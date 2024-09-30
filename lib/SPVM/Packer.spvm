@@ -78,10 +78,6 @@ class Packer {
             }
             
             $values = (byte[])$object;
-            
-            unless (Fn->array_length($values) == $length) {
-              die "The length of the objects \$objects must be equal to the length of the specifier $length.";
-            }
           }
           
           $size = 1;
@@ -101,10 +97,6 @@ class Packer {
             }
             
             $values = (short[])$object;
-            
-            unless (Fn->array_length($values) == $length) {
-              die "The length of the objects \$objects must be equal to the length of the specifier $length.";
-            }
           }
           
           $size = 2;
@@ -124,10 +116,6 @@ class Packer {
             }
             
             $values = (int[])$object;
-            
-            unless (Fn->array_length($values) == $length) {
-              die "The length of the objects \$objects must be equal to the length of the specifier $length.";
-            }
           }
           
           $size = 4;
@@ -147,10 +135,6 @@ class Packer {
             }
             
             $values = (long[])$object;
-            
-            unless (Fn->array_length($values) == $length) {
-              die "The length of the objects \$objects must be equal to the length of the specifier $length.";
-            }
           }
           
           $size = 8;
@@ -170,10 +154,6 @@ class Packer {
             }
             
             $values = (float[])$object;
-            
-            unless (Fn->array_length($values) == $length) {
-              die "The length of the objects \$objects must be equal to the length of the specifier $length.";
-            }
           }
           
           $size = 4;
@@ -193,10 +173,6 @@ class Packer {
             }
             
             $values = (double[])$object;
-            
-            unless (Fn->array_length($values) == $length) {
-              die "The length of the objects \$objects must be equal to the length of the specifier $length.";
-            }
           }
           
           $size = 8;
@@ -206,11 +182,19 @@ class Packer {
         }
       }
       
-      my $binary_part_length = $size * $length;
+      my $binary_part_size = $size * $length;
       
-      my $binary_part = (mutable string)new_string_len $binary_part_length;
+      my $copy_size = 0;
+      if (Fn->length($values) < $length) {
+        $copy_size = $size * Fn->length($values);
+      }
+      else {
+        $copy_size = $size * $length;
+      }
       
-      Fn->memcpy($binary_part, 0, $values, 0, $binary_part_length);
+      my $binary_part = (mutable string)new_string_len $binary_part_size;
+      
+      Fn->memcpy($binary_part, 0, $values, 0, $copy_size);
       
       if ($endian == Packer::Specifier->ENDIAN_BIG_ENDIAN || $endian == Packer::Specifier->ENDIAN_LITTLE_ENDIAN) {
         for (my $i = 0; $i < $length; $i++) {
