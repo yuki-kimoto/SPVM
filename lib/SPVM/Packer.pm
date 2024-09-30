@@ -6,56 +6,96 @@ package SPVM::Packer;
 
 =head1 Name
 
-SPVM::Packer - Short Description
+SPVM::Packer - Pack and Unpack Operations
 
 =head1 Description
 
-Packer class in L<SPVM> has methods to do someting.
+Packer class in L<SPVM> has methods for pack and unpack operations
 
 =head1 Usage
 
   use Packer;
-
-=head1 Details
-
-
-
-=head1 Super Class
-
-
-
-=head1 Interfaces
-
-
-
-=head1 Enumerations
-
-
-
-=head1 Fields
-
-
+  
+  my $packer = Packer->new;
+  
+  my $objects = [(object)1, 2L, 0.5, [1, 2], "abc"];
+  
+  my $binary = $packer->pack("lqdl2a128");
+  
+  my $objects_unpack = $packer->unpack($binary);
 
 =head1 Class Methods
 
+C<static method new : Packer ();>
 
+Creates a new L<Packer|SPVM::Packer> object.
 
 =head1 Instance Methods
 
+=head2 pack
 
+C<static method pack : string ($template : string, $objects : object[]);>
 
-=head1 See Also
+Converts the objects $objects to a binary data according to the template $template, and returns it.
 
+Template Syntax:
 
+A template is a string. It consist of specifier parts.
 
+  TEMPLATE := "SpecifierPart1SpecifierPart2SpecifierPartN"
 
-=head1 Repository
+A specifier part is consist of a speficier, an endian, and a length. An endian and a length are optional.
 
+  SpecifierPart := Specifier[Endian][Length]
 
+Here is the list of specifiers.
 
-=head1 Author
+  [Specifiers]  [Types]              [Meanings]
+  a             string               A input/output binary is a string. It will be null padded in pack method.
+  
+  c             Byte or byte[]       A input/output binary is a 8-bit integer(both singed and unsinged).
+  
+  s             Short or short[]     A input/output binary is a 16-bit integer(both singed and unsinged).
+  
+  l             Int or int[]         A input/output binary is a 32-bit integer(both singed and unsinged).
+  
+  q             Long or long[]       A input/output binary is a 64-bit integer(both singed and unsinged).
+  
+  f             Float or float[]     A input/output binary is a 32-bit floating point number.
+  
+  d             Double or double[]   A input/output binary is a 64-bit floating point number.
 
-Yuki Kimoto C<kimoto.yuki@gmail.com>
+An endian is big-endian C<E<gt>> or little-endian C<E<gt>>.
+
+If big-endian is specified, the binary data is converted from big-endian to system-endian in L</"pack"> method, or from system-endian to big-endian in L</"unpack"> method.
+
+If little-endian is specified, the binary data is converted from little-endian to system-endian in L</"pack"> method, or from system-endian to little-endian in L</"unpack"> method.
+
+A length must be a positive integer. If a length is specified, the type(such as C<Int>) becomes a corresponding array type(such as C<int[]>).
+
+Exceptions:
+
+If template syntax is invalid, an exception is thrown.
+
+The template $template must be defined. Otherwise an exception is thrown.
+
+The objects $objects must be defined. Otherwise an exception is thrown.
+
+=head2 unpack
+
+C<static method unpack : object[] ($template : string, $binary : string);>
+
+Converts the binary data $binary to the objects $objects according to the template $template, and returns it.
+
+See L</"pack"> method about templates.
+
+Exceptions:
+
+If template syntax is invalid, an exception is thrown.
+
+The template $template must be defined. Otherwise an exception is thrown.
+
+The binary data $binary must be defined. Otherwise an exception is thrown.
 
 =head1 Copyright & License
 
