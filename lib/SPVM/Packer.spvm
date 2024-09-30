@@ -309,7 +309,7 @@ class Packer {
         case Packer::Specifier->TYPE_BYTE : {
           $object = new byte[$length];
           
-          Fn->memcpy($object, 0, $binary_part, $binary_offset, $binary_part_size);
+          Fn->memcpy($object, 0, $binary_part, 0, $binary_part_size);
           
           if ($is_numeric_object) {
             $object = Byte->new($object->(byte[])->[0]);
@@ -318,7 +318,7 @@ class Packer {
         case Packer::Specifier->TYPE_SHORT : {
           $object = new short[$length];
           
-          Fn->memcpy($object, 0, $binary_part, $binary_offset, $binary_part_size);
+          Fn->memcpy($object, 0, $binary_part, 0, $binary_part_size);
           
           if ($is_numeric_object) {
             $object = Short->new($object->(short[])->[0]);
@@ -327,7 +327,7 @@ class Packer {
         case Packer::Specifier->TYPE_INT : {
           $object = new int[$length];
           
-          Fn->memcpy($object, 0, $binary_part, $binary_offset, $binary_part_size);
+          Fn->memcpy($object, 0, $binary_part, 0, $binary_part_size);
           
           if ($is_numeric_object) {
             $object = Int->new($object->(int[])->[0]);
@@ -336,7 +336,7 @@ class Packer {
         case Packer::Specifier->TYPE_LONG : {
           $object = new long[$length];
           
-          Fn->memcpy($object, 0, $binary_part, $binary_offset, $binary_part_size);
+          Fn->memcpy($object, 0, $binary_part, 0, $binary_part_size);
           
           if ($is_numeric_object) {
             $object = Long->new($object->(long[])->[0]);
@@ -345,7 +345,7 @@ class Packer {
         case Packer::Specifier->TYPE_FLOAT : {
           $object = new float[$length];
           
-          Fn->memcpy($object, 0, $binary_part, $binary_offset, $binary_part_size);
+          Fn->memcpy($object, 0, $binary_part, 0, $binary_part_size);
           
           if ($is_numeric_object) {
             $object = Float->new($object->(float[])->[0]);
@@ -354,7 +354,7 @@ class Packer {
         case Packer::Specifier->TYPE_DOUBLE : {
           $object = new double[$length];
           
-          Fn->memcpy($object, 0, $binary_part, $binary_offset, $binary_part_size);
+          Fn->memcpy($object, 0, $binary_part, 0, $binary_part_size);
           
           if ($is_numeric_object) {
             $object = Double->new($object->(double[])->[0]);
@@ -490,8 +490,6 @@ class Packer {
       $specifier->{length} = $length;
       
       $specifiers_list->push($specifier);
-      
-      $template_index++;
     }
     
     my $specifiers = (Packer::Specifier[])$specifiers_list->to_array;

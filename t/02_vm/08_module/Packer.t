@@ -22,6 +22,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Packer->pack_unpack_numeric_array);
   ok(SPVM::TestCase::Module::Packer->pack_unpack_big_endian);
   ok(SPVM::TestCase::Module::Packer->pack_unpack_little_endian);
+  ok(SPVM::TestCase::Module::Packer->pack_unpack_specifiers);
   ok(SPVM::TestCase::Module::Packer->pack_exceptions);
 }
 
