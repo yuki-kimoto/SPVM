@@ -1,7 +1,18 @@
 class TestCase::Module::Packer {
   use Packer;
   
-  static method new : int () { return 1; }
+  static method new : int () {
+    
+    {
+      my $packer = Packer->new;
+      
+      unless ($packer is_type Packer) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
   
   static method pack : int () { return 1; }
   
