@@ -25,8 +25,6 @@ class Packer {
       die "The objects \$objects must be defined.";
     }
     
-    
-    
     my $specifiers = $self->_parse_template($template);
     
     my $specifiers_length = @$specifiers;
@@ -34,8 +32,7 @@ class Packer {
     my $objects_length = @$objects;
     
     unless ($specifiers_length <= $objects_length) {
-      die "The length of the specifiers in the template \"$template\" must be less than or equal to the lenght of the objects \$objects.";
-    }
+      die "The length of the specifiers in the template \"$template\" must be less than or equal to the lenght of the objects \$objects.";    }
     
     my $binary_buffer = StringBuffer->new;
     for (my $i = 0; $i < $specifiers_length; $i++) {
