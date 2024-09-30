@@ -14,7 +14,7 @@ class TestCase::Module::Packer {
     return 1;
   }
   
-  static method pack : int () {
+  static method pack_unpack : int () {
     
     my $packer = Packer->new;
     
