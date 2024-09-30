@@ -4,6 +4,8 @@
 class Packer {
   
   use Packer::Specifier;
+  use StringBuffer;
+  use Fn;
   
   # Fields
   has _specifiers_list : List of Packer::Specifier;
@@ -30,7 +32,244 @@ class Packer {
     
     $self->_parse_template($template);
     
-    return undef;
+    my $specifiers_list = $self->{_specifiers_list};
+    
+    my $specifiers_length = $specifiers_list->length;
+    
+    my $objects_length = @$objects;
+    
+    unless ($specifiers_length <= $objects_length) {
+      die "The length of the specifiers in the template \"$template\" must be less than or equal to the lenght of the objects \$objects.";
+    }
+    
+    my $packed_string_buffer = StringBuffer->new;
+    for (my $i = 0; $i < $specifiers_length: $ix++) {
+      
+      my $specifier = (Packer::Specifier)$specifiers_list->get($i);
+      
+      my $specifier_type = $specifier->{type};
+      
+      my $endian = $specifier->{endian};
+      
+      my $length = $specifier->{length};
+      
+      my $object = $objects->[$i];
+      
+      my $size = 0;
+      
+      $values = (object)undef;
+      
+      switch ($specifier_type) {
+        
+        my $paccked_string_part = (mutable string)undef;
+        case Packer::Specifier->TYPE_STRING : {
+          if ($length > 0) {
+            unless ($object is_type string) {
+              die "The type of the element in the objects \$objects at index $i must be string type.";
+            }
+          }
+          else {
+            die "[Unpexpected Error]Invalid length.";
+          }
+          
+          $size = 1;
+          
+          $values = (string)$object;
+        }
+        case Packer::Specifier->TYPE_BYTE : {
+          
+          if ($length == 0) {
+            unless ($object is_type Byte) {
+              die "The type of the element in the objects \$objects at index $i must be Byte type.";
+            }
+            
+            my $value = (Byte)$object;
+            
+            $values = [$value];
+          }
+          elsif ($length > 0) {
+            unless ($object is_type byte[]) {
+              die "The type of the element in the objects \$objects at index $i must be byte[] type.";
+            }
+            
+            $values = (byte[])$object;
+            
+            unless (length $values == $length) {
+              die "The length of the objects \$objects must be equal to the length of the specifier $length.";
+            }
+          }
+          else {
+            die "[Unpexpected Error]Invalid length.";
+          }
+          
+          $size = 1;
+        }
+        case Packer::Specifier->TYPE_SHORT : {
+          
+          if ($length == 0) {
+            unless ($object is_type Short) {
+              die "The type of the element in the objects \$objects at index $i must be Short type.";
+            }
+            
+            my $value = (Short)$object;
+            
+            $values = [$value];
+          }
+          elsif ($length > 0) {
+            unless ($object is_type short[]) {
+              die "The type of the element in the objects \$objects at index $i must be short[] type.";
+            }
+            
+            $values = (short[])$object;
+            
+            unless (length $values == $length) {
+              die "The length of the objects \$objects must be equal to the length of the specifier $length.";
+            }
+          }
+          else {
+            die "[Unpexpected Error]Invalid length.";
+          }
+          
+          $size = 2;
+        }
+        case Packer::Specifier->TYPE_INT : {
+          
+          if ($length == 0) {
+            unless ($object is_type Int) {
+              die "The type of the element in the objects \$objects at index $i must be Int type.";
+            }
+            
+            my $value = (Int)$object;
+            
+            $values = [$value];
+          }
+          elsif ($length > 0) {
+            unless ($object is_type int[]) {
+              die "The type of the element in the objects \$objects at index $i must be int[] type.";
+            }
+            
+            $values = (int[])$object;
+            
+            unless (length $values == $length) {
+              die "The length of the objects \$objects must be equal to the length of the specifier $length.";
+            }
+          }
+          else {
+            die "[Unpexpected Error]Invalid length.";
+          }
+          
+          $size = 4;
+        }
+        case Packer::Specifier->TYPE_LONG : {
+          
+          if ($length == 0) {
+            unless ($object is_type Long) {
+              die "The type of the element in the objects \$objects at index $i must be Long type.";
+            }
+            
+            my $value = (Long)$object;
+            
+            $values = [$value];
+          }
+          elsif ($length > 0) {
+            unless ($object is_type long[]) {
+              die "The type of the element in the objects \$objects at index $i must be long[] type.";
+            }
+            
+            $values = (long[])$object;
+            
+            unless (length $values == $length) {
+              die "The length of the objects \$objects must be equal to the length of the specifier $length.";
+            }
+          }
+          else {
+            die "[Unpexpected Error]Invalid length.";
+          }
+          
+          $size = 8;
+        }
+        case Packer::Specifier->TYPE_FLOAT : {
+          
+          if ($length == 0) {
+            unless ($object is_type Float) {
+              die "The type of the element in the objects \$objects at index $i must be Float type.";
+            }
+            
+            my $value = (Float)$object;
+            
+            $values = [$value];
+          }
+          elsif ($length > 0) {
+            unless ($object is_type float[]) {
+              die "The type of the element in the objects \$objects at index $i must be float[] type.";
+            }
+            
+            $values = (float[])$object;
+            
+            unless (length $values == $length) {
+              die "The length of the objects \$objects must be equal to the length of the specifier $length.";
+            }
+          }
+          else {
+            die "[Unpexpected Error]Invalid length.";
+          }
+          
+          $size = 4;
+        }
+        case Packer::Specifier->TYPE_DOUBLE : {
+          
+          if ($length == 0) {
+            unless ($object is_type Double) {
+              die "The type of the element in the objects \$objects at index $i must be Double type.";
+            }
+            
+            my $value = (Double)$object;
+            
+            $values = [$value];
+          }
+          elsif ($length > 0) {
+            unless ($object is_type double[]) {
+              die "The type of the element in the objects \$objects at index $i must be double[] type.";
+            }
+            
+            $values = (double[])$object;
+            
+            unless (length $values == $length) {
+              die "The length of the objects \$objects must be equal to the length of the specifier $length.";
+            }
+          }
+          else {
+            die "[Unpexpected Error]Invalid length.";
+          }
+          
+          $size = 8;
+        }
+        default : {
+          die "[Unexpected Error]Invalid specifier type.";
+        }
+      }
+      
+      $paccked_string_part = (mutable string)new_string_length $length;
+      
+      Fn->memcpy($paccked_string_part, 0, $values, 0, $size * $length);
+      
+      if ($endian == ENDIAN_BIG_ENDIAN || $endian == ENDIAN_LITTLE_ENDIAN) {
+        for (my $i = 0; $i < $length; $i++) {
+          if ($endian == ENDIAN_BIG_ENDIAN) {
+            Fn->system_endian_to_big_endian($binary, $paccked_string_part, $size, $size * $i);
+          }
+          elsif ($endian == ENDIAN_LITTLE_ENDIAN) {
+            Fn->system_endian_to_little_endian($binary, $paccked_string_part, $size, $size * $i);
+          }
+        }
+      }
+      
+      $packed_string_buffer->push($paccked_string_part);
+    }
+    
+    my $packed_string = $packed_string_buffer->to_string;
+    
+    return $packed_string;
   }
   
   static method unpack : object[] ($template : string, $binary : string) {
@@ -119,6 +358,7 @@ class Packer {
       
       # Parse length
       my $length_string = "";
+      my $glob = 0;
       while (1) {
         unless ($template_index < $template_length) {
           last;
@@ -135,7 +375,10 @@ class Packer {
       }
       
       my $length = 0;
-      if (length $lenght_string) {
+      if ($glob) {
+        $legnth = -1;
+      }
+      elsif (length $lenght_string) {
         my $length_tmp = Fn->to_int($length_string);
         
         unless ($length_tmp > 0) {
@@ -143,6 +386,12 @@ class Packer {
         }
         
         $length = $length_tmp;
+      }
+      
+      if ($specifier_type == Packer::Specifier->TYPE_STRING) {
+        if ($length == 0) {
+          die "The data length $length for \"a" in the template in the template \"$template\" must be specified.";
+        }
       }
       
       my $specifier = Packer::Specifier->new;
