@@ -42,7 +42,7 @@ class Packer {
       die "The length of the specifiers in the template \"$template\" must be less than or equal to the lenght of the objects \$objects.";
     }
     
-    my $packed_string_buffer = StringBuffer->new;
+    my $binary_buffer = StringBuffer->new;
     for (my $i = 0; $i < $specifiers_length: $ix++) {
       
       my $specifier = (Packer::Specifier)$specifiers_list->get($i);
@@ -61,7 +61,7 @@ class Packer {
       
       switch ($specifier_type) {
         
-        my $paccked_string_part = (mutable string)undef;
+        my $binary_part = (mutable string)undef;
         case Packer::Specifier->TYPE_STRING : {
           if ($length > 0) {
             unless ($object is_type string) {
@@ -249,27 +249,30 @@ class Packer {
         }
       }
       
-      $paccked_string_part = (mutable string)new_string_length $length;
+      $binary_part = (mutable string)new_string_length $length;
       
-      Fn->memcpy($paccked_string_part, 0, $values, 0, $size * $length);
+      Fn->memcpy($binary_part, 0, $values, 0, $size * $length);
       
       if ($endian == ENDIAN_BIG_ENDIAN || $endian == ENDIAN_LITTLE_ENDIAN) {
         for (my $i = 0; $i < $length; $i++) {
+          my $binary_part_offset = $size * $i;
           if ($endian == ENDIAN_BIG_ENDIAN) {
-            Fn->system_endian_to_big_endian($binary, $paccked_string_part, $size, $size * $i);
+            Fn->system_endian_to_big_endian($binary, $binary_part, $size, $binary_part_offset);
           }
           elsif ($endian == ENDIAN_LITTLE_ENDIAN) {
-            Fn->system_endian_to_little_endian($binary, $paccked_string_part, $size, $size * $i);
+            Fn->system_endian_to_little_endian($binary, $binary_part, $size, $binary_part_offset);
           }
         }
       }
       
-      $packed_string_buffer->push($paccked_string_part);
+      $binary_buffer->push($binary_part);
     }
     
-    my $packed_string = $packed_string_buffer->to_string;
+    my $binary = $binary_buffer->to_string;
     
-    return $packed_string;
+    make_read_only $binary;
+    
+    return $binary;
   }
   
   static method unpack : object[] ($template : string, $binary : string) {
@@ -284,10 +287,166 @@ class Packer {
     
     $self->_parse_template($template);
     
-    return undef;
+    my $binary_length = length $binary;
+    
+    my $specifiers_list = $self->{_specifiers_list};
+    
+    my $specifiers_length = $specifiers_list->length;
+    
+    my $binary_offset = 0;
+    for (my $i = 0; $i < $specifiers_length: $ix++) {
+      
+      my $specifier = (Packer::Specifier)$specifiers_list->get($i);
+      
+      my $specifier_type = $specifier->{type};
+      
+      my $endian = $specifier->{endian};
+      
+      my $specifier_length = $specifier->{length};
+      
+      my $length = 0;
+      my $is_numeric_object = 0;
+      if ($specifier_length == 0) {
+        $length = 1;
+        $is_numeric_object = 1;
+      }
+      else {
+        $length = $specifier_length;
+      }
+      
+      my $size = 0;
+      
+      my $objects_list = List->new(new object[0]);
+      
+      my $binary_part = (string)undef;
+      
+      switch ($specifier_type) {
+        case Packer::Specifier->TYPE_STRING : {
+          $size = 1;
+        }
+        case Packer::Specifier->TYPE_BYTE : {
+          $size = 1;
+        }
+        case Packer::Specifier->TYPE_SHORT : {
+          $size = 2;
+        }
+        case Packer::Specifier->TYPE_INT : {
+          $size = 4;
+        }
+        case Packer::Specifier->TYPE_LONG : {
+          $size = 8;
+        }
+        case Packer::Specifier->TYPE_FLOAT : {
+          $size = 4;
+        }
+        case Packer::Specifier->TYPE_DOUBLE : {
+          $size = 8;
+        }
+        default : {
+          die "[Unexpected Error]Invalid specifier type.";
+        }
+      }
+      
+      unless ($offset + $size * $length <= $binary_length) {
+        die "The current offset $offset plus (the size $size * the length $length of the specifier) must be less than the length of the binary \$binary.";
+      }
+      
+      my $binary_part_size = $size * $length;
+      
+      $binary_part = (mutable string)new_string_len $binary_part_size;
+      
+      Fn->memcpy($binary_part, 0, $binary, $offset, $binary_part_size);
+      
+      if ($endian == ENDIAN_BIG_ENDIAN || $endian == ENDIAN_LITTLE_ENDIAN) {
+        for (my $i = 0; $i < $length; $i++) {
+          my $binary_part_offset = $size * $i;
+          if ($endian == ENDIAN_BIG_ENDIAN) {
+            Fn->big_endian_to_system_endian($binary, $binary_part, $size, $binary_part_offset);
+          }
+          elsif ($endian == ENDIAN_LITTLE_ENDIAN) {
+            Fn->little_endian_to_system_endian($binary, $binary_part, $size, $binary_part_offset);
+          }
+        }
+      }
+      
+      my $object = (object[])undef;
+      switch ($specifier_type) {
+        
+        case Packer::Specifier->TYPE_STRING : {
+          make_read_only $binary_part;
+          
+          $object = $binary_part;
+        }
+        case Packer::Specifier->TYPE_BYTE : {
+          $object = new byte[$length];
+          
+          Fn->memcpy($object, 0, $binary_part, $offset, $binary_part_size);
+          
+          if ($is_numeric_object) {
+            $object = Byte->new($object->[0]);
+          }
+        }
+        case Packer::Specifier->TYPE_SHORT : {
+          $object = new short[$length];
+          
+          Fn->memcpy($object, 0, $binary_part, $offset, $binary_part_size);
+          
+          if ($is_numeric_object) {
+            $object = Short->new($object->[0]);
+          }
+        }
+        case Packer::Specifier->TYPE_INT : {
+          $object = new int[$length];
+          
+          Fn->memcpy($object, 0, $binary_part, $offset, $binary_part_size);
+          
+          if ($is_numeric_object) {
+            $object = Int->new($object->[0]);
+          }
+        }
+        case Packer::Specifier->TYPE_LONG : {
+          $object = new long[$length];
+          
+          Fn->memcpy($object, 0, $binary_part, $offset, $binary_part_size);
+          
+          if ($is_numeric_object) {
+            $object = Long->new($object->[0]);
+          }
+        }
+        case Packer::Specifier->TYPE_FLOAT : {
+          $object = new float[$length];
+          
+          Fn->memcpy($object, 0, $binary_part, $offset, $binary_part_size);
+          
+          if ($is_numeric_object) {
+            $object = Float->new($object->[0]);
+          }
+        }
+        case Packer::Specifier->TYPE_DOUBLE : {
+          $object = new double[$length];
+          
+          Fn->memcpy($object, 0, $binary_part, $offset, $binary_part_size);
+          
+          if ($is_numeric_object) {
+            $object = Double->new($object->[0]);
+          }
+        }
+        default : {
+          die "[Unexpected Error]Invalid specifier type.";
+        }
+      }
+      
+      $objects_list->push($object);
+      
+      $offset = $binary_part_size;
+    }
+    
+    my $objects = $objects_list->to_array;
+    
+    return $objects;
   }
   
-  method _parse_template : void ($template : string) {
+  private method _parse_template : void ($template : string) {
     
     my $template_length = length $template;
     
