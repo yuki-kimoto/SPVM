@@ -237,6 +237,8 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->change_endian);
     ok(SPVM::TestCase::Module::Fn->big_endian_to_system_endian);
     ok(SPVM::TestCase::Module::Fn->system_endian_to_big_endian);
+    ok(SPVM::TestCase::Module::Fn->little_endian_to_system_endian);
+    ok(SPVM::TestCase::Module::Fn->system_endian_to_little_endian);
   }
   
   # Extra
