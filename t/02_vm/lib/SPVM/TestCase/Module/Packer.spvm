@@ -743,19 +743,19 @@ class TestCase::Module::Packer {
     
     # cslq
     {
-      my $objects = [(object)(byte)1, (short)2, Fn->INT_MIN, Fn->LONG_MIN];
+      my $objects = [(object)(byte)1, (short)2, Fn->INT_MIN, Fn->LONG_MIN, Fn->FLT_MIN];
       
-      my $template = "cslq";
+      my $template = "cslqf";
       
       my $binary = $packer->pack($template, $objects);
       
-      unless (length $binary == 1 + 2 + 4 + 8) {
+      unless (length $binary == 1 + 2 + 4 + 8 + 4) {
         return 0;
       }
       
       my $objects_again = $packer->unpack($template, $binary);
       
-      unless (@$objects_again == 4) {
+      unless (@$objects_again == 5) {
         return 0;
       }
       
@@ -788,6 +788,14 @@ class TestCase::Module::Packer {
       }
       
       unless ($objects_again->[3]->(long) == Fn->LONG_MIN) {
+        return 0;
+      }
+      
+      unless ($objects_again->[4] is_type Float) {
+        return 0;
+      }
+      
+      unless ($objects_again->[4]->(float) == Fn->FLT_MIN) {
         return 0;
       }
       
