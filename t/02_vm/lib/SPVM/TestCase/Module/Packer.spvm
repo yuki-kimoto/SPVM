@@ -741,7 +741,7 @@ class TestCase::Module::Packer {
       
     }
     
-    # cslq
+    # cslqfd
     {
       my $objects = [(object)(byte)1, (short)2, Fn->INT_MIN, Fn->LONG_MIN, Fn->FLT_MIN, Fn->DBL_MIN];
       
@@ -804,6 +804,74 @@ class TestCase::Module::Packer {
       }
       
       unless ($objects_again->[5]->(double) == Fn->DBL_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # cslqfd
+    {
+      my $objects = [(object)[(byte)1], [(short)2], [Fn->INT_MIN], [Fn->LONG_MIN], [Fn->FLT_MIN], [Fn->DBL_MIN]];
+      
+      my $template = "c1s1l1q1f1d1";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 1 + 2 + 4 + 8 + 4 + 8) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 6) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type byte[]) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(byte[])->[0] == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[1] is_type short[]) {
+        return 0;
+      }
+      
+      unless ($objects_again->[1]->(short[])->[0] == 2) {
+        return 0;
+      }
+      
+      unless ($objects_again->[2] is_type int[]) {
+        return 0;
+      }
+      
+      unless ($objects_again->[2]->(int[])->[0] == Fn->INT_MIN) {
+        return 0;
+      }
+      
+      unless ($objects_again->[3] is_type long[]) {
+        return 0;
+      }
+      
+      unless ($objects_again->[3]->(long[])->[0] == Fn->LONG_MIN) {
+        return 0;
+      }
+      
+      unless ($objects_again->[4] is_type float[]) {
+        return 0;
+      }
+      
+      unless ($objects_again->[4]->(float[])->[0] == Fn->FLT_MIN) {
+        return 0;
+      }
+      
+      unless ($objects_again->[5] is_type double[]) {
+        return 0;
+      }
+      
+      unless ($objects_again->[5]->(double[])->[0] == Fn->DBL_MIN) {
         return 0;
       }
       
