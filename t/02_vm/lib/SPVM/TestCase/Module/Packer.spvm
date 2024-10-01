@@ -660,8 +660,7 @@ class TestCase::Module::Packer {
   static method pack_unpack_specifiers : int () {
     
     my $packer = Packer->new;
-    
-    # ll
+
     {
       my $objects = [(object)Fn->INT_MIN, Fn->INT_MAX];
       
@@ -696,7 +695,95 @@ class TestCase::Module::Packer {
       }
       
     }
-
+    
+    # lll
+    {
+      my $objects = [(object)Fn->INT_MIN, Fn->INT_MAX, 1];
+      
+      my $template = "lll";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 4 * 3) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 3) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type Int) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(int) == Fn->INT_MIN) {
+        return 0;
+      }
+      
+      unless ($objects_again->[1] is_type Int) {
+        return 0;
+      }
+      
+      unless ($objects_again->[1]->(int) == Fn->INT_MAX) {
+        return 0;
+      }
+      
+      unless ($objects_again->[2] is_type Int) {
+        return 0;
+      }
+      
+      unless ($objects_again->[2]->(int) == 1) {
+        return 0;
+      }
+      
+    }
+    
+    # lc
+    {
+      my $objects = [(object)(byte)1, (short)2, Fn->INT_MIN];
+      
+      my $template = "csl";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 1 + 2 + 4) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 3) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type Byte) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(byte) == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[1] is_type Short) {
+        return 0;
+      }
+      
+      unless ($objects_again->[1]->(short) == 2) {
+        return 0;
+      }
+      
+      unless ($objects_again->[2] is_type Int) {
+        return 0;
+      }
+      
+      unless ($objects_again->[2]->(int) == Fn->INT_MIN) {
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
   

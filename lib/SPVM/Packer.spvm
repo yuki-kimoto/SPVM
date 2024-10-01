@@ -367,7 +367,7 @@ class Packer {
       
       $objects_list->push($object);
       
-      $binary_offset = $binary_part_size;
+      $binary_offset += $binary_part_size;
     }
     
     my $objects = $objects_list->to_array;
