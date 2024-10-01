@@ -24,6 +24,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Packer->pack_unpack_little_endian);
   ok(SPVM::TestCase::Module::Packer->pack_unpack_specifiers);
   ok(SPVM::TestCase::Module::Packer->pack_exceptions);
+  ok(SPVM::TestCase::Module::Packer->unpack_exceptions);
 }
 
 # All object is freed

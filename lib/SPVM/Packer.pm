@@ -81,6 +81,10 @@ The template $template must be defined. Otherwise an exception is thrown.
 
 The objects $objects must be defined. Otherwise an exception is thrown.
 
+The length of the specifiers in the template $template must be less than or equal to the lenght of the objects $objects. Otherwise an exception is thrown.
+
+The type of the element in the objects $objects is invalid, an exception is thrown.
+
 =head2 unpack
 
 C<static method unpack : object[] ($template : string, $binary : string);>
@@ -96,6 +100,8 @@ If template syntax is invalid, an exception is thrown.
 The template $template must be defined. Otherwise an exception is thrown.
 
 The binary data $binary must be defined. Otherwise an exception is thrown.
+
+The current offset $binary_offset plus (the size $size * the length $length of the specifier) must be less than the length($binary_length) of the binary data $binary. Otherwise an exception is thrown.
 
 =head1 Copyright & License
 

@@ -893,24 +893,7 @@ class TestCase::Module::Packer {
   }
   
   static method pack_exceptions : int () {
-
-=pod
-
-    {
-      my $packer = Packer->new;
-      
-      my $template = "";
-      my $objects = [(object)1];
-      
-      eval { $packer->pack($template, $objects); }
-      
-      unless ($@) {
-        return 0;
-      }
-    }
-
-=cut
-
+    
     {
       my $packer = Packer->new;
       
@@ -931,6 +914,261 @@ class TestCase::Module::Packer {
       my $objects = [(object)1];
       
       eval { $packer->pack($template, undef); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "ll";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "c";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "c1";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "s";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "s1";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "l";
+      my $objects = [(object)1L];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "c1";
+      my $objects = [(object)1L];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "q";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "q1";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "f";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "f1";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "d";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "d1";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "a3";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unpack_exceptions : int () {
+
+=pod
+
+    {
+      my $packer = Packer->new;
+      
+      my $objects = [(object)(byte)Fn->BYTE_MIN];
+      
+      my $template = "c";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      eval { my $objects_again = $packer->unpack($template, $binary); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+=cut
+    
+    {
+      my $packer = Packer->new;
+      
+      my $objects = [(object)(byte)Fn->BYTE_MIN];
+      
+      my $template = "c";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      eval { my $objects_again = $packer->unpack(undef, $binary); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $objects = [(object)(byte)Fn->BYTE_MIN];
+      
+      my $template = "c";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      eval { my $objects_again = $packer->unpack($template, undef); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $objects = [(object)(byte)Fn->BYTE_MIN];
+      
+      my $template = "c";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      eval { my $objects_again = $packer->unpack("cc", $binary); }
       
       unless ($@) {
         return 0;
