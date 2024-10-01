@@ -663,7 +663,7 @@ class TestCase::Module::Packer {
     
     # ll
     {
-      my $objects = [(object)Fn->INT_MIN, 1];
+      my $objects = [(object)Fn->INT_MIN, Fn->INT_MAX];
       
       my $template = "ll";
       
@@ -691,12 +691,12 @@ class TestCase::Module::Packer {
         return 0;
       }
       
-      unless ($objects_again->[1]->(int) == 1) {
+      unless ($objects_again->[1]->(int) == Fn->INT_MAX) {
         return 0;
       }
       
     }
-    
+
     return 1;
   }
   
