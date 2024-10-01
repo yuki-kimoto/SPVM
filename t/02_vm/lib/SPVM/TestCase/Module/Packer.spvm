@@ -811,19 +811,19 @@ class TestCase::Module::Packer {
     
     # cslqfd
     {
-      my $objects = [(object)[(byte)1], [(short)2], [Fn->INT_MIN, 1], [Fn->LONG_MIN], [Fn->FLT_MIN], [Fn->DBL_MIN]];
+      my $objects = [(object)[(byte)1], [(short)2], [Fn->INT_MIN, 1], [Fn->LONG_MIN], [Fn->FLT_MIN], [Fn->DBL_MIN], "abc"];
       
-      my $template = "c1s1l2q1f1d1";
+      my $template = "c1s1l2q1f1d1a3";
       
       my $binary = $packer->pack($template, $objects);
       
-      unless (length $binary == 1 + 2 + (4 * 2) + 8 + 4 + 8) {
+      unless (length $binary == 1 + 2 + (4 * 2) + 8 + 4 + 8 + 3) {
         return 0;
       }
       
       my $objects_again = $packer->unpack($template, $binary);
       
-      unless (@$objects_again == 6) {
+      unless (@$objects_again == 7) {
         return 0;
       }
       
@@ -876,6 +876,14 @@ class TestCase::Module::Packer {
       }
       
       unless ($objects_again->[5]->(double[])->[0] == Fn->DBL_MIN) {
+        return 0;
+      }
+      
+      unless ($objects_again->[6] is_type string) {
+        return 0;
+      }
+      
+      unless ($objects_again->[6]->(string) eq "abc") {
         return 0;
       }
       
