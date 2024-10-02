@@ -1585,6 +1585,22 @@ Exceptions:
 
 Exceptions thrown by L</"change_endian"> method could be thrown.
 
+=head2 pack
+
+C<static method pack : string ($template : string, $objects : object[]);>
+
+Converts the objects $objects to a binary data according to the template $template, and returns it.
+
+This method just creates a L<Packer|SPVM::Packer> object, calls L<Packer#pack|SPVM::Packer/"pack"> method, and returns its return value.
+
+=head2 unpack
+
+C<static method unpack : object[] ($template : string, $binary : string);>
+
+Converts the binary data $binary to the objects $objects according to the template $template, and returns it.
+
+This method just creates a L<Packer|SPVM::Packer> object, calls L<Packer#unpack|SPVM::Packer/"unpack"> method, and returns its return value.
+
 =head1 See Also
 
 =over 2

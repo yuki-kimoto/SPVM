@@ -7680,4 +7680,43 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+  static method pack : int () {
+    
+    # l
+    {
+      my $objects = [(object)Fn->INT_MIN];
+      
+      my $template = "l";
+      
+      my $binary = Fn->pack($template, $objects);
+      
+      unless (length $binary == 4) {
+        return 0;
+      }
+      
+      my $objects_again = Fn->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type Int) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(int) == Fn->INT_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method unpack : int () {
+    
+    # Tested in pack method.
+    
+    return 1;
+  }
 }

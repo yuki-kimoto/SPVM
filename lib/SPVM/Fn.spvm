@@ -16,6 +16,7 @@ class Fn {
   use Callback::Map;
   use Callback::MapExpand;
   use Cloneable;
+  use Packer;
   
   static method BYTE_MAX : int () { return 127; }
   static method BYTE_MIN : int () { return -128; }
@@ -1746,6 +1747,14 @@ class Fn {
       &change_endian($binary, $size, $offset);
     }
     
+  }
+  
+  static method pack : string ($template : string, $objects : object[]) {
+    return Packer->new->pack($template, $objects);
+  }
+  
+  static method unpack : object[] ($template : string, $binary : string) {
+    return Packer->new->unpack($template, $binary);
   }
   
 }

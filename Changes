@@ -1,5 +1,7 @@
 0.990013 2023-09-28
   [New Features]
+    * Add Fn#pack method.
+    * Add Fn#unpack method.
     * Add Fn#system_endian_to_little_endian method.
     * Add Fn#little_endian_to_system_endian method.
     * Add optional $offset argument to Fn#change_endian method.
