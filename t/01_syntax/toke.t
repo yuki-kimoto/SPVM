@@ -111,13 +111,18 @@ use Test::More;
   }
   
   {
-    my $source = qq|#file \nclass MyClass { static method main : void () {} }|;
+    my $source = qq|#file ""\nclass MyClass { static method main : void () {} }|;
     compile_not_ok($source, q|A file directive must have a file path.|);
   }
   
   {
     my $source = qq|#file "/foo/bar.txt"a\nclass MyClass { static method main : void () {} }|;
     compile_not_ok($source, q|A file directive must end with "\n".|);
+  }
+  
+  {
+    my $source = qq|#file /foo/bar.txt\nclass MyClass { static method main : void () {} }|;
+    compile_not_ok($source, q|A file directive must start with '"'|);
   }
   
 }

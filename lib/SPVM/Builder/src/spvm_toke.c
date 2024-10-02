@@ -481,6 +481,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             SPVM_STRING_new(compiler, file, file_length);
           }
+          else {
+            SPVM_COMPILER_error(compiler, "A file directive must start with '\"'.\n  at %s line %d", compiler->current_file, compiler->current_line);
+            return 0;
+          }
           
           while (*compiler->ch_ptr == ' ') {
             compiler->ch_ptr++;
@@ -491,7 +495,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             return 0;
           }
           
-          if (!file) {
+          if (strlen(file) == 0) {
             SPVM_COMPILER_error(compiler, "A file directive must have a file path.\n  at %s line %d", compiler->current_file, compiler->current_line);
             return 0;
           }
