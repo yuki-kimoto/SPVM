@@ -32,7 +32,7 @@ my $dev_null = File::Spec->devnull;
   {
     my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM MyExe foo bar);
     system($spvm_cmd) == 0
-     or die "Can't execute spvmcc command $spvm_cmd:$!";
+     or die "Can't execute spvm command $spvm_cmd:$!";
     
     ok(1);
   }
@@ -40,7 +40,7 @@ my $dev_null = File::Spec->devnull;
   {
     my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM MyExe foo bar);
     system($spvm_cmd) == 0
-     or die "Can't execute spvmcc command $spvm_cmd:$!";
+     or die "Can't execute spvm command $spvm_cmd:$!";
     
     ok(1);
   }
@@ -49,16 +49,16 @@ my $dev_null = File::Spec->devnull;
   {
     my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM MyExe foo bar);
     system($spvm_cmd) == 0
-     or die "Can't execute spvmcc command $spvm_cmd:$!";
+     or die "Can't execute spvm command $spvm_cmd:$!";
     
     ok(1);
   }
   
   # --build-dir
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm --build-dir $build_dir -I solo/lib/SPVM -e "warn q'[Test Output]spvmcc -e option';" MyExe);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm --build-dir $build_dir -I solo/lib/SPVM -e "warn q'[Test Output]spvm -e option';" MyExe);
     system($spvm_cmd) == 0
-     or die "Can't execute spvmcc command $spvm_cmd:$!";
+     or die "Can't execute spvm command $spvm_cmd:$!";
     
     ok(1);
   }
@@ -67,7 +67,7 @@ my $dev_null = File::Spec->devnull;
   {
     my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM -M Fn -M StringBuffer -e "Fn->INT_MAX; StringBuffer->new;warn q'[Test Output]spvm -e and -M option';");
     system($spvm_cmd) == 0
-     or die "Can't execute spvmcc command $spvm_cmd:$!";
+     or die "Can't execute spvm command $spvm_cmd:$!";
     
     ok(1);
   }
