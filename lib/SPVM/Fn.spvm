@@ -18,6 +18,8 @@ class Fn {
   use Cloneable;
   use Packer;
   
+  # Do not use Native and Native::XXX classes because dependencies can have serious negative effects.
+  
   static method BYTE_MAX : int () { return 127; }
   static method BYTE_MIN : int () { return -128; }
   native static method DBL_MAX : double ();
