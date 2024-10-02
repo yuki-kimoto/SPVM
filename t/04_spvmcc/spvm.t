@@ -11,6 +11,7 @@ use Config;
 use File::Path 'mkpath', 'rmtree';
 use File::Spec;
 use SPVM::Builder::Util;
+use FindBin;
 
 use SPVM::Builder;
 use File::Spec;
@@ -66,6 +67,15 @@ my $dev_null = File::Spec->devnull;
   # -e, -M
   {
     my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM -M Fn -M StringBuffer -e "Fn->INT_MAX; StringBuffer->new;warn q'[Test Output]spvm -e and -M option';");
+    system($spvm_cmd) == 0
+     or die "Can't execute spvm command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
+  # SPVM script
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm $FindBin::Bin/script/basic.spvm);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
