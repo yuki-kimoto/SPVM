@@ -1040,6 +1040,9 @@ sub compile_native_class {
     $config_file = $script_name;
     $config_file =~ s/\..*$//;
     $config_file .= '.config';
+    unless (-f $config_file) {
+      $config_file = undef;
+    }
   }
   else {
     $config_file = SPVM::Builder::Util::search_config_file($class_name);

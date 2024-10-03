@@ -1,0 +1,4 @@
+class {
+  static method main : int ($argv : string[]) {
+  }
+}

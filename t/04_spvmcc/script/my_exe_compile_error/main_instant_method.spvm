@@ -1,0 +1,4 @@
+class {
+  method main : int () {
+  }
+}

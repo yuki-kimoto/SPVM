@@ -41,7 +41,7 @@ my $dev_null = File::Spec->devnull;
 {
   {
     
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe_runtime_error --no-config MyExeCompileError::MainInstantMethod);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -o $exe_dir/myexe_runtime_error --no-config t/04_spvmcc/script/my_exe_compile_error/main_instant_method.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
@@ -49,13 +49,13 @@ my $dev_null = File::Spec->devnull;
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     
     my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
-    like($error, qr|The "main" method in the "MyExeCompileError::MainInstantMethod" class must be a class method|);
+    like($error, qr|The "main" method in the ".+" class must be a class method|);
   }
   
   sleep 1;
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe_runtime_error --no-config MyExeCompileError::MainHasArguments);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -o $exe_dir/myexe_runtime_error --no-config t/04_spvmcc/script/my_exe_compile_error/main_has_arguments.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
@@ -63,13 +63,13 @@ my $dev_null = File::Spec->devnull;
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     
     my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
-    like($error, qr|The length of the arguments of the "main" method in the "MyExeCompileError::MainHasArguments" class must be 0|);
+    like($error, qr|The length of the arguments of the "main" method in the ".+" class must be 0|);
   }
   
   sleep 1;
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe_runtime_error --no-config MyExeCompileError::MainNotFound);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -o $exe_dir/myexe_runtime_error --no-config t/04_spvmcc/script/my_exe_compile_error/main_not_found.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
@@ -77,7 +77,7 @@ my $dev_null = File::Spec->devnull;
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     
     my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
-    like($error, qr|The "main" method in the "MyExeCompileError::MainNotFound" class must be defined|);
+    like($error, qr|The "main" method in the ".+" class must be defined|);
   }
 }
 
