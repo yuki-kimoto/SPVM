@@ -84,7 +84,7 @@ my $dev_null = File::Spec->devnull;
 {
   # Basic
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe t/04_spvmcc/script/my_exe.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
@@ -104,6 +104,7 @@ my $dev_null = File::Spec->devnull;
     }
   }
 }
+
 
 {
   # --optimize="-O0 -g"
