@@ -14,6 +14,20 @@
           }
         }
       
+    * spvmcc command support script name. Currently script name must start with [a-z] or contain / or \ because of class name argument is not removed.
+      
+      spvmcc path/foo.spvm
+      spvmcc foo.spvm
+      spvmcc foo
+      
+      the script contains main method in an anon class.
+      
+        class {
+          static method main : void () {
+            
+          }
+        }
+      
   [Deprecation]
     * Deprecate spvm command's class name argument.
     
@@ -23,6 +37,14 @@
       
       spvm path/foo.spvm
     
+    * Deprecate spvmcc command's class name argument.
+    
+      spvmcc Foo
+      
+      this will be changed to script name in a future release.
+      
+      spvmcc path/foo.spvm
+      
   [Improve Compilation Error Messages]
     * Improve a compilation message in file derective.
       

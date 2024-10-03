@@ -368,7 +368,7 @@ sub compile_class {
     $class_file_cannonpath_without_ext =~ s/\.spvm$//;
     my $class_file_cannonpath_without_ext_quotemeta = quotemeta $class_file_cannonpath_without_ext;
     
-    unless ($config_file_abs =~ /^$class_file_cannonpath_without_ext_quotemeta\./) {
+    if (!$config->isa('SPVM::Builder::Config::Exe') && $config_file_abs !~ /^$class_file_cannonpath_without_ext_quotemeta\./) {
       confess("The config file \"$config_file_abs\" is not compatible with the SPVM file \"$class_file_cannonpath\".");
     }
   }

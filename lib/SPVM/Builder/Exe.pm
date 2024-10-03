@@ -206,7 +206,6 @@ sub new {
   
   # Config
   my $config_file;
-  
   if ($script_name) {
     $config_file = $script_name;
     $config_file =~ s/\..*$//;
@@ -350,10 +349,6 @@ sub compile {
     $class_name = $compiler->compile_anon_class_with_exit($program_source, __FILE__, __LINE__);
     
     $self->class_name($class_name);
-    
-    if ($self->config) {
-      $self->config->class_name($class_name);
-    }
   }
   else {
     $compiler->compile_with_exit($class_name, __FILE__, __LINE__);
@@ -1036,7 +1031,16 @@ sub compile_native_class {
   
   my $runtime = $self->runtime;
   
-  my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+  my $script_name = $self->script_name;
+  my $config_file;
+  if ($script_name && $class_name eq $self->class_name) {
+    $config_file = $script_name;
+    $config_file =~ s/\..*$//;
+    $config_file .= '.config';
+  }
+  else {
+    $config_file = SPVM::Builder::Util::search_config_file($class_name);
+  }
   
   if (defined $config_file) {
     
@@ -1048,6 +1052,7 @@ sub compile_native_class {
     my $config = SPVM::Builder::Config->load_mode_config($config_file, $mode, []);
     
     # In an executable file, only resources used in the config of the class for generate an executable file are compiled.
+    
     unless ($class_name eq $self->class_name) {
       $config->no_compile_resource(1);
     }
@@ -1081,6 +1086,10 @@ sub get_user_defined_basic_type_names {
   my $basic_types = [grep { $_->get_name !~ /::anon_class::/ && $_->get_name !~ /::anon_method::/ } @{$runtime->get_basic_types({category => $category})}];
   
   my $class_names = [map { $_->get_name } @$basic_types];
+  
+  if ($self->script_name) {
+    unshift @$class_names, $self->class_name;
+  }
   
   return $class_names;
 }
