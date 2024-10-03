@@ -79,6 +79,21 @@ sub compile_with_exit {
   }
 }
 
+sub compile_anon_class_with_exit {
+  my ($self, $source, $file, $line) = @_;
+  
+  $self->set_start_file($file);
+  
+  $self->set_start_line($line);
+  
+  my $anon_class_name = $self->compile_anon_class($source);
+  unless (defined $anon_class_name) {
+    Carp::confess(join("\n", @{$self->get_formatted_error_messages}));
+  }
+  
+  return $anon_class_name;
+}
+
 1;
 
 =head1 Name
