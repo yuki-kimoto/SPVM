@@ -85,21 +85,14 @@ elsif (defined $script_name) {
 
 if (defined $program_source) {
   
-  my $class_name = SPVM::Global::build_anon_class($program_source, __FILE__, __LINE__);
-  
-  SPVM::Native->check_bootstrap_method($class_name);
-  
-  my $spvm_class_name = "SPVM::$class_name";
-  
-  $spvm_class_name->main;
+  $class_name = SPVM::Global::build_anon_class($program_source, __FILE__, __LINE__);
 }
-else {
-  SPVM::Native->check_bootstrap_method($class_name);
-  
-  my $spvm_class_name = "SPVM::$class_name";
-  
-  $spvm_class_name->main;
-}
+
+SPVM::Native->check_bootstrap_method($class_name);
+
+my $spvm_class_name = "SPVM::$class_name";
+
+$spvm_class_name->main;
 
 =encoding utf8
 
