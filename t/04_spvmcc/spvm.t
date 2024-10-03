@@ -108,6 +108,13 @@ my $dev_null = File::Spec->devnull;
     
     ok(1);
   }
+  
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm t/04_spvmcc/script/program_name.spvm);
+    my $spvm_output = `$spvm_cmd`;
+    like($spvm_output, qr|t/04_spvmcc/script/program_name\.spvm|);
+  }
+  
 }
 
 
