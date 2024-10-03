@@ -47,6 +47,9 @@ if ($class_name =~ /^[a-z]/ || $class_name =~ /[\/\\]/) {
   $script_name = $class_name;
   $class_name = undef;
 }
+else {
+  warn "[DEPRECATED]spvmcc <class_name>. Use spvmcc <script_name> instead.";
+}
 
 unless (defined $class_name || defined $script_name) {
   warn "<script_name|class name> is required.\n\n";
