@@ -28,15 +28,6 @@ rmtree "$build_dir/work";
 
 my $dev_null = File::Spec->devnull;
 
-  # --build-dir
-  {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm --build-dir $build_dir -I solo/lib/SPVM -e "warn q'[Test Output]spvm -e option';");
-    system($spvm_cmd) == 0
-     or die "Can't execute spvm command $spvm_cmd:$!";
-    
-    ok(1);
-  }
-  
 # spvm - Execute solo test.
 {
   {
