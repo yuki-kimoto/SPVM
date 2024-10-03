@@ -106,10 +106,13 @@ The spvm command executes SPVM programs.
 
 =head1 Usage
 
-  usage: spvm [<options>] <class name>
+  usage: spvm [<options>] <script_name|class name>
     
-    spvm -I lib/SPVM Myapp
-  
+    spvm my_app.spvm
+    
+    [DEPRECATED]
+    spvm -I lib/SPVM Myapp 
+    
   options:
     -h, --help                     Shows this message
     -v, --version                  Shows the version
@@ -119,13 +122,21 @@ The spvm command executes SPVM programs.
 
 =head1 Details
 
-  spvm [<options>] <class name>
+  spvm [<options>] <class name|script_name>
 
 The C<spvm> command executes a SPVM program.
 
 C<E<lt>optionsE<gt>> are L<options|/"Options">.
 
-C<E<lt>class nameE<gt>> is a class name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method">.
+C<E<lt>script_nameE<gt>> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an anon class.
+  
+  class {
+    static method main : void () {
+      
+    }
+  }
+  
+C<E<lt>class nameE<gt>> is a class name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method">. This argument is deprecated. 
 
 See L<Class Search Directories|SPVM::Document::Language::Class/"Class Search Directories"> about default class search directories.
 
