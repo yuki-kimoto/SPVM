@@ -41,7 +41,7 @@ my $dev_null = File::Spec->devnull;
 {
   {
     
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -o $exe_dir/myexe_runtime_error --no-config t/04_spvmcc/script/my_exe_compile_error/main_instant_method.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myexe_runtime_error --no-config t/04_spvmcc/script/my_exe_compile_error/main_instant_method.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
@@ -55,7 +55,7 @@ my $dev_null = File::Spec->devnull;
   sleep 1;
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -o $exe_dir/myexe_runtime_error --no-config t/04_spvmcc/script/my_exe_compile_error/main_has_arguments.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myexe_runtime_error --no-config t/04_spvmcc/script/my_exe_compile_error/main_has_arguments.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
@@ -69,7 +69,7 @@ my $dev_null = File::Spec->devnull;
   sleep 1;
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -o $exe_dir/myexe_runtime_error --no-config t/04_spvmcc/script/my_exe_compile_error/main_not_found.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myexe_runtime_error --no-config t/04_spvmcc/script/my_exe_compile_error/main_not_found.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
