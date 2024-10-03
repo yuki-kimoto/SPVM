@@ -78,7 +78,7 @@ sub build_class_common {
   
   # Add module informations
   my $build_success;
-  if (defined $class_name) {
+  if (defined $class_name || defined $source) {
     
     my $api = $API;
     my $compiler = $COMPILER;

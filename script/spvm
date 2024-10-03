@@ -68,16 +68,13 @@ if (defined $script_name) {
   
   $program_source = "#file \"$script_name\"\x{A}$program_source";
   
-  my $current_compiler = SPVM::Native->get_current_compiler;
+  my $class_name = SPVM::Global::build_anon_class($program_source, __FILE__, __LINE__);
   
-  $current_compiler->set_start_file($script_name);
-  $current_compiler->set_start_line(1);
-  my $anon_class_name = $current_compiler->compile_anon_class($program_source);
+  SPVM::Native->check_bootstrap_method($class_name);
   
-  SPVM::Native->check_bootstrap_method($anon_class_name);
+  my $spvm_class_name = "SPVM::$class_name";
   
-  SPVM::Native::MethodCall->call_class_method($anon_class_name, "main");
-  
+  $spvm_class_name->main;
 }
 elsif (defined $program_source) {
   my $current_compiler = SPVM::Native->get_current_compiler;
