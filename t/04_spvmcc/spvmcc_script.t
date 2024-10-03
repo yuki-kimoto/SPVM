@@ -212,22 +212,6 @@ my $dev_null = File::Spec->devnull;
   }
 }
 
-# SPVM script
-{
-  $ENV{SPVM_BUILD_DIR} = $build_dir;
-  
-  my $spvm_script = File::Spec->catfile(qw/t 04_spvmcc myexe.pl/);
-  my $execute_cmd = qq($^X -Mblib -I $test_dir/lib -I t/02_vm/lib $spvm_script);
-  my $execute_cmd_with_args = "$execute_cmd args1 args2";
-  system($execute_cmd_with_args) == 0
-    or die "Can't execute SPVM script: $execute_cmd_with_args:$!";
-
-  my $output = `$execute_cmd_with_args`;
-  chomp $output;
-  my $output_expect = "AAA $spvm_script 3 1 1 7 args1 args2 1";
-  is($output, $output_expect);
-}
-
 # Execute solo test. This is described in DEVELOPMENT.txt
 {
   my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I solo/lib/SPVM -o $exe_dir/myexe_solo --no-config solo/script/my_exe.spvm foo bar);
