@@ -40,10 +40,6 @@ if (!defined $class_name && !defined $program_source) {
   die SPVM::Builder::Util::extract_usage;
 }
 
-for my $use_class_name (@use_class_names) {
-  SPVM::Global::build_class($use_class_name, __FILE__, __LINE__);
-}
-
 my $eval_string;
 if (defined $program_source) {
   $eval_string = 1;
@@ -55,10 +51,15 @@ if (defined $class_name) {
   
   if ($class_name =~ /^[a-z]/ || $class_name =~ /[\/\\]/) {
     $script_name = $class_name;
+    $0 = $script_name;
   }
   else {
     SPVM::Global::build_class($class_name, __FILE__, __LINE__);
   }
+}
+
+for my $use_class_name (@use_class_names) {
+  SPVM::Global::build_class($use_class_name, __FILE__, __LINE__);
 }
 
 SPVM::Global::build_class('Native', __FILE__, __LINE__);
@@ -75,6 +76,7 @@ $program_source
 ";
 }
 elsif (defined $script_name) {
+  
   open my $script_fh, '<', $script_name
     or die "Can't open file \"$script_name\":$!";
     

@@ -1,6 +1,10 @@
 class {
   use TestCase;
+  use CommandInfo;
   static method main : void () {
+    
+    warn CommandInfo->PROGRAM_NAME;
+    
     TestCase->main();
   }
 }
