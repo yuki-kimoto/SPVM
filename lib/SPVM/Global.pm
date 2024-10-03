@@ -38,6 +38,40 @@ sub api {
 sub build_class {
   my ($class_name, $file, $line) = @_;
   
+  my $options = {
+    class_name => $class_name,
+    file => $file,
+    line => $line,
+  };
+  
+  &build_class_common($options);
+}
+
+sub build_anon_class {
+  my ($source, $file, $line) = @_;
+  
+  my $options = {
+    source => $source,
+    file => $file,
+    line => $line,
+  };
+  
+  &build_class_common($options);
+}
+
+sub build_class_common {
+  my ($options) = @_;
+  
+  $options ||= {};
+  
+  my $class_name = $options->{class_name};
+  
+  my $source = $options->{source};
+  
+  my $file = $options->{file};
+  
+  my $line = $options->{line};
+  
   &init_api();
   
   # Add module informations
@@ -52,7 +86,12 @@ sub build_class {
     my $runtime = $compiler->get_runtime;
     my $start_basic_types_length = $runtime->get_basic_types_length;
     
-    $compiler->compile_with_exit($class_name, $file, $line);
+    if (defined $source) {
+      $class_name = $compiler->compile_anon_class_with_exit($source, $file, $line);
+    }
+    else {
+      $compiler->compile_with_exit($class_name, $file, $line);
+    }
     
     my $basic_types_length = $runtime->get_basic_types_length;
     
