@@ -184,7 +184,7 @@ my $dev_null = File::Spec->devnull;
   
   # debug config -O0 -g, --config-argv, --config-argv-option
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe --mode debug --config-argv ARG0 --config-argv ARG1 --config-argv-option NAME=VALUE MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe --mode debug --config-argv ARG0 --config-argv ARG1 --config-argv-option NAME=VALUE t/04_spvmcc/script/my_exe.spvm);
     my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
