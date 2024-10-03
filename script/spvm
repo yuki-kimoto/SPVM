@@ -44,6 +44,11 @@ for my $use_class_name (@use_class_names) {
   SPVM::Global::build_class($use_class_name, __FILE__, __LINE__);
 }
 
+my $eval_string;
+if (defined $program_source) {
+  $eval_string = 1;
+}
+
 my $script_name;
 
 if (defined $class_name) {
@@ -59,14 +64,26 @@ if (defined $class_name) {
 SPVM::Global::build_class('Native', __FILE__, __LINE__);
 SPVM::Global::build_class('Native::MethodCall', __FILE__, __LINE__);
 
-
-if (defined $script_name) {
+if ($eval_string) {
+  $program_source = "
+class {
+static method main : void () {
+#line 1
+$program_source
+}
+}
+";
+}
+elsif (defined $script_name) {
   open my $script_fh, '<', $script_name
     or die "Can't open file \"$script_name\":$!";
     
-  my $program_source = do { local $/; <$script_fh> };
+  $program_source = do { local $/; <$script_fh> };
   
   $program_source = "#file \"$script_name\"\x{A}$program_source";
+}
+
+if (defined $program_source) {
   
   my $class_name = SPVM::Global::build_anon_class($program_source, __FILE__, __LINE__);
   
@@ -75,13 +92,6 @@ if (defined $script_name) {
   my $spvm_class_name = "SPVM::$class_name";
   
   $spvm_class_name->main;
-}
-elsif (defined $program_source) {
-  my $current_compiler = SPVM::Native->get_current_compiler;
-  
-  $current_compiler->set_start_file(__FILE__);
-  $current_compiler->set_start_line(__LINE__ + 1);
-  $current_compiler->eval_string($program_source);
 }
 else {
   SPVM::Native->check_bootstrap_method($class_name);
