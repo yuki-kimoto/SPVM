@@ -463,6 +463,7 @@ solo/lib/SPVM/TestCase/Pointer.spvm
 solo/lib/SPVM/TestCase/Simple.spvm
 solo/lib/SPVM/TestCase/Weaken.spvm
 solo/lib/SPVM/TestCase/Weaken2.spvm
+solo/script/my_exe.spvm
 SPVM.xs
 t/00_builder/CC.t
 t/00_builder/Config-Exe.t

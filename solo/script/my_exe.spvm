@@ -1,0 +1,6 @@
+class {
+  use TestCase;
+  static method main : void () {
+    TestCase->main();
+  }
+}

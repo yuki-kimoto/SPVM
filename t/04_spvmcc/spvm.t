@@ -28,10 +28,10 @@ rmtree "$build_dir/work";
 
 my $dev_null = File::Spec->devnull;
 
-# spvm - Execute solo test.
+# SPVM script
 {
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM MyExe foo bar);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/my_exe.spvm foo bar);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -39,7 +39,7 @@ my $dev_null = File::Spec->devnull;
   }
   
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM MyExe foo bar);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM solo/script/my_exe.spvm foo bar);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -48,7 +48,7 @@ my $dev_null = File::Spec->devnull;
   
   # -B
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM MyExe foo bar);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM solo/script/my_exe.spvm foo bar);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -85,6 +85,53 @@ my $dev_null = File::Spec->devnull;
   # SPVM script - prcompile
   {
     my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/04_spvmcc/lib/SPVM $FindBin::Bin/script/precompile.spvm);
+    system($spvm_cmd) == 0
+     or die "Can't execute spvm command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
+  # SPVM script
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm $FindBin::Bin/script/basic.spvm);
+    system($spvm_cmd) == 0
+     or die "Can't execute spvm command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
+  # SPVM script - prcompile
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/04_spvmcc/lib/SPVM $FindBin::Bin/script/precompile.spvm);
+    system($spvm_cmd) == 0
+     or die "Can't execute spvm command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+}
+
+
+# spvm class name - DEPRECATED
+{
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM MyExe foo bar);
+    system($spvm_cmd) == 0
+     or die "Can't execute spvm command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM MyExe foo bar);
+    system($spvm_cmd) == 0
+     or die "Can't execute spvm command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
+  # -B
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM MyExe foo bar);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
