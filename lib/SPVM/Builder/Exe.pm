@@ -228,6 +228,7 @@ sub new {
     }
     else {
       unless (defined $config_file) {
+        # [TODO]Improve this exception message.
         my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
         confess("A config file \"$config_rel_file\" is not found in (@INC).");
       }

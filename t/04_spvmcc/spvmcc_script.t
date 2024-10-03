@@ -230,7 +230,7 @@ my $dev_null = File::Spec->devnull;
 
 # Execute solo test. This is described in DEVELOPMENT.txt
 {
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I solo/lib/SPVM -o $exe_dir/myexe_solo MyExe);
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I solo/lib/SPVM -o $exe_dir/myexe_solo --no-config solo/script/my_exe.spvm foo bar);
   system($spvmcc_cmd) == 0
    or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
