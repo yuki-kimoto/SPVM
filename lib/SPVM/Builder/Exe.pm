@@ -28,6 +28,17 @@ sub builder {
   }
 }
 
+sub script_name {
+  my $self = shift;
+  if (@_) {
+    $self->{script_name} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{script_name};
+  }
+}
+
 sub class_name {
   my $self = shift;
   if (@_) {
@@ -164,8 +175,11 @@ sub new {
   
   # Target class name
   my $class_name = $self->{class_name};
-  unless (defined $class_name) {
-    confess("A class name must be defined.");
+  
+  my $script_name = $self->{script_name};
+  
+  unless (defined $script_name || defined $class_name) {
+    confess("A script name or a class name must be defined.");
   }
   
   # Excutable file name
@@ -306,15 +320,33 @@ sub build_exe_file {
 
 sub compile {
   my ($self) = @_;
-
+  
   # Builder
   my $builder = $self->builder;
   
   my $class_name = $self->{class_name};
   
+  my $script_name = $self->{script_name};
+  
   my $compiler = $self->compiler;
   
-  $compiler->compile_with_exit($class_name, __FILE__, __LINE__);
+  if (defined $script_name) {
+    open my $script_fh, '<', $script_name
+      or die "Can't open file \"$script_name\":$!";
+      
+    my $program_source = do { local $/; <$script_fh> };
+    
+    $program_source = "#file \"$script_name\"\x{A}$program_source";
+    
+    $class_name = $compiler->compile_anon_class_with_exit($program_source, __FILE__, __LINE__);
+    
+    if ($self->config) {
+      $self->config->class_name($class_name);
+    }
+  }
+  else {
+    $compiler->compile_with_exit($class_name, __FILE__, __LINE__);
+  }
   
   my $runtime = $compiler->get_runtime;
   

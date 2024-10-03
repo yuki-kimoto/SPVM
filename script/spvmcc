@@ -42,8 +42,14 @@ elsif ($show_version) {
 
 my $class_name = shift;
 
-unless (defined $class_name) {
-  warn "<class name> is required.\n\n";
+my $script_name;
+if ($class_name =~ /^[a-z]/ || $class_name =~ /[\/\\]/) {
+  $script_name = $class_name;
+  $class_name = undef;
+}
+
+unless (defined $class_name || defined $script_name) {
+  warn "<script_name|class name> is required.\n\n";
   warn SPVM::Builder::Util::extract_usage;
   exit 255;
 }
@@ -57,6 +63,7 @@ unless (defined $output_file) {
 unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs;
 
 my $build_exe = SPVM::Builder::Exe->new(
+  script_name => $script_name,
   class_name => $class_name,
   build_dir => $build_dir,
   output_file => $output_file,
@@ -82,7 +89,7 @@ The spvmcc command generates an executable file from SPVM classes.
 
 =head1 Usage
 
-  usage: spvmcc [<options>] <class name>
+  usage: spvmcc [<options>] <class name|script name>
     
     spvmcc -I lib/SPVM -o myapp Myapp
   
@@ -108,7 +115,15 @@ The C<spvmcc> command generates an executable file from SPVM classes.
 
 C<E<lt>optionsE<gt>> are L<options|/"Options">.
 
-C<E<lt>class nameE<gt>> is a class name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method">.
+C<E<lt>script nameE<gt>> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an anon class.
+  
+  class {
+    static method main : void () {
+      
+    }
+  }
+  
+C<E<lt>class nameE<gt>> is a class name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method">. This argument is deprecated. 
 
 See L<Class Search Directories|SPVM::Document::Language::Class/"Class Search Directories"> about default class search directories.
 
