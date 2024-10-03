@@ -173,7 +173,7 @@ my $dev_null = File::Spec->devnull;
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe --no-config t/04_spvmcc/script/my_exe.spvm);
     my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
-    if (length $spvmcc_output < 255) { # TODO return back to 0 after deprecattion message is removed.
+    if (length $spvmcc_output == 0) {
       ok(1);
     }
     else {
