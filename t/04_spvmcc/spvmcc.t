@@ -134,12 +134,12 @@ my $dev_null = File::Spec->devnull;
   {
     my $spvmdist_cmd = qq($^X -Mblib blib/script/spvmcc -h);
     my $output = `$spvmdist_cmd`;
-    like($output, qr/\Qusage: spvmcc [<options>] <class name>/);
+    like($output, qr/\Qusage: spvmcc [<options>] </);
   }
   {
     my $spvmdist_cmd = qq($^X -Mblib blib/script/spvmcc --help);
     my $output = `$spvmdist_cmd`;
-    like($output, qr/\Qusage: spvmcc [<options>] <class name>/);
+    like($output, qr/\Qusage: spvmcc [<options>] </);
   }
 }
 

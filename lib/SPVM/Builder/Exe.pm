@@ -205,7 +205,16 @@ sub new {
   my $config_argv = $self->{argv};
   
   # Config
-  my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+  my $config_file;
+  
+  if ($script_name) {
+    $config_file = $script_name;
+    $config_file =~ s/\..*$//;
+    $config_file .= '.config';
+  }
+  else {
+    $config_file = SPVM::Builder::Util::search_config_file($class_name);
+  }
   
   my $config;
   if (defined $config_file) {
@@ -339,6 +348,8 @@ sub compile {
     $program_source = "#file \"$script_name\"\x{A}$program_source";
     
     $class_name = $compiler->compile_anon_class_with_exit($program_source, __FILE__, __LINE__);
+    
+    $self->class_name($class_name);
     
     if ($self->config) {
       $self->config->class_name($class_name);
