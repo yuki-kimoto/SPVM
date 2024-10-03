@@ -54,6 +54,8 @@ if (defined $class_name) {
     $0 = $script_name;
   }
   else {
+    warn "[DEPRECATED]spvm <class_name>. Use spvm <script_name> instead.";
+    
     SPVM::Global::build_class($class_name, __FILE__, __LINE__);
   }
 }
