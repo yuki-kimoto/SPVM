@@ -29,12 +29,12 @@ my $dev_null = File::Spec->devnull;
 
 # Compilation Error
 {
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_compile_error --no-config MyExeCompileError);
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myexe_compile_error --no-config t/04_spvmcc/script/my_exe_compile_error.spvm);
   my $status = system($spvmcc_cmd);
   ok($status != 0);
   
   my $error = `$spvmcc_cmd 2>&1 1>$devnull`;
-  like($error, qr|CompileError|);
+  like($error, qr|Compilation Error|);
 }
 
 # Runtime error
