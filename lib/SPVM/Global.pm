@@ -56,7 +56,9 @@ sub build_anon_class {
     line => $line,
   };
   
-  &build_class_common($options);
+  my $anon_class_name = &build_class_common($options);
+  
+  return $anon_class_name;
 }
 
 sub build_class_common {
@@ -108,6 +110,8 @@ sub build_class_common {
     
     &bind_to_perl($class_name);
   }
+  
+  return $class_name;
 }
 
 sub init_api {
