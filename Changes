@@ -1,4 +1,28 @@
 0.990014 2023-10-03
+  [New Feature]
+    * spvm command support script name. Currently script name must start with [a-z] or contain / or \ because of class name argument is not removed.
+      
+      spvm path/foo.spvm
+      spvm foo.spvm
+      spvm foo
+      
+      the script contains main method in an anon class.
+      
+        class {
+          static method main : void () {
+            
+          }
+        }
+      
+  [Deprecation]
+    * Deprecate spvm command's class name argument.
+    
+      spvm Foo
+      
+      this will be changed to script name in a future release.
+      
+      spvm path/foo.spvm
+    
   [Improve Compilation Error Messages]
     * Improve a compilation message in file derective.
       
