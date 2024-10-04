@@ -1,3 +1,10 @@
+0.990015 2023-10-04
+  [Exception Message Improvement]
+    * An exception message in an array access is improved.
+      
+      [After]
+      An array access failed. The index is out of range.
+      
 0.990014 2023-10-04
   [New Feature]
     * spvm command support script name. Currently script name must start with [a-z] or contain / or \ because of class name argument is not removed.

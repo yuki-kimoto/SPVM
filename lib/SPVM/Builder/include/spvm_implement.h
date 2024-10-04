@@ -69,7 +69,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The new_string_len operator failed. Memory allocation failed.",
   "The new_string_len operator failed. The length of the string must be a non-negative integer.",
   "An array access failed. The array must be defined.",
-  "An array access failed. The index must be a non-negative integer.",
+  "An array access failed. The index is out of range.",
   "An array setting failed. The element does not satisfy type assignability.",
   "An array setting failed. The invocant must be defined.",
   "An unboxing conversion failed. The operand must defined.",
