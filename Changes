@@ -1,3 +1,9 @@
+0.990016 2023-10-04
+  [Exception Changes]
+    * An exception in spvmcc is changed to a warning if Foo.config exists, but Foo.c do not exists.
+      
+      [Warning]Can't find source file.
+      
 0.990015 2023-10-04
   [Exception Message Improvement]
     * An exception message in an array access is improved.

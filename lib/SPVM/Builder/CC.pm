@@ -441,7 +441,9 @@ sub compile_class {
       
       unless (-f $native_class_source_file) {
         unless ($config->isa('SPVM::Builder::Config::Exe')) {
-          confess("Can't find source file $native_class_source_file");
+          # Expect the following case.
+          # Foo.config exists, but Foo.c do not exists. In this case spvm command work well, but spvmcc command do not work well.
+          Carp::cluck("[Warning]Can't find source file $native_class_source_file");
         }
       }
     }
@@ -458,6 +460,8 @@ sub compile_class {
   # Compile source files
   my $is_native_class_source_file = 1;
   for my $source_file ($native_class_source_file, @$native_source_files) {
+    next unless defined $source_file;
+    
     my $current_is_native_class_source_file = $is_native_class_source_file;
     $is_native_class_source_file = 0;
     
