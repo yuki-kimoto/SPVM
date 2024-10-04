@@ -33,6 +33,17 @@ sub class_name {
   }
 }
 
+sub script_name {
+  my $self = shift;
+  if (@_) {
+    $self->{script_name} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{script_name};
+  }
+}
+
 sub compiler {
   my $self = shift;
   if (@_) {
@@ -61,10 +72,12 @@ sub new {
   
   my $self = bless {@_}, $class;
   
-  # Target class name
   my $class_name = $self->{class_name};
-  unless (defined $class_name) {
-    confess("The \"class_name\" option must be defined.");
+  
+  my $script_name = $self->{script_name};
+  
+  unless (defined $script_name || defined $class_name) {
+    confess("The \"script_name\" option or the \"class_name\" option must be defined.");
   }
   
   # New SPVM::Builder object
@@ -90,11 +103,21 @@ sub compile {
   
   my $class_name = $self->{class_name};
   
+  my $script_name = $self->{script_name};
+  
+  my $source;
+  if (defined $script_name) {
+    open my $fh, '<', $script_name
+      or confess "Can't open file \"$script_name\":$!";
+    
+    $source = do { undef $/; <$fh> };
+  }
+  
   my $compiler = $self->compiler;
   
   $compiler->set_start_file(__FILE__);
   $compiler->set_start_line(__LINE__ + 1);
-  eval { $compiler->compile($class_name) };
+  eval { $class_name ? $compiler->compile($class_name) : $compiler->compile_anon_class($source) };
   
   if ($@) {
     my $error_messages = $compiler->get_error_messages;
@@ -219,11 +242,11 @@ The SPVM::Builder::Config::Info class has methods to manipulate config informati
 
   my $config_info = SPVM::Builder::Config::Info->new(%options);
 
-Creates an L<SPVM::Builder::Config::Info> object given the class name $class_name and returns it.
+Creates an L<SPVM::Builder::Config::Info> object given options %options, and returns it.
 
-The class specified by $class_name and classes loaded by the class are compiled and the runtime is generated.
+The class specified by C<class_name> option or C<script_name> option is compiled and the runtime is generated.
 
-The C<class_name> option must be defined.
+C<class_name> option or C<script_name> option must be defined.
 
 Options:
 
@@ -233,11 +256,15 @@ Options:
 
 A class name.
 
+=item * C<script_name>
+
+A script name.
+
 =back
 
 Exceptions:
 
-The "class_name" option must be defined. Otherwise, an exception is thrown.
+The "class_name" option or the "script_name" option must be defined. Otherwise, an exception is thrown.
 
 =head1 Instance Methods
 

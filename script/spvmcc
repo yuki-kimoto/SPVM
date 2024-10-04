@@ -28,6 +28,7 @@ SPVM::Builder::Util::getopt
     my ($opt_name, $opt_value) = @_;
     push @argv, SPVM::Builder::Exe->parse_config_argv_option($opt_value);
   },
+  'resource-info' => \my $show_resource_info,
 ;
 
 if ($help) {
@@ -41,6 +42,18 @@ elsif ($show_version) {
 }
 
 my $script_name = shift;
+
+if ($show_resource_info) {
+  
+  unless (defined $script_name) {
+    die "[spvmcc command]--resource-info option needs <script_name>."
+  }
+  
+  my $resource_info = SPVM::Builder::Exe->dump_resource_info($script_name);
+  
+  print $resource_info;
+  exit 0;
+}
 
 unless (defined $script_name) {
   warn "<script_name> is required.\n\n";

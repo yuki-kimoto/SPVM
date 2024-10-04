@@ -1,4 +1,7 @@
 0.990016 2023-10-04
+  [New Features]
+    * Add --resource-info option to spvmcc command.
+    
   [Exception Changes]
     * An exception in spvmcc is changed to a warning if Foo.config exists, but Foo.c do not exists.
       

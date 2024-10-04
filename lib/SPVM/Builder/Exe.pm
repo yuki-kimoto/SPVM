@@ -1070,9 +1070,9 @@ sub get_user_defined_basic_type_names {
 }
 
 sub dump_resource_info {
-  my ($self) = @_;
+  my ($class, $script_name) = @_;
   
-  my $info = SPVM::Builder::Config::Info->new(script_name => $self->class_name);
+  my $info = SPVM::Builder::Config::Info->new(script_name => $script_name);
   
   my $class_names = [grep { $info->is_resource_loader($_) } @{$info->get_class_names}];
   
