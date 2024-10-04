@@ -424,10 +424,6 @@ README.md
 script/spvm
 script/spvmcc
 script/spvmdist
-solo/lib/SPVM/MyExe.config
-solo/lib/SPVM/MyExe.debug.config
-solo/lib/SPVM/MyExe.debug_memory_count.config
-solo/lib/SPVM/MyExe.spvm
 solo/lib/SPVM/TestCase.spvm
 solo/lib/SPVM/TestCase/Callback1.spvm
 solo/lib/SPVM/TestCase/Callback2.spvm
