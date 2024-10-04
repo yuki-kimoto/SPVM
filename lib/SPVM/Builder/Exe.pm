@@ -178,8 +178,8 @@ sub new {
   
   my $script_name = $self->{script_name};
   
-  unless (defined $script_name || defined $class_name) {
-    confess("A script name or a class name must be defined.");
+  unless (defined $script_name) {
+    confess("A script nam must be defined.");
   }
   
   # Excutable file name
@@ -205,21 +205,12 @@ sub new {
   my $config_argv = $self->{argv};
   
   # Config
-  my $config_file;
-  if ($script_name) {
-    $config_file = $script_name;
-    $config_file =~ s/\..*$//;
-    $config_file .= '.config';
-    unless (-f $config_file) {
-      $config_file = undef;
-    }
-  }
-  else {
-    $config_file = SPVM::Builder::Util::search_config_file($class_name);
-  }
+  my $config_file = $script_name;
+  $config_file =~ s/\..*$//;
+  $config_file .= '.config';
   
   my $config;
-  if (defined $config_file) {
+  if (-f $config_file) {
     $config = SPVM::Builder::Config::Exe->load_mode_config($config_file, $config_mode, $config_argv);
   }
   else {
@@ -227,11 +218,7 @@ sub new {
       $config = SPVM::Builder::Config::Exe->new(file_optional => 1);
     }
     else {
-      unless (defined $config_file) {
-        # [TODO]Improve this exception message.
-        my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
-        confess("A config file \"$config_rel_file\" is not found in (@INC).");
-      }
+      confess("The config file \"$config_file\" is not found.");
     }
   }
   
@@ -336,27 +323,20 @@ sub compile {
   # Builder
   my $builder = $self->builder;
   
-  my $class_name = $self->{class_name};
-  
   my $script_name = $self->{script_name};
   
   my $compiler = $self->compiler;
   
-  if (defined $script_name) {
-    open my $script_fh, '<', $script_name
-      or die "Can't open file \"$script_name\":$!";
-      
-    my $program_source = do { local $/; <$script_fh> };
+  open my $script_fh, '<', $script_name
+    or die "Can't open file \"$script_name\":$!";
     
-    $program_source = "#file \"$script_name\"\x{A}$program_source";
-    
-    $class_name = $compiler->compile_anon_class_with_exit($program_source, __FILE__, __LINE__);
-    
-    $self->class_name($class_name);
-  }
-  else {
-    $compiler->compile_with_exit($class_name, __FILE__, __LINE__);
-  }
+  my $source = do { local $/; <$script_fh> };
+  
+  $source = "#file \"$script_name\"\x{A}$source";
+  
+  my $class_name = $compiler->compile_anon_class_with_exit($source, __FILE__, __LINE__);
+  
+  $self->class_name($class_name);
   
   my $runtime = $compiler->get_runtime;
   
@@ -1037,19 +1017,16 @@ sub compile_native_class {
   
   my $script_name = $self->script_name;
   my $config_file;
-  if ($script_name && $class_name eq $self->class_name) {
+  if ($class_name eq $self->class_name) {
     $config_file = $script_name;
     $config_file =~ s/\..*$//;
     $config_file .= '.config';
-    unless (-f $config_file) {
-      $config_file = undef;
-    }
   }
   else {
     $config_file = SPVM::Builder::Util::search_config_file($class_name);
   }
   
-  if (defined $config_file) {
+  if (defined $config_file && -f $config_file) {
     
     my $mode;
     if ($class_name eq $self->class_name) {
@@ -1059,7 +1036,6 @@ sub compile_native_class {
     my $config = SPVM::Builder::Config->load_mode_config($config_file, $mode, []);
     
     # In an executable file, only resources used in the config of the class for generate an executable file are compiled.
-    
     unless ($class_name eq $self->class_name) {
       $config->no_compile_resource(1);
     }
@@ -1094,9 +1070,7 @@ sub get_user_defined_basic_type_names {
   
   my $class_names = [map { $_->get_name } @$basic_types];
   
-  if ($self->script_name) {
-    unshift @$class_names, $self->class_name;
-  }
+  unshift @$class_names, $self->class_name;
   
   return $class_names;
 }

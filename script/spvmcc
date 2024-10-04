@@ -40,19 +40,10 @@ elsif ($show_version) {
   exit 0;
 }
 
-my $class_name = shift;
+my $script_name = shift;
 
-my $script_name;
-if ($class_name =~ /^[a-z]/ || $class_name =~ /[\/\\]/) {
-  $script_name = $class_name;
-  $class_name = undef;
-}
-else {
-  warn "[DEPRECATED]spvmcc <class_name>. Use spvmcc <script_name> instead.";
-}
-
-unless (defined $class_name || defined $script_name) {
-  warn "<script_name|class name> is required.\n\n";
+unless (defined $script_name) {
+  warn "<script_name> is required.\n\n";
   warn SPVM::Builder::Util::extract_usage;
   exit 255;
 }
@@ -67,7 +58,6 @@ unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs;
 
 my $build_exe = SPVM::Builder::Exe->new(
   script_name => $script_name,
-  class_name => $class_name,
   build_dir => $build_dir,
   output_file => $output_file,
   quiet => $quiet,
@@ -92,9 +82,11 @@ The spvmcc command generates an executable file from SPVM classes.
 
 =head1 Usage
 
-  usage: spvmcc [<options>] <class name|script name>
+  usage: spvmcc [<options>] <script_name>
     
-    spvmcc -I lib/SPVM -o myapp Myapp
+    spvmcc -o myapp myapp.spvm
+    
+    spvmcc -I lib/SPVM -o myapp myapp.spvm
   
   options:
     -h, --help                      Shows this message
@@ -112,21 +104,19 @@ The spvmcc command generates an executable file from SPVM classes.
 
 =head1 Details
 
-  spvmcc [<options>] <class name>
+  spvmcc [<options>] <script_name>
 
 The C<spvmcc> command generates an executable file from SPVM classes.
 
 C<E<lt>optionsE<gt>> are L<options|/"Options">.
 
-C<E<lt>script nameE<gt>> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an anon class.
-  
+C<E<lt>script_nameE<gt>> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
+
   class {
     static method main : void () {
       
     }
   }
-  
-C<E<lt>class nameE<gt>> is a class name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method">. This argument is deprecated. 
 
 See L<Class Search Directories|SPVM::Document::Language::Class/"Class Search Directories"> about default class search directories.
 
@@ -134,11 +124,11 @@ See L<SPVM::Document::EnvironmentVariables> about available environment variable
 
 =head2 Config File for Executable File
 
-A class specified by C<E<lt>class nameE<gt>> must have a config file for an executable file except for the case that L<"--no-config"> is specified.
+A config file that corresponding to the script name must exist for an executable file except for the case that L<"--no-config"> is specified.
 
 The config for an executable file is a L<SPVM::Builder::Config::Exe> object.
 
-C<MyExe.config>:
+C<myapp.config>:
 
   use SPVM::Builder::Config::Exe;
   
