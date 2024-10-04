@@ -27,30 +27,6 @@ rmtree "$build_dir/work";
 
 my $dev_null = File::Spec->devnull;
 
-{
-  # Basic
-  {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp t/04_spvmcc/script/myapp.spvm);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
-
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myapp/);
-    my $execute_cmd_with_args = "$execute_cmd args1 args2";
-    system($execute_cmd_with_args) == 0
-      or die "Can't execute command:$execute_cmd_with_args:$!";
-    
-    my $output = `$execute_cmd_with_args`;
-    chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
-    is($output, $output_expect);
-    
-    # Check -B option
-    {
-      ok(-f "$build_dir/work/exe/myapp$Config{exe_ext}");
-    }
-  }
-}
-
 # Compilation Error
 {
   my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myapp_compile_error --no-config t/04_spvmcc/script/myapp_compile_error.spvm);
@@ -104,31 +80,6 @@ my $dev_null = File::Spec->devnull;
     like($error, qr|The "main" method in the ".+" class must be defined|);
   }
 }
-
-{
-  # Basic
-  {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp t/04_spvmcc/script/myapp.spvm);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
-
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myapp/);
-    my $execute_cmd_with_args = "$execute_cmd args1 args2";
-    system($execute_cmd_with_args) == 0
-      or die "Can't execute command:$execute_cmd_with_args:$!";
-    
-    my $output = `$execute_cmd_with_args`;
-    chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
-    is($output, $output_expect);
-    
-    # Check -B option
-    {
-      ok(-f "$build_dir/work/exe/myapp$Config{exe_ext}");
-    }
-  }
-}
-
 
 {
   # --optimize="-O0 -g"
