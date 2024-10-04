@@ -1,4 +1,4 @@
-0.990014 2023-10-03
+0.990014 2023-10-04
   [New Feature]
     * spvm command support script name. Currently script name must start with [a-z] or contain / or \ because of class name argument is not removed.
       
