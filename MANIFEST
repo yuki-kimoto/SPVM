@@ -1027,7 +1027,6 @@ t/04_spvmcc/script/program_name.spvm
 t/04_spvmcc/spvm.t
 t/04_spvmcc/SPVM_Builder_Exe.t
 t/04_spvmcc/spvmcc.t
-t/04_spvmcc/spvmcc_script.t
 t/05_spvmdist/command.t
 t/05_spvmdist/module.t
 t/test_add_class/SPVM/MyPoint.spvm
