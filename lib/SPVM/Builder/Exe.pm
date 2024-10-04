@@ -173,9 +173,6 @@ sub new {
     %options
   }, $class;
   
-  # Target class name
-  my $class_name = $self->{class_name};
-  
   my $script_name = $self->{script_name};
   
   unless (defined $script_name) {
