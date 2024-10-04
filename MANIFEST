@@ -987,16 +987,7 @@ t/02_vm/lib/SPVM/TestCase/Util/Thread/ID.spvm
 t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.config
 t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.cpp
 t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.spvm
-t/04_spvmcc/lib/SPVM/MyExe.config
-t/04_spvmcc/lib/SPVM/MyExe.debug.config
-t/04_spvmcc/lib/SPVM/MyExe.spvm
-t/04_spvmcc/lib/SPVM/MyExe/Foo/Bar.config
-t/04_spvmcc/lib/SPVM/MyExe/Foo/Bar.spvm
 t/04_spvmcc/lib/SPVM/MyExe/Precompile.spvm
-t/04_spvmcc/lib/SPVM/MyExeCompileError.spvm
-t/04_spvmcc/lib/SPVM/MyExeCompileError/MainHasArguments.spvm
-t/04_spvmcc/lib/SPVM/MyExeCompileError/MainInstantMethod.spvm
-t/04_spvmcc/lib/SPVM/MyExeCompileError/MainNotFound.spvm
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.c
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.config
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/include/bar.h
@@ -1014,6 +1005,8 @@ t/04_spvmcc/script/basic.spvm
 t/04_spvmcc/script/my_exe.config
 t/04_spvmcc/script/my_exe.debug.config
 t/04_spvmcc/script/my_exe.spvm
+t/04_spvmcc/script/my_exe/foo/bar.config
+t/04_spvmcc/script/my_exe/foo/bar.spvm
 t/04_spvmcc/script/my_exe_compile_error.spvm
 t/04_spvmcc/script/my_exe_compile_error/main_has_arguments.spvm
 t/04_spvmcc/script/my_exe_compile_error/main_instant_method.spvm

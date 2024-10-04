@@ -176,7 +176,7 @@ sub new {
   my $script_name = $self->{script_name};
   
   unless (defined $script_name) {
-    confess("A script nam must be defined.");
+    confess("A script name must be defined.");
   }
   
   # Excutable file name
@@ -226,8 +226,6 @@ sub new {
   unless ($config->output_type eq 'exe') {
     confess("output_type field in the config file \"$config_file\" for creating an executable file must be \"exe\".");
   }
-  
-  $config->class_name($class_name);
   
   $self->{config} = $config;
   

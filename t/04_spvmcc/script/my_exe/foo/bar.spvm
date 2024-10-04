@@ -1,0 +1,5 @@
+class {
+  static method main : void () {
+    print "MyExe::Foo::Bar\n";
+  }
+}

@@ -27,12 +27,12 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   my $exe_dir = "$build_dir/work/exe";
   mkpath $exe_dir;
   
-  my $basic_type_name = 'MyExe';
+  my $script_name = 't/04_spvmcc/script/my_exe.spvm';
   my $include_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
   my $output_file = "$build_dir/work/myexe";
 
   my $builder_exe = SPVM::Builder::Exe->new(
-    class_name => $basic_type_name,
+    script_name => $script_name,
     output_file => $output_file,
     build_dir => $build_dir,
     include_dirs => $include_dirs,
@@ -46,7 +46,6 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     
     my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
     
-    ok($link_info->config->class_name, 'TestCase::NativeAPI2');
     ok($link_info->config->ld, $config->ld);
     ok($link_info->config->ldflags, $config->ldflags);
     like($link_info->config->output_file, qr|$build_dir/work/myexe$Config{exe_ext}|);
@@ -78,12 +77,12 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   my $exe_dir = "$test_dir/.spvm_build/work/exe";
   mkpath $exe_dir;
   
-  my $basic_type_name = 'MyExe::Foo::Bar';
+  my $script_name = 't/04_spvmcc/script/my_exe/foo/bar.spvm';
   my $include_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
   my $output_file = "$build_dir/work/myexe";
   
   my $builder_exe = SPVM::Builder::Exe->new(
-    class_name => $basic_type_name,
+    script_name => $script_name,
     output_file => $output_file,
     build_dir => $build_dir,
     include_dirs => $include_dirs,
