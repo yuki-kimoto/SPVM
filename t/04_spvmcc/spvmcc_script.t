@@ -225,7 +225,7 @@ my $dev_null = File::Spec->devnull;
     
     my $output = `$execute_cmd_with_args`;
     chomp $output;
-    my $output_expect = "$exe_dir/myexe";
+    my $output_expect = "$execute_cmd";
     is($output, $output_expect);
   }
 }
