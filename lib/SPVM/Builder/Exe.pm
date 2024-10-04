@@ -1069,6 +1069,36 @@ sub get_user_defined_basic_type_names {
   return $class_names;
 }
 
+sub dump_resource_info {
+  my ($self) = @_;
+  
+  my $info = SPVM::Builder::Config::Info->new(script_name => $self->class_name);
+  
+  my $class_names = [grep { $info->is_resource_loader($_) } @{$info->get_class_names}];
+  
+  my $resource_info = "";
+  
+  for my $class_name (@$class_names) {
+    my $config_file = $info->get_config_file($class_name);
+    
+    $resource_info = <<"EOS";
+[$class_name]
+# $config_file
+# Loaded Resources:
+EOS
+    
+    for my $resource_name (@{$info->get_config($class_name)->get_resource_names}) {
+      $resource_info .= "#    $resource_name";
+    }
+    
+    my $config_content = $info->get_config_content($class_name);
+    
+    $resource_info .= $config_content;
+  }
+  
+  return $resource_info;
+}
+
 1;
 
 =head1 Name
