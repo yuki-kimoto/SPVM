@@ -35,8 +35,7 @@ my $dev_null = File::Spec->devnull;
     like($output, qr|\Q[TestCase::NativeAPI2]|);
     like($output, qr|TestCase::Resource::Mylib1|);
     like($output, qr|TestCase::Resource::Mylib2|);
-    
-    warn $output;
+    like($output, qr|\Q[TestCase::Precompile]|);
   }
 }
 
