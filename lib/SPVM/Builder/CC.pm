@@ -460,12 +460,11 @@ sub compile_class {
   # Compile source files
   my $is_native_class_source_file = 1;
   for my $source_file ($native_class_source_file, @$native_source_files) {
-    next unless defined $source_file;
     
     my $current_is_native_class_source_file = $is_native_class_source_file;
     $is_native_class_source_file = 0;
     
-    next unless defined $source_file && -f $source_file;;
+    next unless defined $source_file && -f $source_file;
     
     my $object_file_name;
     
