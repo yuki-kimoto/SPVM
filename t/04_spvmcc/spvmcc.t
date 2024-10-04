@@ -27,6 +27,17 @@ rmtree "$build_dir/work";
 
 my $dev_null = File::Spec->devnull;
 
+{
+  # --resource-info
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --resource-info t/04_spvmcc/script/myapp.spvm);
+    my $output = `$spvmcc_cmd`;
+    like($output, qr|\Q[TestCase::NativeAPI2]|);
+    like($output, qr|TestCase::Resource::Mylib1|);
+    like($output, qr|TestCase::Resource::Mylib2|);
+  }
+}
+
 # Compilation Error
 {
   my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myapp_compile_error --no-config t/04_spvmcc/script/myapp_compile_error.spvm);

@@ -15,6 +15,7 @@ use SPVM::Builder::Native::Compiler;
 use SPVM::Builder::Native::Runtime;
 use SPVM::Builder::Native::BasicType;
 use SPVM::Builder::Native::ClassFile;
+use SPVM::Builder::Config::Info;
 
 # Fields
 sub builder {
@@ -1088,7 +1089,7 @@ sub dump_resource_info {
 EOS
     
     for my $resource_name (@{$info->get_config($class_name)->get_resource_names}) {
-      $resource_info .= "#    $resource_name";
+      $resource_info .= "#    $resource_name\n";
     }
     
     my $config_content = $info->get_config_content($class_name);

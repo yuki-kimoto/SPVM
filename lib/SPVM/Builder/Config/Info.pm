@@ -117,6 +117,8 @@ sub compile {
   
   $compiler->set_start_file(__FILE__);
   $compiler->set_start_line(__LINE__ + 1);
+  my $anon_class_name;
+  
   eval { $class_name ? $compiler->compile($class_name) : $compiler->compile_anon_class($source) };
   
   if ($@) {
