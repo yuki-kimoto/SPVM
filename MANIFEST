@@ -987,7 +987,6 @@ t/02_vm/lib/SPVM/TestCase/Util/Thread/ID.spvm
 t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.config
 t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.cpp
 t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.spvm
-t/04_spvmcc/lib/SPVM/MyExe/Precompile.spvm
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.c
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.config
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/include/bar.h
@@ -1000,6 +999,7 @@ t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/src/baz/noneed.txt
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/src/foo.c
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/src/noneed.txt
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.spvm
+t/04_spvmcc/lib/SPVM/TestCase/Precompile.spvm
 t/04_spvmcc/myexe.pl
 t/04_spvmcc/script/basic.spvm
 t/04_spvmcc/script/my_exe.config

@@ -1,5 +1,5 @@
 class {
-  use MyExe::Precompile;
+  use TestCase::Precompile;
   use TestCase::NativeAPI2;
   
   our $MOVE_BLOCK_PROGRAM_NAME_ZERO : ro string;
@@ -14,11 +14,11 @@ class {
     my $program_name = CommandInfo->PROGRAM_NAME;
     my $argv = CommandInfo->ARGV;
     
-    my $sum = MyExe::Precompile->sum(1, 2);
+    my $sum = TestCase::Precompile->sum(1, 2);
     my $ret1 = TestCase::NativeAPI2->src_foo;
     my $ret2 = TestCase::NativeAPI2->src_bar;
     
-    my $ret3 = MyExe::Precompile->anon_method_sum;
+    my $ret3 = TestCase::Precompile->anon_method_sum;
     
     my $ret4 = TestCase::NativeAPI2->mylib2_source1_func1;
     

@@ -1,8 +1,8 @@
 class {
-  use MyExe::Precompile;
+  use TestCase::Precompile;
   
   static method main : void () {
-    my $sum = MyExe::Precompile->sum(1, 2);
+    my $sum = TestCase::Precompile->sum(1, 2);
     
     warn "[Test Output]spvm script:precompile.spvm $sum";
   }
