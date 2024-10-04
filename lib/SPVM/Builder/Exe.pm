@@ -1082,7 +1082,7 @@ sub dump_resource_info {
   for my $class_name (@$class_names) {
     my $config_file = $info->get_config_file($class_name);
     
-    $resource_info = <<"EOS";
+    $resource_info .= <<"EOS";
 [$class_name]
 # $config_file
 # Loaded Resources:
@@ -1094,7 +1094,7 @@ EOS
     
     my $config_content = $info->get_config_content($class_name);
     
-    $resource_info .= $config_content;
+    $resource_info .= "$config_content\n";
   }
   
   return $resource_info;
