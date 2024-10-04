@@ -14,7 +14,7 @@ SPVM::Builder::Util::getopt
   'B|build-dir=s'   => \my $build_dir,
   
   # spvm only
-  'e=s' => \my $program_source,
+  'e=s' => \my $source_in_main,
   '-M=s' => \my @use_class_names,
 ;
 
@@ -34,30 +34,40 @@ if (defined $build_dir) {
   $ENV{SPVM_BUILD_DIR} = $build_dir;
 }
 
-my $class_name = shift;
+my $script_name = shift;
 
-if (!defined $class_name && !defined $program_source) {
+if (!defined $script_name && !defined $source_in_main) {
   die SPVM::Builder::Util::extract_usage;
 }
 
-my $eval_string;
-if (defined $program_source) {
-  $eval_string = 1;
+if (defined $script_name && defined $source_in_main) {
+  die "[spvm command]Specifying both <script_name> and -e is not allowed.";
 }
 
-my $script_name;
-
-if (defined $class_name) {
+my $source;
+if (defined $source_in_main) {
+  $0 = "-e";
   
-  if ($class_name =~ /^[a-z]/ || $class_name =~ /[\/\\]/) {
-    $script_name = $class_name;
-    $0 = $script_name;
-  }
-  else {
-    warn "[DEPRECATED]spvm <class_name>. Use spvm <script_name> instead.";
+  $source = "
+class {
+static method main : void () {
+#line 1
+$source_in_main
+}
+}
+";
+
+}
+elsif (defined $script_name) {
+  
+  $0 = $script_name;
+  
+  open my $script_fh, '<', $script_name
+    or die "Can't open file \"$script_name\":$!";
     
-    SPVM::Global::build_class($class_name, __FILE__, __LINE__);
-  }
+  $source = do { local $/; <$script_fh> };
+  
+  $source = "#file \"$script_name\"\x{A}$source";
 }
 
 for my $use_class_name (@use_class_names) {
@@ -67,36 +77,13 @@ for my $use_class_name (@use_class_names) {
 SPVM::Global::build_class('Native', __FILE__, __LINE__);
 SPVM::Global::build_class('Native::MethodCall', __FILE__, __LINE__);
 
-if ($eval_string) {
-  $program_source = "
-class {
-static method main : void () {
-#line 1
-$program_source
-}
-}
-";
-}
-elsif (defined $script_name) {
-  
-  open my $script_fh, '<', $script_name
-    or die "Can't open file \"$script_name\":$!";
-    
-  $program_source = do { local $/; <$script_fh> };
-  
-  $program_source = "#file \"$script_name\"\x{A}$program_source";
-}
+my $anon_class_name = SPVM::Global::build_anon_class($source, __FILE__, __LINE__);
 
-if (defined $program_source) {
-  
-  $class_name = SPVM::Global::build_anon_class($program_source, __FILE__, __LINE__);
-}
+SPVM::Native->check_bootstrap_method($anon_class_name);
 
-SPVM::Native->check_bootstrap_method($class_name);
+my $spvm_anon_class_name = "SPVM::$anon_class_name";
 
-my $spvm_class_name = "SPVM::$class_name";
-
-$spvm_class_name->main;
+$spvm_anon_class_name->main;
 
 =encoding utf8
 
@@ -110,7 +97,7 @@ The spvm command executes SPVM programs.
 
 =head1 Usage
 
-  usage: spvm [<options>] <script name|class name>
+  usage: spvm [<options>] <script_name>
     
     spvm my_app.spvm
     
@@ -122,17 +109,17 @@ The spvm command executes SPVM programs.
     -v, --version                  Shows the version
     -I, --include-dir <directory>  Adds a include directory
     -B, --build-dir <directory>    Build diretory
-    -e <source>                    Executes a program source code
+    -e <source>                    Executes a program source code in main method.
 
 =head1 Details
 
-  spvm [<options>] <class name|script_name>
+  spvm [<options>] <script_name>
 
 The C<spvm> command executes a SPVM program.
 
 C<E<lt>optionsE<gt>> are L<options|/"Options">.
 
-C<E<lt>script nameE<gt>> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an anon class.
+C<E<lt>script_nameE<gt>> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
   
   class {
     static method main : void () {
@@ -140,8 +127,6 @@ C<E<lt>script nameE<gt>> is a script name that contains a L<bootstrap method|SPV
     }
   }
   
-C<E<lt>class nameE<gt>> is a class name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method">. This argument is deprecated. 
-
 See L<Class Search Directories|SPVM::Document::Language::Class/"Class Search Directories"> about default class search directories.
 
 See L<SPVM::Document::EnvironmentVariables> about available environment variables.
@@ -204,9 +189,7 @@ Same as L</"--build-dir">.
 
   -e <source>
 
-Executes a program from the source string E<lt>sourceE<gt>.
-
-C<E<lt>sourceE<gt>> is exceuted by L<Native::Compiler#eval_string|SPVM::Native::Compiler/"eval_string">.
+Executes a source code E<lt>sourceE<gt> in C<main> method.
 
 Examples:
 

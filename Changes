@@ -4,6 +4,8 @@
       
       [After]
       An array access failed. The index is out of range.
+  [Incompatible Changes]
+    * Remove deprecated <class_name> argument in spvm command. This is a big imcompatible change, but without this, the bug that FindBin->Bin do not work well will be not fixed.
       
 0.990014 2023-10-04
   [New Feature]

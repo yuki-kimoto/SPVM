@@ -118,32 +118,4 @@ my $dev_null = File::Spec->devnull;
 }
 
 
-# spvm class name - DEPRECATED
-{
-  {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM MyExe foo bar);
-    system($spvm_cmd) == 0
-     or die "Can't execute spvm command $spvm_cmd:$!";
-    
-    ok(1);
-  }
-  
-  {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM MyExe foo bar);
-    system($spvm_cmd) == 0
-     or die "Can't execute spvm command $spvm_cmd:$!";
-    
-    ok(1);
-  }
-  
-  # -B
-  {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM MyExe foo bar);
-    system($spvm_cmd) == 0
-     or die "Can't execute spvm command $spvm_cmd:$!";
-    
-    ok(1);
-  }
-}
-
 done_testing;
