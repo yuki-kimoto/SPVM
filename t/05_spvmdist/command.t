@@ -27,6 +27,15 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
 my $path_sep = $Config{path_sep};
 my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
 
+# Failed to parse options.
+{
+  {
+    my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --not-exist);
+    my $status = system($spvmdist_cmd);
+    isnt($status, 0);
+  }
+}
+
 # -h, --help
 {
   {

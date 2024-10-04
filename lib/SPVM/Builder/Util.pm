@@ -213,8 +213,12 @@ sub getopt {
   my ($array, $opts) = map { ref $_[0] eq 'ARRAY' ? shift : $_ } \@ARGV, [];
   my $save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case),
     @$opts);
-  GetOptionsFromArray $array, @_;
+  my $success = GetOptionsFromArray $array, @_;
   Getopt::Long::Configure($save);
+  
+  unless ($success) {
+    Carp::confess("Failed to parse command line options.");
+  }
 }
 
 sub convert_class_file_to_dynamic_lib_file {

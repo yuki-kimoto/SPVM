@@ -27,6 +27,15 @@ rmtree "$build_dir/work";
 
 my $dev_null = File::Spec->devnull;
 
+# Failed to parse options.
+{
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --not-exist t/04_spvmcc/script/myapp.spvm);
+    my $status = system($spvmcc_cmd);
+    isnt($status, 0);
+  }
+}
+
 {
   # --resource-info
   {
