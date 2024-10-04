@@ -2040,7 +2040,7 @@ L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> metho
 
 The L<spvmcc> command has C<--mode> option for giving a config mode.
 
-  spvmcc -o myexe --mode production myexe.spvm
+  spvmcc -o myapp --mode production myapp.spvm
 
 =head1 Config Arguments
 
@@ -2058,11 +2058,11 @@ L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> metho
 
 The L<spvmcc> command has C<--config-argv> option(released in the near future) for giving config arguments.
 
-  spvmcc -o myexe --config-argv option_name --config-argv option_value myexe.spvm
+  spvmcc -o myapp --config-argv option_name --config-argv option_value myapp.spvm
 
 The L<spvmcc> command also has C<--config-argv-option> option(released in the near future) to write config arguments easily.
 
-  spvmcc -o myexe --config-argv-option option_name=option_value myexe.spvm
+  spvmcc -o myapp --config-argv-option option_name=option_value myapp.spvm
 
 =head1 Library Path Resolution
 

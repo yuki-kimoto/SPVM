@@ -27,9 +27,9 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   my $exe_dir = "$build_dir/work/exe";
   mkpath $exe_dir;
   
-  my $script_name = 't/04_spvmcc/script/my_exe.spvm';
+  my $script_name = 't/04_spvmcc/script/myapp.spvm';
   my $include_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
-  my $output_file = "$build_dir/work/myexe";
+  my $output_file = "$build_dir/work/myapp";
 
   my $builder_exe = SPVM::Builder::Exe->new(
     script_name => $script_name,
@@ -48,7 +48,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     
     ok($link_info->config->ld, $config->ld);
     ok($link_info->config->ldflags, $config->ldflags);
-    like($link_info->config->output_file, qr|$build_dir/work/myexe$Config{exe_ext}|);
+    like($link_info->config->output_file, qr|$build_dir/work/myapp$Config{exe_ext}|);
     my $is_object_files = 1;
     for my $object_file (@{$link_info->object_files}) {
       unless ($object_file->isa('SPVM::Builder::ObjectFileInfo')) {
@@ -77,9 +77,9 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   my $exe_dir = "$test_dir/.spvm_build/work/exe";
   mkpath $exe_dir;
   
-  my $script_name = 't/04_spvmcc/script/my_exe/foo/bar.spvm';
+  my $script_name = 't/04_spvmcc/script/myapp/foo/bar.spvm';
   my $include_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
-  my $output_file = "$build_dir/work/myexe";
+  my $output_file = "$build_dir/work/myapp";
   
   my $builder_exe = SPVM::Builder::Exe->new(
     script_name => $script_name,

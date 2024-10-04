@@ -31,7 +31,7 @@ my $dev_null = File::Spec->devnull;
 # SPVM script
 {
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/my_exe.spvm foo bar);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -39,7 +39,7 @@ my $dev_null = File::Spec->devnull;
   }
   
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM solo/script/my_exe.spvm foo bar);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -48,7 +48,7 @@ my $dev_null = File::Spec->devnull;
   
   # -B
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM solo/script/my_exe.spvm foo bar);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
