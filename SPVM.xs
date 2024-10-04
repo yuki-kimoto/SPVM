@@ -4667,14 +4667,11 @@ compile(...)
   
   int32_t status = boot_env->api->compiler->compile(compiler, basic_type_name);
   
-  SV* sv_success = &PL_sv_undef;
-  if (status == 0) {
-    sv_success = sv_2mortal(newSViv(1));
+  if (!(status == 0)) {
+    croak("Failed to compile %s class.", basic_type_name);
   }
   
-  XPUSHs(sv_success);
-  
-  XSRETURN(1);
+  XSRETURN(0);
 }
 
 SV*
@@ -4699,10 +4696,11 @@ compile_anon_class(...)
   const char* anon_basic_type_name = NULL;
   int32_t status = boot_env->api->compiler->compile_anon_class(compiler, source, &anon_basic_type_name);
   
-  SV* sv_anon_basic_type_name = &PL_sv_undef;
-  if (status == 0) {
-    sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
+  if (!(status == 0)) {
+    croak("Failed to compile a source code for an anon class.");
   }
+  
+  SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
   
   XPUSHs(sv_anon_basic_type_name);
   

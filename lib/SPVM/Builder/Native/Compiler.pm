@@ -73,8 +73,9 @@ sub compile_with_exit {
   
   $self->set_start_line($line);
   
-  my $success = $self->compile($class_name);
-  unless ($success) {
+  eval { $self->compile($class_name); };
+  
+  if ($@) {
     Carp::confess(join("\n", @{$self->get_formatted_error_messages}));
   }
 }
@@ -86,8 +87,11 @@ sub compile_anon_class_with_exit {
   
   $self->set_start_line($line);
   
-  my $anon_class_name = $self->compile_anon_class($source);
-  unless (defined $anon_class_name) {
+  my $anon_class_name;
+  
+  eval { $anon_class_name = $self->compile_anon_class($source); };
+  
+  if ($@) {
     Carp::confess(join("\n", @{$self->get_formatted_error_messages}));
   }
   

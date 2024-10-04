@@ -99,7 +99,8 @@ sub compile_not_ok_file {
   
   $compiler->set_start_file(__FILE__);
   $compiler->set_start_line(__LINE__ + 1);
-  my $success = $compiler->compile($basic_type_name);
+  eval { $compiler->compile($basic_type_name); };
+  my $success = $@ ? 0 : 1;
   ok(!$success);
   my $error_messages = $compiler->get_error_messages;
   my $first_error_message = $error_messages->[0];
@@ -196,7 +197,10 @@ sub compile_ok_file {
   
   $compiler->set_start_file(__FILE__);
   $compiler->set_start_line(__LINE__ + 1);
-  my $success = $compiler->compile($basic_type_name);
+  eval { $compiler->compile($basic_type_name); };
+  
+  my $success = $@ ? 0 : 1;
+  
   ok($success);
   
   if (!$success) {
