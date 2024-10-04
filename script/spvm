@@ -14,6 +14,7 @@ SPVM::Builder::Util::getopt
   'B|build-dir=s'   => \my $build_dir,
   
   # spvm only
+  'E=s' => \my $source,
   'e=s' => \my $source_in_main,
   '-M=s' => \my @use_class_names,
 ;
@@ -36,15 +37,22 @@ if (defined $build_dir) {
 
 my $script_name = shift;
 
-if (!defined $script_name && !defined $source_in_main) {
+if (!defined $script_name && !defined $source_in_main && !defined $source) {
   die SPVM::Builder::Util::extract_usage;
 }
 
 if (defined $script_name && defined $source_in_main) {
-  die "[spvm command]Specifying both <script_name> and -e is not allowed.";
+  die "[spvm command]Specifying both <script_name> and -e option is not allowed.";
 }
 
-my $source;
+if (defined $script_name && defined $source) {
+  die "[spvm command]Specifying both <script_name> and -E option is not allowed.";
+}
+
+if (defined $source_in_main && defined $source) {
+  die "[spvm command]Specifying both -E option and -e option is not allowed.";
+}
+
 if (defined $source_in_main) {
   $0 = "-e";
   
@@ -184,6 +192,16 @@ Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> env
   -B <directory>
 
 Same as L</"--build-dir">.
+
+=head2 -E
+
+  -E <source>
+
+Executes a source code E<lt>sourceE<gt>.
+
+Examples:
+
+  spvm -E 'class { static method main : void () { say "Hello World!"; } }';
 
 =head2 -e
 
