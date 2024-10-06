@@ -1,0 +1,13 @@
+class TestCase::Issues::Issue567 {
+  
+  static method test : int () {
+    
+    my $anon_result_ref = 1;
+    
+    [$anon_result_ref : int] method : void () {
+    };
+    
+    return 1;
+  }
+  
+}
