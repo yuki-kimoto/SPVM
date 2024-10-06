@@ -1384,8 +1384,12 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
   
   method->name = method->op_name->uv.name;
   
-  method->is_init_method = is_init_method;
-  if (!is_init_method && strcmp(method_name, "INIT") == 0) {
+  if (op_block && op_block->id == SPVM_OP_C_ID_INIT_BLOCK) {
+    method->is_init_method = 1;
+    op_block->id = SPVM_OP_C_ID_BLOCK;
+  }
+  
+  if (!method->is_init_method && strcmp(method_name, "INIT") == 0) {
     SPVM_COMPILER_error(compiler, "\"INIT\" cannnot be used as a method name.\n  at %s line %d", op_name_method->file, op_name_method->line);
   }
   
@@ -1717,7 +1721,10 @@ SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPV
   SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_init->file, op_init->line);
   SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
   
+  
+  
   int32_t is_init_method = 1;
+  op_block->id = SPVM_OP_C_ID_INIT_BLOCK;
   SPVM_OP_build_method_definition(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, op_block, NULL, is_init_method);
   
   return op_method;
