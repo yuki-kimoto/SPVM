@@ -801,7 +801,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         
         // INIT block
-        if (op_decl->uv.method->is_init) {
+        if (op_decl->uv.method->is_init_method) {
           basic_type->has_init_block = 1;
         }
       }
@@ -871,7 +871,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     int32_t has_init_block = 0;
     for (int32_t i = 0; i < type->basic_type->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_get(type->basic_type->methods, i);
-      if (method->is_init) {
+      if (method->is_init_method) {
         has_init_block = 1;
         break;
       }
@@ -984,7 +984,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           basic_type->destructor_method = method;
         }
         
-        if (method->is_init) {
+        if (method->is_init_method) {
           basic_type->init_method = method;
         }
         
@@ -1360,7 +1360,7 @@ SPVM_OP* SPVM_OP_build_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_fie
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_attributes, SPVM_OP* op_block, SPVM_OP* op_anon_method_fields, int32_t is_init) {
+SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_attributes, SPVM_OP* op_block, SPVM_OP* op_anon_method_fields, int32_t is_init_method) {
   SPVM_METHOD* method = SPVM_METHOD_new(compiler);
   
   if (op_name_method == NULL) {
@@ -1383,11 +1383,11 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
   
   method->name = method->op_name->uv.name;
   
-  method->is_init = is_init;
-  if (!is_init && strcmp(method_name, "INIT") == 0) {
+  method->is_init_method = is_init_method;
+  if (!is_init_method && strcmp(method_name, "INIT") == 0) {
     SPVM_COMPILER_error(compiler, "\"INIT\" cannnot be used as a method name.\n  at %s line %d", op_name_method->file, op_name_method->line);
   }
-
+  
   // Method attributes
   int32_t access_control_attributes_count = 0;
   if (op_attributes) {
@@ -1716,8 +1716,8 @@ SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPV
   SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_init->file, op_init->line);
   SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
   
-  int32_t is_init = 1;
-  SPVM_OP_build_method_definition(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, op_block, NULL, is_init);
+  int32_t is_init_method = 1;
+  SPVM_OP_build_method_definition(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, op_block, NULL, is_init_method);
   
   return op_method;
 }

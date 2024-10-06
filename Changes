@@ -1,3 +1,7 @@
+0.990017 2023-10-07
+  [Internal Changes]
+    * is_init member variable in spvm_method.h and spvm_runtime_method.h is renamed to is_init_method.
+    
 0.990016 2023-10-05
   [Internal Changes]
     * SPVM::Builder::Native::Compiler#compile and compile_anon_class methods throw an exception when a compliation failed.
