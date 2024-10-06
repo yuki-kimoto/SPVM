@@ -741,6 +741,7 @@ t/02_vm/10_thread_safe/thread_safe.t
 t/02_vm/99_extra/examples.t
 t/02_vm/99_extra/issue_507.t
 t/02_vm/99_extra/issue_515.t
+t/02_vm/99_extra/issue_567.t
 t/02_vm/99_extra/issues.t
 t/02_vm/99_extra/version.t
 t/02_vm/lib/SPVM/4foo.spvm
@@ -779,6 +780,7 @@ t/02_vm/lib/SPVM/TestCase/Issues/Issue515.spvm
 t/02_vm/lib/SPVM/TestCase/Issues/Issue515/Regex.spvm
 t/02_vm/lib/SPVM/TestCase/Issues/Issue515/Regex/Match.spvm
 t/02_vm/lib/SPVM/TestCase/Issues/Issue515/Regex/Replacer.spvm
+t/02_vm/lib/SPVM/TestCase/Issues/Issue567.spvm
 t/02_vm/lib/SPVM/TestCase/LineDirective.spvm
 t/02_vm/lib/SPVM/TestCase/LINEN.spvm
 t/02_vm/lib/SPVM/TestCase/LINER.spvm
