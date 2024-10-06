@@ -1,5 +1,5 @@
 
-name: macos-latest
+name: macos-latest-anon-method
 
 on:
   push:
