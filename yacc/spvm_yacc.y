@@ -392,7 +392,7 @@ interface
 enumeration
   : opt_attributes ENUM enumeration_block
     {
-      $$ = SPVM_OP_build_enumeration_definition(compiler, $2, $3, $1);
+      $$ = SPVM_OP_build_enumeration(compiler, $2, $3, $1);
     }
 
 enumeration_block 
