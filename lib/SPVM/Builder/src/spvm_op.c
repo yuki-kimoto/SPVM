@@ -1612,7 +1612,7 @@ SPVM_OP* SPVM_OP_attach_anon_method_fields(SPVM_COMPILER* compiler, SPVM_OP* op_
           
         if (field->is_decl_var_in_anon_method) {
           
-          char* var_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, strlen(field->name) + 1);
+          char* var_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, 1 + strlen(field->name) + 1);
           sprintf(var_name, "$%s", field->name);
           
           // my $foo = $self->{foo};
