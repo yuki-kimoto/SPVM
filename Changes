@@ -6,8 +6,8 @@
     * has_for_anon is renamed to anon_method_field_definition, has_for_anon_list is renamed to anon_method_field_definition in spvm_yacc.y.
     * SPVM_OP_build_class_var_definition is renamed to SPVM_OP_build_class_var.
     * SPVM_OP_build_enumeration_definition is renamed to SPVM_OP_build_enumeration.
-    * SPVM_OP_build_field_definition is renamed to SPVM_OP_build_field_definition.
-    
+    * SPVM_OP_build_field_definition is renamed to SPVM_OP_build_field.
+    * SPVM_OP_build_method_definition is renamed to SPVM_OP_build_method.
 0.990016 2023-10-05
   [Internal Changes]
     * SPVM::Builder::Native::Compiler#compile and compile_anon_class methods throw an exception when a compliation failed.

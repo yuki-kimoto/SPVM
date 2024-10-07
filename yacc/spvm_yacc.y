@@ -463,25 +463,25 @@ has
 method
   : opt_attributes METHOD method_name ':' return_type '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, $9, NULL);
+       $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, $9, NULL);
      }
   | opt_attributes METHOD method_name ':' return_type '(' opt_args ')' ';'
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, NULL, NULL);
+       $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, NULL, NULL);
      }
   | opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $8, NULL);
+       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $8, NULL);
      }
   | opt_attributes METHOD ':' return_type '(' opt_args ')' ';'
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, NULL, NULL);
+       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, NULL, NULL);
      }
 
 anon_method
   : opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $8, NULL);
+       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $8, NULL);
      }
   | '[' anon_method_fields ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
@@ -494,7 +494,7 @@ anon_method
          SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, $2);
        }
        
-       $$ = SPVM_OP_build_method_definition(compiler, $5, NULL, $7, $9, $4, $11, op_list_args);
+       $$ = SPVM_OP_build_method(compiler, $5, NULL, $7, $9, $4, $11, op_list_args);
      }
 
 opt_args
