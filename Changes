@@ -1,3 +1,17 @@
+0.990017 2023-10-07
+  [Internal Changes]
+    * is_init member variable in spvm_method.h and spvm_runtime_method.h is renamed to is_init_method.
+    * Add SPVM_OP_C_ID_INIT_BLOCK to spvm_op.h
+    * Remove init_method argument of SPVM_OP_build_method_definition function.
+    * SPVM_OP_build_class_var_definition is renamed to SPVM_OP_build_class_var.
+    * SPVM_OP_build_enumeration_definition is renamed to SPVM_OP_build_enumeration.
+    * SPVM_OP_build_field_definition is renamed to SPVM_OP_build_field.
+    * SPVM_OP_build_method_definition is renamed to SPVM_OP_build_method.
+  [Document Changes]
+    * token names are changes in SPVM::Document::Language::SyntaxParsing
+  [Bug Fix]
+    * Fix a bug that anon method local variable declaration cause a leak of memory allocation.
+    
 0.990016 2023-10-05
   [Internal Changes]
     * SPVM::Builder::Native::Compiler#compile and compile_anon_class methods throw an exception when a compliation failed.

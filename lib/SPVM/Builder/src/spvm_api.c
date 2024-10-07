@@ -3771,7 +3771,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     
     if (!error_id) {
       int32_t no_need_call = 0;
-      if (method->is_init) {
+      if (method->is_init_method) {
         
         if (current_basic_type->initialized) {
           no_need_call = 1;

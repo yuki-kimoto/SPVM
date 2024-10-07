@@ -764,7 +764,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
       // Set is_precompile field of methods
       if (basic_type->is_precompile) {
         int32_t can_precompile;
-        if (method->is_init) {
+        if (method->is_init_method) {
           can_precompile = 0;
         }
         else if (method->is_enum) {

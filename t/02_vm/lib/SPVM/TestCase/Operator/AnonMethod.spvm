@@ -13,7 +13,7 @@ class TestCase::Operator::AnonMethod {
     $var_prec = 5;
   }
 
-  static method anon_method_field_definition : int () {
+  static method anon_method_field : int () {
     {
       my $default1 = 7;
       my $default2 = 10;

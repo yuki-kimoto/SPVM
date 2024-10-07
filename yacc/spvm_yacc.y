@@ -36,7 +36,7 @@
 %type <opval> opt_classes classes class class_block opt_extends version_decl
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
-%type <opval> method anon_method opt_args args arg use require class_alias our has has_for_anon_list has_for_anon interface allow
+%type <opval> method anon_method opt_args args arg use require class_alias our has anon_method_fields anon_method_field interface allow
 %type <opval> opt_attributes attributes
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement foreach_statement
@@ -392,7 +392,7 @@ interface
 enumeration
   : opt_attributes ENUM enumeration_block
     {
-      $$ = SPVM_OP_build_enumeration_definition(compiler, $2, $3, $1);
+      $$ = SPVM_OP_build_enumeration(compiler, $2, $3, $1);
     }
 
 enumeration_block 
@@ -451,53 +451,52 @@ enumeration_item
 our
   : OUR VAR_NAME ':' opt_attributes qualified_type opt_type_comment ';'
     {
-      $$ = SPVM_OP_build_class_var_definition(compiler, $1, $2, $4, $5);
+      $$ = SPVM_OP_build_class_var(compiler, $1, $2, $4, $5);
     }
 
 has
   : HAS field_name ':' opt_attributes qualified_type opt_type_comment
     {
-      $$ = SPVM_OP_build_field_definition(compiler, $1, $2, $4, $5);
+      $$ = SPVM_OP_build_field(compiler, $1, $2, $4, $5);
     }
 
 method
   : opt_attributes METHOD method_name ':' return_type '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, $9, NULL, 0);
+       $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, $9, NULL);
      }
   | opt_attributes METHOD method_name ':' return_type '(' opt_args ')' ';'
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, NULL, NULL, 0);
+       $$ = SPVM_OP_build_method(compiler, $2, $3, $5, $7, $1, NULL, NULL);
      }
   | opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $8, NULL, 0);
+       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $8, NULL);
      }
   | opt_attributes METHOD ':' return_type '(' opt_args ')' ';'
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, NULL, NULL, 0);
+       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, NULL, NULL);
      }
 
 anon_method
   : opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
-       int32_t is_init = 0;
-       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $8, NULL, is_init);
+       $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, $8, NULL);
      }
-  | '[' has_for_anon_list ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
+  | '[' anon_method_fields ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
-       SPVM_OP* op_list_args;
+       SPVM_OP* op_anon_method_fields;
        if ($2->id == SPVM_OP_C_ID_LIST) {
-         op_list_args = $2;
+         op_anon_method_fields = $2;
        }
        else {
-         op_list_args = SPVM_OP_new_op_list(compiler, $2->file, $2->line);
-         SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, $2);
+         op_anon_method_fields = SPVM_OP_new_op_list(compiler, $2->file, $2->line);
+         SPVM_OP_insert_child(compiler, op_anon_method_fields, op_anon_method_fields->last, $2);
        }
        
-       int32_t is_init = 0;
-       int32_t is_anon = 1;
-       $$ = SPVM_OP_build_method_definition(compiler, $5, NULL, $7, $9, $4, $11, op_list_args, is_init);
+       $$ = SPVM_OP_build_method(compiler, $5, NULL, $7, $9, $4, $11, NULL);
+       
+       SPVM_OP_attach_anon_method_fields(compiler, $$, op_anon_method_fields);
      }
 
 opt_args
@@ -545,8 +544,8 @@ arg
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, $6);
     }
 
-has_for_anon_list
-  : has_for_anon_list ',' has_for_anon
+anon_method_fields
+  : anon_method_fields ',' anon_method_field
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -560,29 +559,29 @@ has_for_anon_list
       
       $$ = op_list;
     }
-  | has_for_anon_list ','
-  | has_for_anon
+  | anon_method_fields ','
+  | anon_method_field
 
-has_for_anon
+anon_method_field
   : HAS field_name ':' opt_attributes qualified_type opt_type_comment
     {
-      $$ = SPVM_OP_build_anon_method_field_definition(compiler, $1, $2, $4, $5, NULL);
+      $$ = SPVM_OP_build_anon_method_field(compiler, $1, $2, $4, $5, NULL);
     }
   | HAS field_name ':' opt_attributes qualified_type opt_type_comment ASSIGN operator
     {
-      $$ = SPVM_OP_build_anon_method_field_definition(compiler, $1, $2, $4, $5, $8);
+      $$ = SPVM_OP_build_anon_method_field(compiler, $1, $2, $4, $5, $8);
     }
   | var ':' opt_attributes qualified_type opt_type_comment
     {
       SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, $1->file, $1->line);
       
-      $$ = SPVM_OP_build_anon_method_field_definition(compiler, op_field, NULL, $3, $4, $1);
+      $$ = SPVM_OP_build_anon_method_field(compiler, op_field, NULL, $3, $4, $1);
     }
   | var ':' opt_attributes qualified_type opt_type_comment ASSIGN operator
     {
       SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, $1->file, $1->line);
       
-      $$ = SPVM_OP_build_anon_method_field_definition(compiler, op_field, $1, $3, $4, $7);
+      $$ = SPVM_OP_build_anon_method_field(compiler, op_field, $1, $3, $4, $7);
     }
     
 opt_attributes

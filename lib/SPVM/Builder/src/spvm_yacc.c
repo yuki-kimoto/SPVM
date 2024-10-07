@@ -569,27 +569,27 @@ static const yytype_uint16 yyrline[] =
      330,   331,   332,   333,   334,   335,   336,   337,   338,   341,
      347,   353,   359,   366,   374,   381,   387,   393,   399,   408,
      411,   424,   438,   439,   442,   446,   452,   458,   464,   468,
-     472,   476,   482,   487,   505,   508,   521,   535,   536,   539,
-     543,   549,   563,   564,   567,   571,   575,   581,   590,   593,
-     606,   620,   624,   627,   640,   654,   657,   658,   659,   660,
-     661,   662,   663,   664,   665,   666,   667,   668,   669,   670,
-     674,   678,   682,   683,   687,   690,   694,   698,   702,   706,
-     712,   713,   717,   721,   722,   723,   729,   733,   739,   745,
-     749,   755,   761,   767,   773,   782,   785,   798,   812,   818,
-     822,   828,   832,   838,   844,   851,   862,   876,   879,   883,
-     889,   897,   903,   907,   913,   920,   923,   937,   940,   943,
-     944,   945,   946,   947,   948,   949,   950,   951,   952,   956,
-     960,   961,   962,   963,   964,   965,   966,   967,   971,   972,
-     973,   974,   975,   976,   977,   980,   997,  1011,  1015,  1021,
-    1026,  1031,  1035,  1039,  1043,  1047,  1051,  1055,  1059,  1063,
-    1067,  1071,  1074,  1079,  1084,  1089,  1096,  1101,  1108,  1113,
-    1120,  1121,  1122,  1123,  1124,  1127,  1132,  1137,  1142,  1146,
-    1150,  1154,  1158,  1162,  1168,  1172,  1176,  1180,  1186,  1190,
-    1194,  1198,  1202,  1206,  1210,  1214,  1218,  1222,  1226,  1230,
-    1234,  1238,  1244,  1250,  1254,  1258,  1264,  1268,  1272,  1276,
-    1280,  1286,  1291,  1298,  1302,  1308,  1312,  1318,  1322,  1328,
-    1334,  1340,  1346,  1355,  1360,  1366,  1371,  1377,  1382,  1388,
-    1396,  1401,  1406,  1413,  1418,  1423,  1431,  1439,  1447
+     472,   476,   482,   486,   504,   507,   520,   534,   535,   538,
+     542,   548,   562,   563,   566,   570,   574,   580,   589,   592,
+     605,   619,   623,   626,   639,   653,   656,   657,   658,   659,
+     660,   661,   662,   663,   664,   665,   666,   667,   668,   669,
+     673,   677,   681,   682,   686,   689,   693,   697,   701,   705,
+     711,   712,   716,   720,   721,   722,   728,   732,   738,   744,
+     748,   754,   760,   766,   772,   781,   784,   797,   811,   817,
+     821,   827,   831,   837,   843,   850,   861,   875,   878,   882,
+     888,   896,   902,   906,   912,   919,   922,   936,   939,   942,
+     943,   944,   945,   946,   947,   948,   949,   950,   951,   955,
+     959,   960,   961,   962,   963,   964,   965,   966,   970,   971,
+     972,   973,   974,   975,   976,   979,   996,  1010,  1014,  1020,
+    1025,  1030,  1034,  1038,  1042,  1046,  1050,  1054,  1058,  1062,
+    1066,  1070,  1073,  1078,  1083,  1088,  1095,  1100,  1107,  1112,
+    1119,  1120,  1121,  1122,  1123,  1126,  1131,  1136,  1141,  1145,
+    1149,  1153,  1157,  1161,  1167,  1171,  1175,  1179,  1185,  1189,
+    1193,  1197,  1201,  1205,  1209,  1213,  1217,  1221,  1225,  1229,
+    1233,  1237,  1243,  1249,  1253,  1257,  1263,  1267,  1271,  1275,
+    1279,  1285,  1290,  1297,  1301,  1307,  1311,  1317,  1321,  1327,
+    1333,  1339,  1345,  1354,  1359,  1365,  1370,  1376,  1381,  1387,
+    1395,  1400,  1405,  1412,  1417,  1422,  1430,  1438,  1446
 };
 #endif
 
@@ -627,8 +627,8 @@ static const char *const yytname[] =
   "version_decl", "use", "require", "class_alias", "allow", "interface",
   "enumeration", "enumeration_block", "opt_enumeration_items",
   "enumeration_items", "enumeration_item", "our", "has", "method",
-  "anon_method", "opt_args", "args", "arg", "has_for_anon_list",
-  "has_for_anon", "opt_attributes", "attributes", "opt_statements",
+  "anon_method", "opt_args", "args", "arg", "anon_method_fields",
+  "anon_method_field", "opt_attributes", "attributes", "opt_statements",
   "statements", "statement", "die", "void_return_operator", "warn",
   "for_statement", "foreach_statement", "while_statement",
   "switch_statement", "switch_block", "opt_case_statements",
@@ -3020,7 +3020,7 @@ yyreduce:
   case 67:
 #line 394 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_enumeration_definition(compiler, (yyvsp[-1].opval), (yyvsp[0].opval), (yyvsp[-2].opval));
+      (yyval.opval) = SPVM_OP_build_enumeration(compiler, (yyvsp[-1].opval), (yyvsp[0].opval), (yyvsp[-2].opval));
     }
 #line 3026 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -3095,7 +3095,7 @@ yyreduce:
   case 76:
 #line 453 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_class_var_definition(compiler, (yyvsp[-6].opval), (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-2].opval));
+      (yyval.opval) = SPVM_OP_build_class_var(compiler, (yyvsp[-6].opval), (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-2].opval));
     }
 #line 3101 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -3103,7 +3103,7 @@ yyreduce:
   case 77:
 #line 459 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_field_definition(compiler, (yyvsp[-5].opval), (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-1].opval));
+      (yyval.opval) = SPVM_OP_build_field(compiler, (yyvsp[-5].opval), (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-1].opval));
     }
 #line 3109 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -3111,7 +3111,7 @@ yyreduce:
   case 78:
 #line 465 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-       (yyval.opval) = SPVM_OP_build_method_definition(compiler, (yyvsp[-7].opval), (yyvsp[-6].opval), (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-8].opval), (yyvsp[0].opval), NULL, 0);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[-7].opval), (yyvsp[-6].opval), (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-8].opval), (yyvsp[0].opval), NULL);
      }
 #line 3117 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -3119,7 +3119,7 @@ yyreduce:
   case 79:
 #line 469 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-       (yyval.opval) = SPVM_OP_build_method_definition(compiler, (yyvsp[-7].opval), (yyvsp[-6].opval), (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-8].opval), NULL, NULL, 0);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[-7].opval), (yyvsp[-6].opval), (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-8].opval), NULL, NULL);
      }
 #line 3125 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -3127,7 +3127,7 @@ yyreduce:
   case 80:
 #line 473 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-       (yyval.opval) = SPVM_OP_build_method_definition(compiler, (yyvsp[-6].opval), NULL, (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-7].opval), (yyvsp[0].opval), NULL, 0);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[-6].opval), NULL, (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-7].opval), (yyvsp[0].opval), NULL);
      }
 #line 3133 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -3135,7 +3135,7 @@ yyreduce:
   case 81:
 #line 477 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-       (yyval.opval) = SPVM_OP_build_method_definition(compiler, (yyvsp[-6].opval), NULL, (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-7].opval), NULL, NULL, 0);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[-6].opval), NULL, (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-7].opval), NULL, NULL);
      }
 #line 3141 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -3143,41 +3143,40 @@ yyreduce:
   case 82:
 #line 483 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-       int32_t is_init = 0;
-       (yyval.opval) = SPVM_OP_build_method_definition(compiler, (yyvsp[-6].opval), NULL, (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-7].opval), (yyvsp[0].opval), NULL, is_init);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[-6].opval), NULL, (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-7].opval), (yyvsp[0].opval), NULL);
      }
-#line 3150 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3149 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 488 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 487 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-       SPVM_OP* op_list_args;
+       SPVM_OP* op_anon_method_fields;
        if ((yyvsp[-9].opval)->id == SPVM_OP_C_ID_LIST) {
-         op_list_args = (yyvsp[-9].opval);
+         op_anon_method_fields = (yyvsp[-9].opval);
        }
        else {
-         op_list_args = SPVM_OP_new_op_list(compiler, (yyvsp[-9].opval)->file, (yyvsp[-9].opval)->line);
-         SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, (yyvsp[-9].opval));
+         op_anon_method_fields = SPVM_OP_new_op_list(compiler, (yyvsp[-9].opval)->file, (yyvsp[-9].opval)->line);
+         SPVM_OP_insert_child(compiler, op_anon_method_fields, op_anon_method_fields->last, (yyvsp[-9].opval));
        }
        
-       int32_t is_init = 0;
-       int32_t is_anon = 1;
-       (yyval.opval) = SPVM_OP_build_method_definition(compiler, (yyvsp[-6].opval), NULL, (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-7].opval), (yyvsp[0].opval), op_list_args, is_init);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[-6].opval), NULL, (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-7].opval), (yyvsp[0].opval), NULL);
+       
+       SPVM_OP_attach_anon_method_fields(compiler, (yyval.opval), op_anon_method_fields);
      }
-#line 3169 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3168 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 505 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 504 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
     }
-#line 3177 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3176 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 509 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 508 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       if ((yyvsp[0].opval)->id == SPVM_OP_C_ID_LIST) {
         (yyval.opval) = (yyvsp[0].opval);
@@ -3188,11 +3187,11 @@ yyreduce:
         (yyval.opval) = op_list;
       }
     }
-#line 3192 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3191 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 522 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 521 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_list;
       if ((yyvsp[-2].opval)->id == SPVM_OP_C_ID_LIST) {
@@ -3206,27 +3205,27 @@ yyreduce:
       
       (yyval.opval) = op_list;
     }
-#line 3210 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3209 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 540 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 539 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_arg(compiler, (yyvsp[-3].opval), (yyvsp[-1].opval), NULL, NULL);
     }
-#line 3218 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3217 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 544 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 543 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_arg(compiler, (yyvsp[-5].opval), (yyvsp[-3].opval), NULL, (yyvsp[0].opval));
     }
-#line 3226 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3225 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 550 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 549 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_list;
       if ((yyvsp[-2].opval)->id == SPVM_OP_C_ID_LIST) {
@@ -3240,55 +3239,55 @@ yyreduce:
       
       (yyval.opval) = op_list;
     }
-#line 3244 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3243 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 568 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 567 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_anon_method_field_definition(compiler, (yyvsp[-5].opval), (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-1].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_anon_method_field(compiler, (yyvsp[-5].opval), (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-1].opval), NULL);
     }
-#line 3252 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3251 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 572 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 571 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_anon_method_field_definition(compiler, (yyvsp[-7].opval), (yyvsp[-6].opval), (yyvsp[-4].opval), (yyvsp[-3].opval), (yyvsp[0].opval));
+      (yyval.opval) = SPVM_OP_build_anon_method_field(compiler, (yyvsp[-7].opval), (yyvsp[-6].opval), (yyvsp[-4].opval), (yyvsp[-3].opval), (yyvsp[0].opval));
     }
-#line 3260 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3259 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 576 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 575 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, (yyvsp[-4].opval)->file, (yyvsp[-4].opval)->line);
       
-      (yyval.opval) = SPVM_OP_build_anon_method_field_definition(compiler, op_field, NULL, (yyvsp[-2].opval), (yyvsp[-1].opval), (yyvsp[-4].opval));
+      (yyval.opval) = SPVM_OP_build_anon_method_field(compiler, op_field, NULL, (yyvsp[-2].opval), (yyvsp[-1].opval), (yyvsp[-4].opval));
     }
-#line 3270 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3269 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 582 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 581 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, (yyvsp[-6].opval)->file, (yyvsp[-6].opval)->line);
       
-      (yyval.opval) = SPVM_OP_build_anon_method_field_definition(compiler, op_field, (yyvsp[-6].opval), (yyvsp[-4].opval), (yyvsp[-3].opval), (yyvsp[0].opval));
+      (yyval.opval) = SPVM_OP_build_anon_method_field(compiler, op_field, (yyvsp[-6].opval), (yyvsp[-4].opval), (yyvsp[-3].opval), (yyvsp[0].opval));
     }
-#line 3280 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3279 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 590 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 589 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
     }
-#line 3288 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3287 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 594 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 593 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       if ((yyvsp[0].opval)->id == SPVM_OP_C_ID_LIST) {
         (yyval.opval) = (yyvsp[0].opval);
@@ -3299,11 +3298,11 @@ yyreduce:
         (yyval.opval) = op_list;
       }
     }
-#line 3303 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3302 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 607 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 606 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_list;
       if ((yyvsp[-1].opval)->id == SPVM_OP_C_ID_LIST) {
@@ -3317,19 +3316,19 @@ yyreduce:
       
       (yyval.opval) = op_list;
     }
-#line 3321 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3320 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 102:
-#line 624 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 623 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
     }
-#line 3329 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3328 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 103:
-#line 628 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 627 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       if ((yyvsp[0].opval)->id == SPVM_OP_C_ID_LIST) {
         (yyval.opval) = (yyvsp[0].opval);
@@ -3340,11 +3339,11 @@ yyreduce:
         (yyval.opval) = op_list;
       }
     }
-#line 3344 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3343 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 641 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 640 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_list;
       if ((yyvsp[-1].opval)->id == SPVM_OP_C_ID_LIST) {
@@ -3358,191 +3357,191 @@ yyreduce:
       
       (yyval.opval) = op_list;
     }
-#line 3362 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3361 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 119:
-#line 671 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 670 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_return(compiler, (yyvsp[-1].opval), NULL);
     }
-#line 3370 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3369 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 120:
-#line 675 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 674 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_return(compiler, (yyvsp[-2].opval), (yyvsp[-1].opval));
     }
-#line 3378 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3377 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 121:
-#line 679 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 678 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_operator_statement(compiler, (yyvsp[-1].opval));
     }
-#line 3386 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3385 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 123:
-#line 684 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 683 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
     }
-#line 3394 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3393 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 125:
-#line 691 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 690 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_die(compiler, (yyvsp[-1].opval), (yyvsp[0].opval), NULL);
     }
-#line 3402 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3401 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 126:
-#line 695 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 694 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_die(compiler, (yyvsp[0].opval), NULL, NULL);
     }
-#line 3410 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3409 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 127:
-#line 699 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 698 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_die(compiler, (yyvsp[-2].opval), (yyvsp[0].opval), (yyvsp[-1].opval));
     }
-#line 3418 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3417 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 128:
-#line 703 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 702 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_die(compiler, (yyvsp[-1].opval), NULL, (yyvsp[0].opval));
     }
-#line 3426 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3425 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 129:
-#line 707 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 706 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_die(compiler, (yyvsp[-3].opval), (yyvsp[0].opval), (yyvsp[-2].opval));
     }
-#line 3434 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3433 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 131:
-#line 714 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 713 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_print(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3442 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3441 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 132:
-#line 718 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 717 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_print(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3450 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3449 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 135:
-#line 724 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 723 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_make_read_only(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3458 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3457 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 136:
-#line 730 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 729 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_warn(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3466 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3465 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 137:
-#line 734 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 733 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_warn(compiler, (yyvsp[0].opval), NULL);
     }
-#line 3474 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3473 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 138:
-#line 740 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 739 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_for_statement(compiler, (yyvsp[-8].opval), (yyvsp[-6].opval), (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 3482 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3481 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 139:
-#line 746 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 745 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_foreach_statement(compiler, (yyvsp[-6].opval), (yyvsp[-5].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 3490 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3489 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 140:
-#line 750 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 749 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_foreach_statement(compiler, (yyvsp[-8].opval), (yyvsp[-7].opval), (yyvsp[-3].opval), (yyvsp[0].opval));
     }
-#line 3498 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3497 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 141:
-#line 756 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 755 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_while_statement(compiler, (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 3506 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3505 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 142:
-#line 762 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 761 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_switch_statement(compiler, (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 3514 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3513 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 143:
-#line 768 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 767 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->current_file, compiler->current_line);
       op_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH;
       (yyval.opval) = SPVM_OP_build_switch_block(compiler, op_block, (yyvsp[-1].opval), NULL);
     }
-#line 3524 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3523 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 144:
-#line 774 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 773 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->current_file, compiler->current_line);
       op_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH;
       (yyval.opval) = SPVM_OP_build_switch_block(compiler, op_block, (yyvsp[-2].opval), (yyvsp[-1].opval));
     }
-#line 3534 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3533 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 145:
-#line 782 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 781 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
     }
-#line 3542 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3541 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 146:
-#line 786 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 785 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       if ((yyvsp[0].opval)->id == SPVM_OP_C_ID_LIST) {
         (yyval.opval) = (yyvsp[0].opval);
@@ -3553,11 +3552,11 @@ yyreduce:
         (yyval.opval) = op_list;
       }
     }
-#line 3557 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3556 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 147:
-#line 799 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 798 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_list;
       if ((yyvsp[-1].opval)->id == SPVM_OP_C_ID_LIST) {
@@ -3571,71 +3570,71 @@ yyreduce:
       
       (yyval.opval) = op_list;
     }
-#line 3575 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3574 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 148:
-#line 813 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 812 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = (yyvsp[0].opval);
     }
-#line 3583 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3582 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 149:
-#line 819 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 818 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_case_statement(compiler, (yyvsp[-3].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 3591 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3590 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 150:
-#line 823 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 822 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_case_statement(compiler, (yyvsp[-2].opval), (yyvsp[-1].opval), NULL);
     }
-#line 3599 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3598 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 151:
-#line 829 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 828 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_default_statement(compiler, (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 3607 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3606 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 152:
-#line 833 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 832 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_default_statement(compiler, (yyvsp[-1].opval), NULL);
     }
-#line 3615 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3614 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 153:
-#line 839 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 838 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_if_require = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF_REQUIRE, compiler->current_file, compiler->current_line);
       
       (yyval.opval) = SPVM_OP_build_if_require_statement(compiler, op_if_require, (yyvsp[-2].opval), (yyvsp[0].opval), NULL);
     }
-#line 3625 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3624 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 154:
-#line 845 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 844 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_if_require = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF_REQUIRE, compiler->current_file, compiler->current_line);
       
       (yyval.opval) = SPVM_OP_build_if_require_statement(compiler, op_if_require, (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 3635 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3634 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 155:
-#line 852 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 851 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), (yyvsp[0].opval), 0);
       
@@ -3646,11 +3645,11 @@ yyreduce:
       
       (yyval.opval) = op_block;
     }
-#line 3650 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3649 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 156:
-#line 863 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 862 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_if = SPVM_OP_build_if_statement(compiler, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), (yyvsp[0].opval), 0);
       
@@ -3661,85 +3660,85 @@ yyreduce:
       
       (yyval.opval) = op_block;
     }
-#line 3665 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3664 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 157:
-#line 876 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 875 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
     }
-#line 3673 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3672 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 158:
-#line 880 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 879 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = (yyvsp[0].opval);
     }
-#line 3681 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3680 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 159:
-#line 884 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 883 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_if_statement(compiler, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), (yyvsp[0].opval), 0);
     }
-#line 3689 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3688 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 160:
-#line 890 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 889 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, (yyvsp[-2].opval)->file, (yyvsp[-2].opval)->line);
       SPVM_OP_insert_child(compiler, op_block, op_block->last, (yyvsp[-1].opval));
       (yyval.opval) = op_block;
     }
-#line 3699 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3698 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 161:
-#line 898 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 897 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_eval(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3707 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3706 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 162:
-#line 904 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 903 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_var_decl(compiler, (yyvsp[-4].opval), (yyvsp[-3].opval), (yyvsp[-1].opval), NULL);
     }
-#line 3715 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3714 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 163:
-#line 908 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 907 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_var_decl(compiler, (yyvsp[-1].opval), (yyvsp[0].opval), NULL, NULL);
     }
-#line 3723 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3722 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 164:
-#line 914 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 913 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_var(compiler, (yyvsp[0].opval));
     }
-#line 3731 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3730 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 165:
-#line 920 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 919 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
     }
-#line 3739 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3738 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 166:
-#line 924 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 923 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       if ((yyvsp[0].opval)->id == SPVM_OP_C_ID_LIST) {
         (yyval.opval) = (yyvsp[0].opval);
@@ -3750,43 +3749,43 @@ yyreduce:
         (yyval.opval) = op_list;
       }
     }
-#line 3754 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3753 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 167:
-#line 937 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 936 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
     }
-#line 3762 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3761 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 178:
-#line 953 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 952 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_new_op_true(compiler, (yyvsp[0].opval));
     }
-#line 3770 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3769 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 179:
-#line 957 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 956 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_new_op_false(compiler, (yyvsp[0].opval));
     }
-#line 3778 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3777 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 187:
-#line 968 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 967 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_basic_type_id(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3786 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3785 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 195:
-#line 981 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 980 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       if ((yyvsp[-1].opval)->id == SPVM_OP_C_ID_LIST) {
         SPVM_OP* op_operator = (yyvsp[-1].opval)->first;
@@ -3802,11 +3801,11 @@ yyreduce:
         (yyval.opval) = (yyvsp[-1].opval);
       }
     }
-#line 3806 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3805 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 196:
-#line 998 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 997 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_list;
       if ((yyvsp[-2].opval)->id == SPVM_OP_C_ID_LIST) {
@@ -3820,747 +3819,747 @@ yyreduce:
       
       (yyval.opval) = op_list;
     }
-#line 3824 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3823 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 197:
-#line 1012 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1011 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = (yyvsp[-1].opval);
     }
-#line 3832 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3831 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 198:
-#line 1016 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1015 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = (yyvsp[0].opval);
     }
-#line 3840 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3839 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 199:
-#line 1022 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1021 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* operator = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PLUS, (yyvsp[-1].opval)->file, (yyvsp[-1].opval)->line);
       (yyval.opval) = SPVM_OP_build_unary_op(compiler, operator, (yyvsp[0].opval));
     }
-#line 3849 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3848 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 200:
-#line 1027 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1026 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_negate = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MINUS, (yyvsp[-1].opval)->file, (yyvsp[-1].opval)->line);
       (yyval.opval) = SPVM_OP_build_unary_op(compiler, op_negate, (yyvsp[0].opval));
     }
-#line 3858 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3857 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 201:
-#line 1032 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1031 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_unary_op(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3866 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3865 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 202:
-#line 1036 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1035 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_unary_op(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3874 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3873 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 203:
-#line 1040 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1039 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_unary_op(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3882 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3881 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 204:
-#line 1044 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1043 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_unary_op(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3890 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3889 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 205:
-#line 1048 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1047 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_unary_op(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3898 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3897 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 206:
-#line 1052 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1051 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_unary_op_var(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3906 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3905 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 207:
-#line 1056 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1055 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_unary_op_var(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3914 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3913 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 208:
-#line 1060 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1059 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_unary_op(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3922 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3921 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 209:
-#line 1064 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1063 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_unary_op(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3930 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3929 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 210:
-#line 1068 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1067 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_unary_op(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 3938 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3937 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 212:
-#line 1075 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1074 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_array_length(compiler, op_array_length, (yyvsp[0].opval));
     }
-#line 3947 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3946 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 213:
-#line 1080 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1079 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_array_length(compiler, op_array_length, (yyvsp[-1].opval));
     }
-#line 3956 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3955 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 214:
-#line 1085 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1084 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_array_length(compiler, op_array_length, (yyvsp[0].opval));
     }
-#line 3965 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3964 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 215:
-#line 1090 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1089 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_array_length(compiler, op_array_length, (yyvsp[-1].opval));
     }
-#line 3974 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3973 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 216:
-#line 1097 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1096 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* operator = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_INC, (yyvsp[-1].opval)->file, (yyvsp[-1].opval)->line);
       (yyval.opval) = SPVM_OP_build_inc(compiler, operator, (yyvsp[0].opval));
     }
-#line 3983 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3982 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 217:
-#line 1102 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1101 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* operator = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_INC, (yyvsp[0].opval)->file, (yyvsp[0].opval)->line);
       (yyval.opval) = SPVM_OP_build_inc(compiler, operator, (yyvsp[-1].opval));
     }
-#line 3992 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 3991 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 218:
-#line 1109 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1108 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* operator = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PRE_DEC, (yyvsp[-1].opval)->file, (yyvsp[-1].opval)->line);
       (yyval.opval) = SPVM_OP_build_dec(compiler, operator, (yyvsp[0].opval));
     }
-#line 4001 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4000 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 219:
-#line 1114 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1113 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* operator = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_POST_DEC, (yyvsp[0].opval)->file, (yyvsp[0].opval)->line);
       (yyval.opval) = SPVM_OP_build_dec(compiler, operator, (yyvsp[-1].opval));
     }
-#line 4010 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4009 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 225:
-#line 1128 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1127 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* operator = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADD, (yyvsp[-1].opval)->file, (yyvsp[-1].opval)->line);
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, operator, (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4019 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4018 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 226:
-#line 1133 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1132 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* operator = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, (yyvsp[-1].opval)->file, (yyvsp[-1].opval)->line);
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, operator, (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4028 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4027 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 227:
-#line 1138 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1137 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* operator = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MULTIPLY, (yyvsp[-1].opval)->file, (yyvsp[-1].opval)->line);
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, operator, (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4037 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4036 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 228:
-#line 1143 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1142 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4045 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4044 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 229:
-#line 1147 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1146 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4053 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4052 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 230:
-#line 1151 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1150 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4061 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4060 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 231:
-#line 1155 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1154 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4069 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4068 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 232:
-#line 1159 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1158 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4077 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4076 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 233:
-#line 1163 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1162 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4085 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4084 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 234:
-#line 1169 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1168 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4093 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4092 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 235:
-#line 1173 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1172 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4101 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4100 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 236:
-#line 1177 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1176 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4109 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4108 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 237:
-#line 1181 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1180 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4117 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4116 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 238:
-#line 1187 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1186 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4125 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4124 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 239:
-#line 1191 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1190 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4133 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4132 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 240:
-#line 1195 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1194 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4141 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4140 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 241:
-#line 1199 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1198 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4149 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4148 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 242:
-#line 1203 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1202 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4157 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4156 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 243:
-#line 1207 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1206 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4165 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4164 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 244:
-#line 1211 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1210 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4173 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4172 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 245:
-#line 1215 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1214 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4181 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4180 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 246:
-#line 1219 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1218 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4189 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4188 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 247:
-#line 1223 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1222 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4197 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4196 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 248:
-#line 1227 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1226 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4205 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4204 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 249:
-#line 1231 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1230 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4213 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4212 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 250:
-#line 1235 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1234 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4221 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4220 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 251:
-#line 1239 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1238 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4229 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4228 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 252:
-#line 1245 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1244 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4237 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4236 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 253:
-#line 1251 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1250 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_logical_or(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4245 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4244 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 254:
-#line 1255 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1254 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_logical_and(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4253 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4252 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 255:
-#line 1259 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1258 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_logical_not(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
-#line 4261 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4260 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 256:
-#line 1265 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1264 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_type_check(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4269 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4268 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 257:
-#line 1269 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1268 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_type_check(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4277 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4276 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 258:
-#line 1273 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1272 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_type_check(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4285 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4284 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 259:
-#line 1277 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1276 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_type_check(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4293 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4292 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 260:
-#line 1281 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1280 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_type_check(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4301 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4300 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 261:
-#line 1287 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1286 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, (yyvsp[-2].opval)->file, (yyvsp[-2].opval)->line);
       (yyval.opval) = SPVM_OP_build_type_cast(compiler, op_type_cast, (yyvsp[-2].opval), (yyvsp[0].opval), NULL);
     }
-#line 4310 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4309 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 262:
-#line 1292 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1291 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, (yyvsp[-1].opval)->file, (yyvsp[-1].opval)->line);
       (yyval.opval) = SPVM_OP_build_type_cast(compiler, op_type_cast, (yyvsp[-1].opval), (yyvsp[-4].opval), NULL);
     }
-#line 4319 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4318 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 263:
-#line 1299 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1298 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_can(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4327 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4326 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 264:
-#line 1303 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1302 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_can(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4335 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4334 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 265:
-#line 1309 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1308 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_assign(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4343 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4342 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 266:
-#line 1313 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1312 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_special_assign(compiler, (yyvsp[-1].opval), (yyvsp[-2].opval), (yyvsp[0].opval));
     }
-#line 4351 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4350 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 267:
-#line 1319 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1318 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_new(compiler, (yyvsp[-1].opval), (yyvsp[0].opval), NULL);
     }
-#line 4359 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4358 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 268:
-#line 1323 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1322 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_length = (yyvsp[0].opval)->last;
       SPVM_OP_cut_op(compiler, (yyvsp[0].opval)->last);
       (yyval.opval) = SPVM_OP_build_new(compiler, (yyvsp[-1].opval), (yyvsp[0].opval), op_length);
     }
-#line 4369 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4368 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 269:
-#line 1329 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1328 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       (yyval.opval) = SPVM_OP_build_anon_method(compiler, (yyvsp[0].opval));
     }
-#line 4377 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4376 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 270:
-#line 1335 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1334 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, compiler->current_file, compiler->current_line);
       int32_t is_key_values = 0;
       (yyval.opval) = SPVM_OP_build_array_init(compiler, op_array_init, (yyvsp[-1].opval), is_key_values);
     }
-#line 4387 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4386 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 271:
-#line 1341 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1340 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, compiler->current_file, compiler->current_line);
       int32_t is_key_values = 1;
       (yyval.opval) = SPVM_OP_build_array_init(compiler, op_array_init, (yyvsp[-1].opval), is_key_values);
     }
-#line 4397 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4396 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 272:
-#line 1347 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1346 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, compiler->current_file, compiler->current_line);
       int32_t is_key_values = 1;
       SPVM_OP* op_list_elements = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_array_init(compiler, op_array_init, op_list_elements, is_key_values);
     }
-#line 4408 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4407 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 273:
-#line 1356 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1355 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-4].opval), (yyvsp[-3].opval), (yyvsp[-1].opval));
     }
-#line 4417 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4416 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 274:
-#line 1361 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1360 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->current_file, compiler->current_line);
       SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, (yyvsp[-1].opval)->file, (yyvsp[0].opval)->line);
       (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-1].opval), (yyvsp[0].opval), op_operators);
     }
-#line 4427 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4426 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 275:
-#line 1367 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1366 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval));
     }
-#line 4436 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4435 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 276:
-#line 1372 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1371 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->current_file, compiler->current_line);
       SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, (yyvsp[-2].opval)->file, (yyvsp[-1].opval)->line);
       (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-2].opval), (yyvsp[0].opval), op_operators);
     }
-#line 4446 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4445 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 277:
-#line 1378 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1377 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-1].opval));
     }
-#line 4455 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4454 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 278:
-#line 1383 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1382 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->current_file, compiler->current_line);
       SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, (yyvsp[-2].opval)->file, (yyvsp[-1].opval)->line);
       (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-2].opval), (yyvsp[0].opval), op_operators);
     }
-#line 4465 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4464 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 279:
-#line 1389 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1388 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, compiler->current_file, compiler->current_line);
       SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "", (yyvsp[-3].opval)->file, (yyvsp[-3].opval)->line);
       (yyval.opval) = SPVM_OP_build_call_method(compiler, op_call_method, (yyvsp[-4].opval), op_method_name, (yyvsp[-1].opval));
     }
-#line 4475 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4474 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 280:
-#line 1397 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1396 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_element_access(compiler, op_array_access, (yyvsp[-4].opval), (yyvsp[-1].opval));
     }
-#line 4484 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4483 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 281:
-#line 1402 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1401 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_element_access(compiler, op_array_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
     }
-#line 4493 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4492 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 282:
-#line 1407 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1406 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_element_access(compiler, op_array_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
     }
-#line 4502 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4501 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 283:
-#line 1414 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1413 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_field_access(compiler, op_field_access, (yyvsp[-4].opval), (yyvsp[-1].opval));
     }
-#line 4511 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4510 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 284:
-#line 1419 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1418 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_field_access(compiler, op_field_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
     }
-#line 4520 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4519 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 285:
-#line 1424 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1423 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_array_access = (yyvsp[-3].opval);
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       (yyval.opval) = SPVM_OP_build_field_access(compiler, op_field_access, op_array_access, (yyvsp[-1].opval));
     }
-#line 4530 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4529 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 286:
-#line 1432 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1431 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       SPVM_OP_build_field_access(compiler, op_field_access, (yyvsp[-4].opval), (yyvsp[-1].opval));
       (yyval.opval) = SPVM_OP_build_weaken_field(compiler, (yyvsp[-5].opval), op_field_access);
     }
-#line 4540 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4539 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 287:
-#line 1440 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1439 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       SPVM_OP_build_field_access(compiler, op_field_access, (yyvsp[-4].opval), (yyvsp[-1].opval));
       (yyval.opval) = SPVM_OP_build_unweaken_field(compiler, (yyvsp[-5].opval), op_field_access);
     }
-#line 4550 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4549 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 288:
-#line 1448 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1447 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       SPVM_OP_build_field_access(compiler, op_field_access, (yyvsp[-4].opval), (yyvsp[-1].opval));
       (yyval.opval) = SPVM_OP_build_isweak_field(compiler, (yyvsp[-5].opval), op_field_access);
     }
-#line 4560 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4559 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
 
-#line 4564 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4563 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -4788,5 +4787,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1454 "yacc/spvm_yacc.y" /* yacc.c:1906  */
+#line 1453 "yacc/spvm_yacc.y" /* yacc.c:1906  */
 

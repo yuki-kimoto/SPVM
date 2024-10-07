@@ -32,7 +32,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> opt_classes classes class class_block opt_extends version_decl
   %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
-  %type <opval> method anon_method opt_args args arg use require class_alias our has has_for_anon_list has_for_anon interface allow
+  %type <opval> method anon_method opt_args args arg use require class_alias our has anon_method_fields anon_method_field interface allow
   %type <opval> opt_attributes attributes
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement foreach_statement
@@ -49,7 +49,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> new array_init
   %type <opval> type_check type_cast can
   %type <opval> call_method
-  %type <opval> element_access field_access
+  %type <opval> array_access field_access
   %type <opval> weaken_field unweaken_field isweak_field
   %type <opval> sequential
   %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -224,7 +224,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
 
   anon_method
     : opt_attributes METHOD ':' return_type '(' opt_args ')' block
-    | '[' has_for_anon_list ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
+    | '[' anon_method_fields ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
 
   opt_args
     : /* Empty */
@@ -239,12 +239,12 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : var ':' qualified_type opt_type_comment
     | var ':' qualified_type opt_type_comment ASSIGN operator
 
-  has_for_anon_list
-    : has_for_anon_list ',' has_for_anon
-    | has_for_anon_list ','
-    | has_for_anon
+  anon_method_fields
+    : anon_method_fields ',' anon_method_field
+    | anon_method_fields ','
+    | anon_method_field
 
-  has_for_anon
+  anon_method_field
     : HAS field_name ':' opt_attributes qualified_type opt_type_comment
     | HAS field_name ':' opt_attributes qualified_type opt_type_comment ASSIGN operator
     | var ':' opt_attributes qualified_type opt_type_comment
@@ -395,7 +395,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | BASIC_TYPE_ID type
     | can
     | array_init
-    | element_access
+    | array_access
     | field_access
     | isweak_field
     | call_method
@@ -524,15 +524,15 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | operator ARROW method_name
     | operator ARROW '(' opt_operators ')'
 
-  element_access
+  array_access
     : operator ARROW '[' operator ']'
-    | element_access '[' operator ']'
+    | array_access '[' operator ']'
     | field_access '[' operator ']'
 
   field_access
     : operator ARROW '{' field_name '}'
     | field_access '{' field_name '}'
-    | element_access '{' field_name '}'
+    | array_access '{' field_name '}'
 
   weaken_field
     : WEAKEN var ARROW '{' field_name '}'
