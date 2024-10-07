@@ -1617,18 +1617,18 @@ SPVM_OP* SPVM_OP_attach_anon_method_fields(SPVM_COMPILER* compiler, SPVM_OP* op_
           
           // my $foo = $self->{foo};
           
-          SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, var_name, op_list_statement->file, op_list_statement->last->line + 1);
+          SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, var_name, op_anon_method_field_var_decl_start->file, op_anon_method_field_var_decl_start->line);
           SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name_var);
-          SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
+          SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_anon_method_field_var_decl_start->file, op_anon_method_field_var_decl_start->line);
           op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, NULL, NULL);
           
-          SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", op_list_statement->file, op_list_statement->last->line + 1);
+          SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", op_anon_method_field_var_decl_start->file, op_anon_method_field_var_decl_start->line);
           SPVM_OP* op_var_self_invocant = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
-          SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field->name, op_list_statement->file, op_list_statement->last->line + 1);
-          SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_list_statement->file, op_list_statement->last->line + 1);
+          SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field->name, op_anon_method_field_var_decl_start->file, op_anon_method_field_var_decl_start->line);
+          SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_anon_method_field_var_decl_start->file, op_anon_method_field_var_decl_start->line);
           SPVM_OP_build_field_access(compiler, op_field_access, op_var_self_invocant, op_name_field_access);
           
-          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_list_statement->file, op_list_statement->last->line + 1);
+          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_anon_method_field_var_decl_start->file, op_anon_method_field_var_decl_start->line);
           SPVM_OP_build_assign(compiler, op_assign, op_var, op_field_access);
           
           assert(op_anon_method_field_var_decl_start);
