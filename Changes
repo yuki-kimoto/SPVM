@@ -2,6 +2,7 @@
   [Internal Changes]
     * Add get_version_string method to SPVM::Builder::Native::BasicType.
     * Add get_spvm_version_string method to SPVM::Builder::Native::Runtime module.
+    * Add dump_dependency method to SPVM::Builder::Exe module.
 0.990017 2023-10-07
   [Exception Message Changes]
     * Change an exception message.

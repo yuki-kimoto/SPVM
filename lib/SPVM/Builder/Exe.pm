@@ -1100,6 +1100,41 @@ EOS
   return $resource_info;
 }
 
+sub dump_dependency {
+  my ($class, $script_name) = @_;
+  
+  my $info = SPVM::Builder::Config::Info->new(script_name => $script_name);
+  
+  my $runtime = $info->runtime;
+  
+  my $class_names = $info->get_class_names;
+  
+  my $dependency_infos = [];
+  
+  my $spvm_version_string = $runtime->get_spvm_version_string;
+  
+  push @$dependency_infos, "SPVM $spvm_version_string";
+  
+  for my $class_name (sort @$class_names) {
+    
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $version_string = $basic_type->get_version_string;
+    
+    my $dependency_info = "$class_name";
+    
+    if (length $version_string) {
+      $dependency_info .= " $version_string";
+    }
+    
+    push @$dependency_infos, $dependency_info;
+  }
+  
+  my $dependency = join("\x0A", @$dependency_infos);
+  
+  return $dependency;
+}
+
 1;
 
 =head1 Name
