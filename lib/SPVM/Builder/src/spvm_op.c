@@ -1530,6 +1530,8 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
     
     SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_anon_method_field_var_decl_start);
     
+    method->op_anon_method_field_var_decl_start = op_anon_method_field_var_decl_start;
+    
     // Add variable declarations before the first of the statements
     for (int32_t i = method->args_length - 1; i >= 0; i--) {
       SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, i);
@@ -1582,6 +1584,19 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
   
   op_method->uv.method = method;
   
+  SPVM_OP_attach_anon_method_fields(compiler, op_method, op_anon_method_fields);
+  
+  return op_method;
+}
+
+SPVM_OP* SPVM_OP_attach_anon_method_fields(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_anon_method_fields) {
+  
+  SPVM_METHOD* method = op_method->uv.method;
+  
+  SPVM_OP* op_block = method->op_block;
+  
+  SPVM_OP* op_anon_method_field_var_decl_start = method->op_anon_method_field_var_decl_start;
+  
   // Fields of anon method
   if (op_anon_method_fields) {
     SPVM_OP* op_anon_method_field = op_anon_method_fields->first;
@@ -1625,7 +1640,6 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
     }
   }
   
-  return op_method;
 }
 
 SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_attributes, SPVM_OP* op_arg_default) {
