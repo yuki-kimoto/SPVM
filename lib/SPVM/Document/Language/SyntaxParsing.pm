@@ -32,7 +32,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> opt_classes classes class class_block opt_extends version_decl
   %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
-  %type <opval> method anon_method opt_args args arg use require class_alias our has has_for_anon_list has_for_anon interface allow
+  %type <opval> method anon_method opt_args args arg use require class_alias our has anon_method_field_definitions anon_method_field_definition interface allow
   %type <opval> opt_attributes attributes
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement foreach_statement
@@ -224,7 +224,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
 
   anon_method
     : opt_attributes METHOD ':' return_type '(' opt_args ')' block
-    | '[' has_for_anon_list ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
+    | '[' anon_method_field_definitions ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
 
   opt_args
     : /* Empty */
@@ -239,12 +239,12 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : var ':' qualified_type opt_type_comment
     | var ':' qualified_type opt_type_comment ASSIGN operator
 
-  has_for_anon_list
-    : has_for_anon_list ',' has_for_anon
-    | has_for_anon_list ','
-    | has_for_anon
+  anon_method_field_definitions
+    : anon_method_field_definitions ',' anon_method_field_definition
+    | anon_method_field_definitions ','
+    | anon_method_field_definition
 
-  has_for_anon
+  anon_method_field_definition
     : HAS field_name ':' opt_attributes qualified_type opt_type_comment
     | HAS field_name ':' opt_attributes qualified_type opt_type_comment ASSIGN operator
     | var ':' opt_attributes qualified_type opt_type_comment

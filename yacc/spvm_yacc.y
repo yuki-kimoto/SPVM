@@ -36,7 +36,7 @@
 %type <opval> opt_classes classes class class_block opt_extends version_decl
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
-%type <opval> method anon_method opt_args args arg use require class_alias our has has_for_anon_list has_for_anon interface allow
+%type <opval> method anon_method opt_args args arg use require class_alias our has anon_method_field_definitions anon_method_field_definition interface allow
 %type <opval> opt_attributes attributes
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement foreach_statement
@@ -483,7 +483,7 @@ anon_method
      {
        $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $8, NULL);
      }
-  | '[' has_for_anon_list ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
+  | '[' anon_method_field_definitions ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
        SPVM_OP* op_list_args;
        if ($2->id == SPVM_OP_C_ID_LIST) {
@@ -542,8 +542,8 @@ arg
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, $6);
     }
 
-has_for_anon_list
-  : has_for_anon_list ',' has_for_anon
+anon_method_field_definitions
+  : anon_method_field_definitions ',' anon_method_field_definition
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -557,10 +557,10 @@ has_for_anon_list
       
       $$ = op_list;
     }
-  | has_for_anon_list ','
-  | has_for_anon
+  | anon_method_field_definitions ','
+  | anon_method_field_definition
 
-has_for_anon
+anon_method_field_definition
   : HAS field_name ':' opt_attributes qualified_type opt_type_comment
     {
       $$ = SPVM_OP_build_anon_method_field_definition(compiler, $1, $2, $4, $5, NULL);
