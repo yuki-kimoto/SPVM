@@ -3104,7 +3104,7 @@ yyreduce:
   case 77:
 #line 459 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_field_definition(compiler, (yyvsp[-5].opval), (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-1].opval));
+      (yyval.opval) = SPVM_OP_build_field(compiler, (yyvsp[-5].opval), (yyvsp[-4].opval), (yyvsp[-2].opval), (yyvsp[-1].opval));
     }
 #line 3110 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;

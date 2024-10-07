@@ -1283,7 +1283,7 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
   return op_class_var;
 }
 
-SPVM_OP* SPVM_OP_build_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type) {
 
   // Create field information
   SPVM_FIELD* field = SPVM_FIELD_new(compiler);
@@ -1723,7 +1723,7 @@ SPVM_OP* SPVM_OP_build_anon_method_field_definition(SPVM_COMPILER* compiler, SPV
     is_decl_var_in_anon_method = 1;
   }
   
-  SPVM_OP* op_field_definition = SPVM_OP_build_field_definition(compiler, op_field, op_name_field, op_attributes, op_type);
+  SPVM_OP* op_field_definition = SPVM_OP_build_field(compiler, op_field, op_name_field, op_attributes, op_type);
   
   op_field_definition->uv.field->op_anon_method_field_default = op_default;
   
