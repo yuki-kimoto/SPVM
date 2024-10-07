@@ -1521,10 +1521,12 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
     }
   }
   
-  SPVM_OP* op_anon_method_field_var_decl_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_method->file, op_method->line);
+  SPVM_OP* op_anon_method_field_var_decl_start = NULL;
   if (op_block) {
     
     SPVM_OP* op_list_statement = op_block->first;
+    
+    op_anon_method_field_var_decl_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_list_statement->file, op_list_statement->last->line + 1);
     
     SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_anon_method_field_var_decl_start);
     
@@ -1572,7 +1574,25 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
       }
     }
     
-    if (op_anon_method_fields) {
+  }
+  
+  method->op_block = op_block;
+  
+  method->op_method = op_method;
+  
+  op_method->uv.method = method;
+  
+  // Fields of anon method
+  if (op_anon_method_fields) {
+    SPVM_OP* op_anon_method_field = op_anon_method_fields->first;
+    while ((op_anon_method_field = SPVM_OP_sibling(compiler, op_anon_method_field))) {
+      SPVM_LIST_push(method->anon_method_fields, op_anon_method_field->uv.field);
+    }
+    
+    // Declare local variable for fields in anon method.
+    if (op_block) {
+      SPVM_OP* op_list_statement = op_block->first;
+      
       SPVM_OP* op_anon_method_field = op_anon_method_fields->first;
       while ((op_anon_method_field = SPVM_OP_sibling(compiler, op_anon_method_field))) {
         SPVM_FIELD* field = op_anon_method_field->uv.field;
@@ -1598,25 +1618,10 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_list_statement->file, op_list_statement->last->line + 1);
           SPVM_OP_build_assign(compiler, op_assign, op_var, op_field_access);
           
+          assert(op_anon_method_field_var_decl_start);
           SPVM_OP_insert_child(compiler, op_list_statement, op_anon_method_field_var_decl_start, op_assign);
         }
       }
-    }
-    
-  }
-  
-  // Save block
-  method->op_block = op_block;
-  
-  method->op_method = op_method;
-  
-  op_method->uv.method = method;
-  
-  // Fields of anon method
-  if (op_anon_method_fields) {
-    SPVM_OP* op_anon_method_field = op_anon_method_fields->first;
-    while ((op_anon_method_field = SPVM_OP_sibling(compiler, op_anon_method_field))) {
-      SPVM_LIST_push(method->anon_method_fields, op_anon_method_field->uv.field);
     }
   }
   
