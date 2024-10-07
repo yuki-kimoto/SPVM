@@ -11,7 +11,9 @@
     * token names are changes in SPVM::Document::Language::SyntaxParsing
   [Bug Fix]
     * Fix a bug that anon method local variable declaration cause a leak of memory allocation.
-    
+      
+      #567
+      
 0.990016 2023-10-05
   [Internal Changes]
     * SPVM::Builder::Native::Compiler#compile and compile_anon_class methods throw an exception when a compliation failed.
