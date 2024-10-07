@@ -4,6 +4,9 @@
     * Add SPVM_OP_C_ID_INIT_BLOCK to spvm_op.h
     * Remove init_method argument of SPVM_OP_build_method_definition function.
     * has_for_anon is renamed to anon_method_field_definition, has_for_anon_list is renamed to anon_method_field_definition in spvm_yacc.y.
+    * SPVM_OP_build_class_var_definition is renamed to SPVM_OP_build_class_var.
+    * SPVM_OP_build_enumeration_definition is renamed to SPVM_OP_build_enumeration.
+    
 0.990016 2023-10-05
   [Internal Changes]
     * SPVM::Builder::Native::Compiler#compile and compile_anon_class methods throw an exception when a compliation failed.

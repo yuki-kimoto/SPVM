@@ -451,7 +451,7 @@ enumeration_item
 our
   : OUR VAR_NAME ':' opt_attributes qualified_type opt_type_comment ';'
     {
-      $$ = SPVM_OP_build_class_var_definition(compiler, $1, $2, $4, $5);
+      $$ = SPVM_OP_build_class_var(compiler, $1, $2, $4, $5);
     }
 
 has
