@@ -1470,7 +1470,7 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
     SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg_var_self, op_self_type, NULL, NULL);
     SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_self);
   }
-
+  
   // Add method arguments
   {
     int32_t found_optional_arg = 0;
@@ -1491,14 +1491,6 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
     }
     method->args_length = args_length;
     method->required_args_length = required_args_length;
-  }
-  
-  // Fields of anon method
-  if (op_anon_method_fields) {
-    SPVM_OP* op_anon_method_field = op_anon_method_fields->first;
-    while ((op_anon_method_field = SPVM_OP_sibling(compiler, op_anon_method_field))) {
-      SPVM_LIST_push(method->anon_method_fields, op_anon_method_field->uv.field);
-    }
   }
   
   // Variable declarations of arguments
@@ -1522,17 +1514,64 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
     if (method->is_class_method) {
       SPVM_COMPILER_error(compiler, "DESTROY method must be an instance method.\n  at %s line %d", op_method->file, op_method->line);
     }
-
+    
     // DESTROY doesn't have arguments without invocant
     if (method->args_length != 1) {
       SPVM_COMPILER_error(compiler, "DESTROY method cannnot have arguments.\n  at %s line %d", op_method->file, op_method->line);
     }
   }
   
+  SPVM_OP* op_anon_method_field_var_decl_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_method->file, op_method->line);
   if (op_block) {
-
+    
     SPVM_OP* op_list_statement = op_block->first;
-   
+    
+    SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_anon_method_field_var_decl_start);
+    
+    // Add variable declarations before the first of the statements
+    for (int32_t i = method->args_length - 1; i >= 0; i--) {
+      SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, i);
+      assert(arg_var_decl);
+      SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, arg_var_decl->var->name, arg_var_decl->op_var_decl->file, arg_var_decl->op_var_decl->line);
+      SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+      op_var->uv.var->var_decl = arg_var_decl;
+      op_var->uv.var->is_declaration = 1;
+      op_var->uv.var->var_decl = arg_var_decl;
+      
+      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
+    }
+    
+    // Add condition_flag variable to first of block
+    {
+      SPVM_OP* op_var = SPVM_OP_new_op_var_condition_flag(compiler, op_list_statement->file, op_list_statement->last->line + 1);
+      SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
+      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op_list_statement->file, op_list_statement->line);
+      op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
+      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
+    }
+    
+    // Add return statement after the last of the statements
+    {
+      SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_list_statement->file, op_list_statement->last->line + 1);
+      SPVM_TYPE* return_type = method->return_type;
+      if (SPVM_TYPE_is_void_type(compiler, return_type->basic_type->id, return_type->dimension, return_type->flag)) {
+        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
+      }
+      else {
+        // Return variable name
+        char* name = "$.return";
+        SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
+        op_name->uv.name = name;
+        SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
+        SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
+        SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, return_type->unresolved_basic_type_name, return_type->basic_type, return_type->dimension, return_type->flag, op_list_statement->file, op_list_statement->last->line + 1);
+        
+        op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
+        SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var);
+        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
+      }
+    }
+    
     if (op_anon_method_fields) {
       SPVM_OP* op_anon_method_field = op_anon_method_fields->first;
       while ((op_anon_method_field = SPVM_OP_sibling(compiler, op_anon_method_field))) {
@@ -1559,54 +1598,11 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_list_statement->file, op_list_statement->last->line + 1);
           SPVM_OP_build_assign(compiler, op_assign, op_var, op_field_access);
           
-          SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_assign);
+          SPVM_OP_insert_child(compiler, op_list_statement, op_anon_method_field_var_decl_start, op_assign);
         }
       }
     }
     
-    // Add variable declarations before the first of the statements
-    for (int32_t i = method->args_length - 1; i >= 0; i--) {
-      SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, i);
-      assert(arg_var_decl);
-      SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, arg_var_decl->var->name, arg_var_decl->op_var_decl->file, arg_var_decl->op_var_decl->line);
-      SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-      op_var->uv.var->var_decl = arg_var_decl;
-      op_var->uv.var->is_declaration = 1;
-      op_var->uv.var->var_decl = arg_var_decl;
-
-      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
-    }
-
-    // Add condition_flag variable to first of block
-    {
-      SPVM_OP* op_var = SPVM_OP_new_op_var_condition_flag(compiler, op_list_statement->file, op_list_statement->last->line + 1);
-      SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
-      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op_list_statement->file, op_list_statement->line);
-      op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
-      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
-    }
-
-    // Add return statement after the last of the statements
-    {
-      SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_list_statement->file, op_list_statement->last->line + 1);
-      SPVM_TYPE* return_type = method->return_type;
-      if (SPVM_TYPE_is_void_type(compiler, return_type->basic_type->id, return_type->dimension, return_type->flag)) {
-        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
-      }
-      else {
-        // Return variable name
-        char* name = "$.return";
-        SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
-        op_name->uv.name = name;
-        SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
-        SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
-        SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, return_type->unresolved_basic_type_name, return_type->basic_type, return_type->dimension, return_type->flag, op_list_statement->file, op_list_statement->last->line + 1);
-        
-        op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
-        SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var);
-        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
-      }
-    }
   }
   
   // Save block
@@ -1615,6 +1611,14 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
   method->op_method = op_method;
   
   op_method->uv.method = method;
+  
+  // Fields of anon method
+  if (op_anon_method_fields) {
+    SPVM_OP* op_anon_method_field = op_anon_method_fields->first;
+    while ((op_anon_method_field = SPVM_OP_sibling(compiler, op_anon_method_field))) {
+      SPVM_LIST_push(method->anon_method_fields, op_anon_method_field->uv.field);
+    }
+  }
   
   return op_method;
 }
