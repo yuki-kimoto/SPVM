@@ -1584,8 +1584,6 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   
   op_method->uv.method = method;
   
-  SPVM_OP_attach_anon_method_fields(compiler, op_method, op_anon_method_fields);
-  
   return op_method;
 }
 
