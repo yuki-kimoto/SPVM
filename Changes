@@ -1,4 +1,11 @@
 0.990017 2023-10-07
+  [Exception Message Changes]
+    * Change an exception message.
+      [Before]
+      $var variable is not found.
+      [After]
+      $var is not found.
+      
   [Internal Changes]
     * is_init member variable in spvm_method.h and spvm_runtime_method.h is renamed to is_init_method.
     * Add SPVM_OP_C_ID_INIT_BLOCK to spvm_op.h

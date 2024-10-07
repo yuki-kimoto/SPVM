@@ -3064,7 +3064,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 op_cur = op_class_var_access;
               }
               else {
-                SPVM_COMPILER_error(compiler, "%s variable is not found.\n  at %s line %d", var->name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "%s is not found.\n  at %s line %d", var->name, op_cur->file, op_cur->line);
                 return;
               }
             }
