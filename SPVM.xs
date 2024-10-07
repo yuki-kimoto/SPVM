@@ -5545,6 +5545,29 @@ get_anon_basic_type_names(...)
   XSRETURN(1);
 }
 
+SV*
+get_version_string(...)
+  PPCODE:
+{
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  const char* version_string = boot_env->api->basic_type->get_version_string(runtime, basic_type);
+  
+  SV* sv_version_string = sv_2mortal(newSVpv(version_string, 0));
+  
+  XPUSHs(sv_version_string);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Builder::Native::Method		PACKAGE = SPVM::Builder::Native::Method
 
 SV*
