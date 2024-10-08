@@ -1,6 +1,6 @@
 0.990018 2023-10-08
   [New Features]
-    * Add --resource-info option to spvmcc command.
+    * Add --dependency option to spvmcc command.
   [Internal Changes]
     * Add get_version_string method to SPVM::Builder::Native::BasicType.
     * Add get_spvm_version_string method to SPVM::Builder::Native::Runtime module.
