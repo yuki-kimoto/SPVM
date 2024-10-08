@@ -67,6 +67,7 @@ my $dev_null = File::Spec->devnull;
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --dependency-cpan t/04_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
+    like($output, qr|^SPVM [\.\d]+$|m);
     like($output, qr|^SPVM::TestCase::NativeAPI2 1\.002$|m);
     like($output, qr|^SPVM::TestCase::Precompile 2\.005$|m);
     like($output, qr|^SPVM::Byte$|m);
