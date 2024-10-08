@@ -1,4 +1,7 @@
 class TestCase::NativeAPI2 : precompile {
+  
+  version "1.002";
+  
   static method spvm_extension2 : int () {
     my $total = &mul(5, 3);
     

@@ -29,6 +29,7 @@ SPVM::Builder::Util::getopt
     push @argv, SPVM::Builder::Exe->parse_config_argv_option($opt_value);
   },
   'resource-info' => \my $show_resource_info,
+  'dependency' => \my $show_dependency,
 ;
 
 if ($help) {
@@ -54,6 +55,17 @@ if ($show_resource_info) {
   my $resource_info = SPVM::Builder::Exe->dump_resource_info($script_name);
   
   print $resource_info;
+  exit 0;
+}
+elsif ($show_dependency) {
+  
+  unless (defined $script_name) {
+    die "[spvmcc command]--dependency option needs <script_name>."
+  }
+  
+  my $dependency = SPVM::Builder::Exe->dump_dependency($script_name);
+  
+  print $dependency;
   exit 0;
 }
 
@@ -114,7 +126,8 @@ The spvmcc command generates an executable file from SPVM classes.
     --config-argv <arg>             A config argument
     --config-argv-option <arg pair> Key-value config arguments such as KEY=VALUE
     --optimize <level>              Optimization level such as O3, "-O0 -g"
-    --resource-info                 Show dependent resource information
+    --resource-info                 Show config files of dependent resources
+    --dependency                    Show dependent classes and their versions
 
 =head1 Details
 
@@ -330,7 +343,20 @@ Examples:
 
   --resource-info
 
-Shows dependent resource information.
+Shows all config files loading resources.
+
+=head2 --dependency
+
+  --dependency
+
+Shows all dependent classes and their versions.
+
+Output Example:
+
+  SPVM 1.001
+  SPVM::Sys 1.201
+  SPVM::Regex 0.980
+  Foo
 
 =head1 Copyright & License
 

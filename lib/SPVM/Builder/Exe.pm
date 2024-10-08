@@ -1111,10 +1111,6 @@ sub dump_dependency {
   
   my $dependency_infos = [];
   
-  my $spvm_version_string = $runtime->get_spvm_version_string;
-  
-  push @$dependency_infos, "SPVM $spvm_version_string";
-  
   for my $class_name (sort @$class_names) {
     
     my $basic_type = $runtime->get_basic_type_by_name($class_name);
@@ -1130,7 +1126,11 @@ sub dump_dependency {
     push @$dependency_infos, $dependency_info;
   }
   
-  my $dependency = join("\x0A", @$dependency_infos);
+  my $spvm_version_string = $runtime->get_spvm_version_string;
+  
+  unshift @$dependency_infos, "SPVM $spvm_version_string";
+  
+  my $dependency = join("\x0A", @$dependency_infos) . "\x0A";
   
   return $dependency;
 }
