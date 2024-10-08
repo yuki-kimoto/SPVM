@@ -1126,10 +1126,6 @@ sub dump_dependency {
     push @$dependency_infos, $dependency_info;
   }
   
-  my $spvm_version_string = $runtime->get_spvm_version_string;
-  
-  unshift @$dependency_infos, "SPVM $spvm_version_string";
-  
   my $dependency = join("\x0A", @$dependency_infos) . "\x0A";
   
   return $dependency;

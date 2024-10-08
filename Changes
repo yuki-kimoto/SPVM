@@ -1,6 +1,10 @@
 0.990019 2023-10-08
   [New Features]
     * Add --dependency-cpan option to spvmcc command.
+  [Incompatible Changes]
+    * spvmcc  --dependency option do not contains SPVM.
+  [Document Fix]
+    * Fix docs for spvmcc --dependency option.
 0.990018 2023-10-08
   [New Features]
     * Add --dependency option to spvmcc command.
