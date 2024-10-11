@@ -871,7 +871,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_method->return_type_flag = method->return_type->flag;
         runtime_method->is_native = method->is_native;
         runtime_method->is_precompile = method->is_precompile;
-        runtime_method->is_destructor = method->is_destructor;
+        runtime_method->is_destroy_method = method->is_destroy_method;
         runtime_method->is_required = method->is_required;
         runtime_method->is_enum = method->is_enum;
         
