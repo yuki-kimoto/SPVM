@@ -915,9 +915,9 @@ t/02_vm/lib/SPVM/TestCase/Operator/MethodChild.pm
 t/02_vm/lib/SPVM/TestCase/Operator/Modulo.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Move.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Multiply.spvm
+t/02_vm/lib/SPVM/TestCase/Operator/New.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/New/Array.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/NumericOperator.spvm
-t/02_vm/lib/SPVM/TestCase/Operator/Object.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/PACKAGE.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Print.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Ref.spvm

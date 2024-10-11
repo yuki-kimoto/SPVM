@@ -4,6 +4,9 @@ class TestCase::Destroy {
   
   use TestCase::Destructor;
   use Fn;
+  use TestCase::Minimal;
+  use TestCase::Destructor::InheritanceParent;
+  use TestCase::Destructor::InheritanceChild;
   
   static method destroy : int () {
     {
@@ -49,6 +52,21 @@ class TestCase::Destroy {
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+  
+  static method inheritance : int () {
+    
+    $TestCase::Destructor::InheritanceParent::FOO = 0;
+    
+    {
+      my $object = TestCase::Destructor::InheritanceChild->new;
+    }
+    
+    unless ($TestCase::Destructor::InheritanceParent::FOO == 1) {
+      return 0;
+    }
     
     return 1;
   }

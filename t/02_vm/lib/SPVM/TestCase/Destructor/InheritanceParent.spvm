@@ -1,0 +1,12 @@
+class TestCase::Destructor::InheritanceParent {
+  
+  our $FOO : public int;
+  
+  static method new : TestCase::Destructor::InheritanceParent () {
+    return new TestCase::Destructor::InheritanceParent;
+  }
+  
+  method DESTROY : void () {
+    $FOO = 1;
+  }
+}

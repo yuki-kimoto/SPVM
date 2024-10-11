@@ -209,6 +209,15 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
       }
     }
   }
+  
+  // Resolve DESTROY method
+  for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    
+    SPVM_METHOD* found_destroy_method = SPVM_CHECK_search_method(compiler, basic_type, "DESTROY");
+    
+    basic_type->destroy_method = found_destroy_method;
+  }
 }
 
 void SPVM_CHECK_check_class_vars(SPVM_COMPILER* compiler) {

@@ -16,6 +16,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 {
   ok(SPVM::TestCase::Destroy->destroy);
   ok(SPVM::TestCase::Destroy->destroy_exception_no_override);
+  ok(SPVM::TestCase::Destroy->inheritance);
 }
 
 # All object is freed

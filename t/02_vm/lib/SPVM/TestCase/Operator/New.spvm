@@ -1,4 +1,4 @@
-class TestCase::Operator::Object {
+class TestCase::Operator::New {
   use TestCase::Minimal;
   use TestCase::Simple;
   use Fn;

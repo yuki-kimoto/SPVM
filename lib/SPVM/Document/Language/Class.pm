@@ -1633,6 +1633,8 @@ So, the exception variable in the current runtime stack cannot be changed in a d
 
 See L<Garbage Collection|SPVM::Document::Language::GarbageCollection/"Garbage Collection"> about garbage collection.
 
+If the current class does not have C<DESTROY> method and its super class have C<DESTROY> method, the C<DESTROY> in its super class is called just before an object is destroyed.
+
 Compilation Errors:
 
 A destructor must be an L<instance method|/"Instance Method">. Otherwise, a compilation error occurs.

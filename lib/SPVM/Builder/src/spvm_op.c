@@ -981,10 +981,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         // Bind standard functions
         method->current_basic_type = type->basic_type;
         
-        if (method->is_destroy_method) {
-          basic_type->destroy_method = method;
-        }
-        
         if (method->is_init_method) {
           basic_type->init_method = method;
         }

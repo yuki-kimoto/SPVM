@@ -7,7 +7,7 @@ use warnings;
 use Test::More;
 
 use SPVM 'TestCase';
-use SPVM 'TestCase::Operator::Object';
+use SPVM 'TestCase::Operator::New';
 
 
 
@@ -38,7 +38,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # new operator
 {
-  ok(SPVM::TestCase::Operator::Object->new());
+  ok(SPVM::TestCase::Operator::New->new);
 }
 
 # All object is freed

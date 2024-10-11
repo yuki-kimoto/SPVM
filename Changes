@@ -1,4 +1,8 @@
 0.990019 2023-10-08
+  [Bug Fix]
+    * Fix a bug that child class does not call DESTROY method of its super class.
+
+0.990019 2023-10-08
   [New Features]
     * Add --dependency-cpan option to spvmcc command.
   [Incompatible Changes]
