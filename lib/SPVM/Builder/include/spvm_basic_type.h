@@ -41,7 +41,7 @@ struct spvm_basic_type {
   SPVM_LIST* use_basic_type_names;
   SPVM_HASH* alias_symtable;
   SPVM_METHOD* required_method;
-  SPVM_METHOD* destructor_method;
+  SPVM_METHOD* destroy_method;
   SPVM_METHOD* init_method;
   const char* parent_name;
   SPVM_BASIC_TYPE* parent;

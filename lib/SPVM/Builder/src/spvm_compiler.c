@@ -957,8 +957,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       runtime_basic_type->init_method = &runtime_basic_type->methods[basic_type->init_method->index];
     }
     
-    if (basic_type->destructor_method) {
-      runtime_basic_type->destructor_method = &runtime_basic_type->methods[basic_type->destructor_method->index];
+    if (basic_type->destroy_method) {
+      runtime_basic_type->destroy_method = &runtime_basic_type->methods[basic_type->destroy_method->index];
     }
     
     runtime_basic_type->current_runtime = runtime;

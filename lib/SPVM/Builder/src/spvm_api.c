@@ -4132,18 +4132,18 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
           SPVM_RUNTIME* runtime = env->runtime;
           
           // Call destructor
-          if (released_object_basic_type->destructor_method) {
+          if (released_object_basic_type->destroy_method) {
             
             // Save return value and exception variable
             SPVM_VALUE save_stack_ret = stack[0];
             void* save_stack_exception_var = stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval;
             stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = NULL;
             
-            SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, released_object_basic_type, released_object_basic_type->destructor_method->index);
+            SPVM_RUNTIME_METHOD* destroy_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, released_object_basic_type, released_object_basic_type->destroy_method->index);
             
             stack[0].oval = released_object;
             int32_t args_width = 1;
-            int32_t error_id = SPVM_API_call_method(env, stack, destructor_method, args_width);
+            int32_t error_id = SPVM_API_call_method(env, stack, destroy_method, args_width);
             
             // An exception thrown in a destructor is converted to a warning message
             if (error_id) {
