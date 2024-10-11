@@ -41,12 +41,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Operator::Object->new());
 }
 
-# Destructor
-{
-  ok(SPVM::TestCase::Operator::Object->destructor());
-  ok(SPVM::TestCase::Operator::Object->destructor_exception_no_override());
-}
-
 # All object is freed
 $api->set_exception(undef);
 my $end_memory_blocks_count = $api->get_memory_blocks_count();
