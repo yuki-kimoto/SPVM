@@ -4139,7 +4139,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             void* save_stack_exception_var = stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval;
             stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = NULL;
             
-            SPVM_RUNTIME_METHOD* destroy_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, released_object_basic_type, released_object_basic_type->destroy_method->index);
+            SPVM_RUNTIME_METHOD* destroy_method = released_object_basic_type->destroy_method;
             
             stack[0].oval = released_object;
             int32_t args_width = 1;
