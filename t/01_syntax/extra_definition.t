@@ -74,7 +74,7 @@ use Test::More;
         compile_not_ok($source);
       }
       {
-        my $source = ['class MyClass extends MyParentClass { has x : int; }', 'class MyParentClass { has x : int; }'];
+        my $source = ['class MyClass extends MyParentClass { has x : long; }', 'class MyParentClass { has x : int; }'];
         compile_not_ok($source);
       }
     }

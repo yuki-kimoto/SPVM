@@ -363,11 +363,15 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
         int32_t fields_length = fields->length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
-
+          
           SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_unmerged_field(compiler, basic_type->parent, field->name);
           if (found_field_in_super_class) {
-            SPVM_COMPILER_error(compiler, "%s field cannot be defined in %s class. This field is already defined in its super class.\n  at %s line %d", field->name, basic_type->name, field->op_field->file, field->op_field->line);
-            compile_error = 1;
+            
+            if (!SPVM_TYPE_equals(compiler, found_field_in_super_class->type->basic_type->id, found_field_in_super_class->type->dimension, found_field_in_super_class->type->flag, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
+              SPVM_COMPILER_error(compiler, "%s field cannot be defined in %s class. This field is already defined with a different type in the super class.\n  at %s line %d", field->name, basic_type->name, field->op_field->file, field->op_field->line);
+              compile_error = 1;
+            }
+            
             break;
           }
           

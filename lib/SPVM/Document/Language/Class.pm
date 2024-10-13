@@ -1192,6 +1192,8 @@ I<ATTRIBUTE > must be a L<field attribute|/"Field Attributes">. Otherwise, a com
 
 If two or more fields that has a same name are defined, a compilation error occurs.
 
+If the field is already defined with a different type in the super class, a compilation error occurs.
+
 Examples:
 
   class MyClass {
