@@ -1,3 +1,8 @@
+0.990021 2023-10-12
+  [Improvement]
+    
+    * Fix an exception message in Fn#repeat method.
+    
 0.990020 2023-10-12
   [Bug Fix]
     * Fix a bug that child class does not call DESTROY method of its super class.

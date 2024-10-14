@@ -624,7 +624,7 @@ class Fn {
     }
     
     unless ($count >= 0) {
-      die "The repeat count \$repeat must be greater than or equal to 0.";
+      die "The repeat count \$count must be a non-negative integer.";
     }
     
     my $buffer = StringBuffer->new;
@@ -635,7 +635,7 @@ class Fn {
     
     return $repeat_string;
   }
-
+  
   precompile static method replace_chars : void ($string : mutable string, $from_ch : int, $to_ch : int) {
     
     unless ($string) {

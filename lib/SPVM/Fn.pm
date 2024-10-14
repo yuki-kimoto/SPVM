@@ -674,9 +674,9 @@ Concatenates $string the number of times specified in $count and return it.
 
 Exceptions:
 
-$string must be defined. Otherwise an exception is thrown.
+The $string must be defined. Otherwise an exception is thrown.
 
-$repeat count must be greater than or equal to 0.
+The repeat count $count count be a non-negative integer. Otherwise an exception is thrown.
 
 Examples:
   
