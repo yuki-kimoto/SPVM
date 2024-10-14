@@ -6543,4 +6543,126 @@ class TestCase::Module::Array {
     return 1;
   }
   
+  static method repeat : int () {
+    
+    {
+      my $array = [1, 2];
+      
+      my $count = 2;
+      
+      my $ret = Array->repeat($array, $count);
+      
+      unless ($ret is_compile_type object) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [1, 2];
+      
+      my $count = 2;
+      
+      my $ret = Array->repeat($array, $count);
+      
+      unless ($ret is_type int[]) {
+        return 0;
+      }
+      
+      unless (Array->equals($ret, [1, 2, 1, 2])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = ["a", "b"];
+      
+      my $count = 2;
+      
+      my $ret = Array->repeat($array, $count);
+      
+      unless ($ret is_type string[]) {
+        return 0;
+      }
+      
+      my $shallow = 1;
+      unless (Array->equals($ret, [$array->[0], $array->[1], $array->[0], $array->[1]], $shallow)) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [1, 2];
+      
+      my $count = 0;
+      
+      my $ret = Array->repeat($array, $count);
+      
+      unless ($ret is_compile_type object) {
+        return 0;
+      }
+      
+      unless ($ret is_type int[]) {
+        return 0;
+      }
+      
+      unless (Array->equals($ret, new int[0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      
+      {
+        my $array = [1, 2];
+        
+        my $count = 2;
+        
+        eval { my $ret = Array->repeat($array, $count); }
+        
+        unless (!$@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = (object)undef;
+        
+        my $count = 2;
+        
+        eval { my $ret = Array->repeat($array, $count); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = Int->new(1);
+        
+        my $count = 2;
+        
+        eval { my $ret = Array->repeat($array, $count); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [1, 2];
+        
+        my $count = -1;
+        
+        eval { my $ret = Array->repeat($array, $count); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
 }

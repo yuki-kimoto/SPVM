@@ -1474,4 +1474,40 @@ class Array {
     }
   }
   
+  static method repeat : object ($array : object, $count : int) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless (Fn->is_array($array)) {
+      die "The type of the array \$array must be an array type.";
+    }
+    
+    unless ($count >= 0) {
+      die "The repeat count \$count must be a non-negative integer.";
+    }
+    
+    my $length = Fn->array_length($array);
+    
+    my $elem_size = Fn->get_elem_size($array);
+    
+    my $ret_length = $count * $length;
+    
+    my $ret_array = Array->new_proto_any($array, $ret_length);
+    
+    if (Fn->is_object_array($array)) {
+      for (my $i = 0; $i < $length; $i++) {
+        Array->memcpy_object_address((object[])$ret_array, $count * $i, (object[])$array, 0, $count);
+      }
+    }
+    else {
+      for (my $i = 0; $i < $length; $i++) {
+        Fn->memcpy($ret_array, $elem_size * $count * $i, $array, 0, $elem_size * $count);
+      }
+    }
+    
+    return $ret_array;
+  }
+  
 }

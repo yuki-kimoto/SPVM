@@ -1183,6 +1183,20 @@ $array must be defined. Otherwise an exception is thrown.
 
 The type of $array must be an object type, a numeric type or a multi-numeric type.
 
+=head2 repeat
+
+C<static method repeat : object ($array : obejct, $count : int);>
+
+Retruns a new array that repeats the array $array $count times.
+
+Exceptions:
+
+The array $array must be defined. Otherwise an exception is thrown.
+
+The type of the array $array must be an array type. Otherwise an exception is thrown.
+
+The repeat count $count must be a non-negative integer. Otherwise an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

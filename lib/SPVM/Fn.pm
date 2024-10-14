@@ -668,7 +668,7 @@ Examples:
 
 =head2 repeat
 
-C<static method repeat : double ($string : string, $count : int);>
+C<static method repeat : string ($string : string, $count : int);>
 
 Concatenates $string the number of times specified in $count and return it.
 
@@ -682,6 +682,10 @@ Examples:
   
   # "abcabcabc"
   my $repeat_string = Fn->repeat("abc", 3);
+
+See Also:
+
+See L<Array#repeat|SPVM::Array/"repeat"> method about repeating an array.
 
 =head2 replace_chars
 
