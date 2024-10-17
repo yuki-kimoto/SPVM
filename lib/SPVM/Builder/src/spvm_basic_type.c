@@ -225,7 +225,7 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t src_basic
   
   if (!(dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
     if (error_reason) {
-      snprintf(error_reason, 255, "The destination type %s must be an interface type.\n  at %s line %d", dist_basic_type->name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
+      snprintf(error_reason, SPVM_COMPILER_C_ERROR_REASON_SIZE, "The destination type %s must be an interface type.\n  at %s line %d", dist_basic_type->name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
     }
     return 0;
   }
@@ -241,14 +241,14 @@ int32_t SPVM_BASIC_TYPE_has_interface_common(SPVM_COMPILER* compiler, int32_t sr
   
   if (!(src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
     if (error_reason) {
-      snprintf(error_reason, 255, "The source type %s of the operand must be a class type or an interface type.\n  at %s line %d", src_basic_type->name, src_basic_type->op_class->file, src_basic_type->op_class->line);
+      snprintf(error_reason, SPVM_COMPILER_C_ERROR_REASON_SIZE, "The source type %s of the operand must be a class type or an interface type.\n  at %s line %d", src_basic_type->name, src_basic_type->op_class->file, src_basic_type->op_class->line);
     }
     return 0;
   }
   
   if (!(dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
     if (error_reason) {
-      snprintf(error_reason, 255, "The destination type %s must be an interface type.\n  at %s line %d", dist_basic_type->name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
+      snprintf(error_reason, SPVM_COMPILER_C_ERROR_REASON_SIZE, "The destination type %s must be an interface type.\n  at %s line %d", dist_basic_type->name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
     }
     return 0;
   }
@@ -292,7 +292,7 @@ int32_t SPVM_BASIC_TYPE_has_interface_common(SPVM_COMPILER* compiler, int32_t sr
       
       if (dist_method->is_required && !src_method) {
         if (error_reason) {
-          snprintf(error_reason, 255, "%s %s must define %s method because its interface method is defined as a required method in %s %s.\n  at %s line %d", src_basic_type->name, src_basic_type_category_name, dist_method->name, dist_basic_type->name, dist_basic_type_category_name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
+          snprintf(error_reason, SPVM_COMPILER_C_ERROR_REASON_SIZE, "%s %s must define %s method because its interface method is defined as a required method in %s %s.\n  at %s line %d", src_basic_type->name, src_basic_type_category_name, dist_method->name, dist_basic_type->name, dist_basic_type_category_name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
         }
         return 0;
       }

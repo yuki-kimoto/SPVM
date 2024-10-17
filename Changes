@@ -1,3 +1,9 @@
+0.990022 2023-10-17
+  [Bug Fix]
+    * Fix a bug that compilation error messages were cut off.
+    
+      https://github.com/yuki-kimoto/SPVM/issues/603
+    
 0.990021 2023-10-12
   [New Features]
     * Add Array#repeat method.

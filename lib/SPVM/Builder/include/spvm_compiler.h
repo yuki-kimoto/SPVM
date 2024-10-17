@@ -9,6 +9,10 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
+enum {
+  SPVM_COMPILER_C_ERROR_REASON_SIZE = 1024,
+};
+
 // Parser information
 struct spvm_compiler {
   // OPs
