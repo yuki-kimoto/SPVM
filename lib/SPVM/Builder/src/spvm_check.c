@@ -96,7 +96,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
     const char* parent_basic_type_name = basic_type->parent_name;
     if (parent_basic_type_name) {
       SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_basic_type_name, strlen(parent_basic_type_name));
-
+      
       if (!SPVM_BASIC_TYPE_is_class_type(compiler, parent_basic_type->id)) {
         SPVM_COMPILER_error(compiler, "The parant class must be a class type.\n  at %s line %d", basic_type->op_extends->file, basic_type->op_extends->line);
         return;
@@ -239,6 +239,13 @@ void SPVM_CHECK_check_class_vars(SPVM_COMPILER* compiler) {
         return;
       }
     }
+    
+    // Class variable
+    for (int32_t i = 0; i < basic_type->class_vars->length; i++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, i);
+      
+      class_var->index = i;
+    }
   }
 }
 
@@ -247,26 +254,6 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
     int32_t compile_error = 0;
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     const char* basic_type_name = basic_type->name;
-    
-    // Check class var
-    for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
-      SPVM_TYPE* class_var_type = class_var->type;
-      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
-      
-      // valut_t cannnot become class variable
-      if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable.\n  at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
-        return;
-      }
-    }
-    
-    // Class variable
-    for (int32_t i = 0; i < basic_type->class_vars->length; i++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, i);
-      
-      class_var->index = i;
-    }
     
     // Multi-numeric type limitation
     if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
