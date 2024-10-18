@@ -1,4 +1,4 @@
-class TestCase::Operator::Field {
+class TestCase::Operator::FieldAccess {
   use TestCase;
   use TestCase::Minimal;
   use TestCase::Simple;
@@ -15,7 +15,7 @@ class TestCase::Operator::Field {
   static method DOUBLE_PRECICE : double () { return 65536.5; }
   
   static method get_and_set_field_same_name_as_keyword : int () {
-    my $self = new TestCase::Operator::Field;
+    my $self = new TestCase::Operator::FieldAccess;
     $self->{next} = 1;
     
     unless ($self->{next} == 1) {
@@ -62,7 +62,7 @@ class TestCase::Operator::Field {
   }
   
   static method core_func_name_field_name : int () {
-    my $self = new TestCase::Operator::Field;
+    my $self = new TestCase::Operator::FieldAccess;
     $self->{INT32_MAX} = 1;
     
     unless ($self->{INT32_MAX} == 1) {
@@ -88,7 +88,7 @@ class TestCase::Operator::Field {
   }
 
   # object field set and get
-  static method object_field_set_and_get : int () {
+  static method object_field : int () {
     my $test_case =TestCase->new;
     
     $test_case->{x_byte} = (byte)Fn->INT8_MAX;
@@ -126,15 +126,15 @@ class TestCase::Operator::Field {
   }
 
   # object field set and get
-  static method object_field_set_and_get_again : int () {
+  static method object_field_again : int () {
     my $test_case =TestCase->new;
     
     $test_case->{x_byte} = (byte)Fn->INT8_MAX;
     $test_case->{x_short} = (short)Fn->INT16_MAX;
     $test_case->{x_int} = Fn->INT32_MAX;
     $test_case->{x_long} = Fn->INT64_MAX;
-    $test_case->{x_float} = TestCase::Operator::Field->FLOAT_PRECICE();
-    $test_case->{x_double} = TestCase::Operator::Field->DOUBLE_PRECICE();
+    $test_case->{x_float} = &FLOAT_PRECICE();
+    $test_case->{x_double} = &DOUBLE_PRECICE();
     my $minimal = TestCase::Minimal->new();
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
@@ -143,8 +143,8 @@ class TestCase::Operator::Field {
     $test_case->{x_short} = (short)Fn->INT16_MAX;
     $test_case->{x_int} = Fn->INT32_MAX;
     $test_case->{x_long} = Fn->INT64_MAX;
-    $test_case->{x_float} = TestCase::Operator::Field->FLOAT_PRECICE();
-    $test_case->{x_double} = TestCase::Operator::Field->DOUBLE_PRECICE();
+    $test_case->{x_float} = &FLOAT_PRECICE();
+    $test_case->{x_double} = &DOUBLE_PRECICE();
     $test_case->{minimal} = $minimal;
 
     unless ($test_case->{x_byte} == Fn->INT8_MAX) {
@@ -159,10 +159,10 @@ class TestCase::Operator::Field {
     unless ($test_case->{x_long} == Fn->INT64_MAX) {
       return 0;
     }
-    unless ($test_case->{x_float} == TestCase::Operator::Field->FLOAT_PRECICE()) {
+    unless ($test_case->{x_float} == &FLOAT_PRECICE()) {
       return 0;
     }
-    unless ($test_case->{x_double} == TestCase::Operator::Field->DOUBLE_PRECICE()) {
+    unless ($test_case->{x_double} == &DOUBLE_PRECICE()) {
       return 0;
     }
     unless ($test_case->{minimal}->{x} == 3) {
@@ -173,7 +173,7 @@ class TestCase::Operator::Field {
   }
   
   static method exception : int () {
-    my $self = (TestCase::Operator::Field)undef;
+    my $self = (TestCase::Operator::FieldAccess)undef;
     
     eval { $self->{x}; }
     
