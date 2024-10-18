@@ -758,10 +758,10 @@ t/02_vm/lib/SPVM/TestCase/Allow.spvm
 t/02_vm/lib/SPVM/TestCase/Allow/PrivateData.spvm
 t/02_vm/lib/SPVM/TestCase/Comment/LF.spvm
 t/02_vm/lib/SPVM/TestCase/Destroy.spvm
-t/02_vm/lib/SPVM/TestCase/Destructor.spvm
-t/02_vm/lib/SPVM/TestCase/Destructor/ExceptionNotOverride.spvm
-t/02_vm/lib/SPVM/TestCase/Destructor/InheritanceChild.spvm
-t/02_vm/lib/SPVM/TestCase/Destructor/InheritanceParent.spvm
+t/02_vm/lib/SPVM/TestCase/Destroy/Data/Basic.spvm
+t/02_vm/lib/SPVM/TestCase/Destroy/Data/ExceptionNotOverride.spvm
+t/02_vm/lib/SPVM/TestCase/Destroy/Data/InheritanceChild.spvm
+t/02_vm/lib/SPVM/TestCase/Destroy/Data/InheritanceParent.spvm
 t/02_vm/lib/SPVM/TestCase/Empty.spvm
 t/02_vm/lib/SPVM/TestCase/Enum.spvm
 t/02_vm/lib/SPVM/TestCase/Enum/Data1.spvm

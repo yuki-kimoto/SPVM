@@ -1,0 +1,7 @@
+class TestCase::Destroy::Data::InheritanceChild extends TestCase::Destroy::Data::InheritanceParent {
+  
+  static method new : TestCase::Destroy::Data::InheritanceChild () {
+    return new TestCase::Destroy::Data::InheritanceChild;
+  }
+  
+}

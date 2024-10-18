@@ -1,7 +1,0 @@
-class TestCase::Destructor::InheritanceChild extends TestCase::Destructor::InheritanceParent {
-  
-  static method new : TestCase::Destructor::InheritanceChild () {
-    return new TestCase::Destructor::InheritanceChild;
-  }
-  
-}

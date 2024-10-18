@@ -3,7 +3,6 @@ class TestCase::Operator::FieldAccess {
   use TestCase::Minimal;
   use TestCase::Simple;
   
-  use TestCase::Destructor;
   use Fn;
   use Array;
   

@@ -1,12 +1,12 @@
 class TestCase::Destroy {
   use TestCase::Minimal;
-  use TestCase::Destructor::ExceptionNotOverride;
   
-  use TestCase::Destructor;
   use Fn;
   use TestCase::Minimal;
-  use TestCase::Destructor::InheritanceParent;
-  use TestCase::Destructor::InheritanceChild;
+  use TestCase::Destroy::Data::Basic;
+  use TestCase::Destroy::Data::InheritanceParent;
+  use TestCase::Destroy::Data::InheritanceChild;
+  use TestCase::Destroy::Data::ExceptionNotOverride;
   
   static method destroy : int () {
     {
@@ -25,7 +25,7 @@ class TestCase::Destroy {
     
     # Call DESTROY
     {
-      my $object = TestCase::Destructor->new;
+      my $object = TestCase::Destroy::Data::Basic->new;
       $object->DESTROY;
       unless ($object->{y} == 5) {
         return 0;
@@ -36,14 +36,14 @@ class TestCase::Destroy {
   }
   
   static method destroy_call : int ($minimal: TestCase::Minimal) {
-    my $dest = TestCase::Destructor->new();
+    my $dest = TestCase::Destroy::Data::Basic->new();
     $dest->{minimal} = $minimal;
     
     return 5;
   }
   
   static method destroy_exception_no_override : int () {
-    my $enp = TestCase::Destructor::ExceptionNotOverride->new;
+    my $enp = TestCase::Destroy::Data::ExceptionNotOverride->new;
     
     eval { $enp->throw_exception; };
     
@@ -58,13 +58,13 @@ class TestCase::Destroy {
   
   static method inheritance : int () {
     
-    $TestCase::Destructor::InheritanceParent::FOO = 0;
+    $TestCase::Destroy::Data::InheritanceParent::FOO = 0;
     
     {
-      my $object = TestCase::Destructor::InheritanceChild->new;
+      my $object = TestCase::Destroy::Data::InheritanceChild->new;
     }
     
-    unless ($TestCase::Destructor::InheritanceParent::FOO == 1) {
+    unless ($TestCase::Destroy::Data::InheritanceParent::FOO == 1) {
       return 0;
     }
     
