@@ -71,7 +71,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "An array access failed. The array must be defined.",
   "An array access failed. The index is out of range.",
   "An array setting failed. The element does not satisfy type assignability.",
-  "An array setting failed. The invocant must be defined.",
+  "An field access failed. The invocant must be defined.",
   "An unboxing conversion failed. The operand must defined.",
   "An unboxing conversion failed. The destination type must be a numeric object type corresponding to the source type of the operand.",
   "The weaken operator failed. The memory allocation for the weaken back reference failed.",

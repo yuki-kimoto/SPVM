@@ -1,3 +1,10 @@
+0.990023 2023-10-18
+  [Exception Message Fix]
+    * Fix an exception message "An array setting failed. The invocant must be defined." on a field.
+      
+      [After]
+      An field access failed. The invocant must be defined.
+
 0.990022 2023-10-17
   [Bug Fix]
     * Fix a bug that compilation error messages were cut off.

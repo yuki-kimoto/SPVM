@@ -9,10 +9,11 @@ class TestCase::Operator::Field {
   
   has INT32_MAX : int;
   has next : int;
-
+  has x : int;
+  
   static method FLOAT_PRECICE : float () { return 16384.5f; }
   static method DOUBLE_PRECICE : double () { return 65536.5; }
-
+  
   static method get_and_set_field_same_name_as_keyword : int () {
     my $self = new TestCase::Operator::Field;
     $self->{next} = 1;
@@ -170,4 +171,17 @@ class TestCase::Operator::Field {
     
     return 1;
   }
+  
+  static method exception : int () {
+    my $self = (TestCase::Operator::Field)undef;
+    
+    eval { $self->{x}; }
+    
+    unless (Fn->contains($@, "An field access failed. The invocant must be defined.")) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
 }

@@ -36,6 +36,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Operator::Field->object_field_set_and_get());
   ok(SPVM::TestCase::Operator::Field->object_field_set_and_get_again());
   ok(SPVM::TestCase::Operator::Field->object_field_initialized_zero());
+  ok(SPVM::TestCase::Operator::Field->exception());
 }
 
 # All object is freed
