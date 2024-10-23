@@ -24,7 +24,11 @@
     
     * Change a token name in SPVM::Document::Language::SyntaxParsing.
     * Improve docs for INIT statement.
-    
+  [Bug Fix]
+    * Fix a warning related to inheritance problem in exchange API.
+      
+      https://github.com/yuki-kimoto/SPVM/issues/606
+      
 0.990023 2023-10-18
   [Exception Message Fix]
     * Fix an exception message "An array setting failed. The invocant must be defined." on a field.
