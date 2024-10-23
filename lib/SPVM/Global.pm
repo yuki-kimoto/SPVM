@@ -228,7 +228,7 @@ sub bind_to_perl {
     push @isa, 'SPVM::BlessedObject::Class';
     my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
     
-    my $code = "package $perl_class_name; $isa";
+    my $code = "package $perl_class_name; $isa sub import {}";
     eval $code;
     
     if (my $error = $@) {

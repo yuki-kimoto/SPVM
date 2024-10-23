@@ -744,6 +744,7 @@ t/02_vm/99_extra/examples.t
 t/02_vm/99_extra/issue_507.t
 t/02_vm/99_extra/issue_515.t
 t/02_vm/99_extra/issue_567.t
+t/02_vm/99_extra/issue_606.t
 t/02_vm/99_extra/issues.t
 t/02_vm/99_extra/version.t
 t/02_vm/lib/SPVM/4foo.spvm
