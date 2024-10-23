@@ -177,6 +177,19 @@ use Test::More;
   
 }
 
+# Multi-Numerci Type Definition
+{
+  {
+    my $source = 'class MyClass_1i : mulnum_t { INIT { } has x : int; }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass_1i { INIT { } INIT { } has x : int; }';
+    compile_ok($source);
+  }
+}
+
 # Pointer Class
 {
   {
