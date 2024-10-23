@@ -23,6 +23,7 @@
   [Document Changes]
     
     * Change a token name in SPVM::Document::Language::SyntaxParsing.
+    * Improve docs for INIT statement.
     
 0.990023 2023-10-18
   [Exception Message Fix]
