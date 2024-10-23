@@ -868,32 +868,26 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   // INIT statements
   if (SPVM_TYPE_is_user_defined_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-    // Add an default INIT method
-    if (type->basic_type->init_statements->length == 0) {
-      SPVM_OP* op_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INIT, op_class->file, op_class->line);
+    
+    SPVM_OP* op_merged_block = SPVM_OP_new_op_block(compiler, op_class->file, op_class->line);
+    op_merged_block->uv.block->id = SPVM_BLOCK_C_ID_INIT_BLOCK;
+    
+    SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_class->file, op_class->line);
+    SPVM_OP_insert_child(compiler, op_merged_block, op_merged_block->last, op_list_statements);
+    
+    for (int32_t i = 0; i < type->basic_type->init_statements->length; i++) {
+      SPVM_OP* op_init = SPVM_LIST_get(type->basic_type->init_statements, i);
       
-      // Statements
-      SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_class->file, op_class->line);
+      SPVM_OP* op_block = op_init->first;
       
-      // Block
-      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_class->file, op_class->line);
-      SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
+      SPVM_OP_cut_op(compiler, op_init->first);
       
-      SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_block);
-      
-      SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
+      SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_block);
     }
-    else if (type->basic_type->init_statements->length = 1) {
-      SPVM_OP* op_init = SPVM_LIST_get(type->basic_type->init_statements, 0);
-      
-      SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_init->first);
-      
-      SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
-    }
-    else {
-      spvm_warn("%d", type->basic_type->init_statements->length);
-      assert(0);
-    }
+    
+    SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, NULL, op_merged_block);
+    
+    SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
   }
   
   // Method declarations
@@ -1728,17 +1722,15 @@ SPVM_OP* SPVM_OP_build_anon_method_field(SPVM_COMPILER* compiler, SPVM_OP* op_fi
 
 SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block) {
     
-  SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_init->file, op_init->line);
+  SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_block->file, op_block->line);
   SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, "INIT", strlen("INIT"));
   const char* method_name = method_name_string->value;
-  SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "INIT", op_init->file, op_init->line);
-  SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, op_init->file, op_init->line);
+  SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
+  SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, op_block->file, op_block->line);
   
-  SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, op_init->file, op_init->line);
-  SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_init->file, op_init->line);
+  SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
+  SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_block->file, op_block->line);
   SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
-  
-  op_block->uv.block->id = SPVM_BLOCK_C_ID_INIT_BLOCK;
   
   SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, op_block);
   

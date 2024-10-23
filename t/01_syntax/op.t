@@ -90,6 +90,18 @@ use Test::More;
   }
 }
 
+# Class Definition
+{
+  {
+    my $source = 'class MyClass { INIT { } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { INIT { } INIT { } }';
+    compile_ok($source);
+  }
+}
 
 # Interface Definition
 {
@@ -140,6 +152,11 @@ use Test::More;
   
   {
     my $source = 'class MyClass : interface_t { INIT { } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass : interface_t { INIT { } INIT { } }';
     compile_ok($source);
   }
   
