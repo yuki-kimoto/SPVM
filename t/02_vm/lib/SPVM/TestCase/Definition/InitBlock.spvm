@@ -1,4 +1,4 @@
-class TestCase::Statement::TypeDefaultValueStatement {
+class TestCase::Definition::InitBlock {
   use TestCase::Empty;
   
   our $FOO : int;
