@@ -770,7 +770,6 @@ t/02_vm/lib/SPVM/TestCase/Exception.spvm
 t/02_vm/lib/SPVM/TestCase/ExchangeAPI.spvm
 t/02_vm/lib/SPVM/TestCase/FatCamma.spvm
 t/02_vm/lib/SPVM/TestCase/Inheritance.spvm
-t/02_vm/lib/SPVM/TestCase/InitStatement.spvm
 t/02_vm/lib/SPVM/TestCase/InlineExpansion.spvm
 t/02_vm/lib/SPVM/TestCase/Interface.spvm
 t/02_vm/lib/SPVM/TestCase/Interface/NoRequiredMethod.spvm
