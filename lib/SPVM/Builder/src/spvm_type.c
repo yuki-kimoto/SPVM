@@ -476,6 +476,16 @@ int32_t SPVM_TYPE_is_mulnum_array_type(SPVM_COMPILER* compiler, int32_t basic_ty
   return is_mulnum_array_type;
 }
 
+int32_t SPVM_TYPE_is_user_defined_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  
+  int32_t is_user_defined_type
+    =  SPVM_TYPE_is_class_type(compiler, basic_type_id, dimension, flag)
+    || SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)
+    || SPVM_TYPE_is_mulnum_type(compiler, basic_type_id, dimension, flag);
+  
+  return is_user_defined_type;
+}
+
 int32_t SPVM_TYPE_get_type_name_length(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
   assert(basic_type);

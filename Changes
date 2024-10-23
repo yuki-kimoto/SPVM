@@ -3,6 +3,7 @@
     * Add SPVM_BLOCK_C_ID_INIT_BLOCK to spvm_block.h.
     * Remove SPVM_OP_C_ID_INIT_BLOCK from spvm_op.h.
     * Add init_statements member variable to spvm_basic_type.h.
+    * Add SPVM_TYPE_is_user_defined_type.
   [Test Improvement]
     * Add tests for INIT block.
   [Document Changes]
