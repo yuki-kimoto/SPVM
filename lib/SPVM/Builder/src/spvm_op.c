@@ -249,7 +249,6 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "DEREFERENCE",
     "EVAL_ERROR_ID",
     "SEQUENCE",
-    "INIT_BLOCK",
   };
   
   return id_names;
@@ -1370,19 +1369,18 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_COMPILER_error(compiler, "The method name \"%s\" cannnot contain \"::\".\n  at %s line %d", method_name, op_name_method->file, op_name_method->line);
   }
   
-  // Block is method block
-  if (op_block) {
-    op_block->uv.block->id = SPVM_BLOCK_C_ID_METHOD;
-  }
-  
   // Create method information
   method->op_name = op_name_method;
   
   method->name = method->op_name->uv.name;
   
-  if (op_block && op_block->id == SPVM_OP_C_ID_INIT_BLOCK) {
+  if (op_block && op_block->uv.block->id == SPVM_BLOCK_C_ID_INIT_BLOCK) {
     method->is_init_method = 1;
-    op_block->id = SPVM_OP_C_ID_BLOCK;
+  }
+  
+  // Block is method block
+  if (op_block) {
+    op_block->uv.block->id = SPVM_BLOCK_C_ID_METHOD;
   }
   
   if (!method->is_init_method && strcmp(method_name, "INIT") == 0) {
@@ -1738,9 +1736,8 @@ SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPV
   SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_init->file, op_init->line);
   SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
   
+  op_block->uv.block->id = SPVM_BLOCK_C_ID_INIT_BLOCK;
   
-  
-  op_block->id = SPVM_OP_C_ID_INIT_BLOCK;
   SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, op_block);
   
   return op_method;

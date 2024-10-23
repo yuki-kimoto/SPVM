@@ -1,6 +1,7 @@
 0.990024 2023-10-23
   [Internal Changes]
     * Add SPVM_BLOCK_C_ID_INIT_BLOCK to spvm_block.h.
+    * Remove SPVM_OP_C_ID_INIT_BLOCK from spvm_op.h.
   [Test Improvement]
     * Add tests for INIT block.
     
