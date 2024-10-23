@@ -804,10 +804,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_INIT) {
         SPVM_OP* op_init = op_decl;
         
-        SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_init->first);
-        
-        SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
-        
         SPVM_LIST_push(type->basic_type->init_statements, op_init);
       }
       else {
@@ -872,11 +868,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   // INIT statements
   {
-    // Check INIT block existance
-    int32_t has_init_statement = type->basic_type->init_statements->length > 0;
-    
-    // Add an default INIT block
-    if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS && !has_init_statement) {
+    // Add an default INIT method
+    if (type->basic_type->init_statements->length == 0) {
       SPVM_OP* op_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INIT, op_class->file, op_class->line);
       
       // Statements
@@ -889,6 +882,17 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_block);
       
       SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
+    }
+    else if (type->basic_type->init_statements->length = 1) {
+      SPVM_OP* op_init = SPVM_LIST_get(type->basic_type->init_statements, 0);
+      
+      SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_init->first);
+      
+      SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
+    }
+    else {
+      spvm_warn("%d", type->basic_type->init_statements->length);
+      assert(0);
     }
   }
   
