@@ -867,7 +867,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
   
   // INIT statements
-  {
+  if (SPVM_TYPE_is_user_defined_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
     // Add an default INIT method
     if (type->basic_type->init_statements->length == 0) {
       SPVM_OP* op_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INIT, op_class->file, op_class->line);
