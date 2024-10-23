@@ -1,5 +1,5 @@
 class TestCase::Definition::InitStatement {
-  use TestCase::Empty;
+  use TestCase::Definition::InitStatement::Data;
   
   our $FOO : int;
   
@@ -10,7 +10,6 @@ class TestCase::Definition::InitStatement {
   INIT {
     # Call a default INIT block
     Int->INIT;
-    TestCase::Empty->INIT;
     
     $FOO = 1;
     
@@ -34,6 +33,10 @@ class TestCase::Definition::InitStatement {
     }
     
     unless ($BAZ == 2) {
+      return 0;
+    }
+    
+    unless ($TestCase::Definition::InitStatement::Data::FOO == 1) {
       return 0;
     }
     

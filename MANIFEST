@@ -759,6 +759,7 @@ t/02_vm/lib/SPVM/TestCase/Allow.spvm
 t/02_vm/lib/SPVM/TestCase/Allow/PrivateData.spvm
 t/02_vm/lib/SPVM/TestCase/Comment/LF.spvm
 t/02_vm/lib/SPVM/TestCase/Definition/InitStatement.spvm
+t/02_vm/lib/SPVM/TestCase/Definition/InitStatement/Data.spvm
 t/02_vm/lib/SPVM/TestCase/Destroy.spvm
 t/02_vm/lib/SPVM/TestCase/Destroy/Data/Basic.spvm
 t/02_vm/lib/SPVM/TestCase/Destroy/Data/ExceptionNotOverride.spvm

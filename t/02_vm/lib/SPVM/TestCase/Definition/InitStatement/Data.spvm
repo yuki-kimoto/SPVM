@@ -1,0 +1,9 @@
+class TestCase::Definition::InitStatement::Data {
+  use TestCase::Empty;
+  
+  our $FOO : public int;
+  
+  INIT {
+    $FOO = 1;
+  }
+}
