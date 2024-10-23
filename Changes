@@ -4,6 +4,9 @@
     * Remove SPVM_OP_C_ID_INIT_BLOCK from spvm_op.h.
   [Test Improvement]
     * Add tests for INIT block.
+  [Document Changes]
+    
+    * Change a token name in SPVM::Document::Language::SyntaxParsing.
     
 0.990023 2023-10-18
   [Exception Message Fix]

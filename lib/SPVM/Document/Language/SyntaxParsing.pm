@@ -37,7 +37,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement foreach_statement
   %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
-  %type <opval> block eval_block init_block switch_block if_require_statement
+  %type <opval> block eval_block init_statement switch_block if_require_statement
   %type <opval> die
   %type <opval> var_decl var
   %type <opval> operator opt_operators operators opt_operator
@@ -163,13 +163,13 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | class_alias
     | allow
     | interface
-    | init_block
+    | init_statement
     | enumeration
     | our
     | has ';'
     | method
 
-  init_block
+  init_statement
     : INIT block
 
   version_decl

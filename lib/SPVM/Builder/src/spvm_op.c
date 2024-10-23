@@ -799,15 +799,16 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_LIST_push(type->basic_type->unmerged_fields, anon_method_field);
           anon_method_field->is_anon_method_field = 1;
         }
-        
-        // INIT block
-        if (op_decl->uv.method->is_init_method) {
-          basic_type->has_init_block = 1;
-        }
       }
-      // Method definition
+      // INIT statement
       else if (op_decl->id == SPVM_OP_C_ID_INIT) {
-        spvm_warn("");
+        SPVM_OP* op_init = op_decl;
+        
+        SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_init->first);
+        
+        SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
+        
+        basic_type->has_init_block = 1;
       }
       else {
         assert(0);
@@ -1749,6 +1750,8 @@ SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPV
 
 SPVM_OP* SPVM_OP_build_init_statement(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block) {
     
+  SPVM_OP_insert_child(compiler, op_init, op_init->first, op_block);
+  
   op_block->uv.block->id = SPVM_BLOCK_C_ID_INIT_BLOCK;
   
   return op_init;
