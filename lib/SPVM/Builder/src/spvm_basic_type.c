@@ -98,7 +98,7 @@ SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
   
   basic_type->use_basic_type_names = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   
-  basic_type->init_statements = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
+  basic_type->op_inits = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   
   return basic_type;
 }

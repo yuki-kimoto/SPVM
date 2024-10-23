@@ -804,7 +804,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_INIT) {
         SPVM_OP* op_init = op_decl;
         
-        SPVM_LIST_push(type->basic_type->init_statements, op_init);
+        SPVM_LIST_push(type->basic_type->op_inits, op_init);
       }
       else {
         assert(0);
@@ -875,8 +875,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_class->file, op_class->line);
     SPVM_OP_insert_child(compiler, op_merged_block, op_merged_block->last, op_list_statements);
     
-    for (int32_t i = 0; i < type->basic_type->init_statements->length; i++) {
-      SPVM_OP* op_init = SPVM_LIST_get(type->basic_type->init_statements, i);
+    for (int32_t i = 0; i < type->basic_type->op_inits->length; i++) {
+      SPVM_OP* op_init = SPVM_LIST_get(type->basic_type->op_inits, i);
       
       SPVM_OP* op_block = op_init->first;
       

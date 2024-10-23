@@ -43,7 +43,7 @@ struct spvm_basic_type {
   SPVM_METHOD* required_method;
   SPVM_METHOD* destroy_method;
   SPVM_METHOD* init_method;
-  SPVM_LIST* init_statements;
+  SPVM_LIST* op_inits;
   const char* parent_name;
   SPVM_BASIC_TYPE* parent;
   SPVM_BASIC_TYPE* outmost;
