@@ -4318,14 +4318,14 @@ int32_t SPVM_CHECK_get_typed_var_index(SPVM_COMPILER* compiler, SPVM_LIST* runti
   
   SPVM_TYPE* var_decl_type = var_decl->type;
 
-  int32_t var_width = SPVM_TYPE_get_width(compiler, var_decl_type->basic_type->id, var_decl_type->dimension, var_decl_type->flag);
+  int32_t var_type_width = SPVM_TYPE_get_type_width(compiler, var_decl_type->basic_type->id, var_decl_type->dimension, var_decl_type->flag);
   
   // Search free memory
   int32_t found = 0;
   for (int32_t typed_var_index = 0; typed_var_index < runtime_vars->length; typed_var_index++) {
-    if (typed_var_index + var_width <= runtime_vars->length) {
+    if (typed_var_index + var_type_width <= runtime_vars->length) {
       int32_t is_used = 0;
-      for (int32_t i = 0; i < var_width; i++) {
+      for (int32_t i = 0; i < var_type_width; i++) {
         int32_t var_decl_id = (intptr_t)SPVM_LIST_get(runtime_vars, typed_var_index + i);
         if (var_decl_id >= 0) {
           is_used = 1;
@@ -4335,7 +4335,7 @@ int32_t SPVM_CHECK_get_typed_var_index(SPVM_COMPILER* compiler, SPVM_LIST* runti
       if (!is_used) {
         found = 1;
         found_typed_var_index = typed_var_index;
-        for (int32_t i = 0; i < var_width; i++) {
+        for (int32_t i = 0; i < var_type_width; i++) {
           runtime_vars->values[typed_var_index + i] = (void*)(intptr_t)var_decl->index;
         }
         break;
@@ -4350,7 +4350,7 @@ int32_t SPVM_CHECK_get_typed_var_index(SPVM_COMPILER* compiler, SPVM_LIST* runti
   // Add stack
   if (!found) {
     found_typed_var_index = runtime_vars->length;
-    for (int32_t i = 0; i < var_width; i++) {
+    for (int32_t i = 0; i < var_type_width; i++) {
       SPVM_LIST_push(runtime_vars, (void*)(intptr_t)var_decl->index);
     }
   }
