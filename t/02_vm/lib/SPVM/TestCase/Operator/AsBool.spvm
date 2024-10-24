@@ -164,6 +164,25 @@ class TestCase::Operator::AsBool {
       }
     }
     
+    # Bool
+    {
+      {
+        my $bool = as_bool true;
+        
+        unless ($bool == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $bool = as_bool false;
+        
+        unless ($bool == 0) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   
