@@ -149,12 +149,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
   # a <=> b
   {
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_cmp_byte);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_cmp_short);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_cmp_int);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_cmp_long);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_cmp_float);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_cmp_double);
+    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_cmp);
   }
 
   # String comparison operator
