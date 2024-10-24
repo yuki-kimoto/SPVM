@@ -34,7 +34,7 @@ If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is an ob
 
 C<int32_t (*is_any_object_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
-If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is the any object type C<objct>, returns 1, otherwise returns 0.
+If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is the any object type C<object>, returns 1, otherwise returns 0.
 
 =head2 is_object_array_type
 
@@ -46,7 +46,13 @@ If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is an ob
 
 C<int32_t (*is_any_object_array_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
-If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is the any object array type C<objct[]>, returns 1, otherwise returns 0.
+If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is any object array type C<object[]>, returns 1, otherwise returns 0.
+
+=head2 is_numeric_type
+
+C<int32_t (*is_numeric_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
+
+If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is a numeric type, returns 1, otherwise returns 0.
 
 =head1 Native API IDs
 
@@ -56,6 +62,7 @@ If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is the a
   3 is_any_object_type
   4 is_object_array_type
   5 is_any_object_array_type
+  6 is_numeric_type
 
 =head1 See Also
 

@@ -3,6 +3,7 @@
     * Add tests for NaN comparison and NaN condition evaluation.
   [New Features]
     * Add as_bool operator.
+    * Add is_numeric_type type native API.
   [Internal Changes]
     * SPVM_OP_C_ID_BOOL is renamed to SPVM_OP_C_ID_CONDITION_EVALUATION.
   [Exception Message Improvement]

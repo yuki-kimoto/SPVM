@@ -23,4 +23,6 @@ int32_t SPVM_API_TYPE_is_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_B
 
 int32_t SPVM_API_TYPE_is_any_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag);
 
+int32_t SPVM_API_TYPE_is_numeric_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag);
+
 #endif

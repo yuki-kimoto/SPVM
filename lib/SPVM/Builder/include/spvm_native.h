@@ -510,6 +510,7 @@ struct spvm_api_type {
   int32_t (*is_any_object_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t type_flag);
   int32_t (*is_object_array_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t type_flag);
   int32_t (*is_any_object_array_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t type_flag);
+  int32_t (*is_numeric_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t type_flag);
 };
 
 enum {

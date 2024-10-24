@@ -533,6 +533,18 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_type_ids(SPVM_ENV* env, SPVM
   if ((void*)&env->api->type->is_any_object_type != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->type->is_object_array_type != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->type->is_any_object_array_type != &env_array[5]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->type->is_numeric_type != &env_array[6]) { stack[0].ival = 0; return 0; }
+  
+  {
+    void* basic_type = env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_INT);
+    
+    int32_t ret = env->api->type->is_numeric_type(env->runtime, basic_type, 0, 0);
+    
+    if (!ret) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
   
   stack[0].ival = 1;
   
