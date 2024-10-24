@@ -1287,6 +1287,16 @@ class TestCase::Operator::ComparisonOperator {
 
   static method numeric_lt_double_same  : int () {
     
+    return 1;
+  }
+
+  static method numeric_lt_double_right_big  : int () {
+    
+    return 1;
+  }
+
+  static method numeric_le  : int () {
+    
     if ((byte)3 <= (byte)1) {
       return 0;
     }
@@ -1364,129 +1374,6 @@ class TestCase::Operator::ComparisonOperator {
         return 0;
       }
     }
-    
-    return 1;
-  }
-
-  static method numeric_lt_double_right_big  : int () {
-    
-    return 1;
-  }
-
-  # If a <= b
-  static method numeric_le_byte_left_big  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_byte_same  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_byte_right_big  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_short_left_big  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_short_same  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_short_right_big  : int () {
-    
-    return 1;
-  }
-  
-  static method numeric_le_int_left_big  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_int_same  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_int_right_big  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_long_left_big  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_long_same  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_long_right_big  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_float_left_big  : int () {
-    
-    if ((float)3 <= (float)1) {
-      return 0;
-    }
-    
-    unless ((float)3 <= (float)3) {
-      return 0;
-    }
-    
-    unless ((float)3 <= (float)4) {
-      return 0;
-    }
-    
-    # double
-    {
-      if ((double)3 <= (double)1) {
-        return 0;
-      }
-      
-      unless ((double)3 <= (double)3) {
-        return 0;
-      }
-      
-      unless ((double)3 <= (double)4) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-  static method numeric_le_float_same  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_float_right_big  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_double_left_big  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_double_same  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_le_double_right_big  : int () {
     
     return 1;
   }

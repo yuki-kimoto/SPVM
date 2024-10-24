@@ -85,24 +85,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
   # a <= b
   {
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_byte_left_big);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_byte_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_byte_right_big);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_short_left_big);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_short_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_short_right_big);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_int_left_big);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_int_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_int_right_big);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_long_left_big);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_long_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_long_right_big);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_float_left_big);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_float_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_float_right_big);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_double_left_big);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_double_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le_double_right_big);
+    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_le);
   }
 
   # a == b
