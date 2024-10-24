@@ -60,23 +60,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
   # a != b
   {
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_byte_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_byte_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_short_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_short_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_int_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_int_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_long_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_long_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_float_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_float_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_double_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_double_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_object_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_object_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_undef);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_ref_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne_ref_different);
+    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_ne);
   }
 
   # a <=> b

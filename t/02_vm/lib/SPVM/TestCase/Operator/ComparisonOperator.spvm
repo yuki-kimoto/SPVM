@@ -634,7 +634,7 @@ class TestCase::Operator::ComparisonOperator {
   }
   
   # If a != b
-  static method numeric_ne_undef  : int () {
+  static method numeric_ne  : int () {
     my $test_case : TestCase::Minimal = TestCase::Minimal->new;
     
     if (undef != undef) {
@@ -649,164 +649,95 @@ class TestCase::Operator::ComparisonOperator {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_ne_byte_same  : int () {
-    
     if ((byte)3 != (byte)3) {
       return 0;
     }
-    
-    return 1;
-  }
-  
-  static method numeric_ne_byte_different  : int () {
     
     unless ((byte)3 != (byte)2) {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_ne_short_same  : int () {
-    
     if ((int)(short)3 != (int)(short)3) {
       return 0;
     }
-    
-    return 1;
-  }
-  
-  static method numeric_ne_short_different  : int () {
     
     unless ((int)(short)3 != (int)(short)2) {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_ne_int_same  : int () {
-    
     if ((int)3 != (int)3) {
       return 0;
     }
-    
-    return 1;
-  }
-  
-  static method numeric_ne_int_different  : int () {
     
     unless ((int)3 != (int)2) {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_ne_long_same  : int () {
-    
     if ((long)3 != (long)3) {
       return 0;
     }
-    
-    return 1;
-  }
-  
-  static method numeric_ne_long_different  : int () {
     
     unless ((long)3 != (long)2) {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_ne_float_same  : int () {
-    
     if (0.5f != 0.5f) {
       return 0;
     }
-    
-    return 1;
-  }
-  
-  static method numeric_ne_float_different  : int () {
     
     unless (0.5f != 0.25f) {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_ne_double_same  : int () {
-    
     if (0.5 != 0.5) {
       return 0;
     }
-    
-    return 1;
-  }
-  
-  static method numeric_ne_double_different  : int () {
     
     unless (0.5 != 0.25) {
       return 0;
     }
     
+    
+    {
+      my $object1 = TestCase::Minimal->new;
+      
+      if ($object1 != $object1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object1 = TestCase::Minimal->new;
+      my $object2 = TestCase::Minimal->new;
+      
+      unless ($object1 != $object2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $value = 1;
+      my $ref1 : int* = \$value;
+      
+      if ($ref1 != $ref1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $value1 = 1;
+      my $ref1 = \$value1;
+      my $value2 = 2;
+      my $ref2 = \$value2;
+      
+      unless ($ref1 != $ref2) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
-  static method numeric_ne_object_same  : int () {
-    
-    my $object1 = TestCase::Minimal->new;
-    
-    if ($object1 != $object1) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
-  static method numeric_ne_object_different  : int () {
-    my $object1 = TestCase::Minimal->new;
-    my $object2 = TestCase::Minimal->new;
-    
-    unless ($object1 != $object2) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
-  static method numeric_ne_ref_same  : int () {
-    
-    my $value = 1;
-    my $ref1 : int* = \$value;
-    
-    if ($ref1 != $ref1) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
-  static method numeric_ne_ref_different  : int () {
-    my $value1 = 1;
-    my $ref1 = \$value1;
-    my $value2 = 2;
-    my $ref2 = \$value2;
-    
-    unless ($ref1 != $ref2) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
   # If a > b
   static method numeric_gt  : int () {
     
