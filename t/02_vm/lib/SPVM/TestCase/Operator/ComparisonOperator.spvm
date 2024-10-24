@@ -458,7 +458,7 @@ class TestCase::Operator::ComparisonOperator {
   }
   
   # eq 
-  static method numeric_eq_undef  : int () {
+  static method numeric_eq  : int () {
     my $test_case : TestCase::Minimal = undef;
     
     unless (undef == undef) {
@@ -473,161 +473,91 @@ class TestCase::Operator::ComparisonOperator {
       return 0;
     }
     
-    return 1;
-  }
-
-  static method numeric_eq_byte_same  : int () {
-    
     unless ((byte)3 == (byte)3) {
       return 0;
     }
-    
-    return 1;
-  }
-  
-  static method numeric_eq_byte_different  : int () {
     
     if ((byte)3 == (byte)2) {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_eq_short_same  : int () {
-    
     unless ((short)3 == (short)3) {
       return 0;
     }
-    
-    return 1;
-  }
-  
-  static method numeric_eq_short_different  : int () {
     
     if ((short)3 == (short)2) {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_eq_int_same  : int () {
-    
     unless (3 == 3) {
       return 0;
     }
-
+    
     my $ret = 3 == 3;
     unless ($ret isa int && $ret == 1) {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_eq_int_different  : int () {
-    
     if (3 == 2) {
       return 0;
     }
-    
-    return 1;
-  }
-  
-  static method numeric_eq_long_same  : int () {
     
     unless ((long)3 == (long)3) {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_eq_long_different  : int () {
-    
     if ((long)3 == (long)2) {
       return 0;
     }
-    
-    return 1;
-  }
-  
-  static method numeric_eq_float_same  : int () {
     
     unless (0.5f == 0.5f) {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_eq_float_different  : int () {
-    
     if (0.5f == 0.25f) {
       return 0;
     }
-    
-    return 1;
-  }
-  
-  static method numeric_eq_double_same  : int () {
     
     unless (0.5 == 0.5) {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_eq_double_different  : int () {
-    
     if (0.5 == 0.25) {
       return 0;
     }
     
-    return 1;
-  }
-  
-  static method numeric_eq_object_same  : int () {
-    
-    my $object1 = TestCase::Minimal->new;
-    
-    unless ($object1 == $object1) {
-      return 0;
+    {
+      my $object1 = TestCase::Minimal->new;
+      
+      unless ($object1 == $object1) {
+        return 0;
+      }
     }
     
-    return 1;
-  }
-
-  static method numeric_eq_object_different  : int () {
-    my $object1 = TestCase::Minimal->new;
-    my $object2 = TestCase::Minimal->new;
-    
-    if ($object1 == $object2) {
-      return 0;
+    {
+      my $object1 = TestCase::Minimal->new;
+      my $object2 = TestCase::Minimal->new;
+      
+      if ($object1 == $object2) {
+        return 0;
+      }
     }
     
-    return 1;
-  }
-
-  static method numeric_eq_ref_same  : int () {
-    
-    my $ref1 = TestCase::Minimal->new;
-    
-    unless ($ref1 == $ref1) {
-      return 0;
+    {
+      my $ref1 = TestCase::Minimal->new;
+      
+      unless ($ref1 == $ref1) {
+        return 0;
+      }
     }
     
-    return 1;
-  }
-
-  static method numeric_eq_ref_different  : int () {
-    my $ref1 = TestCase::Minimal->new;
-    my $ref2 = TestCase::Minimal->new;
-    
-    if ($ref1 == $ref2) {
-      return 0;
+    {
+      my $ref1 = TestCase::Minimal->new;
+      my $ref2 = TestCase::Minimal->new;
+      
+      if ($ref1 == $ref2) {
+        return 0;
+      }
     }
     
     return 1;

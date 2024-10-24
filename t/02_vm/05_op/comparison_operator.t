@@ -39,23 +39,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
   # a == b
   {
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_byte_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_byte_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_short_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_short_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_int_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_int_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_long_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_long_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_float_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_float_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_double_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_double_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_object_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_object_different);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_undef);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_ref_same);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq_ref_different);
+    ok(SPVM::TestCase::Operator::ComparisonOperator->numeric_eq);
   }
 
   # a != b
