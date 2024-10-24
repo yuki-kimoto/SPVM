@@ -4080,7 +4080,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       break;
                     }
-                    case  SPVM_OP_C_ID_BOOL: {
+                    case  SPVM_OP_C_ID_CONDITION_EVALUATION: {
                       SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_assign_src->first);
                       
                       if (op_assign_src->first->id != SPVM_OP_C_ID_IF) {

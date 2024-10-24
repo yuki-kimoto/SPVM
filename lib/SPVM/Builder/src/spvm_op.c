@@ -226,7 +226,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "MAKE_READ_ONLY",
     "COPY",
     "TYPE_CAST",
-    "BOOL",
+    "CONDITION_EVALUATION",
     "ISA",
     "ISA_ERROR",
     "IS_TYPE",
@@ -3199,7 +3199,7 @@ SPVM_OP* SPVM_OP_build_as_bool(SPVM_COMPILER* compiler, SPVM_OP* op_as_bool, SPV
 
 SPVM_OP* SPVM_OP_new_op_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand, const char* file, int32_t line) {
   
-  SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, file, line);
+  SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONDITION_EVALUATION, file, line);
   SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_operand);
   
   return op_bool;

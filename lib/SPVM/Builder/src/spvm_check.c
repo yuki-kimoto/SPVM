@@ -1611,7 +1611,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             }
             break;
           }
-          case SPVM_OP_C_ID_BOOL: {
+          case SPVM_OP_C_ID_CONDITION_EVALUATION: {
             SPVM_OP* op_operand = op_cur->first;
             SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
@@ -3577,7 +3577,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_IS_TYPE:
               case SPVM_OP_C_ID_IS_ERROR:
               case SPVM_OP_C_ID_IS_COMPILE_TYPE:
-              case SPVM_OP_C_ID_BOOL:
+              case SPVM_OP_C_ID_CONDITION_EVALUATION:
               {
                 convert_to_assign = 1;
                 break;
@@ -4430,7 +4430,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_NUMERIC_COMPARISON_LT:
     case SPVM_OP_C_ID_NUMERIC_COMPARISON_LE:
     case SPVM_OP_C_ID_NUMERIC_COMPARISON_CMP:
-    case SPVM_OP_C_ID_BOOL:
+    case SPVM_OP_C_ID_CONDITION_EVALUATION:
     case SPVM_OP_C_ID_STRING_COMPARISON_EQ:
     case SPVM_OP_C_ID_STRING_COMPARISON_NE:
     case SPVM_OP_C_ID_STRING_COMPARISON_GT:
