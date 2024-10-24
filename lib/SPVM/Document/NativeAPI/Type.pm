@@ -54,6 +54,12 @@ C<int32_t (*is_numeric_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>
 
 If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is a numeric type, returns 1, otherwise returns 0.
 
+=head2 is_class_type
+
+C<int32_t (*is_class_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
+
+If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is a class type, returns 1, otherwise returns 0.
+
 =head1 Native API IDs
 
   0 can_assign
@@ -63,6 +69,7 @@ If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is a num
   4 is_object_array_type
   5 is_any_object_array_type
   6 is_numeric_type
+  6 is_class_type
 
 =head1 See Also
 

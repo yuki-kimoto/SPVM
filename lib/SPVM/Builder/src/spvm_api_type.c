@@ -28,6 +28,7 @@ SPVM_API_TYPE* SPVM_API_TYPE_new_api() {
     SPVM_API_TYPE_is_object_array_type,
     SPVM_API_TYPE_is_any_object_array_type,
     SPVM_API_TYPE_is_numeric_type,
+    SPVM_API_TYPE_is_class_type,
   };
   
   SPVM_API_TYPE* native_apis = calloc(1, sizeof(native_apis_init));
@@ -136,5 +137,14 @@ int32_t SPVM_API_TYPE_is_numeric_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_
   int32_t is_numeric_type = SPVM_TYPE_is_numeric_type(compiler, basic_type->id, type_dimension, type_flag);
   
   return is_numeric_type;
+}
+
+int32_t SPVM_API_TYPE_is_class_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_class_type = SPVM_TYPE_is_class_type(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return is_class_type;
 }
 
