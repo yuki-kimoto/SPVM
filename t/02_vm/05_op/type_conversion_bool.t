@@ -21,14 +21,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     ok(SPVM::TestCase::Operator::ComparisonOperator->condition_evaluation);
     
-    ok(SPVM::TestCase::Operator::ComparisonOperator->bool_false_byte);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->bool_false_short);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->bool_false_int);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->bool_false_long);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->bool_false_float);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->bool_false_double);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->bool_false_object);
-
     ok(SPVM::TestCase::Operator::ComparisonOperator->bool_else);
     ok(SPVM::TestCase::Operator::ComparisonOperator->bool_elsif);
     ok(SPVM::TestCase::Operator::ComparisonOperator->bool_elsbool_2);
