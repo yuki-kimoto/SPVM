@@ -1330,9 +1330,6 @@ class TestCase::Operator::ComparisonOperator {
     if ((byte)3 < (byte)1) {
       return 0;
     }
-    else {
-      return 1;
-    }
     
     return 1;
   }
@@ -1342,17 +1339,13 @@ class TestCase::Operator::ComparisonOperator {
     if ((byte)3 < (byte)3) {
       return 0;
     }
-    else {
-      return 1;
-    }
+    
+    return 1;
   }
 
   static method numeric_lt_byte_right_big  : int () {
     
-    if ((byte)3 < (byte)4) {
-      return 1;
-    }
-    else {
+    unless ((byte)3 < (byte)4) {
       return 0;
     }
     
@@ -1364,9 +1357,6 @@ class TestCase::Operator::ComparisonOperator {
     if ((int)(short)3 < (int)(short)1) {
       return 0;
     }
-    else {
-      return 1;
-    }
     
     return 1;
   }
@@ -1376,19 +1366,13 @@ class TestCase::Operator::ComparisonOperator {
     if ((int)(short)3 < (int)(short)3) {
       return 0;
     }
-    else {
-      return 1;
-    }
     
     return 1;
   }
 
   static method numeric_lt_short_right_big  : int () {
     
-    if ((int)(short)3 < (int)(short)4) {
-      return 1;
-    }
-    else {
+    unless ((int)(short)3 < (int)(short)4) {
       return 0;
     }
     
@@ -1400,9 +1384,6 @@ class TestCase::Operator::ComparisonOperator {
     if (3 < 1) {
       return 0;
     }
-    else {
-      return 1;
-    }
     
     return 1;
   }
@@ -1412,19 +1393,13 @@ class TestCase::Operator::ComparisonOperator {
     if (3 < 3) {
       return 0;
     }
-    else {
-      return 1;
-    }
     
     return 1;
   }
 
   static method numeric_lt_int_right_big  : int () {
     
-    if (3 < 4) {
-      return 1;
-    }
-    else {
+    unless (3 < 4) {
       return 0;
     }
     
