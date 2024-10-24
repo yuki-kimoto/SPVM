@@ -977,8 +977,8 @@ class TestCase::Operator::ComparisonOperator {
       return 0;
     }
     
-    unless ((byte)3 >= (byte)4) {
-      return 1;
+    if ((byte)3 >= (byte)4) {
+      return 0;
     }
     
     unless ((int)(short)3 >= (int)(short)1) {
@@ -1110,11 +1110,8 @@ class TestCase::Operator::ComparisonOperator {
     if ((double)3 < (double)1) {
       return 0;
     }
-    else {
-      return 1;
-    }
     
-    unless ((double)3 < (double)3) {
+    if ((double)3 < (double)3) {
       return 0;
     }
     
@@ -1124,17 +1121,7 @@ class TestCase::Operator::ComparisonOperator {
     
     return 1;
   }
-
-  static method numeric_lt_double_same  : int () {
-    
-    return 1;
-  }
-
-  static method numeric_lt_double_right_big  : int () {
-    
-    return 1;
-  }
-
+  
   static method numeric_le  : int () {
     
     if ((byte)3 <= (byte)1) {
