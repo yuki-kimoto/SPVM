@@ -262,7 +262,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Byte) {
-      die "The type of the value for the key \"$key\" must be the Byte class.";
+      die "The type of the value for the key \"$key\" must Byte type.";
     }
     
     return (int)(byte)$object;
@@ -272,7 +272,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Short) {
-      die "The type of the value for the key \"$key\" must be the Short class.";
+      die "The type of the value for the key \"$key\" must Short type.";
     }
     
     return (int)(short)$object;
@@ -282,7 +282,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Int) {
-      die "The type of the value for the key \"$key\" must be the Int class.";
+      die "The type of the value for the key \"$key\" must Int type.";
     }
     
     return (int)$object;
@@ -292,7 +292,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Long) {
-      die "The type of the value for the key \"$key\" must be the Long class.";
+      die "The type of the value for the key \"$key\" must Long type.";
     }
     
     return (long)$object;
@@ -302,7 +302,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Float) {
-      die "The type of the value for the key \"$key\" must be the Float class.";
+      die "The type of the value for the key \"$key\" must Float type.";
     }
     
     return (float)$object;
@@ -312,7 +312,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Double) {
-      die "The type of the value for the key \"$key\" must be the Double class.";
+      die "The type of the value for the key \"$key\" must Double type.";
     }
     
     return (double)$object;

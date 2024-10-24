@@ -5,6 +5,9 @@
     * Add as_bool operator.
   [Internal Changes]
     * SPVM_OP_C_ID_BOOL is renamed to SPVM_OP_C_ID_CONDITION_EVALUATION.
+  [Exception Message Improvement]
+    * Improve exception messages in Hash class.
+    
 0.990024 2023-10-23
   [New Features]
     * Allow multiple INIT blocks.
