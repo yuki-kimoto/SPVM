@@ -52,27 +52,9 @@ int32_t SPVM_API_TYPE_is_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_T
 
 int32_t SPVM_API_TYPE_is_any_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
   
-  int32_t is_any_object_type;
-  if (type_dimension == 0) {
-    int32_t basic_type_category = basic_type->category;
-    
-    switch (basic_type_category) {
-      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
-      {
-        is_any_object_type = 1;
-        break;
-      }
-      default: {
-        is_any_object_type = 0;
-      }
-    }
-  }
-  else if (type_dimension >= 1) {
-    is_any_object_type = 1;
-  }
-  else {
-    assert(0);
-  }
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_any_object_type = SPVM_TYPE_is_any_object_type(compiler, basic_type->id, type_dimension, type_flag);
   
   return is_any_object_type;
 }
