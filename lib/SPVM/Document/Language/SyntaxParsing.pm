@@ -62,7 +62,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
+  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY AS_BOOL
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -423,6 +423,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | COPY operator
     | IS_READ_ONLY operator
     | array_length
+    | AS_BOOL operator
 
   array_length
     : '@' operator
@@ -564,6 +565,9 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>AS</td><td>as</td>
+  </tr>
+  <tr>
+    <td>AS_BOOL</td><td>as_bool</td>
   </tr>
   <tr>
     <td>ASSIGN</td><td>=</td>
