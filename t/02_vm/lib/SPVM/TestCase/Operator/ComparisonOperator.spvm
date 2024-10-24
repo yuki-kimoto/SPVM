@@ -264,27 +264,34 @@ class TestCase::Operator::ComparisonOperator {
     my $string_undef : string;
     
     # lt
-    unless ($string lt $string_same) {
-      return 1;
+    if ($string lt $string_same) {
+      return 0;
     }
-    unless ($string lt (byte[])$string_same) {
-      return 1;
+    
+    if ($string lt (byte[])$string_same) {
+      return 0;
     }
-    unless ((byte[])$string lt $string_same) {
-      return 1;
+    
+    if ((byte[])$string lt $string_same) {
+      return 0;
     }
+    
     unless (!($string lt $string_short)) {
       return 0;
     }
+    
     unless ($string lt $string_long) {
       return 0;
     }
+    
     unless ($string lt $string_different_short) {
       return 0;
     }
+    
     unless ($string lt $string_different_long) {
       return 0;
     }
+    
     unless (!($string lt $string_empty)) {
       return 0;
     }
@@ -567,7 +574,7 @@ class TestCase::Operator::ComparisonOperator {
   static method numeric_eq_double_same  : int () {
     
     unless (0.5 == 0.5) {
-      return 1;
+      return 0;
     }
     
     return 1;
@@ -938,10 +945,7 @@ class TestCase::Operator::ComparisonOperator {
 
   static method numeric_gt_double_left_big  : int () {
     
-    if ((double)3 > (double)1) {
-      return 1;
-    }
-    else {
+    unless ((double)3 > (double)1) {
       return 0;
     }
     
