@@ -1070,7 +1070,7 @@ unary_operator
   | array_length
   | AS_BOOL operator
     {
-      $$ = SPVM_OP_build_as_bool(compiler, $1, $2);
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
 
 array_length

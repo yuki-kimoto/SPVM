@@ -1586,6 +1586,19 @@ use Test::More;
   }
 }
 
+# as_bool
+{
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void () { my $num : Complex_2d; as_bool $num; } }';
+    compile_not_ok($source, q|The type of the operand of as_bool operator must be a numeric type or an object type.|);
+  }
+  
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void () { my $num : int*; as_bool $num; } }';
+    compile_not_ok($source, q|The type of the operand of as_bool operator must be a numeric type or an object type.|);
+  }
+}
+
 # Extra
 {
   {

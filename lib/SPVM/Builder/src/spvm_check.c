@@ -2475,6 +2475,53 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
+          case SPVM_OP_C_ID_AS_BOOL: {
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            
+            int32_t is_allowed_type
+              =  SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)
+              || SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+            
+            if (!is_allowed_type) {
+              SPVM_COMPILER_error(compiler, "The type of the operand of as_bool operator must be a numeric type or an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            SPVM_OP* op_as_bool = op_cur;
+            
+            if (SPVM_TYPE_is_integer_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+            }
+            
+            SPVM_OP* op_operand = op_cur->first;
+            
+            SPVM_OP_cut_op(compiler, op_cur->first);
+            
+            SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+            
+            SPVM_OP* op_logical_not1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOGICAL_NOT, op_as_bool->file, op_as_bool->line);
+            
+            op_logical_not1 = SPVM_OP_build_logical_not(compiler, op_logical_not1, op_operand);
+            
+            SPVM_OP* op_logical_not2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOGICAL_NOT, op_as_bool->file, op_as_bool->line);
+            
+            op_logical_not2 = SPVM_OP_build_logical_not(compiler, op_logical_not2, op_logical_not1);
+            
+            SPVM_OP* op_byte_type = SPVM_OP_new_op_byte_type(compiler, op_as_bool->file, op_as_bool->line);
+              
+            SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_as_bool->file, op_as_bool->line);
+            
+            op_type_cast = SPVM_OP_build_type_cast(compiler, op_type_cast, op_byte_type, op_logical_not2);
+            
+            SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
+            
+            op_cur = op_type_cast;
+            
+            break;
+          }
           case SPVM_OP_C_ID_BIT_NOT: {
             SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
