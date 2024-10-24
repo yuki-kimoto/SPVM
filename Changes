@@ -1,6 +1,8 @@
 0.990025 2023-10-24
   [Test Improvement]
     * Add tests for NaN comparison and NaN condition evaluation.
+  [New Features]
+    * Add as_bool operator.
     
 0.990024 2023-10-23
   [New Features]

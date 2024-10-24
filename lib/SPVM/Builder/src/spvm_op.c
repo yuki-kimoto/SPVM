@@ -249,6 +249,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "DEREFERENCE",
     "EVAL_ERROR_ID",
     "SEQUENCE",
+    "AS_BOOL",
   };
   
   return id_names;
@@ -3175,6 +3176,25 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem
   }
   
   return op_type;
+}
+
+SPVM_OP* SPVM_OP_build_as_bool(SPVM_COMPILER* compiler, SPVM_OP* op_as_bool, SPVM_OP* op_operand) {
+  
+  SPVM_OP* op_logical_not1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOGICAL_NOT, op_as_bool->file, op_as_bool->line);
+  
+  op_logical_not1 = SPVM_OP_build_logical_not(compiler, op_logical_not1, op_operand);
+  
+  SPVM_OP* op_logical_not2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOGICAL_NOT, op_as_bool->file, op_as_bool->line);
+  
+  op_logical_not2 = SPVM_OP_build_logical_not(compiler, op_logical_not2, op_logical_not1);
+  
+  SPVM_OP* op_byte_type = SPVM_OP_new_op_byte_type(compiler, op_as_bool->file, op_as_bool->line);
+    
+  SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_as_bool->file, op_as_bool->line);
+  
+  op_type_cast = SPVM_OP_build_type_cast(compiler, op_type_cast, op_byte_type, op_logical_not2);
+  
+  return op_type_cast;
 }
 
 SPVM_OP* SPVM_OP_new_op_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand, const char* file, int32_t line) {

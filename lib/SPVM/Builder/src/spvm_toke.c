@@ -2001,6 +2001,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_AS);
                   keyword_token = AS;
                 }
+                else if (strcmp(symbol_name, "as_bool") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_AS_BOOL);
+                  keyword_token = AS_BOOL;
+                }
                 break;
               }
               case 'b' : {

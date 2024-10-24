@@ -249,6 +249,7 @@ enum {
   SPVM_OP_C_ID_DEREFERENCE,
   SPVM_OP_C_ID_EVAL_ERROR_ID,
   SPVM_OP_C_ID_SEQUENCE,
+  SPVM_OP_C_ID_AS_BOOL,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -457,6 +458,8 @@ SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* 
 SPVM_OP* SPVM_OP_build_basic_type_id(SPVM_COMPILER* compiler, SPVM_OP* op_basic_type_id, SPVM_OP* op_type);
 
 SPVM_OP* SPVM_OP_build_extends(SPVM_COMPILER* compiler, SPVM_OP* op_extends, SPVM_OP* op_name_parent_class);
+
+SPVM_OP* SPVM_OP_build_as_bool(SPVM_COMPILER* compiler, SPVM_OP* op_as_bool, SPVM_OP* op_operand);
 
 SPVM_OP* SPVM_OP_new_op_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand, const char* file, int32_t line);
 
