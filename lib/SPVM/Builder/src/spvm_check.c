@@ -4031,7 +4031,7 @@ void SPVM_CHECK_perform_numeric_to_string_conversion(SPVM_COMPILER* compiler, SP
   
   SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_operand->file, op_operand->line);
   SPVM_OP* op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, dist_type, op_operand->file, op_operand->line);
-  SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_operand, NULL);
+  SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_operand);
   
   SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
 }
@@ -4054,7 +4054,7 @@ void SPVM_CHECK_perform_integer_promotional_conversion(SPVM_COMPILER* compiler, 
     
     SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_operand->file, op_operand->line);
     SPVM_OP* op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, dist_type, op_operand->file, op_operand->line);
-    SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_operand, NULL);
+    SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_operand);
     
     SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_type_cast);
     
@@ -4090,7 +4090,7 @@ void SPVM_CHECK_perform_binary_numeric_conversion(SPVM_COMPILER* compiler, SPVM_
     
     SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_left_operand->file, op_left_operand->line);
     SPVM_OP* op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, dist_type, op_left_operand->file, op_left_operand->line);
-    SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_left_operand, NULL);
+    SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_left_operand);
     
     SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
   }
@@ -4100,7 +4100,7 @@ void SPVM_CHECK_perform_binary_numeric_conversion(SPVM_COMPILER* compiler, SPVM_
     
     SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_right_operand->file, op_right_operand->line);
     SPVM_OP* op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, dist_type, op_right_operand->file, op_right_operand->line);
-    SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_right_operand, NULL);
+    SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_right_operand);
     SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
   }
 }
@@ -4256,7 +4256,7 @@ SPVM_OP* SPVM_CHECK_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, 
     
     SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, file, line);
     SPVM_OP* op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, dist_type, file, line);
-    SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_src, NULL);
+    SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_src);
     
     SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
     return op_type_cast;
