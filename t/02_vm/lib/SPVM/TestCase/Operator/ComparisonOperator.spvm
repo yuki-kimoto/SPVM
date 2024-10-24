@@ -801,24 +801,26 @@ class TestCase::Operator::ComparisonOperator {
       return 1;
     }
   }
-
+  
   # If a != b
   static method numeric_ne_undef  : int () {
     my $test_case : TestCase::Minimal = TestCase::Minimal->new;
     
     if (undef != undef) {
-    
-    }
-    else {
-      if ($test_case != undef) {
-        if (undef != $test_case) {
-          return 1;
-        }
-      }
+      return 0;
     }
     
-    return 0;
+    unless ($test_case != undef) {
+      return 0;
+    }
+    
+    unless (undef != $test_case) {
+      return 0;
+    }
+    
+    return 1;
   }
+  
   static method numeric_ne_byte_same  : int () {
     
     if ((byte)3 != (byte)3) {
