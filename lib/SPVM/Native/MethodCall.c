@@ -522,7 +522,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
           }
         }
         else if (method_arg_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-          int32_t method_arg_width = env->api->type->get_type_width(runtime, method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag);
+          int32_t method_arg_width = env->api->basic_type->get_fields_length(runtime, method_arg_basic_type);
           
           int32_t arg_array_length = env->length(env, stack, obj_arg);
           
