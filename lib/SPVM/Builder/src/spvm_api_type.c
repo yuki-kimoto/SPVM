@@ -61,17 +61,11 @@ int32_t SPVM_API_TYPE_is_any_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BAS
 
 int32_t SPVM_API_TYPE_is_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
   
-  if (type_dimension > 0) {
-    if (SPVM_API_TYPE_is_object_type(runtime, basic_type, type_dimension - 1, type_flag)) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  }
-  else {
-    return 0;
-  }
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_object_array_type = SPVM_TYPE_is_object_array_type(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return is_object_array_type;
 }
 
 int32_t SPVM_API_TYPE_is_any_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
