@@ -1189,15 +1189,24 @@ void SPVM_API_set_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
 }
 
 int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
-  if (object->type_dimension > 0) {
-    SPVM_API_die(env, stack, "The type dimension of the object must be equal to 0.", func_name, file, line);
+  void* object_basic_type = object->basic_type;
+  
+  int32_t object_type_dimension = object->type_dimension;
+  
+  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  
+  if (!object_is_class_type) {
+    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return 0;
   };
   
