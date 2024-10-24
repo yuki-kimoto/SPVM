@@ -1512,16 +1512,95 @@ class TestCase::Operator::ComparisonOperator {
       return 1;
     }
     
+    unless ((double)3 < (double)3) {
+      return 0;
+    }
+    
+    unless ((double)3 < (double)4) {
+      return 0;
+    }
+    
     return 1;
   }
 
   static method numeric_lt_double_same  : int () {
     
-    if ((double)3 < (double)3) {
+    if ((byte)3 <= (byte)1) {
       return 0;
     }
-    else {
-      return 1;
+    
+    unless ((byte)3 <= (byte)3) {
+      return 0;
+    }
+    
+    unless ((byte)3 <= (byte)4) {
+      return 0;
+    }
+    
+    if ((int)(short)3 <= (int)(short)1) {
+      return 0;
+    }
+    
+    unless ((int)(short)3 <= (int)(short)3) {
+      return 0;
+    }
+    
+    unless ((int)(short)3 <= (int)(short)4) {
+      return 0;
+    }
+    
+    if (3 <= 1) {
+      return 0;
+    }
+    
+    unless (3 <= 3) {
+      return 0;
+    }
+    
+    unless (3 <= 4) {
+      return 0;
+    }
+    
+    if ((long)3 <= (long)1) {
+      return 0;
+    }
+    
+    unless ((long)3 <= (long)3) {
+      return 0;
+    }
+    
+    unless ((long)3 <= (long)4) {
+      return 0;
+    }
+    
+    # float
+    {
+      if ((float)3 <= (float)1) {
+        return 0;
+      }
+      
+      unless ((float)3 <= (float)3) {
+        return 0;
+      }
+      
+      unless ((float)3 <= (float)4) {
+        return 0;
+      }
+    }
+    
+    # double
+    {
+      if ((double)3 <= (double)1) {
+        return 0;
+      }
+      
+      unless ((double)3 <= (double)3) {
+        return 0;
+      }
+      
+      unless ((double)3 <= (double)4) {
+        return 0;
+      }
     }
     
     return 1;
@@ -1529,157 +1608,66 @@ class TestCase::Operator::ComparisonOperator {
 
   static method numeric_lt_double_right_big  : int () {
     
-    if ((double)3 < (double)4) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-    
     return 1;
   }
 
   # If a <= b
   static method numeric_le_byte_left_big  : int () {
     
-    if ((byte)3 <= (byte)1) {
-      return 0;
-    }
-    else {
-      return 1;
-    }
-    
     return 1;
   }
 
   static method numeric_le_byte_same  : int () {
-    
-    if ((byte)3 <= (byte)3) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
     
     return 1;
   }
 
   static method numeric_le_byte_right_big  : int () {
     
-    if ((byte)3 <= (byte)4) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-    
     return 1;
   }
 
   static method numeric_le_short_left_big  : int () {
-    
-    if ((int)(short)3 <= (int)(short)1) {
-      return 0;
-    }
-    else {
-      return 1;
-    }
     
     return 1;
   }
 
   static method numeric_le_short_same  : int () {
     
-    if ((int)(short)3 <= (int)(short)3) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-    
     return 1;
   }
 
   static method numeric_le_short_right_big  : int () {
-    
-    if ((int)(short)3 <= (int)(short)4) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
     
     return 1;
   }
   
   static method numeric_le_int_left_big  : int () {
     
-    if (3 <= 1) {
-      return 0;
-    }
-    else {
-      return 1;
-    }
-    
     return 1;
   }
 
   static method numeric_le_int_same  : int () {
-    
-    if (3 <= 3) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
     
     return 1;
   }
 
   static method numeric_le_int_right_big  : int () {
     
-    if (3 <= 4) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-    
     return 1;
   }
 
   static method numeric_le_long_left_big  : int () {
-    
-    if ((long)3 <= (long)1) {
-      return 0;
-    }
-    else {
-      return 1;
-    }
     
     return 1;
   }
 
   static method numeric_le_long_same  : int () {
     
-    if ((long)3 <= (long)3) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-    
     return 1;
   }
 
   static method numeric_le_long_right_big  : int () {
-    
-    if ((long)3 <= (long)4) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
     
     return 1;
   }
@@ -1689,8 +1677,28 @@ class TestCase::Operator::ComparisonOperator {
     if ((float)3 <= (float)1) {
       return 0;
     }
-    else {
-      return 1;
+    
+    unless ((float)3 <= (float)3) {
+      return 0;
+    }
+    
+    unless ((float)3 <= (float)4) {
+      return 0;
+    }
+    
+    # double
+    {
+      if ((double)3 <= (double)1) {
+        return 0;
+      }
+      
+      unless ((double)3 <= (double)3) {
+        return 0;
+      }
+      
+      unless ((double)3 <= (double)4) {
+        return 0;
+      }
     }
     
     return 1;
@@ -1698,60 +1706,25 @@ class TestCase::Operator::ComparisonOperator {
 
   static method numeric_le_float_same  : int () {
     
-    if ((float)3 <= (float)3) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-    
     return 1;
   }
 
   static method numeric_le_float_right_big  : int () {
-    
-    if ((float)3 <= (float)4) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
     
     return 1;
   }
 
   static method numeric_le_double_left_big  : int () {
     
-    if ((double)3 <= (double)1) {
-      return 0;
-    }
-    else {
-      return 1;
-    }
-    
     return 1;
   }
 
   static method numeric_le_double_same  : int () {
     
-    if ((double)3 <= (double)3) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
-    
     return 1;
   }
 
   static method numeric_le_double_right_big  : int () {
-    
-    if ((double)3 <= (double)4) {
-      return 1;
-    }
-    else {
-      return 0;
-    }
     
     return 1;
   }
