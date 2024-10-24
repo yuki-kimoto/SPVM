@@ -461,102 +461,129 @@ class TestCase::Operator::ComparisonOperator {
   static method numeric_eq  : int () {
     my $test_case : TestCase::Minimal = undef;
     
-    unless (undef == undef) {
-      return 0;
-    }
-    
-    unless ($test_case == undef) {
-      return 0;
-    }
-    
-    unless (undef == $test_case) {
-      return 0;
-    }
-    
-    unless ((byte)3 == (byte)3) {
-      return 0;
-    }
-    
-    if ((byte)3 == (byte)2) {
-      return 0;
-    }
-    
-    unless ((short)3 == (short)3) {
-      return 0;
-    }
-    
-    if ((short)3 == (short)2) {
-      return 0;
-    }
-    
-    unless (3 == 3) {
-      return 0;
-    }
-    
-    my $ret = 3 == 3;
-    unless ($ret isa int && $ret == 1) {
-      return 0;
-    }
-    
-    if (3 == 2) {
-      return 0;
-    }
-    
-    unless ((long)3 == (long)3) {
-      return 0;
-    }
-    
-    if ((long)3 == (long)2) {
-      return 0;
-    }
-    
-    unless (0.5f == 0.5f) {
-      return 0;
-    }
-    
-    if (0.5f == 0.25f) {
-      return 0;
-    }
-    
-    unless (0.5 == 0.5) {
-      return 0;
-    }
-    
-    if (0.5 == 0.25) {
-      return 0;
-    }
-    
+    # undef
     {
-      my $object1 = TestCase::Minimal->new;
+      unless (undef == undef) {
+        return 0;
+      }
       
-      unless ($object1 == $object1) {
+      unless ($test_case == undef) {
+        return 0;
+      }
+      
+      unless (undef == $test_case) {
         return 0;
       }
     }
     
+    # byte
     {
-      my $object1 = TestCase::Minimal->new;
-      my $object2 = TestCase::Minimal->new;
+      unless ((byte)3 == (byte)3) {
+        return 0;
+      }
       
-      if ($object1 == $object2) {
+      if ((byte)3 == (byte)2) {
         return 0;
       }
     }
     
+    # short
     {
-      my $ref1 = TestCase::Minimal->new;
+      unless ((short)3 == (short)3) {
+        return 0;
+      }
       
-      unless ($ref1 == $ref1) {
+      if ((short)3 == (short)2) {
         return 0;
       }
     }
     
+    # int
     {
-      my $ref1 = TestCase::Minimal->new;
-      my $ref2 = TestCase::Minimal->new;
-      
-      if ($ref1 == $ref2) {
+      unless (3 == 3) {
         return 0;
+      }
+      
+      my $ret = 3 == 3;
+      unless ($ret isa int && $ret == 1) {
+        return 0;
+      }
+      
+      if (3 == 2) {
+        return 0;
+      }
+    }
+    
+    # long
+    {
+      unless ((long)3 == (long)3) {
+        return 0;
+      }
+      
+      if ((long)3 == (long)2) {
+        return 0;
+      }
+    }
+    
+    # float
+    {
+      unless (0.5f == 0.5f) {
+        return 0;
+      }
+      
+      if (0.5f == 0.25f) {
+        return 0;
+      }
+    }
+    
+    # double
+    {
+      unless (0.5 == 0.5) {
+        return 0;
+      }
+      
+      if (0.5 == 0.25) {
+        return 0;
+      }
+    }
+    
+    # object
+    {
+      {
+        my $object1 = TestCase::Minimal->new;
+        
+        unless ($object1 == $object1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $object1 = TestCase::Minimal->new;
+        my $object2 = TestCase::Minimal->new;
+        
+        if ($object1 == $object2) {
+          return 0;
+        }
+      }
+    }
+    
+    # reference
+    {
+      {
+        my $ref1 = TestCase::Minimal->new;
+        
+        unless ($ref1 == $ref1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ref1 = TestCase::Minimal->new;
+        my $ref2 = TestCase::Minimal->new;
+        
+        if ($ref1 == $ref2) {
+          return 0;
+        }
       }
     }
     
@@ -567,101 +594,127 @@ class TestCase::Operator::ComparisonOperator {
   static method numeric_ne  : int () {
     my $test_case : TestCase::Minimal = TestCase::Minimal->new;
     
-    if (undef != undef) {
-      return 0;
-    }
-    
-    unless ($test_case != undef) {
-      return 0;
-    }
-    
-    unless (undef != $test_case) {
-      return 0;
-    }
-    
-    if ((byte)3 != (byte)3) {
-      return 0;
-    }
-    
-    unless ((byte)3 != (byte)2) {
-      return 0;
-    }
-    
-    if ((int)(short)3 != (int)(short)3) {
-      return 0;
-    }
-    
-    unless ((int)(short)3 != (int)(short)2) {
-      return 0;
-    }
-    
-    if ((int)3 != (int)3) {
-      return 0;
-    }
-    
-    unless ((int)3 != (int)2) {
-      return 0;
-    }
-    
-    if ((long)3 != (long)3) {
-      return 0;
-    }
-    
-    unless ((long)3 != (long)2) {
-      return 0;
-    }
-    
-    if (0.5f != 0.5f) {
-      return 0;
-    }
-    
-    unless (0.5f != 0.25f) {
-      return 0;
-    }
-    
-    if (0.5 != 0.5) {
-      return 0;
-    }
-    
-    unless (0.5 != 0.25) {
-      return 0;
-    }
-    
-    
+    # undef
     {
-      my $object1 = TestCase::Minimal->new;
+      if (undef != undef) {
+        return 0;
+      }
       
-      if ($object1 != $object1) {
+      unless ($test_case != undef) {
+        return 0;
+      }
+      
+      unless (undef != $test_case) {
         return 0;
       }
     }
     
+    # byte
     {
-      my $object1 = TestCase::Minimal->new;
-      my $object2 = TestCase::Minimal->new;
+      if ((byte)3 != (byte)3) {
+        return 0;
+      }
       
-      unless ($object1 != $object2) {
+      unless ((byte)3 != (byte)2) {
         return 0;
       }
     }
     
+    # short
     {
-      my $value = 1;
-      my $ref1 : int* = \$value;
+      if ((int)(short)3 != (int)(short)3) {
+        return 0;
+      }
       
-      if ($ref1 != $ref1) {
+      unless ((int)(short)3 != (int)(short)2) {
         return 0;
       }
     }
     
+    # int
     {
-      my $value1 = 1;
-      my $ref1 = \$value1;
-      my $value2 = 2;
-      my $ref2 = \$value2;
-      
-      unless ($ref1 != $ref2) {
+      if ((int)3 != (int)3) {
         return 0;
+      }
+      
+      unless ((int)3 != (int)2) {
+        return 0;
+      }
+    }
+    
+    # long
+    {
+      if ((long)3 != (long)3) {
+        return 0;
+      }
+      
+      unless ((long)3 != (long)2) {
+        return 0;
+      }
+    }
+    
+    # float
+    {
+      if (0.5f != 0.5f) {
+        return 0;
+      }
+      
+      unless (0.5f != 0.25f) {
+        return 0;
+      }
+    }
+    
+    # double
+    {
+      if (0.5 != 0.5) {
+        return 0;
+      }
+      
+      unless (0.5 != 0.25) {
+        return 0;
+      }
+    }
+    
+    # object
+    {
+      {
+        my $object1 = TestCase::Minimal->new;
+        
+        if ($object1 != $object1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $object1 = TestCase::Minimal->new;
+        my $object2 = TestCase::Minimal->new;
+        
+        unless ($object1 != $object2) {
+          return 0;
+        }
+      }
+    }
+    
+    # reference
+    {
+      {
+        my $value = 1;
+        my $ref1 : int* = \$value;
+        
+        if ($ref1 != $ref1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value1 = 1;
+        my $ref1 = \$value1;
+        my $value2 = 2;
+        my $ref2 = \$value2;
+        
+        unless ($ref1 != $ref2) {
+          return 0;
+        }
       }
     }
     
@@ -671,76 +724,94 @@ class TestCase::Operator::ComparisonOperator {
   # If a > b
   static method numeric_gt  : int () {
     
-    unless ((byte)3 > (byte)1) {
-      return 0;
+    # byte
+    {
+      unless ((byte)3 > (byte)1) {
+        return 0;
+      }
+      
+      if ((byte)3 > (byte)3) {
+        return 0;
+      }
+      
+      if ((byte)3 > (byte)4) {
+        return 0;
+      }
     }
     
-    if ((byte)3 > (byte)3) {
-      return 0;
+    # short
+    {
+      unless ((int)(short)3 > (int)(short)1) {
+        return 0;
+      }
+      
+      if ((int)(short)3 > (int)(short)3) {
+        return 0;
+      }
+      
+      if ((int)(short)3 > (int)(short)4) {
+        return 0;
+      }
     }
     
-    if ((byte)3 > (byte)4) {
-      return 0;
+    # int
+    {
+      unless (3 > 1) {
+        return 0;
+      }
+      
+      if (3 > 3) {
+        return 0;
+      }
+      
+      if (3 > 4) {
+        return 0;
+      }
     }
     
-    unless ((int)(short)3 > (int)(short)1) {
-      return 0;
+    # long
+    {
+      unless ((long)3 > (long)1) {
+        return 0;
+      }
+      
+      if ((long)3 > (long)3) {
+        return 0;
+      }
+      
+      if ((long)3 > (long)4) {
+        return 0;
+      }
     }
     
-    if ((int)(short)3 > (int)(short)3) {
-      return 0;
+    # float
+    {
+      unless ((float)3 > (float)1) {
+        return 0;
+      }
+      
+      if ((float)3 > (float)3) {
+        return 0;
+      }
+      
+      if ((float)3 > (float)4) {
+        return 0;
+      }
     }
     
-    if ((int)(short)3 > (int)(short)4) {
-      return 0;
-    }
-    
-    unless (3 > 1) {
-      return 0;
-    }
-    
-    if (3 > 3) {
-      return 0;
-    }
-    
-    if (3 > 4) {
-      return 0;
-    }
-    
-    unless ((long)3 > (long)1) {
-      return 0;
-    }
-    
-    if ((long)3 > (long)3) {
-      return 0;
-    }
-    
-    if ((long)3 > (long)4) {
-      return 0;
-    }
-    
-    unless ((float)3 > (float)1) {
-      return 0;
-    }
-    
-    if ((float)3 > (float)3) {
-      return 0;
-    }
-    
-    if ((float)3 > (float)4) {
-      return 0;
-    }
-    
-    unless ((double)3 > (double)1) {
-      return 0;
-    }
-    
-    if ((double)3 > (double)3) {
-      return 0;
-    }
-    
-    if ((double)3 > (double)4) {
-      return 0;
+    # double
+    {
+      unless ((double)3 > (double)1) {
+        return 0;
+      }
+      
+      if ((double)3 > (double)3) {
+        return 0;
+      }
+      
+      if ((double)3 > (double)4) {
+        return 0;
+      }
     }
     
     return 1;
@@ -749,76 +820,94 @@ class TestCase::Operator::ComparisonOperator {
   # If a >= b
   static method numeric_ge  : int () {
     
-    unless ((byte)3 >= (byte)1) {
-      return 0;
+    # byte
+    {
+      unless ((byte)3 >= (byte)1) {
+        return 0;
+      }
+      
+      unless ((byte)3 >= (byte)3) {
+        return 0;
+      }
+      
+      if ((byte)3 >= (byte)4) {
+        return 0;
+      }
     }
     
-    unless ((byte)3 >= (byte)3) {
-      return 0;
+    # short
+    {
+      unless ((int)(short)3 >= (int)(short)1) {
+        return 0;
+      }
+      
+      unless ((int)(short)3 >= (int)(short)3) {
+        return 0;
+      }
+      
+      if ((int)(short)3 >= (int)(short)4) {
+        return 0;
+      }
     }
     
-    if ((byte)3 >= (byte)4) {
-      return 0;
+    # int
+    {
+      unless (3 >= 1) {
+        return 0;
+      }
+      
+      unless (3 >= 3) {
+        return 0;
+      }
+      
+      if (3 >= 4) {
+        return 0;
+      }
     }
     
-    unless ((int)(short)3 >= (int)(short)1) {
-      return 0;
+    # long
+    {
+      unless ((long)3 >= (long)1) {
+        return 0;
+      }
+      
+      unless ((long)3 >= (long)3) {
+        return 0;
+      }
+      
+      if ((long)3 >= (long)4) {
+        return 0;
+      }
     }
     
-    unless ((int)(short)3 >= (int)(short)3) {
-      return 0;
+    # float
+    {
+      unless ((float)3 >= (float)1) {
+        return 0;
+      }
+      
+      unless ((float)3 >= (float)3) {
+        return 0;
+      }
+      
+      if ((float)3 >= (float)4) {
+        return 0;
+      }
     }
     
-    if ((int)(short)3 >= (int)(short)4) {
-      return 0;
-    }
-    
-    unless (3 >= 1) {
-      return 0;
-    }
-    
-    unless (3 >= 3) {
-      return 0;
-    }
-    
-    if (3 >= 4) {
-      return 0;
-    }
-    
-    unless ((long)3 >= (long)1) {
-      return 0;
-    }
-    
-    unless ((long)3 >= (long)3) {
-      return 0;
-    }
-    
-    if ((long)3 >= (long)4) {
-      return 0;
-    }
-    
-    unless ((float)3 >= (float)1) {
-      return 0;
-    }
-    
-    unless ((float)3 >= (float)3) {
-      return 0;
-    }
-    
-    if ((float)3 >= (float)4) {
-      return 0;
-    }
-    
-    unless ((double)3 >= (double)1) {
-      return 0;
-    }
-    
-    unless ((double)3 >= (double)3) {
-      return 0;
-    }
-    
-    if ((double)3 >= (double)4) {
-      return 0;
+    # double
+    {
+      unless ((double)3 >= (double)1) {
+        return 0;
+      }
+      
+      unless ((double)3 >= (double)3) {
+        return 0;
+      }
+      
+      if ((double)3 >= (double)4) {
+        return 0;
+      }
     }
     
     return 1;
@@ -827,76 +916,94 @@ class TestCase::Operator::ComparisonOperator {
   # If a < b
   static method numeric_lt  : int () {
     
-    if ((byte)3 < (byte)1) {
-      return 0;
+    # byte
+    {
+      if ((byte)3 < (byte)1) {
+        return 0;
+      }
+      
+      if ((byte)3 < (byte)3) {
+        return 0;
+      }
+      
+      unless ((byte)3 < (byte)4) {
+        return 0;
+      }
     }
     
-    if ((byte)3 < (byte)3) {
-      return 0;
+    # short
+    {
+      if ((int)(short)3 < (int)(short)1) {
+        return 0;
+      }
+      
+      if ((int)(short)3 < (int)(short)3) {
+        return 0;
+      }
+      
+      unless ((int)(short)3 < (int)(short)4) {
+        return 0;
+      }
     }
     
-    unless ((byte)3 < (byte)4) {
-      return 0;
+    # int
+    {
+      if (3 < 1) {
+        return 0;
+      }
+      
+      if (3 < 3) {
+        return 0;
+      }
+      
+      unless (3 < 4) {
+        return 0;
+      }
     }
     
-    if ((int)(short)3 < (int)(short)1) {
-      return 0;
+    # long
+    {
+      if ((long)3 < (long)1) {
+        return 0;
+      }
+      
+      if ((long)3 < (long)3) {
+        return 0;
+      }
+      
+      unless ((long)3 < (long)4) {
+        return 0;
+      }
     }
     
-    if ((int)(short)3 < (int)(short)3) {
-      return 0;
+    # float
+    {
+      if ((float)3 < (float)1) {
+        return 0;
+      }
+      
+      if ((float)3 < (float)3) {
+        return 0;
+      }
+      
+      unless ((float)3 < (float)4) {
+        return 0;
+      }
     }
     
-    unless ((int)(short)3 < (int)(short)4) {
-      return 0;
-    }
-    
-    if (3 < 1) {
-      return 0;
-    }
-    
-    if (3 < 3) {
-      return 0;
-    }
-    
-    unless (3 < 4) {
-      return 0;
-    }
-    
-    if ((long)3 < (long)1) {
-      return 0;
-    }
-    
-    if ((long)3 < (long)3) {
-      return 0;
-    }
-    
-    unless ((long)3 < (long)4) {
-      return 0;
-    }
-    
-    if ((float)3 < (float)1) {
-      return 0;
-    }
-    
-    if ((float)3 < (float)3) {
-      return 0;
-    }
-    
-    unless ((float)3 < (float)4) {
-      return 0;
-    }
-    
-    if ((double)3 < (double)1) {
-      return 0;
-    }
-    
-    if ((double)3 < (double)3) {
-      return 0;
-    }
-    
-    unless ((double)3 < (double)4) {
-      return 0;
+    # double
+    {
+      if ((double)3 < (double)1) {
+        return 0;
+      }
+      
+      if ((double)3 < (double)3) {
+        return 0;
+      }
+      
+      unless ((double)3 < (double)4) {
+        return 0;
+      }
     }
     
     return 1;
@@ -904,52 +1011,64 @@ class TestCase::Operator::ComparisonOperator {
   
   static method numeric_le  : int () {
     
-    if ((byte)3 <= (byte)1) {
-      return 0;
+    # byte
+    {
+      if ((byte)3 <= (byte)1) {
+        return 0;
+      }
+      
+      unless ((byte)3 <= (byte)3) {
+        return 0;
+      }
+      
+      unless ((byte)3 <= (byte)4) {
+        return 0;
+      }
     }
     
-    unless ((byte)3 <= (byte)3) {
-      return 0;
+    # short
+    {
+      if ((int)(short)3 <= (int)(short)1) {
+        return 0;
+      }
+      
+      unless ((int)(short)3 <= (int)(short)3) {
+        return 0;
+      }
+      
+      unless ((int)(short)3 <= (int)(short)4) {
+        return 0;
+      }
     }
     
-    unless ((byte)3 <= (byte)4) {
-      return 0;
+    # int
+    {
+      if (3 <= 1) {
+        return 0;
+      }
+      
+      unless (3 <= 3) {
+        return 0;
+      }
+      
+      unless (3 <= 4) {
+        return 0;
+      }
     }
     
-    if ((int)(short)3 <= (int)(short)1) {
-      return 0;
-    }
-    
-    unless ((int)(short)3 <= (int)(short)3) {
-      return 0;
-    }
-    
-    unless ((int)(short)3 <= (int)(short)4) {
-      return 0;
-    }
-    
-    if (3 <= 1) {
-      return 0;
-    }
-    
-    unless (3 <= 3) {
-      return 0;
-    }
-    
-    unless (3 <= 4) {
-      return 0;
-    }
-    
-    if ((long)3 <= (long)1) {
-      return 0;
-    }
-    
-    unless ((long)3 <= (long)3) {
-      return 0;
-    }
-    
-    unless ((long)3 <= (long)4) {
-      return 0;
+    # long
+    {
+      if ((long)3 <= (long)1) {
+        return 0;
+      }
+      
+      unless ((long)3 <= (long)3) {
+        return 0;
+      }
+      
+      unless ((long)3 <= (long)4) {
+        return 0;
+      }
     }
     
     # float
