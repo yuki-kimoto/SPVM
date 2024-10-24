@@ -1221,7 +1221,10 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 }
 
 int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
@@ -1244,7 +1247,10 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
 }
 
 int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
@@ -1267,7 +1273,10 @@ int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 }
 
 int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
@@ -1290,7 +1299,10 @@ int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
 }
 
 float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
@@ -1313,7 +1325,10 @@ float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 }
 
 double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
@@ -1336,7 +1351,10 @@ double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
 }
 
 SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
@@ -1359,7 +1377,10 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
 }
 
 SPVM_OBJECT** SPVM_API_get_field_object_ref_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
@@ -1388,6 +1409,8 @@ SPVM_OBJECT* SPVM_API_get_field_object_defined_and_has_pointer_by_name(SPVM_ENV*
   
   *error_id = 0;
   
+  void* runtime = env->runtime;
+  
   void* obj_field = env->get_field_object_by_name(env, stack, object, field_name, error_id, func_name, file_name, line);
   
   if (*error_id) { return NULL; }
@@ -1412,7 +1435,10 @@ SPVM_OBJECT* SPVM_API_get_field_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
 }
 
 const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, stack, object, field_name);
   if (!field) {
@@ -1430,7 +1456,10 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* s
 }
 
 void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int8_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
@@ -1452,7 +1481,10 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
 }
 
 void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int16_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
@@ -1474,7 +1506,10 @@ void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
 }
 
 void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
@@ -1496,7 +1531,10 @@ void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
 }
 
 void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int64_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
@@ -1518,7 +1556,11 @@ void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
 }
 
 void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, float value, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
+  
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
@@ -1539,7 +1581,10 @@ void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
 }
 
 void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, double value, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
@@ -1561,7 +1606,10 @@ void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 }
 
 void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, SPVM_OBJECT* value, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
   *error_id = 0;
+  
+  void* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
