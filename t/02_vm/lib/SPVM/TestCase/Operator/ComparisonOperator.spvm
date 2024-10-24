@@ -393,6 +393,19 @@ class TestCase::Operator::ComparisonOperator {
       if ((float)3 > (float)4) {
         return 0;
       }
+      
+      my $nan = (float)0.0 / (float)0.0;
+      if ($nan > $nan) {
+        return 0;
+      }
+      
+      if ($nan > (float)0.0) {
+        return 0;
+      }
+      
+      if ($nan > (float)1.0) {
+        return 0;
+      }
     }
     
     # double
@@ -406,6 +419,19 @@ class TestCase::Operator::ComparisonOperator {
       }
       
       if ((double)3 > (double)4) {
+        return 0;
+      }
+      
+      my $nan = (double)0.0 / (double)0.0;
+      if ($nan > $nan) {
+        return 0;
+      }
+      
+      if ($nan > (double)0.0) {
+        return 0;
+      }
+      
+      if ($nan > (double)1.0) {
         return 0;
       }
     }
@@ -489,6 +515,19 @@ class TestCase::Operator::ComparisonOperator {
       if ((float)3 >= (float)4) {
         return 0;
       }
+      
+      my $nan = (float)0.0 / (float)0.0;
+      if ($nan >= $nan) {
+        return 0;
+      }
+      
+      if ($nan >= (float)0.0) {
+        return 0;
+      }
+      
+      if ($nan >= (float)1.0) {
+        return 0;
+      }
     }
     
     # double
@@ -502,6 +541,19 @@ class TestCase::Operator::ComparisonOperator {
       }
       
       if ((double)3 >= (double)4) {
+        return 0;
+      }
+      
+      my $nan = (double)0.0 / (double)0.0;
+      if ($nan >= $nan) {
+        return 0;
+      }
+      
+      if ($nan >= (double)0.0) {
+        return 0;
+      }
+      
+      if ($nan >= (double)1.0) {
         return 0;
       }
     }
@@ -585,6 +637,19 @@ class TestCase::Operator::ComparisonOperator {
       unless ((float)3 < (float)4) {
         return 0;
       }
+      
+      my $nan = (float)0.0 / (float)0.0;
+      if ($nan < $nan) {
+        return 0;
+      }
+      
+      if ($nan < (float)0.0) {
+        return 0;
+      }
+      
+      if ($nan < (float)1.0) {
+        return 0;
+      }
     }
     
     # double
@@ -598,6 +663,19 @@ class TestCase::Operator::ComparisonOperator {
       }
       
       unless ((double)3 < (double)4) {
+        return 0;
+      }
+      
+      my $nan = (double)0.0 / (double)0.0;
+      if ($nan < $nan) {
+        return 0;
+      }
+      
+      if ($nan < (double)0.0) {
+        return 0;
+      }
+      
+      if ($nan < (double)1.0) {
         return 0;
       }
     }
@@ -680,6 +758,19 @@ class TestCase::Operator::ComparisonOperator {
       unless ((float)3 <= (float)4) {
         return 0;
       }
+      
+      my $nan = (float)0.0 / (float)0.0;
+      if ($nan <= $nan) {
+        return 0;
+      }
+      
+      if ($nan <= (float)0.0) {
+        return 0;
+      }
+      
+      if ($nan <= (float)1.0) {
+        return 0;
+      }
     }
     
     # double
@@ -693,6 +784,19 @@ class TestCase::Operator::ComparisonOperator {
       }
       
       unless ((double)3 <= (double)4) {
+        return 0;
+      }
+      
+      my $nan = (double)0.0 / (double)0.0;
+      if ($nan <= $nan) {
+        return 0;
+      }
+      
+      if ($nan <= (double)0.0) {
+        return 0;
+      }
+      
+      if ($nan <= (double)1.0) {
         return 0;
       }
     }
@@ -820,6 +924,19 @@ class TestCase::Operator::ComparisonOperator {
           return 0;
         }
       }
+      
+      my $nan = (float)0.0 / (float)0.0;
+      if ($nan <=> $nan) {
+        return 0;
+      }
+      
+      if ($nan <=> (float)0.0) {
+        return 0;
+      }
+      
+      if ($nan <=> (float)1.0) {
+        return 0;
+      }
     }
     
     # double
@@ -843,6 +960,19 @@ class TestCase::Operator::ComparisonOperator {
         unless ($ret == 0) {
           return 0;
         }
+      }
+      
+      my $nan = (double)0.0 / (double)0.0;
+      if ($nan <=> $nan) {
+        return 0;
+      }
+      
+      if ($nan <=> (double)0.0) {
+        return 0;
+      }
+      
+      if ($nan <=> (double)1.0) {
+        return 0;
       }
     }
     
