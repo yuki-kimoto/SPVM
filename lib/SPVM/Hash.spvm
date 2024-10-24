@@ -271,31 +271,64 @@ class Hash {
   method get_short : int ($key : string) {
     my $object = $self->get($key);
     
-    unless ($object is_type Short) {
-      die "The type of the value for the key \"$key\" must Short type.";
+    my $value = 0;
+    
+    if ($object is_type Byte) {
+      $value = (int)(byte)$object;
+    }
+    elsif ($object is_type Short) {
+      $value = (int)(short)$object;
+    }
+    else {
+      die "The type of the value for the key \"$key\" must Short type or Byte type.";
     }
     
-    return (int)(short)$object;
+    return $value;
   }
   
   method get_int : int ($key : string) {
     my $object = $self->get($key);
     
-    unless ($object is_type Int) {
-      die "The type of the value for the key \"$key\" must Int type.";
+    my $value = 0;
+    
+    if ($object is_type Byte) {
+      $value = (int)(byte)$object;
+    }
+    elsif ($object is_type Short) {
+      $value = (int)(short)$object;
+    }
+    elsif ($object is_type Int) {
+      $value = (int)$object;
+    }
+    else {
+      die "The type of the value for the key \"$key\" must Int type, Short type or Byte type.";
     }
     
-    return (int)$object;
+    return $value;
   }
   
   method get_long : long ($key : string) {
     my $object = $self->get($key);
     
-    unless ($object is_type Long) {
-      die "The type of the value for the key \"$key\" must Long type.";
+    my $value = 0L;
+    
+    if ($object is_type Byte) {
+      $value = (long)(byte)$object;
+    }
+    elsif ($object is_type Short) {
+      $value = (long)(short)$object;
+    }
+    elsif ($object is_type Int) {
+      $value = (long)(int)$object;
+    }
+    elsif ($object is_type Long) {
+      $value = (long)$object;
+    }
+    else {
+      die "The type of the value for the key \"$key\" must Long type, Int type, Short type or Byte type.";
     }
     
-    return (long)$object;
+    return $value;
   }
   
   method get_float : float ($key : string) {

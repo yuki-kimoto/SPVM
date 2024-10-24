@@ -125,37 +125,37 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be L<Byte|SPVM::Byte> class. Otherwise an exception is thrown.
+The type of the value for the key must be L<Byte|SPVM::Byte>. Otherwise an exception is thrown.
 
 =head2 get_short
 
 C<method get_short : int ($key : string);>
 
-Gets the value specifed by the key $key using the L<"get"> method, and casts it to short type, and casts it to int type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to int value, and returns it.
 
 Exceptions:
 
-The type of the value for the key must be L<Short|SPVM::Short> class. Otherwise an exception is thrown.
+The type of the value for the key must be L<Short|SPVM::Short> or L<Byte|SPVM::Byte>. Otherwise an exception is thrown.
 
 =head2 get_int
 
 C<method get_int : int ($key : string);>
 
-Gets the value specifed by the key $key using the L<"get"> method, and casts it to int type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to int value, and returns it.
 
 Exceptions:
 
-The type of the value for the key must be L<Int|SPVM::Int> class. Otherwise an exception is thrown.
+The type of the value for the key must be L<Int|SPVM::Int>, L<Short|SPVM::Short>, or L<Byte|SPVM::Byte>. Otherwise an exception is thrown.
 
 =head2 get_long
 
 C<method get_long : long ($key : string);>
 
-Gets the value specifed by the key $key using the L<"get"> method, and casts it to long type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to long value, and returns it.
 
 Exceptions:
 
-The type of the value for the key must be L<Long|SPVM::Long> class. Otherwise an exception is thrown.
+The type of the value for the key must be L<Long|SPVM::Long>, L<Int|SPVM::Int>, L<Short|SPVM::Short>, or L<Byte|SPVM::Byte>. Otherwise an exception is thrown.
 
 =head2 get_float
 
@@ -165,7 +165,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be L<Float|SPVM::Float> class. Otherwise an exception is thrown.
+The type of the value for the key must be L<Float|SPVM::Float>. Otherwise an exception is thrown.
 
 =head2 get_double
 
@@ -175,7 +175,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be L<Double|SPVM::Double> class. Otherwise an exception is thrown.
+The type of the value for the key must be L<Double|SPVM::Double>. Otherwise an exception is thrown.
 
 =head2 get_string
 
