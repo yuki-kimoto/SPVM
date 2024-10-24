@@ -1195,7 +1195,7 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
@@ -1206,7 +1206,7 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return 0;
   };
   
@@ -1229,7 +1229,7 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
@@ -1240,7 +1240,7 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return 0;
   };
   
@@ -1261,7 +1261,7 @@ int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
@@ -1272,7 +1272,7 @@ int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return 0;
   };
   
@@ -1293,7 +1293,7 @@ int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
@@ -1304,7 +1304,7 @@ int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return 0;
   };
   
@@ -1325,7 +1325,7 @@ float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
@@ -1336,7 +1336,7 @@ float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return 0;
   };
   
@@ -1357,7 +1357,7 @@ double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
@@ -1368,7 +1368,7 @@ double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return 0;
   };
   
@@ -1389,7 +1389,7 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return NULL;
   };
   
@@ -1400,7 +1400,7 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return 0;
   };
   
@@ -1421,7 +1421,7 @@ SPVM_OBJECT** SPVM_API_get_field_object_ref_by_name(SPVM_ENV* env, SPVM_VALUE* s
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return NULL;
   };
   
@@ -1432,7 +1432,7 @@ SPVM_OBJECT** SPVM_API_get_field_object_ref_by_name(SPVM_ENV* env, SPVM_VALUE* s
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return 0;
   };
   
@@ -1502,7 +1502,7 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
@@ -1513,7 +1513,7 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return;
   };
   
@@ -1533,7 +1533,7 @@ void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
@@ -1544,7 +1544,7 @@ void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return;
   };
   
@@ -1564,7 +1564,7 @@ void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
@@ -1575,7 +1575,7 @@ void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return;
   };
   
@@ -1595,7 +1595,7 @@ void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
@@ -1606,7 +1606,7 @@ void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return;
   };
   
@@ -1626,7 +1626,7 @@ void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
@@ -1637,7 +1637,7 @@ void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return;
   };
   
@@ -1657,7 +1657,7 @@ void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
@@ -1668,7 +1668,7 @@ void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return;
   };
   
@@ -1688,7 +1688,7 @@ void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
-    SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
@@ -1699,7 +1699,7 @@ void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
-    SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
     return;
   };
   
