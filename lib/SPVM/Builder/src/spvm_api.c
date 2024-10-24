@@ -1192,14 +1192,14 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1216,7 +1216,9 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     *error_id = SPVM_API_die(env, stack, "The \"%s\" field is not found in the \"%s\" class or its super class.", field_name, basic_type_name, func_name, file, line);
     return 0;
   };
+  
   int8_t value = SPVM_API_get_field_byte(env, stack, object, field);
+  
   return value;
 }
 
@@ -1224,14 +1226,14 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1256,14 +1258,14 @@ int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1288,14 +1290,14 @@ int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1320,14 +1322,14 @@ float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1352,14 +1354,14 @@ double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return 0;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1384,14 +1386,14 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return NULL;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1416,14 +1418,14 @@ SPVM_OBJECT** SPVM_API_get_field_object_ref_by_name(SPVM_ENV* env, SPVM_VALUE* s
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return NULL;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1497,14 +1499,14 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1528,14 +1530,14 @@ void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1559,14 +1561,14 @@ void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1590,14 +1592,14 @@ void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1621,14 +1623,14 @@ void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1652,14 +1654,14 @@ void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
@@ -1683,14 +1685,14 @@ void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   *error_id = 0;
   
-  void* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
   if (object == NULL) {
     SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
     return;
   };
   
-  void* object_basic_type = object->basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
   
   int32_t object_type_dimension = object->type_dimension;
   
