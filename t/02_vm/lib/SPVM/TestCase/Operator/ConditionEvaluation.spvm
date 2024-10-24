@@ -96,14 +96,18 @@ class TestCase::Operator::ConditionEvaluation {
       }
       
       {
+        if (-0.0) {
+          return 0;
+        }
+      }
+      
+      {
         my $object : Point;
         if ($object) {
           return 0;
         }
       }
     }
-    
-    warn;
     
     return 1;
   }
