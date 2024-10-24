@@ -967,160 +967,75 @@ class TestCase::Operator::ComparisonOperator {
   }
 
   # If a >= b
-  static method numeric_ge_byte_left_big  : int () {
+  static method numeric_ge  : int () {
     
     unless ((byte)3 >= (byte)1) {
       return 0;
     }
     
-    return 1;
-  }
-
-  static method numeric_ge_byte_same  : int () {
-    
     unless ((byte)3 >= (byte)3) {
       return 0;
     }
-    
-    return 1;
-  }
-
-  static method numeric_ge_byte_right_big  : int () {
     
     unless ((byte)3 >= (byte)4) {
       return 1;
     }
     
-    return 1;
-  }
-
-  static method numeric_ge_short_left_big  : int () {
-    
     unless ((int)(short)3 >= (int)(short)1) {
       return 0;
     }
-    
-    return 1;
-  }
-
-  static method numeric_ge_short_same  : int () {
     
     unless ((int)(short)3 >= (int)(short)3) {
       return 0;
     }
     
-    return 1;
-  }
-
-  static method numeric_ge_short_right_big  : int () {
-    
     if ((int)(short)3 >= (int)(short)4) {
       return 0;
     }
-    
-    return 1;
-  }
-  
-  static method numeric_ge_int_left_big  : int () {
     
     unless (3 >= 1) {
       return 0;
     }
     
-    return 1;
-  }
-
-  static method numeric_ge_int_same  : int () {
-    
     unless (3 >= 3) {
       return 0;
     }
-    
-    return 1;
-  }
-
-  static method numeric_ge_int_right_big  : int () {
     
     if (3 >= 4) {
       return 0;
     }
     
-    return 1;
-  }
-
-  static method numeric_ge_long_left_big  : int () {
-    
     unless ((long)3 >= (long)1) {
       return 0;
     }
-    
-    return 1;
-  }
-
-  static method numeric_ge_long_same  : int () {
     
     unless ((long)3 >= (long)3) {
       return 0;
     }
     
-    return 1;
-  }
-
-  static method numeric_ge_long_right_big  : int () {
-    
     if ((long)3 >= (long)4) {
       return 0;
     }
-    
-    return 1;
-  }
-
-  static method numeric_ge_float_left_big  : int () {
     
     unless ((float)3 >= (float)1) {
       return 0;
     }
     
-    return 1;
-  }
-
-  static method numeric_ge_float_same  : int () {
-    
     unless ((float)3 >= (float)3) {
       return 0;
     }
-    
-    return 1;
-  }
-
-  static method numeric_ge_float_right_big  : int () {
     
     if ((float)3 >= (float)4) {
       return 0;
     }
     
-    return 1;
-  }
-
-  static method numeric_ge_double_left_big  : int () {
-    
     unless ((double)3 >= (double)1) {
       return 0;
     }
     
-    return 1;
-  }
-
-  static method numeric_ge_double_same  : int () {
-    
     unless ((double)3 >= (double)3) {
       return 0;
     }
-    
-    return 1;
-  }
-
-  static method numeric_ge_double_right_big  : int () {
     
     if ((double)3 >= (double)4) {
       return 0;
@@ -1128,7 +1043,7 @@ class TestCase::Operator::ComparisonOperator {
     
     return 1;
   }
-
+  
   # If a < b
   static method numeric_lt  : int () {
     
