@@ -79,15 +79,9 @@ int32_t SPVM_API_TYPE_is_any_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTI
 
 int32_t SPVM_API_TYPE_get_type_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
   
-  int32_t basic_type_category = basic_type->category;
+  SPVM_COMPILER* compiler = runtime->compiler;
   
-  int32_t type_width = -1;
-  if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-    type_width = basic_type->fields_length;
-  }
-  else {
-    type_width = 1;
-  }
+  int32_t type_width = SPVM_TYPE_get_type_width(compiler, basic_type->id, type_dimension, type_flag);
   
   return type_width;
 }

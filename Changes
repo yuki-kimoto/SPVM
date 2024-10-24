@@ -11,6 +11,8 @@
     * Hash#get_int method can get a value from Byte, Short, Int object.
     * Hash#get_short method can get a value from Byte, Short object.
     * Hash#get_long method can get a value from Byte, Short, Int, Long object.
+  [Bug Fix]
+    * Fix a bug that get_type_width type native API did not work well when the argument type is a multi-numeric reference type.
     
 0.990024 2023-10-23
   [New Features]
