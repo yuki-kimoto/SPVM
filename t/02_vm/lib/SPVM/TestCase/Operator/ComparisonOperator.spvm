@@ -232,6 +232,19 @@ class TestCase::Operator::ComparisonOperator {
       unless (0.5f != 0.25f) {
         return 0;
       }
+      
+      my $nan = (float)0.0 / (float)0.0;
+      unless ($nan != $nan) {
+        return 0;
+      }
+      
+      unless ($nan != (float)0.0) {
+        return 0;
+      }
+      
+      unless ($nan != (float)1.0) {
+        return 0;
+      }
     }
     
     # double
