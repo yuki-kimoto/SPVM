@@ -1203,7 +1203,7 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1237,7 +1237,7 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1269,7 +1269,7 @@ int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1301,7 +1301,7 @@ int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1333,7 +1333,7 @@ float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1365,7 +1365,7 @@ double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1397,7 +1397,7 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1429,7 +1429,7 @@ SPVM_OBJECT** SPVM_API_get_field_object_ref_by_name(SPVM_ENV* env, SPVM_VALUE* s
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1510,7 +1510,7 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1541,7 +1541,7 @@ void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1572,7 +1572,7 @@ void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1603,7 +1603,7 @@ void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1634,7 +1634,7 @@ void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1665,7 +1665,7 @@ void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1696,7 +1696,7 @@ void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = env->api->type->is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
