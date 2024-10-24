@@ -620,15 +620,19 @@ class TestCase::Operator::ComparisonOperator {
   static method numeric_eq_undef  : int () {
     my $test_case : TestCase::Minimal = undef;
     
-    if (undef == undef) {
-      if ($test_case == undef) {
-        if (undef == $test_case) {
-          return 1;
-        }
-      }
+    unless (undef == undef) {
+      return 0;
     }
     
-    return 0;
+    unless ($test_case == undef) {
+      return 0;
+    }
+    
+    unless (undef == $test_case) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method numeric_eq_byte_same  : int () {
