@@ -7,7 +7,7 @@ use utf8;
 
 use Test::More;
 
-use SPVM 'TestCase::Operator::ComparisonOperator';
+use SPVM 'TestCase::Operator::ConditionEvaluation';
 
 
 
@@ -19,12 +19,12 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 {
   # Condition evaluation
   {
-    ok(SPVM::TestCase::Operator::ComparisonOperator->condition_evaluation);
+    ok(SPVM::TestCase::Operator::ConditionEvaluation->basic);
     
-    ok(SPVM::TestCase::Operator::ComparisonOperator->bool_else);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->bool_elsif);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->bool_elsbool_2);
-    ok(SPVM::TestCase::Operator::ComparisonOperator->bool_duplicate);
+    ok(SPVM::TestCase::Operator::ConditionEvaluation->else);
+    ok(SPVM::TestCase::Operator::ConditionEvaluation->elsif);
+    ok(SPVM::TestCase::Operator::ConditionEvaluation->elsif2);
+    ok(SPVM::TestCase::Operator::ConditionEvaluation->duplicate);
   }
 }
 
