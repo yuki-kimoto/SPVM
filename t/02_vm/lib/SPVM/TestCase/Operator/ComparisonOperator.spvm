@@ -449,75 +449,62 @@ class TestCase::Operator::ComparisonOperator {
     
     return 1;
   }
-
-  # Bool
-  static method bool_true_byte : int () {
-    unless ((int)(byte)1) {
-      return 0;
+  
+  static method condition_evaluation : int () {
+    
+    {
+      unless ((int)(byte)1) {
+        return 0;
+      }
+    }
+    
+    {
+      unless ((int)(short)1) {
+        return 0;
+      }
+    }
+    
+    {
+      unless (1) {
+        return 0;
+      }
+    }
+    
+    {
+      unless (1L) {
+        return 0;
+      }
+    }
+    
+    {
+      unless (1.0f) {
+        return 0;
+      }
+    }
+    
+    {
+      unless (1.0) {
+        return 0;
+      }
+    }
+    
+    {
+      unless (TestCase::Minimal->new) {
+        return 0;
+      }
+    }
+    
+    {
+      my $value = 1;
+      my $vaelu_ref = \$value;
+      unless ($vaelu_ref) {
+        return 0;
+      }
     }
     
     return 1;
   }
   
-  static method bool_true_short : int () {
-    unless ((int)(short)1) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
-  static method bool_true_int : int () {
-    unless (1) {
-      return 0;
-    }
-    
-    return 1;
-  }
-  
-  static method bool_true_long : int () {
-    unless (1L) {
-      return 0;
-    }
-    
-    return 1;
-  }
-  
-  static method bool_true_float : int () {
-    unless (1.0f) {
-      return 0;
-    }
-    
-    return 1;
-  }
-  
-  static method bool_true_double : int () {
-    unless (1.0) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
-  static method bool_true_object : int () {
-    unless (TestCase::Minimal->new) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
-  static method bool_true_ref : int () {
-    my $value = 1;
-    my $vaelu_ref = \$value;
-    unless ($vaelu_ref) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
-
   static method bool_false_byte : int () {
     if ((int)(byte)0) {
       return 0;
