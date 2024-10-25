@@ -51,7 +51,15 @@
     * Improve the type check of the class_var in get_class_var_long_by_name native API. The class variable must be within long type.
     * Improve the type check of the class_var in get_class_var_float_by_name native API. The class variable must be within float type.
     * Improve the type check of the class_var in get_class_var_double_by_name native API. The class variable must be within double type.
+    * Improve the type check of the class_var in get_class_var_double_by_name native API. The class variable must be an object type.
     
+    * Improve the type check of the class_var in set_class_var_byte_by_name native API. The class variable must be byte or larger type.
+    * Improve the type check of the class_var in set_class_var_short_by_name native API. The class variable must be short or larger type.
+    * Improve the type check of the class_var in set_class_var_int_by_name native API. The class variable must be int or larger type.
+    * Improve the type check of the class_var in set_class_var_long_by_name native API. The class variable must be long or larger type.
+    * Improve the type check of the class_var in set_class_var_float_by_name native API. The class variable must be float or larger type.
+    * Improve the type check of the class_var in set_class_var_double_by_name native API. The class variable must be double type.
+    * Improve the type check of the class_var in set_class_var_double_by_name native API. The class variable must be an object type.
 0.990024 2023-10-23
   [New Features]
     * Allow multiple INIT blocks.
