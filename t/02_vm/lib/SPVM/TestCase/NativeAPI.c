@@ -824,9 +824,14 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_short_by_name_test(SPVM_ENV* en
   
   int16_t value = env->get_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
-
-  stack[0].sval = value;
-
+  
+  if (!(value == INT16_MIN)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  
   return 0;
 }
 
@@ -849,8 +854,13 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_int_by_name_test(SPVM_ENV* env,
   int32_t value = env->get_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$INT_VALUE", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  stack[0].ival = value;
-
+  if (!(value == INT32_MIN)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  
   return 0;
 }
 
@@ -873,8 +883,13 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_long_by_name_test(SPVM_ENV* env
   int64_t value = env->get_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  stack[0].lval = value;
-
+  if (!(value == INT64_MIN)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  
   return 0;
 }
 
@@ -897,8 +912,13 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_float_by_name_test(SPVM_ENV* en
   float value = env->get_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  stack[0].fval = value;
-
+  if (!(value == FLT_MIN)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  
   return 0;
 }
 
@@ -921,8 +941,13 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_double_by_name_test(SPVM_ENV* e
   double value = env->get_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  stack[0].dval = value;
-
+  if (!(value == DBL_MIN)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  
   return 0;
 }
 

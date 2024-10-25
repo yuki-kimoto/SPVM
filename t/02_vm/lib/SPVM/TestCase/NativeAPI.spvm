@@ -165,7 +165,11 @@ class TestCase::NativeAPI {
     
     my $success = TestCase::NativeAPI->get_class_var_byte_by_name_test();
     
-    return $success;
+    unless ($success) {
+      return 0;
+    }
+    
+    return 1;
   }
   native static method get_class_var_byte_by_name_test : byte ();
   
@@ -185,9 +189,9 @@ class TestCase::NativeAPI {
 
     $SHORT_VALUE = (short)Fn->INT16_MIN;
     
-    my $value = TestCase::NativeAPI->get_class_var_short_by_name_test();
+    my $success = TestCase::NativeAPI->get_class_var_short_by_name_test();
     
-    unless ($value == Fn->INT16_MIN) {
+    unless ($success) {
       return 0;
     }
     
@@ -211,9 +215,9 @@ class TestCase::NativeAPI {
 
     $INT_VALUE = Fn->INT32_MIN;
     
-    my $value = TestCase::NativeAPI->get_class_var_int_by_name_test();
+    my $success = TestCase::NativeAPI->get_class_var_int_by_name_test();
     
-    unless ($value == Fn->INT32_MIN) {
+    unless ($success) {
       return 0;
     }
     
@@ -237,9 +241,9 @@ class TestCase::NativeAPI {
 
     $LONG_VALUE = Fn->INT64_MIN;
     
-    my $value = TestCase::NativeAPI->get_class_var_long_by_name_test();
+    my $success = TestCase::NativeAPI->get_class_var_long_by_name_test();
     
-    unless ($value == Fn->INT64_MIN) {
+    unless ($success) {
       return 0;
     }
     
@@ -263,9 +267,9 @@ class TestCase::NativeAPI {
 
     $FLOAT_VALUE = Fn->FLT_MIN;
     
-    my $value = TestCase::NativeAPI->get_class_var_float_by_name_test();
+    my $success = TestCase::NativeAPI->get_class_var_float_by_name_test();
     
-    unless ($value == Fn->FLT_MIN) {
+    unless ($success) {
       return 0;
     }
     
@@ -289,9 +293,9 @@ class TestCase::NativeAPI {
 
     $DOUBLE_VALUE = Fn->DBL_MIN;
     
-    my $value = TestCase::NativeAPI->get_class_var_double_by_name_test();
+    my $success = TestCase::NativeAPI->get_class_var_double_by_name_test();
     
-    unless ($value == Fn->DBL_MIN) {
+    unless ($success) {
       return 0;
     }
     
