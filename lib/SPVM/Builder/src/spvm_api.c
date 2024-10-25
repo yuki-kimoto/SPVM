@@ -1804,7 +1804,7 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the field must be within double type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be byte or larger type.", func_name, file, line);
     return;
   }
 }

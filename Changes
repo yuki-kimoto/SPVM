@@ -38,7 +38,7 @@
     * Improve the type check of the field in get_field_double_by_name native API. The field must be within double type.
     * Improve the type check of the field in get_field_object_by_name native API. The field must be an object type.
     * Improve the type check of the field in get_field_object_ref_by_name native API. The field must be an object type.
-    * Improve the type check of the field in get_field_byte_by_name native API. The field must be witin double type.
+    * Improve the type check of the field in set_field_byte_by_name native API. The field must be byte or large type.
     
 0.990024 2023-10-23
   [New Features]
