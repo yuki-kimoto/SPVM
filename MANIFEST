@@ -676,7 +676,6 @@ t/02_vm/05_op/string_concatenation.t
 t/02_vm/05_op/string_data.t
 t/02_vm/05_op/subtraction.t
 t/02_vm/05_op/type_cast.t
-t/02_vm/05_op/type_conversion_bool.t
 t/02_vm/05_op/type_initial_value.t
 t/02_vm/05_op/type_name.t
 t/02_vm/05_op/unary_minus.t
