@@ -1217,7 +1217,30 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     return 0;
   };
   
-  int8_t value = SPVM_API_get_field_byte(env, stack, object, field);
+  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  
+  int32_t is_invalid_type = 0;
+  
+  int8_t value = 0;
+  if (is_numeric_type) {
+    switch (field->basic_type->id) {
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+        value = SPVM_API_get_field_byte(env, stack, object, field);
+        break;
+      }
+      default : {
+        is_invalid_type = 1;
+      }
+    }
+  }
+  else {
+    is_invalid_type = 1;
+  }
+  
+  if (is_invalid_type) {
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be byte type.", func_name, file, line);
+    return 0;
+  }
   
   return value;
 }
