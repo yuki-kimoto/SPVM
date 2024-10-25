@@ -943,13 +943,21 @@ The same as L</"get_field_object_by_name"> for now.
 
 C<void (*set_field_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int8_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a field I<field> given the object I<object> and the field name I<field_name>.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to C<byte> type.
 
-If it is found, interprets it as byte type and sets I<value> to it. Otherwise, an exception is thrown.
+The type of the filed must be C<byte> type or larger numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -961,13 +969,21 @@ Examples:
 
 C<void (*set_field_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int16_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a field I<field> given the object I<object> and the field name I<field_name>.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to C<short> type.
 
-If it is found, interprets it as short type and sets I<value> to it. Otherwise, an exception is thrown.
+The type of the filed must be C<short> type or larger numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -979,13 +995,21 @@ Examples:
 
 C<void (*set_field_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a field I<field> given the object I<object> and the field name I<field_name>.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to C<int> type.
 
-If it is found, interprets it as int type and sets I<value> to it. Otherwise, an exception is thrown.
+The type of the filed must be C<int> type or larger numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -997,13 +1021,21 @@ Examples:
 
 C<void (*set_field_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int64_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a field I<field> given the object I<object> and the field name I<field_name>.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to C<long> type.
 
-If it is found, interprets it as long type and sets I<value> to it. Otherwise, an exception is thrown.
+The type of the filed must be C<long> type or larger numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -1015,13 +1047,21 @@ Examples:
 
 C<void (*set_field_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, float value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a field I<field> given the object I<object> and the field name I<field_name>.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to C<float> type.
 
-If it is found, interprets it as float type and sets I<value> to it. Otherwise, an exception is thrown.
+The type of the filed must be C<float> type or larger numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -1033,13 +1073,21 @@ Examples:
 
 C<void (*set_field_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, double value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a field I<field> given the object I<object> and the field name I<field_name>.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to C<double> type.
 
-If it is found, interprets it as double type and sets I<value> to it. Otherwise, an exception is thrown.
+The type of the filed must be C<double> type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
