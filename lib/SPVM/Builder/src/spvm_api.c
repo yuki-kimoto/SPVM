@@ -902,7 +902,7 @@ int16_t SPVM_API_get_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, c
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be within short type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be short type or smaller numeric type.", func_name, file, line);
     return 0;
   }
   
@@ -956,7 +956,7 @@ int32_t SPVM_API_get_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be within int type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be int type or smaller numeric type.", func_name, file, line);
     return 0;
   }
   
@@ -1014,7 +1014,7 @@ int64_t SPVM_API_get_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, co
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be within long type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be long type or smaller numeric type.", func_name, file, line);
     return 0;
   }
   
@@ -1076,7 +1076,7 @@ float SPVM_API_get_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be within float type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be float type or smaller numeric type.", func_name, file, line);
     return 0;
   }
   
@@ -1142,7 +1142,7 @@ double SPVM_API_get_class_var_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, c
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be within double type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be double type or smaller numeric type.", func_name, file, line);
     return 0;
   }
   
@@ -1250,7 +1250,7 @@ void SPVM_API_set_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be byte or larger type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be byte or larger numeric type.", func_name, file, line);
     return;
   }
 }
@@ -1309,7 +1309,7 @@ void SPVM_API_set_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, cons
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be short or larger type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be short or larger numeric type.", func_name, file, line);
     return;
   }
 }
@@ -1364,7 +1364,7 @@ void SPVM_API_set_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const 
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be int or larger type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be int or larger numeric type.", func_name, file, line);
     return;
   }
 }
@@ -1415,7 +1415,7 @@ void SPVM_API_set_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be long or larger type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be long or larger numeric type.", func_name, file, line);
     return;
   }
 }
@@ -1462,7 +1462,7 @@ void SPVM_API_set_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, cons
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be float or larger type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be float or larger numeric type.", func_name, file, line);
     return;
   }
 }
@@ -1766,7 +1766,7 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the field must be within short type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be short type or smaller numeric type.", func_name, file, line);
     return 0;
   }
   
@@ -1831,7 +1831,7 @@ int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the field must be within int type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be int type or smaller numeric type.", func_name, file, line);
     return 0;
   }
   
@@ -1900,7 +1900,7 @@ int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the field must be within long type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be long type or smaller numeric type.", func_name, file, line);
     return 0;
   }
   
@@ -1973,7 +1973,7 @@ float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the field must be within float type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be float type or smaller numeric type.", func_name, file, line);
     return 0;
   }
   
@@ -2050,7 +2050,7 @@ double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the field must be within double type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be double type or smaller numeric type.", func_name, file, line);
     return 0;
   }
   
@@ -2271,7 +2271,7 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the field must be byte or larger type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be byte or larger numeric type.", func_name, file, line);
     return;
   }
 }
@@ -2341,7 +2341,7 @@ void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the field must be short or larger type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be short or larger numeric type.", func_name, file, line);
     return;
   }
 }
@@ -2407,7 +2407,7 @@ void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the field must be int or larger type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be int or larger numeric type.", func_name, file, line);
     return;
   }
 }
@@ -2469,7 +2469,7 @@ void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the field must be long or larger type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be long or larger numeric type.", func_name, file, line);
     return;
   }
 }
@@ -2527,7 +2527,7 @@ void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   }
   
   if (is_invalid_type) {
-    *error_id = SPVM_API_die(env, stack, "The type of the field must be float or larger type.", func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be float or larger numeric type.", func_name, file, line);
     return;
   }
 }

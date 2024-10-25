@@ -783,7 +783,7 @@ C<int16_t (*get_field_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as C<short> value.
 
-The type of the filed must be within C<short> type.
+The type of the filed must be C<short> type or smaller numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -809,7 +809,7 @@ C<int32_t (*get_field_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as C<int> value.
 
-The type of the filed must be within C<int> type.
+The type of the filed must be C<int> type or smaller numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -835,7 +835,7 @@ C<int64_t (*get_field_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/
 
 Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as C<long> value.
 
-The type of the filed must be within C<long> type.
+The type of the filed must be C<long> type or smaller numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -861,7 +861,7 @@ C<float (*get_field_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as C<float> value.
 
-The type of the filed must be within C<float> type.
+The type of the filed must be C<float> type or smaller numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -887,7 +887,7 @@ C<double (*get_field_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as C<double> value.
 
-The type of the filed must be within C<double> type.
+The type of the filed must be C<double> type or smaller numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
