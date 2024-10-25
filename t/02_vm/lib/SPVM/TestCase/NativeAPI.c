@@ -793,12 +793,14 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_byte_by_name_test(SPVM_ENV* env
   
   int32_t error_id = 0;
   
-  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  
-  if (!(value == INT8_MIN)) {
-    stack[0].ival = 0;
-    return 0;
+  {
+    int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    
+    if (!(value == INT8_MIN)) {
+      stack[0].ival = 0;
+      return 0;
+    }
   }
   
   stack[0].ival = 1;
