@@ -35,7 +35,8 @@
     * Improve the type check of the field in get_field_int_by_name native API. The field must be within int type.
     * Improve the type check of the field in get_field_long_by_name native API. The field must be within long type.
     * Improve the type check of the field in get_field_float_by_name native API. The field must be within float type.
-    * Improve the type check of the field in get_field_float_by_name native API. The field must be within double type.
+    * Improve the type check of the field in get_field_double_by_name native API. The field must be within double type.
+    * Improve the type check of the field in get_field_object_by_name native API. The field must be an object type.
     
 0.990024 2023-10-23
   [New Features]
