@@ -1167,7 +1167,23 @@ SPVM_OBJECT* SPVM_API_get_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* st
     return 0;
   };
   
-  SPVM_OBJECT* value = SPVM_API_get_class_var_object(env, stack, class_var);
+  int32_t is_object_type = SPVM_API_TYPE_is_object_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  
+  int32_t is_invalid_type = 0;
+  
+  void* value = 0;
+  if (is_object_type) {
+    value = SPVM_API_get_class_var_object(env, stack, class_var);
+  }
+  else {
+    is_invalid_type = 1;
+  }
+  
+  if (is_invalid_type) {
+    *error_id = SPVM_API_die(env, stack, "The type of the class variable must be an object type.", func_name, file, line);
+    return 0;
+  }
+  
   return value;
 }
 
