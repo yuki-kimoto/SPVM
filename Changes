@@ -1,3 +1,18 @@
+0.990025001 2023-10-26
+  [Document Fix]
+    * Fix docs for the following native APIs.
+
+      set_class_var_byte_by_name native API
+      set_class_var_short_by_name native API
+      set_class_var_int_by_name native API
+      set_class_var_long_by_name native API
+      set_class_var_float_by_name native API
+      set_field_byte_by_name native API
+      set_field_short_by_name native API
+      set_field_int_by_name native API
+      set_field_long_by_name native API
+      set_field_float_by_name native API
+    
 0.990025 2023-10-25
   [Test Improvement]
     * Add tests for NaN comparison and NaN condition evaluation.

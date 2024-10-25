@@ -514,7 +514,7 @@ The same as L</"get_class_var_object_by_name"> native API.
 
 C<void (*set_class_var_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int8_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to C<byte> type.
+Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to the field type.
 
 The type of the filed must be C<byte> type or larger numeric type.
 
@@ -540,7 +540,7 @@ Examples:
 
 C<void (*set_class_var_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int16_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to C<short> type.
+Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to the field type.
 
 The type of the filed must be C<short> type or larger numeric type.
 
@@ -566,7 +566,7 @@ Examples:
 
 C<void (*set_class_var_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int32_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to C<int> type.
+Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to the field type.
 
 The type of the filed must be C<int> type or larger numeric type.
 
@@ -592,7 +592,7 @@ Examples:
 
 C<void (*set_class_var_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int64_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to C<long> type.
+Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to the field type.
 
 The type of the filed must be C<long> type or larger numeric type.
 
@@ -618,7 +618,7 @@ Examples:
 
 C<void (*set_class_var_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, float value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to C<float> type.
+Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to the field type.
 
 The type of the filed must be C<float> type or larger numeric type.
 
@@ -1011,7 +1011,7 @@ The same as L</"get_field_object_by_name"> native API.
 
 C<void (*set_field_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int8_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to C<byte> type.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to the field type.
 
 The type of the filed must be C<byte> type or larger numeric type.
 
@@ -1037,7 +1037,7 @@ Examples:
 
 C<void (*set_field_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int16_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to C<short> type.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to the field type.
 
 The type of the filed must be C<short> type or larger numeric type.
 
@@ -1063,7 +1063,7 @@ Examples:
 
 C<void (*set_field_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to C<int> type.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to the field type.
 
 The type of the filed must be C<int> type or larger numeric type.
 
@@ -1089,7 +1089,7 @@ Examples:
 
 C<void (*set_field_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int64_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to C<long> type.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to the field type.
 
 The type of the filed must be C<long> type or larger numeric type.
 
@@ -1115,7 +1115,7 @@ Examples:
 
 C<void (*set_field_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, float value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to C<float> type.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to the field type.
 
 The type of the filed must be C<float> type or larger numeric type.
 
