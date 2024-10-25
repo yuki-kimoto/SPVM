@@ -363,11 +363,31 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->set_class_var_byte_by_name_test();
     
-    if ($BYTE_VALUE == Fn->INT8_MIN) {
-      return 1;
+    unless ($BYTE_VALUE == Fn->INT8_MIN) {
+      return 0;
     }
     
-    return 0;
+    unless ($SHORT_VALUE == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    unless ($INT_VALUE == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    unless ($LONG_VALUE == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    unless ($FLOAT_VALUE == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    unless ($DOUBLE_VALUE == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
   native static method set_class_var_byte_by_name_test : void ();
 
@@ -387,11 +407,27 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->set_class_var_short_by_name_test();
     
-    if ($SHORT_VALUE == Fn->INT16_MIN) {
-      return 1;
+    unless ($SHORT_VALUE == Fn->INT16_MIN) {
+      return 0;
     }
     
-    return 0;
+    unless ($INT_VALUE == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    unless ($LONG_VALUE == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    unless ($FLOAT_VALUE == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    unless ($DOUBLE_VALUE == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
   native static method set_class_var_short_by_name_test : void ();
 
@@ -411,11 +447,23 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->set_class_var_int_by_name_test();
     
-    if ($INT_VALUE == Fn->INT32_MIN) {
-      return 1;
+    unless ($INT_VALUE == Fn->INT32_MIN) {
+      return 0;
     }
     
-    return 0;
+    unless ($LONG_VALUE == Fn->INT32_MIN) {
+      return 0;
+    }
+    
+    unless ($FLOAT_VALUE == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    unless ($DOUBLE_VALUE == Fn->INT32_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
   native static method set_class_var_int_by_name_test : void ();
 
@@ -435,11 +483,19 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->set_class_var_long_by_name_test();
     
-    if ($LONG_VALUE == Fn->INT64_MIN) {
-      return 1;
+    unless ($LONG_VALUE == Fn->INT64_MIN) {
+      return 0;
     }
     
-    return 0;
+    unless ($FLOAT_VALUE == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    unless ($DOUBLE_VALUE == Fn->INT32_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
   native static method set_class_var_long_by_name_test : void ();
 
@@ -458,11 +514,15 @@ class TestCase::NativeAPI {
   static method set_class_var_float_by_name : int () {
     TestCase::NativeAPI->set_class_var_float_by_name_test();
     
-    if ($FLOAT_VALUE == Fn->FLT_MIN) {
-      return 1;
+    unless ($FLOAT_VALUE == Fn->FLT_MIN) {
+      return 0;
     }
     
-    return 0;
+    unless ($DOUBLE_VALUE == Fn->FLT_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
   native static method set_class_var_float_by_name_test : void ();
 
@@ -481,11 +541,11 @@ class TestCase::NativeAPI {
   static method set_class_var_double_by_name : int () {
     TestCase::NativeAPI->set_class_var_double_by_name_test();
     
-    if ($DOUBLE_VALUE == Fn->DBL_MIN) {
-      return 1;
+    unless ($DOUBLE_VALUE == Fn->DBL_MIN) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   native static method set_class_var_double_by_name_test : void ();
 

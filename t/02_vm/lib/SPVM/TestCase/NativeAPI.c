@@ -1152,8 +1152,23 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_object_by_name_test_exception(S
 int32_t SPVM__TestCase__NativeAPI__set_class_var_byte_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
-
+  
   env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", INT8_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", INT8_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$INT_VALUE", INT8_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", INT8_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", INT8_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", INT8_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   return 0;
@@ -1170,8 +1185,20 @@ int32_t SPVM__TestCase__NativeAPI__set_class_var_byte_by_name_test_exception(SPV
 
 int32_t SPVM__TestCase__NativeAPI__set_class_var_short_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
-
+  
   env->set_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", INT16_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$INT_VALUE", INT16_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", INT16_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", INT16_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", INT16_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   return 0;
@@ -1188,8 +1215,17 @@ int32_t SPVM__TestCase__NativeAPI__set_class_var_short_by_name_test_exception(SP
 
 int32_t SPVM__TestCase__NativeAPI__set_class_var_int_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
-
+  
   env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$INT_VALUE", INT32_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", INT32_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", INT16_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", INT32_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   return 0;
@@ -1210,6 +1246,12 @@ int32_t SPVM__TestCase__NativeAPI__set_class_var_long_by_name_test(SPVM_ENV* env
   env->set_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", INT64_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
+  env->set_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", INT16_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", INT32_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
   return 0;
 }
 
@@ -1224,8 +1266,11 @@ int32_t SPVM__TestCase__NativeAPI__set_class_var_long_by_name_test_exception(SPV
 
 int32_t SPVM__TestCase__NativeAPI__set_class_var_float_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
-
+  
   env->set_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", FLT_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", FLT_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   return 0;
