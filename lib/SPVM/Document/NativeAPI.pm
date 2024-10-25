@@ -330,17 +330,21 @@ Returns the address where the value of the class variable I<class_var> is stored
 
 C<int8_t (*get_class_var_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
+Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value.
 
-If it is found, interprets it as byte type and returns its value. Otherwise, an exception is thrown.
+The type of the filed must be C<byte> type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If the basic type given by I<basic_type_name> is not found, an exception is thrown.
+If this function succeeds, I<error_id> is set to 0.
 
-If the class variable given by I<class_var_name> is not found, an exception is thrown.
+Exceptions:
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -352,17 +356,21 @@ Examples:
 
 C<int16_t (*get_class_var_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
+Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value casting to C<short> type.
 
-If it is found, interprets it as short type and returns its value. Otherwise, an exception is thrown.
+The type of the filed must be C<short> type or smaller numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If the basic type given by I<basic_type_name> is not found, an exception is thrown.
+If this function succeeds, I<error_id> is set to 0.
 
-If the class variable given by I<class_var_name> is not found, an exception is thrown.
+Exceptions:
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -374,18 +382,21 @@ Examples:
 
 C<int32_t (*get_class_var_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
+Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value casting to C<int> type.
 
-If it is found, interprets it as int type and returns its value. Otherwise, an exception is thrown.
+The type of the filed must be C<int> type or smaller numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If the basic type given by I<basic_type_name> is not found, an exception is thrown.
+If this function succeeds, I<error_id> is set to 0.
 
-If the class variable given by I<class_var_name> is not found, an exception is thrown.
+Exceptions:
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 Examples:
 
   int32_t error_id = 0;
@@ -396,18 +407,21 @@ Examples:
 
 C<int64_t (*get_class_var_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
+Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value casting to C<long> type.
 
-If it is found, interprets it as long type and returns its value. Otherwise, an exception is thrown.
+The type of the filed must be C<long> type or smaller numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If the basic type given by I<basic_type_name> is not found, an exception is thrown.
+If this function succeeds, I<error_id> is set to 0.
 
-If the class variable given by I<class_var_name> is not found, an exception is thrown.
+Exceptions:
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 Examples:
 
   int32_t error_id = 0;
@@ -418,18 +432,21 @@ Examples:
 
 C<float (*get_class_var_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
+Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value casting to C<float> type.
 
-If it is found, interprets it as float type and returns its value. Otherwise, an exception is thrown.
+The type of the filed must be C<float> type or smaller numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If the basic type given by I<basic_type_name> is not found, an exception is thrown.
+If this function succeeds, I<error_id> is set to 0.
 
-If the class variable given by I<class_var_name> is not found, an exception is thrown.
+Exceptions:
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 Examples:
 
   int32_t error_id = 0;
@@ -440,18 +457,21 @@ Examples:
 
 C<double (*get_class_var_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
+Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value casting to C<double> type.
 
-If it is found, interprets it as double type and returns its value. Otherwise, an exception is thrown.
+The type of the filed must be C<double> type or smaller numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If the basic type given by I<basic_type_name> is not found, an exception is thrown.
+If this function succeeds, I<error_id> is set to 0.
 
-If the class variable given by I<class_var_name> is not found, an exception is thrown.
+Exceptions:
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 Examples:
 
   int32_t error_id = 0;
@@ -462,17 +482,21 @@ Examples:
 
 C<void* (*get_class_var_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
+Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value.
 
-If it is found, interprets it as an object type and returns its value. Otherwise, an exception is thrown.
+The type of the filed must be an object type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If the basic type given by I<basic_type_name> is not found, an exception is thrown.
+If this function succeeds, I<error_id> is set to 0.
 
-If the class variable given by I<class_var_name> is not found, an exception is thrown.
+Exceptions:
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
   
@@ -484,29 +508,27 @@ Examples:
 
 C<void* (*get_class_var_string_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
-
-If it is found, interprets it as string type and returns its value. Otherwise, an exception is thrown.
-
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
-
-If the basic type given by I<basic_type_name> is not found, an exception is thrown.
-
-If the class variable given by I<class_var_name> is not found, an exception is thrown.
-
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+The same as L</"get_class_var_object_by_name"> native API.
 
 =head2 set_class_var_byte_by_name
 
 C<void (*set_class_var_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int8_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
+Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to C<byte> type.
 
-If it is found, interprets it as byte type and sets I<value> to it. Otherwise, an exception is thrown.
+The type of the filed must be C<byte> type or larger numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -518,13 +540,21 @@ Examples:
 
 C<void (*set_class_var_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int16_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable I<class_var> given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
+Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to C<short> type.
 
-If it is found, interprets it as short type and sets I<value> to it. Otherwise, an exception is thrown.
+The type of the filed must be C<short> type or larger numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -536,13 +566,21 @@ Examples:
 
 C<void (*set_class_var_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int32_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable I<class_var> given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
+Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to C<int> type.
 
-If it is found, interprets it as int type and sets I<value> to it. Otherwise, an exception is thrown.
+The type of the filed must be C<int> type or larger numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -553,13 +591,22 @@ Examples:
 =head2 set_class_var_long_by_name
 
 C<void (*set_class_var_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, int64_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
-Searches a class variable I<class_var> given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If it is found, interprets it as long type and sets I<value> to it. Otherwise, an exception is thrown.
+Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to C<long> type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The type of the filed must be C<long> type or larger numeric type.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
+
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -571,13 +618,21 @@ Examples:
 
 C<void (*set_class_var_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, float value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable I<class_var> given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
+Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to C<float> type.
 
-If it is found, interprets it as float type and sets I<value> to it. Otherwise, an exception is thrown.
+The type of the filed must be C<float> type or larger numeric type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -589,13 +644,21 @@ Examples:
 
 C<void (*set_class_var_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, double value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a class variable I<class_var> given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
+Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value>.
 
-If it is found, interprets it as double type and sets I<value> to it. Otherwise, an exception is thrown.
+The type of the filed must be C<double> type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -608,11 +671,21 @@ Examples:
 C<void (*set_class_var_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, void* value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 Searches a class variable I<class_var> given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If it is found, interprets it as an object type and sets I<value> to it. Otherwise, an exception is thrown.
+Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value>.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The type of the filed must be an object type.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
+
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -623,13 +696,8 @@ Examples:
 =head2 set_class_var_string_by_name
 
 C<void (*set_class_var_string_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, void* value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
-Searches a class variable I<class_var> given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If it is found, interprets it as string type and sets I<value> to it. Otherwise, an exception is thrown.
-
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
-
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+The same as L</"set_class_var_object_by_name"> native API.
 
 =head2 get_field
 
@@ -755,7 +823,7 @@ Sets I<value> to the field I<field> interpreting its type is string type.
 
 C<int8_t (*get_field_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as C<byte> value.
+Retruns the value of the field specified by the invocant I<object> and the field name I<field_name>.
 
 The type of the filed must be C<byte> type.
 
@@ -781,7 +849,7 @@ Examples:
 
 C<int16_t (*get_field_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as C<short> value.
+Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<short> type.
 
 The type of the filed must be C<short> type or smaller numeric type.
 
@@ -807,7 +875,7 @@ Examples:
 
 C<int32_t (*get_field_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as C<int> value.
+Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<int> type.
 
 The type of the filed must be C<int> type or smaller numeric type.
 
@@ -833,7 +901,7 @@ Examples:
 
 C<int64_t (*get_field_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as C<long> value.
+Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<long> type.
 
 The type of the filed must be C<long> type or smaller numeric type.
 
@@ -859,7 +927,7 @@ Examples:
 
 C<float (*get_field_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as C<float> value.
+Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<float> type.
 
 The type of the filed must be C<float> type or smaller numeric type.
 
@@ -885,7 +953,7 @@ Examples:
 
 C<double (*get_field_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as C<double> value.
+Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<double> type.
 
 The type of the filed must be C<double> type or smaller numeric type.
 
@@ -911,7 +979,7 @@ Examples:
 
 C<void* (*get_field_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as an object value.
+Gets the value of the field specified by the invocant I<object> and the field name I<field_name>.
 
 The type of the filed must be an object type.
 
@@ -937,7 +1005,7 @@ Examples:
 
 C<void* (*get_field_string_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-The same as L</"get_field_object_by_name"> for now.
+The same as L</"get_field_object_by_name"> native API.
 
 =head2 set_field_byte_by_name
 
@@ -1073,7 +1141,7 @@ Examples:
 
 C<void (*set_field_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, double value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to C<double> type.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value>.
 
 The type of the filed must be C<double> type.
 
@@ -1099,13 +1167,21 @@ Examples:
 
 C<void (*set_field_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, void* value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a field I<field> given the object I<object> and the field name I<field_name>.
+Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value>.
 
-If it is found, interprets it as an object type and sets I<value> to it. Otherwise, an exception is thrown.
+The type of the filed must be an object type.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If this function succeeds, I<error_id> is set to 0.
+
+Exceptions:
+
+If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
+If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+
+If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -1117,13 +1193,7 @@ Examples:
 
 C<void (*set_field_string_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, void* value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a field I<field> given the object I<object> and the field name I<field_name>.
-
-If it is found, interprets it as string type and sets I<value> to it. Otherwise, an exception is thrown.
-
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
-
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+The same as L</"set_field_object_by_name"> native API.
 
 =head2 get_field_string_chars_by_name
 
