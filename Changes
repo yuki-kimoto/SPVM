@@ -39,6 +39,11 @@
     * Improve the type check of the field in get_field_object_by_name native API. The field must be an object type.
     * Improve the type check of the field in get_field_object_ref_by_name native API. The field must be an object type.
     * Improve the type check of the field in set_field_byte_by_name native API. The field must be byte or large type.
+    * Improve the type check of the field in set_field_short_by_name native API. The field must be short or large type.
+    * Improve the type check of the field in set_field_int_by_name native API. The field must be int or large type.
+    * Improve the type check of the field in set_field_long_by_name native API. The field must be long or large type.
+    * Improve the type check of the field in set_field_float_by_name native API. The field must be float or large type.
+    * Improve the type check of the field in set_field_double_by_name native API. The field must be double or large type.
     
 0.990024 2023-10-23
   [New Features]
