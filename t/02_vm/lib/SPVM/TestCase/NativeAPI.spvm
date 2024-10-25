@@ -186,7 +186,8 @@ class TestCase::NativeAPI {
   native static method get_class_var_byte_by_name_test_exception : byte ();
 
   static method get_class_var_short_by_name : int () {
-
+    
+    $BYTE_VALUE = (byte)Fn->INT8_MIN;
     $SHORT_VALUE = (short)Fn->INT16_MIN;
     
     my $success = TestCase::NativeAPI->get_class_var_short_by_name_test();
@@ -212,7 +213,9 @@ class TestCase::NativeAPI {
   native static method get_class_var_short_by_name_test_exception : short ();
 
   static method get_class_var_int_by_name : int () {
-
+    
+    $BYTE_VALUE = (byte)Fn->INT8_MIN;
+    $SHORT_VALUE = (short)Fn->INT16_MIN;
     $INT_VALUE = Fn->INT32_MIN;
     
     my $success = TestCase::NativeAPI->get_class_var_int_by_name_test();
@@ -238,7 +241,10 @@ class TestCase::NativeAPI {
   native static method get_class_var_int_by_name_test_exception : int ();
 
   static method get_class_var_long_by_name : long () {
-
+    
+    $BYTE_VALUE = (byte)Fn->INT8_MIN;
+    $SHORT_VALUE = (short)Fn->INT16_MIN;
+    $INT_VALUE = Fn->INT32_MIN;
     $LONG_VALUE = Fn->INT64_MIN;
     
     my $success = TestCase::NativeAPI->get_class_var_long_by_name_test();
@@ -264,7 +270,11 @@ class TestCase::NativeAPI {
   native static method get_class_var_long_by_name_test_exception : long ();
 
   static method get_class_var_float_by_name : int () {
-
+    
+    $BYTE_VALUE = (byte)Fn->INT8_MIN;
+    $SHORT_VALUE = (short)Fn->INT16_MIN;
+    $INT_VALUE = Fn->INT16_MIN;
+    $LONG_VALUE = Fn->INT16_MIN;
     $FLOAT_VALUE = Fn->FLT_MIN;
     
     my $success = TestCase::NativeAPI->get_class_var_float_by_name_test();
@@ -290,7 +300,12 @@ class TestCase::NativeAPI {
   native static method get_class_var_float_by_name_test_exception : float ();
 
   static method get_class_var_double_by_name : int () {
-
+    
+    $BYTE_VALUE = (byte)Fn->INT8_MIN;
+    $SHORT_VALUE = (short)Fn->INT16_MIN;
+    $INT_VALUE = Fn->INT32_MIN;
+    $LONG_VALUE = Fn->INT32_MIN;
+    $FLOAT_VALUE = Fn->FLT_MIN;
     $DOUBLE_VALUE = Fn->DBL_MIN;
     
     my $success = TestCase::NativeAPI->get_class_var_double_by_name_test();
