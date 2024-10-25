@@ -1669,7 +1669,22 @@ SPVM_OBJECT** SPVM_API_get_field_object_ref_by_name(SPVM_ENV* env, SPVM_VALUE* s
     return NULL;
   };
   
-  SPVM_OBJECT** ref = SPVM_API_get_field_object_ref(env, stack, object, field);
+  int32_t is_object_type = SPVM_API_TYPE_is_object_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  
+  int32_t is_invalid_type = 0;
+  
+  SPVM_OBJECT** ref = NULL;
+  if (is_object_type) {
+    ref = SPVM_API_get_field_object_ref(env, stack, object, field);
+  }
+  else {
+    is_invalid_type = 1;
+  }
+  
+  if (is_invalid_type) {
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be an object type.", func_name, file, line);
+    return 0;
+  }
   
   return ref;
 }
