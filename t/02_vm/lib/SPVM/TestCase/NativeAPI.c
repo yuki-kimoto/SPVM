@@ -1386,11 +1386,11 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_byte_by_name(SPVM_ENV* env, 
     
     if (!(byte_value == INT8_MIN)) {
       stack[0].ival = 0;
+      return 0;
     }
   }
   
   stack[0].ival = 1;
-  
   return 0;
 }
 
@@ -1404,11 +1404,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_byte_by_name_exception(SPVM_
   
   if (byte_value == INT8_MIN) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1422,11 +1425,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_short_by_name(SPVM_ENV* env,
   
   if (short_value == INT16_MIN) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1440,11 +1446,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_short_by_name_exception(SPVM
   
   if (short_value == INT16_MIN) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1458,11 +1467,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_int_by_name(SPVM_ENV* env, S
   
   if (int_value == INT32_MIN) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1476,11 +1488,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_int_by_name_exception(SPVM_E
   
   if (int_value == INT32_MIN) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1494,11 +1509,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_long_by_name(SPVM_ENV* env, 
   
   if (long_value == INT64_MIN) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1512,11 +1530,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_long_by_name_exception(SPVM_
   
   if (long_value == INT64_MIN) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1530,11 +1551,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_float_by_name(SPVM_ENV* env,
   
   if (float_value == FLT_MIN) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1548,11 +1572,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_float_by_name_exception(SPVM
   
   if (float_value == FLT_MIN) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1566,11 +1593,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_double_by_name(SPVM_ENV* env
   
   if (double_value == DBL_MIN) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1584,11 +1614,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_double_by_name_exception(SPV
   
   if (double_value == DBL_MIN) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1609,11 +1642,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_object_by_name(SPVM_ENV* env
   
   if (x == 5) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1627,11 +1663,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_string_chars_by_name(SPVM_EN
   
   if (strcmp(string_chars, "abc") == 0) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1643,11 +1682,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_string_chars_by_name_excepti
   const char* string_chars = env->get_field_string_chars_by_name(env, stack, string_chars_simple, "not_found", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
@@ -1668,11 +1710,14 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_object_by_name_exception(SPV
   
   if (x == 5) {
     stack[0].ival = 1;
+    return 0;
   }
   else {
     stack[0].ival = 0;
+    return 0;
   }
   
+  stack[0].ival = 1;
   return 0;
 }
 
