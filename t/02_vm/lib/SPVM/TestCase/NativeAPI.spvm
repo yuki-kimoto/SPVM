@@ -163,13 +163,9 @@ class TestCase::NativeAPI {
     
     $BYTE_VALUE = (byte)Fn->INT8_MIN;
     
-    my $value = TestCase::NativeAPI->get_class_var_byte_by_name_test();
+    my $success = TestCase::NativeAPI->get_class_var_byte_by_name_test();
     
-    unless ($value == Fn->INT8_MIN) {
-      return 0;
-    }
-    
-    return 1;
+    return $success;
   }
   native static method get_class_var_byte_by_name_test : byte ();
   
