@@ -1,4 +1,4 @@
-0.990025001 2023-10-26
+0.990025001 2024-10-26
   [Document Fix]
     * Fix docs for the following native APIs.
 
@@ -13,7 +13,7 @@
       set_field_long_by_name native API
       set_field_float_by_name native API
     
-0.990025 2023-10-25
+0.990025 2024-10-25
   [Test Improvement]
     * Add tests for NaN comparison and NaN condition evaluation.
   [New Features]
@@ -75,7 +75,7 @@
     * Improve the type check of the class_var in set_class_var_float_by_name native API. The class variable must be float or larger type.
     * Improve the type check of the class_var in set_class_var_double_by_name native API. The class variable must be double type.
     * Improve the type check of the class_var in set_class_var_double_by_name native API. The class variable must be an object type.
-0.990024 2023-10-23
+0.990024 2024-10-23
   [New Features]
     * Allow multiple INIT blocks.
       
@@ -106,20 +106,20 @@
       
       https://github.com/yuki-kimoto/SPVM/issues/606
       
-0.990023 2023-10-18
+0.990023 2024-10-18
   [Exception Message Fix]
     * Fix an exception message "An array setting failed. The invocant must be defined." on a field.
       
       [After]
       An field access failed. The invocant must be defined.
 
-0.990022 2023-10-17
+0.990022 2024-10-17
   [Bug Fix]
     * Fix a bug that compilation error messages were cut off.
     
       https://github.com/yuki-kimoto/SPVM/issues/603
     
-0.990021 2023-10-12
+0.990021 2024-10-12
   [New Features]
     * Add Array#repeat method.
     
@@ -129,28 +129,28 @@
     * Improve the performance of Fn#repeat method.
     * Fix docs in Fn#repeat method. The return type was wrong.
     
-0.990020 2023-10-12
+0.990020 2024-10-12
   [Bug Fix]
     * Fix a bug that child class does not call DESTROY method of its super class.
   
   [Changes]
     * Allow the same type and name field in a child class.
     
-0.990019 2023-10-08
+0.990019 2024-10-08
   [New Features]
     * Add --dependency-cpan option to spvmcc command.
   [Incompatible Changes]
     * spvmcc  --dependency option do not contains SPVM.
   [Document Fix]
     * Fix docs for spvmcc --dependency option.
-0.990018 2023-10-08
+0.990018 2024-10-08
   [New Features]
     * Add --dependency option to spvmcc command.
   [Internal Changes]
     * Add get_version_string method to SPVM::Builder::Native::BasicType.
     * Add get_spvm_version_string method to SPVM::Builder::Native::Runtime module.
     * Add dump_dependency method to SPVM::Builder::Exe module.
-0.990017 2023-10-07
+0.990017 2024-10-07
   [Exception Message Changes]
     * Change an exception message.
       [Before]
@@ -174,7 +174,7 @@
       
       #567
       
-0.990016 2023-10-05
+0.990016 2024-10-05
   [Internal Changes]
     * SPVM::Builder::Native::Compiler#compile and compile_anon_class methods throw an exception when a compliation failed.
   [Changes]
@@ -193,7 +193,7 @@
   
     * Add the way to search dependent resourcees to the help of spvmcc command.
     
-0.990015 2023-10-04
+0.990015 2024-10-04
   [Exception Message Improvement]
     * An exception message in an array access is improved.
       
@@ -205,7 +205,7 @@
   [New Features]
     * Add -E option to spvm command.
     
-0.990014 2023-10-04
+0.990014 2024-10-04
   [New Feature]
     * spvm command support script name. Currently script name must start with [a-z] or contain / or \ because of class name argument is not removed.
       
@@ -260,7 +260,7 @@
     * Fix a bug that compile_with_exit do not receive the file and line in arguments in SPVM::Global::build_class.
   [Bug Fix]
     * Fix a bug that spvm command -e option do not work well in precompilation and native methods.
-0.990013 2023-10-02
+0.990013 2024-10-02
   [New Features]
     * Add Fn#pack method.
     * Add Fn#unpack method.
@@ -271,7 +271,7 @@
     * Add optional $offset argument to Fn#big_endian_to_system_endian method.
     * Add optional $offset argument to Fn#system_endian_to_big_endian method.
     
-0.990012 2023-09-26
+0.990012 2024-09-26
   [New Features]
     * Add Fn#system_endian_to_big_endian method.
     * Add Fn#big_endian_to_system_endian method.
@@ -281,13 +281,13 @@
     * Add Fn#sort_desc method.
     * Add Fn#sprintf method.
     * Add Fn#system_is_little_endian method.
-0.990011 2023-09-20
+0.990011 2024-09-20
   [New Features]
     * Add Array#shuffle method.
     * Add Array#shuffle_any_numeric method.
     * Add Fn#reverse method.
     * Add Fn#slice method.
-0.990010 2023-09-18
+0.990010 2024-09-18
   [New Features]
     * Add Fn#length method.
     * Add Fn#get_elem_or_char_size method.
@@ -312,7 +312,7 @@
     
       https://github.com/yuki-kimoto/SPVM/issues/582
     
-0.990009 2023-09-11
+0.990009 2024-09-11
   [New Features]
     * Add SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE to spvm_native.h
     * Add get_stack_tmp_buffer internal native API.
@@ -381,7 +381,7 @@
       
       Some Mac clang compilier may cause this problem, but I don't know the reason for now.
       
-0.990008 2023-09-10
+0.990008 2024-09-10
   [New Features]
     * Add Fn#memcmp method.
     * Add Comparable interface.
@@ -449,7 +449,7 @@
   [Changes]
     * Add $api->set_exception(undef); to a test file generated by spvmdist command.
     
-0.990007 2023-09-02
+0.990007 2024-09-02
   [New Features]
     * Add StringBuffer#clone method.
     * Add Fn#is_any_numeric_array method.
@@ -514,11 +514,11 @@
       
       We will add Fn#print_stderr and Fn#say_stderr to achieve the original behavior, no stack trace, of warn operator.
     
-0.990006 2023-05-09
+0.990006 2024-05-09
   [Feature Improvement]
     * Users know caller when a class loading from a Perl script failed.
     
-0.990005 2023-05-07
+0.990005 2024-05-07
   [New Features]
     * Add the following argument native APIs.
       int32_t (*is_optional)(void* runtime, void* arg);
@@ -551,7 +551,7 @@
       SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_DOUBLE
       SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_OBJECT
 
-0.990004 2023-05-07
+0.990004 2024-05-07
   [Bug Fix with Incompatible Changes]
     * Change arguments requirement in Interface Method Requirement. This fix deglation of the SPVM::Regex module.
     [Before]
@@ -561,16 +561,16 @@
     [After]
     The length of the arguments of the method of the I<INTERFACE_METHOD_TO> type must be greater than or equal to the length of the required arguments the method of the I<INSTANT_METHOD_TYPE_FROM> type.
   
-0.990003 2023-05-01
+0.990003 2024-05-01
   [Incompatible Changes and New Features]
     * Add the mingw_ccflags field to the SPVM::Builder::Config class.
       This value is set to ['-D__USE_MINGW_ANSI_STDIO'] in Windows. This changes printf format in Windows becuase the output is compliant to C99.
   [Internal Changes]
     * Do not use _set_output_format in Windows. -D__USE_MINGW_ANSI_STDIO contains _set_output_format effect.
-0.990002 2023-04-29
+0.990002 2024-04-29
   [Bug Fix]
     * Fix sprintf %g format in old Windows. 1.0e008(3 digit) is changed to 1.0e08(2 digit). This is C11 compliant.
-0.990001 2023-04-23
+0.990001 2024-04-23
   [Document Improvement]
     * Add the doc of the spvmdist command.
     * Add the doc of the spvm command.
@@ -582,13 +582,13 @@
     * Remove unneeded SPVM/Stack.pm file.
     * Remove unneeded SPVM/Runtime.pm file.
     
-0.990 2023-04-23
+0.990 2024-04-23
   [Major Version Up]
     * SPVM 0.990 is a major version up. The document is finished.
   [Document Improvement]
     * Add the doc of the Sync::Mutex class.
     * Add the doc of Thread Safe to SPVM::Document::Language::System.
-0.989105 2023-04-23
+0.989105 2024-04-23
   [Fix Bug]
     * Fix the bug that native mortal stack is not released properly in a normal method and a precompilation method implementation.
       env->enter_scope and env->leave_scope are added to the start and end of a normal method and a precompilation method implementation.
@@ -597,7 +597,7 @@
     * The heading "Mortal Stack" in SPVM::Document::NativeClass is changed to "Native Mortal Stack".
   [Internal Changes]
     * Cleanup method calls.
-0.989104 2023-04-20
+0.989104 2024-04-20
   [Document Improvement]
     * Improve the doc of Tokanization.
   [Internal Changes]
@@ -607,7 +607,7 @@
   [Document Fix]
     * \0 is a octal escape character.
     
-0.989103 2023-04-16
+0.989103 2024-04-16
   [Internal Changes]
     * Remove the is_anon field from spvm_runtime_method.h.
     * Remove the is_anon field from spvm_method.h.
@@ -617,7 +617,7 @@
     * Improve the doc of Operators.
     * Improve the doc of GarbageCollection.
     
-0.989102 2023-04-15
+0.989102 2024-04-15
   [Internal Changes]
     * The is_super_class basic type native API shares the logic of its compiler.
     * The has_interface basic type native API shares the logic of its compiler.
@@ -636,7 +636,7 @@
   [Imcompatible Changes]
     * The class generated by a anon method is not an anon class.
     
-.989101 2023-04-14
+.989101 2024-04-14
   [Imcompatible Changes]
     * An instance method cannot be assigned to a statice method of its super classes in the interface method requirement.
   [Internal Changes]
@@ -645,7 +645,7 @@
     * Improve a compilation error message related to the assignment requirement, cast requirement, the interface method requirement, the interface requirement.  [Document Fix and Improvement]
     * Improve the doc of Class.
     * Improve the doc of Types.
-0.989100 2023-04-10
+0.989100 2024-04-10
   [Document Fix and Improvement]
     * The heading "Boolean Conversion is changed to "Condition Evaluation", and it is moved from the doc of Types to the doc of Operators.
     * The concept "Implicite Type Conversion" is changed to "Data Conversion".
@@ -659,20 +659,20 @@
     [After]
     The \"%s\" type cannot be assigned to the \"%s\" type in %s.
     
-0.989099 2023-04-08
+0.989099 2024-04-08
   [Document Fix and Improvement]
     * Fix and improve the document of Operators.
     * Fix and improve the document of Types.
   [Support Changes]
     * SPVM doesn't support C++ compilers that does not support -std=c++11 option.
-0.989098 2023-04-04
+0.989098 2024-04-04
   [Document Fix and Improvement]
     * Fix and improve the document of Operators.
     * Fix and improve the document of Class.
     * The heading "Array Access" is changed to "Element Access".
   [Internal Changes]
     * The type check logic is simplified and it is shared with the compilation time and runtime.
-0.989097 2023-04-02
+0.989097 2024-04-02
   [Imcompatible Changes]
     * The copy operator does not thrown an exception, and causes an compilation error instead of an exception.
     * The warn operator causes an compilation error if the type of the operand is the undef type.
@@ -684,7 +684,7 @@
     * Fix and improve the document of operators.
     * Fix and improve the document of class definition.
     
-0.989096 2023-03-27
+0.989096 2024-03-27
   [Incompatible Changes]
     * Change the definition of the value field in the Bool class.
       [Before]
@@ -757,7 +757,7 @@
       218 get_float_object_value
       219 get_double_object_value
     
-0.989095 2023-03-26
+0.989095 2024-03-26
   [Bug Fix]
     * Fix the bug that second compilation use freed op field information.
     
@@ -765,14 +765,14 @@
     
     * Fix the bug that second compilation use freed op class variable information.
     
-0.989094 2023-03-26
+0.989094 2024-03-26
   [Internal Changes]
     * SPVM::Builder::Config::Info does not depend on the SPVM::Native::Compiler.
   [Bug Fix]
     * Fix the bug that the spvmcc command does not compile precompilation anon methods.
   [Incompatible Changes]
     * Precompilation methods are no more fallback if is_precompile_fallback is set to a true value.
-0.989093 2023-03-25
+0.989093 2024-03-25
   [Bug Fix]
     * Fix the bug that the logical OR operator set the internal condition flag where it should not be changed.
     * Fix the bug that the logical AND operator set the internal condition flag where it should not be changed.
@@ -782,7 +782,7 @@
   [Test Cleanup]
     * Cleanup tests for operators
     * Cleanup tests for statements
-0.989092 2023-03-23
+0.989092 2024-03-23
   [New Features]
     * Add the get_basic_types method to the Native::Runtime class.
     * Add the get_methods method to the Native::BasicType class.
@@ -813,7 +813,7 @@
   [Internal Changes]
     * Runtime precompilation can be detected in easy way that update blib/lib/SPVM/Builder/include/spvm_version.h in Makefile.PL.
     * The can operator receive the constant string ID for method name.
-0.989091 2023-03-21
+0.989091 2024-03-21
   [Incompatible Changes]
     * The check_stack_env native API is renamed to is_binary_compatible_stack.
     * Remove the call_class_method_for_env method in the Native::MethodCall class.
@@ -840,7 +840,7 @@
     * Add the new_class_method_with_env_stack, new_instance_method_static_with_env_stack, new_instance_method_with_env_stack methods to the Native::MethodCall class.
     * Add the Native::MethodCall::Error::ExceptionThrown class.
     * Add the optional argument $error_id_ref to the call, call_class_method, call_instance_method_static, call_instance_method.
-0.989090 2023-03-20
+0.989090 2024-03-20
   [Exception Message Improvement]
     * Improve exception messages in Modules.
       [Before]
@@ -857,7 +857,7 @@
     * The warn operator output undef if the operand is an object type and the value in runtime is undef.
     * The warn operator output the type and the address if the operand is an object type that is not the string type.
     * The warn operator output the empty string if the operand is an empty string.
-0.989089 2023-03-20
+0.989089 2024-03-20
   [Incompatible Changes]
     * Rename the get_method, get_field, get_class_var methods from the Native::Runtime::Info class to get_method_by_name, get_field_by_name, get_class_var_by_name.
     * Remove the Native::Runtime::Info class and its methods are moved to the Native::Runtime::Class.
@@ -865,7 +865,7 @@
   [Internal Changes]
     * Remove the SPVM::Builder::Native::Runtime::Info module.
   
-0.989088 2023-03-19
+0.989088 2024-03-19
   [New Features]
     * Add the Native::API class.
   [Internal Changes]
@@ -895,7 +895,7 @@
     * Remove the set_exception in the Native::Env and add the set_exception method to the Native::API class.
   [Bug Fix]
     * Fix bug that the SPVM language is not build by only Perl and the C language.
-0.989087 2023-03-14
+0.989087 2024-03-14
   [Document Improvement and Changes]
     * The heading "Type Assignability" to "Assignment Requirement".
     * The heading "Type Castability" to "Cast Requirement".
@@ -907,7 +907,7 @@
     * Add the new_array_proto_element Native API.
     * Add the new_array_proto_element method ot the Array class.
     
-0.989086 2023-03-11
+0.989086 2024-03-11
   [New Features]
     * Add the following methods to the Array class.
       to_object_array_byte
@@ -945,7 +945,7 @@
       
       https://github.com/yuki-kimoto/SPVM/wiki/Config
       
-0.989085 2023-03-08
+0.989085 2024-03-08
   [New Features]
     * Add the or method to the Fn class.
     * Add the if method to the Fn class.
@@ -967,7 +967,7 @@
   [Ingernal Changes]
     * Remove removing "SPVM::" from from class names in arguments.
     
-0.989084 2023-03-07
+0.989084 2024-03-07
   [New Features]
     * Add -B and --build-dir to the spvm command.
     * Add the --config-argv option to the spvmcc command.
@@ -1012,7 +1012,7 @@
     * Fix the bug that if spvmcc mode and optimize does not work in compiling native classes and precompilation classes.
     * Fix the bug that the string-to-byte[] type conversion cause segfault when the operand is undef.
       
-0.989083 2023-03-06
+0.989083 2024-03-06
   [Internal Changes]
     * Add parentheses to the confess function so that Perl does not interpret it as the indirect syntax.
   [New Features]
@@ -1025,7 +1025,7 @@
     * Improve and fix the document of the SPVM::Builder::Util::API class.
     * Improve and fix SPVM::Document::NativeClass.
     
-0.989082 2023-03-01
+0.989082 2024-03-01
   [New Features]
     * The spvm_warn function in native APIs outputs the function name, the file name, and the line number.
     * The spvm_warnf function in native APIs outputs the function name, the file name, and the line number.
@@ -1041,7 +1041,7 @@
   [Bug Fix]
     * Fix the bug that the shorten native API cannot culcurate the length of \0 filling.
     
-0.989081 2023-02-29
+0.989081 2024-02-29
   [Document Improvement]
     * Improve the documents of native APIs.
   [Bug Fix]
@@ -1069,7 +1069,7 @@
   [Incompatible Changes]
     * The copy_no_mortal native API does not return NULL if the argument object is invalid type. This is replaced with an assersion.
     
-0.989080 2023-02-23
+0.989080 2024-02-23
   [Document Improvement]
     * Add SPVM::Document page.
     * Improve the documents of native APIs.
@@ -1077,11 +1077,11 @@
     * "Execution Environemnt" is renamed to "Runtime Environment".
     * "Call Stack" is renamed to "Runtime Stack".
     
-0.989080 2023-02-23
+0.989080 2024-02-23
   [Document Fix]
     * Fix language specification document pathes.
     
-0.989079 2023-02-22
+0.989079 2024-02-22
   [Document Improvement]
     * Separate SPVM::Document::Language to the following documents.
     
@@ -1105,7 +1105,7 @@
     * Improve many docs.
   [Test Improvement]
     * Add tests for native APIs.
-0.989078 2023-02-21
+0.989078 2024-02-21
   [Document Improvement]
     * Improve "Usage" of SPVM program.
     * Add SPVM::Document::EnvironmentVariables.
@@ -1151,7 +1151,7 @@
       -  const void* (*get_name)(void* runtime, void* method);
       +  const char* (*get_name)(void* runtime, void* method);
       
-0.989077 2023-02-20
+0.989077 2024-02-20
   [New Features]
     * Add file directive syntax.
     
@@ -1189,7 +1189,7 @@
 
       The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.
 
-0.989076 2023-02-19
+0.989076 2024-02-19
   [Changes]
     * Improve the compilation error message in the compile and compile_anon_class in the Native::Compiler class.
   [New Features]
@@ -1197,14 +1197,14 @@
     
       #line 35
       
-0.989075 2023-02-19
+0.989075 2024-02-19
   [Changes]
     * The $args argument in the call_class_method method in the Native::MethodCall class becomes optional.
     * The $args argument in the call method in the Native::MethodCall class becomes optional.
   [New Features]
     * Add the eval_string method in the Native::Compiler class.
     * Add the spvm command
-0.989074 2023-02-14
+0.989074 2024-02-14
   [New Features]
     * Add anon class syntax. Anon class cause compilation error, but this will be used for the compile_anon_class method.
       class {
@@ -1213,7 +1213,7 @@
     * Add the compile_anon_class native compiler API.
     * Add the compile_anon_class method to the Native::Compiler class.
       
-0.989073 2023-02-14
+0.989073 2024-02-14
   [Changes]
     * The spvmdist command outputs .gitattributes file that contains "*.spvm text eol=lf".
     * Add the spvm_utf8.c and spvm_utf8.h files.
@@ -1252,7 +1252,7 @@
       The charactor encoding of SPVM source codes must be UTF-8. Otherwise a compilation error occurs.
 
 
-0.989072 2023-02-14
+0.989072 2024-02-14
   [New Features]
     * Add single quote string literal syntax.
     
@@ -1282,7 +1282,7 @@
     * The add_before_each_compile_cb method in the SPVM::Builder::Config::Exe is renamed to add_global_before_compile_cb.
     * before_compile_cbs are executed just before the compilation.
     * before_link_cbs are executed just before the link.
-0.989071 2023-02-12
+0.989071 2024-02-12
   [New Features]
     * Add the input_dir field to SPVM::Builder::Config.
   [Changes]
@@ -1307,7 +1307,7 @@
     
     * The executable file generated by the spvmcc command returns status code as same as SPVM error id.
     * Include directories by add_include_dir is high priority than native include direcotory and resource include directory.
-0.989070 2023-02-09
+0.989070 2024-02-09
   [New Features]
     * Add the force option to the build_dynamic_lib_dist_precompile method and the build_dynamic_lib_dist_native method
       in the SPVM::Builder::API class.
@@ -1316,7 +1316,7 @@
   [Changes]
     * SPVM compilation dependency is checked by spvm_version.h update, instead of checking all files.
     * Add spvm_version.h to dependency of Makefile generated by create_make_rule_native and create_make_rule_precompile in Makefile.PL.
-0.989069 2023-02-09
+0.989069 2024-02-09
   [New Features]
     * Add a message in compiling and linking a source file like
       [Compile a %s source file ...]
@@ -1351,7 +1351,7 @@
     * Unshift "lib" directory in Makefile.PL that is generated by the spvmdist command.
   [Internal Changes]
     * Resources are loaded in a compilattion instead of a link.
-0.989068 2023-01-22
+0.989068 2024-01-22
   [New Features]
     * Add the copy_object_with_proto method to the Array class.
     * Add the copy_object_address_with_proto method to the Array class.
@@ -1359,7 +1359,7 @@
     * Fix the bug that the unweaken operator does not work well.
     * Fix the bug that the get_string method in the Hash class throws exception when the value is undef.
     * Fix the bug that parant's private fields can access from child classes.
-0.989067 2023-01-05
+0.989067 2024-01-05
   [Incompatible Changes]
     * Remove the DEFAULT_CAPACITY enumeration from the StringBuffer class.
   [New Features]
@@ -1380,7 +1380,7 @@
     * Improve the docs of the Byte, Short, Int, Long, Float, Double classes.
     * Improve the docs of the ByteList, ShortList, IntList, LongList, FloatList, DoubleList classes.
 
-0.989066 2023-01-03
+0.989066 2024-01-03
   [Document Fix]
     * Fix and improve the doc of SPVM::Builder::Config.
   [New features]
