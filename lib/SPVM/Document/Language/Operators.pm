@@ -539,7 +539,7 @@ Compilation Erorrs:
 
 The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer types within int|SPVM::Document::Language::Types/"Integer Types within int">. Otherwise, a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer types|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -566,7 +566,7 @@ Compilation Errors:
 
 The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer types within int|SPVM::Document::Language::Types/"Integer Types within int">. Otherwise, a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer types|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -599,7 +599,7 @@ Compilation Errors:
 
 The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer types within int|SPVM::Document::Language::Types/"Integer Types within int">. Otherwise, a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer types|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
 Examples:
 
