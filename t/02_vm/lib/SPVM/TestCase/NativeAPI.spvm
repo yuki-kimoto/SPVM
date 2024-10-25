@@ -625,8 +625,29 @@ class TestCase::NativeAPI {
       return 0;
     }
     
+    unless ($simple->{short_value} == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{int_value} == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{long_value} == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{float_value} == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{double_value} == Fn->INT8_MIN) {
+      return 0;
+    }
+    
     return 1;
   }
+  
   native static method native_set_field_byte_by_name : void ($simple : TestCase::Simple);
   
   static method set_field_byte_by_name_exception : int () {
@@ -649,11 +670,27 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->native_set_field_short_by_name($simple);
     
-    if ($simple->{short_value} == Fn->INT16_MIN) {
-      return 1;
+    unless ($simple->{short_value} == Fn->INT16_MIN) {
+      return 0;
     }
     
-    return 0;
+    unless ($simple->{int_value} == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{long_value} == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{float_value} == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{double_value} == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
   native static method native_set_field_short_by_name : void ($simple : TestCase::Simple);
   
@@ -680,6 +717,18 @@ class TestCase::NativeAPI {
       return 0;
     }
     
+    unless ($simple->{long_value} == Fn->INT32_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{float_value} == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{double_value} == Fn->INT32_MIN) {
+      return 0;
+    }
+    
     return 1;
   }
   native static method native_set_field_int_by_name : void ($simple : TestCase::Simple);
@@ -703,11 +752,19 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->native_set_field_long_by_name($simple);
     
-    if ($simple->{long_value} == Fn->INT64_MIN) {
-      return 1;
+    unless ($simple->{long_value} == Fn->INT64_MIN) {
+      return 0;
     }
     
-    return 0;
+    unless ($simple->{float_value} == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{double_value} == Fn->INT32_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
   native static method native_set_field_long_by_name : void ($simple : TestCase::Simple);
   
@@ -731,6 +788,10 @@ class TestCase::NativeAPI {
     TestCase::NativeAPI->native_set_field_float_by_name($simple);
     
     unless ($simple->{float_value} == Fn->FLT_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{double_value} == Fn->FLT_MIN) {
       return 0;
     }
     
