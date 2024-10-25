@@ -1763,7 +1763,50 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     *error_id = SPVM_API_die(env, stack, "The \"%s\" field is not found in the \"%s\" class or its super class.", field_name, basic_type_name, func_name, file, line);
     return;
   }
-  SPVM_API_set_field_byte(env, stack, object, field, value);
+  
+  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  
+  int32_t is_invalid_type = 0;
+  
+  if (is_numeric_type) {
+    switch (field->basic_type->id) {
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+        SPVM_API_set_field_byte(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+        SPVM_API_set_field_short(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+        SPVM_API_set_field_int(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+        SPVM_API_set_field_long(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+        SPVM_API_set_field_float(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+        SPVM_API_set_field_double(env, stack, object, field, value);
+        break;
+      }
+      default : {
+        is_invalid_type = 1;
+      }
+    }
+  }
+  else {
+    is_invalid_type = 1;
+  }
+  
+  if (is_invalid_type) {
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be within double type.", func_name, file, line);
+    return;
+  }
 }
 
 void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int16_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
