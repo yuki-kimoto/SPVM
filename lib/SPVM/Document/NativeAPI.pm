@@ -937,21 +937,7 @@ Examples:
 
 C<void* (*get_field_string_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Retruns the value of the field specified by the invocant I<object> and the field name I<field_name> as string value.
-
-The type of the filed must be string type.
-
-The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
-
-If this function succeeds, I<error_id> is set to 0.
-
-Exceptions:
-
-If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
-
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
-
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+The same as L</"get_field_object_by_name"> for now.
 
 =head2 set_field_byte_by_name
 
