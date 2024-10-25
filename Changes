@@ -45,6 +45,12 @@
     * Improve the type check of the field in set_field_float_by_name native API. The field must be float or large type.
     * Improve the type check of the field in set_field_double_by_name native API. The field must be double or large type.
     * Improve the type check of the field in set_field_object_by_name native API. The field must be an object type.
+    * Improve the type check of the class_var in get_class_var_byte_by_name native API. The class variable must be byte type.
+    * Improve the type check of the class_var in get_class_var_short_by_name native API. The class variable must be within short type.
+    * Improve the type check of the class_var in get_class_var_int_by_name native API. The class variable must be within int type.
+    * Improve the type check of the class_var in get_class_var_long_by_name native API. The class variable must be within long type.
+    * Improve the type check of the class_var in get_class_var_float_by_name native API. The class variable must be within float type.
+    * Improve the type check of the class_var in get_class_var_double_by_name native API. The class variable must be within double type.
     
 0.990024 2023-10-23
   [New Features]
