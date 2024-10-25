@@ -1273,7 +1273,36 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
     *error_id = SPVM_API_die(env, stack, "The \"%s\" field is not found in the \"%s\" class or its super class.", field_name, basic_type_name, func_name, file, line);
     return 0;
   };
-  int16_t value = SPVM_API_get_field_short(env, stack, object, field);
+  
+  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  
+  int32_t is_invalid_type = 0;
+  
+  int16_t value = 0;
+  if (is_numeric_type) {
+    switch (field->basic_type->id) {
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+        value = SPVM_API_get_field_byte(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+        value = SPVM_API_get_field_short(env, stack, object, field);
+        break;
+      }
+      default : {
+        is_invalid_type = 1;
+      }
+    }
+  }
+  else {
+    is_invalid_type = 1;
+  }
+  
+  if (is_invalid_type) {
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be within short type.", func_name, file, line);
+    return 0;
+  }
+  
   return value;
 }
 
