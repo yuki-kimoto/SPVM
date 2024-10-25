@@ -44,6 +44,7 @@
     * Improve the type check of the field in set_field_long_by_name native API. The field must be long or large type.
     * Improve the type check of the field in set_field_float_by_name native API. The field must be float or large type.
     * Improve the type check of the field in set_field_double_by_name native API. The field must be double or large type.
+    * Improve the type check of the field in set_field_object_by_name native API. The field must be an object type.
     
 0.990024 2023-10-23
   [New Features]

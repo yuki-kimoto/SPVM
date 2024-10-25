@@ -2147,7 +2147,23 @@ void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     *error_id = SPVM_API_die(env, stack, "The \"%s\" field is not found in the \"%s\" class or its super class.", field_name, basic_type_name, func_name, file, line);
     return;
   };
-  SPVM_API_set_field_object(env, stack, object, field, value);
+  
+  
+  int32_t is_object_type = SPVM_API_TYPE_is_object_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  
+  int32_t is_invalid_type = 0;
+  
+  if (is_object_type) {
+    SPVM_API_set_field_object(env, stack, object, field, value);
+  }
+  else {
+    is_invalid_type = 1;
+  }
+  
+  if (is_invalid_type) {
+    *error_id = SPVM_API_die(env, stack, "The type of the field must be an object type.", func_name, file, line);
+    return;
+  }
 }
 
 void SPVM_API_set_field_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, SPVM_OBJECT* value, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
