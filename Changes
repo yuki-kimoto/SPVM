@@ -32,7 +32,8 @@
   [Changes with Incompatible Change]
     * Improve the type check of the field in get_field_byte_by_name native API. The field must be byte type.
     * Improve the type check of the field in get_field_short_by_name native API. The field must be within short type.
-    * Improve the type check of the field in get_field_short_by_name native API. The field must be within int type.
+    * Improve the type check of the field in get_field_int_by_name native API. The field must be within int type.
+    * Improve the type check of the field in get_field_long_by_name native API. The field must be within long type.
     
 0.990024 2023-10-23
   [New Features]
