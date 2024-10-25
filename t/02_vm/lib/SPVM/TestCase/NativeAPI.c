@@ -1380,15 +1380,16 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_byte_by_name(SPVM_ENV* env, 
   int32_t error_id = 0;
   void* object = stack[0].oval;
   
-  int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
+  {
+    int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    
+    if (!(byte_value == INT8_MIN)) {
+      stack[0].ival = 0;
+    }
+  }
   
-  if (byte_value == INT8_MIN) {
-    stack[0].ival = 1;
-  }
-  else {
-    stack[0].ival = 0;
-  }
+  stack[0].ival = 1;
   
   return 0;
 }
