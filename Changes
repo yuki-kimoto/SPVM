@@ -5,7 +5,8 @@
   [Incompatible Changes]
     * Remove as_bool operator added at 0.990025 2024-10-25
       bacause field setters cannot behave this way and creating 0 or 1 has no meaing.
-          
+  [Internal Changes]
+    * Add SPVM_OBJECT_C_FLAG_NO_FREE to spvm_object struct.
 0.990025001 2024-10-26
   [Document Fix]
     * Fix docs for the following native APIs.
