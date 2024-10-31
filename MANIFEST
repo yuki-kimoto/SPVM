@@ -637,7 +637,6 @@ t/02_vm/05_op/array_big_size.t
 t/02_vm/05_op/array_initialization.t
 t/02_vm/05_op/array_length.t
 t/02_vm/05_op/array_middle_size.t
-t/02_vm/05_op/as_bool.t
 t/02_vm/05_op/assign.t
 t/02_vm/05_op/basic_type_id.t
 t/02_vm/05_op/bit_operator.t
@@ -894,7 +893,6 @@ t/02_vm/lib/SPVM/TestCase/Operator/ArrayBigSize.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/ArrayInit.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/ArrayLength.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/ArrayMiddleSize.spvm
-t/02_vm/lib/SPVM/TestCase/Operator/AsBool.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Assign.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/BasicTypeId.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/BitOperator.spvm

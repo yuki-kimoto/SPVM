@@ -249,7 +249,6 @@ enum {
   SPVM_OP_C_ID_DEREFERENCE,
   SPVM_OP_C_ID_EVAL_ERROR_ID,
   SPVM_OP_C_ID_SEQUENCE,
-  SPVM_OP_C_ID_AS_BOOL,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);

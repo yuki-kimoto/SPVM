@@ -249,7 +249,6 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "DEREFERENCE",
     "EVAL_ERROR_ID",
     "SEQUENCE",
-    "AS_BOOL",
   };
   
   return id_names;

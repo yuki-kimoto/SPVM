@@ -3242,22 +3242,6 @@ Examples:
 
 See the doc of L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about scope operations.
 
-=head2 as_bool Operator
-
-C<as_bool> operator converts a value to 1 or 0.
-
-  as_bool OPERAND
-
-This operator is the alias for the following code.
-
-  (byte)!!OPERAND
-
-The return type is C<byte> type.
-
-Compilation Errors:
-
-The type of I<OPERAND> must be a numeric type or an object type. Otherwise an compilation error occurs.
-
 =head1 Method Call
 
 A method call is an L<operator|/"Operators"> to call a L<method|SPVM::Document::Language::Class/"Method">.
