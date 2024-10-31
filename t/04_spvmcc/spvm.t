@@ -28,6 +28,23 @@ rmtree "$build_dir/work";
 
 my $dev_null = File::Spec->devnull;
 
+# -c option
+{
+  {
+    my $spvm_cmd = "$^X -Mblib blib/script/spvm -c -I solo/lib/SPVM solo/script/myapp.spvm foo bar";
+    my $output = `$spvm_cmd`;
+    
+    is($output, '');
+  }
+  
+  {
+    my $spvm_cmd = "$^X -Mblib blib/script/spvm -c -I solo/lib/SPVM solo/script/myapp.spvm foo bar 2>&1";
+    my $output = `$spvm_cmd`;
+    
+    is($output, "syntax OK\n");
+  }
+}
+
 # Failed to parse options.
 {
   {

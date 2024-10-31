@@ -17,6 +17,7 @@ SPVM::Builder::Util::getopt
   'E=s' => \my $source,
   'e=s' => \my $source_in_main,
   '-M=s' => \my @use_class_names,
+  '-c' => \my $syntax_ok,
 ;
 
 unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs;
@@ -91,6 +92,11 @@ SPVM::Native->check_bootstrap_method($anon_class_name);
 
 my $spvm_anon_class_name = "SPVM::$anon_class_name";
 
+if ($syntax_ok) {
+  print STDERR "syntax OK\n";
+  exit 0;
+}
+
 $spvm_anon_class_name->main;
 
 =encoding utf8
@@ -115,6 +121,7 @@ The spvm command executes SPVM programs.
     -I, --include-dir <directory>  Adds a include directory
     -B, --build-dir <directory>    Build diretory
     -e <source>                    Executes a program source code in main method.
+    -c                             Check syntx only
 
 =head1 Details
 
@@ -209,6 +216,12 @@ Executes a source code E<lt>sourceE<gt> in C<main> method.
 Examples:
 
   spvm -e 'say "Hello World!";';
+
+=head2 -c
+
+  -c
+
+Checks syntax only.
 
 =head1 Copyright & License
 
