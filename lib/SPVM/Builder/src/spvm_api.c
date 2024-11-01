@@ -95,9 +95,6 @@ SPVM_ENV* SPVM_API_new_env(void) {
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));
 
-
-
-
   // Native APIs
   void* env_init[]  = {
     NULL, // runtime
@@ -320,6 +317,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_long_object_value,
     SPVM_API_get_float_object_value,
     SPVM_API_get_double_object_value,
+    SPVM_API_no_free,
+    SPVM_API_set_no_free,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -5486,5 +5485,22 @@ char* SPVM_API_get_stack_tmp_buffer(SPVM_ENV* env, SPVM_VALUE* stack) {
   char* tmp_buffer = (char*)&stack[SPVM_API_C_STACK_INDEX_TMP_BUFFER];
   
   return tmp_buffer;
+}
+
+int32_t SPVM_API_no_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  int32_t no_free = object->flag & SPVM_OBJECT_C_FLAG_NO_FREE;
+  
+  return no_free;
+}
+
+void SPVM_API_set_no_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t no_free) {
+  
+  if (no_free) {
+    object->flag |= SPVM_OBJECT_C_FLAG_NO_FREE;
+  }
+  else {
+    object->flag ^= SPVM_OBJECT_C_FLAG_NO_FREE;
+  }
 }
 

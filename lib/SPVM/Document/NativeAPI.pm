@@ -2491,6 +2491,22 @@ Returns the value of the C<value> field of L<Double|SPVM::Double> object I<doubl
 
 I<double_object> must be a L<Double|SPVM::Double> object.
 
+=head2 no_free
+
+C<int32_t (*no_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+
+Retruns C<no_free> flag of the object I<object>.
+
+This flag expects a boolean value.
+
+=head2 set_no_free
+
+C<void (*set_no_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t no_free);>
+
+Sets C<no_free> flag of the object I<object> to the value I<no_free>.
+
+This flag expects a boolean value.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2715,6 +2731,8 @@ Native APIs have its IDs.
   217 get_long_object_value
   218 get_float_object_value
   219 get_double_object_value
+  220 no_free
+  221 set_no_free
 
 =head1 Constant Values
 

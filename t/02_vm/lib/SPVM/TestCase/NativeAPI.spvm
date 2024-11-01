@@ -1715,4 +1715,6 @@ class TestCase::NativeAPI {
   native static method spvm_warn : int ();
   
   native static method spvm_warnf : int ();
+  
+  native static method no_free : int ();
 }

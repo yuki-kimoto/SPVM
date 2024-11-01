@@ -90,6 +90,12 @@ union spvm_value {
 
 
 
+
+
+
+
+
+
 struct spvm_env {
   void* runtime;
   SPVM_ENV_API* api;
@@ -311,6 +317,8 @@ struct spvm_env {
   int64_t (*get_long_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* long_object);
   float (*get_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* float_object);
   double (*get_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* double_object);
+  int32_t (*no_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void (*set_no_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t no_free);
 };
 
 struct spvm_env_api {

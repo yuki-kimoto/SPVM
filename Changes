@@ -1,6 +1,8 @@
 0.990026 2024-11-01
   [New Features]
     * Add -c option to spvm command.
+    * Add no_free native API.
+    * Add set_no_free native API.
     
   [Incompatible Changes]
     * Remove as_bool operator added at 0.990025 2024-10-25
