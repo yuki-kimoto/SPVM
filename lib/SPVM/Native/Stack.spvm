@@ -7,8 +7,6 @@ class Native::Stack : pointer {
   # Fields
   has env : Native::Env;
   
-  has no_destroy : byte;
-  
   # Instance Methods
   native method DESTROY : void ();
 }

@@ -10,6 +10,8 @@
       bacause field setters cannot behave this way and creating 0 or 1 has no meaing.
   [Internal Changes]
     * Add SPVM_OBJECT_C_FLAG_NO_FREE to spvm_object struct.
+    * Remove Native::Stack#no_destroy field. Use no_free flag.
+    * Remove Native::Env#no_destroy field. Use no_free flag.
 0.990025001 2024-10-26
   [Document Fix]
     * Fix docs for the following native APIs.

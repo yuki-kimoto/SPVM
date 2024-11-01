@@ -34,7 +34,7 @@ int32_t SPVM__Native__get_current_env(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   env->weaken(env, stack, obj_runtime_ref);
   
-  env->set_field_byte_by_name(env, stack, obj_env, "no_destroy", 1, &error_id, __func__, FILE_NAME, __LINE__);
+  env->set_no_free(env, stack, obj_env, 1);
   if (error_id) { return error_id; }
   
   stack[0].oval = obj_env;
@@ -49,7 +49,7 @@ int32_t SPVM__Native__get_current_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_stack = env->new_pointer_object_by_name(env, stack, "Native::Stack", stack, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  env->set_field_byte_by_name(env, stack, obj_stack, "no_destroy", 1, &error_id, __func__, FILE_NAME, __LINE__);
+  env->set_no_free(env, stack, obj_stack, 1);
   if (error_id) { return error_id; }
   
   stack[0].oval = obj_stack;

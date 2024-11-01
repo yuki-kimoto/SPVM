@@ -32,10 +32,10 @@ int32_t SPVM__Native__Env__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_self = stack[0].oval;
   
-  int32_t no_destroy = env->get_field_byte_by_name(env, stack, obj_self, "no_destroy", &error_id, __func__, FILE_NAME, __LINE__);
+  int32_t no_free = env->no_free(env, stack, obj_self);
   if (error_id) { return error_id; }
   
-  if (!no_destroy) {
+  if (!no_free) {
     SPVM_ENV* my_env = env->get_pointer(env, stack, obj_self);
     
     my_env->free_env(my_env);

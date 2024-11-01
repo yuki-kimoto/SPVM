@@ -22,7 +22,7 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
     obj_self_env = env->new_pointer_object_by_name(env, stack, "Native::Env", self_env, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     
-    env->set_field_byte_by_name(env, stack, obj_self_env, "no_destroy", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    env->set_no_free(env, stack, obj_self_env, 1);
     if (error_id) { return error_id; }
   }
   
@@ -37,7 +37,7 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
     obj_self_stack = env->new_pointer_object_by_name(env, stack, "Native::Stack", self_stack, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     
-    env->set_field_byte_by_name(env, stack, obj_self_stack, "no_destroy", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    env->set_no_free(env, stack, obj_self_stack, 1);
     if (error_id) { return error_id; }
   }
   
