@@ -3,6 +3,7 @@
     * Add -c option to spvm command.
     * Add no_free native API.
     * Add set_no_free native API.
+    * Add Fn#no_free method.
     
   [Incompatible Changes]
     * Remove as_bool operator added at 0.990025 2024-10-25

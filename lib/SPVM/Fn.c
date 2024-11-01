@@ -882,3 +882,18 @@ int32_t SPVM__Fn__system_is_little_endian(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* object = stack[0].oval;
+  
+  if (!object) {
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t no_free = env->no_free(env, stack, object);
+  
+  stack[0].ival = no_free;
+  
+  return 0;
+}
+

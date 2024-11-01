@@ -1759,4 +1759,6 @@ class Fn {
     return Packer->new->unpack($template, $binary);
   }
   
+  native static method no_free : int ($object : object);
+  
 }

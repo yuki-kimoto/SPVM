@@ -822,6 +822,8 @@ t/02_vm/lib/SPVM/TestCase/Module/EqualityChecker.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Error.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Float.spvm
 t/02_vm/lib/SPVM/TestCase/Module/FloatList.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Fn.c
+t/02_vm/lib/SPVM/TestCase/Module/Fn.config
 t/02_vm/lib/SPVM/TestCase/Module/Fn.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Format.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Hash.spvm

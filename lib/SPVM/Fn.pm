@@ -1605,6 +1605,14 @@ Converts the binary data $binary to the objects $objects according to the templa
 
 This method just creates a L<Packer|SPVM::Packer> object, calls L<Packer#unpack|SPVM::Packer/"unpack"> method, and returns its return value.
 
+=head2 no_free
+
+C<static method no_free : int ($object : object);>
+
+Returns C<no_free> flag of the object $object.
+
+This flag expects a boolean value.
+
 =head1 See Also
 
 =over 2

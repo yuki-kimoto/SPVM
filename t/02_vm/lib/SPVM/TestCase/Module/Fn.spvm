@@ -7719,4 +7719,32 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+  
+  static method no_free : int () {
+    
+    my $point = Point->new;
+    
+    {
+      my $no_free = Fn->no_free($point);
+      
+      if ($no_free) {
+        return 0;
+      }
+    }
+    
+    {
+      &set_no_free_true($point);
+      
+      my $no_free = Fn->no_free($point);
+      
+      unless ($no_free) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  native static method set_no_free_true : int ($object : object);
+  
 }

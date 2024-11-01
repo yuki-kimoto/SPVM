@@ -241,6 +241,7 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->system_endian_to_little_endian);
     ok(SPVM::TestCase::Module::Fn->pack);
     ok(SPVM::TestCase::Module::Fn->unpack);
+    ok(SPVM::TestCase::Module::Fn->no_free);
   }
   
   # Extra
