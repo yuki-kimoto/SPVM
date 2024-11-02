@@ -9,6 +9,7 @@ class TestCase::Module::Fn {
   use TestCase::Pointer;
   use Hash;
   use Sort;
+  use Native;
   
   static method BYTE_MAX : int () {
     
@@ -7746,5 +7747,311 @@ class TestCase::Module::Fn {
   }
   
   native static method set_no_free_true : int ($object : object);
+  
+  static method get_pointer : int () {
+    
+    {
+      my $point = Point->new;
+      
+      my $pointer = Fn->get_pointer($point);
+      
+      unless ($pointer is_type Address) {
+        return 0;
+      }
+    }
+    
+    {
+      my $point = Point->new;
+      
+      my $pointer = Fn->get_pointer($point);
+      
+      unless (Fn->has_null_pointer($pointer)) {
+        return 0;
+      }
+    }
+    
+    {
+      my $point = Native->get_current_compiler;
+      
+      my $pointer = Fn->get_pointer($point);
+      
+      if (Fn->has_null_pointer($pointer)) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $point = Point->new;
+        
+        eval { my $pointer = Fn->get_pointer($point); }
+        
+        unless (!$@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $point = Point->new;
+        
+        eval { my $pointer = Fn->get_pointer(undef); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method set_pointer : int () {
+    
+    {
+      my $compiler = Native->get_current_compiler;
+      
+      my $pointer = Fn->get_pointer($compiler);
+      
+      my $point = Point->new;
+      
+      Fn->set_pointer($point, $pointer);
+      
+      unless (Fn->eq_pointer(Fn->get_pointer($point), $pointer)) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $compiler = Native->get_current_compiler;
+        
+        my $pointer = Fn->get_pointer($compiler);
+        
+        my $point = Point->new;
+        
+        eval { Fn->set_pointer($point, $pointer); }
+        
+        unless (!$@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $compiler = Native->get_current_compiler;
+        
+        my $pointer = Fn->get_pointer($compiler);
+        
+        my $point = Point->new;
+        
+        eval { Fn->set_pointer(undef, $pointer); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $compiler = Native->get_current_compiler;
+        
+        my $pointer = Fn->get_pointer($compiler);
+        
+        my $point = Point->new;
+        
+        eval { Fn->set_pointer($point, undef); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method has_null_pointer : int () {
+    
+    {
+      my $point = Point->new;
+      
+      my $pointer = Fn->get_pointer($point);
+      
+      unless (Fn->has_null_pointer($pointer)) {
+        return 0;
+      }
+    }
+    
+    {
+      my $compiler = Native->get_current_compiler;
+      
+      my $pointer = Fn->get_pointer($compiler);
+      
+      if (Fn->has_null_pointer($pointer)) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $point = Point->new;
+        
+        eval { my $pointer = Fn->get_pointer($point); }
+        
+        unless (!$@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $point = Point->new;
+        
+        eval { my $pointer = Fn->get_pointer(undef); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method eq_pointer : int () {
+    
+    {
+      my $point = Point->new;
+      
+      my $pointer1 = Fn->get_pointer($point);
+      
+      my $pointer2 = Fn->get_pointer($point);
+      
+      my $ret = Fn->eq_pointer($pointer1, $pointer2);
+      
+      unless ($ret) {
+        return 0;
+      }
+    }
+    
+    {
+      my $point = Point->new;
+      
+      my $pointer1 = Fn->get_pointer($point);
+      
+      my $compiler = Native->get_current_compiler;
+      
+      my $pointer2 = Fn->get_pointer($compiler);
+      
+      my $ret = Fn->eq_pointer($pointer1, $pointer2);
+      
+      if ($ret) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $point = Point->new;
+        
+        my $pointer1 = Fn->get_pointer($point);
+        
+        my $pointer2 = Fn->get_pointer($point);
+        
+        eval { my $ret = Fn->eq_pointer($pointer1, $pointer2); }
+        
+        unless (!$@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $point = Point->new;
+        
+        my $pointer1 = Fn->get_pointer($point);
+        
+        my $pointer2 = Fn->get_pointer($point);
+        
+        eval { my $ret = Fn->eq_pointer(undef, $pointer2); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $point = Point->new;
+        
+        my $pointer1 = Fn->get_pointer($point);
+        
+        my $pointer2 = Fn->get_pointer($point);
+        
+        eval { my $ret = Fn->eq_pointer($pointer1, undef); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method pointer_to_string : int () {
+    
+    {
+      my $point = Point->new;
+      
+      my $pointer = Fn->get_pointer($point);
+      
+      my $ret = Fn->pointer_to_string($pointer);
+      
+      warn "[Test Output]$ret";
+    }
+    
+    {
+      my $compiler = Native->get_current_compiler;
+      
+      my $pointer = Fn->get_pointer($compiler);
+      
+      my $ret = Fn->pointer_to_string($pointer);
+      
+      warn "[Test Output]$ret";
+    }
+    
+    # Exceptions
+    {
+      {
+        my $point = Point->new;
+        
+        my $pointer = Fn->get_pointer($point);
+        
+        eval { my $ret = Fn->pointer_to_string($pointer); }
+        
+        unless (!$@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $point = Point->new;
+        
+        my $pointer = Fn->get_pointer($point);
+        
+        eval { my $ret = Fn->pointer_to_string(undef); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
   
 }

@@ -1,4 +1,11 @@
 0.990027 2024-11-03
+  [New Features]
+    * Add Fn#get_pointer method.
+    * Add Fn#set_pointer method.
+    * Add Fn#has_null_pointer method.
+    * Add Fn#eq_pointer method.
+    * Add Fn#pointer_to_string method.
+
   [Exception Message Fix]
     * Fix the line number of the following exception message.
     

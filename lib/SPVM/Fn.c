@@ -897,3 +897,117 @@ int32_t SPVM__Fn__no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__get_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_object = stack[0].oval;
+  
+  if (!obj_object) {
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* pointer = env->get_pointer(env, stack, obj_object);
+  
+  void* obj_address = env->new_object_by_name(env, stack, "Address", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_pointer(env, stack, obj_address, pointer);
+  
+  stack[0].oval = obj_address;
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__set_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_object = stack[0].oval;
+  
+  if (!obj_object) {
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_address = stack[1].oval;
+  
+  if (!obj_address) {
+    return env->die(env, stack, "The address $address must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* pointer = env->get_pointer(env, stack, obj_address);
+  
+  env->set_pointer(env, stack, obj_object, pointer);
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__has_null_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_object = stack[0].oval;
+  
+  if (!obj_object) {
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* pointer = env->get_pointer(env, stack, obj_object);
+  
+  int32_t has_null_pointer = pointer == NULL;
+  
+  stack[0].ival = has_null_pointer;
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__eq_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_object1 = stack[0].oval;
+  
+  if (!obj_object1) {
+    return env->die(env, stack, "The object $object1 must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_object2 = stack[1].oval;
+  
+  if (!obj_object2) {
+    return env->die(env, stack, "The object $object2 must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* pointer1 = env->get_pointer(env, stack, obj_object1);
+  
+  void* pointer2 = env->get_pointer(env, stack, obj_object2);
+  
+  int32_t equal = pointer1 == pointer2;
+  
+  stack[0].ival = equal;
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__pointer_to_string(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_object = stack[0].oval;
+  
+  if (!obj_object) {
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* pointer = env->get_pointer(env, stack, obj_object);
+  
+  char tmp_buffer[64] = {0};
+  
+  snprintf(tmp_buffer, 64, "%p", pointer);
+  
+  void* obj_string = env->new_string_nolen(env, stack, tmp_buffer);
+  
+  stack[0].oval = obj_string;
+  
+  return 0;
+}
+

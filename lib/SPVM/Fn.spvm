@@ -1761,4 +1761,13 @@ class Fn {
   
   native static method no_free : int ($object : object);
   
+  native static method get_pointer : Address ($object : object);
+  
+  native static method set_pointer : void ($object : object, $address : Address);
+  
+  native static method has_null_pointer : int ($object : object);
+  
+  native static method eq_pointer : int ($object1 : object, $object2 : object);
+  
+  native static method pointer_to_string : string ($object : object);
 }

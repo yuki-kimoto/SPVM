@@ -242,6 +242,12 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->pack);
     ok(SPVM::TestCase::Module::Fn->unpack);
     ok(SPVM::TestCase::Module::Fn->no_free);
+    
+    ok(SPVM::TestCase::Module::Fn->get_pointer);
+    ok(SPVM::TestCase::Module::Fn->set_pointer);
+    ok(SPVM::TestCase::Module::Fn->has_null_pointer);
+    ok(SPVM::TestCase::Module::Fn->eq_pointer);
+    ok(SPVM::TestCase::Module::Fn->pointer_to_string);
   }
   
   # Extra
