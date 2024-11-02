@@ -11,6 +11,7 @@
       The %dth argument(%s type) of %s#%s method must be able to be assigned to the %dth argument(%s type) of %s#%s method.
   [Changes]
     * Allow empty strings in the ccflags of a compiler comamnd excecuted spvmcc command.
+    * Allow empty strings in the ldflags of a linker comamnd excecuted spvmcc command.
     
 0.990026 2024-11-01
   [New Features]

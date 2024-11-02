@@ -88,11 +88,8 @@ sub create_ldflags {
   my @link_command_ldflags;
   
   if ($self->is_abs) {
-    if (defined $self->file) {
+    if (length $self->file) {
       push @link_command_ldflags, $self->file;
-    }
-    else {
-      push @link_command_ldflags, "";
     }
   }
   else {
@@ -103,12 +100,14 @@ sub create_ldflags {
       my $static_lib_begin = $config->static_lib_ldflag->[0];
       my $static_lib_end = $config->static_lib_ldflag->[1];
       
-      warn "$static_lib_begin -l$name $static_lib_end";
-      
-      push @link_command_ldflags, "$static_lib_begin -l$name $static_lib_end";
+      if (length $name) {
+        push @link_command_ldflags, "$static_lib_begin -l$name $static_lib_end";
+      }
     }
     else {
-      push @link_command_ldflags, "-l$name";
+      if (length $name) {
+        push @link_command_ldflags, "-l$name";
+      }
     }
   }
   

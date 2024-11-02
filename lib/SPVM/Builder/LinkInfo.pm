@@ -81,36 +81,37 @@ sub create_ldflags {
   
   my @merged_ldflags;
   
-  if (defined $config->ld_optimize) {
+  if (length $config->ld_optimize) {
     push @merged_ldflags, split(/ +/, $config->ld_optimize);
   }
   
   my $output_type = $config->output_type;
   if ($output_type eq 'dynamic_lib') {
-    push @merged_ldflags, @{$config->dynamic_lib_ldflags};
+    push @merged_ldflags, grep { length $_ } @{$config->dynamic_lib_ldflags};
   }
   
   my $ldflags = $config->ldflags;
-  push @merged_ldflags, @{$config->ldflags};
+  push @merged_ldflags, grep { length $_ } @{$config->ldflags};
   
-  push @merged_ldflags, @{$config->thread_ldflags};
+  push @merged_ldflags, grep { length $_ } @{$config->thread_ldflags};
   
   my $lib_dirs = $config->lib_dirs;
   
-  my @lib_dirs_ldflags = map { "-L$_" } @$lib_dirs;
-  push @merged_ldflags, @lib_dirs_ldflags;
+  push @merged_ldflags, map { "-L$_" } grep { length $_ } @$lib_dirs;
   
   my @lib_ldflags;
   my $libs = $config->libs;
   for my $lib (@$libs) {
-    my $lib_ldflag;
-    
-    unless (ref $lib) {
-      $lib = SPVM::Builder::LibInfo->new(config => $config, name => $lib);
+    if (ref $lib || length $lib) {
+      my $lib_ldflag;
+      
+      unless (ref $lib) {
+        $lib = SPVM::Builder::LibInfo->new(config => $config, name => $lib);
+      }
+      
+      my $lib_ldflags = $lib->create_ldflags;
+      push @lib_ldflags, @$lib_ldflags;
     }
-    
-    my $lib_ldflags = $lib->create_ldflags;
-    push @lib_ldflags, @$lib_ldflags;
   }
   
   push @merged_ldflags, @lib_ldflags;
