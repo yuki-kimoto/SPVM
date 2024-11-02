@@ -106,25 +106,25 @@ sub create_ccflags {
   my @compile_command_args;
   
   my $std = $config->std;
-  if (defined $std) {
+  if (length $std) {
     push @compile_command_args, "-std=$std";
   }
   
   my $optimize = $config->optimize;
-  if (defined $optimize) {
+  if (length $optimize) {
     push @compile_command_args, split(/ +/, $optimize);
   }
   
-  push @compile_command_args, @{$config->ccflags};
+  push @compile_command_args, grep { length $_ } @{$config->ccflags};
   
-  push @compile_command_args, @{$config->thread_ccflags};
+  push @compile_command_args, grep { length $_ } @{$config->thread_ccflags};
   
-  push @compile_command_args, @{$config->mingw_ccflags};
+  push @compile_command_args, grep { length $_ } @{$config->mingw_ccflags};
   
   my $output_type = $config->output_type;
   
   if ($output_type eq 'dynamic_lib') {
-    push @compile_command_args, @{$config->dynamic_lib_ccflags};
+    push @compile_command_args, grep { length $_ } @{$config->dynamic_lib_ccflags};
   }
   
   # include directories
@@ -133,15 +133,17 @@ sub create_ccflags {
     
     # SPVM core native directory
     my $spvm_core_include_dir = $config->spvm_core_include_dir;
-    push @all_include_dirs, $spvm_core_include_dir;
+    if (length $spvm_core_include_dir) {
+      push @all_include_dirs, $spvm_core_include_dir;
+    }
     
     # include directories
     my $include_dirs = $config->include_dirs;
-    push @all_include_dirs, @$include_dirs;
+    push @all_include_dirs, grep { length $_ } @$include_dirs;
     
     # Native include directory
     my $native_include_dir = $config->native_include_dir;
-    if (defined $native_include_dir) {
+    if (length $native_include_dir) {
       push @all_include_dirs, $native_include_dir;
     }
     
@@ -151,7 +153,7 @@ sub create_ccflags {
       my $resource = $config->get_resource($resource_name);
       my $config = $resource->config;
       my $resource_include_dir = $config->native_include_dir;
-      if (defined $resource_include_dir) {
+      if (length $resource_include_dir) {
         push @all_include_dirs, $resource_include_dir;
       }
     }
