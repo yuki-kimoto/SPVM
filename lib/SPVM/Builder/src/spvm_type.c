@@ -1897,7 +1897,7 @@ int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, 
       const char* dist_method_var_decl_type_name = SPVM_TYPE_new_type_name(compiler, dist_method_var_decl_type->basic_type->id, dist_method_var_decl_type->dimension, dist_method_var_decl_type->flag);
       
       if (error_reason) {
-        snprintf(error_reason, SPVM_COMPILER_C_ERROR_REASON_SIZE, "The %dth argument(%s type) of %s#%s method must be able to be assigned to the %dth argument(%s type) of %s#%s method.\n  at %s line %d", arg_index, src_method_var_decl_type_name, src_basic_type->name, src_method->name, arg_index, dist_method_var_decl_type_name, dist_basic_type->name, dist_method->name, src_basic_type->op_class->file, src_basic_type->op_class->line);
+        snprintf(error_reason, SPVM_COMPILER_C_ERROR_REASON_SIZE, "The %dth argument(%s type) of %s#%s method must be able to be assigned to the %dth argument(%s type) of %s#%s method.\n  at %s line %d", arg_index, src_method_var_decl_type_name, src_basic_type->name, src_method->name, arg_index, dist_method_var_decl_type_name, dist_basic_type->name, dist_method->name, src_method->op_method->file, src_method->op_method->line);
       }
       
       return 0;

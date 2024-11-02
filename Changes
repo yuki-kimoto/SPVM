@@ -8,6 +8,8 @@
       
       The length of the arguments of %s#%s method must be greater than or equal to the length of the required arguments of %s#%s method.
       
+      The %dth argument(%s type) of %s#%s method must be able to be assigned to the %dth argument(%s type) of %s#%s method.
+      
 0.990026 2024-11-01
   [New Features]
     * Add -c option to spvm command.
