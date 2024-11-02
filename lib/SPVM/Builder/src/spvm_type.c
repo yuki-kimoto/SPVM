@@ -1861,7 +1861,7 @@ int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, 
   
   if (dist_method->is_class_method) {
     if (error_reason) {
-      snprintf(error_reason, SPVM_COMPILER_C_ERROR_REASON_SIZE, "%s#%s method must be an instance method.\n  at %s line %d", dist_basic_type->name, dist_method->name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
+      snprintf(error_reason, SPVM_COMPILER_C_ERROR_REASON_SIZE, "%s#%s method must be an instance method.\n  at %s line %d", dist_basic_type->name, dist_method->name, dist_method->op_method->file, dist_method->op_method->line);
     }
     return 0;
   }

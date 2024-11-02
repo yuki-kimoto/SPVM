@@ -4,6 +4,7 @@
     
       %s#%s method must be an instance method because its interface method is defined in %s %s.
       
+      %s#%s method must be an instance method.
       
 0.990026 2024-11-01
   [New Features]
