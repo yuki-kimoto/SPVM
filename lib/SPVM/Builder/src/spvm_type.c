@@ -1869,7 +1869,7 @@ int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, 
   if (!(dist_method->args_length >= src_method->required_args_length)) {
     
     if (error_reason) {
-      snprintf(error_reason, SPVM_COMPILER_C_ERROR_REASON_SIZE, "The length of the arguments of %s#%s method must be greater than or equal to the length of the required arguments of %s#%s method.\n  at %s line %d", dist_basic_type->name, dist_method->name, src_basic_type->name, src_method->name, src_basic_type->op_class->file, src_basic_type->op_class->line);
+      snprintf(error_reason, SPVM_COMPILER_C_ERROR_REASON_SIZE, "The length of the arguments of %s#%s method must be greater than or equal to the length of the required arguments of %s#%s method.\n  at %s line %d", dist_basic_type->name, dist_method->name, src_basic_type->name, src_method->name, dist_method->op_method->file, dist_method->op_method->line);
     }
     return 0;
   }
