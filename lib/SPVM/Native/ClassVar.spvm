@@ -11,7 +11,7 @@ class Native::ClassVar {
   has runtime : Native::Runtime;
   
   # Class Method
-  private static method new_pointer : Native::ClassVar ($pointer : Address, $options : object[] = undef) {
+  private static method new_with_pointer : Native::ClassVar ($pointer : Address, $options : object[] = undef) {
     
     my $self = new Native::ClassVar;
     

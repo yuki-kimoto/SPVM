@@ -10,7 +10,7 @@ class Native::Field {
   has runtime : Native::Runtime;
   
   # Class Method
-  private static method new_pointer : Native::Field ($pointer : Address, $options : object[] = undef) {
+  private static method new_with_pointer : Native::Field ($pointer : Address, $options : object[] = undef) {
     
     my $self = new Native::Field;
     
