@@ -7,7 +7,19 @@ class Native::BasicType {
   use Native::Field;
   use Native::Method;
   use List;
+  use Fn;
   
+  # Class Method
+  private static method new_pointer : Native::BasicType ($pointer : Address) {
+    
+    my $self = new Native::BasicType;
+    
+    Fn->set_pointer($self, $pointer);
+    
+    return $self;
+  }
+  
+  # Instance Methods
   has runtime : Native::Runtime;
   
   native method get_id : int ();
