@@ -358,8 +358,12 @@ int32_t SPVM__Native__BasicType__get_field_by_name(SPVM_ENV* env, SPVM_VALUE* st
     return env->die(env, stack, "The field is not found.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_field = env->new_pointer_object_by_name(env, stack, "Native::Field", field, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_address_anon_basic_type = env->new_pointer_object_by_name(env, stack, "Address", field, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
+  stack[0].oval = obj_address_anon_basic_type;
+  env->call_class_method_by_name(env, stack, "Native::Field", "new_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  void* obj_field = stack[0].oval;
   
   env->set_field_object_by_name(env, stack, obj_field, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -409,8 +413,12 @@ int32_t SPVM__Native__BasicType__get_method_by_index(SPVM_ENV* env, SPVM_VALUE* 
     return env->die(env, stack, "The method is not found.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_method = env->new_pointer_object_by_name(env, stack, "Native::Method", method, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_address_anon_basic_type = env->new_pointer_object_by_name(env, stack, "Address", method, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
+  stack[0].oval = obj_address_anon_basic_type;
+  env->call_class_method_by_name(env, stack, "Native::Method", "new_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  void* obj_method = stack[0].oval;
   
   env->set_field_object_by_name(env, stack, obj_method, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
