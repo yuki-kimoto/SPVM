@@ -10,7 +10,7 @@ class Native::BasicType {
   use Fn;
   
   # Class Method
-  private static method new_pointer : Native::BasicType ($pointer : Address) {
+  private static method new_pointer : Native::BasicType ($pointer : Address, $options : object[] = undef) {
     
     my $self = new Native::BasicType;
     
