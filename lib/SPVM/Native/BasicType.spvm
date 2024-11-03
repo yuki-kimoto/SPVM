@@ -2,6 +2,10 @@
 # MIT License
 
 class Native::BasicType {
+  allow Native::ClassVar;
+  allow Native::Field;
+  allow Native::Method;
+  
   use Native::Runtime;
   use Native::ClassVar;
   use Native::Field;
