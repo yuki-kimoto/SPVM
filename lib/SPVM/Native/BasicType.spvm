@@ -9,6 +9,9 @@ class Native::BasicType {
   use List;
   use Fn;
   
+  # Fields
+  has runtime : Native::Runtime;
+  
   # Class Method
   private static method new_pointer : Native::BasicType ($pointer : Address, $options : object[] = undef) {
     
@@ -20,8 +23,6 @@ class Native::BasicType {
   }
   
   # Instance Methods
-  has runtime : Native::Runtime;
-  
   native method get_id : int ();
   
   native method get_name : string ();

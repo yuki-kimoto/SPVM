@@ -2,10 +2,25 @@
 # MIT License
 
 class Native::ClassVar {
-  use Native::BasicType;
+  allow Native::BasicType;
   
+  use Native::BasicType;
+  use Fn;
+  
+  # Fields
   has runtime : Native::Runtime;
   
+  # Class Method
+  private static method new_pointer : Native::ClassVar ($pointer : Address, $options : object[] = undef) {
+    
+    my $self = new Native::ClassVar;
+    
+    Fn->set_pointer($self, $pointer);
+    
+    return $self;
+  }
+  
+  # Instance Methods
   native method get_index : int ();
   
   native method get_name : string ();

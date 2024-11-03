@@ -2,12 +2,27 @@
 # MIT License
 
 class Native::Method {
+  allow Native::BasicType;
+  
   use Address;
   use Native::BasicType;
   use Native::Arg;
+  use Fn;
   
+  # Fields
   has runtime : Native::Runtime;
   
+  # Class Method
+  private static method new_pointer : Native::Method ($pointer : Address, $options : object[] = undef) {
+    
+    my $self = new Native::Method;
+    
+    Fn->set_pointer($self, $pointer);
+    
+    return $self;
+  }
+  
+  # Instance Methods
   native method get_index : int ();
   
   native method get_name : string ();
