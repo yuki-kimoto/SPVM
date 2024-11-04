@@ -28,8 +28,12 @@ int32_t SPVM__Native__get_current_env(SPVM_ENV* env, SPVM_VALUE* stack) {
   env->set_field_object_by_name(env, stack, obj_env, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  void* obj_compiler = env->new_pointer_object_by_name(env, stack, "Native::Compiler", env->api->runtime->get_compiler(env->runtime), &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_address_compiler = env->new_pointer_object_by_name(env, stack, "Address", env->api->runtime->get_compiler(env->runtime), &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
+  stack[0].oval = obj_address_compiler;
+  env->call_class_method_by_name(env, stack, "Native::Compiler", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  void* obj_compiler = stack[0].oval;
   
   env->set_field_object_by_name(env, stack, obj_runtime, "compiler", obj_compiler, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
