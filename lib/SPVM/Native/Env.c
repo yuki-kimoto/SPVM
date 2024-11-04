@@ -15,13 +15,13 @@ int32_t SPVM__Native__Env__new_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_VALUE* my_stack = my_env->new_stack(my_env);
   
-  void* obj_new_stack = env->new_pointer_object_by_name(env, stack, "Native::Stack", my_stack, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_my_stack = env->new_pointer_object_by_name(env, stack, "Native::Stack", my_stack, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  env->set_field_object_by_name(env, stack, obj_new_stack, "env", obj_my_env, &error_id, __func__, FILE_NAME, __LINE__);
+  env->set_field_object_by_name(env, stack, obj_my_stack, "env", obj_my_env, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  stack[0].oval = obj_new_stack;
+  stack[0].oval = obj_my_stack;
   
   return 0;
 }
