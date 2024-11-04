@@ -8,7 +8,7 @@ A native class is the class implemented by a native language such as the C langu
 
 =head1 Native Method Definition
 
-A native method is defined by the L<native method attribute|SPVM::Document::Language::Class/"Method Attributes"> in an SPVM class file. It ends with a semicolon. A native method does not have its block. 
+A native method is defined by L<native method attribute|SPVM::Document::Language::Class/"Method Attributes"> in an SPVM class file. It ends with a semicolon. A native method does not have its block. 
 
   # SPVM/MyClass.spvm
   class MyClass {
@@ -50,7 +50,7 @@ C++:
 
 A native class is the class implemented by a native language such as the C language and C++.
 
-The name of the native class file is the same as the SPVM class name, but the extension C<.spvm> is replaced with C<.> and the L<extension of the native class|/"Native Class File Extension">.
+The name of the native class file is the same as the SPVM class name, but the extension C<.spvm> is replaced with C<.> and L<extension of the native class|/"Native Class File Extension">.
 
   SPVM/MyClass.c
 
@@ -70,7 +70,7 @@ Examples:
 
 Exceptions:
 
-If the L<ext|SPVM::Builder::Config/"ext"> is defined, but its corresponding config file does not exist, an exception is thrown.
+If L<ext|SPVM::Builder::Config/"ext"> is defined, but its corresponding config file does not exist, an exception is thrown.
 
 =head2 Native Function
 
@@ -189,7 +189,7 @@ C<SPVM_VALUE> type is an union type in the C language.
 
 =head2 Getting Argument
 
-Arguments given to a native function have been stored in the L<runtime stack|/"Runtime Stack"> I<stack>.
+Arguments given to a native function have been stored in L<runtime stack|/"Runtime Stack"> I<stack>.
 
   int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
@@ -294,7 +294,7 @@ Use the C<dref> field of L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value 
 
 =head3 Getting Multi-Numeric Type Arguments
 
-The values of an SPVM multi-numeric type from an argument have been stored to the multiple values in the L<runtime stack|/"Runtime Stack">. the length of the values in the runtime stack is the same as the length of the fields of the SPVM multi-numeric type.
+The values of an SPVM multi-numeric type from an argument have been stored to the multiple values in L<runtime stack|/"Runtime Stack">. the length of the values in the runtime stack is the same as the length of the fields of the SPVM multi-numeric type.
 
 For example, if the argument type is L<Complex_2d|SPVM::Complex_2d> type, these values have been stored to multiple fields the multiple values in the runtime stack.
 
@@ -303,7 +303,7 @@ For example, if the argument type is L<Complex_2d|SPVM::Complex_2d> type, these 
 
 =head2 Return Value
 
-If the reutrn type of an SPVM method is not the C<void> type, the first argument of the L<runtime stack|/"Runtime Stack"> must be set to a return value.
+If the reutrn type of an SPVM method is not the C<void> type, the first argument of L<runtime stack|/"Runtime Stack"> must be set to a return value.
 
   int32_t return_value = 5;
   
@@ -353,7 +353,7 @@ Use the C<oval> field of L<SPVM_VALUE|/"SPVM_VALUE Type"> type to set a return v
 
 =head3 Setting Return Value of Multi-Numeric Type
 
-Multiple values in the L<runtime stack|/"Runtime Stack"> are needed to be set to values of the field type of the multi-numeric type. The length of the values in the runtime stack is the same as the length of the fields of the SPVM multi-numeric type.
+Multiple values in L<runtime stack|/"Runtime Stack"> are needed to be set to values of the field type of the multi-numeric type. The length of the values in the runtime stack is the same as the length of the fields of the SPVM multi-numeric type.
 
 There is an example in the case that the return type is L<Complex_2d|SPVM::Complex_2d>.
 
@@ -400,13 +400,13 @@ Get the elements of an array of int type.
 
 If a native method throws an exception, the native function must return a non-zero value, normally the basic type ID of an error class.
 
-A message can be set to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">. If no message is set to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">, a default exception message is set to it.
+A message can be set to L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">. If no message is set to L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">, a default exception message is set to it.
 
   env->set_exception(env, stack, env->new_string_nolen(env, stack, "An exception is thrown."));
   
   return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
 
-The L<die|SPVM::Document::NativeAPI/"die"> native API can be used to throw an exception easily.
+L<die|SPVM::Document::NativeAPI/"die"> native API can be used to throw an exception easily.
 
   return env->die("The value must be %d.", 3, __func__, FILE_NAME, __LINE__);
 
@@ -414,11 +414,11 @@ The L<die|SPVM::Document::NativeAPI/"die"> native API can be used to throw an ex
 
 An SPVM object can store a pointer to a native data. The class that have a pointer to a native data is called the pointer class.
 
-The L<set_pointer|SPVM::Document::NativeAPI/"set_pointer"> native API sets a pointer to a native data.
+L<set_pointer|SPVM::Document::NativeAPI/"set_pointer"> native API sets a pointer to a native data.
 
-The L<get_pointer|SPVM::Document::NativeAPI/"get_pointer"> native API gets a pointer to a native data.
+L<get_pointer|SPVM::Document::NativeAPI/"get_pointer"> native API gets a pointer to a native data.
 
-The L<pointer|SPVM::Document::Language::Class/"Class Attributes"> class attribute indicates this class is a pointer class.
+L<pointer|SPVM::Document::Language::Class/"Class Attributes"> class attribute indicates this class is a pointer class.
 
 The following class is an example of a pointer class.
 
@@ -475,6 +475,14 @@ SPVM/MyTm.c
     return 0;
   }
 
+=head3 Pointer Value
+
+An object can have a pointer value. A pointer value is the address of a C/C++ object.
+
+See L<get_pointer|SPVM::Document::NativeAPI/"get_pointer"> native API to get a pointer value of an object.
+
+See L<set_pointer|SPVM::Document::NativeAPI/"set_pointer"> native API to set a pointer value of an object.
+
 =head2 Native Directory
 
 A native directory is the directory for native header files and native source files.
@@ -498,7 +506,7 @@ A native class can include native header files in the C<include> directory under
 
 =head3 Native Source Files
 
-A native class can compile native source files in the C<src> directory under the native directory using the L<add_source_file|SPVM::Builder::Config/"add_source_file"> in C<SPVM::Builder::Config> class.
+A native class can compile native source files in the C<src> directory under the native directory using L<add_source_file|SPVM::Builder::Config/"add_source_file"> in C<SPVM::Builder::Config> class.
   
   # Native source files
   SPVM/MyClass.native/src/foo.c
@@ -512,11 +520,11 @@ A native class can compile native source files in the C<src> directory under the
 
 A native function has its scope.
 
-The L<enter_scope|SPVM::Document::NativeAPI/"enter_scope"> native API is called before the call of the native function.
+L<enter_scope|SPVM::Document::NativeAPI/"enter_scope"> native API is called before the call of the native function.
 
-The L<leave_scope|SPVM::Document::NativeAPI/"leave_scope"> native API is called after the call of the native function.
+L<leave_scope|SPVM::Document::NativeAPI/"leave_scope"> native API is called after the call of the native function.
 
-You can create a scope and push objects to the the L<native mortal stack|/"Native Mortal Stack">.
+You can create a scope and push objects to the L<native mortal stack|/"Native Mortal Stack">.
 
   int32_t mortal_stack_top = env->enter_scope(env, stack);
   
@@ -548,7 +556,7 @@ A runtime environement is given to the first argument of a native function.
 
 A runtime stack is created for a native thread. An SPVM runtime creates a runtime stack for the main thread.
 
-A runtime stack is used to get values of arguments and return a value, and it also stored its own data such as the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
+A runtime stack is used to get values of arguments and return a value, and it also stored its own data such as L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
 
 This is the pointer to the values of L<SPVM_VALUE|/"SPVM_VALUE Type"> type, normally named C<stack>.
 
@@ -560,7 +568,7 @@ A runtime stack is given to the second argument of a native function.
     
   }
 
-A runtime stack can be created and freed using the L<new_stack|SPVM::Document::NativeAPI/"new_stack"> native API and the L<free_stack|SPVM::Document::NativeAPI/"free_stack"> native API.
+A runtime stack can be created and freed using L<new_stack|SPVM::Document::NativeAPI/"new_stack"> native API and L<free_stack|SPVM::Document::NativeAPI/"free_stack"> native API.
 
 =head2 Arguments Width
 
@@ -582,7 +590,7 @@ So the width of the arguments is totally 4.
 
 =head2 Native Motal Stack
 
-A native mortal stack is a stack that is used by the L<enter_scope|SPVM::Document::NativeAPI/"enter_scope"> native API and the L<leave_scope|SPVM::Document::NativeAPI/"leave_scope"> native API.
+A native mortal stack is a stack that is used by L<enter_scope|SPVM::Document::NativeAPI/"enter_scope"> native API and L<leave_scope|SPVM::Document::NativeAPI/"leave_scope"> native API.
 
 A L<runtime stack|/"Runtime Stack"> has one native mortal stack.
 
@@ -592,7 +600,7 @@ A native class and native source files are compiled to object files and are link
 
 The extension of a shared library is C<.so> in Linux and UNIX, C<.dylib> in Mac, C<.dll> in Windows.
 
-The L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable must be set to a build directoy path.
+L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable must be set to a build directoy path.
 
 Normally, C<~/.spvm_build> is set to it.
 

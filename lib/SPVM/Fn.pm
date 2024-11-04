@@ -1617,7 +1617,7 @@ This flag expects a boolean value.
 
 C<static method get_pointer : L<Address|SPVM::Address> ($object : object);>
 
-Creates a new L<Address|SPVM::Address> object, sets its pointer value to the pointer value of the object $object, and returns the new object.
+Creates a new L<Address|SPVM::Address> object, sets its L<pointer value|SPVM::Document::NativeClass/"Pointer Value"> to the pointer value of the object $object, and returns the new object.
 
 Exceptions:
 
@@ -1627,7 +1627,7 @@ The object $object must be defined. Otherwise an exception is thrown.
 
 C<static method set_pointer : void ($object : object, $address : L<Address|SPVM::Address>);>
 
-Sets the pointer value of the object $object to the pointer value of the address $address.
+Sets the L<pointer value|SPVM::Document::NativeClass/"Pointer Value"> of the object $object to the pointer value of the address $address.
 
 Exceptions:
 
@@ -1639,7 +1639,7 @@ The address $address must be defined. Otherwise an exception is thrown.
 
 C<static method has_null_pointer : int ($object : object);>
 
-If the pointer value of the object $object is NULL, returns 1, otherwise returns 0.
+If the L<pointer value|SPVM::Document::NativeClass/"Pointer Value"> of the object $object is NULL, returns 1, otherwise returns 0.
 
 Exceptions:
 
@@ -1649,7 +1649,7 @@ The object $object must be defined. Otherwise an exception is thrown.
 
 C<static method eq_pointer : int ($object1 : object, $object2 : object);>
 
-If the pointer value of the object $object1 is equal to the pointer value of the object $object2, returns 1, otherwise returns 0.
+If the L<pointer value|SPVM::Document::NativeClass/"Pointer Value"> of the object $object1 is equal to the pointer value of the object $object2, returns 1, otherwise returns 0.
 
 Exceptions:
 
@@ -1661,7 +1661,7 @@ The object $object2 must be defined. Otherwise an exception is thrown.
 
 C<static method pointer_to_string : string ($object : object);>
 
-Creates a new string that contains the hex address of the pointer of the object $object, and returns the new string.
+Creates a new string that contains the hex address of the L<pointer value|SPVM::Document::NativeClass/"Pointer Value"> of the object $object, and returns the new string.
 
 Exceptions:
 
