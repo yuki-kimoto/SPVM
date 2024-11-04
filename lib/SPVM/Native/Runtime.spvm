@@ -21,6 +21,16 @@ class Native::Runtime : pointer {
   
   has env : Native::Env;
   
+  # Class Methods
+  private static method new_with_pointer : Native::Runtime ($pointer : Address, $options : object[] = undef) {
+    
+    my $self = new Native::Runtime;
+    
+    Fn->set_pointer($self, $pointer);
+    
+    return $self;
+  }
+  
   # Instance Methods
   native method get_basic_types_length : int ();
   

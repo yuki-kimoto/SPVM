@@ -16,6 +16,15 @@ class Native::Compiler : pointer {
   # Class Methods
   native static method new : Native::Compiler ();
   
+  private static method new_with_pointer : Native::Compiler ($pointer : Address, $options : object[] = undef) {
+    
+    my $self = new Native::Compiler;
+    
+    Fn->set_pointer($self, $pointer);
+    
+    return $self;
+  }
+  
   # Instance Methods
   native method compile : void ($class_name : string);
   
