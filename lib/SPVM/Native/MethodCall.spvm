@@ -2,6 +2,8 @@
 # MIT License
 
 class Native::MethodCall {
+  use Native::Env;
+  use Native::Stack;
   use Native::Method;
   use Callback;
   use Native::MethodCall::Error::ExceptionThrown;
