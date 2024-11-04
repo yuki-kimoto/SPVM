@@ -244,8 +244,12 @@ int32_t SPVM__Native__Runtime__get_basic_type_by_id(SPVM_ENV* env, SPVM_VALUE* s
     return env->die(env, stack, "The basic type cannot be found.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_basic_type = env->new_pointer_object_by_name(env, stack, "Native::BasicType", basic_type, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_address_basic_type = env->new_pointer_object_by_name(env, stack, "Address", basic_type, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
+  stack[0].oval = obj_address_basic_type;
+  env->call_class_method_by_name(env, stack, "Native::BasicType", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  void* obj_basic_type = stack[0].oval;
   
   env->set_field_object_by_name(env, stack, obj_basic_type, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -277,8 +281,12 @@ int32_t SPVM__Native__Runtime__get_basic_type_by_name(SPVM_ENV* env, SPVM_VALUE*
     return env->die(env, stack, "The basic type cannot be found.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_basic_type = env->new_pointer_object_by_name(env, stack, "Native::BasicType", basic_type, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_address_basic_type = env->new_pointer_object_by_name(env, stack, "Address", basic_type, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
+  stack[0].oval = obj_address_basic_type;
+  env->call_class_method_by_name(env, stack, "Native::BasicType", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  void* obj_basic_type = stack[0].oval;
   
   env->set_field_object_by_name(env, stack, obj_basic_type, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }

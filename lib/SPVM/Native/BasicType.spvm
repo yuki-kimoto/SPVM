@@ -5,6 +5,7 @@ class Native::BasicType {
   allow Native::ClassVar;
   allow Native::Field;
   allow Native::Method;
+  allow Native::Runtime;
   
   use Native::Runtime;
   use Native::ClassVar;
