@@ -412,17 +412,17 @@ L<die|SPVM::Document::NativeAPI/"die"> native API can be used to throw an except
 
 =head2 Pointer Class
 
-An SPVM object can store a pointer to a native data. The class that have a pointer to a native data is called the pointer class.
+An SPVM object can have a L<pointer value|/"Pointer Value">.
 
-L<set_pointer|SPVM::Document::NativeAPI/"set_pointer"> native API sets a pointer to a native data.
+If necessary, you can mark a class as a pointer class using L<pointer class attribute|SPVM::Document::Language::Class/"Class Attributes">.
 
-L<get_pointer|SPVM::Document::NativeAPI/"get_pointer"> native API gets a pointer to a native data.
+  class MyClass : pointer {
+    
+  }
 
-L<pointer|SPVM::Document::Language::Class/"Class Attributes"> class attribute indicates this class is a pointer class.
+Examples of Pointer Classes:
 
-The following class is an example of a pointer class.
-
-SPVM/MyTm.spvm
+C<SPVM/MyTm.spvm>:
 
   class MyTm : pointer {
     
@@ -433,7 +433,7 @@ SPVM/MyTm.spvm
     native method DESTROY : ();
   }
 
-SPVM/MyTm.c
+C<SPVM/MyTm.c>:
   
   static const char* FILE_NAME = "MyTm.c";
   
