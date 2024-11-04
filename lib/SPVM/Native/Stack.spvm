@@ -2,11 +2,24 @@
 # MIT License
 
 class Native::Stack : pointer {
+  allow Native::MethodCall;
+  
   use Native::Env;
   
   # Fields
   has env : Native::Env;
   
+  # Class Method
+  private static method new_with_pointer : Native::Stack ($pointer : Address, $options : object[] = undef) {
+    
+    my $self = new Native::Stack;
+    
+    Fn->set_pointer($self, $pointer);
+    
+    return $self;
+  }
+  
   # Instance Methods
   native method DESTROY : void ();
+  
 }
