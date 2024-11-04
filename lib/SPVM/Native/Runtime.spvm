@@ -2,6 +2,8 @@
 # MIT License
 
 class Native::Runtime : pointer {
+  allow Native::Compiler;
+  
   use Native::Compiler;
   use Native::Env;
   use Native::Stack;

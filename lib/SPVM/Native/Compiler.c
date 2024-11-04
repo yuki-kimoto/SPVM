@@ -17,8 +17,12 @@ int32_t SPVM__Native__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* runtime = env->api->compiler->get_runtime(compiler);
   
-  void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Native::Runtime", runtime, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_address_runtime = env->new_pointer_object_by_name(env, stack, "Address", runtime, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
+  stack[0].oval = obj_address_runtime;
+  env->call_class_method_by_name(env, stack, "Native::Runtime", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  void* obj_runtime = stack[0].oval;
   
   env->set_field_object_by_name(env, stack, obj_runtime, "compiler", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -31,8 +35,12 @@ int32_t SPVM__Native__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_ENV* runtime_env = env->api->runtime->get_env(runtime);
   
-  void* obj_runtime_env = env->new_pointer_object_by_name(env, stack, "Native::Env", runtime, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_address_runtime_env = env->new_pointer_object_by_name(env, stack, "Address", runtime_env, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
+  stack[0].oval = obj_address_runtime_env;
+  env->call_class_method_by_name(env, stack, "Native::Env", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  void* obj_runtime_env = stack[0].oval;
   
   env->set_no_free(env, stack, obj_runtime_env, 1);
   
