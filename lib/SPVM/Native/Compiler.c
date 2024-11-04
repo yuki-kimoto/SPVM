@@ -35,7 +35,6 @@ int32_t SPVM__Native__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (error_id) { return error_id; }
   
   env->set_no_free(env, stack, obj_runtime_env, 1);
-  if (error_id) { return error_id; }
   
   env->set_field_object_by_name(env, stack, obj_runtime, "env", obj_runtime_env, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -58,7 +57,6 @@ int32_t SPVM__Native__Compiler__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (error_id) { return error_id; }
   
   env->set_no_free(env, stack, obj_runtime_env, 1);
-  if (error_id) { return error_id; }
   
   env->set_field_object_by_name(env, stack, obj_runtime_env, "runtime", NULL, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }

@@ -23,7 +23,6 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
     if (error_id) { return error_id; }
     
     env->set_no_free(env, stack, obj_self_env, 1);
-    if (error_id) { return error_id; }
   }
   
   void* obj_self_stack = stack[1].oval;
@@ -38,7 +37,6 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
     if (error_id) { return error_id; }
     
     env->set_no_free(env, stack, obj_self_stack, 1);
-    if (error_id) { return error_id; }
   }
   
   int32_t is_binary_compatible_stack = env->is_binary_compatible_stack(self_env, self_stack);
