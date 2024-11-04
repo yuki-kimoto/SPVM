@@ -1427,9 +1427,9 @@ Calls L</"new_object_by_name"> native API and sets the pointer I<pointer> to a n
 
 =head2 get_pointer
 
-C<void* (*get_pointer)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* pointer_object);>
+C<void* (*get_pointer)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Returns the value of the C<pointer> field of the object I<pointer_object>.
+Returns L<pointer value|SPVM::Document::NativeClass/"Pointer Value"> of the object I<object>.
 
 Examples:
 
@@ -1437,9 +1437,9 @@ Examples:
 
 =head2 set_pointer
 
-C<void (*set_pointer)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* pointer_object, void* pointer);>
+C<void (*set_pointer)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, void* pointer);>
 
-Sets I<pointer> to the C<pointer> field of the object I<pointer_object>.
+Sets the L<pointer value|SPVM::Document::NativeClass/"Pointer Value"> of the object I<object> to the pointer I<pointer>.
 
 =head2 new_string_nolen_no_mortal
 
