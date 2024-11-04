@@ -3,6 +3,7 @@
     * The related classes of Native::Compiler use new_pointer method instead of new_pointer_object_by_name native API.
   [Document Improvement]
     * Add the doc for "Pointer Value".
+    * Improve docs for Pointer Class.
 0.990027 2024-11-03
   [New Features]
     * Add Fn#get_pointer method.
