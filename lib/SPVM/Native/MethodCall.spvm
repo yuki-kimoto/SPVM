@@ -8,6 +8,7 @@ class Native::MethodCall {
   use Callback;
   use Native::MethodCall::Error::ExceptionThrown;
   
+  # Fields
   has env : Native::Env;
   
   has stack : Native::Stack;
