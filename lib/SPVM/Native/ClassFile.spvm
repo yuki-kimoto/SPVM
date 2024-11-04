@@ -2,10 +2,24 @@
 # MIT License
 
 class Native::ClassFile {
+  allow Native::Compiler;
+  
   use Native::Compiler;
   
+  # Fields
   has compiler : Native::Compiler;
   
+  # Class Methods
+  private static method new_with_pointer : Native::ClassFile ($pointer : Address, $options : object[] = undef) {
+    
+    my $self = new Native::ClassFile;
+    
+    Fn->set_pointer($self, $pointer);
+    
+    return $self;
+  }
+  
+  # Instance Methods
   native method get_class_name : string ();
   
   native method get_file : string ();
