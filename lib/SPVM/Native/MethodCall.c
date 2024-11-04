@@ -12,6 +12,15 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
   int32_t error_id = 0;
   
   void* obj_self_env = stack[0].oval;
+  
+  void* obj_self_stack = stack[1].oval;
+  
+  void* obj_instance = stack[2].oval;
+  
+  void* obj_basic_type_name = stack[2].oval;
+  
+  void* obj_method_name = stack[3].oval;
+  
   SPVM_ENV* self_env = NULL;
   if (obj_self_env) {
     self_env = env->get_pointer(env, stack, obj_self_env);
@@ -19,13 +28,16 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
   else {
     self_env = env;
     
-    obj_self_env = env->new_pointer_object_by_name(env, stack, "Native::Env", self_env, &error_id, __func__, FILE_NAME, __LINE__);
+    void* obj_address_self_env = env->new_pointer_object_by_name(env, stack, "Address", self_env, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
+    stack[0].oval = obj_address_self_env;
+    env->call_class_method_by_name(env, stack, "Native::Env", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    obj_self_env = stack[0].oval;
     
     env->set_no_free(env, stack, obj_self_env, 1);
   }
   
-  void* obj_self_stack = stack[1].oval;
   SPVM_VALUE* self_stack = NULL;
   if (obj_self_stack) {
     self_stack = env->get_pointer(env, stack, obj_self_stack);
@@ -33,8 +45,12 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
   else {
     self_stack = stack;
     
-    obj_self_stack = env->new_pointer_object_by_name(env, stack, "Native::Stack", self_stack, &error_id, __func__, FILE_NAME, __LINE__);
+    void* obj_address_self_stack = env->new_pointer_object_by_name(env, stack, "Address", self_stack, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
+    stack[0].oval = obj_address_self_stack;
+    env->call_class_method_by_name(env, stack, "Native::Stack", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    obj_self_stack = stack[0].oval;
     
     env->set_no_free(env, stack, obj_self_stack, 1);
   }
@@ -49,15 +65,12 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
   
   const char* method_disp = NULL;
   if (method_call_type == 0) {
-    void* obj_basic_type_name = stack[2].oval;
     
     if (!obj_basic_type_name) {
       return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
     }
     
     const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
-    
-    void* obj_method_name = stack[3].oval;
     
     if (!obj_method_name) {
       return env->die(env, stack, "The method name $method_name must be defined.", __func__, FILE_NAME, __LINE__);
@@ -71,15 +84,12 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
     }
   }
   else if (method_call_type == 1) {
-    void* obj_basic_type_name = stack[2].oval;
     
     if (!obj_basic_type_name) {
       return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
     }
     
     const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
-    
-    void* obj_method_name = stack[3].oval;
     
     if (!obj_method_name) {
       return env->die(env, stack, "The method name $method_name must be defined.", __func__, FILE_NAME, __LINE__);
@@ -93,13 +103,10 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
     }
   }
   else if (method_call_type == 2) {
-    void* obj_instance = stack[2].oval;
     
     if (!obj_instance) {
       return env->die(env, stack, "The instance $instance must be defined.", __func__, FILE_NAME, __LINE__);
     }
-    
-    void* obj_method_name = stack[3].oval;
     
     if (!obj_method_name) {
       return env->die(env, stack, "The method name $method_name must be defined.", __func__, FILE_NAME, __LINE__);
@@ -113,8 +120,12 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
     }
   }
   
-  void* obj_method = env->new_pointer_object_by_name(env, stack, "Native::Method", method, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_address_method = env->new_pointer_object_by_name(env, stack, "Address", method, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
+  stack[0].oval = obj_address_method;
+  env->call_class_method_by_name(env, stack, "Native::Method", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  void* obj_method = stack[0].oval;
   
   void* obj_self = env->new_pointer_object_by_name(env, stack, "Native::MethodCall", method, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
