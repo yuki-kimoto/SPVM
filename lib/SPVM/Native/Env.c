@@ -18,7 +18,7 @@ int32_t SPVM__Native__Env__new_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_address_my_stack = env->new_pointer_object_by_name(env, stack, "Address", my_stack, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   stack[0].oval = obj_address_my_stack;
-  env->call_class_method_by_name(env, stack, "Native::BasicType", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
+  env->call_class_method_by_name(env, stack, "Native::Stack", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   void* obj_my_stack = stack[0].oval;
   
