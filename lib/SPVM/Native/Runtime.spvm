@@ -2,6 +2,7 @@
 # MIT License
 
 class Native::Runtime : pointer {
+  allow Native;
   allow Native::Compiler;
   
   use Native::Compiler;
