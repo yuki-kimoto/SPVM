@@ -1,3 +1,7 @@
+0.990029 2024-11-08
+  [New Features]
+    * Add SPVM::Builder::ConfigBuilder class.
+    
 0.990028 2024-11-04
   [Internal Changes]
     * The related classes of Native::Compiler use new_pointer method instead of new_pointer_object_by_name native API.

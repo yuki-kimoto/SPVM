@@ -240,6 +240,8 @@ L<All SPVM Documents|SPVM::Document>
 
 =item * L<Config Information|SPVM::Builder::Config::Info>
 
+=item * L<Config Builder|SPVM::Builder::ConfigBuilder>
+
 =back
 
 =head1 Commands
