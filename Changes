@@ -1,6 +1,7 @@
 0.990029 2024-11-08
   [New Features]
     * Add SPVM::Builder::ConfigBuilder class.
+    * Add Native::MethodCall#new_proto_with_method_name method.
     
 0.990028 2024-11-04
   [Internal Changes]

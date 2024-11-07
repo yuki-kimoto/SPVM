@@ -93,17 +93,23 @@ C<static method call_instance_method : object ($method_name : string, $args : ob
 
 Calls a instance method given the method name $method_name, and the arguments $args. The first argument in $args must be an instance.
 
-=head2 new_proto
+=head2 new_proto_with_method_name
 
-C<static method new_proto : object ($proto : object, $args : object[] = undef, $error_id_ref : int[] = undef);>
+C<static method new_proto_with_method_name : object ($proto : object, $method_name : string, $args : object[] = undef, $error_id_ref : int[] = undef)>
 
-Calls L</"call_class_method"> method given the class name of $proto, the method name C<new>, $args, and $error_id_ref and its return value.
+Calls L</"call_class_method"> method given the class name of $proto, the method name $method_name, $args, and $error_id_ref and its return value.
 
 Exceptions:
 
 The prototype object $proto must be defined. Otherwise an exception is thrown.
 
 Exceptions thrown by L</"call_class_method"> method could be thrown.
+
+=head2 new_proto
+
+C<static method new_proto : object ($proto : object, $args : object[] = undef, $error_id_ref : int[] = undef);>
+
+Same as L</"new_proto_with_method_name"> method, but $method_name is set to C<"new">.
 
 =head1 Instance Methods
 
