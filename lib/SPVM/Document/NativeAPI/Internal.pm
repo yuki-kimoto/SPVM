@@ -44,9 +44,11 @@ The value referenced by I<mortal_stack_top_ptr> is updated.
 
 C<char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
-Returns the temporary buffer in the runtime stack I<stack>.
+Returns the temporary buffer on the runtime stack I<stack>.
 
-The byte size of the temporary buffer is L<SPVM::Document::NativeAPI/"SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE">.
+The byte size of the temporary buffer is L<SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE|SPVM::Document::NativeAPI/"SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE">.
+
+Currently, this internal native API is the same as L<get_stack_tmp_buffer|SPVM::Document::NativeAPI/"get_stack_tmp_buffer"> native API.
 
 =head1 Native API IDs
 

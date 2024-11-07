@@ -319,6 +319,7 @@ struct spvm_env {
   double (*get_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* double_object);
   int32_t (*no_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*set_no_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t no_free);
+  char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 struct spvm_env_api {

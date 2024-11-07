@@ -2,6 +2,7 @@
   [New Features]
     * Add SPVM::Builder::ConfigBuilder class.
     * Add Native::MethodCall#new_proto_with_method_name method.
+    * Add get_stack_tmp_buffer native API.
   [Internal Changes]
     * Change the following constants for stack data to be more safe.
       

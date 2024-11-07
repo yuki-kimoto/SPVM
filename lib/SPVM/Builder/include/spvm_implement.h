@@ -95,7 +95,7 @@ enum {
 
 static inline void* SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id) {
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
   
@@ -111,7 +111,7 @@ static inline void* SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(SPVM_ENV* env, SPVM_VA
 
 static inline void* SPVM_IMPLEMENT_GET_FIELD_STATIC_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, int32_t* error_id) {
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   void* field = env->get_field_static(env, stack, basic_type_name, field_name);
   
@@ -127,7 +127,7 @@ static inline void* SPVM_IMPLEMENT_GET_FIELD_STATIC_BY_NAME(SPVM_ENV* env, SPVM_
 
 static inline int32_t SPVM_IMPLEMENT_GET_FIELD_OFFSET_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, int32_t* error_id) {
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   void* field = env->get_field_static(env, stack, basic_type_name, field_name);
   
@@ -146,7 +146,7 @@ static inline int32_t SPVM_IMPLEMENT_GET_FIELD_OFFSET_BY_NAME(SPVM_ENV* env, SPV
 
 static inline void* SPVM_IMPLEMENT_GET_CLASS_VAR_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error_id) {
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   void* class_var = env->get_class_var(env, stack, basic_type_name, class_var_name);
   
@@ -162,7 +162,7 @@ static inline void* SPVM_IMPLEMENT_GET_CLASS_VAR_BY_NAME(SPVM_ENV* env, SPVM_VAL
 
 static inline void* SPVM_IMPLEMENT_GET_METHOD_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t* error_id) {
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   void* method = env->get_method(env, stack, basic_type_name, method_name);
   
@@ -2052,7 +2052,7 @@ static inline void SPVM_IMPLEMENT_DEREF_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE*
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int8_t value) {
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId8, value);
   int32_t string_length = strlen(tmp_buffer);
@@ -2062,7 +2062,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(SPVM_ENV* env, 
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int16_t value) {
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId16, value);
   int32_t string_length = strlen(tmp_buffer);
@@ -2072,7 +2072,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_STRING(SPVM_ENV* env,
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t value) {
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId32, value);
   int32_t string_length = strlen(tmp_buffer);
@@ -2082,7 +2082,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_STRING(SPVM_ENV* env, S
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int64_t value) {
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId64, value);
   int32_t string_length = strlen(tmp_buffer);
@@ -2092,7 +2092,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(SPVM_ENV* env, 
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float value) {
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%g", value);
   int32_t string_length = strlen(tmp_buffer);
@@ -2102,7 +2102,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(SPVM_ENV* env,
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, double value) {
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%g", value);
   int32_t string_length = strlen(tmp_buffer);
@@ -2613,7 +2613,7 @@ static inline void SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE
 
 static inline void SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(SPVM_ENV* env, SPVM_VALUE* stack, const char* interface_name, const char* method_name, int32_t args_width, int32_t* error_id) {
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   void* object = stack[0].oval;
   

@@ -319,6 +319,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_double_object_value,
     SPVM_API_no_free,
     SPVM_API_set_no_free,
+    SPVM_API_get_stack_tmp_buffer,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -2640,7 +2641,7 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   
   va_list args;
   
-  char* message_with_line = env->api->internal->get_stack_tmp_buffer(env, stack);;
+  char* message_with_line = SPVM_API_get_stack_tmp_buffer(env, stack);;
   int32_t message_length = strlen(message);
   if (message_length > 255) {
     message_length = 255;
@@ -3160,7 +3161,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
   const char* line_part = " line ";
   
   total_length += strlen(line_part);
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);;
+  char* tmp_buffer = SPVM_API_get_stack_tmp_buffer(env, stack);;
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId32, line);
   total_length += strlen(tmp_buffer);
   
@@ -3348,7 +3349,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = SPVM_API_get_stack_tmp_buffer(env, stack);
   
   SPVM_OBJECT* dump;
   if (object == NULL) {

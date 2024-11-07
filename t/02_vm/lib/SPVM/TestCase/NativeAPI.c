@@ -239,6 +239,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->get_double_object_value != &env_array[219]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->no_free != &env_array[220]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_no_free != &env_array[221]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_stack_tmp_buffer != &env_array[222]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

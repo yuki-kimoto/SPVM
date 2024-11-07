@@ -2507,6 +2507,14 @@ Sets C<no_free> flag of the object I<object> to the value I<no_free>.
 
 This flag expects a boolean value.
 
+=head2 get_stack_tmp_buffer
+
+C<char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);>
+
+Returns the temporary buffer on the runtime stack I<stack>.
+
+The byte size of the temporary buffer is L</"SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE">.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2733,6 +2741,7 @@ Native APIs have its IDs.
   219 get_double_object_value
   220 no_free
   221 set_no_free
+  222 get_stack_tmp_buffer
 
 =head1 Constant Values
 
