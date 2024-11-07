@@ -22,10 +22,6 @@ enum {
   SPVM_API_C_STACK_INDEX_ENV = 377,
 };
 
-enum {
-  SPVM_API_C_TMP_BUFFER_SIZE = 512,
-};
-
 /*
   Environment APIs
 */
