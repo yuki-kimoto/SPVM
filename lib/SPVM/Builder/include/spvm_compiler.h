@@ -65,6 +65,8 @@ struct spvm_compiler {
   // Line start position
   char* line_begin_ch_ptr;
   
+  char* line_begin_after_shebang_line_ch_ptr;
+  
   // Char pointer of current source
   char* ch_ptr;
   

@@ -392,6 +392,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         int32_t is_content_begin = (compiler->ch_ptr == compiler->current_class_content);
         
+        int32_t is_line_begin_after_sheban = (compiler->ch_ptr == compiler->line_begin_after_shebang_line_ch_ptr);
+        
         int32_t is_line_begin = (compiler->ch_ptr == compiler->line_begin_ch_ptr);
         
         compiler->ch_ptr++;
@@ -446,8 +448,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // File directive
         else if (strncmp(compiler->ch_ptr, "file ", 5) == 0) {
           
-          if (!is_content_begin) {
-            SPVM_COMPILER_error(compiler, "A file directive must begin from the beggining of the source code.\n  at %s line %d", compiler->current_file, compiler->current_line);
+          if (!(is_content_begin || is_line_begin_after_sheban)) {
+            SPVM_COMPILER_error(compiler, "A file directive must begin from the beggining of the source code excluding a shebang line.\n  at %s line %d", compiler->current_file, compiler->current_line);
             return 0;
           }
           
@@ -507,6 +509,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         // Comment
         else {
+          
+          int32_t is_shebang_line = 0;
+          if (is_content_begin && strncmp(compiler->ch_ptr, "! ", 1) == 0) {
+            is_shebang_line = 1;
+          }
+          
           while(1) {
             int32_t is_line_terminator = SPVM_TOKE_is_line_terminator(compiler, compiler->ch_ptr);
             
@@ -521,6 +529,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             else {
               compiler->ch_ptr++;
             }
+          }
+          
+          if (is_shebang_line) {
+            compiler->line_begin_after_shebang_line_ch_ptr = compiler->ch_ptr;
           }
         }
         

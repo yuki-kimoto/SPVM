@@ -101,13 +101,18 @@ use Test::More;
   }
   
   {
+    my $source = qq|#!spvm\n#file "/foo/bar.txt" \nclass MyClass { static method main : void () {} }|;
+    compile_ok($source);
+  }
+  
+  {
     my $source = qq|#file "/foo/bar.txt\nclass MyClass { static method main : void () {} }|;
     compile_not_ok($source, q|A file in a line directive must end with ".|);
   }
   
   {
     my $source = qq| #file "/foo/bar.txt"\nclass MyClass { static method main : void () {} }|;
-    compile_not_ok($source, q|A file directive must begin from the beggining of the source code.|);
+    compile_not_ok($source, q|A file directive must begin from the beggining of the source code excluding a shebang line.|);
   }
   
   {

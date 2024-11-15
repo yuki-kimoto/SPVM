@@ -1,3 +1,10 @@
+0.990030 2024-11-15
+  [Changes]
+    * A file directive before a shebang line is allowed.
+    
+      #!command
+      #file "FILE_PATH"
+
 0.990029 2024-11-08
   [New Features]
     * Add SPVM::Builder::ConfigBuilder class.

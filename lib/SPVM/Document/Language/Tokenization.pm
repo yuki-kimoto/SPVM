@@ -455,8 +455,13 @@ Examples:
 A file directive set the current file path.
 
   #file "FILE_PATH"
+  
+A file directive begins from the beggining of the source code excluding a shebang line.
 
-A file directive begins from the beggining of the source code.
+A shebang line before a file directive is allowed.
+
+  #!command
+  #file "FILE_PATH"
 
 It is followed by one or more ASCII C<SP>.
 
