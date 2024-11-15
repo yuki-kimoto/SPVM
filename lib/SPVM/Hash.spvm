@@ -100,7 +100,7 @@ class Hash {
     $self->{keys_length} = $keys_length;
   }
   
-  precompile method get : object ($key : string) {
+  method get : object ($key : string) {
     
     my $entry = $self->get_entry($key);
     
