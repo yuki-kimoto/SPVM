@@ -101,6 +101,20 @@ class Hash {
   }
   
   precompile method get : object ($key : string) {
+    
+    my $entry = $self->get_entry($key);
+    
+    my $value = (object)undef;
+    
+    if ($entry) {
+      $value = $entry->{value};
+    }
+    
+    return $value;
+  }
+  
+  precompile private method get_entry : Hash::Entry ($key : string) {
+    
     unless ($key) {
       die "The key \$key must be defined.";
     }
@@ -112,7 +126,7 @@ class Hash {
     }
     while (1) {
       if ($entry->{key} eq $key) {
-        return $entry->{value};
+        return $entry;
       }
       unless ($entry->{next_entry}) {
         return undef;
