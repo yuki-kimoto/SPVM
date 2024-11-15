@@ -125,7 +125,10 @@ my $dev_null = File::Spec->devnull;
   }
   
   # shebang
-  unless ($^O eq 'MSWin32') {
+  if ($^O eq 'MSWin32') {
+    warn "[Test Output]A test for shebang is skipped.";
+  }
+  else {
     local $ENV{PERL5LIB} = "blib/lib";
     my $spvm_cmd = qq($FindBin::Bin/script/use_class.spvm);
     my $output = `$spvm_cmd`;
