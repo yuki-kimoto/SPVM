@@ -656,13 +656,13 @@ class TestCase::Module::Hash {
     }
     return 1;
   }
-
+  
   static method get : int () {
     my $hash = Hash->new;
     $hash->set_int("a" => 1);
     $hash->set("b" => undef);
     $hash->set("c" => "str");
-
+    
     unless (((Int)($hash->get("a")))->value == 1) {
       return 0;
     }
@@ -690,7 +690,7 @@ class TestCase::Module::Hash {
     
     return 1;
   }
-
+  
   static method exists : int () {
     my $keys = ["alice", "bob"];
     my $vals = [Int->new(1), Int->new(2)];
@@ -1304,4 +1304,167 @@ class TestCase::Module::Hash {
     
     return 1;
   }
+  
+  static method weaken : int () {
+    
+    {
+      my $hash = Hash->new;
+      
+      my $key = "key";
+      my $value = Int->new(1);
+      
+      $hash->set($key, $value);
+      
+      $hash->weaken($key);
+      
+      unless ($hash->isweak($key)) {
+        return 0;
+      }
+      
+      $hash->unweaken($key);
+      
+      if ($hash->isweak($key)) {
+        return 0;
+      }
+    }
+    
+    {
+      my $hash = Hash->new;
+      
+      my $key = "key";
+      
+      $hash->weaken($key);
+      
+      if ($hash->isweak($key)) {
+        return 0;
+      }
+      
+      $hash->unweaken($key);
+      
+      if ($hash->isweak($key)) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      my $hash = Hash->new;
+      eval { $hash->weaken(undef); }
+      
+      unless (Fn->contains($@, "The key \$key must be defined.")) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unweaken : int () {
+    
+    {
+      my $hash = Hash->new;
+      
+      my $key = "key";
+      my $value = Int->new(1);
+      
+      $hash->set($key, $value);
+      
+      $hash->weaken($key);
+      
+      unless ($hash->isweak($key)) {
+        return 0;
+      }
+      
+      $hash->unweaken($key);
+      
+      if ($hash->isweak($key)) {
+        return 0;
+      }
+    }
+    
+    {
+      my $hash = Hash->new;
+      
+      my $key = "key";
+      
+      $hash->weaken($key);
+      
+      if ($hash->isweak($key)) {
+        return 0;
+      }
+      
+      $hash->unweaken($key);
+      
+      if ($hash->isweak($key)) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      my $hash = Hash->new;
+      eval { $hash->unweaken(undef); }
+      
+      unless (Fn->contains($@, "The key \$key must be defined.")) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method isweak : int () {
+    
+    {
+      my $hash = Hash->new;
+      
+      my $key = "key";
+      my $value = Int->new(1);
+      
+      $hash->set($key, $value);
+      
+      $hash->weaken($key);
+      
+      unless ($hash->isweak($key)) {
+        return 0;
+      }
+      
+      $hash->unweaken($key);
+      
+      if ($hash->isweak($key)) {
+        return 0;
+      }
+    }
+    
+    {
+      my $hash = Hash->new;
+      
+      my $key = "key";
+      
+      $hash->weaken($key);
+      
+      if ($hash->isweak($key)) {
+        return 0;
+      }
+      
+      $hash->unweaken($key);
+      
+      if ($hash->isweak($key)) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      my $hash = Hash->new;
+      eval { $hash->isweak(undef); }
+      
+      unless (Fn->contains($@, "The key \$key must be defined.")) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }

@@ -87,7 +87,7 @@ The deleted value is returned.
 
 Exceptions:
 
-$key must be defined. Otherwise an exception is thrown.
+The key $key must be defined. Otherwise, an exception is thrown.
 
 =head2 exists
 
@@ -111,11 +111,43 @@ Gets all the values in the hash.
 
 C<method get : object ($key : string);>
 
-Gets a value specifed by the key $key, and returns it.
+Gets the value specifed by the key $key, and returns it.
+
+If the value does not exist, returns undef.
 
 Exceptions:
 
-$key must be defined. Otherwise an exception is thrown.
+The key $key must be defined. Otherwise, an exception is thrown.
+
+=head2 weaken
+
+C<method weaken : void ($key : string));>
+
+Enables a weaken reference of the field that stores the value specifed by the key $key if the value exists.
+
+Exceptions:
+
+The key $key must be defined. Otherwise, an exception is thrown.
+
+=head2 unweaken
+
+C<method unweaken : void ($key : string);>
+
+Disables a weaken reference of the field that stores the value specifed by the key $key if the value exists.
+
+Exceptions:
+
+The key $key must be defined. Otherwise, an exception is thrown.
+
+=head2 isweak
+
+C<method isweak : int ($key : string)>
+
+If the field that stores the value specifed by the key $key is weakened, returns 1, otherwise returns 0.
+
+Exceptions:
+
+The key $key must be defined. Otherwise, an exception is thrown.
 
 =head2 get_byte
 
@@ -125,7 +157,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be L<Byte|SPVM::Byte>. Otherwise an exception is thrown.
+The type of the value for the key must be L<Byte|SPVM::Byte>. Otherwise, an exception is thrown.
 
 =head2 get_short
 
@@ -135,7 +167,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be L<Short|SPVM::Short> or L<Byte|SPVM::Byte>. Otherwise an exception is thrown.
+The type of the value for the key must be L<Short|SPVM::Short> or L<Byte|SPVM::Byte>. Otherwise, an exception is thrown.
 
 =head2 get_int
 
@@ -145,7 +177,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be L<Int|SPVM::Int>, L<Short|SPVM::Short>, or L<Byte|SPVM::Byte>. Otherwise an exception is thrown.
+The type of the value for the key must be L<Int|SPVM::Int>, L<Short|SPVM::Short>, or L<Byte|SPVM::Byte>. Otherwise, an exception is thrown.
 
 =head2 get_long
 
@@ -155,7 +187,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be L<Long|SPVM::Long>, L<Int|SPVM::Int>, L<Short|SPVM::Short>, or L<Byte|SPVM::Byte>. Otherwise an exception is thrown.
+The type of the value for the key must be L<Long|SPVM::Long>, L<Int|SPVM::Int>, L<Short|SPVM::Short>, or L<Byte|SPVM::Byte>. Otherwise, an exception is thrown.
 
 =head2 get_float
 
@@ -165,7 +197,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be L<Float|SPVM::Float>. Otherwise an exception is thrown.
+The type of the value for the key must be L<Float|SPVM::Float>. Otherwise, an exception is thrown.
 
 =head2 get_double
 
@@ -175,7 +207,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be L<Double|SPVM::Double>. Otherwise an exception is thrown.
+The type of the value for the key must be L<Double|SPVM::Double>. Otherwise, an exception is thrown.
 
 =head2 get_string
 
@@ -185,7 +217,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be string type. Otherwise an exception is thrown.
+The type of the value for the key must be string type. Otherwise, an exception is thrown.
 
 =head2 set
   
@@ -195,7 +227,7 @@ Sets $value to the hash by the key $key.
 
 Exceptions:
 
-$key must be defined. Otherwise an exception is thrown.
+The key $key must be defined. Otherwise, an exception is thrown.
 
 =head2 set_byte
 

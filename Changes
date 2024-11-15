@@ -1,3 +1,9 @@
+0.990031 2024-11-16
+  [New Features]
+    * Add Hash#weaken method.
+    * Add Hash#unweaken method.
+    * Add Hash#isweak method.
+    
 0.990030 2024-11-15
   [New Features]
     * Add lib directive.

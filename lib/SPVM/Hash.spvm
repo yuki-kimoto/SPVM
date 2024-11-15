@@ -113,6 +113,40 @@ class Hash {
     return $value;
   }
   
+  method weaken : void ($key : string) {
+    
+    my $entry = $self->get_entry($key);
+    
+    my $value = (object)undef;
+    
+    if ($entry) {
+      weaken $entry->{value};
+    }
+  }
+  
+  method unweaken : void ($key : string) {
+    
+    my $entry = $self->get_entry($key);
+    
+    my $value = (object)undef;
+    
+    if ($entry) {
+      unweaken $entry->{value};
+    }
+  }
+  
+  method isweak : int ($key : string) {
+    
+    my $entry = $self->get_entry($key);
+    
+    my $isweak = 0;
+    if ($entry) {
+      $isweak = isweak $entry->{value};
+    }
+    
+    return $isweak;
+  }
+  
   precompile private method get_entry : Hash::Entry ($key : string) {
     
     unless ($key) {
