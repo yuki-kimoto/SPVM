@@ -129,7 +129,7 @@ my $dev_null = File::Spec->devnull;
     warn "[Test Output]A test for shebang is skipped.";
   }
   else {
-    local $ENV{PERL5LIB} = "blib/lib:blib/arch";
+    local $ENV{PERL5LIB} = "blib/lib:blib/arch:$ENV{PERL5LIB}";
     my $spvm_cmd = qq($FindBin::Bin/script/use_class.spvm);
     my $output = `$spvm_cmd`;
     like($output, qr/3000/);
