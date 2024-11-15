@@ -107,7 +107,7 @@ use Test::More;
   
   {
     my $source = qq|#file "/foo/bar.txt\nclass MyClass { static method main : void () {} }|;
-    compile_not_ok($source, q|A file in a line directive must end with ".|);
+    compile_not_ok($source, q|A file in a file directive must end with ".|);
   }
   
   {

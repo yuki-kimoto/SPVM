@@ -468,7 +468,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t file_length = 0;
             while (*compiler->ch_ptr != '"') {
               if (*compiler->ch_ptr == '\n') {
-                SPVM_COMPILER_error(compiler, "A file in a line directive must end with \".\n  at %s line %d", compiler->current_file, compiler->current_line);
+                SPVM_COMPILER_error(compiler, "A file in a file directive must end with \".\n  at %s line %d", compiler->current_file, compiler->current_line);
                 return 0;
               }
               

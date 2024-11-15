@@ -4,7 +4,15 @@
     
       #!command
       #file "FILE_PATH"
-
+  [Compilation Error Messages Improvement]
+    * Fix A compilation error message.
+      
+      [Before]
+      A file in a line directive must end with ".
+      
+      [After]
+      A file in a file directive must end with ".
+      
 0.990029 2024-11-08
   [New Features]
     * Add SPVM::Builder::ConfigBuilder class.
