@@ -6,7 +6,7 @@ use strict;
 use warnings;
 use utf8;
 use Data::Dumper;
-use File::Basename 'basename';
+use File::Basename 'basename', 'dirname';
 use Config;
 use File::Path 'mkpath', 'rmtree';
 use File::Spec;
@@ -129,7 +129,7 @@ my $dev_null = File::Spec->devnull;
     warn "[Test Output]A test for shebang is skipped.";
   }
   else {
-    local $ENV{PERL5LIB} = "blib/lib";
+    local $ENV{PERL5LIB} = "blib/lib:blib/arch";
     my $spvm_cmd = qq($FindBin::Bin/script/use_class.spvm);
     my $output = `$spvm_cmd`;
     like($output, qr/3000/);
