@@ -5,6 +5,7 @@ use warnings;
 
 use SPVM::Builder::Util;
 use SPVM::Global;
+use FindBin;
 
 SPVM::Builder::Util::getopt
   # spvmcc and spvm shared
@@ -19,8 +20,6 @@ SPVM::Builder::Util::getopt
   '-M=s' => \my @use_class_names,
   '-c' => \my $syntax_ok,
 ;
-
-unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs;
 
 if ($help) {
   print SPVM::Builder::Util::extract_usage;
@@ -78,6 +77,12 @@ elsif (defined $script_name) {
   
   $source = "#file \"$script_name\"\x{A}$source";
 }
+
+FindBin::again();
+
+my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
+
+unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_by_lib_directive;
 
 for my $use_class_name (@use_class_names) {
   SPVM::Global::build_class($use_class_name, __FILE__, __LINE__);
@@ -222,6 +227,18 @@ Examples:
   -c
 
 Checks syntax only.
+
+=head1 lib Directive
+
+If the source code specified by C<E<lt>script_nameE<gt>>, C<-E>, or C<-e> option contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
+  
+  #lib "$FindBin::Bin/lib"
+  
+  class {
+  
+  }
+
+This directories specified by lib directive is placed after the directories specified by L</"--include-dir"> option.
 
 =head1 Copyright & License
 

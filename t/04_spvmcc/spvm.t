@@ -117,6 +117,22 @@ my $dev_null = File::Spec->devnull;
     ok(1);
   }
   
+  # lib directive
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm $FindBin::Bin/script/use_class.spvm);
+    my $output = `$spvm_cmd`;
+    like($output, qr/3000/);
+  }
+  
+  # prcompile
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/04_spvmcc/lib/SPVM $FindBin::Bin/script/precompile.spvm);
+    system($spvm_cmd) == 0
+     or die "Can't execute spvm command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
   # prcompile
   {
     my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/04_spvmcc/lib/SPVM $FindBin::Bin/script/precompile.spvm);

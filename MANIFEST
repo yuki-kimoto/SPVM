@@ -1002,6 +1002,7 @@ t/02_vm/lib/SPVM/TestCase/Util/Thread/ID.spvm
 t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.config
 t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.cpp
 t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.spvm
+t/04_spvmcc/lib/SPVM/TestCase.spvm
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.c
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.config
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/include/bar.h
@@ -1029,6 +1030,7 @@ t/04_spvmcc/script/myapp_compile_error/main_instant_method.spvm
 t/04_spvmcc/script/myapp_compile_error/main_not_found.spvm
 t/04_spvmcc/script/precompile.spvm
 t/04_spvmcc/script/program_name.spvm
+t/04_spvmcc/script/use_class.spvm
 t/04_spvmcc/spvm.t
 t/04_spvmcc/SPVM_Builder_Exe.t
 t/04_spvmcc/spvmcc.t

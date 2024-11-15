@@ -13,7 +13,6 @@ use File::Spec;
 use SPVM::Builder::Config;
 use Encode 'decode';
 use File::Find 'find';
-use FindBin;
 
 # SPVM::Builder::Util is used from Makefile.PL
 # so this class must be wrote as pure perl. Do not contain XS functions.
@@ -659,14 +658,14 @@ EOS
 }
 
 sub parse_lib_directive {
-  my ($source) = @_;
+  my ($source, $bin) = @_;
   
   my $include_dirs = [];
   
-  while ($source =~ /^#lib "([^"]+)"/g) {
+  while ($source =~ /^#lib "([^"]+)"/gm) {
     my $include_dir = $1;
     
-    $include_dir =~ s/\$FindBin::Bin/$FindBin::Bin/g;
+    $include_dir =~ s/\$FindBin::Bin/$bin/g;
     
     push @$include_dirs, $include_dir;
   }
