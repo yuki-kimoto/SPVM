@@ -106,18 +106,18 @@ class Hash {
     }
     
     my $index = $self->_index_by_key($key, @{$self->{entries}});
-    my $ref = $self->{entries}->[$index];
-    unless ($ref) {
+    my $entry = $self->{entries}->[$index];
+    unless ($entry) {
       return undef;
     }
     while (1) {
-      if ($ref->{key} eq $key) {
-        return $ref->{value};
+      if ($entry->{key} eq $key) {
+        return $entry->{value};
       }
-      unless ($ref->{next_entry}) {
+      unless ($entry->{next_entry}) {
         return undef;
       }
-      $ref = $ref->{next_entry};
+      $entry = $entry->{next_entry};
     }
   }
   
@@ -127,19 +127,19 @@ class Hash {
     }
     
     my $index = $self->_index_by_key($key, @{$self->{entries}});
-    my $ref = $self->{entries}->[$index];
+    my $entry = $self->{entries}->[$index];
     
-    unless ($ref) {
+    unless ($entry) {
       return 0;
     }
     while (1) {
-      if ($ref->{key} eq $key) {
+      if ($entry->{key} eq $key) {
         return 1;
       }
-      unless ($ref->{next_entry}) {
+      unless ($entry->{next_entry}) {
         return 0;
       }
-      $ref = $ref->{next_entry};
+      $entry = $entry->{next_entry};
     }
   }
   
@@ -149,28 +149,28 @@ class Hash {
     }
     
     my $index = $self->_index_by_key($key, @{$self->{entries}});
-    my $ref = $self->{entries}->[$index];
+    my $entry = $self->{entries}->[$index];
     my $prev : Hash::Entry = undef;
-    unless ($ref) {
+    unless ($entry) {
       return undef;
     }
     while (1) {
-      if ($ref->{key} eq $key) {
-        my $ret = $ref->{value};
+      if ($entry->{key} eq $key) {
+        my $ret = $entry->{value};
         if ($prev) {
-          $prev->{next_entry} = $ref->{next_entry};
+          $prev->{next_entry} = $entry->{next_entry};
         }
         else {
-          $self->{entries}->[$index] = $ref->{next_entry};
+          $self->{entries}->[$index] = $entry->{next_entry};
         }
         $self->{keys_length}--;
         return $ret;
       }
-      unless ($ref->{next_entry}) {
+      unless ($entry->{next_entry}) {
         return undef;
       }
-      $prev = $ref;
-      $ref = $ref->{next_entry};
+      $prev = $entry;
+      $entry = $entry->{next_entry};
     }
   }
   
@@ -180,10 +180,10 @@ class Hash {
     my $keys_length = 0;
     my $entries_length = @{$self->{entries}};
     for (my $i = 0; $i < $entries_length; ++$i) {
-      my $ref = $self->{entries}->[$i];
-      while ($ref) {
-        $keys->[$keys_length++] = $ref->{key};
-        $ref = $ref->{next_entry};
+      my $entry = $self->{entries}->[$i];
+      while ($entry) {
+        $keys->[$keys_length++] = $entry->{key};
+        $entry = $entry->{next_entry};
       }
     }
     return $keys;
@@ -205,10 +205,10 @@ class Hash {
     my $keys_length = 0;
     my $entries_length = @{$self->{entries}};
     for (my $i = 0; $i < $entries_length; ++$i) {
-      my $ref = $self->{entries}->[$i];
-      while ($ref) {
-        $retvalue->[$keys_length++] = $ref->{value};
-        $ref = $ref->{next_entry};
+      my $entry = $self->{entries}->[$i];
+      while ($entry) {
+        $retvalue->[$keys_length++] = $entry->{value};
+        $entry = $entry->{next_entry};
       }
     }
     return $retvalue;
@@ -602,8 +602,8 @@ class Hash {
   {
     my $index = $self->_index_by_key($key, $entries_length);
     
-    my $ref = $entries->[$index];
-    unless ($ref) {
+    my $entry = $entries->[$index];
+    unless ($entry) {
       $entries->[$index] = new Hash::Entry;
       my $new_key : string;
       if (is_read_only $key) {
@@ -621,11 +621,11 @@ class Hash {
       return;
     }
     while (1) {
-      if ($ref->{key} eq $key) {
-        $ref->{value} = $value;
+      if ($entry->{key} eq $key) {
+        $entry->{value} = $value;
         return;
       }
-      unless ($ref->{next_entry}) {
+      unless ($entry->{next_entry}) {
         my $new_key : string;
         if (is_read_only $key) {
           $new_key = $key;
@@ -635,14 +635,14 @@ class Hash {
           make_read_only $new_key;
         }
         
-        $ref->{next_entry} = new Hash::Entry;
-        $ref->{next_entry}->{key} = $new_key;
-        $ref->{next_entry}->{value} = $value;
-        $ref->{next_entry}->{next_entry} = undef;
+        $entry->{next_entry} = new Hash::Entry;
+        $entry->{next_entry}->{key} = $new_key;
+        $entry->{next_entry}->{value} = $value;
+        $entry->{next_entry}->{next_entry} = undef;
         ++$$keys_length_ref;
         return;
       }
-      $ref = $ref->{next_entry};
+      $entry = $entry->{next_entry};
     }
   }
   
@@ -654,10 +654,10 @@ class Hash {
     my $new_keys_length = 0;
     # iterate entries
     for (my $i = 0; $i < $entries_length; ++$i) {
-      my $ref = $self->{entries}->[$i];
-      while ($ref) {
-        $self->_set_to_container($new_entries, $new_entries_length, \$new_keys_length, $ref->{key}, $ref->{value});
-        $ref = $ref->{next_entry};
+      my $entry = $self->{entries}->[$i];
+      while ($entry) {
+        $self->_set_to_container($new_entries, $new_entries_length, \$new_keys_length, $entry->{key}, $entry->{value});
+        $entry = $entry->{next_entry};
       }
     }
     $self->{entries} = $new_entries;
