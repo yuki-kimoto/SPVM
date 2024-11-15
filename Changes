@@ -3,7 +3,9 @@
     * Add lib directive.
       
       #lib "$FindBin::Bin/lib"
-      
+    * spvm command can detect class search directories specified by lib directive.
+    * spvmcc command can detect class search directories specified by lib directive.
+    
   [Changes]
     * A file directive before a shebang line is allowed.
     

@@ -6,6 +6,7 @@ use warnings;
 use SPVM();
 use SPVM::Builder::Exe;
 use SPVM::Builder::Util;
+use FindBin;
 
 my @argv;
 
@@ -45,7 +46,17 @@ elsif ($show_version) {
 
 my $script_name = shift;
 
-unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs;
+my $source = "";
+
+$0 = $script_name;
+
+FindBin::again();
+
+eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
+
+my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
+
+unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_by_lib_directive;
 
 if ($show_resource_info) {
   
@@ -383,6 +394,18 @@ Output Example:
   SPVM::Sys 1.201
   SPVM::Regex 0.980
   SPVM::Foo
+
+=head1 lib Directive
+
+If the source code specified by C<E<lt>script_nameE<gt>> contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
+  
+  #lib "$FindBin::Bin/lib"
+  
+  class {
+  
+  }
+
+This directories specified by lib directive is placed after the directories specified by L</"--include-dir"> option.
 
 =head1 Copyright & License
 

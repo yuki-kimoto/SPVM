@@ -197,7 +197,7 @@ my $dev_null = File::Spec->devnull;
 
   # Compile and link cached
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --no-config t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --no-config t/04_spvmcc/script/myapp.spvm);    
     my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
     if (length $spvmcc_output == 0) {
       ok(1);
@@ -206,6 +206,18 @@ my $dev_null = File::Spec->devnull;
       ok(0);
       warn "[Test Failed]$spvmcc_output";
     }
+  }
+  
+  # lib directive
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -o $exe_dir/use_class --no-config t/04_spvmcc/script/use_class.spvm);
+    system($spvmcc_cmd) == 0
+      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe use_class/);
+    my $output = `$execute_cmd`;
+    chomp $output;
+    like($output, qr/3000/);
   }
   
   # debug config -O0 -g, --config-argv, --config-argv-option
