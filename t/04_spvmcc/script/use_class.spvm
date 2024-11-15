@@ -1,4 +1,4 @@
-#!spvm
+#!blib/script/spvm
 
 #lib "$FindBin::Bin/../lib/SPVM"
 

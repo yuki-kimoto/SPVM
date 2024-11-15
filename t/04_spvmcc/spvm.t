@@ -124,6 +124,14 @@ my $dev_null = File::Spec->devnull;
     like($output, qr/3000/);
   }
   
+  # shebang
+  unless ($^O eq 'MSWin32') {
+    local $ENV{PERL5LIB} = "blib/lib";
+    my $spvm_cmd = qq($FindBin::Bin/script/use_class.spvm);
+    my $output = `$spvm_cmd`;
+    like($output, qr/3000/);
+  }
+  
   # prcompile
   {
     my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/04_spvmcc/lib/SPVM $FindBin::Bin/script/precompile.spvm);

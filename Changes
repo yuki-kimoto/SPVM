@@ -6,6 +6,23 @@
     * spvm command can detect class search directories specified by lib directive.
     * spvmcc command can detect class search directories specified by lib directive.
     
+    * Support SPVM script such as the following script that has a sheban line.
+      
+      #!spvm
+      
+      #lib "$FindBin::Bin/../lib/SPVM"
+      
+      class {
+        use TestCase;
+        
+        static method main : void () {
+          
+          my $sum = TestCase->sum(1000, 2000);
+          
+          say "$sum";
+        }
+      }
+
   [Changes]
     * A file directive before a shebang line is allowed.
     
