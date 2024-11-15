@@ -1,7 +1,9 @@
 0.990030 2024-11-15
   [New Features]
     * Add lib directive.
-    
+      
+      #lib "$FindBin::Bin/lib"
+      
   [Changes]
     * A file directive before a shebang line is allowed.
     
