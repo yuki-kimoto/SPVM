@@ -411,7 +411,7 @@ Examples:
 
   # This is a comment line
 
-=head2 Line Directive
+=head2 line Directive
 
 A line directive set the current line number.
 
@@ -450,7 +450,7 @@ Examples:
     }
   }
 
-=head2 File Directive
+=head2 file Directive
 
 A file directive set the current file path.
 
@@ -491,6 +491,44 @@ Examples:
 
   #file "/path/MyClass.spvm"
   class MyClass {
+  
+  }
+
+=head2 lib Directive
+
+A lib directive gives a hint for a class search directory to L<spvm> command and L<spvmcc> command.
+
+  #lib "DIRECTORY_PATH"
+  
+A lib directive begins from the beggining of a line.
+
+It is followed by one or more ASCII C<SP>.
+
+It is followed by C<">.
+
+It is followed by I<DIRECTORY_PATH>. I<DIRECTORY_PATH> is a string that represetns a directory path.
+
+It is closed with C<">.
+
+It ends with ASCII C<LF>.
+
+The line directives take precedence over L<comments|/"Comment">.
+
+Compilation Errors:
+
+A lib directive must begin from the beggining of a line. Otherwise an compilation error occurs.
+
+The directory specified by a lib directive end with "\n". Otherwise an compilation error occurs.
+
+The directory specified by a lib directive must not be an empty string. Otherwise an compilation error occurs.
+
+The directory specified by a lib directive must end with ". Otherwise an compilation error occurs.
+
+Examples:
+
+  #lib "$FindBIn::Bin/lib"
+  
+  class {
   
   }
 

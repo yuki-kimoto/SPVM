@@ -1,4 +1,7 @@
 0.990030 2024-11-15
+  [New Features]
+    * Add lib directive.
+    
   [Changes]
     * A file directive before a shebang line is allowed.
     
@@ -12,7 +15,10 @@
       
       [After]
       A file in a file directive must end with ".
-      
+  [Document Changes]
+    * The heading "File Directive" is renamed to "file Directive".
+    * The heading "Line Directive" is renamed to "line Directive".
+    
 0.990029 2024-11-08
   [New Features]
     * Add SPVM::Builder::ConfigBuilder class.

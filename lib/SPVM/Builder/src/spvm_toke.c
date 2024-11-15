@@ -507,6 +507,59 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           compiler->ch_ptr++;
           compiler->line_begin_ch_ptr = compiler->ch_ptr;
         }
+        else if (strncmp(compiler->ch_ptr, "lib ", 4) == 0) {
+          
+          if (!is_line_begin) {
+            SPVM_COMPILER_error(compiler, "A lib directive must begin from the beggining of the line.\n  at %s line %d", compiler->current_file, compiler->current_line);
+            return 0;
+          }
+          
+          compiler->ch_ptr += 3;
+          
+          while (*compiler->ch_ptr == ' ') {
+            compiler->ch_ptr++;
+          }
+          
+          int32_t include_dir_length = 0;
+          if (*compiler->ch_ptr == '"') {
+            
+            compiler->ch_ptr++;
+            
+            const char* include_dir_begin_ptr = compiler->ch_ptr;
+            while (*compiler->ch_ptr != '"') {
+              if (*compiler->ch_ptr == '\n') {
+                SPVM_COMPILER_error(compiler, "The directory specified by a lib directive must end with \".\n  at %s line %d", compiler->current_file, compiler->current_line);
+                return 0;
+              }
+              
+              compiler->ch_ptr++;
+              include_dir_length++;
+            }
+            
+            compiler->ch_ptr++;
+          }
+          else {
+            SPVM_COMPILER_error(compiler, "The directory specified by a lib directive must start with '\"'.\n  at %s line %d", compiler->current_file, compiler->current_line);
+            return 0;
+          }
+          
+          while (*compiler->ch_ptr == ' ') {
+            compiler->ch_ptr++;
+          }
+          
+          if (!(*compiler->ch_ptr == '\n')) {
+            SPVM_COMPILER_error(compiler, "The directory specified by a lib directive must end with \"\\n\".\n  at %s line %d", compiler->current_file, compiler->current_line);
+            return 0;
+          }
+          
+          if (include_dir_length == 0) {
+            SPVM_COMPILER_error(compiler, "The directory specified by a lib directive must not be an empty string.\n  at %s line %d", compiler->current_file, compiler->current_line);
+            return 0;
+          }
+          
+          compiler->ch_ptr++;
+          compiler->line_begin_ch_ptr = compiler->ch_ptr;
+        }
         // Comment
         else {
           

@@ -24,7 +24,7 @@ use MyTest qw(compile_not_ok_file compile_not_ok);
 
 use Test::More;
 
-# Line Directive
+# line Directive
 {
   {
     my $source = "class MyClass { static method main : void () {\n#line 1\n} }";
@@ -88,7 +88,7 @@ use Test::More;
   
 }
 
-# File Directive
+# file Directive
 {
   {
     my $source = qq|#file "/foo/bar.txt"\nclass MyClass { static method main : void () {} }|;
@@ -128,6 +128,45 @@ use Test::More;
   {
     my $source = qq|#file /foo/bar.txt\nclass MyClass { static method main : void () {} }|;
     compile_not_ok($source, q|A file directive must start with '"'|);
+  }
+  
+}
+
+# lib Directive
+{
+  {
+    my $source = qq|#lib "/foo/bar"\nclass MyClass { static method main : void () {} }|;
+    compile_ok($source);
+  }
+  
+  {
+    my $source = qq|#lib "/foo/bar"\n#lib "/foo/baz"\nclass MyClass { static method main : void () {} }|;
+    compile_ok($source);
+  }
+  
+  {
+    my $source = qq|#lib "/foo/bar" \nclass MyClass { static method main : void () {} }|;
+    compile_ok($source);
+  }
+  
+  {
+    my $source = qq|#lib "/foo/bar\nclass MyClass { static method main : void () {} }|;
+    compile_not_ok($source, q|The directory specified by a lib directive must end with ".|);
+  }
+  
+  {
+    my $source = qq|#lib ""\nclass MyClass { static method main : void () {} }|;
+    compile_not_ok($source, q|The directory specified by a lib directive must not be an empty string.|);
+  }
+  
+  {
+    my $source = qq|#lib "/foo/bar"a\nclass MyClass { static method main : void () {} }|;
+    compile_not_ok($source, q|The directory specified by a lib directive must end with "\n".|);
+  }
+  
+  {
+    my $source = qq|#lib /foo/bar\nclass MyClass { static method main : void () {} }|;
+    compile_not_ok($source, q|The directory specified by a lib directive must start with '"'|);
   }
   
 }
