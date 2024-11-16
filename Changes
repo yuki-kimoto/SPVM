@@ -1,4 +1,4 @@
-0.990031 2024-11-16
+0.990031 2024-11-17
   [New Features]
     * Add Hash#weaken method.
     * Add Hash#unweaken method.
