@@ -244,6 +244,7 @@ int32_t SPVM__Native__BasicType__get_class_var_by_index(SPVM_ENV* env, SPVM_VALU
   env->call_class_method_by_name(env, stack, "Native::ClassVar", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   void* obj_class_var = stack[0].oval;
+  env->set_no_free(env, stack, obj_class_var, 1);
   
   env->set_field_object_by_name(env, stack, obj_class_var, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -285,6 +286,7 @@ int32_t SPVM__Native__BasicType__get_class_var_by_name(SPVM_ENV* env, SPVM_VALUE
   env->call_class_method_by_name(env, stack, "Native::ClassVar", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   void* obj_class_var = stack[0].oval;
+  env->set_no_free(env, stack, obj_class_var, 1);
   
   env->set_field_object_by_name(env, stack, obj_class_var, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -382,6 +384,7 @@ int32_t SPVM__Native__BasicType__get_field_by_name(SPVM_ENV* env, SPVM_VALUE* st
   env->call_class_method_by_name(env, stack, "Native::Field", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   void* obj_field = stack[0].oval;
+  env->set_no_free(env, stack, obj_field, 1);
   
   env->set_field_object_by_name(env, stack, obj_field, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -437,6 +440,7 @@ int32_t SPVM__Native__BasicType__get_method_by_index(SPVM_ENV* env, SPVM_VALUE* 
   env->call_class_method_by_name(env, stack, "Native::Method", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   void* obj_method = stack[0].oval;
+  env->set_no_free(env, stack, obj_method, 1);
   
   env->set_field_object_by_name(env, stack, obj_method, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -478,6 +482,7 @@ int32_t SPVM__Native__BasicType__get_method_by_name(SPVM_ENV* env, SPVM_VALUE* s
   env->call_class_method_by_name(env, stack, "Native::Method", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   void* obj_method = stack[0].oval;
+  env->set_no_free(env, stack, obj_method, 1);
   
   env->set_field_object_by_name(env, stack, obj_method, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }

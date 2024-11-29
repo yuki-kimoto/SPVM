@@ -126,6 +126,7 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
   env->call_class_method_by_name(env, stack, "Native::Method", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   void* obj_method = stack[0].oval;
+  env->set_no_free(env, stack, obj_method, 1);
   
   void* obj_self = env->new_pointer_object_by_name(env, stack, "Native::MethodCall", method, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
