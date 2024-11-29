@@ -40,9 +40,9 @@ int32_t SPVM__Native__Env__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (error_id) { return error_id; }
   
   if (!no_free) {
-    SPVM_ENV* my_env = env->get_pointer(env, stack, obj_self);
+    SPVM_ENV* self = env->get_pointer(env, stack, obj_self);
     
-    my_env->free_env(my_env);
+    self->free_env(self);
   }
   
   return 0;
