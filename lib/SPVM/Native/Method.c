@@ -200,6 +200,7 @@ int32_t SPVM__Native__Method__get_arg_by_index(SPVM_ENV* env, SPVM_VALUE* stack)
   env->call_class_method_by_name(env, stack, "Native::Arg", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   void* obj_arg = stack[0].oval;
+  env->set_no_free(env, stack, obj_arg, 1);
   
   env->set_field_object_by_name(env, stack, obj_arg, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
