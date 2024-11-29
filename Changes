@@ -5,7 +5,10 @@
     * Fix the following warning in child class.
       
       While trying to resolve method call %s->%s() can not locate package "%s" yet it is mentioned in @%s::ISA (perhaps you forgot to load "%s"?)
-      
+  [Bug Fix]
+    * Fix a bug that die native API do not set correct exception message when get_stack_tmp_buffer is used.
+      https://github.com/yuki-kimoto/SPVM/issues/639
+   
 0.990031 2024-11-17
   [New Features]
     * Add Hash#weaken method.

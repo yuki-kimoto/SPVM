@@ -4244,3 +4244,82 @@ int32_t SPVM__TestCase__NativeAPI__no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  {
+    int32_t error_id = env->die(env, stack, "Error %s.", "abc", __func__, __FILE__, __LINE__); int32_t line = __LINE__;
+    
+    if (!(error_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    const char* exception = env->get_chars(env, stack, env->get_exception(env, stack));
+    
+    if (!strstr(exception, "abc")) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    if (!strstr(exception, "SPVM__TestCase__NativeAPI__die")) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    if (!strstr(exception, "NativeAPI.c")) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    char tmp_line[255] = {0};
+    sprintf(tmp_line, "%d", line);
+    
+    if (!strstr(exception, tmp_line)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  {
+    char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+    sprintf(tmp_buffer, "%s", "abcd");
+    int32_t error_id = env->die(env, stack, "Error %s.", tmp_buffer, __func__, __FILE__, __LINE__); int32_t line = __LINE__;
+    
+    if (!(error_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    const char* exception = env->get_chars(env, stack, env->get_exception(env, stack));
+    
+    if (!strstr(exception, "abcd")) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    if (!strstr(exception, "SPVM__TestCase__NativeAPI__die")) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    if (!strstr(exception, "NativeAPI.c")) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    char tmp_line[255] = {0};
+    sprintf(tmp_line, "%d", line);
+    
+    if (!strstr(exception, tmp_line)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
