@@ -417,6 +417,10 @@ use Test::More;
     my $source = 'class MyClass { version "1.0011"; }';
     compile_not_ok($source, qr|The length of characters after "." in a version string must be divisible by 3|);
   }
+  {
+    my $source = 'class MyClass { version 1.001; }';
+    compile_not_ok($source,q|The type of the operand of version statement must be string type.|);
+  }
 }
 
 # Extra

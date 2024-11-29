@@ -426,6 +426,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         SPVM_OP* op_version_string = op_decl->first;
         SPVM_CONSTANT* version_string_constant = op_version_string->uv.constant;
+        SPVM_TYPE* version_string_constant_type = version_string_constant->type;
+        if (!SPVM_TYPE_is_string_type(compiler, version_string_constant_type->basic_type->id, version_string_constant_type->dimension, version_string_constant_type->flag)) {
+          SPVM_COMPILER_error(compiler, "The type of the operand of version statement must be string type.\n  at %s line %d", op_decl->file, op_decl->line);
+          break;
+        }
+        
         const char* version_string = version_string_constant->value.oval;
         int32_t version_string_length = version_string_constant->string_length;
         
