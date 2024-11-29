@@ -13,14 +13,14 @@ int32_t SPVM__Native__ClassVar__get_index(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_self = stack[0].oval;
   
-  void* class_var = env->get_pointer(env, stack, obj_self);
+  void* self = env->get_pointer(env, stack, obj_self);
   
   void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  int32_t index = env->api->class_var->get_index(runtime, class_var);
+  int32_t index = env->api->class_var->get_index(runtime, self);
   
   stack[0].ival = index;
   
@@ -33,14 +33,14 @@ int32_t SPVM__Native__ClassVar__get_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_self = stack[0].oval;
   
-  void* class_var = env->get_pointer(env, stack, obj_self);
+  void* self = env->get_pointer(env, stack, obj_self);
   
   void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  const char* name = env->api->class_var->get_name(runtime, class_var);
+  const char* name = env->api->class_var->get_name(runtime, self);
   
   void* obj_name = env->new_string_nolen(env, stack, name);
   
@@ -55,14 +55,14 @@ int32_t SPVM__Native__ClassVar__get_basic_type(SPVM_ENV* env, SPVM_VALUE* stack)
   
   void* obj_self = stack[0].oval;
   
-  void* class_var = env->get_pointer(env, stack, obj_self);
+  void* self = env->get_pointer(env, stack, obj_self);
   
   void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* basic_type = env->api->class_var->get_basic_type(runtime, class_var);
+  void* basic_type = env->api->class_var->get_basic_type(runtime, self);
   
   void* obj_address_basic_type = env->new_pointer_object_by_name(env, stack, "Address", basic_type, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -86,14 +86,14 @@ int32_t SPVM__Native__ClassVar__get_type_dimension(SPVM_ENV* env, SPVM_VALUE* st
   
   void* obj_self = stack[0].oval;
   
-  void* class_var = env->get_pointer(env, stack, obj_self);
+  void* self = env->get_pointer(env, stack, obj_self);
   
   void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  int32_t type_dimension = env->api->class_var->get_type_dimension(runtime, class_var);
+  int32_t type_dimension = env->api->class_var->get_type_dimension(runtime, self);
   
   stack[0].ival = type_dimension;
   
@@ -106,14 +106,14 @@ int32_t SPVM__Native__ClassVar__get_type_flag(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   void* obj_self = stack[0].oval;
   
-  void* class_var = env->get_pointer(env, stack, obj_self);
+  void* self = env->get_pointer(env, stack, obj_self);
   
   void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  int32_t type_flag = env->api->class_var->get_type_flag(runtime, class_var);
+  int32_t type_flag = env->api->class_var->get_type_flag(runtime, self);
   
   stack[0].ival = type_flag;
   
@@ -126,14 +126,14 @@ int32_t SPVM__Native__ClassVar__get_current_basic_type(SPVM_ENV* env, SPVM_VALUE
   
   void* obj_self = stack[0].oval;
   
-  void* class_var = env->get_pointer(env, stack, obj_self);
+  void* self = env->get_pointer(env, stack, obj_self);
   
   void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* current_basic_type = env->api->class_var->get_current_basic_type(runtime, class_var);
+  void* current_basic_type = env->api->class_var->get_current_basic_type(runtime, self);
   
   void* obj_address_current_basic_type = env->new_pointer_object_by_name(env, stack, "Address", current_basic_type, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
