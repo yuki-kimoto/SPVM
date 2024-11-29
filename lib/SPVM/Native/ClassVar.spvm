@@ -1,7 +1,7 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class Native::ClassVar {
+class Native::ClassVar : pointer {
   allow Native::BasicType;
   
   use Native::BasicType;

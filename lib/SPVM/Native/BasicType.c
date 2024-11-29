@@ -122,6 +122,7 @@ int32_t SPVM__Native__BasicType__get_parent(SPVM_ENV* env, SPVM_VALUE* stack) {
     env->call_class_method_by_name(env, stack, "Native::BasicType", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     void* obj_parent = stack[0].oval;
+    env->set_no_free(env, stack, obj_parent, 1);
     
     env->set_field_object_by_name(env, stack, obj_parent, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
@@ -531,6 +532,7 @@ int32_t SPVM__Native__BasicType__get_anon_basic_type_by_index(SPVM_ENV* env, SPV
   env->call_class_method_by_name(env, stack, "Native::BasicType", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   void* obj_anon_basic_type = stack[0].oval;
+  env->set_no_free(env, stack, obj_anon_basic_type, 1);
   
   env->set_field_object_by_name(env, stack, obj_anon_basic_type, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -560,3 +562,20 @@ int32_t SPVM__Native__BasicType__get_anon_basic_types_length(SPVM_ENV* env, SPVM
   return 0;
 }
 
+int32_t SPVM__Native__Env__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  int32_t no_free = env->no_free(env, stack, obj_self);
+  if (error_id) { return error_id; }
+  
+  if (!no_free) {
+    SPVM_ENV* my_env = env->get_pointer(env, stack, obj_self);
+    
+    my_env->free_env(my_env);
+  }
+  
+  return 0;
+}

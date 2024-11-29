@@ -1,7 +1,7 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class Native::Field {
+class Native::Field : pointer {
   allow Native::BasicType;
   
   use Native::BasicType;

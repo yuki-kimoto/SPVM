@@ -1,7 +1,7 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class Native::ClassFile {
+class Native::ClassFile : pointer {
   allow Native::Compiler;
   
   use Native::Compiler;

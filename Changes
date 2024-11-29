@@ -1,3 +1,16 @@
+0.990033 2024-11-30
+  [New Features]
+    * Add pointer attribute to the following classes.
+      
+      Native::API
+      Native::Arg
+      Native::BasicType
+      Native::ClassFile
+      Native::ClassVar
+      Native::Field
+      Native::Method
+      Native::MethodCall      
+    
 0.990032 2024-11-29
   [Compilation Bug Fix]
     * Fix a bug that version statement caused a segmentation fault when a number is given.

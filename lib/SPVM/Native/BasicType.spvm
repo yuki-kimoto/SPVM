@@ -1,7 +1,7 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class Native::BasicType {
+class Native::BasicType : pointer {
   allow Native::ClassVar;
   allow Native::Field;
   allow Native::Method;
@@ -115,4 +115,5 @@ class Native::BasicType {
     
     return $class_vars;
   }
+  
 }
