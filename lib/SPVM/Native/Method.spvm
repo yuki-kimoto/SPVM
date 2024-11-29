@@ -3,6 +3,7 @@
 
 class Native::Method : pointer {
   allow Native::BasicType;
+  allow Native::Arg;
   
   use Address;
   use Native::BasicType;

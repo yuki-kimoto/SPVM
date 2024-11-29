@@ -6,6 +6,7 @@ class Native::BasicType : pointer {
   allow Native::Field;
   allow Native::Method;
   allow Native::Runtime;
+  allow Native::Arg;
   
   use Native::Runtime;
   use Native::ClassVar;
@@ -22,6 +23,8 @@ class Native::BasicType : pointer {
   has ref_field : Native::Field;
   
   has ref_method : Native::Method;
+  
+  has ref_arg : Native::Arg;
   
   # Class Method
   private static method new_with_pointer : Native::BasicType ($pointer : Address, $options : object[] = undef) {
