@@ -15,6 +15,8 @@
     * Add Native::BasicType#ref_field field.
     * Add Native::BasicType#ref_arg field.
     * Add Native::Arg#ref_method field.
+  [Bug Fix]
+    * Fix Native::Compiler bugs.
 0.990032 2024-11-29
   [Compilation Bug Fix]
     * Fix a bug that version statement caused a segmentation fault when a number is given.
