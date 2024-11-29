@@ -228,7 +228,12 @@ sub bind_to_perl {
     push @isa, 'SPVM::BlessedObject::Class';
     my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
     
-    my $code = "package $perl_class_name; $isa sub import {}";
+    # Suppress a warning in child class
+    # While trying to resolve method call %s->%s() can not locate package "%s" yet it is mentioned in @%s::ISA (perhaps you forgot to load "%s"?)
+    # https://perldoc.perl.org/perldiag
+    my $suppress_warning_code = "sub import {} sub CLONE_SKIP { 1 } sub CLONE {}";
+    
+    my $code = "package $perl_class_name; $isa $suppress_warning_code";
     eval $code;
     
     if (my $error = $@) {

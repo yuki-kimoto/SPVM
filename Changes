@@ -1,7 +1,11 @@
 0.990032 2024-11-29
   [Compilation Bug Fix]
     * Fix a bug that version statement caused a segmentation fault when a number is given.
-    
+  [Warnings Fix]
+    * Fix the following warning in child class.
+      
+      While trying to resolve method call %s->%s() can not locate package "%s" yet it is mentioned in @%s::ISA (perhaps you forgot to load "%s"?)
+      
 0.990031 2024-11-17
   [New Features]
     * Add Hash#weaken method.
