@@ -10,7 +10,8 @@
       Native::Field
       Native::Method
       Native::MethodCall      
-    
+  [Internal Changes]
+    * Add Native::BasicType#ref_class_var field.
 0.990032 2024-11-29
   [Compilation Bug Fix]
     * Fix a bug that version statement caused a segmentation fault when a number is given.
