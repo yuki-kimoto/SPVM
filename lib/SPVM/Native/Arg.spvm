@@ -9,6 +9,8 @@ class Native::Arg : pointer {
   # Fields
   has runtime : Native::Runtime;
   
+  has ref_method : Native::Method;
+  
   # Class Method
   private static method new_with_pointer : Native::Arg ($pointer : Address, $options : object[] = undef) {
     
