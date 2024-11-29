@@ -191,7 +191,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t args_length = env->length(env, stack, obj_args);
   
-  void* obj_method = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "method", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_method = env->get_field_object_by_name(env, stack, obj_self, "method", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->runtime;

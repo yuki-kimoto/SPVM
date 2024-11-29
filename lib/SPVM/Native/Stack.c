@@ -15,7 +15,7 @@ int32_t SPVM__Native__Stack__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   if (!no_free) {
   
-    void* obj_my_env = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
+    void* obj_my_env = env->get_field_object_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     
     SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
