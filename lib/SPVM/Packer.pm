@@ -50,21 +50,25 @@ A specifier part is consist of a speficier, an endian, and a length. An endian a
 
 Here is the list of specifiers.
 
-  [Specifiers]  [Types]              [Meanings]
-  a             string               A input/output binary is a string. It will be null padded in pack method.
+  [Specifiers]  [Types]              [An output binary in pack or an input binary in unpack]
+  a             string               string. It is null padded in pack method.
   
-  c             Byte or byte[]       A input/output binary is a 8-bit integer(both singed and unsinged).
+  c             Byte or byte[]       8-bit integers(both singed and unsinged)
   
-  s             Short or short[]     A input/output binary is a 16-bit integer(both singed and unsinged).
+  s             Short or short[]     16-bit integers(both singed and unsinged)
   
-  l             Int or int[]         A input/output binary is a 32-bit integer(both singed and unsinged).
+  l             Int or int[]         32-bit integers(both singed and unsinged)
   
-  q             Long or long[]       A input/output binary is a 64-bit integer(both singed and unsinged).
+  q             Long or long[]       64-bit integers(both singed and unsinged)
   
-  f             Float or float[]     A input/output binary is a 32-bit floating point number.
+  f             Float or float[]     32-bit floating point numbers.
   
-  d             Double or double[]   A input/output binary is a 64-bit floating point number.
-
+  d             Double or double[]   64-bit floating point numbers.
+  
+  h             string               A hex string (low nybble first).
+  
+  H             string               A hex string (high nybble first).
+  
 An endian is big-endian C<E<gt>> or little-endian C<E<gt>>.
 
 If big-endian is specified, the binary data is converted from big-endian to system-endian in L</"pack"> method, or from system-endian to big-endian in L</"unpack"> method.
