@@ -401,27 +401,43 @@ class Packer {
           $specifier_type = Packer::Specifier->TYPE_STRING;
         }
         
-        # Signed 8-bit integer(or unsinged)
+        # Signed 8-bit integers
         case 'c' : {
           $specifier_type = Packer::Specifier->TYPE_BYTE;
         }
-        # Signed 16-bit integer(or unsinged)
+        # Unsigned 8-bit integers
+        case 'C' : {
+          $specifier_type = Packer::Specifier->TYPE_BYTE;
+        }
+        # Signed 16-bit integers
         case 's' : {
           $specifier_type = Packer::Specifier->TYPE_SHORT;
         }
-        # Signed 32-bit integer(or unsinged)
+        # Unsigned 16-bit integers
+        case 'S' : {
+          $specifier_type = Packer::Specifier->TYPE_SHORT;
+        }
+        # Signed 32-bit integers
         case 'l' : {
           $specifier_type = Packer::Specifier->TYPE_INT;
         }
-        # Signed 32-bit integer(or unsinged)
+        # Unsigned 32-bit integers
+        case 'L' : {
+          $specifier_type = Packer::Specifier->TYPE_INT;
+        }
+        # Signed 32-bit integers
         case 'q' : {
           $specifier_type = Packer::Specifier->TYPE_LONG;
         }
-        # 16-bit floating point
+        # Unigned 32-bit integers
+        case 'Q' : {
+          $specifier_type = Packer::Specifier->TYPE_LONG;
+        }
+        # 16-bit floating point numbers
         case 'f' : {
           $specifier_type = Packer::Specifier->TYPE_FLOAT;
         }
-        # 32-bit floating point
+        # 32-bit floating point numbers
         case 'd' : {
           $specifier_type = Packer::Specifier->TYPE_DOUBLE;
         }

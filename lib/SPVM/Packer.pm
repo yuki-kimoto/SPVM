@@ -53,13 +53,21 @@ Here is the list of specifiers.
   [Specifiers]  [Types]              [An output binary in pack or an input binary in unpack]
   a             string               string. It is null padded in pack method.
   
-  c             Byte or byte[]       8-bit integers(both singed and unsinged)
+  c             Byte or byte[]       Singed 8-bit integers
   
-  s             Short or short[]     16-bit integers(both singed and unsinged)
+  C             Byte or byte[]       Unsinged 8-bit integers
   
-  l             Int or int[]         32-bit integers(both singed and unsinged)
+  s             Short or short[]     Singed 16-bit integers
   
-  q             Long or long[]       64-bit integers(both singed and unsinged)
+  S             Short or short[]     Unsinged 16-bit integers
+  
+  l             Int or int[]         Singed 32-bit integers
+  
+  L             Int or int[]         Unsinged 32-bit integers
+  
+  q             Long or long[]       Singed 64-bit integers
+  
+  Q             Long or long[]       Unsinged 64-bit integers
   
   f             Float or float[]     32-bit floating point numbers.
   

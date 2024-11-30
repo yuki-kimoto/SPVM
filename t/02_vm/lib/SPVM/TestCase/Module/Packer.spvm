@@ -137,6 +137,34 @@ class TestCase::Module::Packer {
       
     }
     
+    # C
+    {
+      my $objects = [(object)(byte)Fn->BYTE_MIN];
+      
+      my $template = "C";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 1) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type Byte) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(byte) == Fn->BYTE_MIN) {
+        return 0;
+      }
+      
+    }
+    
     # s
     {
       my $objects = [(object)(short)Fn->SHORT_MIN];
@@ -165,11 +193,67 @@ class TestCase::Module::Packer {
       
     }
     
+    # S
+    {
+      my $objects = [(object)(short)Fn->SHORT_MIN];
+      
+      my $template = "S";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 2) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type Short) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(short) == Fn->SHORT_MIN) {
+        return 0;
+      }
+      
+    }
+    
     # l
     {
       my $objects = [(object)Fn->INT_MIN];
       
       my $template = "l";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 4) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type Int) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(int) == Fn->INT_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # L
+    {
+      my $objects = [(object)Fn->INT_MIN];
+      
+      my $template = "L";
       
       my $binary = $packer->pack($template, $objects);
       
@@ -226,6 +310,34 @@ class TestCase::Module::Packer {
       my $objects = [(object)Fn->LONG_MIN];
       
       my $template = "q";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 8) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type Long) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(long) == Fn->LONG_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # Q
+    {
+      my $objects = [(object)Fn->LONG_MIN];
+      
+      my $template = "Q";
       
       my $binary = $packer->pack($template, $objects);
       

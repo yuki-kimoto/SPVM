@@ -9,7 +9,8 @@
       Native::ClassVar
       Native::Field
       Native::Method
-      Native::MethodCall      
+      Native::MethodCall
+    * Add C, S, L, Q specifiers to Packer#unpack and Packer#pack method.
   [Internal Changes]
     * Add Native::BasicType#ref_class_var field.
     * Add Native::BasicType#ref_field field.
