@@ -23,6 +23,30 @@ class TestCase::Module::Native::Runtime {
         }
       }
       
+      {
+        my $basic_type = $method->get_return_basic_type;
+        
+        unless ($basic_type->get_name eq "string") {
+          return 0;
+        }
+        
+        my $current_basic_type = $method->get_current_basic_type;
+        
+        unless ($current_basic_type->get_name eq "Fn") {
+          return 0;
+        }
+      }
+      
+      {
+        my $arg = $method->get_arg_by_index(0);
+        
+        unless ($arg->get_index == 0) {
+          return 0;
+        }
+        
+        my $arg_basic_type = $arg->get_basic_type;
+      }
+      
     }
     
     return 1;
@@ -45,6 +69,21 @@ class TestCase::Module::Native::Runtime {
         }
       }
       
+      {
+        my $basic_type = $field->get_basic_type;
+        
+        unless ($basic_type->get_name eq "int") {
+          return 0;
+        }
+        
+        my $current_basic_type = $field->get_current_basic_type;
+        
+        unless ($current_basic_type->get_name eq "Point") {
+          return 0;
+        }
+        
+      }
+      
     }
     
     return 1;
@@ -65,6 +104,20 @@ class TestCase::Module::Native::Runtime {
         unless ($class_var->get_name eq "\$TRUE") {
           return 0;
         }
+      }
+      
+      {
+        my $basic_type = $class_var->get_basic_type;
+        unless ($basic_type->get_name eq "Bool") {
+          return 0;
+        }
+        
+        my $current_basic_type = $class_var->get_current_basic_type;
+        
+        unless ($current_basic_type->get_name eq "Bool") {
+          return 0;
+        }
+        
       }
       
     }
