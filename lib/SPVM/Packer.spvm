@@ -211,8 +211,6 @@ class Packer {
     
     my $binary = $binary_buffer->to_string;
     
-    make_read_only $binary;
-    
     return $binary;
   }
   
@@ -232,6 +230,8 @@ class Packer {
     
     my $specifiers_length = @$specifiers;
     
+    # warn dump $specifiers;
+    
     my $binary_offset = 0;
     
     my $objects_list = List->new(new object[0]);
@@ -246,6 +246,8 @@ class Packer {
       
       my $length = $specifier->{length};
       
+      my $process_length = $length;
+      
       my $is_numeric_object = $specifier->{is_numeric_object};
       
       my $size = 0;
@@ -253,6 +255,11 @@ class Packer {
       switch ($specifier_type) {
         case Packer::Specifier->TYPE_STRING : {
           $size = 1;
+        }
+        case Packer::Specifier->TYPE_HEX_STRING_HIGH :
+        {
+          $size = 1;
+          $process_length = ($length + 1) / 2;
         }
         case Packer::Specifier->TYPE_BYTE : {
           $size = 1;
@@ -277,11 +284,11 @@ class Packer {
         }
       }
       
-      unless ($binary_offset + $size * $length <= $binary_length) {
-        die "The current offset $binary_offset plus (the size $size * the length $length of the specifier) must be less than the length($binary_length) of the binary data \$binary.";
+      unless ($binary_offset + $size * $process_length <= $binary_length) {
+        die "The current offset $binary_offset plus (the size $size * the process length culcuralted by $length of the specifier) must be less than the length($binary_length) of the binary data \$binary.";
       }
       
-      my $binary_part_size = $size * $length;
+      my $binary_part_size = $size * $process_length;
       
       my $binary_part = (mutable string)new_string_len $binary_part_size;
       
@@ -303,9 +310,26 @@ class Packer {
       switch ($specifier_type) {
         
         case Packer::Specifier->TYPE_STRING : {
-          make_read_only $binary_part;
-          
           $object = $binary_part;
+        }
+        case Packer::Specifier->TYPE_HEX_STRING_HIGH : {
+          my $byte_numbers = (byte[])$binary_part;
+          
+          my $int_object_array = new Int[$process_length];
+          
+          for (my $i = 0; $i < length $binary_part; $i++) {
+            my $number = $binary_part->[$i];
+            
+            $int_object_array->[$i] = Int->new($number & 0xFF);
+          }
+          
+          my $format = Fn->repeat("%x", $process_length);
+          
+          my $hex_string_part = (mutable string)Fn->sprintf($format, (object[])$int_object_array);
+          
+          Fn->shorten($hex_string_part, $length);
+          
+          $object = $hex_string_part;
         }
         case Packer::Specifier->TYPE_BYTE : {
           $object = new byte[$length];
@@ -400,7 +424,10 @@ class Packer {
         case 'a' : {
           $specifier_type = Packer::Specifier->TYPE_STRING;
         }
-        
+        # A hex string (high nybble first)
+        case 'H' : {
+          $specifier_type = Packer::Specifier->TYPE_HEX_STRING_HIGH;
+        }
         # Signed 8-bit integers
         case 'c' : {
           $specifier_type = Packer::Specifier->TYPE_BYTE;

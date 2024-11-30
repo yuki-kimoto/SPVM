@@ -105,6 +105,47 @@ class TestCase::Module::Packer {
     return 1;
   }
   
+  static method pack_unpack_hex_string : int () {
+    
+    my $packer = Packer->new;
+    
+    # H4
+    {
+      my $binary = "\x{ef}\x{df}";
+      
+      my $template = "H4";
+      
+      my $objects = $packer->unpack($template, $binary);
+      
+      unless (@$objects == 1) {
+        return 0;
+      }
+      
+      unless ($objects->[0]->(string) eq "efdf") {
+        return 0;
+      }
+    }
+    
+    # H3
+    {
+      my $binary = "\x{ef}\x{df}";
+      
+      my $template = "H3";
+      
+      my $objects = $packer->unpack($template, $binary);
+      
+      unless (@$objects == 1) {
+        return 0;
+      }
+      
+      unless ($objects->[0]->(string) eq "efd") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method pack_unpack_numeric_object : int () {
     
     my $packer = Packer->new;

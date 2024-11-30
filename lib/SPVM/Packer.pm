@@ -53,6 +53,8 @@ Here is the list of specifiers.
   [Specifiers]  [Types]              [An output binary in pack or an input binary in unpack]
   a             string               string. It is null padded in pack method.
   
+  H             string               A hex string (high nybble first)
+  
   c             Byte or byte[]       Singed 8-bit integers
   
   C             Byte or byte[]       Unsinged 8-bit integers
@@ -72,10 +74,6 @@ Here is the list of specifiers.
   f             Float or float[]     32-bit floating point numbers.
   
   d             Double or double[]   64-bit floating point numbers.
-  
-  h             string               A hex string (low nybble first).
-  
-  H             string               A hex string (high nybble first).
   
 An endian is big-endian C<E<gt>> or little-endian C<E<gt>>.
 

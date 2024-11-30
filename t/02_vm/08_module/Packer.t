@@ -25,6 +25,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Packer->pack_unpack_specifiers);
   ok(SPVM::TestCase::Module::Packer->pack_exceptions);
   ok(SPVM::TestCase::Module::Packer->unpack_exceptions);
+  ok(SPVM::TestCase::Module::Packer->pack_unpack_hex_string);
 }
 
 # All object is freed

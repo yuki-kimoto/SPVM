@@ -13,6 +13,7 @@ class Packer::Specifier {
     TYPE_FLOAT,
     TYPE_DOUBLE,
     TYPE_STRING,
+    TYPE_HEX_STRING_HIGH,
   }
   
   private enum {
