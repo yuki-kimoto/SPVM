@@ -111,7 +111,7 @@ class TestCase::Module::Packer {
     
     # H4
     {
-      my $binary = "\x{ef}\x{df}";
+      my $binary = "\x{ef}\x{cd}";
       
       my $template = "H4";
       
@@ -121,14 +121,14 @@ class TestCase::Module::Packer {
         return 0;
       }
       
-      unless ($objects->[0]->(string) eq "efdf") {
+      unless ($objects->[0]->(string) eq "efcd") {
         return 0;
       }
     }
     
     # H3
     {
-      my $binary = "\x{ef}\x{df}";
+      my $binary = "\x{ef}\x{cd}";
       
       my $template = "H3";
       
@@ -138,7 +138,7 @@ class TestCase::Module::Packer {
         return 0;
       }
       
-      unless ($objects->[0]->(string) eq "efd") {
+      unless ($objects->[0]->(string) eq "efc") {
         return 0;
       }
     }
