@@ -53,6 +53,8 @@ Here is the list of specifiers.
   [Specifiers]  [Types]              [An output binary in pack or an input binary in unpack]
   a             string               string. It is null padded in pack method.
   
+  h             string               A hex string (low nybble first)
+  
   H             string               A hex string (high nybble first)
   
   c             Byte or byte[]       Singed 8-bit integers

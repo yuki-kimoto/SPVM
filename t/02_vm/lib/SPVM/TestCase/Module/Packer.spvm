@@ -143,6 +143,40 @@ class TestCase::Module::Packer {
       }
     }
     
+    # h4
+    {
+      my $binary = "\x{ef}\x{cd}";
+      
+      my $template = "h4";
+      
+      my $objects = $packer->unpack($template, $binary);
+      
+      unless (@$objects == 1) {
+        return 0;
+      }
+      
+      unless ($objects->[0]->(string) eq "fedc") {
+        return 0;
+      }
+    }
+    
+    # h3
+    {
+      my $binary = "\x{ef}\x{cd}";
+      
+      my $template = "h3";
+      
+      my $objects = $packer->unpack($template, $binary);
+      
+      unless (@$objects == 1) {
+        return 0;
+      }
+      
+      unless ($objects->[0]->(string) eq "fed") {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   

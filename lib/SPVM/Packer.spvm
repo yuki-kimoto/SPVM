@@ -256,6 +256,7 @@ class Packer {
         case Packer::Specifier->TYPE_STRING : {
           $size = 1;
         }
+        case Packer::Specifier->TYPE_HEX_STRING_LOW :
         case Packer::Specifier->TYPE_HEX_STRING_HIGH :
         {
           $size = 1;
@@ -312,7 +313,9 @@ class Packer {
         case Packer::Specifier->TYPE_STRING : {
           $object = $binary_part;
         }
-        case Packer::Specifier->TYPE_HEX_STRING_HIGH : {
+        case Packer::Specifier->TYPE_HEX_STRING_LOW :
+        case Packer::Specifier->TYPE_HEX_STRING_HIGH :
+        {
           my $byte_numbers = (byte[])$binary_part;
           
           my $int_object_array = new Int[$process_length];
@@ -326,6 +329,14 @@ class Packer {
           my $format = Fn->repeat("%x", $process_length);
           
           my $hex_string_part = (mutable string)Fn->sprintf($format, (object[])$int_object_array);
+          
+          if ($specifier_type == Packer::Specifier->TYPE_HEX_STRING_LOW) {
+            for (my $i = 0; $i < $process_length; $i++) {
+              my $tmp = $hex_string_part->[$i * 2];
+              $hex_string_part->[$i * 2] = $hex_string_part->[$i * 2 + 1];
+              $hex_string_part->[$i * 2 + 1] = $tmp;
+            }
+          }
           
           Fn->shorten($hex_string_part, $length);
           
@@ -423,6 +434,10 @@ class Packer {
         # String
         case 'a' : {
           $specifier_type = Packer::Specifier->TYPE_STRING;
+        }
+        # A hex string (low nybble first)
+        case 'h' : {
+          $specifier_type = Packer::Specifier->TYPE_HEX_STRING_LOW;
         }
         # A hex string (high nybble first)
         case 'H' : {
