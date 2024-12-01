@@ -10,8 +10,9 @@
       Native::Field
       Native::Method
       Native::MethodCall
-    * Add C, S, L, Q specifiers to Packer#unpack and Packer#pack method.
-    * Add H, h specifiers to Packer#unpack and Packer#pack method.
+    * Add C, S, L, Q specifiers to Packer#unpack and Packer#pack methods.
+    * Add H, h specifiers to Packer#unpack and Packer#pack methods.
+    * Support wildcard * in Packer#unpack and Packer#pack methods.
   [Performance Improvement]
     * Methods in Packer class are precompiled.
   [Internal Changes]

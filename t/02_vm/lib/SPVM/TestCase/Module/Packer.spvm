@@ -106,11 +106,9 @@ class TestCase::Module::Packer {
     {
       my $objects = [(object)"abc"];
       
-      my $template_pack = "a*";
+      my $template = "a*";
       
-      my $template = "a3";
-      
-      my $binary = $packer->pack($template_pack, $objects);
+      my $binary = $packer->pack($template, $objects);
       
       unless (length $binary == 3) {
         return 0;
@@ -837,11 +835,9 @@ class TestCase::Module::Packer {
     {
       my $objects = [(object)[Fn->INT_MIN, 1]];
       
-      my $template_pack = "l*";
+      my $template = "l*";
       
-      my $template = "l2";
-      
-      my $binary = $packer->pack($template_pack, $objects);
+      my $binary = $packer->pack($template, $objects);
       
       unless (length $binary == 4 * 2) {
         return 0;

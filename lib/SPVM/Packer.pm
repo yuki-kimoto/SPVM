@@ -18,12 +18,22 @@ Packer class in L<SPVM> has methods for pack and unpack operations
   
   my $packer = Packer->new;
   
-  my $objects = [(object)1, 2L, 0.5, [1, 2], "abc"];
+  {
+    my $objects = [(object)1, 2L, 0.5, [1, 2], "abc"];
+    
+    my $binary = $packer->pack("lqdl2a128");
+    
+    my $objects_unpack = $packer->unpack($binary);
+  }
   
-  my $binary = $packer->pack("lqdl2a128");
+  {
+    my $objects = [(object)[1, 2, 3]];
+    
+    my $binary = $packer->pack("l*");
+    
+    my $objects_unpack = $packer->unpack($binary);
+  }
   
-  my $objects_unpack = $packer->unpack($binary);
-
 =head1 Class Methods
 
 C<static method new : Packer ();>
@@ -83,7 +93,7 @@ If big-endian is specified, the binary data is converted from big-endian to syst
 
 If little-endian is specified, the binary data is converted from little-endian to system-endian in L</"pack"> method, or from system-endian to little-endian in L</"unpack"> method.
 
-A length must be a positive integer. If a length is specified, the type(such as C<Int>) becomes a corresponding array type(such as C<int[]>).
+A length must be a positive integer or a wildcard C<*>. If a length or a wildcard is specified, the type(such as C<Int>) becomes a corresponding array type(such as C<int[]>).
 
 Exceptions:
 

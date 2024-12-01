@@ -342,6 +342,10 @@ class Packer {
       
       my $process_length = $length;
       
+      if ($has_wildcard_length) {
+        $process_length = ($binary_length - $binary_offset) / $size;
+      }
+      
       if ($specifier_type == Packer::Specifier->TYPE_HEX_STRING_LOW || $specifier_type == Packer::Specifier->TYPE_HEX_STRING_HIGH) {
         $process_length = ($process_length + 1) / 2;
       }
