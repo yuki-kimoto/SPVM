@@ -302,6 +302,8 @@ class Packer {
       
       my $length = $specifier->{length};
       
+      my $has_wildcard_length = $specifier->{has_wildcard_length};
+      
       my $is_numeric_object = $specifier->{is_numeric_object};
       
       my $size = 0;
@@ -355,7 +357,7 @@ class Packer {
       Fn->memcpy($binary_part, 0, $binary, $binary_offset, $binary_part_size);
       
       if ($endian == Packer::Specifier->ENDIAN_BIG_ENDIAN || $endian == Packer::Specifier->ENDIAN_LITTLE_ENDIAN) {
-        for (my $i = 0; $i < $length; $i++) {
+        for (my $i = 0; $i < $process_length; $i++) {
           my $binary_part_offset = $size * $i;
           if ($endian == Packer::Specifier->ENDIAN_BIG_ENDIAN) {
             Fn->big_endian_to_system_endian($binary_part, $size);
@@ -397,12 +399,14 @@ class Packer {
             }
           }
           
-          Fn->shorten($hex_string_part, $length);
+          unless ($has_wildcard_length) {
+            Fn->shorten($hex_string_part, $length);
+          }
           
           $object = $hex_string_part;
         }
         case Packer::Specifier->TYPE_BYTE : {
-          $object = new byte[$length];
+          $object = new byte[$process_length];
           
           Fn->memcpy($object, 0, $binary_part, 0, $binary_part_size);
           
@@ -411,7 +415,7 @@ class Packer {
           }
         }
         case Packer::Specifier->TYPE_SHORT : {
-          $object = new short[$length];
+          $object = new short[$process_length];
           
           Fn->memcpy($object, 0, $binary_part, 0, $binary_part_size);
           
@@ -420,7 +424,7 @@ class Packer {
           }
         }
         case Packer::Specifier->TYPE_INT : {
-          $object = new int[$length];
+          $object = new int[$process_length];
           
           Fn->memcpy($object, 0, $binary_part, 0, $binary_part_size);
           
@@ -429,7 +433,7 @@ class Packer {
           }
         }
         case Packer::Specifier->TYPE_LONG : {
-          $object = new long[$length];
+          $object = new long[$process_length];
           
           Fn->memcpy($object, 0, $binary_part, 0, $binary_part_size);
           
@@ -438,7 +442,7 @@ class Packer {
           }
         }
         case Packer::Specifier->TYPE_FLOAT : {
-          $object = new float[$length];
+          $object = new float[$process_length];
           
           Fn->memcpy($object, 0, $binary_part, 0, $binary_part_size);
           
@@ -447,7 +451,7 @@ class Packer {
           }
         }
         case Packer::Specifier->TYPE_DOUBLE : {
-          $object = new double[$length];
+          $object = new double[$process_length];
           
           Fn->memcpy($object, 0, $binary_part, 0, $binary_part_size);
           
