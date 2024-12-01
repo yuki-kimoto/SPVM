@@ -288,8 +288,6 @@ class Packer {
     
     my $specifiers_length = @$specifiers;
     
-    # warn dump $specifiers;
-    
     my $binary_offset = 0;
     
     my $objects_list = List->new(new object[0]);
@@ -304,8 +302,6 @@ class Packer {
       
       my $length = $specifier->{length};
       
-      my $process_length = $length;
-      
       my $is_numeric_object = $specifier->{is_numeric_object};
       
       my $size = 0;
@@ -318,7 +314,6 @@ class Packer {
         case Packer::Specifier->TYPE_HEX_STRING_HIGH :
         {
           $size = 1;
-          $process_length = ($length + 1) / 2;
         }
         case Packer::Specifier->TYPE_BYTE : {
           $size = 1;
@@ -341,6 +336,12 @@ class Packer {
         default : {
           die "[Unexpected Error]Invalid specifier type.";
         }
+      }
+      
+      my $process_length = $length;
+      
+      if ($specifier_type == Packer::Specifier->TYPE_HEX_STRING_LOW || $specifier_type == Packer::Specifier->TYPE_HEX_STRING_HIGH) {
+        $process_length = ($process_length + 1) / 2;
       }
       
       unless ($binary_offset + $size * $process_length <= $binary_length) {
