@@ -109,71 +109,130 @@ class TestCase::Module::Packer {
     
     my $packer = Packer->new;
     
-    # H4
+    # pack
     {
-      my $binary = "\x{ef}\x{cd}";
-      
-      my $template = "H4";
-      
-      my $objects = $packer->unpack($template, $binary);
-      
-      unless (@$objects == 1) {
-        return 0;
+      # H4
+      {
+        my $objects = [(object)"efcd"];
+        
+        my $template = "H4";
+        
+        my $binary = $packer->pack($template, $objects);
+        
+        unless ($binary eq "\x{EF}\x{CD}") {
+          return 0;
+        }
       }
       
-      unless ($objects->[0]->(string) eq "efcd") {
-        return 0;
+      # H3
+      {
+        my $objects = [(object)"efc"];
+        
+        my $template = "H3";
+        
+        my $binary = $packer->pack($template, $objects);
+        
+        unless ($binary eq "\x{EF}\x{C0}") {
+          return 0;
+        }
       }
+      
+      # h4
+      {
+        my $objects = [(object)"efcd"];
+        
+        my $template = "h4";
+        
+        my $binary = $packer->pack($template, $objects);
+        
+        unless ($binary eq "\x{FE}\x{DC}") {
+          return 0;
+        }
+      }
+      
+      # h3
+      {
+        my $objects = [(object)"efc"];
+        
+        my $template = "h4";
+        
+        my $binary = $packer->pack($template, $objects);
+        
+        unless ($binary eq "\x{FE}\x{0C}") {
+          return 0;
+        }
+      }
+      
     }
     
-    # H3
+    # unpack
     {
-      my $binary = "\x{ef}\x{cd}";
-      
-      my $template = "H3";
-      
-      my $objects = $packer->unpack($template, $binary);
-      
-      unless (@$objects == 1) {
-        return 0;
+      # H4
+      {
+        my $binary = "\x{ef}\x{cd}";
+        
+        my $template = "H4";
+        
+        my $objects = $packer->unpack($template, $binary);
+        
+        unless (@$objects == 1) {
+          return 0;
+        }
+        
+        unless ($objects->[0]->(string) eq "efcd") {
+          return 0;
+        }
       }
       
-      unless ($objects->[0]->(string) eq "efc") {
-        return 0;
-      }
-    }
-    
-    # h4
-    {
-      my $binary = "\x{ef}\x{cd}";
-      
-      my $template = "h4";
-      
-      my $objects = $packer->unpack($template, $binary);
-      
-      unless (@$objects == 1) {
-        return 0;
-      }
-      
-      unless ($objects->[0]->(string) eq "fedc") {
-        return 0;
-      }
-    }
-    
-    # h3
-    {
-      my $binary = "\x{ef}\x{cd}";
-      
-      my $template = "h3";
-      
-      my $objects = $packer->unpack($template, $binary);
-      
-      unless (@$objects == 1) {
-        return 0;
+      # H3
+      {
+        my $binary = "\x{ef}\x{cd}";
+        
+        my $template = "H3";
+        
+        my $objects = $packer->unpack($template, $binary);
+        
+        unless (@$objects == 1) {
+          return 0;
+        }
+        
+        unless ($objects->[0]->(string) eq "efc") {
+          return 0;
+        }
       }
       
-      unless ($objects->[0]->(string) eq "fed") {
-        return 0;
+      # h4
+      {
+        my $binary = "\x{ef}\x{cd}";
+        
+        my $template = "h4";
+        
+        my $objects = $packer->unpack($template, $binary);
+        
+        unless (@$objects == 1) {
+          return 0;
+        }
+        
+        unless ($objects->[0]->(string) eq "fedc") {
+          return 0;
+        }
+      }
+      
+      # h3
+      {
+        my $binary = "\x{ef}\x{cd}";
+        
+        my $template = "h3";
+        
+        my $objects = $packer->unpack($template, $binary);
+        
+        unless (@$objects == 1) {
+          return 0;
+        }
+        
+        unless ($objects->[0]->(string) eq "fed") {
+          return 0;
+        }
       }
     }
     

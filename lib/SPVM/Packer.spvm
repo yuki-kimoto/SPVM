@@ -48,6 +48,8 @@ class Packer {
       
       my $length = $specifier->{length};
       
+      my $process_length = $length;
+      
       my $object = $objects->[$i];
       
       my $size = 0;
@@ -60,6 +62,51 @@ class Packer {
           $size = 1;
           
           $values = (string)$object;
+        }
+        case Packer::Specifier->TYPE_HEX_STRING_LOW :
+        case Packer::Specifier->TYPE_HEX_STRING_HIGH :
+        {
+          $size = 1;
+          $process_length = ($length + 1) / 2;
+          
+          my $hex_string = (string)$object;
+          
+          my $hex_string_length = length $hex_string;
+          
+          my $values_buffer = StringBuffer->new;
+          for (my $i = 0; $i < $hex_string_length; $i += 2) {
+            
+            my $hex_char_high = $hex_string->[$i];
+            
+            unless (Fn->is_hex_digit($hex_char_high)) {
+              die "Input contains non hex character.";
+            }
+            
+            my $hex_char_low = '\x30'; # 0
+            if ($i + 1 < $hex_string_length) {
+              $hex_char_low = $hex_string->[$i + 1];
+              unless (Fn->is_hex_digit($hex_char_high)) {
+                die "Input contains non hex character.";
+              }
+            }
+            
+            my $hex_char = (string)undef;
+            if ($specifier_type == Packer::Specifier->TYPE_HEX_STRING_HIGH) {
+              $hex_char = Fn->chr($hex_char_high) . Fn->chr($hex_char_low);
+            }
+            elsif ($specifier_type == Packer::Specifier->TYPE_HEX_STRING_LOW) {
+              $hex_char = Fn->chr($hex_char_low) . Fn->chr($hex_char_high);
+            }
+            else {
+              die "[Unexpected Error]Invalid specifier type";
+            }
+            
+            my $byte_number = Fn->hex($hex_char);
+            
+            $values_buffer->push_char($byte_number);
+          }
+          
+          $values = $values_buffer->to_string;
         }
         case Packer::Specifier->TYPE_BYTE : {
           
@@ -180,14 +227,14 @@ class Packer {
         }
       }
       
-      my $binary_part_size = $size * $length;
+      my $binary_part_size = $size * $process_length;
       
       my $copy_size = 0;
-      if (Fn->length($values) < $length) {
+      if (Fn->length($values) < $process_length) {
         $copy_size = $size * Fn->length($values);
       }
       else {
-        $copy_size = $size * $length;
+        $copy_size = $size * $process_length;
       }
       
       my $binary_part = (mutable string)new_string_len $binary_part_size;
@@ -195,7 +242,7 @@ class Packer {
       Fn->memcpy($binary_part, 0, $values, 0, $copy_size);
       
       if ($endian == Packer::Specifier->ENDIAN_BIG_ENDIAN || $endian == Packer::Specifier->ENDIAN_LITTLE_ENDIAN) {
-        for (my $i = 0; $i < $length; $i++) {
+        for (my $i = 0; $i < $process_length; $i++) {
           my $binary_part_offset = $size * $i;
           if ($endian == Packer::Specifier->ENDIAN_BIG_ENDIAN) {
             Fn->system_endian_to_big_endian($binary_part, $size);
