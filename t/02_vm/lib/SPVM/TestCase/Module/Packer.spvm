@@ -124,6 +124,32 @@ class TestCase::Module::Packer {
         }
       }
       
+      # H4 - data is long
+      {
+        my $objects = [(object)"efcda"];
+        
+        my $template = "H4";
+        
+        my $binary = $packer->pack($template, $objects);
+        
+        unless ($binary eq "\x{EF}\x{CD}") {
+          return 0;
+        }
+      }
+      
+      # H4 - data is short
+      {
+        my $objects = [(object)"efc"];
+        
+        my $template = "H4";
+        
+        my $binary = $packer->pack($template, $objects);
+        
+        unless ($binary eq "\x{EF}\x{C0}") {
+          return 0;
+        }
+      }
+      
       # H3
       {
         my $objects = [(object)"efc"];
