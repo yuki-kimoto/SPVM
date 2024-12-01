@@ -48,7 +48,7 @@ class Packer {
       
       my $length = $specifier->{length};
       
-      my $process_length = $length;
+      my $has_wildcard_length = $specifier->{has_wildcard_length};
       
       my $object = $objects->[$i];
       
@@ -67,7 +67,6 @@ class Packer {
         case Packer::Specifier->TYPE_HEX_STRING_HIGH :
         {
           $size = 1;
-          $process_length = ($length + 1) / 2;
           
           my $hex_string = (string)$object;
           
@@ -225,6 +224,18 @@ class Packer {
         default : {
           die "[Unexpected Error]Invalid specifier type.";
         }
+      }
+      
+      my $process_length = 0;
+      if ($has_wildcard_length) {
+        $process_length = Fn->length($values);
+      }
+      else {
+        $process_length = $length;
+      }
+      
+      if ($specifier_type == Packer::Specifier->TYPE_HEX_STRING_LOW || $specifier_type == Packer::Specifier->TYPE_HEX_STRING_HIGH) {
+        $process_length = ($process_length + 1) / 2;
       }
       
       my $binary_part_size = $size * $process_length;
