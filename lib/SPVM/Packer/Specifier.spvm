@@ -30,5 +30,7 @@ class Packer::Specifier {
   
   has length : int;
   
+  has has_wildcard_length : byte;
+  
   has endian : int;
 }

@@ -531,7 +531,7 @@ class Packer {
           $specifier_type = Packer::Specifier->TYPE_DOUBLE;
         }
         default : {
-          die "Invalid specifier " . Fn->chr($ch) . "in the template \"$template\".";
+          die "Invalid specifier " . Fn->chr($ch) . " in the template \"$template\".";
         }
       }
       
@@ -553,36 +553,44 @@ class Packer {
       }
       
       # Parse length
-      my $length_string = "";
-      while (1) {
-        unless ($template_index < $template_length) {
-          last;
-        }
-        $ch = $template->[$template_index];
-        
-        if (Fn->is_digit($ch)) {
-          $length_string .= Fn->chr($ch);
-          $template_index++;
-        }
-        else {
-          last;
-        }
-      }
-      
-      my $length = 0;
       my $is_numeric_object = 0;
-      if (length $length_string) {
-        $length = Fn->to_int($length_string);
-        
-        unless ($length > 0) {
-          die "The data length $length in the template in the template \"$template\" must be a positive value.";
-        }
+      my $has_wildcard_length = 0;
+      my $length = 0;
+      if ($template_index < $template_length && $template->[$template_index] == '*') {
+        $has_wildcard_length = 1;
+        $template_index++;
       }
       else {
-        $length = 1;
-        $is_numeric_object = 1;
+        my $length_string = "";
+        while (1) {
+          unless ($template_index < $template_length) {
+            last;
+          }
+          $ch = $template->[$template_index];
+          
+          if (Fn->is_digit($ch)) {
+            $length_string .= Fn->chr($ch);
+            $template_index++;
+          }
+          else {
+            last;
+          }
+        }
+        
+        if (length $length_string) {
+          $length = Fn->to_int($length_string);
+          
+          unless ($length > 0) {
+            die "The data length $length in the template in the template \"$template\" must be a positive value.";
+          }
+        }
+        else {
+          $length = 1;
+          $is_numeric_object = 1;
+        }
       }
       
+        
       if ($specifier_type == Packer::Specifier->TYPE_STRING) {
         if ($is_numeric_object) {
           die "The data length $length for \"a\" in the template in the template \"$template\" must be specified.";
@@ -594,6 +602,7 @@ class Packer {
       $specifier->{is_numeric_object} = $is_numeric_object;
       $specifier->{endian} = $endian;
       $specifier->{length} = $length;
+      $specifier->{has_wildcard_length} = (byte)$has_wildcard_length;
       
       $specifiers_list->push($specifier);
     }
