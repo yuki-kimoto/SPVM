@@ -11,6 +11,9 @@
       Native::Method
       Native::MethodCall
     * Add C, S, L, Q specifiers to Packer#unpack and Packer#pack method.
+    * Add H, h specifiers to Packer#unpack and Packer#pack method.
+  [Performance Improvement]
+    * Methods in Packer class are precompiled.
   [Internal Changes]
     * Add Native::BasicType#ref_class_var field.
     * Add Native::BasicType#ref_field field.

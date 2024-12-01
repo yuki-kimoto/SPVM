@@ -15,7 +15,7 @@ class Packer {
     return $self;
   }
   
-  method pack : string ($template : string, $objects : object[]) {
+  precompile method pack : string ($template : string, $objects : object[]) {
     
     unless ($template) {
       die "The template \$template must be defined.";
@@ -261,7 +261,7 @@ class Packer {
     return $binary;
   }
   
-  method unpack : object[] ($template : string, $binary : string) {
+  precompile method unpack : object[] ($template : string, $binary : string) {
     
     unless ($template) {
       die "The template \$template must be defined.";
@@ -458,7 +458,7 @@ class Packer {
     return $objects;
   }
   
-  private method _parse_template : Packer::Specifier[] ($template : string) {
+  private precompile method _parse_template : Packer::Specifier[] ($template : string) {
     
     my $template_length = length $template;
     

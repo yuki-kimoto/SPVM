@@ -198,6 +198,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Format');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Hash');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Sort');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Packer');
   }
   
   unless ($no_precompile_tests) {
