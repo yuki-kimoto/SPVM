@@ -1,4 +1,4 @@
-0.990033 2024-12-02
+0.990032 2024-12-02
   [New Features]
     * Add pointer attribute to the following classes.
       
@@ -22,8 +22,6 @@
     * Add Native::BasicType#ref_arg field.
     * Add Native::Arg#ref_method field.
   [Bug Fix]
-    * Fix Native::Compiler bugs that runtime object is not set.
-0.990032 2024-11-29
   [Compilation Bug Fix]
     * Fix a bug that version statement caused a segmentation fault when a number is given.
   [Warnings Fix]
@@ -33,6 +31,7 @@
   [Bug Fix]
     * Fix a bug that die native API do not set correct exception message when get_stack_tmp_buffer is used.
       https://github.com/yuki-kimoto/SPVM/issues/639
+    * Fix Native::Compiler bugs that runtime object is not set.
    
 0.990031 2024-11-17
   [New Features]
