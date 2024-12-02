@@ -13,6 +13,7 @@
     * Add C, S, L, Q specifiers to Packer#unpack and Packer#pack methods.
     * Add H, h specifiers to Packer#unpack and Packer#pack methods.
     * Support wildcard * in Packer#unpack and Packer#pack methods.
+    * Add print_exception_to_stderr native API.
   [Performance Improvement]
     * Methods in Packer class are precompiled.
   [Internal Changes]

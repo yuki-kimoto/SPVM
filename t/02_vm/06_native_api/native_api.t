@@ -399,6 +399,8 @@ ok(SPVM::TestCase::NativeAPI->no_free);
 
 ok(SPVM::TestCase::NativeAPI->die);
 
+ok(SPVM::TestCase::NativeAPI->print_exception_to_stderr);
+
 # Clear exception
 $api->set_exception(undef);
 

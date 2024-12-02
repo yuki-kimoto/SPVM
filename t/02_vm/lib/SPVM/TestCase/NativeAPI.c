@@ -240,6 +240,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->no_free != &env_array[220]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_no_free != &env_array[221]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_stack_tmp_buffer != &env_array[222]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->print_exception_to_stderr != &env_array[223]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
@@ -4316,6 +4317,21 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
       stack[0].ival = 0;
       return 0;
     }
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__print_exception_to_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  {
+    int32_t error_id = env->die(env, stack, "[Test Output]Error %s.", "abc", __func__, __FILE__, __LINE__);
+    
+    env->print_exception_to_stderr(env, stack);
   }
   
   stack[0].ival = 1;

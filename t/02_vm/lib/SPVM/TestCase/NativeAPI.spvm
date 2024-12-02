@@ -1719,4 +1719,6 @@ class TestCase::NativeAPI {
   native static method no_free : int ();
   
   native static method die : int ();
+  
+  native static method print_exception_to_stderr : int ();
 }

@@ -374,4 +374,6 @@ int32_t SPVM_API_no_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 
 void SPVM_API_set_no_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t no_free);
 
+void SPVM_API_print_exception_to_stderr(SPVM_ENV* env, SPVM_VALUE* stack);
+
 #endif

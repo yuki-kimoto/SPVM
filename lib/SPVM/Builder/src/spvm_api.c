@@ -320,6 +320,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_no_free,
     SPVM_API_set_no_free,
     SPVM_API_get_stack_tmp_buffer,
+    SPVM_API_print_exception_to_stderr,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -5506,3 +5507,14 @@ void SPVM_API_set_no_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object,
   }
 }
 
+void SPVM_API_print_exception_to_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_exception = env->get_exception(env, stack);
+  const char* exception = env->get_chars(env, stack, obj_exception);
+  
+  fprintf(env->api->runtime->get_spvm_stderr(env->runtime), "[An exception is converted to a warning]\n");
+  
+  env->print_stderr(env, stack, obj_exception);
+  
+  fprintf(env->api->runtime->get_spvm_stderr(env->runtime), "\n");
+}

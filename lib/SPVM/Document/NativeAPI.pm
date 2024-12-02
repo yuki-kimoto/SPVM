@@ -2515,6 +2515,16 @@ Returns the temporary buffer on the runtime stack I<stack>.
 
 The byte size of the temporary buffer is L</"SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE">.
 
+=head2 print_exception_to_stderr
+
+C<void (*print_exception_to_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);>
+
+Prints C<"[An exception is converted to a warning]\n"> to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
+
+And prints the current exception to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
+
+And prints C<"\n"> to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2742,6 +2752,7 @@ Native APIs have its IDs.
   220 no_free
   221 set_no_free
   222 get_stack_tmp_buffer
+  223 print_exception_to_stderr
 
 =head1 Constant Values
 
