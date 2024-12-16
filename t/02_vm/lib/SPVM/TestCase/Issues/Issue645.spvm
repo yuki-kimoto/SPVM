@@ -1,0 +1,37 @@
+class TestCase::Issues::Issue645 {
+  
+  use Hash;
+  
+  # Class Variables
+  our $INSTANCES_H : Hash of TestCase::Issues::Issue645;
+  
+  INIT {
+    $INSTANCES_H = Hash->new;
+  }
+  
+  # Class Methods
+  static method test : int () {
+    
+    my $object = TestCase::Issues::Issue645->new;
+    
+    $object = undef;
+    
+    return 1;
+  }
+  
+  static method new : TestCase::Issues::Issue645 () {
+    
+    my $self = new TestCase::Issues::Issue645;
+    
+    $INSTANCES_H->set(Fn->to_address($self), $self);
+    
+  }
+  
+  method DESTROY : void () {
+    # [BUG] $INSTANCES_H becomes undef.
+    warn $INSTANCES_H;
+    
+    $INSTANCES_H->delete(Fn->to_address($self));
+  }
+  
+}
