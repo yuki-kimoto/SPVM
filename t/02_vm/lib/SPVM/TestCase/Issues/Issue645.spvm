@@ -14,8 +14,6 @@ class TestCase::Issues::Issue645 {
     
     my $object = TestCase::Issues::Issue645->new;
     
-    $object = undef;
-    
     return 1;
   }
   
@@ -25,12 +23,12 @@ class TestCase::Issues::Issue645 {
     
     $INSTANCES_H->set(Fn->to_address($self), $self);
     
+    $INSTANCES_H->weaken(Fn->to_address($self));
+    
+    return $self;
   }
   
   method DESTROY : void () {
-    # [BUG] $INSTANCES_H becomes undef.
-    warn $INSTANCES_H;
-    
     $INSTANCES_H->delete(Fn->to_address($self));
   }
   
