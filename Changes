@@ -1,3 +1,9 @@
+0.990033 2024-12-17
+  [Bug Fix]
+    * Fix a bug that rehash of Hash class dose not copy weaken flag.
+      
+      https://github.com/yuki-kimoto/SPVM/issues/649
+      
 0.990032 2024-12-02
   [New Features]
     * Add pointer attribute to the following classes.

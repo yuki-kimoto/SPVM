@@ -95,7 +95,7 @@ class Hash {
       $self->_rehash;
     }
     my $keys_length = $self->{keys_length};
-    $self->_set_to_container($self->{entries}, @{$self->{entries}}, \$keys_length, $key, $value);
+    $self->_set_to_container($self->{entries}, @{$self->{entries}}, \$keys_length, $key, $value, 0);
     
     $self->{keys_length} = $keys_length;
   }
@@ -117,8 +117,6 @@ class Hash {
     
     my $entry = $self->get_entry($key);
     
-    my $value = (object)undef;
-    
     if ($entry) {
       weaken $entry->{value};
     }
@@ -127,8 +125,6 @@ class Hash {
   method unweaken : void ($key : string) {
     
     my $entry = $self->get_entry($key);
-    
-    my $value = (object)undef;
     
     if ($entry) {
       unweaken $entry->{value};
@@ -646,7 +642,8 @@ class Hash {
     $entries_length : int,
     $keys_length_ref : int*,
     $key : string,
-    $value : object)
+    $value : object,
+    $isweak : int)
   {
     my $index = $self->_index_by_key($key, $entries_length);
     
@@ -664,6 +661,10 @@ class Hash {
       
       $entries->[$index]->{key} = $new_key;
       $entries->[$index]->{value} = $value;
+      if ($isweak) {
+        my $tmp = $entries->[$index];
+        weaken $tmp->{value};
+      }
       $entries->[$index]->{next_entry} = undef;
       ++$$keys_length_ref;
       return;
@@ -671,6 +672,9 @@ class Hash {
     while (1) {
       if ($entry->{key} eq $key) {
         $entry->{value} = $value;
+        if ($isweak) {
+          weaken $entry->{value};
+        }
         return;
       }
       unless ($entry->{next_entry}) {
@@ -686,6 +690,10 @@ class Hash {
         $entry->{next_entry} = new Hash::Entry;
         $entry->{next_entry}->{key} = $new_key;
         $entry->{next_entry}->{value} = $value;
+        if ($isweak) {
+          my $tmp = $entry->{next_entry};
+          weaken $tmp->{value};
+        }
         $entry->{next_entry}->{next_entry} = undef;
         ++$$keys_length_ref;
         return;
@@ -704,7 +712,7 @@ class Hash {
     for (my $i = 0; $i < $entries_length; ++$i) {
       my $entry = $self->{entries}->[$i];
       while ($entry) {
-        $self->_set_to_container($new_entries, $new_entries_length, \$new_keys_length, $entry->{key}, $entry->{value});
+        $self->_set_to_container($new_entries, $new_entries_length, \$new_keys_length, $entry->{key}, $entry->{value}, isweak $entry->{value});
         $entry = $entry->{next_entry};
       }
     }

@@ -16,6 +16,8 @@ class TestCase::Issues::Issue649 {
     
     my $object2 = TestCase::Issues::Issue649->new;
     
+    my $object3 = TestCase::Issues::Issue649->new;
+    
     return 1;
   }
   
