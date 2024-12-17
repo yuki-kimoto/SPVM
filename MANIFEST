@@ -795,7 +795,6 @@ t/02_vm/lib/SPVM/TestCase/Issues/Issue515/Regex/Replacer.spvm
 t/02_vm/lib/SPVM/TestCase/Issues/Issue567.spvm
 t/02_vm/lib/SPVM/TestCase/Issues/Issue645.spvm
 t/02_vm/lib/SPVM/TestCase/Issues/Issue649.spvm
-t/02_vm/lib/SPVM/TestCase/Issues/Issues645.spvm
 t/02_vm/lib/SPVM/TestCase/LineDirective.spvm
 t/02_vm/lib/SPVM/TestCase/LINEN.spvm
 t/02_vm/lib/SPVM/TestCase/LINER.spvm
