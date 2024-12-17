@@ -1,0 +1,52 @@
+class TestCase::Issues::Issue649 {
+  
+  use Hash;
+  
+  # Class Variables
+  our $INSTANCES_H : Hash of TestCase::Issues::Issue649;
+  
+  INIT {
+    $INSTANCES_H = Hash->new;
+  }
+  
+  # Class Methods
+  static method test : int () {
+    
+    my $object1 = TestCase::Issues::Issue649->new;
+    
+    my $object2 = TestCase::Issues::Issue649->new;
+    
+    return 1;
+  }
+  
+  static method new : TestCase::Issues::Issue649 () {
+    
+    my $self = new TestCase::Issues::Issue649;
+    
+    my $address = Fn->to_address($self);
+    
+    &SET_INSTANCE($address, $self);
+    
+    return $self;
+  }
+  
+  method DESTROY : void () {
+    
+    my $address = Fn->to_address($self);
+    
+    &DELETE_INSTANCE($address);
+  }
+  
+  private static method SET_INSTANCE : void ($address : string, $self : TestCase::Issues::Issue649) {
+    
+    $INSTANCES_H->set($address, $self);
+    
+    $INSTANCES_H->weaken($address);
+  }
+  
+  private static method DELETE_INSTANCE : void ($address : string) {
+    
+    $INSTANCES_H->delete($address);
+  }
+  
+}
