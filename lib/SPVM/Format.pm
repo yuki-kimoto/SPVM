@@ -91,7 +91,7 @@ Creates a formatted string form $format and $args.
   <tr><td>%ld</td><td>Signed 64bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
   <tr><td>%lu</td><td>Unsigned 64bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
   <tr><td>%lx</td><td>Unsiged 64-bit integer represented by hexadecima characters <code>0-9a-z</code></td><td><a href="https://metacpan.org/pod/SPVM::Long">Long</a></td></tr>
-  <tr><td>%s</td><td>String</td><td>String Type</td></tr>
+  <tr><td>%s</td><td>String(undef is treated as an empty string)</td><td>String Type</td></tr>
   <tr><td>%p</td><td>Address</td><td>Object Type</td></tr>
   <tr><td>%u</td><td>Unsigned 32-bit integer</td><td><a href="https://metacpan.org/pod/SPVM::Int">Int</a></td></tr>
 </table>

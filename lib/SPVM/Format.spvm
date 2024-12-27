@@ -332,8 +332,13 @@ class Format {
   }
 
   precompile static method _push_formatted_string_signed : void($buffer : StringBuffer, $formatted_value : string, $width : int, $pad_char : byte, $left_justified : int, $plus_sign : int) {
+    
+    unless ($formatted_value) {
+      $formatted_value = "";
+    }
+    
     my $is_minus = 0;
-    if ($formatted_value->[0] == '-') {
+    if (length $formatted_value > 0 && $formatted_value->[0] == '-') {
        $is_minus = 1;
     }
     

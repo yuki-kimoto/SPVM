@@ -491,6 +491,25 @@ class TestCase::Module::Format {
       }
       $@ = undef;
     }
+    
+    # ""
+    {
+      my $value = "";
+      my $ret = Format->sprintf("%s", [(object)$value]);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+    
+    # undef
+    {
+      my $value = (string)undef;
+      my $ret = Format->sprintf("%s", [(object)$value]);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
