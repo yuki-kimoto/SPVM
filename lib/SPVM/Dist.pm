@@ -688,8 +688,6 @@ sub generate_gitignore_file {
 /MYMETA.yml
 /MYMETA.json
 /pm_to_blib
-/SPVM-*
-.spvm_build
 core.*
 core
 *.bak
@@ -697,6 +695,8 @@ core
 *.tmp
 *.o
 *.bs
+.spvm_build
+/SPVM-*
 EOS
   
   # Generate file
@@ -727,9 +727,6 @@ sub generate_manifest_skip_file {
 (^|\/)MYMETA.yml$
 (^|\/)MYMETA.json$
 (^|\/)pm_to_blib$
-(^|\/).spvm_build/
-(^|\/)t/.spvm_build/
-(^|\/)SPVM-
 (^|\/)core\.
 (^|\/)core$
 (^|\/)\.git/
@@ -739,6 +736,9 @@ sub generate_manifest_skip_file {
 \.BAK$
 \.o$
 \.bs$
+(^|\/).spvm_build/
+(^|\/)t/.spvm_build/
+(^|\/)SPVM-
 EOS
 
   # Generate file
