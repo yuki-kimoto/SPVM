@@ -4339,3 +4339,18 @@ int32_t SPVM__TestCase__NativeAPI__print_exception_to_stderr(SPVM_ENV* env, SPVM
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__extra(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  // sprintf("%s", NULL);
+  {
+    const char* string = NULL;
+    fprintf(env->spvm_stderr(env, stack), "[Test Output][sprintf string NULL]%s\n", string);
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+

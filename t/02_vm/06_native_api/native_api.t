@@ -401,6 +401,8 @@ ok(SPVM::TestCase::NativeAPI->die);
 
 ok(SPVM::TestCase::NativeAPI->print_exception_to_stderr);
 
+ok(SPVM::TestCase::NativeAPI->extra);
+
 # Clear exception
 $api->set_exception(undef);
 
