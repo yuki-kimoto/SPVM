@@ -1266,15 +1266,19 @@ use Test::More;
     compile_not_ok($source, q|The types other than the numeric type and the object type cannnot be used in the optional argument|);
   }
   {
-    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : int* = 0) { } }';
-    compile_not_ok($source, q|The types other than the numeric type and the object type cannnot be used in the optional argument|);
+    my $source = 'class MyClass { static method main : void ($arg1 : int* = 0) { } }';
+    compile_not_ok($source, q|The default value of the optional argument $arg1 must be undef.|);
   }
   {
-    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : int* = 0) { } }';
-    compile_not_ok($source, q|The types other than the numeric type and the object type cannnot be used in the optional argument|);
+    my $source = 'class MyClass { static method main : void ($arg1 : int* = 0) { } }';
+    compile_not_ok($source, q|The default value of the optional argument $arg1 must be undef.|);
   }
   {
-    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : int = 0, $arg2 : int) { } }';
+    my $source = 'class MyClass { static method main : void ($arg1 : int* = undef) { } }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { static method main : void ($arg1 : int = 0, $arg2 : int) { } }';
     compile_not_ok($source, q|Arguments after optional arguments must be optional arguments|);
   }
   compile_not_ok_file('CompileError::Method::TooManyArguments', qr/The width of the arguments must be less than or equal to 255/);
