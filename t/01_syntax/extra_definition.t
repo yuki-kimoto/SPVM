@@ -168,7 +168,7 @@ use Test::More;
       }
       {
         my $source = 'class MyClass { static method foo : void ($args0 : int* = undef) { } }';
-        compile_not_ok($source);
+        compile_ok($source);
       }
       {
         my $source = 'class MyClass { use Complex_2d; static method foo : void ($args0 : Complex_2d = 0) { } }';
