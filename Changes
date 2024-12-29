@@ -5,6 +5,12 @@
     * Fix a bug that Format->strpinf("%s", "") does not work well.
   [Changes]
     * Format->strpinf("%s", undef) is treaded as Format->strpinf("%s", "");
+  [Compilation Error Messages Improvement]
+    * Improve a compilation error massage.
+      [Before]
+      Arguments after optional arguments must be optional arguments.
+      [After]
+      Optional arguments must be placed at the end of the arguments.
 0.990033 2024-12-17
   [Bug Fix]
     * Fix a bug that rehash of Hash class dose not copy weaken flag.

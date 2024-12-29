@@ -719,7 +719,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
         }
         else {
           if (found_optional_arg) {
-            SPVM_COMPILER_error(compiler, "Arguments after optional arguments must be optional arguments.\n  at %s line %d", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "Optional arguments must be placed at the end of the arguments.\n  at %s line %d", method->op_method->file, method->op_method->line);
             return;
           }
         }
