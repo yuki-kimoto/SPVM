@@ -713,7 +713,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
             }
           }
           else {
-            SPVM_COMPILER_error(compiler, "The types other than the numeric type and the object type cannnot be used in the optional argument.\n  at %s line %d", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "The optional argument %s is not allowed. The type must be a numeric type, an object type, or a numeric reference type.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
             return;
           }
         }
