@@ -67,6 +67,13 @@
      * SPVM_IMPLEMENT_DEREF_MULNUM_LONG throws an exception when input is undef.
      * SPVM_IMPLEMENT_DEREF_MULNUM_FLOAT throws an exception when input is undef.
      * SPVM_IMPLEMENT_DEREF_MULNUM_DOUBLE throws an exception when input is undef.
+     * SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_BYTE throws an exception when input is undef.
+     * SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_SHORT throws an exception when input is undef.
+     * SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_INT throws an exception when input is undef.
+     * SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_LONG throws an exception when input is undef.
+     * SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_FLOAT throws an exception when input is undef.
+     * SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_DOUBLE throws an exception when input is undef.
+     
 0.990033 2024-12-17
   [Bug Fix]
     * Fix a bug that rehash of Hash class dose not copy weaken flag.

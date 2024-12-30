@@ -2196,30 +2196,85 @@ static inline void SPVM_IMPLEMENT_DEREF_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE*
       *(out + field_index) = *((double*)mulnum_ref + field_index);
     }
   }
+  
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_BYTE(int8_t* out, int8_t* mulnum_ref, int32_t field_index) {
-  *out = *((int8_t*)mulnum_ref + field_index);
+static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, int8_t* mulnum_ref, int32_t field_index, int32_t* error_id) {
+  
+  if (__builtin_expect(mulnum_ref == NULL, 0)) {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  else {
+    *out = *((int8_t*)mulnum_ref + field_index);
+  }
+  
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_SHORT(int16_t* out, int16_t* mulnum_ref, int32_t field_index) {
-  *out = *((int16_t*)mulnum_ref + field_index);
+static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, int16_t* mulnum_ref, int32_t field_index, int32_t* error_id) {
+  
+  if (__builtin_expect(mulnum_ref == NULL, 0)) {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  else {
+    *out = *((int16_t*)mulnum_ref + field_index);
+  }
+  
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_INT(int32_t* out, int32_t* mulnum_ref, int32_t field_index) {
-  *out = *((int32_t*)mulnum_ref + field_index);
+static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t* mulnum_ref, int32_t field_index, int32_t* error_id) {
+  
+  if (__builtin_expect(mulnum_ref == NULL, 0)) {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  else {
+    *out = *((int32_t*)mulnum_ref + field_index);
+  }
+  
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_LONG(int64_t* out, int64_t* mulnum_ref, int32_t field_index) {
-  *out = *((int64_t*)mulnum_ref + field_index);
+static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int64_t* mulnum_ref, int32_t field_index, int32_t* error_id) {
+  
+  if (__builtin_expect(mulnum_ref == NULL, 0)) {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  else {
+    *out = *((int64_t*)mulnum_ref + field_index);
+  }
+  
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_FLOAT(float* out, float* mulnum_ref, int32_t field_index) {
-  *out = *((float*)mulnum_ref + field_index);
+static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, float* mulnum_ref, int32_t field_index, int32_t* error_id) {
+  
+  if (__builtin_expect(mulnum_ref == NULL, 0)) {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  else {
+    *out = *((float*)mulnum_ref + field_index);
+  }
+  
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_DOUBLE(double* out, double* mulnum_ref, int32_t field_index) {
-  *out = *((double*)mulnum_ref + field_index);
+static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, double* mulnum_ref, int32_t field_index, int32_t* error_id) {
+  
+  if (__builtin_expect(mulnum_ref == NULL, 0)) {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  else {
+    *out = *((double*)mulnum_ref + field_index);
+  }
+  
 }
 
 static inline void SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_BYTE(int8_t* mulnum_ref, int32_t field_index, int8_t in) {
