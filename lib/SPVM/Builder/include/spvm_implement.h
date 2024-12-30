@@ -1473,7 +1473,12 @@ static inline void SPVM_IMPLEMENT_GET_DEREF_DOUBLE(double* out, void** in) {
   
 }
 
-#define SPVM_IMPLEMENT_SET_DEREF_BYTE(out, in) (*(int8_t*)*(void**)out = in)
+static inline void SPVM_IMPLEMENT_SET_DEREF_BYTE(void** out, int8_t in) {
+  
+  *(int8_t*)*(void**)out = in;
+  
+}
+
 #define SPVM_IMPLEMENT_SET_DEREF_SHORT(out, in) (*(int16_t*)*(void**)out = in)
 #define SPVM_IMPLEMENT_SET_DEREF_INT(out, in) (*(int32_t*)*(void**)out = in)
 #define SPVM_IMPLEMENT_SET_DEREF_LONG(out, in) (*(int64_t*)*(void**)out = in)
