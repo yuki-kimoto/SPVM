@@ -1499,65 +1499,19 @@ static inline void SPVM_IMPLEMENT_SET_DEREF_DOUBLE(void** out, double in) {
   *(double*)*(void**)out = in;
 }
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_BYTE(int8_t* out, int8_t* in, int32_t field_index) {
-  *out = *(in + field_index);
-}
+#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_BYTE(out, in, field_index) (out = *(in + field_index))
+#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_SHORT(out, in, field_index) (out = *(in + field_index))
+#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_INT(out, in, field_index) (out = *(in + field_index))
+#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_LONG(out, in, field_index) (out = *(in + field_index))
+#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_FLOAT(out, in, field_index) (out = *(in + field_index))
+#define SPVM_IMPLEMENT_GET_MULNUM_FIELD_DOUBLE(out, in, field_index) (out = *(in + field_index))
 
-static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_SHORT(int16_t* out, int16_t* in, int32_t field_index) {
-  *out = *(in + field_index);
-}
-
-static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_INT(int32_t* out, int32_t* in, int32_t field_index) {
-  *out = *(in + field_index);
-}
-
-static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_LONG(int64_t* out, int64_t* in, int32_t field_index) {
-  *out = *(in + field_index);
-}
-
-static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_FLOAT(float* out, float* in, int32_t field_index) {
-  *out = *(in + field_index);
-}
-
-static inline void SPVM_IMPLEMENT_GET_MULNUM_FIELD_DOUBLE(double* out, double* in, int32_t field_index) {
-  *out = *(in + field_index);
-}
-
-static inline void SPVM_IMPLEMENT_SET_MULNUM_FIELD_BYTE(int8_t* out, int32_t field_index, int8_t in) {
-  
-  *(out + field_index) = in;
-  
-}
-
-static inline void SPVM_IMPLEMENT_SET_MULNUM_FIELD_SHORT(int16_t* out, int32_t field_index, int16_t in) {
-  
-  *(out + field_index) = in;
-  
-}
-
-static inline void SPVM_IMPLEMENT_SET_MULNUM_FIELD_INT(int32_t* out, int32_t field_index, int32_t in) {
-  
-  *(out + field_index) = in;
-  
-}
-
-static inline void SPVM_IMPLEMENT_SET_MULNUM_FIELD_LONG(int64_t* out, int32_t field_index, int64_t in) {
-  
-  *(out + field_index) = in;
-  
-}
-
-static inline void SPVM_IMPLEMENT_SET_MULNUM_FIELD_FLOAT(float* out, int32_t field_index, float in) {
-  
-  *(out + field_index) = in;
-  
-}
-
-static inline void SPVM_IMPLEMENT_SET_MULNUM_FIELD_DOUBLE(double* out, int32_t field_index, double in) {
-  
-  *(out + field_index) = in;
-  
-}
+#define SPVM_IMPLEMENT_SET_MULNUM_FIELD_BYTE(out, field_index, in) (*(out + field_index) = in)
+#define SPVM_IMPLEMENT_SET_MULNUM_FIELD_SHORT(out, field_index, in) (*(out + field_index) = in)
+#define SPVM_IMPLEMENT_SET_MULNUM_FIELD_INT(out, field_index, in) (*(out + field_index) = in)
+#define SPVM_IMPLEMENT_SET_MULNUM_FIELD_LONG(out, field_index, in) (*(out + field_index) = in)
+#define SPVM_IMPLEMENT_SET_MULNUM_FIELD_FLOAT(out, field_index, in) (*(out + field_index) = in)
+#define SPVM_IMPLEMENT_SET_MULNUM_FIELD_DOUBLE(out, field_index, in) (*(out + field_index) = in)
 
 static inline void SPVM_IMPLEMENT_MOVE_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, int8_t* in, int32_t fields_length) {
   for (int32_t field_index = 0; field_index < fields_length; field_index++) {
