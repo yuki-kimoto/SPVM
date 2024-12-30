@@ -1566,6 +1566,9 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           opcode.operand2 = field_offset;
 
                           SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                          
+                          SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                          
                         }
                         // Mulnum field access
                         else if (SPVM_TYPE_is_mulnum_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
@@ -1924,6 +1927,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         opcode.operand3 = operand3;
 
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                        
+                        SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
                       }
                       else if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
 
@@ -1973,6 +1978,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         opcode.operand1 = typed_var_index_in;
                         
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                        
+                        SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
                       }
                       else {
                         assert(0);
@@ -4571,6 +4578,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   opcode.operand0 = typed_var_index_out;
                   opcode.operand1 = typed_var_index_in;
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                  
+                  SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
                 }
                 // $@ = $var
                 else if (op_assign_dist->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
@@ -4849,6 +4858,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                     opcode.operand2 = field_offset;
 
                     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                    
+                    SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
                   }
                   else if (SPVM_TYPE_is_mulnum_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
                     SPVM_OPCODE opcode = {0};
