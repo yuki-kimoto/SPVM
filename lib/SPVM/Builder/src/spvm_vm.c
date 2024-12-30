@@ -1486,7 +1486,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_BYTE: {
-        SPVM_IMPLEMENT_GET_DEREF_BYTE(byte_vars[opcode->operand0], &ref_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_GET_DEREF_BYTE(&byte_vars[opcode->operand0], &ref_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_SHORT: {
