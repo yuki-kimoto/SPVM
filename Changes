@@ -28,6 +28,11 @@
      * SPVM_IMPLEMENT_GET_DEREF_FLOAT changes from macro function to inline function.
      * SPVM_IMPLEMENT_GET_DEREF_DOUBLE changes from macro function to inline function.
      * SPVM_IMPLEMENT_SET_DEREF_BYTE changes from macro function to inline function.
+     * SPVM_IMPLEMENT_SET_DEREF_SHORT changes from macro function to inline function.
+     * SPVM_IMPLEMENT_SET_DEREF_INT changes from macro function to inline function.
+     * SPVM_IMPLEMENT_SET_DEREF_LONG changes from macro function to inline function.
+     * SPVM_IMPLEMENT_SET_DEREF_FLOAT changes from macro function to inline function.
+     * SPVM_IMPLEMENT_SET_DEREF_DOUBLE changes from macro function to inline function.
 0.990033 2024-12-17
   [Bug Fix]
     * Fix a bug that rehash of Hash class dose not copy weaken flag.

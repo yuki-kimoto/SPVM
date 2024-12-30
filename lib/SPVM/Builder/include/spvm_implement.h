@@ -1479,11 +1479,25 @@ static inline void SPVM_IMPLEMENT_SET_DEREF_BYTE(void** out, int8_t in) {
   
 }
 
-#define SPVM_IMPLEMENT_SET_DEREF_SHORT(out, in) (*(int16_t*)*(void**)out = in)
-#define SPVM_IMPLEMENT_SET_DEREF_INT(out, in) (*(int32_t*)*(void**)out = in)
-#define SPVM_IMPLEMENT_SET_DEREF_LONG(out, in) (*(int64_t*)*(void**)out = in)
-#define SPVM_IMPLEMENT_SET_DEREF_FLOAT(out, in) (*(float*)*(void**)out = in)
-#define SPVM_IMPLEMENT_SET_DEREF_DOUBLE(out, in) (*(double*)*(void**)out = in)
+static inline void SPVM_IMPLEMENT_SET_DEREF_SHORT(void** out, int16_t in) {
+  *(int16_t*)*(void**)out = in;
+}
+
+static inline void SPVM_IMPLEMENT_SET_DEREF_INT(void** out, int32_t in) {
+  *(int32_t*)*(void**)out = in;
+}
+
+static inline void SPVM_IMPLEMENT_SET_DEREF_LONG(void** out, int64_t in) {
+  *(int64_t*)*(void**)out = in;
+}
+
+static inline void SPVM_IMPLEMENT_SET_DEREF_FLOAT(void** out, float in) {
+  *(float*)*(void**)out = in;
+}
+
+static inline void SPVM_IMPLEMENT_SET_DEREF_DOUBLE(void** out, double in) {
+  *(double*)*(void**)out = in;
+}
 
 #define SPVM_IMPLEMENT_GET_MULNUM_FIELD_BYTE(out, in, field_index) (out = *(in + field_index))
 #define SPVM_IMPLEMENT_GET_MULNUM_FIELD_SHORT(out, in, field_index) (out = *(in + field_index))
