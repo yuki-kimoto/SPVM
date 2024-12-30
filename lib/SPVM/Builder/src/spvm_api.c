@@ -2692,6 +2692,8 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].oval = native_mortal_stack;
   stack[SPVM_API_C_STACK_INDEX_ENV].oval = env;
   
+  stack[SPVM_API_C_STACK_INDEX_REF_UNDEF].oval = (void*)&stack[SPVM_API_C_STACK_INDEX_REF_UNDEF].oval;
+  
   return stack;
 }
 
