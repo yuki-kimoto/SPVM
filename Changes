@@ -22,6 +22,11 @@
        method foo ($ref : int* = undef);
    [Internal Changes]
      * SPVM_IMPLEMENT_GET_DEREF_BYTE becomes from macro function to inline function.
+     * SPVM_IMPLEMENT_GET_DEREF_SHORT becomes from macro function to inline function.
+     * SPVM_IMPLEMENT_GET_DEREF_INT becomes from macro function to inline function.
+     * SPVM_IMPLEMENT_GET_DEREF_LONG becomes from macro function to inline function.
+     * SPVM_IMPLEMENT_GET_DEREF_FLOAT becomes from macro function to inline function.
+     * SPVM_IMPLEMENT_GET_DEREF_DOUBLE becomes from macro function to inline function.
 0.990033 2024-12-17
   [Bug Fix]
     * Fix a bug that rehash of Hash class dose not copy weaken flag.

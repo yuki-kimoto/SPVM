@@ -1443,11 +1443,35 @@ static inline void SPVM_IMPLEMENT_GET_DEREF_BYTE(int8_t* out, void** in) {
   
 }
 
-#define SPVM_IMPLEMENT_GET_DEREF_SHORT(out, in) (out = *(int16_t*)*(void**)in)
-#define SPVM_IMPLEMENT_GET_DEREF_INT(out, in) (out = *(int32_t*)*(void**)in)
-#define SPVM_IMPLEMENT_GET_DEREF_LONG(out, in) (out = *(int64_t*)*(void**)in)
-#define SPVM_IMPLEMENT_GET_DEREF_FLOAT(out, in) (out = *(float*)*(void**)in)
-#define SPVM_IMPLEMENT_GET_DEREF_DOUBLE(out, in) (out = *(double*)*(void**)in)
+static inline void SPVM_IMPLEMENT_GET_DEREF_SHORT(int16_t* out, void** in) {
+  
+  *out = *(int16_t*)*(void**)in;
+  
+}
+
+static inline void SPVM_IMPLEMENT_GET_DEREF_INT(int32_t* out, void** in) {
+  
+  *out = *(int32_t*)*(void**)in;
+  
+}
+
+static inline void SPVM_IMPLEMENT_GET_DEREF_LONG(int64_t* out, void** in) {
+  
+  *out = *(int64_t*)*(void**)in;
+  
+}
+
+static inline void SPVM_IMPLEMENT_GET_DEREF_FLOAT(float* out, void** in) {
+
+  *out = *(float*)*(void**)in;
+  
+}
+
+static inline void SPVM_IMPLEMENT_GET_DEREF_DOUBLE(double* out, void** in) {
+  
+  *out = *(double*)*(void**)in;
+  
+}
 
 #define SPVM_IMPLEMENT_SET_DEREF_BYTE(out, in) (*(int8_t*)*(void**)out = in)
 #define SPVM_IMPLEMENT_SET_DEREF_SHORT(out, in) (*(int16_t*)*(void**)out = in)
