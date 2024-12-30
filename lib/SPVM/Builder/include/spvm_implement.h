@@ -41,8 +41,8 @@ enum {
   SPVM_IMPLEMENT_C_EXCEPTION_ERROR_METHOD_NOT_FOUND,
   SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_INVOCANT_UNDEF,
   SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND,
+  SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED,
 };
-
 
 
 
@@ -81,6 +81,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "%s#%s method is not found.",
   "An instance method call failed. The invocant of the method call for %s#%s method must be defined.",
   "An instance method call failed. The implementation of %s#%s method is not found.",
+  "An reference access failed. The reference must be defined.",
 };
 
 enum {
