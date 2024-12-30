@@ -49,7 +49,7 @@
      * SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_LONG changes from macro function to inline function.
      * SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_FLOAT changes from macro function to inline function.
      * SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_DOUBLE changes from macro function to inline function.
-
+     * SPVM_IMPLEMENT_GET_DEREF_BYTE throws an exception when input is undef.
 0.990033 2024-12-17
   [Bug Fix]
     * Fix a bug that rehash of Hash class dose not copy weaken flag.

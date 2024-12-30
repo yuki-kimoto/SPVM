@@ -1438,9 +1438,16 @@ static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, void** 
 #define SPVM_IMPLEMENT_REF_FLOAT(out, in) (out = in)
 #define SPVM_IMPLEMENT_REF_DOUBLE(out, in) (out = in)
 
-static inline void SPVM_IMPLEMENT_GET_DEREF_BYTE(int8_t* out, void** in) {
+static inline void SPVM_IMPLEMENT_GET_DEREF_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void** in, int32_t* error_id) {
   
-  *out = *(int8_t*)*(void**)in;
+  if (__builtin_expect(in == NULL, 0)) {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  else {
+    *out = *(int8_t*)*(void**)in;
+  }
   
 }
 
