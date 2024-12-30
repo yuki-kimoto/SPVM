@@ -273,6 +273,15 @@ use Test::More;
       compile_not_ok($source, q|int* type cannot be assigned to long* type in assignment operator.|);
     }
   }
+  
+  # The source type is undef type
+  {
+    my $source = [
+      'class MyClass { static method main : int () { my $ref : int* = undef; }  }',
+    ];
+    compile_ok($source);
+  }
+  
   # The source type is not the reference type
   {
     {
