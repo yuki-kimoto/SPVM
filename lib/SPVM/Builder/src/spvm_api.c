@@ -4848,11 +4848,51 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         // Set default values of optional arguments
         for (int32_t arg_index = method->required_args_length; arg_index < method->args_length; arg_index++) {
           SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
+          
           if (arg->stack_index >= args_width) {
             
             assert(arg->is_optional);
             
-            stack[arg->stack_index] = arg->default_value;
+            if (arg->type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
+              switch(arg->basic_type->id) {
+                case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+                  int8_t tmp;
+                  stack[arg->stack_index].bref = &tmp;
+                  break;
+                }
+                case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+                  int16_t tmp;
+                  stack[arg->stack_index].sref = &tmp;
+                  break;
+                }
+                case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+                  int32_t tmp;
+                  stack[arg->stack_index].iref = &tmp;
+                  break;
+                }
+                case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+                  int64_t tmp;
+                  stack[arg->stack_index].lref = &tmp;
+                  break;
+                }
+                case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+                  float tmp;
+                  stack[arg->stack_index].fref = &tmp;
+                  break;
+                }
+                case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+                  double tmp;
+                  stack[arg->stack_index].dref = &tmp;
+                  break;
+                }
+                default : {
+                  assert(0);
+                }
+              }
+            }
+            else {
+              stack[arg->stack_index] = arg->default_value;
+            }
           }
         }
         

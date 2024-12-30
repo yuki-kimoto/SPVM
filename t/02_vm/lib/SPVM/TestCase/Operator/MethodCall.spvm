@@ -1098,6 +1098,16 @@ class TestCase::Operator::MethodCall {
       }
     }
     
+    # Numeric reference
+    {
+      {
+        my $success = &optional_args_numeric_ref(1);
+        unless ($success) {
+          return 0;
+        }
+      }
+    }
+    
     {
       {
         my $values = &optional_args_byte_three_optional;
@@ -1321,6 +1331,18 @@ class TestCase::Operator::MethodCall {
   }
   static method optional_args_string : string ($arg : string = undef) {
     return $arg;
+  }
+  
+  static method optional_args_numeric_ref : int ($arg : int, $arg_byte_ref : byte* = undef, $arg_short_ref : short* = undef,$arg_int_ref : int* = undef, $arg_long_ref : long* = undef, $arg_float_ref : float* = undef, $arg_double_ref : double* = undef,) {
+    
+    $$arg_byte_ref = 1;
+    $$arg_short_ref = 1;
+    $$arg_int_ref = 1;
+    $$arg_long_ref = 1;
+    $$arg_float_ref = 1;
+    $$arg_double_ref = 1;
+    
+    return 1;
   }
   
   static method deep_recursion : int () {
