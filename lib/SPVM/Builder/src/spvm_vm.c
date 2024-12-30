@@ -2138,35 +2138,35 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_BYTE: {
-        SPVM_IMPLEMENT_GET_STACK_BYTE(byte_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+        SPVM_IMPLEMENT_GET_STACK_BYTE(byte_vars[opcode->operand0], stack, opcode->operand3);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_SHORT: {
-        SPVM_IMPLEMENT_GET_STACK_SHORT(short_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+        SPVM_IMPLEMENT_GET_STACK_SHORT(short_vars[opcode->operand0], stack, opcode->operand3);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_INT: {
-        SPVM_IMPLEMENT_GET_STACK_INT(int_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+        SPVM_IMPLEMENT_GET_STACK_INT(int_vars[opcode->operand0], stack, opcode->operand3);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_LONG: {
-        SPVM_IMPLEMENT_GET_STACK_LONG(long_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+        SPVM_IMPLEMENT_GET_STACK_LONG(long_vars[opcode->operand0], stack, opcode->operand3);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_FLOAT: {
-       SPVM_IMPLEMENT_GET_STACK_FLOAT(float_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+       SPVM_IMPLEMENT_GET_STACK_FLOAT(float_vars[opcode->operand0], stack, opcode->operand3);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_DOUBLE: {
-        SPVM_IMPLEMENT_GET_STACK_DOUBLE(double_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+        SPVM_IMPLEMENT_GET_STACK_DOUBLE(double_vars[opcode->operand0], stack, opcode->operand3);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_OBJECT: {
-        SPVM_IMPLEMENT_GET_STACK_OBJECT(env, &object_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+        SPVM_IMPLEMENT_GET_STACK_OBJECT(env, &object_vars[opcode->operand0], stack, opcode->operand3);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_REF: {
-        SPVM_IMPLEMENT_GET_STACK_REF(ref_vars[opcode->operand0], stack, opcode->operand3 & 0xFF);
+        SPVM_IMPLEMENT_GET_STACK_REF(ref_vars[opcode->operand0], stack, opcode->operand3);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_BYTE: {
