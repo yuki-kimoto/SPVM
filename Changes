@@ -20,6 +20,10 @@
      * Allow optional argument in numeric reference type.
        
        method foo ($ref : int* = undef);
+     * Allow optional argument in multi-numeric reference type.
+       
+       method foo ($ref : Complex_2d* = undef);
+       
    [Internal Changes]
      * SPVM_IMPLEMENT_GET_DEREF_BYTE changes from macro function to inline function.
      * SPVM_IMPLEMENT_GET_DEREF_SHORT changes from macro function to inline function.
