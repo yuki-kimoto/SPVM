@@ -1510,27 +1510,27 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_BYTE: {
-        SPVM_IMPLEMENT_SET_DEREF_BYTE(&ref_vars[opcode->operand0], byte_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_SET_DEREF_BYTE(env, stack, &ref_vars[opcode->operand0], byte_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_SHORT: {
-        SPVM_IMPLEMENT_SET_DEREF_SHORT(&ref_vars[opcode->operand0], short_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_SET_DEREF_SHORT(env, stack, &ref_vars[opcode->operand0], short_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_INT: {
-        SPVM_IMPLEMENT_SET_DEREF_INT(&ref_vars[opcode->operand0], int_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_SET_DEREF_INT(env, stack, &ref_vars[opcode->operand0], int_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_LONG: {
-        SPVM_IMPLEMENT_SET_DEREF_LONG(&ref_vars[opcode->operand0], long_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_SET_DEREF_LONG(env, stack, &ref_vars[opcode->operand0], long_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_FLOAT: {
-        SPVM_IMPLEMENT_SET_DEREF_FLOAT(&ref_vars[opcode->operand0], float_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_SET_DEREF_FLOAT(env, stack, &ref_vars[opcode->operand0], float_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_DOUBLE: {
-        SPVM_IMPLEMENT_SET_DEREF_DOUBLE(&ref_vars[opcode->operand0], double_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_SET_DEREF_DOUBLE(env, stack, &ref_vars[opcode->operand0], double_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_BYTE: {
