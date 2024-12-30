@@ -1335,12 +1335,33 @@ class TestCase::Operator::MethodCall {
   
   static method optional_args_numeric_ref : int ($arg : int, $arg_byte_ref : byte* = undef, $arg_short_ref : short* = undef,$arg_int_ref : int* = undef, $arg_long_ref : long* = undef, $arg_float_ref : float* = undef, $arg_double_ref : double* = undef,) {
     
-    $$arg_byte_ref = 1;
-    $$arg_short_ref = 1;
-    $$arg_int_ref = 1;
-    $$arg_long_ref = 1;
-    $$arg_float_ref = 1;
-    $$arg_double_ref = 1;
+    if ($arg_byte_ref) {
+      return 0;
+    }
+    
+    if ($arg_byte_ref) {
+      return 0;
+    }
+    
+    if ($arg_short_ref) {
+      return 0;
+    }
+    
+    if ($arg_int_ref) {
+      return 0;
+    }
+    
+    if ($arg_long_ref) {
+      return 0;
+    }
+    
+    if ($arg_float_ref) {
+      return 0;
+    }
+    
+    if ($arg_double_ref) {
+      return 0;
+    }
     
     return 1;
   }

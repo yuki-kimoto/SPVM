@@ -4853,46 +4853,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
             
             assert(arg->is_optional);
             
-            if (arg->type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
-              switch(arg->basic_type->id) {
-                case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
-                  int8_t tmp;
-                  stack[arg->stack_index].bref = &tmp;
-                  break;
-                }
-                case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
-                  int16_t tmp;
-                  stack[arg->stack_index].sref = &tmp;
-                  break;
-                }
-                case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
-                  int32_t tmp;
-                  stack[arg->stack_index].iref = &tmp;
-                  break;
-                }
-                case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
-                  int64_t tmp;
-                  stack[arg->stack_index].lref = &tmp;
-                  break;
-                }
-                case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
-                  float tmp;
-                  stack[arg->stack_index].fref = &tmp;
-                  break;
-                }
-                case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
-                  double tmp;
-                  stack[arg->stack_index].dref = &tmp;
-                  break;
-                }
-                default : {
-                  assert(0);
-                }
-              }
-            }
-            else {
-              stack[arg->stack_index] = arg->default_value;
-            }
+            stack[arg->stack_index] = arg->default_value;
           }
         }
         
