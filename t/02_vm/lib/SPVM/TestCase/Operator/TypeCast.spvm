@@ -55,7 +55,7 @@ class TestCase::Operator::TypeCast {
     return 1;
   }
   
-  static method undef_to_object : int () {
+  static method undef_to_object2 : int () {
     my $minimal : TestCase::Minimal;
     my $object = (TestCase::Minimal)$minimal;
     
