@@ -886,7 +886,7 @@ If the type of the I<LEFT_OPERAND> is an object type, the type of the I<RIGHT_OP
 
 If the type of the I<LEFT_OPERAND> is the undef type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type. Otherwise, a compilation error occurs.
 
-If the type of the I<LEFT_OPERAND> is a reference type, the type of the I<RIGHT_OPERAND> must be a reference type. Otherwise, a compilation error occurs.
+If the type of the I<LEFT_OPERAND> is a reference type, the type of the I<RIGHT_OPERAND> must be a reference type or undef type. Otherwise, a compilation error occurs.
 
 C<E<lt>>, C<E<lt>=>, C<E<gt>>, C<E<gt>=>, C<E<lt>=E<gt>>
 

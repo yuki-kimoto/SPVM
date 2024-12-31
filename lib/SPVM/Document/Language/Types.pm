@@ -950,6 +950,7 @@ I<Multi-NumericX> is a L<multi-numeric type|/"Multi-Numeric Types">.
 <table>
   <tr><th>Assignment Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th></tr>
   <tr><td>Yes</td><td>ReferenceX</td><td>ReferenceX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ReferenceX</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>ReferenceX</td><td>Other</td><td>No</td></tr>
 </table>
 
@@ -1349,6 +1350,7 @@ I<Multi-NumericX> is a L<multi-numeric type|/"Multi-Numeric Types">.
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th><th>Data Check</th></tr>
   <tr><td>Yes</td><td>ReferenceX</td><td>ReferenceX</td><td>No</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ReferenceX</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>ReferenceX</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
 
