@@ -409,6 +409,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_MOVE_REF(ref_vars[opcode->operand0], ref_vars[opcode->operand1]);
         break;
       }
+      case SPVM_OPCODE_C_ID_MOVE_REF_UNDEF: {
+        SPVM_IMPLEMENT_MOVE_REF_UNDEF(ref_vars[opcode->operand0]);
+        break;
+      }
       case SPVM_OPCODE_C_ID_ADD_INT: {
         SPVM_IMPLEMENT_ADD_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;

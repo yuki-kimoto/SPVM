@@ -931,6 +931,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
+      case SPVM_OPCODE_C_ID_MOVE_REF_UNDEF: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_MOVE_REF_UNDEF(");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_ADD_INT: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ADD_INT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);

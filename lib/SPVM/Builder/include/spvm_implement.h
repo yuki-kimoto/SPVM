@@ -409,6 +409,7 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING(SPVM_ENV* e
 }
 
 #define SPVM_IMPLEMENT_MOVE_REF(out, in) (out = in)
+#define SPVM_IMPLEMENT_MOVE_REF_UNDEF(out) (out = NULL)
 
 #define SPVM_IMPLEMENT_BIT_NOT_INT(out, in) (out = ~in)
 #define SPVM_IMPLEMENT_BIT_NOT_LONG(out, in) (out = ~in)

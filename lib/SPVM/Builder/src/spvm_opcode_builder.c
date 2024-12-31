@@ -875,6 +875,18 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
                     }
+                    // Referece type
+                    else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                      SPVM_OPCODE opcode = {0};
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_REF_UNDEF);
+                      int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
+                      
+                      opcode.operand0 = typed_var_index_out;
+                      
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      
+                    }
                     // Numeric type
                     else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                       SPVM_OPCODE opcode = {0};
@@ -1045,7 +1057,12 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                       SPVM_OPCODE opcode = {0};
                       
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_UNDEF);
+                      if (SPVM_TYPE_is_object_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_UNDEF);
+                      }
+                      else if (SPVM_TYPE_is_ref_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_REF_UNDEF);
+                      }
                       
                       int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                       opcode.operand0 = typed_var_index_out;
@@ -2754,6 +2771,15 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         if (SPVM_TYPE_is_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
                           
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_UNDEF);
+                          
+                          int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_dist_term);
+                          opcode.operand0 = typed_var_index_out;
+                          
+                          SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                        }
+                        else if (SPVM_TYPE_is_ref_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
+                          
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_REF_UNDEF);
                           
                           int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_dist_term);
                           opcode.operand0 = typed_var_index_out;

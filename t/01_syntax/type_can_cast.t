@@ -147,6 +147,15 @@ use Test::More;
       compile_not_ok($source, q|type cast|);
     }
   }
+  
+  # Source type is undef type
+  {
+    {
+      my $source = 'class MyClass { static method main : void () { my $dist = (int*)undef; } }';
+      compile_ok($source);
+    }
+  }
+  
   # Source type is not the reference type
   {
     {
