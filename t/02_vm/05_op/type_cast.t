@@ -95,9 +95,10 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Operator::TypeCast->to_callback_array);
   ok(SPVM::TestCase::Operator::TypeCast->to_any_object);
   ok(SPVM::TestCase::Operator::TypeCast->to_callback);
-  ok(SPVM::TestCase::Operator::TypeCast->to_undef_to_any_object);
-  ok(SPVM::TestCase::Operator::TypeCast->to_undef_to_callback);
-  ok(SPVM::TestCase::Operator::TypeCast->to_undef_to_object);
+  ok(SPVM::TestCase::Operator::TypeCast->undef_to_any_object);
+  ok(SPVM::TestCase::Operator::TypeCast->undef_to_callback);
+  ok(SPVM::TestCase::Operator::TypeCast->undef_to_object);
+  ok(SPVM::TestCase::Operator::TypeCast->undef_to_ref);
 
   ok(SPVM::TestCase::Operator::TypeCast->byte_to_byte_object);
   ok(SPVM::TestCase::Operator::TypeCast->short_to_short_object);

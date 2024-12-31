@@ -44,7 +44,7 @@ class TestCase::Operator::TypeCast {
     return 1;
   }
   
-  static method to_undef_to_any_object : int () {
+  static method undef_to_any_object : int () {
     my $minimal : TestCase::Minimal;
     my $object = (object)$minimal;
     
@@ -55,12 +55,36 @@ class TestCase::Operator::TypeCast {
     return 1;
   }
   
-  static method to_undef_to_object : int () {
+  static method undef_to_object : int () {
     my $minimal : TestCase::Minimal;
     my $object = (TestCase::Minimal)$minimal;
     
     unless ($object == undef) {
       return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method undef_to_ref : int () {
+    {
+      my $ref = (int*)undef;
+      
+      unless ($ref == undef) {
+        return 0;
+      }
+      
+      if ($ref) {
+        return 0;
+      }
+    }
+    
+    {
+      my $ref = (Complex_2d*)undef;
+      
+      unless ($ref == undef) {
+        return 0;
+      }
     }
     
     return 1;
@@ -82,7 +106,7 @@ class TestCase::Operator::TypeCast {
     return 1;
   }
   
-  static method to_undef_to_callback : int () {
+  static method undef_to_callback : int () {
     my $comparator : Comparator;
     
     my $comparator2 = (Comparator)$comparator;

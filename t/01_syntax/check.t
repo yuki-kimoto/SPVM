@@ -176,7 +176,12 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { my $left = 1; my $right = 2; \$left == $right; } }';
-    compile_not_ok($source, q|If the type of the left operand of == operator is a reference type, the type of the right operand must be a reference type.|);
+    compile_not_ok($source, q|If the type of the left operand of == operator is a reference type, the type of the right operand must be a reference type or undef type.|);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $left = 1; my $right = 2; \$left == undef; } }';
+    compile_ok($source);
   }
 }
 
@@ -204,7 +209,12 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { my $left = 1; my $right = 2; \$left != $right; } }';
-    compile_not_ok($source, q|If the type of the left operand of != operator is a reference type, the type of the right operand must be a reference type.|);
+    compile_not_ok($source, q|If the type of the left operand of != operator is a reference type, the type of the right operand must be a reference type or undef type.|);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $left = 1; my $right = 2; \$left != undef; } }';
+    compile_ok($source);
   }
 }
 
