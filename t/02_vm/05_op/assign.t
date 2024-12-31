@@ -98,6 +98,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Operator::Assign->assign_any_object_to_double);
   
   ok(SPVM::TestCase::Operator::Assign->assign_undef_to_numeric_object);
+  ok(SPVM::TestCase::Operator::Assign->assign_undef_to_ref);
 
 }
 
