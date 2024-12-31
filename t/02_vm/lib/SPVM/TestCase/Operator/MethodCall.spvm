@@ -1476,9 +1476,29 @@ class TestCase::Operator::MethodCall {
     return 1;
   }
   
-  static method optional_args_multi_numeric_ref : int ($arg : int, $arg_byte_ref : Complex_2d* = undef) {
+  static method optional_args_multi_numeric_ref : int ($arg : int, $arg_byte_ref : TestCase::Point_3b* = undef, $arg_short_ref : TestCase::Point_3s* = undef, $arg_int_ref : TestCase::Point_3i* = undef, $arg_long_ref : TestCase::Point_3l* = undef, $arg_float_ref : TestCase::Point_3f* = undef, $arg_double_ref : TestCase::Point_3d* = undef) {
     
     if ($arg_byte_ref) {
+      return 0;
+    }
+    
+    if ($arg_short_ref) {
+      return 0;
+    }
+    
+    if ($arg_int_ref) {
+      return 0;
+    }
+    
+    if ($arg_long_ref) {
+      return 0;
+    }
+    
+    if ($arg_float_ref) {
+      return 0;
+    }
+    
+    if ($arg_double_ref) {
       return 0;
     }
     
