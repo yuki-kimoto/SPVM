@@ -1505,6 +1505,54 @@ class TestCase::Operator::MethodCall {
     # Exceptions
     {
       {
+        eval { $$arg_byte_ref; }
+        
+        unless (Fn->contains($@, "An reference access failed. The reference must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { $$arg_short_ref; }
+        
+        unless (Fn->contains($@, "An reference access failed. The reference must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { $$arg_int_ref; }
+        
+        unless (Fn->contains($@, "An reference access failed. The reference must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { $$arg_long_ref; }
+        
+        unless (Fn->contains($@, "An reference access failed. The reference must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { $$arg_float_ref; }
+        
+        unless (Fn->contains($@, "An reference access failed. The reference must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { $$arg_double_ref; }
+        
+        unless (Fn->contains($@, "An reference access failed. The reference must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
         eval { $arg_byte_ref->{x}; }
         
         unless (Fn->contains($@, "An reference access failed. The reference must be defined.")) {
