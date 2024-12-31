@@ -1611,6 +1611,10 @@ Compilation Errors:
 
 The type of I<VARIABLE> must be a reference type. Otherwise, a compilation error occurs.
 
+Exceptions:
+
+If I<VARIABLE> is undef, an exception is thrown.
+
 Examples:
   
   # Examples of the dereference operator
@@ -2169,6 +2173,10 @@ Compiliation errors caused by the syntax of L<field access|/"Field Access"> coul
 
 Compiliation errors caused by L<dereference operator|/"Dereference Operator"> could occur.
 
+Exceptions:
+
+If I<INVOCANT> is undef, an exception is thrown.
+
 Examples:
 
   my $z : Complex_2d;
@@ -2192,6 +2200,10 @@ Compiliation errors caused by the syntax of L<field access|/"Field Access"> coul
 Compiliation errors caused by L<dereference operator|/"Dereference Operator"> could occur.
 
 The assignment must satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
+
+Exceptions:
+
+If I<INVOCANT> is undef, an exception is thrown.
 
 Examples:
 
