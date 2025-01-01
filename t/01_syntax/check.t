@@ -156,7 +156,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { undef == 1; } }';
-    compile_not_ok($source, q|If the type of the left operand of == operator is the undef type, the type of the right operand must be an object type or undef type.|);
+    compile_not_ok($source, q|If the type of the left operand of == operator is the undef type, the type of the right operand must be an object type, a reference type, or undef type.|);
   }
   
   {
@@ -189,7 +189,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { undef != 1; } }';
-    compile_not_ok($source, q|If the type of the left operand of != operator is the undef type, the type of the right operand must be an object type or undef type.|);
+    compile_not_ok($source, q|If the type of the left operand of != operator is the undef type, the type of the right operand must be an object type, a reference type, or undef type.|);
   }
   
   {

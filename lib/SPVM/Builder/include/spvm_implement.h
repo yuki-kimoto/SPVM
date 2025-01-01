@@ -484,8 +484,10 @@ static inline void SPVM_IMPLEMENT_STRING_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_CMP_FLOAT(out, in1, in2) (out = in1 > in2 ? 1 : in1 < in2 ? -1 : 0)
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_CMP_DOUBLE(out, in1, in2) (out = in1 > in2 ? 1 : in1 < in2 ? -1 : 0)
 
-#define SPVM_IMPLEMENT_IS_UNDEF(out, in) (out = in == NULL)
-#define SPVM_IMPLEMENT_IS_NOT_UNDEF(out, in) (out = in != NULL)
+#define SPVM_IMPLEMENT_IS_UNDEF_OBJECT(out, in) (out = (in == NULL))
+#define SPVM_IMPLEMENT_IS_UNDEF_REF(out, in) (out = (in == NULL))
+#define SPVM_IMPLEMENT_IS_NOT_UNDEF_OBJECT(out, in) (out = (in != NULL))
+#define SPVM_IMPLEMENT_IS_NOT_UNDEF_REF(out, in) (out = (in != NULL))
 
 static inline void SPVM_IMPLEMENT_STRING_COMPARISON(SPVM_ENV* env, SPVM_VALUE* stack, int32_t comparison_op_id, int32_t* out, void* in1, void* in2, int32_t object_length_offset) {
   void* object1 = in1;

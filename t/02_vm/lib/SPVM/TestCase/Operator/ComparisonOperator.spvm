@@ -135,6 +135,28 @@ class TestCase::Operator::ComparisonOperator {
           return 0;
         }
       }
+      
+      {
+        my $object1 = (TestCase::Minimal)undef;
+        
+        unless ($object1 == undef) {
+          return 0;
+        }
+        
+        unless (undef == $object1) {
+          return 0;
+        }
+        
+        if ($object1 != undef) {
+          return 0;
+        }
+        
+        if (undef != $object1) {
+          return 0;
+        }
+        
+      }
+      
     }
     
     # reference
@@ -155,6 +177,28 @@ class TestCase::Operator::ComparisonOperator {
           return 0;
         }
       }
+      
+      {
+        my $ref1 = (int*)undef;
+        
+        unless ($ref1 == undef) {
+          return 0;
+        }
+        
+        unless (undef == $ref1) {
+          return 0;
+        }
+        
+        if ($ref1 != undef) {
+          return 0;
+        }
+        
+        if (undef != $ref1) {
+          return 0;
+        }
+        
+      }
+      
     }
     
     return 1;

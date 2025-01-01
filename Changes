@@ -26,6 +26,9 @@
      * Allow optional argument in multi-numeric reference type.
        
        method foo ($ref : Complex_2d* = undef);
+     * Allow numeric comparison operator a referene type == undef
+     * Allow numeric comparison operator a referene type != undef
+     
    [Incompatible Changes]
      * undef can assign to a reference type. This means you must check the reference is NULL in native classes.
      * undef can cast to a reference type. This means you must check the reference is NULL in native classes.
@@ -86,7 +89,10 @@
      * SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_FLOAT throws an exception when input is undef.
      * SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_DOUBLE throws an exception when input is undef.
      * Add SPVM_OPCODE_C_ID_MOVE_REF_UNDEF opcode.
-     
+     * Rename SPVM_OPCODE_C_ID_IS_UNDEF to SPVM_OPCODE_C_ID_IS_UNDEF_OBJECT.
+     * Rename SPVM_OPCODE_C_ID_IS_NOT_UNDEF to SPVM_OPCODE_C_ID_IS_NOT_UNDEF_OBJECT.
+     * Add SPVM_OPCODE_C_ID_IS_UNDEF_REF.
+     * Add SPVM_OPCODE_C_ID_IS_NOT_UNDEF_REF.
 0.990033 2024-12-17
   [Bug Fix]
     * Fix a bug that rehash of Hash class dose not copy weaken flag.

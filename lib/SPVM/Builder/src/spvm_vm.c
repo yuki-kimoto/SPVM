@@ -733,12 +733,20 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_NUMERIC_COMPARISON_CMP_DOUBLE(int_vars[opcode->operand0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
         break;
       }
-      case SPVM_OPCODE_C_ID_IS_UNDEF: {
-        SPVM_IMPLEMENT_IS_UNDEF(int_vars[opcode->operand0], object_vars[opcode->operand1]);
+      case SPVM_OPCODE_C_ID_IS_UNDEF_OBJECT: {
+        SPVM_IMPLEMENT_IS_UNDEF_OBJECT(int_vars[opcode->operand0], object_vars[opcode->operand1]);
         break;
       }
-      case SPVM_OPCODE_C_ID_IS_NOT_UNDEF: {
-        SPVM_IMPLEMENT_IS_NOT_UNDEF(int_vars[opcode->operand0], object_vars[opcode->operand1]);
+      case SPVM_OPCODE_C_ID_IS_UNDEF_REF: {
+        SPVM_IMPLEMENT_IS_UNDEF_REF(int_vars[opcode->operand0], ref_vars[opcode->operand1]);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_IS_NOT_UNDEF_OBJECT: {
+        SPVM_IMPLEMENT_IS_NOT_UNDEF_OBJECT(int_vars[opcode->operand0], object_vars[opcode->operand1]);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_IS_NOT_UNDEF_REF: {
+        SPVM_IMPLEMENT_IS_NOT_UNDEF_REF(int_vars[opcode->operand0], ref_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_COMPARISON_EQ: {

@@ -3678,8 +3678,15 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         
                         int32_t typed_var_index_in;
                         
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_UNDEF);
                         if (op_assign_src->first->id == SPVM_OP_C_ID_UNDEF) {
+                          SPVM_TYPE* src_last_type = SPVM_CHECK_get_type(compiler, op_assign_src->last);
+                          if (SPVM_TYPE_is_object_type(compiler, src_last_type->basic_type->id, src_last_type->dimension, src_last_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_UNDEF_OBJECT);
+                          }
+                          else if (SPVM_TYPE_is_ref_type(compiler, src_last_type->basic_type->id, src_last_type->dimension, src_last_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_UNDEF_REF);
+                          }
+                          
                           typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           
                           int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
@@ -3689,6 +3696,14 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                         }
                         else {
+                          SPVM_TYPE* src_first_type = SPVM_CHECK_get_type(compiler, op_assign_src->first);
+                          if (SPVM_TYPE_is_object_type(compiler, src_first_type->basic_type->id, src_first_type->dimension, src_first_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_UNDEF_OBJECT);
+                          }
+                          else if (SPVM_TYPE_is_ref_type(compiler, src_first_type->basic_type->id, src_first_type->dimension, src_first_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_UNDEF_REF);
+                          }
+                          
                           typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           
                           int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
@@ -3766,14 +3781,28 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         
                         
                         int32_t typed_var_index_in;
-
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_NOT_UNDEF);
+                         
                         if (op_assign_src->first->id == SPVM_OP_C_ID_UNDEF) {
+                          SPVM_TYPE* src_last_type = SPVM_CHECK_get_type(compiler, op_assign_src->last);
+                          if (SPVM_TYPE_is_object_type(compiler, src_last_type->basic_type->id, src_last_type->dimension, src_last_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_NOT_UNDEF_OBJECT);
+                          }
+                          else if (SPVM_TYPE_is_ref_type(compiler, src_last_type->basic_type->id, src_last_type->dimension, src_last_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_NOT_UNDEF_REF);
+                          }
                           typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           
                           opcode.operand1 = typed_var_index_in;
                         }
                         else {
+                          SPVM_TYPE* src_first_type = SPVM_CHECK_get_type(compiler, op_assign_src->first);
+                          if (SPVM_TYPE_is_object_type(compiler, src_first_type->basic_type->id, src_first_type->dimension, src_first_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_NOT_UNDEF_OBJECT);
+                          }
+                          else if (SPVM_TYPE_is_ref_type(compiler, src_first_type->basic_type->id, src_first_type->dimension, src_first_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_NOT_UNDEF_REF);
+                          }
+                          
                           typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           
                           opcode.operand1 = typed_var_index_in;
