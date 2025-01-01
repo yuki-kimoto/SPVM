@@ -4847,15 +4847,24 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   // Call native method
   if (method->is_native) {
     error_id = SPVM_API_call_method_native(env, stack, method, args_width);
+    if (error_id) {
+      goto END_OF_FUNC;
+    }
   }
   else if (method->is_precompile) {
     void* method_precompile_address = method->precompile_address;
     if (method_precompile_address) {
       int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
       error_id = (*precompile_address)(env, stack);
+      if (error_id) {
+        goto END_OF_FUNC;
+      }
     }
     else if (method->is_precompile_fallback) {
       error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
+      if (error_id) {
+        goto END_OF_FUNC;
+      }
     }
     else {
       error_id = SPVM_API_die(env, stack, "The execution address of the \"%s\" precompilation method in the \"%s\" class must not be NULL. Loading the dynamic link library maybe failed.", method->name, method->current_basic_type->name, __func__, FILE_NAME, __LINE__);
@@ -4864,17 +4873,18 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   }
   else {
     error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
+    if (error_id) {
+      goto END_OF_FUNC;
+    }
   }
   
-  if (!error_id) {
-    void* method_return_basic_type = method->return_basic_type;
-    int32_t method_return_type_dimension = method->return_type_dimension;
-    int32_t method_return_type_flag = method->return_type_flag;
-    int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
-    
-    if (mortal && method_return_type_is_object) {
-      SPVM_API_push_mortal(env, stack, stack[0].oval);
-    }
+  void* method_return_basic_type = method->return_basic_type;
+  int32_t method_return_type_dimension = method->return_type_dimension;
+  int32_t method_return_type_flag = method->return_type_flag;
+  int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
+  
+  if (mortal && method_return_type_is_object) {
+    SPVM_API_push_mortal(env, stack, stack[0].oval);
   }
   
   END_OF_FUNC:
