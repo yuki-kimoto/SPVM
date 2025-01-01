@@ -2495,6 +2495,22 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
     return 0;
   }
   
+  env->call_class_method_by_name(env, stack, "TestCase::Operator::MethodCall", "optional_args_byte_one_required_tow_optional", 0, &error_id, __func__, FILE_NAME, __LINE__);
+  if (!error_id) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  spvm_warn("[Test Output]%s", env->get_chars(env, stack, env->get_exception(env, stack)));
+  
+  env->call_class_method_by_name(env, stack, "TestCase::Operator::MethodCall", "optional_args_byte_one_required_tow_optional", 4, &error_id, __func__, FILE_NAME, __LINE__);
+  if (!error_id) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  spvm_warn("[Test Output]%s", env->get_chars(env, stack, env->get_exception(env, stack)));
+  
   stack[0].ival = 1;
   
   return 0;

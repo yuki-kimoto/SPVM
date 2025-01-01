@@ -1206,6 +1206,7 @@ class TestCase::Operator::MethodCall {
           return 0;
         }
       }
+      
     }
     
     # Interface optional argument
