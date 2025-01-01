@@ -2151,7 +2151,7 @@ class TestCase::Operator::MethodCall {
           
           eval { $simple->(TestCase::Simple)->arg_object($input); }
           
-          unless (Fn->contains($@, q'The object given in the 1th argument must be assigned to the type of the 1th argument of the "arg_object" method in the "TestCase::SimpleChild" class.')) {
+          unless (Fn->contains($@, q'1th argument must be assigned to the type of 1th argument of TestCase::SimpleChild#arg_object method.')) {
             return 0;
           }
         }
