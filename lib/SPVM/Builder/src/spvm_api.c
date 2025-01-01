@@ -4825,19 +4825,17 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           
           int32_t stack_index = arg->stack_index;
           
-          if (!(stack_index < args_width)) {
-            break;
-          }
-          
-          int32_t arg_is_object_type = SPVM_API_TYPE_is_object_type(env->runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
-          if (arg_is_object_type) {
-            SPVM_OBJECT* obj_arg = stack[stack_index].oval;
-            
-            if (obj_arg) {
-              int32_t can_assign = SPVM_API_isa(env, stack, obj_arg, arg->basic_type, arg->type_dimension);
-              if (!can_assign) {
-                error_id = SPVM_API_die(env, stack, "The object given in the %ith argument must be assigned to the type of the %ith argument of the \"%s\" method in the \"%s\" class.", arg_index, arg_index, method->name, current_basic_type->name, __func__, FILE_NAME, __LINE__);
-                break;
+          if (stack_index < args_width) {
+            int32_t arg_is_object_type = SPVM_API_TYPE_is_object_type(env->runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
+            if (arg_is_object_type) {
+              SPVM_OBJECT* obj_arg = stack[stack_index].oval;
+              
+              if (obj_arg) {
+                int32_t can_assign = SPVM_API_isa(env, stack, obj_arg, arg->basic_type, arg->type_dimension);
+                if (!can_assign) {
+                  error_id = SPVM_API_die(env, stack, "The object given in the %ith argument must be assigned to the type of the %ith argument of the \"%s\" method in the \"%s\" class.", arg_index, arg_index, method->name, current_basic_type->name, __func__, FILE_NAME, __LINE__);
+                  break;
+                }
               }
             }
           }
