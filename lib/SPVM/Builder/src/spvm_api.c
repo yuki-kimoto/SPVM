@@ -4806,81 +4806,77 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   
   SPVM_RUNTIME_BASIC_TYPE* current_basic_type = method->current_basic_type;
   
-  int32_t no_need_call = 0;
   if (method->is_init_method) {
-    
     if (current_basic_type->initialized) {
-      no_need_call = 1;
+      goto END_OF_FUNC;
     }
     else {
       current_basic_type->initialized = 1;
     }
   }
   
-  if (!no_need_call) {
+  int32_t args_length = method->args_length;
+  for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
+    SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
     
-    int32_t args_length = method->args_length;
-    for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
-      SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
-      
-      // Type check
-      int32_t arg_stack_index = arg->stack_index;
-      if (arg_stack_index < args_width) {
-        int32_t arg_is_object_type = SPVM_API_TYPE_is_object_type(env->runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
-        if (arg_is_object_type) {
-          SPVM_OBJECT* obj_arg = stack[arg_stack_index].oval;
-          
-          if (obj_arg) {
-            int32_t can_assign = SPVM_API_isa(env, stack, obj_arg, arg->basic_type, arg->type_dimension);
-            if (!can_assign) {
-              error_id = SPVM_API_die(env, stack, "The object given in the %ith argument must be assigned to the type of the %ith argument of the \"%s\" method in the \"%s\" class.", arg_index, arg_index, method->name, current_basic_type->name, __func__, FILE_NAME, __LINE__);
-              break;
-            }
+    // Type check
+    int32_t arg_stack_index = arg->stack_index;
+    if (arg_stack_index < args_width) {
+      int32_t arg_is_object_type = SPVM_API_TYPE_is_object_type(env->runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
+      if (arg_is_object_type) {
+        SPVM_OBJECT* obj_arg = stack[arg_stack_index].oval;
+        
+        if (obj_arg) {
+          int32_t can_assign = SPVM_API_isa(env, stack, obj_arg, arg->basic_type, arg->type_dimension);
+          if (!can_assign) {
+            error_id = SPVM_API_die(env, stack, "The object given in the %ith argument must be assigned to the type of the %ith argument of the \"%s\" method in the \"%s\" class.", arg_index, arg_index, method->name, current_basic_type->name, __func__, FILE_NAME, __LINE__);
+            goto END_OF_FUNC;
           }
         }
       }
-      
-      // Set a default value of an optional argument
-      if (arg_stack_index >= args_width) {
-        if (arg->is_optional) {
-          stack[arg_stack_index] = arg->default_value;
-        }
-      }
     }
     
-    // Call native method
-    if (method->is_native) {
-      error_id = SPVM_API_call_method_native(env, stack, method, args_width);
-    }
-    else if (method->is_precompile) {
-      void* method_precompile_address = method->precompile_address;
-      if (method_precompile_address) {
-        int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
-        error_id = (*precompile_address)(env, stack);
-      }
-      else if (method->is_precompile_fallback) {
-        error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
-      }
-      else {
-        error_id = SPVM_API_die(env, stack, "The execution address of the \"%s\" precompilation method in the \"%s\" class must not be NULL. Loading the dynamic link library maybe failed.", method->name, method->current_basic_type->name, __func__, FILE_NAME, __LINE__);
-      }
-    }
-    else {
-      error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
-    }
-    
-    if (!error_id) {
-      void* method_return_basic_type = method->return_basic_type;
-      int32_t method_return_type_dimension = method->return_type_dimension;
-      int32_t method_return_type_flag = method->return_type_flag;
-      int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
-      
-      if (mortal && method_return_type_is_object) {
-        SPVM_API_push_mortal(env, stack, stack[0].oval);
+    // Set a default value of an optional argument
+    if (arg_stack_index >= args_width) {
+      if (arg->is_optional) {
+        stack[arg_stack_index] = arg->default_value;
       }
     }
   }
-
+  
+  // Call native method
+  if (method->is_native) {
+    error_id = SPVM_API_call_method_native(env, stack, method, args_width);
+  }
+  else if (method->is_precompile) {
+    void* method_precompile_address = method->precompile_address;
+    if (method_precompile_address) {
+      int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
+      error_id = (*precompile_address)(env, stack);
+    }
+    else if (method->is_precompile_fallback) {
+      error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
+    }
+    else {
+      error_id = SPVM_API_die(env, stack, "The execution address of the \"%s\" precompilation method in the \"%s\" class must not be NULL. Loading the dynamic link library maybe failed.", method->name, method->current_basic_type->name, __func__, FILE_NAME, __LINE__);
+      goto END_OF_FUNC;
+    }
+  }
+  else {
+    error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
+  }
+  
+  if (!error_id) {
+    void* method_return_basic_type = method->return_basic_type;
+    int32_t method_return_type_dimension = method->return_type_dimension;
+    int32_t method_return_type_flag = method->return_type_flag;
+    int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
+    
+    if (mortal && method_return_type_is_object) {
+      SPVM_API_push_mortal(env, stack, stack[0].oval);
+    }
+  }
+  
   END_OF_FUNC:
   
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival--;
