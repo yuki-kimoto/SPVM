@@ -2803,13 +2803,12 @@ int32_t SPVM__TestCase__NativeAPI__get_instance_method_static_native(SPVM_ENV* e
   int32_t error_id = 0;
   
   void* minimal = stack[0].oval;
-  
   void* method = env->get_instance_method_static(env, stack, "TestCase::Minimal", "x");
   if (!method) { return 0; }
   
   int32_t ret;
   {
-    int32_t args_width = 0;
+    int32_t args_width = 1;
     env->call_method(env, stack, method, args_width);
     if (error_id) { return error_id; }
     ret = stack[0].ival;
