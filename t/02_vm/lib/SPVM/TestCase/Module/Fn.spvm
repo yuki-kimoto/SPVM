@@ -8102,6 +8102,8 @@ class TestCase::Module::Fn {
     {
       my $point = Point->new;
       
+      Fn->set_no_free($point, 1);
+      
       my $hash = Hash->new;
       $hash->set("point", $point);
       
@@ -8110,6 +8112,34 @@ class TestCase::Module::Fn {
       my $dump = Fn->dump_object_internal($point);
       
       unless (Fn->contains($dump, "weaken_backrefs_length:1")) {
+        return 0;
+      }
+      
+      unless (Fn->contains($dump, "no_free")) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abc";
+      
+      my $dump = Fn->dump_object_internal($string);
+      
+      unless (Fn->contains($dump, "is_read_only")) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $points = new Point[2];
+      my $dump = Fn->dump_object_internal($points);
+      
+      unless (Fn->contains($dump, "type_dimension:1")) {
+        return 0;
+      }
+      
+      unless (Fn->contains($dump, "length:2")) {
         return 0;
       }
       

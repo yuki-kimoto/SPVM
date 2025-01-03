@@ -5578,7 +5578,7 @@ SPVM_OBJECT* SPVM_API_dump_object_internal(SPVM_ENV* env, SPVM_VALUE* stack, SPV
     
     int32_t length = object->length;
     
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "[Object Intenal:%p]\npointer:%p\nweaken_backrefs_length:%d\nref_count:%d\nbasic_type_name:%s\ntype_dimension:%d\nflag:%s %s", object, pointer, weaken_backrefs_length, ref_count, basic_type_name, type_dimension, is_read_only_flag_str, no_free_flag_str);
+    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "[Object Intenal:%p]\npointer:%p\nweaken_backrefs_length:%d\nref_count:%d\nbasic_type_name:%s\ntype_dimension:%d\nflag:%s %s\nlength:%d", object, pointer, weaken_backrefs_length, ref_count, basic_type_name, type_dimension, is_read_only_flag_str, no_free_flag_str, length);
     
     obj_dump = env->new_string_nolen(env, stack, tmp_buffer);
   }
