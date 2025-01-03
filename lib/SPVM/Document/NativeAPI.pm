@@ -2531,6 +2531,18 @@ The dumped internal information looks like the following one.
 
 If I<object> is NULL, returns a string C<"undef">.
 
+=head2 get_seed
+
+C<int32_t (*get_seed)(SPVM_ENV* env, SPVM_VALUE* stack);>
+
+Returns the value of C<seed> stack variable on the runtime stack I<stack>.
+
+=head2 set_seed
+
+C<void (*set_seed)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t seed);>
+
+Sets the value of C<seed> stack variable on the runtime stack I<stack> to I<seed>.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.

@@ -1,9 +1,11 @@
-0.990035 2024-01-02
+0.990035 2024-01-04
   
   [New Features]
     * Add Fn#dump_object_internal method.
     * Add dump_object_internal native API.
     * Add Fn#set_no_free method.
+    * Add set_seed native API.
+    * Add get_seed native API.
     
   [Changes]
     * Add argument count check to native method call.

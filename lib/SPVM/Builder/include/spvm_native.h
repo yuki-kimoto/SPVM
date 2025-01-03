@@ -322,6 +322,8 @@ struct spvm_env {
   char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*print_exception_to_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);
   void* (*dump_object_internal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  int32_t (*get_seed)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void (*set_seed)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t seed);
 };
 
 struct spvm_env_api {

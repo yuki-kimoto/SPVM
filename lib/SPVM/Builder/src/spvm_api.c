@@ -322,6 +322,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_stack_tmp_buffer,
     SPVM_API_print_exception_to_stderr,
     SPVM_API_dump_object_internal,
+    SPVM_API_get_seed,
+    SPVM_API_set_seed,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -5587,4 +5589,16 @@ SPVM_OBJECT* SPVM_API_dump_object_internal(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   }
   
   return obj_dump;
+}
+
+int32_t SPVM_API_get_seed(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t seed = *(int32_t*)&stack[SPVM_API_C_STACK_INDEX_SEED];
+  
+  return seed;
+}
+
+void SPVM_API_set_seed(SPVM_ENV* env, SPVM_VALUE* stack, int32_t seed) {
+  
+  *(int32_t*)&stack[SPVM_API_C_STACK_INDEX_SEED] = seed;
 }

@@ -379,4 +379,8 @@ void SPVM_API_print_exception_to_stderr(SPVM_ENV* env, SPVM_VALUE* stack);
 
 SPVM_OBJECT* SPVM_API_dump_object_internal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 
+int32_t SPVM_API_get_seed(SPVM_ENV* env, SPVM_VALUE* stack);
+
+void SPVM_API_set_seed(SPVM_ENV* env, SPVM_VALUE* stack, int32_t seed);
+
 #endif
