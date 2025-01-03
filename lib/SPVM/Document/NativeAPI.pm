@@ -2525,6 +2525,16 @@ And prints the current exception to L<SPVM's standard error|SPVM::Document::Lang
 
 And prints C<"\n"> to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
+=head2 dump_object_internal
+
+C<void* (*dump_object_internal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+
+Dumps the internal information of the object I<object>, creates a new string from the information, and returns it.
+
+The dumped internal information looks like the following one.
+
+If I<object> is NULL, returns a string C<"undef">.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2753,6 +2763,7 @@ Native APIs have its IDs.
   221 set_no_free
   222 get_stack_tmp_buffer
   223 print_exception_to_stderr
+  224 dump_object_internal
 
 =head1 Constant Values
 

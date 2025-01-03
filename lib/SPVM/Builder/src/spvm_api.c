@@ -321,6 +321,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_set_no_free,
     SPVM_API_get_stack_tmp_buffer,
     SPVM_API_print_exception_to_stderr,
+    SPVM_API_dump_object_internal,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -5538,4 +5539,52 @@ void SPVM_API_print_exception_to_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   env->print_stderr(env, stack, obj_exception);
   
   fprintf(env->api->runtime->get_spvm_stderr(env->runtime), "\n");
+}
+
+SPVM_OBJECT* SPVM_API_dump_object_internal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  void* obj_dump = NULL;
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  if (object) {
+    void* pointer = object->pointer;
+    
+    int32_t weaken_back_refs_length = 0;
+    
+    SPVM_WEAKEN_BACKREF* weaken_backref_cur = object->weaken_backref_head;
+    
+    while (weaken_backref_cur) {
+      weaken_back_refs_length++;
+      weaken_backref_cur = weaken_backref_cur->next;
+    }
+    
+    int32_t ref_count = object->ref_count;
+    
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = object->basic_type;
+    
+    const char* basic_type_name = basic_type->name;
+    
+    uint8_t type_dimension = object->type_dimension;
+    
+    uint8_t flag = object->flag;
+    const char* is_read_only_flag_str = "";
+    if (flag & SPVM_OBJECT_C_FLAG_IS_READ_ONLY) {
+      is_read_only_flag_str = "is_read_only";
+    }
+    
+    const char* no_free_flag_str = "";
+    if (flag & SPVM_OBJECT_C_FLAG_NO_FREE) {
+      no_free_flag_str = "no_free";
+    }
+    
+    int32_t length = object->length;
+    
+    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "pointer:%p\n\nweaken_back_refs_length:%d\nref_count:%d\nbasic_type_name:%s\ntype_dimension:%d\nflag:%s %s", pointer, weaken_back_refs_length, ref_count, basic_type_name, type_dimension, is_read_only_flag_str, no_free_flag_str);
+    
+    obj_dump = env->new_string_nolen(env, stack, tmp_buffer);
+  }
+  else {
+    obj_dump = env->new_string_nolen(env, stack, "undef");
+  }
+  
+  return obj_dump;
 }

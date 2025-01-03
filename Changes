@@ -1,5 +1,8 @@
 0.990035 2024-01-02
   
+  [New Features]
+    * Add dump_object_internal native API.
+    
   [Changes]
     * Add argument count check to native method call.
 
