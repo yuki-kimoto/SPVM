@@ -1011,3 +1011,16 @@ int32_t SPVM__Fn__pointer_to_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__dump_object_internal(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_object = stack[0].oval;
+  
+  void* obj_dump = env->dump_object_internal(env, stack, obj_object);
+  
+  stack[0].oval = obj_dump;
+  
+  return 0;
+}
+

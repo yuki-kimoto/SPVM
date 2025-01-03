@@ -5548,12 +5548,12 @@ SPVM_OBJECT* SPVM_API_dump_object_internal(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   if (object) {
     void* pointer = object->pointer;
     
-    int32_t weaken_back_refs_length = 0;
+    int32_t weaken_backrefs_length = 0;
     
     SPVM_WEAKEN_BACKREF* weaken_backref_cur = object->weaken_backref_head;
     
     while (weaken_backref_cur) {
-      weaken_back_refs_length++;
+      weaken_backrefs_length++;
       weaken_backref_cur = weaken_backref_cur->next;
     }
     
@@ -5578,7 +5578,7 @@ SPVM_OBJECT* SPVM_API_dump_object_internal(SPVM_ENV* env, SPVM_VALUE* stack, SPV
     
     int32_t length = object->length;
     
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "pointer:%p\n\nweaken_back_refs_length:%d\nref_count:%d\nbasic_type_name:%s\ntype_dimension:%d\nflag:%s %s", pointer, weaken_back_refs_length, ref_count, basic_type_name, type_dimension, is_read_only_flag_str, no_free_flag_str);
+    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "[Object Intenal:%p]\npointer:%p\nweaken_backrefs_length:%d\nref_count:%d\nbasic_type_name:%s\ntype_dimension:%d\nflag:%s %s", object, pointer, weaken_backrefs_length, ref_count, basic_type_name, type_dimension, is_read_only_flag_str, no_free_flag_str);
     
     obj_dump = env->new_string_nolen(env, stack, tmp_buffer);
   }

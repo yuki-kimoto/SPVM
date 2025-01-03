@@ -1667,6 +1667,12 @@ Exceptions:
 
 The object $object must be defined. Otherwise an exception is thrown.
 
+=head2 dump_object_internal
+
+C<static method dump_object_internal : string ($object : object);>
+
+Calls L<dump_object_internal|SPVM::Document::NativeAPI/"dump_object_internal"> native API, and returns its return value.
+
 =head1 See Also
 
 =over 2

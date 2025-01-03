@@ -248,6 +248,7 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->has_null_pointer);
     ok(SPVM::TestCase::Module::Fn->eq_pointer);
     ok(SPVM::TestCase::Module::Fn->pointer_to_string);
+    ok(SPVM::TestCase::Module::Fn->dump_object_internal);
   }
   
   # Extra

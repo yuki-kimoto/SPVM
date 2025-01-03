@@ -1,6 +1,7 @@
 0.990035 2024-01-02
   
   [New Features]
+    * Add Fn#dump_object_internal method.
     * Add dump_object_internal native API.
     
   [Changes]

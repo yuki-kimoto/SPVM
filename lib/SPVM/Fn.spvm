@@ -1770,4 +1770,6 @@ class Fn {
   native static method eq_pointer : int ($object1 : object, $object2 : object);
   
   native static method pointer_to_string : string ($object : object);
+  
+  native static method dump_object_internal : string ($object : object);
 }
