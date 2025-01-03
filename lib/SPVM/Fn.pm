@@ -1609,9 +1609,7 @@ This method just creates a L<Packer|SPVM::Packer> object, calls L<Packer#unpack|
 
 C<static method no_free : int ($object : object);>
 
-Returns C<no_free> flag of the object $object.
-
-This flag expects a boolean value.
+Calls L<no_free|SPVM::Document::NativeAPI/"no_free"> native API, and retunrs its return value.
 
 Excetpions:
 
@@ -1621,9 +1619,7 @@ The object $object must be defined. Otherwise an exception is thrown.
 
 C<static method set_no_free : void ($object : object, $no_free : int);>
 
-Sets C<no_free> flag of the object $object.
-
-This flag expects a boolean value.
+Calls L<set_no_free|SPVM::Document::NativeAPI/"set_no_free"> native API.
 
 Excetpions:
 

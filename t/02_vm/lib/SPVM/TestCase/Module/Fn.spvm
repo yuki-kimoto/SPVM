@@ -7741,6 +7741,10 @@ class TestCase::Module::Fn {
       unless ($no_free) {
         return 0;
       }
+      
+      unless ($no_free == 1) {
+        return 0;
+      }
     }
     
     return 1;

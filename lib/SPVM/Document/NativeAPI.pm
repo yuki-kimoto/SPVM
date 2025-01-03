@@ -2495,17 +2495,13 @@ I<double_object> must be a L<Double|SPVM::Double> object.
 
 C<int32_t (*no_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
-Retruns C<no_free> flag of the object I<object>.
-
-This flag expects a boolean value.
+If C<no_free> flag of the object I<object> is enabled, retunrs 1, otherwise retunrs 0.
 
 =head2 set_no_free
 
 C<void (*set_no_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t no_free);>
 
-Sets C<no_free> flag of the object I<object> to the value I<no_free>.
-
-This flag expects a boolean value.
+If I<no_free> is a true value, enables C<no_free> flag of the object I<object>, otherwise disables C<no_free> flag.
 
 =head2 get_stack_tmp_buffer
 
