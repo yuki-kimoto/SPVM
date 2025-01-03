@@ -3,6 +3,7 @@
   [New Features]
     * Add Fn#dump_object_internal method.
     * Add dump_object_internal native API.
+    * Add Fn#set_no_free method.
     
   [Changes]
     * Add argument count check to native method call.

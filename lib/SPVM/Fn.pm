@@ -1613,6 +1613,22 @@ Returns C<no_free> flag of the object $object.
 
 This flag expects a boolean value.
 
+Excetpions:
+
+The object $object must be defined. Otherwise an exception is thrown.
+
+=head2 set_no_free
+
+C<static method set_no_free : void ($object : object, $no_free : int);>
+
+Sets C<no_free> flag of the object $object.
+
+This flag expects a boolean value.
+
+Excetpions:
+
+The object $object must be defined. Otherwise an exception is thrown.
+
 =head2 get_pointer
 
 C<static method get_pointer : L<Address|SPVM::Address> ($object : object);>

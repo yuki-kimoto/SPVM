@@ -894,6 +894,25 @@ int32_t SPVM__Fn__no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = no_free;
   
+  spvm_warn("%d", no_free);
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__set_no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* object = stack[0].oval;
+  
+  if (!object) {
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t no_free = stack[1].ival;
+  
+  spvm_warn("%d", no_free);
+  
+  env->set_no_free(env, stack, object, no_free);
+  
   return 0;
 }
 
