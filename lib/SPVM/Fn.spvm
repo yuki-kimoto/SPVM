@@ -1775,4 +1775,10 @@ class Fn {
   
   native static method dump_object_internal : string ($object : object);
   
+  native static method get_seed : int ();
+  
+  native static method set_seed : void ($seed : int);
+  
+  native static method seed_initialized : int ();
+  
 }

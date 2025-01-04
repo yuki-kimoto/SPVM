@@ -7,6 +7,9 @@
     * Add set_seed native API.
     * Add get_seed native API.
     * Add seed_initialized native API.
+    * Add Fn#set_seed method.
+    * Add Fn#get_seed method.
+    * Add Fn#seed_initialized method.
     
   [Changes]
     * Add argument count check to native method call.

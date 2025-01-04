@@ -1609,7 +1609,7 @@ This method just creates a L<Packer|SPVM::Packer> object, calls L<Packer#unpack|
 
 C<static method no_free : int ($object : object);>
 
-Calls L<no_free|SPVM::Document::NativeAPI/"no_free"> native API, and retunrs its return value.
+Calls L<no_free|SPVM::Document::NativeAPI/"no_free"> native API given $object, and retunrs its return value.
 
 Excetpions:
 
@@ -1619,7 +1619,7 @@ The object $object must be defined. Otherwise an exception is thrown.
 
 C<static method set_no_free : void ($object : object, $no_free : int);>
 
-Calls L<set_no_free|SPVM::Document::NativeAPI/"set_no_free"> native API.
+Calls L<set_no_free|SPVM::Document::NativeAPI/"set_no_free"> native API given $object, $no_free.
 
 Excetpions:
 
@@ -1684,6 +1684,24 @@ The object $object must be defined. Otherwise an exception is thrown.
 C<static method dump_object_internal : string ($object : object);>
 
 Calls L<dump_object_internal|SPVM::Document::NativeAPI/"dump_object_internal"> native API, and returns its return value.
+
+=head2 get_seed
+
+C<static method get_seed : int ();>
+
+Calls L<get_seed|SPVM::Document::NativeAPI/"get_seed"> native API, and retunrs its return value.
+
+=head2 set_seed
+
+C<static method set_seed : void ($seed : int);>
+
+Calls L<get_seed|SPVM::Document::NativeAPI/"set_seed"> native API given $seed.
+
+=head2 seed_initialized
+
+C<static method seed_initialized : int ();>
+
+Calls L<seed_initialized|SPVM::Document::NativeAPI/"seed_initialized"> native API, and retunrs its return value.
 
 =head1 See Also
 

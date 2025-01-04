@@ -1039,3 +1039,30 @@ int32_t SPVM__Fn__dump_object_internal(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__get_seed(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t seed = env->get_seed(env, stack);
+  
+  stack[0].ival = seed;
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__set_seed(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t seed = stack[0].ival;
+  
+  env->set_seed(env, stack, seed);
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__seed_initialized(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t seed_initialized = env->seed_initialized(env, stack);
+  
+  stack[0].ival = seed_initialized;
+  
+  return 0;
+}
+
