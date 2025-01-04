@@ -242,6 +242,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->get_stack_tmp_buffer != &env_array[222]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->print_exception_to_stderr != &env_array[223]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->dump_object_internal != &env_array[224]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_seed != &env_array[225]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_seed != &env_array[226]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->seed_initialized != &env_array[227]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

@@ -21,6 +21,7 @@ enum {
   SPVM_API_C_STACK_INDEX_CALL_DEPTH = 378,
   SPVM_API_C_STACK_INDEX_ENV = 377,
   SPVM_API_C_STACK_INDEX_SEED = 376,
+  SPVM_API_C_STACK_INDEX_SEED_INITIALIZED = 375,
 };
 
 /*
@@ -382,5 +383,7 @@ SPVM_OBJECT* SPVM_API_dump_object_internal(SPVM_ENV* env, SPVM_VALUE* stack, SPV
 int32_t SPVM_API_get_seed(SPVM_ENV* env, SPVM_VALUE* stack);
 
 void SPVM_API_set_seed(SPVM_ENV* env, SPVM_VALUE* stack, int32_t seed);
+
+int32_t SPVM_API_seed_initialized(SPVM_ENV* env, SPVM_VALUE* stack);
 
 #endif

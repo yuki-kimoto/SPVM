@@ -2543,6 +2543,14 @@ C<void (*set_seed)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t seed);>
 
 Sets the value of C<seed> stack variable on the runtime stack I<stack> to I<seed>.
 
+If the value of C<seed_initialized> stack variable on the runtime stack I<stack> is 0, sets it to 1.
+
+=head2 seed_initialized
+
+int32_t (*seed_initialized)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+Returns the value of C<seed_initialized> stack variable on the runtime stack I<stack>.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.

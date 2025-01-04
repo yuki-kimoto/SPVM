@@ -324,6 +324,7 @@ struct spvm_env {
   void* (*dump_object_internal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*get_seed)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*set_seed)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t seed);
+  int32_t (*seed_initialized)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 struct spvm_env_api {

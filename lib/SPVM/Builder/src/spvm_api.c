@@ -324,6 +324,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_dump_object_internal,
     SPVM_API_get_seed,
     SPVM_API_set_seed,
+    SPVM_API_seed_initialized,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -2675,14 +2676,6 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   
   SPVM_RUNTIME* runtime = env->runtime;
-  
-  // Arguments and return values : 0-255
-  // Temporary buffer and stack local varialbe : 256-511
-  //   Temporary buffer 256(to byte size 512)
-  //   Exception message 511
-  //   Mortal stack 510
-  //   Motal stack top 509
-  //   Motal stack capacity 508
   
   SPVM_VALUE* stack = env->new_memory_block(env, NULL, sizeof(SPVM_VALUE) * SPVM_API_C_STACK_LENGTH);
   
@@ -5601,4 +5594,16 @@ int32_t SPVM_API_get_seed(SPVM_ENV* env, SPVM_VALUE* stack) {
 void SPVM_API_set_seed(SPVM_ENV* env, SPVM_VALUE* stack, int32_t seed) {
   
   *(int32_t*)&stack[SPVM_API_C_STACK_INDEX_SEED] = seed;
+  
+  if (!*(int32_t*)&stack[SPVM_API_C_STACK_INDEX_SEED_INITIALIZED]) {
+    *(int32_t*)&stack[SPVM_API_C_STACK_INDEX_SEED_INITIALIZED] = 1;
+  }
 }
+
+int32_t SPVM_API_seed_initialized(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t seed_initialized = !!*(int32_t*)&stack[SPVM_API_C_STACK_INDEX_SEED_INITIALIZED];
+  
+  return seed_initialized;
+}
+
