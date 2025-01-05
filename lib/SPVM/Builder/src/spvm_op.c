@@ -418,7 +418,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_OP* op_decls = op_block->first;
     SPVM_OP* op_decl = op_decls->first;
     while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
-      // version declaration
+      // version statement
       if (op_decl->id == SPVM_OP_C_ID_VERSION_DECL) {
         if (type->basic_type->version_string) {
           SPVM_COMPILER_error(compiler, "The version has already been declared.\n  at %s line %d", op_decl->file, op_decl->line);
@@ -495,6 +495,32 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         SPVM_STRING_new(compiler, version_string, version_string_length);
         type->basic_type->version_string = version_string;
+      }
+      // version_from statement
+      else if (op_decl->id == SPVM_OP_C_ID_VERSION_FROM) {
+        if (type->basic_type->version_from_string) {
+          SPVM_COMPILER_error(compiler, "version_from has already been declared.\n  at %s line %d", op_decl->file, op_decl->line);
+          break;
+        }
+        
+        SPVM_OP* op_version_from_string = op_decl->first;
+        SPVM_CONSTANT* version_from_string_constant = op_version_from_string->uv.constant;
+        SPVM_TYPE* version_from_string_constant_type = version_from_string_constant->type;
+        if (!SPVM_TYPE_is_string_type(compiler, version_from_string_constant_type->basic_type->id, version_from_string_constant_type->dimension, version_from_string_constant_type->flag)) {
+          SPVM_COMPILER_error(compiler, "The type of the operand of version_from statement must be string type.\n  at %s line %d", op_decl->file, op_decl->line);
+          break;
+        }
+        
+        const char* version_from_string = version_from_string_constant->value.oval;
+        int32_t version_from_string_length = version_from_string_constant->string_length;
+        
+        if (!(version_from_string_length > 0)) {
+          SPVM_COMPILER_error(compiler, "The string length of the operand of version_from statement must be greter than 0.\n  at %s line %d", op_decl->file, op_decl->line);
+          break;
+        }
+        
+        SPVM_STRING_new(compiler, version_from_string, version_from_string_length);
+        type->basic_type->version_from_string = version_from_string;
       }
       // use statement
       else if (op_decl->id == SPVM_OP_C_ID_USE) {

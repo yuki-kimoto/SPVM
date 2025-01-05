@@ -423,6 +423,87 @@ use Test::More;
   }
 }
 
+# version statement - Version Declaration
+{
+  {
+    my $source = 'class MyClass { version "1.001"; }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { version "1"; }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { version "10000"; }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { version "123456789.123456789123"; }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { version "1.001"; version "1.001";}';
+    compile_not_ok($source, qr|The version has already been declared|);
+  }
+  {
+    my $source = 'class MyClass { version ".001"; }';
+    compile_not_ok($source, qr|A version string must begin with a number|);
+  }
+  {
+    my $source = 'class MyClass { version "1."; }';
+    compile_not_ok($source, qr|A version string must end with a number|);
+  }
+  {
+    my $source = 'class MyClass { version "1.0a0"; }';
+    compile_not_ok($source, qr|A character in a version string must be a number or "\."|);
+  }
+  {
+    my $source = 'class MyClass { version "1.001.001"; }';
+    compile_not_ok($source, qr|The number of "." in a version string must be less than or equal to 1|);
+  }
+  {
+    my $source = 'class MyClass { version "1.00101"; }';
+    compile_not_ok($source, qr|The length of characters after "." in a version string must be divisible by 3|);
+  }
+  {
+    my $source = 'class MyClass { version "1.0011"; }';
+    compile_not_ok($source, qr|The length of characters after "." in a version string must be divisible by 3|);
+  }
+  {
+    my $source = 'class MyClass { version 1.001; }';
+    compile_not_ok($source,q|The type of the operand of version statement must be string type.|);
+  }
+}
+
+# version_from statement
+{
+  {
+    my $source = 'class MyClass { version_from "spvm"; }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { version_from "Foo"; }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { version_from "Foo::Bar"; }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { version_from ""; }';
+    compile_not_ok($source, qr/The string length of the operand of version_from statement must be greter than 0./);
+  }
+  
+  {
+    my $source = 'class MyClass { version_from 1; }';
+    compile_not_ok($source, qr/The type of the operand of version_from statement must be string type./);
+  }
+  
+}
+
 # Extra
 {
   {
