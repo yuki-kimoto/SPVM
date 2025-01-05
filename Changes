@@ -3,7 +3,8 @@
   [New Features]
     * Add version_from statement.
     * Add get_version_from_string native API.
-    
+  [Document Changes]
+    * The heading "Version Statement" to "version Statement".
 0.990035 2024-01-04
   
   [New Features]

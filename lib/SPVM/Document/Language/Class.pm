@@ -184,7 +184,7 @@ Compilation Errors:
 
 A class definition must be written in its corresponding class file. Otherwise, a compilation error occurs.
 
-=head2 Version Statement
+=head2 version Statement
 
 The C<version> statement declares the version of a class.
 
@@ -210,7 +210,7 @@ Examples:
 
 =head3 Version String
 
-The version string is the string that represents L<version|/"Version Statement"> of a class.
+The version string is the string that represents L<version|/"version Statement"> of a class.
 
 A version string must be written by the following rules.
 
