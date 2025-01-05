@@ -12,6 +12,7 @@ struct spvm_runtime_basic_type {
   const char* class_dir;
   const char* class_rel_file;
   const char* version_string;
+  const char* version_from_string;
   SPVM_RUNTIME_BASIC_TYPE* parent;
   const char* string_pool;
   SPVM_RUNTIME_STRING* constant_strings;
