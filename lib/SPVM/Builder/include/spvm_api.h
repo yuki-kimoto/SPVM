@@ -307,8 +307,8 @@ const char* SPVM_API_dumpc(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object
 
 const char* SPVM_API_get_spvm_version_string(SPVM_ENV* env, SPVM_VALUE* stack);
 double SPVM_API_get_spvm_version_number(SPVM_ENV* env, SPVM_VALUE* stack);
-const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE*);
-double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE*);
+const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE* basic_type);
 
 // Type utilities
 int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension);
@@ -385,5 +385,7 @@ int32_t SPVM_API_get_seed(SPVM_ENV* env, SPVM_VALUE* stack);
 void SPVM_API_set_seed(SPVM_ENV* env, SPVM_VALUE* stack, int32_t seed);
 
 int32_t SPVM_API_seed_initialized(SPVM_ENV* env, SPVM_VALUE* stack);
+
+const char* SPVM_API_get_version_from_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE* basic_type);
 
 #endif
