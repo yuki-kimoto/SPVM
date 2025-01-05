@@ -109,6 +109,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "CLASS_BLOCK",
     "END_OF_FILE",
     "VERSION_DECL",
+    "VERSION_FROM",
     "IF",
     "UNLESS",
     "ELSIF",
@@ -1038,6 +1039,13 @@ SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version
   SPVM_OP_insert_child(compiler, op_version_decl, op_version_decl->last, op_version_string);
   
   return op_version_decl;
+}
+
+SPVM_OP* SPVM_OP_build_version_from(SPVM_COMPILER* compiler, SPVM_OP* op_version_from, SPVM_OP* op_version_from_string) {
+  
+  SPVM_OP_insert_child(compiler, op_version_from, op_version_from->last, op_version_from_string);
+  
+  return op_version_from;
 }
 
 SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP* op_type) {

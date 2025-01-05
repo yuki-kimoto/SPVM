@@ -109,6 +109,7 @@ enum {
   SPVM_OP_C_ID_CLASS_BLOCK,
   SPVM_OP_C_ID_END_OF_FILE,
   SPVM_OP_C_ID_VERSION_DECL,
+  SPVM_OP_C_ID_VERSION_FROM,
   SPVM_OP_C_ID_IF,
   SPVM_OP_C_ID_UNLESS,
   SPVM_OP_C_ID_ELSIF,
@@ -389,6 +390,8 @@ SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_a
 SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_name_basic_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends);
 
 SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version, SPVM_OP* op_version_string);
+
+SPVM_OP* SPVM_OP_build_version_from(SPVM_COMPILER* compiler, SPVM_OP* op_version_from, SPVM_OP* op_version_from_string);
 
 SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_methodname, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_attributes, SPVM_OP* op_block);
 

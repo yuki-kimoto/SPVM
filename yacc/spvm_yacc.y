@@ -22,7 +22,7 @@
 %}
 
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
-%token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL
+%token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -33,7 +33,7 @@
 %type <opval> field_name method_name class_name
 %type <opval> type qualified_type basic_type array_type opt_basic_type
 %type <opval> array_type_with_length ref_type return_type type_comment opt_type_comment union_type
-%type <opval> opt_classes classes class class_block opt_extends version_decl
+%type <opval> opt_classes classes class class_block opt_extends version_decl version_from
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
 %type <opval> method anon_method opt_args args arg use require class_alias our has anon_method_fields anon_method_field interface allow
@@ -327,6 +327,7 @@ definitions
 
 definition
   : version_decl
+  | version_from
   | use
   | class_alias
   | allow
@@ -347,6 +348,12 @@ version_decl
   : VERSION_DECL CONSTANT ';'
     {
       $$ = SPVM_OP_build_version_decl(compiler, $1, $2);
+    }
+
+version_from
+  : VERSION_FROM CONSTANT ';'
+    {
+      $$ = SPVM_OP_build_version_from(compiler, $1, $2);
     }
 
 use
