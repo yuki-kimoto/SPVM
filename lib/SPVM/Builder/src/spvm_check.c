@@ -852,6 +852,10 @@ void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler) {
       SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->version_string, strlen(basic_type->version_string));
     }
     
+    if (basic_type->version_from_string) {
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->version_from_string, strlen(basic_type->version_from_string));
+    }
+    
     for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
       SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, class_var->name, strlen(class_var->name));
