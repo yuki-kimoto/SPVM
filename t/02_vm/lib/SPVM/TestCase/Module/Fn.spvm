@@ -963,7 +963,7 @@ class TestCase::Module::Fn {
         my $string = "あaい";
         my $offset = -1;
         eval { Fn->get_code_point($string, \$offset); };
-        unless (Fn->contains($@, "The offset \$offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The offset \$\$offset_ref must be greater than or equal to 0")) {
           return 0;
         }
       }

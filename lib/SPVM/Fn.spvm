@@ -112,7 +112,7 @@ class Fn {
     return copy $string;
   }
   
-  native static method crand : int ($seed : int*);
+  native static method crand : int ($seed_ref : int*);
 
   precompile static method equals_string_range : int ($string1 : string, $string1_offset : int, $string2 : string, $string2_offset : int, $length : int) {
     unless ($string1) {

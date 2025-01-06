@@ -289,11 +289,11 @@ The alias for the following code using L<copy operator|SPVM::Document::Language:
 
 =head2 crand
 
-C<static method crand : int ($seed : int*);>
+C<static method crand : int ($seed_ref : int*);>
 
-Create a random number from 0 to L</"RAND_MAX"> using $seed and return it.
+Create a random number from 0 to L</"RAND_MAX"> using $$seed_ref and return it.
 
-$seed is updated.
+$$seed_ref is updated.
 
 This method is thread safe.
 
