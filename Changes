@@ -1,3 +1,7 @@
+0.990036 2024-01-07
+  [Changes]
+    * Fn#rand method throws an exception unless $max is greater than 0.
+    
 0.990035 2024-01-04
   
   [New Features]

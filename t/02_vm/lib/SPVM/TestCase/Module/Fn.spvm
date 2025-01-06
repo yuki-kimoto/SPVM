@@ -2629,6 +2629,19 @@ class TestCase::Module::Fn {
       }
     }
     
+    # Exceptions
+    {
+      {
+        my $seed = 1;
+        eval { Fn->rand(\$seed, 0); }
+        
+        unless ($@) {
+          return 0;
+        }
+        
+      }
+    }
+    
     return 1;
   }
   

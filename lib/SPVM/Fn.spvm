@@ -609,6 +609,10 @@ class Fn {
   
   static method rand : double ($seed : int*, $max : int = 1) {
     
+    unless ($max > 0) {
+      die "The max number \$max must be greater than 0.";
+    }
+    
     # 0 <= random_number < 1
     my $random_number = (double)&crand($seed) / ((double)&RAND_MAX() + 1);
     

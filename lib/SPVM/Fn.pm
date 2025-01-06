@@ -651,7 +651,7 @@ If $base number is 0, $exponant number cannnot be 0.
 
 C<static method rand : double ($seed : int*, $max : int = 1);>
 
-Gets a 64bit floating point random number that is greater than or equal to 0 and less than 1 using $seed.
+Gets a 64bit floating point random number that is greater than or equal to 0 and less than $max using $seed.
 
 If $max is specified, $max is multiplied to the return value.
 
@@ -665,6 +665,10 @@ Examples:
   my $seed = (int)Sys::Time->time;
   my $rand0 = Fn->rand(\$seed);
   my $rand1 = Fn->rand(\$seed);
+
+Exceptions:
+
+The max number \$max must be greater than 0. Otherwise an exception is thrown.
 
 =head2 repeat
 
