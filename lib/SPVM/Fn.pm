@@ -670,6 +670,10 @@ Exceptions:
 
 The max number \$max must be greater than 0. Otherwise an exception is thrown.
 
+See Also:
+
+If you want to omit $seed, you can use L<Sys#rand|SPVM::Sys/"rand"> method.
+
 =head2 repeat
 
 C<static method repeat : string ($string : string, $count : int);>
