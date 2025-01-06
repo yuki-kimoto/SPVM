@@ -12,6 +12,7 @@ struct spvm_use {
   const char* alias_name;
   const char* file;
   int8_t is_require;
+  int8_t is_version_from;
 };
 
 SPVM_USE* SPVM_USE_new(SPVM_COMPILER* compiler);
