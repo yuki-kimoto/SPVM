@@ -137,6 +137,10 @@ int32_t SPVM__Fn__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t* seed_ref = stack[0].iref;
   
+  if (!seed_ref) {
+    return env->die(env, stack, "The reference of the seed $seed_ref must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
   int32_t random_value = SPVM__Fn__static__rand_r((uint32_t *) seed_ref);
   
   stack[0].ival = random_value;
@@ -203,8 +207,12 @@ int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
     return env->die(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
+  if (!offset_ref) {
+    return env->die(env, stack, "The reference of the offset $offset_ref must be must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
   if (!(*offset_ref >= 0)) {
-    return env->die(env, stack, "The offset $offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset $$offset_ref must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* string = env->get_chars(env, stack, obj_string);

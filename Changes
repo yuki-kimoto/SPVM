@@ -1,4 +1,4 @@
-0.990036 2024-01-06
+0.990036 2024-01-07
 
   [New Features]
     * Add version_from statement.
@@ -7,6 +7,11 @@
   [Document Changes]
     * The heading "Version Statement" to "version Statement".
     * Add docs for Fn#get_version_string method.
+  [Changes]
+    * Fn#rand method throws an exception unless $max is greater than 0.
+    * Add check for the reference argument of Fn#crand.
+    * Add check for the reference argument of Fn#get_code_point.
+    
 0.990035 2024-01-04
   
   [New Features]

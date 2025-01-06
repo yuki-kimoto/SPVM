@@ -289,11 +289,11 @@ The alias for the following code using L<copy operator|SPVM::Document::Language:
 
 =head2 crand
 
-C<static method crand : int ($seed : int*);>
+C<static method crand : int ($seed_ref : int*);>
 
-Create a random number from 0 to L</"RAND_MAX"> using $seed and return it.
+Create a random number from 0 to L</"RAND_MAX"> using $$seed_ref and return it.
 
-$seed is updated.
+$$seed_ref is updated.
 
 This method is thread safe.
 
@@ -651,7 +651,7 @@ If $base number is 0, $exponant number cannnot be 0.
 
 C<static method rand : double ($seed : int*, $max : int = 1);>
 
-Gets a 64bit floating point random number that is greater than or equal to 0 and less than 1 using $seed.
+Gets a 64bit floating point random number that is greater than or equal to 0 and less than $max using $seed.
 
 If $max is specified, $max is multiplied to the return value.
 
@@ -665,6 +665,14 @@ Examples:
   my $seed = (int)Sys::Time->time;
   my $rand0 = Fn->rand(\$seed);
   my $rand1 = Fn->rand(\$seed);
+
+Exceptions:
+
+The max number \$max must be greater than 0. Otherwise an exception is thrown.
+
+See Also:
+
+If you want to omit $seed, you can use L<Sys#rand|SPVM::Sys/"rand"> method.
 
 =head2 repeat
 

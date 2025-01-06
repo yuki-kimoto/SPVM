@@ -964,7 +964,7 @@ class TestCase::Module::Fn {
         my $string = "あaい";
         my $offset = -1;
         eval { Fn->get_code_point($string, \$offset); };
-        unless (Fn->contains($@, "The offset \$offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The offset \$\$offset_ref must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -2627,6 +2627,19 @@ class TestCase::Module::Fn {
       
       unless (Array->equals_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
         return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $seed = 1;
+        eval { Fn->rand(\$seed, 0); }
+        
+        unless ($@) {
+          return 0;
+        }
+        
       }
     }
     

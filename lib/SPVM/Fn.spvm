@@ -112,7 +112,7 @@ class Fn {
     return copy $string;
   }
   
-  native static method crand : int ($seed : int*);
+  native static method crand : int ($seed_ref : int*);
 
   precompile static method equals_string_range : int ($string1 : string, $string1_offset : int, $string2 : string, $string2_offset : int, $length : int) {
     unless ($string1) {
@@ -608,6 +608,10 @@ class Fn {
   }
   
   static method rand : double ($seed : int*, $max : int = 1) {
+    
+    unless ($max > 0) {
+      die "The max number \$max must be greater than 0.";
+    }
     
     # 0 <= random_number < 1
     my $random_number = (double)&crand($seed) / ((double)&RAND_MAX() + 1);
