@@ -129,6 +129,7 @@ lib/SPVM/Builder/include/spvm_utf8.h
 lib/SPVM/Builder/include/spvm_var.h
 lib/SPVM/Builder/include/spvm_var_decl.h
 lib/SPVM/Builder/include/spvm_version.h
+lib/SPVM/Builder/include/spvm_version_from.h
 lib/SPVM/Builder/include/spvm_vm.h
 lib/SPVM/Builder/include/spvm_weaken_backref.h
 lib/SPVM/Builder/include/spvm_yacc.h
@@ -196,6 +197,7 @@ lib/SPVM/Builder/src/spvm_use.c
 lib/SPVM/Builder/src/spvm_utf8.c
 lib/SPVM/Builder/src/spvm_var.c
 lib/SPVM/Builder/src/spvm_var_decl.c
+lib/SPVM/Builder/src/spvm_version_from.c
 lib/SPVM/Builder/src/spvm_vm.c
 lib/SPVM/Builder/src/spvm_yacc.c
 lib/SPVM/Builder/src/spvm_yacc_util.c

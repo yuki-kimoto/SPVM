@@ -10,6 +10,10 @@
 struct spvm_mutex;
 typedef struct spvm_mutex SPVM_MUTEX;
 
+// spvm_version_from.h
+struct spvm_version_from;
+typedef struct spvm_version_from SPVM_VERSION_FROM;
+
 // spvm_class_file.h
 struct spvm_class_file;
 typedef struct spvm_class_file SPVM_CLASS_FILE;

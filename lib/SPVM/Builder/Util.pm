@@ -39,16 +39,16 @@ sub get_spvm_core_source_file_names {
     spvm_api_arg.c
     spvm_api_basic_type.c
     spvm_api.c
+    spvm_api_class_file.c
     spvm_api_class_var.c
     spvm_api_compiler.c
     spvm_api_field.c
+    spvm_api_internal.c
     spvm_api_method.c
     spvm_api_mutex.c
-    spvm_api_class_file.c
     spvm_api_runtime.c
     spvm_api_string_buffer.c
     spvm_api_type.c
-    spvm_api_internal.c
     spvm_array_field_access.c
     spvm_attribute.c
     spvm_basic_type.c
@@ -56,6 +56,7 @@ sub get_spvm_core_source_file_names {
     spvm_call_method.c
     spvm_case_info.c
     spvm_check.c
+    spvm_class_file.c
     spvm_class_var_access.c
     spvm_class_var.c
     spvm_compiler.c
@@ -68,7 +69,6 @@ sub get_spvm_core_source_file_names {
     spvm_list.c
     spvm_method.c
     spvm_mutex.c
-    spvm_class_file.c
     spvm_op.c
     spvm_opcode_builder.c
     spvm_opcode.c
@@ -85,6 +85,7 @@ sub get_spvm_core_source_file_names {
     spvm_utf8.c
     spvm_var.c
     spvm_var_decl.c
+    spvm_version_from.c
     spvm_vm.c
     spvm_yacc.c
     spvm_yacc_util.c
