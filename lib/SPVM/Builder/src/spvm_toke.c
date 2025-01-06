@@ -2487,6 +2487,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_VERSION_FROM);
                   keyword_token = VERSION_FROM;
                 }
+                else if (strcmp(symbol_name, "version_from_v2") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_VERSION_FROM_V2);
+                  keyword_token = VERSION_FROM_V2;
+                }
                 else if (strcmp(symbol_name, "void") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_VOID);
                   keyword_token = VOID;

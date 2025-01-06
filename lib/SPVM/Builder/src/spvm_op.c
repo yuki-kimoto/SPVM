@@ -39,7 +39,7 @@
 #include "spvm_interface.h"
 #include "spvm_string.h"
 #include "spvm_dumper.h"
-
+#include "spvm_version_from.h"
 
 
 
@@ -110,6 +110,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "END_OF_FILE",
     "VERSION_DECL",
     "VERSION_FROM",
+    "VERSION_FROM_V2",
     "IF",
     "UNLESS",
     "ELSIF",
@@ -1070,6 +1071,22 @@ SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version
 SPVM_OP* SPVM_OP_build_version_from(SPVM_COMPILER* compiler, SPVM_OP* op_version_from, SPVM_OP* op_version_from_string) {
   
   SPVM_OP_insert_child(compiler, op_version_from, op_version_from->last, op_version_from_string);
+  
+  return op_version_from;
+}
+
+SPVM_OP* SPVM_OP_build_version_from_v2(SPVM_COMPILER* compiler, SPVM_OP* op_version_from, SPVM_OP* op_type) {
+  
+  SPVM_VERSION_FROM* version_from = SPVM_VERSION_FROM_new(compiler);
+  op_version_from->uv.version_from = version_from;
+  version_from->op_version_from = op_version_from;
+  version_from->basic_type_name = op_type->uv.type->unresolved_basic_type_name;
+  
+  // add use stack
+  SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, op_version_from->file, op_version_from->line);
+  SPVM_OP* op_name_alias = NULL;
+  int32_t is_require = 0;
+  SPVM_OP_build_use(compiler, op_use, op_type, op_name_alias, is_require);
   
   return op_version_from;
 }

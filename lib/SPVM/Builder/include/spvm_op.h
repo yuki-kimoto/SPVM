@@ -110,6 +110,7 @@ enum {
   SPVM_OP_C_ID_END_OF_FILE,
   SPVM_OP_C_ID_VERSION_DECL,
   SPVM_OP_C_ID_VERSION_FROM,
+  SPVM_OP_C_ID_VERSION_FROM_V2,
   SPVM_OP_C_ID_IF,
   SPVM_OP_C_ID_UNLESS,
   SPVM_OP_C_ID_ELSIF,
@@ -315,6 +316,7 @@ struct spvm_op {
     SPVM_METHOD* method;
     SPVM_SWITCH_INFO* switch_info;
     SPVM_CASE_INFO* case_info;
+    SPVM_VERSION_FROM* version_from;
   } uv;
   int32_t id;
   int32_t original_id;
@@ -392,6 +394,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version, SPVM_OP* op_version_string);
 
 SPVM_OP* SPVM_OP_build_version_from(SPVM_COMPILER* compiler, SPVM_OP* op_version_from, SPVM_OP* op_version_from_string);
+
+SPVM_OP* SPVM_OP_build_version_from_v2(SPVM_COMPILER* compiler, SPVM_OP* op_version_from, SPVM_OP* op_type);
 
 SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_methodname, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_attributes, SPVM_OP* op_block);
 
