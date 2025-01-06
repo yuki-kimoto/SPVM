@@ -502,6 +502,10 @@ use Test::More;
     compile_not_ok($source, qr/The type of the operand of version_from statement must be string type./);
   }
   
+  {
+    my $source = 'class MyClass { version_from "Foo"; version_from "Bar";}';
+    compile_not_ok($source, qr|version_from has already been declared.|);
+  }
 }
 
 # Extra

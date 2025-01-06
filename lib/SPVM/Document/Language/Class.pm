@@ -254,6 +254,35 @@ Examples:
   # "10.001003"
   10.001003
 
+=head2 version_from Statement
+
+The C<version_from> statement allows you to make the version of this class dependent on another class.
+
+  version_from VERSION_FROM_STRING;
+
+I<VERSION_FROM_STRING> is a class name or C<"spvm">. C<"spvm"> means the version of this class depends on the version of SPVM language.
+
+The type of I<VERSION_FROM_STRING> is string type.
+
+Compilation Errors:
+
+If version_from has already been declared, a compilation error occurs.
+
+The type of the operand of version_from statement must be string type. Otherwise a compilation error occurs.
+
+The string length of the operand of version_from statement must be greter than 0. Otherwise a compilation error occurs.
+
+Examples:
+  
+  # This means the version of MyClass::Foo class depends on the version of MyClass class.
+  class MyClass::Foo {
+    version_from "MyClass";
+  }
+  
+  class MyClass {
+    version "1.001";
+  }
+
 =head2 use Statement
 
 The C<use> statemenet loads a class.
