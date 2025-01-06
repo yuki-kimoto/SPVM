@@ -2529,6 +2529,15 @@ Dumps the internal information of the object I<object>, creates a new string fro
 
 The dumped internal information looks like the following one.
 
+  [Object Intenal:0x55dd87806090]
+  pointer:(nil)
+  weaken_backrefs_length:0
+  ref_count:1
+  basic_type_name:Point
+  type_dimension:0
+  flag:
+  length:2
+
 If I<object> is NULL, returns a string C<"undef">.
 
 =head2 get_seed
