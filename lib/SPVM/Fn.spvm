@@ -1781,4 +1781,6 @@ class Fn {
   
   native static method seed_initialized : int ();
   
+  native static method get_version_from_string : string ($basic_type_name : string);
+  
 }

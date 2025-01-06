@@ -580,7 +580,7 @@ The same as L</"get_code_point">, but the offset is not updated.
 
 C<static method memcpy : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);>
 
-Copies the range of $source to the the range of $dest.
+Copies the range of $source to the range of $dest.
 
 The range of $dest is from $offset to the position proceeded by $length of the destination.
 
@@ -1098,13 +1098,7 @@ Converts the address of $object to a value of int type, and returns it.
 
 C<static method get_spvm_version_string : string ();>
 
-Returns the the L<version string|SPVM::Document::Language::Class/"Version String"> of the SPVM language.
-
-=head2 get_spvm_version_string
-
-C<static method get_spvm_version_string : string ();>
-
-Returns the the L<version string|SPVM::Document::Language::Class/"Version String"> of the SPVM language.
+Returns the L<version string|SPVM::Document::Language::Class/"Version String"> of the SPVM language.
 
 =head2 get_spvm_version_number
 
@@ -1112,11 +1106,17 @@ C<static method get_spvm_version_number : double ();>
 
 Returns the L<version number|SPVM::Document::Language::Class/"Version Number"> of the SPVM language.
 
+=head2 get_version_string
+
+C<static method get_version_string : string ($basic_type_name : string);>
+
+Returns the L<version string|SPVM::Document::Language::Class/"Version String"> of the class $basic_type_name.
+
 =head2 get_version_number
 
 C<static method get_version_number : double ($basic_type_name : string);>
 
-Returns the L<version number|SPVM::Document::Language::Class/"Version Number"> of a class.
+Returns the L<version number|SPVM::Document::Language::Class/"Version Number"> of the class $basic_type_name.
 
 Exceptions:
 
@@ -1702,6 +1702,12 @@ Calls L<get_seed|SPVM::Document::NativeAPI/"set_seed"> native API given $seed.
 C<static method seed_initialized : int ();>
 
 Calls L<seed_initialized|SPVM::Document::NativeAPI/"seed_initialized"> native API, and retunrs its return value.
+
+=head2 get_version_from_string
+
+C<static method get_version_from_string : string ($basic_type_name : string);>
+
+Returns the string specified by L<version_from Statement|SPVM::Document::Language::Class/"version_from Statement"> of the class $basic_type_name. If it is not specified, returns undef.
 
 =head1 See Also
 
