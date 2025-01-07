@@ -8,27 +8,14 @@ use SPVM::Builder::Deps;
 use SPVM::Builder::Util;
 use FindBin;
 
-my @argv;
-
 SPVM::Builder::Util::getopt
   # spvmcc and spvm shared
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
   'I|include-dir=s' => \my @include_dirs,
-  'B|build-dir=s'   => \my $build_dir,
   
   # spvmcc only
   'o|output=s'        => \my $output_file,
-  'q|quiet'   => \my $quiet,
-  'f|force' => \my $force,
-  'no-config' => \my $allow_no_config_file,
-  'm|mode=s' => \my $mode,
-  'optimize=s' => \my $optimize,
-  'config-argv=s' => \@argv,
-  'config-argv-option=s' => sub {
-    my ($opt_name, $opt_value) = @_;
-    push @argv, SPVM::Builder::Deps->parse_config_argv_option($opt_value);
-  },
   'resource-info' => \my $show_resource_info,
   'dependency' => \my $show_dependency,
   'dependency-cpan' => \my $show_dependency_cpan,
@@ -92,33 +79,6 @@ elsif ($show_dependency_cpan) {
   exit 0;
 }
 
-
-unless (defined $script_name) {
-  warn "<script_name> is required.\n\n";
-  warn SPVM::Builder::Util::extract_usage;
-  exit 255;
-}
-
-unless (defined $output_file) {
-  warn "-o, --output option is required.\n\n";
-  warn SPVM::Builder::Util::extract_usage;
-  exit 255;
-}
-
-my $build_exe = SPVM::Builder::Deps->new(
-  script_name => $script_name,
-  build_dir => $build_dir,
-  output_file => $output_file,
-  quiet => $quiet,
-  force => $force,
-  allow_no_config_file => $allow_no_config_file,
-  mode => $mode,
-  optimize => $optimize,
-  argv => \@argv,
-);
-
-$build_exe->build_exe_file;
-
 =encoding utf8
 
 =head1 Name
@@ -140,16 +100,9 @@ The spvmcc command generates an executable file from SPVM classes.
   options:
     -h, --help                      Shows this message
     -v, --version                   Shows the version
-    -o, --output <file>             The output file name
     -I, --include-dir <directory>   Adds a include directory
     -B, --build-dir <directory>     Build diretory
-    -q, --quiet                     Stops the output of messages
-    -f, --force                     Forces the compile and link
     --no-config                     No configration file is ok
-    -m, --mode <mode>               Config mode
-    --config-argv <arg>             A config argument
-    --config-argv-option <arg pair> Key-value config arguments such as KEY=VALUE
-    --optimize <level>              Optimization level such as O3, "-O0 -g"
     --resource-info                 Show config files of dependent resources
     --dependency                    Show dependent classes and their versions
     --dependency-cpan               Show dependent cpan modules and their versions
@@ -191,8 +144,6 @@ C<myapp.config>:
 =head2 Caching System
 
 Compiled object files and an executable file are not rebuilt unless they need to be rebuilt.
-
-L</"--force"> option forces the rebuild.
 
 =head2 Resources
 
@@ -252,117 +203,9 @@ In this case, class search directories becomes the following.
 
 Same as L</"--include-dir">.
 
-=head2 --build-dir
-
-  --build-dir <directory>
-
-Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable to C<E<lt>directoryE<gt>>.
-
-=head2 -B
-
-  -B <directory>
-
-Same as L</"--build-dir">.
-
-=head2 --output
-
-  --output <file>
-
-Specifies the output file path C<E<lt>fileE<gt>>. This output file is an executable file.
-
-=head2 -o
-
-  -o <file>
-
-Same as L</"--output">.
-
-=head2 --quiet
-
-  --quiet
-
-Suppresses messages from the C<spvmcc> command.
-
-=head2 -q
-
-  -q
-
-Same as L</"--quiet">.
-
-=head2 --force
-
-  --force
-
-Forces the rebuild of object files and an executable file.
-
-=head2 -f
-
-  -f
-
-Same as L</"--force">.
-
 =head2 --no-config
 
 If this option is specified and a config file does not exist, the C<spvmcc> command runs without finising the program.
-
-=head2 --mode
-
-  --mode <mode>
-
-Specifies the config mode C<E<lt>modeE<gt>>.
-
-See L<Config Mode|SPVM::Builder::Config/"Config Mode"> about config modes.
-
-=head2 -m
-
-  -m <mode>
-
-Same as L</"--mode">.
-
-=head2 --config-argv
-
-  --config-argv <arg>
-
-Specifies a config argument C<E<lt>argE<gt>>.
-
-This option can be specified multiple times.
-
-See L<Config Arguments|SPVM::Builder::Config/"Config Arguments"> about config arguments.
-
-Examples:
-
-  --config-argv FOO
-
-=head2 --config-argv-option
-
-  --config-argv-option <arg pair>
-
-Specifies two config arguments C<E<lt>arg pairE<gt>> as the format C<KEY=VALUE>.
-
-This is expaned to the following options.
-
-  --config-argv KEY --config-argv VALUE
-
-If only I<KEY> exists or I<VALUE> dose not exist, I<VALUE> is set to an empty string C<"">.
-
-This option can be specified multiple times.
-
-See L<Config Arguments|SPVM::Builder::Config/"Config Arguments"> about config arguments.
-
-Examples:
-
-  --config-argv-option FOO=1
-
-=head2 --optimize
-
-  --optimize <level>
-
-Sepcifies optimization level C<E<lt>levelE<gt>>.
-
-This affects all source files that are compiled.
-
-Examples:
-
-  --optimize "-O0 -g"
 
 =head2 --resource-info
 

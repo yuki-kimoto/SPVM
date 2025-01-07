@@ -39,7 +39,7 @@ my $dev_null = File::Spec->devnull;
 {
   # --resource-info
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -B $build_dir -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --resource-info t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --resource-info t/04_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     like($output, qr|\Q[TestCase::NativeAPI2]|);
     like($output, qr|TestCase::Resource::Mylib1|);
@@ -51,7 +51,7 @@ my $dev_null = File::Spec->devnull;
 {
   # --dependency
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -B $build_dir -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --dependency t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --dependency t/04_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^SPVM [\.\d]+$|m);
@@ -67,7 +67,7 @@ my $dev_null = File::Spec->devnull;
 {
   # --dependency-cpan
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -B $build_dir -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --dependency-cpan t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --dependency-cpan t/04_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^SPVM [\.\d]+$|m);
