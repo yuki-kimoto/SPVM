@@ -11,7 +11,8 @@
     * Fn#rand method throws an exception unless $max is greater than 0.
     * Add check for the reference argument of Fn#crand.
     * Add check for the reference argument of Fn#get_code_point.
-    
+  [Bug Fix]
+    * Fix a bug that SPVM_NATIVE_VERSION_STRING is not used as an operator.
 0.990035 2024-01-04
   
   [New Features]
