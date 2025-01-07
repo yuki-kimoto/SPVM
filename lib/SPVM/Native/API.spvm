@@ -2,6 +2,8 @@
 # MIT License
 
 class Native::API : pointer {
+  version_from SPVM;
+
   
   use Native::Env;
   use Native::Stack;

@@ -2,6 +2,8 @@
 # MIT License
 
 class Hash {
+  version_from SPVM;
+
   use Hash::Entry;
   use Fn;
   use Array;

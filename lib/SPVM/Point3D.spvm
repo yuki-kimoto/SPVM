@@ -2,6 +2,8 @@
 # MIT License
 
 class Point3D extends Point {
+  version_from SPVM;
+
   
   # Fields
   has z : ro int;

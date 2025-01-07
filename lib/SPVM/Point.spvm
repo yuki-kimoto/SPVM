@@ -2,6 +2,8 @@
 # MIT License
 
 class Point {
+  version_from SPVM;
+
   # Interfaces
   interface Stringable;
   interface Cloneable;

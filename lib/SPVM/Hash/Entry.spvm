@@ -2,6 +2,8 @@
 # MIT License
 
 class Hash::Entry {
+  version_from SPVM;
+
   allow Hash;
 
   has key : string;

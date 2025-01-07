@@ -2,6 +2,8 @@
 # MIT License
 
 class Native::BasicType : pointer {
+  version_from SPVM;
+
   allow Native::ClassVar;
   allow Native::Field;
   allow Native::Method;

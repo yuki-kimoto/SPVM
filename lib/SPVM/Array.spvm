@@ -2,6 +2,8 @@
 # MIT License
 
 class Array {
+  version_from SPVM;
+
   use Stringer;
   use Cloner;
   use EqualityChecker;

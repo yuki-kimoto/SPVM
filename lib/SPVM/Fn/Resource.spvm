@@ -2,5 +2,7 @@
 # MIT License
 
 class Fn::Resource {
+  version_from SPVM;
+
   
 }

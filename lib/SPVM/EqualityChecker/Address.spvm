@@ -2,6 +2,8 @@
 # MIT License
 
 class EqualityChecker::Address {
+  version_from SPVM;
+
   static method new : EqualityChecker::Address () {
     return new EqualityChecker::Address;
   }

@@ -2,5 +2,7 @@
 # MIT License
 
 class Stringer : interface_t {
+  version_from SPVM;
+
   required method : string ($object : object);
 }

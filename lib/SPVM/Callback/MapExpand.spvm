@@ -2,5 +2,7 @@
 # MIT License
 
 class Callback::MapExpand : interface_t {
+  version_from SPVM;
+
   required method : object[] ($element : object);
 }

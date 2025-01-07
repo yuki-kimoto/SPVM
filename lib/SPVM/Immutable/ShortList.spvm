@@ -2,6 +2,8 @@
 # MIT License
 
 class Immutable::ShortList {
+  version_from SPVM;
+
   use Fn;
   use Array;
   

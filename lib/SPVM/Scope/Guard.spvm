@@ -2,6 +2,8 @@
 # MIT License
 
 class Scope::Guard {
+  version_from SPVM;
+
   
   use Callback;
   

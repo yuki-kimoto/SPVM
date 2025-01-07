@@ -2,5 +2,7 @@
 # MIT License
 
 class Comparator::Double : interface_t {
+  version_from SPVM;
+
   required method : int ($a : double, $b : double);
 }

@@ -2,6 +2,8 @@
 # MIT License
 
 class Comparable : interface_t {
+  version_from SPVM;
+
   
   # Interface Methods
   required method cmp : int ($a : object, $b : object);

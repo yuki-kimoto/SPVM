@@ -2,6 +2,8 @@
 # MIT License
 
 class Sync::Mutex {
+  version_from SPVM;
+
   
   # Class Methods
   native static method new : Sync::Mutex ();

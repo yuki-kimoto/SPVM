@@ -2,6 +2,8 @@
 # MIT License
 
 class List {
+  version_from SPVM;
+
   use Fn;
   use Array;
   

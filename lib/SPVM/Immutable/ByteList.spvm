@@ -2,6 +2,8 @@
 # MIT License
 
 class Immutable::ByteList {
+  version_from SPVM;
+
   use Fn;
   use Array;
   

@@ -2,6 +2,8 @@
 # MIT License
 
 class Sort {
+  version_from SPVM;
+
   use Comparator::Int;
   use Comparator::Long;
   use Comparator::Float;

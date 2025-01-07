@@ -5,6 +5,7 @@
     * Add get_basic_type_name_in_version_from native API.
     * Add Fn#get_basic_type_name_in_version_from method.
     * Add SPVM class.
+    * Add version_from SPVM to all classes.
   [Document Changes]
     * The heading "Version Statement" to "version Statement".
     * Add docs for Fn#get_version_string method.

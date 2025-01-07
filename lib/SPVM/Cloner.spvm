@@ -2,6 +2,8 @@
 # MIT License
 
 class Cloner : interface_t {
+  version_from SPVM;
+
   
   use Cloneable;
   

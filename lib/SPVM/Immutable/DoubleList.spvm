@@ -2,6 +2,8 @@
 # MIT License
 
 class Immutable::DoubleList {
+  version_from SPVM;
+
   use Fn;
   use Array;
   

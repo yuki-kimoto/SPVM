@@ -2,6 +2,8 @@
 # MIT License
 
 class Native::Constant {
+  version_from SPVM;
+
   
   # Enumerations
   enum {

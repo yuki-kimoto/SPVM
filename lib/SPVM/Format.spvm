@@ -2,6 +2,8 @@
 # MIT License
 
 class Format {
+  version_from SPVM;
+
   use StringBuffer;
   use Fn;
   
