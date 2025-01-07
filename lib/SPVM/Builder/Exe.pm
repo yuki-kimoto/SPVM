@@ -1148,7 +1148,14 @@ sub dump_dependency_cpan {
     
     my $version_string = $basic_type->get_version_string;
     
-    my $dependency_info = "SPVM::$class_name";
+    my $dependency_info;
+    
+    if ($class_name eq "SPVM") {
+      $dependency_info = "SPVM";
+    }
+    else {
+      $dependency_info = "SPVM::$class_name";
+    }
     
     if (length $version_string) {
       $dependency_info .= " $version_string";
