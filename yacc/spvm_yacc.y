@@ -33,7 +33,7 @@
 %type <opval> field_name method_name class_name
 %type <opval> type qualified_type basic_type array_type opt_basic_type
 %type <opval> array_type_with_length ref_type return_type type_comment opt_type_comment union_type
-%type <opval> opt_classes classes class class_block opt_extends version_decl version_from version_from_v2
+%type <opval> opt_classes classes class class_block opt_extends version_decl version_from_v2
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
 %type <opval> method anon_method opt_args args arg use require class_alias our has anon_method_fields anon_method_field interface allow
@@ -327,7 +327,6 @@ definitions
 
 definition
   : version_decl
-  | version_from
   | version_from_v2
   | use
   | class_alias
@@ -349,12 +348,6 @@ version_decl
   : VERSION_DECL CONSTANT ';'
     {
       $$ = SPVM_OP_build_version_decl(compiler, $1, $2);
-    }
-
-version_from
-  : VERSION_FROM CONSTANT ';'
-    {
-      $$ = SPVM_OP_build_version_from(compiler, $1, $2);
     }
 
 version_from_v2

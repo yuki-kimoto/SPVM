@@ -1711,12 +1711,6 @@ C<static method seed_initialized : int ();>
 
 Calls L<seed_initialized|SPVM::Document::NativeAPI/"seed_initialized"> native API, and retunrs its return value.
 
-=head2 get_version_from_string
-
-C<static method get_version_from_string : string ($basic_type_name : string);>
-
-Returns the string specified by L<version_from Statement|SPVM::Document::Language::Class/"version_from Statement"> of the class $basic_type_name. If it is not specified, returns undef.
-
 =head2 get_version_from_basic_type_name
 
 C<static method get_version_from_basic_type_name : basic_type_name ($basic_type_name : basic_type_name);>

@@ -250,7 +250,6 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->pointer_to_string);
     ok(SPVM::TestCase::Module::Fn->dump_object_internal);
     ok(SPVM::TestCase::Module::Fn->get_seed);
-    ok(SPVM::TestCase::Module::Fn->get_version_from_string);
     ok(SPVM::TestCase::Module::Fn->get_version_from_basic_type_name);
   }
   

@@ -475,39 +475,6 @@ use Test::More;
   }
 }
 
-# version_from statement
-{
-  {
-    my $source = 'class MyClass { version_from "spvm"; }';
-    compile_ok($source);
-  }
-  
-  {
-    my $source = 'class MyClass { version_from "Foo"; }';
-    compile_ok($source);
-  }
-  
-  {
-    my $source = 'class MyClass { version_from "Foo::Bar"; }';
-    compile_ok($source);
-  }
-  
-  {
-    my $source = 'class MyClass { version_from ""; }';
-    compile_not_ok($source, qr/The string length of the operand of version_from statement must be greter than 0./);
-  }
-  
-  {
-    my $source = 'class MyClass { version_from 1; }';
-    compile_not_ok($source, qr/The type of the operand of version_from statement must be string type./);
-  }
-  
-  {
-    my $source = 'class MyClass { version_from "Foo"; version_from "Bar";}';
-    compile_not_ok($source, qr|version_from has already been declared.|);
-  }
-}
-
 # version_from_v2 statement
 {
   {

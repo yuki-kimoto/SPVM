@@ -1,7 +1,5 @@
 class TestCase::Examples {
   
-  version_from "TestCase";
-  
   version_from_v2 TestCase;
   
   use TestCase::OnlyField;

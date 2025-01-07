@@ -948,11 +948,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       runtime_basic_type->version_string = runtime_basic_type->constant_strings[basic_type_version_string->index].value;
     }
     
-    if (basic_type->version_from_string) {
-      SPVM_STRING* basic_type_version_from_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->version_from_string, strlen(basic_type->version_from_string));
-      runtime_basic_type->version_from_string = runtime_basic_type->constant_strings[basic_type_version_from_string->index].value;
-    }
-    
     if (basic_type->version_from_basic_type_name) {
       SPVM_BASIC_TYPE* version_from_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->version_from_basic_type_name, strlen(basic_type->version_from_basic_type_name));
       runtime_basic_type->version_from_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, version_from_basic_type->id);

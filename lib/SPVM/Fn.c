@@ -1074,33 +1074,6 @@ int32_t SPVM__Fn__seed_initialized(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Fn__get_version_from_string(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  void* obj_basic_type_name = stack[0].oval;
-  
-  if (!obj_basic_type_name) {
-    return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
-  }
-  
-  const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
-  
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
-  if (!basic_type) {
-    return env->die(env, stack, "The class specified by the basic type name $basic_type_name must be loaded.", __func__, FILE_NAME, __LINE__);
-  }
-  
-  const char* version_from_string = env->get_version_from_string(env, stack, basic_type);
-  
-  void* obj_version_from_string = NULL;
-  if (version_from_string) {
-    obj_version_from_string = env->new_string(env, stack, version_from_string, strlen(version_from_string));
-  }
-  
-  stack[0].oval = obj_version_from_string;
-  
-  return 0;
-}
-
 int32_t SPVM__Fn__get_version_from_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_basic_type_name = stack[0].oval;
