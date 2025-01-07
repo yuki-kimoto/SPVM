@@ -245,7 +245,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->get_seed != &env_array[225]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_seed != &env_array[226]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->seed_initialized != &env_array[227]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_version_from_basic_type_name != &env_array[228]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_basic_type_name_in_version_from != &env_array[228]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

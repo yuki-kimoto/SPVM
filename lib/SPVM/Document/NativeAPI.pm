@@ -2560,9 +2560,9 @@ C<int32_t (*seed_initialized)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Returns the value of C<seed_initialized> stack variable on the runtime stack I<stack>.
 
-=head2 get_version_from_basic_type_name
+=head2 get_basic_type_name_in_version_from
 
-C<const char* (*get_version_from_basic_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);>
+C<const char* (*get_basic_type_name_in_version_from)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);>
 
 Returns the basic type name specified by C<version_from> statement. If it is not specified, returns NULL.
 
@@ -2798,7 +2798,7 @@ Native APIs have its IDs.
   225 get_seed
   226 set_seed
   227 seed_initialized
-  228 get_version_from_basic_type_name
+  228 get_basic_type_name_in_version_from
 
 =head1 Constant Values
 

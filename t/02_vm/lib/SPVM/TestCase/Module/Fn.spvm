@@ -8200,10 +8200,10 @@ class TestCase::Module::Fn {
     return 1;
   }
   
-  static method get_version_from_basic_type_name : int () {
+  static method get_basic_type_name_in_version_from : int () {
     
     {
-      my $version_from_basic_type_name = Fn->get_version_from_basic_type_name("TestCase::Examples");
+      my $version_from_basic_type_name = Fn->get_basic_type_name_in_version_from("TestCase::Examples");
       
       unless ($version_from_basic_type_name eq "TestCase") {
         return 0;
@@ -8211,7 +8211,7 @@ class TestCase::Module::Fn {
     }
     
     {
-      my $version_from_basic_type_name = Fn->get_version_from_basic_type_name("TestCase::Empty");
+      my $version_from_basic_type_name = Fn->get_basic_type_name_in_version_from("TestCase::Empty");
       if ($version_from_basic_type_name) {
         return 0;
       }
@@ -8220,13 +8220,13 @@ class TestCase::Module::Fn {
     # Exceptions
     {
       {
-        eval { Fn->get_version_from_basic_type_name(undef); };
+        eval { Fn->get_basic_type_name_in_version_from(undef); };
         unless (Fn->contains($@, "The basic type name \$basic_type_name must be defined")) {
           return 0;
         }
       }
       {
-        eval { Fn->get_version_from_basic_type_name("NotFoundClass"); };
+        eval { Fn->get_basic_type_name_in_version_from("NotFoundClass"); };
         unless (Fn->contains($@, "The class specified by the basic type name \$basic_type_name must be loaded")) {
           return 0;
         }
