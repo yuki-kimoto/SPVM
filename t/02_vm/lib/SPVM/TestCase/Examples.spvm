@@ -2,6 +2,8 @@ class TestCase::Examples {
   
   version_from "TestCase";
   
+  version_from_v2 "TestCase";
+  
   use TestCase::OnlyField;
   
   static method new_only_field_object : TestCase::OnlyField () {
