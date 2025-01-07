@@ -109,7 +109,6 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "CLASS_BLOCK",
     "END_OF_FILE",
     "VERSION_DECL",
-    "VERSION_FROM",
     "VERSION_FROM_V2",
     "IF",
     "UNLESS",
