@@ -9,12 +9,12 @@ use SPVM::Builder::Util;
 use FindBin;
 
 SPVM::Builder::Util::getopt
-  # spvmcc and spvm shared
+  # spvmdeps and spvm shared
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
   'I|include-dir=s' => \my @include_dirs,
   
-  # spvmcc only
+  # spvmdeps only
   'o|output=s'        => \my $output_file,
   'resource-info' => \my $show_resource_info,
   'dependency' => \my $show_dependency,
@@ -26,7 +26,7 @@ if ($help) {
   exit 0;
 }
 elsif ($show_version) {
-  my $version_string = "spvmcc v$SPVM::VERSION";
+  my $version_string = "spvmdeps v$SPVM::VERSION";
   print "$version_string\n";
   exit 0;
 }
@@ -48,7 +48,7 @@ unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_b
 if ($show_resource_info) {
   
   unless (defined $script_name) {
-    die "[spvmcc command]--resource-info option needs <script_name>."
+    die "[spvmdeps command]--resource-info option needs <script_name>."
   }
   
   my $resource_info = SPVM::Builder::Deps->dump_resource_info($script_name);
@@ -59,7 +59,7 @@ if ($show_resource_info) {
 elsif ($show_dependency) {
   
   unless (defined $script_name) {
-    die "[spvmcc command]--dependency option needs <script_name>."
+    die "[spvmdeps command]--dependency option needs <script_name>."
   }
   
   my $dependency = SPVM::Builder::Deps->dump_dependency($script_name);
@@ -70,7 +70,7 @@ elsif ($show_dependency) {
 elsif ($show_dependency_cpan) {
   
   unless (defined $script_name) {
-    die "[spvmcc command]--dependency option needs <script_name>."
+    die "[spvmdeps command]--dependency option needs <script_name>."
   }
   
   my $dependency_cpan = SPVM::Builder::Deps->dump_dependency_cpan($script_name);
@@ -83,35 +83,33 @@ elsif ($show_dependency_cpan) {
 
 =head1 Name
 
-spvmcc - Generating Excutable File
+spvmdeps - Generating Excutable File
 
 =head1 Description
 
-The spvmcc command generates an executable file from SPVM classes.
+The spvmdeps command generates an executable file from SPVM classes.
 
 =head1 Usage
 
-  usage: spvmcc [<options>] <script_name>
+  usage: spvmdeps [<options>] <script_name>
     
-    spvmcc -o myapp myapp.spvm
+    spvmdeps -o myapp myapp.spvm
     
-    spvmcc -I lib/SPVM -o myapp myapp.spvm
+    spvmdeps -I lib/SPVM -o myapp myapp.spvm
   
   options:
     -h, --help                      Shows this message
     -v, --version                   Shows the version
     -I, --include-dir <directory>   Adds a include directory
-    -B, --build-dir <directory>     Build diretory
-    --no-config                     No configration file is ok
     --resource-info                 Show config files of dependent resources
     --dependency                    Show dependent classes and their versions
     --dependency-cpan               Show dependent cpan modules and their versions
 
 =head1 Details
 
-  spvmcc [<options>] <script_name>
+  spvmdeps [<options>] <script_name>
 
-The C<spvmcc> command generates an executable file from SPVM classes.
+The C<spvmdeps> command generates an executable file from SPVM classes.
 
 C<E<lt>optionsE<gt>> are L<options|/"Options">.
 
@@ -128,8 +126,6 @@ See L<Class Search Directories|SPVM::Document::Language::Class/"Class Search Dir
 See L<SPVM::Document::EnvironmentVariables> about available environment variables.
 
 =head2 Config File for Executable File
-
-A config file that corresponding to the script name must exist for an executable file except for the case that L<"--no-config"> is specified.
 
 The config for an executable file is a L<SPVM::Builder::Config::Exe> object.
 
@@ -165,7 +161,7 @@ L<How to dump resource information|https://github.com/yuki-kimoto/SPVM/wiki/Conf
 
 =head2 --help
 
-Outputs how to use the C<spvmcc> command to standard output.
+Outputs how to use the C<spvmdeps> command to standard output.
 
 =head2 -h
 
@@ -175,7 +171,7 @@ Same as L</"--help">.
 
 =head2 --version
 
-Outputs the version of the C<spvmcc> command to standard output. This version is the same as the version of L<SPVM>.
+Outputs the version of the C<spvmdeps> command to standard output. This version is the same as the version of L<SPVM>.
 
 =head2 -v
 
@@ -202,10 +198,6 @@ In this case, class search directories becomes the following.
   -I <directory>
 
 Same as L</"--include-dir">.
-
-=head2 --no-config
-
-If this option is specified and a config file does not exist, the C<spvmcc> command runs without finising the program.
 
 =head2 --resource-info
 
