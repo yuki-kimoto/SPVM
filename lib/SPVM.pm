@@ -238,9 +238,9 @@ L<All SPVM Documents|SPVM::Document>
 
 =item * L<Builder Utility APIs|SPVM::Builder::Util::API>
 
-=item * L<Config Information|SPVM::Builder::Config::Info>
-
 =item * L<Config Builder|SPVM::Builder::ConfigBuilder>
+
+=item * L<SPVM Script Information|SPVM::Builder::ProgramInfo>
 
 =back
 

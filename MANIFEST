@@ -61,7 +61,6 @@ lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/CompileInfo.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
-lib/SPVM/Builder/Config/Info.pm
 lib/SPVM/Builder/ConfigBuilder.pm
 lib/SPVM/Builder/Deps.pm
 lib/SPVM/Builder/Exe.pm
@@ -146,6 +145,7 @@ lib/SPVM/Builder/Native/Runtime.pm
 lib/SPVM/Builder/Native/Stack.pm
 lib/SPVM/Builder/ObjectFileInfo.pm
 lib/SPVM/Builder/Resource.pm
+lib/SPVM/Builder/ScriptInfo.pm
 lib/SPVM/Builder/src/spvm_allocator.c
 lib/SPVM/Builder/src/spvm_allow.c
 lib/SPVM/Builder/src/spvm_api.c
@@ -469,13 +469,13 @@ solo/script/myapp.spvm
 SPVM.xs
 t/00_builder/CC.t
 t/00_builder/Config-Exe.t
-t/00_builder/Config-Info.t
 t/00_builder/Config.t
 t/00_builder/ConfigBuilder.t
 t/00_builder/lib/SPVM/MyClass/ConfigBuilder.pm
 t/00_builder/LinkInfo.t
 t/00_builder/makefile.t
 t/00_builder/ObjectFileInfo.t
+t/00_builder/ScriptInfo.t
 t/00_builder/Util.t
 t/01_syntax/check.t
 t/01_syntax/dist.pl

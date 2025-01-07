@@ -1,3 +1,8 @@
+0.990037 2024-01-08
+  
+  [Incompatible Changes]
+    * Rename SPVM::Builder::Config::Info to SPVM::Builder::ScriptInfo.
+  
 0.990036 2024-01-07
 
   [New Features]

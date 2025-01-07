@@ -15,7 +15,7 @@ use SPVM::Builder::Native::Compiler;
 use SPVM::Builder::Native::Runtime;
 use SPVM::Builder::Native::BasicType;
 use SPVM::Builder::Native::ClassFile;
-use SPVM::Builder::Config::Info;
+use SPVM::Builder::ScriptInfo;
 
 # Fields
 sub builder {
@@ -1073,7 +1073,7 @@ sub get_user_defined_basic_type_names {
 sub dump_resource_info {
   my ($class, $script_name) = @_;
   
-  my $info = SPVM::Builder::Config::Info->new(script_name => $script_name);
+  my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
   my $class_names = [grep { $info->is_resource_loader($_) } @{$info->get_class_names}];
   
@@ -1103,7 +1103,7 @@ EOS
 sub dump_dependency {
   my ($class, $script_name) = @_;
   
-  my $info = SPVM::Builder::Config::Info->new(script_name => $script_name);
+  my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
   my $runtime = $info->runtime;
   
@@ -1134,7 +1134,7 @@ sub dump_dependency {
 sub dump_dependency_cpan {
   my ($class, $script_name) = @_;
   
-  my $info = SPVM::Builder::Config::Info->new(script_name => $script_name);
+  my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
   my $runtime = $info->runtime;
   

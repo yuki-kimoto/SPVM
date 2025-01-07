@@ -1,4 +1,4 @@
-package SPVM::Builder::Config::Info;
+package SPVM::Builder::ScriptInfo;
 
 use strict;
 use warnings;
@@ -228,23 +228,23 @@ sub get_config {
 
 =head1 Name
 
-SPVM::Builder::Config::Info - Config Information
+SPVM::Builder::ScriptInfo - Script Information
 
 =head1 Description
 
-The SPVM::Builder::Config::Info class has methods to manipulate config information.
+The SPVM::Builder::ScriptInfo class has methods to manipulate SPVM script information.
 
 =head1 Usage
 
-  my $config_info = SPVM::Builder::Config::Info->new(class_name => "Foo");
+  my $config_info = SPVM::Builder::ScriptInfo->new(class_name => "Foo");
 
 =head1 Class Methods
 
 =head2 new
 
-  my $config_info = SPVM::Builder::Config::Info->new(%options);
+  my $config_info = SPVM::Builder::ScriptInfo->new(%options);
 
-Creates an L<SPVM::Builder::Config::Info> object given options %options, and returns it.
+Creates an L<SPVM::Builder::ScriptInfo> object given options %options, and returns it.
 
 The class specified by C<class_name> option or C<script_name> option is compiled and the runtime is generated.
 
