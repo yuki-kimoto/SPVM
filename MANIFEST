@@ -63,6 +63,7 @@ lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
 lib/SPVM/Builder/Config/Info.pm
 lib/SPVM/Builder/ConfigBuilder.pm
+lib/SPVM/Builder/Deps.spvm
 lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/include/spvm_allocator.h
 lib/SPVM/Builder/include/spvm_allow.h
@@ -427,6 +428,7 @@ ppport.h
 README.md
 script/spvm
 script/spvmcc
+script/spvmdeps
 script/spvmdist
 solo/lib/SPVM/TestCase.spvm
 solo/lib/SPVM/TestCase/Callback1.spvm
@@ -1041,6 +1043,7 @@ t/04_spvmcc/script/use_class.spvm
 t/04_spvmcc/spvm.t
 t/04_spvmcc/SPVM_Builder_Exe.t
 t/04_spvmcc/spvmcc.t
+t/04_spvmcc/spvmdeps.t
 t/05_spvmdist/command.t
 t/05_spvmdist/module.t
 t/test_add_class/SPVM/MyPoint.spvm
