@@ -426,6 +426,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         
+        if (type->basic_type->version_from_basic_type_name) {
+          SPVM_COMPILER_error(compiler, "Both version statement and version_from_v2 statement cannnot be used at the same time.\n  at %s line %d", op_decl->file, op_decl->line);
+          break;
+        }
+        
         SPVM_OP* op_version_string = op_decl->first;
         SPVM_CONSTANT* version_string_constant = op_version_string->uv.constant;
         SPVM_TYPE* version_string_constant_type = version_string_constant->type;
@@ -522,6 +527,24 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         SPVM_STRING_new(compiler, version_from_string, version_from_string_length);
         type->basic_type->version_from_string = version_from_string;
+      }
+      // version_from_v2 statement
+      else if (op_decl->id == SPVM_OP_C_ID_VERSION_FROM_V2) {
+        if (type->basic_type->version_from) {
+          SPVM_COMPILER_error(compiler, "version_from_v2 has already been declared.\n  at %s line %d", op_decl->file, op_decl->line);
+          break;
+        }
+        
+        if (type->basic_type->version_string) {
+          SPVM_COMPILER_error(compiler, "Both version statement and version_from_v2 statement cannnot be used at the same time.\n  at %s line %d", op_decl->file, op_decl->line);
+          break;
+        }
+        
+        SPVM_OP* op_version_from = op_decl;
+        
+        type->basic_type->version_from = op_version_from->uv.version_from;
+        
+        type->basic_type->version_from_basic_type_name = op_version_from->uv.version_from->basic_type_name;
       }
       // use statement
       else if (op_decl->id == SPVM_OP_C_ID_USE) {
@@ -843,7 +866,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else {
         assert(0);
       }
+      
     }
+    
   }
   
   // Field declarations

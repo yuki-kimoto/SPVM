@@ -22,6 +22,8 @@ struct spvm_basic_type {
   const char* class_rel_file;
   const char* version_string;
   const char* version_from_string;
+  const char* version_from_basic_type_name;
+  SPVM_VERSION_FROM* version_from;
   SPVM_LIST* constant_strings;
   SPVM_HASH* constant_string_symtable;
   SPVM_STRING_BUFFER* string_pool;

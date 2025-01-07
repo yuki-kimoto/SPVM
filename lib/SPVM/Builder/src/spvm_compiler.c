@@ -38,6 +38,7 @@
 #include "spvm_string.h"
 #include "spvm_class_file.h"
 #include "spvm_mutex.h"
+#include "spvm_version_from.h"
 
 #include "spvm_api.h"
 #include "spvm_api_runtime.h"
@@ -666,6 +667,11 @@ void SPVM_COMPILER_free_memory_tmp_each_compile(SPVM_COMPILER* compiler) {
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, allow);
         break;
       }
+      case SPVM_OP_C_ID_VERSION_FROM_V2: {
+        SPVM_VERSION_FROM* version_from = op->uv.version_from;
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, version_from);
+        break;
+      }
       case SPVM_OP_C_ID_INTERFACE: {
         SPVM_INTERFACE* interface = op->uv.interface;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, interface);
@@ -945,6 +951,11 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     if (basic_type->version_from_string) {
       SPVM_STRING* basic_type_version_from_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->version_from_string, strlen(basic_type->version_from_string));
       runtime_basic_type->version_from_string = runtime_basic_type->constant_strings[basic_type_version_from_string->index].value;
+    }
+    
+    if (basic_type->version_from_basic_type_name) {
+      SPVM_BASIC_TYPE* version_from_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->version_from_basic_type_name, strlen(basic_type->version_from_basic_type_name));
+      runtime_basic_type->version_from_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, version_from_basic_type->id);
     }
     
     runtime_basic_type->is_anon = basic_type->is_anon;
