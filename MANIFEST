@@ -406,6 +406,7 @@ lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm
 lib/SPVM/Sort.pm
 lib/SPVM/Sort.spvm
+lib/SPVM/SPVM.pm
 lib/SPVM/Stringable.pm
 lib/SPVM/Stringable.spvm
 lib/SPVM/StringBuffer.pm

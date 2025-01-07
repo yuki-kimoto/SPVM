@@ -4444,6 +4444,15 @@ class TestCase::Module::Fn {
       $@ = undef;
     }
     
+    # Extra
+    {
+      {
+        unless (Fn->get_version_string("SPVM") eq Fn->get_spvm_version_string) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   

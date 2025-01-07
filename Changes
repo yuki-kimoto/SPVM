@@ -4,6 +4,7 @@
     * Add version_from statement.
     * Add get_basic_type_name_in_version_from native API.
     * Add Fn#get_basic_type_name_in_version_from method.
+    * Add SPVM class.
   [Document Changes]
     * The heading "Version Statement" to "version Statement".
     * Add docs for Fn#get_version_string method.
@@ -13,6 +14,8 @@
     * Add check for the reference argument of Fn#get_code_point.
   [Bug Fix]
     * Fix a bug that SPVM_NATIVE_VERSION_STRING is not used as an operator.
+    * Fix a bug that Error::Compile class is not recognized.
+    
 0.990035 2024-01-04
   
   [New Features]

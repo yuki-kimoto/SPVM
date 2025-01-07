@@ -366,6 +366,10 @@ The following classes are loaded by default.
 
 =item * L<Address|SPVM::Address>
 
+=item * L<Error::Compile|SPVM::Error::Compile>
+
+=item * L<SPVM|SPVM::SPVM>
+
 =back
 
 =head2 alias Statement

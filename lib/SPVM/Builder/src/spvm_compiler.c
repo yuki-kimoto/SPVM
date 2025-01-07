@@ -39,6 +39,7 @@
 #include "spvm_class_file.h"
 #include "spvm_mutex.h"
 #include "spvm_version_from.h"
+#include "spvm_version.h"
 
 #include "spvm_api.h"
 #include "spvm_api_runtime.h"
@@ -489,6 +490,7 @@ void SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_use(compiler, "CommandInfo", "CommandInfo", 0);
   SPVM_COMPILER_use(compiler, "Address", "Address", 0);
   SPVM_COMPILER_use(compiler, "Error::Compile", "Error::Compile", 0);
+  SPVM_COMPILER_use(compiler, "SPVM", "SPVM", 0);
 }
 
 void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
@@ -595,6 +597,16 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* content = "class Error::Compile extends Error;";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
+  
+  // Add SPVM class file
+  {
+    const char* class_name = "SPVM";
+    const char* rel_file = "SPVM.spvm";
+    char content[512] = {0};
+    snprintf(content, 512, "class SPVM {\n  version \"%s\";\n}", SPVM_NATIVE_VERSION_STRING);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
+  }
+  
 }
 
 void SPVM_COMPILER_set_class_file_with_members(SPVM_COMPILER* compiler, const char* class_name, const char* rel_file, const char* content) {
@@ -631,6 +643,7 @@ void SPVM_COMPILER_assert_check_basic_type_ids(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_assert_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS);
   SPVM_COMPILER_assert_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS);
   SPVM_COMPILER_assert_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS);
+  SPVM_COMPILER_assert_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_SPVM_CLASS);
 }
 
 void SPVM_COMPILER_assert_check_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_type_id) {
