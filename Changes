@@ -4,6 +4,8 @@
     * Add version_from statement.
     * Add get_version_from_string native API.
     * Add Fn#get_version_from_string method.
+    * Add version_from_v2 statement.
+    * Add get_version_from_basic_type_name native API.
   [Document Changes]
     * The heading "Version Statement" to "version Statement".
     * Add docs for Fn#get_version_string method.

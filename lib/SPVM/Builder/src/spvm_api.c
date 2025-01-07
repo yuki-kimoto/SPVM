@@ -326,6 +326,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_set_seed,
     SPVM_API_seed_initialized,
     SPVM_API_get_version_from_string,
+    SPVM_API_get_version_from_basic_type_name,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -5611,4 +5612,14 @@ int32_t SPVM_API_seed_initialized(SPVM_ENV* env, SPVM_VALUE* stack) {
 const char* SPVM_API_get_version_from_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
   return basic_type->version_from_string;
+}
+
+const char* SPVM_API_get_version_from_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
+  
+  const char* version_from_basic_type_name = NULL;
+  if (basic_type->version_from_basic_type) {
+    version_from_basic_type_name = basic_type->version_from_basic_type->name;
+  }
+  
+  return version_from_basic_type_name;
 }

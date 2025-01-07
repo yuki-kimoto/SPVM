@@ -326,6 +326,7 @@ struct spvm_env {
   void (*set_seed)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t seed);
   int32_t (*seed_initialized)(SPVM_ENV* env, SPVM_VALUE* stack);
   const char* (*get_version_from_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
+  const char* (*get_version_from_basic_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
 };
 
 struct spvm_env_api {
