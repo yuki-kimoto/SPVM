@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use SPVM();
-use SPVM::Builder::Deps;
+use SPVM::Builder::DependencyAnalyzer;
 use SPVM::Builder::Util;
 use FindBin;
 
@@ -51,7 +51,7 @@ if ($show_resource_info) {
     die "[spvmdeps command]--resource-info option needs <script_name>."
   }
   
-  my $resource_info = SPVM::Builder::Deps->dump_resource_info($script_name);
+  my $resource_info = SPVM::Builder::DependencyAnalyzer->dump_resource_info($script_name);
   
   print $resource_info;
   exit 0;
@@ -62,7 +62,7 @@ elsif ($show_dependency) {
     die "[spvmdeps command]--dependency option needs <script_name>."
   }
   
-  my $dependency = SPVM::Builder::Deps->dump_dependency($script_name);
+  my $dependency = SPVM::Builder::DependencyAnalyzer->dump_dependency($script_name);
   
   print $dependency;
   exit 0;
@@ -73,7 +73,7 @@ elsif ($show_dependency_cpan) {
     die "[spvmdeps command]--dependency option needs <script_name>."
   }
   
-  my $dependency_cpan = SPVM::Builder::Deps->dump_dependency_cpan($script_name);
+  my $dependency_cpan = SPVM::Builder::DependencyAnalyzer->dump_dependency_cpan($script_name);
   
   print $dependency_cpan;
   exit 0;

@@ -62,7 +62,7 @@ lib/SPVM/Builder/CompileInfo.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
 lib/SPVM/Builder/ConfigBuilder.pm
-lib/SPVM/Builder/Deps.pm
+lib/SPVM/Builder/DependencyAnalyzer.pm
 lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/include/spvm_allocator.h
 lib/SPVM/Builder/include/spvm_allow.h
