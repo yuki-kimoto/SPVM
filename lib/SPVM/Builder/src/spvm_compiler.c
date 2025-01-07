@@ -667,7 +667,7 @@ void SPVM_COMPILER_free_memory_tmp_each_compile(SPVM_COMPILER* compiler) {
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, allow);
         break;
       }
-      case SPVM_OP_C_ID_VERSION_FROM_V2: {
+      case SPVM_OP_C_ID_VERSION_FROM: {
         SPVM_VERSION_FROM* version_from = op->uv.version_from;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, version_from);
         break;

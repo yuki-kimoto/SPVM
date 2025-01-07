@@ -475,26 +475,26 @@ use Test::More;
   }
 }
 
-# version_from_v2 statement
+# version_from statement
 {
   {
-    my $source = 'class MyClass { version_from_v2 Point; }';
+    my $source = 'class MyClass { version_from Point; }';
     compile_ok($source);
   }
   
   {
-    my $source = 'class MyClass { version_from_v2 Point; version_from_v2 Point;}';
-    compile_not_ok($source, qr|version_from_v2 has already been declared.|);
+    my $source = 'class MyClass { version_from Point; version_from Point;}';
+    compile_not_ok($source, qr|version_from has already been declared.|);
   }
   
   {
-    my $source = 'class MyClass { version "1"; version_from_v2 Point;}';
-    compile_not_ok($source, qr|Both version statement and version_from_v2 statement cannnot be used at the same time.|);
+    my $source = 'class MyClass { version "1"; version_from Point;}';
+    compile_not_ok($source, qr|Both version statement and version_from statement cannnot be used at the same time.|);
   }
   
   {
-    my $source = 'class MyClass { version_from_v2 Point; version "1"; }';
-    compile_not_ok($source, qr|Both version statement and version_from_v2 statement cannnot be used at the same time.|);
+    my $source = 'class MyClass { version_from Point; version "1"; }';
+    compile_not_ok($source, qr|Both version statement and version_from statement cannnot be used at the same time.|);
   }
 }
 

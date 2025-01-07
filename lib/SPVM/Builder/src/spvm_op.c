@@ -109,7 +109,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "CLASS_BLOCK",
     "END_OF_FILE",
     "VERSION_DECL",
-    "VERSION_FROM_V2",
+    "VERSION_FROM",
     "IF",
     "UNLESS",
     "ELSIF",
@@ -426,7 +426,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         
         if (type->basic_type->version_from_basic_type_name) {
-          SPVM_COMPILER_error(compiler, "Both version statement and version_from_v2 statement cannnot be used at the same time.\n  at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "Both version statement and version_from statement cannnot be used at the same time.\n  at %s line %d", op_decl->file, op_decl->line);
           break;
         }
         
@@ -501,15 +501,15 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_STRING_new(compiler, version_string, version_string_length);
         type->basic_type->version_string = version_string;
       }
-      // version_from_v2 statement
-      else if (op_decl->id == SPVM_OP_C_ID_VERSION_FROM_V2) {
+      // version_from statement
+      else if (op_decl->id == SPVM_OP_C_ID_VERSION_FROM) {
         if (type->basic_type->version_from) {
-          SPVM_COMPILER_error(compiler, "version_from_v2 has already been declared.\n  at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "version_from has already been declared.\n  at %s line %d", op_decl->file, op_decl->line);
           break;
         }
         
         if (type->basic_type->version_string) {
-          SPVM_COMPILER_error(compiler, "Both version statement and version_from_v2 statement cannnot be used at the same time.\n  at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "Both version statement and version_from statement cannnot be used at the same time.\n  at %s line %d", op_decl->file, op_decl->line);
           break;
         }
         
@@ -1066,14 +1066,7 @@ SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version
   return op_version_decl;
 }
 
-SPVM_OP* SPVM_OP_build_version_from(SPVM_COMPILER* compiler, SPVM_OP* op_version_from, SPVM_OP* op_version_from_string) {
-  
-  SPVM_OP_insert_child(compiler, op_version_from, op_version_from->last, op_version_from_string);
-  
-  return op_version_from;
-}
-
-SPVM_OP* SPVM_OP_build_version_from_v2(SPVM_COMPILER* compiler, SPVM_OP* op_version_from, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_version_from(SPVM_COMPILER* compiler, SPVM_OP* op_version_from, SPVM_OP* op_type) {
   
   SPVM_VERSION_FROM* version_from = SPVM_VERSION_FROM_new(compiler);
   op_version_from->uv.version_from = version_from;
