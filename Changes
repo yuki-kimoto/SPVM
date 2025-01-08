@@ -2,7 +2,8 @@
   
   [Incompatible Changes]
     * Rename SPVM::Builder::Config::Info to SPVM::Builder::ScriptInfo.
-  
+    * SPVM::Builder::ScriptInfo#get_class_names returns also multi-numeric types.
+    
 0.990036 2024-01-07
 
   [New Features]
