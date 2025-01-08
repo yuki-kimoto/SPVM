@@ -73,7 +73,7 @@ sub dump_dependency {
   return $dependency;
 }
 
-sub dump_dependency_cpan {
+sub dump_cpanm_commands {
   my ($class, $script_name) = @_;
   
   my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
@@ -82,7 +82,7 @@ sub dump_dependency_cpan {
   
   my $class_names = $info->get_class_names;
   
-  my $dependency_infos = [];
+  my $cpanm_commands = [];
   
   for my $class_name (sort @$class_names) {
     
@@ -90,29 +90,25 @@ sub dump_dependency_cpan {
     
     my $version_string = $basic_type->get_version_string;
     
-    my $dependency_info;
+    my $cpanm_command = "cpanm ";
     
     if ($class_name eq "SPVM") {
-      $dependency_info = "SPVM";
+      $cpanm_command .= "SPVM";
     }
     else {
-      $dependency_info = "SPVM::$class_name";
+      $cpanm_command .= "SPVM::$class_name";
     }
     
     if (length $version_string) {
-      $dependency_info .= " $version_string";
+      $cpanm_command .= "\@$version_string";
     }
     
-    push @$dependency_infos, $dependency_info;
+    push @$cpanm_commands, $cpanm_command;
   }
   
-  my $spvm_version_string = $runtime->get_spvm_version_string;
+  my $cpanm_commands_string = join("\x0A", @$cpanm_commands) . "\x0A";
   
-  unshift @$dependency_infos, "SPVM $spvm_version_string";
-  
-  my $dependency_cpan = join("\x0A", @$dependency_infos) . "\x0A";
-  
-  return $dependency_cpan;
+  return $cpanm_commands_string;
 }
 
 1;
