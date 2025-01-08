@@ -29,7 +29,6 @@ SPVM::Builder::Util::getopt
     my ($opt_name, $opt_value) = @_;
     push @argv, SPVM::Builder::Exe->parse_config_argv_option($opt_value);
   },
-  'dependency' => \my $show_dependency,
   'dependency-cpan' => \my $show_dependency_cpan,
 ;
 
@@ -57,18 +56,7 @@ my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($so
 
 unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_by_lib_directive;
 
-if ($show_dependency) {
-  
-  unless (defined $script_name) {
-    die "[spvmcc command]--dependency option needs <script_name>."
-  }
-  
-  my $dependency = SPVM::Builder::Exe->dump_dependency($script_name);
-  
-  print $dependency;
-  exit 0;
-}
-elsif ($show_dependency_cpan) {
+if ($show_dependency_cpan) {
   
   unless (defined $script_name) {
     die "[spvmcc command]--dependency option needs <script_name>."
@@ -138,7 +126,6 @@ The spvmcc command generates an executable file from SPVM classes.
     --config-argv <arg>             A config argument
     --config-argv-option <arg pair> Key-value config arguments such as KEY=VALUE
     --optimize <level>              Optimization level such as O3, "-O0 -g"
-    --dependency                    Show dependent classes and their versions
     --dependency-cpan               Show dependent cpan modules and their versions
 
 =head1 Details
@@ -350,18 +337,6 @@ This affects all source files that are compiled.
 Examples:
 
   --optimize "-O0 -g"
-
-=head2 --dependency
-
-  --dependency
-
-Shows all dependent classes and their versions.
-
-Output Example:
-
-  Sys 1.201
-  Regex 0.980
-  Foo
 
 =head2 --dependency-cpan
 

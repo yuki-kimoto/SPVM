@@ -1070,37 +1070,6 @@ sub get_user_defined_basic_type_names {
   return $class_names;
 }
 
-sub dump_dependency {
-  my ($class, $script_name) = @_;
-  
-  my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
-  
-  my $runtime = $info->runtime;
-  
-  my $class_names = $info->get_class_names;
-  
-  my $dependency_infos = [];
-  
-  for my $class_name (sort @$class_names) {
-    
-    my $basic_type = $runtime->get_basic_type_by_name($class_name);
-    
-    my $version_string = $basic_type->get_version_string;
-    
-    my $dependency_info = "$class_name";
-    
-    if (length $version_string) {
-      $dependency_info .= " $version_string";
-    }
-    
-    push @$dependency_infos, $dependency_info;
-  }
-  
-  my $dependency = join("\x0A", @$dependency_infos) . "\x0A";
-  
-  return $dependency;
-}
-
 sub dump_dependency_cpan {
   my ($class, $script_name) = @_;
   
