@@ -35,11 +35,23 @@ sub with_version {
   }
 }
 
+sub excluded_class_names {
+  my $self = shift;
+  if (@_) {
+    $self->{excluded_class_names} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{excluded_class_names};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
   
   my $self = {
+    excluded_class_names => [],
     @_,
   };
   
@@ -96,6 +108,8 @@ sub to_class_infos {
   
   my $script_name = $self->{script_name};
   
+  my $excluded_class_names = $self->{excluded_class_names};
+  
   my $script_info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
   my $runtime = $script_info->runtime;
@@ -105,6 +119,27 @@ sub to_class_infos {
   my $class_infos = [];
   
   for my $class_name (sort @$class_names) {
+    
+    my $skip = 0;
+    for my $excluded_class_name (@$excluded_class_names) {
+      
+      if ($excluded_class_name =~ /[^\w:\*]/) {
+        Carp::confess("--exclude option in spvmdeps command contains invalid characters.");
+      }
+      
+      my $excluded_class_name_re = $excluded_class_name;
+      
+      $excluded_class_name_re =~ s/\*/.*/g;
+      
+      $excluded_class_name_re = "^$excluded_class_name_re\$";
+      
+      if ($class_name =~ /$excluded_class_name_re/) {
+        $skip = 1;
+        last;
+      }
+    }
+    
+    next if $skip;
     
     my $basic_type = $runtime->get_basic_type_by_name($class_name);
     

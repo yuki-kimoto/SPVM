@@ -19,6 +19,7 @@ SPVM::Builder::Util::getopt
   'cpanm' => \my $cpanm_option_on,
   'cpanfile' => \my $cpanfile_option_on,
   'with-version' => \my $with_version_option_on,
+  'exclude=s' => \my @excluded_class_names,
   'resource-info' => \my $show_resource_info,
 ;
 
@@ -46,7 +47,11 @@ my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($so
 
 unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_by_lib_directive;
 
-my $dependency_analyzer = SPVM::Builder::DependencyAnalyzer->new(script_name => $script_name, with_version => $with_version_option_on);
+my $dependency_analyzer = SPVM::Builder::DependencyAnalyzer->new(
+  script_name => $script_name,
+  with_version => $with_version_option_on,
+  excluded_class_names => \@excluded_class_names,
+);
 
 unless (defined $script_name) {
   die "[spvmdeps command]spvmdeps command needs <script_name>."
@@ -91,20 +96,24 @@ else {
 
 =head1 Name
 
-spvmdeps - Generating Excutable File
+spvmdeps - Analyzing Class Dependencies Analyzer
 
 =head1 Description
 
-The spvmdeps command generates an executable file from SPVM classes.
+C<spvmdeps> command is a class dependencies analyzer.
 
 =head1 Usage
 
   usage: spvmdeps [<options>] <script_name>
     
-    spvmdeps -o myapp myapp.spvm
+    spvmdeps myapp.spvm
     
-    spvmdeps -I lib/SPVM -o myapp myapp.spvm
-  
+    spvmdeps --with-version myapp.spvm
+    
+    spvmdeps --cpanm --with-version myapp.spvm
+    
+    spvmdeps --cpanfile --with-version myapp.spvm
+    
   options:
     -h, --help                      Shows this message
     -v, --version                   Shows the version
@@ -113,7 +122,8 @@ The spvmdeps command generates an executable file from SPVM classes.
     --cpanm                         Prints cpanm commands that contains dependent cpan modules
     --cpanfile                      Prints cpanfile that contains dependent cpan modules
     --with-version                  Output(default, --cpanm, --json) contains version information.
-    --resource-info                 Show config files of dependent resources
+    --exclude <class_name>          Excludes a class name. This option can be used repeatedly.
+    --resource-info                 Shows config files of dependent resources
 
 =head1 Details
 
@@ -147,22 +157,6 @@ C<E<lt>script_nameE<gt>> is a script name that contains a L<bootstrap method|SPV
 See L<Class Search Directories|SPVM::Document::Language::Class/"Class Search Directories"> about default class search directories.
 
 See L<SPVM::Document::EnvironmentVariables> about available environment variables.
-
-=head2 Resources
-
-There are important points to be aware of when generating executable files. That is, L<resources|SPVM::Document::Resource> are not automatically compiled.
-
-When you run an SPVM program with the L<spvm> command, the resources are contained within the shared library of each class. Therefore, there are no conflicts between resources.
-
-However, in the case of executable files, there are resource conflicts. For this, the resources must be resolved manually in the configuration file.
-
-  $config->use_resource('Resource::Zlib');
-
-This is hard work, but given that the executable file must be compiled from source files and run on a variety of platforms, I think that solving it manually is a better way.
-
-I have published a command that allows you to view the list of classes using resources and the resource settings.
-
-L<How to dump resource information|https://github.com/yuki-kimoto/SPVM/wiki/Config#how-to-dump-resource-information>
 
 =head1 Options
 
@@ -205,12 +199,6 @@ In this case, class search directories becomes the following.
   -I <directory>
 
 Same as L</"--include-dir">.
-
-=head2 --resource-info
-
-  --resource-info
-
-Shows all config files loading resources.
 
 =head2 --json
 
@@ -298,6 +286,26 @@ Output Examples:
   --with-version
 
 Output(default, L</"--cpanm">, L</"--cpanfile">, L</"--json">) contains version information.
+
+=head2 --exclude
+
+  --exclude=<class_name>
+
+Excludes a class name. This option can be used repeatedly.
+
+Examples:
+
+  --exclude TestCase::Foo
+
+Wildcard C<*> can be used.
+
+  --exclude TestCase::*
+
+=head2 --resource-info
+
+  --resource-info
+
+Shows all config files loading resources.
 
 =head1 lib Directive
 
