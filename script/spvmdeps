@@ -111,8 +111,14 @@ The spvmdeps command generates an executable file from SPVM classes.
 
 The C<spvmdeps> command prints class dependency information.
 
-Output Example:
+Output Examples:
 
+  Sys
+  Regex
+  Foo
+  Bar
+  
+  # --with-version
   Sys 1.201
   Regex 0.980
   Foo (version_from Sys)
@@ -259,6 +265,12 @@ Output Examples:
   cpanm SPVM@1.001
   cpanm SPVM::Sys@1.201
   cpanm SPVM::Regex@0.980
+
+=head2 --with-version
+
+  --with-version
+
+Output(default, L</"--cpanm">, L</"--json">) contains version information.
 
 =head1 lib Directive
 
