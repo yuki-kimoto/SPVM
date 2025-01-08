@@ -9,17 +9,16 @@ use SPVM::Builder::Util;
 use FindBin;
 
 SPVM::Builder::Util::getopt
-  # spvmdeps and spvm shared
+  # spvm,spvmcc, spvmdeps shared
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
   'I|include-dir=s' => \my @include_dirs,
   
   # spvmdeps only
-  'o|output=s'        => \my $output_file,
-  'resource-info' => \my $show_resource_info,
   'json' => \my $json_option_on,
   'cpanm' => \my $cpanm_option_on,
   'with-version' => \my $with_version_option_on,
+  'resource-info' => \my $show_resource_info,
 ;
 
 if ($help) {
@@ -101,8 +100,10 @@ The spvmdeps command generates an executable file from SPVM classes.
     -h, --help                      Shows this message
     -v, --version                   Shows the version
     -I, --include-dir <directory>   Adds a include directory
+    --json                          Prints JSON that contains all dependent class information.
+    --cpanm                         Prints cpanm commands with dependent cpan modules
+    --with-version                  Output(default, --cpanm, --json) contains version information.
     --resource-info                 Show config files of dependent resources
-    --cpanm                         Prints cpanm commands with dependent cpan modules and their versions
 
 =head1 Details
 
