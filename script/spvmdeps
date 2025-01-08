@@ -96,14 +96,20 @@ The spvmdeps command generates an executable file from SPVM classes.
     -v, --version                   Shows the version
     -I, --include-dir <directory>   Adds a include directory
     --resource-info                 Show config files of dependent resources
-    --dependency                    Show dependent classes and their versions
     --cpanm                         Prints cpanm commands with dependent cpan modules and their versions
 
 =head1 Details
 
   spvmdeps [<options>] <script_name>
 
-The C<spvmdeps> command generates an executable file from SPVM classes.
+The C<spvmdeps> command prints class dependency information.
+
+Output Example:
+
+  Sys 1.201
+  Regex 0.980
+  Foo (version_from Sys)
+  Bar
 
 C<E<lt>optionsE<gt>> are L<options|/"Options">.
 
@@ -118,22 +124,6 @@ C<E<lt>script_nameE<gt>> is a script name that contains a L<bootstrap method|SPV
 See L<Class Search Directories|SPVM::Document::Language::Class/"Class Search Directories"> about default class search directories.
 
 See L<SPVM::Document::EnvironmentVariables> about available environment variables.
-
-=head2 Config File for Executable File
-
-The config for an executable file is a L<SPVM::Builder::Config::Exe> object.
-
-C<myapp.config>:
-
-  use SPVM::Builder::Config::Exe;
-  
-  my $exe_config = SPVM::Builder::Config::Exe->new_gnu99(file => __FILE__);
-  
-  $exe_config
-
-=head2 Caching System
-
-Compiled object files and an executable file are not rebuilt unless they need to be rebuilt.
 
 =head2 Resources
 
@@ -198,18 +188,6 @@ Same as L</"--include-dir">.
   --resource-info
 
 Shows all config files loading resources.
-
-=head2 --dependency
-
-  --dependency
-
-Shows all dependent classes and their versions.
-
-Output Example:
-
-  Sys 1.201
-  Regex 0.980
-  Foo
 
 =head2 --cpanm
 
