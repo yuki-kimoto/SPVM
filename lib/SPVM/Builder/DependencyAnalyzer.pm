@@ -12,8 +12,18 @@ use SPVM::Builder::Util;
 
 use SPVM::Builder::ScriptInfo;
 
+sub new {
+  my $class = shift;
+  
+  my $self = {
+    @_,
+  };
+  
+  return bless $self, ref $class || $class;
+}
+
 sub dump_resource_info {
-  my ($class, $script_name) = @_;
+  my ($self, $script_name) = @_;
   
   my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
@@ -43,7 +53,7 @@ EOS
 }
 
 sub dump_classes {
-  my ($class, $script_name) = @_;
+  my ($self, $script_name) = @_;
   
   my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
@@ -74,7 +84,7 @@ sub dump_classes {
 }
 
 sub dump_cpanm_commands {
-  my ($class, $script_name) = @_;
+  my ($self, $script_name) = @_;
   
   my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
