@@ -259,6 +259,50 @@ sub to_cpanm_commands {
   return $cpanm_commands;
 }
 
+sub to_cpanfile_commands {
+  my ($self) = @_;
+  
+  my $script_name = $self->{script_name};
+  
+  my $with_version = $self->{with_version};
+  
+  my $script_info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
+  
+  my $class_infos = $self->to_class_infos;
+  
+  my $cpanfile_commands = [];
+  
+  for my $class_info (@$class_infos) {
+    
+    my $class_name = $class_info->{class_name};
+    
+    my $version = $class_info->{version};
+    
+    if (defined $version) {
+      my $cpanfile_command = "requires ";
+      
+      if ($class_name eq "SPVM") {
+        $cpanfile_command .= "'SPVM'";
+      }
+      else {
+        $cpanfile_command .= "'SPVM::$class_name'";
+      }
+      
+      if ($with_version) {
+        if (defined $version) {
+          $cpanfile_command .= ", '== $version'";
+        }
+      }
+      
+      $cpanfile_command .= ";";
+      
+      push @$cpanfile_commands, $cpanfile_command;
+    }
+  }
+  
+  return $cpanfile_commands;
+}
+
 1;
 
 =head1 Name

@@ -17,6 +17,7 @@ SPVM::Builder::Util::getopt
   # spvmdeps only
   'json' => \my $json_option_on,
   'cpanm' => \my $cpanm_option_on,
+  'cpanfile' => \my $cpanfile_option_on,
   'with-version' => \my $with_version_option_on,
   'resource-info' => \my $show_resource_info,
 ;
@@ -65,6 +66,14 @@ elsif ($cpanm_option_on) {
   
   print $cpanm_commands_lines;
 }
+elsif ($cpanfile_option_on) {
+  
+  my $cpanfile_commands = $dependency_analyzer->to_cpanfile_commands;
+  
+  my $cpanfile_commands_lines = SPVM::Builder::DependencyAnalyzer->to_lines($cpanfile_commands);
+  
+  print $cpanfile_commands_lines;
+}
 elsif ($json_option_on) {
   my $json = $dependency_analyzer->to_json;
   
@@ -101,7 +110,8 @@ The spvmdeps command generates an executable file from SPVM classes.
     -v, --version                   Shows the version
     -I, --include-dir <directory>   Adds a include directory
     --json                          Prints JSON that contains all dependent class information.
-    --cpanm                         Prints cpanm commands with dependent cpan modules
+    --cpanm                         Prints cpanm commands that contains dependent cpan modules
+    --cpanfile                      Prints cpanfile that contains dependent cpan modules
     --with-version                  Output(default, --cpanm, --json) contains version information.
     --resource-info                 Show config files of dependent resources
 
@@ -253,7 +263,7 @@ Output Examples:
 
   --cpanm
 
-Prints cpanm commands with all dependent cpan modules. Classes its version is specified are considered CPAN dependencies modules.
+Prints cpanm commands that contains dependent CPAN modules. Classes its version is specified are treated as dependent CPAN modules.
 
 Output Examples:
   
@@ -266,11 +276,28 @@ Output Examples:
   cpanm SPVM::Sys@1.201
   cpanm SPVM::Regex@0.980
 
+=head2 --cpanfile
+
+  --cpanfile
+
+Prints cpanfile that contains dependent CPAN modules. Classes its version is specified are treated as dependent CPAN modules.
+
+Output Examples:
+
+  requires 'SPVM';
+  requires 'SPVM::Sys';
+  requires 'SPVM::Regex';
+  
+  # --with-version
+  requires 'SPVM', '== 1.001';
+  requires 'SPVM::Sys', '== 1.201';
+  requires 'SPVM::Regex', '== 0.980';
+
 =head2 --with-version
 
   --with-version
 
-Output(default, L</"--cpanm">, L</"--json">) contains version information.
+Output(default, L</"--cpanm">, L</"--cpanfile">, L</"--json">) contains version information.
 
 =head1 lib Directive
 

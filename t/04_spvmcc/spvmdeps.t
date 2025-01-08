@@ -70,6 +70,8 @@ my $dev_null = File::Spec->devnull;
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanm t/04_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
+    warn "[Test Output]\n$output";
+    
     like($output, qr|^cpanm SPVM$|m);
     like($output, qr|^cpanm SPVM::TestCase::NativeAPI2$|m);
     like($output, qr|^cpanm SPVM::TestCase::Precompile$|m);
@@ -82,9 +84,42 @@ my $dev_null = File::Spec->devnull;
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanm --with-version t/04_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
+    warn "[Test Output]\n$output";
+    
     like($output, qr|^cpanm SPVM\@[\.\d]+$|m);
     like($output, qr|^cpanm SPVM::TestCase::NativeAPI2\@1\.002$|m);
     like($output, qr|^cpanm SPVM::TestCase::Precompile\@2\.005$|m);
+    unlike($output, qr|SPVM::Byte|m);
+    like($output, qr|\x0A$|s);
+  }
+}
+
+# --cpanfile
+{
+  # --cpanfile
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanfile t/04_spvmcc/script/myapp.spvm);
+    my $output = `$spvmcc_cmd`;
+    
+    warn "[Test Output]\n$output";
+    
+    like($output, qr|^requires 'SPVM';$|m);
+    like($output, qr|^requires 'SPVM::TestCase::NativeAPI2';$|m);
+    like($output, qr|^requires 'SPVM::TestCase::Precompile';$|m);
+    unlike($output, qr|SPVM::Byte|m);
+    like($output, qr|\x0A$|s);
+  }
+  
+  # --cpanfile, --with-version
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanfile --with-version t/04_spvmcc/script/myapp.spvm);
+    my $output = `$spvmcc_cmd`;
+    
+    warn "[Test Output]\n$output";
+    
+    like($output, qr|^requires 'SPVM', '== [\.\d]+';$|m);
+    like($output, qr|^requires 'SPVM::TestCase::NativeAPI2', '== 1\.002';$|m);
+    like($output, qr|^requires 'SPVM::TestCase::Precompile', '== 2\.005';$|m);
     unlike($output, qr|SPVM::Byte|m);
     like($output, qr|\x0A$|s);
   }
