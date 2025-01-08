@@ -144,6 +144,8 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<Sort|SPVM::Sort>
 
+=item * L<SPVM|SPVM::SPVM>
+
 =item * L<Stringable|SPVM::Stringable>
 
 =item * L<StringBuffer|SPVM::StringBuffer>
