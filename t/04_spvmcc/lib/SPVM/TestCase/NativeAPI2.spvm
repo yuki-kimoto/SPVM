@@ -1,10 +1,14 @@
 class TestCase::NativeAPI2 : precompile {
   
   version "1.002";
-  
+
+=pod TODO
+
   use TestCase::Resource::Mylib1;
   use TestCase::Resource::Mylib2;
-  
+
+=cut
+
   static method spvm_extension2 : int () {
     my $total = &mul(5, 3);
     
