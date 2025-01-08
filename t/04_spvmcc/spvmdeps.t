@@ -60,8 +60,6 @@ my $dev_null = File::Spec->devnull;
     like($output, qr|^TestCase::Precompile 2\.005$|m);
     like($output, qr|^Byte \(version_from SPVM\)$|m);
     like($output, qr|\x0A$|s);
-    
-    warn $output;
   }
 }
 
