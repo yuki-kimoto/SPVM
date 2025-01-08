@@ -45,7 +45,7 @@ my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($so
 
 unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_by_lib_directive;
 
-my $dependency_analyzer = SPVM::Builder::DependencyAnalyzer->new;
+my $dependency_analyzer = SPVM::Builder::DependencyAnalyzer->new(script_name => $script_name);
 
 if ($show_resource_info) {
   
@@ -53,7 +53,7 @@ if ($show_resource_info) {
     die "[spvmdeps command]--resource-info option needs <script_name>."
   }
   
-  my $resource_info = $dependency_analyzer->dump_resource_info($script_name);
+  my $resource_info = $dependency_analyzer->dump_resource_info;
   
   print $resource_info;
   exit 0;
@@ -64,7 +64,7 @@ elsif ($show_dependency) {
     die "[spvmdeps command]--dependency option needs <script_name>."
   }
   
-  my $dependency = $dependency_analyzer->dump_classes($script_name);
+  my $dependency = $dependency_analyzer->dump_classes;
   
   print $dependency;
   exit 0;
@@ -75,7 +75,7 @@ elsif ($cpanm) {
     die "[spvmdeps command]--dependency option needs <script_name>."
   }
   
-  my $dependency_cpan = $dependency_analyzer->dump_cpanm_commands($script_name);
+  my $dependency_cpan = $dependency_analyzer->dump_cpanm_commands;
   
   print $dependency_cpan;
   exit 0;

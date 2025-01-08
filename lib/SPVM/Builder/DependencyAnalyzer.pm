@@ -12,6 +12,19 @@ use SPVM::Builder::Util;
 
 use SPVM::Builder::ScriptInfo;
 
+# Fields
+sub script_name {
+  my $self = shift;
+  if (@_) {
+    $self->{script_name} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{script_name};
+  }
+}
+
+# Class Methods
 sub new {
   my $class = shift;
   
@@ -22,8 +35,11 @@ sub new {
   return bless $self, ref $class || $class;
 }
 
+# Instance Methods
 sub dump_resource_info {
-  my ($self, $script_name) = @_;
+  my ($self) = @_;
+  
+  my $script_name = $self->{script_name};
   
   my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
@@ -53,7 +69,9 @@ EOS
 }
 
 sub dump_classes {
-  my ($self, $script_name) = @_;
+  my ($self) = @_;
+  
+  my $script_name = $self->{script_name};
   
   my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
@@ -84,7 +102,9 @@ sub dump_classes {
 }
 
 sub dump_cpanm_commands {
-  my ($self, $script_name) = @_;
+  my ($self) = @_;
+  
+  my $script_name = $self->{script_name};
   
   my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
