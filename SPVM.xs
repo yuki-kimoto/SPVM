@@ -5584,7 +5584,11 @@ get_version_string(...)
   
   const char* version_string = boot_env->api->basic_type->get_version_string(runtime, basic_type);
   
-  SV* sv_version_string = sv_2mortal(newSVpv(version_string, 0));
+  SV* sv_version_string = &PL_sv_undef;
+  
+  if (version_string) {
+    sv_version_string = sv_2mortal(newSVpv(version_string, 0));
+  }
   
   XPUSHs(sv_version_string);
   XSRETURN(1);

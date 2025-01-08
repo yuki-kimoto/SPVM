@@ -168,13 +168,16 @@ int32_t SPVM__Native__BasicType__get_version_string(SPVM_ENV* env, SPVM_VALUE* s
   
   const char* version_string = env->api->basic_type->get_version_string(runtime, self);
   
-  void* obj_version_string = env->new_string_nolen(env, stack, version_string);
+  void* obj_version_string = NULL;
+  
+  if (version_string) {
+    obj_version_string = env->new_string_nolen(env, stack, version_string);
+  }
   
   stack[0].oval = obj_version_string;
   
   return 0;
 }
-
 
 int32_t SPVM__Native__BasicType__is_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   

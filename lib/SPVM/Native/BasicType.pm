@@ -70,7 +70,7 @@ If a memory error occurs, an exception is thrown.
 
 C<method get_version_string : string ();>
 
-Returns the version string.
+Returns the version string. If it is not specified, returns undef.
 
 If a memory error occurs, an exception is thrown.
 
