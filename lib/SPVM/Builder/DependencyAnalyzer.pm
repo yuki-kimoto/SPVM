@@ -110,17 +110,23 @@ sub to_classes {
     
     my $basic_type = $runtime->get_basic_type_by_name($class_name);
     
-    my $dependency_info = "$class_name";
+    my $class = "$class_name";
     
     if ($with_version) {
       my $version_string = $basic_type->get_version_string;
       
+      my $basic_type_in_version_from = $basic_type->get_basic_type_in_version_from;
+      
       if (length $version_string) {
-        $dependency_info .= " $version_string";
+        $class .= " $version_string";
+      }
+      elsif ($basic_type_in_version_from) {
+        my $basic_type_name_in_version_from = $basic_type_in_version_from->get_name;
+        $class .= " (version_from $basic_type_name_in_version_from)";
       }
     }
     
-    push @$classes, $dependency_info;
+    push @$classes, $class;
   }
   
   return $classes;

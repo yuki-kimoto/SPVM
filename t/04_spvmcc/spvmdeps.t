@@ -47,8 +47,6 @@ my $dev_null = File::Spec->devnull;
     like($output, qr|^TestCase::Precompile$|m);
     like($output, qr|^Byte$|m);
     like($output, qr|\x0A$|s);
-    
-    warn $output;
   }
   
   # --with-version
@@ -59,7 +57,7 @@ my $dev_null = File::Spec->devnull;
     like($output, qr|^SPVM [\.\d]+$|m);
     like($output, qr|^TestCase::NativeAPI2 1\.002$|m);
     like($output, qr|^TestCase::Precompile 2\.005$|m);
-    like($output, qr|^Byte$|m);
+    like($output, qr|^Byte \(version_from SPVM\)$|m);
     like($output, qr|\x0A$|s);
     
     warn $output;
