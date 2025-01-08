@@ -62,7 +62,7 @@ elsif ($show_dependency) {
     die "[spvmdeps command]--dependency option needs <script_name>."
   }
   
-  my $dependency = SPVM::Builder::DependencyAnalyzer->dump_dependency($script_name);
+  my $dependency = SPVM::Builder::DependencyAnalyzer->dump_classes($script_name);
   
   print $dependency;
   exit 0;

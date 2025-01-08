@@ -42,7 +42,7 @@ EOS
   return $resource_info;
 }
 
-sub dump_dependency {
+sub dump_classes {
   my ($class, $script_name) = @_;
   
   my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
