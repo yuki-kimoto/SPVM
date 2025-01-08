@@ -66,12 +66,11 @@ elsif ($cpanm_option_on) {
   print $cpanm_commands_lines;
 }
 else {
+  my $class_names = $dependency_analyzer->to_class_names;
   
-  my $classes = $dependency_analyzer->to_classes;
+  my $class_names_lines = SPVM::Builder::DependencyAnalyzer->to_lines($class_names);
   
-  my $classes_lines = SPVM::Builder::DependencyAnalyzer->to_lines($classes);
-  
-  print $classes_lines;
+  print $class_names_lines;
 }
 
 =encoding utf8

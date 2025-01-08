@@ -130,7 +130,7 @@ sub to_class_infos {
   return $class_infos;
 }
 
-sub to_classes {
+sub to_class_names {
   my ($self) = @_;
   
   my $script_name = $self->{script_name};
@@ -139,36 +139,33 @@ sub to_classes {
   
   my $script_info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
-  my $runtime = $script_info->runtime;
+  my $class_infos = $self->to_class_infos;
   
-  my $class_names = $script_info->get_class_names;
+  my $class_names = [];
   
-  my $classes = [];
-  
-  for my $class_name (sort @$class_names) {
+  for my $class_info (sort @$class_infos) {
     
-    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    my $class_name_only = $class_info->{class_name};
     
-    my $class = "$class_name";
+    my $version = $class_info->{version};
+    
+    my $version_from = $class_info->{version_from};
+    
+    my $class_name = "$class_name_only";
     
     if ($with_version) {
-      my $version_string = $basic_type->get_version_string;
-      
-      my $basic_type_in_version_from = $basic_type->get_basic_type_in_version_from;
-      
-      if (defined $version_string) {
-        $class .= " $version_string";
+      if (defined $version) {
+        $class_name .= " $version";
       }
-      elsif ($basic_type_in_version_from) {
-        my $basic_type_name_in_version_from = $basic_type_in_version_from->get_name;
-        $class .= " (version_from $basic_type_name_in_version_from)";
+      elsif ($version_from) {
+        $class_name .= " (version_from $version_from)";
       }
     }
     
-    push @$classes, $class;
+    push @$class_names, $class_name;
   }
   
-  return $classes;
+  return $class_names;
 }
 
 sub to_cpanm_commands {
