@@ -5590,6 +5590,37 @@ get_version_string(...)
   XSRETURN(1);
 }
 
+SV*
+get_basic_type_in_version_from(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  void* basic_type_in_version_from = boot_env->api->basic_type->get_basic_type_in_version_from(runtime, basic_type);
+  
+  SV* sv_basic_type_in_version_from = &PL_sv_undef;
+  
+  if (basic_type_in_version_from) {
+    sv_basic_type_in_version_from = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ basic_type_in_version_from, "SPVM::Builder::Native::BasicType");
+    HV* hv_basic_type_in_version_from = (HV*)SvRV(sv_basic_type_in_version_from);
+    
+    (void)hv_store(hv_basic_type_in_version_from, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+  }
+  
+  XPUSHs(sv_basic_type_in_version_from);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Builder::Native::Method		PACKAGE = SPVM::Builder::Native::Method
 
 SV*
