@@ -36,7 +36,22 @@ my $dev_null = File::Spec->devnull;
   }
 }
 
+# Basic
 {
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM t/04_spvmcc/script/myapp.spvm);
+    my $output = `$spvmcc_cmd`;
+    
+    like($output, qr|^SPVM$|m);
+    like($output, qr|^TestCase::NativeAPI2$|m);
+    like($output, qr|^TestCase::Precompile$|m);
+    like($output, qr|^Byte$|m);
+    like($output, qr|\x0A$|s);
+    
+    warn $output;
+  }
+  
+  # --with-version
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --with-version t/04_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
@@ -53,6 +68,18 @@ my $dev_null = File::Spec->devnull;
 
 {
   # --cpanm
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanm t/04_spvmcc/script/myapp.spvm);
+    my $output = `$spvmcc_cmd`;
+    
+    like($output, qr|^cpanm SPVM$|m);
+    like($output, qr|^cpanm SPVM::TestCase::NativeAPI2$|m);
+    like($output, qr|^cpanm SPVM::TestCase::Precompile$|m);
+    like($output, qr|^cpanm SPVM::Byte$|m);
+    like($output, qr|\x0A$|s);
+  }
+  
+  # --cpanm, --with-version
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanm --with-version t/04_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
