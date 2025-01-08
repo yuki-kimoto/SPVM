@@ -254,6 +254,8 @@ L<All SPVM Documents|SPVM::Document>
 
 =item * L<spvmdist - Distributing SPVM Modules|spvmdist>
 
+=item * L<spvmdeps - Class Dependencies Analyzer|spvmdeps>
+
 =back
 
 =head1 Modules

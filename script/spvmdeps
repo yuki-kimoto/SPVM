@@ -96,7 +96,7 @@ else {
 
 =head1 Name
 
-spvmdeps - Analyzing Class Dependencies Analyzer
+spvmdeps - Class Dependencies Analyzer
 
 =head1 Description
 
