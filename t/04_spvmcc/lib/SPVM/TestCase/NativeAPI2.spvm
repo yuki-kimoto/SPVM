@@ -1,7 +1,9 @@
 class TestCase::NativeAPI2 : precompile {
   
   version "1.002";
-
+  
+  # use TestCase::Resource::Mylib1;
+  
 =pod TODO
 
   use TestCase::Resource::Mylib1;
