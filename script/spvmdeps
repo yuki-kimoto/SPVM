@@ -247,20 +247,18 @@ Output Examples:
 
   --cpanm
 
-Prints cpanm commands with all dependent cpan modules.
+Prints cpanm commands with all dependent cpan modules. Classes its version is specified are considered CPAN dependencies modules.
 
 Output Examples:
   
   cpanm SPVM
   cpanm SPVM::Sys
   cpanm SPVM::Regex
-  cpanm SPVM::Foo
   
   # --with-version
   cpanm SPVM@1.001
   cpanm SPVM::Sys@1.201
   cpanm SPVM::Regex@0.980
-  cpanm SPVM::Foo
 
 =head1 lib Directive
 

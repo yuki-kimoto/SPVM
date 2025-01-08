@@ -73,7 +73,7 @@ my $dev_null = File::Spec->devnull;
     like($output, qr|^cpanm SPVM$|m);
     like($output, qr|^cpanm SPVM::TestCase::NativeAPI2$|m);
     like($output, qr|^cpanm SPVM::TestCase::Precompile$|m);
-    like($output, qr|^cpanm SPVM::Byte$|m);
+    unlike($output, qr|SPVM::Byte|m);
     like($output, qr|\x0A$|s);
   }
   
@@ -85,7 +85,7 @@ my $dev_null = File::Spec->devnull;
     like($output, qr|^cpanm SPVM\@[\.\d]+$|m);
     like($output, qr|^cpanm SPVM::TestCase::NativeAPI2\@1\.002$|m);
     like($output, qr|^cpanm SPVM::TestCase::Precompile\@2\.005$|m);
-    like($output, qr|^cpanm SPVM::Byte$|m);
+    unlike($output, qr|SPVM::Byte|m);
     like($output, qr|\x0A$|s);
   }
 }

@@ -236,24 +236,24 @@ sub to_cpanm_commands {
     
     my $version = $class_info->{version};
     
-    my $version_from = $class_info->{version_from};
-    
-    my $cpanm_command = "cpanm ";
-    
-    if ($class_name eq "SPVM") {
-      $cpanm_command .= "SPVM";
-    }
-    else {
-      $cpanm_command .= "SPVM::$class_name";
-    }
-    
-    if ($with_version) {
-      if (defined $version) {
-        $cpanm_command .= "\@$version";
+    if (defined $version) {
+      my $cpanm_command = "cpanm ";
+      
+      if ($class_name eq "SPVM") {
+        $cpanm_command .= "SPVM";
       }
+      else {
+        $cpanm_command .= "SPVM::$class_name";
+      }
+      
+      if ($with_version) {
+        if (defined $version) {
+          $cpanm_command .= "\@$version";
+        }
+      }
+      
+      push @$cpanm_commands, $cpanm_command;
     }
-    
-    push @$cpanm_commands, $cpanm_command;
   }
   
   return $cpanm_commands;
