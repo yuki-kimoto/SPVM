@@ -24,6 +24,17 @@ sub script_name {
   }
 }
 
+sub with_version {
+  my $self = shift;
+  if (@_) {
+    $self->{with_version} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{with_version};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -85,6 +96,8 @@ sub to_classes {
   
   my $script_name = $self->{script_name};
   
+  my $with_version = $self->{with_version};
+  
   my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
   my $runtime = $info->runtime;
@@ -97,12 +110,14 @@ sub to_classes {
     
     my $basic_type = $runtime->get_basic_type_by_name($class_name);
     
-    my $version_string = $basic_type->get_version_string;
-    
     my $dependency_info = "$class_name";
     
-    if (length $version_string) {
-      $dependency_info .= " $version_string";
+    if ($with_version) {
+      my $version_string = $basic_type->get_version_string;
+      
+      if (length $version_string) {
+        $dependency_info .= " $version_string";
+      }
     }
     
     push @$classes, $dependency_info;
@@ -116,6 +131,8 @@ sub to_cpanm_commands {
   
   my $script_name = $self->{script_name};
   
+  my $with_version = $self->{with_version};
+  
   my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
   my $runtime = $info->runtime;
@@ -128,8 +145,6 @@ sub to_cpanm_commands {
     
     my $basic_type = $runtime->get_basic_type_by_name($class_name);
     
-    my $version_string = $basic_type->get_version_string;
-    
     my $cpanm_command = "cpanm ";
     
     if ($class_name eq "SPVM") {
@@ -139,8 +154,12 @@ sub to_cpanm_commands {
       $cpanm_command .= "SPVM::$class_name";
     }
     
-    if (length $version_string) {
-      $cpanm_command .= "\@$version_string";
+    if ($with_version) {
+      my $version_string = $basic_type->get_version_string;
+      
+      if (length $version_string) {
+        $cpanm_command .= "\@$version_string";
+      }
     }
     
     push @$cpanm_commands, $cpanm_command;

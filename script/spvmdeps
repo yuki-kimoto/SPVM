@@ -18,6 +18,7 @@ SPVM::Builder::Util::getopt
   'o|output=s'        => \my $output_file,
   'resource-info' => \my $show_resource_info,
   'cpanm' => \my $cpanm_option_on,
+  'with-version' => \my $with_version_option_on,
 ;
 
 if ($help) {
@@ -44,7 +45,7 @@ my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($so
 
 unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_by_lib_directive;
 
-my $dependency_analyzer = SPVM::Builder::DependencyAnalyzer->new(script_name => $script_name);
+my $dependency_analyzer = SPVM::Builder::DependencyAnalyzer->new(script_name => $script_name, with_version => $with_version_option_on);
 
 unless (defined $script_name) {
   die "[spvmdeps command]spvmdeps command needs <script_name>."

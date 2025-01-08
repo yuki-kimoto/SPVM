@@ -38,7 +38,7 @@ my $dev_null = File::Spec->devnull;
 
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --with-version t/04_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^SPVM [\.\d]+$|m);
@@ -54,7 +54,7 @@ my $dev_null = File::Spec->devnull;
 {
   # --cpanm
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanm t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanm --with-version t/04_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^cpanm SPVM\@[\.\d]+$|m);
