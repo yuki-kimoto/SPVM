@@ -17,8 +17,7 @@ SPVM::Builder::Util::getopt
   # spvmdeps only
   'o|output=s'        => \my $output_file,
   'resource-info' => \my $show_resource_info,
-  'dependency' => \my $show_dependency,
-  'cpanm' => \my $cpanm,
+  'cpanm' => \my $cpanm_option_on,
 ;
 
 if ($help) {
@@ -57,19 +56,21 @@ if ($show_resource_info) {
   
   print $resource_info;
 }
-elsif ($show_dependency) {
-  
-  my $dependency = $dependency_analyzer->dump_classes;
-  
-  print $dependency;
-}
-elsif ($cpanm) {
+elsif ($cpanm_option_on) {
   
   my $cpanm_commands = $dependency_analyzer->to_cpanm_commands;
   
   my $cpanm_commands_lines = SPVM::Builder::DependencyAnalyzer->to_lines($cpanm_commands);
   
   print $cpanm_commands_lines;
+}
+else {
+  
+  my $classes = $dependency_analyzer->to_classes;
+  
+  my $classes_lines = SPVM::Builder::DependencyAnalyzer->to_lines($classes);
+  
+  print $classes_lines;
 }
 
 =encoding utf8

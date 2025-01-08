@@ -37,21 +37,8 @@ my $dev_null = File::Spec->devnull;
 }
 
 {
-  # --resource-info
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --resource-info t/04_spvmcc/script/myapp.spvm);
-    my $output = `$spvmcc_cmd`;
-    like($output, qr|\Q[TestCase::NativeAPI2]|);
-    like($output, qr|TestCase::Resource::Mylib1|);
-    like($output, qr|TestCase::Resource::Mylib2|);
-    like($output, qr|\Q[TestCase::Precompile]|);
-  }
-}
-
-{
-  # --dependency
-  {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --dependency t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM t/04_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^SPVM [\.\d]+$|m);
@@ -75,6 +62,18 @@ my $dev_null = File::Spec->devnull;
     like($output, qr|^cpanm SPVM::TestCase::Precompile\@2\.005$|m);
     like($output, qr|^cpanm SPVM::Byte$|m);
     like($output, qr|\x0A$|s);
+  }
+}
+
+{
+  # --resource-info
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --resource-info t/04_spvmcc/script/myapp.spvm);
+    my $output = `$spvmcc_cmd`;
+    like($output, qr|\Q[TestCase::NativeAPI2]|);
+    like($output, qr|TestCase::Resource::Mylib1|);
+    like($output, qr|TestCase::Resource::Mylib2|);
+    like($output, qr|\Q[TestCase::Precompile]|);
   }
 }
 

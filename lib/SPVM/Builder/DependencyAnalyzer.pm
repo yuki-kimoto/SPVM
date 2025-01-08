@@ -80,7 +80,7 @@ EOS
   return $resource_info;
 }
 
-sub dump_classes {
+sub to_classes {
   my ($self) = @_;
   
   my $script_name = $self->{script_name};
@@ -91,7 +91,7 @@ sub dump_classes {
   
   my $class_names = $info->get_class_names;
   
-  my $dependency_infos = [];
+  my $classes = [];
   
   for my $class_name (sort @$class_names) {
     
@@ -105,12 +105,10 @@ sub dump_classes {
       $dependency_info .= " $version_string";
     }
     
-    push @$dependency_infos, $dependency_info;
+    push @$classes, $dependency_info;
   }
   
-  my $dependency = join("\x0A", @$dependency_infos) . "\x0A";
-  
-  return $dependency;
+  return $classes;
 }
 
 sub to_cpanm_commands {
