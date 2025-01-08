@@ -66,6 +66,7 @@ my $dev_null = File::Spec->devnull;
   }
 }
 
+# --cpanm
 {
   # --cpanm
   {
