@@ -3,6 +3,16 @@
   [Incompatible Changes]
     * Rename SPVM::Builder::Config::Info to SPVM::Builder::ScriptInfo.
     * SPVM::Builder::ScriptInfo#get_class_names returns also multi-numeric types.
+  [Internal Changes]
+    * Rename version_from_basic_type_name member in struct spvm_basic_type to basic_type_name_in_version_from.
+    * Rename version_from_basic_type member in struct spvm_runtime_basic_type to basic_type_in_version_from.
+    
+  [New Features]
+    * Add get_basic_type_in_version_from basic type native API.
+    * Add Native::BasicType#get_basic_type_in_version_from method.
+  
+  [Bug Fix]
+    * Fix a bug that Native::BasicType#get_parent method does not work well.
     
 0.990036 2024-01-07
 

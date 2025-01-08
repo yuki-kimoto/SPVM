@@ -49,6 +49,7 @@ SPVM_API_BASIC_TYPE* SPVM_API_BASIC_TYPE_new_api() {
     SPVM_API_BASIC_TYPE_is_super_class,
     SPVM_API_BASIC_TYPE_get_file,
     SPVM_API_BASIC_TYPE_get_current_runtime,
+    SPVM_API_BASIC_TYPE_get_basic_type_in_version_from,
   };
   
   SPVM_API_BASIC_TYPE* native_apis = calloc(1, sizeof(native_apis_init));
@@ -284,4 +285,9 @@ const char* SPVM_API_BASIC_TYPE_get_file(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BAS
 SPVM_RUNTIME* SPVM_API_BASIC_TYPE_get_current_runtime(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
   return basic_type->current_runtime;
+}
+
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_BASIC_TYPE_get_basic_type_in_version_from(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
+  
+  return basic_type->basic_type_in_version_from;
 }

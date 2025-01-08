@@ -196,6 +196,14 @@ C<method get_class_vars : L<Native::ClassVar|SPVM::Native::ClassVar>[] ($options
 
 Returns class variables.
 
+=head2 get_basic_type_in_version_from
+
+C<method get_basic_type_in_version_from : L<Native::BasicType|SPVM::Native::BasicType> ();>
+
+Returns the basic typeL<Native::BasicType|SPVM::Native::BasicType> object specified by C<version_from> statement.
+
+If a memory error occurs, an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

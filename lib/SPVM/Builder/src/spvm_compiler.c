@@ -961,9 +961,9 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       runtime_basic_type->version_string = runtime_basic_type->constant_strings[basic_type_version_string->index].value;
     }
     
-    if (basic_type->version_from_basic_type_name) {
-      SPVM_BASIC_TYPE* version_from_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->version_from_basic_type_name, strlen(basic_type->version_from_basic_type_name));
-      runtime_basic_type->version_from_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, version_from_basic_type->id);
+    if (basic_type->basic_type_name_in_version_from) {
+      SPVM_BASIC_TYPE* basic_type_in_version_from = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->basic_type_name_in_version_from, strlen(basic_type->basic_type_name_in_version_from));
+      runtime_basic_type->basic_type_in_version_from = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_in_version_from->id);
     }
     
     runtime_basic_type->is_anon = basic_type->is_anon;
