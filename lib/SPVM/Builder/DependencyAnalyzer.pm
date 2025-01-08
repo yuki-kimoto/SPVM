@@ -64,14 +64,14 @@ sub dump_resource_info {
   
   my $script_name = $self->{script_name};
   
-  my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
+  my $script_info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
-  my $class_names = [grep { $info->is_resource_loader($_) } @{$info->get_class_names}];
+  my $class_names = [grep { $script_info->is_resource_loader($_) } @{$script_info->get_class_names}];
   
   my $resource_info = "";
   
   for my $class_name (@$class_names) {
-    my $config_file = $info->get_config_file($class_name);
+    my $config_file = $script_info->get_config_file($class_name);
     
     $resource_info .= <<"EOS";
 [$class_name]
@@ -79,16 +79,55 @@ sub dump_resource_info {
 # Loaded Resources:
 EOS
     
-    for my $resource_name (@{$info->get_config($class_name)->get_resource_names}) {
+    for my $resource_name (@{$script_info->get_config($class_name)->get_resource_names}) {
       $resource_info .= "#    $resource_name\n";
     }
     
-    my $config_content = $info->get_config_content($class_name);
+    my $config_content = $script_info->get_config_content($class_name);
     
     $resource_info .= "$config_content\n";
   }
   
   return $resource_info;
+}
+
+sub to_class_infos {
+  my ($self) = @_;
+  
+  my $script_name = $self->{script_name};
+  
+  my $script_info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
+  
+  my $runtime = $script_info->runtime;
+  
+  my $class_names = $script_info->get_class_names;
+  
+  my $class_infos = [];
+  
+  for my $class_name (sort @$class_names) {
+    
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $class_info = {};
+    
+    $class_info->{class_name} = $class_name;
+    
+    my $version_string = $basic_type->get_version_string;
+    
+    my $basic_type_in_version_from = $basic_type->get_basic_type_in_version_from;
+    
+    if (defined $version_string) {
+      $class_info .= " $version_string";
+    }
+    elsif ($basic_type_in_version_from) {
+      my $basic_type_name_in_version_from = $basic_type_in_version_from->get_name;
+      $class_info .= " (version_from $basic_type_name_in_version_from)";
+    }
+    
+    push @$class_infos, $class_info;
+  }
+  
+  return $class_infos;
 }
 
 sub to_classes {
@@ -98,11 +137,11 @@ sub to_classes {
   
   my $with_version = $self->{with_version};
   
-  my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
+  my $script_info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
-  my $runtime = $info->runtime;
+  my $runtime = $script_info->runtime;
   
-  my $class_names = $info->get_class_names;
+  my $class_names = $script_info->get_class_names;
   
   my $classes = [];
   
@@ -117,7 +156,7 @@ sub to_classes {
       
       my $basic_type_in_version_from = $basic_type->get_basic_type_in_version_from;
       
-      if (length $version_string) {
+      if (defined $version_string) {
         $class .= " $version_string";
       }
       elsif ($basic_type_in_version_from) {
@@ -139,11 +178,11 @@ sub to_cpanm_commands {
   
   my $with_version = $self->{with_version};
   
-  my $info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
+  my $script_info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
-  my $runtime = $info->runtime;
+  my $runtime = $script_info->runtime;
   
-  my $class_names = $info->get_class_names;
+  my $class_names = $script_info->get_class_names;
   
   my $cpanm_commands = [];
   
@@ -163,7 +202,7 @@ sub to_cpanm_commands {
     if ($with_version) {
       my $version_string = $basic_type->get_version_string;
       
-      if (length $version_string) {
+      if (defined $version_string) {
         $cpanm_command .= "\@$version_string";
       }
     }
