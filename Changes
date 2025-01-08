@@ -3,6 +3,7 @@
   [Incompatible Changes]
     * Rename SPVM::Builder::Config::Info to SPVM::Builder::ScriptInfo.
     * SPVM::Builder::ScriptInfo#get_class_names returns also multi-numeric types.
+    * Remove --resource-info option in spvmcc command in favor of spvmdeps command.
     
   [Internal Changes]
     * Rename version_from_basic_type_name member in struct spvm_basic_type to basic_type_name_in_version_from.

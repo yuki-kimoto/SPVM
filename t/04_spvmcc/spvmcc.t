@@ -37,18 +37,6 @@ my $dev_null = File::Spec->devnull;
 }
 
 {
-  # --resource-info
-  {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --resource-info t/04_spvmcc/script/myapp.spvm);
-    my $output = `$spvmcc_cmd`;
-    like($output, qr|\Q[TestCase::NativeAPI2]|);
-    like($output, qr|TestCase::Resource::Mylib1|);
-    like($output, qr|TestCase::Resource::Mylib2|);
-    like($output, qr|\Q[TestCase::Precompile]|);
-  }
-}
-
-{
   # --dependency
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --dependency t/04_spvmcc/script/myapp.spvm);
