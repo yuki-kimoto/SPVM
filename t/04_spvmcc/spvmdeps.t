@@ -129,9 +129,9 @@ my $dev_null = File::Spec->devnull;
     
     is($class_infos->[0]{class_name}, "Address");
     is($class_infos->[0]{version_from}, "SPVM");
-    is($class_infos->[-1]{class_name}, "TestCase::Precompile");
-    is($class_infos->[-1]{version}, "2.005");
     
+    my ($class_info_testcase_precompile) = grep { $_->{class_name} eq "TestCase::Precompile"} @$class_infos;
+    is($class_info_testcase_precompile->{version}, "2.005");
   }
 }
 

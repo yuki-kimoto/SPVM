@@ -2,6 +2,8 @@ class TestCase::Precompile : precompile {
   
   version "2.005";
   
+  use TestCase::Resource::Mylib1;
+  
   static method sum : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }
