@@ -17,6 +17,7 @@ SPVM::Builder::Util::getopt
   # spvmdeps only
   'o|output=s'        => \my $output_file,
   'resource-info' => \my $show_resource_info,
+  'json' => \my $json_option_on,
   'cpanm' => \my $cpanm_option_on,
   'with-version' => \my $with_version_option_on,
 ;
@@ -64,6 +65,11 @@ elsif ($cpanm_option_on) {
   my $cpanm_commands_lines = SPVM::Builder::DependencyAnalyzer->to_lines($cpanm_commands);
   
   print $cpanm_commands_lines;
+}
+elsif ($json_option_on) {
+  my $json = $dependency_analyzer->to_json;
+  
+  print $json;
 }
 else {
   my $class_names = $dependency_analyzer->to_class_names;
@@ -189,14 +195,67 @@ Same as L</"--include-dir">.
 
 Shows all config files loading resources.
 
+=head2 --json
+
+  --json
+
+Prints JSON that contains all dependent class information.
+
+Output Examples:
+  
+  [
+    {"class_name":"Address"},
+    {"class_name":"Bool"},
+    {"class_name":"Byte"},
+    {"class_name":"CommandInfo"},
+    {"class_name":"Double"},
+    {"class_name":"Error"},
+    {"class_name":"Error::Compile"},
+    {"class_name":"Error::NotSupported"},
+    {"class_name":"Error::System"},
+    {"class_name":"Float"},
+    {"class_name":"Int"},
+    {"class_name":"Long"},
+    {"class_name":"SPVM"},
+    {"class_name":"Short"},
+    {"class_name":"TestCase::NativeAPI2"},
+    {"class_name":"TestCase::Precompile"}
+  ]
+  
+  # --with-version
+  [
+    {"class_name":"Address","version_from":"SPVM"},
+    {"class_name":"Bool","version_from":"SPVM"},
+    {"class_name":"Byte","version_from":"SPVM"},
+    {"class_name":"CommandInfo","version_from":"SPVM"},
+    {"class_name":"Double","version_from":"SPVM"},
+    {"class_name":"Error","version_from":"SPVM"},
+    {"class_name":"Error::Compile","version_from":"SPVM"},
+    {"class_name":"Error::NotSupported","version_from":"SPVM"},
+    {"class_name":"Error::System","version_from":"SPVM"},
+    {"class_name":"Float","version_from":"SPVM"},
+    {"class_name":"Int","version_from":"SPVM"},
+    {"class_name":"Long","version_from":"SPVM"},
+    {"class_name":"SPVM","version":"0.990036"},
+    {"class_name":"Short","version_from":"SPVM"},
+    {"class_name":"TestCase::NativeAPI2","version":"1.002"},
+    {"class_name":"TestCase::Precompile","version":"2.005"}
+  ]
+
 =head2 --cpanm
 
   --cpanm
 
-Prints cpanm commands with all dependent cpan modules and their versions.
+Prints cpanm commands with all dependent cpan modules.
 
-Output Example:
-
+Output Examples:
+  
+  cpanm SPVM
+  cpanm SPVM::Sys
+  cpanm SPVM::Regex
+  cpanm SPVM::Foo
+  
+  # --with-version
   cpanm SPVM@1.001
   cpanm SPVM::Sys@1.201
   cpanm SPVM::Regex@0.980

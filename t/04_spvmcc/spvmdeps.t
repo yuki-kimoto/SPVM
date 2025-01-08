@@ -14,6 +14,7 @@ use SPVM::Builder::Util;
 
 use SPVM::Builder;
 use File::Spec;
+use JSON::PP;
 
 my $devnull = File::Spec->devnull;
 
@@ -88,6 +89,49 @@ my $dev_null = File::Spec->devnull;
     like($output, qr|^cpanm SPVM::TestCase::Precompile\@2\.005$|m);
     like($output, qr|^cpanm SPVM::Byte$|m);
     like($output, qr|\x0A$|s);
+  }
+}
+
+# --json
+{
+  # --json
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --json t/04_spvmcc/script/myapp.spvm);
+    my $output = `$spvmcc_cmd`;
+    
+    like($output, qr|^  \{"class_name":"SPVM"\}|m);
+    like($output, qr|^  \{"class_name":"TestCase::NativeAPI2"\}|m);
+    like($output, qr|^  \{"class_name":"TestCase::Precompile"\}|m);
+    like($output, qr|^  \{"class_name":"Byte"\}|m);
+    like($output, qr|\x0A$|s);
+    
+    my $class_infos = JSON::PP::decode_json($output);
+    
+    ok($class_infos);
+    
+    is($class_infos->[0]{class_name}, "Address");
+    
+  }
+  
+  # --json, --with-version
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --json --with-version t/04_spvmcc/script/myapp.spvm);
+    my $output = `$spvmcc_cmd`;
+    
+    like($output, qr|^  \{"class_name":"SPVM","version":"[\.\d]+"\}|m);
+    like($output, qr|^  \{"class_name":"TestCase::NativeAPI2","version":"1\.002"\}|m);
+    like($output, qr|^  \{"class_name":"TestCase::Precompile","version":"2\.005"\}|m);
+    like($output, qr|\x0A$|s);
+    
+    my $class_infos = JSON::PP::decode_json($output);
+    
+    ok($class_infos);
+    
+    is($class_infos->[0]{class_name}, "Address");
+    is($class_infos->[0]{version_from}, "SPVM");
+    is($class_infos->[-1]{class_name}, "TestCase::Precompile");
+    is($class_infos->[-1]{version}, "2.005");
+    
   }
 }
 

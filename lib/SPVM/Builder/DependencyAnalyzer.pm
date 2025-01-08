@@ -3,7 +3,7 @@ package SPVM::Builder::DependencyAnalyzer;
 use strict;
 use warnings;
 use Carp 'confess';
-use JSON::PP;
+use JSON::PP ();
 use File::Basename 'basename';
 
 use SPVM::Builder;
@@ -130,6 +130,55 @@ sub to_class_infos {
   return $class_infos;
 }
 
+sub to_json {
+  my ($self) = @_;
+  
+  my $script_name = $self->{script_name};
+  
+  my $with_version = $self->{with_version};
+  
+  my $script_info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
+  
+  my $class_infos = $self->to_class_infos;
+  
+  my $class_names = [];
+  
+  my $json = "[\x0A";
+  
+  for (my $i = 0; $i < @$class_infos; $i++) {
+    my $class_info = $class_infos->[$i];
+    
+    my $class_name = $class_info->{class_name};
+    
+    my $version = $class_info->{version};
+    
+    my $version_from = $class_info->{version_from};
+    
+    $json .= "  {";
+    
+    $json .= "\"class_name\":\"$class_name\"";
+    if ($with_version) {
+      if (defined $version) {
+        $json .= ",\"version\":\"$version\"";
+      }
+      elsif ($version_from) {
+        $json .= ",\"version_from\":\"$version_from\"";
+      }
+    }
+    $json .= "}";
+    
+    if ($i < @$class_infos - 1) {
+      $json .= ",";
+    }
+    
+    $json .= "\x0A";
+  }
+  
+  $json .= "]\x0A";
+  
+  return $json;
+}
+
 sub to_class_names {
   my ($self) = @_;
   
@@ -143,7 +192,7 @@ sub to_class_names {
   
   my $class_names = [];
   
-  for my $class_info (sort @$class_infos) {
+  for my $class_info (@$class_infos) {
     
     my $class_name_only = $class_info->{class_name};
     
@@ -181,7 +230,7 @@ sub to_cpanm_commands {
   
   my $cpanm_commands = [];
   
-  for my $class_info (sort @$class_infos) {
+  for my $class_info (@$class_infos) {
     
     my $class_name = $class_info->{class_name};
     
