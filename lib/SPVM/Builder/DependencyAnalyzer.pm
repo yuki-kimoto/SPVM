@@ -117,11 +117,11 @@ sub to_class_infos {
     my $basic_type_in_version_from = $basic_type->get_basic_type_in_version_from;
     
     if (defined $version_string) {
-      $class_info .= " $version_string";
+      $class_info->{version} = $version_string;
     }
     elsif ($basic_type_in_version_from) {
       my $basic_type_name_in_version_from = $basic_type_in_version_from->get_name;
-      $class_info .= " (version_from $basic_type_name_in_version_from)";
+      $class_info->{version_from} = $basic_type_name_in_version_from;
     }
     
     push @$class_infos, $class_info;
