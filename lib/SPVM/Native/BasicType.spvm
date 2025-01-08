@@ -126,4 +126,6 @@ class Native::BasicType : pointer {
     return $class_vars;
   }
   
+  native method get_basic_type_in_version_from : Native::BasicType ();
+  
 }

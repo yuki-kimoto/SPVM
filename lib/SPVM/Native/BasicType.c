@@ -585,3 +585,40 @@ int32_t SPVM__Native__Env__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Native__BasicType__get_basic_type_in_version_from(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* self = env->get_pointer(env, stack, obj_self);
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  void* basic_type_in_version_from = env->api->basic_type->get_basic_type_in_version_from(runtime, self);
+  
+  spvm_warn("%p", basic_type_in_version_from);
+  
+  void* obj_basic_type_in_version_from = NULL;
+  if (basic_type_in_version_from) {
+    void* obj_address_basic_type_in_version_from = env->new_pointer_object_by_name(env, stack, "Address", basic_type_in_version_from, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    stack[0].oval = obj_address_basic_type_in_version_from;
+    env->call_class_method_by_name(env, stack, "Native::BasicType", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    obj_basic_type_in_version_from = stack[0].oval;
+    env->set_no_free(env, stack, obj_basic_type_in_version_from, 1);
+    
+    env->set_field_object_by_name(env, stack, obj_basic_type_in_version_from, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+  }
+  
+  stack[0].oval = obj_basic_type_in_version_from;
+  
+  return 0;
+}
+
