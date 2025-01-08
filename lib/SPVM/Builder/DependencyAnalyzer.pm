@@ -177,15 +177,17 @@ sub to_cpanm_commands {
   
   my $script_info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
   
-  my $runtime = $script_info->runtime;
-  
-  my $class_names = $script_info->get_class_names;
+  my $class_infos = $self->to_class_infos;
   
   my $cpanm_commands = [];
   
-  for my $class_name (sort @$class_names) {
+  for my $class_info (sort @$class_infos) {
     
-    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    my $class_name = $class_info->{class_name};
+    
+    my $version = $class_info->{version};
+    
+    my $version_from = $class_info->{version_from};
     
     my $cpanm_command = "cpanm ";
     
@@ -197,10 +199,8 @@ sub to_cpanm_commands {
     }
     
     if ($with_version) {
-      my $version_string = $basic_type->get_version_string;
-      
-      if (defined $version_string) {
-        $cpanm_command .= "\@$version_string";
+      if (defined $version) {
+        $cpanm_command .= "\@$version";
       }
     }
     
