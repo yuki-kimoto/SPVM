@@ -183,6 +183,14 @@ C<void* (*get_current_runtime)(L<void* runtime|SPVM::Document::NativeAPI::Runtim
 
 Returns the runtime that owns the basic type I<basic_type>.
 
+=head2 get_basic_type_in_version_from
+
+C<void* (*get_basic_type_in_version_from)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+
+void* (*get_basic_type_in_version_from)(void* runtime, void* basic_type)
+
+Returns the basic type L<basic type|SPVM::Document::NativeAPI::BasicType> object specified by C<version_from> statement.
+
 =head1 Native API IDs
 
   0 get_name
@@ -209,6 +217,7 @@ Returns the runtime that owns the basic type I<basic_type>.
   21 is_super_class
   22 get_file
   23 get_current_runtime
+  24 get_basic_type_in_version_from
 
 =head1 See Aloso
 

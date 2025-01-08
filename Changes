@@ -4,6 +4,8 @@
     * Rename version_from_basic_type_name member in struct spvm_basic_type to basic_type_name_in_version_from.
     * Rename version_from_basic_type member in struct spvm_runtime_basic_type to basic_type_in_version_from.
     
+  [New Features]
+    * Add get_basic_type_in_version_from basic type native API.
     
 0.990036 2024-01-07
 
