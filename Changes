@@ -7,6 +7,10 @@
   [New Features]
     * Add get_basic_type_in_version_from basic type native API.
     * Add Native::BasicType#get_basic_type_in_version_from method.
+  
+  [Bug Fix]
+    * Fix a bug that Native::BasicType#get_parent method does not work well.
+    
 0.990036 2024-01-07
 
   [New Features]

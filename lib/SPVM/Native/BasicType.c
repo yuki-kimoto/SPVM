@@ -121,7 +121,7 @@ int32_t SPVM__Native__BasicType__get_parent(SPVM_ENV* env, SPVM_VALUE* stack) {
     stack[0].oval = obj_address_parent;
     env->call_class_method_by_name(env, stack, "Native::BasicType", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
-    void* obj_parent = stack[0].oval;
+    obj_parent = stack[0].oval;
     env->set_no_free(env, stack, obj_parent, 1);
     
     env->set_field_object_by_name(env, stack, obj_parent, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
@@ -600,8 +600,6 @@ int32_t SPVM__Native__BasicType__get_basic_type_in_version_from(SPVM_ENV* env, S
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
   void* basic_type_in_version_from = env->api->basic_type->get_basic_type_in_version_from(runtime, self);
-  
-  spvm_warn("%p", basic_type_in_version_from);
   
   void* obj_basic_type_in_version_from = NULL;
   if (basic_type_in_version_from) {
