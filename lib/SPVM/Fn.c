@@ -1089,14 +1089,14 @@ int32_t SPVM__Fn__get_basic_type_name_in_version_from(SPVM_ENV* env, SPVM_VALUE*
     return env->die(env, stack, "The class specified by the basic type name $basic_type_name must be loaded.", __func__, FILE_NAME, __LINE__);
   }
   
-  const char* version_from_basic_type_name = env->get_basic_type_name_in_version_from(env, stack, basic_type);
+  const char* basic_type_name_in_version_from = env->get_basic_type_name_in_version_from(env, stack, basic_type);
   
-  void* obj_version_from_basic_type_name = NULL;
-  if (version_from_basic_type_name) {
-    obj_version_from_basic_type_name = env->new_string(env, stack, version_from_basic_type_name, strlen(version_from_basic_type_name));
+  void* obj_basic_type_name_in_version_from = NULL;
+  if (basic_type_name_in_version_from) {
+    obj_basic_type_name_in_version_from = env->new_string(env, stack, basic_type_name_in_version_from, strlen(basic_type_name_in_version_from));
   }
   
-  stack[0].oval = obj_version_from_basic_type_name;
+  stack[0].oval = obj_basic_type_name_in_version_from;
   
   return 0;
 }

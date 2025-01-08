@@ -8212,16 +8212,16 @@ class TestCase::Module::Fn {
   static method get_basic_type_name_in_version_from : int () {
     
     {
-      my $version_from_basic_type_name = Fn->get_basic_type_name_in_version_from("TestCase::Examples");
+      my $basic_type_name_in_version_from = Fn->get_basic_type_name_in_version_from("TestCase::Examples");
       
-      unless ($version_from_basic_type_name eq "TestCase") {
+      unless ($basic_type_name_in_version_from eq "TestCase") {
         return 0;
       }
     }
     
     {
-      my $version_from_basic_type_name = Fn->get_basic_type_name_in_version_from("TestCase::Empty");
-      if ($version_from_basic_type_name) {
+      my $basic_type_name_in_version_from = Fn->get_basic_type_name_in_version_from("TestCase::Empty");
+      if ($basic_type_name_in_version_from) {
         return 0;
       }
     }

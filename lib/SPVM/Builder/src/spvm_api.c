@@ -5610,10 +5610,10 @@ int32_t SPVM_API_seed_initialized(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 const char* SPVM_API_get_basic_type_name_in_version_from(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
-  const char* version_from_basic_type_name = NULL;
-  if (basic_type->version_from_basic_type) {
-    version_from_basic_type_name = basic_type->version_from_basic_type->name;
+  const char* basic_type_name_in_version_from = NULL;
+  if (basic_type->basic_type_in_version_from) {
+    basic_type_name_in_version_from = basic_type->basic_type_in_version_from->name;
   }
   
-  return version_from_basic_type_name;
+  return basic_type_name_in_version_from;
 }

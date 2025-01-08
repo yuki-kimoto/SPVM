@@ -1,3 +1,10 @@
+0.990037 2024-01-08
+  
+  [Internal Changes]
+    * Rename version_from_basic_type_name member in struct spvm_basic_type to basic_type_name_in_version_from.
+    * Rename version_from_basic_type member in struct spvm_runtime_basic_type to basic_type_in_version_from.
+    
+    
 0.990036 2024-01-07
 
   [New Features]

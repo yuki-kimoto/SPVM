@@ -425,7 +425,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         
-        if (type->basic_type->version_from_basic_type_name) {
+        if (type->basic_type->basic_type_name_in_version_from) {
           SPVM_COMPILER_error(compiler, "Both version statement and version_from statement cannnot be used at the same time.\n  at %s line %d", op_decl->file, op_decl->line);
           break;
         }
@@ -517,7 +517,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         type->basic_type->version_from = op_version_from->uv.version_from;
         
-        type->basic_type->version_from_basic_type_name = op_version_from->uv.version_from->basic_type_name;
+        type->basic_type->basic_type_name_in_version_from = op_version_from->uv.version_from->basic_type_name;
       }
       // use statement
       else if (op_decl->id == SPVM_OP_C_ID_USE) {
