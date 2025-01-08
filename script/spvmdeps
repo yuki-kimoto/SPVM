@@ -47,40 +47,29 @@ unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_b
 
 my $dependency_analyzer = SPVM::Builder::DependencyAnalyzer->new(script_name => $script_name);
 
+unless (defined $script_name) {
+  die "[spvmdeps command]spvmdeps command needs <script_name>."
+}
+
 if ($show_resource_info) {
-  
-  unless (defined $script_name) {
-    die "[spvmdeps command]--resource-info option needs <script_name>."
-  }
   
   my $resource_info = $dependency_analyzer->dump_resource_info;
   
   print $resource_info;
-  exit 0;
 }
 elsif ($show_dependency) {
-  
-  unless (defined $script_name) {
-    die "[spvmdeps command]--dependency option needs <script_name>."
-  }
   
   my $dependency = $dependency_analyzer->dump_classes;
   
   print $dependency;
-  exit 0;
 }
 elsif ($cpanm) {
-  
-  unless (defined $script_name) {
-    die "[spvmdeps command]--dependency option needs <script_name>."
-  }
   
   my $cpanm_commands = $dependency_analyzer->to_cpanm_commands;
   
   my $cpanm_commands_lines = SPVM::Builder::DependencyAnalyzer->to_lines($cpanm_commands);
   
   print $cpanm_commands_lines;
-  exit 0;
 }
 
 =encoding utf8
