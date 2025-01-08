@@ -35,6 +35,18 @@ sub new {
   return bless $self, ref $class || $class;
 }
 
+sub to_lines {
+  my ($class, $array) = @_;
+  
+  my $lines = '';
+  
+  for my $elem (@$array) {
+    $lines .= "$elem\x0A";
+  }
+  
+  return $lines;
+}
+
 # Instance Methods
 sub dump_resource_info {
   my ($self) = @_;
