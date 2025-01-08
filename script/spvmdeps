@@ -75,9 +75,11 @@ elsif ($cpanm) {
     die "[spvmdeps command]--dependency option needs <script_name>."
   }
   
-  my $dependency_cpan = $dependency_analyzer->dump_cpanm_commands;
+  my $cpanm_commands = $dependency_analyzer->to_cpanm_commands;
   
-  print $dependency_cpan;
+  my $cpanm_commands_lines = SPVM::Builder::DependencyAnalyzer->to_lines($cpanm_commands);
+  
+  print $cpanm_commands_lines;
   exit 0;
 }
 

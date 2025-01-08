@@ -113,7 +113,7 @@ sub dump_classes {
   return $dependency;
 }
 
-sub dump_cpanm_commands {
+sub to_cpanm_commands {
   my ($self) = @_;
   
   my $script_name = $self->{script_name};
@@ -148,9 +148,7 @@ sub dump_cpanm_commands {
     push @$cpanm_commands, $cpanm_command;
   }
   
-  my $cpanm_commands_string = join("\x0A", @$cpanm_commands) . "\x0A";
-  
-  return $cpanm_commands_string;
+  return $cpanm_commands;
 }
 
 1;
