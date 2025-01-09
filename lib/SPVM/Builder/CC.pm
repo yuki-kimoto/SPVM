@@ -443,18 +443,27 @@ sub compile_class {
         unless ($config->isa('SPVM::Builder::Config::Exe')) {
           # Expect the following case.
           # Foo.config exists, but Foo.c do not exists. In this case spvm command work well, but spvmcc command do not work well.
+
+=pod TODO
+
           Carp::cluck("[Warning]Can't find source file $native_class_source_file");
+
+=cut
+
         }
       }
     }
   }
   
   # Native source files
-  my $native_source_files_base = $config->source_files;
+  # For executable files, the resources are compiled in the executable's configuration file, so we don't compile them here.
   my $native_src_dir = $config->native_src_dir;
-  my $native_source_files;
-  if (defined $native_src_dir) {
-    $native_source_files = [map { "$native_src_dir/$_" } @$native_source_files_base ];
+  my $native_source_files = [];
+  if ((defined $native_class_source_file && -f $native_class_source_file) || !$config->no_compile_resource) {
+    my $native_source_files_base = $config->source_files;
+    if (defined $native_src_dir) {
+      $native_source_files = [map { "$native_src_dir/$_" } @$native_source_files_base ];
+    }
   }
   
   # Compile source files

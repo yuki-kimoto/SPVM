@@ -1,12 +1,9 @@
 class TestCase::Precompile : precompile {
   
   version "2.005";
-
-=pod TODO
-
+  
   use TestCase::Resource::Mylib1;
-
-=cut
+  use TestCase::Resource::Mylib2;
 
   static method sum : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
