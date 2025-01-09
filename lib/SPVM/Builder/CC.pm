@@ -396,7 +396,20 @@ sub compile_class {
   
   my $object_files = [];
   
-  unless ($config->no_compile_resource) {
+  my $need_compile_resources;
+  if ($config->config_exe) {
+    if ($class_name eq $config->config_exe->class_name) {
+      $need_compile_resources = 1;
+    }
+    else {
+      $need_compile_resources = 0;
+    }
+  }
+  else {
+    $need_compile_resources = 1;
+  }
+  
+  if ($need_compile_resources) {
     for my $resource_name (@$resource_names) {
       my $resource = $config->get_resource($resource_name);
       
