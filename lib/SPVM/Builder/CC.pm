@@ -319,7 +319,7 @@ sub compile_class {
     $class_file = $basic_type->get_class_file;
   }
   else {
-    Carp::cluck("[Warning]A resource class $class_name must be loaded.");
+    Carp::cluck("[Warning]A resource class $class_name must be loaded. Currently this is a warning, but this will be an exception.");
     
     # Note: A resource do not load an SPVM class currently.
     # However, I would like to have an SPVM class file that corresponds to the config file.
