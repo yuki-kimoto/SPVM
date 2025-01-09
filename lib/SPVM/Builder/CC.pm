@@ -313,7 +313,16 @@ sub compile_class {
   }
   
   my $class_file;
-  if ($used_as_resource) {
+  my $basic_type;
+  
+  eval { $basic_type = $runtime->get_basic_type_by_name($class_name) };
+  
+  if ($basic_type) {
+    $class_file = $basic_type->get_class_file;
+  }
+  else {
+    Carp::cluck("[Warning]A resource class $class_name must be loaded.");
+    
     # Note: A resource do not load an SPVM class currently.
     # However, I would like to have an SPVM class file that corresponds to the config file.
     my $config_file = $config->file;
@@ -329,15 +338,6 @@ sub compile_class {
     unless (-f $class_file) {
       confess("The resource \"$class_name\" must have its SPVM class file \"$class_file\".");
     }
-  }
-  else {
-    my $basic_type = $runtime->get_basic_type_by_name($class_name);
-    
-    $class_file = $basic_type->get_class_file;
-  }
-  
-  unless (defined $class_file) {
-    confess("[Unexpected Error]The class file is not defined.");
   }
   
   my $cc_input_dir;

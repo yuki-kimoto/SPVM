@@ -19,6 +19,7 @@ class Fn {
   use Callback::MapExpand;
   use Cloneable;
   use Packer;
+  use Fn::Resource;
   
   # Do not use Native and Native::XXX classes because dependencies can have serious negative effects.
   
