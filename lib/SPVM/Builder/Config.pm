@@ -450,6 +450,17 @@ sub used_as_resource {
   }
 }
 
+sub is_resource {
+  my $self = shift;
+  if (@_) {
+    $self->{is_resource} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{is_resource};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -1568,6 +1579,15 @@ Gets and sets the C<used_as_resource> field.
 If this field is true, this config is used as a resource.
 
 This field is automatically set and users nomally do not change it.
+
+=head2 is_resource
+
+  my $is_resource = $config->is_resource;
+  $config->is_resource($is_resource);
+
+Gets and sets the C<is_resource> field.
+
+If this field is true, this config is for a L<resource|SPVM::Document::Resource> class.
 
 =head1 Class Methods
 
