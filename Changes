@@ -5,6 +5,9 @@
   [New Features]
     * Add SPVM::Builder::Config#is_resource accessor method.
     
+  [Incompatible Changes]
+    * Remove SPVM::Builder::Config#used_as_resource accessor method.
+    
 0.990037 2024-01-08
   
   [Incompatible Changes]

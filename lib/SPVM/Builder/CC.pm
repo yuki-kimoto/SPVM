@@ -287,8 +287,6 @@ sub compile_class {
   
   my $runtime = $options->{runtime};
   
-  my $used_as_resource = $config->used_as_resource;
-  
   my $is_jit = $config->is_jit;
   
   my $category = $config->category;
@@ -422,8 +420,6 @@ sub compile_class {
       $resource_config->class_name($resource_class_name);
       
       $resource_config->resource_loader_config($config),
-      
-      $resource_config->used_as_resource(1),
       
       my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
       
