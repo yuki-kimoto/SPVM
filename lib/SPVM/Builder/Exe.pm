@@ -334,6 +334,8 @@ sub compile {
   
   $self->class_name($class_name);
   
+  $self->config->class_name($class_name);
+  
   my $runtime = $compiler->get_runtime;
   
   $self->runtime($runtime);

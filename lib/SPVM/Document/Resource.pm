@@ -14,6 +14,8 @@ C<SPVM/Resource/MyResource.config>
 
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
   
+  $config->is_resource(1);
+  
   my @source_files = ("myresource.c");
   $config->add_source_file(@source_files);
   

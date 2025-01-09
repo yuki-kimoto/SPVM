@@ -455,11 +455,37 @@ sub compile_class {
     }
   }
   
-  # Native source files
+  my $is_resource;
+  if (defined $config->is_resource) {
+    $is_resource = $config->is_resource;
+  }
+  else {
+    $is_resource = !(defined $native_class_source_file && -f $native_class_source_file);
+  }
+  
   # For executable files, the resources are compiled in the executable's configuration file, so we don't compile them here.
+  my $is_compile_native_source_files;
+  if ($config->config_exe) {
+    if ($is_resource) {
+      if ($class_name eq $config->config_exe->class_name) {
+        $is_compile_native_source_files = 1;
+      }
+      else {
+        $is_compile_native_source_files = 0;
+      }
+    }
+    else {
+      $is_compile_native_source_files = 1;
+    }
+  }
+  else {
+    $is_compile_native_source_files = 1;
+  }
+  
+  # Native source files
   my $native_src_dir = $config->native_src_dir;
   my $native_source_files = [];
-  if ((defined $native_class_source_file && -f $native_class_source_file) || !$config->no_compile_resource) {
+  if ($is_compile_native_source_files) {
     my $native_source_files_base = $config->source_files;
     if (defined $native_src_dir) {
       $native_source_files = [map { "$native_src_dir/$_" } @$native_source_files_base ];
