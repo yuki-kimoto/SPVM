@@ -968,17 +968,6 @@ sub use_resource {
   return $resource;
 }
 
-sub no_compile_resource {
-  my $self = shift;
-  if (@_) {
-    $self->{no_compile_resource} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{no_compile_resource};
-  }
-}
-
 sub get_resource {
   my ($self, $resource_class_name) = @_;
   
@@ -1475,17 +1464,6 @@ If thie field is C<dynamic_lib>, the output file is a dynamic link library.
 If thie field is C<static_lib>, the output file is a static link library.
 
 If thie field is C<exe>, the output file is an executable file.
-
-This field is automatically set and users nomally do not change it.
-
-=head2 no_compile_resource
-
-  my $no_compile_resource = $config->no_compile_resource;
-  $config->no_compile_resource($no_compile_resource);
-
-Gets and sets the C<no_compile_resource> field.
-
-If this value is a true value, no L<native source files|SPVM::Document::NativeClass/"Native Source Files"> of resources loaded by L</"use_resource"> method are compiled.
 
 This field is automatically set and users nomally do not change it.
 

@@ -1033,11 +1033,6 @@ sub compile_native_class {
     
     my $config = SPVM::Builder::Config->load_mode_config($config_file, $mode, []);
     
-    # In an executable file, only resources used in the config of the class for generate an executable file are compiled.
-    unless ($class_name eq $self->class_name) {
-      $config->no_compile_resource(1);
-    }
-    
     $config->config_exe($config_exe);
     
     my $object_files = $builder_cc->compile_class(
