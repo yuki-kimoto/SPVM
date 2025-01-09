@@ -277,6 +277,11 @@ sub compile_class {
     confess("[Unexpected Error]A build directory must exists.");
   }
   
+  my $is_anon;
+  if ($class_name =~ /::anon_/) {
+    $is_anon = 1;
+  }
+  
   # Config
   my $config = $options->{config};
   
@@ -331,6 +336,10 @@ sub compile_class {
     $class_file = $basic_type->get_class_file;
   }
   
+  unless (defined $class_file) {
+    confess("[Unexpected Error]The class file is not defined.");
+  }
+  
   my $cc_input_dir;
   if ($category eq 'precompile') {
     
@@ -349,11 +358,9 @@ sub compile_class {
     );
   }
   elsif ($category eq 'native') {
-    $cc_input_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
-  }
-  
-  unless (defined $class_file) {
-    confess("[Unexpected Error]The class file is not defined.");
+    unless ($is_anon) {
+      $cc_input_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
+    }
   }
   
   # Check if a config file and an SPVM class file are in the same directory.
@@ -434,22 +441,37 @@ sub compile_class {
   
   # Native class source file
   my $native_class_source_file;
-  if (defined $native_class_ext) {
+  if (defined $cc_input_dir && defined $native_class_ext) {
     my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
     $native_class_source_file = "$cc_input_dir/$native_class_rel_file";
-    
-    unless (-f $native_class_source_file) {
-      unless ($config->isa('SPVM::Builder::Config::Exe')) {
-        # Expect the following case.
-        # Foo.config exists, but Foo.c do not exists. In this case spvm command work well, but spvmcc command do not work well.
-
-=pod TODO
-
-        Carp::cluck("[Warning]Can't find source file $native_class_source_file");
-
-=cut
-
+  }
+  
+  my $need_native_class_file;
+  if ($native_class_source_file) {
+    if (defined $config->is_resource) {
+      if ($config->is_resource) {
+        $need_native_class_file = 0;
       }
+      else {
+        if ($config->config_exe && $class_name eq $config->config_exe->class_name) {
+          $need_native_class_file = 0;
+        }
+        else {
+          $need_native_class_file = 1;
+        }
+      }
+    }
+    else {
+      $need_native_class_file = 1;
+    }
+  }
+  else {
+    $need_native_class_file = 0;
+  }
+  
+  if ($need_native_class_file) {
+    unless (-f $native_class_source_file) {
+      Carp::cluck("[Warning]Can't find native class source file $native_class_source_file. If this class is a resource class, set is_resource field to 1 to suppress this warning.");
     }
   }
   
