@@ -434,23 +434,21 @@ sub compile_class {
   
   # Native class source file
   my $native_class_source_file;
-  unless ($used_as_resource) {
-    if (defined $native_class_ext) {
-      my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
-      $native_class_source_file = "$cc_input_dir/$native_class_rel_file";
-      
-      unless (-f $native_class_source_file) {
-        unless ($config->isa('SPVM::Builder::Config::Exe')) {
-          # Expect the following case.
-          # Foo.config exists, but Foo.c do not exists. In this case spvm command work well, but spvmcc command do not work well.
+  if (defined $native_class_ext) {
+    my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
+    $native_class_source_file = "$cc_input_dir/$native_class_rel_file";
+    
+    unless (-f $native_class_source_file) {
+      unless ($config->isa('SPVM::Builder::Config::Exe')) {
+        # Expect the following case.
+        # Foo.config exists, but Foo.c do not exists. In this case spvm command work well, but spvmcc command do not work well.
 
 =pod TODO
 
-          Carp::cluck("[Warning]Can't find source file $native_class_source_file");
+        Carp::cluck("[Warning]Can't find source file $native_class_source_file");
 
 =cut
 
-        }
       }
     }
   }
@@ -465,8 +463,8 @@ sub compile_class {
   
   # For executable files, the resources are compiled in the executable's configuration file, so we don't compile them here.
   my $is_compile_native_source_files;
-  if ($config->config_exe) {
-    if ($is_resource) {
+  if ($is_resource) {
+    if ($config->config_exe) {
       if ($class_name eq $config->config_exe->class_name) {
         $is_compile_native_source_files = 1;
       }
