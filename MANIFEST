@@ -1,4 +1,11 @@
-.tmp/cpanfile
+.gitattributes
+.github/workflows/linux-ubuntu-latest-32bit.yml
+.github/workflows/linux-ubuntu-latest-perl-5.8.9.yml
+.github/workflows/linux-ubuntu-latest.yml
+.github/workflows/macos-latest.yml
+.github/workflows/windows-2019.yml
+.github/workflows/windows-latest.yml
+.gitignore
 benchmark/benchmark-synopsys.pl
 benchmark/lib/SPVM/MyMath.spvm
 benchmark/lib/SPVM/MyMathNative.c
@@ -425,6 +432,7 @@ LICENSE
 logo/spvm_logo.jpg
 Makefile.PL
 MANIFEST			This list of files
+MANIFEST.SKIP
 ppport.h
 README.md
 script/spvm
