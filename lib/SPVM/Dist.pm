@@ -682,21 +682,23 @@ sub generate_gitignore_file {
   my ($self) = @_;
   
   my $gitignore_content = <<'EOS';
-/blib/*
+/blib
 /Makefile
 /Makefile.old
 /MYMETA.yml
 /MYMETA.json
 /pm_to_blib
-core.*
-core
+/core.*
+/core
+/SPVM-*
 *.bak
 *.BAK
 *.tmp
 *.o
 *.bs
+.tmp
+.git
 .spvm_build
-/SPVM-*
 EOS
   
   # Generate file
