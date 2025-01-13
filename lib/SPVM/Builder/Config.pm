@@ -1360,7 +1360,7 @@ Mac does not support these options. If you want to search a static library, crea
   $config->add_lib_dir('/path_for_static_lib');
   $config->add_lib('z');
 
-MinGW on Windows supports these options, but instead of linking statically, it links dynamically with absolute paths. This is usually not the intended behavior. If you want to do static linking on Windows, you need to use C<--static> option.
+MinGW on Windows supports these options, but instead of linking statically, it links dynamically with absolute paths. This is usually not the intended behavior. If you want to do static linking on Windows, you need to use C<-static> option.
 
 =head2 ld_optimize
 
