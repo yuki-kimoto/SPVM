@@ -27,22 +27,22 @@ DEVELOPERS NOTE
     SPVM solo test command
 
        # Normal run
-       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/work/myexe -f --no-config solo/script/my_exe.spvm && ./solo/work/myexe foo bar
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp -f --no-config solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
        
        # Debug run
-       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/work/myexe --mode debug -f --no-config solo/script/my_exe.spvm && ./solo/work/myexe foo bar
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp --mode debug -f --no-config solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
        
        # Debug run - Print memory count
-       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/work/myexe --mode debug_memory_count -f --no-config solo/script/my_exe.spvm && ./solo/work/myexe foo bar
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp --mode debug_memory_count -f --no-config solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
 
        # Debug run - Print AST, package information, operaion codes
-       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/work/myexe --mode debug -f --no-config solo/script/my_exe.spvm
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp --mode debug -f --no-config solo/script/myapp.spvm
 
        # Debug run - Print yacc result
-       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --DEFINE=SPVM_DEBUG_YACC --DEFINE=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/work/myexe --mode debug -f --no-config solo/script/my_exe.spvm
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --DEFINE=SPVM_DEBUG_YACC --DEFINE=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp --mode debug -f --no-config solo/script/myapp.spvm
        
        # Cleanup
-       rm solo/work/myexe
+       rm solo/.spvm_build/work/myapp
 
     See batcktrace of core dump
       
@@ -53,7 +53,7 @@ DEVELOPERS NOTE
       gdb perl core
       
       # Runtime stack trace
-      gdb solo/work/myexe core
+      gdb solo/.spvm_build/work/myapp core
       
       bt
       

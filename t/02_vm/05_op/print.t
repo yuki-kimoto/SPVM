@@ -13,7 +13,7 @@ use SPVM 'TestCase::Operator::Print';
 my $test_dir = $ENV{SPVM_TEST_DIR};
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
-my $test_tmp_dir = "$test_dir/test_files_tmp";
+my $test_tmp_dir = "$test_dir/test_files/.tmp";
 
 my $script_file = "$test_tmp_dir/print-script.pl";
 my $output_file = "$test_tmp_dir/print-output.txt";

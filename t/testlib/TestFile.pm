@@ -9,7 +9,7 @@ use File::Path 'mkpath';
 sub copy_test_files_tmp {
 
   my $test_files_dir = 't/test_files';
-  my $test_files_tmp_dir = 't/test_files_tmp';
+  my $test_files_tmp_dir = 't/test_files/.tmp';
   
   mkpath $test_files_tmp_dir;
   
