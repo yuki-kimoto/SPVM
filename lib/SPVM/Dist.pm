@@ -723,24 +723,23 @@ sub generate_manifest_skip_file {
   
   # Content
   my $manifest_skip_content = <<'EOS';
-(^|\/)blib/
-(^|\/)Makefile$
-(^|\/)Makefile.old$
-(^|\/)MYMETA.yml$
-(^|\/)MYMETA.json$
-(^|\/)pm_to_blib$
-(^|\/)core\.
-(^|\/)core$
-(^|\/)\.git/
+^blib(/|$)
+^Makefile$
+^Makefile.old$
+^MYMETA.yml$
+^MYMETA.json$
+^pm_to_blib$
+^core\.
+^core$
+^SPVM-
 \.bak$
-\.tmp$
-\.tmp/
 \.BAK$
+\.tmp$
 \.o$
 \.bs$
-(^|\/).spvm_build/
-(^|\/)t/.spvm_build/
-(^|\/)SPVM-
+(^|/)\.tmp(/|$)
+(^|/)\.git(/|$)
+(^|/)\.spvm_build(/|$)
 EOS
 
   # Generate file
