@@ -256,27 +256,24 @@ Examples:
 
 =head2 version_from Statement
 
-The C<version_from> statement allows you to make the version of this class dependent on another class.
+The C<version_from> statement allows you to make the version of the current class dependent on another class.
 
-  version_from VERSION_FROM_STRING;
+  version_from CLASS_NAME;
 
-I<VERSION_FROM_STRING> is a class name or C<"spvm">. C<"spvm"> means the version of this class depends on the version of SPVM language.
+I<CLASS_NAME> is a L<class name|SPVM::Document::Language::Tokenization/"Class Name">.
 
-The type of I<VERSION_FROM_STRING> is string type.
+It means the version of the current class is considered to be the same as the version of the class specified by I<CLASS_NAME>.
+
+The class specified by I<CLASS_NAME> is loaded by L<use statement|/"use Statement">.
 
 Compilation Errors:
 
 If version_from has already been declared, a compilation error occurs.
 
-The type of the operand of version_from statement must be string type. Otherwise a compilation error occurs.
-
-The string length of the operand of version_from statement must be greter than 0. Otherwise a compilation error occurs.
-
 Examples:
   
-  # This means the version of MyClass::Foo class depends on the version of MyClass class.
   class MyClass::Foo {
-    version_from "MyClass";
+    version_from MyClass;
   }
   
   class MyClass {
