@@ -583,6 +583,12 @@ sub generate_native_config_file {
   # Year
   my $year = $self->_year;
   
+  my $is_resource = $self->{resource};
+  my $is_resource_code = '';
+  if ($is_resource) {
+    $is_resource_code = '$config->is_resource(1);';
+  }
+  
   # Content
   my $native_config_content = <<"EOS";
 # Copyright (c) $year $user_name
@@ -593,6 +599,8 @@ use warnings;
 use SPVM::Builder::Config;
 
 my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
+
+$is_resource_code
 
 \$config;
 EOS

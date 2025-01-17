@@ -44,6 +44,8 @@
       (^|/)\.tmp(/|$)
       (^|/)\.git(/|$)
       (^|/)\.spvm_build(/|$)
+    * $config->is_resource(1); is contained in the config file by spvmdist command with --resource option.
+    
   [New Features]
     * Add --version_from option to spvmdist command.
     
