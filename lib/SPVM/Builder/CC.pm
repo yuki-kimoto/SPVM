@@ -327,23 +327,7 @@ sub compile_class {
     $class_file = $basic_type->get_class_file;
   }
   else {
-    Carp::cluck("[Warning]A resource class $class_name must be loaded. Currently this is a warning, but this will be an exception.");
-    
-    # Note: A resource do not load an SPVM class currently.
-    # However, I would like to have an SPVM class file that corresponds to the config file.
-    my $config_file = $config->file;
-    
-    my $config_file_basename = basename $config_file;
-    
-    my $config_file_dirname = dirname $config_file;
-    
-    $config_file_basename =~ s/\..+$//;
-    
-    $class_file = "$config_file_dirname/$config_file_basename.spvm";
-    
-    unless (-f $class_file) {
-      confess("The resource \"$class_name\" must have its SPVM class file \"$class_file\".");
-    }
+    Carp::confess("$class_name class must be loaded.");
   }
   
   my $cc_input_dir;
