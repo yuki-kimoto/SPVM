@@ -1034,6 +1034,7 @@ sub generate_basic_test_spvm_class_file {
   if ($resource) {
     $basic_test_spvm_class_content = <<"EOS";
 class TestCase::$class_name {
+  use $class_name;
   native static method test : int ();
 }
 EOS
