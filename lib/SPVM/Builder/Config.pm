@@ -450,6 +450,17 @@ sub is_resource {
   }
 }
 
+sub mode {
+  my $self = shift;
+  if (@_) {
+    $self->{mode} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{mode};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -903,6 +914,10 @@ sub load_mode_config {
   
   my $config = $self->load_config($mode_config_file, $argv);
   
+  if (defined $mode) {
+    $self->{mode} = $mode;
+  }
+  
   return $config;
 }
 
@@ -910,7 +925,7 @@ sub load_base_config {
   my ($self, $config_file, $args) = @_;
   
   my $config = $self->load_mode_config($config_file, undef, $args);
-
+  
   return $config;
 }
 
@@ -1545,6 +1560,13 @@ Gets and sets the C<is_resource> field.
 
 If this field is true, this config is for a L<resource|SPVM::Document::Resource> class.
 
+=head2 mode
+
+  my $mode = $config->mode;
+  $config->mode($mode);
+
+Gets and sets the C<mode> field.
+
 =head1 Class Methods
 
 =head2 new
@@ -1979,6 +2001,8 @@ Examples:
 Creates a L<mode config file|/"Config Mode"> path from the config file path $config_file, and calls L</"load_config"> method given the mode config file path and config arguments, and returns its return value.
 
   my $config = SPVM::Builder::Config::Exe->load_mode_config(__FILE__, "production");
+
+L</"mode>" field is set to $mode.
 
 =head2 get_loaded_config_files
 

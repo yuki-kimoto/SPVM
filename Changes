@@ -48,6 +48,7 @@
     * Load the class in SPVM class file generaged by spvmdist command with --resource option.
   [New Features]
     * Add --version_from option to spvmdist command.
+    * Add mode accessor to SPVM::Builder::Config;
     
 0.990038 2025-01-09
   [Bug Fix]
