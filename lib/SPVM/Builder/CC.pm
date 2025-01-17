@@ -224,13 +224,13 @@ sub compile_source_file {
         $message = "[Compile a bootstrap source file for an excutable file]";
       }
       elsif ($compile_info_category eq 'precompile_class') {
-        $message = "[Compile a precompile source file for the \"$config_class_name\" class]";
+        $message = "[Compile a precompile source file for $config_class_name class]";
       }
       elsif ($compile_info_category eq 'native_class') {
-        $message = "[Compile a native class source file for the \"$config_class_name\" class using the config file \"$config_file\"]";
+        $message = "[Compile a native class source file for $config_class_name class using the config file \"$config_file\"]";
       }
       elsif ($compile_info_category eq 'native_source') {
-        $message = "[Compile a native source file for the \"$config_class_name\" class using the config file \"$config_file\"]";
+        $message = "[Compile a native source file for $config_class_name class using the config file \"$config_file\"]";
       }
       else {
         confess("[Unexpected Error]Invalid compile info category.");
@@ -768,7 +768,7 @@ sub link {
       
       unless ($quiet) {
         my $for_precompile = $category eq 'precompile' ? ' for precompile' : '';
-        my $message = "[Generate a dynamic link library for the \"$class_name\" class$for_precompile]";
+        my $message = "[Generate a dynamic link library for $class_name class$for_precompile]";
         warn "$message\n";
         
         my $link_command = $link_info->to_command;
@@ -790,7 +790,7 @@ sub link {
       my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
       
       unless ($quiet) {
-        warn "[Generate a static link library for the \"$class_name\" class]\n";
+        warn "[Generate a static link library for $class_name class]\n";
         
         warn "@ar_cmd\n";
       }
@@ -801,7 +801,7 @@ sub link {
     # Create an executable file
     elsif ($output_type eq 'exe') {
       unless ($quiet) {
-        warn "[Generate an executable file for the \"$class_name\" class]\n";
+        warn "[Generate an executable file for $class_name class]\n";
         
         my $link_command = $link_info->to_command;
         warn "$link_command\n";
