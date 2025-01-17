@@ -69,7 +69,7 @@ spvmdist - Generating SPVM Distribution
 
 =head1 Usage
 
-  Osage: spvmdist [OPTIONS] <class name> [<dir>]
+  Usage: spvmdist [OPTIONS] CLASS_NAME [DIR]
     
     spvmdist Foo
     spvmdist Foo My-Foo
@@ -101,7 +101,7 @@ C<spvmdist> is the command to generate a SPVM distribution.
 
 =head1 Details
 
-  spvmdist [OPTIONS] <class name> [DIR]
+  spvmdist [OPTIONS] CLASS_NAME [DIR]
 
 I<OPTIONS> are L<options|/"Options">. These are optional.
 
