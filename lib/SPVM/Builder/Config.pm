@@ -1097,7 +1097,7 @@ The SPVM::Builder::Config class has methods to get and set config for compiling 
   my $ext = $config->ext;
   $config->ext($ext);
 
-Gets and sets the C<ext> field, the extension of a native class.
+Gets and sets C<ext> field, the extension of a native class.
 
 Examples:
 
@@ -1121,7 +1121,7 @@ Examples:
   my $cc = $config->cc;
   $config->cc($cc);
 
-Gets and sets the C<cc> field, a compiler name.
+Gets and sets C<cc> field, a compiler name.
 
 Examples:
   
@@ -1143,7 +1143,7 @@ Examples:
   my $include_dirs = $config->include_dirs;
   $config->include_dirs($include_dirs);
 
-Gets and sets the C<include_dirs> field, an array reference containing header file search directories.
+Gets and sets C<include_dirs> field, an array reference containing header file search directories.
 
 The values of this field are converted to C<-I> options when the arguments of the compiler L</"cc"> are created.
 
@@ -1155,7 +1155,7 @@ The values of this field are converted to C<-I> options when the arguments of th
   my $spvm_core_include_dir = $config->spvm_core_include_dir;
   $config->spvm_core_include_dir($spvm_core_include_dir);
 
-Gets and sets the C<spvm_core_include_dir> field, an SPVM core header file search directory.
+Gets and sets C<spvm_core_include_dir> field, an SPVM core header file search directory.
 
 The value of this field is converted to C<-I> option when the arguments of the compiler L</"cc"> are created.
 
@@ -1166,7 +1166,7 @@ This field is automatically set and users nomally do not change it.
   my $native_include_dir = $config->native_include_dir;
   $config->native_include_dir($native_include_dir);
 
-Gets and sets the C<native_include_dir> field, a L<native header file|SPVM::Document::NativeClass/"Native Header Files"> search directory.
+Gets and sets C<native_include_dir> field, a L<native header file|SPVM::Document::NativeClass/"Native Header Files"> search directory.
 
 The value of this field is converted to C<-I> option when the arguments of the compiler L</"cc"> are created.
 
@@ -1177,7 +1177,7 @@ This field is automatically set and users nomally do not change it.
   my $native_src_dir = $config->native_src_dir;
   $config->native_src_dir($native_src_dir);
 
-Gets and sets the C<native_src_dir> field, a L<native source file|SPVM::Document::NativeClass/"Native Source Files"> search directory.
+Gets and sets C<native_src_dir> field, a L<native source file|SPVM::Document::NativeClass/"Native Source Files"> search directory.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1186,14 +1186,14 @@ This field is automatically set and users nomally do not change it.
   my $ccflags = $config->ccflags;
   $config->ccflags($ccflags);
 
-Gets and sets the C<ccflags> field, an array reference containing arugments of the compiler L</"cc">.
+Gets and sets C<ccflags> field, an array reference containing arugments of the compiler L</"cc">.
 
 =head2 dynamic_lib_ccflags
 
   my $dynamic_lib_ccflags = $config->dynamic_lib_ccflags;
   $config->dynamic_lib_ccflags($dynamic_lib_ccflags);
 
-Gets and sets the C<dynamic_lib_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for dynamic linking.
+Gets and sets C<dynamic_lib_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for dynamic linking.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1202,7 +1202,7 @@ This field is automatically set and users nomally do not change it.
   my $thread_ccflags = $config->thread_ccflags;
   $config->thread_ccflags($thread_ccflags);
 
-Gets and sets the C<thread_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for threads.
+Gets and sets C<thread_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for threads.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1211,7 +1211,7 @@ This field is automatically set and users nomally do not change it.
   my $mingw_ccflags = $config->mingw_ccflags;
   $config->mingw_ccflags($mingw_ccflags);
 
-Gets and sets the C<mingw_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for MinGW.
+Gets and sets C<mingw_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for MinGW.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1220,7 +1220,7 @@ This field is automatically set and users nomally do not change it.
   my $std = $config->std;
   $config->std($std);
 
-Gets and sets the C<std> field, a language standard.
+Gets and sets C<std> field, a language standard.
 
 This field is converted to C<-std> option when the arguments of the compiler L</"cc"> are created.
 
@@ -1246,7 +1246,7 @@ Examples:
   my $optimize = $config->optimize;
   $config->optimize($optimize);
 
-Gets and sets the C<optimize> field, an arugment of the compiler L</"cc"> for optimization.
+Gets and sets C<optimize> field, an arugment of the compiler L</"cc"> for optimization.
 
 Examples:
 
@@ -1259,14 +1259,14 @@ Examples:
   my $source_files = $config->source_files;
   $config->source_files($source_files);
 
-Gets and sets the C<source_files> field, an array reference containing relative paths of L<native source file|SPVM::Document::NativeClass/"Native Source Files"> file from L</"native_src_dir"> field.
+Gets and sets C<source_files> field, an array reference containing relative paths of L<native source file|SPVM::Document::NativeClass/"Native Source Files"> file from L</"native_src_dir"> field.
 
 =head2 after_create_compile_info_cbs
 
   my $after_create_compile_info_cbs = $config->after_create_compile_info_cbs;
   $config->after_create_compile_info_cbs($after_create_compile_info_cbs);
 
-Gets and sets the C<after_create_compile_info_cbs> field, an array reference containing callbacks called just after creating compilation information.
+Gets and sets C<after_create_compile_info_cbs> field, an array reference containing callbacks called just after creating compilation information.
 
 These callbacks are executed even if no object file was generated.
 
@@ -1279,7 +1279,7 @@ The 2th argument of the callback is an L<SPVM::Builder::CompileInfo> object.
   my $before_compile_cbs = $config->before_compile_cbs;
   $config->before_compile_cbs($before_compile_cbs);
 
-Gets and sets the C<before_compile_cbs> field, an array reference containing callbacks called just before the compile command L</"cc"> is executed.
+Gets and sets C<before_compile_cbs> field, an array reference containing callbacks called just before the compile command L</"cc"> is executed.
 
 These callbacks are executed only if an object file is actually generated.
 
@@ -1292,7 +1292,7 @@ The 2th argument of the callback is an L<SPVM::Builder::CompileInfo> object.
   my $ld = $config->ld;
   $config->ld($ld);
 
-Gets and sets the C<ld> field, a linker name.
+Gets and sets C<ld> field, a linker name.
 
 Examples:
 
@@ -1304,7 +1304,7 @@ Examples:
   my $lib_dirs = $config->lib_dirs;
   $config->lib_dirs($lib_dirs);
 
-Gets and sets the C<lib_dirs> field, an array reference containing library search directories.
+Gets and sets C<lib_dirs> field, an array reference containing library search directories.
 
 The values of this field are converted to C<-L> options when the arguments of the linker L</"ld"> are created.
 
@@ -1316,7 +1316,7 @@ The values of this field are converted to C<-L> options when the arguments of th
   my $libs = $config->libs;
   $config->libs($libs);
 
-Gets and sets the C<libs> field, an array reference containing library names such as C<z>, and C<png> or L<SPVM::Builder::LibInfo> objects.
+Gets and sets C<libs> field, an array reference containing library names such as C<z>, and C<png> or L<SPVM::Builder::LibInfo> objects.
 
 The values of this field are converted to C<-l> options when the arguments of the linker L</"ld"> are created.
 
@@ -1332,14 +1332,14 @@ Examples:
   my ldflags = $config->ldflags;
   $config->ldflags(ldflags);
 
-Gets and sets the C<ldflags> field, an array reference containing arguments of the linker L</"ld">.
+Gets and sets C<ldflags> field, an array reference containing arguments of the linker L</"ld">.
 
 =head2 dynamic_lib_ldflags
 
   my dynamic_lib_ldflags = $config->dynamic_lib_ldflags;
   $config->dynamic_lib_ldflags(dynamic_lib_ldflags);
 
-Gets and sets the C<dynamic_lib_ldflags> field, an array reference containing arguments of the linker L</"ld"> for dynamic libraries.
+Gets and sets C<dynamic_lib_ldflags> field, an array reference containing arguments of the linker L</"ld"> for dynamic libraries.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1348,7 +1348,7 @@ This field is automatically set and users nomally do not change it.
   my thread_ldflags = $config->thread_ldflags;
   $config->thread_ldflags(thread_ldflags);
 
-Gets and sets the C<thread_ldflags> field, an array reference containing arguments of the linker L</"ld"> for threads.
+Gets and sets C<thread_ldflags> field, an array reference containing arguments of the linker L</"ld"> for threads.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1357,7 +1357,7 @@ This field is automatically set and users nomally do not change it.
   my static_lib_ldflag = $config->static_lib_ldflag;
   $config->static_lib_ldflag(static_lib_ldflag);
 
-Gets and sets the C<static_lib_ldflag> field, an array reference containing a pair of arguments to start statically linking and end it.
+Gets and sets C<static_lib_ldflag> field, an array reference containing a pair of arguments to start statically linking and end it.
 
 The library name added by the L</"add_static_lib"> are surrounded by the values of the pair.
 
@@ -1382,7 +1382,7 @@ MinGW on Windows supports these options, but instead of linking statically, it l
   my $ld_optimize = $config->ld_optimize;
   $config->ld_optimize($ld_optimize);
 
-Gets and sets the C<ld_optimize> field, an argument of the linker L</"ld"> for optimization.
+Gets and sets C<ld_optimize> field, an argument of the linker L</"ld"> for optimization.
 
 Examples:
 
@@ -1393,7 +1393,7 @@ Examples:
   my $after_create_link_info_cbs = $config->after_create_link_info_cbs;
   $config->after_create_link_info_cbs($after_create_link_info_cbs);
 
-Gets and sets the C<after_create_link_info_cbs> field, an array reference containing callbacks called just after creating link information.
+Gets and sets C<after_create_link_info_cbs> field, an array reference containing callbacks called just after creating link information.
 
 These callbacks are executed even if no dynamic link library file was generated.
 
@@ -1406,7 +1406,7 @@ The 2th argument of the callback is an L<SPVM::Builder::LinkInfo> object.
   my $before_link_cbs = $config->before_link_cbs;
   $config->before_link_cbs($before_link_cbs);
 
-Gets and sets the C<before_link_cbs> field, an array reference containing callbacks called just before the link command L</"ld"> is executed.
+Gets and sets C<before_link_cbs> field, an array reference containing callbacks called just before the link command L</"ld"> is executed.
 
 These callbacks are executed only if a dynamic link library is actually generated.
 
@@ -1419,7 +1419,7 @@ The 2th argument of the callback is an L<SPVM::Builder::LinkInfo> object.
   my $force = $config->force;
   $config->force($force);
 
-Gets and sets the C<force> field.
+Gets and sets C<force> field.
 
 If this field is a true value, the compilation and linking are forced.
 
@@ -1432,7 +1432,7 @@ If this field is undef, this config does not specify whether the compilation and
   my $quiet = $config->quiet;
   $config->quiet($quiet);
 
-Gets and sets the C<quiet> field.
+Gets and sets C<quiet> field.
 
 If this field is a true value, the messages from the compiler and the linker are output to C<stderr>.
 
@@ -1445,7 +1445,7 @@ If this field is undef, this config does specify whether the messages from the c
   my $class_name = $config->class_name;
   $config->class_name($class_name);
 
-Gets and sets the C<class_name> field, the name of the class configured by this config.
+Gets and sets C<class_name> field, the name of the class configured by this config.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1454,7 +1454,7 @@ This field is automatically set and users nomally do not change it.
   my $file = $config->file;
   $config->file($file);
 
-Gets and sets the C<file> field, the file path of this config.
+Gets and sets C<file> field, the file path of this config.
 
 This field is set by L</"new"> method and users nomally do not change it.
 
@@ -1463,7 +1463,7 @@ This field is set by L</"new"> method and users nomally do not change it.
   my $file_optional = $config->file_optional;
   $config->file_optional($file_optional);
 
-Gets and sets the C<file_optional> field.
+Gets and sets C<file_optional> field.
 
 If this field is a true value, even if the L<file|/"file"> field is not given to L</"new"> method, the exception is not thrown.
 
@@ -1472,7 +1472,7 @@ If this field is a true value, even if the L<file|/"file"> field is not given to
   my $output_type = $config->output_type;
   $config->output_type($output_type);
 
-Gets and sets the C<output_type> field, a type of the output file L</"output_file"> generated by the linker L</"ld">.
+Gets and sets C<output_type> field, a type of the output file L</"output_file"> generated by the linker L</"ld">.
 
 If thie field is C<dynamic_lib>, the output file is a dynamic link library.
 
@@ -1487,7 +1487,7 @@ This field is automatically set and users nomally do not change it.
   my $resource_loader_config = $config->resource_loader_config;
   $config->resource_loader_config($resource_loader_config);
 
-Gets and sets the C<resource_loader_config> field, the config file of the class that loaded a resource by L</"use_resource"> method.
+Gets and sets C<resource_loader_config> field, the config file of the class that loaded a resource by L</"use_resource"> method.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1496,7 +1496,7 @@ This field is automatically set and users nomally do not change it.
   my $category = $config->category;
   $config->category($category);
 
-Gets and sets the C<category> field.
+Gets and sets C<category> field.
 
 If this field is C<precompile>, this config is for precompilation, 
 
@@ -1509,7 +1509,7 @@ This field is automatically set and users nomally do not change it.
   my $config_exe = $config->config_exe;
   $config->config_exe($config_exe);
 
-Gets and sets the C<config_exe> field.
+Gets and sets C<config_exe> field.
 
 If L<spvmcc> command generates an excutable file, this field is set to an L<SPVM::Builder::Config::Exe> object.
 
@@ -1520,7 +1520,7 @@ This field is automatically set and users nomally do not change it.
   my $cc_input_dir = $config->cc_input_dir;
   $config->cc_input_dir($cc_input_dir);
 
-Gets and sets the C<cc_input_dir> field, an input directory for the compiler L</"cc">.
+Gets and sets C<cc_input_dir> field, an input directory for the compiler L</"cc">.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1529,7 +1529,7 @@ This field is automatically set and users nomally do not change it.
   my $cc_output_dir = $config->cc_output_dir;
   $config->cc_output_dir($cc_output_dir);
 
-Gets and sets the C<cc_output_dir> field, an output directory for the compiler L</"cc">.
+Gets and sets C<cc_output_dir> field, an output directory for the compiler L</"cc">.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1538,7 +1538,7 @@ This field is automatically set and users nomally do not change it.
   my $output_dir = $config->output_dir;
   $config->output_dir($output_dir);
 
-Gets and sets the C<output_dir> field, an output directory for the linker L</"ld">.
+Gets and sets C<output_dir> field, an output directory for the linker L</"ld">.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1547,7 +1547,7 @@ This field is automatically set and users nomally do not change it.
   my $output_file = $config->output_file;
   $config->output_file($output_file);
 
-Gets and sets the C<output_file> field. A path of a dinamic link library or an executable file generated by the linker L</"ld">.
+Gets and sets C<output_file> field. A path of a dinamic link library or an executable file generated by the linker L</"ld">.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1556,7 +1556,7 @@ This field is automatically set and users nomally do not change it.
   my $is_resource = $config->is_resource;
   $config->is_resource($is_resource);
 
-Gets and sets the C<is_resource> field.
+Gets and sets C<is_resource> field.
 
 If this field is true, this config is for a L<resource|SPVM::Document::Resource> class.
 
@@ -1565,7 +1565,7 @@ If this field is true, this config is for a L<resource|SPVM::Document::Resource>
   my $mode = $config->mode;
   $config->mode($mode);
 
-Gets and sets the C<mode> field.
+Gets and sets C<mode> field.
 
 =head1 Class Methods
 
@@ -2018,7 +2018,7 @@ Clones L<SPVM::Builder::Config> object, and returns it.
 
 A config can have its mode if the config is one for an executable file generated by L<spvmcc> command and for a L<resource|SPVM::Document::Resource>.
 
-The mode is written in the format C<.MODE_NAME> just before the C<.config> extension of a config file.
+The mode is written in the format C<.MODE_NAME> just before C<.config> extension of a config file.
 
 C<MODE_NAME> must consist of C<a-zA-Z0-9_>.
 
