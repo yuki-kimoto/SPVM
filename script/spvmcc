@@ -93,29 +93,29 @@ The spvmcc command generates an executable file from SPVM classes.
 
 =head1 Usage
 
-  usage: spvmcc [<options>] SCRIPT_NAME
+  Usage: spvmcc [OPTIONS] SCRIPT_NAME
     
     spvmcc -o myapp myapp.spvm
     
     spvmcc -I lib/SPVM -o myapp myapp.spvm
   
-  options:
+  Options:
     -h, --help                      Shows this message
     -v, --version                   Shows the version
-    -o, --output FILE             The output file name
-    -I, --include-dir DIRECTORY   Adds a include directory
-    -B, --build-dir DIRECTORY     Build diretory
+    -o, --output FILE               The output file name
+    -I, --include-dir DIRECTORY     Adds a include directory
+    -B, --build-dir DIRECTORY       Build diretory
     -q, --quiet                     Stops the output of messages
     -f, --force                     Forces the compile and link
     --no-config                     No configration file is ok
-    -m, --mode MODE               Config mode
-    --config-argv ARG             A config argument
-    --config-argv-option <arg pair> Key-value config arguments such as KEY=VALUE
-    --optimize LEVEL              Optimization level such as O3, "-O0 -g"
+    -m, --mode MODE                 Config mode
+    --config-argv ARG               A config argument
+    --config-argv-option ARG_PAIR   Key-value config arguments such as KEY=VALUE
+    --optimize LEVEL                Optimization level such as O3, "-O0 -g"
 
 =head1 Details
 
-  spvmcc [<options>] SCRIPT_NAME
+  spvmcc [OPTIONS] SCRIPT_NAME
 
 The C<spvmcc> command generates an executable file from SPVM classes.
 
@@ -293,9 +293,9 @@ Examples:
 
 =head2 --config-argv-option
 
-  --config-argv-option <arg pair>
+  --config-argv-option ARG_PAIR
 
-Specifies two config arguments C<E<lt>arg pairE<gt>> as the format C<KEY=VALUE>.
+Specifies two config arguments I<ARG_PAIR> as the format C<KEY=VALUE>.
 
 This is expaned to the following options.
 

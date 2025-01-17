@@ -53,6 +53,8 @@
     * Compilation messages of resources are improved.
   [Incompatible Changes]
     * The resource class used from a config file must be loaded.
+  [Document Improvement]
+    * Use upper case option value in docs for spvm, spvmcc, spvmdeps, spvmdist commands.
 0.990038 2025-01-09
   [Bug Fix]
     * Fix a bug that when resource class is loaded more than once, spvmcc failed.

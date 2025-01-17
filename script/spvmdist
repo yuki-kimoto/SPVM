@@ -69,7 +69,7 @@ spvmdist - Generating SPVM Distribution
 
 =head1 Usage
 
-  usage: spvmdist [<options>] <class name> [<dir>]
+  Osage: spvmdist [OPTIONS] <class name> [<dir>]
     
     spvmdist Foo
     spvmdist Foo My-Foo
@@ -79,20 +79,20 @@ spvmdist - Generating SPVM Distribution
     spvmdist --precompile Foo
     spvmdist --resource Foo
 
-  options:
+  Options:
     -h, --help                     Show this message
     -v, --version                  Show the version
     -q, --quiet                    Quiet output
     -f, --force                    Force to generate files
-    --native LANGUAGE            Output a distributioon for a native class
+    --native LANGUAGE              Output a distributioon for a native class
     --precompile                   Add precompilattion setting
     --only-lib-files               Output only the files in "lib" directory
     --no-pm-file                   Don't output Perl module(.pm) file
     --resource                     Output a distributioon for for a resource
     --genlib                       Shortcut for --only-lib-files --no-pm-file
-    --user-name NAME             User name
-    --user-email EMAIL           User email
-    --version_from CLASS_NAME    Add version_from statement
+    --user-name NAME               User name
+    --user-email EMAIL             User email
+    --version_from CLASS_NAME      Add version_from statement
 
 
 =head1 Description
@@ -101,7 +101,7 @@ C<spvmdist> is the command to generate a SPVM distribution.
 
 =head1 Details
 
-  spvmdist [<options>] <class name> [<dir>]
+  spvmdist [OPTIONS] <class name> [DIR]
 
 I<OPTIONS> are L<options|/"Options">. These are optional.
 

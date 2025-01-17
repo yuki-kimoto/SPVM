@@ -104,7 +104,7 @@ C<spvmdeps> command is a class dependencies analyzer.
 
 =head1 Usage
 
-  usage: spvmdeps [<options>] SCRIPT_NAME
+  Usage: spvmdeps [OPTIONS] SCRIPT_NAME
     
     spvmdeps myapp.spvm
     
@@ -114,20 +114,20 @@ C<spvmdeps> command is a class dependencies analyzer.
     
     spvmdeps --cpanfile --with-version myapp.spvm
     
-  options:
+  Options:
     -h, --help                      Shows this message
     -v, --version                   Shows the version
-    -I, --include-dir DIRECTORY   Adds a include directory
+    -I, --include-dir DIRECTORY     Adds a include directory
     --json                          Prints JSON that contains all dependent class information.
     --cpanm                         Prints cpanm commands that contains dependent cpan modules
     --cpanfile                      Prints cpanfile that contains dependent cpan modules
     --with-version                  Output(default, --cpanm, --json) contains version information.
-    --exclude CLASS_NAME          Excludes a class name. This option can be used repeatedly.
+    --exclude CLASS_NAME            Excludes a class name. This option can be used repeatedly.
     --resource-info                 Shows config files of dependent resources
 
 =head1 Details
 
-  spvmdeps [<options>] SCRIPT_NAME
+  spvmdeps [OPTIONS] SCRIPT_NAME
 
 The C<spvmdeps> command prints class dependency information.
 

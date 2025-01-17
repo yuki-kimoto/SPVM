@@ -116,21 +116,21 @@ The spvm command executes SPVM programs.
 
 =head1 Usage
 
-  usage: spvm [<options>] SCRIPT_NAME
+  Usage: spvm [OPTIONS] SCRIPT_NAME
     
     spvm myapp.spvm
     
-  options:
+  Options:
     -h, --help                     Shows this message
     -v, --version                  Shows the version
-    -I, --include-dir DIRECTORY  Adds a include directory
-    -B, --build-dir DIRECTORY    Build diretory
-    -e SOURCE                    Executes a program source code in main method.
+    -I, --include-dir DIRECTORY    Adds a include directory
+    -B, --build-dir DIRECTORY      Build diretory
+    -e SOURCE                      Executes a program source code in main method.
     -c                             Check syntx only
 
 =head1 Details
 
-  spvm [<options>] SCRIPT_NAME
+  spvm [OPTIONS] SCRIPT_NAME
 
 The C<spvm> command executes a SPVM program.
 
@@ -206,7 +206,7 @@ Same as L</"--build-dir">.
 
   -E SOURCE
 
-Executes a source code E<lt>sourceE<gt>.
+Executes a source code I<SOURCE>.
 
 Examples:
 
@@ -216,7 +216,7 @@ Examples:
 
   -e SOURCE
 
-Executes a source code E<lt>sourceE<gt> in C<main> method.
+Executes a source code I<SOURCE> in C<main> method.
 
 Examples:
 
