@@ -145,6 +145,17 @@ sub user_email {
   }
 }
 
+sub version_from {
+  my $self = shift;
+  if (@_) {
+    $self->{version_from} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{version_from};
+  }
+}
+
 # Class methods
 sub new {
   my $class = shift;
@@ -271,12 +282,18 @@ sub generate_spvm_class_file {
     $version_decl = '';
   }
   
+  my $version_from = $self->{version_from};
+  my $version_from_decl = '';
+  if (length $version_from) {
+    $version_from_decl = "version_from $version_from;";
+  }
+  
   my $spvm_class_content = <<"EOS";
 # Copyright (c) $year $user_name
 # MIT License
 
 class $class_name ${attributes}{
-  $version_decl
+  $version_decl$version_from_decl
 }
 EOS
   

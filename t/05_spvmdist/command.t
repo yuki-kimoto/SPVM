@@ -448,6 +448,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   my $spvm_class_file = "$tmp_dir/mylib/SPVM/Foo.spvm";
   ok(-f $spvm_class_file);
   ok(!SPVM::Builder::Util::file_contains($perl_class_file, 'version'));
+  ok(!SPVM::Builder::Util::file_contains($spvm_class_file, 'version'));
   
   my $native_config_file = "$tmp_dir/mylib/SPVM/Foo.config";
   ok(-f $native_config_file);
@@ -473,6 +474,25 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(!-f $basic_test_file);
 
+  chdir($save_cur_dir) or die;
+}
+
+# --version_from
+{
+  my $spvmdist_path = File::Spec->rel2abs('blib/script/spvmdist');
+  my $blib = File::Spec->rel2abs('blib/lib');
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path --only-lib-files --version_from SPVM Foo mylib);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  my $spvm_class_file = "$tmp_dir/mylib/SPVM/Foo.spvm";
+  ok(-f $spvm_class_file);
+  ok(SPVM::Builder::Util::file_contains($spvm_class_file, 'version_from SPVM;'));
+  
   chdir($save_cur_dir) or die;
 }
 

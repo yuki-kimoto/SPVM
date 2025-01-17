@@ -44,7 +44,9 @@
       (^|/)\.tmp(/|$)
       (^|/)\.git(/|$)
       (^|/)\.spvm_build(/|$)
-
+  [New Features]
+    * Add --version_from option to spvmdist command.
+    
 0.990038 2025-01-09
   [Bug Fix]
     * Fix a bug that when resource class is loaded more than once, spvmcc failed.

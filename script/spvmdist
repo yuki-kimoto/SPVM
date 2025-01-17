@@ -21,6 +21,7 @@ SPVM::Builder::Util::getopt
   'genlib' => \my $genlib,
   'user-name=s' => \my $user_name,
   'user-email=s' => \my $user_email,
+  'version_from=s' => \my $version_from,
 ;
 
 if ($help) {
@@ -54,6 +55,7 @@ else {
     resource => $resource,
     user_name => $user_name,
     user_email => $user_email,
+    version_from => $version_from,
   );
   
   $gendist->generate_dist;
@@ -88,8 +90,10 @@ spvmdist - Generating SPVM Distribution
     --no-pm-file                   Don't output Perl module(.pm) file
     --resource                     Output a distributioon for for a resource
     --genlib                       Shortcut for --only-lib-files --no-pm-file
-    --user-name <name>             User name
+    --user-name NAME             User name
     --user-email <email>           User email
+    --version_from <class_name>    Add version_from statement
+
 
 =head1 Description
 
@@ -241,6 +245,12 @@ Specifies the user name C<E<lt>nameE<gt>>.
   --user-email <email>
 
 Specifies the user email C<E<lt>emailE<gt>>.
+
+=head2 --version_from
+
+  --version_from <class_name>
+
+Add version_from statement given C<E<lt>class_nameE<gt>>.
 
 =head1 Copyright & License
 
