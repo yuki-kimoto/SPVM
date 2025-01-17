@@ -93,7 +93,7 @@ The spvmcc command generates an executable file from SPVM classes.
 
 =head1 Usage
 
-  usage: spvmcc [<options>] <script_name>
+  usage: spvmcc [<options>] SCRIPT_NAME
     
     spvmcc -o myapp myapp.spvm
     
@@ -102,26 +102,26 @@ The spvmcc command generates an executable file from SPVM classes.
   options:
     -h, --help                      Shows this message
     -v, --version                   Shows the version
-    -o, --output <file>             The output file name
-    -I, --include-dir <directory>   Adds a include directory
-    -B, --build-dir <directory>     Build diretory
+    -o, --output FILE             The output file name
+    -I, --include-dir DIRECTORY   Adds a include directory
+    -B, --build-dir DIRECTORY     Build diretory
     -q, --quiet                     Stops the output of messages
     -f, --force                     Forces the compile and link
     --no-config                     No configration file is ok
-    -m, --mode <mode>               Config mode
-    --config-argv <arg>             A config argument
+    -m, --mode MODE               Config mode
+    --config-argv ARG             A config argument
     --config-argv-option <arg pair> Key-value config arguments such as KEY=VALUE
-    --optimize <level>              Optimization level such as O3, "-O0 -g"
+    --optimize LEVEL              Optimization level such as O3, "-O0 -g"
 
 =head1 Details
 
-  spvmcc [<options>] <script_name>
+  spvmcc [<options>] SCRIPT_NAME
 
 The C<spvmcc> command generates an executable file from SPVM classes.
 
-C<E<lt>optionsE<gt>> are L<options|/"Options">.
+I<OPTIONS> are L<options|/"Options">.
 
-C<E<lt>script_nameE<gt>> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
+I<SCRIPT_NAME> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
 
   class {
     static method main : void () {
@@ -193,9 +193,9 @@ Same as L</"--version">.
 
 =head2 --include-dir
 
-  --include-dir <directory>
+  --include-dir DIRECTORY
 
-Prepends C<E<lt>directoryE<gt>> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
+Prepends I<DIRECTORY> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
 
 This option can be specified multiple times.
 
@@ -207,31 +207,31 @@ In this case, class search directories becomes the following.
 
 =head2 -I
 
-  -I <directory>
+  -I DIRECTORY
 
 Same as L</"--include-dir">.
 
 =head2 --build-dir
 
-  --build-dir <directory>
+  --build-dir DIRECTORY
 
-Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable to C<E<lt>directoryE<gt>>.
+Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable to I<DIRECTORY>.
 
 =head2 -B
 
-  -B <directory>
+  -B DIRECTORY
 
 Same as L</"--build-dir">.
 
 =head2 --output
 
-  --output <file>
+  --output FILE
 
-Specifies the output file path C<E<lt>fileE<gt>>. This output file is an executable file.
+Specifies the output file path I<FILE>. This output file is an executable file.
 
 =head2 -o
 
-  -o <file>
+  -o FILE
 
 Same as L</"--output">.
 
@@ -265,23 +265,23 @@ If this option is specified and a config file does not exist, the C<spvmcc> comm
 
 =head2 --mode
 
-  --mode <mode>
+  --mode MODE
 
-Specifies the config mode C<E<lt>modeE<gt>>.
+Specifies the config mode I<MODE>.
 
 See L<Config Mode|SPVM::Builder::Config/"Config Mode"> about config modes.
 
 =head2 -m
 
-  -m <mode>
+  -m MODE
 
 Same as L</"--mode">.
 
 =head2 --config-argv
 
-  --config-argv <arg>
+  --config-argv ARG
 
-Specifies a config argument C<E<lt>argE<gt>>.
+Specifies a config argument I<ARG>.
 
 This option can be specified multiple times.
 
@@ -313,9 +313,9 @@ Examples:
 
 =head2 --optimize
 
-  --optimize <level>
+  --optimize LEVEL
 
-Sepcifies optimization level C<E<lt>levelE<gt>>.
+Sepcifies optimization level I<LEVEL>.
 
 This affects all source files that are compiled.
 
@@ -325,7 +325,7 @@ Examples:
 
 =head1 lib Directive
 
-If the source code specified by C<E<lt>script_nameE<gt>> contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
+If the source code specified by I<SCRIPT_NAME> contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
   
   #lib "$FindBin::Bin/lib"
   

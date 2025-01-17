@@ -42,11 +42,11 @@ if (!defined $script_name && !defined $source_in_main && !defined $source) {
 }
 
 if (defined $script_name && defined $source_in_main) {
-  die "[spvm command]Specifying both <script_name> and -e option is not allowed.";
+  die "[spvm command]Specifying both SCRIPT_NAME and -e option is not allowed.";
 }
 
 if (defined $script_name && defined $source) {
-  die "[spvm command]Specifying both <script_name> and -E option is not allowed.";
+  die "[spvm command]Specifying both SCRIPT_NAME and -E option is not allowed.";
 }
 
 if (defined $source_in_main && defined $source) {
@@ -116,27 +116,27 @@ The spvm command executes SPVM programs.
 
 =head1 Usage
 
-  usage: spvm [<options>] <script_name>
+  usage: spvm [<options>] SCRIPT_NAME
     
     spvm myapp.spvm
     
   options:
     -h, --help                     Shows this message
     -v, --version                  Shows the version
-    -I, --include-dir <directory>  Adds a include directory
-    -B, --build-dir <directory>    Build diretory
-    -e <source>                    Executes a program source code in main method.
+    -I, --include-dir DIRECTORY  Adds a include directory
+    -B, --build-dir DIRECTORY    Build diretory
+    -e SOURCE                    Executes a program source code in main method.
     -c                             Check syntx only
 
 =head1 Details
 
-  spvm [<options>] <script_name>
+  spvm [<options>] SCRIPT_NAME
 
 The C<spvm> command executes a SPVM program.
 
-C<E<lt>optionsE<gt>> are L<options|/"Options">.
+I<OPTIONS> are L<options|/"Options">.
 
-C<E<lt>script_nameE<gt>> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
+I<SCRIPT_NAME> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
 
   class {
     static method main : void () {
@@ -172,9 +172,9 @@ Same as L</"--version">.
 
 =head2 --include-dir
 
-  --include-dir <directory>
+  --include-dir DIRECTORY
 
-Prepends C<E<lt>directoryE<gt>> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
+Prepends I<DIRECTORY> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
 
 This option can be specified multiple times.
 
@@ -186,25 +186,25 @@ In this case, class search directories becomes the following.
 
 =head2 -I
 
-  -I <directory>
+  -I DIRECTORY
 
 Same as L</"--include-dir">.
 
 =head2 --build-dir
 
-  --build-dir <directory>
+  --build-dir DIRECTORY
 
-Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable to C<E<lt>directoryE<gt>>.
+Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable to I<DIRECTORY>.
 
 =head2 -B
 
-  -B <directory>
+  -B DIRECTORY
 
 Same as L</"--build-dir">.
 
 =head2 -E
 
-  -E <source>
+  -E SOURCE
 
 Executes a source code E<lt>sourceE<gt>.
 
@@ -214,7 +214,7 @@ Examples:
 
 =head2 -e
 
-  -e <source>
+  -e SOURCE
 
 Executes a source code E<lt>sourceE<gt> in C<main> method.
 
@@ -230,7 +230,7 @@ Checks syntax only.
 
 =head1 lib Directive
 
-If the source code specified by C<E<lt>script_nameE<gt>>, C<-E>, or C<-e> option contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
+If the source code specified by I<SCRIPT_NAME>, C<-E>, or C<-e> option contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
   
   #lib "$FindBin::Bin/lib"
   

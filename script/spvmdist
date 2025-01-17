@@ -84,15 +84,15 @@ spvmdist - Generating SPVM Distribution
     -v, --version                  Show the version
     -q, --quiet                    Quiet output
     -f, --force                    Force to generate files
-    --native <language>            Output a distributioon for a native class
+    --native LANGUAGE            Output a distributioon for a native class
     --precompile                   Add precompilattion setting
     --only-lib-files               Output only the files in "lib" directory
     --no-pm-file                   Don't output Perl module(.pm) file
     --resource                     Output a distributioon for for a resource
     --genlib                       Shortcut for --only-lib-files --no-pm-file
     --user-name NAME             User name
-    --user-email <email>           User email
-    --version_from <class_name>    Add version_from statement
+    --user-email EMAIL           User email
+    --version_from CLASS_NAME    Add version_from statement
 
 
 =head1 Description
@@ -103,11 +103,11 @@ C<spvmdist> is the command to generate a SPVM distribution.
 
   spvmdist [<options>] <class name> [<dir>]
 
-C<E<lt>optionsE<gt>> are L<options|/"Options">. These are optional.
+I<OPTIONS> are L<options|/"Options">. These are optional.
 
 C<E<lt>class nameE<gt>> is the name of the class contained in the distribution.
 
-C<E<lt>dirE<gt>> is the output directory. This is optional. The default is the current directory.
+I<DIR> is the output directory. This is optional. The default is the current directory.
 
 These are the output files when C<E<lt>class nameE<gt>> is C<MyClass>.
 
@@ -184,9 +184,9 @@ Same as L</"--force">.
 
 =head2 --native
 
-  --native <language>
+  --native LANGUAGE
 
-Outputs a distribution for a L<native class|SPVM::Document::NativeClass> specified in C<E<lt>languageE<gt>>.
+Outputs a distribution for a L<native class|SPVM::Document::NativeClass> specified in I<LANGUAGE>.
 
 The default is C<c>.
 
@@ -236,21 +236,21 @@ Specifies both L</"--only-lib-files"> and L<"--no-pm-file">.
 
 =head2 --user-name
 
-  --user-name <name>
+  --user-name NAME
 
-Specifies the user name C<E<lt>nameE<gt>>.
+Specifies the user name I<NAME>.
 
 =head2 --user-email
 
-  --user-email <email>
+  --user-email EMAIL
 
-Specifies the user email C<E<lt>emailE<gt>>.
+Specifies the user email I<EMAIL>.
 
 =head2 --version_from
 
-  --version_from <class_name>
+  --version_from CLASS_NAME
 
-Add version_from statement given C<E<lt>class_nameE<gt>>.
+Add version_from statement given I<CLASS_NAME>.
 
 =head1 Copyright & License
 

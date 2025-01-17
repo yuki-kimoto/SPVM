@@ -54,7 +54,7 @@ my $dependency_analyzer = SPVM::Builder::DependencyAnalyzer->new(
 );
 
 unless (defined $script_name) {
-  die "[spvmdeps command]spvmdeps command needs <script_name>."
+  die "[spvmdeps command]spvmdeps command needs SCRIPT_NAME."
 }
 
 if ($show_resource_info) {
@@ -104,7 +104,7 @@ C<spvmdeps> command is a class dependencies analyzer.
 
 =head1 Usage
 
-  usage: spvmdeps [<options>] <script_name>
+  usage: spvmdeps [<options>] SCRIPT_NAME
     
     spvmdeps myapp.spvm
     
@@ -117,17 +117,17 @@ C<spvmdeps> command is a class dependencies analyzer.
   options:
     -h, --help                      Shows this message
     -v, --version                   Shows the version
-    -I, --include-dir <directory>   Adds a include directory
+    -I, --include-dir DIRECTORY   Adds a include directory
     --json                          Prints JSON that contains all dependent class information.
     --cpanm                         Prints cpanm commands that contains dependent cpan modules
     --cpanfile                      Prints cpanfile that contains dependent cpan modules
     --with-version                  Output(default, --cpanm, --json) contains version information.
-    --exclude <class_name>          Excludes a class name. This option can be used repeatedly.
+    --exclude CLASS_NAME          Excludes a class name. This option can be used repeatedly.
     --resource-info                 Shows config files of dependent resources
 
 =head1 Details
 
-  spvmdeps [<options>] <script_name>
+  spvmdeps [<options>] SCRIPT_NAME
 
 The C<spvmdeps> command prints class dependency information.
 
@@ -144,9 +144,9 @@ Output Examples:
   Foo (version_from Sys)
   Bar
 
-C<E<lt>optionsE<gt>> are L<options|/"Options">.
+I<OPTIONS> are L<options|/"Options">.
 
-C<E<lt>script_nameE<gt>> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
+I<SCRIPT_NAME> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
 
   class {
     static method main : void () {
@@ -182,9 +182,9 @@ Same as L</"--version">.
 
 =head2 --include-dir
 
-  --include-dir <directory>
+  --include-dir DIRECTORY
 
-Prepends C<E<lt>directoryE<gt>> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
+Prepends I<DIRECTORY> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
 
 This option can be specified multiple times.
 
@@ -196,7 +196,7 @@ In this case, class search directories becomes the following.
 
 =head2 -I
 
-  -I <directory>
+  -I DIRECTORY
 
 Same as L</"--include-dir">.
 
@@ -309,7 +309,7 @@ Shows all config files loading resources.
 
 =head1 lib Directive
 
-If the source code specified by C<E<lt>script_nameE<gt>> contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
+If the source code specified by I<SCRIPT_NAME> contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
   
   #lib "$FindBin::Bin/lib"
   
