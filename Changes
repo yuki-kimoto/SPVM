@@ -48,8 +48,9 @@
     * Load the class in SPVM class file generaged by spvmdist command with --resource option.
   [New Features]
     * Add --version_from option to spvmdist command.
-    * Add mode accessor to SPVM::Builder::Config;
-    
+    * Add mode field to SPVM::Builder::Config.
+  [Exception Message Improvement]
+    * Compilation messages of resources are improved.
 0.990038 2025-01-09
   [Bug Fix]
     * Fix a bug that when resource class is loaded more than once, spvmcc failed.

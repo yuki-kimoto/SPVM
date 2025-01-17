@@ -914,8 +914,10 @@ sub load_mode_config {
   
   my $config = $self->load_config($mode_config_file, $argv);
   
+  warn $mode_config_file;
   if (defined $mode) {
-    $self->{mode} = $mode;
+    warn $mode;
+    $config->mode($mode);
   }
   
   return $config;
@@ -973,6 +975,10 @@ sub use_resource {
   
   my $config = $self->load_config($config_file, $resource_argv);
   $config->file($config_file);
+  
+  if (defined $resource_mode) {
+    $config->mode($resource_mode);
+  }
   
   $resource->config($config);
   
