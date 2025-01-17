@@ -210,7 +210,7 @@ sub compile_source_file {
       
       my $resource_config_mode_desc = length $resource_config_mode ? "(mode is $resource_config_mode)" : '';
       
-      $message = "[Compile $resource_class_name resource$resource_config_mode_desc. It is used from $resource_loader_config_class_name class$resource_loader_config_mode_desc]";
+      $message = "[Compile a source file in $resource_class_name resource$resource_config_mode_desc. The resouce is used from $resource_loader_config_class_name class$resource_loader_config_mode_desc]";
     }
     else {
       my $config_class_name = $config->class_name;
