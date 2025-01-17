@@ -1,4 +1,8 @@
 class TestCase::UseResource::Mylib2 {
+  
+  use TestCase::Resource::Mylib1;
+  use TestCase::Resource::Mylib2;
+  
   native static method mylib2_source1_func1 : string ();
   native static method mylib2_source1_func2 : string ();
   
