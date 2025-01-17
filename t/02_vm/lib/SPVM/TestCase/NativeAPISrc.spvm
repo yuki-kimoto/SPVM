@@ -1,5 +1,7 @@
 class TestCase::NativeAPISrc {
   
+  use TestCase::Resource::Mylib1;
+  
   native static method src_foo : int ();
   
   native static method src_bar : int ();
