@@ -914,9 +914,7 @@ sub load_mode_config {
   
   my $config = $self->load_config($mode_config_file, $argv);
   
-  warn $mode_config_file;
   if (defined $mode) {
-    warn $mode;
     $config->mode($mode);
   }
   
