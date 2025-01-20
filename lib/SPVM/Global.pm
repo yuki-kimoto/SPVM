@@ -156,6 +156,8 @@ sub init_api {
     $env->set_command_info_base_time($stack, $base_time);
     
     $env->set_command_info_base_time($stack, $base_time);
+    
+    $env->set_command_info_warning($stack, !!$^W);
   }
 }
 

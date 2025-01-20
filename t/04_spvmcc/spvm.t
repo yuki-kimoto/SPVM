@@ -63,8 +63,9 @@ my $dev_null = File::Spec->devnull;
     ok(1);
   }
   
+  # -w
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -w -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     

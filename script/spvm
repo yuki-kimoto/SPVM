@@ -13,6 +13,7 @@ SPVM::Builder::Util::getopt
   'v|version'       => \my $show_version,
   'I|include-dir=s' => \my @include_dirs,
   'B|build-dir=s'   => \my $build_dir,
+  'w'               => \my $warning,
   
   # spvm only
   'E=s' => \my $source,
@@ -83,6 +84,10 @@ FindBin::again();
 my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
 
 unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_by_lib_directive;
+
+if ($warning) {
+  $^W = 1;
+}
 
 for my $use_class_name (@use_class_names) {
   SPVM::Global::build_class($use_class_name, __FILE__, __LINE__);
@@ -227,6 +232,16 @@ Examples:
   -c
 
 Checks syntax only.
+
+=head2 -w
+
+  -w
+
+Enables warning flag.
+
+Implementation:
+
+Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
 
 =head1 lib Directive
 
