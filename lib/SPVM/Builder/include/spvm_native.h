@@ -104,7 +104,7 @@ struct spvm_env {
   int32_t (*call_init_methods)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);
   int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);
-  int32_t (*set_command_info_base_time)(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);
+  int32_t (*set_command_info_basetime)(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);
   void (*destroy_class_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*args_width)(SPVM_ENV* env, SPVM_VALUE* stack);
   void* (*get_object_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);

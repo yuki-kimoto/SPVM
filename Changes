@@ -4,6 +4,8 @@
     * Add set_command_info_warning native API.
     * Add -w flag to spvm command.
     * Add -w flag to spvmcc command.
+  [Incompatibe Changes]
+    * Rename set_command_info_base_time native API to set_command_info_basetime.
     
 0.990039 2025-01-13
   [Internal Changes]

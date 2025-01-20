@@ -21,7 +21,7 @@ class Native::API : pointer {
   
   native method set_command_info_argv : void ($argv : string[]);
   
-  native method set_command_info_base_time : void ($base_time : long);
+  native method set_command_info_basetime : void ($base_time : long);
   
   native method call_init_methods : void ();
   

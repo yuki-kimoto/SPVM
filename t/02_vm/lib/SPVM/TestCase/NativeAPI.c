@@ -24,7 +24,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->call_init_methods != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_command_info_program_name != &env_array[5]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_command_info_argv != &env_array[6]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_command_info_base_time != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_command_info_basetime != &env_array[7]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->destroy_class_vars != &env_array[8]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->args_width != &env_array[9]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_object_basic_type != &env_array[10]) { stack[0].ival = 0; return 0; }

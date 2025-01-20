@@ -136,7 +136,7 @@ int32_t SPVM__Native__API__set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stac
   return 0;
 }
 
-int32_t SPVM__Native__API__set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__API__set_command_info_basetime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
@@ -154,7 +154,7 @@ int32_t SPVM__Native__API__set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE*
   
   int64_t base_time = stack[1].lval;
   
-  error_id = api_env->set_command_info_base_time(api_env, api_stack, base_time);
+  error_id = api_env->set_command_info_basetime(api_env, api_stack, base_time);
   if (error_id) { return error_id; }
   
   return 0;

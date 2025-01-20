@@ -572,7 +572,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
           env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
         }
         else {
-          error_id = env->set_command_info_base_time(env, stack, base_time);
+          error_id = env->set_command_info_basetime(env, stack, base_time);
           if (error_id) {
             env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
           }

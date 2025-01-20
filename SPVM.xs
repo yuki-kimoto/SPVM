@@ -5104,7 +5104,7 @@ set_command_info_argv(...)
 }
 
 SV*
-set_command_info_base_time(...)
+set_command_info_basetime(...)
   PPCODE:
 {
   
@@ -5123,7 +5123,7 @@ set_command_info_base_time(...)
     // Set command info
     {
       int32_t error_id;
-      error_id = env->set_command_info_base_time(env, stack, base_time);
+      error_id = env->set_command_info_basetime(env, stack, base_time);
       assert(error_id == 0);
     }
     

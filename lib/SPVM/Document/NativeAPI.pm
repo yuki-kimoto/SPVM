@@ -106,9 +106,9 @@ If an exception is thrown, returns a non-zero value. Otherwise, returns 0.
 
 This native API should not be used unless special purposes are intended.
 
-=head2 set_command_info_base_time
+=head2 set_command_info_basetime
 
-C<int32_t (*set_command_info_base_time)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int64_t base_time);>
+C<int32_t (*set_command_info_basetime)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int64_t base_time);>
 
 Sets the base time I<base_time> to L<CommandInfo#BASE_TIME|SPVM::CommandInfo/"BASE_TIME"> class variable.
 
@@ -2587,7 +2587,7 @@ Native APIs have its IDs.
   4 call_init_methods,
   5 set_command_info_program_name,
   6 set_command_info_argv,
-  7 set_command_info_base_time,
+  7 set_command_info_basetime,
   8 destroy_class_vars,
   9 args_width,
   10 get_object_basic_type,

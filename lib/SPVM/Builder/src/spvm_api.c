@@ -104,7 +104,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_call_init_methods,
     SPVM_API_set_command_info_program_name,
     SPVM_API_set_command_info_argv,
-    SPVM_API_set_command_info_base_time,
+    SPVM_API_set_command_info_basetime,
     SPVM_API_destroy_class_vars,
     SPVM_API_args_width,
     SPVM_API_get_object_basic_type,
@@ -420,7 +420,7 @@ int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   return 0;
 }
 
-int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time) {
+int32_t SPVM_API_set_command_info_basetime(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time) {
   
   int32_t error_id = 0;
   
