@@ -579,7 +579,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "CommandInfo";
     const char* rel_file = "CommandInfo.spvm";
-    const char* content = "class CommandInfo {\n  version_from SPVM;\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASETIME : ro long;\n  our $WARNING : ro byte;\n  static method BASE_TIME : long () { if (CommandInfo->WARNING) { warn \"BASE_TIME is deprecated in favor of BASETIME\";  } return $BASETIME; }}";
+    const char* content = "class CommandInfo {\n  version_from SPVM;\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASETIME : ro long;\n  our $WARNING : ro byte;\n  }";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
