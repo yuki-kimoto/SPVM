@@ -721,7 +721,7 @@ t/02_vm/08_module/Double.t
 t/02_vm/08_module/DoubleList.t
 t/02_vm/08_module/EqualityChecker.t
 t/02_vm/08_module/Error.t
-t/02_vm/08_module/Error_System.t
+t/02_vm/08_module/Error/System.t
 t/02_vm/08_module/Float.t
 t/02_vm/08_module/FloatList.t
 t/02_vm/08_module/Fn.t
@@ -754,7 +754,6 @@ t/02_vm/08_module/Sort.t
 t/02_vm/08_module/StringBuffer.t
 t/02_vm/08_module/StringList.t
 t/02_vm/08_module/Sync/Mutex.t
-t/02_vm/08_module/Sync_Mutex.t
 t/02_vm/09_stdio/stdio.t
 t/02_vm/10_thread_safe/thread_safe.t
 t/02_vm/99_extra/examples.t
@@ -1061,8 +1060,8 @@ t/04_spvmcc/script/myapp_compile_error/main_not_found.spvm
 t/04_spvmcc/script/precompile.spvm
 t/04_spvmcc/script/program_name.spvm
 t/04_spvmcc/script/use_class.spvm
+t/04_spvmcc/SPVM-Builder-Exe.t
 t/04_spvmcc/spvm.t
-t/04_spvmcc/SPVM_Builder_Exe.t
 t/04_spvmcc/spvmcc.t
 t/04_spvmcc/spvmdeps.t
 t/05_spvmdist/command.t
