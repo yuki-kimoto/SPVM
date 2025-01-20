@@ -154,6 +154,8 @@ sub init_api {
     $env->set_command_info_argv($stack, \@ARGV);
     my $base_time = $^T + 0; # For Perl 5.8.9
     $env->set_command_info_base_time($stack, $base_time);
+    
+    $env->set_command_info_base_time($stack, $base_time);
   }
 }
 
