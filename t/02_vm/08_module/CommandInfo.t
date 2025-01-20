@@ -19,8 +19,9 @@ is(SPVM::CommandInfo->PROGRAM_NAME, $0);
 is_deeply(SPVM::CommandInfo->ARGV->to_elems, \@ARGV);
 
 
-is(SPVM::CommandInfo->BASE_TIME, $^T);
+is(SPVM::CommandInfo->BASETIME, $^T);
 
+# Deprecated
 is(SPVM::CommandInfo->BASE_TIME, $^T);
 
 is(SPVM::CommandInfo->WARNING, $^W);

@@ -420,11 +420,11 @@ int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   return 0;
 }
 
-int32_t SPVM_API_set_command_info_basetime(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time) {
+int32_t SPVM_API_set_command_info_basetime(SPVM_ENV* env, SPVM_VALUE* stack, int64_t basetime) {
   
   int32_t error_id = 0;
   
-  SPVM_API_set_class_var_long_by_name(env, stack, "CommandInfo", "$BASE_TIME", base_time, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_API_set_class_var_long_by_name(env, stack, "CommandInfo", "$BASETIME", basetime, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   return 0;

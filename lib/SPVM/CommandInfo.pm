@@ -28,9 +28,9 @@ C<our $ARGV : ro string[];>
 
 Comand line arguments passed when the program starts.
 
-=head2 BASE_TIME
+=head2 BASETIME
 
-C<our $BASE_TIME : ro long;>
+C<our $BASETIME : ro long;>
 
 The time when the program starts. This is the same as Perl C<$^T>.
 
@@ -39,6 +39,16 @@ The time when the program starts. This is the same as Perl C<$^T>.
 C<our $WARNING : ro byte;>
 
 A warning flag.
+
+=head1 Class Methods
+
+=head2 BASE_TIME
+
+B<Deprecated>
+
+C<method BASE_TIME : long ();>
+
+Returns the value of L</"BASETIME"> field.
 
 =head1 Copyright & License
 

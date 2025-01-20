@@ -6,6 +6,7 @@
     * Add -w flag to spvmcc command.
   [Incompatibe Changes]
     * Rename set_command_info_base_time native API to set_command_info_basetime.
+    * Rename CommandInfo#$BASE_TIME class variable to $BASETIME. BASE_TIME gettor is deprecated and will be removed in the future.
     
 0.990039 2025-01-13
   [Internal Changes]
