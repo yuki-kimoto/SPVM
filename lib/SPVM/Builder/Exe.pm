@@ -514,7 +514,9 @@ sub create_bootstrap_main_func_source {
   my $class_name = $self->class_name;
 
   my $class_names = $self->get_user_defined_basic_type_names;
-
+  
+  my $warning = $^W ? 1 : 0;
+  
   my $source = '';
 
   $source .= <<"EOS";
@@ -573,6 +575,12 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
           error_id = env->set_command_info_base_time(env, stack, base_time);
           if (error_id) {
             env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+          }
+          else {
+            error_id = env->set_command_info_warning(env, stack, $warning);
+            if (error_id) {
+              env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+            }
           }
         }
       }

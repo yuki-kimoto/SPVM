@@ -16,6 +16,7 @@ SPVM::Builder::Util::getopt
   'v|version'       => \my $show_version,
   'I|include-dir=s' => \my @include_dirs,
   'B|build-dir=s'   => \my $build_dir,
+  'w'               => \my $warning,
   
   # spvmcc only
   'o|output=s'        => \my $output_file,
@@ -54,6 +55,10 @@ eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
 my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
 
 unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_by_lib_directive;
+
+if ($warning) {
+  $^W = 1;
+}
 
 unless (defined $script_name) {
   warn "<script_name> is required.\n\n";
@@ -322,6 +327,16 @@ This affects all source files that are compiled.
 Examples:
 
   --optimize "-O0 -g"
+
+=head2 -w
+
+  -w
+
+Enables warning flag.
+
+Implementation:
+
+Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
 
 =head1 lib Directive
 
