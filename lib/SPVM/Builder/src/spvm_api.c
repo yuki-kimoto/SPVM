@@ -326,6 +326,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_set_seed,
     SPVM_API_seed_initialized,
     SPVM_API_get_basic_type_name_in_version_from,
+    SPVM_API_set_command_info_warning,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
