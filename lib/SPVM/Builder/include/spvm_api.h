@@ -388,4 +388,6 @@ int32_t SPVM_API_seed_initialized(SPVM_ENV* env, SPVM_VALUE* stack);
 
 const char* SPVM_API_get_basic_type_name_in_version_from(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE* basic_type);
 
+int32_t SPVM_API_set_command_info_warning(SPVM_ENV* env, SPVM_VALUE* stack, int32_t warning);
+
 #endif

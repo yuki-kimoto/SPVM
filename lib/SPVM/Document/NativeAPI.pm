@@ -2566,6 +2566,16 @@ C<const char* (*get_basic_type_name_in_version_from)(SPVM_ENV* env, SPVM_VALUE* 
 
 Returns the basic type name specified by C<version_from> statement. If it is not specified, returns NULL.
 
+=head2 set_command_info_warning
+
+C<int32_t (*set_command_info_warning)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t warning);>
+
+Sets L<CommandInfo#WARNING|SPVM::CommandInfo/"WARNING"> class variable to I<warning>.
+
+If an exception is thrown, returns the basic type ID of L<Error|SPVM::Error> classs, otherwise returns 0.
+
+This native API should not be used unless special purposes are intended.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2799,6 +2809,7 @@ Native APIs have its IDs.
   226 set_seed
   227 seed_initialized
   228 get_basic_type_name_in_version_from
+  229 set_command_info_warning
 
 =head1 Constant Values
 

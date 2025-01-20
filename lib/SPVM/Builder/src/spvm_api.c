@@ -5617,3 +5617,13 @@ const char* SPVM_API_get_basic_type_name_in_version_from(SPVM_ENV* env, SPVM_VAL
   
   return basic_type_name_in_version_from;
 }
+
+int32_t SPVM_API_set_command_info_warning(SPVM_ENV* env, SPVM_VALUE* stack, int32_t warning) {
+  
+  int32_t error_id = 0;
+  
+  SPVM_API_set_class_var_byte_by_name(env, stack, "CommandInfo", "$WARNING", warning, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  return 0;
+}

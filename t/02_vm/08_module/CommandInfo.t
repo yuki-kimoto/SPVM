@@ -21,6 +21,10 @@ is_deeply(SPVM::CommandInfo->ARGV->to_elems, \@ARGV);
 
 is(SPVM::CommandInfo->BASE_TIME, $^T);
 
+is(SPVM::CommandInfo->BASE_TIME, $^T);
+
+is(SPVM::CommandInfo->WARNING, $^W);
+
 # All object is freed
 $api->set_exception(undef);
 my $end_memory_blocks_count = $api->get_memory_blocks_count();

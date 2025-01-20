@@ -12,29 +12,33 @@ SPVM::CommandInfo - Command Line Information
 
 =head1 Description
 
-C<CommandInfo> is a class that has command line information such as the program name and the arguments.
-
-C<CommandInfo> is a L<SPVM> class.
+C<CommandInfo> in L<SPVM> has methods to get command line information such as a program name and arguments.
 
 =head1 Class Variables
 
 =head2 PROGRAM_NAME
 
-  our $PROGRAM_NAME : ro string;
+C<our $PROGRAM_NAME : ro string;>
 
-Gets the program name. This is the same as Perl C<$0>.
+A program name when the program starts.
 
 =head2 ARGV
 
-  our $ARGV : ro string[];
+C<our $ARGV : ro string[];>
 
-Gets the comand line arguments. This is the same as Perl C<@ARGV>.
+Comand line arguments passed when the program starts.
 
 =head2 BASE_TIME
 
-  our $BASE_TIME : ro long;
+C<our $BASE_TIME : ro long;>
 
-Gets the time when the program starts. This is the same as Perl C<$^T>.
+The time when the program starts. This is the same as Perl C<$^T>.
+
+=head2 WARNING
+
+C<our $WARNING : ro byte;>
+
+A warning flag.
 
 =head1 Copyright & License
 

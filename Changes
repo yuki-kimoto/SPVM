@@ -1,3 +1,8 @@
+0.990040 2025-01-20
+  [New Features]
+    * Add CommandInfo#WARNING class variable.
+    * Add set_command_info_warning native API.
+    
 0.990039 2025-01-13
   [Internal Changes]
     * Clanup .gitignore.
