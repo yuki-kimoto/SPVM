@@ -1302,6 +1302,7 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
           break;
         }
         case SPVM_ATTRIBUTE_C_ID_CACHE: {
+          class_var->is_cache = 1;
           break;
         }
         default: {

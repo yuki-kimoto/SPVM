@@ -832,9 +832,11 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_class_var->type_dimension = class_var->type->dimension;
         runtime_class_var->type_flag = class_var->type->flag;
         runtime_class_var->current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, class_var->current_basic_type->id);
+        runtime_class_var->is_cache = class_var->is_cache;
         
         SPVM_STRING* class_var_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, class_var->name, strlen(class_var->name));
         runtime_class_var->name = runtime_basic_type->constant_strings[class_var_name_string->index].value;
+        
       }
       runtime_basic_type->class_vars = runtime_class_vars;
       runtime_basic_type->class_vars_length = basic_type->class_vars->length;

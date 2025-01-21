@@ -15,6 +15,7 @@ struct spvm_runtime_class_var {
   int32_t index;
   int32_t type_dimension;
   int32_t type_flag;
+  int8_t is_cache;
 };
 
 #endif
