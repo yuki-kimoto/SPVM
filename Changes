@@ -1,3 +1,8 @@
+0.990042 2025-01-22
+  [New Features]
+    * Add cache class variable attribute.
+    * Add is_cache class variable native API.
+    
 0.990041 2025-01-20
   [Incompatibe Changes]
     * Remove deprecated CommandInfo#$BASE_TIME method.

@@ -54,6 +54,12 @@ C<void* (*get_current_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Run
 
 Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> that owns the class variable I<class_var>.
 
+=head2 is_cache
+
+C<int32_t (*is_cache)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
+
+If C<cache> class variable attribute is specified, returns 1, otherwise returns 0.
+
 =head1 Native API IDs
 
   0 get_name
@@ -62,6 +68,7 @@ Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> that owns the cla
   3 get_type_dimension
   4 get_type_flag
   5 get_current_basic_type
+  6 is_cache
 
 =head1 See Also
 

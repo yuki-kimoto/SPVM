@@ -411,6 +411,7 @@ struct spvm_api_class_var {
   int32_t (*get_type_dimension)(void* runtime, void* class_var);
   int32_t (*get_type_flag)(void* runtime, void* class_var);
   void* (*get_current_basic_type)(void* runtime, void* class_var);
+  int32_t (*is_cache)(void* runtime, void* class_var);
 };
 
 struct spvm_api_compiler {

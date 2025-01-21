@@ -19,6 +19,7 @@ SPVM_API_CLASS_VAR* SPVM_API_CLASS_VAR_new_api() {
     SPVM_API_CLASS_VAR_get_type_dimension,
     SPVM_API_CLASS_VAR_get_type_flag,
     SPVM_API_CLASS_VAR_get_current_basic_type,
+    SPVM_API_CLASS_VAR_is_cache,
   };
   
   SPVM_API_CLASS_VAR* native_apis = calloc(1, sizeof(native_apis_init));
@@ -61,4 +62,9 @@ int32_t SPVM_API_CLASS_VAR_get_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLA
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_CLASS_VAR_get_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
   return class_var->current_basic_type;
+}
+
+int32_t SPVM_API_CLASS_VAR_is_cache(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
+  
+  return class_var->is_cache;
 }
