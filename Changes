@@ -6,7 +6,13 @@
     * Add destroy_cache_class_vars native API.
     * Add Fn#destroy_cache_class_vars method.
     * Add Fn#destroy_runtime_permanent_vars method.
-    
+  [Compilation Error Message Changes]
+    * Change compilation error message.
+      [Before]
+      The private MyClass2#$FOO class variable cannnot be called from the current class MyClass
+      
+      [After]
+      The private $MyClass2::FOO class variable cannnot be called from the current class MyClass
 0.990041 2025-01-20
   [Incompatibe Changes]
     * Remove deprecated CommandInfo#$BASE_TIME method.
