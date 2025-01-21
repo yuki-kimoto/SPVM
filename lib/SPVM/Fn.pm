@@ -1723,6 +1723,14 @@ C<static method destroy_cache_class_vars : void ();>
 
 Sets all class variables of all classes that is a object type and C<cache> class variable attribute is specified to undef.
 
+=head2 destroy_runtime_permanent_vars
+
+C<method destroy_runtime_permanent_vars : void ();>
+
+Sets all runtime permanent variables to undef.
+
+Currently thie method calls L</"destroy_cache_class_vars> method and sets C<$@> to undef.
+
 =head1 See Also
 
 =over 2

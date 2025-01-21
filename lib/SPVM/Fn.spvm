@@ -1792,4 +1792,12 @@ class Fn {
   
   native static method destroy_cache_class_vars : void ();
   
+  static method destroy_runtime_permanent_vars : void () {
+    
+    &destroy_cache_class_vars;
+    
+    $@ = undef;
+    
+  }
+  
 }
