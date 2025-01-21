@@ -3,6 +3,7 @@ class TestCase::Simple : public {
   
   use TestCase::Minimal;
   use Hash;
+  use Point;
   
   interface Stringable;
   interface Cloneable;
