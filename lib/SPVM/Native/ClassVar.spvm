@@ -34,4 +34,7 @@ class Native::ClassVar : pointer {
   native method get_type_flag : int ();
   
   native method get_current_basic_type : Native::BasicType ();
+  
+  native method is_cache : int ();
+  
 }

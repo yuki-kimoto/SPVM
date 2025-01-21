@@ -156,3 +156,23 @@ int32_t SPVM__Native__ClassVar__get_current_basic_type(SPVM_ENV* env, SPVM_VALUE
   
   return 0;
 }
+
+int32_t SPVM__Native__ClassVar__is_cache(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* self = env->get_pointer(env, stack, obj_self);
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  int32_t is_cache = env->api->class_var->is_cache(runtime, self);
+  
+  stack[0].ival = is_cache;
+  
+  return 0;
+}

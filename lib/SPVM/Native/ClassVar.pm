@@ -66,6 +66,12 @@ Gets the current L<Native::BasicType|SPVM::Native::BasicType> object that define
 
 If a memory error occurs, an exception is thrown.
 
+=head2 is_cache
+
+C<method is_cache : int ();>
+
+If C<cache> class variable attribute is specified, returns 1, otherwise returns 0.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

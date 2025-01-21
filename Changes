@@ -2,6 +2,7 @@
   [New Features]
     * Add cache class variable attribute.
     * Add is_cache class variable native API.
+    * Add Native::ClassVar#is_cache method.
     
 0.990041 2025-01-20
   [Incompatibe Changes]
