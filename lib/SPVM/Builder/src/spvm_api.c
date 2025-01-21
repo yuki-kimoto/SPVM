@@ -430,12 +430,10 @@ int32_t SPVM_API_set_command_info_basetime(SPVM_ENV* env, SPVM_VALUE* stack, int
   return 0;
 }
 
-void SPVM_API_destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack){
+static void SPVM_API_destroy_class_vars_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t only_cache){
 
-  // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
-  // Free objects of class variables
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
     
@@ -446,14 +444,33 @@ void SPVM_API_destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack){
       SPVM_RUNTIME_BASIC_TYPE* class_var_basic_type = class_var->basic_type;
       int32_t class_var_type_dimension = class_var->type_dimension;
       int32_t class_var_type_flag = class_var->type_flag;
-      
+      int32_t class_var_is_cache = class_var->is_cache;
       int32_t class_var_type_is_object = SPVM_API_TYPE_is_object_type(runtime, class_var_basic_type, class_var_type_dimension, class_var_type_flag);
-      if (class_var_type_is_object) {
-        SPVM_OBJECT** ref = (SPVM_OBJECT**)&class_var->data;
-        SPVM_API_assign_object(env, stack, ref, NULL);
+      
+      int32_t do_free = 0;
+      if (only_cache) {
+        if (class_var_is_cache) {
+          do_free = 1;
+        }
+      }
+      else {
+        do_free = 1;
+      }
+      
+      if (do_free) {
+        if (class_var_type_is_object) {
+          SPVM_OBJECT** ref = (SPVM_OBJECT**)&class_var->data;
+          SPVM_API_assign_object(env, stack, ref, NULL);
+        }
       }
     }
   }
+}
+
+void SPVM_API_destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack){
+  
+  int32_t only_cache = 0;
+  SPVM_API_destroy_class_vars_common(env, stack, only_cache);
 }
 
 int32_t SPVM_API_args_width(SPVM_ENV* env, SPVM_VALUE* stack) {
