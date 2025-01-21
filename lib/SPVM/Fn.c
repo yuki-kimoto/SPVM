@@ -1101,3 +1101,10 @@ int32_t SPVM__Fn__get_basic_type_name_in_version_from(SPVM_ENV* env, SPVM_VALUE*
   return 0;
 }
 
+int32_t SPVM__Fn__destroy_cache_class_vars(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  env->destroy_cache_class_vars(env, stack);
+  
+  return 0;
+}
+

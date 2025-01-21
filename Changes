@@ -3,6 +3,8 @@
     * Add cache class variable attribute.
     * Add is_cache class variable native API.
     * Add Native::ClassVar#is_cache method.
+    * Add destroy_cache_class_vars native API.
+    * Add Fn#destroy_cache_class_vars method.
     
 0.990041 2025-01-20
   [Incompatibe Changes]

@@ -1717,6 +1717,12 @@ C<static method get_basic_type_name_in_version_from : basic_type_name ($basic_ty
 
 Returns the basic_type_name specified by L<version_from Statement|SPVM::Document::Language::Class/"version_from Statement"> of the class $basic_type_name. If it is not specified, returns undef.
 
+=head2 destroy_cache_class_vars
+
+C<static method destroy_cache_class_vars : void ();>
+
+Sets all class variables of all classes that is a object type and C<cache> class variable attribute is specified to undef.
+
 =head1 See Also
 
 =over 2

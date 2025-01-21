@@ -120,7 +120,7 @@ This native API should not be used unless special purposes are intended.
   
 C<void (*destroy_class_vars)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Destroys the class variables of all classes.
+Sets all class variables of all classes that is a object type to undef.
 
 This native API should not be used unless special purposes are intended.
 
@@ -2576,6 +2576,12 @@ If an exception is thrown, returns the basic type ID of L<Error|SPVM::Error> cla
 
 This native API should not be used unless special purposes are intended.
 
+=head2 destroy_cache_class_vars
+  
+C<void (*destroy_cache_class_vars)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+
+Sets all class variables of all classes that is a object type and C<cache> class variable attribute is specified to undef.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2810,6 +2816,7 @@ Native APIs have its IDs.
   227 seed_initialized
   228 get_basic_type_name_in_version_from
   229 set_command_info_warning
+  230 destroy_cache_class_vars
 
 =head1 Constant Values
 

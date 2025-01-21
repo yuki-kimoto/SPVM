@@ -327,6 +327,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_seed_initialized,
     SPVM_API_get_basic_type_name_in_version_from,
     SPVM_API_set_command_info_warning,
+    SPVM_API_destroy_cache_class_vars,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -470,6 +471,12 @@ static void SPVM_API_destroy_class_vars_common(SPVM_ENV* env, SPVM_VALUE* stack,
 void SPVM_API_destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack){
   
   int32_t only_cache = 0;
+  SPVM_API_destroy_class_vars_common(env, stack, only_cache);
+}
+
+void SPVM_API_destroy_cache_class_vars(SPVM_ENV* env, SPVM_VALUE* stack){
+
+  int32_t only_cache = 1;
   SPVM_API_destroy_class_vars_common(env, stack, only_cache);
 }
 

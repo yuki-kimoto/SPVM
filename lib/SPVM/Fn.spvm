@@ -1790,4 +1790,6 @@ class Fn {
   
   native static method get_basic_type_name_in_version_from : string ($basic_type_name : string);
   
+  native static method destroy_cache_class_vars : void ();
+  
 }
