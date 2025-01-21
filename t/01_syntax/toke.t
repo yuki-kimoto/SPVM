@@ -754,6 +754,15 @@ use Test::More;
   }
 }
 
+# Attributes
+{
+  # cache
+  {
+    my $source = "class MyClass { our \$FOO : cache int; }";
+    compile_ok($source);
+  }
+}
+
 # Extra
 {
   {

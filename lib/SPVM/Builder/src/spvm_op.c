@@ -1301,6 +1301,9 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
           field_method_attributes_count++;
           break;
         }
+        case SPVM_ATTRIBUTE_C_ID_CACHE: {
+          break;
+        }
         default: {
           SPVM_COMPILER_error(compiler, "Invalid class variable attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
         }

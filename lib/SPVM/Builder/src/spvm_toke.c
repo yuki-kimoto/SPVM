@@ -2084,7 +2084,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 'c' : {
-                if (strcmp(symbol_name, "can") == 0) {
+                if (strcmp(symbol_name, "cache") == 0) {
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_CACHE, compiler->current_file, compiler->current_line);
+                  yylvalp->opval = op_attribute;
+                  keyword_token = ATTRIBUTE;
+                }
+                else if (strcmp(symbol_name, "can") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CAN);
                   keyword_token = CAN;
                 }

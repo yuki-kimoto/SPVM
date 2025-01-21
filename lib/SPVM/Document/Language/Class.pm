@@ -1124,6 +1124,14 @@ The List of Class Variable Attributes:
       This class variable defines a <a href="#Class-Variable-Getter-Method">getter method</a> and a <a href="#Class-Variable-Setter-Method">setter method</a>.
     </td>
   </tr>
+  <tr>
+    <td>
+      <b>cache</b>
+    </td>
+    <td>
+      This class variable is used for cache in runtime.
+    </td>
+  </tr>
 </table>
 
 =end html
