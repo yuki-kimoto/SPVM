@@ -8,6 +8,9 @@ class TestCase::Simple : public {
   interface Cloneable;
   interface TestCase::Interface::Type;
   
+  our $CACHE_POINT : public cache Point;
+  our $NOT_CACHE_POINT : public Point;
+  
   has x : rw public int;
   has y : rw public int;
   

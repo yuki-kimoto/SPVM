@@ -251,6 +251,9 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->dump_object_internal);
     ok(SPVM::TestCase::Module::Fn->get_seed);
     ok(SPVM::TestCase::Module::Fn->get_basic_type_name_in_version_from);
+    ok(SPVM::TestCase::Module::Fn->destroy_cache_class_vars);
+    ok(SPVM::TestCase::Module::Fn->destroy_runtime_permanent_vars);
+    
   }
   
   # Extra

@@ -8247,4 +8247,52 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method destroy_cache_class_vars : int () {
+    
+    $TestCase::Simple::CACHE_POINT = Point->new;
+    
+    $TestCase::Simple::NOT_CACHE_POINT = Point->new;
+    
+    Fn->destroy_cache_class_vars;
+    
+    if ($TestCase::Simple::CACHE_POINT) {
+      return 0;
+    }
+    
+    unless ($TestCase::Simple::NOT_CACHE_POINT) {
+      return 0;
+    }
+    
+    $TestCase::Simple::NOT_CACHE_POINT = undef;
+    
+    return 1;
+  }
+  
+  static method destroy_runtime_permanent_vars : int () {
+    
+    $TestCase::Simple::CACHE_POINT = Point->new;
+    
+    $TestCase::Simple::NOT_CACHE_POINT = Point->new;
+    
+    $@ = "Error";
+    
+    Fn->destroy_runtime_permanent_vars;
+    
+    if ($TestCase::Simple::CACHE_POINT) {
+      return 0;
+    }
+    
+    unless ($TestCase::Simple::NOT_CACHE_POINT) {
+      return 0;
+    }
+    
+    if ($@) {
+      return 0;
+    }
+    
+    $TestCase::Simple::NOT_CACHE_POINT = undef;
+    
+    return 1;
+  }
+  
 }
