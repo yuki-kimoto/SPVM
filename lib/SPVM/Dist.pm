@@ -963,7 +963,7 @@ ok(SPVM::TestCase::$class_name->test);
   is(\$SPVM::${class_name}::VERSION, \$version_string);
 }
 
-\$api->set_exception(undef);
+SPVM::Fn->destroy_runtime_permanent_vars;
 
 my \$end_memory_blocks_count = \$api->get_memory_blocks_count;
 is(\$end_memory_blocks_count, \$start_memory_blocks_count);
