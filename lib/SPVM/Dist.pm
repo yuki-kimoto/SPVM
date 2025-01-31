@@ -348,7 +348,7 @@ sub generate_perl_class_file {
 EOS
   }
   elsif ($resource) {
-    $description = "$class_name in L<SPVM> is a L<resource|SPVM::Document::Resource> for something.";
+    $description = "$class_name class in L<SPVM> is a L<resource|SPVM::Document::Resource> class for something.";
     
     my $native = $self->native;
     my $new_method;
