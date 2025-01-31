@@ -523,6 +523,8 @@ sub create_bootstrap_main_func_source {
 
 int32_t main(int32_t command_args_length, const char *command_args[]) {
   
+  int32_t error_id = 0;
+  
   SPVM_ENV* boot_env = SPVM_NATIVE_new_env();
   
   void* compiler = boot_env->api->compiler->new_instance();
@@ -541,8 +543,6 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   SPVM_VALUE* stack = env->new_stack(env);
   
-  int32_t error_id = 0;
-  
   // Set the program name and the command line arguments
   {
     int32_t mortal_stack_top = env->enter_scope(env, stack);
@@ -558,59 +558,63 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     
     int64_t base_time = time(NULL);
     
-    // Set command info
+    // Set command line info
     {
       error_id = env->set_command_info_program_name(env, stack, obj_program_name);
       
       if (error_id) {
         env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+        goto END_OF_FUNC;
       }
-      else {
-        error_id = env->set_command_info_argv(env, stack, obj_argv);
-        
-        if (error_id) {
-          env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
-        }
-        else {
-          error_id = env->set_command_info_basetime(env, stack, base_time);
-          if (error_id) {
-            env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
-          }
-          else {
-            error_id = env->set_command_info_warning(env, stack, $warning);
-            if (error_id) {
-              env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
-            }
-          }
-        }
+      
+      error_id = env->set_command_info_argv(env, stack, obj_argv);
+      
+      if (error_id) {
+        env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+        goto END_OF_FUNC;
+      }
+      
+      error_id = env->set_command_info_basetime(env, stack, base_time);
+      if (error_id) {
+        env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+        goto END_OF_FUNC;
+      }
+      
+      error_id = env->set_command_info_warning(env, stack, $warning);
+      if (error_id) {
+        env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+        goto END_OF_FUNC;
       }
     }
     
     env->leave_scope(env, stack, mortal_stack_top);
   }
   
-  if (!error_id) {
-    const char* class_name = "$class_name";
-    
-    error_id = env->check_bootstrap_method(env, stack, class_name);
-    
-    if (error_id) {
-      env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
-    }
-    else {
-      error_id = env->call_init_methods(env, stack);
-      if (!error_id) {
-        void* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
-        void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, "main");
-        
-        int32_t args_width = 0;
-        error_id = env->call_method(env, stack, method, args_width);
-        if (error_id) {
-          env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
-        }
-      }
-    }
+  const char* class_name = "$class_name";
+  
+  error_id = env->check_bootstrap_method(env, stack, class_name);
+  
+  if (error_id) {
+    env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+    goto END_OF_FUNC;
   }
+  
+  error_id = env->call_init_methods(env, stack);
+  if (error_id) {
+    goto END_OF_FUNC;
+  }
+  
+  void* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
+  void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, "main");
+  
+  int32_t args_width = 0;
+  error_id = env->call_method(env, stack, method, args_width);
+  if (error_id) {
+    error_id = env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+    goto END_OF_FUNC;
+  }
+  
+  END_OF_FUNC:
   
   if (error_id) {
     env->print_stderr(env, stack, env->get_exception(env, stack));
