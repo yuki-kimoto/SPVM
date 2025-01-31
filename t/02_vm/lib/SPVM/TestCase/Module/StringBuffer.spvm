@@ -637,4 +637,81 @@ class TestCase::Module::StringBuffer {
     return 1;
   }
   
+  static method compare_string : int () {
+    
+    {
+      {
+        my $ret = StringBuffer->new("abd")->compare_string("abc");
+        unless ($ret == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = StringBuffer->new("abcd")->compare_string("abc");
+        unless ($ret == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = StringBuffer->new("abb")->compare_string("abc");
+        unless ($ret == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = StringBuffer->new("abc")->compare_string("abcd");
+        unless ($ret == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = StringBuffer->new("abc")->compare_string("abc");
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = StringBuffer->new("")->compare_string(undef);
+        unless ($ret == 1) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method equals_string : int () {
+    
+    {
+      {
+        my $ret = StringBuffer->new("abd")->equals_string("abc");
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = StringBuffer->new("abc")->equals_string("abc");
+        unless ($ret == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = StringBuffer->new("")->equals_string(undef);
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
 }

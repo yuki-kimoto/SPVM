@@ -303,4 +303,32 @@ class StringBuffer {
     
     return $eq;
   }
+  
+  method compare_string : int ($string : string) {
+    
+    my $a_length = $self->{length};
+    my $a_string = $self->{string};
+    
+    my $b_length = -1;
+    my $b_string = (string)undef;
+    
+    if ($string) {
+      $b_length = length $string;
+      $b_string = $string;
+    }
+    
+    my $cmp = &cmp_common($a_string, $a_length, $b_string, $b_length);
+    
+    return $cmp;
+  }
+  
+  method equals_string : int ($string : string) {
+    
+    my $cmp = $self->compare_string($string);
+    
+    my $eq = ($cmp == 0);
+    
+    return $eq;
+  }
+
 }

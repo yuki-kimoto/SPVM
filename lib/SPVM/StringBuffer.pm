@@ -165,11 +165,25 @@ C<method set : void ($string : string);>
 
 Sets the string $string.
 
+=head2 compare_string
+
+C<method compare_string : int ($string : string);>
+
+The return value is the same as the return value of C<cmp> operator given C<$self-E<gt>to_string> and $string.
+
+=head2 equals_string
+
+C<method equals_string : int ($string : string);>
+
+If the string contained in the StringBuffer instance is equal to the string $string, returns 1, otherwise returns 0.
+
 =head2 clone
 
 C<method clone ();>
 
 Clones this string buffer and returns it.
+
+This method is a method implementation for L<Cloneable|SPVM::Cloneable> interface.
 
 =head2 cmp
 
@@ -177,7 +191,9 @@ C<method cmp : int ($a : L<StringBuffer|SPVM::StringBuffer>, $b : L<StringBuffer
 
 Compares two L<StringBuffer|SPVM::StringBuffer> and returns its result.
 
-The result is equal to the return value of C<cmp> operator given C<$a-E<gt>to_string> or undef(if $a is undef) and C<$b-E<gt>to_string> or undef(if $b is undef).
+The return value is the same as the return value of C<cmp> operator given C<$a-E<gt>to_string> or undef(if $a is undef) and C<$b-E<gt>to_string> or undef(if $b is undef).
+
+This method is a method implementation for L<Comparable|SPVM::Comparable> interface.
 
 =head2 eq
 
@@ -194,6 +210,8 @@ If only $a is not defined, returns 0.
 If only $b is not defined, returns 0.
 
 If both $a and $b is not defined, returns 1.
+
+This method is a method implementation for L<EqualityCheckable|SPVM::EqualityCheckable> interface.
 
 =head1 Copyright & License
 

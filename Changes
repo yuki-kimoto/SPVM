@@ -1,3 +1,7 @@
+0.990043 2025-01-31
+  [New Features]
+    * Add StringBuffer#compare_string method.
+    * Add StringBuffer#equals_string method.
 0.990042 2025-01-22
   [New Features]
     * Add cache class variable attribute.
