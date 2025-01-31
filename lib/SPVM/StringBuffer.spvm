@@ -214,24 +214,41 @@ class StringBuffer {
   
   method cmp : int ($a : StringBuffer, $b : StringBuffer) {
     
+    my $a_length = -1;
+    my $a_string = (string)undef;
+    
+    if ($a) {
+      $a_length = $a->{length};
+      $a_string = $a->{string};
+    }
+    
+    my $b_length = -1;
+    my $b_string = (string)undef;
+    
+    if ($b) {
+      $b_length = $b->{length};
+      $b_string = $b->{string};
+    }
+    
+    my $cmp = &cmp_common($a_string, $a_length, $b_string, $b_length);
+    
+    return $cmp;
+  }
+  
+  private static method cmp_common : int ($a_string : string, $a_length : int, $b_string : string, $b_length : int) {
+    
     my $cmp = 0;
     
-    if ($a == undef && $b == undef) {
+    if ($a_string == undef && $b_string == undef) {
       $cmp = 0;
     }
-    elsif ($a != undef && $b == undef) {
+    elsif ($a_string != undef && $b_string == undef) {
       $cmp = 1;
     }
-    elsif ($a == undef && $b != undef) {
+    elsif ($a_string == undef && $b_string != undef) {
       $cmp = -1;
     }
     else {
-      my $a_length = $a->length;
-      my $b_length = $b->length;
-      
-      my $a_string = $a->{string};
-      my $b_string = $b->{string};
-      
       my $short_length = -1;
       
       if ($a_length < $b_length) {
