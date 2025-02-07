@@ -104,7 +104,7 @@ class TestCase::Module::StringBuffer {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -173,7 +173,7 @@ class TestCase::Module::StringBuffer {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -321,7 +321,7 @@ class TestCase::Module::StringBuffer {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -420,7 +420,7 @@ class TestCase::Module::StringBuffer {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -473,7 +473,7 @@ class TestCase::Module::StringBuffer {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
