@@ -714,4 +714,52 @@ class TestCase::Module::StringBuffer {
     return 1;
   }
   
+  static method substr : int () {
+    
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      my $ret = $buffer->substr(0, 2);
+      
+      unless ($ret eq "ab") {
+        return 0;
+      }
+    }
+    
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      my $ret = $buffer->substr(0, 3);
+      
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      my $ret = $buffer->substr(1, 2);
+      
+      unless ($ret eq "bc") {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $buffer = StringBuffer->new("abc");
+        
+        eval { $buffer->substr(1, 3); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
 }

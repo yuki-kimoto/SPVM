@@ -330,5 +330,20 @@ class StringBuffer {
     
     return $eq;
   }
+  
+  method substr : string ($offset : int, $length : int = -1) {
+    
+    my $string = $self->{string};
+    
+    my $string_length = $self->{length};
+    
+    unless ($offset + $length <= $string_length) {
+      die "The offset \$offset + the length \$length must be less than or equal to the value of length field.";
+    }
+    
+    my $substr = Fn->substr($string, $offset, $length);
+    
+    return $substr;
+  }
 
 }

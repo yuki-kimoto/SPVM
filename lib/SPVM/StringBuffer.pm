@@ -213,6 +213,18 @@ If both $a and $b is not defined, returns 1.
 
 This method is a method implementation for L<EqualityCheckable|SPVM::EqualityCheckable> interface.
 
+=head2 substr
+
+C<method substr : string ($offset : int, $length : int = -1);>
+
+Calls L<Fn#substr|SPVM::Fn/"substr"> method given the value of L</"string"> field, $offset, $length, and returns its return value.
+
+Exceptions:
+
+The offset $offset + the length $length must be less than or equal to the value of length field. Otherwise an exception is thrown.
+
+Exceptions thrown by L<Fn#substr|SPVM::Fn/"substr"> method could be thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
