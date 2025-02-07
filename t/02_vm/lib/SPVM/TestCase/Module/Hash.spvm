@@ -128,7 +128,7 @@ class TestCase::Module::Hash {
       
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -162,7 +162,7 @@ class TestCase::Module::Hash {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -211,7 +211,7 @@ class TestCase::Module::Hash {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -275,7 +275,7 @@ class TestCase::Module::Hash {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -354,7 +354,7 @@ class TestCase::Module::Hash {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -388,7 +388,7 @@ class TestCase::Module::Hash {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -422,7 +422,7 @@ class TestCase::Module::Hash {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -470,7 +470,7 @@ class TestCase::Module::Hash {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -686,7 +686,7 @@ class TestCase::Module::Hash {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -717,7 +717,7 @@ class TestCase::Module::Hash {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -750,7 +750,7 @@ class TestCase::Module::Hash {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
