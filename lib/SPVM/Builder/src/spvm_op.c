@@ -408,9 +408,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     basic_type->category = SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS;
   }
   
-  // The default of the access controll is private
+  // The default of the access controll is protected
   if (basic_type->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
-    basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+    basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
   }
   
   // Declarations
@@ -858,9 +858,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
         field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
       }
-      // Default is private
+      // Default is protected
       else {
-        field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+        field->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
       }
     }
     
@@ -1320,7 +1320,7 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
   
   // The default of the access controll of the class variable is private.
   if (class_var->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
-    class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
+    class_var->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
   }
   
   return op_class_var;

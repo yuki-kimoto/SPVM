@@ -84,7 +84,7 @@ The List of Class Attributes:
       <b>private</b>
     </td>
     <td>
-      This class is private. Classes other than this class are not able to create an object of this class using the <a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#new-Operator">new operator</a>. This is default.
+      This class is private. Classes other than this class are not able to create an object of this class using the <a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#new-Operator">new operator</a>.
     </td>
   </tr>
   <tr>
@@ -92,7 +92,7 @@ The List of Class Attributes:
       <b>protected</b>
     </td>
     <td>
-      This class is protected. Only this class and its child classes are able to create an object of this class using the <a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#new-Operator">new operator</a>.
+      This class is protected. Only this class and its child classes are able to create an object of this class using the <a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#new-Operator">new operator</a>. This is default.
     </td>
   </tr>
   <tr>
@@ -1089,7 +1089,7 @@ The List of Class Variable Attributes:
       <b>private</b>
     </td>
     <td>
-      This class variable is private. All classes ohter than this class cannnot access this class variable. This is default.
+      This class variable is private. All classes ohter than this class cannnot access this class variable.
     </td>
   </tr>
   <tr>
@@ -1097,7 +1097,7 @@ The List of Class Variable Attributes:
       <b>protected</b>
     </td>
     <td>
-      This class variable is protected. All classes ohter than this class and its child classes cannot access this class variable.
+      This class variable is protected. All classes ohter than this class and its child classes cannot access this class variable. This is default.
     </td>
   </tr>
   <tr>
@@ -1275,7 +1275,7 @@ The List of Field Attributes:
       <b>private</b>
     </td>
     <td>
-      This field is private. All classes ohter than this class cannnot access this field. This is default.
+      This field is private. All classes ohter than this class cannnot access this field.
     </td>
   </tr>
   <tr>
@@ -1283,7 +1283,7 @@ The List of Field Attributes:
       <b>protected</b>
     </td>
     <td>
-      This field is protected. All classes ohter than this class and its child classes cannot access this field.
+      This field is protected. All classes ohter than this class and its child classes cannot access this field. This is default.
     </td>
   </tr>
   <tr>

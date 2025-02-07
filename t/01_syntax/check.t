@@ -381,7 +381,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () {  new Int; } }';
-    compile_not_ok($source, q|The object of the private Int class cannnot be created from the current class MyClass.|);
+    compile_not_ok($source, q|The object of the protected Int class cannnot be created from the current class MyClass.|);
   }
 }
 
@@ -1397,7 +1397,7 @@ use Test::More;
   {
     my $source = [
       'class MyClass extends MyClassParent : public { method main : void () { my $my_class = new MyClass; $my_class->{foo}; } }',
-      'class MyClassParent { has foo : int; }',
+      'class MyClassParent { has foo : private int; }',
     ];
     compile_not_ok($source, q|The private MyClassParent#foo field cannnot be accessed from the current class MyClass.|);
   }
@@ -1405,6 +1405,30 @@ use Test::More;
   {
     my $source = [
       'class MyClass extends MyClassParent : public { method main : void () { my $my_class = new MyClass; $my_class->{foo}; } }',
+      'class MyClassParent { has foo : int; }',
+    ];
+    compile_ok($source);
+  }
+  
+  {
+    my $source = [
+      'class MyClass extends MyClassParent { method main : void () { $MyClassParent::FOO; } }',
+      'class MyClassParent { our $FOO : int; }',
+    ];
+    compile_ok($source);
+  }
+  
+  {
+    my $source = [
+      'class MyClass extends MyClassParent { method main : void () { $MyClassParent::FOO; } }',
+      'class MyClassParent { our $FOO : private int; }',
+    ];
+    compile_not_ok($source, q|The private $MyClassParent::FOO class variable cannnot be accessed from the current class MyClass.|);
+  }
+  
+  {
+    my $source = [
+      'class MyClass extends MyClassParent { method main : void () { my $my_class = new MyClass; $my_class->{foo}; } }',
       'class MyClassParent { has foo : protected int; }',
     ];
     compile_ok($source);
@@ -1412,11 +1436,28 @@ use Test::More;
   
   {
     my $source = [
-      'class MyClass extends MyClassParent : public { method main : void () { my $my_class = new MyClass; $my_class->{foo}; } }',
+      'class MyClass extends MyClassParent { method main : void () { my $my_class = new MyClass; $my_class->{foo}; } }',
       'class MyClassParent { has foo : public int; }',
     ];
     compile_ok($source);
   }
+  
+  {
+    my $source = [
+      'class MyClass extends MyClassParent { method main : void () { new MyClassParent; } }',
+      'class MyClassParent { }',
+    ];
+    compile_ok($source);
+  }
+  
+  {
+    my $source = [
+      'class MyClass extends MyClassParent { method main : void () { new MyClassParent; } }',
+      'class MyClassParent : private { }',
+    ];
+    compile_not_ok($source, q|The object of the private MyClassParent class cannnot be created from the current class MyClass.|);
+  }
+  
 }
 
 # interface Statement
