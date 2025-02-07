@@ -47,6 +47,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Hash->weaken);
   ok(SPVM::TestCase::Module::Hash->unweaken);
   ok(SPVM::TestCase::Module::Hash->isweak);
+  ok(SPVM::TestCase::Module::Hash->extra);
 }
 
 # All object is freed

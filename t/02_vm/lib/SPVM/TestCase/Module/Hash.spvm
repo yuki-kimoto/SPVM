@@ -1467,4 +1467,20 @@ class TestCase::Module::Hash {
     return 1;
   }
   
+  static method extra : int () {
+    
+    # The type of a key is int type
+    {
+      my $hash = Hash->new([(string)
+        100 => "a",
+        200 => "b",
+      ]);
+      
+      unless ($hash->get_string("100") eq "a") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }
