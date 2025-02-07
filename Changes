@@ -1,4 +1,4 @@
-0.990043 2025-01-31
+0.990043 2025-02-07
   [New Features]
     * Add StringBuffer#compare_string method.
     * Add StringBuffer#equals_string method.
