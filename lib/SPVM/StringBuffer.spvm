@@ -345,5 +345,28 @@ class StringBuffer {
     
     return $substr;
   }
+  
+  method index : int ($substring : string, $begin : int = 0, $end : int = -1) {
+    
+    my $string = $self->{string};
+    
+    my $string_length = $self->{length};
+    
+    unless ($begin >= 0 && $begin <= $string_length) {
+      die "The begin \$begin must be between 0 and the length of string field.";
+    }
+    
+    if ($end < 0) {
+      $end = $string_length;
+    }
+    
+    unless ($end <= $string_length) {
+      die "The end \$end must be less than or equal to the length of string field.";
+    }
+    
+    my $ret = Fn->index($string, $substring, $begin, $end);
+    
+    return $ret;
+  }
 
 }

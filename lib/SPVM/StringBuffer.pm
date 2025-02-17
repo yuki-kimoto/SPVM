@@ -225,6 +225,22 @@ The offset $offset + the length $length must be less than or equal to the value 
 
 Exceptions thrown by L<Fn#substr|SPVM::Fn/"substr"> method could be thrown.
 
+=head2 index
+
+C<method index : int ($substring : string, $begin : int = 0, $end : int = -1);>
+
+Calls L<Fn#index|SPVM::Fn/"index"> method given L</"string"> field, $substring, $bigen, $end, and retunrs its return value.
+
+If $end is less than 0, it is set to the value of L</"length"> field.
+
+Exceptions:
+
+The begin $begin must be between 0 and the length of string field. Otherwise an exception is thrown.
+
+The end $end must be less than or equal to the length of string field. Otherwise an exception is thrown.
+
+Exceptions thrown by L<Fn#index|SPVM::Fn/"index"> method could be thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
