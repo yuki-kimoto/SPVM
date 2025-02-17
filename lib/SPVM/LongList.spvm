@@ -3,7 +3,9 @@
 
 class LongList {
   version_from SPVM;
-
+  
+  interface Cloneable;
+  
   use Fn;
   use Array;
   
@@ -301,4 +303,14 @@ class LongList {
     $self->{array} = $new_array;
     $self->{capacity} = $new_capacity;
   }
+  
+  method clone : LongList () {
+    
+    my $array = $self->to_array;
+    
+    my $clone = &new($array);
+    
+    return $clone;
+  }
+  
 }

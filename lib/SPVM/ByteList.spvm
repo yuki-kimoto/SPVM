@@ -3,11 +3,11 @@
 
 class ByteList {
   version_from SPVM;
-
-  use Fn;
-  use Array;
   
   interface Cloneable;
+  
+  use Fn;
+  use Array;
   
   # Enumerations
   private enum {

@@ -59,6 +59,14 @@ The L</"array"> stored in a ByteList object always starts at index 0.
 
 The elements in the range that is greater than or equal to L</"length"> field and less than L</"capacity"> field are filled with 0.
 
+=head1 Interfaces
+
+=over 2
+
+=item * L<Cloneable|SPVM::Cloneable>
+
+=back
+
 =head1 Fields
 
 =head2 capacity

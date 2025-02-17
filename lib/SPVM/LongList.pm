@@ -59,6 +59,14 @@ The L</"array"> stored in a LongList object always starts at index 0.
 
 The elements in the range that is greater than or equal to L</"length"> field and less than L</"capacity"> field are filled with 0.
 
+=head1 Interfaces
+
+=over 2
+
+=item * L<Cloneable|SPVM::Cloneable>
+
+=back
+
 =head1 Fields
 
 =head2 capacity
@@ -241,6 +249,12 @@ This array is unsafe because it continues to point to the old array if the inter
 C<method unshift : void ($element : long);>
 
 Inserts an $element at the beginning of the list.
+
+=head2 clone
+
+C<method clone : L<LongList|SPVM::LongList> ();>
+
+Clones this instance and returns it.
 
 =head1 Copyright & License
 

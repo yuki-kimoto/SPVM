@@ -60,6 +60,14 @@ SPVM::List - Dynamic Object Array
 
 C<List> is the dynamic object array that has a specified object array type.
 
+=head1 Interfaces
+
+=over 2
+
+=item * L<Cloneable|SPVM::Cloneable>
+
+=back
+
 =head1 Fields
 
 =head2 capacity

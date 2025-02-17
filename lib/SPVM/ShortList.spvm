@@ -3,7 +3,9 @@
 
 class ShortList {
   version_from SPVM;
-
+  
+  interface Cloneable;
+  
   use Fn;
   use Array;
   
@@ -301,4 +303,14 @@ class ShortList {
     $self->{array} = $new_array;
     $self->{capacity} = $new_capacity;
   }
+  
+  method clone : ShortList () {
+    
+    my $array = $self->to_array;
+    
+    my $clone = &new($array);
+    
+    return $clone;
+  }
+  
 }
