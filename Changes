@@ -8,12 +8,14 @@
     * Add LongList#clone method.
     * Add FloatList#clone method.
     * Add DoubleList#clone method.
+    * Add List#clone method.
     * Add Cloneable interface to ByteList class.
     * Add Cloneable interface to ShortList class.
     * Add Cloneable interface to IntList class.
     * Add Cloneable interface to LongList class.
     * Add Cloneable interface to FloatList class.
     * Add Cloneable interface to DoubleList class.
+    * Add Cloneable interface to List class.
     
 0.990043 2025-02-07
   [New Features]

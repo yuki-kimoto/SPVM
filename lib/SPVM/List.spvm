@@ -3,9 +3,12 @@
 
 class List {
   version_from SPVM;
-
+  
+  interface Cloneable;
+  
   use Fn;
   use Array;
+  use Cloneable;
   
   # Enumerations
   private enum {
@@ -393,4 +396,20 @@ class List {
     $self->{array} = $new_array;
     $self->{capacity} = $new_capacity;
   }
+  
+  method clone : List () {
+    
+    my $array = $self->to_array;
+    
+    for (my $i = 0; $i < @$array; $i++) {
+      if ($array->[$i]) {
+        $array->[$i] = $array->[$i]->(Cloneable)->clone;
+      }
+    }
+    
+    my $clone = &new($array);
+    
+    return $clone;
+  }
+  
 }

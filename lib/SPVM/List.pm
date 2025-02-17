@@ -253,6 +253,14 @@ C<method unshift : void ($element : object);>
 
 Inserts an $element at the beginning of the list.
 
+=head2 clone
+
+C<method clone : L<List|SPVM::List> ();>
+
+Clones this instance and returns it.
+
+Each element is cloned by L<Cloneable#clone|SPVM::Cloneable/"clone"> method if it is defined, otherwise undef is assigned.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
