@@ -974,4 +974,75 @@ class TestCase::Module::StringBuffer {
     return 1;
   }
   
+  static method contains : int () {
+    {
+      my $buffer = StringBuffer->new("abcde");
+      my $substring = "";
+      my $found = $buffer->contains($substring);
+      unless ($found == 1) {
+        return 0;
+      }
+    }
+    {
+      my $buffer = StringBuffer->new("");
+      my $substring = "";
+      my $found = $buffer->contains($substring);
+      unless ($found == 1) {
+        return 0;
+      }
+    }
+    {
+      my $buffer = StringBuffer->new("abcde");
+      my $substring = "bcd";
+      my $found = $buffer->contains($substring);
+      unless ($found == 1) {
+        return 0;
+      }
+    }
+    {
+      my $buffer = StringBuffer->new("abcde");
+      my $substring = "abcde";
+      my $found = $buffer->contains($substring);
+      unless ($found == 1) {
+        return 0;
+      }
+    }
+    {
+      my $buffer = StringBuffer->new("abcde");
+      my $substring = "p";
+      my $found = $buffer->contains($substring);
+      unless ($found == 0) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        {
+          my $buffer = (StringBuffer)undef;
+          my $substring = "p";
+          eval { $buffer->contains($substring); };
+          
+          unless ($@) {
+            return 0;
+          }
+        }
+      }
+      
+      {
+        {
+        my $buffer = StringBuffer->new("abcde");
+        my $substring = (string)undef;
+          eval {$buffer->contains($substring); };
+          unless ($@) {
+            return 0;
+          }
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
 }

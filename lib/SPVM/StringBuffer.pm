@@ -241,6 +241,22 @@ The end $end must be less than or equal to the length of string field. Otherwise
 
 Exceptions thrown by L<Fn#index|SPVM::Fn/"index"> method could be thrown.
 
+=head2 contains
+
+C<static method contains : int ($substring : string, $begin : int = 0, $end : int = -1);>
+
+Checks if L</"string"> field contains $substring.
+
+Implementation:
+
+The alias for the following code using L</"index"> method.
+
+  my $ret = $self->index($substring, $begin, $end) >= 0;
+
+Exceptions:
+
+Exceptions thrown by L</"index"> method could be thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

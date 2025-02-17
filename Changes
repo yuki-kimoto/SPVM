@@ -1,6 +1,8 @@
 0.990044 2025-02-17
   [New Features]
     * Add StringBuffer#index method.
+    * Add StringBuffer#contains method.
+    
 0.990043 2025-02-07
   [New Features]
     * Add StringBuffer#compare_string method.

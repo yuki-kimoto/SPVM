@@ -368,5 +368,9 @@ class StringBuffer {
     
     return $ret;
   }
-
+  
+  method contains : int ($substring : string, $begin : int = 0, $end : int = -1) {
+    return $self->index($substring, $begin, $end) >= 0;
+  }
+  
 }
