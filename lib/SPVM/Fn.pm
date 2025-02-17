@@ -273,11 +273,15 @@ If $code_point is not a Unicode scalar value, return undef.
 
 =head2 contains
 
-C<static method contains : int ($string : string, $substring : string, $string_offset : int = 0, $string_length : int = -1);>
+C<static method contains : int ($string : string, $substring : string, $begin : int = 0, $end : int = -1);>
 
-The alias for the following code using L</"index>.
+Checks if $string contains $substring.
 
-  my $ret = Fn->index($string, $substring, $string_offset, $string_length) >= 0;
+Implementation:
+
+The alias for the following code using L</"index"> method.
+
+  my $ret = Fn->index($string, $substring, $begin, $end) >= 0;
 
 =head2 copy_string
 

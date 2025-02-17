@@ -107,8 +107,8 @@ class Fn {
     return $utf8_char;
   }
   
-  static method contains : int ($string : string, $substring : string, $string_offset : int = 0, $string_length : int = -1) {
-    return &index($string, $substring, $string_offset, $string_length) >= 0;
+  static method contains : int ($string : string, $substring : string, $begin : int = 0, $end : int = -1) {
+    return &index($string, $substring, $begin, $end) >= 0;
   }
   
   static method copy_string : string ($string : string) {
