@@ -75,13 +75,11 @@ class StringList extends List {
   
   method clone : StringList () {
     
-    my $array = $self->to_array;
+    my $clone = &new_len($self->length, $self->capacity);
     
-    for (my $i = 0; $i < @$array; $i++) {
-      $array->[$i] = copy $array->[$i];
+    for (my $i = 0; $i < $self->length; $i++) {
+      $clone->{array}->[$i] = copy (string)$self->{array}->[$i];
     }
-    
-    my $clone = &new($array);
     
     return $clone;
   }
