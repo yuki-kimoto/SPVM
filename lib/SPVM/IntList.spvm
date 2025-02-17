@@ -306,9 +306,9 @@ class IntList {
   
   method clone : IntList () {
     
-    my $array = $self->to_array;
+    my $clone = &new_len($self->length, $self->capacity);
     
-    my $clone = &new($array);
+    $clone->{array} = copy $self->{array};
     
     return $clone;
   }
