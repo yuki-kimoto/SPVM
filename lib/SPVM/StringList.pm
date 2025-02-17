@@ -202,6 +202,14 @@ C<method unshift : void ($element : string);>
 
 Inserts an $element at the beginning of the list.
 
+=head2 clone
+
+C<method clone : L<StringList|SPVM::StringList> ();>
+
+Clones this instance and returns it.
+
+Each element is cloned by C<copy> operator.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

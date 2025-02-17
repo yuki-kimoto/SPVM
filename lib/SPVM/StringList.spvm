@@ -3,9 +3,11 @@
 
 class StringList extends List {
   version_from SPVM;
-
+  
   use Fn;
   use Array;
+  
+  interface Cloneable;
   
   # Class methods
   static method new : StringList ($array : string[] = undef, $capacity : int = -1) {
@@ -70,4 +72,18 @@ class StringList extends List {
   method unshift : void ($element : string) {
     $self->SUPER::unshift($element);
   }
+  
+  method clone : StringList () {
+    
+    my $array = $self->to_array;
+    
+    for (my $i = 0; $i < @$array; $i++) {
+      $array->[$i] = copy $array->[$i];
+    }
+    
+    my $clone = &new($array);
+    
+    return $clone;
+  }
+  
 }

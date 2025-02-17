@@ -3,7 +3,6 @@
 
 class StringBuffer {
   version_from SPVM;
-
   use Fn;
   use Array;
   
