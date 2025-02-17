@@ -2,6 +2,7 @@
   [New Features]
     * Add StringBuffer#index method.
     * Add StringBuffer#contains method.
+    * Add ByteList#clone method.
     
 0.990043 2025-02-07
   [New Features]

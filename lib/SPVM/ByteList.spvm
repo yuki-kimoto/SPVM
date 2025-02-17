@@ -7,6 +7,8 @@ class ByteList {
   use Fn;
   use Array;
   
+  interface Cloneable;
+  
   # Enumerations
   private enum {
     DEFAULT_CAPACITY = 4,
@@ -14,7 +16,9 @@ class ByteList {
   
   # Fields
   has capacity : ro int;
+  
   has length : ro int;
+  
   has array : byte[];
   
   # Class methods
@@ -301,4 +305,14 @@ class ByteList {
     $self->{array} = $new_array;
     $self->{capacity} = $new_capacity;
   }
+  
+  method clone : ByteList () {
+    
+    my $array = $self->to_array;
+    
+    my $clone = &new($array);
+    
+    return $clone;
+  }
+  
 }

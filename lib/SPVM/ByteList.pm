@@ -242,6 +242,12 @@ C<method unshift : void ($element : int);>
 
 Inserts an $element at the beginning of the list.
 
+=head2 clone
+
+C<method clone : L<ByteList|SPVM::ByteList> ();>
+
+Clones this instance and returns it.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
