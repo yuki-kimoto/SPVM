@@ -819,4 +819,39 @@ class TestCase::Module::DoubleList {
   static method length : int () {
     return 1;
   }
+  
+  static method clone : int () {
+    
+    {
+      my $array = [(double)1, 2];
+      my $capacity = 3;
+      
+      my $list = DoubleList->new($array, $capacity);
+      
+      my $clone = $list->clone;
+      
+      unless ($clone is_type DoubleList) {
+        return 0;
+      }
+      
+      unless ($clone->length == $list->length) {
+        return 0;
+      }
+      
+      unless ($clone->capacity == $list->capacity) {
+        return 0;
+      }
+      
+      if ($clone == $list) {
+        return 0;
+      }
+      
+      unless (Array->equals($array, $clone->to_array)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }

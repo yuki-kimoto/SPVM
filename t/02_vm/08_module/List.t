@@ -36,8 +36,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::List->set);
   ok(SPVM::TestCase::Module::List->to_array);
   ok(SPVM::TestCase::Module::List->unshift);
+  ok(SPVM::TestCase::Module::List->clone);
+}
+
+{
   ok(SPVM::TestCase::Module::List->extra);
-  
   ok(SPVM::TestCase::Module::List->check_offset_logic);
 }
 

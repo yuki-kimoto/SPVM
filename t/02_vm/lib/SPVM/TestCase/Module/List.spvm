@@ -910,4 +910,39 @@ class TestCase::Module::List {
     
     return 1;
   }
+  
+  static method clone : int () {
+    
+    {
+      my $array = [(StringBuffer)StringBuffer->new("1"), StringBuffer->new("2")];
+      my $capacity = 3;
+      
+      my $list = List->new($array, $capacity);
+      
+      my $clone = $list->clone;
+      
+      unless ($clone is_type List) {
+        return 0;
+      }
+      
+      unless ($clone->length == $list->length) {
+        return 0;
+      }
+      
+      unless ($clone->capacity == $list->capacity) {
+        return 0;
+      }
+      
+      if ($clone == $list) {
+        return 0;
+      }
+      
+      unless (Array->equals($array, $clone->to_array)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }
