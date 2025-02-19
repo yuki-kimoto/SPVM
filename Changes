@@ -19,6 +19,7 @@
     * Add Cloneable interface to List class.
     * Add Cloneable interface to StringList class.
     * Add push_array and unshift_array method to ByteList, ShortList, IntList, LongList, FloatList, DoubleList, List, StringList.
+    * Add splice method to ByteList, ShortList, IntList, LongList, FloatList, DoubleList, List, StringList.
     
 0.990043 2025-02-07
   [New Features]

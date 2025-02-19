@@ -57,6 +57,10 @@ class StringList extends List {
     $self->SUPER::replace($offset, $remove_length, $replace);
   }
   
+  method splice : string[] ($offset : int, $remove_length : int, $replace : string[]) {
+    return (string[])$self->SUPER::splice($offset, $remove_length, $replace);
+  }
+  
   method set : void ($index : int, $element : string) {
     $self->SUPER::set($index, $element);
   }

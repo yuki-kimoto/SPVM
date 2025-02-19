@@ -184,22 +184,28 @@ class List {
     return $remove_value;
   }
   
-  method replace : void ($index : int, $remove_length : int, $replace : object[]) {
-    unless ($index >= 0) {
-      die "The index \$index must be greater than or equal to 0.";
+  method replace : void ($offset : int, $remove_length : int, $replace : object[]) {
+    $self->splice($offset, $remove_length, $replace);
+  }
+  
+  method splice : object[] ($offset : int, $remove_length : int, $replace : object[]) {
+    unless ($offset >= 0) {
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     unless ($remove_length >= 0) {
       die "The removal length \$remove_length must be greater than or equal to 0.";
     }
-    unless ($index + $remove_length <= $self->{length}) {
-      die "The index \$index + the removal length \$remove_length must be less than or equal to the length of this list.";
+    unless ($offset + $remove_length <= $self->{length}) {
+      die "The offset \$offset + the removal length \$remove_length must be less than or equal to the length of this list.";
     }
     
     my $replace_length = 0;
     if ($replace) {
       $replace_length = @$replace;
     }
+    
+    my $removed_elements = Array->copy_object_address($self->{array}, $offset, $remove_length);
     
     my $new_length = $self->{length} - $remove_length + $replace_length;
     $self->_extend($new_length);
@@ -210,22 +216,22 @@ class List {
       # Do nothing
     }
     elsif ($diff_length > 0) {
-      my $move_length = $self->{length} - $index - $remove_length;
+      my $move_length = $self->{length} - $offset - $remove_length;
       
       $self->{length} += $diff_length;
       
       for (my $i = $move_length - 1; $i >= 0; $i--) {
-        my $element = $self->get($index + $remove_length + $i);
-        $self->set($index + $replace_length + $i, $element);
+        my $element = $self->get($offset + $remove_length + $i);
+        $self->set($offset + $replace_length + $i, $element);
       }
     }
     elsif ($diff_length < 0) {
-      my $move_length = $self->{length} - $index - $remove_length;
+      my $move_length = $self->{length} - $offset - $remove_length;
       
       for (my $i = 0; $i < $move_length; $i++) {
-        my $element = $self->get($index + $remove_length + $i);
-        $self->set($index + $replace_length + $i, $element);
-        $self->set($index + $remove_length + $i, undef);
+        my $element = $self->get($offset + $remove_length + $i);
+        $self->set($offset + $replace_length + $i, $element);
+        $self->set($offset + $remove_length + $i, undef);
       }
     }
     
@@ -234,10 +240,11 @@ class List {
     if ($replace) {
       for (my $i = 0; $i < $replace_length; $i++) {
         my $element = $replace->[$i];
-        $self->set($index + $i, $element);
+        $self->set($offset + $i, $element);
       }
     }
     
+    return $removed_elements;
   }
   
   method reserve : void ($new_capacity : int) {

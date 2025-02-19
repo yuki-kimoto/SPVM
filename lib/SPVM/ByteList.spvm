@@ -156,6 +156,10 @@ class ByteList {
   }
   
   method replace : void ($offset : int, $remove_length : int, $replace : byte[]) {
+    $self->splice($offset, $remove_length, $replace);
+  }
+  
+  method splice : byte[] ($offset : int, $remove_length : int, $replace : byte[]) {
     unless ($offset >= 0) {
       die "The offset \$offset must be greater than or equal to 0.";
     }
@@ -172,6 +176,8 @@ class ByteList {
       $replace_length = @$replace;
     }
     
+    my $removed_elements = Array->copy_byte($self->{array}, $offset, $remove_length);
+    
     my $new_length = $self->{length} - $remove_length + $replace_length;
     $self->_maybe_extend($new_length);
     
@@ -183,6 +189,8 @@ class ByteList {
     }
     
     $self->{length} = $new_length;
+    
+    return $removed_elements;
   }
   
   method reserve : void ($new_capacity : int) {
