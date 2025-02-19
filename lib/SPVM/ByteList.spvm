@@ -315,4 +315,29 @@ class ByteList {
     return $clone;
   }
   
+  method push_array : void ($elements : byte[]) {
+    
+    unless ($elements) {
+      die "The elements \$elements must be defined.";
+    }
+    
+    for my $element (@$elements) {
+      $self->push($element);
+    }
+    
+  }
+  
+  method unshift_array : void ($elements : byte[]) {
+    
+    unless ($elements) {
+      die "The elements \$elements must be defined.";
+    }
+    
+    for (my $i = @$elements - 1; $i >= 0; $i--) {
+      my $element = $elements->[$i];
+      $self->unshift($element);
+    }
+    
+  }
+  
 }

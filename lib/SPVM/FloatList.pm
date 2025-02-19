@@ -256,6 +256,32 @@ C<method clone : L<FloatList|SPVM::FloatList> ();>
 
 Clones this instance and returns it.
 
+=head2 push_array
+
+C<method push_array : void ($elements : byte[]);>
+
+Adds the elements $elements after the end of this list.
+
+This method calls L</"push"> method internally.
+
+Exceptions:
+
+The elements $elements must be defined.
+
+Exceptions thrown by L</"push"> method could be thrown.
+
+=head2 unshift_array
+
+C<method unshift_array : void ($elements : byte[]);>
+
+Inserts the elemnets $elements at the beginning of the list.
+
+Exceptions:
+
+The elements $elements must be defined.
+
+Exceptions thrown by L</"unshift"> method could be thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
