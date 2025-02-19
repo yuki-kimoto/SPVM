@@ -155,11 +155,11 @@ class ByteList {
     return $remove_value;
   }
   
-  method replace : void ($offset : int, $remove_length : int, $replace : byte[]) {
+  method replace : void ($offset : int, $remove_length : int, $replace : byte[] = undef) {
     $self->splice($offset, $remove_length, $replace);
   }
   
-  method splice : byte[] ($offset : int, $remove_length : int, $replace : byte[]) {
+  method splice : byte[] ($offset : int, $remove_length : int, $replace : byte[] = undef) {
     unless ($offset >= 0) {
       die "The offset \$offset must be greater than or equal to 0.";
     }

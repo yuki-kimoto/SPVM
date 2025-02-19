@@ -153,11 +153,11 @@ class ShortList {
     return $remove_value;
   }
   
-  method replace : void ($offset : int, $remove_length : int, $replace : short[]) {
+  method replace : void ($offset : int, $remove_length : int, $replace : short[] = undef) {
     $self->splice($offset, $remove_length, $replace);
   }
   
-  method splice : short[] ($offset : int, $remove_length : int, $replace : short[]) {
+  method splice : short[] ($offset : int, $remove_length : int, $replace : short[] = undef) {
     unless ($offset >= 0) {
       die "The offset \$offset must be greater than or equal to 0.";
     }

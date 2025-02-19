@@ -174,9 +174,21 @@ $index must be less than the length of $list. Otherwise an exception is thrown.
 
 =head2 replace
 
-C<method replace : void ($offset : int, $remove_length : int, $replace : byte[]);>
+C<method replace : void ($offset : int, $remove_length : int, $replace : byte[] = undef);>
 
-Replaces the elements of the range specified by $offset and $length with $replace array.
+Same as L</"splice"> method, but the return vlaue is not returned.
+
+Exceptions:
+
+Exceptions thrown by L</"splice> method could be thrown.
+
+=head2 splice
+
+C<method splice : byte[] ($offset : int, $remove_length : int, $replace : byte[] = undef);>
+
+Replaces the elements of the range specified by $offset and $length with $replace array, and returns removed elements creating a new array.
+
+If $replace is not defined, the replacemnet is not performed.
 
 Exceptions:
 
@@ -274,7 +286,7 @@ Exceptions thrown by L</"push"> method could be thrown.
 
 C<method unshift_array : void ($elements : byte[]);>
 
-Inserts the elemnets $elements at the beginning of the list.
+Inserts the elements $elements at the beginning of the list.
 
 Exceptions:
 

@@ -177,17 +177,29 @@ $index must be less than the length of $list. Otherwise an exception is thrown.
 
 =head2 replace
 
-C<method replace : void ($index : int, $remove_length : int, $replace : string[]);>
+C<method replace : void ($offset : int, $remove_length : int, $replace : object[] = undef);>
 
-Replaces the elements of the range specified by $index and $length with $replace array.
+Same as L</"splice"> method, but the return vlaue is not returned.
 
 Exceptions:
 
-$index must be greater than or equal to 0. Otherwise an exception is thrown.
+Exceptions thrown by L</"splice> method could be thrown.
+
+=head2 splice
+
+C<method splice : object[] ($offset : int, $remove_length : int, $replace : object[] = undef);>
+
+Replaces the elements of the range specified by $offset and $length with $replace array, and returns removed elements creating a new array.
+
+If $replace is not defined, the replacemnet is not performed.
+
+Exceptions:
+
+$offset must be greater than or equal to 0. Otherwise an exception is thrown.
 
 $remove_length must be greater than or equal to 0. Otherwise an exception is thrown.
 
-$index + $removing length must be less than or equal to the length of $list. Otherwise an exception is thrown.
+$offset + $removing length must be less than or equal to the length of $list. Otherwise an exception is thrown.
 
 =head2 reserve
 
@@ -204,20 +216,6 @@ Resize the list with $new_length.
 Exceptions:
 
 $new_length must be greater than or equal to 0. Otherwise an exception is thrown.
-
-=head2 replace
-
-C<method replace : void ($offset : int, $remove_length : int, $replace : object[]);>
-
-Replaces the elements of the range specified by $offset and $remove_length with the replacement array.
-
-Exceptions:
-
-$offset must be greater than or equal to 0. Otherwise an exception is thrown.
-
-$remove_length must be greater than or equal to 0. Otherwise an exception is thrown.
-
-$offset + $removing length must be less than or equal to the length of $list. Otherwise an exception is thrown.
 
 =head2 set
 
