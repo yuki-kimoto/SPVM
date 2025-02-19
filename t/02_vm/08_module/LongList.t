@@ -31,6 +31,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::LongList->get_array_unsafe);
   ok(SPVM::TestCase::Module::LongList->unshift);
   ok(SPVM::TestCase::Module::LongList->clone);
+  ok(SPVM::TestCase::Module::LongList->push_array);
+  ok(SPVM::TestCase::Module::LongList->unshift_array);
 }
 
 # All object is freed

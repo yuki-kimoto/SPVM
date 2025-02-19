@@ -854,4 +854,43 @@ class TestCase::Module::ShortList {
     return 1;
   }
   
+  static method push_array : int () {
+    
+    {
+      my $list = ShortList->new_len(0);
+      
+      $list->push_array([(short)3, 5, (short)Fn->SHORT_MAX]);
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->SHORT_MAX) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unshift_array : int () {
+    {
+      my $list = ShortList->new_len(0);
+      
+      $list->unshift_array([(short)3, 5, (short)Fn->SHORT_MAX]);
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->SHORT_MAX) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }

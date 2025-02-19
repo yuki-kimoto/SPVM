@@ -854,4 +854,43 @@ class TestCase::Module::IntList {
     return 1;
   }
   
+  static method push_array : int () {
+    
+    {
+      my $list = IntList->new_len(0);
+      
+      $list->push_array([(int)3, 5, (int)Fn->INT_MAX]);
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->INT_MAX) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unshift_array : int () {
+    {
+      my $list = IntList->new_len(0);
+      
+      $list->unshift_array([(int)3, 5, (int)Fn->INT_MAX]);
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->INT_MAX) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }

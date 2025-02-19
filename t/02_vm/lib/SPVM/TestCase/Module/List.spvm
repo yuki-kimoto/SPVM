@@ -945,4 +945,43 @@ class TestCase::Module::List {
     return 1;
   }
   
+  static method push_array : int () {
+    
+    {
+      my $list = List->new_len(new string[0], 0);
+      
+      $list->push_array([(string)3, 5, 7]);
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0)->(string) eq "3" && $list->get(1)->(string) eq "5" && $list->get(2)->(string) eq "7") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unshift_array : int () {
+    {
+      my $list = List->new_len(new string[0], 0);
+      
+      $list->unshift_array([(string)3, 5, 7]);
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0)->(string) eq "3" && $list->get(1)->(string) eq "5" && $list->get(2)->(string) eq "7") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }
