@@ -23,6 +23,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::LongList->push);
   ok(SPVM::TestCase::Module::LongList->remove);
   ok(SPVM::TestCase::Module::LongList->replace);
+  ok(SPVM::TestCase::Module::LongList->splice);
   ok(SPVM::TestCase::Module::LongList->reserve);
   ok(SPVM::TestCase::Module::LongList->resize);
   ok(SPVM::TestCase::Module::LongList->set);

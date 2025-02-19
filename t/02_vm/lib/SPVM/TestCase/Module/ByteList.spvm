@@ -517,6 +517,24 @@ class TestCase::Module::ByteList {
     return 1;
   }
   
+  static method splice : int () {
+  
+    {
+      my $list = ByteList->new([(byte)1, 2, 3, 4]);
+      my $removed = $list->splice(1, 2, [(byte)20, 30]);
+      
+      unless (Array->equals_byte($list->to_array, [(byte)1, 20, 30, 4])) {
+        return 0;
+      }
+      
+      unless (Array->equals_byte($removed, [(byte)2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method reserve : int () {
     {
       my $list = ByteList->new([(byte)1]);

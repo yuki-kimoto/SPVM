@@ -517,6 +517,24 @@ class TestCase::Module::DoubleList {
     return 1;
   }
   
+  static method splice : int () {
+  
+    {
+      my $list = DoubleList->new([(double)1, 2, 3, 4]);
+      my $removed = $list->splice(1, 2, [(double)20, 30]);
+      
+      unless (Array->equals_double($list->to_array, [(double)1, 20, 30, 4])) {
+        return 0;
+      }
+      
+      unless (Array->equals_double($removed, [(double)2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method reserve : int () {
     {
       my $list = DoubleList->new([(double)1]);

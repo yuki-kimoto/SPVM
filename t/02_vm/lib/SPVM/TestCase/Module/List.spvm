@@ -463,6 +463,24 @@ class TestCase::Module::List {
     return 1;
   }
   
+  static method splice : int () {
+  
+    {
+      my $list = List->new([(string)1, 2, 3, 4]);
+      my $removed = $list->splice(1, 2, [(string)20, 30]);
+      
+      unless (Array->equals_string($list->to_array->(string[]), [(string)1, 20, 30, 4])) {
+        return 0;
+      }
+      
+      unless (Array->equals_string((string[])$removed, [(string)2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method reserve : int () {
     {
       my $list = List->new([(object)1]);
@@ -598,6 +616,31 @@ class TestCase::Module::List {
     return 1;
   }
   
+  static method unshift : int () {
+    my $list = List->new_len(new Int[0], 0);
+    
+    my $v1 = Int->new(1);
+    $list->unshift($v1);
+    
+    my $v2 = Int->new(2);
+    $list->unshift($v2);
+    
+    my $v3 = Int->new(3);
+    $list->unshift($v3);
+    
+    my $v4 = Int->new(4);
+    $list->unshift($v4);
+    
+    my $v5 = Int->new(5);
+    $list->unshift($v5);
+    
+    unless (TestCase::Module::List->equals_list($list, List->new([$v5, $v4, $v3, $v2, $v1]))) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   static method shift : int () {
     my $list = List->new([Int->new(1), undef, Int->new(2)]);
     unless (((Int)$list->shift)->value == 1) {
@@ -687,31 +730,6 @@ class TestCase::Module::List {
     }
     
     $@ = undef;
-    
-    return 1;
-  }
-  
-  static method unshift : int () {
-    my $list = List->new_len(new Int[0], 0);
-    
-    my $v1 = Int->new(1);
-    $list->unshift($v1);
-    
-    my $v2 = Int->new(2);
-    $list->unshift($v2);
-    
-    my $v3 = Int->new(3);
-    $list->unshift($v3);
-    
-    my $v4 = Int->new(4);
-    $list->unshift($v4);
-    
-    my $v5 = Int->new(5);
-    $list->unshift($v5);
-    
-    unless (TestCase::Module::List->equals_list($list, List->new([$v5, $v4, $v3, $v2, $v1]))) {
-      return 0;
-    }
     
     return 1;
   }

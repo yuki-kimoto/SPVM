@@ -517,6 +517,24 @@ class TestCase::Module::FloatList {
     return 1;
   }
   
+  static method splice : int () {
+  
+    {
+      my $list = FloatList->new([(float)1, 2, 3, 4]);
+      my $removed = $list->splice(1, 2, [(float)20, 30]);
+      
+      unless (Array->equals_float($list->to_array, [(float)1, 20, 30, 4])) {
+        return 0;
+      }
+      
+      unless (Array->equals_float($removed, [(float)2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method reserve : int () {
     {
       my $list = FloatList->new([(float)1]);
