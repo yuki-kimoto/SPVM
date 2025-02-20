@@ -2453,11 +2453,15 @@ SPVM_OP* SPVM_OP_build_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_var_decl, S
     op_type->uv.type->resolved_in_ast = 1;
   }
   
-  // Name OP
-  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
-  op_name->uv.name = op_var->uv.var->name;
+  // Local temporary variable
+  if (strcmp(op_var->uv.var->name, "$_") == 0) {
+    char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, strlen("$.line_2147483647_column_2147483647") + 1);
+    sprintf(name, "$.line_%d_column_%d", op_var_decl->line, op_var_decl->column);
+    op_var->uv.var->name = name;
+  }
+  
   var_decl->var = op_var->uv.var;
-
+  
   op_var->uv.var->var_decl = var_decl;
   
   if (strstr(op_var->uv.var->name, "::")) {
