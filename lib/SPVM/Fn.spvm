@@ -1354,7 +1354,7 @@ class Fn {
     return $new_array;
   }
   
-  precompile static method map_expand : object[] ($array : object[], $callback : Callback::MapExpand) {
+  precompile static method map_expand : object[] ($callback : Callback::MapExpand, $array : object[]) {
     
     unless ($array) {
       die "The array \$array must be defined.";

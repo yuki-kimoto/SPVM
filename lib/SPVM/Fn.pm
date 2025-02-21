@@ -1246,7 +1246,7 @@ The callback $callback must be defined. Otherwise, an exception is thrown.
 
 =head2 map_expand
 
-C<static method map_expand : object[] ($array : object[], $callback : L<Callback::MapExpand|SPVM::Callback::MapExpand>);>
+C<static method map_expand : object[] ($callback : L<Callback::MapExpand|SPVM::Callback::MapExpand>, $array : object[]);>
 
 Returns a new array with each element of the array $array processed in the callback $callback which returns multiple values.
 

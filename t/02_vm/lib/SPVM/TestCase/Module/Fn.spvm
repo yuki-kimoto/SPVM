@@ -4908,9 +4908,9 @@ class TestCase::Module::Fn {
     {
       my $array = ["a", "b", "c"];
       
-      my $array_out = (string[])Fn->map_expand($array, method : object[] ($element : object) {
+      my $array_out = (string[])Fn->map_expand(method : object[] ($element : object) {
         return ["a" . $element->(string), "b" . $element->(string)];
-      });
+      }, $array);
       
       unless (Array->equals_string($array_out, ["aa", "ba", "ab", "bb", "ac", "bc"])) {
         return 0;
@@ -4920,14 +4920,14 @@ class TestCase::Module::Fn {
     # Exceptions
     {
       {
-        eval { Fn->map_expand(undef, method : object[] ($array : object) {}); };
+        eval { Fn->map_expand(method : object[] ($array : object) {}, undef); };
         unless (Fn->contains($@, "The array \$array must be defined.")) {
           return 0;
         }
       }
       
       {
-        eval { Fn->map_expand(["a"], undef); };
+        eval { Fn->map_expand(undef, ["a"]); };
         unless (Fn->contains($@, "The callback \$callback must be defined.")) {
           return 0;
         }
