@@ -20,7 +20,7 @@ class TestCase::Module::Native::BasicType {
           if ($element->(Native::Method)->get_name eq "value") { return 1; }
         };
         
-        unless (@{Fn->grep($methods, $callback)}) {
+        unless (@{Fn->grep($callback, $methods)}) {
           return 0;
         }
       }
@@ -72,7 +72,7 @@ class TestCase::Module::Native::BasicType {
           if ($element->(Native::Field)->get_name eq "value") { return 1; }
         };
         
-        unless (@{Fn->grep($fields, $callback)}) {
+        unless (@{Fn->grep($callback, $fields)}) {
           return 0;
         }
       }
@@ -95,7 +95,7 @@ class TestCase::Module::Native::BasicType {
           if ($element->(Native::ClassVar)->get_name eq "\$TRUE") { return 1; }
         };
         
-        unless (@{Fn->grep($class_vars, $callback)}) {
+        unless (@{Fn->grep($callback, $class_vars)}) {
           return 0;
         }
       }

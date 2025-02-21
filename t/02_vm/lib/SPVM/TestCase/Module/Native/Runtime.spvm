@@ -137,7 +137,7 @@ class TestCase::Module::Native::Runtime {
           if ($element->(Native::BasicType)->get_name eq "int") { return 1; }
         };
         
-        unless (@{Fn->grep($basic_types, $callback)}) {
+        unless (@{Fn->grep($callback, $basic_types)}) {
           return 0;
         }
       }
@@ -147,7 +147,7 @@ class TestCase::Module::Native::Runtime {
           if ($element->(Native::BasicType)->get_name eq "Fn") { return 1; }
         };
         
-        unless (@{Fn->grep($basic_types, $callback)}) {
+        unless (@{Fn->grep($callback, $basic_types)}) {
           return 0;
         }
       }
@@ -157,7 +157,7 @@ class TestCase::Module::Native::Runtime {
           if ($element->(Native::BasicType)->get_name eq "Array") { return 1; }
         };
         
-        unless (@{Fn->grep($basic_types, $callback)}) {
+        unless (@{Fn->grep($callback, $basic_types)}) {
           return 1;
         }
       }
@@ -174,7 +174,7 @@ class TestCase::Module::Native::Runtime {
           if ($element->(Native::BasicType)->get_name eq "int") { return 1; }
         };
         
-        if (@{Fn->grep($basic_types, $callback)}) {
+        if (@{Fn->grep($callback, $basic_types)}) {
           return 0;
         }
       }
@@ -184,7 +184,7 @@ class TestCase::Module::Native::Runtime {
           if ($element->(Native::BasicType)->get_name eq "Fn") { return 1; }
         };
         
-        unless (@{Fn->grep($basic_types, $callback)}) {
+        unless (@{Fn->grep($callback, $basic_types)}) {
           return 0;
         }
       }
@@ -194,7 +194,7 @@ class TestCase::Module::Native::Runtime {
           if ($element->(Native::BasicType)->get_name eq "Callback") { return 1; }
         };
         
-        unless (@{Fn->grep($basic_types, $callback)}) {
+        unless (@{Fn->grep($callback, $basic_types)}) {
           return 1;
         }
       }
@@ -213,7 +213,7 @@ class TestCase::Module::Native::Runtime {
             if ($element->(Native::BasicType)->get_name eq "int") { return 1; }
           };
           
-          if (@{Fn->grep($basic_types, $callback)}) {
+          if (@{Fn->grep($callback, $basic_types)}) {
             return 0;
           }
         }
@@ -223,7 +223,7 @@ class TestCase::Module::Native::Runtime {
             if ($element->(Native::BasicType)->get_name eq "::anon_method::") { return 1; }
           };
           
-          unless (@{Fn->grep($basic_types, $callback)}) {
+          unless (@{Fn->grep($callback, $basic_types)}) {
             return 1;
           }
         }
@@ -240,7 +240,7 @@ class TestCase::Module::Native::Runtime {
             if ($element->(Native::BasicType)->get_name eq "int") { return 1; }
           };
           
-          unless (@{Fn->grep($basic_types, $callback)}) {
+          unless (@{Fn->grep($callback, $basic_types)}) {
             return 0;
           }
         }
@@ -250,7 +250,7 @@ class TestCase::Module::Native::Runtime {
             if ($element->(Native::BasicType)->get_name eq "::anon_method::") { return 1; }
           };
           
-          if (@{Fn->grep($basic_types, $callback)}) {
+          if (@{Fn->grep($callback, $basic_types)}) {
             return 1;
           }
         }
