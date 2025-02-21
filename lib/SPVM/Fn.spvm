@@ -1329,7 +1329,7 @@ class Fn {
     return $new_array;
   }
   
-  precompile static method map : object[] ($array : object[], $callback : Callback::Map) {
+  precompile static method map : object[] ($callback : Callback::Map, $array : object[]) {
     
     unless ($array) {
       die "The array \$array must be defined.";

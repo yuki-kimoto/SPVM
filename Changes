@@ -8,11 +8,17 @@
       
       my $_ = Point->new;
   [Incompatible Changes]
-    * Changes the definition of Fn->grep method.
+    * Changes the definition of Fn#grep method.
       [Before]
       static method grep : object[] ($array : object[], $callback : Callback::Grep);
       [After]
       static method grep : object[] ($callback : Callback::Grep, $array : object[]);
+      
+    * Changes the definition of Fn#map method.
+      [Before]
+      static method map : object[] ($array : object[], $callback : Callback::Map);
+      [After]
+      static static method map : object[] ($callback : Callback::Map, $array : object[]);
       
 0.990044 2025-02-19
   [New Features]

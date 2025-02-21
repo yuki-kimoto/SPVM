@@ -4871,9 +4871,9 @@ class TestCase::Module::Fn {
     {
       my $array = ["a", "b", "c"];
       
-      my $array_out = (string[])Fn->map($array, method : object ($element : object) {
+      my $array_out = (string[])Fn->map(method : object ($element : object) {
         return "a" . $element->(string);
-      });
+      }, $array);
       
       unless (Array->equals_string($array_out, ["aa", "ab", "ac"])) {
         return 0;
@@ -4883,14 +4883,14 @@ class TestCase::Module::Fn {
     # Exceptions
     {
       {
-        eval { Fn->map(undef, method : object ($array : object) {}); };
+        eval { Fn->map(method : object ($array : object) {}, undef); };
         unless (Fn->contains($@, "The array \$array must be defined.")) {
           return 0;
         }
       }
       
       {
-        eval { Fn->map(["a"], undef); };
+        eval { Fn->map(undef, ["a"]); };
         unless (Fn->contains($@, "The callback \$callback must be defined.")) {
           return 0;
         }

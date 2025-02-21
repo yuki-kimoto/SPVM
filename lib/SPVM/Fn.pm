@@ -1222,7 +1222,7 @@ If $condition is a true value, returns $left. Otherwise, returns $right;
 
 =head2 grep
 
-C<static method grep : object[] ($array : object[], $callback : L<Callback::Grep|SPVM::Callback::Grep>);>
+C<static method grep : object[] ($callback : L<Callback::Grep|SPVM::Callback::Grep>, $array : object[]);>
 
 Returns a new array containing only the elements of the array $array for which the callback $callback returned a true value.
 
@@ -1234,7 +1234,7 @@ The callback $callback must be defined. Otherwise, an exception is thrown.
 
 =head2 map
 
-C<static method map : object[] ($array : object[], $callback : L<Callback::Map|SPVM::Callback::Map>);>
+C<static method map : object[] ($callback : L<Callback::Map|SPVM::Callback::Map>, $array : object[]);>
 
 Returns a new array with each element of the array $array processed in the callback $callback.
 
