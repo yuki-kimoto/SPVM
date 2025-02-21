@@ -338,7 +338,7 @@ class TestCase::LocalVar {
     
     my $_ : long;
     
-    my $map = Fn->map(["a", "ab"], method : string ($_ : string) { return $_ . "c"; });
+    my $map = (string[])Fn->map(method : string ($_ : string) { return $_ . "c"; }, ["a", "ab"]);
     
     unless (Array->equals($map, ["ac", "abc"])) {
       return 0;
