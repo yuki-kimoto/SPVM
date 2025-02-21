@@ -1,5 +1,6 @@
 class TestCase::LocalVar {
   use Point;
+  use Fn;
   
   our $VAR_PREC : int;
   
@@ -336,6 +337,12 @@ class TestCase::LocalVar {
     }
     
     my $_ : long;
+    
+    my $map = Fn->map(["a", "ab"], method : string ($_ : string) { return $_ . "c"; });
+    
+    unless (Array->equals($map, ["ac", "abc"])) {
+      return 0;
+    }
     
     return 1;
   }
