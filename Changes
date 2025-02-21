@@ -7,6 +7,12 @@
       my $_ = 2;
       
       my $_ = Point->new;
+  [Incompatible Changes]
+    * Changes the definition of Fn->grep method.
+      [Before]
+      static method grep : object[] ($array : object[], $callback : Callback::Grep);
+      [After]
+      static method grep : object[] ($callback : Callback::Grep, $array : object[]);
       
 0.990044 2025-02-19
   [New Features]

@@ -1302,7 +1302,7 @@ class Fn {
     }
   }
   
-  precompile static method grep : object[] ($array : object[], $callback : Callback::Grep) {
+  precompile static method grep : object[] ($callback : Callback::Grep, $array : object[]) {
     
     unless ($array) {
       die "The array \$array must be defined.";

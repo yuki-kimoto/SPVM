@@ -4829,14 +4829,14 @@ class TestCase::Module::Fn {
     {
       my $array = ["a", "b", "c"];
       
-      my $array_out = (string[])Fn->grep($array, method : int ($element : object) {
+      my $array_out = (string[])Fn->grep(method : int ($element : object) {
         if ($element->(string) eq "c") {
           return 1;
         }
         else {
           return 0;
         }
-      });
+      }, $array);
       
       unless (Array->equals_string($array_out, ["c"])) {
         return 0;
@@ -4846,14 +4846,14 @@ class TestCase::Module::Fn {
     # Exceptions
     {
       {
-        eval { Fn->grep(undef, method : int ($array : object) {}); };
+        eval { Fn->grep(method : int ($array : object) {}, undef); };
         unless (Fn->contains($@, "The array \$array must be defined.")) {
           return 0;
         }
       }
       
       {
-        eval { Fn->grep(["a"], undef); };
+        eval { Fn->grep(undef, ["a"]); };
         unless (Fn->contains($@, "The callback \$callback must be defined.")) {
           return 0;
         }
