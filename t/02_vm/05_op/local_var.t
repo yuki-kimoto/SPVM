@@ -19,6 +19,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::LocalVar->upper_case);
   ok(SPVM::TestCase::LocalVar->high_precidence_than_class_var);
   ok(SPVM::TestCase::LocalVar->with_logical_operator);
+  ok(SPVM::TestCase::LocalVar->temporary_local_var);
 }
 
 # All object is freed

@@ -1,3 +1,13 @@
+0.990045 2025-02-21
+  [New Features]
+    * Add local temporary variable feature. $_ is a local temporary variable. A internally named temporary variable is created each when $_ is declared.
+      
+      my $_ = 1;
+      
+      my $_ = 2;
+      
+      my $_ = Point->new;
+      
 0.990044 2025-02-19
   [New Features]
     * Add StringBuffer#index method.

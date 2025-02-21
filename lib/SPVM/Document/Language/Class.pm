@@ -1852,6 +1852,38 @@ If the type of the local variable declaration is ommited, the type of the local 
   # Foo
   my $foo = new Foo;
 
+=head2 Local Temporary Variable
+
+The declaration of a local variable C<$_> is treated as a declaration of a local templrary variable.
+
+  my $_ : TYPE;
+
+The internal variable name like C<$_.line_12_column_85>.
+
+Local temporary variables can be declared repeatedly with different types in the same scope.
+
+  my $_ = 1;
+  
+  my $_ = 2;
+  
+  my $_ = Point->new;
+
+Examples:
+
+  my $_ = 1;
+  
+  say $_;
+  
+  my $_ = 2;
+  
+  say $_;
+  
+  my $_ = Point->new;
+  
+  say $_->x;
+  
+  my $point = (my $_ = Point->new(1, 2), $_->clear, $_);
+
 =head1 Symbol Name Resolution
 
 This section describes resolutions of symbol names, such as variable names, class names, field names, method names in the current L<method implementation|/"Method Implementation">.

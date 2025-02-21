@@ -1363,6 +1363,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
   SPVM_LIST* var_decl_scope_base_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   SPVM_LIST* op_switch_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   
+  SPVM_VAR_DECL* var_decl_local_tmp_var_cur = NULL;
+  
   // Check tree
   SPVM_OP* op_root = method->op_block;
   SPVM_OP* op_cur = op_root;
@@ -2987,6 +2989,11 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               SPVM_VAR_DECL* var_decl = op_cur->uv.var->var_decl;
               
+              // Local temporary variable
+              if (strstr(op_cur->uv.var->name, "$_.")) {
+                var_decl_local_tmp_var_cur = op_cur->uv.var->var_decl;
+              }
+              
               // Redeclaration error if same name variable is declare in same block
               int32_t found = 0;
               int32_t block_var_decl_base = (intptr_t)SPVM_LIST_get(var_decl_scope_base_stack, var_decl_scope_base_stack->length - 1);
@@ -3017,6 +3024,11 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_COMPILER_error(compiler, "The type of %s variable is not detected.\n  at %s line %d", op_cur->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
                 return;
               }
+            }
+            
+            // Local temporary variable
+            if (var_decl_local_tmp_var_cur && strcmp(op_cur->uv.var->name, "$_") == 0) {
+              op_cur->uv.var->name = var_decl_local_tmp_var_cur->name;
             }
             
             SPVM_VAR* var = op_cur->uv.var;

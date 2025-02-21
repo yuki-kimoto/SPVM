@@ -907,6 +907,11 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { my $var = 0; !(my $var = 0); } }';
     compile_not_ok($source, q|Redeclaration of $var variable.|);
   }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { $_; } }';
+    compile_not_ok($source, q|$_ is not found.|);
+  }
 }
 
 # Method Call

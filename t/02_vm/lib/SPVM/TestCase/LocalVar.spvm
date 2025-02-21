@@ -309,4 +309,35 @@ class TestCase::LocalVar {
     return 1;
   }
   
+  static method temporary_local_var : int () {
+    
+    my $_ = 1;
+    
+    unless ($_ == 1) {
+      return 0;
+    }
+    
+    my $_ = 2;
+    
+    unless ($_ == 2) {
+      return 0;
+    }
+    
+    my $_ = Point->new(1, 2);
+    
+    unless ($_ is_type Point) {
+      return 0;
+    }
+    
+    my $point = (my $_ = Point->new(1, 2), $_->clear, $_);
+    
+    unless ($point->x == 0 && $point->y == 0) {
+      return 0;
+    }
+    
+    my $_ : long;
+    
+    return 1;
+  }
+  
 }
