@@ -1,3 +1,10 @@
+0.990046 2025-03-11
+  [Changes]
+    * The right type of is_compile_type operator is allowed to be specify type modifier(such as mutable).
+  
+  [Incompabile Changes]
+    * is_compile_type operator checks the equality that contains type modifier.
+  
 0.990045 2025-02-21
   [New Features]
     * Add local temporary variable feature. $_ is a local temporary variable. A internally named temporary variable is created each when $_ is declared.

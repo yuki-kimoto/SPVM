@@ -2940,14 +2940,14 @@ Examples:
 
 The C<is_compile_type> operator checks whether the compilation type of an operand is equal to a type.
 
-  OPERAND is_compile_type TYPE
+  OPERAND is_compile_type QUALIFIED_TYPE
 
-If the compilation type of I<OPERAND> is equal to the type I<TYPE>, returns 1, otherwise returns 0.
+If the compilation type of I<OPERAND> is equal to the type with type modifier I<QUALIFIED_TYPE>, returns 1, otherwise returns 0.
 
 The return type is int type.
 
 Examples:
-  
+
   {
     my $value : int;
     if ($value is_compile_type int) {
@@ -2965,6 +2965,20 @@ Examples:
   {
     my $value : Stringer = method : string () { return "aaa"; };
     if ($value is_compile_type Stringer) {
+      # Pass
+    }
+  }
+  
+  {
+    my $value : string;
+    if ($value is_compile_type string) {
+      # Pass
+    }
+  }
+  
+  {
+    my $value : mutable string;
+    if ($value is_compile_type mutable string) {
       # Pass
     }
   }

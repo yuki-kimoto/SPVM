@@ -226,7 +226,6 @@ class TestCase::Operator::String {
           unless ($string is_compile_type string) {
             return 0;
           }
-          
         }
         
         {

@@ -63,6 +63,29 @@ class TestCase::Operator::IsCompileType {
       }
     }
     
+    {
+      my $string : string;
+      unless ($string is_compile_type string) {
+        return 0;
+      }
+      
+      if ($string is_compile_type mutable string) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string : mutable string;
+      unless ($string is_compile_type mutable string) {
+        return 0;
+      }
+      
+      if ($string is_compile_type string) {
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
 }
