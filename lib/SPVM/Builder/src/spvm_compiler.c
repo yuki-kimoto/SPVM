@@ -984,13 +984,19 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       runtime_basic_type->init_method = &runtime_basic_type->methods[basic_type->init_method->index];
     }
     
+    runtime_basic_type->current_runtime = runtime;
+  }
+  
+  for (int32_t basic_type_id = current_runtime_basic_types_length; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+    
     if (basic_type->destroy_method) {
       SPVM_RUNTIME_BASIC_TYPE* destroy_method_runtime_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type->destroy_method->current_basic_type->id);
       
       runtime_basic_type->destroy_method = &destroy_method_runtime_basic_type->methods[basic_type->destroy_method->index];
     }
-    
-    runtime_basic_type->current_runtime = runtime;
   }
   
   compiler->runtime = runtime;
