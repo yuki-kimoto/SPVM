@@ -4547,9 +4547,14 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_COMPILE_TYPE_NAME:
     case SPVM_OP_C_ID_DUMP:
     case SPVM_OP_C_ID_EXCEPTION_VAR:
+    {
+      type = SPVM_TYPE_new_string_type(compiler);
+      break;
+    }
     case SPVM_OP_C_ID_NEW_STRING_LEN:
     {
       type = SPVM_TYPE_new_string_type(compiler);
+      type->flag |= SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
       break;
     }
     case SPVM_OP_C_ID_VAR_DECL: {

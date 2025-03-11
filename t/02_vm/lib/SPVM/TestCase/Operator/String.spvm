@@ -223,7 +223,7 @@ class TestCase::Operator::String {
             return 0;
           }
           
-          unless ($string is_compile_type string) {
+          unless ($string is_compile_type mutable string) {
             return 0;
           }
         }

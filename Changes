@@ -2,9 +2,9 @@
   [Changes]
     * The right type of is_compile_type operator is allowed to be specify type modifier(such as mutable).
   
-  [Incompabile Changes]
+  [Incompatible Changes]
     * is_compile_type operator checks the equality that contains type modifier.
-  
+    * The return type of new_string_len operator becomes mutable string. Originally this is string.
 0.990045 2025-02-21
   [New Features]
     * Add local temporary variable feature. $_ is a local temporary variable. A internally named temporary variable is created each when $_ is declared.

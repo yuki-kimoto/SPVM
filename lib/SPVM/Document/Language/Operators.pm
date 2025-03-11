@@ -1069,7 +1069,7 @@ This operator performs L<integer promotional conversion|/"Integer Promotional Co
 
 And creates a new string with the length, fills all characters in the string with C<\0>, and returns it.
 
-The return type is string type.
+The return type is mutable string type.
 
 Exceptions:
 
