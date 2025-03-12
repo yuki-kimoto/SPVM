@@ -3271,7 +3271,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             if (!field) {
               const char* invocant_type_name = SPVM_TYPE_new_type_name(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
-              SPVM_COMPILER_error(compiler, "The %s#%s field is not found.\n  at %s line %d", invocant_type_name, op_name->uv.name, op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "%s#%s field is not found.\n  at %s line %d", invocant_type_name, op_name->uv.name, op_cur->file, op_cur->line);
               return;
             }
             
