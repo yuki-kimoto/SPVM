@@ -26,6 +26,8 @@ class TestCase::Simple : public {
 
   has minimal : rw public TestCase::Minimal;
   
+  has parent_child_duplicate : int;
+  
   our $FOO : public rw int;
   our $VAR_PRIVATE : private int;
 
@@ -36,7 +38,13 @@ class TestCase::Simple : public {
   }
 
   static method new : TestCase::Simple () {
-    return new TestCase::Simple;
+    
+    my $self = new TestCase::Simple;
+    
+    # Check field access for duplicate fields.
+    $self->{parent_child_duplicate};
+    
+    return $self;
   }
 
   static method new_xy : TestCase::Simple ($x : int, $y : int) {

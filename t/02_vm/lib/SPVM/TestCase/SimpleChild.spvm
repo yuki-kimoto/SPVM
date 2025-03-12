@@ -1,5 +1,7 @@
 class TestCase::SimpleChild extends TestCase::Simple {
   
+  has parent_child_duplicate : int;
+  
   has z : rw public int;
   
   static method new : TestCase::SimpleChild () {
