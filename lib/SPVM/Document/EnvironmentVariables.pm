@@ -45,3 +45,16 @@ If C<SPVM_CC_FORCE> environement variable is a true value of Perl, the compilati
 
 This setting has a higher priority than L<SPVM::Builder::Config#force|SPVM::Builder::Config/"force"> field.
 
+=head1 See Also
+
+=over 2
+
+=item * L<SPVM::Document>
+
+=back
+
+=head1 Copyright & License
+
+Copyright (c) 2023 Yuki Kimoto
+
+MIT License

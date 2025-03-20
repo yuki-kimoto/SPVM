@@ -162,6 +162,14 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 L<CPAN Modules - SPVM Wiki|https://github.com/yuki-kimoto/SPVM/wiki/CPAN-Modules>
 
+=head1 See Also
+
+=over 2
+
+=item * L<SPVM::Document>
+
+=back
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

@@ -32,6 +32,14 @@ This document describes L<SPVM> language specification.
 
 =back
 
+=head1 See Also
+
+=over 2
+
+=item * L<SPVM::Document>
+
+=back
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

@@ -682,6 +682,8 @@ A native class file and a config file only can be added to an existing distribut
 
 =item * L<SPVM::Document::Language::Class>
 
+=item * L<SPVM::Document>
+
 =back
 
 =head2 Config
