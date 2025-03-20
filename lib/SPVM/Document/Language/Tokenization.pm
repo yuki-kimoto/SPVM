@@ -498,7 +498,7 @@ Examples:
 
 A lib directive gives a hint for a class search directory to L<spvm> command and L<spvmcc> command.
 
-  #lib "DIRECTORY_PATH"
+  #lib "CLASS_SEARCH_DIRECTORY"
   
 A lib directive begins from the beggining of a line.
 
@@ -506,13 +506,17 @@ It is followed by one or more ASCII C<SP>.
 
 It is followed by C<">.
 
-It is followed by I<DIRECTORY_PATH>. I<DIRECTORY_PATH> is a string that represetns a directory path.
+It is followed by I<CLASS_SEARCH_DIRECTORY>. I<CLASS_SEARCH_DIRECTORY> is a string that represetns a L<class search directory|SPVM::Document::Language::Class/"Class Search Directories">.
 
 It is closed with C<">.
 
 It ends with ASCII C<LF>.
 
 The line directives take precedence over L<comments|/"Comment">.
+
+I<CLASS_SEARCH_DIRECTORY> can contains C<$FindBin::Bin>. This is expaned to the directory where the SPVM script is placed.
+
+  #lib "$FindBin::Bin/lib/SPVM"
 
 Compilation Errors:
 
@@ -526,7 +530,9 @@ The directory specified by a lib directive must end with ". Otherwise an compila
 
 Examples:
 
-  #lib "$FindBIn::Bin/lib"
+C<my_script.spvm>:
+
+  #lib "$FindBin::Bin/lib/SPVM"
   
   class {
   

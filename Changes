@@ -1,3 +1,10 @@
+0.990049 2025-03-21
+  [Document Fix]
+    * Fix an example of a doc for lib directive.
+  [Document Improvement]
+    * Improve documents for lib directive.
+    * Add links to SPVM::Document from its child documents.
+    
 0.990048 2025-03-12
   [Bug Fix]
     * Fix a bug that duplicate fields in parent and child does not work well.
