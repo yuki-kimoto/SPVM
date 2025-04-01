@@ -19,7 +19,7 @@ Syntax parsing is performed according to the grammer of the SPVM language.
 The grammer of the SPVM language is described using L<GNU Bison|https://en.wikipedia.org/wiki/GNU_Bison> syntax.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
-  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL
+  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -29,7 +29,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> field_name method_name class_name
   %type <opval> type qualified_type basic_type array_type opt_basic_type
   %type <opval> array_type_with_length ref_type return_type type_comment opt_type_comment union_type
-  %type <opval> opt_classes classes class class_block opt_extends version_decl
+  %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
   %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
   %type <opval> method anon_method opt_args args arg use require class_alias our has anon_method_fields anon_method_field interface allow
@@ -44,7 +44,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> void_return_operator warn
   %type <opval> unary_operator array_length
   %type <opval> inc dec
-  %type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation logical_operator
+  %type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation logical_operator defined_or
   %type <opval> assign
   %type <opval> new array_init
   %type <opval> type_check type_cast can
@@ -53,7 +53,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> weaken_field unweaken_field isweak_field
   %type <opval> sequential
   %right <opval> ASSIGN SPECIAL_ASSIGN
-  %left <opval> LOGICAL_OR
+  %left <opval> LOGICAL_OR DEFINED_OR
   %left <opval> LOGICAL_AND
   %left <opval> BIT_OR BIT_XOR
   %left <opval> BIT_AND
@@ -159,6 +159,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
 
   definition
     : version_decl
+    | version_from
     | use
     | class_alias
     | allow
@@ -174,6 +175,9 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
 
   version_decl
     : VERSION_DECL CONSTANT ';'
+
+  version_from
+    : VERSION_FROM basic_type ';'
 
   use
     : USE basic_type ';'
@@ -445,6 +449,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | comparison_operator
     | string_concatenation
     | logical_operator
+    | defined_or
 
   arithmetic_operator
     : operator '+' operator
@@ -486,6 +491,9 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : operator LOGICAL_OR operator
     | operator LOGICAL_AND operator
     | LOGICAL_NOT operator
+
+  defined_or
+    : operator DEFINED_OR operator
 
   type_check
     : operator ISA type
@@ -729,6 +737,9 @@ These are tokens for L<grammer/"Grammer">.
     <td>LOGICAL_OR</td><td>||</td>
   </tr>
   <tr>
+    <td>DEFINED_OR</td><td>//</td>
+  </tr>
+  <tr>
     <td>LONG</td><td>long</td>
   </tr>
   <tr>
@@ -885,6 +896,9 @@ These are tokens for L<grammer/"Grammer">.
     <td>VERSION</td><td>version</td>
   </tr>
   <tr>
+    <td>VERSION_FROM</td><td>version_from</td>
+  </tr>
+  <tr>
     <td>VOID</td><td>void</td>
   </tr>
   <tr>
@@ -910,7 +924,7 @@ The operator precidence in the SPVM language is described using L<GNU Bison|http
 The bottom is the highest precidence and the top is the lowest precidence.
   
   %right <opval> ASSIGN SPECIAL_ASSIGN
-  %left <opval> LOGICAL_OR
+  %left <opval> LOGICAL_OR DEFINED_OR
   %left <opval> LOGICAL_AND
   %left <opval> BIT_OR BIT_XOR
   %left <opval> BIT_AND

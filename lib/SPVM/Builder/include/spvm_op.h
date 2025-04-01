@@ -291,10 +291,6 @@ enum {
   SPVM_OP_C_FLAG_ELEMENT_ACCESS_ISWEAK = 8,
 };
 
-enum {
-  SPVM_OP_C_FLAG_SEQUENCE_DEFINED_OR = 1,
-};
-
 struct spvm_op {
   SPVM_OP* first;
   SPVM_OP* last;

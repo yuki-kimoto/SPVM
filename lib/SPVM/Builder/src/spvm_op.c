@@ -3107,13 +3107,12 @@ SPVM_OP* SPVM_OP_build_defined_or(SPVM_COMPILER* compiler, SPVM_OP* op_defined_o
   */
   
   SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_defined_or->file, op_defined_or->line);
-  op_sequence->flag |= SPVM_OP_C_FLAG_SEQUENCE_DEFINED_OR;
+  op_sequence->original_id = SPVM_OP_C_ID_DEFINED_OR;
   
   SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, op_defined_or->file, op_defined_or->line);
   SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-  SPVM_OP* op_type_var = SPVM_OP_new_op_any_object_type(compiler, op_defined_or->file, op_defined_or->line);
   SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_defined_or->file, op_defined_or->line);
-  SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type_var, NULL);
+  SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, NULL, NULL);
   SPVM_OP* op_assign_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_defined_or->file, op_defined_or->line);
   SPVM_OP_build_assign(compiler, op_assign_var, op_var, op_left_operand);
   

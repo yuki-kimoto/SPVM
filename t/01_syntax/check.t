@@ -1650,6 +1650,19 @@ use Test::More;
   }
 }
 
+# Defined-or
+{
+  {
+    my $source = 'class MyClass  { static method main : void () { 1 // 2; } }';
+    compile_not_ok($source, qr|The type of the left operand of defined-or operator // must be an object type.|);
+  }
+  
+  {
+    my $source = 'class MyClass  { static method main : void () { 1 // "false"; } }';
+    compile_not_ok($source);
+  }
+}
+
 # Extra
 {
   {

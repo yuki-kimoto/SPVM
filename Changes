@@ -5,7 +5,10 @@
     * Allow sequencial operator to use if statement.
     
       (OPERAND1, OPERAND2, ..., IF_STATEMENT, OPERANDn)
-    
+    * Add defined-or operator
+      
+      $left // $bar
+      
 0.990049 2025-03-21
   [Document Fix]
     * Fix an example of a doc for lib directive.
