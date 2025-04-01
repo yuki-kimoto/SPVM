@@ -287,6 +287,8 @@ lib/SPVM/EqualityChecker/Address.pm
 lib/SPVM/EqualityChecker/Address.spvm
 lib/SPVM/Error.pm
 lib/SPVM/Error/Compile.pm
+lib/SPVM/Error/FieldNotSpecified.pm
+lib/SPVM/Error/FieldNotSpecified.spvm
 lib/SPVM/Error/NotSupported.pm
 lib/SPVM/Error/System.pm
 lib/SPVM/Error/Unicode/InvalidUTF8.pm

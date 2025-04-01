@@ -1,5 +1,6 @@
 class TestCase::Module::Error {
   use Fn;
+  use Error::FieldNotSpecified;
   
   static method basic_type_id : int () {
     

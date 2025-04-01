@@ -1,3 +1,7 @@
+0.990050 2025-04-01
+  [New Features]
+    * Add Error::FieldNotSpecified class.
+    
 0.990049 2025-03-21
   [Document Fix]
     * Fix an example of a doc for lib directive.

@@ -1,0 +1,6 @@
+# Copyright (c) 2025 Yuki Kimoto
+# MIT License
+
+class Error::FieldNotSpecified extends Error {
+  version_from SPVM;
+}
