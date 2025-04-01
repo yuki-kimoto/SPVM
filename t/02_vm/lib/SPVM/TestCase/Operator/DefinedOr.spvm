@@ -1,0 +1,31 @@
+class TestCase::Operator::DefinedOr {
+  
+  static method defined_or : int () {
+    
+    {
+      my $left = "true";
+      my $right = "false";
+      
+      my $ret = $left // $right;
+      
+      unless ($ret == $left) {
+        return 0;
+      }
+    }
+    
+    {
+      my $left = (string)undef;
+      my $right = "false";
+      
+      my $ret = $left // $right;
+      
+      unless ($ret == $right) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+}

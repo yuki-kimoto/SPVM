@@ -281,7 +281,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '/': {
         compiler->ch_ptr++;
         
-        if (*compiler->ch_ptr == '=') {
+        if (*compiler->ch_ptr == '/') {
+          compiler->ch_ptr++;
+          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DEFINED_OR);
+          yylvalp->opval = op;
+          return DEFINED_OR;
+        }
+        else if (*compiler->ch_ptr == '=') {
           compiler->ch_ptr++;
           SPVM_OP* op_special_assign = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
           op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_DIVIDE;

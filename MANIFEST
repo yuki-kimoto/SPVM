@@ -666,6 +666,7 @@ t/02_vm/05_op/condition_evaluation.t
 t/02_vm/05_op/constant.t
 t/02_vm/05_op/copy.t
 t/02_vm/05_op/decrement.t
+t/02_vm/05_op/defined_or.t
 t/02_vm/05_op/destroy.t
 t/02_vm/05_op/division.t
 t/02_vm/05_op/dump.t
@@ -928,6 +929,7 @@ t/02_vm/lib/SPVM/TestCase/Operator/ConditionEvaluation.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Constant.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Copy.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Data/Weaken.spvm
+t/02_vm/lib/SPVM/TestCase/Operator/DefinedOr.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Divide.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Dump.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/DumpTest1.spvm

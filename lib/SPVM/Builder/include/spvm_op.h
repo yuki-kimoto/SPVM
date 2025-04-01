@@ -250,6 +250,7 @@ enum {
   SPVM_OP_C_ID_DEREFERENCE,
   SPVM_OP_C_ID_EVAL_ERROR_ID,
   SPVM_OP_C_ID_SEQUENCE,
+  SPVM_OP_C_ID_DEFINED_OR,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -288,6 +289,10 @@ enum {
   SPVM_OP_C_FLAG_ELEMENT_ACCESS_STRING = 2,
   SPVM_OP_C_FLAG_ELEMENT_ACCESS_UNWEAKEN = 4,
   SPVM_OP_C_FLAG_ELEMENT_ACCESS_ISWEAK = 8,
+};
+
+enum {
+  SPVM_OP_C_FLAG_SEQUENCE_DEFINED_OR = 1,
 };
 
 struct spvm_op {
@@ -343,6 +348,8 @@ SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPV
 SPVM_OP* SPVM_OP_build_logical_or(SPVM_COMPILER* compiler, SPVM_OP* op_or, SPVM_OP* op_left_operand, SPVM_OP* op_right_operand);
 
 SPVM_OP* SPVM_OP_build_logical_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op_operand);
+
+SPVM_OP* SPVM_OP_build_defined_or(SPVM_COMPILER* compiler, SPVM_OP* op_defined_or, SPVM_OP* op_left_operand, SPVM_OP* op_right_operand);
 
 SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_left_operand, SPVM_OP* op_right_operand);
 

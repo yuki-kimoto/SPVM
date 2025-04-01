@@ -250,6 +250,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "DEREFERENCE",
     "EVAL_ERROR_ID",
     "SEQUENCE",
+    "DEFINED_OR",
   };
   
   return id_names;
@@ -3069,6 +3070,67 @@ SPVM_OP* SPVM_OP_build_logical_not(SPVM_COMPILER* compiler, SPVM_OP* op_logical_
   
   int32_t no_scope = 1;
   SPVM_OP_build_if_statement(compiler, op_if, op_operand, op_assign_false, op_assign_true, no_scope);
+  
+  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_if);
+  
+  SPVM_OP* op_var_ret = SPVM_OP_clone_op_var(compiler, op_var);
+  
+  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
+  
+  return op_sequence;
+}
+
+SPVM_OP* SPVM_OP_build_defined_or(SPVM_COMPILER* compiler, SPVM_OP* op_defined_or, SPVM_OP* op_left_operand, SPVM_OP* op_right_operand) {
+  
+  /*
+    [Before]
+    DEFINED_OR
+      left_operand
+      right_operand
+  */
+  
+  /*
+    [After]
+    SEQUENCE                    op_sequence
+      ASSIGN                op_assign_var
+        VAR_LEFT            op_left_operand
+        VAR                       op_var
+          VAR_DECL                op_var_decl
+      IF                        op_if
+        CONDITION
+          VAR                 op_var_condition
+        DO_NOTHING
+        ASSIGN                op_assign_right
+          OP                  op_right_operand
+          VAR                 op_var_right
+      VAR                       op_var_ret
+  */
+  
+  SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_defined_or->file, op_defined_or->line);
+  op_sequence->flag |= SPVM_OP_C_FLAG_SEQUENCE_DEFINED_OR;
+  
+  SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, op_defined_or->file, op_defined_or->line);
+  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+  SPVM_OP* op_type_var = SPVM_OP_new_op_any_object_type(compiler, op_defined_or->file, op_defined_or->line);
+  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_defined_or->file, op_defined_or->line);
+  SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type_var, NULL);
+  SPVM_OP* op_assign_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_defined_or->file, op_defined_or->line);
+  SPVM_OP_build_assign(compiler, op_assign_var, op_var, op_left_operand);
+  
+  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_var);
+  
+  SPVM_OP* op_var_condition = SPVM_OP_clone_op_var(compiler, op_var);
+  
+  SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_defined_or->file, op_defined_or->line);
+  
+  SPVM_OP* op_var_right = SPVM_OP_clone_op_var(compiler, op_var);
+  SPVM_OP* op_assign_right = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_defined_or->file, op_defined_or->line);
+  SPVM_OP_build_assign(compiler, op_assign_right, op_var_right, op_right_operand);
+  
+  SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_defined_or->file, op_defined_or->line);
+  
+  int32_t no_scope = 1;
+  SPVM_OP_build_if_statement(compiler, op_if, op_var_condition, op_do_nothing, op_assign_right, no_scope);
   
   SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_if);
   

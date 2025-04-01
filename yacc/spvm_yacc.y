@@ -48,7 +48,7 @@
 %type <opval> void_return_operator warn 
 %type <opval> unary_operator array_length
 %type <opval> inc dec
-%type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation logical_operator
+%type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation logical_operator defined_or
 %type <opval> assign
 %type <opval> new array_init
 %type <opval> type_check type_cast can
@@ -58,7 +58,7 @@
 %type <opval> sequential
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
-%left <opval> LOGICAL_OR
+%left <opval> LOGICAL_OR DEFINED_OR
 %left <opval> LOGICAL_AND
 %left <opval> BIT_OR BIT_XOR
 %left <opval> BIT_AND
@@ -1140,6 +1140,7 @@ binary_operator
   | comparison_operator
   | string_concatenation
   | logical_operator
+  | defined_or
 
 arithmetic_operator
   : operator '+' operator
@@ -1276,6 +1277,12 @@ logical_operator
   | LOGICAL_NOT operator
     {
       $$ = SPVM_OP_build_logical_not(compiler, $1, $2);
+    }
+
+defined_or
+  : operator DEFINED_OR operator
+    {
+      $$ = SPVM_OP_build_defined_or(compiler, $2, $1, $3);
     }
 
 type_check
