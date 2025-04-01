@@ -183,7 +183,7 @@ Same as L</"splice"> method, but the return vlaue is not returned.
 
 Exceptions:
 
-Exceptions thrown by L</"splice> method could be thrown.
+Exceptions thrown by L</"splice"> method could be thrown.
 
 =head2 splice
 

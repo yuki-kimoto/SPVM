@@ -117,7 +117,17 @@ Adds Ascii $char after the end of the string in the string buffer.
 
 C<method replace : void ($offset : int, $length : int, $replace : string);>
 
-Replace the characters of the range specified by $offset and $length in the buffer with $replace string.
+Same as L</"splice"> method, but the return vlaue is not returned.
+
+Exceptions:
+
+Exceptions thrown by L</"splice> method could be thrown.
+
+=head2 splice
+
+C<method splice : string ($offset : int, $remove_length : int, $replace : string = undef);>
+
+Replace the characters of the range specified by $offset and $length in the buffer with $replace string, and returns removed charcters.
 
 Exceptions:
 

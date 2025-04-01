@@ -29,6 +29,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   
   ok(SPVM::TestCase::Module::StringBuffer->replace);
   
+  ok(SPVM::TestCase::Module::StringBuffer->splice);
+  
   ok(SPVM::TestCase::Module::StringBuffer->reserve);
   
   ok(SPVM::TestCase::Module::StringBuffer->to_string);
