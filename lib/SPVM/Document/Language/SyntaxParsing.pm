@@ -403,6 +403,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
 
   sequential
     : '(' operators ')'
+    | '(' operators ',' if_statement ',' operator ')'
 
   operators
     : operators ',' operator

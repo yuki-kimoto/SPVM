@@ -999,6 +999,18 @@ sequential
         $$ = $2;
       }
     }
+  | '(' operators ',' if_statement ',' operator ')'
+    {
+      SPVM_OP* op_operator = $2->first;
+      SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, compiler->current_file, compiler->current_line);
+      
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, $2);
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, $4);
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, $6);
+      
+      $$ = op_sequence;
+    }
+
 operators
   : operators ',' operator
     {

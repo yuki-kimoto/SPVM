@@ -2,6 +2,9 @@
   [New Features]
     * Add Error::FieldNotSpecified class.
     * Add StringBuffer#splice method.
+    * Allow sequencial operator to use if statement.
+    
+      (OPERAND1, OPERAND2, ..., IF_STATEMENT, OPERANDn)
     
 0.990049 2025-03-21
   [Document Fix]

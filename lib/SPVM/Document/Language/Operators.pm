@@ -830,6 +830,10 @@ This operator evaluates operands C<OPERAND1>, C<OPERAND1> ... C<OPERANDn> from l
 
 The return type is the type of C<OPERANDn>.
 
+The L<if statement|SPVM::Document::Language::Statements/"if Statement"> C<IF_STATEMENT> can place directory before C<OPERANDn>.
+
+  (OPERAND1, OPERAND2, ..., IF_STATEMENT, OPERANDn)
+
 Examples:
 
   # Examples of the sequential operator
@@ -841,6 +845,12 @@ Examples:
   my $x = 1;
   my $y = 2;
   my $result = ($x += 2, $x + $y);
+  
+  # Peseud ternary operator
+  {
+    my $condition = 1;
+    my $ret = (my $_ = 0, if ($condition) { $_ = 3; } else { $_ = 5; }, $_);
+  }
 
 =head2 Comparison Operators
 
