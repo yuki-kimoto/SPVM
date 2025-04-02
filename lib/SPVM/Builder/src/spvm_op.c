@@ -3180,8 +3180,6 @@ SPVM_OP* SPVM_OP_build_ternary_op(SPVM_COMPILER* compiler, SPVM_OP* op_ternary, 
   
   SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var);
   
-  SPVM_OP* op_var_condition = SPVM_OP_clone_op_var(compiler, op_var);
-  
   SPVM_OP* op_var_left = SPVM_OP_clone_op_var(compiler, op_var);
   SPVM_OP* op_assign_left = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_ternary->file, op_ternary->line);
   SPVM_OP_build_assign(compiler, op_assign_left, op_var_left, op_left_operand);
