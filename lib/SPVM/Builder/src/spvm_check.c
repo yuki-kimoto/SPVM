@@ -2513,15 +2513,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 return;
               }
             }
-            else if (op_cur->original_id == SPVM_OP_C_ID_TERNARY_OP) {
-              
-              SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
-              
-              if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_COMPILER_error(compiler, "The type of the left operand of ternary operator CONDITION ? LEFT : RIGHT must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
             
             break;
           }
