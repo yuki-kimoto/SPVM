@@ -462,7 +462,7 @@ The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language:
 
 Examples:
   
-  # Examples of the bitwise AND operator
+  # Examples of bitwise AND operator
   my $num1 = 0xff;
   my $num2 = 0x12;
   my $result = $num1 & $num2;
@@ -514,7 +514,7 @@ The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types
 
 Examples:
   
-  # Examples of the bitwise NOT operator
+  # Examples of bitwise NOT operator
   my $result = ~0xFF0A;
 
 =head3 Shift Operators
@@ -543,7 +543,7 @@ The type of I<RIGHT_OPERAND> must be an L<integer types|SPVM::Document::Language
 
 Examples:
 
-  # Examples of the left shift operator
+  # Examples of left shift operator
   my $result = 0xFF0A << 3;
 
 =head4 Arithmetic Right Shift Operator
@@ -570,7 +570,7 @@ The type of I<RIGHT_OPERAND> must be an L<integer types|SPVM::Document::Language
 
 Examples:
 
-  # Examples of the arithmetic right shift operator
+  # Examples of arithmetic right shift operator
   my $result = 0xFF0A >> 3;
 
 =head4 Logical Right Shift Operator
@@ -603,7 +603,7 @@ The type of I<RIGHT_OPERAND> must be an L<integer types|SPVM::Document::Language
 
 Examples:
 
-  # Examples of the logical right shift operator
+  # Examples of logical right shift operator
   my $result = 0xFF0A >>> 3;
 
 =head2 Logical Operators
@@ -624,7 +624,7 @@ The return type is int type.
 
 Examples:
 
-  # Examples of the logical AND operator
+  # Examples of logical AND operator
   if (1 && 0) {
     
   }
@@ -633,7 +633,7 @@ Examples:
 
 The logical OR operator C<||> performes a logical OR operation.
 
-  # The logical OR operator
+  # logical OR operator
   LEFT_OPERAND || RIGHT_OPERAND
 
 Thg logical OR operator performs L<condition evaluation|/"Condition Evaluation"> on the left operand I<LEFT_OPERAND>.
@@ -646,7 +646,7 @@ The return type is int type.
 
 Examples:
 
-  # Examples of the logical OR operator
+  # Examples of logical OR operator
   if (1 || 0) {
     
   }
@@ -663,10 +663,34 @@ If the evaluated value is 0, returns 1, otherwise returns 0.
 
 The return type is int type.
 
-  # Examples of the logical NOT operator
+  # Examples of logical NOT operator
   if (!1) {
     
   }
+
+=head2 Defined-OR  Operators
+
+The defined-OR operator C<//> performes a defined-OR operation.
+
+  # defined-OR operator
+  LEFT_OPERAND // RIGHT_OPERAND
+
+Thg logical OR operator performs L<condition evaluation|/"Condition Evaluation"> on the left operand I<LEFT_OPERAND>.
+
+If the evaluated value is not 0, it returns the evaluated value. Otherwise, returns I<RIGHT_OPERAND>.
+
+The return type is the type of I<LEFT_OPERAND>.
+
+Compilation Errors:
+
+The type of the left operand of defined-or operator // must be an object type. Otherwise, an compication error occurs.
+
+Examples:
+
+  # Examples of defined-OR operator
+  my $value = "foo";
+  my $default = "default";
+  my $ret = $value // $default;
 
 =head2 Condition Evaluation
 
