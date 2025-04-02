@@ -3199,6 +3199,8 @@ SPVM_OP* SPVM_OP_build_ternary_op(SPVM_COMPILER* compiler, SPVM_OP* op_ternary, 
   
   SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
   
+  op_sequence->uv.any = op_left_operand;
+  
   return op_sequence;
 }
 

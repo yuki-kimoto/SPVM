@@ -705,7 +705,7 @@ I<CONDITION> is evaluated by L<condition evaluation|/"Condition Evaluation">.
 
 If the evaluated value is not 0, it returns I<LEFT_OPERAND>. Otherwise, returns I<RIGHT_OPERAND>.
 
-The return type is any object type.
+The return type is the type of I<LEFT_OPERAND>.
 
 Examples:
 
@@ -713,7 +713,7 @@ Examples:
   my $flag = 1;
   my $left = "foo";
   my $right = "default";
-  my $ret = (string)($flag ? $left : $right);
+  my $ret = $flag ? $left : $right;
 
 =head2 Condition Evaluation
 

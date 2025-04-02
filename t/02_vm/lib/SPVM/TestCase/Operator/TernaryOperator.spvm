@@ -8,7 +8,7 @@ class TestCase::Operator::TernaryOperator {
       
       my $ret = 1 ? $left : $right;
       
-      unless ($ret is_compile_type object) {
+      unless ($ret is_compile_type string) {
         return 0;
       }
     }
@@ -17,7 +17,7 @@ class TestCase::Operator::TernaryOperator {
       my $left = "true";
       my $right = "false";
       
-      my $ret = (string)(1 ? $left : $right);
+      my $ret = 1 ? $left : $right;
       
       unless ($ret == $left) {
         return 0;
@@ -32,7 +32,7 @@ class TestCase::Operator::TernaryOperator {
       my $left = (string)undef;
       my $right = "false";
       
-      my $ret = (string)(0 ? $left : $right);
+      my $ret = 0 ? $left : $right;
       
       unless ($ret == $right) {
         return 0;
@@ -45,7 +45,7 @@ class TestCase::Operator::TernaryOperator {
     }
     
     {
-      my $ret = (string)(1 ? "true" : "false");
+      my $ret = 1 ? "true" : "false";
       
       unless ($ret eq "true") {
         return 0;
@@ -53,7 +53,7 @@ class TestCase::Operator::TernaryOperator {
     }
     
     {
-      my $ret = (string)(0 ? (string)undef : "false");
+      my $ret = 0 ? (string)undef : "false";
       
       unless ($ret eq "false") {
         return 0;
@@ -62,7 +62,7 @@ class TestCase::Operator::TernaryOperator {
     }
     
     {
-      my $ret = (string)(0 ? "1" : 0 ? "3" : "2");
+      my $ret = 0 ? "1" : 0 ? "3" : "2";
       
       unless ($ret eq "2") {
         return 0;
@@ -71,7 +71,7 @@ class TestCase::Operator::TernaryOperator {
     }
     
     {
-      my $ret = (string)(0 ? "1" : 1 ? "3" : "2");
+      my $ret = 0 ? "1" : 1 ? "3" : "2";
       
       unless ($ret eq "3") {
         return 0;
@@ -83,8 +83,11 @@ class TestCase::Operator::TernaryOperator {
       my $left = 2;
       my $right = 3;
       
-      my $ret = (int)(1 ? $left : $right);
+      my $ret = 1 ? $left : $right;
       
+      unless ($ret is_compile_type int) {
+        return 0;
+      }
       unless ($ret == 2) {
         return 0;
       }
@@ -94,7 +97,7 @@ class TestCase::Operator::TernaryOperator {
       my $left = 2;
       my $right = 3;
       
-      my $ret = (int)(0 ? $left : $right);
+      my $ret = 0 ? $left : $right;
       
       unless ($ret == 3) {
         return 0;

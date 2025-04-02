@@ -2513,6 +2513,19 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 return;
               }
             }
+            else if (op_cur->original_id == SPVM_OP_C_ID_TERNARY_OP) {
+              
+              // Type cast to the type of the left operand
+              SPVM_OP* op_left_operand = (SPVM_OP*)op_cur->uv.any;
+              SPVM_TYPE* type_left_operand = SPVM_CHECK_get_type(compiler, op_left_operand);
+              SPVM_OP* op_ret = op_cur->last;
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur->last);
+              SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_ret->file, op_ret->line);
+              SPVM_OP* op_type_left_operand = SPVM_CHECK_new_op_type_shared(compiler, type_left_operand, op_ret->file, op_ret->line);
+              SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_left_operand, op_ret);
+              SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
+              
+            }
             
             break;
           }
