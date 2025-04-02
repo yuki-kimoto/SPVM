@@ -44,7 +44,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> void_return_operator warn
   %type <opval> unary_operator array_length
   %type <opval> inc dec
-  %type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation logical_operator defined_or
+  %type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation logical_operator defined_or ternary_operator
   %type <opval> assign
   %type <opval> new array_init
   %type <opval> type_check type_cast can
@@ -392,6 +392,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | OUTMOST_CLASS_NAME
     | unary_operator
     | binary_operator
+    | ternary_operator
     | assign
     | inc
     | dec
@@ -461,6 +462,9 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | operator MODULO operator
     | operator MODULO_UNSIGNED_INT operator
     | operator MODULO_UNSIGNED_LONG operator
+
+  ternary_operator
+    : operator '?' operator ':' operator
 
   bit_operator
     : operator BIT_XOR operator
@@ -551,6 +555,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
 
   isweak_field
     : ISWEAK var ARROW '{' field_name '}'
+
 
 =head2 Grammer Token
 
