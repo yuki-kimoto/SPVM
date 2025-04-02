@@ -251,6 +251,7 @@ enum {
   SPVM_OP_C_ID_EVAL_ERROR_ID,
   SPVM_OP_C_ID_SEQUENCE,
   SPVM_OP_C_ID_DEFINED_OR,
+  SPVM_OP_C_ID_TERNARY_OP,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -382,6 +383,8 @@ SPVM_OP* SPVM_OP_build_array_length(SPVM_COMPILER* compiler, SPVM_OP* op_array_l
 SPVM_OP* SPVM_OP_build_malloc_object(SPVM_COMPILER* compiler, SPVM_OP* op_malloc, SPVM_OP* op_type);
 
 SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_call_op, SPVM_OP* op_left_operand, SPVM_OP* op_right_operand);
+
+SPVM_OP* SPVM_OP_build_ternary_op(SPVM_COMPILER* compiler, SPVM_OP* op_ternary_op, SPVM_OP* op_condition, SPVM_OP* op_left_operand, SPVM_OP* op_right_operand);
 
 SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_name);
 

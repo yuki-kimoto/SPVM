@@ -1533,6 +1533,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case ':' :
       case ';' :
       case '@' :
+      case '?' :
       {
         // Return character
         compiler->ch_ptr++;

@@ -1,0 +1,56 @@
+class TestCase::Operator::TernaryOperator {
+  
+  static method ternary_op : int () {
+    
+    {
+      my $left = "true";
+      my $right = "false";
+      
+      my $ret = (string)(1 ? $left : $right);
+      
+      unless ($ret == $left) {
+        return 0;
+      }
+      
+      unless ($ret eq "true") {
+        return 0;
+      }
+    }
+    
+    {
+      my $left = (string)undef;
+      my $right = "false";
+      
+      my $ret = (string)(0 ? $left : $right);
+      
+      unless ($ret == $right) {
+        return 0;
+      }
+      
+      
+      unless ($ret eq "false") {
+        return 0;
+      }
+    }
+    
+    {
+      my $ret = (string)(1 ? "true" : "false");
+      
+      unless ($ret eq "true") {
+        return 0;
+      }
+    }
+    
+    {
+      my $ret = (string)(0 ? (string)undef : "false");
+      
+      unless ($ret eq "false") {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+}

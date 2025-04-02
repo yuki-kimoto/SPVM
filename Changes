@@ -9,6 +9,10 @@
       
       $left // $bar
       
+    * Add ternary operator
+      
+      $condition ? $left : $rigth
+      
 0.990049 2025-03-21
   [Document Fix]
     * Fix an example of a doc for lib directive.

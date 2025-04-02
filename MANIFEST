@@ -694,6 +694,7 @@ t/02_vm/05_op/special_assign.t
 t/02_vm/05_op/string_concatenation.t
 t/02_vm/05_op/string_data.t
 t/02_vm/05_op/subtraction.t
+t/02_vm/05_op/ternary_op.t
 t/02_vm/05_op/type_cast.t
 t/02_vm/05_op/type_initial_value.t
 t/02_vm/05_op/type_name.t
@@ -957,6 +958,7 @@ t/02_vm/lib/SPVM/TestCase/Operator/SpecialAssign.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Stdio.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/String.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Subtract.spvm
+t/02_vm/lib/SPVM/TestCase/Operator/TernaryOperator.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/TypeCast.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/TypeDefaultValue.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/TypeName.spvm

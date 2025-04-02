@@ -48,7 +48,7 @@
 %type <opval> void_return_operator warn 
 %type <opval> unary_operator array_length
 %type <opval> inc dec
-%type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation logical_operator defined_or
+%type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation logical_operator defined_or ternary_operator
 %type <opval> assign
 %type <opval> new array_init
 %type <opval> type_check type_cast can
@@ -966,6 +966,7 @@ operator
   | OUTMOST_CLASS_NAME
   | unary_operator
   | binary_operator
+  | ternary_operator
   | assign
   | inc
   | dec
@@ -1181,6 +1182,13 @@ arithmetic_operator
   | operator MODULO_UNSIGNED_LONG operator
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+
+ternary_operator
+  : operator '?' operator ':' operator
+    {
+      SPVM_OP* ternary_op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TERNARY_OP, $1->file, $1->line);
+      $$ = SPVM_OP_build_ternary_op(compiler, ternary_op, $1, $3, $5);
     }
 
 bit_operator
