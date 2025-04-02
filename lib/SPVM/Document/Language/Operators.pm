@@ -668,14 +668,14 @@ The return type is int type.
     
   }
 
-=head2 Defined-OR  Operators
+=head2 Defined-OR  Operator
 
 The defined-OR operator C<//> performes a defined-OR operation.
 
   # defined-OR operator
   LEFT_OPERAND // RIGHT_OPERAND
 
-Thg logical OR operator performs L<condition evaluation|/"Condition Evaluation"> on the left operand I<LEFT_OPERAND>.
+Thg defined-OR operator performs L<condition evaluation|/"Condition Evaluation"> on the left operand I<LEFT_OPERAND>.
 
 If the evaluated value is not 0, it returns the evaluated value. Otherwise, returns I<RIGHT_OPERAND>.
 
@@ -691,6 +691,29 @@ Examples:
   my $value = "foo";
   my $default = "default";
   my $ret = $value // $default;
+
+=head2 Ternary Operator
+
+The ternary operator performes a ternary operation.
+
+  # ternary operator
+  CONDITION ? LEFT_OPERAND : RIGHT_OPERAND
+
+The type of I<LEFT_OPERAND> and I<RIGHT_OPERAND> must satisfy assignment requrement to any object type.
+
+I<CONDITION> is evaluated by L<condition evaluation|/"Condition Evaluation">.
+
+If the evaluated value is not 0, it returns I<LEFT_OPERAND>. Otherwise, returns I<RIGHT_OPERAND>.
+
+The return type is any object type.
+
+Examples:
+
+  # Examples of ternary operator
+  my $flag = 1;
+  my $left = "foo";
+  my $right = "default";
+  my $ret = (string)($flag ? $left : $right);
 
 =head2 Condition Evaluation
 

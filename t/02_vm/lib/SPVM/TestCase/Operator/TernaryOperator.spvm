@@ -79,6 +79,28 @@ class TestCase::Operator::TernaryOperator {
       
     }
     
+    {
+      my $left = 2;
+      my $right = 3;
+      
+      my $ret = (int)(1 ? $left : $right);
+      
+      unless ($ret == 2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $left = 2;
+      my $right = 3;
+      
+      my $ret = (int)(0 ? $left : $right);
+      
+      unless ($ret == 3) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
