@@ -1,5 +1,7 @@
 class TestCase::Operator::DefinedOr {
   
+  use TestCase::Simple;
+  
   static method defined_or : int () {
     
     {
@@ -40,6 +42,23 @@ class TestCase::Operator::DefinedOr {
         return 0;
       }
       
+    }
+    
+    # https://github.com/yuki-kimoto/SPVM/issues/705
+    {
+      {
+        my $simple = TestCase::Simple->new;
+        $simple->{string_value} = $simple->{string_value} // "headers";
+      }
+      
+      {
+        my $simple = TestCase::Simple->new;
+        my $tmp = ($simple->{string_value} = $simple->{string_value} // "headers");
+        
+        unless ($tmp eq "headers") {
+          return 0;
+        }
+      }
     }
     
     return 1;

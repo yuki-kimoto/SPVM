@@ -3580,6 +3580,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_IS_ERROR:
               case SPVM_OP_C_ID_IS_COMPILE_TYPE:
               case SPVM_OP_C_ID_CONDITION_EVALUATION:
+              case SPVM_OP_C_ID_SEQUENCE:
               {
                 convert_to_assign = 1;
                 break;
@@ -3607,7 +3608,6 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_LOOP:
               case SPVM_OP_C_ID_EVAL:
               case SPVM_OP_C_ID_UNDEF:
-              case SPVM_OP_C_ID_SEQUENCE:
               case SPVM_OP_C_ID_DO_NOTHING:
               case SPVM_OP_C_ID_WEAKEN_FIELD:
               case SPVM_OP_C_ID_UNWEAKEN_FIELD:
