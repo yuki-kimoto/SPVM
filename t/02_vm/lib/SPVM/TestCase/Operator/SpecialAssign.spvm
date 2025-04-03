@@ -9,6 +9,7 @@ class TestCase::Operator::SpecialAssign {
   use TestCase::Point_3d;
   use Fn;
   use Array;
+  use Point;
   
   our $BYTE_VALUE : byte;
   our $SHORT_VALUE : short;
@@ -1012,4 +1013,31 @@ class TestCase::Operator::SpecialAssign {
     
     return 1;
   }
+  
+  static method special_assign_defined_or : int () {
+    
+    {
+      my $object = (Point)undef;
+      
+      $object //= Point->new;
+      
+      unless ($object is_type Point) {
+        return 0;
+      }
+    }
+    
+    {
+      my $simple = TestCase::Simple->new;
+      
+      $simple->{string_value} //= "foo";
+      
+      unless ($simple->{string_value} eq "foo") {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
 }

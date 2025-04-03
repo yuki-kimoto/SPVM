@@ -1796,6 +1796,10 @@ List of Special Assignment Operators:
     <td>The concatenation assignment operator</td>
     <td>.=</td>
   </tr>
+  <tr>
+    <td>The defined-or assignment operator</td>
+    <td>//=</td>
+  </tr>
 </table>
 
 =end html

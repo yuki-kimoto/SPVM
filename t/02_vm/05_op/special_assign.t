@@ -78,6 +78,10 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_right_shift_var);
 }
 
+{
+  ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_defined_or);
+}
+
 # All object is freed
 $api->set_exception(undef);
 my $end_memory_blocks_count = $api->get_memory_blocks_count();

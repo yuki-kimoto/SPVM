@@ -1,6 +1,9 @@
 0.990052 2025-04-03
   [Bug Fix]
     * Fix a bug that assignment of sequencial operator caused segfault.
+  [New Features]
+    * Add special assign operator //=.
+    
 0.990051 2025-04-03
   [Incompatible Changes]
     * The return type of ternary operator becomes the type of the left operand.
