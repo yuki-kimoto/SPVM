@@ -527,31 +527,44 @@ class TestCase::Operator::SpecialAssign {
     my $value_float2 = $values_point_float->[0]{x} += 1;
     my $value_double2 = $values_point_double->[0]{x} += 1;
     
-    if ($values_point_byte->[0]{x} == Fn->INT8_MIN() + 1) {
-      if ($value_byte2 == Fn->INT8_MIN() + 1) {
-        if ($values_point_short->[0]{x} == Fn->INT16_MIN() + 1) {
-          if ($value_short2 == Fn->INT16_MIN() + 1) {
-            if ($values_point_int->[0]{x} == Fn->INT32_MIN() + 1) {
-              if ($value_int2 == Fn->INT32_MIN() + 1) {
-                if ($values_point_long->[0]{x} == Fn->INT64_MIN() + 1) {
-                  if ($value_long2 == Fn->INT64_MIN() + 1) {
-                    if ($values_point_float->[0]{x} == Fn->FLT_MIN() + 1) {
-                      if ($value_float2 == Fn->FLT_MIN() + 1) {
-                        if ($values_point_double->[0]{x} == Fn->DBL_MIN() + 1) {
-                          if ($value_double2 = Fn->DBL_MIN() + 1) {
-                            return 1;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+    unless ($values_point_byte->[0]{x} == Fn->INT8_MIN() + 1) {
+      return 0;
     }
+    unless ($value_byte2 == Fn->INT8_MIN() + 1) {
+      return 0;
+    }
+    unless ($values_point_short->[0]{x} == Fn->INT16_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_short2 == Fn->INT16_MIN() + 1) {
+      return 0;
+    }
+    unless ($values_point_int->[0]{x} == Fn->INT32_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_int2 == Fn->INT32_MIN() + 1) {
+      return 0;
+    }
+    unless ($values_point_long->[0]{x} == Fn->INT64_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_long2 == Fn->INT64_MIN() + 1) {
+      return 0;
+    }
+    unless ($values_point_float->[0]{x} == Fn->FLT_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_float2 == Fn->FLT_MIN() + 1) {
+      return 0;
+    }
+    unless ($values_point_double->[0]{x} == Fn->DBL_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_double2 = Fn->DBL_MIN() + 1) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method special_assign_add_class_var_access : int () {
