@@ -106,23 +106,32 @@ class TestCase::Operator::SpecialAssign {
     my $value_int2 : int = $value_int <<= 1;
     my $value_long2 : long = $value_long <<= 1;
     
-    if ($value_byte == 6 << 1) {
-      if ($value_byte2 == 6 << 1) {
-        if ($value_short == 6 << 1) {
-          if ($value_short2 == 6 << 1) {
-            if ($value_int == 6 << 1) {
-              if ($value_int2 == 6 << 1) {
-                if ($value_long == 6 << 1) {
-                  if ($value_long2 == 6 << 1) {
-                    return 1;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+    unless ($value_byte == 6 << 1) {
+      return 0;
     }
+    unless ($value_byte2 == 6 << 1) {
+      return 0;
+    }
+    unless ($value_short == 6 << 1) {
+      return 0;
+    }
+    unless ($value_short2 == 6 << 1) {
+      return 0;
+    }
+    unless ($value_int == 6 << 1) {
+      return 0;
+    }
+    unless ($value_int2 == 6 << 1) {
+      return 0;
+    }
+    unless ($value_long == 6 << 1) {
+      return 0;
+    }
+    unless ($value_long2 == 6 << 1) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method special_assign_bit_xor_var : int () {
