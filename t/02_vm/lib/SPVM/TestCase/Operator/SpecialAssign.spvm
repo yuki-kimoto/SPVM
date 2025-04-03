@@ -582,31 +582,44 @@ class TestCase::Operator::SpecialAssign {
     my $value_float2 = $FLOAT_VALUE += 1;
     my $value_double2 = $DOUBLE_VALUE += 1;
     
-    if ($BYTE_VALUE == Fn->INT8_MIN() + 1) {
-      if ($value_byte2 == Fn->INT8_MIN() + 1) {
-        if ($SHORT_VALUE == Fn->INT16_MIN() + 1) {
-          if ($value_short2 == Fn->INT16_MIN() + 1) {
-            if ($INT_VALUE == Fn->INT32_MIN() + 1) {
-              if ($value_int2 == Fn->INT32_MIN() + 1) {
-                if ($LONG_VALUE == Fn->INT64_MIN() + 1) {
-                  if ($value_long2 == Fn->INT64_MIN() + 1) {
-                    if ($FLOAT_VALUE == Fn->FLT_MIN() + 1) {
-                      if ($value_float2 == Fn->FLT_MIN() + 1) {
-                        if ($DOUBLE_VALUE == Fn->DBL_MIN() + 1) {
-                          if ($value_double2 = Fn->DBL_MIN() + 1) {
-                            return 1;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+    unless ($BYTE_VALUE == Fn->INT8_MIN() + 1) {
+      return 0;
     }
+    unless ($value_byte2 == Fn->INT8_MIN() + 1) {
+      return 0;
+    }
+    unless ($SHORT_VALUE == Fn->INT16_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_short2 == Fn->INT16_MIN() + 1) {
+      return 0;
+    }
+    unless ($INT_VALUE == Fn->INT32_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_int2 == Fn->INT32_MIN() + 1) {
+      return 0;
+    }
+    unless ($LONG_VALUE == Fn->INT64_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_long2 == Fn->INT64_MIN() + 1) {
+      return 0;
+    }
+    unless ($FLOAT_VALUE == Fn->FLT_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_float2 == Fn->FLT_MIN() + 1) {
+      return 0;
+    }
+    unless ($DOUBLE_VALUE == Fn->DBL_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_double2 = Fn->DBL_MIN() + 1) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method special_assign_add_deref : int () {
