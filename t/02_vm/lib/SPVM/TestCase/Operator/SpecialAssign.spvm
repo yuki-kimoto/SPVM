@@ -414,31 +414,44 @@ class TestCase::Operator::SpecialAssign {
     my $value_float2 : float = $value_float -=1;
     my $value_double2 : double= $value_double -=1;
     
-    if ($value_byte == Fn->INT8_MAX() - 1) {
-      if ($value_byte2 == Fn->INT8_MAX() - 1) {
-        if ($value_short == Fn->INT16_MAX() - 1) {
-          if ($value_short2 == Fn->INT16_MAX() - 1) {
-            if ($value_int == Fn->INT32_MAX() - 1) {
-              if ($value_int2 == Fn->INT32_MAX() - 1) {
-                if ($value_long == Fn->INT64_MAX() - 1) {
-                  if ($value_long2 == Fn->INT64_MAX() - 1) {
-                    if ($value_float == Fn->FLT_MAX() - 1) {
-                      if ($value_float2 == Fn->FLT_MAX() - 1) {
-                        if ($value_double == Fn->DBL_MAX() - 1) {
-                          if ($value_double2 = Fn->DBL_MAX() - 1) {
-                            return 1;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+    unless ($value_byte == Fn->INT8_MAX() - 1) {
+      return 0;
     }
+    unless ($value_byte2 == Fn->INT8_MAX() - 1) {
+      return 0;
+    }
+    unless ($value_short == Fn->INT16_MAX() - 1) {
+      return 0;
+    }
+    unless ($value_short2 == Fn->INT16_MAX() - 1) {
+      return 0;
+    }
+    unless ($value_int == Fn->INT32_MAX() - 1) {
+      return 0;
+    }
+    unless ($value_int2 == Fn->INT32_MAX() - 1) {
+      return 0;
+    }
+    unless ($value_long == Fn->INT64_MAX() - 1) {
+      return 0;
+    }
+    unless ($value_long2 == Fn->INT64_MAX() - 1) {
+      return 0;
+    }
+    unless ($value_float == Fn->FLT_MAX() - 1) {
+      return 0;
+    }
+    unless ($value_float2 == Fn->FLT_MAX() - 1) {
+      return 0;
+    }
+    unless ($value_double == Fn->DBL_MAX() - 1) {
+      return 0;
+    }
+    unless ($value_double2 = Fn->DBL_MAX() - 1) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method special_assign_add_field_access_invocant_not_var : int () {
