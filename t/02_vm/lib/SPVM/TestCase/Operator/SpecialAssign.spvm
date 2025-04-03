@@ -644,31 +644,44 @@ class TestCase::Operator::SpecialAssign {
     my $value_float2 = $$value_float_ref += 1;
     my $value_double2 = $$value_double_ref += 1;
     
-    if ($$value_byte_ref == Fn->INT8_MIN() + 1) {
-      if ($value_byte2 == Fn->INT8_MIN() + 1) {
-        if ($$value_short_ref == Fn->INT16_MIN() + 1) {
-          if ($value_short2 == Fn->INT16_MIN() + 1) {
-            if ($$value_int_ref == Fn->INT32_MIN() + 1) {
-              if ($value_int2 == Fn->INT32_MIN() + 1) {
-                if ($$value_long_ref == Fn->INT64_MIN() + 1) {
-                  if ($value_long2 == Fn->INT64_MIN() + 1) {
-                    if ($$value_float_ref == Fn->FLT_MIN() + 1) {
-                      if ($value_float2 == Fn->FLT_MIN() + 1) {
-                        if ($$value_double_ref == Fn->DBL_MIN() + 1) {
-                          if ($value_double2 = Fn->DBL_MIN() + 1) {
-                            return 1;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+    unless ($$value_byte_ref == Fn->INT8_MIN() + 1) {
+      return 0;
     }
+    unless ($value_byte2 == Fn->INT8_MIN() + 1) {
+      return 0;
+    }
+    unless ($$value_short_ref == Fn->INT16_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_short2 == Fn->INT16_MIN() + 1) {
+      return 0;
+    }
+    unless ($$value_int_ref == Fn->INT32_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_int2 == Fn->INT32_MIN() + 1) {
+      return 0;
+    }
+    unless ($$value_long_ref == Fn->INT64_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_long2 == Fn->INT64_MIN() + 1) {
+      return 0;
+    }
+    unless ($$value_float_ref == Fn->FLT_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_float2 == Fn->FLT_MIN() + 1) {
+      return 0;
+    }
+    unless ($$value_double_ref == Fn->DBL_MIN() + 1) {
+      return 0;
+    }
+    unless ($value_double2 = Fn->DBL_MIN() + 1) {
+      return 1;
+    }
+    
+    return 1;
   }
 
   static method special_assign_add_field_access : int () {
