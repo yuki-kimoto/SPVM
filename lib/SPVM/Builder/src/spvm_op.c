@@ -252,6 +252,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "SEQUENCE",
     "DEFINED_OR",
     "TERNARY_OP",
+    "COPY_FIELDS",
   };
   
   return id_names;
@@ -3366,6 +3367,15 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem
   }
   
   return op_type;
+}
+
+SPVM_OP* SPVM_OP_build_copy_fields(SPVM_COMPILER* compiler, SPVM_OP* op_copy_fields, SPVM_OP* op_dist, SPVM_OP* op_src, SPVM_OP* op_type) {
+  
+  SPVM_OP_insert_child(compiler, op_copy_fields, op_copy_fields->last, op_dist);
+  SPVM_OP_insert_child(compiler, op_copy_fields, op_copy_fields->last, op_src);
+  SPVM_OP_insert_child(compiler, op_copy_fields, op_copy_fields->last, op_type);
+  
+  return op_copy_fields;
 }
 
 SPVM_OP* SPVM_OP_new_op_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand, const char* file, int32_t line) {

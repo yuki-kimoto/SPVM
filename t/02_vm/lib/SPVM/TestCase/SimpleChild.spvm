@@ -1,5 +1,7 @@
 class TestCase::SimpleChild extends TestCase::Simple {
   
+  allow TestCase::Operator::CopyFields;
+  
   has parent_child_duplicate : int;
   
   has z : rw public int;
@@ -8,6 +10,16 @@ class TestCase::SimpleChild extends TestCase::Simple {
     return new TestCase::SimpleChild;
   }
   
+  static method new_xyz : TestCase::SimpleChild ($x : int, $y : int, $z : int) {
+    
+    my $simple = new TestCase::SimpleChild;
+    $simple->{x} = $x;
+    $simple->{y} = $y;
+    $simple->{z} = $z;
+    
+    return $simple;
+  }
+
   method clear : void () {
     $self->SUPER::clear;
     

@@ -1396,6 +1396,87 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
         SPVM_LIST_push(op_switch_stack, op_cur);
         break;
       }
+      case SPVM_OP_C_ID_COPY_FIELDS: {
+        
+        SPVM_OP* op_copy_fields = op_cur;
+        
+        SPVM_OP* op_dist = op_cur->first;
+        
+        SPVM_OP* op_src = SPVM_OP_sibling(compiler, op_dist);
+        
+        SPVM_OP* op_type_for_fields = op_cur->last;
+        
+        SPVM_TYPE* type_for_fields = op_type_for_fields->uv.type;
+        
+        if (!SPVM_TYPE_is_class_type(compiler, type_for_fields->basic_type->id, type_for_fields->dimension, type_for_fields->flag))
+        {
+          SPVM_COMPILER_error(compiler, "The type operand of copy_fields operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+          return;
+        }
+        
+        SPVM_BASIC_TYPE* basic_type_for_fields = type_for_fields->basic_type;
+        
+        SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
+        SPVM_LIST* dist_fields = basic_type_for_fields->fields;
+        
+        SPVM_OP* op_name_var_dist = SPVM_OP_new_op_name_tmp_var(compiler, op_cur->file, op_cur->line);
+        SPVM_OP* op_var_dist = SPVM_OP_new_op_var(compiler, op_name_var_dist);
+        SPVM_OP* op_var_dist_decl = SPVM_OP_new_op_var_decl(compiler, op_cur->file, op_cur->line);
+        SPVM_OP_build_var_decl(compiler, op_var_dist_decl, op_var_dist, NULL, NULL);
+        SPVM_OP* op_assign_var_dist = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+        SPVM_OP_cut_op(compiler, op_dist);
+        SPVM_OP_build_assign(compiler, op_assign_var_dist, op_var_dist, op_dist);
+        
+        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_var_dist);
+        
+        SPVM_OP* op_name_var_src = SPVM_OP_new_op_name_tmp_var(compiler, op_cur->file, op_cur->line);
+        SPVM_OP* op_var_src = SPVM_OP_new_op_var(compiler, op_name_var_src);
+        SPVM_OP* op_var_src_decl = SPVM_OP_new_op_var_decl(compiler, op_cur->file, op_cur->line);
+        SPVM_OP_build_var_decl(compiler, op_var_src_decl, op_var_src, NULL, NULL);
+        SPVM_OP* op_assign_var_src = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+        SPVM_OP_cut_op(compiler, op_src);
+        SPVM_OP_build_assign(compiler, op_assign_var_src, op_var_src, op_src);
+        
+        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_var_src);
+        
+        for (int32_t i = 0; i < dist_fields->length; i++) {
+          
+          SPVM_FIELD* field = SPVM_LIST_get(dist_fields, i);
+          
+          SPVM_OP* op_name_field_access_dist = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
+          
+          SPVM_OP* op_field_access_dist = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+          
+          SPVM_OP* op_var_dist_field_access = SPVM_OP_clone_op_var(compiler, op_var_dist);
+          
+          SPVM_OP_build_field_access(compiler, op_field_access_dist, op_var_dist_field_access, op_name_field_access_dist);
+          
+          SPVM_OP* op_name_field_access_src = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
+          SPVM_OP* op_field_access_src = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+          SPVM_OP* op_var_src_field_access = SPVM_OP_clone_op_var(compiler, op_var_src);
+          SPVM_OP_build_field_access(compiler, op_field_access_src, op_var_src_field_access, op_name_field_access_src);
+          
+          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+          SPVM_OP_build_assign(compiler, op_assign, op_field_access_dist, op_field_access_src);
+          
+          SPVM_FIELD_ACCESS* field_access_dist = op_field_access_dist->uv.field_access;
+          SPVM_FIELD_ACCESS* field_access_src = op_field_access_src->uv.field_access;
+          
+          SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign);
+        }
+        
+        // Dummy
+        SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
+        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_constant);
+        
+        SPVM_OP* op_stub = SPVM_OP_cut_op(compiler, op_cur);
+        
+        SPVM_OP_replace_op(compiler, op_stub, op_sequence);
+        
+        op_cur = op_sequence;
+        
+        break;
+      }
     }
     // [END]Preorder traversal position
     

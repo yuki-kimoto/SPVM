@@ -24,7 +24,7 @@
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
 %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
-%token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
+%token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
 %token <opval> FATCAMMA RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
 %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN '[' '{' '('
@@ -55,7 +55,7 @@
 %type <opval> call_method
 %type <opval> array_access field_access
 %type <opval> weaken_field unweaken_field isweak_field
-%type <opval> sequential
+%type <opval> sequential copy_fields
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
 %left <opval> LOGICAL_OR DEFINED_OR
@@ -691,6 +691,13 @@ statement
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
     }
   | die ';'
+  | copy_fields
+
+copy_fields
+  : COPY_FIELDS operator ',' operator ',' type';'
+    {
+      $$ = SPVM_OP_build_copy_fields(compiler, $1, $2, $4, $6);
+    }
 
 die
   : DIE operator

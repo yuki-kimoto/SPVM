@@ -1056,6 +1056,14 @@ use Test::More;
   }
 }
 
+# copy_fields
+{
+  {
+    my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; my $point2 = Point->new; copy_fields $point, $point, int; } }';
+    compile_not_ok($source, q|The type operand of copy_fields operator must be a class type.|);
+  }
+}
+
 # can
 {
   {

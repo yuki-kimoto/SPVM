@@ -3,7 +3,10 @@
     * Fix a bug that assignment of sequencial operator caused segfault.
   [New Features]
     * Add special assign operator //=.
-    
+    * Add copy_fields operator.
+      
+      copy_fields $foo, $bar, Point;
+      
 0.990051 2025-04-03
   [Incompatible Changes]
     * The return type of ternary operator becomes the type of the left operand.

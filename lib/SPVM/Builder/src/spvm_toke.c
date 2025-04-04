@@ -2131,6 +2131,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_COPY);
                   keyword_token = COPY;
                 }
+                else if (strcmp(symbol_name, "copy_fields") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_COPY_FIELDS);
+                  keyword_token = COPY_FIELDS;
+                }
                 break;
               }
               case 'd' : {

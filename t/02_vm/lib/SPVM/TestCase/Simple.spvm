@@ -1,6 +1,8 @@
 class TestCase::Simple : public {
   version "1.001009000";
   
+  allow TestCase::Operator::CopyFields;
+  
   use TestCase::Minimal;
   use Hash;
   use Point;

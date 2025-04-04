@@ -1,0 +1,87 @@
+class TestCase::Operator::CopyFields {
+  
+  use TestCase::Simple;
+  use TestCase::SimpleChild;
+  use Complex_2d;
+  use Complex_2f;
+  
+  static method copy_fields : int () {
+    
+    {
+      my $simple = TestCase::Simple->new_xy(1, 2);
+      
+      my $simple2 = TestCase::Simple->new_xy(5, 6);
+      
+      copy_fields $simple, $simple2, TestCase::Simple;
+      
+      unless ($simple->{x} == 5) {
+        return 0;
+      }
+      
+      unless ($simple->{y} == 6) {
+        return 0;
+      }
+      
+      unless ($simple2->{x} == 5) {
+        return 0;
+      }
+      
+      unless ($simple2->{y} == 6) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      copy_fields my $simple = TestCase::Simple->new_xy(1, 2), my $simple2 = TestCase::Simple->new_xy(5, 6), TestCase::Simple;
+      
+      unless ($simple->{x} == 5) {
+        return 0;
+      }
+      
+      unless ($simple->{y} == 6) {
+        return 0;
+      }
+      
+      unless ($simple2->{x} == 5) {
+        return 0;
+      }
+      
+      unless ($simple2->{y} == 6) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $simple = TestCase::Simple->new_xy(1, 2);
+      
+      my $simple2 = TestCase::SimpleChild->new_xyz(5, 6, 7);
+      
+      copy_fields $simple, $simple2, TestCase::Simple;
+      
+      unless ($simple->{x} == 5) {
+        return 0;
+      }
+      
+      unless ($simple->{y} == 6) {
+        return 0;
+      }
+      
+      unless ($simple2->{x} == 5) {
+        return 0;
+      }
+      
+      unless ($simple2->{y} == 6) {
+        return 0;
+      }
+      
+      unless ($simple2->{z} == 7) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+}
