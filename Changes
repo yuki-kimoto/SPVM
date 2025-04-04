@@ -3,7 +3,7 @@
     * Fix a bug that assignment of sequencial operator caused segfault.
   [New Features]
     * Add special assign operator //=.
-    * Add copy_fields operator.
+    * Add copy_fields statement.
       
       copy_fields $foo, $bar, Point;
       
