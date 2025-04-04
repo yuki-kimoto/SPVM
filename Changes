@@ -1,4 +1,4 @@
-0.990052 2025-04-03
+0.990052 2025-04-04
   [Bug Fix]
     * Fix a bug that assignment of sequencial operator caused segfault.
   [New Features]
