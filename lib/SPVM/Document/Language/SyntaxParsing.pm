@@ -53,6 +53,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> weaken_field unweaken_field isweak_field
   %type <opval> sequential copy_fields
   %right <opval> ASSIGN SPECIAL_ASSIGN
+  %right <oval> '?' ':'
   %left <opval> LOGICAL_OR DEFINED_OR
   %left <opval> LOGICAL_AND
   %left <opval> BIT_OR BIT_XOR
@@ -935,6 +936,7 @@ The operator precidence in the SPVM language is described using L<GNU Bison|http
 The bottom is the highest precidence and the top is the lowest precidence.
   
   %right <opval> ASSIGN SPECIAL_ASSIGN
+  %right <oval> '?' ':'
   %left <opval> LOGICAL_OR DEFINED_OR
   %left <opval> LOGICAL_AND
   %left <opval> BIT_OR BIT_XOR

@@ -104,6 +104,25 @@ class TestCase::Operator::TernaryOperator {
       }
     }
     
+    # Operator Precidence
+    {
+      {
+        my $ret = my $flag = 5 ? 1 + 3 : 5 + 3;
+        
+        unless ($ret == 4) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = my $flag = 0 ? 1 + 3 : 5 + 3;
+        
+        unless ($ret == 8) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   

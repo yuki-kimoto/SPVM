@@ -1,3 +1,9 @@
+0.990053 2025-04-16
+  [Bug Fix with Incompatible Changes]
+    * Fix operator precidence of ternary operator CONDITION ? LEFT : RIGHT.
+      This now has the same operator precedence as Perl's one.
+    
+  
 0.990052 2025-04-04
   [Bug Fix]
     * Fix a bug that assignment of sequencial operator caused segfault.

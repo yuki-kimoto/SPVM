@@ -58,6 +58,7 @@
 %type <opval> sequential copy_fields
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
+%right <oval> '?' ':'
 %left <opval> LOGICAL_OR DEFINED_OR
 %left <opval> LOGICAL_AND
 %left <opval> BIT_OR BIT_XOR

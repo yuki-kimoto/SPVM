@@ -836,7 +836,7 @@ class Fn {
     
     return $substring;
   }
-
+  
   precompile static method to_code_points : int[] ($string : string) {
     
     unless ($string) {
