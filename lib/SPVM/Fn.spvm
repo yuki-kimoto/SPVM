@@ -1800,4 +1800,19 @@ class Fn {
     
   }
   
+  static method range : int[] ($begin : int, $end : int) {
+    
+    unless ($end >= $begin) {
+      die "\$end must be greater than or equal to \$begin.";
+    }
+    
+    my $length = $end - $begin + 1;
+    my $nums = new int [$length];
+    for (my $i = 0; $i < $length; $i++) {
+      $nums->[$i] = $begin + $i;
+    }
+    
+    return $nums;
+  }
+  
 }

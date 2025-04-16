@@ -4,7 +4,8 @@
       This now has the same operator precedence as Perl's one.
   [New Features]
     * Add raw string literal \C, \E, \Q.
-  
+    * Add Fn#range method.
+    
 0.990052 2025-04-04
   [Bug Fix]
     * Fix a bug that assignment of sequencial operator caused segfault.

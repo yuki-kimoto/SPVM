@@ -253,6 +253,7 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->get_basic_type_name_in_version_from);
     ok(SPVM::TestCase::Module::Fn->destroy_cache_class_vars);
     ok(SPVM::TestCase::Module::Fn->destroy_runtime_permanent_vars);
+    ok(SPVM::TestCase::Module::Fn->range);
     
   }
   

@@ -1735,6 +1735,16 @@ Sets all runtime permanent variables to undef.
 
 Currently thie method calls L</"destroy_cache_class_vars> method and sets C<$@> to undef.
 
+=head2 range
+
+C<static method range : int[] ($begin : int, $end : int);>
+
+Returns a new array of values counting (up by ones) from $begin to $end.
+
+Exceptions:
+
+$end must be greater than or equal to $begin.
+
 =head1 See Also
 
 =over 2
