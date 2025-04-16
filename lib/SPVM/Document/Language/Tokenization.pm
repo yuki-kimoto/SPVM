@@ -1345,12 +1345,15 @@ The List of Raw Escape Characters:
   <tr><td>\@</td></tr>
   <tr><td>\A</td></tr>
   <tr><td>\B</td></tr>
+  <tr><td>\C</td></tr>
   <tr><td>\D</td></tr>
+  <tr><td>\E</td></tr>
   <tr><td>\G</td></tr>
   <tr><td>\H</td></tr>
   <tr><td>\K</td></tr>
   <tr><td>\N</td></tr>
   <tr><td>\P</td></tr>
+  <tr><td>\Q</td></tr>
   <tr><td>\R</td></tr>
   <tr><td>\S</td></tr>
   <tr><td>\V</td></tr>

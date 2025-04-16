@@ -474,7 +474,7 @@ ef"
     
     # Raw escape - Character and number
     {
-      my $string = "\w\W\s\S\d\D\p\P\X\g\k\K\v\V\h\H\R\b\B\A\Z\z\G\N";
+      my $string = "\w\W\s\S\d\D\p\P\X\g\k\K\v\V\h\H\R\b\B\A\Z\z\G\N\C\E\Q";
       
       unless ($string->[0] == '\\') { return 0; }
       unless ($string->[1] == 'w') { return 0; }
@@ -524,6 +524,12 @@ ef"
       unless ($string->[45] == 'G') { return 0; }
       unless ($string->[46] == '\\') { return 0; }
       unless ($string->[47] == 'N') { return 0; }
+      unless ($string->[48] == '\\') { return 0; }
+      unless ($string->[49] == 'C') { return 0; }
+      unless ($string->[50] == '\\') { return 0; }
+      unless ($string->[51] == 'E') { return 0; }
+      unless ($string->[52] == '\\') { return 0; }
+      unless ($string->[53] == 'Q') { return 0; }
     }
 
     # Raw escape - punct characters

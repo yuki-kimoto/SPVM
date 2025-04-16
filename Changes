@@ -2,7 +2,8 @@
   [Bug Fix with Incompatible Changes]
     * Fix operator precidence of ternary operator CONDITION ? LEFT : RIGHT.
       This now has the same operator precedence as Perl's one.
-    
+  [New Features]
+    * Add raw string literal \C, \E, \Q.
   
 0.990052 2025-04-04
   [Bug Fix]

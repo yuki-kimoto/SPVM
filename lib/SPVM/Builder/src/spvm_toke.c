@@ -1330,12 +1330,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     case '@':
                     case 'A':
                     case 'B':
+                    case 'C':
                     case 'D':
+                    case 'E':
                     case 'G':
                     case 'H':
                     case 'K':
                     case 'N':
                     case 'P':
+                    case 'Q':
                     case 'R':
                     case 'S':
                     case 'V':
