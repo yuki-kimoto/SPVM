@@ -26,8 +26,8 @@
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
-%token <opval> FATCAMMA RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
-%token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN '[' '{' '('
+%token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
+%token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN
 
 %type <opval> grammar
 %type <opval> field_name method_name class_name
@@ -57,6 +57,7 @@
 %type <opval> weaken_field unweaken_field isweak_field
 %type <opval> sequential copy_fields
 
+%left <opval> ',' FATCAMMA
 %right <opval> ASSIGN SPECIAL_ASSIGN
 %right <oval> '?' ':'
 %left <opval> LOGICAL_OR DEFINED_OR
@@ -71,6 +72,9 @@
 %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
+%nonassoc <opval> ')'
+%left <opval> '('
+%left <opval> '[' '{'
 
 %%
 

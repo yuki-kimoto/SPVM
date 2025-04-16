@@ -17,6 +17,8 @@ class Native::MethodCall : pointer {
   
   has method : Native::Method;
   
+  has no_check_max_args : byte;
+  
   # Class Methods
   native static method new_class_method_with_env_stack : Native::MethodCall ($env : Native::Env, $stack : Native::Stack, $basic_type_name : string, $method_name : string);
   

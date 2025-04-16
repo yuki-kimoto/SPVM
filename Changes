@@ -2,6 +2,16 @@
   [Bug Fix with Incompatible Changes]
     * Fix operator precidence of ternary operator CONDITION ? LEFT : RIGHT.
       This now has the same operator precedence as Perl's one.
+  [Changes that probably won't affect your program]
+    * Clarified operator precedence.
+      
+      ,
+      =>
+      )
+      (
+      [
+      {
+      
   [New Features]
     * Add raw string literal \C, \E, \Q.
     * Add Fn#range method.
