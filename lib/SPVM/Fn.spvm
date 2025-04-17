@@ -827,12 +827,17 @@ class Fn {
     }
     
     my $string_length = length $string;
-    if ($length < 0) {
-      $length = $string_length - $offset;
+    
+    unless ($offset < $string_length) {
+      die "The offset \$offset must be less than or equal to the length of the string \$string.";
     }
     
     unless ($offset + $length <= $string_length) {
-      die "The offset \$offset + the length \$length must be less than or equal to the length of the string \$string.";
+      $length = -1;
+    }
+    
+    if ($length < 0) {
+      $length = $string_length - $offset;
     }
     
     my $substring = (mutable string)new_string_len($length);

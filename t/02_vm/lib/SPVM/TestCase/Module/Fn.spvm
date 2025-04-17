@@ -3445,30 +3445,34 @@ class TestCase::Module::Fn {
     }
     
     {
-      eval { Fn->substr(undef, 0); };
-      unless ($@) {
+      my $substring = Fn->substr("abc", 1, 3);
+      
+      unless ($substring eq "bc") {
         return 0;
       }
     }
     
+    # Exceptions
     {
-      eval { Fn->substr(Int->new(1), 0); };
-      unless ($@) {
-        return 0;
+      {
+        eval { Fn->substr(undef, 0); };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    {
-      eval { Fn->substr("a", -1); };
-      unless ($@) {
-        return 0;
+      
+      {
+        eval { Fn->substr(Int->new(1), 0); };
+        unless ($@) {
+          return 0;
+        }
       }
-    }
-    
-    {
-      eval { Fn->substr("abc", 1, 3); };
-      unless ($@) {
-        return 0;
+      
+      {
+        eval { Fn->substr("a", -1); };
+        unless ($@) {
+          return 0;
+        }
       }
     }
     

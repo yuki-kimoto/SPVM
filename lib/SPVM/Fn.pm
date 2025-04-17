@@ -798,7 +798,7 @@ C<static method substr : string ($string_or_ref : object of string|string[], $of
 
 Cuts a substring of $length from $offset of a string $string (If $string_or_ref is a string, $string is $string_or_ref. If $string_or_ref is a string array, $string is $string_or_ref->[0]), and returns it.
 
-If $length is ommited, $length is the length of $string minus $offset.
+If $length is ommited or $offset plus $length is less than or equal to the length of $string, $length is set to the length of $string minus $offset.
 
 If the length is less than 0, the length to the end of the string is calculated from the length of $string and $offset.
 
@@ -814,7 +814,7 @@ $string_or_ref must be a string or a string array of 1-length. Otherwise an exce
 
 $offset must be greater than or equal to 0. Otherwise an exception is thrown.
 
-$offset + $length must be less than or equal to the length of $string. Otherwise an exception is thrown.
+The offset $offset must be less than or equal to the length of the string $string. Otherwise an exception is thrown.
 
 =head2 to_code_points
 
