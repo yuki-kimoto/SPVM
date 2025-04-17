@@ -15,6 +15,12 @@
   [New Features]
     * Add raw string literal \C, \E, \Q.
     * Add Fn#range method.
+  
+  [Design Bug Fix with Incompatible Changes]
+    
+    Fn#substr method returns always cut string, not replaced string. This was design mistake.
+    
+    The replaced string is set to the first argument when it is a string array of 1-length.
     
 0.990052 2025-04-04
   [Bug Fix]
