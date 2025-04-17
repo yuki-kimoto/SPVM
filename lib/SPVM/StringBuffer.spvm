@@ -346,7 +346,7 @@ class StringBuffer {
     my $string_length = $self->{length};
     
     unless ($offset + $length <= $string_length) {
-      die "The offset \$offset + the length \$length must be less than or equal to the value of length field.";
+      $length = $string_length - $offset;
     }
     
     my $substr = Fn->substr($string, $offset, $length);

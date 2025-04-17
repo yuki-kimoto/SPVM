@@ -1,6 +1,7 @@
 0.990054 2025-04-17
   [Changes]
     * Fn#substr method does not throw an eception even if $offset + $length is greater than the length of $string.
+    * StringBuffer#substr method does not throw an eception even if $offset + $length is greater than the length of $string.
     
 0.990053 2025-04-17
   [Bug Fix with Incompatible Changes]

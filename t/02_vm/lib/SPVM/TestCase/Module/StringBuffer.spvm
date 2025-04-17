@@ -842,16 +842,13 @@ class TestCase::Module::StringBuffer {
       }
     }
     
-    # Exceptions
     {
-      {
-        my $buffer = StringBuffer->new("abc");
-        
-        eval { $buffer->substr(1, 3); }
-        
-        unless ($@) {
-          return 0;
-        }
+      my $buffer = StringBuffer->new("abc");
+      
+      my $ret = $buffer->substr(1, 3);
+      
+      unless ($ret eq "bc") {
+        return 0;
       }
     }
     
