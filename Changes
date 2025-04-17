@@ -2,6 +2,10 @@
   [Changes]
     * Fn#substr method does not throw an eception even if $offset + $length is greater than the length of $string.
     * StringBuffer#substr method does not throw an eception even if $offset + $length is greater than the length of $string.
+    * Remove runtime check for too many argument
+  [Design Changes]
+    Method calls no longer throw exceptions when they are passed too many arguments in runtime.
+    The length of the arguments is reduced to the length of the methog.
     
 0.990053 2025-04-17
   [Bug Fix with Incompatible Changes]

@@ -105,6 +105,12 @@ class TestCase::Module::Native::BasicType {
           return 0;
         }
         
+        $cb_args1->("D", "E");
+        
+        unless ($ref->[0] eq "D") {
+          return 0;
+        }
+        
         my $cb_args2 = (TestCase::Interface::Args1)$cb2;
         
         $cb_args2->("A", "B");

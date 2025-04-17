@@ -2505,6 +2505,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
     return 0;
   }
   
+  // Too few arguments
   env->call_class_method_by_name(env, stack, "TestCase::Operator::MethodCall", "optional_args_byte_one_required_tow_optional", 0, &error_id, __func__, FILE_NAME, __LINE__);
   if (!error_id) {
     stack[0].ival = 0;
@@ -2513,13 +2514,12 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
   
   spvm_warn("[Test Output]%s", env->get_chars(env, stack, env->get_exception(env, stack)));
   
+  // Too many arguments. This is OK.
   env->call_class_method_by_name(env, stack, "TestCase::Operator::MethodCall", "optional_args_byte_one_required_tow_optional", 4, &error_id, __func__, FILE_NAME, __LINE__);
-  if (!error_id) {
+  if (error_id) {
     stack[0].ival = 0;
     return 0;
   }
-  
-  spvm_warn("[Test Output]%s", env->get_chars(env, stack, env->get_exception(env, stack)));
   
   stack[0].ival = 1;
   

@@ -138,12 +138,9 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       like($@, qr/Too few arguments are passed to the "new" method in the "Int" class/);
     }
     
-    # Argument conversiongeneral exception - too many arguments
+    # Argument conversiongeneral exception - too many arguments. This is OK.
     {
-      eval {
-        SPVM::Int->new(1, 2);
-      };
-      like($@, qr/Too many arguments are passed to the "new" method in the "Int" class/);
+      SPVM::Int->new(1, 2);
     }
   }
 

@@ -213,7 +213,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t method_args_length = env->api->method->get_args_length(runtime, method);
   
   if (!(args_length <= method_args_length)) {
-    return env->die(env, stack, "%s#%s method failed to execute. Too many arguments.", class_name, method_name, __func__, FILE_NAME, __LINE__);
+    args_length = method_args_length;
   }
   
   void* obj_self_env = env->get_field_object_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);

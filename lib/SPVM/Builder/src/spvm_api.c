@@ -4876,10 +4876,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   }
   
   if (args_width > args_type_width) {
-    error_id = SPVM_API_die(env, stack, "Too many arguments are passed to %s#%s method.", current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
-    if (error_id) {
-      goto END_OF_FUNC;
-    }
+    args_width = args_type_width;
   }
   
   if (args_width < required_args_type_width) {

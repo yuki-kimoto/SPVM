@@ -1307,7 +1307,7 @@ _xs_call_method(...)
     croak("Too few arguments are passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", method_name, basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   else if (call_method_args_length > method_args_length) {
-    croak("Too many arguments are passed to the \"%s\" method in the \"%s\" class\n    %s at %s line %d\n", method_name, basic_type_name, __func__, FILE_NAME, __LINE__);
+    call_method_args_length = method_args_length;
   }
   
   int32_t stack_index = 0;
