@@ -5,6 +5,7 @@ class TestCase::Module::Native::BasicType {
   use Point;
   use Native::Constant;
   use Point3D;
+  use TestCase::Interface::Args1;
 
   static method get_methods : int () {
     
@@ -71,11 +72,18 @@ class TestCase::Module::Native::BasicType {
       
       # Anon method
       {
-        my $cb = method : void ($arg : object) {
-        
+        my $ref = [(string)undef];
+        my $cb1 = (object) [$ref : string[]] method : void ($arg : string) {
+          $ref->[0] = $arg;
         };
         
-        my $type_name = type_name $cb;
+        my $ref2 = [(string)undef, undef];
+        my $cb2 = (object) [$ref2 : string[]] method : void ($arg1 : string, $arg2 : string) {
+          $ref2->[0] = $arg1;
+          $ref2->[1] = $arg2;
+        };
+        
+        my $type_name = type_name $cb1;
         
         my $current_rntime = Native->get_current_runtime;
         
@@ -88,6 +96,28 @@ class TestCase::Module::Native::BasicType {
         unless ($args_length == 2) {
           return 0;
         }
+        
+        my $cb_args1 = (TestCase::Interface::Args1)$cb1;
+        
+        $cb_args1->("abc");
+        
+        unless ($ref->[0] eq "abc") {
+          return 0;
+        }
+        
+        my $cb_args2 = (TestCase::Interface::Args1)$cb2;
+        
+        $cb_args2->("A", "B");
+        
+        unless ($ref2->[0] eq "A") {
+          return 0;
+        }
+        
+        unless ($ref2->[1] eq "B") {
+          return 0;
+        }
+        
+        
       }
     }
     
