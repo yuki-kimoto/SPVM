@@ -53,6 +53,21 @@ class TestCase::Module::Native::BasicType {
           return 0;
         }
       }
+      
+      # get_method_by_name
+      {
+        my $current_rntime = Native->get_current_runtime;
+        
+        my $basic_type = $current_rntime->get_basic_type_by_name("Int");
+        
+        my $method = $basic_type->get_method_by_name("value");
+        
+        my $args_length = $method->get_args_length;
+        
+        unless ($args_length == 1) {
+          return 0;
+        }
+      }
     }
     
     return 1;
