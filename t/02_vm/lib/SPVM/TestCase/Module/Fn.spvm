@@ -3474,6 +3474,13 @@ class TestCase::Module::Fn {
           return 0;
         }
       }
+      
+      {
+        eval { Fn->substr("a", 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
     
     $@ = undef;
