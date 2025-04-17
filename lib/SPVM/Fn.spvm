@@ -828,7 +828,7 @@ class Fn {
     
     my $string_length = length $string;
     
-    unless ($offset < $string_length) {
+    unless ($offset <= $string_length) {
       die "The offset \$offset must be less than or equal to the length of the string \$string.";
     }
     

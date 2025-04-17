@@ -3452,6 +3452,14 @@ class TestCase::Module::Fn {
       }
     }
     
+    {
+      my $substring = Fn->substr("abc", 3);
+      
+      unless ($substring eq "") {
+        return 0;
+      }
+    }
+    
     # Exceptions
     {
       {
@@ -3476,7 +3484,7 @@ class TestCase::Module::Fn {
       }
       
       {
-        eval { Fn->substr("a", 1); };
+        eval { Fn->substr("a", 2); };
         unless ($@) {
           return 0;
         }
