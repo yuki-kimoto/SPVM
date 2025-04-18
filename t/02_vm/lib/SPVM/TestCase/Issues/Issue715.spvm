@@ -3,7 +3,7 @@ class TestCase::Issues::Issue715 {
   # https://github.com/yuki-kimoto/SPVM/issues/715
   static method test : int () {
     
-    my $tmp = new int[0];
+    my $tmp = (int[])undef;
     
     (int[][])undef || [$tmp];
     
