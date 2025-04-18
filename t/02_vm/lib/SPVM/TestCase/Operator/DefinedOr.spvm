@@ -61,6 +61,24 @@ class TestCase::Operator::DefinedOr {
       }
     }
     
+    {
+      my $ret = (my $foo = Int->new(1)) // (my $bar = Int->new(2));
+      
+      unless ((int)$foo == 1) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $ret = (Int)undef // (my $bar = Int->new(2));
+      
+      unless ((int)$bar == 2) {
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
   
