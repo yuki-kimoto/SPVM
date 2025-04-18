@@ -1,20 +1,16 @@
 class TestCase::Issues::Issue715 {
   
-  has state : string;
-  
   # https://github.com/yuki-kimoto/SPVM/issues/715
   static method test : int () {
     
-    my $self = new TestCase::Issues::Issue715;
-    
     my $tmp = new int[0];
     
-    (int[][])undef // [$tmp];
+    (int[][])undef || [$tmp];
     
-    my $line = "abc";
+    my $line = "";
     
     {
-      $self->{state} = "";
+      my $tmp = "";
     }
     
     unless ($line) {
