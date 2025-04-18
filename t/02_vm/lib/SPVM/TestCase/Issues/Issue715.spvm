@@ -1,0 +1,28 @@
+class TestCase::Issues::Issue715 {
+  
+  has state : string;
+  
+  # https://github.com/yuki-kimoto/SPVM/issues/715
+  static method test : int () {
+    
+    my $self = new TestCase::Issues::Issue715;
+    
+    my $cache : int[][];
+    
+    my $tmp = new int[0];
+    
+    $cache = $cache // [$tmp];
+    
+    my $line = "abc";
+    
+    {
+      $self->{state} = "";
+    }
+    
+    unless ($line) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
