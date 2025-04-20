@@ -70,6 +70,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   int32_t eval_error_id = 0;
   
   // Mortal stack
+  void** mortal_stack = NULL;
   int32_t* mortal_stack_typed_var_index = NULL;
   int32_t mortal_stack_top = 0;
   
@@ -124,6 +125,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     int32_t address_vars_size = 0;
     address_vars_size += current_method->object_vars_width * sizeof(void*);
     address_vars_size += current_method->ref_vars_width * sizeof(void*);
+    address_vars_size += current_method->mortal_stack_length * sizeof(void*);
     
     // Total area byte size
     int32_t total_vars_size = numeric_vars_size + address_vars_size;
@@ -154,7 +156,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     int_vars = (int32_t*)&call_stack[call_stack_offset];
     call_stack_offset += current_method->int_vars_width * sizeof(int32_t);
     
-    // Mortal stack
+    // Mortal stack(typed var index)
     mortal_stack_typed_var_index = (int32_t*)&call_stack[call_stack_offset];
     call_stack_offset += current_method->mortal_stack_length * sizeof(int32_t);
     
@@ -171,7 +173,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     call_stack_offset += current_method->byte_vars_width * sizeof(int8_t);
     
     call_stack_offset = numeric_vars_size;
-
+    
     // Object variables
     object_vars = (void**)&call_stack[call_stack_offset];
     call_stack_offset += current_method->object_vars_width * sizeof(void*);
@@ -179,6 +181,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     // Refernce variables
     ref_vars = (void**)&call_stack[call_stack_offset];
     call_stack_offset += current_method->ref_vars_width * sizeof(void*);
+    
+    // Mortal stack
+    mortal_stack = (void**)&call_stack[call_stack_offset];
+    call_stack_offset += current_method->mortal_stack_length * sizeof(void*);
   }
   
   int32_t object_data_offset = env->api->runtime->get_object_data_offset(env->runtime);
