@@ -274,7 +274,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       SPVM_OP* op_cur = op_base;
       int32_t finish = 0;
       
-      int32_t mortal_stack_top = 0;
+      int32_t mortal_stack_max = 0;
       
       int32_t mortal_stack_tops_index = 0;
       
@@ -823,7 +823,9 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                     
                     SPVM_LIST_push(mortal_stack, (void*)(intptr_t)typed_var_index);
                     
-                    mortal_stack_top++;
+                    if (mortal_stack->length > mortal_stack_max) {
+                      mortal_stack_max = mortal_stack->length;
+                    }
                   }
                   
                   // Initialized not initialized variable
@@ -5182,7 +5184,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode,  SPVM_OPCODE_C_ID_END_METHOD);
         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
         
-        method->mortal_stack_length = mortal_stack_top + 1;
+        // TODO: +10 is not needed if scope bug does not eixst.
+        method->mortal_stack_length = mortal_stack_max + 10;
       }
     }
   }
