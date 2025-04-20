@@ -104,13 +104,13 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   {
     // Numeric area byte size
     int32_t numeric_vars_size = 0;
-    numeric_vars_size += current_method->long_vars_width * 8;
-    numeric_vars_size += current_method->double_vars_width * 8;
-    numeric_vars_size += current_method->int_vars_width * 4;
-    numeric_vars_size += current_method->float_vars_width * 4;
-    numeric_vars_size += current_method->mortal_stack_length * 4;
-    numeric_vars_size += current_method->short_vars_width * 2;
-    numeric_vars_size += current_method->byte_vars_width * 1;
+    numeric_vars_size += current_method->long_vars_width * sizeof(int64_t);
+    numeric_vars_size += current_method->double_vars_width * sizeof(double);
+    numeric_vars_size += current_method->int_vars_width * sizeof(int32_t);
+    numeric_vars_size += current_method->float_vars_width * sizeof(float);
+    numeric_vars_size += current_method->mortal_stack_length * sizeof(int32_t);
+    numeric_vars_size += current_method->short_vars_width * sizeof(int16_t);
+    numeric_vars_size += current_method->byte_vars_width * sizeof(int8_t);
     
     if (numeric_vars_size % 8 != 0) {
       numeric_vars_size += (8 - (numeric_vars_size % 8));
@@ -136,31 +136,31 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     
     // Double variables
     double_vars = (double*)&call_stack[call_stack_offset];
-    call_stack_offset += current_method->double_vars_width * 8;
+    call_stack_offset += current_method->double_vars_width * sizeof(double);
     
     // Long varialbes
     long_vars = (int64_t*)&call_stack[call_stack_offset];
-    call_stack_offset += current_method->long_vars_width * 8;
+    call_stack_offset += current_method->long_vars_width * sizeof(int64_t);
     
     // Float variables
     float_vars = (float*)&call_stack[call_stack_offset];
-    call_stack_offset += current_method->float_vars_width * 4;
+    call_stack_offset += current_method->float_vars_width * sizeof(float);
     
     // Int variables
     int_vars = (int32_t*)&call_stack[call_stack_offset];
-    call_stack_offset += current_method->int_vars_width * 4;
+    call_stack_offset += current_method->int_vars_width * sizeof(int32_t);
 
     // Mortal stack
     mortal_stack = (int32_t*)&call_stack[call_stack_offset];
-    call_stack_offset += current_method->mortal_stack_length * 4;
+    call_stack_offset += current_method->mortal_stack_length * sizeof(int32_t);
     
     // Short variables
     short_vars = (int16_t*)&call_stack[call_stack_offset];
-    call_stack_offset += current_method->short_vars_width * 2;
+    call_stack_offset += current_method->short_vars_width * sizeof(int16_t);
 
     // Byte variables
     byte_vars = (int8_t*)&call_stack[call_stack_offset];
-    call_stack_offset += current_method->byte_vars_width * 1;
+    call_stack_offset += current_method->byte_vars_width * sizeof(int8_t);
     
     call_stack_offset = numeric_vars_size;
 
