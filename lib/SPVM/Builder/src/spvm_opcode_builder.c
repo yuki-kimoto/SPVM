@@ -275,7 +275,11 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       int32_t finish = 0;
       
       int32_t mortal_stack_top = 0;
-
+      
+      int32_t mortal_stack_tops_index = 0;
+      
+      int32_t mortal_stack_tops_max = 0;
+      
       while (op_cur) {
         
         // [START]Preorder traversal position
@@ -326,6 +330,20 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR_UNDEF);
                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
               }
+            }
+            
+            if (block->need_leave_scope) {
+              SPVM_OPCODE opcode = {0};
+              
+              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ENTER_SCOPE);
+              opcode.operand0 = mortal_stack_tops_index;
+              mortal_stack_tops_index++;
+              
+              if (mortal_stack_tops_index > mortal_stack_tops_max) {
+                mortal_stack_tops_max = mortal_stack_tops_index;
+              }
+              
+              SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
             }
             
             int32_t typed_var_indexs_top = mortal_stack->length;
@@ -479,6 +497,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   opcode.operand0 = typed_var_indexs_top;
                   
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                  
+                  mortal_stack_tops_index--;
                 }
                 
                 while (mortal_stack->length > typed_var_indexs_top) {

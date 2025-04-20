@@ -679,6 +679,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_CASE_INFO: {
         break;
       }
+      case SPVM_OPCODE_C_ID_ENTER_SCOPE: {
+        break;
+      }
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack, mortal_stack_top, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
