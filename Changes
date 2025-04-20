@@ -1,3 +1,11 @@
+0.990055 2025-04-21
+  [Bug Fix]
+    * Fix a scope bug referered by issue 715
+    
+      https://github.com/yuki-kimoto/SPVM/issues/715
+      
+      This bug is fixed, but other scope bugs is found.
+    
 0.990054 2025-04-17
   [Changes]
     * Fn#substr method does not throw an eception even if $offset + $length is greater than the length of $string.

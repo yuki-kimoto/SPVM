@@ -328,8 +328,10 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               }
             }
             
-            int32_t typed_var_indexs_top = mortal_stack->length;
-            SPVM_LIST_push(block_stack_typed_var_index_top, (void*)(intptr_t)typed_var_indexs_top);
+            if (block->need_leave_scope) {
+              int32_t typed_var_indexs_top = mortal_stack->length;
+              SPVM_LIST_push(block_stack_typed_var_index_top, (void*)(intptr_t)typed_var_indexs_top);
+            }
             
             break;
           }
@@ -468,10 +470,10 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   }
                 }
                 
-                int32_t typed_var_indexs_top = (intptr_t)SPVM_LIST_get(block_stack_typed_var_index_top, block_stack_typed_var_index_top->length - 1);
-                
                 // Leave scope
                 if (block->need_leave_scope) {
+                  
+                  int32_t typed_var_indexs_top = (intptr_t)SPVM_LIST_get(block_stack_typed_var_index_top, block_stack_typed_var_index_top->length - 1);
                   
                   SPVM_OPCODE opcode = {0};
                   
@@ -479,14 +481,15 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   opcode.operand0 = typed_var_indexs_top;
                   
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                  
+                  while (mortal_stack->length > typed_var_indexs_top) {
+                    SPVM_LIST_pop(mortal_stack);
+                  }
+                  
+                  SPVM_LIST_pop(block_stack_typed_var_index_top);
                 }
                 
-                while (mortal_stack->length > typed_var_indexs_top) {
-                  SPVM_LIST_pop(mortal_stack);
-                }
-                
-                SPVM_LIST_pop(block_stack_typed_var_index_top);
-                
+                  
                 break;
               }
               case SPVM_OP_C_ID_LOOP_INCREMENT: {
