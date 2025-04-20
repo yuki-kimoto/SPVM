@@ -495,6 +495,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LEAVE_SCOPE);
                   opcode.operand0 = typed_var_indexs_top;
+                  opcode.operand1 = mortal_stack_tops_index;
                   
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                   
