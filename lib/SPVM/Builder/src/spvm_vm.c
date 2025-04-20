@@ -73,6 +73,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   int32_t* mortal_stack_typed_var_index = NULL;
   int32_t mortal_stack_top = 0;
   
+  // Mortal stack tops
+  int32_t* mortal_stack_tops = NULL;
+  
   // object variables
   void** object_vars = NULL;
   
@@ -109,6 +112,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     numeric_vars_size += current_method->int_vars_width * sizeof(int32_t);
     numeric_vars_size += current_method->float_vars_width * sizeof(float);
     numeric_vars_size += current_method->mortal_stack_length * sizeof(int32_t);
+    numeric_vars_size += current_method->mortal_stack_tops_length * sizeof(int32_t);
     numeric_vars_size += current_method->short_vars_width * sizeof(int16_t);
     numeric_vars_size += current_method->byte_vars_width * sizeof(int8_t);
     
@@ -149,15 +153,19 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     // Int variables
     int_vars = (int32_t*)&call_stack[call_stack_offset];
     call_stack_offset += current_method->int_vars_width * sizeof(int32_t);
-
+    
     // Mortal stack
     mortal_stack_typed_var_index = (int32_t*)&call_stack[call_stack_offset];
     call_stack_offset += current_method->mortal_stack_length * sizeof(int32_t);
     
+    // Mortal stack tops
+    mortal_stack_tops = (int32_t*)&call_stack[call_stack_offset];
+    call_stack_offset += current_method->mortal_stack_tops_length * sizeof(int32_t);
+    
     // Short variables
     short_vars = (int16_t*)&call_stack[call_stack_offset];
     call_stack_offset += current_method->short_vars_width * sizeof(int16_t);
-
+    
     // Byte variables
     byte_vars = (int8_t*)&call_stack[call_stack_offset];
     call_stack_offset += current_method->byte_vars_width * sizeof(int8_t);
