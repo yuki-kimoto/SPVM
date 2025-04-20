@@ -5187,6 +5187,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
         
         // TODO: +10 is not needed if scope bug does not eixst.
         method->mortal_stack_length = mortal_stack_max + 10;
+        method->mortal_stack_tops_length = mortal_stack_tops_max;
       }
     }
   }
