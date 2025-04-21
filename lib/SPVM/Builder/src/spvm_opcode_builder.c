@@ -280,6 +280,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       int32_t mortal_stack_tops_max = 0;
       
+      int32_t new_object_count = 0;
       while (op_cur) {
         
         int32_t throw_exception = 0;
@@ -5221,6 +5222,14 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
             }
             
+            if (new_object_var_index_out >= 0) {
+              SPVM_OPCODE opcode = {0};
+              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_PUSH_MORTAL_V2);
+              opcode.operand0 = new_object_var_index_out;
+              SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+              new_object_count++;
+            }
+            
             // [END]Postorder traversal position
             
             if (op_cur == op_base) {
@@ -5271,6 +5280,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
         
         // TODO: +10 is not needed if scope bug does not eixst.
         method->mortal_stack_length = mortal_stack_max + 10;
+        method->mortal_stack_length_v2 = new_object_count;
         method->mortal_stack_tops_length = mortal_stack_tops_max;
       }
     }
