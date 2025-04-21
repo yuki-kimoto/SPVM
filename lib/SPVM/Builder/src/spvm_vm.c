@@ -296,6 +296,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         continue;
       }
       case SPVM_OPCODE_C_ID_ENTER_SCOPE: {
+        SPVM_IMPLEMENT_ENTER_SCOPE(mortal_stack, mortal_stack_top, mortal_stack_tops, opcode->operand0);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {

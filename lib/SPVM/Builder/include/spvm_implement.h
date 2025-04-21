@@ -181,6 +181,8 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_UNDEF(SPVM_ENV* env, SPVM_VALUE* s
   env->assign_object(env, stack, dist_address, NULL);
 }
 
+#define SPVM_IMPLEMENT_ENTER_SCOPE(mortal_stack, mortal_stack_top, mortal_stack_tops, mortal_stack_tops_index) (mortal_stack_tops[mortal_stack_tops_index] = mortal_stack_top)
+
 #define SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack_typed_var_index, mortal_stack_top, object_vars_index) (mortal_stack_typed_var_index[mortal_stack_top++] = object_vars_index)
 
 #define SPVM_IMPLEMENT_PUSH_MORTAL_V2(mortal_stack, mortal_stack_top, object) (mortal_stack[mortal_stack_top++] = object)
