@@ -1,7 +1,7 @@
 0.990055 2025-04-21
   [Internal Changes]
     * Mortal stack length has been reduced to the actual required length.
-    
+    * Cleanup exception logig in opcode_builder.c.
 0.990054 2025-04-17
   [Changes]
     * Fn#substr method does not throw an eception even if $offset + $length is greater than the length of $string.
