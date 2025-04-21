@@ -189,7 +189,8 @@ static inline void SPVM_IMPLEMENT_PUSH_MORTAL_V2(SPVM_ENV* env, SPVM_VALUE* stac
   
   if (object) {
     env->api->internal->inc_ref_count(env, stack, object);
-    mortal_stack[*mortal_stack_top_ptr++] = object;
+    mortal_stack[*mortal_stack_top_ptr] = object;
+    (*mortal_stack_top_ptr)++;
   }
 }
 
