@@ -4996,6 +4996,17 @@ void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** 
   
 }
 
+void SPVM_API_leave_scope_local_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** mortal_stack, int32_t* mortal_stack_top_ptr, int32_t* mortal_stack_tops, int32_t* mortal_stack_tops_index_ptr) {
+  
+  for (int32_t mortal_stack_index = *mortal_stack_tops_index_ptr; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
+    SPVM_OBJECT** ref = &mortal_stack[mortal_stack_index];
+    SPVM_API_assign_object(env, stack, ref, NULL);
+  }
+  *mortal_stack_top_ptr = mortal_stack_tops[*mortal_stack_tops_index_ptr];
+  
+  *mortal_stack_tops_index_ptr--;
+}
+
 SPVM_OBJECT* SPVM_API_get_object_no_weaken_address(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   //  Dropping weaken flag
   void* object_no_weaken_address = (void*)((intptr_t)object & ~(intptr_t)1);

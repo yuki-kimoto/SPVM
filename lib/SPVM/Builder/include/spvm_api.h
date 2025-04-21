@@ -288,6 +288,7 @@ int32_t SPVM_API_enter_scope(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top);
 void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
+void SPVM_API_leave_scope_local_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** mortal_stack, int32_t* mortal_stack_top_ptr, int32_t* mortal_stack_tops, int32_t* mortal_stack_tops_index_ptr);
 
 // Get type name
 SPVM_OBJECT* SPVM_API_get_type_name_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
