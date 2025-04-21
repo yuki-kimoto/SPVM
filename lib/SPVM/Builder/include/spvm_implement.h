@@ -206,8 +206,7 @@ static inline void SPVM_IMPLEMENT_LEAVE_SCOPE(SPVM_ENV* env, SPVM_VALUE* stack, 
 static inline void SPVM_IMPLEMENT_PUSH_MORTAL_V2(SPVM_ENV* env, SPVM_VALUE* stack, void** mortal_stack, int32_t* mortal_stack_top_ptr, void* object) {
   
   if (object) {
-    env->api->internal->inc_ref_count(env, stack, object);
-    mortal_stack[*mortal_stack_top_ptr] = object;
+    env->assign_object(env, stack, &mortal_stack[*mortal_stack_top_ptr], object);
     (*mortal_stack_top_ptr)++;
   }
 }
