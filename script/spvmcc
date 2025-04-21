@@ -148,7 +148,7 @@ C<myapp.config>:
 
   use SPVM::Builder::Config::Exe;
   
-  my $exe_config = SPVM::Builder::Config::Exe->new_gnu99(file => __FILE__);
+  my $exe_config = SPVM::Builder::Config::Exe->new(file => __FILE__);
   
   $exe_config
 
