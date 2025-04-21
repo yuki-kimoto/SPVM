@@ -512,13 +512,13 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 
                 // Leave scope v2
                 if (block->need_leave_scope) {
+                  mortal_stack_tops_index--;
+                  
                   SPVM_OPCODE opcode = {0};
                    
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LEAVE_SCOPE_V2);
                   opcode.operand0 = mortal_stack_tops_index;
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-                  
-                  mortal_stack_tops_index--;
                 }
                 
                 break;
@@ -5292,6 +5292,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
         method->mortal_stack_length = mortal_stack_max + 10;
         method->mortal_stack_length_v2 = new_object_count;
         method->mortal_stack_tops_length = mortal_stack_tops_max + 1;
+        
+        assert(mortal_stack_tops_index == 0);
       }
     }
   }
