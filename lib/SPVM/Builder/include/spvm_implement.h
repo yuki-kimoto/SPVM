@@ -181,9 +181,27 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_UNDEF(SPVM_ENV* env, SPVM_VALUE* s
   env->assign_object(env, stack, dist_address, NULL);
 }
 
-#define SPVM_IMPLEMENT_ENTER_SCOPE(mortal_stack, mortal_stack_top, mortal_stack_tops, mortal_stack_tops_index) (mortal_stack_tops[mortal_stack_tops_index] = mortal_stack_top)
-
 #define SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack_typed_var_index, mortal_stack_top, object_vars_index) (mortal_stack_typed_var_index[mortal_stack_top++] = object_vars_index)
+
+static inline void SPVM_IMPLEMENT_LEAVE_SCOPE(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack_typed_var_index, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
+  env->api->internal->leave_scope_local(env, stack, object_vars, mortal_stack_typed_var_index, mortal_stack_top_ptr, original_mortal_stack_top);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#define SPVM_IMPLEMENT_ENTER_SCOPE(mortal_stack, mortal_stack_top, mortal_stack_tops, mortal_stack_tops_index) (mortal_stack_tops[mortal_stack_tops_index] = mortal_stack_top)
 
 static inline void SPVM_IMPLEMENT_PUSH_MORTAL_V2(SPVM_ENV* env, SPVM_VALUE* stack, void** mortal_stack, int32_t* mortal_stack_top_ptr, void* object) {
   
@@ -194,13 +212,24 @@ static inline void SPVM_IMPLEMENT_PUSH_MORTAL_V2(SPVM_ENV* env, SPVM_VALUE* stac
   }
 }
 
-static inline void SPVM_IMPLEMENT_LEAVE_SCOPE(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack_typed_var_index, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
-  env->api->internal->leave_scope_local(env, stack, object_vars, mortal_stack_typed_var_index, mortal_stack_top_ptr, original_mortal_stack_top);
-}
-
 static inline void SPVM_IMPLEMENT_LEAVE_SCOPE_V2(SPVM_ENV* env, SPVM_VALUE* stack, void** mortal_stack, int32_t* mortal_stack_top_ptr, int32_t* mortal_stack_tops, int32_t mortal_stack_tops_index) {
   env->api->internal->leave_scope_local_v2(env, stack, mortal_stack, mortal_stack_top_ptr, mortal_stack_tops, mortal_stack_tops_index);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #define SPVM_IMPLEMENT_ADD_INT(out, in1, in2) (out = in1 + in2)
 
