@@ -888,6 +888,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_method->object_vars_width = method->object_vars_width;
         runtime_method->ref_vars_width = method->ref_vars_width;
         runtime_method->mortal_stack_length  = method->mortal_stack_length;
+        runtime_method->mortal_stack_length_v2  = method->mortal_stack_length_v2;
         runtime_method->mortal_stack_tops_length  = method->mortal_stack_tops_length;
         runtime_method->return_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, method->return_type->basic_type->id);
         runtime_method->return_type_dimension = method->return_type->dimension;
