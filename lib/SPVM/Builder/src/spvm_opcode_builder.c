@@ -502,12 +502,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LEAVE_SCOPE);
                   opcode.operand0 = typed_var_indexs_top;
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-                  
-                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LEAVE_SCOPE_V2);
-                  opcode.operand0 = mortal_stack_tops_index;
-                  SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-                  
-                  mortal_stack_tops_index--;
                 }
                 
                 while (mortal_stack_v1->length > typed_var_indexs_top) {
@@ -515,6 +509,17 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 }
                 
                 SPVM_LIST_pop(block_stack_typed_var_index_top);
+                
+                // Leave scope v2
+                if (block->need_leave_scope) {
+                  SPVM_OPCODE opcode = {0};
+                   
+                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LEAVE_SCOPE_V2);
+                  opcode.operand0 = mortal_stack_tops_index;
+                  SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                  
+                  mortal_stack_tops_index--;
+                }
                 
                 break;
               }
