@@ -128,7 +128,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     int32_t address_vars_size = 0;
     address_vars_size += current_method->object_vars_width * sizeof(void*);
     address_vars_size += current_method->ref_vars_width * sizeof(void*);
-    address_vars_size += current_method->mortal_stack_length * sizeof(void*);
+    address_vars_size += current_method->mortal_stack_length_v2 * sizeof(void*);
     
     // Total area byte size
     int32_t total_vars_size = numeric_vars_size + address_vars_size;
@@ -187,7 +187,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     
     // Mortal stack
     mortal_stack = (void**)&call_stack[call_stack_offset];
-    call_stack_offset += current_method->mortal_stack_length * sizeof(void*);
+    call_stack_offset += current_method->mortal_stack_length_v2 * sizeof(void*);
   }
   
   int32_t object_data_offset = env->api->runtime->get_object_data_offset(env->runtime);
