@@ -282,6 +282,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       while (op_cur) {
         
+        int32_t throw_exception_v2 = 0;
+        
         // [START]Preorder traversal position
         switch (op_cur->id) {
           case SPVM_OP_C_ID_BLOCK: { // Preorder
@@ -5135,6 +5137,10 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 
                 break;
               }
+            }
+            
+            if (throw_exception_v2) {
+              SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
             }
             
             // [END]Postorder traversal position
