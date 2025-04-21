@@ -189,7 +189,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_STRING_BUFFER_add_int(string_buffer, int_vars_width);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
-
+  
   // Exception
   // volatile attribute is not needed, but the environment "FreeBSD 9.1" and "gcc 4.2.1" seems to performe wrong optimisation
   // in double pointer logic. volatile attribute fixed the test "ref.t" "SPVM::TestCase::Operator::Ref->test_pass_mulnum_ref_byte".
@@ -201,7 +201,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
 
   int32_t method_mortal_stack_length = current_method->mortal_stack_length;
   if (method_mortal_stack_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack[");
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_typed_var_index[");
     SPVM_STRING_BUFFER_add_int(string_buffer, method_mortal_stack_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
@@ -214,7 +214,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_STRING_BUFFER_add_int(string_buffer, short_vars_width);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
-
+  
   // byte variable declarations
   int32_t byte_vars_width = current_method->byte_vars_width;
   if (byte_vars_width > 0) {
@@ -683,7 +683,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack, mortal_stack_top, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack_typed_var_index, mortal_stack_top, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
@@ -691,7 +691,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
         int32_t original_mortal_stack_top = opcode->operand0;
         if (method_mortal_stack_length > 0) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack, &mortal_stack_top, original_mortal_stack_top = ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack_typed_var_index, &mortal_stack_top, original_mortal_stack_top = ");
           SPVM_STRING_BUFFER_add_int(string_buffer, original_mortal_stack_top);
           SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         }
