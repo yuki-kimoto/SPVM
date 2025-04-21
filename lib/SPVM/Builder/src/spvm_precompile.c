@@ -214,6 +214,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top_typed_var_index = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
   
   // short variable declarations
   int32_t short_vars_width = current_method->short_vars_width;
