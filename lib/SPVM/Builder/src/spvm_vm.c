@@ -318,6 +318,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack_typed_var_index, &mortal_stack_top_typed_var_index, original_mortal_stack_top_typed_var_index);
         break;
       }
+      case SPVM_OPCODE_C_ID_LEAVE_SCOPE_V2: {
+        // SPVM_IMPLEMENT_LEAVE_SCOPE_V2(env, stack, mortal_stack, &mortal_stack_top, mortal_stack_tops, opcode->operand0);
+        break;
+      }
       case SPVM_OPCODE_C_ID_MOVE_BYTE_ZERO: {
         SPVM_IMPLEMENT_MOVE_BYTE_ZERO(byte_vars[opcode->operand0]);
         break;
