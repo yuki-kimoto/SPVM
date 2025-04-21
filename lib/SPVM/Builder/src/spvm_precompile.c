@@ -204,8 +204,16 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_typed_var_index[");
     SPVM_STRING_BUFFER_add_int(string_buffer, method_mortal_stack_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
+    
+    SPVM_STRING_BUFFER_add(string_buffer, "  void* mortal_stack[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, method_mortal_stack_length);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+    
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_tops[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_tops_length);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
   
   // short variable declarations
   int32_t short_vars_width = current_method->short_vars_width;
