@@ -72,7 +72,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   // Mortal stack
   void** mortal_stack = NULL;
   int32_t* mortal_stack_typed_var_index = NULL;
-  int32_t mortal_stack_top = 0;
+  int32_t mortal_stack_top_typed_var_index = 0;
   
   // Mortal stack tops
   int32_t* mortal_stack_tops = NULL;
@@ -296,16 +296,16 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         continue;
       }
       case SPVM_OPCODE_C_ID_ENTER_SCOPE: {
-        SPVM_IMPLEMENT_ENTER_SCOPE(mortal_stack, mortal_stack_top, mortal_stack_tops, opcode->operand0);
+        SPVM_IMPLEMENT_ENTER_SCOPE(mortal_stack, mortal_stack_top_typed_var_index, mortal_stack_tops, opcode->operand0);
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
-        SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack_typed_var_index, mortal_stack_top, opcode->operand0);
+        SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack_typed_var_index, mortal_stack_top_typed_var_index, opcode->operand0);
         break;
       }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
-        int32_t original_mortal_stack_top = opcode->operand0;
-        SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack_typed_var_index, &mortal_stack_top, original_mortal_stack_top);
+        int32_t original_mortal_stack_top_typed_var_index = opcode->operand0;
+        SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack_typed_var_index, &mortal_stack_top_typed_var_index, original_mortal_stack_top_typed_var_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_BYTE_ZERO: {
