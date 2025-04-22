@@ -476,6 +476,8 @@ solo/lib/SPVM/TestCase/Pointer.spvm
 solo/lib/SPVM/TestCase/Simple.spvm
 solo/lib/SPVM/TestCase/Weaken.spvm
 solo/lib/SPVM/TestCase/Weaken2.spvm
+solo/script/myapp.config
+solo/script/myapp.debug_memory_count.config
 solo/script/myapp.spvm
 SPVM.xs
 t/00_builder/CC.t
