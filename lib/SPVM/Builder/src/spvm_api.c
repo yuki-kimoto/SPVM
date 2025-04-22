@@ -5004,6 +5004,7 @@ void SPVM_API_leave_scope_local_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT
     if (*ref != NULL) {
       SPVM_API_assign_object(env, stack, ref, NULL);
     }
+    mortal_stack_typed_var_index[mortal_stack_index] = 0;
   }
   *mortal_stack_top_ptr = mortal_stack_tops[mortal_stack_tops_index];
 }
