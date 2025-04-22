@@ -276,7 +276,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       int32_t mortal_stack_max = 0;
       
-      int32_t scope_index = 0;
+      int32_t mortal_stack_tops_index = 0;
       
       int32_t mortal_stack_tops_max = 0;
       
@@ -336,12 +336,15 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
             }
             
             if (block->need_leave_scope) {
-              block->scope_index = scope_index;
-              scope_index++;
-              
               SPVM_OPCODE opcode = {0};
+              
               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ENTER_SCOPE);
-              opcode.operand0 = block->scope_index;
+              opcode.operand0 = mortal_stack_tops_index;
+              mortal_stack_tops_index++;
+              
+              if (mortal_stack_tops_index > mortal_stack_tops_max) {
+                mortal_stack_tops_max = mortal_stack_tops_index;
+              }
               
               SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
             }
@@ -506,12 +509,12 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 
                 // Leave scope v2
                 if (block->need_leave_scope) {
-                  assert(block->scope_index >= 0);
+                  mortal_stack_tops_index--;
                   
                   SPVM_OPCODE opcode = {0};
                    
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LEAVE_SCOPE_V2);
-                  opcode.operand0 = block->scope_index;
+                  opcode.operand0 = mortal_stack_tops_index;
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                 }
                 
@@ -5219,7 +5222,9 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
         // TODO: +10 is not needed if scope bug does not eixst.
         method->mortal_stack_length = mortal_stack_max + 10;
         
-        method->mortal_stack_tops_length = scope_index + 1;
+        method->mortal_stack_tops_length = mortal_stack_tops_max + 1;
+        
+        assert(mortal_stack_tops_index == 0);
       }
     }
   }
