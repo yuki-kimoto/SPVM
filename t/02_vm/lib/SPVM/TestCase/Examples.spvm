@@ -8,4 +8,15 @@ class TestCase::Examples {
     my $object = new TestCase::OnlyField;
     return $object;
   }
+  
+  static method scope : int () {
+    
+    {
+      if (0) {
+        "";
+      }
+    }
+    
+    return 1;
+  }
 }

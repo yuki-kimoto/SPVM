@@ -692,6 +692,7 @@ t/02_vm/05_op/new_string_len.t
 t/02_vm/05_op/print.t
 t/02_vm/05_op/reference.t
 t/02_vm/05_op/say.t
+t/02_vm/05_op/scope.t
 t/02_vm/05_op/sequential.t
 t/02_vm/05_op/special_assign.t
 t/02_vm/05_op/string_concatenation.t
