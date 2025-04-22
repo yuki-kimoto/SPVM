@@ -709,7 +709,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE_V2: {
         /*
         int32_t mortal_stock_tops_index = opcode->operand0;
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LEAVE_SCOPE_V2(env, stack, mortal_stack, &mortal_stack_top, mortal_stack_tops, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LEAVE_SCOPE_V2(env, stack, object_vars, mortal_stack_typed_var_index, &mortal_stack_top, mortal_stack_tops, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, mortal_stock_tops_index);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         */
