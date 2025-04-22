@@ -317,7 +317,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE_V2: {
         int32_t mortal_stack_tops_index = opcode->operand0;
         //spvm_warn("[LEAVE_SCOPE BEGIN]%d %d %d", mortal_stack_top, mortal_stack_tops[mortal_stack_tops_index], mortal_stack_tops_index);
-        //SPVM_IMPLEMENT_LEAVE_SCOPE_V2(env, stack, mortal_stack, &mortal_stack_top, mortal_stack_tops, opcode->operand0);
+        //SPVM_IMPLEMENT_LEAVE_SCOPE_V2(env, stack, object_vars, mortal_stack_object_var_indexes, &mortal_stack_top, mortal_stack_tops, mortal_stack_tops_index);
         //spvm_warn("[LEAVE_SCOPE END]%d %d %d", mortal_stack_top, mortal_stack_tops[mortal_stack_tops_index], mortal_stack_tops_index);
         break;
       }
