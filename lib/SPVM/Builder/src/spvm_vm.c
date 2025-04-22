@@ -128,7 +128,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     int32_t address_vars_size = 0;
     address_vars_size += current_method->object_vars_width * sizeof(void*);
     address_vars_size += current_method->ref_vars_width * sizeof(void*);
-    address_vars_size += current_method->mortal_stack_length_v2 * sizeof(void*);
+    address_vars_size += current_method->mortal_stack_length * sizeof(void*);
     
     // Total area byte size
     int32_t total_vars_size = numeric_vars_size + address_vars_size;
@@ -187,7 +187,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     
     // Mortal stack
     mortal_stack = (void**)&call_stack[call_stack_offset];
-    call_stack_offset += current_method->mortal_stack_length_v2 * sizeof(void*);
+    call_stack_offset += current_method->mortal_stack_length * sizeof(void*);
   }
   
   int32_t object_data_offset = env->api->runtime->get_object_data_offset(env->runtime);
@@ -326,7 +326,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_MORTAL_V2: {
-        //spvm_warn("[SPVM_OPCODE_C_ID_PUSH_MORTAL_V2]%d %d %p", mortal_stack_top, current_method->mortal_stack_length_v2, mortal_stack[mortal_stack_top]);
+        //spvm_warn("[SPVM_OPCODE_C_ID_PUSH_MORTAL_V2]%d %d %p", mortal_stack_top, current_method->mortal_stack_length, mortal_stack[mortal_stack_top]);
         //SPVM_IMPLEMENT_PUSH_MORTAL_V2(env, stack, mortal_stack, &mortal_stack_top, *(void**)&object_vars[opcode->operand0]);
         break;
       }

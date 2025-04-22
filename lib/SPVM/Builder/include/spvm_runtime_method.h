@@ -28,7 +28,6 @@ struct spvm_runtime_method {
   int32_t object_vars_width;
   int32_t ref_vars_width;
   int32_t mortal_stack_length;
-  int32_t mortal_stack_length_v2;
   int32_t mortal_stack_tops_length;
   int32_t return_type_dimension;
   int32_t return_type_flag;

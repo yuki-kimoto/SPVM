@@ -32,7 +32,6 @@ struct spvm_method {
   int32_t object_vars_width;
   int32_t ref_vars_width;
   int32_t mortal_stack_length;
-  int32_t mortal_stack_length_v2;
   int32_t mortal_stack_tops_length;
   int32_t tmp_vars_length;
   int8_t is_class_method;
