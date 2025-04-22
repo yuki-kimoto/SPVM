@@ -831,9 +831,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                     opcode.operand0 = typed_var_index;
                     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                     
-                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_PUSH_MORTAL_V2);
-                    SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-                    
                     SPVM_LIST_push(mortal_stack_v1, (void*)(intptr_t)typed_var_index);
                     
                     if (mortal_stack_v1->length > mortal_stack_max) {

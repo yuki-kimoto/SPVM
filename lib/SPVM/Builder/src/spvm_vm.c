@@ -314,11 +314,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         //spvm_warn("[ENTER_SCOPE END]%d %d %d", mortal_stack_top, mortal_stack_tops[mortal_stack_tops_index], mortal_stack_tops_index);
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_MORTAL_V2: {
-        //spvm_warn("[SPVM_OPCODE_C_ID_PUSH_MORTAL_V2]%d %d %p", mortal_stack_top, current_method->mortal_stack_length, mortal_stack[mortal_stack_top]);
-        //SPVM_IMPLEMENT_PUSH_MORTAL_V2(env, stack, mortal_stack, &mortal_stack_top, *(void**)&object_vars[opcode->operand0]);
-        break;
-      }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE_V2: {
         int32_t mortal_stack_tops_index = opcode->operand0;
         //spvm_warn("[LEAVE_SCOPE BEGIN]%d %d %d", mortal_stack_top, mortal_stack_tops[mortal_stack_tops_index], mortal_stack_tops_index);

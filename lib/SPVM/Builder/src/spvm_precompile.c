@@ -708,14 +708,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         */
         break;
       }
-      case SPVM_OPCODE_C_ID_PUSH_MORTAL_V2: {
-        /*
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_PUSH_MORTAL_V2(env, stack, mortal_stack, &mortal_stack_top, *(void**)");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-        */
-        break;
-      }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE_V2: {
         /*
         int32_t mortal_stock_tops_index = opcode->operand0;
