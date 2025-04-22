@@ -69,15 +69,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   // Caught eval error_id
   int32_t eval_error_id = 0;
   
-  // Mortal stack(typed_var_index)
+  // Mortal stack for object variable indexes
   int32_t* mortal_stack_object_var_indexes = NULL;
-  int32_t mortal_stack_top_typed_var_index = 0;
-  
-  // Mortal stack
-  void** mortal_stack = NULL;
   int32_t mortal_stack_top = 0;
-  
-  // Mortal stack tops
   int32_t* mortal_stack_tops = NULL;
   
   // object variables
@@ -294,12 +288,12 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         continue;
       }
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
-        SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack_object_var_indexes, mortal_stack_top_typed_var_index, opcode->operand0);
+        SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack_object_var_indexes, mortal_stack_top, opcode->operand0);
         break;
       }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
-        int32_t original_mortal_stack_top_typed_var_index = opcode->operand0;
-        SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack_object_var_indexes, &mortal_stack_top_typed_var_index, original_mortal_stack_top_typed_var_index);
+        int32_t original_mortal_stack_top = opcode->operand0;
+        SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack_object_var_indexes, &mortal_stack_top, original_mortal_stack_top);
         break;
       }
       

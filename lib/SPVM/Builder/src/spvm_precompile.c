@@ -205,14 +205,13 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_STRING_BUFFER_add_int(string_buffer, method_mortal_stack_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top_typed_var_index = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
   
   if (current_method->mortal_stack_tops_length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_tops[");
     SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_tops_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
   
   // short variable declarations
   int32_t short_vars_width = current_method->short_vars_width;
@@ -687,7 +686,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack_typed_var_index, mortal_stack_top_typed_var_index, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack_typed_var_index, mortal_stack_top, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
@@ -695,7 +694,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
         int32_t original_mortal_stack_top = opcode->operand0;
         if (method_mortal_stack_length > 0) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack_typed_var_index, &mortal_stack_top_typed_var_index, original_mortal_stack_top = ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack_typed_var_index, &mortal_stack_top, original_mortal_stack_top = ");
           SPVM_STRING_BUFFER_add_int(string_buffer, original_mortal_stack_top);
           SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         }
@@ -703,7 +702,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       }
       case SPVM_OPCODE_C_ID_ENTER_SCOPE: {
         /*
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ENTER_SCOPE(mortal_stack, mortal_stack_top_typed_var_index, mortal_stack_tops, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ENTER_SCOPE(mortal_stack, mortal_stack_top, mortal_stack_tops, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         */
