@@ -179,6 +179,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     call_stack_offset += current_method->ref_vars_width * sizeof(void*);
   }
   
+  memset(mortal_stack_tops, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
+  memset(mortal_stack_object_var_indexes, -1, current_method->mortal_stack_length * sizeof(int32_t));
+  
   int32_t cur_motal_stack_tops_index = 0;
   
   int32_t object_data_offset = env->api->runtime->get_object_data_offset(env->runtime);
