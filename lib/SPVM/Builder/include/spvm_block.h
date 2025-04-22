@@ -24,6 +24,7 @@ struct spvm_block {
   int32_t no_scope;
   int32_t has_object_var_decls;
   int32_t need_leave_scope;
+  int32_t scope_index;
 };
 
 SPVM_BLOCK* SPVM_BLOCK_new(SPVM_COMPILER* compiler);

@@ -9,5 +9,7 @@
 SPVM_BLOCK* SPVM_BLOCK_new(SPVM_COMPILER* compiler) {
   SPVM_BLOCK* block = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, sizeof(SPVM_BLOCK));
   
+  block->scope_index = -1;
+  
   return block;
 }
