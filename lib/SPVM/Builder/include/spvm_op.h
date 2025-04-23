@@ -379,6 +379,8 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
 
 SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_while, SPVM_OP* op_condition, SPVM_OP* op_block);
 
+SPVM_OP* SPVM_OP_build_loop_statement(SPVM_COMPILER* compiler, SPVM_OP* op_loop, SPVM_OP* op_init, SPVM_OP* op_condition_operand, SPVM_OP* op_increment, SPVM_OP* op_block_inner);
+
 SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPVM_OP* op_operand, SPVM_OP* op_block, SPVM_OP* op_else_statement, int32_t no_scope);
 
 SPVM_OP* SPVM_OP_build_array_length(SPVM_COMPILER* compiler, SPVM_OP* op_array_length, SPVM_OP* op_operand);

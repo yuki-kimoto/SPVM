@@ -2091,6 +2091,50 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   return op_loop;
 }
 
+SPVM_OP* SPVM_OP_build_loop_statement(SPVM_COMPILER* compiler, SPVM_OP* op_loop, SPVM_OP* op_init, SPVM_OP* op_condition_operand, SPVM_OP* op_increment, SPVM_OP* op_block_inner) {
+  
+  // Init statement
+  if (!op_init) {
+    op_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_loop->file, op_loop->line);
+  }
+  
+  // Condition
+  assert(op_condition_operand->moresib == 0);
+  SPVM_OP* op_constant_1 = SPVM_OP_new_op_constant_int(compiler, 1, op_condition_operand->file, op_condition_operand->line);
+  SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_constant_1, 1);
+  op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
+  
+  SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_condition_operand->file, op_condition_operand->line);
+  int32_t no_scope = 1;
+  SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_condition_operand->file, op_condition_operand->line);
+  SPVM_OP* op_last = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LAST, op_condition_operand->file, op_condition_operand->line);
+  SPVM_OP_build_if_statement(compiler, op_if, op_condition_operand, op_do_nothing, op_last, no_scope);
+  
+  SPVM_OP* op_list_op_block_inner = op_block_inner->first;
+  SPVM_OP_insert_child(compiler, op_list_op_block_inner, op_list_op_block_inner->first, op_if);
+  
+  // Set block flag
+  op_block_inner->uv.block->id = SPVM_BLOCK_C_ID_LOOP_STATEMENTS;
+  
+  SPVM_OP* op_block_outer = SPVM_OP_new_op_block(compiler, op_loop->file, op_loop->line);
+  op_block_outer->uv.block->id = SPVM_BLOCK_C_ID_LOOP_INIT;
+  
+  if (!op_increment) {
+    op_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_loop->file, op_loop->line);
+  }
+  SPVM_OP* op_loop_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOOP_INCREMENT, op_loop->file, op_loop->line);
+  SPVM_OP_insert_child(compiler, op_loop_increment, op_loop_increment->last, op_increment);
+  
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_init);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_condition);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_block_inner);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_loop_increment);
+  
+  SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_outer);
+  
+  return op_loop;
+}
+
 SPVM_OP* SPVM_OP_build_if_require_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if_require, SPVM_OP* op_use, SPVM_OP* op_block_true, SPVM_OP* op_block_false) {
   
   SPVM_OP_insert_child(compiler, op_if_require, op_if_require->last, op_use);
