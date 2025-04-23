@@ -15,6 +15,13 @@ class TestCase::Scope {
       }
     }
     
+    # Objects in condition part is destroyed.
+    {
+      switch ((my $object = Int->new(1), my $num = 1, $num)) {
+        
+      }
+    }
+    
     return 1;
   }
   
