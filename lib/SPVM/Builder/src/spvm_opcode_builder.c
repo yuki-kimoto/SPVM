@@ -237,6 +237,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
         goto END_OF_FUNCTION;
       }
       
+      SPVM_LIST* block_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      
       SPVM_LIST* block_stack_typed_var_index_top = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       SPVM_LIST* if_block_stack_goto_end_opcode_index = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -290,6 +292,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
           case SPVM_OP_C_ID_BLOCK: { // Preorder
             
             SPVM_BLOCK* block = op_cur->uv.block;
+            
+            SPVM_LIST_push(block_stack, (void*)(intptr_t)block);
             
             if (block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
               // Push last block base stack
@@ -518,6 +522,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                     break_goto->operand0 = break_goto_opcode_base_index;
                   }
                 }
+                
+                SPVM_LIST_pop(block_stack);
                 
                 break;
               }
@@ -5212,6 +5218,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       SPVM_LIST_free(switch_block_stack_break_base);
       SPVM_LIST_free(mortal_stack);
       SPVM_LIST_free(block_stack_typed_var_index_top);
+      SPVM_LIST_free(block_stack);
       
       END_OF_FUNCTION: {
       
