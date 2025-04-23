@@ -211,6 +211,25 @@ It is allowed to jump multiple case statements into a single block.
     }
   }
 
+C<CONDITION> in C<switch statement> has own scope.
+
+  {
+    switch (CONDITION) {
+      case CASE1: {
+        # ...
+      }
+      case CASE2: {
+        # ...
+      }
+      case CASEn: {
+        # ...
+      }
+      default: {
+        # ...
+      }
+    }
+  }
+
 Compilation Errors:
 
 I<CONDITION> must be an integer type within int. Otherwise, a compilation error occurs.

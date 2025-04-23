@@ -1,5 +1,23 @@
 class TestCase::Scope {
   
+  static method switch : int () {
+    
+    # switch condition has own scope
+    {
+      switch (my $num = 1) {
+        
+      }
+      
+      my $num = 2;
+      
+      unless ($num == 2) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method extra : int () {
     
     {
