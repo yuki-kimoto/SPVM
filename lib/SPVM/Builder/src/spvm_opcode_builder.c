@@ -432,8 +432,21 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                     goto_end_of_method_on_exception_goto->operand0 = goto_end_of_method_on_exception_goto_opcode_base_index;
                   }
                 }
-                
-                if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+                else if (block->id == SPVM_BLOCK_C_ID_SWITCH) {
+                  // break block base
+                  int32_t break_block_base = (intptr_t)SPVM_LIST_pop(switch_block_stack_break_base);
+                  
+                  // Set break position
+                  int32_t break_opcode_index_stack_pop_count = break_opcode_index_stack->length - break_block_base;
+                  for (int32_t i = 0; i < break_opcode_index_stack_pop_count; i++) {
+                    int32_t break_goto_opcode_index = (intptr_t)SPVM_LIST_pop(break_opcode_index_stack);
+                    
+                    SPVM_OPCODE* break_goto = (opcode_list->values + break_goto_opcode_index);
+                    int32_t break_goto_opcode_base_index = opcode_list->length;
+                    break_goto->operand0 = break_goto_opcode_base_index;
+                  }
+                }
+                else if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
                   // next block base
                   int32_t next_block_base = (intptr_t)SPVM_LIST_pop(loop_block_stack_next_base);
                   
@@ -486,20 +499,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE* if_block_end_goto = (opcode_list->values + if_block_end_goto_opcode_index);
                   int32_t if_block_end_goto_opcode_base_index = opcode_list->length;
                   if_block_end_goto->operand0 = if_block_end_goto_opcode_base_index;
-                }
-                if (block->id == SPVM_BLOCK_C_ID_SWITCH) {
-                  // break block base
-                  int32_t break_block_base = (intptr_t)SPVM_LIST_pop(switch_block_stack_break_base);
-                  
-                  // Set break position
-                  int32_t break_opcode_index_stack_pop_count = break_opcode_index_stack->length - break_block_base;
-                  for (int32_t i = 0; i < break_opcode_index_stack_pop_count; i++) {
-                    int32_t break_goto_opcode_index = (intptr_t)SPVM_LIST_pop(break_opcode_index_stack);
-                    
-                    SPVM_OPCODE* break_goto = (opcode_list->values + break_goto_opcode_index);
-                    int32_t break_goto_opcode_base_index = opcode_list->length;
-                    break_goto->operand0 = break_goto_opcode_base_index;
-                  }
                 }
                 
                 SPVM_LIST_pop(block_stack);
