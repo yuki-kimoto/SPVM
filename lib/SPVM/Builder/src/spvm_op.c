@@ -2055,9 +2055,19 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   
   // Condition
   assert(op_while_operand->moresib == 0);
-  SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_while_operand, 1);
+  SPVM_OP* op_constant_1 = SPVM_OP_new_op_constant_int(compiler, 1, op_while_operand->file, op_while_operand->line);
+  SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_constant_1, 1);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
-
+  
+  SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_while_operand->file, op_while_operand->line);
+  int32_t no_scope = 1;
+  SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_while_operand->file, op_while_operand->line);
+  SPVM_OP* op_last = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LAST, op_while_operand->file, op_while_operand->line);
+  SPVM_OP_build_if_statement(compiler, op_if, op_while_operand, op_do_nothing, op_last, no_scope);
+  
+  SPVM_OP* op_list_op_block_statements = op_block_statements->first;
+  SPVM_OP_insert_child(compiler, op_list_op_block_statements, op_list_op_block_statements->first, op_if);
+  
   // Set block flag
   op_block_statements->uv.block->id = SPVM_BLOCK_C_ID_LOOP_STATEMENTS;
   
