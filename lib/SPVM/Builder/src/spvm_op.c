@@ -1914,33 +1914,11 @@ SPVM_OP* SPVM_OP_build_condition(SPVM_COMPILER* compiler, SPVM_OP* op_condition_
   return op_condition;
 }
 
-SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, SPVM_OP* op_init, SPVM_OP* op_condition_operand, SPVM_OP* op_increment, SPVM_OP* op_block_statements) {
+SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, SPVM_OP* op_init, SPVM_OP* op_condition_operand, SPVM_OP* op_increment, SPVM_OP* op_block) {
   
-  // Loop
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOOP, op_for->file, op_for->line);
   
-  // Condition
-  SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_condition_operand, 1);
-  op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
-
-  // Set block flag
-  op_block_statements->uv.block->id = SPVM_BLOCK_C_ID_LOOP_STATEMENTS;
-
-  // Outer block for initialize loop variable
-  SPVM_OP* op_block_init = SPVM_OP_new_op_block(compiler, op_for->file, op_for->line);
-  op_block_init->uv.block->id = SPVM_BLOCK_C_ID_LOOP_INIT;
-  
-  // Block for increment
-  SPVM_OP* op_loop_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOOP_INCREMENT, op_for->file, op_for->line);
-
-  SPVM_OP_insert_child(compiler, op_loop_increment, op_loop_increment->last, op_increment);
-
-  SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_init);
-  SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_condition);
-  SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_block_statements);
-  SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_loop_increment);
-  
-  SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_init);
+  SPVM_OP_build_loop_statement(compiler, op_loop, op_init, op_condition_operand, op_increment, op_block);
   
   return op_loop;
 }
