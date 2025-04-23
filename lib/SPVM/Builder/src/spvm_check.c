@@ -3885,7 +3885,7 @@ void SPVM_CHECK_check_ast_typed_var_indexs(SPVM_COMPILER* compiler, SPVM_BASIC_T
           case SPVM_OP_C_ID_BLOCK: {
             SPVM_BLOCK* block = op_cur->uv.block;
             // Move loop condition to last sibling before opcode building
-            if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
+            if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_OUTER) {
               SPVM_OP* op_init = op_cur->first;
               SPVM_OP* op_condition = op_cur->first->sibparent;
               SPVM_OP* op_block_statements = op_cur->first->sibparent->sibparent;

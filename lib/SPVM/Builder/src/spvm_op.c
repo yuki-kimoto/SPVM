@@ -2058,7 +2058,7 @@ SPVM_OP* SPVM_OP_build_loop_statement(SPVM_COMPILER* compiler, SPVM_OP* op_loop,
   op_block_inner->uv.block->id = SPVM_BLOCK_C_ID_LOOP_STATEMENTS;
   
   SPVM_OP* op_block_outer = SPVM_OP_new_op_block(compiler, op_loop->file, op_loop->line);
-  op_block_outer->uv.block->id = SPVM_BLOCK_C_ID_LOOP_INIT;
+  op_block_outer->uv.block->id = SPVM_BLOCK_C_ID_LOOP_OUTER;
   
   if (!op_increment) {
     op_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_loop->file, op_loop->line);
