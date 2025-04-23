@@ -182,8 +182,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   memset(mortal_stack_tops, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
   memset(mortal_stack_object_var_indexes, -1, current_method->mortal_stack_length * sizeof(int32_t));
   
-  int32_t cur_motal_stack_tops_index = 0;
-  
   int32_t object_data_offset = env->api->runtime->get_object_data_offset(env->runtime);
   int32_t object_ref_count_offset = env->api->runtime->get_object_ref_count_offset(env->runtime);
   int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);
@@ -298,58 +296,16 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack_object_var_indexes, mortal_stack_top, opcode->operand0);
         break;
       }
-      case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
-        /*
-        int32_t original_mortal_stack_top = opcode->operand0;
-        SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack_object_var_indexes, &mortal_stack_top, original_mortal_stack_top);
-        */
-        break;
-      }
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       case SPVM_OPCODE_C_ID_ENTER_SCOPE: {
         int32_t mortal_stack_tops_index = opcode->operand0;
-        
-        cur_motal_stack_tops_index = mortal_stack_tops_index;
-        
-        //spvm_warn("[ENTER_SCOPE]%d %s#%s", mortal_stack_tops_index, current_basic_type->name, current_method->name);
-        //spvm_warn("[ENTER_SCOPE BEGIN]%d %d %d", mortal_stack_top, mortal_stack_tops[mortal_stack_tops_index], mortal_stack_tops_index);
         SPVM_IMPLEMENT_ENTER_SCOPE(mortal_stack, mortal_stack_top, mortal_stack_tops, mortal_stack_tops_index);
-        //spvm_warn("[ENTER_SCOPE END]%d %d %d", mortal_stack_top, mortal_stack_tops[mortal_stack_tops_index], mortal_stack_tops_index);
         break;
       }
-      case SPVM_OPCODE_C_ID_LEAVE_SCOPE_V2: {
+      case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
         int32_t mortal_stack_tops_index = opcode->operand0;
-        
-        if (mortal_stack_tops_index > cur_motal_stack_tops_index) {
-          mortal_stack_tops_index = cur_motal_stack_tops_index;
-        }
-        
-        //spvm_warn("[LEAVE_SCOPE]%d %s#%s", mortal_stack_tops_index, current_basic_type->name, current_method->name);
-        //spvm_warn("[LEAVE_SCOPE BEGIN]%d %d %d", mortal_stack_top, mortal_stack_tops[mortal_stack_tops_index], mortal_stack_tops_index);
-        SPVM_IMPLEMENT_LEAVE_SCOPE_V2(env, stack, object_vars, mortal_stack_object_var_indexes, &mortal_stack_top, mortal_stack_tops, mortal_stack_tops_index);
-        //spvm_warn("[LEAVE_SCOPE END]%d %d %d", mortal_stack_top, mortal_stack_tops[mortal_stack_tops_index], mortal_stack_tops_index);
+        SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack_object_var_indexes, &mortal_stack_top, mortal_stack_tops, mortal_stack_tops_index);
         break;
       }
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       case SPVM_OPCODE_C_ID_MOVE_BYTE_ZERO: {
         SPVM_IMPLEMENT_MOVE_BYTE_ZERO(byte_vars[opcode->operand0]);
         break;

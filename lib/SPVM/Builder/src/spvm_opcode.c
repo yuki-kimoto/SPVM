@@ -110,7 +110,6 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "ENTER_SCOPE",
     "PUSH_MORTAL",
     "LEAVE_SCOPE",
-    "LEAVE_SCOPE_V2",
     "MOVE_CONSTANT_BYTE",
     "MOVE_CONSTANT_INT",
     "MOVE_CONSTANT_LONG",
