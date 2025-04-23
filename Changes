@@ -1,17 +1,17 @@
-0.990055 2025-04-21
-<<<<<<< HEAD
+0.990055 2025-04-23
   [Internal Changes]
     * Mortal stack length has been reduced to the actual required length.
     * Cleanup exception logig in opcode_builder.c.
-=======
+    * Fix bugs in scope. There was quite a bit of rework done to fix a bug (issue 715) regarding scope,
+      where the mortal stack was using compile-time information and now uses dynamic information to fix bugs,
+      and the LEAVE_SCOPE opcode has been reworked for this purpose.
   [Bug Fix]
     * Fix a scope bug referered by issue 715
     
       https://github.com/yuki-kimoto/SPVM/issues/715
       
       This bug is fixed, but other scope bugs is found.
-    
->>>>>>> bug
+   
 0.990054 2025-04-17
   [Changes]
     * Fn#substr method does not throw an eception even if $offset + $length is greater than the length of $string.
