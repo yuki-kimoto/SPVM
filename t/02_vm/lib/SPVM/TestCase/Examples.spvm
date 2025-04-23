@@ -9,14 +9,4 @@ class TestCase::Examples {
     return $object;
   }
   
-  static method scope : int () {
-    
-    {
-      if (0) {
-        "";
-      }
-    }
-    
-    return 1;
-  }
 }

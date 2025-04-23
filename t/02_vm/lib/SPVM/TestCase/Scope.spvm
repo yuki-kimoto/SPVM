@@ -1,0 +1,13 @@
+class TestCase::Scope {
+  
+  static method extra : int () {
+    
+    {
+      if (0) {
+        "";
+      }
+    }
+    
+    return 1;
+  }
+}

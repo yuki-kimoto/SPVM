@@ -1001,6 +1001,7 @@ t/02_vm/lib/SPVM/TestCase/Resource/Mylib2.config
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib2.native/include/mylib2_source1.h
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib2.native/src/mylib2_source1.c
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib2.spvm
+t/02_vm/lib/SPVM/TestCase/Scope.spvm
 t/02_vm/lib/SPVM/TestCase/Simple.spvm
 t/02_vm/lib/SPVM/TestCase/SimpleChild.spvm
 t/02_vm/lib/SPVM/TestCase/Statement/For.spvm
