@@ -13,6 +13,7 @@
       This bug is fixed, but other scope bugs is found.
    [Incomptible Changes that are unlikely to have any impact]
      * Rename leave_scope_local internal native API to removed3.
+     * Add new leave_scope_local internal native API at index 5.
      
 0.990054 2025-04-17
   [Changes]

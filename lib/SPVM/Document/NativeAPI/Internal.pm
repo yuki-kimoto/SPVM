@@ -32,14 +32,6 @@ C<void (*dec_ref_count)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Env
 
 Decrements the reference count of the object I<object>.
 
-=head2 removed3
-
-C<void (*removed3)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);>
-
-Performs a leaveing scope operation for local variables given object variables I<object_vars>, the mortal stack I<mortal_stack>, the address of the top of the mortal stack I<mortal_stack_top_ptr>, and the original top of the mortal stack I<original_mortal_stack_top>.
-
-The value referenced by I<mortal_stack_top_ptr> is updated.
-
 =head2 get_stack_tmp_buffer
 
 C<char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);>
@@ -50,6 +42,14 @@ The byte size of the temporary buffer is L<SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE|S
 
 Currently, this internal native API is the same as L<get_stack_tmp_buffer|SPVM::Document::NativeAPI/"get_stack_tmp_buffer"> native API.
 
+=head2 leave_scope_local
+
+C<void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack_typed_var_index, int32_t* mortal_stack_top_ptr, int32_t* mortal_stack_tops, int32_t mortal_stack_tops_index);>
+
+Performs a leaveing scope operation for local variables given object variables I<object_vars>, the mortal stack I<mortal_stack>, the address of the top of the mortal stack I<mortal_stack_top_ptr>, and the mortal stack tops I<mortal_stack_tops>, and the index of the top of the mortal stack I<mortal_stack_tops_index>.
+
+The value referenced by I<mortal_stack_top_ptr> is updated.
+
 =head1 Native API IDs
 
   0 get_ref_count
@@ -57,6 +57,7 @@ Currently, this internal native API is the same as L<get_stack_tmp_buffer|SPVM::
   2 dec_ref_count
   3 removed3
   4 get_stack_tmp_buffer
+  5 leave_scope_local
 
 =head1 See Also
 
