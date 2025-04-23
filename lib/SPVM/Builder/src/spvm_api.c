@@ -4998,15 +4998,20 @@ void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** 
 
 void SPVM_API_leave_scope_local_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack_typed_var_index, int32_t* mortal_stack_top_ptr, int32_t* mortal_stack_tops, int32_t mortal_stack_tops_index) {
   
-  for (int32_t mortal_stack_index = mortal_stack_tops[mortal_stack_tops_index]; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
-    int32_t var_index = mortal_stack_typed_var_index[mortal_stack_index];
-    SPVM_OBJECT** ref = (SPVM_OBJECT**)&object_vars[var_index];
-    if (*ref != NULL) {
-      SPVM_API_assign_object(env, stack, ref, NULL);
+  if (!(mortal_stack_tops[mortal_stack_tops_index] == -1)) {
+    for (int32_t mortal_stack_index = mortal_stack_tops[mortal_stack_tops_index]; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
+      int32_t var_index = mortal_stack_typed_var_index[mortal_stack_index];
+      if (!(var_index == -1)) {
+        SPVM_OBJECT** ref = (SPVM_OBJECT**)&object_vars[var_index];
+        if (*ref != NULL) {
+          SPVM_API_assign_object(env, stack, ref, NULL);
+        }
+      }
+      mortal_stack_typed_var_index[mortal_stack_index] = -1;
     }
-    mortal_stack_typed_var_index[mortal_stack_index] = 0;
+    *mortal_stack_top_ptr = mortal_stack_tops[mortal_stack_tops_index];
+    mortal_stack_tops[mortal_stack_tops_index] = -1;
   }
-  *mortal_stack_top_ptr = mortal_stack_tops[mortal_stack_tops_index];
 }
 
 SPVM_OBJECT* SPVM_API_get_object_no_weaken_address(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
