@@ -2,6 +2,16 @@ class TestCase::Statement::While {
   use TestCase::Minimal;
 
   static method condition_my_var_mem_id : int () {
+    
+    # Assing an object in condition
+    {
+      my $strings = ["a", "b", undef];
+      my $i = 0;
+      while (my $string = $strings->[$i]) {
+        $i++;
+      }
+    }
+    
     while (my $uchar = 5) {
       my $is_char = 10;
 
