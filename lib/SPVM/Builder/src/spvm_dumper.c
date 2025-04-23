@@ -126,7 +126,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_OUTER) {
         fprintf(stderr, " LOOP_INIT");
       }
-      else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+      else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
         fprintf(stderr, " LOOP_STATEMENTS");
       }
       else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_SWITCH) {

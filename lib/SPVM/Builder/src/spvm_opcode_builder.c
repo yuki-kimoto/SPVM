@@ -298,7 +298,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               int32_t last_block_base = last_opcode_index_stack->length;
               SPVM_LIST_push(loop_block_stack_last_base, (void*)(intptr_t)last_block_base);
             }
-            else if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+            else if (block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
               
               // Push next block base stack
               int32_t next_block_base = next_opcode_index_stack->length;
@@ -446,7 +446,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                     break_goto->operand0 = break_goto_opcode_base_index;
                   }
                 }
-                else if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+                else if (block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
                   // next block base
                   int32_t next_block_base = (intptr_t)SPVM_LIST_pop(loop_block_stack_next_base);
                   

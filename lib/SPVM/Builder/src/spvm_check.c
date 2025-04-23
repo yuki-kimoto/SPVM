@@ -1383,7 +1383,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           SPVM_LIST_push(var_decl_scope_base_stack, (void*)(intptr_t)block_var_decl_base);
         }
         
-        if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+        if (block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
           loop_block_stack_length++;
         }
         else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
@@ -3060,7 +3060,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             }
             
             // Pop loop block var_decl variable base
-            if (block->id == SPVM_BLOCK_C_ID_LOOP_STATEMENTS) {
+            if (block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
               loop_block_stack_length--;
             }
             // Pop try block var_decl variable base
