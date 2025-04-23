@@ -344,6 +344,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               
               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ENTER_SCOPE);
               opcode.operand0 = mortal_stack_tops_index;
+              block->mortal_stack_tops_index = mortal_stack_tops_index;
               mortal_stack_tops_index++;
               
               if (mortal_stack_tops_index > mortal_stack_tops_max) {
