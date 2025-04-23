@@ -204,6 +204,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_typed_var_index[");
     SPVM_STRING_BUFFER_add_int(string_buffer, method_mortal_stack_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  memset(mortal_stack_typed_var_index, -1, ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_length * sizeof(int32_t));
+    SPVM_STRING_BUFFER_add(string_buffer, ");");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
   
@@ -211,6 +214,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_tops[");
     SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_tops_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  memset(mortal_stack_tops, -1, ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_tops_length * sizeof(int32_t));
+    SPVM_STRING_BUFFER_add(string_buffer, ");");
   }
   
   // short variable declarations
@@ -692,12 +698,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
+        /*
         int32_t original_mortal_stack_top = opcode->operand0;
         if (method_mortal_stack_length > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack_typed_var_index, &mortal_stack_top, original_mortal_stack_top = ");
           SPVM_STRING_BUFFER_add_int(string_buffer, original_mortal_stack_top);
           SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         }
+        */
         break;
       }
       case SPVM_OPCODE_C_ID_ENTER_SCOPE: {
@@ -707,12 +715,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE_V2: {
-        /*
         int32_t mortal_stock_tops_index = opcode->operand0;
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LEAVE_SCOPE_V2(env, stack, object_vars, mortal_stack_typed_var_index, &mortal_stack_top, mortal_stack_tops, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, mortal_stock_tops_index);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
-        */
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_BYTE_ZERO: {
