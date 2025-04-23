@@ -3104,7 +3104,7 @@ SPVM_OP* SPVM_OP_build_defined_or(SPVM_COMPILER* compiler, SPVM_OP* op_defined_o
     [After]
     SEQUENCE                op_sequence
       ASSIGN                op_assign_var
-        VAR_LEFT            op_left_operand
+        OP_LEFT             op_left_operand
         VAR                 op_var
           VAR_DECL          op_var_decl
       IF                    op_if
@@ -3112,7 +3112,7 @@ SPVM_OP* SPVM_OP_build_defined_or(SPVM_COMPILER* compiler, SPVM_OP* op_defined_o
           VAR               op_var_condition
         DO_NOTHING
         ASSIGN              op_assign_right
-          OP                op_right_operand
+          OP_RIGHT          op_right_operand
           VAR               op_var_right
       VAR                   op_var_ret
   */

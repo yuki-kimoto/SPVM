@@ -1,0 +1,22 @@
+class TestCase::Issues::Issue715 {
+  
+  # https://github.com/yuki-kimoto/SPVM/issues/715
+  static method test : int () {
+    
+    my $tmp = (int[])undef;
+    
+    (int[][])undef || [$tmp];
+    
+    my $line = "";
+    
+    {
+      my $tmp = "";
+    }
+    
+    unless ($line) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
