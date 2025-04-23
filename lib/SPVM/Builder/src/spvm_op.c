@@ -2041,8 +2041,8 @@ SPVM_OP* SPVM_OP_build_loop_statement(SPVM_COMPILER* compiler, SPVM_OP* op_loop,
   
   // Condition
   assert(op_condition_operand->moresib == 0);
-  SPVM_OP* op_constant_1 = SPVM_OP_new_op_constant_int(compiler, 1, op_condition_operand->file, op_condition_operand->line);
-  SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_constant_1, 1);
+  SPVM_OP* op_constant_0 = SPVM_OP_new_op_constant_int(compiler, 0, op_condition_operand->file, op_condition_operand->line);
+  SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_constant_0, 0);
   op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_LOOP;
   
   SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_condition_operand->file, op_condition_operand->line);
