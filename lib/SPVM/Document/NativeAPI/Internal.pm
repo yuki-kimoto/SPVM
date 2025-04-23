@@ -32,9 +32,9 @@ C<void (*dec_ref_count)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Env
 
 Decrements the reference count of the object I<object>.
 
-=head2 leave_scope_local
+=head2 removed3
 
-C<void (*leave_scope_local)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);>
+C<void (*removed3)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);>
 
 Performs a leaveing scope operation for local variables given object variables I<object_vars>, the mortal stack I<mortal_stack>, the address of the top of the mortal stack I<mortal_stack_top_ptr>, and the original top of the mortal stack I<original_mortal_stack_top>.
 
@@ -55,7 +55,7 @@ Currently, this internal native API is the same as L<get_stack_tmp_buffer|SPVM::
   0 get_ref_count
   1 inc_ref_count
   2 dec_ref_count
-  3 leave_scope_local
+  3 removed3
   4 get_stack_tmp_buffer
 
 =head1 See Also

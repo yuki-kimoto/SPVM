@@ -11,7 +11,9 @@
       https://github.com/yuki-kimoto/SPVM/issues/715
       
       This bug is fixed, but other scope bugs is found.
-   
+   [Incomptible Changes that are unlikely to have any impact]
+     * Rename leave_scope_local internal native API to removed3.
+     
 0.990054 2025-04-17
   [Changes]
     * Fn#substr method does not throw an eception even if $offset + $length is greater than the length of $string.
