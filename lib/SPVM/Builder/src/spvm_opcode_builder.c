@@ -253,8 +253,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       SPVM_LIST* eval_block_stack_goto_opcode_index = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* if_eq_or_if_ne_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-      
       SPVM_LIST* last_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       SPVM_LIST* break_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -485,11 +483,9 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                     SPVM_LIST_push(if_block_stack_goto_end_opcode_index, (void*)(intptr_t)opcode_index);
                   }
                   
-                  int32_t if_eq_or_if_ne_goto_opcode_index = (intptr_t)SPVM_LIST_pop(if_eq_or_if_ne_opcode_index_stack);
-                  
-                  SPVM_OPCODE* if_eq_or_if_ne_goto = (opcode_list->values + if_eq_or_if_ne_goto_opcode_index);
-                  int32_t if_eq_or_if_ne_goto_opcode_base_index = opcode_list->length;
-                  if_eq_or_if_ne_goto->operand0 = if_eq_or_if_ne_goto_opcode_base_index;
+                  SPVM_OPCODE* condition_goto = (opcode_list->values + block->condition_opcode_index);
+                  int32_t condition_goto_opcode_base_index = opcode_list->length;
+                  condition_goto->operand0 = condition_goto_opcode_base_index;
                 }
                 else if (block->id == SPVM_BLOCK_C_ID_ELSE) {
                   
@@ -540,8 +536,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 else {
                   assert(0);
                 }
-                
-                SPVM_LIST_push(if_eq_or_if_ne_opcode_index_stack, (void*)(intptr_t)opcode_index);
                 
                 int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur->first);
                 
@@ -5182,7 +5176,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       }
 
       // Free list
-      SPVM_LIST_free(if_eq_or_if_ne_opcode_index_stack);
       SPVM_LIST_free(if_block_stack_goto_end_opcode_index);
       SPVM_LIST_free(loop_block_stack_goto_opcode_index);
       SPVM_LIST_free(last_opcode_index_stack);
