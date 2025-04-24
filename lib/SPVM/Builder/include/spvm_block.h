@@ -27,6 +27,7 @@ struct spvm_block {
   int32_t mortal_stack_tops_index;
   int32_t begin_opcode_index;
   int32_t end_opcode_index;
+  int32_t condition_opcode_index;
   int32_t loop_increment_opcode_index;
 };
 
