@@ -302,7 +302,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               int32_t next_block_base = next_opcode_index_stack->length;
               SPVM_LIST_push(next_opcode_index_base_stack, (void*)(intptr_t)next_block_base);
             }
-            else if (block->id == SPVM_BLOCK_C_ID_SWITCH_INNER) {
+            else if (block->id == SPVM_BLOCK_C_ID_SWITCH_OUTER) {
               int32_t break_block_base = break_opcode_index_stack->length;
               SPVM_LIST_push(break_opcode_index_base_stack, (void*)(intptr_t)break_block_base);
             }
@@ -403,7 +403,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                     return_on_exception_goto->operand0 = opcode_list->length;
                   }
                 }
-                else if (block->id == SPVM_BLOCK_C_ID_SWITCH_INNER) {
+                else if (block->id == SPVM_BLOCK_C_ID_SWITCH_OUTER) {
                   int32_t break_opcode_index_base = (intptr_t)SPVM_LIST_pop(break_opcode_index_base_stack);
                   int32_t break_opcode_index_stack_pop_count = break_opcode_index_stack->length - break_opcode_index_base;
                   for (int32_t i = 0; i < break_opcode_index_stack_pop_count; i++) {
