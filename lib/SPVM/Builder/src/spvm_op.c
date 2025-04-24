@@ -2054,6 +2054,7 @@ SPVM_OP* SPVM_OP_build_loop_statement(SPVM_COMPILER* compiler, SPVM_OP* op_loop,
   SPVM_OP_insert_child(compiler, op_list_op_block_inner, op_list_op_block_inner->first, op_if);
   
   op_block_inner->uv.block->id = SPVM_BLOCK_C_ID_LOOP_INNER;
+  op_block_inner->uv.block->no_scope = 1;
   
   SPVM_OP* op_block_outer = SPVM_OP_new_op_block(compiler, op_loop->file, op_loop->line);
   op_block_outer->uv.block->id = SPVM_BLOCK_C_ID_LOOP_OUTER;
