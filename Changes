@@ -11,6 +11,8 @@
       https://github.com/yuki-kimoto/SPVM/issues/715
       
       This bug is fixed, but other scope bugs is found.
+    * Fix potential scope bugs that enter scope operation is not performed, but leave scope operation in the same scope is performed.
+    
   [Incomptible Changes that are unlikely to have any impact]
     * Rename leave_scope_local internal native API to removed3.
     * Add new leave_scope_local internal native API at index 5.
