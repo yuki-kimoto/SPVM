@@ -1812,27 +1812,26 @@ SPVM_OP* SPVM_OP_build_eval(SPVM_COMPILER* compiler, SPVM_OP* op_eval, SPVM_OP* 
   
   SPVM_OP_insert_child(compiler, op_eval, op_eval->last, op_eval_block);
   
-  // eval block
   op_eval_block->uv.block->id = SPVM_BLOCK_C_ID_EVAL;
   
   return op_eval;
 }
 
-SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_switch, SPVM_OP* op_switch_operand, SPVM_OP* op_switch_block) {
+SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_switch, SPVM_OP* op_condition_operand, SPVM_OP* op_block) {
   
-  SPVM_OP* op_switch_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SWITCH_CONDITION, op_switch_operand->file, op_switch_operand->line);
-  SPVM_OP_insert_child(compiler, op_switch_condition, op_switch_condition->last, op_switch_operand);
+  SPVM_OP* op_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SWITCH_CONDITION, op_condition_operand->file, op_condition_operand->line);
+  SPVM_OP_insert_child(compiler, op_condition, op_condition->last, op_condition_operand);
   
-  SPVM_OP* op_switch_condition_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_switch_condition->file, op_switch_condition->line);
-  SPVM_OP_insert_child(compiler, op_switch_condition_do_nothing, op_switch_condition_do_nothing->last, op_switch_condition);
+  SPVM_OP* op_condition_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_condition->file, op_condition->line);
+  SPVM_OP_insert_child(compiler, op_condition_do_nothing, op_condition_do_nothing->last, op_condition);
   
-  SPVM_OP_insert_child(compiler, op_switch, op_switch->last, op_switch_condition_do_nothing);
-  SPVM_OP_insert_child(compiler, op_switch, op_switch->last, op_switch_block);
+  SPVM_OP_insert_child(compiler, op_switch, op_switch->last, op_condition_do_nothing);
+  SPVM_OP_insert_child(compiler, op_switch, op_switch->last, op_block);
   
   SPVM_SWITCH_INFO* switch_info = SPVM_SWITCH_INFO_new(compiler);
   op_switch->uv.switch_info = switch_info;
   
-  op_switch_condition->uv.switch_info = switch_info;
+  op_condition->uv.switch_info = switch_info;
   
   return op_switch;
 }
