@@ -25,6 +25,31 @@ class TestCase::Scope {
     return 1;
   }
   
+  static method while : int () {
+    
+    # while condition has own scope
+    {
+      while (my $num = 0) {
+        
+      }
+      
+      my $num = 2;
+      
+      unless ($num == 2) {
+        return 0;
+      }
+    }
+    
+    # Objects in condition part is destroyed.
+    {
+      while ((my $object = Int->new(1), my $num = 0, $num)) {
+        
+      }
+    }
+    
+    return 1;
+  }
+  
   static method extra : int () {
     
     {
