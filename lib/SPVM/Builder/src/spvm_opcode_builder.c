@@ -1339,7 +1339,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                      SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack->length, catch_on_exception_opcode_index_stack, return_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+                      SPVM_OPCODE_BUILDER_push_opcode_on_exception(compiler, opcode_list, eval_block_stack->length, catch_on_exception_opcode_index_stack, return_on_exception_opcode_index_stack, method->op_method, op_cur->line);
                       
                       if (!SPVM_TYPE_is_void_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode_get_stack);
@@ -5127,7 +5127,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
             }
             
             if (throw_exception) {
-              SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack->length, catch_on_exception_opcode_index_stack, return_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+              SPVM_OPCODE_BUILDER_push_opcode_on_exception(compiler, opcode_list, eval_block_stack->length, catch_on_exception_opcode_index_stack, return_on_exception_opcode_index_stack, method->op_method, op_cur->line);
             }
             
             // [END]Postorder traversal position
@@ -5196,7 +5196,7 @@ void SPVM_OPCODE_BUILDER_set_opcode_id(SPVM_COMPILER* compiler, SPVM_OPCODE* opc
   opcode->id = opcode_id;
 }
 
-void SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(
+void SPVM_OPCODE_BUILDER_push_opcode_on_exception(
   SPVM_COMPILER* compiler,
   SPVM_OPCODE_LIST* opcode_list,
   int32_t in_eval_block,
