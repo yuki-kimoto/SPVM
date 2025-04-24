@@ -239,8 +239,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       SPVM_LIST* block_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* loop_block_stack_goto_opcode_index = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-      
       SPVM_LIST* loop_block_stack_next_base = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       SPVM_LIST* loop_block_stack_last_base = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -5118,7 +5116,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   
                   int32_t typed_var_index_invocant = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_term_invocant);
                   int32_t typed_var_index_index = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_term_index);
-
+                  
                   int32_t fields_length = array_basic_type->fields->length;
                   int32_t field_offset = field->index;
                   
@@ -5130,7 +5128,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   opcode.operand3 = operand3;
                   
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-
+                  
                   throw_exception = 1;
                   
                 }
@@ -5168,9 +5166,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
           }
         }
       }
-
+      
       // Free list
-      SPVM_LIST_free(loop_block_stack_goto_opcode_index);
       SPVM_LIST_free(last_opcode_index_stack);
       SPVM_LIST_free(break_opcode_index_stack);
       SPVM_LIST_free(next_opcode_index_stack);
