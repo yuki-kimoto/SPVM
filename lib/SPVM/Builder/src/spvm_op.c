@@ -2083,8 +2083,10 @@ SPVM_OP* SPVM_OP_build_if_require_statement(SPVM_COMPILER* compiler, SPVM_OP* op
 SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPVM_OP* op_if_operand, SPVM_OP* op_block_true, SPVM_OP* op_block_false, int32_t no_scope) {
   
   if (op_if->id == SPVM_OP_C_ID_UNLESS) {
-    SPVM_OP* op_logical_not = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOGICAL_NOT, op_if_operand->file, op_if_operand->line);
-    op_if_operand = SPVM_OP_build_logical_not(compiler, op_logical_not, op_if_operand);
+    
+    SPVM_OP* op_block_tmp = op_block_true;
+    op_block_true = op_block_false;
+    op_block_false = op_block_tmp;
     op_if->id = SPVM_OP_C_ID_IF;
   }
   else if (op_if->id == SPVM_OP_C_ID_ELSIF) {
