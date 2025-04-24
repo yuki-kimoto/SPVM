@@ -904,7 +904,8 @@ else_statement
     }
   | ELSIF '(' operator ')' block else_statement
     {
-      $$ = SPVM_OP_build_if_statement(compiler, $1, $3, $5, $6, 0);
+      SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, $1->file, $1->line);
+      $$ = SPVM_OP_build_if_statement(compiler, op_if, $3, $5, $6, 0);
     }
 
 block 

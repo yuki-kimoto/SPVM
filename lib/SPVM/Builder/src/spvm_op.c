@@ -2089,9 +2089,6 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
     op_block_false = op_block_tmp;
     op_if->id = SPVM_OP_C_ID_IF;
   }
-  else if (op_if->id == SPVM_OP_C_ID_ELSIF) {
-    op_if->id = SPVM_OP_C_ID_IF;
-  }
   
   // Condition
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_if_operand, 0);
