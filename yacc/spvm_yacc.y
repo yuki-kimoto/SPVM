@@ -791,13 +791,11 @@ switch_block
   : '{' opt_case_statements '}'
     {
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->current_file, compiler->current_line);
-      op_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH_INNER;
       $$ = SPVM_OP_build_switch_block(compiler, op_block, $2, NULL);
     }
   | '{' opt_case_statements default_statement '}'
     {
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->current_file, compiler->current_line);
-      op_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH_INNER;
       $$ = SPVM_OP_build_switch_block(compiler, op_block, $2, $3);
     }
 
