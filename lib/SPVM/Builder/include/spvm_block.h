@@ -29,6 +29,7 @@ struct spvm_block {
   int32_t end_opcode_index;
   int32_t condition_opcode_index;
   int32_t loop_increment_opcode_index;
+  int32_t if_end_goto_opcode_index;
 };
 
 SPVM_BLOCK* SPVM_BLOCK_new(SPVM_COMPILER* compiler);
