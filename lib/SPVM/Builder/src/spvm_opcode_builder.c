@@ -291,7 +291,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
             
             SPVM_BLOCK* block = op_cur->uv.block;
             
-            block->opcode_index = opcode_list->length;
+            block->begin_opcode_index = opcode_list->length;
             
             SPVM_LIST_push(block_stack, (void*)(intptr_t)block);
             
@@ -305,7 +305,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               // Push next block base stack
               int32_t next_block_base = next_opcode_index_stack->length;
               SPVM_LIST_push(loop_block_stack_next_base, (void*)(intptr_t)next_block_base);
-
+              
               SPVM_OPCODE opcode = {0};
             }
             else if (block->id == SPVM_BLOCK_C_ID_SWITCH) {
@@ -317,7 +317,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               int32_t opcode_index = opcode_list->length;
               
               SPVM_LIST_push(eval_block_stack_goto_opcode_index, (void*)(intptr_t)opcode_index);
-
+              
               // Set exception var to undef in eval block start
               {
                 SPVM_OPCODE opcode = {0};
@@ -507,7 +507,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   
                   // Add goto
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GOTO);
-                  opcode.operand0 = block->opcode_index;
+                  opcode.operand0 = block->begin_opcode_index;
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                 }
                 
