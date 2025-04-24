@@ -508,6 +508,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                 }
                 
+                block->end_opcode_index = opcode_list->length;
+                
                 SPVM_LIST_pop(block_stack);
                 
                 break;
