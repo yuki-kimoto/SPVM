@@ -3509,7 +3509,7 @@ yyreduce:
 #line 792 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->current_file, compiler->current_line);
-      op_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH;
+      op_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH_INNER;
       (yyval.opval) = SPVM_OP_build_switch_block(compiler, op_block, (yyvsp[-1].opval), NULL);
     }
 #line 3516 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
@@ -3519,7 +3519,7 @@ yyreduce:
 #line 798 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->current_file, compiler->current_line);
-      op_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH;
+      op_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH_INNER;
       (yyval.opval) = SPVM_OP_build_switch_block(compiler, op_block, (yyvsp[-2].opval), (yyvsp[-1].opval));
     }
 #line 3526 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */

@@ -124,13 +124,13 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         fprintf(stderr, " ELSE");
       }
       else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_OUTER) {
-        fprintf(stderr, " LOOP_INIT");
+        fprintf(stderr, " LOOP_OUTER");
       }
       else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
-        fprintf(stderr, " LOOP_STATEMENTS");
+        fprintf(stderr, " LOOP_INNER");
       }
-      else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_SWITCH) {
-        fprintf(stderr, " SWITCH");
+      else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_SWITCH_INNER) {
+        fprintf(stderr, " SWITCH_INNER");
       }
       else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_METHOD) {
         fprintf(stderr, " METHOD");
