@@ -5157,10 +5157,9 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode,  SPVM_OPCODE_C_ID_END_METHOD);
         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
         
-        // TODO: +10 is not needed if scope bug does not eixst.
-        method->mortal_stack_length = mortal_stack_max + 10;
+        method->mortal_stack_length = mortal_stack_max;
         
-        method->mortal_stack_tops_length = mortal_stack_tops_max + 1;
+        method->mortal_stack_tops_length = mortal_stack_tops_max;
         
         assert(mortal_stack_tops_index == 0);
       }
