@@ -3882,25 +3882,6 @@ void SPVM_CHECK_check_ast_typed_var_indexs(SPVM_COMPILER* compiler, SPVM_BASIC_T
       while (1) {
         // [START]Postorder traversal position
         switch (op_cur->id) {
-          case SPVM_OP_C_ID_BLOCK: {
-            SPVM_BLOCK* block = op_cur->uv.block;
-            // Move loop condition to last sibling before opcode building
-            if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_OUTER) {
-              SPVM_OP* op_init = op_cur->first;
-              SPVM_OP* op_condition = op_cur->first->sibparent;
-              SPVM_OP* op_block_statements = op_cur->first->sibparent->sibparent;
-              SPVM_OP* op_loop_increment = op_cur->first->sibparent->sibparent->sibparent;
-              
-              op_init->sibparent = op_block_statements;
-              op_loop_increment->sibparent = op_condition;
-              op_loop_increment->moresib = 1;
-              
-              op_condition->sibparent = op_cur;
-              op_condition->moresib = 0;
-            }
-            
-            break;
-          }
           case SPVM_OP_C_ID_VAR: {
             if (op_cur->uv.var->is_declaration) {
               SPVM_VAR_DECL* var_decl = op_cur->uv.var->var_decl;

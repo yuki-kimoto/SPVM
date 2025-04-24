@@ -16,6 +16,8 @@
     * Add new leave_scope_local internal native API at index 5.
   [Changes]
     * The condition part  in switch statement has own scope.
+  [Big Internal Changes]
+    * The AST logic for while and for statement are rewritten completely.
     
 0.990054 2025-04-17
   [Changes]
