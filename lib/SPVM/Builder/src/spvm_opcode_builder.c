@@ -530,9 +530,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_NE_ZERO);
                 }
                 
-                if (op_cur->flag & SPVM_OP_C_FLAG_CONDITION_IF) {
-                  SPVM_LIST_push(if_eq_or_if_ne_opcode_index_stack, (void*)(intptr_t)opcode_index);
-                }
+                SPVM_LIST_push(if_eq_or_if_ne_opcode_index_stack, (void*)(intptr_t)opcode_index);
                 
                 int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur->first);
                 

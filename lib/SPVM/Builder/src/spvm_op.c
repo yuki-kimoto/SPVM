@@ -2084,7 +2084,6 @@ SPVM_OP* SPVM_OP_build_if_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if, SPV
   
   // Condition
   SPVM_OP* op_condition = SPVM_OP_build_condition(compiler, op_if_operand, 0);
-  op_condition->flag |= SPVM_OP_C_FLAG_CONDITION_IF;
   
   // Create true block if needed
   if (op_block_true->id != SPVM_OP_C_ID_BLOCK) {

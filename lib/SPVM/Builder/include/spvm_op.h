@@ -258,12 +258,6 @@ enum {
 const char* const* SPVM_OP_C_ID_NAMES(void);
 
 enum {
-  // Condition flag
-  SPVM_OP_C_FLAG_CONDITION_IF = 1,
-  SPVM_OP_C_FLAG_CONDITION_LOOP = 2,
-};
-
-enum {
   // Special assign flag
   SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD,
   SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT,
