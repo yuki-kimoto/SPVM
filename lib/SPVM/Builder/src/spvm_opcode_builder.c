@@ -277,7 +277,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       int32_t new_object_count = 0;
       while (op_cur) {
         
-        int32_t throw_exception = 0;
+        int32_t check_exception = 0;
         
         // [START]Preorder traversal position
         switch (op_cur->id) {
@@ -753,7 +753,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                 }
                 
-                throw_exception = 1;
+                check_exception = 1;
                 
                 break;
               }
@@ -950,7 +950,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                       break;
                     }
@@ -1006,7 +1006,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                       break;
                     }
@@ -1358,7 +1358,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                       break;
                     }
@@ -1436,7 +1436,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                       break;
                     }
@@ -1459,7 +1459,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         opcode.operand3 = (uint16_t)field->index;
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                        throw_exception = 1;
+                        check_exception = 1;
                         
                       }
                       else if (op_assign_src->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN) {
@@ -1477,7 +1477,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         opcode.operand3 = (uint16_t)field->index;
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                         
-                        throw_exception = 1;
+                        check_exception = 1;
                         
                       }
                       else if (op_assign_src->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK) {
@@ -1498,7 +1498,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         opcode.operand3 = (uint16_t)field->index;
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                         
-                        throw_exception = 1;
+                        check_exception = 1;
                         
                       }
                       else {
@@ -1562,7 +1562,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                           SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                           
-                          throw_exception = 1;
+                          check_exception = 1;
                           
                         }
                         // Mulnum field access
@@ -1679,7 +1679,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                           SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                          throw_exception = 1;
+                          check_exception = 1;
                           
                         }
                       }
@@ -1751,7 +1751,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                        throw_exception = 1;
+                        check_exception = 1;
                         
                       }
                       else {
@@ -1811,7 +1811,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                        throw_exception = 1;
+                        check_exception = 1;
                         
                       }
                       break;
@@ -1926,7 +1926,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                         
-                        throw_exception = 1;
+                        check_exception = 1;
                         
                       }
                       else if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -1978,7 +1978,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                         
-                        throw_exception = 1;
+                        check_exception = 1;
                         
                       }
                       else {
@@ -2225,7 +2225,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       switch (type_dist->basic_type->id) {
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
-                          throw_exception = 1;
+                          check_exception = 1;
                         
                         break;
                       }
@@ -2249,7 +2249,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                      throw_exception = 1;
+                      check_exception = 1;
                         
                       break;
                     }
@@ -2270,7 +2270,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                       
                       break;
@@ -2312,7 +2312,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
                         {
-                          throw_exception = 1;
+                          check_exception = 1;
                           
                           break;
                         }
@@ -2336,7 +2336,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                       break;
                     }
@@ -2357,7 +2357,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                       break;
                     }
@@ -2807,11 +2807,11 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_byte_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE);
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE);
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_BYTE);
@@ -2842,11 +2842,11 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_short_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT);
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT);
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_SHORT);
@@ -2877,11 +2877,11 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_int_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_OBJECT_TO_INT);
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_OBJECT_TO_INT);
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_INT);
@@ -2912,11 +2912,11 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_long_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_OBJECT_TO_LONG);
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_OBJECT_TO_LONG);
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_LONG);
@@ -2947,11 +2947,11 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_float_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT);
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT);
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_FLOAT);
@@ -2982,11 +2982,11 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           }
                           else if (SPVM_TYPE_is_double_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE);
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE);
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_DOUBLE);
@@ -3014,7 +3014,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             int32_t operand3 = op_cast_type->uv.type->dimension;
                             assert(operand3 < 0xFFFF);
                             opcode.operand3 = operand3;
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else {
                             assert(0);
@@ -3034,7 +3034,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             int32_t operand3 = op_cast_type->uv.type->dimension;
                             assert(operand3 < 0xFFFF);
                             opcode.operand3 = operand3;
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else {
                             assert(0);
@@ -3054,7 +3054,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             int32_t operand3 = op_cast_type->uv.type->dimension;
                             assert(operand3 < 0xFFFF);
                             opcode.operand3 = operand3;
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else {
                             assert(0);
@@ -3074,7 +3074,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             int32_t operand3 = op_cast_type->uv.type->dimension;
                             assert(operand3 < 0xFFFF);
                             opcode.operand3 = operand3;
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else {
                             assert(0);
@@ -3094,7 +3094,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             int32_t operand3 = op_cast_type->uv.type->dimension;
                             assert(operand3 < 0xFFFF);
                             opcode.operand3 = operand3;
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else {
                             assert(0);
@@ -3114,7 +3114,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             int32_t operand3 = op_cast_type->uv.type->dimension;
                             assert(operand3 < 0xFFFF);
                             opcode.operand3 = operand3;
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else {
                             assert(0);
@@ -3125,7 +3125,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             if (cast_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(src_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE)) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY_STRING);
-                              throw_exception = 1;
+                              check_exception = 1;
                             }
                             else {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
@@ -3137,7 +3137,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             if (cast_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY_STRING);
-                              throw_exception = 1;
+                              check_exception = 1;
                             }
                             else {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECK);
@@ -3145,7 +3145,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                               int32_t operand3 = op_cast_type->uv.type->dimension;
                               assert(operand3 < 0xFFFF);
                               opcode.operand3 = operand3;
-                              throw_exception = 1;
+                              check_exception = 1;
                             }
                           }
                           else if (SPVM_TYPE_is_byte_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -3184,7 +3184,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             int32_t operand3 = op_cast_type->uv.type->dimension;
                             assert(operand3 < 0xFFFF);
                             opcode.operand3 = operand3;
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else {
                             assert(0);
@@ -3244,7 +3244,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                               int32_t operand3 = op_cast_type->uv.type->dimension;
                               assert(operand3 < 0xFFFF);
                               opcode.operand3 = operand3;
-                              throw_exception = 1;
+                              check_exception = 1;
                             }
                           }
                           else {
@@ -3293,7 +3293,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                                throw_exception = 1;
+                                check_exception = 1;
                                 
                                 break;
                               }
@@ -3310,7 +3310,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                                throw_exception = 1;
+                                check_exception = 1;
                                 
                                 break;
                               }
@@ -3328,7 +3328,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                                throw_exception = 1;
+                                check_exception = 1;
                                 
                                 break;
                               }
@@ -3346,7 +3346,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                                 
-                                throw_exception = 1;
+                                check_exception = 1;
                                 
                                 break;
                               }
@@ -3364,7 +3364,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                                 
-                                throw_exception = 1;
+                                check_exception = 1;
                                 
                                 break;
                               }
@@ -3382,7 +3382,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                                throw_exception = 1;
+                                check_exception = 1;
                                 
                                 break;
                               }
@@ -3402,7 +3402,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                                  throw_exception = 1;
+                                  check_exception = 1;
                                   
                                 }
                                 else {
@@ -3420,7 +3420,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                                  throw_exception = 1;
+                                  check_exception = 1;
                                   
                                 }
                               }
@@ -3444,7 +3444,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                             SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                            throw_exception = 1;
+                            check_exception = 1;
                           }
                           else {
                             assert(0);
@@ -3483,7 +3483,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       opcode.operand1 = basic_type_id;
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                       break;
                     }
@@ -4619,7 +4619,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   opcode.operand1 = typed_var_index_in;
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                   
-                  throw_exception = 1;
+                  check_exception = 1;
                   
                 }
                 // $@ = $var
@@ -4689,7 +4689,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       opcode.operand2 = typed_var_index_in;
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                     }
                   }
@@ -4744,7 +4744,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                    throw_exception = 1;
+                    check_exception = 1;
                     
                   }
                   else {
@@ -4764,7 +4764,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       opcode.operand1 = typed_var_index_index;
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                     }
                     else {
@@ -4835,7 +4835,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       opcode.operand2 = typed_var_index_in;
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                     }
                   }
@@ -4904,7 +4904,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                     
-                    throw_exception = 1;
+                    check_exception = 1;
                     
                   }
                   else if (SPVM_TYPE_is_mulnum_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
@@ -4972,7 +4972,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       opcode.operand3 = (uint16_t)field->index;
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                     }
                     else {
@@ -5027,7 +5027,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       opcode.operand3 = (uint16_t)field->index;
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      throw_exception = 1;
+                      check_exception = 1;
                       
                     }
                   }
@@ -5097,7 +5097,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                   
-                  throw_exception = 1;
+                  check_exception = 1;
                   
                 }
                 else {
@@ -5108,7 +5108,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               }
             }
             
-            if (throw_exception) {
+            if (check_exception) {
               SPVM_OPCODE_BUILDER_push_opcode_on_exception(compiler, opcode_list, eval_block_stack->length, catch_on_exception_opcode_index_stack, return_on_exception_opcode_index_stack, method->op_method, op_cur->line);
             }
             
