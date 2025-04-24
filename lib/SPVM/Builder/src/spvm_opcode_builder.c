@@ -526,8 +526,11 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 if (op_cur->id == SPVM_OP_C_ID_CONDITION) {
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_EQ_ZERO);
                 }
-                else {
+                else if (op_cur->id == SPVM_OP_C_ID_CONDITION_NOT) {
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_NE_ZERO);
+                }
+                else {
+                  assert(0);
                 }
                 
                 SPVM_LIST_push(if_eq_or_if_ne_opcode_index_stack, (void*)(intptr_t)opcode_index);
