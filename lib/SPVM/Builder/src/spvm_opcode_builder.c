@@ -291,6 +291,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
             
             SPVM_BLOCK* block = op_cur->uv.block;
             
+            block->opcode_index = opcode_list->length;
+            
             SPVM_LIST_push(block_stack, (void*)(intptr_t)block);
             
             if (block->id == SPVM_BLOCK_C_ID_LOOP_OUTER) {
