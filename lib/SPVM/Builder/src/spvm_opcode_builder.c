@@ -293,7 +293,12 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
             
             SPVM_LIST_push(block_stack, (void*)(intptr_t)block);
             
-            if (block->id == SPVM_BLOCK_C_ID_LOOP_OUTER) {
+            if (block->id == SPVM_BLOCK_C_ID_ELSE) {
+              SPVM_OPCODE* condition_goto = (opcode_list->values + block->condition_opcode_index);
+              int32_t condition_goto_opcode_base_index = opcode_list->length;
+              condition_goto->operand0 = condition_goto_opcode_base_index;
+            }
+            else if (block->id == SPVM_BLOCK_C_ID_LOOP_OUTER) {
               // Push last block base stack
               int32_t last_block_base = last_opcode_index_stack->length;
               SPVM_LIST_push(loop_block_stack_last_base, (void*)(intptr_t)last_block_base);
@@ -482,10 +487,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                     int32_t opcode_index = opcode_list->length - 1;
                     SPVM_LIST_push(if_block_stack_goto_end_opcode_index, (void*)(intptr_t)opcode_index);
                   }
-                  
-                  SPVM_OPCODE* condition_goto = (opcode_list->values + block->condition_opcode_index);
-                  int32_t condition_goto_opcode_base_index = opcode_list->length;
-                  condition_goto->operand0 = condition_goto_opcode_base_index;
                 }
                 else if (block->id == SPVM_BLOCK_C_ID_ELSE) {
                   
