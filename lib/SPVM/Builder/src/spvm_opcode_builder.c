@@ -255,7 +255,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       SPVM_LIST* return_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* eval_block_stack_goto_opcode_index = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* eval_block_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       SPVM_LIST* goto_end_of_eval_on_exception_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
@@ -307,9 +307,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               SPVM_LIST_push(break_opcode_index_base_stack, (void*)(intptr_t)break_block_base);
             }
             else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
-              int32_t opcode_index = opcode_list->length;
-              
-              SPVM_LIST_push(eval_block_stack_goto_opcode_index, (void*)(intptr_t)opcode_index);
+              SPVM_LIST_push(eval_block_stack, block);
               
               // Set exception var to undef in eval block start
               {
@@ -393,7 +391,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                     goto_end_of_eval_on_exception_goto->operand0 = goto_end_of_eval_on_exception_goto_opcode_base_index;
                   }
                   
-                  SPVM_LIST_pop(eval_block_stack_goto_opcode_index);
+                  SPVM_LIST_pop(eval_block_stack);
                 }
                 else if (block->id == SPVM_BLOCK_C_ID_METHOD) {
                   while (return_opcode_index_stack->length > 0) {
@@ -1341,7 +1339,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                      SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+                      SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
                       
                       if (!SPVM_TYPE_is_void_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode_get_stack);
@@ -5129,7 +5127,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
             }
             
             if (throw_exception) {
-              SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+              SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
             }
             
             // [END]Postorder traversal position
@@ -5166,7 +5164,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       SPVM_LIST_free(next_opcode_index_base_stack);
       SPVM_LIST_free(mortal_stack);
       SPVM_LIST_free(return_opcode_index_stack);
-      SPVM_LIST_free(eval_block_stack_goto_opcode_index);
+      SPVM_LIST_free(eval_block_stack);
       SPVM_LIST_free(goto_end_of_eval_on_exception_opcode_index_stack);
       SPVM_LIST_free(goto_end_of_method_on_exception_opcode_index_stack);
       
