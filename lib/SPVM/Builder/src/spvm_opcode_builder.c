@@ -521,6 +521,14 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 
                 int32_t opcode_index = opcode_list->length;
                 
+                SPVM_OP* op_block_true = SPVM_OP_sibling(compiler, op_cur);
+                assert(op_block_true->id == SPVM_OP_C_ID_BLOCK);
+                op_block_true->uv.block->condition_opcode_index = opcode_index;
+                
+                SPVM_OP* op_block_false = SPVM_OP_sibling(compiler, op_block_true);
+                assert(op_block_false->id == SPVM_OP_C_ID_BLOCK);
+                op_block_false->uv.block->condition_opcode_index = opcode_index;
+                
                 SPVM_OPCODE opcode = {0};
                 
                 if (op_cur->id == SPVM_OP_C_ID_CONDITION) {
