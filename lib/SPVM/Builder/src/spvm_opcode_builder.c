@@ -243,8 +243,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       SPVM_LIST* switch_block_stack_break_base = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* eval_block_stack_goto_opcode_index = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-      
       SPVM_LIST* break_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       SPVM_LIST* last_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -257,22 +255,24 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       SPVM_LIST* return_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
+      SPVM_LIST* eval_block_stack_goto_opcode_index = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      
       SPVM_LIST* goto_end_of_eval_on_exception_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       SPVM_LIST* goto_end_of_method_on_exception_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       SPVM_LIST* mortal_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      // Run OPs
-      SPVM_OP* op_base = method->op_block;
-      SPVM_OP* op_cur = op_base;
-      int32_t finish = 0;
-      
       int32_t mortal_stack_max = 0;
       
       int32_t mortal_stack_tops_index = 0;
       
       int32_t mortal_stack_tops_max = 0;
+      
+      // Run OPs
+      SPVM_OP* op_base = method->op_block;
+      SPVM_OP* op_cur = op_base;
+      int32_t finish = 0;
       
       int32_t new_object_count = 0;
       while (op_cur) {
