@@ -4998,9 +4998,7 @@ void SPVM_API_leave_scope_local_removed3(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
 
 void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack_typed_var_index, int32_t* mortal_stack_top_ptr, int32_t* mortal_stack_tops, int32_t mortal_stack_tops_index) {
   
-  // spvm_warn("%d", mortal_stack_tops[mortal_stack_tops_index]);
-  
-  // assert(mortal_stack_tops[mortal_stack_tops_index] != -1);
+  assert(mortal_stack_tops[mortal_stack_tops_index] != -1);
   
   if (!(mortal_stack_tops[mortal_stack_tops_index] == -1)) {
     for (int32_t mortal_stack_index = mortal_stack_tops[mortal_stack_tops_index]; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
