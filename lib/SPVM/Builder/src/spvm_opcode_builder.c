@@ -502,6 +502,18 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   int32_t if_block_end_goto_opcode_base_index = opcode_list->length;
                   if_block_end_goto->operand0 = if_block_end_goto_opcode_base_index;
                 }
+                // This is for next commits
+                /*
+                else if (block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
+                  
+                  SPVM_OPCODE opcode = {0};
+                  
+                  // Add goto
+                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GOTO);
+                  opcode.operand0 = block->opcode_index;
+                  SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                }
+                */
                 
                 SPVM_LIST_pop(block_stack);
                 
