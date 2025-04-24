@@ -778,13 +778,7 @@ while_statement
 switch_statement
   : SWITCH '(' operator ')' switch_block
     {
-      SPVM_OP* op_switch = SPVM_OP_build_switch_statement(compiler, $1, $3, $5);
-      
-      // condition part has own scope
-      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, op_block, op_block->last, op_switch);
-      
-      $$ = op_block;
+      $$ = SPVM_OP_build_switch_statement(compiler, $1, $3, $5);
     }
 
 switch_block

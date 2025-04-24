@@ -1833,7 +1833,10 @@ SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_swi
   
   op_condition->uv.switch_info = switch_info;
   
-  return op_switch;
+  SPVM_OP* op_block_outer = SPVM_OP_new_op_block(compiler, op_switch->file, op_switch->line);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_switch);
+      
+  return op_block_outer;
 }
 
 SPVM_OP* SPVM_OP_build_switch_block(SPVM_COMPILER* compiler, SPVM_OP* op_switch_block, SPVM_OP* op_case_statements, SPVM_OP* op_default_statement) {
