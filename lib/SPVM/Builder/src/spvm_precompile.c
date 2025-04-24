@@ -326,6 +326,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_size = env->api->runtime->get_object_data_offset(env->runtime);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);\n");
   
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t native_scope_id = env->enter_scope(env, stack);\n");
+  
   SPVM_OPCODE* opcodes = current_method->opcodes;
   int32_t opcodes_length = current_method->opcodes_length;
   int32_t opcode_index = 0;
@@ -5075,6 +5077,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   }
   
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+  
+  SPVM_STRING_BUFFER_add(string_buffer, "  env->leave_scope(env, stack, native_scope_id);\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  return error_id;\n"
                                         "}\n"

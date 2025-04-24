@@ -186,6 +186,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   int32_t object_ref_count_offset = env->api->runtime->get_object_ref_count_offset(env->runtime);
   int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);
   
+  int32_t native_scope_id = env->enter_scope(env, stack);
+  
   // Execute operation codes
   while (1) {
     SPVM_OPCODE* opcode = &(opcodes[opcode_rel_index]);
@@ -2435,6 +2437,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     
     SPVM_API_free_memory_block(env, stack, call_stack);
     call_stack = NULL;
+    
+    env->leave_scope(env, stack, native_scope_id);
     
     return error_id;
   }
