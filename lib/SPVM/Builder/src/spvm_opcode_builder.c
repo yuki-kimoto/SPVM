@@ -241,9 +241,9 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       SPVM_LIST* switch_stack_switch_info = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* switch_block_stack_break_base = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-      
       SPVM_LIST* break_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      
+      SPVM_LIST* break_opcode_index_base_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       SPVM_LIST* last_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
@@ -310,7 +310,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
             else if (block->id == SPVM_BLOCK_C_ID_SWITCH) {
               // Push break block base stack
               int32_t break_block_base = break_opcode_index_stack->length;
-              SPVM_LIST_push(switch_block_stack_break_base, (void*)(intptr_t)break_block_base);
+              SPVM_LIST_push(break_opcode_index_base_stack, (void*)(intptr_t)break_block_base);
             }
             else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
               int32_t opcode_index = opcode_list->length;
@@ -421,7 +421,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 }
                 else if (block->id == SPVM_BLOCK_C_ID_SWITCH) {
                   // break block base
-                  int32_t break_block_base = (intptr_t)SPVM_LIST_pop(switch_block_stack_break_base);
+                  int32_t break_block_base = (intptr_t)SPVM_LIST_pop(break_opcode_index_base_stack);
                   
                   // Set break position
                   int32_t break_opcode_index_stack_pop_count = break_opcode_index_stack->length - break_block_base;
@@ -5168,19 +5168,19 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       }
       
       // Free list
-      SPVM_LIST_free(break_opcode_index_stack);
-      SPVM_LIST_free(eval_block_stack_goto_opcode_index);
-      SPVM_LIST_free(goto_end_of_eval_on_exception_opcode_index_stack);
-      SPVM_LIST_free(goto_end_of_method_on_exception_opcode_index_stack);
-      SPVM_LIST_free(return_opcode_index_stack);
+      SPVM_LIST_free(block_stack);
       SPVM_LIST_free(switch_stack_switch_info);
+      SPVM_LIST_free(break_opcode_index_stack);
+      SPVM_LIST_free(break_opcode_index_base_stack);
       SPVM_LIST_free(last_opcode_index_stack);
       SPVM_LIST_free(last_opcode_index_base_stack);
       SPVM_LIST_free(next_opcode_index_stack);
       SPVM_LIST_free(next_opcode_index_base_stack);
-      SPVM_LIST_free(switch_block_stack_break_base);
       SPVM_LIST_free(mortal_stack);
-      SPVM_LIST_free(block_stack);
+      SPVM_LIST_free(return_opcode_index_stack);
+      SPVM_LIST_free(eval_block_stack_goto_opcode_index);
+      SPVM_LIST_free(goto_end_of_eval_on_exception_opcode_index_stack);
+      SPVM_LIST_free(goto_end_of_method_on_exception_opcode_index_stack);
       
       END_OF_FUNCTION: {
         
