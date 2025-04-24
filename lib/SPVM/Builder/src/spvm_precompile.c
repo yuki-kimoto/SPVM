@@ -630,7 +630,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "; }\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GOTO_END_OF_EVAL_ON_EXCEPTION: {
+      case SPVM_OPCODE_C_ID_CATCH_ON_EXCEPTION: {
         int32_t line = opcode->operand2;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error_id, 0)) {\n"

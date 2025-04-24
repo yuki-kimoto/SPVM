@@ -219,7 +219,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_GOTO_END_OF_EVAL_ON_EXCEPTION: {
+      case SPVM_OPCODE_C_ID_CATCH_ON_EXCEPTION: {
         if (__builtin_expect(error_id, 0)) {
           int32_t line = opcode->operand2;
           eval_error_id = error_id;
