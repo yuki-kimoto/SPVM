@@ -382,66 +382,50 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 SPVM_BLOCK* block = op_cur->uv.block;
                 
                 if (block->id == SPVM_BLOCK_C_ID_EVAL) {
-                  // Set IF_EXCEPTION_CATCH opcode index
                   while (catch_on_exception_opcode_index_stack->length > 0) {
                     int32_t catch_on_exception_goto_opcode_index = (intptr_t)SPVM_LIST_pop(catch_on_exception_opcode_index_stack);
-                    
                     SPVM_OPCODE* catch_on_exception_goto = (opcode_list->values + catch_on_exception_goto_opcode_index);
-                    int32_t catch_on_exception_goto_opcode_base_index = opcode_list->length;
-                    catch_on_exception_goto->operand0 = catch_on_exception_goto_opcode_base_index;
+                    catch_on_exception_goto->operand0 = opcode_list->length;
                   }
                   
                   SPVM_LIST_pop(eval_block_stack);
                 }
                 else if (block->id == SPVM_BLOCK_C_ID_METHOD) {
                   while (return_opcode_index_stack->length > 0) {
-                    
                     int32_t return_goto_opcode_index = (intptr_t)SPVM_LIST_pop(return_opcode_index_stack);
-                    
                     SPVM_OPCODE* return_goto = (opcode_list->values + return_goto_opcode_index);
-                    int32_t return_goto_opcode_base_index = opcode_list->length;
-                    return_goto->operand1 = return_goto_opcode_base_index;
+                    return_goto->operand1 = opcode_list->length;
                   }
 
                   while (return_on_exception_opcode_index_stack->length > 0) {
                     int32_t return_on_exception_goto_opcode_index = (intptr_t)SPVM_LIST_pop(return_on_exception_opcode_index_stack);
-                    
                     SPVM_OPCODE* return_on_exception_goto = (opcode_list->values + return_on_exception_goto_opcode_index);
-                    int32_t return_on_exception_goto_opcode_base_index = opcode_list->length;
-                    return_on_exception_goto->operand0 = return_on_exception_goto_opcode_base_index;
+                    return_on_exception_goto->operand0 = opcode_list->length;
                   }
                 }
                 else if (block->id == SPVM_BLOCK_C_ID_SWITCH) {
-                  int32_t break_block_base = (intptr_t)SPVM_LIST_pop(break_opcode_index_base_stack);
-                  
-                  int32_t break_opcode_index_stack_pop_count = break_opcode_index_stack->length - break_block_base;
+                  int32_t break_opcode_index_base = (intptr_t)SPVM_LIST_pop(break_opcode_index_base_stack);
+                  int32_t break_opcode_index_stack_pop_count = break_opcode_index_stack->length - break_opcode_index_base;
                   for (int32_t i = 0; i < break_opcode_index_stack_pop_count; i++) {
                     int32_t break_goto_opcode_index = (intptr_t)SPVM_LIST_pop(break_opcode_index_stack);
-                    
                     SPVM_OPCODE* break_goto = (opcode_list->values + break_goto_opcode_index);
-                    int32_t break_goto_opcode_base_index = opcode_list->length;
-                    break_goto->operand0 = break_goto_opcode_base_index;
+                    break_goto->operand0 = opcode_list->length;
                   }
                 }
                 else if (block->id == SPVM_BLOCK_C_ID_LOOP_OUTER) {
-                  int32_t last_block_base = (intptr_t)SPVM_LIST_pop(last_opcode_index_base_stack);
-
-                  int32_t last_opcode_index_stack_pop_count = last_opcode_index_stack->length - last_block_base;
+                  int32_t last_opcode_index_base = (intptr_t)SPVM_LIST_pop(last_opcode_index_base_stack);
+                  int32_t last_opcode_index_stack_pop_count = last_opcode_index_stack->length - last_opcode_index_base;
                   for (int32_t i = 0; i < last_opcode_index_stack_pop_count; i++) {
                     int32_t last_goto_opcode_index = (intptr_t)SPVM_LIST_pop(last_opcode_index_stack);
-                    
                     SPVM_OPCODE* last_goto = (opcode_list->values + last_goto_opcode_index);
-                    int32_t last_goto_opcode_base_index = opcode_list->length;
-                    last_goto->operand0 = last_goto_opcode_base_index;
+                    last_goto->operand0 = opcode_list->length;
                   }
                 }
                 else if (block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
-                  int32_t next_block_base = (intptr_t)SPVM_LIST_pop(next_opcode_index_base_stack);
-                  
-                  int32_t next_opcode_index_stack_pop_count = next_opcode_index_stack->length - next_block_base;
+                  int32_t next_opcode_index_base = (intptr_t)SPVM_LIST_pop(next_opcode_index_base_stack);
+                  int32_t next_opcode_index_stack_pop_count = next_opcode_index_stack->length - next_opcode_index_base;
                   for (int32_t i = 0; i < next_opcode_index_stack_pop_count; i++) {
                     int32_t next_goto_opcode_index = (intptr_t)SPVM_LIST_pop(next_opcode_index_stack);
-                    
                     SPVM_OPCODE* next_goto = (opcode_list->values + next_goto_opcode_index);
                     next_goto->operand0 = block->loop_increment_opcode_index;
                   }
