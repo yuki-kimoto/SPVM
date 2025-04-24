@@ -239,8 +239,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       SPVM_LIST* block_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* loop_block_stack_next_base = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-      
       SPVM_LIST* loop_block_stack_last_base = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       SPVM_LIST* switch_stack_switch_info = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -254,6 +252,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       SPVM_LIST* break_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       SPVM_LIST* next_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      
+      SPVM_LIST* next_opcode_index_base_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       SPVM_LIST* return_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
@@ -303,7 +303,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               
               // Push next block base stack
               int32_t next_block_base = next_opcode_index_stack->length;
-              SPVM_LIST_push(loop_block_stack_next_base, (void*)(intptr_t)next_block_base);
+              SPVM_LIST_push(next_opcode_index_base_stack, (void*)(intptr_t)next_block_base);
               
               SPVM_OPCODE opcode = {0};
             }
@@ -449,7 +449,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 }
                 else if (block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
                   // next block base
-                  int32_t next_block_base = (intptr_t)SPVM_LIST_pop(loop_block_stack_next_base);
+                  int32_t next_block_base = (intptr_t)SPVM_LIST_pop(next_opcode_index_base_stack);
                   
                   // Set next position
                   int32_t next_opcode_index_stack_pop_count = next_opcode_index_stack->length - next_block_base;
@@ -5170,13 +5170,13 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       // Free list
       SPVM_LIST_free(last_opcode_index_stack);
       SPVM_LIST_free(break_opcode_index_stack);
-      SPVM_LIST_free(next_opcode_index_stack);
       SPVM_LIST_free(eval_block_stack_goto_opcode_index);
       SPVM_LIST_free(goto_end_of_eval_on_exception_opcode_index_stack);
       SPVM_LIST_free(goto_end_of_method_on_exception_opcode_index_stack);
       SPVM_LIST_free(return_opcode_index_stack);
       SPVM_LIST_free(switch_stack_switch_info);
-      SPVM_LIST_free(loop_block_stack_next_base);
+      SPVM_LIST_free(next_opcode_index_stack);
+      SPVM_LIST_free(next_opcode_index_base_stack);
       SPVM_LIST_free(loop_block_stack_last_base);
       SPVM_LIST_free(switch_block_stack_break_base);
       SPVM_LIST_free(mortal_stack);
