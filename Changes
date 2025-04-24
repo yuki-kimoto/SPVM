@@ -19,6 +19,7 @@
   [Big Internal Changes]
     * The AST logic for while and for statement are rewritten completely.
     * The AST logic for if and unless are rewritten completely.
+    * The AST logic for switch is rewritten completely. Some potential scope bugs are fixed.
     
 0.990054 2025-04-17
   [Changes]

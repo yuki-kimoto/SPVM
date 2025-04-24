@@ -1843,6 +1843,7 @@ SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_swi
 SPVM_OP* SPVM_OP_build_switch_block(SPVM_COMPILER* compiler, SPVM_OP* op_switch_block, SPVM_OP* op_case_statements, SPVM_OP* op_default_statement) {
   
   op_switch_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH_INNER;
+  op_switch_block->uv.block->no_scope = 1;
   
   if (op_case_statements->id != SPVM_OP_C_ID_LIST) {
     SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_case_statements->file, op_case_statements->line);
