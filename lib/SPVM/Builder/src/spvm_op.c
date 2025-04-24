@@ -1877,6 +1877,9 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case_
         }
       }
     }
+    
+    op_block->uv.block->id = SPVM_BLOCK_C_ID_CASE;
+    
     SPVM_OP_insert_child(compiler, op_case_info, op_case_info->last, op_block);
   }
   
@@ -1890,6 +1893,8 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case_
 SPVM_OP* SPVM_OP_build_default_statement(SPVM_COMPILER* compiler, SPVM_OP* op_default, SPVM_OP* op_block) {
   
   if (op_block) {
+    op_block->uv.block->id = SPVM_BLOCK_C_ID_DEFAULT;
+    
     SPVM_OP_insert_child(compiler, op_default, op_default->last, op_block);
   }
   

@@ -17,6 +17,8 @@ enum {
   SPVM_BLOCK_C_ID_EVAL,
   SPVM_BLOCK_C_ID_LOOP_OUTER,
   SPVM_BLOCK_C_ID_INIT_BLOCK,
+  SPVM_BLOCK_C_ID_CASE,
+  SPVM_BLOCK_C_ID_DEFAULT,
 };
 
 struct spvm_block {
@@ -26,7 +28,6 @@ struct spvm_block {
   int32_t need_leave_scope;
   int32_t mortal_stack_tops_index;
   int32_t begin_opcode_index;
-  int32_t end_opcode_index;
   int32_t condition_opcode_index;
   int32_t loop_increment_opcode_index;
   int32_t if_end_goto_opcode_index;

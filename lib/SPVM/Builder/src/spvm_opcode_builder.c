@@ -557,19 +557,19 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 assert(switch_stack_switch_info->length > 0);
                 
                 SPVM_SWITCH_INFO* switch_info = SPVM_LIST_get(switch_stack_switch_info, switch_stack_switch_info->length - 1);
-
+                
                 int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur->first);
                 
                 int32_t opcode_index = opcode_list->length;
                 switch_info->opcode_index = opcode_index;
-
+                
                 // Add switch opcode
                 SPVM_OPCODE opcode_switch_info;
                 memset(&opcode_switch_info, 0, sizeof(SPVM_OPCODE));
                 opcode_switch_info.id = SPVM_OPCODE_C_ID_LOOKUP_SWITCH;
                 opcode_switch_info.operand0 = typed_var_index_in;
                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode_switch_info);
-
+                
                 // Match values and branchs
                 for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
                   SPVM_CASE_INFO* case_info = SPVM_LIST_get(switch_info->case_infos, i);
@@ -584,14 +584,14 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   opcode_case_info.id = SPVM_OPCODE_C_ID_CASE_INFO;
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode_case_info);
                 }
-
+                
                 // Default branch
                 int32_t default_opcode_index = switch_info->default_opcode_index;
                 if (default_opcode_index == 0) {
                   default_opcode_index = opcode_list->length + 1;
                 }
                 switch_info->default_opcode_index = default_opcode_index;
-
+                
                 break;
               }
               case SPVM_OP_C_ID_BREAK: {
