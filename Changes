@@ -1,7 +1,8 @@
 0.990057 2025-04-25
   [Bug Fix]
     * Fix a bug that warn operator moves native mortal stack forward.
-
+  [Internal Changes with some impact]
+    * Remove unneeded native enter/leave scope logic from vm and precompile.
 0.990056 2025-04-25
   [Revertion]
     * Revert "Remove unneeded native enter/leave scope logic from vm and precompile."
