@@ -69,4 +69,13 @@ class TestCase::Operator::Warn { use Fn;
     return 1;
   }
   
+  static method warn_object_address : int () {
+    
+    my $object = Int->new(1);
+    
+    warn $object;
+    
+    return 1;
+  }
+  
 }

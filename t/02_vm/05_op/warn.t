@@ -169,6 +169,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       is($output, "\x{0A}");
     }
     
+    SPVM::TestCase::Operator::Warn->warn_object_address;
   }
 }
 

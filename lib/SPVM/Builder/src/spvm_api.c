@@ -3273,11 +3273,13 @@ void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const 
       fprintf(spvm_stderr, "\n  %s->%s at %s line %d\n", basic_type_name, method_name, file, line);
     }
     else {
+      int32_t scope_id = env->enter_scope(env, stack);
       void* obj_type_name = env->get_type_name(env, stack, string);
       const char* type_name = env->get_chars(env, stack, obj_type_name);
       
       fprintf(spvm_stderr, "%s", type_name);
       fprintf(spvm_stderr, "(0x%" PRIxPTR ")\n  %s->%s at %s line %d\n", (uintptr_t)string, basic_type_name, method_name, file, line);
+      env->leave_scope(env, stack, scope_id);
     }
   }
   else {
