@@ -1,0 +1,165 @@
+Developers Note
+    
+  Tests
+  
+    perl Makefile.PL
+    make
+    make test
+  
+  Unit Tests
+  
+    make && perl -Mblib t/default/convert.t
+
+  Cleanup
+  
+    make clean
+    
+  Create distribution
+    
+    perl Makefile.PL
+    rm MANIFEST
+    make manifest
+    make disttest
+    make dist
+
+  Solo Tests
+
+    SPVM solo test command using spvm command
+       
+       # Normal run
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+       
+       # Debug run
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+       
+       # Debug run - Print memory count
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_MEMORY && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+       
+       # Debug run - Print AST, package information, operaion codes
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+       
+       # Debug run - Print yacc result
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --DEFINE=SPVM_DEBUG_YACC --DEFINE=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+       
+    SPVM solo test command using spvmcc command
+       
+       # Normal run
+       make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp -f --no-config solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
+       
+       # Debug run
+       make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp --optimize "-O0 -g" -f --no-config solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
+       
+       # Debug run - Print memory count
+       make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp --mode debug_memory_count -f solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
+
+    Cleanup
+      
+      rm solo/.spvm_build/work/myapp
+
+    See batcktrace of core dump
+      
+      # Compilation for debug
+      perl Makefile.PL --OPTIMIZE="-O0 -g" && make
+      
+      # Compiliation time stack trace
+      gdb perl core
+      
+      # Runtime stack trace
+      gdb solo/.spvm_build/work/myapp core
+      
+      bt
+      
+    If core file is not output, set the following.
+      
+        ulimit -c unlimited
+
+  Portability Note
+  
+    SPVM is run on various environments.
+    Main compiler targets is gcc, clang, MinGW.
+    Main OS targets is Linux/Unix, Windows(MinGW), macOS.
+    To keep maxmam portability in SPVM, I have the following rule.
+  
+    - don't use realloc.
+    - don't use global variables
+    - don't use inline keyword
+    - use -std=gnu99 always in core modules
+    - use fgetc instead of getc for FreeBSD compile error
+    - Don't use os error number(error.h defined values) outside of native subrsoutine.
+    - Don't contain os dependency features(for example unistd.h, windows.h)
+    - NOTE: In Windows/MinGW/Strawbery Perl, newline is always \x0A if mode is text mode
+    - Automatically loaded module must not be native or precompile
+      Currently, Byte, Short, Int, Long, Float, Double, Bool
+    - Don't use temporary directory in SPVM module, for example, using File::Temp.
+      Security risk is increased and, Windows dll file can't be removed by cleanuping temporary directory
+    - Feature_test_macros is allowed to use if the tests of gcc, clang, MinGW pass.
+      #define _XOPEN_SOURCE
+      #define _POSIX_SOURCE
+      #define _POSIX_C_SOURCE
+    - Don't implement timegm compatible method because the tests of Windows/MinGW 32bit fail.
+      undefined reference to _mkgmtime32
+    - Recommend the size of a module file is less than 50KB because SPVM itself has no problem
+      but in the small memory environment, the precompile by gcc fails by memory errors.
+  Coding Guide Line
+    - use int8_t, int16_t, int32_t, int64_t instead of byte, short, int, long, _Bool.
+    - char is used for only character.
+    - char[] is used for only string.
+    - constant value is defined by enum { } syntax.
+    - constant name is ,for example, SPVM_TYPE_C_FLAG_REF.
+      all character is upper case or under score. need _C_ between package name and constant base name
+    - fix all warnings before CPAN release
+  
+  Utilities
+  
+    Gets SPVM Core Perl module files
+    
+      find lib | grep -P '(Builder|BlessedObject|ExchangeAPI|Global|SPVM\.pm)' | grep '\.pm' | perl -p -e 's|lib/||' | sort
+      
+    Gets SPVM header files
+    
+      find lib | grep Builder | grep -P '\.h$' | perl -p -e 's|lib/SPVM/Builder/include/||' | sort
+    
+    Gets SPVM source files
+    
+      find lib | grep Builder | grep -P '\.c$' | perl -p -e 's|lib/SPVM/Builder/src/||' | sort
+
+    Gets SPVM Compilation and Rintime module files
+    
+      find lib | grep -P '(Native\b)' | grep -P '\.(spvm|c)$' | perl -p -e 's|lib/||' | sort
+
+    Print config 
+      
+      # All config
+      perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1; print Dumper \%Config;'
+      
+      # ivsize
+      perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1; print Dumper \%Config;' | grep ivsize
+      
+      # myuname
+      perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1; print Dumper \%Config;' | grep myuname
+
+      # make
+      perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1; print Dumper \%Config;' | grep make
+
+      # dlext
+      perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1; print Dumper \%Config;' | grep dlext
+  
+    Gets all keywords
+    
+      perl -n -e 'if (/strcmp\s*\(\s*symbol_name\s*,\s*"(.+?)"/) { print "$1\n" } ' lib/SPVM/Builder/src/spvm_toke.c
+    
+    Gets the definition of syntax parsing
+    
+      perl -n -e 'if (/^(%token|%type|%right|%nonassoc|%left|[a-zA-Z]|\s+:|\s+\|)(.+)/) { my $line = "$1$2"; if ($line =~ /^[a-zA-Z]/) { print "\n"; } print "$line\n" } ' yacc/spvm_yacc.y
+    
+    Gets the linkgs of SPVM modules for POD
+    
+      find lib | grep -P '\.pm$' | grep -v 'SPVM\.pm$' | perl -p -e 's/\.pm$//' | sort | grep -v -P '^lib/SPVM(\.pm|/(ExchangeAPI|Document|Builder|BlessedObject|Dist))' | perl -p -e 'chomp;s|lib/SPVM/||; s|/|::|g; $_ = "=item * L<$_|SPVM::$_>\n\n";'
+
+    Creates compile error test module
+    
+      spvmdist --genlib TestCase::CompileError::Foo t/default/lib
+    
+    Creates a SPVM distribution
+      
+      spvmdist Foo
