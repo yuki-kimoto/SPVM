@@ -198,14 +198,17 @@ perl -n -e 'if (/^(%token|%type|%right|%nonassoc|%left|[a-zA-Z]|\s+:|\s+\|)(.+)/
 find lib | grep -P '\.pm$' | grep -v 'SPVM\.pm$' | perl -p -e 's/\.pm$//' | sort | grep -v -P '^lib/SPVM(\.pm|/(ExchangeAPI|Document|Builder|BlessedObject|Dist))' | perl -p -e 'chomp;s|lib/SPVM/||; s|/|::|g; $_ = "=item * L<$_|SPVM::$_>\n\n";'
 ```
 
-### Creates compile error test module
-
-```
-spvmdist --genlib TestCase::CompileError::Foo t/default/lib
-```
+## spvmdist
 
 ### Creates a SPVM distribution
 
 ```
-spvmdist Foo
+spvmdist --user-name="Yuki Kimoto" --user-email="kimoto.yuki@gmail.com"  Foo
 ```
+
+### Create only class files
+
+```
+spvmdist --version_from Foo --only-lib-files --user-name="Yuki Kimoto" --user-email="kimoto.yuki@gmail.com" Foo::Bar lib
+```
+
