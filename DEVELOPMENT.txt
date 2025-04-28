@@ -22,14 +22,28 @@ DEVELOPERS NOTE
     make disttest
     make dist
 
-  SOLE TESTS
+  Solo Tests
 
-    SPVM solo test command
+    SPVM solo test command using spvm command
        
-       # Normal run - spvm command
+       # Normal run
        yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
        
-       # Normal run - spvmcc command
+       # Debug run
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+       
+       # Debug run - Print memory count
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_MEMORY && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+       
+       # Debug run - Print AST, package information, operaion codes
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+       
+       # Debug run - Print yacc result
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --DEFINE=SPVM_DEBUG_YACC --DEFINE=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+       
+    SPVM solo test command using spvmcc command
+       
+       # Normal run
        yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp -f --no-config solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
        
        # Debug run
@@ -64,7 +78,7 @@ DEVELOPERS NOTE
       
         ulimit -c unlimited
 
-  PORTABILITY NOTE
+  Portability Note
   
     SPVM is run on various environments.
     Main compiler targets is gcc, clang, MinGW.
@@ -91,7 +105,7 @@ DEVELOPERS NOTE
       undefined reference to _mkgmtime32
     - Recommend the size of a module file is less than 50KB because SPVM itself has no problem
       but in the small memory environment, the precompile by gcc fails by memory errors.
-  CODING GUIDE LINE
+  Coding Guide Line
     - use int8_t, int16_t, int32_t, int64_t instead of byte, short, int, long, _Bool.
     - char is used for only character.
     - char[] is used for only string.
@@ -100,7 +114,7 @@ DEVELOPERS NOTE
       all character is upper case or under score. need _C_ between package name and constant base name
     - fix all warnings before CPAN release
   
-  UTILITIES
+  Utilities
   
     Gets SPVM Core Perl module files
     
