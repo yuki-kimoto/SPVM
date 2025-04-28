@@ -25,8 +25,11 @@ DEVELOPERS NOTE
   SOLE TESTS
 
     SPVM solo test command
-
-       # Normal run
+       
+       # Normal run - spvm command
+       yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+       
+       # Normal run - spvmcc command
        yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules && make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp -f --no-config solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
        
        # Debug run
