@@ -110,21 +110,20 @@ ulimit -c unlimited
 SPVM is run on various environments.
 Main compiler targets is gcc, clang, MinGW.
 Main OS targets is Linux/Unix, Windows(MinGW), macOS.
-To keep maxmam portability in SPVM, I have the following rule.
+To keep maxmam portability in SPVM, I follow the following rule.
   
-- don't use realloc.
-- don't use global variables
-- don't use inline keyword
-- use -std=gnu99 always in core modules
-- use fgetc instead of getc for FreeBSD compile error
-- Don't use os error number(error.h defined values) outside of native subrsoutine.
-- Don't contain os dependency features(for example unistd.h, windows.h)
-- NOTE: In Windows/MinGW/Strawbery Perl, newline is always \x0A if mode is text mode
-- Automatically loaded module must not be native or precompile. Currently, Byte, Short, Int, Long, Float, Double, Bool
-- Don't use temporary directory in SPVM module, for example, using File::Temp. Security risk is increased and, Windows dll file can't be removed by cleanuping temporary directory
-- Feature_test_macros is allowed to use if the tests of gcc, clang, MinGW pass. #define _XOPEN_SOURCE #define _POSIX_SOURCE #define _POSIX_C_SOURCE
-- Don't implement timegm compatible method because the tests of Windows/MinGW 32bit fail. undefined reference to _mkgmtime32
-- Recommend the size of a module file is less than 50KB because SPVM itself has no problem but in the small memory environment, the precompile by gcc fails by memory errors.
+- Don't use realloc function.
+- Don't use global variables.
+- Don't use inline keyword in places other than spvm_implement.h.
+- Use -std=gnu99 flag when native classes are compiled.
+- Use fgetc function instead of getc function.
+- Don't use error numbers defined in error.h.
+- Don't contain os dependency features(for example unistd.h, windows.h), but only spvm_mutex.c uses Windows-specific functionality to implement mutexes portable.
+- Default loaded module(such as Byte, Short) must not have native and precompile attributes.
+- Avoid using Feature_test_macros(such as _XOPEN_SOURCE, _POSIX_SOURCE, _POSIX_C_SOURCE) as possible, but only spvm_strerror.c uses _POSIX_C_SOURCE to implement portable and thread-safe strerror.
+- Do not invoke system calls. System calls are implemented in CPAN modules, such as SPVM::Sys. Currently the only exception to this is mutexes. This is necessary to make the assignment operation thread-safe.
+- Don't create temporary files(this means don't use File::Temp) for SPVM JIT compilation. DLL files are opened in runtime, Windows dll file can't be removed if DLL files are opened.
+- Newlines in source codes are LF.
 
 ## Coding Guide Line
 
@@ -134,7 +133,7 @@ To keep maxmam portability in SPVM, I have the following rule.
 - constant value is defined by enum { } syntax.
 - constant name is ,for example, SPVM_TYPE_C_FLAG_REF. all character is upper case or under score. need _C_ between package name and constant base name
 - fix all warnings before CPAN release
-  
+
 ## Utilities
 
 ### Gets SPVM Core Perl module files
