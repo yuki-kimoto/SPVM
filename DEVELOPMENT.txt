@@ -136,7 +136,7 @@ To keep maxmam portability in SPVM, I have the following rule.
 - fix all warnings before CPAN release
   
 ## Utilities
-  
+
 ### Gets SPVM Core Perl module files
 
 ```
@@ -192,7 +192,7 @@ perl -n -e 'if (/strcmp\s*\(\s*symbol_name\s*,\s*"(.+?)"/) { print "$1\n" } ' li
 perl -n -e 'if (/^(%token|%type|%right|%nonassoc|%left|[a-zA-Z]|\s+:|\s+\|)(.+)/) { my $line = "$1$2"; if ($line =~ /^[a-zA-Z]/) { print "\n"; } print "$line\n" } ' yacc/spvm_yacc.y
 ```
 
-### Gets the linkgs of SPVM modules for POD
+### Gets the links of SPVM modules for POD
 
 ```
 find lib | grep -P '\.pm$' | grep -v 'SPVM\.pm$' | perl -p -e 's/\.pm$//' | sort | grep -v -P '^lib/SPVM(\.pm|/(ExchangeAPI|Document|Builder|BlessedObject|Dist))' | perl -p -e 'chomp;s|lib/SPVM/||; s|/|::|g; $_ = "=item * L<$_|SPVM::$_>\n\n";'
