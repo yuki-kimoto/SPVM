@@ -1,6 +1,8 @@
 # Developers Note
-    
-## Tests
+
+## make
+
+### Tests
 
 ```
 perl Makefile.PL
@@ -8,26 +10,38 @@ make
 make test
 ```
 
-## Unit Tests
+### Unit Tests
 
 ```
-make && perl -Mblib t/default/convert.t
+make && perl -Mblib t/02_vm/05_op/comparison_operator.t
 ```
 
-## Cleanup
+### Cleanup
 
 ```
 make clean
 ```
-    
-## Create distribution
+
+### Create MANIFEST
 
 ```
 perl Makefile.PL
 rm MANIFEST
 make manifest
+```
+
+### Create distribution
+
+```
+perl Makefile.PL
 make disttest
 make dist
+```
+
+### Install SPVM
+
+```
+make install
 ```
 
 ## Solo Tests
