@@ -137,6 +137,8 @@ sub create_ccflags {
     push @compile_command_args, split(/ +/, $optimize);
   }
   
+  push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config->defines};
+  
   push @compile_command_args, grep { length $_ } @{$config->ccflags};
   
   push @compile_command_args, grep { length $_ } @{$config->thread_ccflags};

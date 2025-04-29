@@ -1,4 +1,8 @@
 0.990058 2025-04-29
+  [New Features]
+    * Add SPVM::Builder::Config#defines field.
+    * Add SPVM::Builder::Config#add_define method.
+    
   [Incompatible Changes]
     * Remove config_bootstrap field in SPVM::Builder::Config::Exe.
     * Rename config_spvm_core field to config_spvm in SPVM::Builder::Config::Exe.

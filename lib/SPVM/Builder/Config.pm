@@ -98,6 +98,17 @@ sub ccflags {
   }
 }
 
+sub defines {
+  my $self = shift;
+  if (@_) {
+    $self->{defines} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{defines};
+  }
+}
+
 sub optimize {
   my $self = shift;
   if (@_) {
@@ -486,6 +497,11 @@ sub new {
     $self->ccflags([]);
   }
   
+  # defines
+  unless (defined $self->{defines}) {
+    $self->defines([]);
+  }
+  
   # dynamic_lib_ccflags
   unless (defined $self->{dynamic_lib_ccflags}) {
     if ($^O eq 'MSWin32') {
@@ -771,6 +787,12 @@ sub add_ccflag {
   my ($self, @ccflags) = @_;
   
   push @{$self->{ccflags}}, @ccflags;
+}
+
+sub add_define {
+  my ($self, @defines) = @_;
+  
+  push @{$self->{defines}}, @defines;
 }
 
 sub add_include_dir {
@@ -1082,6 +1104,8 @@ The SPVM::Builder::Config class has methods to get and set config for compiling 
   # Add ccflags
   $config->add_ccflag("-DFOO");
   
+  $config->add_define("FOO");
+  
   # Add source files
   $config->add_source_file("foo.c", "bar.c", "baz/baz.c");
   
@@ -1191,6 +1215,13 @@ This field is automatically set and users nomally do not change it.
   $config->ccflags($ccflags);
 
 Gets and sets C<ccflags> field, an array reference containing arugments of the compiler L</"cc">.
+
+=head2 defines
+
+  my $defines = $config->defines;
+  $config->defines($defines);
+
+Gets and sets C<defines> field, an array reference containing arugments of the compiler L</"cc">.
 
 =head2 optimize
 
@@ -1593,6 +1624,14 @@ The C<$Config{cc}> of L<Config> module.
 
   []
 
+=item * L</"defines">
+
+  []
+
+=item * L</"optimize">
+
+  "-O3"
+
 =item * L</"dynamic_lib_ccflags">
 
 Windows:
@@ -1622,10 +1661,6 @@ Windows:
 Other OSs:
 
   []
-
-=item * L</"optimize">
-
-  "-O3"
 
 =item * L</"include_dirs">
 
@@ -1800,6 +1835,12 @@ Calls L</"new_cpp"> method and sets L</"std"> field to C<c++17>, and returns the
   $config->add_ccflag(@ccflags);
 
 Adds @ccflags to the end of L</"ccflags"> field.
+
+=head2 add_define
+
+  $config->add_define(@defines);
+
+Adds @defines to the end of L</"defines"> field.
 
 =head2 add_ldflag
 
