@@ -228,11 +228,13 @@ sub compile_source_file {
       elsif ($compile_info_category eq 'precompile') {
         $message = "[Compile Precompile Class File for $config_class_name class]";
       }
-      elsif ($compile_info_category eq 'native_class') {
-        $message = "[Compile a native class source file for $config_class_name class using the config file \"$config_file\"]";
-      }
-      elsif ($compile_info_category eq 'native_source') {
-        $message = "[Compile a native source file for $config_class_name class using the config file \"$config_file\"]";
+      elsif ($compile_info_category eq 'native') {
+        if ($compile_info->is_native_src) {
+          $message = "[Compile Native Source File for $config_class_name class using the config file \"$config_file\"]";
+        }
+        else {
+          $message = "[Compile Native Class File for $config_class_name class using the config file \"$config_file\"]";
+        }
       }
       else {
         confess("[Unexpected Error]Invalid compile info category.");
@@ -544,15 +546,15 @@ sub compile_class {
     }
     
     my $compile_info_category;
+    my $is_native_src;
     if ($category eq 'precompile') {
       $compile_info_category = 'precompile';
     }
     elsif ($category eq 'native') {
-      if ($current_is_native_class_source_file) {
-        $compile_info_category = 'native_class';
-      }
-      else {
-        $compile_info_category = 'native_source';
+      $compile_info_category = 'native';
+      
+      unless ($current_is_native_class_source_file) {
+        $is_native_src = 1
       }
     }
     
@@ -561,6 +563,7 @@ sub compile_class {
       source_file => $source_file,
       config => $config,
       category => $compile_info_category,
+      is_native_src => $is_native_src,
     );
     
     # Check if object file need to be generated

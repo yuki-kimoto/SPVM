@@ -7,6 +7,9 @@
     * Remove a value "bootstrap" of category in SPVM::Builder::CompileInfo.
     * Add is_bootstrap accessor to SPVM::Builder::CompileInfo.
     * Rename a value 'precompile_class' to 'precompile' of category in SPVM::Builder::CompileInfo.
+    * Remove a value 'native_class' of category in SPVM::Builder::CompileInfo.
+    * Remove a value 'native_source' of category in SPVM::Builder::CompileInfo.
+    * Add a value 'native' of category in SPVM::Builder::CompileInfo.
     
 0.990057 2025-04-25
   [Bug Fix]
