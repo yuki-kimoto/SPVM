@@ -33,14 +33,14 @@ sub global_before_compile_cbs {
   }
 }
 
-sub config_spvm_core {
+sub config_spvm {
   my $self = shift;
   if (@_) {
-    $self->{config_spvm_core} = $_[0];
+    $self->{config_spvm} = $_[0];
     return $self;
   }
   else {
-    return $self->{config_spvm_core};
+    return $self->{config_spvm};
   }
 }
 
@@ -51,7 +51,7 @@ sub new {
   my %fields = (
     output_type => 'exe',
     global_before_compile_cbs => [],
-    config_spvm_core => SPVM::Builder::Util::API::create_default_config(),
+    config_spvm => SPVM::Builder::Util::API::create_default_config(),
     @_,
   );
   
@@ -127,12 +127,12 @@ Gets and sets the C<global_before_compile_cbs> field, an array reference of call
 
 This affects all compilations of native classes and precompilation classes.
 
-=head2 config_spvm_core
+=head2 config_spvm
 
-  my $config_exe_spvm_core = $config_exe->config_spvm_core;
-  $config_exe->config_spvm_core($config_exe_spvm_core);
+  my $config_exe_spvm_core = $config_exe->config_spvm;
+  $config_exe->config_spvm($config_exe_spvm_core);
 
-Gets and sets the C<config_spvm_core> field, an L<SPVM::Builder::Config> object for SPVM core source files.
+Gets and sets the C<config_spvm> field, an L<SPVM::Builder::Config> object for SPVM core source files.
 
 This field is automatically set and users nomally do not change it.
 
@@ -158,7 +158,7 @@ Field Default Values:
 
   []
 
-=item * L</"config_spvm_core">
+=item * L</"config_spvm">
 
 The return value of the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function of C<SPVM::Builder::Util::API> class.
 

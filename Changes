@@ -1,6 +1,7 @@
 0.990058 2025-04-29
   [Incompatible Changes]
     * Remove config_bootstrap field in SPVM::Builder::Config::Exe.
+    * Rename config_spvm_core field to config_spvm in SPVM::Builder::Config::Exe.
     
 0.990057 2025-04-25
   [Bug Fix]
