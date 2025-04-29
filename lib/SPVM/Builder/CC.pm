@@ -225,8 +225,8 @@ sub compile_source_file {
           $message = "[Compile SPVM Source File]";
         }
       }
-      elsif ($compile_info_category eq 'precompile_class') {
-        $message = "[Compile a precompile source file for $config_class_name class]";
+      elsif ($compile_info_category eq 'precompile') {
+        $message = "[Compile Precompile Class File for $config_class_name class]";
       }
       elsif ($compile_info_category eq 'native_class') {
         $message = "[Compile a native class source file for $config_class_name class using the config file \"$config_file\"]";
@@ -545,7 +545,7 @@ sub compile_class {
     
     my $compile_info_category;
     if ($category eq 'precompile') {
-      $compile_info_category = 'precompile_class';
+      $compile_info_category = 'precompile';
     }
     elsif ($category eq 'native') {
       if ($current_is_native_class_source_file) {

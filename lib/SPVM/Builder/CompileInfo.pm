@@ -226,7 +226,7 @@ Gets and sets the C<output_file> field, an output file.
 
 Gets and sets the C<category> field.
 
-These are C<precompile_class>, C<native_class>, C<native_source>, C<spvm>.
+These are C<precompile>, C<native_class>, C<native_source>, C<spvm>.
 
 =head2 is_bootstrap
 
