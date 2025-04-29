@@ -98,6 +98,17 @@ sub ccflags {
   }
 }
 
+sub optimize {
+  my $self = shift;
+  if (@_) {
+    $self->{optimize} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{optimize};
+  }
+}
+
 sub dynamic_lib_ccflags {
   my $self = shift;
   if (@_) {
@@ -139,17 +150,6 @@ sub std {
   }
   else {
     return $self->{std};
-  }
-}
-
-sub optimize {
-  my $self = shift;
-  if (@_) {
-    $self->{optimize} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{optimize};
   }
 }
 
@@ -1192,6 +1192,19 @@ This field is automatically set and users nomally do not change it.
 
 Gets and sets C<ccflags> field, an array reference containing arugments of the compiler L</"cc">.
 
+=head2 optimize
+
+  my $optimize = $config->optimize;
+  $config->optimize($optimize);
+
+Gets and sets C<optimize> field, an arugment of the compiler L</"cc"> for optimization.
+
+Examples:
+
+  $config->optimize('-O3');
+  $config->optimize('-O2');
+  $config->optimize('-g3 -O0');
+
 =head2 dynamic_lib_ccflags
 
   my $dynamic_lib_ccflags = $config->dynamic_lib_ccflags;
@@ -1244,19 +1257,6 @@ Examples:
   
   # -std=cpp17
   $config->std('cpp17');
-
-=head2 optimize
-
-  my $optimize = $config->optimize;
-  $config->optimize($optimize);
-
-Gets and sets C<optimize> field, an arugment of the compiler L</"cc"> for optimization.
-
-Examples:
-
-  $config->optimize('-O3');
-  $config->optimize('-O2');
-  $config->optimize('-g3 -O0');
 
 =head2 source_files
 
