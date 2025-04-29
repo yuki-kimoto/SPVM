@@ -133,6 +133,7 @@ To keep maxmam portability in SPVM, I follow the following rule.
 - constant value is defined by enum { } syntax.
 - constant name is ,for example, SPVM_TYPE_C_FLAG_REF. all character is upper case or under score. need _C_ between package name and constant base name
 - fix all warnings before CPAN release
+- Tab is 2 space.
 
 ## Utilities
 
