@@ -908,9 +908,9 @@ sub compile_bootstrap_source_file {
   my $object_file_name = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir, "$class_name_rel_file.boot.o");
   my $source_file = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir, "$class_name_rel_file.boot.c");
   
-  my $config = $config_exe->config_bootstrap;
+  my $config = $config_exe->config_spvm_core;
   unless ($config) {
-    confess("The config_bootstrap field in the SPVM::Builder::Config class must be defined");
+    confess("The config_spvm_core field in the SPVM::Builder::Config class must be defined");
   }
   
   # Compile

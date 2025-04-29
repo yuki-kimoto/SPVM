@@ -44,17 +44,6 @@ sub config_spvm_core {
   }
 }
 
-sub config_bootstrap {
-  my $self = shift;
-  if (@_) {
-    $self->{config_bootstrap} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{config_bootstrap};
-  }
-}
-
 # Class Methods
 sub new {
   my $self = shift;
@@ -63,7 +52,6 @@ sub new {
     output_type => 'exe',
     global_before_compile_cbs => [],
     config_spvm_core => SPVM::Builder::Util::API::create_default_config(),
-    config_bootstrap => SPVM::Builder::Util::API::create_default_config(),
     @_,
   );
   
@@ -148,15 +136,6 @@ Gets and sets the C<config_spvm_core> field, an L<SPVM::Builder::Config> object 
 
 This field is automatically set and users nomally do not change it.
 
-=head2 config_bootstrap
-
-  my $config_exe_bootstrap = $config_exe->config_bootstrap;
-  $config_exe->config_bootstrap($config_exe_bootstrap);
-
-Gets and sets the C<config_bootstrap> field, an L<SPVM::Builder::Config> object for the bootstrap source file for the executable file.
-
-This field is automatically set and users nomally do not change it.
-
 =head1 Methods
 
 =head2 new
@@ -180,10 +159,6 @@ Field Default Values:
   []
 
 =item * L</"config_spvm_core">
-
-The return value of the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function of C<SPVM::Builder::Util::API> class.
-
-=item * L</"config_bootstrap">
 
 The return value of the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function of C<SPVM::Builder::Util::API> class.
 
