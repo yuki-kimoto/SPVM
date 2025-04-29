@@ -30,9 +30,9 @@ sub get_spvm_version_header_file {
   return $spvm_version_header_file;
 }
 
-sub get_spvm_core_source_file_names {
+sub get_spvm_source_file_names {
   
-  my @spvm_core_source_file_names = qw(
+  my @spvm_source_file_names = qw(
     spvm_allocator.c
     spvm_allow.c
     spvm_api_allocator.c
@@ -91,7 +91,7 @@ sub get_spvm_core_source_file_names {
     spvm_yacc_util.c
   );
 
-  return \@spvm_core_source_file_names;
+  return \@spvm_source_file_names;
 }
 
 sub need_generate {

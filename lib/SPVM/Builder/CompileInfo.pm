@@ -132,9 +132,9 @@ sub create_ccflags {
     my @all_include_dirs;
     
     # SPVM core native directory
-    my $spvm_core_include_dir = $config->spvm_core_include_dir;
-    if (length $spvm_core_include_dir) {
-      push @all_include_dirs, $spvm_core_include_dir;
+    my $spvm_include_dir = $config->spvm_include_dir;
+    if (length $spvm_include_dir) {
+      push @all_include_dirs, $spvm_include_dir;
     }
     
     # include directories
@@ -215,7 +215,7 @@ Gets and sets the C<output_file> field, an output file.
 
 Gets and sets the C<category> field.
 
-These are C<precompile_class>, C<native_class>, C<native_source>, C<spvm_core>, C<bootstrap>.
+These are C<precompile_class>, C<native_class>, C<native_source>, C<spvm>, C<bootstrap>.
 
 =head1 Class Methods
 

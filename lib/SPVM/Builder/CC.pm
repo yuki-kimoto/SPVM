@@ -217,7 +217,7 @@ sub compile_source_file {
       
       my $config_file = $config->file;
       
-      if ($compile_info_category eq 'spvm_core') {
+      if ($compile_info_category eq 'spvm') {
         $message = "[Compile an SPVM core source file]";
       }
       elsif ($compile_info_category eq 'bootstrap') {

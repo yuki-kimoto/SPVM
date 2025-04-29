@@ -129,8 +129,8 @@ This affects all compilations of native classes and precompilation classes.
 
 =head2 config_spvm
 
-  my $config_exe_spvm_core = $config_exe->config_spvm;
-  $config_exe->config_spvm($config_exe_spvm_core);
+  my $config_exe_spvm = $config_exe->config_spvm;
+  $config_exe->config_spvm($config_exe_spvm);
 
 Gets and sets the C<config_spvm> field, an L<SPVM::Builder::Config> object for SPVM core source files.
 
