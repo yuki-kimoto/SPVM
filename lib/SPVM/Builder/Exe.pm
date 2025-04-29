@@ -273,6 +273,10 @@ sub parse_config_argv_option {
 sub build_exe_file {
   my ($self) = @_;
   
+  my $script_name = $self->script_name;
+  
+  warn "[Start Build Process for $script_name]\n";
+  
   my $builder = $self->builder;
   
   my $class_name = $self->{class_name};
@@ -311,6 +315,8 @@ sub build_exe_file {
   $config_linker->output_file($self->{output_file});
   
   $cc_linker->link($class_name, $object_files, {config => $config_linker});
+  
+  warn "[End Build Process for $script_name]\n";
 }
 
 sub compile {

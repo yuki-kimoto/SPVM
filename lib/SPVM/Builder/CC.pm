@@ -790,7 +790,7 @@ sub link {
     # Create an executable file
     elsif ($output_type eq 'exe') {
       unless ($quiet) {
-        warn "[Generate Executable File \"$link_info_output_file\" for $class_name class]\n";
+        warn "[Generate Executable File \"$link_info_output_file\"]\n";
         
         my $link_command = $link_info->to_command;
         warn "$link_command\n";

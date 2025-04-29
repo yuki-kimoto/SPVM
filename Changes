@@ -10,7 +10,9 @@
     * Remove a value 'native_class' of category in SPVM::Builder::CompileInfo.
     * Remove a value 'native_source' of category in SPVM::Builder::CompileInfo.
     * Add a value 'native' of category in SPVM::Builder::CompileInfo.
-    
+  [spvmcc Message Improvement]
+    * Improve messages from spvmcc command.
+
 0.990057 2025-04-25
   [Bug Fix]
     * Fix a bug that warn operator moves native mortal stack forward.
