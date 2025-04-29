@@ -218,10 +218,12 @@ sub compile_source_file {
       my $config_file = $config->file;
       
       if ($compile_info_category eq 'spvm') {
-        $message = "[Compile an SPVM core source file]";
-      }
-      elsif ($compile_info_category eq 'bootstrap') {
-        $message = "[Compile a bootstrap source file for an excutable file]";
+        if ($compile_info->is_bootstrap) {
+          $message = "[Compile Bootstrap File]";
+        }
+        else {
+          $message = "[Compile SPVM Source File]";
+        }
       }
       elsif ($compile_info_category eq 'precompile_class') {
         $message = "[Compile a precompile source file for $config_class_name class]";

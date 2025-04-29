@@ -4,6 +4,8 @@
     * Rename config_spvm_core field to config_spvm in SPVM::Builder::Config::Exe.
     * Rename SPVM::Builder::Config#spvm_core_include_dir method to spvm_include_dir.
     * The value of category in SPVM::Builder::CompileInfo is chaned from spvm_core to spvm.
+    * Remove a value "bootstrap" of category in SPVM::Builder::CompileInfo.
+    * Add is_bootstrap accessor to SPVM::Builder::CompileInfo.
     
 0.990057 2025-04-25
   [Bug Fix]

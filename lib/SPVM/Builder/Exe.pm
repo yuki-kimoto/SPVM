@@ -396,6 +396,7 @@ sub compile_source_file {
     source_file => $source_file,
     config => $config,
     category => $options->{category},
+    is_bootstrap => $options->{is_bootstrap},
   );
   
   if ($need_generate) {
@@ -918,7 +919,8 @@ sub compile_bootstrap_source_file {
     source_file => $source_file,
     output_file => $object_file_name,
     config => $config,
-    category => 'bootstrap',
+    category => 'spvm',
+    is_bootstrap => 1,
   });
   
   return $object_file;
