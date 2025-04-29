@@ -757,7 +757,7 @@ sub link {
       
       unless ($quiet) {
         my $for_precompile = $category eq 'precompile' ? ' for precompile' : '';
-        my $message = "[Generate a dynamic link library for $class_name class$for_precompile]";
+        my $message = "[Generate Dynamic Link Library for $class_name class$for_precompile]";
         warn "$message\n";
         
         my $link_command = $link_info->to_command;
@@ -779,7 +779,7 @@ sub link {
       my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
       
       unless ($quiet) {
-        warn "[Generate a static link library for $class_name class]\n";
+        warn "[Generate Static Link Library for $class_name class]\n";
         
         warn "@ar_cmd\n";
       }
@@ -790,7 +790,7 @@ sub link {
     # Create an executable file
     elsif ($output_type eq 'exe') {
       unless ($quiet) {
-        warn "[Generate an executable file for $class_name class]\n";
+        warn "[Generate Executable File \"$link_info_output_file\" for $class_name class]\n";
         
         my $link_command = $link_info->to_command;
         warn "$link_command\n";
