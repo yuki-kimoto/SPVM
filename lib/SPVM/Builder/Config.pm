@@ -175,14 +175,14 @@ sub include_dirs {
   }
 }
 
-sub spvm_include_dir {
+sub spvm_core_include_dir {
   my $self = shift;
   if (@_) {
-    $self->{spvm_include_dir} = $_[0];
+    $self->{spvm_core_include_dir} = $_[0];
     return $self;
   }
   else {
-    return $self->{spvm_include_dir};
+    return $self->{spvm_core_include_dir};
   }
 }
 
@@ -520,12 +520,12 @@ sub new {
     $self->include_dirs([]);
   }
   
-  # spvm_include_dir
-  unless (defined $self->spvm_include_dir) {
+  # spvm_core_include_dir
+  unless (defined $self->spvm_core_include_dir) {
     my $builder_dir = SPVM::Builder::Util::get_builder_dir();
-    my $spvm_include_dir = "$builder_dir/include";
+    my $spvm_core_include_dir = "$builder_dir/include";
     
-    $self->spvm_include_dir($spvm_include_dir);
+    $self->spvm_core_include_dir($spvm_core_include_dir);
   }
   
   # native_include_dir
@@ -1138,12 +1138,12 @@ The values of this field are converted to C<-I> options when the arguments of th
   # -I /path1 -I /path2
   $config->include_dirs(['/path1', '/path2']);
 
-=head2 spvm_include_dir
+=head2 spvm_core_include_dir
 
-  my $spvm_include_dir = $config->spvm_include_dir;
-  $config->spvm_include_dir($spvm_include_dir);
+  my $spvm_core_include_dir = $config->spvm_core_include_dir;
+  $config->spvm_core_include_dir($spvm_core_include_dir);
 
-Gets and sets C<spvm_include_dir> field, an SPVM core header file search directory.
+Gets and sets C<spvm_core_include_dir> field, an SPVM core header file search directory.
 
 The value of this field is converted to C<-I> option when the arguments of the compiler L</"cc"> are created.
 
@@ -1600,7 +1600,7 @@ Other OSs:
 
   []
 
-=item * L</"spvm_include_dir">
+=item * L</"spvm_core_include_dir">
 
 The SPVM core header file search directory.
 
