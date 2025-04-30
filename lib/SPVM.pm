@@ -1,4 +1,3 @@
-use 5.008007;
 package SPVM;
 use strict;
 use warnings;
