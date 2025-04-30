@@ -154,7 +154,7 @@ sub create_ccflags {
   
   my $config_exe = $config->config_exe;
   if ($config_exe) {
-    push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_all};
+    push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_global};
     
     if ($category eq 'spvm') {
       push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_spvm};

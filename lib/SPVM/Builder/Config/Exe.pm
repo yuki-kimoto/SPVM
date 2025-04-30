@@ -94,14 +94,14 @@ sub ccflags_precompile {
   }
 }
 
-sub defines_all {
+sub defines_global {
   my $self = shift;
   if (@_) {
-    $self->{defines_all} = $_[0];
+    $self->{defines_global} = $_[0];
     return $self;
   }
   else {
-    return $self->{defines_all};
+    return $self->{defines_global};
   }
 }
 
@@ -229,7 +229,7 @@ sub new {
     ccflags_native => [],
     ccflags_native_class => {},
     ccflags_precompile => [],
-    defines_all => [],
+    defines_global => [],
     defines_spvm => [],
     defines_native => [],
     defines_native_class => {},
@@ -284,10 +284,10 @@ sub add_ccflag_precompile {
   push @{$self->{ccflags_precompile}}, @ccflags_precompile;
 }
 
-sub add_define_all {
-  my ($self, @defines_all) = @_;
+sub add_define_global {
+  my ($self, @defines_global) = @_;
   
-  push @{$self->{defines_all}}, @defines_all;
+  push @{$self->{defines_global}}, @defines_global;
 }
 
 sub add_define_spvm {
@@ -397,10 +397,10 @@ Gets and sets the value of C<ccflags_native_class> field's class name key $class
 
 Gets and sets C<ccflags_precompile> field, an array reference containing arugments of the compiler L</"cc"> in compilation for precompilation.
 
-=head2 defines_all
+=head2 defines_global
 
-  my $defines_all = $config->defines_all;
-  $config->defines_all($defines_all);
+  my $defines_global = $config->defines_global;
+  $config->defines_global($defines_global);
 
 Gets and sets C<defines> field, an array reference containing the value of C<-D> arugments of the compiler L</"cc"> in all compilation.
 
@@ -545,11 +545,11 @@ Adds @ccflags_native_class to the end of L</"ccflags_native_class"> field's key 
 
 Adds @ccflags_precompile to the end of L</"ccflags_precompile"> field.
 
-=head2 add_define_all
+=head2 add_define_global
 
-  $config->add_define_all(@defines_all);
+  $config->add_define_global(@defines_global);
 
-Adds @defines_all to the end of L</"defines_all"> field.
+Adds @defines_global to the end of L</"defines_global"> field.
 
 =head2 add_define_spvm
 

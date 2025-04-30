@@ -3,7 +3,7 @@
     * Add SPVM::Builder::Config#defines field.
     * Add SPVM::Builder::Config#add_define method.
     * Add the following methods to SPVM::Builder::Config::Exe.
-      ccflags_all
+      ccflags_global
 
       ccflags_spvm
 
@@ -13,7 +13,7 @@
 
       ccflags_precompile
 
-      defines_all
+      defines_global
 
       defines_spvm
 
@@ -23,7 +23,7 @@
 
       defines_precompile
 
-      optimize_all
+      optimize_global
 
       optimize_spvm
 
@@ -33,7 +33,7 @@
 
       optimize_precompile
 
-      add_ccflag_all
+      add_ccflag_global
 
       add_ccflag_spvm
 
@@ -43,7 +43,7 @@
 
       add_ccflag_precompile
 
-      add_define_all
+      add_define_global
 
       add_define_spvm
 
