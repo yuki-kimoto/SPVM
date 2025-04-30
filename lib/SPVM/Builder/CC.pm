@@ -172,98 +172,102 @@ sub build_precompile_class_source_file {
 sub compile_source_file {
   my ($self, $compile_info) = @_;
   
-  my $config = $compile_info->config;
+  my $no_generate = $compile_info->no_generate;
   
-  # Quiet output
-  my $quiet = $self->detect_quiet($config);
-  
-  my $source_file = $compile_info->source_file;
-  
-  # Execute compile command
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
-  my $cc_cmd = $compile_info->create_command;
-  
-  my $output_file = $compile_info->output_file;
-  
-  unless ($quiet) {
+  unless ($no_generate) {
+    my $config = $compile_info->config;
     
-    my $resource_loader_config = $compile_info->config->resource_loader_config;
+    # Quiet output
+    my $quiet = $self->detect_quiet($config);
     
-    my $compile_info_category = $compile_info->category;
+    my $source_file = $compile_info->source_file;
     
-    my $message;
-    if ($resource_loader_config) {
+    # Execute compile command
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
+    my $cc_cmd = $compile_info->create_command;
+    
+    my $output_file = $compile_info->output_file;
+    
+    unless ($quiet) {
       
-      my $resource_loader_config_class_name = $resource_loader_config->class_name;
+      my $resource_loader_config = $compile_info->config->resource_loader_config;
       
-      my $resource_loader_config_file = $resource_loader_config->file;
+      my $compile_info_category = $compile_info->category;
       
-      my $resource_loader_config_mode = $resource_loader_config->mode;
-      
-      my $resource_loader_config_mode_desc = length $resource_loader_config_mode ? "(mode is $resource_loader_config_mode)" : '';
-      
-      my $resource_class_name = $config->class_name;
-      
-      my $resource_config_file = $config->file;
-      
-      my $resource_config_mode = $config->mode;
-      
-      my $resource_config_mode_desc = length $resource_config_mode ? "(mode is $resource_config_mode)" : '';
-      
-      $message = "[Compile a source file in $resource_class_name resource$resource_config_mode_desc. The resouce is used from $resource_loader_config_class_name class$resource_loader_config_mode_desc]";
-    }
-    else {
-      my $config_class_name = $config->class_name;
-      
-      my $config_file = $config->file;
-      
-      if ($compile_info_category eq 'spvm') {
-        if ($compile_info->is_bootstrap) {
-          $message = "[Compile Bootstrap File]";
-        }
-        else {
-          $message = "[Compile SPVM Source File]";
-        }
-      }
-      elsif ($compile_info_category eq 'precompile') {
-        $message = "[Compile Precompile Class File for $config_class_name class]";
-      }
-      elsif ($compile_info_category eq 'native') {
-        if ($compile_info->is_native_src) {
-          $message = "[Compile Native Source File for $config_class_name class using the config file \"$config_file\"]";
-        }
-        else {
-          $message = "[Compile Native Class File for $config_class_name class using the config file \"$config_file\"]";
-        }
+      my $message;
+      if ($resource_loader_config) {
+        
+        my $resource_loader_config_class_name = $resource_loader_config->class_name;
+        
+        my $resource_loader_config_file = $resource_loader_config->file;
+        
+        my $resource_loader_config_mode = $resource_loader_config->mode;
+        
+        my $resource_loader_config_mode_desc = length $resource_loader_config_mode ? "(mode is $resource_loader_config_mode)" : '';
+        
+        my $resource_class_name = $config->class_name;
+        
+        my $resource_config_file = $config->file;
+        
+        my $resource_config_mode = $config->mode;
+        
+        my $resource_config_mode_desc = length $resource_config_mode ? "(mode is $resource_config_mode)" : '';
+        
+        $message = "[Compile a source file in $resource_class_name resource$resource_config_mode_desc. The resouce is used from $resource_loader_config_class_name class$resource_loader_config_mode_desc]";
       }
       else {
-        confess("[Unexpected Error]Invalid compile info category.");
+        my $config_class_name = $config->class_name;
+        
+        my $config_file = $config->file;
+        
+        if ($compile_info_category eq 'spvm') {
+          if ($compile_info->is_bootstrap) {
+            $message = "[Compile Bootstrap File]";
+          }
+          else {
+            $message = "[Compile SPVM Source File]";
+          }
+        }
+        elsif ($compile_info_category eq 'precompile') {
+          $message = "[Compile Precompile Class File for $config_class_name class]";
+        }
+        elsif ($compile_info_category eq 'native') {
+          if ($compile_info->is_native_src) {
+            $message = "[Compile Native Source File for $config_class_name class using the config file \"$config_file\"]";
+          }
+          else {
+            $message = "[Compile Native Class File for $config_class_name class using the config file \"$config_file\"]";
+          }
+        }
+        else {
+          confess("[Unexpected Error]Invalid compile info category.");
+        }
+      }
+      
+      warn "$message\n";
+      
+      warn "@$cc_cmd\n";
+    }
+    
+    mkpath dirname $output_file;
+    
+    my $before_compile_cbs = $config->before_compile_cbs;
+    for my $before_compile_cb (@$before_compile_cbs) {
+      $before_compile_cb->($config, $compile_info);
+    }
+    
+    my $config_exe = $config->config_exe;
+    
+    if ($config_exe) {
+      my $global_before_compile_cbs = $config_exe->global_before_compile_cbs;
+      for my $global_before_compile_cb (@$global_before_compile_cbs) {
+        $global_before_compile_cb->($config, $compile_info);
       }
     }
     
-    warn "$message\n";
-    
-    warn "@$cc_cmd\n";
+    $cbuilder->do_system(@$cc_cmd)
+      or confess("$source_file file cannnot be compiled by the following command:\n@$cc_cmd\n");
   }
-  
-  mkpath dirname $output_file;
-  
-  my $before_compile_cbs = $config->before_compile_cbs;
-  for my $before_compile_cb (@$before_compile_cbs) {
-    $before_compile_cb->($config, $compile_info);
-  }
-  
-  my $config_exe = $config->config_exe;
-  
-  if ($config_exe) {
-    my $global_before_compile_cbs = $config_exe->global_before_compile_cbs;
-    for my $global_before_compile_cb (@$global_before_compile_cbs) {
-      $global_before_compile_cb->($config, $compile_info);
-    }
-  }
-  
-  $cbuilder->do_system(@$cc_cmd)
-    or confess("$source_file file cannnot be compiled by the following command:\n@$cc_cmd\n");
 }
 
 sub compile_class {
@@ -627,9 +631,8 @@ sub compile_class {
     }
     
     # Compile a source file
-    if ($need_generate) {
-      $self->compile_source_file($compile_info);
-    }
+    $compile_info->no_generate(!$need_generate);
+    $self->compile_source_file($compile_info);
     
     # Object file information
     my $compile_info_cc = $compile_info->{cc};
