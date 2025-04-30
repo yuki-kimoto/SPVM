@@ -58,11 +58,6 @@ sub new {
     $self->object_files([]);
   }
   
-  my $after_create_link_info_cbs = $config->after_create_link_info_cbs;
-  for my $after_create_link_info_cb (@$after_create_link_info_cbs) {
-    $after_create_link_info_cb->($config, $self);
-  }
-  
   return $self;
 }
 

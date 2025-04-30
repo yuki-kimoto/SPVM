@@ -318,17 +318,6 @@ sub libs {
   }
 }
 
-sub after_create_link_info_cbs {
-  my $self = shift;
-  if (@_) {
-    $self->{after_create_link_info_cbs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{after_create_link_info_cbs};
-  }
-}
-
 sub before_link_cbs {
   my $self = shift;
   if (@_) {
@@ -623,11 +612,6 @@ sub new {
     $self->libs([]);
   }
   
-  # after_create_link_info_cbs
-  unless (defined $self->{after_create_link_info_cbs}) {
-    $self->after_create_link_info_cbs([]);
-  }
-  
   # before_link_cbs
   unless (defined $self->{before_link_cbs}) {
     $self->before_link_cbs([]);
@@ -855,12 +839,6 @@ sub add_before_compile_cb {
   my ($self, @before_compile_cbs) = @_;
   
   push @{$self->{before_compile_cbs}}, @before_compile_cbs;
-}
-
-sub add_after_create_link_info_cb {
-  my ($self, @after_create_link_info_cbs) = @_;
-  
-  push @{$self->{after_create_link_info_cbs}}, @after_create_link_info_cbs;
 }
 
 sub add_before_link_cb {
@@ -1388,19 +1366,6 @@ Examples:
 
   $config->ld_optimize("-O3");
 
-=head2 after_create_link_info_cbs
-
-  my $after_create_link_info_cbs = $config->after_create_link_info_cbs;
-  $config->after_create_link_info_cbs($after_create_link_info_cbs);
-
-Gets and sets C<after_create_link_info_cbs> field, an array reference containing callbacks called just after creating link information.
-
-These callbacks are executed even if no dynamic link library file was generated.
-
-The 1th argument of the callback is an L<SPVM::Builder::Config> object.
-
-The 2th argument of the callback is an L<SPVM::Builder::LinkInfo> object.
-
 =head2 before_link_cbs
 
   my $before_link_cbs = $config->before_link_cbs;
@@ -1700,10 +1665,6 @@ Other OSs:
   []
 
 =item * L</"libs">
-
-  []
-
-=item * L</"after_create_link_info_cbs">
 
   []
 
