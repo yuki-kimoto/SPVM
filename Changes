@@ -2,6 +2,56 @@
   [New Features]
     * Add SPVM::Builder::Config#defines field.
     * Add SPVM::Builder::Config#add_define method.
+    * Add the following methods to SPVM::Builder::Config::Exe.
+      ccflags_all
+
+      ccflags_spvm
+
+      ccflags_native
+
+      ccflags_native_class
+
+      ccflags_precompile
+
+      defines_all
+
+      defines_spvm
+
+      defines_native
+
+      defines_native_class
+
+      defines_precompile
+
+      optimize_all
+
+      optimize_spvm
+
+      optimize_native
+
+      optimize_native_class
+
+      optimize_precompile
+
+      add_ccflag_all
+
+      add_ccflag_spvm
+
+      add_ccflag_native
+
+      add_ccflag_native_class
+
+      add_ccflag_precompile
+
+      add_define_all
+
+      add_define_spvm
+
+      add_define_native
+
+      add_define_native_class
+
+      add_define_precompile
     
   [Incompatible Changes]
     * Remove config_bootstrap field in SPVM::Builder::Config::Exe.

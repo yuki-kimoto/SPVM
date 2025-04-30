@@ -1221,7 +1221,7 @@ Gets and sets C<ccflags> field, an array reference containing arugments of the c
   my $defines = $config->defines;
   $config->defines($defines);
 
-Gets and sets C<defines> field, an array reference containing arugments of the compiler L</"cc">.
+Gets and sets C<defines> field, an array reference containing the values of C<-D> arugments of the compiler L</"cc">.
 
 =head2 optimize
 
