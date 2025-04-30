@@ -219,17 +219,6 @@ sub source_files {
   }
 }
 
-sub after_create_compile_info_cbs {
-  my $self = shift;
-  if (@_) {
-    $self->{after_create_compile_info_cbs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{after_create_compile_info_cbs};
-  }
-}
-
 sub before_compile_cbs {
   my $self = shift;
   if (@_) {
@@ -577,11 +566,6 @@ sub new {
     $self->source_files([]);
   }
   
-  # after_create_compile_info_cbs
-  unless (defined $self->{after_create_compile_info_cbs}) {
-    $self->after_create_compile_info_cbs([]);
-  }
-  
   # before_compile_cbs
   unless (defined $self->{before_compile_cbs}) {
     $self->before_compile_cbs([]);
@@ -865,12 +849,6 @@ sub add_source_file {
   my ($self, @source_files) = @_;
   
   push @{$self->{source_files}}, @source_files;
-}
-
-sub add_after_create_compile_info_cb {
-  my ($self, @after_create_compile_info_cbs) = @_;
-  
-  push @{$self->{after_create_compile_info_cbs}}, @after_create_compile_info_cbs;
 }
 
 sub add_before_compile_cb {
@@ -1296,19 +1274,6 @@ Examples:
 
 Gets and sets C<source_files> field, an array reference containing relative paths of L<native source file|SPVM::Document::NativeClass/"Native Source Files"> file from L</"native_src_dir"> field.
 
-=head2 after_create_compile_info_cbs
-
-  my $after_create_compile_info_cbs = $config->after_create_compile_info_cbs;
-  $config->after_create_compile_info_cbs($after_create_compile_info_cbs);
-
-Gets and sets C<after_create_compile_info_cbs> field, an array reference containing callbacks called just after creating compilation information.
-
-These callbacks are executed even if no object file was generated.
-
-The 1th argument of the callback is an L<SPVM::Builder::Config> object.
-
-The 2th argument of the callback is an L<SPVM::Builder::CompileInfo> object.
-
 =head2 before_compile_cbs
 
   my $before_compile_cbs = $config->before_compile_cbs;
@@ -1690,10 +1655,6 @@ Examples:
 
   []
 
-=item * L</"after_create_compile_info_cbs">
-
-  []
-
 =item * L</"before_compile_cbs">
 
   []
@@ -1863,22 +1824,6 @@ Adds @source_files to the end of L</"source_files"> field.
 Examples:
 
   $config->add_source_file('foo.c', 'bar.c');
-
-=head2 add_after_create_compile_info_cb
-
-  $config->add_after_create_compile_info_cb(@after_create_compile_info_cbs);
-
-Adds @after_create_compile_info_cbs to the end of L</"after_create_compile_info_cbs"> field.
-
-Examples:
-
-  $config->add_after_create_compile_info_cb(sub {
-    my ($config, $compile_info) = @_;
-    
-    my $cc = $config->cc;
-    
-    # Do something
-  });
 
 =head2 add_before_compile_cb
 

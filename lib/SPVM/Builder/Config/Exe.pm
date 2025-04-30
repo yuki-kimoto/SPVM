@@ -11,17 +11,6 @@ use SPVM::Builder::Util::API;
 use base 'SPVM::Builder::Config';
 
 # Fields
-sub global_after_create_compile_info_cbs {
-  my $self = shift;
-  if (@_) {
-    $self->{global_after_create_compile_info_cbs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{global_after_create_compile_info_cbs};
-  }
-}
-
 sub global_before_compile_cbs {
   my $self = shift;
   if (@_) {
@@ -255,12 +244,6 @@ sub new {
 }
 
 # Instance Methods
-sub add_global_after_create_compile_info_cb {
-  my ($self, @global_after_create_compile_info_cbs) = @_;
-  
-  push @{$self->{global_after_create_compile_info_cbs}}, @global_after_create_compile_info_cbs;
-}
-
 sub add_global_before_compile_cb {
   my ($self, @global_before_compile_cbs) = @_;
   
@@ -360,15 +343,6 @@ The SPVM::Builder::Config::Exe class has methods to manipulate the config for th
 =back
 
 =head1 Fields
-
-=head2 global_after_create_compile_info_cbs
-
-  my $global_after_create_compile_info_cbs = $config_exe->global_after_create_compile_info_cbs;
-  $config_exe->global_after_create_compile_info_cbs($global_after_create_compile_info_cbs);
-
-Gets and sets the C<global_after_create_compile_info_cbs> field, an array reference of callbacks that work globally called just after creating a compilation information.
-
-This affects all compilations.
 
 =head2 global_before_compile_cbs
 
@@ -524,22 +498,6 @@ The return value of the L<create_default_config|SPVM::Builder::Util::API/"create
   undef
 
 =back
-
-=head2 add_global_after_create_compile_info_cb
-
-  $config_exe->add_global_after_create_compile_info_cb(@global_after_create_compile_info_cbs);
-
-Adds @global_after_create_compile_info_cbs to the end of L</"global_after_create_compile_info_cbs"> field.
-
-Examples:
-
-  $config_exe->add_global_after_create_compile_info_cb(sub {
-    my ($config, $compile_info) = @_;
-    
-    my $cc = $config->cc;
-    
-    # Do something
-  });
 
 =head2 add_global_before_compile_cb
 
