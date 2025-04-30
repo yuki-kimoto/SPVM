@@ -52,6 +52,8 @@
       add_define_native_class
 
       add_define_precompile
+    * Add SPVM::Builder::LinkInfo#no_generate field.
+    * Add SPVM::Builder::CompileInfo#no_generate field.
     
   [Incompatible Changes]
     * Remove config_bootstrap field in SPVM::Builder::Config::Exe.
