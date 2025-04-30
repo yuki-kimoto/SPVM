@@ -188,7 +188,7 @@ sub compile_source_file {
   
   my $before_compile_cbs = $config->before_compile_cbs;
   for my $before_compile_cb (@$before_compile_cbs) {
-    $before_compile_cb->($config, $compile_info);
+    $before_compile_cb->($compile_info->config, $compile_info);
   }
   
   my $config_exe = $config->config_exe;
@@ -196,7 +196,7 @@ sub compile_source_file {
   if ($config_exe) {
     my $global_before_compile_cbs = $config_exe->global_before_compile_cbs;
     for my $global_before_compile_cb (@$global_before_compile_cbs) {
-      $global_before_compile_cb->($config, $compile_info);
+      $global_before_compile_cb->($compile_info->config, $compile_info);
     }
   }
   
@@ -742,7 +742,7 @@ sub link {
   
   my $before_link_cbs = $config->before_link_cbs;
   for my $before_link_cb (@$before_link_cbs) {
-    $before_link_cb->($config, $link_info);
+    $before_link_cb->($link_info->config, $link_info);
   }
   
   if ($need_generate) {
