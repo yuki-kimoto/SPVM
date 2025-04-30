@@ -156,7 +156,10 @@ sub create_ccflags {
   if ($config_exe) {
     push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_all};
     
-    if ($category eq 'native') {
+    if ($category eq 'spvm') {
+      push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_spvm};
+    }
+    elsif ($category eq 'native') {
       push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_native};
       
       if (defined $class_name) {
@@ -169,7 +172,10 @@ sub create_ccflags {
     
     push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_all};
     
-    if ($category eq 'native') {
+    if ($category eq 'spvm') {
+      push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_spvm};
+    }
+    elsif ($category eq 'native') {
       push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_native};
       
       if (defined $class_name) {
@@ -184,7 +190,12 @@ sub create_ccflags {
       $optimize = $config_exe->optimize_all;
     }
     
-    if ($category eq 'native') {
+    if ($category eq 'spvm') {
+      if (length $config_exe->optimize_spvm) {
+        $optimize = $config_exe->optimize_spvm;
+      }
+    }
+    elsif ($category eq 'native') {
       if (length $config_exe->optimize_native) {
         $optimize = $config_exe->optimize_native;
       }
