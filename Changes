@@ -67,6 +67,9 @@
     * Remove a value 'native_source' of category in SPVM::Builder::CompileInfo.
     * Add a value 'native' of category in SPVM::Builder::CompileInfo.
     * Remove SPVM::Builder::Config::Exe#set_global_optimize method.
+    * SPVM::Builder::Config#before_compile_cbs and SPVM::Builder::Config::Exe#global_before_compile_cbs are exected even if the output file is not needed to generate.
+    * SPVM::Builder::Config#before_link_cbs is exected even if the output file is not needed to generate.
+    
   [spvmcc Message Improvement]
     * Improve messages from spvmcc command.
   [Requirement Changes]

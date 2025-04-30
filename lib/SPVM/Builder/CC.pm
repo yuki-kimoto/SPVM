@@ -174,19 +174,35 @@ sub compile_source_file {
   
   my $no_generate = $compile_info->no_generate;
   
+  my $config = $compile_info->config;
+  
+  # Quiet output
+  my $quiet = $self->detect_quiet($config);
+  
+  my $source_file = $compile_info->source_file;
+  
+  # Execute compile command
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
+  my $cc_cmd = $compile_info->create_command;
+  
+  my $output_file = $compile_info->output_file;
+  
+  my $before_compile_cbs = $config->before_compile_cbs;
+  for my $before_compile_cb (@$before_compile_cbs) {
+    $before_compile_cb->($config, $compile_info);
+  }
+  
+  my $config_exe = $config->config_exe;
+  
+  if ($config_exe) {
+    my $global_before_compile_cbs = $config_exe->global_before_compile_cbs;
+    for my $global_before_compile_cb (@$global_before_compile_cbs) {
+      $global_before_compile_cb->($config, $compile_info);
+    }
+  }
+  
   unless ($no_generate) {
-    my $config = $compile_info->config;
-    
-    # Quiet output
-    my $quiet = $self->detect_quiet($config);
-    
-    my $source_file = $compile_info->source_file;
-    
-    # Execute compile command
-    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
-    my $cc_cmd = $compile_info->create_command;
-    
-    my $output_file = $compile_info->output_file;
+    mkpath dirname $output_file;
     
     unless ($quiet) {
       
@@ -247,22 +263,6 @@ sub compile_source_file {
       warn "$message\n";
       
       warn "@$cc_cmd\n";
-    }
-    
-    mkpath dirname $output_file;
-    
-    my $before_compile_cbs = $config->before_compile_cbs;
-    for my $before_compile_cb (@$before_compile_cbs) {
-      $before_compile_cb->($config, $compile_info);
-    }
-    
-    my $config_exe = $config->config_exe;
-    
-    if ($config_exe) {
-      my $global_before_compile_cbs = $config_exe->global_before_compile_cbs;
-      for my $global_before_compile_cb (@$global_before_compile_cbs) {
-        $global_before_compile_cb->($config, $compile_info);
-      }
     }
     
     $cbuilder->do_system(@$cc_cmd)
