@@ -298,7 +298,9 @@ sub add_ccflag_native {
 sub add_ccflag_native_class {
   my ($self, $class_name, @ccflags_native_class) = @_;
   
-  $self->{ccflags_native_class}{$class_name} //= [];
+  unless (defined $self->{ccflags_native_class}{$class_name}) {
+    $self->{ccflags_native_class}{$class_name} = [];
+  }
   
   push @{$self->{ccflags_native_class}{$class_name}}, @ccflags_native_class;
 }
@@ -330,7 +332,9 @@ sub add_define_native {
 sub add_define_native_class {
   my ($self, $class_name, @defines_native_class) = @_;
   
-  $self->{defines_native_class}{$class_name} //= [];
+  unless (defined $self->{defines_native_class}{$class_name}) {
+    $self->{defines_native_class}{$class_name} = []
+  }
   
   push @{$self->{defines_native_class}{$class_name}}, @defines_native_class;
 }

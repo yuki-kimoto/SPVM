@@ -160,7 +160,7 @@ sub create_ccflags {
       push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_native};
       
       if (defined $class_name) {
-        push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_native_class($class_name) // []};
+        push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_native_class($class_name) || []};
       }
     }
     elsif ($category eq 'precompile') {
@@ -173,7 +173,7 @@ sub create_ccflags {
       push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_native};
       
       if (defined $class_name) {
-        push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_native_class($class_name) // []};
+        push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_native_class($class_name) || []};
       }
     }
     elsif ($category eq 'precompile') {
