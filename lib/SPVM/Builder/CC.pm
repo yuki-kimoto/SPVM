@@ -693,9 +693,9 @@ sub link {
   
   my $force = $self->detect_force($config);
   
-  my $output_file = $config->output_file;
-  
   my $link_info = $self->create_link_info($class_name, $object_files, $config);
+  
+  my $output_file = $config->output_file;
   
   my @object_files = map { "$_" } @{$link_info->object_files};
   
