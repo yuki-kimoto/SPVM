@@ -237,27 +237,23 @@ sub compile_source_file {
         
         my $config_file = $config->file;
         
-        if ($compile_info_category eq 'spvm') {
-          if ($compile_info->is_bootstrap) {
-            $message = "[Compile Bootstrap File]";
-          }
-          else {
-            $message = "[Compile SPVM Source File]";
-          }
+        if ($compile_info_category eq 'bootstrap') {
+          $message = "[Compile Bootstrap File]";
         }
-        elsif ($compile_info_category eq 'precompile') {
+        elsif ($compile_info_category eq 'spvm_core') {
+          $message = "[Compile SPVM Source File]";
+        }
+        elsif ($compile_info_category eq 'native_source') {
+          $message = "[Compile Native Source File for $config_class_name class using the config file \"$config_file\"]";
+        }
+        elsif ($compile_info_category eq 'native_class') {
+          $message = "[Compile Native Class File for $config_class_name class using the config file \"$config_file\"]";
+        }
+        elsif ($compile_info_category eq 'precompile_class') {
           $message = "[Compile Precompile Class File for $config_class_name class]";
         }
-        elsif ($compile_info_category eq 'native') {
-          if ($compile_info->is_native_src) {
-            $message = "[Compile Native Source File for $config_class_name class using the config file \"$config_file\"]";
-          }
-          else {
-            $message = "[Compile Native Class File for $config_class_name class using the config file \"$config_file\"]";
-          }
-        }
         else {
-          confess("[Unexpected Error]Invalid compile info category.");
+          confess("[Unexpected Error]Invalid compile info category \"$compile_info_category\".");
         }
       }
       
@@ -551,15 +547,15 @@ sub compile_class {
     }
     
     my $compile_info_category;
-    my $is_native_src;
     if ($category eq 'precompile') {
-      $compile_info_category = 'precompile';
+      $compile_info_category = 'precompile_class';
     }
     elsif ($category eq 'native') {
-      $compile_info_category = 'native';
-      
-      unless ($current_is_native_class_source_file) {
-        $is_native_src = 1
+      if ($current_is_native_class_source_file) {
+        $compile_info_category = 'native_source';
+      }
+      else {
+        $compile_info_category = 'native_class';
       }
     }
     
@@ -568,7 +564,6 @@ sub compile_class {
       source_file => $source_file,
       config => $config,
       category => $compile_info_category,
-      is_native_src => $is_native_src,
     );
     
     # Check if object file need to be generated

@@ -284,7 +284,7 @@ sub build_exe_file {
   push @$object_files, $bootstrap_object_file;
   
   # Compile SPVM core source files
-  my $spvm_object_files = $self->compile_spvm_source_files;
+  my $spvm_object_files = $self->compile_spvm_core_source_files;
   push @$object_files, @$spvm_object_files;
   
   my $classes_object_files = $self->compile_classes;
@@ -385,7 +385,6 @@ sub compile_source_file {
     source_file => $source_file,
     config => $config,
     category => $options->{category},
-    is_bootstrap => $options->{is_bootstrap},
   );
   
   if ($need_generate) {
@@ -908,14 +907,13 @@ sub compile_bootstrap_source_file {
     source_file => $source_file,
     output_file => $object_file_name,
     config => $config,
-    category => 'spvm',
-    is_bootstrap => 1,
+    category => 'bootstrap',
   });
   
   return $object_file;
 }
 
-sub compile_spvm_source_files {
+sub compile_spvm_core_source_files {
   my ($self) = @_;
   
   # Config
@@ -928,8 +926,8 @@ sub compile_spvm_source_files {
   
   # SPVM runtime source files
   my $spvm_runtime_src_base_names;
-  $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_source_file_names();
-  my @spvm_source_files = map { "$builder_src_dir/$_" } @$spvm_runtime_src_base_names;
+  $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
+  my @spvm_core_source_files = map { "$builder_src_dir/$_" } @$spvm_runtime_src_base_names;
   
   # Object dir
   my $output_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
@@ -942,7 +940,7 @@ sub compile_spvm_source_files {
   
   # Compile source files
   my $object_files = [];
-  for my $src_file (@spvm_source_files) {
+  for my $src_file (@spvm_core_source_files) {
     # Object file
     my $object_file_name = "$output_dir/" . basename($src_file);
     $object_file_name =~ s/\.c$//;
@@ -952,7 +950,7 @@ sub compile_spvm_source_files {
       source_file => $src_file,
       output_file => $object_file_name,
       config => $config,
-      category => 'spvm',
+      category => 'spvm_core',
     });
     push @$object_files, $object_file;
   }
