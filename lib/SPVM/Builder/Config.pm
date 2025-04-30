@@ -1004,6 +1004,10 @@ sub clone {
     }
   }
   
+  if ($self->config_exe) {
+    $clone->config_exe($self->config_exe->clone);
+  }
+  
   return $clone;
 }
 

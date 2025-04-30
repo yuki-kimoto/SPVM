@@ -58,6 +58,8 @@ sub new {
     $self->object_files([]);
   }
   
+  $self->config($config->clone);
+  
   return $self;
 }
 

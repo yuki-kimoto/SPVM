@@ -75,6 +75,8 @@
     * Improve messages from spvmcc command.
   [Requirement Changes]
     * Require Perl 5.20.
+  [Changes]
+    * config file passed to before_compile_cbs is cloned one.
 0.990057 2025-04-25
   [Bug Fix]
     * Fix a bug that warn operator moves native mortal stack forward.

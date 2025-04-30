@@ -98,6 +98,8 @@ sub new {
     confess("The \"config\" field must be defined.");
   }
   
+  $self->config($config->clone);
+  
   return $self;
 }
 
