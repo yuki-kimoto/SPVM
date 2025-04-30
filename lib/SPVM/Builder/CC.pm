@@ -707,53 +707,51 @@ sub link {
     input_files => $input_files,
   });
   
+  my $ld = $config->ld;
+  
+  my $cbuilder_config = {
+    ld => $ld,
+    lddlflags => '',
+    shrpenv => '',
+    libpth => '',
+    libperl => '',
+    
+    # "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
+    # Linker Script File(.lds) when "perllibs" is empty string.
+    # This is syntax error in Linker Script File(.lds)
+    # For the reason, libm is linked which seems to have no effect.
+    perllibs => '-lm',
+  };
+  
+  my $quiet = $self->detect_quiet($config);
+  
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
+  
+  my $link_info_output_file = $config->output_file;
+  
+  my $link_info_object_files = $link_info->object_files;
+  
+  my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
+  
+  my $link_info_ldflags = $link_info->create_ldflags;
+  
+  my $output_type = $config->output_type;
+  
+  my @link_tmp_files;
+  
+  my $before_link_cbs = $config->before_link_cbs;
+  for my $before_link_cb (@$before_link_cbs) {
+    $before_link_cb->($config, $link_info);
+  }
+  
   if ($need_generate) {
     
-    my $ld = $config->ld;
-    
-    my $cbuilder_config = {
-      ld => $ld,
-      lddlflags => '',
-      shrpenv => '',
-      libpth => '',
-      libperl => '',
-      
-      # "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
-      # Linker Script File(.lds) when "perllibs" is empty string.
-      # This is syntax error in Linker Script File(.lds)
-      # For the reason, libm is linked which seems to have no effect.
-      perllibs => '-lm',
-    };
-    
-    my $quiet = $self->detect_quiet($config);
-    
-    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
-    
-    my $link_info_output_file = $config->output_file;
-    
-    my $link_info_object_files = $link_info->object_files;
-    
-    my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
-    
-    my $link_info_ldflags = $link_info->create_ldflags;
-    
-    my $output_type = $config->output_type;
-    
-    my @link_tmp_files;
-    
     mkpath dirname $link_info_output_file;
-    
-    my $before_link_cbs = $config->before_link_cbs;
-    for my $before_link_cb (@$before_link_cbs) {
-      $before_link_cb->($config, $link_info);
-    }
     
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
       my $basic_type = $runtime->get_basic_type_by_name($class_name);
       my $method_names = $basic_type->get_method_names_by_category($category);
-      
-      my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
       
       unless ($quiet) {
         my $for_precompile = $category eq 'precompile' ? ' for precompile' : '';
@@ -763,6 +761,8 @@ sub link {
         my $link_command = $link_info->to_command;
         warn "$link_command\n";
       }
+      
+      my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
       
       (undef, @link_tmp_files) = $cbuilder->link(
         objects => $link_info_object_file_names,
