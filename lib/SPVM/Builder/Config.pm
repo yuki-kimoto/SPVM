@@ -997,7 +997,7 @@ sub clone {
       $clone->{$name} = [@$value];
     }
     elsif (ref $value eq 'HASH') {
-      $clone->{$name} = {%$value};
+      $clone->{$name} = &_copy_hash($value);
     }
     else {
       $clone->{$name} = $value;
@@ -1006,6 +1006,28 @@ sub clone {
   
   if ($self->config_exe) {
     $clone->config_exe($self->config_exe->clone);
+  }
+  
+  return $clone;
+}
+
+sub _copy_hash {
+  my ($hash) = @_;
+  
+  my $clone = {};
+  
+  for my $name (keys %$hash) {
+    my $value = $hash->{$name};
+    
+    if (ref $value eq 'ARRAY') {
+      $clone->{$name} = [@$value];
+    }
+    elsif (ref $value eq 'HASH') {
+      $clone->{$name} = {%$value};
+    }
+    else {
+      $clone->{$name} = $value;
+    }
   }
   
   return $clone;
