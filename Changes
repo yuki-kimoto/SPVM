@@ -1,4 +1,4 @@
-0.990058 2025-04-29
+0.990058 2025-04-30
   [New Features]
     * Add SPVM::Builder::Config#defines field.
     * Add SPVM::Builder::Config#add_define method.
@@ -64,6 +64,7 @@
     * Remove a value 'native_class' of category in SPVM::Builder::CompileInfo.
     * Remove a value 'native_source' of category in SPVM::Builder::CompileInfo.
     * Add a value 'native' of category in SPVM::Builder::CompileInfo.
+    * Remove SPVM::Builder::Config::Exe#set_global_optimize method.
   [spvmcc Message Improvement]
     * Improve messages from spvmcc command.
 

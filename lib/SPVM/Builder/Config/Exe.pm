@@ -267,16 +267,6 @@ sub add_global_before_compile_cb {
   push @{$self->{global_before_compile_cbs}}, @global_before_compile_cbs;
 }
 
-sub set_global_optimize {
-  my ($self, $optimize) = @_;
-  
-  $self->add_global_after_create_compile_info_cb(sub {
-    my ($config, $comile_info) = @_;
-    
-    $config->optimize($optimize);
-  });
-}
-
 sub add_ccflag_all {
   my ($self, @ccflags_all) = @_;
   
@@ -565,18 +555,6 @@ Examples:
     my $cc_command = $compile_info->to_command;
     
     # Do something
-  });
-
-=head2 set_global_optimize
-
-  $config_exe->set_global_optimize("-O0 -g");
-
-Sets C<optimize> that works globally. This is the same as the following code.
-
-  $config_exe->add_global_after_create_compile_info_cb(sub {
-    my ($config, $comile_info) = @_;
-    
-    $config->optimize($optimize);
   });
 
 =head2 add_ccflag_all
