@@ -552,10 +552,10 @@ sub compile_class {
     }
     elsif ($category eq 'native') {
       if ($current_is_native_class_source_file) {
-        $compile_info_category = 'native_source';
+        $compile_info_category = 'native_class';
       }
       else {
-        $compile_info_category = 'native_class';
+        $compile_info_category = 'native_source';
       }
     }
     

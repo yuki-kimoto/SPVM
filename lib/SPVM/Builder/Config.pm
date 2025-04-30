@@ -860,8 +860,13 @@ sub load_config {
   
   my $config;
   {
+    open my $fh, '<', $config_file
+      or confess("The config file \"$config_file\" can't found: $!");
+    
+    my $config_content = do { $/ = undef; <$fh> };
+    
     local @ARGV = @$argv;
-    $config = do File::Spec->rel2abs($config_file);
+    $config = &_eval_config_content($config_content, $config_file);
   }
   
   if ($@) {
@@ -875,6 +880,13 @@ sub load_config {
   push @{$config->get_loaded_config_files}, $config_file;
   
   return $config;
+}
+
+sub _eval_config_content {
+  
+  $_[0] = qq|{\nuse strict;\nuse warnings;\nuse SPVM::Builder::Config;\nuse SPVM::Builder::Config::Exe;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
+  
+  return eval $_[0];
 }
 
 sub load_mode_config {
