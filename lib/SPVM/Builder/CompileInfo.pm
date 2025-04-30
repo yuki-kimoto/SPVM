@@ -125,16 +125,15 @@ sub create_ccflags {
   
   my $config = $self->config;
   
+  my $class_name = $config->class_name;
+  
+  my $category = $config->category;
+  
   my @compile_command_args;
   
   my $std = $config->std;
   if (length $std) {
     push @compile_command_args, "-std=$std";
-  }
-  
-  my $optimize = $config->optimize;
-  if (length $optimize) {
-    push @compile_command_args, split(/ +/, $optimize);
   }
   
   push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config->defines};
@@ -149,6 +148,62 @@ sub create_ccflags {
   
   if ($output_type eq 'dynamic_lib') {
     push @compile_command_args, grep { length $_ } @{$config->dynamic_lib_ccflags};
+  }
+  
+  my $optimize = $config->optimize;
+  
+  my $config_exe = $config->config_exe;
+  if ($config_exe) {
+    push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_all};
+    
+    if ($category eq 'native') {
+      push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_native};
+      
+      if (defined $class_name) {
+        push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_native_class($class_name) // []};
+      }
+    }
+    elsif ($category eq 'precompile') {
+      push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_precompile};
+    }
+    
+    push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_all};
+    
+    if ($category eq 'native') {
+      push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_native};
+      
+      if (defined $class_name) {
+        push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_native_class($class_name) // []};
+      }
+    }
+    elsif ($category eq 'precompile') {
+      push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_precompile};
+    }
+    
+    if (length $config_exe->optimize_all) {
+      $optimize = $config_exe->optimize_all;
+    }
+    
+    if ($category eq 'native') {
+      if (length $config_exe->optimize_native) {
+        $optimize = $config_exe->optimize_native;
+      }
+      
+      if (defined $class_name) {
+        if (length $config_exe->optimize_native_class($class_name)) {
+          $optimize = $config_exe->optimize_native_class($config->class_name);
+        }
+      }
+    }
+    elsif ($category eq 'precompile') {
+      if (length $config_exe->optimize_precompile) {
+        $optimize = $config_exe->optimize_precompile;
+      }
+    }
+  }
+  
+  if (length $optimize) {
+    push @compile_command_args, split(/ +/, $optimize);
   }
   
   # include directories
