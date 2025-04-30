@@ -100,9 +100,9 @@ if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
 my $inc = '-Ilib/SPVM/Builder/include';
 
 # Source files
-my $spvm_source_file_names = SPVM::Builder::Util::get_spvm_source_file_names();
+my $spvm_core_source_file_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
 
-my @spvm_csource_files = map { "lib/SPVM/Builder/src/$_" } @$spvm_source_file_names;
+my @spvm_csource_files = map { "lib/SPVM/Builder/src/$_" } @$spvm_core_source_file_names;
 
 my @csource_files = ('SPVM.c', @spvm_csource_files);
 
