@@ -378,7 +378,7 @@ The SPVM::Builder::Config::Exe class has methods to manipulate the config for th
 
 Gets and sets the C<global_after_create_compile_info_cbs> field, an array reference of callbacks that work globally called just after creating a compilation information.
 
-This affects all compilations of native classes and precompilation classes.
+This affects all compilations.
 
 =head2 global_before_compile_cbs
 
@@ -387,7 +387,7 @@ This affects all compilations of native classes and precompilation classes.
 
 Gets and sets the C<global_before_compile_cbs> field, an array reference of callbacks that work globally called just before the compile command L</"cc"> is executed.
 
-This affects all compilations of native classes and precompilation classes.
+This affects all compilations.
 
 =head2 config_spvm
 

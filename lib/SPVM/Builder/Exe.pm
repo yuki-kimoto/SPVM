@@ -150,17 +150,6 @@ sub argv {
   }
 }
 
-sub optimize {
-  my $self = shift;
-  if (@_) {
-    $self->{optimize} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{optimize};
-  }
-}
-
 # Class Methods
 sub new {
   my $class = shift;
@@ -240,8 +229,8 @@ sub new {
   $self->{compiler} = $compiler;
   
   my $optimize = $self->{optimize};
-  if (defined $optimize) {
-    $config->set_global_optimize($optimize);
+  if (length $optimize) {
+    $config->optimize_all($optimize);
   }
   
   $self->compile;
@@ -864,8 +853,8 @@ sub create_bootstrap_source {
   $bootstrap_source .= "// argv : @$argv\n";
   
   # For detecting chaging optimize
-  my $optimize_string = $self->optimize;
-  unless (defined $optimize_string) {
+  my $optimize_string = $config_exe->optimize_all;
+  unless (length $optimize_string) {
     $optimize_string = '';
   }
   $bootstrap_source .= "// optimize : $optimize_string\n";
