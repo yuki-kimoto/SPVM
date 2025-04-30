@@ -183,7 +183,6 @@ sub compile_source_file {
   
   # Execute compile command
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
-  my $cc_cmd = $compile_info->create_command;
   
   my $output_file = $compile_info->output_file;
   
@@ -200,6 +199,8 @@ sub compile_source_file {
       $global_before_compile_cb->($config, $compile_info);
     }
   }
+  
+  my $cc_cmd = $compile_info->create_command;
   
   unless ($no_generate) {
     mkpath dirname $output_file;
