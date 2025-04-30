@@ -693,9 +693,9 @@ sub link {
   
   my $force = $self->detect_force($config);
   
-  my $link_info = $self->create_link_info($class_name, $object_files, $config);
-  
   my $output_file = $config->output_file;
+  
+  my $link_info = $self->create_link_info($class_name, $object_files, $config);
   
   my @object_files = map { "$_" } @{$link_info->object_files};
   
@@ -706,6 +706,8 @@ sub link {
     output_file => $output_file,
     input_files => $input_files,
   });
+  
+  $link_info->no_generate(!$need_generate);
   
   my $ld = $config->ld;
   
