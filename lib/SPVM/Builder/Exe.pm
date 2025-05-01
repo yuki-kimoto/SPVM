@@ -855,6 +855,28 @@ sub create_bootstrap_source {
   
 }
 
+sub _field_value_to_string {
+  my ($field_value) = @_;
+  
+  my $string;
+  if (ref $field_value eq 'HASH') {
+    my @option_values;
+    for my $key (keys %$field_value) {
+      my $value = $field_value->{$key};
+      push @option_values, "$key#$value";
+    }
+    $string = join(',', @option_values);
+  }
+  elsif (ref $field_value eq 'ARRAY') {
+    $string = join(',', @$field_value);
+  }
+  else {
+    $string = $field_value;
+  }
+  
+  return $string;
+}
+
 sub compile_bootstrap_source_file {
   my ($self) = @_;
   
