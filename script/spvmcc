@@ -22,7 +22,21 @@ SPVM::Builder::Util::getopt
   'f|force' => \my $force,
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
+  'ccflag=s' => \my @ccflags_global,
+  'ccflag-spvm=s' => \my @ccflags_spvm,
+  'ccflag-native=s' => \my @ccflags_native,
+  'ccflag-native-class=s' => \my @ccflags_native_class_strings,
+  'ccflag-precompile=s' => \my @ccflags_precompile,
+  'define=s' => \my @defines_global,
+  'define-spvm=s' => \my @defines_spvm,
+  'define-native=s' => \my @defines_native,
+  'define-native-class=s' => \my @defines_native_class_strings,
+  'define-precompile=s' => \my @defines_precompile,
   'optimize=s' => \my $optimize_global,
+  'optimize-spvm=s' => \my $optimize_spvm,
+  'optimize-native=s' => \my $optimize_native,
+  'optimize-native-class=s' => \my @optimize_native_class_strings,
+  'optimize-precompile=s' => \my $optimize_precompile,
 ;
 
 if ($help) {
