@@ -194,9 +194,9 @@ sub compile_source_file {
   my $config_exe = $config->config_exe;
   
   if ($config_exe) {
-    my $global_before_compile_cbs = $config_exe->global_before_compile_cbs;
-    for my $global_before_compile_cb (@$global_before_compile_cbs) {
-      $global_before_compile_cb->($compile_info->config, $compile_info);
+    my $before_compile_cbs_global = $config_exe->before_compile_cbs_global;
+    for my $before_compile_cb_global (@$before_compile_cbs_global) {
+      $before_compile_cb_global->($compile_info->config, $compile_info);
     }
   }
   

@@ -1,4 +1,6 @@
-0.990058 2025-05-01
+0.990058 2025-05-02
+  [Note]
+    * In this release, many imcompatible changes in spvmcc and SPVM::Builder::Config::Exe are performed.
   [New Features]
     * Add SPVM::Builder::Config#defines field.
     * Add SPVM::Builder::Config#add_define method.
@@ -84,6 +86,8 @@
       Remove config-argv and config-argv-option options in spvmcc command.
       Remove all resource and config argument argv passing.
     * Remove SPVM::Builder::Config::Exe#config_spvm field, SPVM::Builder::Config::Exe itself is used to compile SPVM core source files and a bootstrap file.
+    * Rename SPVM::Builder::Config::Exe#add_global_before_compile_cb to add_before_compile_cb_global.
+    * Rename SPVM::Builder::Config::Exe#global_before_compile_cbs to before_compile_cbs_global.
     
   [spvmcc Message Improvement]
     * Improve messages from spvmcc command.

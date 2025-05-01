@@ -11,14 +11,14 @@ use SPVM::Builder::Util::API;
 use base 'SPVM::Builder::Config';
 
 # Fields
-sub global_before_compile_cbs {
+sub before_compile_cbs_global {
   my $self = shift;
   if (@_) {
-    $self->{global_before_compile_cbs} = $_[0];
+    $self->{before_compile_cbs_global} = $_[0];
     return $self;
   }
   else {
-    return $self->{global_before_compile_cbs};
+    return $self->{before_compile_cbs_global};
   }
 }
 
@@ -214,7 +214,7 @@ sub new {
   my %fields = (
     %$default_config,
     output_type => 'exe',
-    global_before_compile_cbs => [],
+    before_compile_cbs_global => [],
     ccflags_global => [],
     ccflags_spvm => [],
     ccflags_native => [],
@@ -235,10 +235,10 @@ sub new {
 }
 
 # Instance Methods
-sub add_global_before_compile_cb {
-  my ($self, @global_before_compile_cbs) = @_;
+sub add_before_compile_cb_global {
+  my ($self, @before_compile_cbs_global) = @_;
   
-  push @{$self->{global_before_compile_cbs}}, @global_before_compile_cbs;
+  push @{$self->{before_compile_cbs_global}}, @before_compile_cbs_global;
 }
 
 sub add_ccflag_global {
@@ -335,12 +335,12 @@ The SPVM::Builder::Config::Exe class has methods to manipulate the config for th
 
 =head1 Fields
 
-=head2 global_before_compile_cbs
+=head2 before_compile_cbs_global
 
-  my $global_before_compile_cbs = $config_exe->global_before_compile_cbs;
-  $config_exe->global_before_compile_cbs($global_before_compile_cbs);
+  my $before_compile_cbs_global = $config_exe->before_compile_cbs_global;
+  $config_exe->before_compile_cbs_global($before_compile_cbs_global);
 
-Gets and sets the C<global_before_compile_cbs> field, an array reference of callbacks that work globally called just before the compile command L</"cc"> is executed.
+Gets and sets the C<before_compile_cbs_global> field, an array reference of callbacks that work globally called just before the compile command L</"cc"> is executed.
 
 This affects all compilations.
 
@@ -467,7 +467,7 @@ Field Default Values:
 
   "exe"
 
-=item * L</"global_before_compile_cbs">
+=item * L</"before_compile_cbs_global">
 
   []
 
@@ -477,15 +477,15 @@ Field Default Values:
 
 =back
 
-=head2 add_global_before_compile_cb
+=head2 add_before_compile_cb_global
 
-  $config_exe->add_global_before_compile_cb(@global_before_compile_cbs);
+  $config_exe->add_before_compile_cb_global(@before_compile_cbs_global);
 
-Adds @global_before_compile_cbs to the end of L</"global_before_compile_cbs"> field.
+Adds @before_compile_cbs_global to the end of L</"before_compile_cbs_global"> field.
 
 Examples:
 
-  $config_exe->add_global_before_compile_cb(sub {
+  $config_exe->add_before_compile_cb_global(sub {
     my ($config, $compile_info) = @_;
     
     my $cc_command = $compile_info->to_command;
