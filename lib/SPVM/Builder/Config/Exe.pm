@@ -22,17 +22,6 @@ sub global_before_compile_cbs {
   }
 }
 
-sub config_spvm {
-  my $self = shift;
-  if (@_) {
-    $self->{config_spvm} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{config_spvm};
-  }
-}
-
 sub ccflags_global {
   my $self = shift;
   if (@_) {
@@ -220,10 +209,12 @@ sub optimize_precompile {
 sub new {
   my $self = shift;
   
+  my $default_config = SPVM::Builder::Util::API::create_default_config();
+  
   my %fields = (
+    %$default_config,
     output_type => 'exe',
     global_before_compile_cbs => [],
-    config_spvm => SPVM::Builder::Util::API::create_default_config(),
     ccflags_global => [],
     ccflags_spvm => [],
     ccflags_native => [],
@@ -353,15 +344,6 @@ Gets and sets the C<global_before_compile_cbs> field, an array reference of call
 
 This affects all compilations.
 
-=head2 config_spvm
-
-  my $config_exe_spvm = $config_exe->config_spvm;
-  $config_exe->config_spvm($config_exe_spvm);
-
-Gets and sets the C<config_spvm> field, an L<SPVM::Builder::Config> object for SPVM core source files.
-
-This field is automatically set and users nomally do not change it.
-
 =head2 ccflags_global
 
   my $ccflags_global = $config->ccflags_global;
@@ -488,10 +470,6 @@ Field Default Values:
 =item * L</"global_before_compile_cbs">
 
   []
-
-=item * L</"config_spvm">
-
-The return value of the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function of C<SPVM::Builder::Util::API> class.
 
 =item * Other Fields
 

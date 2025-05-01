@@ -83,6 +83,7 @@
     * Remove config argv system because we decided to use environment variables.
       Remove config-argv and config-argv-option options in spvmcc command.
       Remove all resource and config argument argv passing.
+    * Remove SPVM::Builder::Config::Exe#config_spvm field, SPVM::Builder::Config::Exe itself is used to compile SPVM core source files and a bootstrap file.
     
   [spvmcc Message Improvement]
     * Improve messages from spvmcc command.

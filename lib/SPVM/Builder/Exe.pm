@@ -923,16 +923,11 @@ sub compile_bootstrap_source_file {
   my $object_file_name = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir, "$class_name_rel_file.boot.o");
   my $source_file = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir, "$class_name_rel_file.boot.c");
   
-  my $config = $config_exe->config_spvm;
-  unless ($config) {
-    confess("The config_spvm field in the SPVM::Builder::Config class must be defined");
-  }
-  
   # Compile
   my $object_file = $self->compile_source_file({
     source_file => $source_file,
     output_file => $object_file_name,
-    config => $config,
+    config => $config_exe,
     category => 'bootstrap',
   });
   
@@ -958,12 +953,6 @@ sub compile_spvm_core_source_files {
   # Object dir
   my $output_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
   
-  # Config
-  my $config = $config_exe->config_spvm;
-  unless ($config) {
-    confess("The config_spvm field in the SPVM::Builder::Config::Exe class must be defined");
-  }
-  
   # Compile source files
   my $object_files = [];
   for my $src_file (@spvm_core_source_files) {
@@ -975,7 +964,7 @@ sub compile_spvm_core_source_files {
     my $object_file = $self->compile_source_file({
       source_file => $src_file,
       output_file => $object_file_name,
-      config => $config,
+      config => $config_exe,
       category => 'spvm_core',
     });
     push @$object_files, $object_file;
