@@ -71,7 +71,7 @@ sub ccflags_native_class {
   my $class_name = shift;
   
   unless (defined $class_name) {
-    confess "The class name \$class_name must be defined.";
+    return $self->{ccflags_native_class};
   }
   
   if (@_) {
@@ -132,7 +132,7 @@ sub defines_native_class {
   my $class_name = shift;
   
   unless (defined $class_name) {
-    confess "The class name \$class_name must be defined.";
+    return $self->{defines_native_class};
   }
   
   if (@_) {
@@ -193,7 +193,7 @@ sub optimize_native_class {
   my $class_name = shift;
   
   unless (defined $class_name) {
-    confess "The class name \$class_name must be defined.";
+    return $self->{optimize_native_class};
   }
   
   if (@_) {

@@ -824,12 +824,28 @@ sub create_bootstrap_source {
   }
   $bootstrap_source .= "// mode : $mode_string\n";
   
-  # For detecting chaging optimize_global
-  my $optimize_global_string = $config_exe->optimize_global;
-  unless (length $optimize_global_string) {
-    $optimize_global_string = '';
+  my @config_field_names = qw(
+    ccflags_global
+    ccflags_spvm
+    ccflags_native
+    ccflags_native_class
+    ccflags_precompile
+    defines_global
+    defines_spvm
+    defines_native
+    defines_native_class
+    defines_precompile
+    optimize_global
+    optimize_spvm
+    optimize_native
+    optimize_native_class
+    optimize_precompile
+  );
+  
+  # For detecting chaging fields
+  for my $config_field_name (@config_field_names) {
+    $bootstrap_source .= "// $config_field_name : " . &_field_value_to_string($config_exe->$config_field_name) . "\n";
   }
-  $bootstrap_source .= "// optimize_global : $optimize_global_string\n";
   
   my $bootstrap_source_original;
   if (-f $bootstrap_source_file) {
@@ -872,6 +888,10 @@ sub _field_value_to_string {
   }
   else {
     $string = $field_value;
+  }
+  
+  unless (length $string) {
+    $string = '';
   }
   
   return $string;
