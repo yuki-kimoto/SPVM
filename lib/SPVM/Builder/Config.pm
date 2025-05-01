@@ -855,7 +855,7 @@ sub load_config {
   }
   
   unless (defined $argv) {
-    confess("The arguments \$argv must be defined.");
+    $argv = [];
   }
   
   my $config;

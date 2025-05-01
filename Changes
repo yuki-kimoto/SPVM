@@ -71,6 +71,7 @@
     * Require Perl 5.20.
   [Changes]
     * config file passed to before_compile_cbs is cloned one.
+    * SPVM::Builder::Config#load_config's argv argument is optional.
 0.990057 2025-04-25
   [Bug Fix]
     * Fix a bug that warn operator moves native mortal stack forward.
