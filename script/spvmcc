@@ -140,7 +140,46 @@ The spvmcc command generates an executable file from SPVM classes.
     -f, --force                     Forces the compile and link
     --no-config                     No configration file is ok
     -m, --mode MODE                 Config mode
-    --optimize LEVEL                Optimization level such as O3, "-O0 -g"
+    -w                              Enable warnings
+    --ccflag VALUE                  Compiler flag
+    --ccflag-spvm VALUE             Same as --ccflag,
+                                    but only SPVM source files
+                                    and a bootstrap file
+    --ccflag-native VALUE           Same as --ccflag,
+                                    but only native class source files
+                                    and native source files
+                                    
+    --ccflag-native-class CLASS_NAME#VALUE     Same as --ccflag-native,
+                                               but only a class
+                                             
+    --ccflag-precompile VALUE       Same as --ccflag,
+                                    but only precompile class source files
+    --define VALUE                  Same as --ccflag, but -D is prefixed.
+    --define-spvm VALUE             Same as --define,
+                                    but only SPVM source files
+                                    and a bootstrap file
+    --define-native VALUE           Same as --define,
+                                    but only native class source files
+                                    and native source files
+                                    
+    --define-native-class CLASS_NAME#VALUE     Same as --define-native,
+                                               but only a class
+                                             
+    --define-precompile VALUE       Same as --define,
+                                    but only precompile class source files
+    --optimize LEVEL                Optimization level such as "-O3", "-O0 -g".
+    --optimize-spvm LEVEL           Same as --optimize,
+                                    but only SPVM source files
+                                    and a bootstrap file
+    --optimize-native LEVEL         Same as --optimize,
+                                    but only native class source files
+                                    and native source files
+                                    
+    --optimize-native-class CLASS_NAME#LEVEL   Same as --optimize-native,
+                                               but only a class
+                                               
+    --optimize-precompile LEVEL     Same as --optimize,
+                                    but only precompile class source files
 
 =head1 Details
 
@@ -306,6 +345,16 @@ See L<Config Mode|SPVM::Builder::Config/"Config Mode"> about config modes.
 
 Same as L</"--mode">.
 
+=head2 -w
+
+  -w
+
+Enables warning flag.
+
+Implementation:
+
+Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
+
 =head2 --optimize
 
   --optimize LEVEL
@@ -318,15 +367,25 @@ Examples:
 
   --optimize "-O0 -g"
 
-=head2 -w
+=pod TODO
 
-  -w
+--ccflag
+--ccflag-spvm
+--ccflag-native
+--ccflag-native-class
+--ccflag-precompile
+--define
+--define-spvm
+--define-native
+--define-native-class
+--define-precompile
+--optimize
+--optimize-spvm
+--optimize-native
+--optimize-native-class
+--optimize-precompile
 
-Enables warning flag.
-
-Implementation:
-
-Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
+=cut
 
 =head1 lib Directive
 
