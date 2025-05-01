@@ -216,7 +216,7 @@ sub new {
   
   my $optimize = $self->{optimize};
   if (length $optimize) {
-    $config->optimize_all($optimize);
+    $config->optimize_global($optimize);
   }
   
   $self->compile;
@@ -814,7 +814,7 @@ sub create_bootstrap_source {
   $bootstrap_source .= "// mode : $mode_string\n";
   
   # For detecting chaging optimize
-  my $optimize_string = $config_exe->optimize_all;
+  my $optimize_string = $config_exe->optimize_global;
   unless (length $optimize_string) {
     $optimize_string = '';
   }

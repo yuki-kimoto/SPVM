@@ -164,8 +164,8 @@ sub create_ccflags {
       push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_precompile};
     }
     
-    if (length $config_exe->optimize_all) {
-      $optimize = $config_exe->optimize_all;
+    if (length $config_exe->optimize_global) {
+      $optimize = $config_exe->optimize_global;
     }
     
     if ($config_category eq 'spvm') {

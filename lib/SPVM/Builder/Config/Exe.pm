@@ -155,14 +155,14 @@ sub defines_precompile {
   }
 }
 
-sub optimize_all {
+sub optimize_global {
   my $self = shift;
   if (@_) {
-    $self->{optimize_all} = $_[0];
+    $self->{optimize_global} = $_[0];
     return $self;
   }
   else {
-    return $self->{optimize_all};
+    return $self->{optimize_global};
   }
 }
 
@@ -432,10 +432,10 @@ Gets and sets the value of C<defines_native_class> field's class name key $class
 
 Gets and sets C<defines_precompile> field, an array reference containing the value of C<-D> arugments of the compiler L</"cc"> in compilation for precompilation.
 
-=head2 optimize_all
+=head2 optimize_global
 
-  my $optimize_all = $config->optimize_all;
-  $config->optimize_all($optimize_all);
+  my $optimize_global = $config->optimize_global;
+  $config->optimize_global($optimize_global);
 
 Gets and sets C<optimize> field, an arugment of the compiler L</"cc"> for optimization in all compilation.
 
