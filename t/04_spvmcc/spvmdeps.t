@@ -208,6 +208,7 @@ my $dev_null = File::Spec->devnull;
 {
   # --resource-info
   {
+    $ENV{"SPVM__TEST__MYAPP__EXE"} = 1;
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --resource-info t/04_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     like($output, qr|\Q[TestCase::NativeAPI2]|);
