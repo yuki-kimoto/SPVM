@@ -22,7 +22,7 @@ SPVM::Builder::Util::getopt
   'f|force' => \my $force,
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
-  'optimize=s' => \my $optimize,
+  'optimize=s' => \my $optimize_global,
 ;
 
 if ($help) {
@@ -73,7 +73,7 @@ my $build_exe = SPVM::Builder::Exe->new(
   force => $force,
   allow_no_config_file => $allow_no_config_file,
   mode => $mode,
-  optimize => $optimize,
+  optimize_global => $optimize_global,
 );
 
 $build_exe->build_exe_file;
