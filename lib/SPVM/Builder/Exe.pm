@@ -214,10 +214,21 @@ sub new {
   
   $self->{compiler} = $compiler;
   
-  my $optimize_global = $self->{optimize_global};
-  if (length $optimize_global) {
-    $config->optimize_global($optimize_global);
-  }
+  $config->ccflags_global($self->{ccflags_global});
+  $config->ccflags_spvm($self->{ccflags_spvm});
+  $config->ccflags_native($self->{ccflags_native});
+  $config->ccflags_native_class($self->{ccflags_native_class});
+  $config->ccflags_precompile($self->{ccflags_precompile});
+  $config->defines_global($self->{defines_global});
+  $config->defines_spvm($self->{defines_spvm});
+  $config->defines_native($self->{defines_native});
+  $config->defines_native_class($self->{defines_native_class});
+  $config->defines_precompile($self->{defines_precompile});
+  $config->optimize_global($self->{optimize_global});
+  $config->optimize_spvm($self->{optimize_spvm});
+  $config->optimize_native($self->{optimize_native});
+  $config->optimize_native_class($self->{optimize_native_class});
+  $config->optimize_precompile($self->{optimize_precompile});
   
   $self->compile;
   
