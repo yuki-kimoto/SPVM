@@ -57,13 +57,13 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     }
     ok($is_object_files);
   }
-
+  
   {
     no warnings 'once';
     my $compile_info = $main::MYEXE_COMPILE_INFO_BEFORE_COMPILE;
     ok(ref $compile_info eq 'SPVM::Builder::CompileInfo');
   }
-
+  
   {
     no warnings 'once';
     my $compile_info = $main::MYEXE_COMPILE_INFO_GLOBAL_BEFORE_COMPILE;

@@ -148,6 +148,17 @@ sub new {
   my $build_dir = delete $options{build_dir};
   
   my $self = bless {
+    ccflags_global => [],
+    ccflags_spvm => [],
+    ccflags_native => [],
+    ccflags_native_class => {},
+    ccflags_precompile => [],
+    defines_global => [],
+    defines_spvm => [],
+    defines_native => [],
+    defines_native_class => {},
+    defines_precompile => [],
+    optimize_native_class => {},
     %options
   }, $class;
   
