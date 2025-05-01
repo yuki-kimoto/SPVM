@@ -35,6 +35,16 @@
 
       optimize_precompile
 
+      include_dirs_global
+
+      include_dirs_spvm
+
+      include_dirs_native
+
+      include_dirs_native_class
+
+      include_dirs_precompile
+
       add_ccflag_global
 
       add_ccflag_spvm
@@ -54,6 +64,17 @@
       add_define_native_class
 
       add_define_precompile
+      
+      add_include_dir_global
+
+      add_include_dir_spvm
+
+      add_include_dir_native
+
+      add_include_dir_native_class
+
+      add_include_dir_precompile
+
     * Add SPVM::Builder::LinkInfo#no_generate field.
     * Add SPVM::Builder::CompileInfo#no_generate field.
     * Add the following options to spvmcc command.
