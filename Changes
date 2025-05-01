@@ -1,4 +1,4 @@
-0.990058 2025-04-30
+0.990058 2025-05-01
   [New Features]
     * Add SPVM::Builder::Config#defines field.
     * Add SPVM::Builder::Config#add_define method.
@@ -64,6 +64,9 @@
     * Remove SPVM::Builder::Config#after_create_compile_info_cbs, add_after_create_compile_info_cb and SPVM::Builder::Config::Exe#global_after_create_compile_info_cbs, add_global_after_create_compile_info_cb.
     * Remove SPVM::Builder::Config#after_create_link_info_cbs, add_after_create_link_info_cb.
     * Enable strict and warnings pragma in config file and use SPVM::Builder::Config and use SPVM::Builder::Config::Exe.
+    * Remove config argv system because we decided to use environment variables.
+      Remove config-argv and config-argv-option options in spvmcc command.
+      Remove all resource and config argument argv passing.
     
   [spvmcc Message Improvement]
     * Improve messages from spvmcc command.

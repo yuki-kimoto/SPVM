@@ -8,8 +8,6 @@ use SPVM::Builder::Exe;
 use SPVM::Builder::Util;
 use FindBin;
 
-my @argv;
-
 SPVM::Builder::Util::getopt
   # spvmcc and spvm shared
   'h|help'          => \my $help,
@@ -25,11 +23,6 @@ SPVM::Builder::Util::getopt
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
   'optimize=s' => \my $optimize,
-  'config-argv=s' => \@argv,
-  'config-argv-option=s' => sub {
-    my ($opt_name, $opt_value) = @_;
-    push @argv, SPVM::Builder::Exe->parse_config_argv_option($opt_value);
-  },
 ;
 
 if ($help) {
@@ -81,7 +74,6 @@ my $build_exe = SPVM::Builder::Exe->new(
   allow_no_config_file => $allow_no_config_file,
   mode => $mode,
   optimize => $optimize,
-  argv => \@argv,
 );
 
 $build_exe->build_exe_file;
@@ -114,8 +106,6 @@ The spvmcc command generates an executable file from SPVM classes.
     -f, --force                     Forces the compile and link
     --no-config                     No configration file is ok
     -m, --mode MODE                 Config mode
-    --config-argv ARG               A config argument
-    --config-argv-option ARG_PAIR   Key-value config arguments such as KEY=VALUE
     --optimize LEVEL                Optimization level such as O3, "-O0 -g"
 
 =head1 Details
@@ -281,40 +271,6 @@ See L<Config Mode|SPVM::Builder::Config/"Config Mode"> about config modes.
   -m MODE
 
 Same as L</"--mode">.
-
-=head2 --config-argv
-
-  --config-argv ARG
-
-Specifies a config argument I<ARG>.
-
-This option can be specified multiple times.
-
-See L<Config Arguments|SPVM::Builder::Config/"Config Arguments"> about config arguments.
-
-Examples:
-
-  --config-argv FOO
-
-=head2 --config-argv-option
-
-  --config-argv-option ARG_PAIR
-
-Specifies two config arguments I<ARG_PAIR> as the format C<KEY=VALUE>.
-
-This is expaned to the following options.
-
-  --config-argv KEY --config-argv VALUE
-
-If only I<KEY> exists or I<VALUE> dose not exist, I<VALUE> is set to an empty string C<"">.
-
-This option can be specified multiple times.
-
-See L<Config Arguments|SPVM::Builder::Config/"Config Arguments"> about config arguments.
-
-Examples:
-
-  --config-argv-option FOO=1
 
 =head2 --optimize
 

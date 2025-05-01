@@ -848,14 +848,10 @@ sub add_before_link_cb {
 }
 
 sub load_config {
-  my ($self, $config_file, $argv) = @_;
+  my ($self, $config_file) = @_;
   
   unless (-f $config_file) {
     confess("The config file \"$config_file\" must exist");
-  }
-  
-  unless (defined $argv) {
-    $argv = [];
   }
   
   my $config;
@@ -865,7 +861,6 @@ sub load_config {
     
     my $config_content = do { $/ = undef; <$fh> };
     
-    local @ARGV = @$argv;
     $config = &_eval_config_content($config_content, $config_file);
   }
   
@@ -890,7 +885,7 @@ sub _eval_config_content {
 }
 
 sub load_mode_config {
-  my ($self, $config_file, $mode, $argv) = @_;
+  my ($self, $config_file, $mode) = @_;
   
   my $mode_config_file = $self->_remove_ext_from_config_file($config_file);
   if (defined $mode) {
@@ -902,7 +897,7 @@ sub load_mode_config {
     confess("Can't find the config file \"$mode_config_file\"");
   }
   
-  my $config = $self->load_config($mode_config_file, $argv);
+  my $config = $self->load_config($mode_config_file);
   
   if (defined $mode) {
     $config->mode($mode);
@@ -948,7 +943,6 @@ sub use_resource {
   
   my $resource_class_name = $resource->class_name;
   my $resource_mode = $resource->mode;
-  my $resource_argv = $resource->argv;
   
   my $ext = defined $resource_mode ? "$resource_mode.config" : 'config';
   my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, $ext);
@@ -961,7 +955,7 @@ sub use_resource {
     confess("A config file \"$config_rel_file\" is not found in (@INC)");
   }
   
-  my $config = $self->load_config($config_file, $resource_argv);
+  my $config = $self->load_config($config_file);
   $config->file($config_file);
   
   if (defined $resource_mode) {
@@ -1928,16 +1922,12 @@ Options:
 
 A L<config mode|/"Config Mode"> for the resource.
 
-=item * argv
-
-An array reference contains L<config arguments|/"Config Arguments"> for the resource.
-
 =back
 
 Examples:
 
   $config->use_resource('Resource::MyResource');
-  $config->use_resource('Resource::MyResource', mode => 'mode1', argv => ["option1_name" => "option1_value"]);
+  $config->use_resource('Resource::MyResource', mode => 'mode1');
 
 =head2 get_resource
 
@@ -1953,21 +1943,17 @@ Returns resource names loaded by L</"use_resource"> method.
 
 =head2 load_config
 
-  my $config = $config->load_config($config_file, $argv);
+  my $config = $config->load_config($config_file);
 
 Loads a config file given a config file path and an array refernce containing L<config arguments|/"Config Arguments">, and returns an L<SPVM::Builder::Config> object.
 
-The values referenced by $argv is set to the @ARGV of the config file.
-
 Examples:
 
-  my $config = $config->load_config(__FILE__, \@ARGV);
-
-  my $config = $config->load_config(__FILE__, []);
+  my $config = $config->load_config(__FILE__);
 
 =head2 load_base_config
 
-  my $config = $config->load_base_config($config_file, $argv);
+  my $config = $config->load_base_config($config_file);
 
 Creates the base config file path from the config file path $config_file, and calls L</"load_config"> method given the base config file path and config arguments, and returns its return value.
 
@@ -1985,7 +1971,7 @@ Examples:
 
 =head2 load_mode_config
 
-  my $config = $config->load_mode_config($config_file, $mode, $argv);
+  my $config = $config->load_mode_config($config_file, $mode);
 
 Creates a L<mode config file|/"Config Mode"> path from the config file path $config_file, and calls L</"load_config"> method given the mode config file path and config arguments, and returns its return value.
 
@@ -2030,28 +2016,6 @@ L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> metho
 The L<spvmcc> command has C<--mode> option for giving a config mode.
 
   spvmcc -o myapp --mode production myapp.spvm
-
-=head1 Config Arguments
-
-A config file can receive its argments.
-
-Key-value pairs are recommended as the values of C<@ARGV> because they are normally assigned to a Perl hash.
-
-  my %options = @ARGV;
-  
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
-
-L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> method has C<argv> option for giving config arguments.
-
-  $config->use_resource('Resource::MyResource', argv => [option_name => "option_value"]);
-
-The L<spvmcc> command has C<--config-argv> option(released in the near future) for giving config arguments.
-
-  spvmcc -o myapp --config-argv option_name --config-argv option_value myapp.spvm
-
-The L<spvmcc> command also has C<--config-argv-option> option(released in the near future) to write config arguments easily.
-
-  spvmcc -o myapp --config-argv-option option_name=option_value myapp.spvm
 
 =head1 Library Path Resolution
 

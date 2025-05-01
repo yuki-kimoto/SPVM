@@ -31,17 +31,6 @@ sub mode {
   }
 }
 
-sub argv {
-  my $self = shift;
-  if (@_) {
-    $self->{argv} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{argv};
-  }
-}
-
 sub config {
   my $self = shift;
   if (@_) {
@@ -60,10 +49,6 @@ sub new {
   my $self = {@_};
   
   bless $self, ref $class || $class;
-  
-  unless ($self->argv) {
-    $self->argv([]);
-  }
   
   return $self;
 }
@@ -89,7 +74,6 @@ The SPVM::Builder::Resource class has methods to manipulate L<resources|SPVM::Do
   my $resource = SPVM::Builder::Resource->new(
     class_name => 'Resource::Zlib',
     mode => 'high_performance',
-    argv => ['foo', 'bar'],
   );
 
 =head1 Details
@@ -111,13 +95,6 @@ Gets and sets the C<class_name> field, the class name of this resource.
   $resource->mode($mode);
 
 Gets and sets the C<mode> field, the mode of the config file of this resource.
-
-=head2 argv
-
-  my $argv = $resource->argv;
-  $resource->argv($argv);
-
-Gets and sets the C<argv> field, an array reference of command line arguments C<@ARGV> given to the config file of this resource.
 
 =head2 config
 
@@ -145,10 +122,6 @@ undef
 =item * L</"mode">
 
 undef
-
-=item * L</"argv">
-
-[]
 
 =item * L</"config">
 

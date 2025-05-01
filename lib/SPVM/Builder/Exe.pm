@@ -139,17 +139,6 @@ sub mode {
   }
 }
 
-sub argv {
-  my $self = shift;
-  if (@_) {
-    $self->{argv} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{argv};
-  }
-}
-
 # Class Methods
 sub new {
   my $class = shift;
@@ -159,7 +148,6 @@ sub new {
   my $build_dir = delete $options{build_dir};
   
   my $self = bless {
-    argv => [],
     %options
   }, $class;
   
@@ -189,8 +177,6 @@ sub new {
   
   my $config_mode = $self->{mode};
   
-  my $config_argv = $self->{argv};
-  
   # Config
   my $config_file = $script_name;
   $config_file =~ s/\..*$//;
@@ -198,7 +184,7 @@ sub new {
   
   my $config;
   if (-f $config_file) {
-    $config = SPVM::Builder::Config::Exe->load_mode_config($config_file, $config_mode, $config_argv);
+    $config = SPVM::Builder::Config::Exe->load_mode_config($config_file, $config_mode);
   }
   else {
     if ($allow_no_config_file) {
@@ -236,26 +222,6 @@ sub new {
   $self->compile;
   
   return $self;
-}
-
-sub parse_config_argv_option {
-  my ($class, $config_argv_option) = @_;
-  
-  my $name;
-  my $value;
-  if ($config_argv_option =~ /^(.+?)(?:=(.+)?)?$/) {
-    $name = $1;
-    $value = $2;
-    
-    unless (defined $value) {
-      $value = '';
-    }
-  }
-  else {
-    confess("[Unexpected Error]The regex for --config-argv-option does not match.");
-  }
-  
-  return ($name, $value);
 }
 
 # Instance Methods
@@ -846,10 +812,6 @@ sub create_bootstrap_source {
     $mode_string = '';
   }
   $bootstrap_source .= "// mode : $mode_string\n";
-  
-  # For detecting chaging config arguments
-  my $argv = $self->argv;
-  $bootstrap_source .= "// argv : @$argv\n";
   
   # For detecting chaging optimize
   my $optimize_string = $config_exe->optimize_all;
