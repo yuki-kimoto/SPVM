@@ -1030,6 +1030,33 @@ sub get_user_defined_basic_type_names {
   return $class_names;
 }
 
+sub parse_option_values_native_class {
+  my ($option_name, $option_values, $value_is_array) = @_;
+  
+  my $hash = {};
+  for my $option_value (@$option_values) {
+    
+    if ($option_value =~ /^([\w:]+)\#(.+)/) {
+      my $class_name = $1;
+      
+      my $value = $2;
+      
+      if ($value_is_array) {
+        $hash->{$class_name} //= [];
+        push @{$hash->{$class_name}}, $value;
+      }
+      else {
+        $hash->{$class_name} = $value;
+      }
+    }
+    else {
+      confess "Invalid option value \"$option_value\" for $option_name option.";
+    }
+  }
+  
+  return $hash;
+}
+
 1;
 
 =head1 Name
