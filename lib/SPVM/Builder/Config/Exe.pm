@@ -33,14 +33,14 @@ sub config_spvm {
   }
 }
 
-sub ccflags_all {
+sub ccflags_global {
   my $self = shift;
   if (@_) {
-    $self->{ccflags_all} = $_[0];
+    $self->{ccflags_global} = $_[0];
     return $self;
   }
   else {
-    return $self->{ccflags_all};
+    return $self->{ccflags_global};
   }
 }
 
@@ -224,7 +224,7 @@ sub new {
     output_type => 'exe',
     global_before_compile_cbs => [],
     config_spvm => SPVM::Builder::Util::API::create_default_config(),
-    ccflags_all => [],
+    ccflags_global => [],
     ccflags_spvm => [],
     ccflags_native => [],
     ccflags_native_class => {},
@@ -250,10 +250,10 @@ sub add_global_before_compile_cb {
   push @{$self->{global_before_compile_cbs}}, @global_before_compile_cbs;
 }
 
-sub add_ccflag_all {
-  my ($self, @ccflags_all) = @_;
+sub add_ccflag_global {
+  my ($self, @ccflags_global) = @_;
   
-  push @{$self->{ccflags_all}}, @ccflags_all;
+  push @{$self->{ccflags_global}}, @ccflags_global;
 }
 
 sub add_ccflag_spvm {
@@ -362,10 +362,10 @@ Gets and sets the C<config_spvm> field, an L<SPVM::Builder::Config> object for S
 
 This field is automatically set and users nomally do not change it.
 
-=head2 ccflags_all
+=head2 ccflags_global
 
-  my $ccflags_all = $config->ccflags_all;
-  $config->ccflags_all($ccflags_all);
+  my $ccflags_global = $config->ccflags_global;
+  $config->ccflags_global($ccflags_global);
 
 Gets and sets C<ccflags> field, an array reference containing arugments of the compiler L</"cc"> in all compilation.
 
@@ -515,11 +515,11 @@ Examples:
     # Do something
   });
 
-=head2 add_ccflag_all
+=head2 add_ccflag_global
 
-  $config->add_ccflag_all(@ccflags_all);
+  $config->add_ccflag_global(@ccflags_global);
 
-Adds @ccflags_all to the end of L</"ccflags_all"> field.
+Adds @ccflags_global to the end of L</"ccflags_global"> field.
 
 =head2 add_ccflag_spvm
 
