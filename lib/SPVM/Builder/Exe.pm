@@ -1031,7 +1031,7 @@ sub get_user_defined_basic_type_names {
 }
 
 sub parse_option_values_native_class {
-  my ($option_name, $option_values, $value_is_array) = @_;
+  my ($class, $option_name, $option_values, $value_is_array) = @_;
   
   my $hash = {};
   for my $option_value (@$option_values) {

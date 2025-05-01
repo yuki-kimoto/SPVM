@@ -79,6 +79,12 @@ unless (defined $output_file) {
   exit 255;
 }
 
+my $ccflags_native_class = SPVM::Builder::Exe->parse_option_values_native_class('ccflag-native-class', \@ccflags_native_class_strings, 1);
+
+my $defines_native_class = SPVM::Builder::Exe->parse_option_values_native_class('define-native-class', \@defines_native_class_strings, 1);
+
+my $optimize_native_class = SPVM::Builder::Exe->parse_option_values_native_class('optimize-native-class', \@optimize_native_class_strings, 0);
+
 my $build_exe = SPVM::Builder::Exe->new(
   script_name => $script_name,
   build_dir => $build_dir,
@@ -87,7 +93,21 @@ my $build_exe = SPVM::Builder::Exe->new(
   force => $force,
   allow_no_config_file => $allow_no_config_file,
   mode => $mode,
+  ccflags_global => \@ccflags_global,
+  ccflags_spvm => \@ccflags_spvm,
+  ccflags_native => \@ccflags_native,
+  ccflags_native_class => $ccflags_native_class,
+  ccflags_precompile => \@ccflags_precompile,
+  defines_global => \@defines_global,
+  defines_spvm => \@defines_spvm,
+  defines_native => \@defines_native,
+  defines_native_class => $defines_native_class,
+  defines_precompile => \@defines_precompile,
   optimize_global => $optimize_global,
+  optimize_spvm => $optimize_spvm,
+  optimize_native => $optimize_native,
+  optimize_native_class => $optimize_native_class,
+  optimize_precompile => $optimize_precompile,
 );
 
 $build_exe->build_exe_file;
