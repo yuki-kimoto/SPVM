@@ -199,6 +199,24 @@ sub create_ccflags {
   {
     my @all_include_dirs;
     
+    if ($config_exe) {
+      push @all_include_dirs, grep { length $_ } @{$config_exe->include_dirs_global};
+      
+      if ($config_category eq 'spvm') {
+        push @all_include_dirs, grep { length $_ } @{$config_exe->include_dirs_spvm};
+      }
+      elsif ($config_category eq 'native') {
+        push @all_include_dirs, grep { length $_ } @{$config_exe->include_dirs_native};
+        
+        if (defined $class_name) {
+          push @all_include_dirs, grep { length $_ } @{$config_exe->include_dirs_native_class($class_name) || []};
+        }
+      }
+      elsif ($config_category eq 'precompile') {
+        push @all_include_dirs, grep { length $_ } @{$config_exe->include_dirs_precompile};
+      }
+    }
+    
     # SPVM core native directory
     my $spvm_core_include_dir = $config->spvm_core_include_dir;
     if (length $spvm_core_include_dir) {
