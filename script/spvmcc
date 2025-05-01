@@ -37,6 +37,11 @@ SPVM::Builder::Util::getopt
   'optimize-native=s' => \my $optimize_native,
   'optimize-native-class=s' => \my @optimize_native_class_strings,
   'optimize-precompile=s' => \my $optimize_precompile,
+  'include-dir=s' => \my @include_dirs_global,
+  'include-dir-spvm=s' => \my @include_dirs_spvm,
+  'include-dir-native=s' => \my @include_dirs_native,
+  'include-dir-native-class=s' => \my @include_dirs_native_class_strings,
+  'include-dir-precompile=s' => \my @include_dirs_precompile,
 ;
 
 if ($help) {
@@ -85,6 +90,8 @@ my $defines_native_class = SPVM::Builder::Exe->parse_option_values_native_class(
 
 my $optimize_native_class = SPVM::Builder::Exe->parse_option_values_native_class('optimize-native-class', \@optimize_native_class_strings, 0);
 
+my $include_dirs_native_class = SPVM::Builder::Exe->parse_option_values_native_class('include-dir-native-class', \@include_dirs_native_class_strings, 1);
+
 my $build_exe = SPVM::Builder::Exe->new(
   script_name => $script_name,
   build_dir => $build_dir,
@@ -108,6 +115,11 @@ my $build_exe = SPVM::Builder::Exe->new(
   optimize_native => $optimize_native,
   optimize_native_class => $optimize_native_class,
   optimize_precompile => $optimize_precompile,
+  include_dirs_global => \@include_dirs_global,
+  include_dirs_spvm => \@include_dirs_spvm,
+  include_dirs_native => \@include_dirs_native,
+  include_dirs_native_class => $include_dirs_native_class,
+  include_dirs_precompile => \@include_dirs_precompile,
 );
 
 $build_exe->build_exe_file;
@@ -149,8 +161,8 @@ The spvmcc command generates an executable file from SPVM classes.
                                     but only native class source files
                                     and native source files
                                     
-    --ccflag-native-class CLASS_NAME#VALUE     Same as --ccflag-native,
-                                               but only a class
+    --ccflag-native-class CLASS_NAME#VALUE       Same as --ccflag-native,
+                                                 but only a class
                                              
     --ccflag-precompile VALUE       Same as --ccflag,
                                     but only precompile class source files
@@ -162,8 +174,8 @@ The spvmcc command generates an executable file from SPVM classes.
                                     but only native class source files
                                     and native source files
                                     
-    --define-native-class CLASS_NAME#VALUE     Same as --define-native,
-                                               but only a class
+    --define-native-class CLASS_NAME#VALUE       Same as --define-native,
+                                                 but only a class
                                              
     --define-precompile VALUE       Same as --define,
                                     but only precompile class source files
@@ -175,10 +187,23 @@ The spvmcc command generates an executable file from SPVM classes.
                                     but only native class source files
                                     and native source files
                                     
-    --optimize-native-class CLASS_NAME#LEVEL   Same as --optimize-native,
-                                               but only a class
+    --optimize-native-class CLASS_NAME#LEVEL     Same as --optimize-native,
+                                                 but only a class
                                                
     --optimize-precompile LEVEL     Same as --optimize,
+                                    but only precompile class source files
+    --include-dir VALUE             Same as --ccflag, but -I is prefixed.
+    --include-dir-spvm VALUE        Same as --include-dir,
+                                    but only SPVM source files
+                                    and a bootstrap file
+    --include-dir-native VALUE      Same as --include-dir,
+                                    but only native class source files
+                                    and native source files
+                                    
+    --include-dir-native-class CLASS_NAME#VALUE  Same as --include-dir-native,
+                                                 but only a class
+                                             
+    --include-dir-precompile VALUE  Same as --include-dir,
                                     but only precompile class source files
 
 =head1 Details
@@ -384,6 +409,11 @@ Examples:
 --optimize-native
 --optimize-native-class
 --optimize-precompile
+--include-dir
+--include-dir-spvm
+--include-dir-native
+--include-dir-native-class
+--include-dir-precompile
 
 =cut
 

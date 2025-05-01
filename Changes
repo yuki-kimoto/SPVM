@@ -93,6 +93,11 @@
       --optimize-native
       --optimize-native-class
       --optimize-precompile
+      --include-dir
+      --include-dir-spvm
+      --include-dir-native
+      --include-dir-native-class
+      --include-dir-precompile
     
   [Incompatible Changes]
     * Remove config_bootstrap field in SPVM::Builder::Config::Exe.
