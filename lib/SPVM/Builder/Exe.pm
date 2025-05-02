@@ -855,7 +855,7 @@ sub create_bootstrap_source {
   
   # For detecting chaging fields
   for my $config_field_name (@config_field_names) {
-    $bootstrap_source .= "// $config_field_name:" . &_field_value_to_string($config_exe->$config_field_name) . "\n";
+    $bootstrap_source .= "// $config_field_name:" . &_field_value_to_string($config_exe->{$config_field_name}) . "\n";
   }
   
   my $bootstrap_source_original;

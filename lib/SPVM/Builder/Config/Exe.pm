@@ -60,7 +60,7 @@ sub ccflags_native_class {
   my $class_name = shift;
   
   unless (defined $class_name) {
-    return $self->{ccflags_native_class};
+    Carp::confess("The class name \$class_name must be defined.");
   }
   
   if (@_) {
@@ -121,7 +121,7 @@ sub defines_native_class {
   my $class_name = shift;
   
   unless (defined $class_name) {
-    return $self->{defines_native_class};
+    Carp::confess("The class name \$class_name must be defined.");
   }
   
   if (@_) {
@@ -182,7 +182,7 @@ sub optimize_native_class {
   my $class_name = shift;
   
   unless (defined $class_name) {
-    return $self->{optimize_native_class};
+    Carp::confess("The class name \$class_name must be defined.");
   }
   
   if (@_) {
@@ -243,7 +243,7 @@ sub include_dirs_native_class {
   my $class_name = shift;
   
   unless (defined $class_name) {
-    return $self->{include_dirs_native_class};
+    Carp::confess("The class name \$class_name must be defined.");
   }
   
   if (@_) {
