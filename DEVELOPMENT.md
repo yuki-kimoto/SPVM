@@ -75,6 +75,9 @@ make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o s
 make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp --optimize "-O0 -g" -f --no-config solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
 
 # Debug run - Print memory count
+make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp --define-spvm SPVM_DEBUG_MEMORY -f solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
+
+# Debug run - Print memory count using config file
 make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp --mode debug_memory_count -f solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
 ```
 

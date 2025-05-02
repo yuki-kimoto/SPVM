@@ -274,6 +274,7 @@ sub new {
   
   my %fields = (
     %$default_config,
+    category => 'spvm',
     output_type => 'exe',
     before_compile_cbs_global => [],
     ccflags_global => [],
