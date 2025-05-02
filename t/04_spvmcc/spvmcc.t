@@ -178,33 +178,6 @@ my $dev_null = File::Spec->devnull;
     like($output, qr/3000/);
   }
   
-  # debug config -O0 -g
-  {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --mode debug t/04_spvmcc/script/myapp.spvm);
-    my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
-    like($spvmcc_output, qr/NativeAPI2\.o/);
-    like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
-    like($spvmcc_output, qr/\Q-O0 -g/);
-    like($spvmcc_output, qr/-L\./);
-    like($spvmcc_output, qr/-lm\b/);
-    like($spvmcc_output, qr/-std=gnu99/);
-    
-    # Note: Arguments of the link command(these contain -l flags) must be
-    # after object file names for resolving symbol names properly
-    like($spvmcc_output, qr/NativeAPI2\.o.+-L\..+-lm\b/);
-    
-    warn "$spvmcc_output";
-
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myapp/);
-    my $execute_cmd_with_args = "$execute_cmd args1 args2";
-    system($execute_cmd_with_args) == 0
-      or die "Can't execute command: $execute_cmd_with_args:$!";
-
-    my $output = `$execute_cmd_with_args`;
-    chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
-    is($output, $output_expect);
-  }
 }
 
 {
@@ -223,6 +196,99 @@ my $dev_null = File::Spec->devnull;
     my $output_expect = "$execute_cmd";
     is($output, $output_expect);
   }
+  
+  # debug config -O0 -g and many options
+  {
+    my @compiler_options = qw(
+      --ccflag=-DCC_001
+      --ccflag-spvm=-DCC_002
+      --ccflag-native=-DCC_003
+      --ccflag-native-class=NativeAPI2@-DCC_004
+      --ccflag-precompile=-DCC_005
+      --ccflag=-DCC_001
+      --ccflag-spvm=-DCC_002
+      --ccflag-native=-DCC_003
+      --ccflag-native-class=NativeAPI2@-DCC_004
+      --ccflag-precompile=-DCC_005
+      --define=DEF_001
+      --define-spvm=DEF_002
+      --define-native=DEF_003
+      --define-native-class=NativeAPI2@DEF_004
+      --define-precompile=DEF_005
+      --define=DEF_001
+      --define-spvm=DEF_002
+      --define-native=DEF_003
+      --define-native-class=NativeAPI2@DEF_004
+      --define-precompile=DEF_005
+      --optimize="-O0 -g"
+      --optimize-spvm="-O0 -g"
+      --optimize-native="-O0 -g"
+      --optimize-native-class="NativeAPI2@-O0 -g"
+      --optimize-precompile="-O0 -g"
+      --include-dir=./INC_001
+      --include-dir-spvm=./INC_002
+      --include-dir-native=./INC_003
+      --include-dir-native-class=NativeAPI2@./INC_004
+      --include-dir-precompile=./INC_005
+      --include-dir=./INC_001
+      --include-dir-spvm=./INC_002
+      --include-dir-native=./INC_003
+      --include-dir-native-class=NativeAPI2@./INC_004
+      --include-dir-precompile=./INC_005
+    );
+    
+    my $compiler_options_string = join(' ', @compiler_options);
+    
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --mode debug $compiler_options_string t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
+    like($spvmcc_output, qr/NativeAPI2\.o/);
+    like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
+    like($spvmcc_output, qr/\Q-O0 -g/);
+    like($spvmcc_output, qr/-L\./);
+    like($spvmcc_output, qr/-lm\b/);
+    like($spvmcc_output, qr/-std=gnu99/);
+    
+    # Note: Arguments of the link command(these contain -l flags) must be
+    # after object file names for resolving symbol names properly
+    like($spvmcc_output, qr/NativeAPI2\.o.+-L\..+-lm\b/);
+    
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myapp/);
+    my $execute_cmd_with_args = "$execute_cmd args1 args2";
+    system($execute_cmd_with_args) == 0
+      or die "Can't execute command: $execute_cmd_with_args:$!";
+
+    my $output = `$execute_cmd_with_args`;
+    chomp $output;
+    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
+    is($output, $output_expect);
+    
+    {
+      my $bootstrap_file = 't/04_spvmcc/.spvm_build/work/src/SPVM/eval/anon_class/0.boot.c';
+      open my $fh, '<', $bootstrap_file
+        or die "Cannot open file \"$bootstrap_file\":$!";
+      
+      my $bootstrap_content = do { $/ = undef; <$fh> };
+      
+      like($bootstrap_content, qr|mode:debug|);
+      like($bootstrap_content, qr|ccflags_global:-DCC_001,-DCC_001|);
+      like($bootstrap_content, qr|ccflags_spvm:-DCC_002,-DCC_002|);
+      like($bootstrap_content, qr|ccflags_native:-DCC_003,-DCC_003|);
+      like($bootstrap_content, qr|ccflags_native_class:NativeAPI2\@-DCC_004,NativeAPI2\@-DCC_004|);
+      like($bootstrap_content, qr|ccflags_precompile:-DCC_005,-DCC_005|);
+      like($bootstrap_content, qr|defines_global:DEF_001,DEF_001|);
+      like($bootstrap_content, qr|defines_spvm:DEF_002,DEF_002|);
+      like($bootstrap_content, qr|defines_native:DEF_003,DEF_003|);
+      like($bootstrap_content, qr|defines_native_class:NativeAPI2\@DEF_004,NativeAPI2\@DEF_004|);
+      like($bootstrap_content, qr|defines_precompile:DEF_005,DEF_005|);
+      like($bootstrap_content, qr|optimize_global:-O0 -g|);
+      like($bootstrap_content, qr|optimize_spvm:-O0 -g|);
+      like($bootstrap_content, qr|optimize_native:-O0 -g|);
+      like($bootstrap_content, qr|optimize_native_class:NativeAPI2\@-O0 -g|);
+      like($bootstrap_content, qr|optimize_precompile:-O0 -g|);
+      
+    }
+  }
+
 }
 
 # Execute solo test. This is described in DEVELOPMENT.txt

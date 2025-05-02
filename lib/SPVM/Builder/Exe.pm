@@ -228,17 +228,17 @@ sub new {
   $config->ccflags_global($self->{ccflags_global});
   $config->ccflags_spvm($self->{ccflags_spvm});
   $config->ccflags_native($self->{ccflags_native});
-  $config->ccflags_native_class($self->{ccflags_native_class});
+  $config->{ccflags_native_class} = $self->{ccflags_native_class};
   $config->ccflags_precompile($self->{ccflags_precompile});
   $config->defines_global($self->{defines_global});
   $config->defines_spvm($self->{defines_spvm});
   $config->defines_native($self->{defines_native});
-  $config->defines_native_class($self->{defines_native_class});
+  $config->{defines_native_class} = $self->{defines_native_class};
   $config->defines_precompile($self->{defines_precompile});
   $config->optimize_global($self->{optimize_global});
   $config->optimize_spvm($self->{optimize_spvm});
   $config->optimize_native($self->{optimize_native});
-  $config->optimize_native_class($self->{optimize_native_class});
+  $config->{optimize_native_class} = $self->{optimize_native_class};
   $config->optimize_precompile($self->{optimize_precompile});
   
   $self->compile;
@@ -833,7 +833,7 @@ sub create_bootstrap_source {
   unless (defined $mode_string) {
     $mode_string = '';
   }
-  $bootstrap_source .= "// mode : $mode_string\n";
+  $bootstrap_source .= "// mode:$mode_string\n";
   
   my @config_field_names = qw(
     ccflags_global
@@ -855,7 +855,7 @@ sub create_bootstrap_source {
   
   # For detecting chaging fields
   for my $config_field_name (@config_field_names) {
-    $bootstrap_source .= "// $config_field_name : " . &_field_value_to_string($config_exe->$config_field_name) . "\n";
+    $bootstrap_source .= "// $config_field_name:" . &_field_value_to_string($config_exe->$config_field_name) . "\n";
   }
   
   my $bootstrap_source_original;
@@ -890,7 +890,14 @@ sub _field_value_to_string {
     my @option_values;
     for my $key (keys %$field_value) {
       my $value = $field_value->{$key};
-      push @option_values, "$key#$value";
+      if (ref $value eq 'ARRAY') {
+        for my $v (@$value) {
+          push @option_values, "$key\@$v";
+        }
+      }
+      else {
+        push @option_values, "$key\@$value";
+      }
     }
     $string = join(',', @option_values);
   }
@@ -1095,7 +1102,9 @@ sub parse_option_values_native_class {
       my $value = $2;
       
       if ($value_is_array) {
-        $hash->{$class_name} //= [];
+       # warn $class_name;
+       
+       $hash->{$class_name} //= [];
         push @{$hash->{$class_name}}, $value;
       }
       else {
