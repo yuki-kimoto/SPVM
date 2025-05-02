@@ -77,6 +77,7 @@
 
     * Add SPVM::Builder::LinkInfo#no_generate field.
     * Add SPVM::Builder::CompileInfo#no_generate field.
+    * Remove current --include-dir option in spvmcc command. This option means source file include directory now.
     * Add the following options to spvmcc command.
       --ccflag
       --ccflag-spvm

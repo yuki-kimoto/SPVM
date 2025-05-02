@@ -12,7 +12,7 @@ SPVM::Builder::Util::getopt
   # spvmcc and spvm shared
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
-  'I|include-dir=s' => \my @include_dirs,
+  'I=s' => \my @inc,
   'B|build-dir=s'   => \my $build_dir,
   'w'               => \my $warning,
   
@@ -64,9 +64,9 @@ FindBin::again();
 
 eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
 
-my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
+my $inc_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
 
-unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_by_lib_directive;
+unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @inc, @$inc_by_lib_directive;
 
 if ($warning) {
   $^W = 1;
