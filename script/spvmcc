@@ -146,8 +146,8 @@ The spvmcc command generates an executable file from SPVM classes.
     -h, --help                      Shows this message
     -v, --version                   Shows the version
     -o, --output FILE               The output file name
-    -I, --include-dir DIRECTORY     Adds a include directory
-    -B, --build-dir DIRECTORY       Build diretory
+    -I, --include-dir DIR           Adds a include directory
+    -B, --build-dir DIR             Build diretory
     -q, --quiet                     Stops the output of messages
     -f, --force                     Forces the compile and link
     --no-config                     No configration file is ok
@@ -155,7 +155,7 @@ The spvmcc command generates an executable file from SPVM classes.
     -w                              Enable warnings
     --ccflag VALUE                  Compiler flag
     --ccflag-spvm VALUE             Same as --ccflag,
-                                    but only SPVM source files
+                                    but only SPVM core source files
                                     and a bootstrap file
     --ccflag-native VALUE           Same as --ccflag,
                                     but only native class source files
@@ -168,7 +168,7 @@ The spvmcc command generates an executable file from SPVM classes.
                                     but only precompile class source files
     --define VALUE                  Same as --ccflag, but -D is prefixed.
     --define-spvm VALUE             Same as --define,
-                                    but only SPVM source files
+                                    but only SPVM core source files
                                     and a bootstrap file
     --define-native VALUE           Same as --define,
                                     but only native class source files
@@ -181,7 +181,7 @@ The spvmcc command generates an executable file from SPVM classes.
                                     but only precompile class source files
     --optimize LEVEL                Optimization level such as "-O3", "-O0 -g".
     --optimize-spvm LEVEL           Same as --optimize,
-                                    but only SPVM source files
+                                    but only SPVM core source files
                                     and a bootstrap file
     --optimize-native LEVEL         Same as --optimize,
                                     but only native class source files
@@ -192,18 +192,18 @@ The spvmcc command generates an executable file from SPVM classes.
                                                
     --optimize-precompile LEVEL     Same as --optimize,
                                     but only precompile class source files
-    --include-dir VALUE             Same as --ccflag, but -I is prefixed.
-    --include-dir-spvm VALUE        Same as --include-dir,
-                                    but only SPVM source files
+    --include-dir DIR               Same as --ccflag, but -I is prefixed.
+    --include-dir-spvm DIR          Same as --include-dir,
+                                    but only SPVM core source files
                                     and a bootstrap file
-    --include-dir-native VALUE      Same as --include-dir,
+    --include-dir-native DIR        Same as --include-dir,
                                     but only native class source files
                                     and native source files
                                     
-    --include-dir-native-class CLASS_NAME#VALUE  Same as --include-dir-native,
+    --include-dir-native-class CLASS_NAME#DIR    Same as --include-dir-native,
                                                  but only a class
                                              
-    --include-dir-precompile VALUE  Same as --include-dir,
+    --include-dir-precompile DIR    Same as --include-dir,
                                     but only precompile class source files
 
 =head1 Details
@@ -286,9 +286,9 @@ Same as L</"--version">.
 
 =head2 --include-dir
 
-  --include-dir DIRECTORY
+  --include-dir DIR
 
-Prepends I<DIRECTORY> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
+Prepends I<DIR> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
 
 This option can be specified multiple times.
 
@@ -300,19 +300,19 @@ In this case, class search directories becomes the following.
 
 =head2 -I
 
-  -I DIRECTORY
+  -I DIR
 
 Same as L</"--include-dir">.
 
 =head2 --build-dir
 
-  --build-dir DIRECTORY
+  --build-dir DIR
 
-Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable to I<DIRECTORY>.
+Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable to I<DIR>.
 
 =head2 -B
 
-  -B DIRECTORY
+  -B DIR
 
 Same as L</"--build-dir">.
 
@@ -380,42 +380,218 @@ Implementation:
 
 Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
 
+=head2 --ccflag
+
+  --ccflag VALUE
+
+A compiler flag.
+
+This affects all source files.
+
+This option can be repeated.
+
+=head2 --ccflag-spvm
+
+  --ccflag-spvm VALUE
+
+A compiler flag.
+
+This affects SPVM core source files and a bootstrap file.
+
+This option can be repeated.
+
+=head2 --ccflag-native
+
+  --ccflag-native VALUE
+
+A compiler flag.
+
+This affects native class source files(such as C<MyClass.c>) and native source files(such as C<MyClass.native/src/foo>).
+
+This option can be repeated.
+
+=head2 --ccflag-native-class
+
+  --ccflag-native-class CLASS_NAME#VALUE
+
+A compiler flag.
+
+This affects a native class source file specified by I<CLASS_NAME>(such as C<MyClass.c>) and its native source files(such as C<MyClass.native/src/foo>).
+
+This option can be repeated.
+
+Examples:
+
+  --ccflag-native-class MyClass#-Wall
+
+=head2 --ccflag-precompile
+
+  --ccflag-precompile VALUE
+
+A compiler flag.
+
+This affects precompile class source files.
+
+This option can be repeated.
+
+=head2 --define
+
+  --define VALUE
+
+A compiler flag, but C<-D> is prefiex.
+
+This affects all source files.
+
+This option can be repeated.
+
+=head2 --define-spvm
+
+  --define-spvm VALUE
+
+A compiler flag, but C<-D> is prefiex.
+
+This affects SPVM core source files and a bootstrap file.
+
+This option can be repeated.
+
+=head2 --define-native
+
+  --define-native VALUE
+
+A compiler flag, but C<-D> is prefiex.
+
+This affects native class source files(such as C<MyClass.c>) and native source files(such as C<MyClass.native/src/foo>).
+
+This option can be repeated.
+
+=head2 --define-native-class
+
+  --define-native-class VALUE
+
+A compiler flag, but C<-D> is prefiex.
+
+This affects a native class source file specified by I<CLASS_NAME>(such as C<MyClass.c>) and its native source files(such as C<MyClass.native/src/foo>).
+
+This option can be repeated.
+
+Examples:
+  
+  # Expanded to -DDEBUG_MEMORY
+  --define-native-class MyClass#DEBUG_MEMORY
+
+=head2 --define-precompile
+
+  --define-precompile VALUE
+
+A compiler flag, but C<-D> is prefiex.
+
+This affects precompile class source files.
+
+This option can be repeated.
+
 =head2 --optimize
 
   --optimize LEVEL
 
-Sepcifies optimization level I<LEVEL>.
+Optimization level.
 
-This affects all source files that are compiled.
+This affects all source files.
 
 Examples:
 
   --optimize "-O0 -g"
 
-=pod TODO
+=head2 --optimize-spvm
 
---ccflag
---ccflag-spvm
---ccflag-native
---ccflag-native-class
---ccflag-precompile
---define
---define-spvm
---define-native
---define-native-class
---define-precompile
---optimize
---optimize-spvm
---optimize-native
---optimize-native-class
---optimize-precompile
---include-dir
---include-dir-spvm
---include-dir-native
---include-dir-native-class
---include-dir-precompile
+  --optimize-spvm LEVEL
 
-=cut
+Optimization level.
+
+This affects SPVM core source files and a bootstrap file.
+
+=head2 --optimize-native
+
+  --optimize-native LEVEL
+
+Optimization level.
+
+This affects native class source files(such as C<MyClass.c>) and native source files(such as C<MyClass.native/src/foo>).
+
+=head2 --optimize-native-class
+
+  --optimize-native-class LEVEL
+
+Optimization level.
+
+This affects a native class source file specified by I<CLASS_NAME>(such as C<MyClass.c>) and its native source files(such as C<MyClass.native/src/foo>).
+
+This option can be repeated.
+
+Examples:
+
+  --optimize-native-class "MyClass#-O0 -g"
+
+=head2 --optimize-precompile
+
+  --optimize-precompile LEVEL
+
+Optimization level.
+
+This affects precompile class source files.
+
+=head2 --include-dir
+
+  --include-dir DIR
+
+A compiler flag, but C<-I> is prefiex.
+
+This affects all source files.
+
+This option can be repeated.
+
+=head2 --include-dir-spvm
+
+  --include-dir-spvm DIR
+
+A compiler flag, but C<-I> is prefiex.
+
+This affects SPVM core source files and a bootstrap file.
+
+This option can be repeated.
+
+=head2 --include-dir-native
+
+  --include-dir-native DIR
+
+A compiler flag, but C<-I> is prefiex.
+
+This affects native class source files(such as C<MyClass.c>) and native source files(such as C<MyClass.native/src/foo>).
+
+This option can be repeated.
+
+=head2 --include-dir-native-class
+
+  --include-dir-native-class DIR
+
+A compiler flag, but C<-I> is prefiex.
+
+This affects a native class source file specified by I<CLASS_NAME>(such as C<MyClass.c>) and its native source files(such as C<MyClass.native/src/foo>).
+
+This option can be repeated.
+
+Examples:
+
+  --include-dir-native-class MyClass#/path/foo
+
+=head2 --include-dir-precompile
+
+  --include-dir-precompile DIR
+
+A compiler flag, but C<-I> is prefiex.
+
+This affects precompile class source files.
+
+This option can be repeated.
 
 =head1 lib Directive
 
