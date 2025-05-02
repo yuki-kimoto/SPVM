@@ -146,7 +146,7 @@ The spvmcc command generates an executable file from SPVM classes.
     -h, --help                      Shows this message
     -v, --version                   Shows the version
     -o, --output FILE               The output file name
-    -I, --include-dir DIR           Adds a include directory
+    -I DIR                          Adds a include directory
     -B, --build-dir DIR             Build diretory
     -q, --quiet                     Stops the output of messages
     -f, --force                     Forces the compile and link
@@ -284,25 +284,19 @@ Outputs the version of the C<spvmcc> command to standard output. This version is
 
 Same as L</"--version">.
 
-=head2 --include-dir
+=head2 -I
 
-  --include-dir DIR
+  -I DIR
 
 Prepends I<DIR> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
 
 This option can be specified multiple times.
 
-  --include-dir dir1 --include-dir dir2
+  -I dir1 -I dir2
 
 In this case, class search directories becomes the following.
 
   [dir1, dir2, default_dirs]
-
-=head2 -I
-
-  -I DIR
-
-Same as L</"--include-dir">.
 
 =head2 --build-dir
 
