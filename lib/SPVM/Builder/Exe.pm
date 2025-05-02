@@ -1089,7 +1089,7 @@ sub parse_option_values_native_class {
   my $hash = {};
   for my $option_value (@$option_values) {
     
-    if ($option_value =~ /^([\w:]+)\#(.+)/) {
+    if ($option_value =~ /^([\w:]+)\@(.+)/) {
       my $class_name = $1;
       
       my $value = $2;

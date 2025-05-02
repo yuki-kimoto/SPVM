@@ -161,7 +161,7 @@ The spvmcc command generates an executable file from SPVM classes.
                                     but only native class source files
                                     and native source files
                                     
-    --ccflag-native-class CLASS_NAME#VALUE       Same as --ccflag-native,
+    --ccflag-native-class CLASS_NAME@VALUE       Same as --ccflag-native,
                                                  but only a class
                                              
     --ccflag-precompile VALUE       Same as --ccflag,
@@ -174,7 +174,7 @@ The spvmcc command generates an executable file from SPVM classes.
                                     but only native class source files
                                     and native source files
                                     
-    --define-native-class CLASS_NAME#VALUE       Same as --define-native,
+    --define-native-class CLASS_NAME@VALUE       Same as --define-native,
                                                  but only a class
                                              
     --define-precompile VALUE       Same as --define,
@@ -187,7 +187,7 @@ The spvmcc command generates an executable file from SPVM classes.
                                     but only native class source files
                                     and native source files
                                     
-    --optimize-native-class CLASS_NAME#LEVEL     Same as --optimize-native,
+    --optimize-native-class CLASS_NAME@LEVEL     Same as --optimize-native,
                                                  but only a class
                                                
     --optimize-precompile LEVEL     Same as --optimize,
@@ -200,7 +200,7 @@ The spvmcc command generates an executable file from SPVM classes.
                                     but only native class source files
                                     and native source files
                                     
-    --include-dir-native-class CLASS_NAME#DIR    Same as --include-dir-native,
+    --include-dir-native-class CLASS_NAME@DIR    Same as --include-dir-native,
                                                  but only a class
                                              
     --include-dir-precompile DIR    Same as --include-dir,
@@ -406,7 +406,7 @@ This option can be repeated.
 
 =head2 --ccflag-native-class
 
-  --ccflag-native-class CLASS_NAME#VALUE
+  --ccflag-native-class CLASS_NAME@VALUE
 
 A compiler flag.
 
@@ -416,7 +416,7 @@ This option can be repeated.
 
 Examples:
 
-  --ccflag-native-class MyClass#-Wall
+  --ccflag-native-class MyClass@-Wall
 
 =head2 --ccflag-precompile
 
@@ -471,7 +471,7 @@ This option can be repeated.
 Examples:
   
   # Expanded to -DDEBUG_MEMORY
-  --define-native-class MyClass#DEBUG_MEMORY
+  --define-native-class MyClass@DEBUG_MEMORY
 
 =head2 --define-precompile
 
@@ -523,7 +523,7 @@ This option can be repeated.
 
 Examples:
 
-  --optimize-native-class "MyClass#-O0 -g"
+  --optimize-native-class "MyClass@-O0 -g"
 
 =head2 --optimize-precompile
 
@@ -575,7 +575,7 @@ This option can be repeated.
 
 Examples:
 
-  --include-dir-native-class MyClass#/path/foo
+  --include-dir-native-class MyClass@/path/foo
 
 =head2 --include-dir-precompile
 
