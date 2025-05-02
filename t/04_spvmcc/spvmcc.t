@@ -30,7 +30,7 @@ my $dev_null = File::Spec->devnull;
 # Failed to parse options.
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --not-exist t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --not-exist --optimize=-O0 t/04_spvmcc/script/myapp.spvm);
     my $status = system($spvmcc_cmd);
     isnt($status, 0);
   }
@@ -38,7 +38,7 @@ my $dev_null = File::Spec->devnull;
 
 # Compilation Error
 {
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myapp_compile_error --no-config t/04_spvmcc/script/myapp_compile_error.spvm);
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myapp_compile_error --no-config --optimize=-O0 t/04_spvmcc/script/myapp_compile_error.spvm);
   my $status = system($spvmcc_cmd);
   ok($status != 0);
   
@@ -50,7 +50,7 @@ my $dev_null = File::Spec->devnull;
 {
   {
     
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myapp_runtime_error --no-config t/04_spvmcc/script/myapp_compile_error/main_instant_method.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myapp_runtime_error --no-config --optimize=-O0 t/04_spvmcc/script/myapp_compile_error/main_instant_method.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
@@ -64,7 +64,7 @@ my $dev_null = File::Spec->devnull;
   sleep 1;
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myapp_runtime_error --no-config t/04_spvmcc/script/myapp_compile_error/main_has_arguments.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myapp_runtime_error --no-config --optimize=-O0 t/04_spvmcc/script/myapp_compile_error/main_has_arguments.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
@@ -78,7 +78,7 @@ my $dev_null = File::Spec->devnull;
   sleep 1;
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myapp_runtime_error --no-config t/04_spvmcc/script/myapp_compile_error/main_not_found.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -o $exe_dir/myapp_runtime_error --no-config --optimize=-O0 t/04_spvmcc/script/myapp_compile_error/main_not_found.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
@@ -93,7 +93,7 @@ my $dev_null = File::Spec->devnull;
 {
   # --optimize="-O0 -g"
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize="-O0 -g" -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize="-O0 -g" -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --optimize=-O0 t/04_spvmcc/script/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
@@ -155,7 +155,7 @@ my $dev_null = File::Spec->devnull;
 
   # Compile and link cached
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --no-config t/04_spvmcc/script/myapp.spvm);    
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp t/04_spvmcc/script/myapp.spvm);
     my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
     if (length $spvmcc_output == 0) {
       ok(1);
@@ -168,7 +168,7 @@ my $dev_null = File::Spec->devnull;
   
   # lib directive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -o $exe_dir/use_class --no-config t/04_spvmcc/script/use_class.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -o $exe_dir/use_class --no-config --optimize=-O0 t/04_spvmcc/script/use_class.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -182,7 +182,7 @@ my $dev_null = File::Spec->devnull;
 
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -o $exe_dir/myapp --no-config t/04_spvmcc/script/program_name.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -o $exe_dir/myapp --no-config --optimize=-O0 t/04_spvmcc/script/program_name.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -293,7 +293,7 @@ my $dev_null = File::Spec->devnull;
 
 # Execute solo test. This is described in DEVELOPMENT.txt
 {
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I solo/lib/SPVM -o $exe_dir/myapp_solo --no-config solo/script/myapp.spvm foo bar);
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I solo/lib/SPVM -o $exe_dir/myapp_solo --no-config --optimize=-O0 solo/script/myapp.spvm foo bar);
   system($spvmcc_cmd) == 0
    or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
