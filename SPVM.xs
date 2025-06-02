@@ -1123,7 +1123,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_api, void* basic_type, SV* sv_arr
               sv_field_value = *sv_field_value_ptr;
             }
             else {
-              *sv_error = sv_2mortal(newSVpvf("'s %dth element's hash reference must have the \"%s\" key for the \"%s\" field of the \"%s\" basic type\n    %s at %s line %d\n", index + 1, mulnum_field_name, mulnum_field_name, basic_type_name, __func__, FILE_NAME, __LINE__));
+              *sv_error = sv_2mortal(newSVpvf("'s %dth element's hash reference must have \"%s\" key for %s#%s field\n    %s at %s line %d\n", index + 1, mulnum_field_name, basic_type_name, mulnum_field_name, __func__, FILE_NAME, __LINE__));
               return &PL_sv_undef;
             }
             
@@ -1496,7 +1496,7 @@ _xs_call_method(...)
               }
               else {
                 const char* arg_basic_type_name = env->api->basic_type->get_name(env->runtime, arg_basic_type);
-                croak("The hash reference for the %dth argument of %s#%s method must have the \"%s\" key for the \"%s\" field of the \"%s\" basic type\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, mulnum_field_name, mulnum_field_name, arg_basic_type_name, __func__, FILE_NAME, __LINE__);
+                croak("The hash reference for the %dth argument of %s#%s method must have \"%s\" key for %s#%s field\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, mulnum_field_name, arg_basic_type_name, mulnum_field_name, __func__, FILE_NAME, __LINE__);
 
               }
               
@@ -1721,7 +1721,7 @@ _xs_call_method(...)
               }
               else {
                 const char* arg_basic_type_name = env->api->basic_type->get_name(env->runtime, arg_basic_type);
-                croak("The hash reference for the %dth argument of %s#%s method must have the \"%s\" key for the \"%s\" field of the \"%s\" basic type\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, mulnum_field_name, mulnum_field_name, arg_basic_type_name, __func__, FILE_NAME, __LINE__);
+                croak("The hash reference for the %dth argument of %s#%s method must have \"%s\" key for %s#%s field\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, mulnum_field_name, arg_basic_type_name, mulnum_field_name, __func__, FILE_NAME, __LINE__);
               }
               switch(arg_basic_type_field_basic_type_id) {
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
