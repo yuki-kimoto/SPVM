@@ -2035,7 +2035,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       {
         my $point = SPVM::Point->new(1, 2);
         eval { $point->not_found; };
-        like($@, qr|The "not_found" method in the "Point" class is not found|);
+        like($@, qr|Point#not_found method is not found|);
       }
     }
   }

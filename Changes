@@ -1,3 +1,7 @@
+0.990059 2025-06-02
+  [Exception Message Improvement]
+    * Improve exception messages in exchange APIs.
+      
 0.990058 2025-05-02
   [Note]
     * In this release, many imcompatible changes in spvmcc and SPVM::Builder::Config::Exe are performed.
