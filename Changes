@@ -1,6 +1,7 @@
 0.990059 2025-06-02
   [Exception Message Improvement]
-    * Improve exception messages in exchange APIs.
+    * Improve exception messages in exchange APIs. Use Class#method representation in all places.
+    * Improve exception messages thrown by spvm_api.c. Use Class#method representation in all places.
       
 0.990058 2025-05-02
   [Note]

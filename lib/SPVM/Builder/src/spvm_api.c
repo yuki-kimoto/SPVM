@@ -531,12 +531,12 @@ void SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const 
   SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
   
   if (!method) {
-    *error_id = SPVM_API_die(env, stack, "The \"%s\" method in the \"%s\" class is not found.", method_name, basic_type_name, func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "%s#%s method is not found.", basic_type_name, method_name, func_name, file, line);
     return;
   }
   
   if (!method->is_class_method) {
-    *error_id = SPVM_API_die(env, stack, "The \"%s\" method in the \"%s\" class must be a class method.", method_name, basic_type_name, func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "%s#%s method must be a class method.", basic_type_name, method_name, func_name, file, line);
     return;
   }
   
@@ -562,12 +562,12 @@ void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
   
   if (!method) {
-    *error_id = SPVM_API_die(env, stack, "The \"%s\" method in the \"%s\" class is not found.", method_name, basic_type_name, func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "%s#%s method is not found.", basic_type_name, method_name, func_name, file, line);
     return;
   }
   
   if (method->is_class_method) {
-    *error_id = SPVM_API_die(env, stack, "The \"%s\" method in the \"%s\" class must be an instance method.", method_name, basic_type_name, func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "%s#%s method must be an instance method.", basic_type_name, method_name, func_name, file, line);
     return;
   }
   
@@ -611,7 +611,7 @@ void SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
   
   if (!method) {
     const char* basic_type_name = SPVM_API_get_object_basic_type_name(env, stack, object);
-    *error_id = SPVM_API_die(env, stack, "The \"%s\" instance method in the \"%s\" class is not found in the invocant class or its super classes.", method_name, basic_type_name, func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "%s#%s instance method is not found in the invocant class or its super classes.", basic_type_name, method_name, func_name, file, line);
     return;
   };
   
@@ -4673,10 +4673,6 @@ const char* SPVM_API_strerror_nolen(SPVM_ENV* env, SPVM_VALUE* stack, int32_t er
   return SPVM_API_strerror(env, stack, errno_value, 0);
 }
 
-int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
-  return SPVM_VM_call_method(env, stack, method, args_width);
-}
-
 const char* SPVM_API_get_spvm_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   const char* spvm_version_string = SPVM_NATIVE_VERSION_STRING;
@@ -4751,6 +4747,10 @@ int32_t SPVM_API_is_binary_compatible_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   return is_binary_compatible_stack;
 }
 
+int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
+  return SPVM_VM_call_method(env, stack, method, args_width);
+}
+
 int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -4760,7 +4760,7 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   // Call native method
   int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = method->native_address;
   if (!native_address) {
-    error_id = SPVM_API_die(env, stack, "The execution address of the \"%s\" native method in the \"%s\" class must not be NULL. Loading the dynamic link library maybe failed.", method->name, method->current_basic_type->name, __func__, FILE_NAME, __LINE__);
+    error_id = SPVM_API_die(env, stack, "The execution address of %s#%s native method must not be NULL. Loading the dynamic link library maybe failed.", method->current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
   }
   
   if (!error_id) {
@@ -5406,23 +5406,23 @@ int32_t SPVM_API_check_bootstrap_method(SPVM_ENV* env, SPVM_VALUE* stack, const 
       int32_t args_length = env->api->method->get_args_length(env->runtime, method);
       
       if (!(args_length == 0)) {
-        error_id = env->die(env, stack, "The length of the arguments of the \"main\" method in the \"%s\" class must be 0.", basic_type_name, __func__, FILE_NAME, __LINE__);
+        error_id = env->die(env, stack, "The length of the arguments of %s#main method must be 0.", basic_type_name, __func__, FILE_NAME, __LINE__);
       }
       else {
         void* return_basic_type = env->api->method->get_return_basic_type(env->runtime, method);
         const char* return_basic_type_name = env->api->basic_type->get_name(env->runtime, return_basic_type);
         
         if (!(strcmp(return_basic_type_name, "void") == 0)) {
-          error_id = env->die(env, stack, "The return type of the \"main\" method in the \"%s\" class must be the void type.", basic_type_name, __func__, FILE_NAME, __LINE__);
+          error_id = env->die(env, stack, "The return type of %s#main method must be the void type.", basic_type_name, __func__, FILE_NAME, __LINE__);
         }
       }
     }
     else {
-      error_id = env->die(env, stack, "The \"main\" method in the \"%s\" class must be a class method.", basic_type_name, __func__, FILE_NAME, __LINE__);
+      error_id = env->die(env, stack, "%s#main method must be a class method.", basic_type_name, __func__, FILE_NAME, __LINE__);
     }
   }
   else {
-    error_id = env->die(env, stack, "The \"main\" method in the \"%s\" class must be defined.", basic_type_name, __func__, FILE_NAME, __LINE__);
+    error_id = env->die(env, stack, "%s#main method must be defined.", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   
   return error_id;
