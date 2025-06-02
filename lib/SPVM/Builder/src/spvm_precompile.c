@@ -274,7 +274,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t dist_type_dimension = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t type_dimension = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_type_dimension_id = 0;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t runtime_assignability = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t runtime_can_assign = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_VALUE tmp_constant;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int8_t* mulnum_ref_byte;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int16_t* mulnum_ref_short;\n");
