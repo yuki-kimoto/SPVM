@@ -58,7 +58,7 @@ my $dev_null = File::Spec->devnull;
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     
     my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
-    like($error, qr|The "main" method in the ".+" class must be a class method|);
+    like($error, qr|.+#main method must be a class method|);
   }
   
   sleep 1;
@@ -72,7 +72,7 @@ my $dev_null = File::Spec->devnull;
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     
     my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
-    like($error, qr|The length of the arguments of the "main" method in the ".+" class must be 0|);
+    like($error, qr|The length of the arguments of .+#main method must be 0|);
   }
   
   sleep 1;
@@ -86,7 +86,7 @@ my $dev_null = File::Spec->devnull;
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     
     my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
-    like($error, qr|The "main" method in the ".+" class must be defined|);
+    like($error, qr|.+#main method must be defined|);
   }
 }
 
