@@ -309,7 +309,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
             else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
               SPVM_LIST_push(eval_block_stack, block);
               
-              // Set exception var to undef in eval block start
+              // Set exception var to undef in the beginning of eval block
               {
                 SPVM_OPCODE opcode = {0};
                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_ID);
@@ -382,6 +382,19 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 SPVM_BLOCK* block = op_cur->uv.block;
                 
                 if (block->id == SPVM_BLOCK_C_ID_EVAL) {
+                  
+                  // Set exception variable to undef in the end of eval block
+                  {
+                    SPVM_OPCODE opcode = {0};
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_ID);
+                    SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                  }
+                  {
+                    SPVM_OPCODE opcode = {0};
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR_UNDEF);
+                    SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                  }
+                  
                   while (catch_on_exception_opcode_index_stack->length > 0) {
                     int32_t catch_on_exception_goto_opcode_index = (intptr_t)SPVM_LIST_pop(catch_on_exception_opcode_index_stack);
                     SPVM_OPCODE* catch_on_exception_goto = (opcode_list->values + catch_on_exception_goto_opcode_index);

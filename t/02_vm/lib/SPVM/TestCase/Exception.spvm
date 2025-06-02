@@ -299,12 +299,12 @@ class TestCase::Exception {
       eval { die -1, "Foo"; }
       
       # 0 means do not throw an exception
-      eval { die 0, "Error Message 1"; }
-      
-      my $error = $@;
-      
-      unless (Fn->index($error, "Error Message 1", 0) == 0) {
-        return 0;
+      eval {
+        die 0, "Error Message 1";
+        
+        unless (Fn->index($@, "Error Message 1", 0) == 0) {
+          return 0;
+        }
       }
       
       unless (eval_error_id == 0) {
@@ -316,4 +316,22 @@ class TestCase::Exception {
     
     return 1;
   }
+  
+  static method eval_block : int () {
+    
+    $@ = "a";
+    eval {
+      if ($@) {
+        return 0;
+      }
+      $@ = "b";
+    }
+    
+    if ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
 }

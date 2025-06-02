@@ -108,4 +108,6 @@ ok($@);
   ok(SPVM::TestCase::Exception->die);
 }
 
+ok(SPVM::TestCase::Exception->eval_block);
+
 done_testing;
