@@ -942,6 +942,7 @@ class TestCase::NativeAPI {
     }
     
     $@ = undef;
+    
     return 1;
   }
   native static method native_set_field_object_by_name_exception : int ($simple : TestCase::Simple);

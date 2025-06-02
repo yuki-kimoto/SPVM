@@ -1669,6 +1669,10 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_object_by_name_exception(SPV
   
   env->set_field_object_by_name(env, stack, object_simple, "not_found", object_minimal, &error_id, __func__, FILE_NAME, __LINE__);
   
+  if (error_id) {
+    return error_id;
+  }
+  
   return 0;
 }
 
@@ -3693,8 +3697,6 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
   float value_float = stack[4].fval;
   double value_double = stack[5].dval;
   void* value_object = stack[6].oval;
-  
-  spvm_warn("");
   
   if (args_width >= 1) {
     if (!(value_byte == 1)) {
