@@ -104,7 +104,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       like($@, qr/\$string cannnot be a reference/);
       like($@, qr|XS_SPVM__ExchangeAPI__xs_new_string at SPVM\.xs line \d+|);
     }
-    # new_string - non-assignable
+    # new_string - cannot assign
     {
       eval { $api->new_string($api->new_byte_array([1, 2, 3])); };
       like($@, qr/\$string cannnot be a reference/);
@@ -1144,7 +1144,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_object_array("Point[]", $api->new_any_object_array([])); };
-      ok(index($@, '$array: If it is an SPVM::BlessedObject::Array object, the type must be assignable') >= 0);
+      ok(index($@, '$array: If it is an SPVM::BlessedObject::Array object, the type must satisfy type requirement') >= 0);
     }
     {
       eval { $api->new_object_array("Point[][]", []); };
@@ -1405,7 +1405,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_mulnum_array("TestCase::Point_3b[]", $api->new_any_object_array([])); };
-      ok(index($@, '$array: If it is an SPVM::BlessedObject::Array object, the type must be assignable') >= 0);
+      ok(index($@, '$array: If it is an SPVM::BlessedObject::Array object, the type must satisfy type requirement') >= 0);
     }
     {
       eval { $api->new_mulnum_array("TestCase::Point_3b[][]", []); };
@@ -1672,7 +1672,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_muldim_array("byte[][]", $api->new_any_object_array([])); };
-      ok(index($@, '$array: If it is an SPVM::BlessedObject::Array object, the type must be assignable') >= 0);
+      ok(index($@, '$array: If it is an SPVM::BlessedObject::Array object, the type must satisfy type requirement') >= 0);
     }
     {
       eval { $api->new_muldim_array("Point[]", []); };

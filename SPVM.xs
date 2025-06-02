@@ -927,7 +927,7 @@ SV* SPVM_XS_UTIL_new_object_array(pTHX_ SV* sv_api, void* basic_type, SV* sv_arr
       void* spvm_array = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_array);
       int32_t type_dimension = 1;
       if (!env->isa(env, stack, spvm_array, basic_type, type_dimension)) {
-        *sv_error = sv_2mortal(newSVpvf(": If it is an SPVM::BlessedObject::Array object, the type must be assignable"));
+        *sv_error = sv_2mortal(newSVpvf(": If it is an SPVM::BlessedObject::Array object, the type must satisfy type requirement"));
         return &PL_sv_undef;
       }
     }
@@ -1000,7 +1000,7 @@ SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_api, void* basic_type, int32_t ty
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_array);
       if (!env->isa(env, stack, spvm_array, basic_type, type_dimension)) {
-        *sv_error = sv_2mortal(newSVpvf(": If it is an SPVM::BlessedObject::Array object, the type must be assignable"));
+        *sv_error = sv_2mortal(newSVpvf(": If it is an SPVM::BlessedObject::Array object, the type must satisfy type requirement"));
         return &PL_sv_undef;
       }
     }
@@ -1074,7 +1074,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_api, void* basic_type, SV* sv_arr
       void* spvm_array = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_array);
       int32_t type_dimension = 1;
       if (!env->isa(env, stack, spvm_array, basic_type, type_dimension)) {
-        *sv_error = sv_2mortal(newSVpvf(": If it is an SPVM::BlessedObject::Array object, the type must be assignable"));
+        *sv_error = sv_2mortal(newSVpvf(": If it is an SPVM::BlessedObject::Array object, the type must satisfy type requirement"));
         return &PL_sv_undef;
       }
     }

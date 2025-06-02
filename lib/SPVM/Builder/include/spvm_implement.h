@@ -57,7 +57,7 @@ enum {
 
 
 static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
-  "An assignment failed. The right operand does not satisfy type assignability.",
+  "An assignment failed. The right operand does not satisfy type requirement.",
   "A read-only string cannnot be cast to mutable string type.",
   "A value of an integer type cannnot be divided by 0.",
   "The left operand of . operator must be defined.",
@@ -70,7 +70,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The new_string_len operator failed. The length of the string must be a non-negative integer.",
   "An array access failed. The array must be defined.",
   "An array access failed. The index is out of range.",
-  "An array setting failed. The element does not satisfy type assignability.",
+  "An array setting failed. The element does not satisfy type requirement.",
   "An field access failed. The invocant must be defined.",
   "An unboxing conversion failed. The operand must defined.",
   "An unboxing conversion failed. The destination type must be a numeric object type corresponding to the source type of the operand.",

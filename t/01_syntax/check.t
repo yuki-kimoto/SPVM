@@ -1131,7 +1131,7 @@ use Test::More;
   }
 }
 
-# Assignability
+# Type requirement
 {
   {
     my $source = q|class MyClass { static method main : void () { my $ret = &main(); } }|;

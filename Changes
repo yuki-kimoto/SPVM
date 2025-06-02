@@ -2,7 +2,8 @@
   [Exception Message Improvement]
     * Improve exception messages in exchange APIs. Use Class#method representation in all places.
     * Improve exception messages thrown by spvm_api.c. Use Class#method representation in all places.
-      
+    * Improve exception messages. Use word "type requirement" instead of "type assignability".
+    
 0.990058 2025-05-02
   [Note]
     * In this release, many imcompatible changes in spvmcc and SPVM::Builder::Config::Exe are performed.

@@ -24,7 +24,7 @@ use MyTest qw(compile_not_ok_file compile_not_ok);
 
 use Test::More;
 
-# Compilation errors of the type assignability in spvm_type.c 
+# Compilation errors of the type requirement in spvm_type.c 
 
 # Dist type is numeric type
 {

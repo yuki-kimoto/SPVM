@@ -354,7 +354,7 @@ class TestCase::Operator::Isa {
   
   static method isa_extra : int () {
     
-    # Assignability cached
+    # Type requirement cached
     {
       my $object = Int->new(1);
       

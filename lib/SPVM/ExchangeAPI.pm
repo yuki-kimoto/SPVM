@@ -828,7 +828,7 @@ If the type name $type_name was parsed, but the class name could not be extracte
 
 $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-$array: If it is an SPVM::BlessedObject::Array object, the type must be assignable. Otherwise an exception is thrown.
+$array: If it is an SPVM::BlessedObject::Array object, the type must satisfy type requirement. Otherwise an exception is thrown.
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
 
@@ -931,7 +931,7 @@ The dimension of the type $type_name must be 1. Otherwise an exception is thrown
 
 $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-$array: If it is an SPVM::BlessedObject::Array object, the type must be assignable. Otherwise an exception is thrown.
+$array: If it is an SPVM::BlessedObject::Array object, the type must satisfy type requirement. Otherwise an exception is thrown.
 
 Examples:
 
@@ -1033,13 +1033,13 @@ If $array is a reference other than the array reference, an exception is thrown.
 
 $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-$array: If it is an SPVM::BlessedObject::Array object, the type must be assignable. Otherwise an exception is thrown.
+$array: If it is an SPVM::BlessedObject::Array object, the type must satisfy type requirement. Otherwise an exception is thrown.
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
 
 The dimension of $type_name must be greater than or equal to 2 and less than or equal to 255. Otherwise an exception is thrown.
 
-The assignability of the element to the element type of $type_name is checked. If it is not assignable, an exception is thrown.
+The assignment requirement of the element to the element type of $type_name is checked. If it is not satisfied, an exception is thrown.
 
 Examples:
 
@@ -1302,7 +1302,7 @@ No conversion is performed.
 
 Exceptions:
 
-The argument must be an SPVM::BlessedObject::Class object of a Z assignable type or undef. Otherwise an exception is thrown.
+The argument must be an SPVM::BlessedObject::Class object that can be assigned to Z type, or undef. Otherwise an exception is thrown.
 
 =head2 Interaface Type Argument
 
@@ -1310,7 +1310,7 @@ No conversion is performed.
 
 Exceptions:
 
-The argument must be an SPVM::BlessedObject::Class object of a Z assignable type or undef. Otherwise an exception is thrown.
+The argument must be an SPVM::BlessedObject::Class object that can be assigned to Z type, or undef. Otherwise an exception is thrown.
 
 =head2 Multi-Numeric Type Argument
 
