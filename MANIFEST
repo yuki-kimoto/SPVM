@@ -6,12 +6,10 @@
 .github/workflows/windows-2019.yml
 .github/workflows/windows-latest.yml
 .gitignore
-benchmark/benchmark-synopsys.pl
+benchmark/benchmark_sum.pl
+benchmark/lib/SPVM/MyMath.c
+benchmark/lib/SPVM/MyMath.config
 benchmark/lib/SPVM/MyMath.spvm
-benchmark/lib/SPVM/MyMathNative.c
-benchmark/lib/SPVM/MyMathNative.config
-benchmark/lib/SPVM/MyMathNative.spvm
-benchmark/lib/SPVM/MyMathPrecompile.spvm
 Changes
 DEVELOPMENT.md
 examples/doc/tutorial/basic/lib/SPVM/MyMath.spvm

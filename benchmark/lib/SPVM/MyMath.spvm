@@ -1,4 +1,5 @@
 class MyMath {
+  
   static method spvm_sum : int ($loop_count : int) {
     
     my $total = 0;
@@ -8,4 +9,17 @@ class MyMath {
     
     return $total;
   }
+  
+  precompile static method spvm_sum_precompile : int ($loop_count : int) {
+    
+    my $total = 0;
+    for (my $i = 0; $i < $loop_count; $i++) {
+      $total += $i;
+    }
+    
+    return $total;
+  }
+  
+  native static method spvm_sum_native : int ($loop_count : int);
+  
 }

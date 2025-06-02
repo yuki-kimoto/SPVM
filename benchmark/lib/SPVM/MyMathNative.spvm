@@ -1,3 +1,0 @@
-class MyMathNative {
-  native static method spvm_sum : int ($loop_count : int);
-}
