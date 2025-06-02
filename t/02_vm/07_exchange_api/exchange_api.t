@@ -1152,7 +1152,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_object_array("NotFoundClass[]", []); };
-      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+      ok(index($@, 'NotFoundClass class is not found') >= 0);
     }
     {
       eval { $api->new_object_array("byte[]", []); };
@@ -1200,7 +1200,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_object_array_len("NotFoundClass[]", 0); };
-      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+      ok(index($@, 'NotFoundClass class is not found') >= 0);
     }
     {
       eval { $api->new_object_array_len("byte[]", 0); };
@@ -1413,7 +1413,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_mulnum_array("NotFoundClass[]", []); };
-      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+      ok(index($@, 'NotFoundClass class is not found') >= 0);
     }
     {
       eval { $api->new_mulnum_array("byte[]", []); };
@@ -1461,7 +1461,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_mulnum_array_len("NotFoundClass[]", 0); };
-      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+      ok(index($@, 'NotFoundClass class is not found') >= 0);
     }
     {
       eval { $api->new_mulnum_array_len("byte[]", 0); };
@@ -1560,7 +1560,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_mulnum_array_from_bin("NotFoundClass[]", ""); };
-      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+      ok(index($@, 'NotFoundClass class is not found') >= 0);
     }
     {
       eval { $api->new_mulnum_array_from_bin("byte[]", ""); };
@@ -1680,7 +1680,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_muldim_array("NotFoundClass[][]", []); };
-      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+      ok(index($@, 'NotFoundClass class is not found') >= 0);
     }
   }
 }
@@ -1724,7 +1724,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_muldim_array_len("NotFoundClass[][]", 0); };
-      ok(index($@, 'The "NotFoundClass" basic type is not found') >= 0);
+      ok(index($@, 'NotFoundClass class is not found') >= 0);
     }
   }
 }
@@ -2028,7 +2028,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       {
         my $point = SPVM::Point3D->new(1, 2, 3);
         eval { $point->SPVM::Int::value; };
-        like($@, qr|The invocant must be assinged to the "Int" basic type|);
+        like($@, qr|The invocant must be assinged to Int class|);
       }
       
       # Method not found
