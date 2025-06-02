@@ -2567,7 +2567,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* en
         return 0;
       }
       
-      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The \"NotFound\" class is not found.")) {
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "NotFound class is not found.")) {
         stack[0].ival = 0;
         return 0;
       }
@@ -2585,7 +2585,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* en
         return 0;
       }
       
-      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The \"not_found\" method in the \"TestCase::NativeAPI\" class is not found.")) {
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "TestCase::NativeAPI#not_found method is not found.")) {
         stack[0].ival = 0;
         return 0;
       }
@@ -2603,7 +2603,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* en
         return 0;
       }
       
-      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The \"instance_method\" method in the \"TestCase::NativeAPI\" class must be a class method.")) {
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "TestCase::NativeAPI#instance_method method must be a class method.")) {
         stack[0].ival = 0;
         return 0;
       }
@@ -2653,7 +2653,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_native(SP
         return 0;
       }
       
-      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The \"NotFound\" class is not found.")) {
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "NotFound class is not found.")) {
         stack[0].ival = 0;
         return 0;
       }
@@ -2669,7 +2669,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_native(SP
         return 0;
       }
       
-      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The \"not_found\" method in the \"TestCase::NativeAPI\" class is not found.")) {
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "TestCase::NativeAPI#not_found method is not found.")) {
         stack[0].ival = 0;
         return 0;
       }
@@ -2685,7 +2685,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_native(SP
         return 0;
       }
       
-      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The \"class_method\" method in the \"TestCase::NativeAPI\" class must be an instance method.")) {
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "TestCase::NativeAPI#class_method method must be an instance method.")) {
         stack[0].ival = 0;
         return 0;
       }
@@ -2760,7 +2760,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
         return 0;
       }
       
-      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The \"not_found\" instance method in the \"TestCase::NativeAPI\" class is not found in the invocant class or its super classes.")) {
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "TestCase::NativeAPI#not_found instance method is not found in the invocant class or its super classes.")) {
         stack[0].ival = 0;
         return 0;
       }
