@@ -14,7 +14,7 @@ use SPVM::MyClass::ConfigBuilder;
   
   is(ref $config_builder, 'SPVM::MyClass::ConfigBuilder');
   
-  my $config = SPVM::Builder::Config->new(file => __FILE__);
+  my $config = SPVM::Builder::Config->new;
   
   $config_builder->build_config($config);
   

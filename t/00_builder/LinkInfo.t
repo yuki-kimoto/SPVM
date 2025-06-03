@@ -7,7 +7,7 @@ use SPVM::Builder::Config;
 use SPVM::Builder::LinkInfo;
 
 {
-  my $config = SPVM::Builder::Config->new(file => __FILE__);
+  my $config = SPVM::Builder::Config->new;
   
   my $object_file = SPVM::Builder::LinkInfo->new(config => $config);
   

@@ -386,7 +386,7 @@ EOS
 
 MyClass.config:
   
-  my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
+  my \$config = SPVM::Builder::Config->$new_method;
   
   \$config->use_resource('$class_name');
   
@@ -598,7 +598,7 @@ use strict;
 use warnings;
 use SPVM::Builder::Config;
 
-my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
+my \$config = SPVM::Builder::Config->$new_method;
 
 $is_resource_code
 
@@ -1080,7 +1080,7 @@ sub generate_basic_test_native_config_file {
 use strict;
 use warnings;
 
-my \$config = SPVM::Builder::Config->$new_method(file => __FILE__);
+my \$config = SPVM::Builder::Config->$new_method;
 
 \$config->use_resource('$class_name');
 

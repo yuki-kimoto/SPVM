@@ -36,13 +36,13 @@ Examples:
 
 GNU C99:
 
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_gnu99;
   
   $config;
 
 C++:
 
-  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp;
   
   $config;
 

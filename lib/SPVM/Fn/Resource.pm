@@ -16,7 +16,7 @@ The Fn::Resource resource in L<SPVM> is a L<resouce|SPVM::Document::Resource> to
 
 MyClass.config:
   
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_gnu99;
   
   $config->use_resource('Fn::Resource');
   
