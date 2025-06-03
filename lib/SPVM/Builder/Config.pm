@@ -458,13 +458,6 @@ sub new {
   
   bless $self, ref $class || $class;
   
-  my $file_optional = $self->file_optional;
-  
-  my $file = $self->file;
-  if (!$file_optional && !defined $file) {
-    confess("The \"file\" field must be defined");
-  }
-  
   # [TODO]A config file name is set by load_config method. This is removed in a future release.
   $self->file(undef);
   
@@ -529,28 +522,6 @@ sub new {
     my $spvm_core_include_dir = "$builder_dir/include";
     
     $self->spvm_core_include_dir($spvm_core_include_dir);
-  }
-  
-  # native_include_dir
-  unless (defined $self->native_include_dir) {
-    if (defined $file) {
-      my $native_dir = $self->_remove_ext_from_config_file($file);
-      $native_dir .= '.native';
-      my $native_include_dir = "$native_dir/include";
-      
-      $self->native_include_dir($native_include_dir);
-    }
-  }
-  
-  # native_src_dir
-  unless (defined $self->native_src_dir) {
-    if (defined $file) {
-      my $native_dir = $self->_remove_ext_from_config_file($file);
-      $native_dir .= '.native';
-      my $native_src_dir = "$native_dir/src";
-      
-      $self->native_src_dir($native_src_dir);
-    }
   }
   
   # source_files
@@ -878,6 +849,28 @@ sub load_config {
   push @{$config->get_loaded_config_files}, $config_file;
   
   $config->file($config_file);
+  
+  # native_include_dir
+  unless (defined $config->native_include_dir) {
+    if (defined $config_file) {
+      my $native_dir = $config->_remove_ext_from_config_file($config_file);
+      $native_dir .= '.native';
+      my $native_include_dir = "$native_dir/include";
+      
+      $config->native_include_dir($native_include_dir);
+    }
+  }
+  
+  # native_src_dir
+  unless (defined $config->native_src_dir) {
+    if (defined $config_file) {
+      my $native_dir = $config->_remove_ext_from_config_file($config_file);
+      $native_dir .= '.native';
+      my $native_src_dir = "$native_dir/src";
+      
+      $config->native_src_dir($native_src_dir);
+    }
+  }
   
   return $config;
 }
@@ -1454,7 +1447,7 @@ This field is automatically set and users nomally do not change it.
 
 Gets and sets C<file> field, the file path of this config.
 
-This field is set by L</"new"> method and users nomally do not change it.
+This field is set by L</"load_config"> method and users should not set it.
 
 =head2 file_optional
 
@@ -1573,11 +1566,13 @@ Gets and sets C<mode> field.
 
 Creates a new C<SPVM::Builder::Config> object with L<fields|/"Fields">, and returns it.
 
-The C<file> field must be defined.
-
 Field Default Values:
 
 =over 2
+
+=item * L</"file">
+
+This value is set automatically.
 
 =item * L</"cc">
 
@@ -1718,14 +1713,6 @@ Other OSs:
   undef
 
 =back
-
-Exceptions:
-
-The "file" field must be defined. Otherwise, an exception is thrown.
-
-Exampels:
-
-  my $config = SPVM::Builder::Config->new(file => __FILE__);
 
 =head2 new_c
   
