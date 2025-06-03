@@ -1,3 +1,10 @@
+0.990060 2025-06-03
+  [Bug Fix]
+    * Fix a bug that an anon class with anon methods caused segfault.
+      
+      SPVM::Thread segfault #730
+      https://github.com/yuki-kimoto/SPVM/issues/730
+      
 0.990059 2025-06-02
   [Exception Message Improvement]
     * Improve exception messages in exchange APIs. Use Class#method representation in all places.

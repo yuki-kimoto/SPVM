@@ -161,6 +161,13 @@ my $dev_null = File::Spec->devnull;
     like($spvm_output, qr|t/04_spvmcc/script/program_name\.spvm|);
   }
   
+  # anon method
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm $FindBin::Bin/script/anon_method.spvm);
+    my $output = `$spvm_cmd`;
+    like($output, qr/OK/);
+  }
+  
 }
 
 
