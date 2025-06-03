@@ -499,7 +499,7 @@ sub get_dynamic_lib_file_dist {
 
 sub create_default_config {
   
-  my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
+  my $config = SPVM::Builder::Config->new_gnu99;
   
   return $config;
 }

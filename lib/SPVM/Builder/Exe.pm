@@ -199,7 +199,7 @@ sub new {
   }
   else {
     if ($allow_no_config_file) {
-      $config = SPVM::Builder::Config::Exe->new(file_optional => 1);
+      $config = SPVM::Builder::Config::Exe->new;
     }
     else {
       confess("The config file \"$config_file\" is not found.");

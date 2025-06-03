@@ -44,7 +44,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     no warnings 'once';
     my $link_info = $main::MYEXE_LINK_INFO;
     
-    my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
+    my $config = SPVM::Builder::Config->new_gnu99;
     
     ok($link_info->config->ld, $config->ld);
     ok($link_info->config->ldflags, $config->ldflags);

@@ -10,7 +10,7 @@ use SPVM::Builder::Config;
 {
   # default - 0
   {
-    my $config = SPVM::Builder::Config->new(file_optional => 1);
+    my $config = SPVM::Builder::Config->new;
     my $cc = SPVM::Builder::CC->new;
     
     my $quiet = $cc->detect_quiet($config);
@@ -19,7 +19,7 @@ use SPVM::Builder::Config;
 
   # $cc->debug - 0
   {
-    my $config = SPVM::Builder::Config->new(file_optional => 1);
+    my $config = SPVM::Builder::Config->new;
     my $cc = SPVM::Builder::CC->new;
     $cc->debug(1);
     
@@ -29,7 +29,7 @@ use SPVM::Builder::Config;
 
   # $cc->quiet
   {
-    my $config = SPVM::Builder::Config->new(file_optional => 1);
+    my $config = SPVM::Builder::Config->new;
     my $cc = SPVM::Builder::CC->new;
     
     {
@@ -47,7 +47,7 @@ use SPVM::Builder::Config;
 
   # $config->quiet
   {
-    my $config = SPVM::Builder::Config->new(file_optional => 1);
+    my $config = SPVM::Builder::Config->new;
     my $cc = SPVM::Builder::CC->new;
     
     {
@@ -66,7 +66,7 @@ use SPVM::Builder::Config;
   # order
   {
     {
-      my $config = SPVM::Builder::Config->new(file_optional => 1, is_jit => 1);
+      my $config = SPVM::Builder::Config->new( is_jit => 1);
       my $cc = SPVM::Builder::CC->new;
       
       $cc->debug(1);
@@ -78,7 +78,7 @@ use SPVM::Builder::Config;
     }
     
     {
-      my $config = SPVM::Builder::Config->new(file_optional => 1, is_jit => 1);
+      my $config = SPVM::Builder::Config->new( is_jit => 1);
       my $cc = SPVM::Builder::CC->new;
       
       $cc->quiet(0);
@@ -89,7 +89,7 @@ use SPVM::Builder::Config;
     }
     
     {
-      my $config = SPVM::Builder::Config->new(file_optional => 1, is_jit => 1);
+      my $config = SPVM::Builder::Config->new( is_jit => 1);
       my $cc = SPVM::Builder::CC->new;
       
       $config->quiet(0);
@@ -104,7 +104,7 @@ use SPVM::Builder::Config;
 {
   # default - 0
   {
-    my $config = SPVM::Builder::Config->new(file_optional => 1);
+    my $config = SPVM::Builder::Config->new;
     my $cc = SPVM::Builder::CC->new;
     
     my $force = $cc->detect_force($config);
@@ -113,7 +113,7 @@ use SPVM::Builder::Config;
 
   # $cc->force
   {
-    my $config = SPVM::Builder::Config->new(file_optional => 1);
+    my $config = SPVM::Builder::Config->new;
     my $cc = SPVM::Builder::CC->new;
     
     {
@@ -131,7 +131,7 @@ use SPVM::Builder::Config;
 
   # $config->force
   {
-    my $config = SPVM::Builder::Config->new(file_optional => 1);
+    my $config = SPVM::Builder::Config->new;
     my $cc = SPVM::Builder::CC->new;
     
     {
@@ -150,7 +150,7 @@ use SPVM::Builder::Config;
   # order
   {
     {
-      my $config = SPVM::Builder::Config->new(file_optional => 1);
+      my $config = SPVM::Builder::Config->new;
       my $cc = SPVM::Builder::CC->new;
       
       $cc->force(0);
@@ -161,7 +161,7 @@ use SPVM::Builder::Config;
     }
 
     {
-      my $config = SPVM::Builder::Config->new(file_optional => 1);
+      my $config = SPVM::Builder::Config->new;
       my $cc = SPVM::Builder::CC->new;
       
       $config->force(0);

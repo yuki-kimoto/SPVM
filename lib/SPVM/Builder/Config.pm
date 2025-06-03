@@ -32,17 +32,6 @@ sub file {
   }
 }
 
-sub file_optional {
-  my $self = shift;
-  if (@_) {
-    $self->{file_optional} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{file_optional};
-  }
-}
-
 sub ext {
   my $self = shift;
   if (@_) {
@@ -1448,15 +1437,6 @@ This field is automatically set and users nomally do not change it.
 Gets and sets C<file> field, the file path of this config.
 
 This field is set by L</"load_config"> method and users should not set it.
-
-=head2 file_optional
-
-  my $file_optional = $config->file_optional;
-  $config->file_optional($file_optional);
-
-Gets and sets C<file_optional> field.
-
-If this field is a true value, even if the L<file|/"file"> field is not given to L</"new"> method, the exception is not thrown.
 
 =head2 output_type
 

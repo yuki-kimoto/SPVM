@@ -78,7 +78,7 @@ Creates a default config, and returns it. It is an L<SPVM::Builder::Config> obje
 
 Currently the default config is created by the following operation.
 
-  my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
+  my $config = SPVM::Builder::Config->new_gnu99;
 
 =head1 Copyright & License
 

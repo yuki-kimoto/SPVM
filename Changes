@@ -1,7 +1,8 @@
 0.990061 2025-06-03
   [Changes]
     * file option in SPVM::Builder::Config has no effect. That value is automatically set in load_config method.
-    
+  [Incompatible Changes]
+    * Remove SPVM::Builder::Config#file_optional field.
 0.990060 2025-06-03
   [Bug Fix]
     * Fix a bug that an anon class with anon methods caused segfault.
