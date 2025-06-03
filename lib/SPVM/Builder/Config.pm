@@ -465,6 +465,9 @@ sub new {
     confess("The \"file\" field must be defined");
   }
   
+  # [TODO]A config file name is set by load_config method. This is removed in a future release.
+  $self->file(undef);
+  
   # cc
   unless (defined $self->{cc}) {
     $self->cc($Config{cc});
@@ -873,6 +876,8 @@ sub load_config {
   }
   
   push @{$config->get_loaded_config_files}, $config_file;
+  
+  $config->file($config_file);
   
   return $config;
 }
