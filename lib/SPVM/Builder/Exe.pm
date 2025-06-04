@@ -2,7 +2,7 @@ package SPVM::Builder::Exe;
 
 use strict;
 use warnings;
-use Carp 'confess';
+use Carp ();
 use JSON::PP;
 use File::Basename 'basename', 'dirname';
 use File::Path 'mkpath';
@@ -166,13 +166,13 @@ sub new {
   my $script_name = $self->{script_name};
   
   unless (defined $script_name) {
-    confess("A script name must be defined.");
+    Carp::confess("A script name must be defined.");
   }
   
   # Excutable file name
   my $output_file = $self->{output_file};
   unless (defined $output_file) {
-    confess("A output file must be defined.");
+    Carp::confess("A output file must be defined.");
   }
   
   unless (defined $build_dir) {
@@ -203,16 +203,16 @@ sub new {
       $config = SPVM::Builder::Config::Exe->new;
     }
     else {
-      confess("The config file \"$config_file\" is not found.");
+      Carp::confess("The config file \"$config_file\" is not found.");
     }
   }
   
   unless ($config->isa('SPVM::Builder::Config::Exe')) {
-    confess("The class of a config object for creating an executable file must be SPVM::Builder::Config::Exe or its child class.");
+    Carp::confess("The class of a config object for creating an executable file must be SPVM::Builder::Config::Exe or its child class.");
   }
   
   unless ($config->output_type eq 'exe') {
-    confess("output_type field in the config file \"$config_file\" for creating an executable file must be \"exe\".");
+    Carp::confess("output_type field in the config file \"$config_file\" for creating an executable file must be \"exe\".");
   }
   
   $self->{config} = $config;
@@ -1112,7 +1112,7 @@ sub parse_option_values_native_class {
       }
     }
     else {
-      confess "Invalid option value \"$option_value\" for $option_name option.";
+      Carp::confess "Invalid option value \"$option_value\" for $option_name option.";
     }
   }
   
