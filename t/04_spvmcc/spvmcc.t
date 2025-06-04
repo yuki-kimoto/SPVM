@@ -263,7 +263,12 @@ my $dev_null = File::Spec->devnull;
     is($output, $output_expect);
     
     {
-      my $bootstrap_file = 't/04_spvmcc/.spvm_build/work/src/SPVM/eval/anon_class/0.boot.c';
+      ok(-d 't/04_spvmcc/.spvm_build/work/src');
+      ok(-d 't/04_spvmcc/.spvm_build/work/object');
+    }
+    
+    {
+      my $bootstrap_file = 't/04_spvmcc/.spvm_build/work/src/bootstrap/myapp.c';
       open my $fh, '<', $bootstrap_file
         or die "Cannot open file \"$bootstrap_file\":$!";
       

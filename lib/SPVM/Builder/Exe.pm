@@ -4,7 +4,8 @@ use strict;
 use warnings;
 use Carp 'confess';
 use JSON::PP;
-use File::Basename 'basename';
+use File::Basename 'basename', 'dirname';
+use File::Path 'mkpath';
 
 use SPVM::Builder;
 use SPVM::Builder::CC;
@@ -795,11 +796,9 @@ sub create_bootstrap_source {
   }
   
   # Source file - Output
-  my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
-  my $perl_class_name = "SPVM::$class_name";
-  my $bootstrap_base = $perl_class_name;
-  $bootstrap_base =~ s|::|/|g;
-  my $bootstrap_source_file = "$build_src_dir/$bootstrap_base.boot.c";
+  my $bootstrap_source_file = $self->create_bootstrap_source_file_path;
+  
+  mkpath dirname $bootstrap_source_file;
   
   # Config
   my $config_exe = $self->config;
@@ -927,8 +926,9 @@ sub compile_bootstrap_source_file {
   
   # Compile source files
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
-  my $object_file_name = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir, "$class_name_rel_file.boot.o");
-  my $source_file = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir, "$class_name_rel_file.boot.c");
+  my $source_file = $self->create_bootstrap_source_file_path;
+  my $object_file_name = $source_file;
+  $object_file_name =~ s/\.c$/.o/;
   
   # Compile
   my $object_file = $self->compile_source_file({
@@ -1119,6 +1119,18 @@ sub parse_option_values_native_class {
   return $hash;
 }
 
+sub create_bootstrap_source_file_path {
+  my ($self) = @_;
+  
+  my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
+  my $script_name = $self->script_name;
+  my $bootstrap_source_file_base = basename $script_name;
+  $bootstrap_source_file_base =~ s/\..*$//;
+  $bootstrap_source_file_base .= '.c';
+  my $bootstrap_source_file = "$build_src_dir/bootstrap/$bootstrap_source_file_base";
+  
+  return $bootstrap_source_file;
+}
 1;
 
 =head1 Name
