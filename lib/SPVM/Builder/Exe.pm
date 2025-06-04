@@ -462,7 +462,7 @@ EOS
 
   $source .= "static void ${boostrap_name_space}set_native_method_addresses(SPVM_ENV* env);\n\n";
 
-  $source .= "static void* ${boostrap_name_space}get_runtime(SPVM_ENV* env, void* compiler);\n\n";
+  $source .= "static void* ${boostrap_name_space}compile(SPVM_ENV* env, void* compiler);\n\n";
 
   $source .= <<"EOS";
 static void ${boostrap_name_space}set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address);
@@ -503,7 +503,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   void* compiler = boot_env->api->compiler->new_instance();
   
-  void* runtime = ${boostrap_name_space}get_runtime(boot_env, compiler);
+  void* runtime = ${boostrap_name_space}compile(boot_env, compiler);
   
   SPVM_ENV* env = boot_env->new_env();
   
@@ -623,7 +623,7 @@ sub create_bootstrap_get_runtime_source {
   my $source = '';
   
   $source .= <<"EOS";
-static void* ${boostrap_name_space}get_runtime(SPVM_ENV* env, void* compiler) {
+static void* ${boostrap_name_space}compile(SPVM_ENV* env, void* compiler) {
   
 EOS
   
