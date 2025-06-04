@@ -464,7 +464,7 @@ EOS
   
   $source .= "static void ${boostrap_name_space}build_runtime(SPVM_ENV* env, void* compiler);\n\n";
   
-  $source .= "static void compile(SPVM_ENV* env, void* compiler);\n\n";
+  $source .= "static void compile_all_classes(SPVM_ENV* env, void* compiler);\n\n";
   
   $source .= <<"EOS";
 static void set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address);
@@ -618,7 +618,7 @@ sub create_bootstrap_build_runtime_source {
   $source .= <<"EOS";
 static void ${boostrap_name_space}build_runtime(SPVM_ENV* env, void* compiler) {
   
-  compile(env, compiler);
+  compile_all_classes(env, compiler);
   
   set_precompile_method_addresses(env);
   
@@ -641,7 +641,7 @@ sub create_bootstrap_compile_source {
   my $source = '';
   
   $source .= <<"EOS";
-static void compile(SPVM_ENV* env, void* compiler) {
+static void compile_all_classes(SPVM_ENV* env, void* compiler) {
   
 EOS
   
