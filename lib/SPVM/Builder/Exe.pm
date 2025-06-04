@@ -1155,6 +1155,20 @@ sub check_script_name {
   
 }
 
+sub create_boostrap_name_space {
+  my ($self) = @_;
+  
+  my $script_name = $self->script_name;
+  
+  my $name_space = basename $script_name;
+  $name_space =~ s/\.spvm$//;
+  $name_space =~ s/-/____/g;
+  
+  $name_space = "SPVM_BOOTSTRAP_$name_space";
+  
+  return $name_space;
+}
+
 1;
 
 =head1 Name
