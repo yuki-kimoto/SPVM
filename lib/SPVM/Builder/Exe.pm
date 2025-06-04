@@ -462,7 +462,7 @@ EOS
 
   $source .= "static void ${boostrap_name_space}set_native_method_addresses(SPVM_ENV* env);\n\n";
 
-  $source .= "static void* ${boostrap_name_space}compile(SPVM_ENV* env, void* compiler);\n\n";
+  $source .= "static void ${boostrap_name_space}compile(SPVM_ENV* env, void* compiler);\n\n";
 
   $source .= <<"EOS";
 static void ${boostrap_name_space}set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address);
@@ -505,9 +505,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   SPVM_ENV* env = boot_env->new_env();
   
-  void* runtime = ${boostrap_name_space}compile(env, compiler);
-  
-  env->runtime = runtime;
+  ${boostrap_name_space}compile(env, compiler);
   
   ${boostrap_name_space}set_precompile_method_addresses(env);
   
@@ -623,7 +621,7 @@ sub create_bootstrap_get_runtime_source {
   my $source = '';
   
   $source .= <<"EOS";
-static void* ${boostrap_name_space}compile(SPVM_ENV* env, void* compiler) {
+static void ${boostrap_name_space}compile(SPVM_ENV* env, void* compiler) {
   
 EOS
   
@@ -685,8 +683,7 @@ EOS
   $source .= qq|    fprintf(spvm_stderr, "[Unexpected Compile Error]%s.", env->api->compiler->get_error_message(compiler, 0));\n|;
   $source .= qq|    exit(255);\n|;
   $source .= qq|  }\n|;
-  
-  $source .= qq|  return runtime;\n|;
+  $source .= qq|  env->runtime = runtime;\n|;
   
   $source .= <<"EOS";
 }
