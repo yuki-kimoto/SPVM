@@ -447,14 +447,6 @@ EOS
   
   $source .= "static void ${boostrap_name_space}create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env);\n";
 
-  $source .= <<"EOS";
-static void ${boostrap_name_space}set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address) {
-void* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
-void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, method_name);
-env->api->method->set_precompile_address(env->runtime, method, precompile_address);
-}
-EOS
-  
   $source .= "// native functions declaration\n";
   for my $class_name (@$class_names) {
     my $class = $self->runtime->get_basic_type_by_name($class_name);
@@ -473,11 +465,11 @@ EOS
   $source .= "static void* ${boostrap_name_space}get_runtime(SPVM_ENV* env, void* compiler);\n\n";
 
   $source .= <<"EOS";
-static void ${boostrap_name_space}set_native_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* native_address) {
-  void* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
-  void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, method_name);
-  env->api->method->set_native_address(env->runtime, method, native_address);
-}
+static void ${boostrap_name_space}set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address);
+EOS
+
+  $source .= <<"EOS";
+static void ${boostrap_name_space}set_native_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* native_address);
 EOS
 
   return $source;
@@ -713,6 +705,22 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   
   my $source = '';
   
+  $source .= <<"EOS";
+static void ${boostrap_name_space}set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address) {
+  void* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
+  void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, method_name);
+  env->api->method->set_precompile_address(env->runtime, method, precompile_address);
+}
+EOS
+  
+  $source .= <<"EOS";
+static void ${boostrap_name_space}set_native_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* native_address) {
+  void* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
+  void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, method_name);
+  env->api->method->set_native_address(env->runtime, method, native_address);
+}
+EOS
+
   $source .= "static void ${boostrap_name_space}create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env){\n";
   
   for my $class_name (@$class_names) {
