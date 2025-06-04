@@ -60,8 +60,6 @@ It dose not end with C<::>.
 
 It dose not contains C<::::>.
 
-It dose not begin with C<0-9>.
-
 Compliation Errors:
 
 If a symbol name is invald, a compilation error occurs.

@@ -141,7 +141,7 @@ The C<spvm> command executes a SPVM program.
 
 I<OPTIONS> are L<options|/"Options">.
 
-I<SCRIPT_NAME> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
+I<SCRIPT_NAME> is a script path that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
 
   class {
     static method main : void () {
@@ -149,9 +149,41 @@ I<SCRIPT_NAME> is a script name that contains a L<bootstrap method|SPVM::Documen
     }
   }
 
+The base name of I<SCRIPT_NAME> must be a L</"Script Base Name">. Otherwise an exception is thrown.
+
 See L<Class Search Directories|SPVM::Document::Language::Class/"Class Search Directories"> about default class search directories.
 
 See L<SPVM::Document::EnvironmentVariables> about available environment variables.
+
+=head2 Script Base Name
+
+A script base name ends with C<.spvm>.
+
+A script base name without C<.spvm> consists of L<word characters|SPVM::Document::Language::Tokenization/"Word Characters"> and C<->.
+
+It dose not contains C<__>.
+
+It dose not begin with C<0-9>.
+
+It dose not begin with C<->.
+
+It dose not end with C<->.
+
+It dose not contains C<-->.
+
+Examples:
+  
+  # Script Base Names
+  foo.spvm
+  foo_bar2.spvm
+  myapp-foo.spvm
+  
+  # Invalid Script Base Names
+  2foo.spvm
+  foo__bar.spvm
+  -myapp.spvm
+  myapp-.spvm
+  myapp--foo.spvm
 
 =head1 Options
 

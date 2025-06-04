@@ -214,13 +214,15 @@ The C<spvmcc> command generates an executable file from SPVM classes.
 
 I<OPTIONS> are L<options|/"Options">.
 
-I<SCRIPT_NAME> is a script name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
+I<SCRIPT_NAME> is a script path that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
 
   class {
     static method main : void () {
       
     }
   }
+
+The base name of I<SCRIPT_NAME> must be a L<Script Base Name|spvm/"Script Base Name">. Otherwise an exception is thrown.
 
 See L<Class Search Directories|SPVM::Document::Language::Class/"Class Search Directories"> about default class search directories.
 

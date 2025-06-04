@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp ();
 use JSON::PP;
-use File::Basename 'basename', 'dirname';
+use File::Basename 'basename', 'dirname', 'fileparse';
 use File::Path 'mkpath';
 
 use SPVM::Builder;
@@ -165,9 +165,7 @@ sub new {
   
   my $script_name = $self->{script_name};
   
-  unless (defined $script_name) {
-    Carp::confess("A script name must be defined.");
-  }
+  $self->check_script_name;
   
   # Excutable file name
   my $output_file = $self->{output_file};
@@ -1131,6 +1129,32 @@ sub create_bootstrap_source_file_path {
   
   return $bootstrap_source_file;
 }
+
+sub check_script_name {
+  my ($self) = @_;
+  
+  my $script_name = $self->{script_name};
+  
+  unless (defined $script_name) {
+    Carp::confess("A script name must be defined.");
+  }
+  
+  my ($script_name_base) = fileparse $script_name;
+  
+  unless ($script_name_base =~ /^[a-zA-Z_][a-zA-Z_0-9\-]*\.spvm$/) {
+    Carp::confess "The script base name must match the regex qr/^[a-zA-Z_][a-zA-Z_0-9\\-]*\\.spvm\$/. SCRIPT_NAME=\"$script_name\".";
+  }
+  
+  if ($script_name_base =~ /--/) {
+    Carp::confess "The script base name cannnot contain \"--\". SCRIPT_NAME=$script_name.";
+  }
+  
+  if ($script_name_base =~ /__/) {
+    Carp::confess "The script base name cannot contain \"__\". SCRIPT_NAME=$script_name.";
+  }
+  
+}
+
 1;
 
 =head1 Name
