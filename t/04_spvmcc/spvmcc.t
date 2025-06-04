@@ -182,11 +182,11 @@ my $dev_null = File::Spec->devnull;
 
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -o $exe_dir/myapp --no-config --optimize=-O0 t/04_spvmcc/script/program_name.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -o $exe_dir/program_name --no-config --optimize=-O0 t/04_spvmcc/script/program_name.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myapp/);
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe program_name/);
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     system($execute_cmd_with_args) == 0
       or die "Can't execute command:$execute_cmd_with_args:$!";
