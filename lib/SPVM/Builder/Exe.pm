@@ -509,11 +509,11 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   env->runtime = runtime;
   
-  FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
-  
   ${boostrap_name_space}set_precompile_method_addresses(env);
   
   ${boostrap_name_space}set_native_method_addresses(env);
+  
+  FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
   
   SPVM_VALUE* stack = env->new_stack(env);
   
