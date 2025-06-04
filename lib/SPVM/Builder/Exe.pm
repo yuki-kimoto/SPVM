@@ -443,8 +443,12 @@ EOS
     }
   }
   
+  my $boostrap_name_space = $self->create_boostrap_name_space;
+  
+  $source .= "void ${boostrap_name_space}build_runtime(SPVM_ENV* env, void* compiler);\n\n";
+  
   $source .= "static void set_precompile_method_addresses(SPVM_ENV* env);\n";
-
+  
   $source .= "// native functions declaration\n";
   for my $class_name (@$class_names) {
     my $class = $self->runtime->get_basic_type_by_name($class_name);
@@ -459,10 +463,6 @@ EOS
   }
   
   $source .= "static void set_native_method_addresses(SPVM_ENV* env);\n\n";
-  
-  my $boostrap_name_space = $self->create_boostrap_name_space;
-  
-  $source .= "static void ${boostrap_name_space}build_runtime(SPVM_ENV* env, void* compiler);\n\n";
   
   $source .= "static void compile_all_classes(SPVM_ENV* env, void* compiler);\n\n";
   
@@ -616,7 +616,7 @@ sub create_bootstrap_build_runtime_source {
   my $source = '';
   
   $source .= <<"EOS";
-static void ${boostrap_name_space}build_runtime(SPVM_ENV* env, void* compiler) {
+void ${boostrap_name_space}build_runtime(SPVM_ENV* env, void* compiler) {
   
   compile_all_classes(env, compiler);
   
