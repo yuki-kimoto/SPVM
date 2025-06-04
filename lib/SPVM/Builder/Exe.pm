@@ -442,11 +442,13 @@ EOS
       }
     }
   }
-
-  $source .= "static void SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env);\n";
+  
+  my $boostrap_name_space = $self->create_boostrap_name_space;
+  
+  $source .= "static void ${boostrap_name_space}create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env);\n";
 
   $source .= <<"EOS";
-static void SPVM_BOOTSTRAP_set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address) {
+static void ${boostrap_name_space}set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address) {
 void* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
 void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, method_name);
 env->api->method->set_precompile_address(env->runtime, method, precompile_address);
@@ -466,12 +468,12 @@ EOS
     }
   }
 
-  $source .= "static void SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env);\n\n";
+  $source .= "static void ${boostrap_name_space}create_bootstrap_set_native_method_addresses(SPVM_ENV* env);\n\n";
 
-  $source .= "static void* SPVM_BOOTSTRAP_get_runtime(SPVM_ENV* env, void* compiler);\n\n";
+  $source .= "static void* ${boostrap_name_space}get_runtime(SPVM_ENV* env, void* compiler);\n\n";
 
   $source .= <<"EOS";
-static void SPVM_BOOTSTRAP_set_native_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* native_address) {
+static void ${boostrap_name_space}set_native_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* native_address) {
   void* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
   void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, method_name);
   env->api->method->set_native_address(env->runtime, method, native_address);
@@ -483,20 +485,22 @@ EOS
 
 sub create_bootstrap_main_func_source {
   my ($self) = @_;
-
+  
   # Builder
   my $builder = $self->builder;
-
+  
   my $class_name = $self->class_name;
-
+  
   my $class_names = $self->get_user_defined_basic_type_names;
   
   my $warning = $^W ? 1 : 0;
   
+  my $boostrap_name_space = $self->create_boostrap_name_space;
+  
   my $source = '';
-
+  
   $source .= <<"EOS";
-
+  
 int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   int32_t error_id = 0;
@@ -505,7 +509,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   void* compiler = boot_env->api->compiler->new_instance();
   
-  void* runtime = SPVM_BOOTSTRAP_get_runtime(boot_env, compiler);
+  void* runtime = ${boostrap_name_space}get_runtime(boot_env, compiler);
   
   SPVM_ENV* env = boot_env->new_env();
   
@@ -513,9 +517,9 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
   
-  SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(env);
+  ${boostrap_name_space}create_bootstrap_set_precompile_method_addresses(env);
   
-  SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(env);
+  ${boostrap_name_space}create_bootstrap_set_native_method_addresses(env);
   
   SPVM_VALUE* stack = env->new_stack(env);
   
@@ -620,10 +624,12 @@ sub create_bootstrap_get_runtime_source {
   # Builder
   my $builder = $self->builder;
   
+  my $boostrap_name_space = $self->create_boostrap_name_space;
+  
   my $source = '';
   
   $source .= <<"EOS";
-static void* SPVM_BOOTSTRAP_get_runtime(SPVM_ENV* env, void* compiler) {
+static void* ${boostrap_name_space}get_runtime(SPVM_ENV* env, void* compiler) {
   
 EOS
   
@@ -703,9 +709,11 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   
   my $class_names = $self->get_user_defined_basic_type_names;
   
+  my $boostrap_name_space = $self->create_boostrap_name_space;
+  
   my $source = '';
   
-  $source .= "static void SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env){\n";
+  $source .= "static void ${boostrap_name_space}create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env){\n";
   
   for my $class_name (@$class_names) {
     my $class = $self->runtime->get_basic_type_by_name($class_name);
@@ -717,7 +725,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
     
     for my $precompile_method_name (@$precompile_method_names) {
       $source .= <<"EOS";
-  SPVM_BOOTSTRAP_set_precompile_method_address(env, "$class_name", "$precompile_method_name", &SPVMPRECOMPILE__${class_cname}__$precompile_method_name);
+  ${boostrap_name_space}set_precompile_method_address(env, "$class_name", "$precompile_method_name", &SPVMPRECOMPILE__${class_cname}__$precompile_method_name);
 EOS
     }
     
@@ -731,7 +739,7 @@ EOS
       my $anon_method = $anon_basic_type->get_method_by_name("");
       if ($anon_method->is_precompile) {
         $source .= <<"EOS";
-  SPVM_BOOTSTRAP_set_precompile_method_address(env, "$anon_basic_type_name", "", &SPVMPRECOMPILE__${anon_basic_type_cname}__);
+  ${boostrap_name_space}set_precompile_method_address(env, "$anon_basic_type_name", "", &SPVMPRECOMPILE__${anon_basic_type_cname}__);
 EOS
       }
     }
@@ -744,16 +752,18 @@ EOS
 
 sub create_bootstrap_set_native_method_addresses_func_source {
   my ($self) = @_;
-
+  
   # Builder
   my $builder = $self->builder;
-
+  
   my $class_names = $self->get_user_defined_basic_type_names;
-
+  
+  my $boostrap_name_space = $self->create_boostrap_name_space;
+  
   my $source = '';
-
-  $source .= "static void SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env){\n";
-
+  
+  $source .= "static void ${boostrap_name_space}create_bootstrap_set_native_method_addresses(SPVM_ENV* env){\n";
+  
   for my $class_name (@$class_names) {
     my $class = $self->runtime->get_basic_type_by_name($class_name);
     
@@ -764,7 +774,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
     
     for my $native_method_name (@$native_method_names) {
       $source .= <<"EOS";
-  SPVM_BOOTSTRAP_set_native_method_address(env, "$class_name", "$native_method_name", &SPVM__${class_cname}__$native_method_name);
+  ${boostrap_name_space}set_native_method_address(env, "$class_name", "$native_method_name", &SPVM__${class_cname}__$native_method_name);
 EOS
     }
   }

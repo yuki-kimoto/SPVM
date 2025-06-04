@@ -24,7 +24,9 @@
       It dose not end with C<->.
 
       It dose not contains C<-->.
-
+  [Internal Changes]
+    * bootstrap function have own name space.
+    
 0.990061 2025-06-03
   [Changes]
     * file option in SPVM::Builder::Config has no effect. That value is automatically set in load_config method.
