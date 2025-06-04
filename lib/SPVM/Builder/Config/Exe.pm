@@ -426,6 +426,14 @@ The SPVM::Builder::Config::Exe class has methods to manipulate the config for th
   
   my $config_exe = SPVM::Builder::Config::Exe->new_gnu99;
 
+=head1 Details
+
+=head2 Warning: Should Not Change Compiler Flags
+
+The fields for compiler flags in L<SPVM::Builder::Config> such as L<SPVM::Builder::Config/"cc">, L<SPVM::Builder::Config/"std"> should not be changed.
+
+This is because the compiler flags are used to compile SPVM core source files and a bootstrap source file generagted by C<spvmcc> command.
+
 =head1 Super Class
 
 =over 2
