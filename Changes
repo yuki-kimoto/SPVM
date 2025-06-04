@@ -26,6 +26,8 @@
       It dose not contains C<-->.
   [Internal Changes]
     * bootstrap function have own name space.
+  [Changes]
+    * Remove Fn::Resource. This class was for tests, but spvmdeps output this class.
     
 0.990061 2025-06-03
   [Changes]

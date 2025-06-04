@@ -299,17 +299,8 @@ lib/SPVM/FloatList.pm
 lib/SPVM/FloatList.spvm
 lib/SPVM/Fn.c
 lib/SPVM/Fn.config
-lib/SPVM/Fn.native/include/SPVM__Fn.h
-lib/SPVM/Fn.native/src/SPVM__Fn.c
 lib/SPVM/Fn.pm
 lib/SPVM/Fn.spvm
-lib/SPVM/Fn/Resource.config
-lib/SPVM/Fn/Resource.native/include/.gitkeep
-lib/SPVM/Fn/Resource.native/include/SPVM__Fn__Resource.h
-lib/SPVM/Fn/Resource.native/src/.gitkeep
-lib/SPVM/Fn/Resource.native/src/SPVM__Fn__Resource.c
-lib/SPVM/Fn/Resource.pm
-lib/SPVM/Fn/Resource.spvm
 lib/SPVM/Format.c
 lib/SPVM/Format.config
 lib/SPVM/Format.pm
@@ -1073,7 +1064,7 @@ t/04_spvmcc/script/myapp_compile_error/main_instant_method.spvm
 t/04_spvmcc/script/myapp_compile_error/main_not_found.spvm
 t/04_spvmcc/script/precompile.spvm
 t/04_spvmcc/script/program_name.spvm
-t/04_spvmcc/script/use_class.spvm
+t/04_spvmcc/script/use-class.spvm
 t/04_spvmcc/SPVM-Builder-Exe.t
 t/04_spvmcc/spvm.t
 t/04_spvmcc/spvmcc.t

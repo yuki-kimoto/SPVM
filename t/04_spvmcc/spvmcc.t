@@ -168,11 +168,11 @@ my $dev_null = File::Spec->devnull;
   
   # lib directive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -o $exe_dir/use_class --no-config --optimize=-O0 t/04_spvmcc/script/use_class.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -o $exe_dir/use-class --no-config --optimize=-O0 t/04_spvmcc/script/use-class.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe use_class/);
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe use-class/);
     my $output = `$execute_cmd`;
     chomp $output;
     like($output, qr/3000/);

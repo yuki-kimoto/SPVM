@@ -120,7 +120,7 @@ my $dev_null = File::Spec->devnull;
   
   # lib directive
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm $FindBin::Bin/script/use_class.spvm);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm $FindBin::Bin/script/use-class.spvm);
     my $output = `$spvm_cmd`;
     like($output, qr/3000/);
   }
@@ -132,7 +132,7 @@ my $dev_null = File::Spec->devnull;
   else {
     local $ENV{PATH} = "blib/script:$ENV{PATH}";
     local $ENV{PERL5LIB} = "blib/lib:blib/arch:$ENV{PERL5LIB}";
-    my $spvm_cmd = qq($FindBin::Bin/script/use_class.spvm);
+    my $spvm_cmd = qq($FindBin::Bin/script/use-class.spvm);
     my $output = `$spvm_cmd`;
     like($output, qr/3000/);
   }
