@@ -503,9 +503,9 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   void* compiler = boot_env->api->compiler->new_instance();
   
-  void* runtime = ${boostrap_name_space}compile(boot_env, compiler);
-  
   SPVM_ENV* env = boot_env->new_env();
+  
+  void* runtime = ${boostrap_name_space}compile(env, compiler);
   
   env->runtime = runtime;
   
