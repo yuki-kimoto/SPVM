@@ -1164,7 +1164,7 @@ sub create_boostrap_name_space {
   $name_space =~ s/\.spvm$//;
   $name_space =~ s/-/____/g;
   
-  $name_space = "SPVM_BOOTSTRAP_$name_space";
+  $name_space = "SPVM_BOOTSTRAP_${name_space}______";
   
   return $name_space;
 }
