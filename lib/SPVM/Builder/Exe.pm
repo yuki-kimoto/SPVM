@@ -459,11 +459,13 @@ int32_t SPVM__${class_name}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
     }
   }
-
+  
   $source .= "static void ${boostrap_name_space}set_native_method_addresses(SPVM_ENV* env);\n\n";
-
+  
+  $source .= "static void ${boostrap_name_space}build_runtime(SPVM_ENV* env, void* compiler);\n\n";
+  
   $source .= "static void ${boostrap_name_space}compile(SPVM_ENV* env, void* compiler);\n\n";
-
+  
   $source .= <<"EOS";
 static void ${boostrap_name_space}set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address);
 
@@ -505,11 +507,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   SPVM_ENV* env = boot_env->new_env();
   
-  ${boostrap_name_space}compile(env, compiler);
-  
-  ${boostrap_name_space}set_precompile_method_addresses(env);
-  
-  ${boostrap_name_space}set_native_method_addresses(env);
+  ${boostrap_name_space}build_runtime(env, compiler);
   
   FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
   
@@ -610,7 +608,29 @@ EOS
   return $source;
 }
 
-sub create_bootstrap_get_runtime_source {
+sub create_bootstrap_build_runtime_source {
+  my ($self) = @_;
+  
+  my $boostrap_name_space = $self->create_boostrap_name_space;
+  
+  my $source = '';
+  
+  $source .= <<"EOS";
+static void ${boostrap_name_space}build_runtime(SPVM_ENV* env, void* compiler) {
+  
+  ${boostrap_name_space}compile(env, compiler);
+  
+  ${boostrap_name_space}set_precompile_method_addresses(env);
+  
+  ${boostrap_name_space}set_native_method_addresses(env);
+}
+
+EOS
+  
+  return $source;
+}
+
+sub create_bootstrap_compile_source {
   my ($self) = @_;
   
   # Builder
@@ -831,19 +851,17 @@ sub create_bootstrap_source {
   
   my $bootstrap_source = '';
   
-  # Header
   $bootstrap_source .= $self->create_bootstrap_header_source;
   
-  # main function
   $bootstrap_source .= $self->create_bootstrap_main_func_source;
   
-  # Set precompile method addresses function
+  $bootstrap_source .= $self->create_bootstrap_build_runtime_source;
+  
+  $bootstrap_source .= $self->create_bootstrap_compile_source;
+  
   $bootstrap_source .= $self->create_bootstrap_set_precompile_method_addresses_func_source;
   
-  # Set native method addresses function
   $bootstrap_source .= $self->create_bootstrap_set_native_method_addresses_func_source;
-  
-  $bootstrap_source .= $self->create_bootstrap_get_runtime_source;
   
   $bootstrap_source .= "\n";
   
