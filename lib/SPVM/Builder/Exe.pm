@@ -162,6 +162,17 @@ sub extra_object_dirs {
   }
 }
 
+sub extra_object_archive_tar_gzs {
+  my $self = shift;
+  if (@_) {
+    $self->{extra_object_archive_tar_gzs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{extra_object_archive_tar_gzs};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -304,9 +315,28 @@ sub build_exe_file {
   push @$object_files, @{$self->extra_object_files};
   
   my $extra_object_dirs = $self->extra_object_dirs;
-  
   for my $extra_object_dir (@$extra_object_dirs) {
     my $extra_object_files_in_dir = SPVM::Builder::Exe->find_object_files($extra_object_dir);
+    push @$object_files, @$extra_object_files_in_dir;
+  }
+  
+  my $tmp_dir = File::Temp->newdir;
+  my $extra_object_archive_tar_gzs = $self->extra_object_archive_tar_gzs;
+  for (my $i = 0; $i < @$extra_object_archive_tar_gzs; $i++) {
+    
+    my $extra_object_archive_tar_gz = $extra_object_archive_tar_gzs->[$i];
+    
+    my $tmp_dir_i = "$tmp_dir/$i";
+    File::Path::mkpath $tmp_dir_i;
+    
+    my $tar = Archive::Tar->new;
+    $tar->read($extra_object_archive_tar_gz);
+    for my $tar_file (@{$tar->list_files}) {
+      $tar->extract($tar_file, "$tmp_dir_i/$tar_file");
+    }
+    
+    my $extra_object_files_in_dir = SPVM::Builder::Exe->find_object_files($tmp_dir_i);
+    
     push @$object_files, @$extra_object_files_in_dir;
   }
   

@@ -4,6 +4,7 @@
   [New Features]
     * Add --object-file option to spvmcc command.
     * Add --object-dir option to spvmcc command.
+    * Add --object-archive-tar-gz option to spvmcc command.
     
 0.990062 2025-06-04
   [Incompatible Changes]
