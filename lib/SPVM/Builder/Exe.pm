@@ -1235,6 +1235,31 @@ sub create_boostrap_name_space {
   return $name_space;
 }
 
+sub find_object_files {
+  
+  my ($class, $dir) = @_;
+  
+  my @object_files;
+  
+  find(
+    {
+      wanted => sub {
+        my $path = $File::Find::name;
+        
+        if (-f $path) {
+          if ($path =~ /\.o$/) {
+            push @object_files, $path;
+          }
+        }
+      },
+      no_chdir => 1,
+    },
+    $dir
+  );
+  
+  return \@object_files;
+}
+
 1;
 
 =head1 Name
