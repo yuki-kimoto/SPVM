@@ -42,6 +42,7 @@ SPVM::Builder::Util::getopt
   'include-dir-native=s' => \my @include_dirs_native,
   'include-dir-native-class=s' => \my @include_dirs_native_class_strings,
   'include-dir-precompile=s' => \my @include_dirs_precompile,
+  '--object-file=s' => \my @object_files,
 ;
 
 if ($help) {
@@ -120,6 +121,7 @@ my $build_exe = SPVM::Builder::Exe->new(
   include_dirs_native => \@include_dirs_native,
   include_dirs_native_class => $include_dirs_native_class,
   include_dirs_precompile => \@include_dirs_precompile,
+  extra_object_files => \@object_files,
 );
 
 $build_exe->build_exe_file;

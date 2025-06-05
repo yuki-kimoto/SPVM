@@ -140,6 +140,17 @@ sub mode {
   }
 }
 
+sub extra_object_files {
+  my $self = shift;
+  if (@_) {
+    $self->{extra_object_files} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{extra_object_files};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -160,6 +171,7 @@ sub new {
     defines_native_class => {},
     defines_precompile => [],
     optimize_native_class => {},
+    extra_object_files => [],
     %options
   }, $class;
   
@@ -276,6 +288,8 @@ sub build_exe_file {
   
   my $classes_object_files = $self->compile_classes;
   push @$object_files, @$classes_object_files;
+  
+  push @$object_files, @{$self->extra_object_files};
   
   # Link and generate executable file
   my $config_linker = $self->config->clone;
