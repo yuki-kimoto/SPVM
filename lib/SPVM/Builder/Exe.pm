@@ -1272,15 +1272,17 @@ sub check_script_name {
 }
 
 sub create_boostrap_name_space {
-  my ($self) = @_;
+  my ($self, $app_name) = @_;
   
-  my $script_name = $self->script_name;
+  unless (defined $app_name) {
+    my $script_name = $self->script_name;
+    
+    $app_name = basename $script_name;
+    $app_name =~ s/\.spvm$//;
+    $app_name =~ s/-/____/g;
+  }
   
-  my $name_space = basename $script_name;
-  $name_space =~ s/\.spvm$//;
-  $name_space =~ s/-/____/g;
-  
-  $name_space = "SPVM_BOOTSTRAP_${name_space}______";
+  my $name_space = "SPVM_BOOTSTRAP_${app_name}______";
   
   return $name_space;
 }
