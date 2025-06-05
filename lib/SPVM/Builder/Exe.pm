@@ -195,6 +195,7 @@ sub new {
     optimize_native_class => {},
     extra_object_files => [],
     extra_object_dirs => [],
+    extra_object_archive_tar_gzs => [],
     %options
   }, $class;
   
