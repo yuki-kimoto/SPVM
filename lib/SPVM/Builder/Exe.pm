@@ -740,7 +740,14 @@ sub create_bootstrap_compile_source {
   my $source = '';
   
   $source .= <<"EOS";
-static void compile_all_classes(SPVM_ENV* env, void* compiler) {
+static void compile_all_classes(SPVM_ENV* env, void* compiler_tmp) {
+  
+  int32_t error_id_tmp = env->api->compiler->compile(compiler_tmp, NULL);
+  assert(error_id_tmp == 0);
+  
+  void* runtime_tmp = env->api->compiler->get_runtime(compiler_tmp);
+  
+  void* compiler = env->api->runtime->get_compiler(runtime_tmp);
   
 EOS
   
