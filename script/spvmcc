@@ -45,6 +45,7 @@ SPVM::Builder::Util::getopt
   '--object-file=s' => \my @extra_object_files,
   '--object-dir=s' => \my @extra_object_dirs,
   '--object-archive-tar-gz=s' => \my @extra_object_archive_tar_gzs,
+  '--parent-runtime=s' => \my $parent_runtime,
 ;
 
 if ($help) {
@@ -126,6 +127,7 @@ my $build_exe = SPVM::Builder::Exe->new(
   extra_object_files => \@extra_object_files,
   extra_object_dirs => \@extra_object_dirs,
   extra_object_archive_tar_gzs => \@extra_object_archive_tar_gzs,
+  parent_runtime => $parent_runtime,
 );
 
 $build_exe->build_exe_file;
