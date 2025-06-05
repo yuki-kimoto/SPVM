@@ -520,7 +520,7 @@ EOS
   
   my $boostrap_name_space = $self->create_boostrap_name_space;
   
-  $source .= "void ${boostrap_name_space}build_runtime(SPVM_ENV* env, void* compiler);\n\n";
+  $source .= "void ${boostrap_name_space}build_runtime(SPVM_ENV* env);\n\n";
   
   $source .= "static void set_precompile_method_addresses(SPVM_ENV* env);\n";
   
@@ -556,7 +556,7 @@ EOS
   my $define_parent_build_runtime = '';
   if (defined $parent_runtime) {
     my $parent_boostrap_name_space = $self->create_boostrap_name_space($parent_runtime);
-    $define_parent_build_runtime = "void ${parent_boostrap_name_space}build_runtime(SPVM_ENV* env, void* compiler);";
+    $define_parent_build_runtime = "void ${parent_boostrap_name_space}build_runtime(SPVM_ENV* env);";
   }
   
   $source .= <<"EOS";
@@ -595,7 +595,12 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   SPVM_ENV* env = boot_env->new_env();
   
-  ${boostrap_name_space}build_runtime(env, compiler);
+  error_id = env->api->compiler->compile(compiler, NULL);
+  assert(error_id == 0);
+  
+  env->runtime = env->api->compiler->get_runtime(compiler);
+  
+  ${boostrap_name_space}build_runtime(env);
   
   FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
   
@@ -706,21 +711,14 @@ sub create_bootstrap_build_runtime_source {
   my $call_parent_build_runtime = '';
   if (defined $parent_runtime) {
     my $parent_boostrap_name_space = $self->create_boostrap_name_space($parent_runtime);
-    $call_parent_build_runtime = "${parent_boostrap_name_space}build_runtime(env, compiler);";
+    $call_parent_build_runtime = "${parent_boostrap_name_space}build_runtime(env);";
   }
   
   my $source = '';
   
   $source .= <<"EOS";
 
-void ${boostrap_name_space}build_runtime(SPVM_ENV* env, void* compiler_tmp) {
-  
-  int32_t error_id_tmp = env->api->compiler->compile(compiler_tmp, NULL);
-  assert(error_id_tmp == 0);
-  
-  void* runtime_tmp = env->api->compiler->get_runtime(compiler_tmp);
-  
-  env->runtime = runtime_tmp;
+void ${boostrap_name_space}build_runtime(SPVM_ENV* env) {
   
   $call_parent_build_runtime
   
