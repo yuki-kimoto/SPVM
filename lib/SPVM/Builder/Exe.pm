@@ -151,6 +151,17 @@ sub extra_object_files {
   }
 }
 
+sub extra_object_dirs {
+  my $self = shift;
+  if (@_) {
+    $self->{extra_object_dirs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{extra_object_dirs};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -172,6 +183,7 @@ sub new {
     defines_precompile => [],
     optimize_native_class => {},
     extra_object_files => [],
+    extra_object_dirs => [],
     %options
   }, $class;
   
@@ -290,6 +302,13 @@ sub build_exe_file {
   push @$object_files, @$classes_object_files;
   
   push @$object_files, @{$self->extra_object_files};
+  
+  my $extra_object_dirs = $self->extra_object_dirs;
+  
+  for my $extra_object_dir (@$extra_object_dirs) {
+    my $extra_object_files_in_dir = SPVM::Builder::Exe->find_object_files($extra_object_dir);
+    push @$object_files, @$extra_object_files_in_dir;
+  }
   
   # Link and generate executable file
   my $config_linker = $self->config->clone;
