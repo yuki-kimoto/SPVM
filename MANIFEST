@@ -1024,9 +1024,9 @@ t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.config
 t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.cpp
 t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.spvm
 t/04_spvmcc/lib/SPVM/TestCase.spvm
-t/04_spvmcc/lib/SPVM/TestCase/ExternalObject.c
-t/04_spvmcc/lib/SPVM/TestCase/ExternalObject.config
-t/04_spvmcc/lib/SPVM/TestCase/ExternalObject.spvm
+t/04_spvmcc/lib/SPVM/TestCase/ExternalFunction.c
+t/04_spvmcc/lib/SPVM/TestCase/ExternalFunction.config
+t/04_spvmcc/lib/SPVM/TestCase/ExternalFunction.spvm
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.c
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.config
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/include/bar.h
