@@ -965,8 +965,7 @@ sub compile_bootstrap_source_file {
   # Compile source files
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
   my $source_file = $self->create_bootstrap_source_file_path;
-  my $object_file_name = $source_file;
-  $object_file_name =~ s/\.c$/.o/;
+  my $object_file_name = $self->create_bootstrap_object_file_path;
   
   # Compile
   my $object_file = $self->compile_source_file({
@@ -1166,6 +1165,19 @@ sub create_bootstrap_source_file_path {
   $bootstrap_source_file_base =~ s/\..*$//;
   $bootstrap_source_file_base .= '.c';
   my $bootstrap_source_file = "$build_src_dir/bootstrap/$bootstrap_source_file_base";
+  
+  return $bootstrap_source_file;
+}
+
+sub create_bootstrap_object_file_path {
+  my ($self) = @_;
+  
+  my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
+  my $script_name = $self->script_name;
+  my $bootstrap_source_file_base = basename $script_name;
+  $bootstrap_source_file_base =~ s/\..*$//;
+  $bootstrap_source_file_base .= '.o';
+  my $bootstrap_source_file = "$build_object_dir/bootstrap/$bootstrap_source_file_base";
   
   return $bootstrap_source_file;
 }
