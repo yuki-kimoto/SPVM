@@ -22,10 +22,12 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 my @build_dir_parts = split('/', $build_dir);
 my $exe_dir = "$build_dir/work/exe";
+my $external_object_dir = "$build_dir/work/external_object";
 
 rmtree "$build_dir/work";
 
 mkpath $exe_dir;
+mkpath $external_object_dir;
 
 my $dev_null = File::Spec->devnull;
 
@@ -314,11 +316,11 @@ my $dev_null = File::Spec->devnull;
 {
   # --object-file
   {
-    my $cc_cmd = qq($Config{cc} -c -o $exe_dir/external.o t/04_spvmcc/lib/SPVM/external.c);
+    my $cc_cmd = qq($Config{cc} -c -o $external_object_dir/external.o t/04_spvmcc/lib/SPVM/external.c);
     system($cc_cmd) == 0
       or die "Can't execute cc command $cc_cmd:$!";
     
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM --optimize=-O0 --object-file $exe_dir/external.o -o $exe_dir/external --no-config t/04_spvmcc/script/external.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM --optimize=-O0 --object-file $external_object_dir/external.o -o $exe_dir/external --no-config t/04_spvmcc/script/external.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     

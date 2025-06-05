@@ -3,7 +3,7 @@ class {
   static method main : void () {
     my $ret = TestCase::ExternalFunction->external_sum(10, 30);
     
-    say $ret;
+    print $ret;
   }
   
 }
