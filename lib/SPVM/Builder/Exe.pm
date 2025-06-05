@@ -747,7 +747,9 @@ static void compile_all_classes(SPVM_ENV* env, void* compiler_tmp) {
   
   void* runtime_tmp = env->api->compiler->get_runtime(compiler_tmp);
   
-  void* compiler = env->api->runtime->get_compiler(runtime_tmp);
+  env->runtime = runtime_tmp;
+  
+  void* compiler = env->api->runtime->get_compiler(env->runtime);
   
 EOS
   
@@ -809,7 +811,6 @@ EOS
   $source .= qq|    fprintf(spvm_stderr, "[Unexpected Compile Error]%s.", env->api->compiler->get_error_message(compiler, 0));\n|;
   $source .= qq|    exit(255);\n|;
   $source .= qq|  }\n|;
-  $source .= qq|  env->runtime = runtime;\n|;
   
   $source .= <<"EOS";
 }
