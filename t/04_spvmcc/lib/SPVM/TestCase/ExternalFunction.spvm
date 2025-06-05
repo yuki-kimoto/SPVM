@@ -3,4 +3,6 @@
 
 class TestCase::ExternalFunction {
   
+  native static method external_sum : int ($x : int, $y : int);
+  
 }
