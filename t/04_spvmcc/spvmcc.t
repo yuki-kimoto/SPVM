@@ -25,6 +25,8 @@ my $exe_dir = "$build_dir/work/exe";
 
 rmtree "$build_dir/work";
 
+mkpath $exe_dir;
+
 my $dev_null = File::Spec->devnull;
 
 # Failed to parse options.
@@ -129,8 +131,6 @@ my $dev_null = File::Spec->devnull;
 }
 
 {
-  mkpath $exe_dir;
-  
   # Basic
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp t/04_spvmcc/script/myapp.spvm);
@@ -310,5 +310,24 @@ my $dev_null = File::Spec->devnull;
   ok(1);
 }
 
-ok(1);
+# External objects
+{
+  # --object-file
+  {
+    my $cc_cmd = qq($Config{cc} -c -o $exe_dir/external.o t/04_spvmcc/lib/SPVM/external.c);
+    system($cc_cmd) == 0
+      or die "Can't execute cc command $cc_cmd:$!";
+    
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM --optimize=-O0 --object-file $exe_dir/external.o -o $exe_dir/external --no-config t/04_spvmcc/script/external.spvm);
+    system($spvmcc_cmd) == 0
+      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe external/);
+    my $output = `$execute_cmd`;
+    chomp $output;
+    my $output_expect = "40";
+    is($output, $output_expect);
+  }
+}
+
 done_testing;

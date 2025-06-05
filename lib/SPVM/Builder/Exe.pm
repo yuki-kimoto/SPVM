@@ -324,12 +324,14 @@ sub build_exe_file {
   my $classes_object_files = $self->compile_classes;
   push @$object_files, @$classes_object_files;
   
-  push @$object_files, @{$self->extra_object_files};
+  for my $extra_object_file (@{$self->extra_object_files}) {
+    push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $extra_object_file);
+  }
   
   my $extra_object_dirs = $self->extra_object_dirs;
   for my $extra_object_dir (@$extra_object_dirs) {
     my $extra_object_files_in_dir = SPVM::Builder::Exe->find_object_files($extra_object_dir);
-    push @$object_files, @$extra_object_files_in_dir;
+    push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $extra_object_files_in_dir);
   }
   
   my $tmp_dir = File::Temp->newdir;
@@ -349,7 +351,7 @@ sub build_exe_file {
     
     my $extra_object_files_in_dir = SPVM::Builder::Exe->find_object_files($tmp_dir_i);
     
-    push @$object_files, @$extra_object_files_in_dir;
+    push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $extra_object_files_in_dir);
   }
   
   # Link and generate executable file
