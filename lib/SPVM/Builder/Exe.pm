@@ -403,6 +403,41 @@ sub build_exe_file {
   $config_linker->output_file($self->{output_file});
   
   $cc_linker->link($class_name, $object_files, {config => $config_linker});
+  
+  my $build_spvm_archive = $self->build_spvm_archive;
+  $build_spvm_archive = 1; # for test
+  if ($build_spvm_archive) {
+    $self->create_spvm_archive;
+  }
+}
+
+sub create_spvm_archive {
+  my ($self) = @_;
+  
+  my $compiler = $self->compiler;
+  
+  my $build_dir = $self->builder->build_dir;
+  my $build_spvm_archive_dir = "$build_dir/work/build_spvm_archive";
+  rmtree $build_spvm_archive_dir;
+  my $class_names = $self->get_user_defined_basic_type_names;
+  my $spvm_class_work_dir = "$build_dir/work/build_spvm_archive/SPVM";
+  for my $class_name (@$class_names) {
+    my $spvm_class_path_part = $class_name;
+    $spvm_class_path_part =~ s/::/\//g;
+    my $spvm_class_path = "$spvm_class_work_dir/$spvm_class_path_part.spvm";
+    
+    mkpath dirname $spvm_class_path;
+    
+    my $class = $self->runtime->get_basic_type_by_name($class_name);
+    my $class_file = $compiler->get_class_file($class_name);
+    my $class_file_content = $class_file->get_content;
+    my $class_file_content_length = $class_file->get_content_length;
+    
+    open my $fh, '>', $spvm_class_path
+      or die "Cannot open the file \"$spvm_class_path\":$!";
+    
+    syswrite($fh, $class_file_content, $class_file_content_length);
+  }
 }
 
 sub compile {
@@ -431,35 +466,6 @@ sub compile {
   my $runtime = $compiler->get_runtime;
   
   $self->runtime($runtime);
-  
-  # For SPVM archive
-  my $build_spvm_archive = $self->build_spvm_archive;
-  $build_spvm_archive = 1; # for test
-  if ($build_spvm_archive) {
-    my $build_dir = $self->builder->build_dir;
-    my $build_spvm_archive_dir = "$build_dir/work/build_spvm_archive";
-    rmtree $build_spvm_archive_dir;
-    my $class_names = $self->get_user_defined_basic_type_names;
-    my $spvm_class_work_dir = "$build_dir/work/build_spvm_archive/SPVM";
-    for my $class_name (@$class_names) {
-      my $spvm_class_path_part = $class_name;
-      $spvm_class_path_part =~ s/::/\//g;
-      my $spvm_class_path = "$spvm_class_work_dir/$spvm_class_path_part.spvm";
-      
-      mkpath dirname $spvm_class_path;
-      
-      my $class = $self->runtime->get_basic_type_by_name($class_name);
-      my $class_file = $compiler->get_class_file($class_name);
-      my $class_file_content = $class_file->get_content;
-      my $class_file_content_length = $class_file->get_content_length;
-      
-      open my $fh, '>', $spvm_class_path
-        or die "Cannot open the file \"$spvm_class_path\":$!";
-      
-      syswrite($fh, $class_file_content, $class_file_content_length);
-    }
-  }
-  
 }
 
 sub compile_classes {
