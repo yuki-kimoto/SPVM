@@ -8,6 +8,7 @@ use File::Basename 'basename', 'dirname', 'fileparse';
 use File::Path 'mkpath';
 use File::Find 'find';
 use Archive::Tar;
+use File::Copy 'copy';
 
 use SPVM::Builder;
 use SPVM::Builder::CC;
@@ -334,8 +335,12 @@ sub build_exe_file {
   my $classes_object_files = $self->compile_classes;
   push @$object_files, @$classes_object_files;
   
+  my $external_object_dir = "$build_dir/work/object/external";
+  mkpath $external_object_dir;
   for my $external_object_file (@{$self->external_object_files}) {
-    push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
+    my $external_object_file_dest = "$external_object_dir/". basename $external_object_file;
+    &copy_with_timestamps($external_object_file, $external_object_file_dest);
+    push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file_dest);
   }
   
   # spvm_archive
@@ -1381,7 +1386,7 @@ sub find_object_files {
 }
 
 sub copy_with_timestamps {
-  my ($class, $source_file, $dest_file) = @_;
+  my ($source_file, $dest_file) = @_;
   
   copy($source_file, $dest_file)
     or Carp::confess "Failed to copy '$source_file' to '$dest_file': $!\n";
