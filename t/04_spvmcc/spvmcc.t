@@ -21,9 +21,8 @@ my $devnull = File::Spec->devnull;
 my $test_dir = $ENV{SPVM_TEST_DIR};
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
-my @build_dir_parts = split('/', $build_dir);
-my $exe_dir = "$build_dir/work/exe";
-my $external_object_dir = "$build_dir/work/external_object";
+my $exe_dir = "$build_dir/work/.tmp/exe";
+my $external_object_dir = "$build_dir/work/.tmp/external_object";
 
 rmtree "$build_dir/work";
 
@@ -31,6 +30,14 @@ mkpath $exe_dir;
 mkpath $external_object_dir;
 
 my $dev_null = File::Spec->devnull;
+
+sub to_cmd {
+  my ($path) = @_;
+  
+  my $cmd = File::Spec->catfile(split("/", $path));
+  
+  return $cmd;
+}
 
 # External objects
 {
@@ -44,7 +51,7 @@ my $dev_null = File::Spec->devnull;
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe external/);
+    my $execute_cmd = &to_cmd("$exe_dir/external");
     my $output = `$execute_cmd`;
     chomp $output;
     my $output_expect = "40";
@@ -77,7 +84,7 @@ my $dev_null = File::Spec->devnull;
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe external/);
+    my $execute_cmd = &to_cmd("$exe_dir/external");
     my $output = `$execute_cmd`;
     chomp $output;
     my $output_expect = "40";
@@ -113,7 +120,7 @@ my $dev_null = File::Spec->devnull;
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myapp_runtime_error/);
+    my $execute_cmd = &to_cmd("$exe_dir/myapp_runtime_error");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     
     my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
@@ -127,7 +134,7 @@ my $dev_null = File::Spec->devnull;
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myapp_runtime_error/);
+    my $execute_cmd = &to_cmd("$exe_dir/myapp_runtime_error");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     
     my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
@@ -141,7 +148,7 @@ my $dev_null = File::Spec->devnull;
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myapp_runtime_error/);
+    my $execute_cmd = &to_cmd("$exe_dir/myapp_runtime_error");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     
     my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
@@ -156,7 +163,7 @@ my $dev_null = File::Spec->devnull;
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myapp/);
+    my $execute_cmd = &to_cmd("$exe_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     system($execute_cmd_with_args) == 0
       or die "Can't execute command:$execute_cmd_with_args:$!";
@@ -168,7 +175,7 @@ my $dev_null = File::Spec->devnull;
     
     # Check -B option
     {
-      ok(-f "$build_dir/work/exe/myapp$Config{exe_ext}");
+      ok(-f "$exe_dir/myapp$Config{exe_ext}");
     }
   }
 }
@@ -194,7 +201,7 @@ my $dev_null = File::Spec->devnull;
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myapp/);
+    my $execute_cmd = &to_cmd("$exe_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     system($execute_cmd_with_args) == 0
       or die "Can't execute command:$execute_cmd_with_args:$!";
@@ -206,7 +213,7 @@ my $dev_null = File::Spec->devnull;
     
     # Check -B option
     {
-      ok(-f "$build_dir/work/exe/myapp$Config{exe_ext}");
+      ok(-f "$exe_dir/myapp$Config{exe_ext}");
     }
   }
 
@@ -229,7 +236,7 @@ my $dev_null = File::Spec->devnull;
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe use-class/);
+    my $execute_cmd = &to_cmd("$exe_dir/use-class");
     my $output = `$execute_cmd`;
     chomp $output;
     like($output, qr/3000/);
@@ -243,7 +250,7 @@ my $dev_null = File::Spec->devnull;
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe program_name/);
+    my $execute_cmd = &to_cmd("$exe_dir/program_name");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     system($execute_cmd_with_args) == 0
       or die "Can't execute command:$execute_cmd_with_args:$!";
@@ -309,7 +316,7 @@ my $dev_null = File::Spec->devnull;
     # after object file names for resolving symbol names properly
     like($spvmcc_output, qr/NativeAPI2\.o.+-L\..+-lm\b/);
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myapp/);
+    my $execute_cmd = &to_cmd("$exe_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     system($execute_cmd_with_args) == 0
       or die "Can't execute command: $execute_cmd_with_args:$!";
@@ -359,7 +366,7 @@ my $dev_null = File::Spec->devnull;
   system($spvmcc_cmd) == 0
    or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
-  my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myapp_solo/);
+  my $execute_cmd = &to_cmd("$exe_dir/myapp_solo");
   my $execute_cmd_with_args = "$execute_cmd foo bar";
   system($execute_cmd_with_args) == 0
     or die "Can't execute command:$execute_cmd_with_args:$!";
