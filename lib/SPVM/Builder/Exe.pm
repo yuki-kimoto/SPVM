@@ -6,6 +6,7 @@ use Carp ();
 use JSON::PP;
 use File::Basename 'basename', 'dirname', 'fileparse';
 use File::Path 'mkpath';
+use File::Find 'find';
 
 use SPVM::Builder;
 use SPVM::Builder::CC;

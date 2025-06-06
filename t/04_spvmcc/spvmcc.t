@@ -49,6 +49,23 @@ my $dev_null = File::Spec->devnull;
     my $output_expect = "40";
     is($output, $output_expect);
   }
+  
+  # --object-dir
+  {
+    my $cc_cmd = qq($Config{cc} -c -o $external_object_dir/external.o t/04_spvmcc/lib/SPVM/external.c);
+    system($cc_cmd) == 0
+      or die "Can't execute cc command $cc_cmd:$!";
+    
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM --optimize=-O0 --object-dir $external_object_dir -o $exe_dir/external --no-config t/04_spvmcc/script/external.spvm);
+    system($spvmcc_cmd) == 0
+      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe external/);
+    my $output = `$execute_cmd`;
+    chomp $output;
+    my $output_expect = "40";
+    is($output, $output_expect);
+  }
 }
 
 # Failed to parse options.
