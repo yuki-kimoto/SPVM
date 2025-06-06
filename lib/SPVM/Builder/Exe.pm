@@ -142,14 +142,14 @@ sub mode {
   }
 }
 
-sub extra_object_files {
+sub external_object_files {
   my $self = shift;
   if (@_) {
-    $self->{extra_object_files} = $_[0];
+    $self->{external_object_files} = $_[0];
     return $self;
   }
   else {
-    return $self->{extra_object_files};
+    return $self->{external_object_files};
   }
 }
 
@@ -206,7 +206,7 @@ sub new {
     defines_native_class => {},
     defines_precompile => [],
     optimize_native_class => {},
-    extra_object_files => [],
+    external_object_files => [],
     %options
   }, $class;
   
@@ -334,8 +334,8 @@ sub build_exe_file {
   my $classes_object_files = $self->compile_classes;
   push @$object_files, @$classes_object_files;
   
-  for my $extra_object_file (@{$self->extra_object_files}) {
-    push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $extra_object_file);
+  for my $external_object_file (@{$self->external_object_files}) {
+    push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
   
   # spvm_archive
@@ -355,10 +355,10 @@ sub build_exe_file {
       $tar->extract_file($tar_file, "$tmp_dir/$spvm_archive_base_name/$tar_file");
     }
     
-    my $extra_object_files_in_dir = SPVM::Builder::Exe->find_object_files("$tmp_dir/$spvm_archive_base_name");
+    my $object_files_in_spvm_archive = SPVM::Builder::Exe->find_object_files("$tmp_dir/$spvm_archive_base_name");
     
-    for my $extra_object_file_in_dir (@$extra_object_files_in_dir) {
-      push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $extra_object_file_in_dir);
+    for my $object_file_in_spvm_archive (@$object_files_in_spvm_archive) {
+      push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $object_file_in_spvm_archive);
     }
   }
   
