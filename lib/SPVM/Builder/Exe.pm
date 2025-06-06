@@ -153,17 +153,6 @@ sub extra_object_files {
   }
 }
 
-sub extra_object_dirs {
-  my $self = shift;
-  if (@_) {
-    $self->{extra_object_dirs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{extra_object_dirs};
-  }
-}
-
 sub extra_object_archive_tar_gzs {
   my $self = shift;
   if (@_) {
@@ -207,7 +196,6 @@ sub new {
     defines_precompile => [],
     optimize_native_class => {},
     extra_object_files => [],
-    extra_object_dirs => [],
     extra_object_archive_tar_gzs => [],
     %options
   }, $class;
@@ -328,12 +316,6 @@ sub build_exe_file {
   
   for my $extra_object_file (@{$self->extra_object_files}) {
     push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $extra_object_file);
-  }
-  
-  my $extra_object_dirs = $self->extra_object_dirs;
-  for my $extra_object_dir (@$extra_object_dirs) {
-    my $extra_object_files_in_dir = SPVM::Builder::Exe->find_object_files($extra_object_dir);
-    push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $extra_object_files_in_dir);
   }
   
   my $tmp_dir = File::Temp->newdir;
