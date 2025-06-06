@@ -360,6 +360,21 @@ sub build_exe_file {
     }
   }
   
+  {
+    my $spvm_archive_info = $self->spvm_archive_info;
+    
+    my $spvm_archive_json = JSON::PP->new->pretty->encode($spvm_archive_info);
+    
+    my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
+    
+    my $spvm_archive_json_file = "$build_object_dir/spvm-archive.json";
+    
+    open my $fh, '>', $spvm_archive_json_file
+      or die "Cannot open the file \"$spvm_archive_json_file\":$!";
+    
+    print $fh $spvm_archive_json;
+  }
+  
   # Link and generate executable file
   my $config_linker = $self->config->clone;
   my $cc_linker = SPVM::Builder::CC->new(
