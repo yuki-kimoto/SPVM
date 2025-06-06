@@ -1332,8 +1332,9 @@ sub create_boostrap_name_space {
     
     $app_name = basename $script_name;
     $app_name =~ s/\.spvm$//;
-    $app_name =~ s/-/____/g;
   }
+  
+  $app_name =~ s/-/____/g;
   
   my $name_space = "SPVM_BOOTSTRAP_${app_name}______";
   
