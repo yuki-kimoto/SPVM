@@ -1380,6 +1380,22 @@ sub find_object_files {
   return \@object_files;
 }
 
+sub copy_with_timestamps {
+  my ($class, $source_file, $dest_file) = @_;
+  
+  copy($source_file, $dest_file)
+    or Carp::confess "Failed to copy '$source_file' to '$dest_file': $!\n";
+  
+  my @stats = stat($source_file);
+  my $atime = $stats[8];
+  my $mtime = $stats[9];
+  
+  utime($atime, $mtime, $dest_file)
+    or Carp::confess "Failed to restore timestamp for '$dest_file': $!\n";
+  
+  return 1;
+}
+
 1;
 
 =head1 Name
