@@ -222,6 +222,8 @@ sub new {
   
   $spvm_archive_info->{app_name} = $app_name;
   
+  $spvm_archive_info->{classes_h} = {};
+  
   # Excutable file name
   my $output_file = $self->{output_file};
   unless (defined $output_file) {
@@ -421,8 +423,12 @@ sub compile_classes {
   
   my $class_names = $self->get_user_defined_basic_type_names;
   
+  my $spvm_archive_info = $self->spvm_archive_info;
+  
   my $object_files = [];
   for my $class_name (@$class_names) {
+    
+    $spvm_archive_info->{classes_h}{$class_name} = {};
     
     my $precompile_object_files = $self->compile_precompile_class($class_name);
     push @$object_files, @$precompile_object_files;
@@ -1178,6 +1184,12 @@ sub compile_precompile_class {
   );
   push @$object_files, @$precompile_object_files;
   
+  my $spvm_archive_info = $self->spvm_archive_info;
+  
+  if (@$precompile_object_files) {
+    $spvm_archive_info->{classes_h}{$class_name}{precompile} = 1;
+  }
+  
   return $object_files;
 }
 
@@ -1231,6 +1243,12 @@ sub compile_native_class {
       }
     );
     push @$all_object_files, @$object_files;
+    
+    if (@$object_files) {
+      my $spvm_archive_info = $self->spvm_archive_info;
+      
+      $spvm_archive_info->{classes_h}{$class_name}{native} = 1;
+    }
   }
   
   return $all_object_files;
