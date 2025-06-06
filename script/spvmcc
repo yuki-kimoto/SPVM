@@ -44,6 +44,7 @@ SPVM::Builder::Util::getopt
   'include-dir-precompile=s' => \my @include_dirs_precompile,
   '--object-file=s' => \my @external_object_files,
   '--load-spvm-archive=s' => \my $spvm_archive,
+  '--build-spvm-archive' => \my $build_spvm_archive,
 ;
 
 if ($help) {
@@ -124,6 +125,7 @@ my $build_exe = SPVM::Builder::Exe->new(
   include_dirs_precompile => \@include_dirs_precompile,
   external_object_files => \@external_object_files,
   spvm_archive => $spvm_archive,
+  build_spvm_archive => $build_spvm_archive,
 );
 
 $build_exe->build_exe_file;
