@@ -11,6 +11,7 @@ use Config;
 use File::Path 'mkpath', 'rmtree';
 use File::Spec;
 use SPVM::Builder::Util;
+use Archive::Tar;
 
 use SPVM::Builder;
 use File::Spec;
@@ -66,6 +67,44 @@ my $dev_null = File::Spec->devnull;
     my $output_expect = "40";
     is($output, $output_expect);
   }
+  
+  # --object-archive-tar-gz
+  {
+    my $cc_cmd = qq($Config{cc} -c -o $external_object_dir/external.o t/04_spvmcc/lib/SPVM/external.c);
+    system($cc_cmd) == 0
+      or die "Can't execute cc command $cc_cmd:$!";
+    
+    my $tar = Archive::Tar->new;
+    
+    my $cwd = Cwd::getcwd;
+    
+    chdir $external_object_dir
+      or die;
+    
+    my @tar_files = (
+      "external.o",
+    );
+    $tar->add_files(@tar_files)
+      or die $tar->error;
+    
+    chdir $cwd
+      or die;
+    
+    my $external_object_tar_gz = "$external_object_dir.tar.gz";
+    $tar->write($external_object_tar_gz, COMPRESS_GZIP)
+      or die $tar->error;
+    
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM --optimize=-O0 --object-archive-tar-gz $external_object_tar_gz -o $exe_dir/external --no-config t/04_spvmcc/script/external.spvm);
+    system($spvmcc_cmd) == 0
+      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe external/);
+    my $output = `$execute_cmd`;
+    chomp $output;
+    my $output_expect = "40";
+    is($output, $output_expect);
+  }
+  
 }
 
 # Failed to parse options.

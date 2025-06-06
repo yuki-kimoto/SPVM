@@ -7,6 +7,7 @@ use JSON::PP;
 use File::Basename 'basename', 'dirname', 'fileparse';
 use File::Path 'mkpath';
 use File::Find 'find';
+use Archive::Tar;
 
 use SPVM::Builder;
 use SPVM::Builder::CC;
@@ -345,14 +346,22 @@ sub build_exe_file {
     File::Path::mkpath $tmp_dir_i;
     
     my $tar = Archive::Tar->new;
-    $tar->read($extra_object_archive_tar_gz);
-    for my $tar_file (@{$tar->list_files}) {
-      $tar->extract($tar_file, "$tmp_dir_i/$tar_file");
+    $tar->read($extra_object_archive_tar_gz)
+      or die $tar->error;
+    
+    my $dir_name = basename $extra_object_archive_tar_gz;
+    $dir_name =~ s/\..+$//;
+    
+    my @tar_files = $tar->list_files;
+    for my $tar_file (@tar_files) {
+      $tar->extract_file($tar_file, "$tmp_dir_i/$dir_name/$tar_file");
     }
     
     my $extra_object_files_in_dir = SPVM::Builder::Exe->find_object_files($tmp_dir_i);
     
-    push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $extra_object_files_in_dir);
+    for my $extra_object_file_in_dir (@$extra_object_files_in_dir) {
+      push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $extra_object_file_in_dir);
+    }
   }
   
   # Link and generate executable file
