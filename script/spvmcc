@@ -43,7 +43,7 @@ SPVM::Builder::Util::getopt
   'include-dir-native-class=s' => \my @include_dirs_native_class_strings,
   'include-dir-precompile=s' => \my @include_dirs_precompile,
   '--object-file=s' => \my @extra_object_files,
-  '--spvm-archive=s' => \my $spvm_archive,
+  '--load-spvm-archive=s' => \my $spvm_archive,
 ;
 
 if ($help) {
