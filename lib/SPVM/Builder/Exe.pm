@@ -580,19 +580,6 @@ static void set_native_method_address(SPVM_ENV* env, const char* class_name, con
 
 EOS
 
-  my $parent_runtime = $self->parent_runtime;
-  
-  my $define_parent_build_runtime = '';
-  if (defined $parent_runtime) {
-    my $parent_boostrap_name_space = $self->create_boostrap_name_space($parent_runtime);
-    $define_parent_build_runtime = "void ${parent_boostrap_name_space}build_runtime(SPVM_ENV* env);";
-  }
-  
-  $source .= <<"EOS";
-$define_parent_build_runtime
-
-EOS
-
   return $source;
 }
 
@@ -735,21 +722,11 @@ sub create_bootstrap_build_runtime_source {
   
   my $boostrap_name_space = $self->create_boostrap_name_space;
   
-  my $parent_runtime = $self->parent_runtime;
-  
-  my $call_parent_build_runtime = '';
-  if (defined $parent_runtime) {
-    my $parent_boostrap_name_space = $self->create_boostrap_name_space($parent_runtime);
-    $call_parent_build_runtime = "${parent_boostrap_name_space}build_runtime(env);";
-  }
-  
   my $source = '';
   
   $source .= <<"EOS";
 
 void ${boostrap_name_space}build_runtime(SPVM_ENV* env) {
-  
-  $call_parent_build_runtime
   
   compile_all_classes(env);
   
