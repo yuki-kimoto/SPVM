@@ -175,6 +175,17 @@ sub parent_runtime {
   }
 }
 
+sub spvm_archive_info {
+  my $self = shift;
+  if (@_) {
+    $self->{spvm_archive_info} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{spvm_archive_info};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -199,9 +210,17 @@ sub new {
     %options
   }, $class;
   
+  my $spvm_archive_info = {};
+  
+  $self->spvm_archive_info($spvm_archive_info);
+  
   my $script_name = $self->{script_name};
   
   $self->check_script_name;
+  
+  my $app_name = $self->app_name;
+  
+  $spvm_archive_info->{app_name} = $app_name;
   
   # Excutable file name
   my $output_file = $self->{output_file};
@@ -1301,14 +1320,22 @@ sub check_script_name {
   
 }
 
+sub app_name {
+  my ($self) = @_;
+  
+  my $script_name = $self->script_name;
+  
+  my $app_name = basename $script_name;
+  $app_name =~ s/\.spvm$//;
+  
+  return $app_name;
+}
+
 sub create_boostrap_name_space {
   my ($self, $app_name) = @_;
   
   unless (defined $app_name) {
-    my $script_name = $self->script_name;
-    
-    $app_name = basename $script_name;
-    $app_name =~ s/\.spvm$//;
+    $app_name = $self->app_name;
   }
   
   $app_name =~ s/-/____/g;
