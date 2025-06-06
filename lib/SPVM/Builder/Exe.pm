@@ -153,14 +153,14 @@ sub extra_object_files {
   }
 }
 
-sub extra_object_archive_tar_gzs {
+sub spvm_archive {
   my $self = shift;
   if (@_) {
-    $self->{extra_object_archive_tar_gzs} = $_[0];
+    $self->{spvm_archive} = $_[0];
     return $self;
   }
   else {
-    return $self->{extra_object_archive_tar_gzs};
+    return $self->{spvm_archive};
   }
 }
 
@@ -196,7 +196,6 @@ sub new {
     defines_precompile => [],
     optimize_native_class => {},
     extra_object_files => [],
-    extra_object_archive_tar_gzs => [],
     %options
   }, $class;
   
@@ -318,28 +317,24 @@ sub build_exe_file {
     push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $extra_object_file);
   }
   
+  # spvm_archive
   my $tmp_dir = File::Temp->newdir;
-  my $extra_object_archive_tar_gzs = $self->extra_object_archive_tar_gzs;
-  for (my $i = 0; $i < @$extra_object_archive_tar_gzs; $i++) {
-    
-    my $extra_object_archive_tar_gz = $extra_object_archive_tar_gzs->[$i];
-    
-    my $tmp_dir_i = "$tmp_dir/$i";
-    File::Path::mkpath $tmp_dir_i;
+  my $spvm_archive = $self->spvm_archive;
+  if (defined $spvm_archive) {
     
     my $tar = Archive::Tar->new;
-    $tar->read($extra_object_archive_tar_gz)
+    $tar->read($spvm_archive)
       or die $tar->error;
     
-    my $dir_name = basename $extra_object_archive_tar_gz;
-    $dir_name =~ s/\..+$//;
+    my $spvm_archive_base_name = basename $spvm_archive;
+    $spvm_archive_base_name =~ s/\..+$//;
     
     my @tar_files = $tar->list_files;
     for my $tar_file (@tar_files) {
-      $tar->extract_file($tar_file, "$tmp_dir_i/$dir_name/$tar_file");
+      $tar->extract_file($tar_file, "$tmp_dir/$spvm_archive_base_name/$tar_file");
     }
     
-    my $extra_object_files_in_dir = SPVM::Builder::Exe->find_object_files($tmp_dir_i);
+    my $extra_object_files_in_dir = SPVM::Builder::Exe->find_object_files("$tmp_dir/$spvm_archive_base_name");
     
     for my $extra_object_file_in_dir (@$extra_object_files_in_dir) {
       push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $extra_object_file_in_dir);

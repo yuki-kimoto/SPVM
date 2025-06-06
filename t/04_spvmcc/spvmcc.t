@@ -34,12 +34,12 @@ my $dev_null = File::Spec->devnull;
 
 # External objects
 {
+  my $cc_cmd = qq($Config{cc} -c -o $external_object_dir/external.o t/04_spvmcc/lib/SPVM/external.c);
+  system($cc_cmd) == 0
+    or die "Can't execute cc command $cc_cmd:$!";
+  
   # --object-file
   {
-    my $cc_cmd = qq($Config{cc} -c -o $external_object_dir/external.o t/04_spvmcc/lib/SPVM/external.c);
-    system($cc_cmd) == 0
-      or die "Can't execute cc command $cc_cmd:$!";
-    
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM --optimize=-O0 --object-file $external_object_dir/external.o -o $exe_dir/external --no-config t/04_spvmcc/script/external.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
@@ -51,12 +51,8 @@ my $dev_null = File::Spec->devnull;
     is($output, $output_expect);
   }
   
-  # --object-archive-tar-gz
+  # --spvm-archive
   {
-    my $cc_cmd = qq($Config{cc} -c -o $external_object_dir/external.o t/04_spvmcc/lib/SPVM/external.c);
-    system($cc_cmd) == 0
-      or die "Can't execute cc command $cc_cmd:$!";
-    
     my $tar = Archive::Tar->new;
     
     my $cwd = Cwd::getcwd;
@@ -73,11 +69,11 @@ my $dev_null = File::Spec->devnull;
     chdir $cwd
       or die;
     
-    my $external_object_tar_gz = "$external_object_dir.tar.gz";
-    $tar->write($external_object_tar_gz, COMPRESS_GZIP)
+    my $spvm_archive = "$external_object_dir.tar.gz";
+    $tar->write($spvm_archive, COMPRESS_GZIP)
       or die $tar->error;
     
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM --optimize=-O0 --object-archive-tar-gz $external_object_tar_gz -o $exe_dir/external --no-config t/04_spvmcc/script/external.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM --optimize=-O0 --spvm-archive $spvm_archive -o $exe_dir/external --no-config t/04_spvmcc/script/external.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
