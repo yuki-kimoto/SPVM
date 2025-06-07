@@ -385,7 +385,7 @@ sub build_exe_file {
     
     my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
     
-    my $spvm_archive_json_file = "$build_object_dir/spvm-archive.json";
+    my $spvm_archive_json_file = "$build_object_dir/spvmcc.json";
     
     open my $fh, '>', $spvm_archive_json_file
       or die "Cannot open the file \"$spvm_archive_json_file\":$!";
