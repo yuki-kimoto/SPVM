@@ -18,17 +18,6 @@ use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Native::BasicType;
 
 # Fields
-sub build_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{build_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{build_dir};
-  }
-}
-
 sub builder {
   my $self = shift;
   if (@_) {
@@ -291,7 +280,7 @@ sub compile_class {
   
   $options ||= {};
   
-  my $build_dir = $self->build_dir;
+  my $build_dir = $self->builder->build_dir;
   
   unless (defined $build_dir) {
     confess("[Unexpected Error]A build directory must be defined.");
@@ -423,7 +412,6 @@ sub compile_class {
       
       # Build native classes
       my $builder_cc_resource = SPVM::Builder::CC->new(
-        build_dir => $self->build_dir,
         builder => $self->builder,
       );
       
@@ -662,7 +650,7 @@ sub get_resource_object_dir_from_class_name {
   
   my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
   
-  my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$module_rel_dir.resource");
+  my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir, "$module_rel_dir.resource");
   
   return $resource_object_dir;
 }
@@ -684,7 +672,7 @@ sub link {
   
   my $runtime = $options->{runtime};
   
-  my $build_dir = $self->build_dir;
+  my $build_dir = $self->builder->build_dir;
   
   unless (defined $build_dir) {
     confess("[Unexpected Error]A build directory must be defined.");
@@ -860,7 +848,7 @@ sub create_link_info {
   
   my $output_dir = $config->output_dir;
   
-  my $build_dir = $self->build_dir;
+  my $build_dir = $self->builder->build_dir;
   
   my $ld = $config->ld;
   

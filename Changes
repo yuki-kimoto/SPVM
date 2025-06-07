@@ -3,6 +3,7 @@
     * Fix the output path of a bootstrap object file.
   [Internal Changes]
     * Add SPVM::Builder::CC#builder field.
+    * Remove SPVM::Builder::CC#build_dir field.
     * Add --object-file option to spvmcc command. This will be public in the neer future release.
     * Add --load-spvm-archive option to spvmcc command. This will be public in the neer future release.
 0.990062 2025-06-04
