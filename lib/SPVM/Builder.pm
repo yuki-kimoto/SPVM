@@ -173,7 +173,7 @@ sub build {
   
   $config->output_dir($output_dir);
   
-  my $cc_options = {build_dir => $build_dir};
+  my $cc_options = {build_dir => $build_dir, builder => $self};
   
   if (exists $options->{force}) {
     $cc_options->{force} = $options->{force};

@@ -29,6 +29,17 @@ sub build_dir {
   }
 }
 
+sub builder {
+  my $self = shift;
+  if (@_) {
+    $self->{builder} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{builder};
+  }
+}
+
 sub force {
   my $self = shift;
   if (@_) {
@@ -413,6 +424,7 @@ sub compile_class {
       # Build native classes
       my $builder_cc_resource = SPVM::Builder::CC->new(
         build_dir => $self->build_dir,
+        builder => $self->builder,
       );
       
       my $resource_class_name;

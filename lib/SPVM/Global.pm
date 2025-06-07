@@ -179,13 +179,15 @@ sub load_dynamic_lib {
       unless (-f $dynamic_lib_file) {
         my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
         my $builder = SPVM::Builder->new(build_dir => $build_dir);
+        my $builder_options = {
+          runtime => $runtime,
+          class_file => $class_file,
+          category => $category,
+        };
+        
         $dynamic_lib_file = $builder->build_jit(
           $class_name,
-          {
-            runtime => $runtime,
-            class_file => $class_file,
-            category => $category,
-          }
+          $builder_options,
         );
       }
       

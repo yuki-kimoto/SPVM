@@ -397,6 +397,7 @@ sub build_exe_file {
   my $config_linker = $self->config->clone;
   my $cc_linker = SPVM::Builder::CC->new(
     build_dir => $build_dir,
+    builder => $self->builder,
     quiet => $self->quiet,
     force => $self->force,
   );
@@ -517,6 +518,7 @@ sub compile_source_file {
   # Compile command
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
+    builder => $self->builder,
     quiet => $self->quiet,
     force => $self->force,
   );
@@ -1189,6 +1191,7 @@ sub compile_precompile_class {
   
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
+    builder => $self->builder,
     quiet => $self->quiet,
     force => $self->force,
   );
@@ -1232,6 +1235,7 @@ sub compile_native_class {
   # Compiler for native class
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
+    builder => $self->builder,
     quiet => $self->quiet,
     force => $self->force,
   );
