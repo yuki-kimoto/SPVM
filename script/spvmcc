@@ -43,8 +43,8 @@ SPVM::Builder::Util::getopt
   'include-dir-native-class=s' => \my @include_dirs_native_class_strings,
   'include-dir-precompile=s' => \my @include_dirs_precompile,
   '--object-file=s' => \my @external_object_files,
-  '--load-spvm-archive=s' => \my $spvm_archive,
-  '--build-spvm-archive' => \my $build_spvm_archive,
+  '--load-spvm-archive=s' => \my $spvm_archive, # This is not working well yet, and undocumented.
+  '--build-spvm-archive' => \my $build_spvm_archive, # This is not working well yet, and undocumented.
 ;
 
 if ($help) {
@@ -592,6 +592,14 @@ Examples:
 A compiler flag, but C<-I> is prefiex.
 
 This affects precompile class source files.
+
+This option can be repeated.
+
+=head2 --object-file
+
+  --object-file OBJECT_FILE
+
+An additional object file I<OBJECT_FILE> passed to the linker.
 
 This option can be repeated.
 
