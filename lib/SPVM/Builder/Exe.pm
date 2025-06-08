@@ -187,14 +187,14 @@ sub parent_runtime {
   }
 }
 
-sub spvm_archive_info {
+sub spvmcc_info {
   my $self = shift;
   if (@_) {
-    $self->{spvm_archive_info} = $_[0];
+    $self->{spvmcc_info} = $_[0];
     return $self;
   }
   else {
-    return $self->{spvm_archive_info};
+    return $self->{spvmcc_info};
   }
 }
 
@@ -222,9 +222,9 @@ sub new {
     %options
   }, $class;
   
-  my $spvm_archive_info = {};
+  my $spvmcc_info = {};
   
-  $self->spvm_archive_info($spvm_archive_info);
+  $self->spvmcc_info($spvmcc_info);
   
   my $script_name = $self->{script_name};
   
@@ -232,9 +232,9 @@ sub new {
   
   my $app_name = $self->app_name;
   
-  $spvm_archive_info->{app_name} = $app_name;
+  $spvmcc_info->{app_name} = $app_name;
   
-  $spvm_archive_info->{classes_h} = {};
+  $spvmcc_info->{classes_h} = {};
   
   # Excutable file name
   my $output_file = $self->{output_file};
@@ -377,18 +377,18 @@ sub build_exe_file {
   }
   
   {
-    my $spvm_archive_info = $self->spvm_archive_info;
+    my $spvmcc_info = $self->spvmcc_info;
     
-    my $spvm_archive_json = JSON::PP->new->pretty->encode($spvm_archive_info);
+    my $spvmcc_json = JSON::PP->new->pretty->encode($spvmcc_info);
     
     my $build_work_dir = $self->builder->create_build_work_path;
     
-    my $spvm_archive_json_file = "$build_work_dir/spvmcc.json";
+    my $spvmcc_json_file = "$build_work_dir/spvmcc.json";
     
-    open my $fh, '>', $spvm_archive_json_file
-      or die "Cannot open the file \"$spvm_archive_json_file\":$!";
+    open my $fh, '>', $spvmcc_json_file
+      or die "Cannot open the file \"$spvmcc_json_file\":$!";
     
-    print $fh $spvm_archive_json;
+    print $fh $spvmcc_json;
   }
   
   # Link and generate executable file
@@ -472,12 +472,12 @@ sub compile_classes {
   
   my $class_names = $self->get_user_defined_basic_type_names;
   
-  my $spvm_archive_info = $self->spvm_archive_info;
+  my $spvmcc_info = $self->spvmcc_info;
   
   my $object_files = [];
   for my $class_name (@$class_names) {
     
-    $spvm_archive_info->{classes_h}{$class_name} = {};
+    $spvmcc_info->{classes_h}{$class_name} = {};
     
     my $precompile_object_files = $self->compile_precompile_class($class_name);
     push @$object_files, @$precompile_object_files;
@@ -1210,10 +1210,10 @@ sub compile_precompile_class {
   );
   push @$object_files, @$precompile_object_files;
   
-  my $spvm_archive_info = $self->spvm_archive_info;
+  my $spvmcc_info = $self->spvmcc_info;
   
   if (@$precompile_object_files) {
-    $spvm_archive_info->{classes_h}{$class_name}{precompile} = 1;
+    $spvmcc_info->{classes_h}{$class_name}{precompile} = 1;
   }
   
   return $object_files;
@@ -1271,9 +1271,9 @@ sub compile_native_class {
     push @$all_object_files, @$object_files;
     
     if (@$object_files) {
-      my $spvm_archive_info = $self->spvm_archive_info;
+      my $spvmcc_info = $self->spvmcc_info;
       
-      $spvm_archive_info->{classes_h}{$class_name}{native} = 1;
+      $spvmcc_info->{classes_h}{$class_name}{native} = 1;
     }
   }
   
