@@ -383,7 +383,7 @@ sub build_exe_file {
     
     my $spvm_archive_json = JSON::PP->new->pretty->encode($spvm_archive_info);
     
-    my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
+    my $build_object_dir = $self->builder->create_build_object_path;
     
     my $spvm_archive_json_file = "$build_object_dir/spvmcc.json";
     
@@ -1156,7 +1156,7 @@ sub compile_spvm_core_source_files {
   my @spvm_core_source_files = map { "$builder_src_dir/$_" } @$spvm_runtime_src_base_names;
   
   # Object dir
-  my $output_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
+  my $output_dir = $self->builder->create_build_object_path;
   
   # Compile source files
   my $object_files = [];
@@ -1332,7 +1332,7 @@ sub parse_option_values_native_class {
 sub create_bootstrap_source_file_path {
   my ($self) = @_;
   
-  my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
+  my $build_src_dir = $self->builder->create_build_src_path;
   my $script_name = $self->script_name;
   my $bootstrap_source_file_base = basename $script_name;
   $bootstrap_source_file_base =~ s/\..*$//;
@@ -1345,7 +1345,7 @@ sub create_bootstrap_source_file_path {
 sub create_bootstrap_object_file_path {
   my ($self) = @_;
   
-  my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
+  my $build_object_dir = $self->builder->create_build_object_path;
   my $script_name = $self->script_name;
   my $bootstrap_source_file_base = basename $script_name;
   $bootstrap_source_file_base =~ s/\..*$//;

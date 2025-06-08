@@ -202,6 +202,58 @@ sub build {
   return $output_file;
 }
 
+sub create_build_src_path {
+  my ($self, $rel_file) = @_;
+  
+  my $build_dir = $self->build_dir;
+  
+  my $build_src_path = "$build_dir/work/src";
+  if (defined $rel_file) {
+    $build_src_path .= "/$rel_file";
+  }
+  
+  return $build_src_path;
+}
+
+sub create_build_include_path {
+  my ($self, $rel_file) = @_;
+  
+  my $build_dir = $self->build_dir;
+  
+  my $build_include_path = "$build_dir/work/include";
+  if (defined $rel_file) {
+    $build_include_path .= "/$rel_file";
+  }
+  
+  return $build_include_path;
+}
+
+sub create_build_object_path {
+  my ($self, $rel_file) = @_;
+  
+  my $build_dir = $self->build_dir;
+  
+  my $build_output_path = "$build_dir/work/object";
+  if (defined $rel_file) {
+    $build_output_path .= "/$rel_file";
+  }
+  
+  return $build_output_path;
+}
+
+sub create_build_lib_path {
+  my ($self, $rel_file) = @_;
+  
+  my $build_dir = $self->build_dir;
+  
+  my $build_lib_path = "$build_dir/work/lib";
+  if (defined $rel_file) {
+    $build_lib_path .= "/$rel_file";
+  }
+  
+  return $build_lib_path;
+}
+
 1;
 
 =encoding utf8

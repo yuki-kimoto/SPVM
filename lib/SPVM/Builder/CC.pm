@@ -320,7 +320,7 @@ sub compile_class {
   
   my $cc_output_dir = $config->cc_output_dir;
   unless ($cc_output_dir) {
-    $cc_output_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
+    $cc_output_dir = $self->builder->create_build_object_path;
   }
   
   my $class_file;
@@ -338,7 +338,7 @@ sub compile_class {
   my $cc_input_dir;
   if ($category eq 'precompile') {
     
-    $cc_input_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
+    $cc_input_dir = $self->builder->create_build_src_path;
     
     my $config_precompile_class_source = $config->clone;
     
@@ -650,7 +650,7 @@ sub get_resource_object_dir_from_class_name {
   
   my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
   
-  my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir, "$module_rel_dir.resource");
+  my $resource_object_dir = $self->builder->create_build_object_path("$module_rel_dir.resource");
   
   return $resource_object_dir;
 }
@@ -915,7 +915,7 @@ sub create_link_info {
     unless (defined $output_dir) {
       my $is_jit = $config->is_jit;
       if ($is_jit) {
-        $output_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
+        $output_dir = $self->builder->create_build_lib_path;
       }
       else {
         confess("[Unexpected Error]A output directory must exists.");
