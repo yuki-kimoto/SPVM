@@ -214,6 +214,21 @@ sub build {
   return $output_file;
 }
 
+sub create_build_work_path {
+  my ($self, $rel_file) = @_;
+  
+  my $build_dir = $self->build_dir;
+  
+  my $work_dir = $self->work_dir;
+  
+  my $build_work_path = "$build_dir/$work_dir";
+  if (defined $rel_file) {
+    $build_work_path .= "/$rel_file";
+  }
+  
+  return $build_work_path;
+}
+
 sub create_build_src_path {
   my ($self, $rel_file) = @_;
   

@@ -381,9 +381,9 @@ sub build_exe_file {
     
     my $spvm_archive_json = JSON::PP->new->pretty->encode($spvm_archive_info);
     
-    my $build_object_dir = $self->builder->create_build_object_path;
+    my $build_work_dir = $self->builder->create_build_work_path;
     
-    my $spvm_archive_json_file = "$build_object_dir/spvmcc.json";
+    my $spvm_archive_json_file = "$build_work_dir/spvmcc.json";
     
     open my $fh, '>', $spvm_archive_json_file
       or die "Cannot open the file \"$spvm_archive_json_file\":$!";
