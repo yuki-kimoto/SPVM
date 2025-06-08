@@ -4,8 +4,10 @@
   [Internal Changes]
     * Add SPVM::Builder::CC#builder field.
     * Remove SPVM::Builder::CC#build_dir field.
-    * Add --object-file option to spvmcc command. This will be public in the neer future release.
-    * Add --load-spvm-archive option to spvmcc command. This will be public in the neer future release.
+    * Add SPVM::Builder#work_dir field.
+    * Add --object-file option which is not working yet to spvmcc command. This will be public in the neer future release.
+    * Add --load-spvm-archive option which is not working yet to spvmcc command. This will be public in the neer future release.
+    * Add --build-spvm-archive which is not working yet to spvmcc command. This will be public in the neer future release.
     * Remove create_build_xxx_path function in SPVM::Builder::Util and add create_build_xxx_path method to SPVM::Builder.
 0.990062 2025-06-04
   [Incompatible Changes]

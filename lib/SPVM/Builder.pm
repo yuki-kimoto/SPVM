@@ -27,6 +27,17 @@ sub build_dir {
   }
 }
 
+sub work_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{work_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{work_dir};
+  }
+}
+
 sub include_dirs {
   my $self = shift;
   if (@_) {
@@ -44,6 +55,7 @@ sub new {
   my $self = {
     build_dir => $ENV{SPVM_BUILD_DIR},
     include_dirs => [map { "$_/SPVM" } @INC],
+    work_dir => 'work',
     @_
   };
   
@@ -207,7 +219,9 @@ sub create_build_src_path {
   
   my $build_dir = $self->build_dir;
   
-  my $build_src_path = "$build_dir/work/src";
+  my $work_dir = $self->work_dir;
+  
+  my $build_src_path = "$build_dir/$work_dir/src";
   if (defined $rel_file) {
     $build_src_path .= "/$rel_file";
   }
@@ -220,7 +234,9 @@ sub create_build_include_path {
   
   my $build_dir = $self->build_dir;
   
-  my $build_include_path = "$build_dir/work/include";
+  my $work_dir = $self->work_dir;
+  
+  my $build_include_path = "$build_dir/$work_dir/include";
   if (defined $rel_file) {
     $build_include_path .= "/$rel_file";
   }
@@ -233,7 +249,9 @@ sub create_build_object_path {
   
   my $build_dir = $self->build_dir;
   
-  my $build_output_path = "$build_dir/work/object";
+  my $work_dir = $self->work_dir;
+  
+  my $build_output_path = "$build_dir/$work_dir/object";
   if (defined $rel_file) {
     $build_output_path .= "/$rel_file";
   }
@@ -246,7 +264,9 @@ sub create_build_lib_path {
   
   my $build_dir = $self->build_dir;
   
-  my $build_lib_path = "$build_dir/work/lib";
+  my $work_dir = $self->work_dir;
+  
+  my $build_lib_path = "$build_dir/$work_dir/lib";
   if (defined $rel_file) {
     $build_lib_path .= "/$rel_file";
   }
