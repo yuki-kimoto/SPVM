@@ -402,24 +402,18 @@ sub build_exe_file {
   
   $cc_linker->link($class_name, $object_files, {config => $config_linker});
   
-  my $build_spvm_archive = $self->build_spvm_archive;
-  $build_spvm_archive = 1; # for test
-  if ($build_spvm_archive) {
-    $self->create_spvm_archive;
-  }
+  $self->generate_spvm_class_files;
 }
 
-sub create_spvm_archive {
+sub generate_spvm_class_files {
   my ($self) = @_;
   
   my $compiler = $self->compiler;
   
   my $build_dir = $self->builder->build_dir;
   my $work_dir = $self->builder->work_dir;
-  my $build_spvm_archive_dir = "$build_dir/$work_dir/build_spvm_archive";
-  rmtree $build_spvm_archive_dir;
   my $class_names = $self->get_user_defined_basic_type_names;
-  my $spvm_class_work_dir = "$build_dir/$work_dir/build_spvm_archive/SPVM";
+  my $spvm_class_work_dir = "$build_dir/$work_dir/SPVM";
   for my $class_name (@$class_names) {
     my $spvm_class_path_part = $class_name;
     $spvm_class_path_part =~ s/::/\//g;
