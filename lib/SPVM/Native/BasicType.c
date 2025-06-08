@@ -571,24 +571,6 @@ int32_t SPVM__Native__BasicType__get_anon_basic_types_length(SPVM_ENV* env, SPVM
   return 0;
 }
 
-int32_t SPVM__Native__Env__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t error_id = 0;
-  
-  void* obj_self = stack[0].oval;
-  
-  int32_t no_free = env->no_free(env, stack, obj_self);
-  if (error_id) { return error_id; }
-  
-  if (!no_free) {
-    SPVM_ENV* my_env = env->get_pointer(env, stack, obj_self);
-    
-    my_env->free_env(my_env);
-  }
-  
-  return 0;
-}
-
 int32_t SPVM__Native__BasicType__get_basic_type_in_version_from(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
