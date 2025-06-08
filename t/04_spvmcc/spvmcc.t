@@ -21,8 +21,8 @@ my $devnull = File::Spec->devnull;
 my $test_dir = $ENV{SPVM_TEST_DIR};
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
-my $exe_dir = "$build_dir/work/.tmp/exe";
-my $external_object_dir = "$build_dir/work/.tmp/external_object";
+my $exe_dir = "$build_dir/.tmp/exe";
+my $external_object_dir = "$build_dir/.tmp/external_object";
 
 rmtree "$build_dir/work";
 
@@ -327,12 +327,12 @@ sub to_cmd {
     is($output, $output_expect);
     
     {
-      ok(-d 't/04_spvmcc/.spvm_build/work/src');
-      ok(-d 't/04_spvmcc/.spvm_build/work/object');
+      ok(-d 't/04_spvmcc/.spvm_build/spvmcc/myapp/src');
+      ok(-d 't/04_spvmcc/.spvm_build/spvmcc/myapp/object');
     }
     
     {
-      my $bootstrap_file = 't/04_spvmcc/.spvm_build/work/src/bootstrap/myapp.c';
+      my $bootstrap_file = 't/04_spvmcc/.spvm_build/spvmcc/myapp/src/bootstrap/myapp.c';
       open my $fh, '<', $bootstrap_file
         or die "Cannot open file \"$bootstrap_file\":$!";
       
