@@ -424,6 +424,13 @@ sub build_exe_file {
           $class_name_by_path =~ s|^object/||;
           $class_name_by_path =~ s/\..+$//;
           $class_name_by_path =~ s/\//::/g;
+          $class_name_by_path =~ s/^SPVM:://;
+          
+          use D;du $spvmcc_info->{classes_h};
+          unless ($spvmcc_info->{classes_h}{$class_name_by_path}) {
+            return;
+          }
+          
           $tar->add_files($name)
             or Carp::Confess $tar->error;
           $tar->rename($name, $name_rel)

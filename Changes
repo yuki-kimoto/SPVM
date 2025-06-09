@@ -1,3 +1,6 @@
+0.990065 2025-06-09
+  [New Features]
+    * Add --build-spvm-archive option to spvmcc command.
 0.990064 2025-06-09
   [Incompatible Changes]
     * In this release, the resource "mode" feature is removed.

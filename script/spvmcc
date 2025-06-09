@@ -603,6 +603,12 @@ An additional object file I<OBJECT_FILE> passed to the linker.
 
 This option can be repeated.
 
+=head2 --build-spvm-archive
+
+  --build-spvm-archive
+
+Generate an SPVM archive into the path of C<-o> option. The recomennded file extension of an SPVM archive is a tarball(.spvm-archive.tar.gz).
+
 =head1 lib Directive
 
 If the source code specified by I<SCRIPT_NAME> contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
