@@ -386,6 +386,7 @@ sub build_exe_file {
     
     my $classes = [];
     for my $class_name (keys %$classes_h) {
+      next if $class_name =~ /^eval::anon_class::\d+$/a;
       my $class = $classes_h->{$class_name};
       $class->{name} = $class_name;
       push @$classes, $class;
