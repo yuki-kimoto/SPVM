@@ -382,6 +382,17 @@ sub build_exe_file {
   {
     my $spvmcc_info = $self->spvmcc_info;
     
+    my $classes_h = delete $spvmcc_info->{classes_h};
+    
+    my $classes = [];
+    for my $class_name (keys %$classes_h) {
+      my $class = $classes_h->{$class_name};
+      $class->{name} = $class_name;
+      push @$classes, $class;
+    }
+    
+    $spvmcc_info->{classes} = $classes;
+    
     my $spvmcc_json = JSON::PP->new->pretty->encode($spvmcc_info);
     
     my $build_work_dir = $self->builder->create_build_work_path;

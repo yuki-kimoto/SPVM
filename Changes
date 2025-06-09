@@ -1,6 +1,10 @@
+0.990064 2025-06-09
+  [Internal Changes]
+    * Change the format of spvmcc.json.
+    
 0.990063 2025-06-08
   [New Features]
-    * Add --object-file option which is not working yet to spvmcc command. This will be public in the neer future release.
+    * Add --object-file option to spvmcc command. This will be public in the neer future release.
   [Internal Bug Fix]
     * Fix the output path of a bootstrap object file.
   [Internal Changes]
