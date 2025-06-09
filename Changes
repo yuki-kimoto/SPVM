@@ -3,6 +3,9 @@
     * Add --build-spvm-archive option to spvmcc command.
     * Add SPVM::Builder::Config::Exe#external_object_files field.
     * Add SPVM::Builder::Config::Exe#add_external_object_file method.
+    * Add SPVM::Builder::Config::Exe#load_spvm_archive method.
+    * Add SPVM::Builder::Config::Exe#get_spvm_archive method.
+    
 0.990064 2025-06-09
   [Incompatible Changes]
     * In this release, the resource "mode" feature is removed.

@@ -214,6 +214,8 @@ The spvmcc command generates an executable file from SPVM classes.
 
 =head1 Details
 
+=head2 spvmcc Command
+
   spvmcc [OPTIONS] SCRIPT_NAME
 
 The C<spvmcc> command generates an executable file from SPVM classes.
@@ -269,6 +271,34 @@ This is hard work, but given that the executable file must be compiled from sour
 I have published a command that allows you to view the list of classes using resources and the resource settings.
 
 See also L<--resource-info|spvmdeps/"--resource-info"> option in L<spvmdeps> command to dump resource information.
+
+=head2 lib Directive
+
+If the source code specified by I<SCRIPT_NAME> contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
+  
+  #lib "$FindBin::Bin/lib"
+  
+  class {
+  
+  }
+
+This directories specified by lib directive is placed after the directories specified by L</"--include-dir"> option.
+
+=head2 SPVM Archive
+
+An SPVM archive is a tarball (C<.tar.gz>) containing SPVM class files and object files generated from native classes, precompilation classes, and resource classes.
+
+The recommended file extension is C<.spvm-archive.tar.gz>.
+
+An SPVM archive does not contains external object files(C<.o>), static library files(C<.a>), dynamic library files(C<.so>, C<.dll>, etc), and SPVM anon class files.
+
+An SPVM archive can be created by C<--build-spvm-archive> option.
+
+  spvmcc --build-spvm-archive -o $exe_dir/myapp.spvm-archive.tar.gz myapp.spvm
+
+An SPVM archive can be load by L<SPVM::Builder::Config::Exe/"load_spvm_archive"> method.
+
+By loading an SPVM archive, you can load its classes, and its object files are linked.
 
 =head1 Options
 
@@ -608,18 +638,6 @@ This option can be repeated.
   --build-spvm-archive
 
 Generate an SPVM archive into the path of C<-o> option. The recomennded file extension of an SPVM archive is a tarball(.spvm-archive.tar.gz).
-
-=head1 lib Directive
-
-If the source code specified by I<SCRIPT_NAME> contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
-  
-  #lib "$FindBin::Bin/lib"
-  
-  class {
-  
-  }
-
-This directories specified by lib directive is placed after the directories specified by L</"--include-dir"> option.
 
 =head1 Copyright & License
 
