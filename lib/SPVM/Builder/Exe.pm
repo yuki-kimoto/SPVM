@@ -379,6 +379,61 @@ sub build_exe_file {
     }
   }
   
+  # Do not generate an executable file if --build-spvm-archive option is enabled.
+  my $output_file = $self->{output_file};
+  my $output_dir_tmp = File::Temp->newdir;
+  my $build_spvm_archive = $self->build_spvm_archive;
+  if ($build_spvm_archive) {
+    my $output_file_base = basename $output_file;
+    $output_file = "$output_dir_tmp/$output_file_base";
+  }
+  
+  # Link and generate executable file
+  my $config_linker = $self->config->clone;
+  my $cc_linker = SPVM::Builder::CC->new(
+    builder => $self->builder,
+    quiet => $self->quiet,
+    force => $self->force,
+  );
+  $config_linker->output_file($output_file);
+  
+  $cc_linker->link($class_name, $object_files, {config => $config_linker});
+  
+  if ($build_spvm_archive) {
+    my $build_work_dir = $self->builder->create_build_work_path;
+    
+    my $spvmcc_info = $self->spvmcc_info;
+    
+    my $spvm_archive_dir = $output_file;
+    $spvm_archive_dir =~ s/\..+$//;
+    my $spvm_archive_file = "$spvm_archive_dir.tar.gz";
+    
+    my $spvm_archive_tmp_dir = File::Temp->newdir;
+    find(
+      {
+        wanted => sub {
+          my $name = $File::Find::name;
+          
+          return unless $name =~ /\.spvm$/ || $name =~ /\.o$/;
+          return unless -f $name;
+          
+          my $name_rel = $name;
+          $name_rel =~ s/^\Q$build_work_dir\///;
+          
+          return unless $name_rel =~ m|^(object/)?SPVM/|;
+          
+          my $class_name_by_path = $name_rel;
+          $class_name_by_path =~ s|^object/||;
+          $class_name_by_path =~ s/\..+$//;
+          $class_name_by_path =~ s/\//::/g;
+          # warn "$class_name_by_path : $name";
+        },
+        no_chdir => 1,
+      },
+      $build_work_dir
+    );
+  }
+  
   {
     my $spvmcc_info = $self->spvmcc_info;
     
@@ -406,16 +461,6 @@ sub build_exe_file {
     print $fh $spvmcc_json;
   }
   
-  # Link and generate executable file
-  my $config_linker = $self->config->clone;
-  my $cc_linker = SPVM::Builder::CC->new(
-    builder => $self->builder,
-    quiet => $self->quiet,
-    force => $self->force,
-  );
-  $config_linker->output_file($self->{output_file});
-  
-  $cc_linker->link($class_name, $object_files, {config => $config_linker});
 }
 
 sub generate_spvm_class_files_into_work_dir {
