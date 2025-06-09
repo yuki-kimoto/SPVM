@@ -1259,12 +1259,7 @@ sub compile_native_class {
   
   if (defined $config_file && -f $config_file) {
     
-    my $mode;
-    if ($class_name eq $self->class_name) {
-      $mode = $self->{mode};
-    }
-    
-    my $config = SPVM::Builder::Config->load_mode_config($config_file, $mode, []);
+    my $config = SPVM::Builder::Config->load_config($config_file);
     
     $config->config_exe($config_exe);
     
