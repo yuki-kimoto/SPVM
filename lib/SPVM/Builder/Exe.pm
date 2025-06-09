@@ -207,6 +207,7 @@ sub new {
     defines_native_class => {},
     defines_precompile => [],
     optimize_native_class => {},
+    external_object_files => [],
     %options
   }, $class;
   
@@ -298,9 +299,7 @@ sub new {
   $config->optimize_native($self->{optimize_native});
   $config->{optimize_native_class} = $self->{optimize_native_class};
   $config->optimize_precompile($self->{optimize_precompile});
-  if ($options{external_object_files}) {
-    $config->external_object_files($options{external_object_files});
-  }
+  $config->external_object_files($self->{external_object_files});
   
   $self->compile;
   
