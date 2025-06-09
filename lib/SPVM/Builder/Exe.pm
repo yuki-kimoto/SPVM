@@ -426,7 +426,6 @@ sub build_exe_file {
           $class_name_by_path =~ s/\//::/g;
           $class_name_by_path =~ s/^SPVM:://;
           
-          use D;du $spvmcc_info->{classes_h};
           unless ($spvmcc_info->{classes_h}{$class_name_by_path}) {
             return;
           }
