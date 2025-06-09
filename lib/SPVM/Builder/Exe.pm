@@ -143,17 +143,6 @@ sub mode {
   }
 }
 
-sub external_object_files {
-  my $self = shift;
-  if (@_) {
-    $self->{external_object_files} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{external_object_files};
-  }
-}
-
 sub spvm_archive {
   my $self = shift;
   if (@_) {
@@ -218,7 +207,6 @@ sub new {
     defines_native_class => {},
     defines_precompile => [],
     optimize_native_class => {},
-    external_object_files => [],
     %options
   }, $class;
   
@@ -310,6 +298,9 @@ sub new {
   $config->optimize_native($self->{optimize_native});
   $config->{optimize_native_class} = $self->{optimize_native_class};
   $config->optimize_precompile($self->{optimize_precompile});
+  if ($options{external_object_files}) {
+    $config->external_object_files($options{external_object_files});
+  }
   
   $self->compile;
   
@@ -321,6 +312,8 @@ sub build_exe_file {
   my ($self) = @_;
   
   my $builder = $self->builder;
+  
+  my $config_exe = $self->config;
   
   my $class_name = $self->{class_name};
   
@@ -351,7 +344,7 @@ sub build_exe_file {
   # This is needed only for SPVM archive
   $self->generate_spvm_class_files_into_work_dir;
   
-  for my $external_object_file (@{$self->external_object_files}) {
+  for my $external_object_file (@{$config_exe->external_object_files}) {
     push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
   

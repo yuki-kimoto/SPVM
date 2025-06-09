@@ -277,6 +277,17 @@ sub include_dirs_precompile {
   }
 }
 
+sub external_object_files {
+  my $self = shift;
+  if (@_) {
+    $self->{external_object_files} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{external_object_files};
+  }
+}
+
 # Class Methods
 sub new {
   my $self = shift;
@@ -304,6 +315,7 @@ sub new {
     include_dirs_native => [],
     include_dirs_native_class => {},
     include_dirs_precompile => [],
+    external_object_files => [],
     @_,
   );
   
@@ -449,6 +461,12 @@ sub add_include_dir_precompile {
   my ($self, @include_dirs_precompile) = @_;
   
   push @{$self->{include_dirs_precompile}}, @include_dirs_precompile;
+}
+
+sub add_external_object_file {
+  my ($self, @external_object_files) = @_;
+  
+  push @{$self->{external_object_files}}, @external_object_files;
 }
 
 1;
@@ -641,6 +659,13 @@ Gets and sets the value of C<include_dirs_native_class> field's class name key $
 
 Gets and sets C<include_dirs_precompile> field, an array reference containing C<-I> arugments of the compiler L</"cc"> in compilation for precompilation.
 
+=head2 external_object_files
+
+  my $external_object_files = $config->external_object_files;
+  $config->external_object_files($external_object_files);
+
+Gets and sets C<external_object_files> field, an array reference containing additinal external object files linked to an executable file.
+
 =head1 Methods
 
 =head2 new
@@ -802,6 +827,12 @@ Adds @include_dirs_native_class to the end of L</"include_dirs_native_class"> fi
   $config->add_include_dir_precompile(@include_dirs_precompile);
 
 Adds @include_dirs_precompile to the end of L</"include_dirs_precompile"> field.
+
+=head2 add_external_object_file
+
+  $config->add_external_object_file(@external_object_files);
+
+Adds @external_object_files to the end of L</"external_object_files"> field.
 
 =head1 Config Mode
 
