@@ -431,7 +431,13 @@ sub compile_class {
       
       $resource_config->resource_loader_config($config),
       
-      my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
+      my $resource_object_dir;
+      if ($config->config_exe) {
+        $resource_object_dir = $self->builder->create_build_object_path;
+      }
+      else {
+        $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
+      }
       
       $resource_config->cc_output_dir($resource_object_dir);
       
