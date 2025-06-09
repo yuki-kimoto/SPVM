@@ -20,17 +20,6 @@ sub class_name {
   }
 }
 
-sub mode {
-  my $self = shift;
-  if (@_) {
-    $self->{mode} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{mode};
-  }
-}
-
 sub config {
   my $self = shift;
   if (@_) {
@@ -73,7 +62,6 @@ The SPVM::Builder::Resource class has methods to manipulate L<resources|SPVM::Do
 
   my $resource = SPVM::Builder::Resource->new(
     class_name => 'Resource::Zlib',
-    mode => 'high_performance',
   );
 
 =head1 Details
@@ -88,13 +76,6 @@ See L<SPVM::Document::Resource> about creating and using resources.
   $resource->class_name($class_name);
 
 Gets and sets the C<class_name> field, the class name of this resource.
-
-=head2 mode
-
-  my $mode = $resource->mode;
-  $resource->mode($mode);
-
-Gets and sets the C<mode> field, the mode of the config file of this resource.
 
 =head2 config
 
@@ -116,10 +97,6 @@ Field Default Values:
 =over 2
 
 =item * L</"class_name">
-
-undef
-
-=item * L</"mode">
 
 undef
 

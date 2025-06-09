@@ -979,7 +979,6 @@ t/02_vm/lib/SPVM/TestCase/Precedence.spvm
 t/02_vm/lib/SPVM/TestCase/PrecompileClassAttribute.spvm
 t/02_vm/lib/SPVM/TestCase/Private.spvm
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.config
-t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.mode1.config
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.native/include/mylib1_source1.h
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.native/include/mylib1_source2.h
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.native/src/extra.c
@@ -1047,7 +1046,6 @@ t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.spvm
 t/04_spvmcc/lib/SPVM/TestCase/Precompile.config
 t/04_spvmcc/lib/SPVM/TestCase/Precompile.spvm
 t/04_spvmcc/lib/SPVM/TestCase/Resource/Mylib1.config
-t/04_spvmcc/lib/SPVM/TestCase/Resource/Mylib1.mode1.config
 t/04_spvmcc/lib/SPVM/TestCase/Resource/Mylib1.native/include/mylib1_source1.h
 t/04_spvmcc/lib/SPVM/TestCase/Resource/Mylib1.native/include/mylib1_source2.h
 t/04_spvmcc/lib/SPVM/TestCase/Resource/Mylib1.native/src/extra.c

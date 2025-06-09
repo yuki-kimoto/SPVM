@@ -218,19 +218,11 @@ sub compile_source_file {
         
         my $resource_loader_config_file = $resource_loader_config->file;
         
-        my $resource_loader_config_mode = $resource_loader_config->mode;
-        
-        my $resource_loader_config_mode_desc = length $resource_loader_config_mode ? "(mode is $resource_loader_config_mode)" : '';
-        
         my $resource_class_name = $config->class_name;
         
         my $resource_config_file = $config->file;
         
-        my $resource_config_mode = $config->mode;
-        
-        my $resource_config_mode_desc = length $resource_config_mode ? "(mode is $resource_config_mode)" : '';
-        
-        $message = "[Compile a source file in $resource_class_name resource$resource_config_mode_desc. The resouce is used from $resource_loader_config_class_name class$resource_loader_config_mode_desc]";
+        $message = "[Compile a source file in $resource_class_name resource. The resouce is used from $resource_loader_config_class_name class]";
       }
       else {
         my $config_class_name = $config->class_name;
