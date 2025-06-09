@@ -348,6 +348,9 @@ sub build_exe_file {
   my $classes_object_files = $self->compile_classes;
   push @$object_files, @$classes_object_files;
   
+  # This is needed only for SPVM archive
+  $self->generate_spvm_class_files_into_work_dir;
+  
   for my $external_object_file (@{$self->external_object_files}) {
     push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
@@ -401,11 +404,9 @@ sub build_exe_file {
   $config_linker->output_file($self->{output_file});
   
   $cc_linker->link($class_name, $object_files, {config => $config_linker});
-  
-  $self->generate_spvm_class_files;
 }
 
-sub generate_spvm_class_files {
+sub generate_spvm_class_files_into_work_dir {
   my ($self) = @_;
   
   my $compiler = $self->compiler;
