@@ -780,20 +780,6 @@ sub link {
       );
       
     }
-    # Create a static library
-    elsif ($output_type eq 'static_lib') {
-      my @object_files = map { "$_" } @$link_info_object_file_names;
-      my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
-      
-      unless ($quiet) {
-        warn "[Generate Static Link Library for $class_name class]\n";
-        
-        warn "@ar_cmd\n";
-      }
-      
-      $cbuilder->do_system(@ar_cmd)
-        or confess("Can't execute command @ar_cmd");
-    }
     # Create an executable file
     elsif ($output_type eq 'exe') {
       unless ($quiet) {
