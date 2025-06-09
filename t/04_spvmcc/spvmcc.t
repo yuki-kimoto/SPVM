@@ -39,12 +39,14 @@ sub to_cmd {
   return $cmd;
 }
 
-  # --build-spvm-archive
+  # Basic
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --build-spvm-archive t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp.spvm-archive.tar.gz --build-spvm-archive t/04_spvmcc/script/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
   }
+
+__END__
 
 # External objects
 {

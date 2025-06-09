@@ -383,6 +383,7 @@ sub build_exe_file {
   my $output_file = $self->{output_file};
   my $output_dir_tmp = File::Temp->newdir;
   my $build_spvm_archive = $self->build_spvm_archive;
+  my $spvm_archive_file = $output_file;
   if ($build_spvm_archive) {
     my $output_file_base = basename $output_file;
     $output_file = "$output_dir_tmp/$output_file_base";
@@ -404,11 +405,8 @@ sub build_exe_file {
     
     my $spvmcc_info = $self->spvmcc_info;
     
-    my $spvm_archive_dir = $output_file;
-    $spvm_archive_dir =~ s/\..+$//;
-    my $spvm_archive_file = "$spvm_archive_dir.tar.gz";
+    my $tar = Archive::Tar->new;
     
-    my $spvm_archive_tmp_dir = File::Temp->newdir;
     find(
       {
         wanted => sub {
@@ -426,12 +424,18 @@ sub build_exe_file {
           $class_name_by_path =~ s|^object/||;
           $class_name_by_path =~ s/\..+$//;
           $class_name_by_path =~ s/\//::/g;
-          # warn "$class_name_by_path : $name";
+          $tar->add_files($name)
+            or Carp::Confess $tar->error;
+          $tar->rename($name, $name_rel)
+            or Carp::Confess $tar->error;
         },
         no_chdir => 1,
       },
       $build_work_dir
     );
+    
+    $tar->write($spvm_archive_file, COMPRESS_GZIP)
+      or Carp::Confess $tar->error;
   }
   
   {
