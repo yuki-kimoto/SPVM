@@ -393,7 +393,7 @@ sub build_exe_file {
     
     $spvmcc_info->{classes} = $classes;
     
-    my $spvmcc_json = JSON::PP->new->pretty->encode($spvmcc_info);
+    my $spvmcc_json = JSON::PP->new->pretty->canonical(1)->encode($spvmcc_info);
     
     my $build_work_dir = $self->builder->create_build_work_path;
     
