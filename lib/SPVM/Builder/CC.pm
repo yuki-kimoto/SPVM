@@ -249,9 +249,9 @@ sub compile_source_file {
         }
       }
       
-      warn "$message\n";
+      print "$message\n";
       
-      warn "@$cc_cmd\n";
+      print "@$cc_cmd\n";
     }
     
     $cbuilder->do_system(@$cc_cmd)
@@ -755,10 +755,10 @@ sub link {
       unless ($quiet) {
         my $for_precompile = $category eq 'precompile' ? ' for precompile' : '';
         my $message = "[Generate Dynamic Link Library for $class_name class$for_precompile]";
-        warn "$message\n";
+        print "$message\n";
         
         my $link_command = $link_info->to_command;
-        warn "$link_command\n";
+        print "$link_command\n";
       }
       
       my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
@@ -775,10 +775,10 @@ sub link {
     # Create an executable file
     elsif ($output_type eq 'exe') {
       unless ($quiet) {
-        warn "[Generate Executable File \"$link_info_output_file\"]\n";
+        print "[Generate Executable File \"$link_info_output_file\"]\n";
         
         my $link_command = $link_info->to_command;
-        warn "$link_command\n";
+        print "$link_command\n";
       }
       
       (undef, @link_tmp_files) = $cbuilder->link_executable(
@@ -810,11 +810,11 @@ sub link {
         }
         if (defined $def_file && -f $def_file) {
           my $def_content = SPVM::Builder::Util::slurp_binary($def_file);
-          warn "[$def_file]\n$def_content\n";
+          print "[$def_file]\n$def_content\n";
         }
         if (defined $lds_file && -f $lds_file) {
           my $lds_content = SPVM::Builder::Util::slurp_binary($lds_file);
-          warn "[$lds_file]\n$lds_content\n";
+          print "[$lds_file]\n$lds_content\n";
         }
       }
     }

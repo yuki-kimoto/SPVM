@@ -8,6 +8,8 @@
     * Add SPVM::Builder::Config::Exe#spvm_archive_skip_classes field.
   [Internal Changes]
     * Remove --load-spvm-archive option from spvmcc command.
+  [Incompatibe Changes]
+    * The messages from SPVM::Builder::CC and spvmcc are printed to STDIO instead of STDERR.
 0.990064 2025-06-09
   [Incompatible Changes]
     * In this release, the resource "mode" feature is removed.

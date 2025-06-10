@@ -1367,8 +1367,6 @@ sub parse_option_values_native_class {
       my $value = $2;
       
       if ($value_is_array) {
-       # warn $class_name;
-       
        $hash->{$class_name} //= [];
         push @{$hash->{$class_name}}, $value;
       }

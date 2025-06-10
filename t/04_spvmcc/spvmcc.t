@@ -42,7 +42,7 @@ sub to_cmd {
 sub system_silence {
   my ($cmd) = @_;
   
-  return system("$cmd > $dev_null 2>&1");
+  return system("$cmd > $dev_null");
 }
 
 {
@@ -303,7 +303,7 @@ sub system_silence {
     my $compiler_options_string = join(' ', @compiler_options);
     
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --mode debug $compiler_options_string t/04_spvmcc/script/myapp.spvm);
-    my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
+    my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
     like($spvmcc_output, qr/\Q-O0 -g/);
@@ -367,7 +367,7 @@ sub system_silence {
 
   my $execute_cmd = &to_cmd("$exe_dir/myapp_solo");
   my $execute_cmd_with_args = "$execute_cmd foo bar";
-  &system_silence($execute_cmd_with_args) == 0
+  system("$execute_cmd_with_args > $dev_null 2>&1") == 0
     or die "Can't execute command:$execute_cmd_with_args:$!";
   
   ok(1);
