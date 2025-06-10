@@ -304,6 +304,19 @@ sub new {
     my $spvm_archive_skip_classes_h = {map { $_ => 1} @$spvm_archive_skip_classes};
     
     my @tar_files = $tar->list_files;
+    
+    my $spvmcc_json;
+    for my $tar_file (@tar_files) {
+      if ($tar_file eq 'spvmcc.json') {
+        $spvmcc_json = $tar->get_content($tar_file);
+        last;
+      }
+    }
+    
+    unless ($spvmcc_json) {
+      Carp::confess "SVPM archive \"$spvm_archive\" must contain spvmcc.json";
+    }
+    
     for my $tar_file (@tar_files) {
       my $class_name_by_path = $tar_file;
       $class_name_by_path =~ s|^object/||;
@@ -405,6 +418,12 @@ sub build_exe_file {
     my $spvmcc_info = $self->spvmcc_info;
     
     my $tar = Archive::Tar->new;
+    
+    my $spvmcc_json_file = "$build_work_dir/spvmcc.json";
+    $tar->add_files($spvmcc_json_file)
+      or Carp::confess $tar->error;
+    $tar->rename($spvmcc_json_file, basename $spvmcc_json_file)
+      or Carp::confess $tar->error;
     
     find(
       {
