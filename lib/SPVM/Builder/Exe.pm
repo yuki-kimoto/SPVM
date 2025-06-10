@@ -317,6 +317,11 @@ sub new {
       Carp::confess "SVPM archive \"$spvm_archive\" must contain spvmcc.json";
     }
     
+    my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
+    
+    my $spvm_archive_classes_h = {map { $_->{name} => 1} @{$spvmcc_info->{classes}}};
+    
+    $tar->extract_file('spvmcc.json', "$spvm_archive_tmp_dir/spvmcc.json");
     for my $tar_file (@tar_files) {
       my $class_name_by_path = $tar_file;
       $class_name_by_path =~ s|^object/||;
@@ -324,11 +329,13 @@ sub new {
       $class_name_by_path =~ s/\//::/g;
       $class_name_by_path =~ s/^SPVM:://;
       
-      if ($spvm_archive_skip_classes_h->{$class_name_by_path}) {
-        # Skip
-      }
-      else {
-        $tar->extract_file($tar_file, "$spvm_archive_tmp_dir/$tar_file");
+      if ($spvm_archive_classes_h->{$class_name_by_path}) {
+        if ($spvm_archive_skip_classes_h->{$class_name_by_path}) {
+          # Skip
+        }
+        else {
+          $tar->extract_file($tar_file, "$spvm_archive_tmp_dir/$tar_file");
+        }
       }
     }
   }
