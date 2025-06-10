@@ -314,7 +314,7 @@ sub new {
     
     my $spvmcc_info_archive = JSON::PP->new->decode($spvmcc_json_archive);
     
-    my $spvm_archive_classes_h = {map { $_->{name} => 1} @{$spvmcc_info_archive->{classes}}};
+    my $spvm_archive_classes_h = {map { $_->{name} => $_ } @{$spvmcc_info_archive->{classes}}};
     
     $spvmcc_info_archive->{classes_h} = $spvm_archive_classes_h;
     
@@ -1593,15 +1593,17 @@ sub merge_spvmcc_info {
     $merged_spvmcc_info->{classes_h}{$class_name} = $spvmcc_info->{classes_h}{$class_name};
   }
   
-  my $classes_h = delete $merged_spvmcc_info->{classes_h};
+  my $merged_spvmcc_info_classes_h = delete $merged_spvmcc_info->{classes_h};
   
   my $classes = [];
-  for my $class_name (keys %$classes_h) {
+  for my $class_name (keys %$merged_spvmcc_info_classes_h) {
     next if $class_name =~ /^eval::anon_class::\d+$/a;
-    my $class = $classes_h->{$class_name};
+    my $class = $merged_spvmcc_info_classes_h->{$class_name};
     $class->{name} = $class_name;
     push @$classes, $class;
   }
+  
+  $classes = [sort { $a->{name} cmp $b->{name} } @$classes];
   
   $merged_spvmcc_info->{classes} = $classes;
   

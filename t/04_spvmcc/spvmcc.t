@@ -96,6 +96,7 @@ sub to_cmd {
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
     ok(-f "t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz");
+    ok(-s "t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz" > 1_000);
   }
 
   # load_spvm_archive
@@ -111,7 +112,17 @@ sub to_cmd {
     is($output, $output_expect);
   }
   
+  # load_spvm_archive and --build-spvm-archive
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz --build-spvm-archive t/04_spvmcc/script/load-spvm-archive.spvm);
+    system($spvmcc_cmd) == 0
+      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    
+    ok(-f "t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz");
+  }
+  
 }
+
 
 # External objects
 {
