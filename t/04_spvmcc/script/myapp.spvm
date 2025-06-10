@@ -1,5 +1,6 @@
 class {
   use TestCase::Precompile;
+  use TestCase::NativeAPI;
   use TestCase::NativeAPI2;
   
   use Fn;

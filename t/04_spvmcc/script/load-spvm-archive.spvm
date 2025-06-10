@@ -1,7 +1,10 @@
 class {
+  use TestCase::NativeAPI;
   static method main : void () {
     
-    print "load-spvm-archive";
+    my $ret = TestCase::NativeAPI->sum(29, 45);
+    
+    print "load-spvm-archive $ret";
   }
   
 }
