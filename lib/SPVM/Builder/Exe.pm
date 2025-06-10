@@ -266,13 +266,6 @@ sub new {
   
   $self->{builder} = $builder;
   
-  my $compiler = SPVM::Builder::Native::Compiler->new;
-  for my $include_dir (@{$builder->include_dirs}) {
-    $compiler->add_include_dir($include_dir);
-  }
-  
-  $self->{compiler} = $compiler;
-  
   $config->ccflags_global($self->{ccflags_global});
   $config->ccflags_spvm($self->{ccflags_spvm});
   $config->ccflags_native($self->{ccflags_native});
@@ -339,6 +332,13 @@ sub new {
       }
     }
   }
+  
+  my $compiler = SPVM::Builder::Native::Compiler->new;
+  for my $include_dir (@{$builder->include_dirs}) {
+    $compiler->add_include_dir($include_dir);
+  }
+  
+  $self->{compiler} = $compiler;
   
   $self->compile;
   
