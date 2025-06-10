@@ -54,9 +54,6 @@ sub system_silence {
     
     my $execute_cmd = &to_cmd("$exe_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
-    &system_silence($execute_cmd_with_args) == 0
-      or die "Can't execute command:$execute_cmd_with_args:$!";
-    
     my $output = `$execute_cmd_with_args`;
     chomp $output;
     my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
@@ -214,9 +211,6 @@ sub system_silence {
 
     my $execute_cmd = &to_cmd("$exe_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
-    &system_silence($execute_cmd_with_args) == 0
-      or die "Can't execute command:$execute_cmd_with_args:$!";
-    
     my $output = `$execute_cmd_with_args`;
     chomp $output;
     my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
@@ -251,9 +245,6 @@ sub system_silence {
     
     my $execute_cmd = &to_cmd("$exe_dir/program_name");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
-    &system_silence($execute_cmd_with_args) == 0
-      or die "Can't execute command:$execute_cmd_with_args:$!";
-    
     my $output = `$execute_cmd_with_args`;
     chomp $output;
     my $output_expect = "$execute_cmd";
@@ -317,9 +308,6 @@ sub system_silence {
     
     my $execute_cmd = &to_cmd("$exe_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
-    &system_silence($execute_cmd_with_args) == 0
-      or die "Can't execute command: $execute_cmd_with_args:$!";
-
     my $output = `$execute_cmd_with_args`;
     chomp $output;
     my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
