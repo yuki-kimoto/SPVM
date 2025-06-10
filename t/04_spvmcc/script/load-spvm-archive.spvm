@@ -4,7 +4,12 @@ class {
     
     my $ret = TestCase::NativeAPI->sum(29, 45);
     
-    print "load-spvm-archive $ret";
+    my $skip_class = 1;
+    if (require TestCase::Precompile) {
+      $skip_class = 0;
+    }
+    
+    print "load-spvm-archive $ret,skip_class:$skip_class";
   }
   
 }

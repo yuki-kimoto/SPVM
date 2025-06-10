@@ -107,7 +107,7 @@ sub to_cmd {
     my $execute_cmd = &to_cmd("$exe_dir/load-spvm-archive");
     my $output = `$execute_cmd`;
     chomp $output;
-    my $output_expect = "load-spvm-archive 74";
+    my $output_expect = "load-spvm-archive 74,skip_class:1";
     is($output, $output_expect);
   }
   
