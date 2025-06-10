@@ -100,14 +100,14 @@ sub to_cmd {
 
   # load_spvm_archive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -o $exe_dir/load-spvm-archive t/04_spvmcc/script/load-spvm-archive.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/load-spvm-archive t/04_spvmcc/script/load-spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
     my $execute_cmd = &to_cmd("$exe_dir/load-spvm-archive");
     my $output = `$execute_cmd`;
     chomp $output;
-    my $output_expect = "load-spvm-archive 74,skip_class:1";
+    my $output_expect = "load-spvm-archive 74,skip_class:1,api3:60";
     is($output, $output_expect);
   }
   

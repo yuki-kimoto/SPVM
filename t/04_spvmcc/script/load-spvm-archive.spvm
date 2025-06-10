@@ -1,5 +1,6 @@
 class {
   use TestCase::NativeAPI;
+  use TestCase::NativeAPI3;
   static method main : void () {
     
     my $ret = TestCase::NativeAPI->sum(29, 45);
@@ -9,7 +10,9 @@ class {
       $skip_class = 0;
     }
     
-    print "load-spvm-archive $ret,skip_class:$skip_class";
+    my $ret_api3 = TestCase::NativeAPI3->sum(28, 32);
+    
+    print "load-spvm-archive $ret,skip_class:$skip_class,api3:$ret_api3";
   }
   
 }
