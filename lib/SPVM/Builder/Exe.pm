@@ -426,21 +426,22 @@ sub build_exe_file {
     
     my $tar = Archive::Tar->new;
     
-    my $spvmcc_json_file = "$build_work_dir/spvmcc.json";
-    $tar->add_files($spvmcc_json_file)
-      or Carp::confess $tar->error;
-    $tar->rename($spvmcc_json_file, basename $spvmcc_json_file)
-      or Carp::confess $tar->error;
-    
     $self->add_dir_to_tar($build_work_dir, $tar, $spvmcc_info->{classes_h});
     
     my $spvm_archive = $config_exe->get_spvm_archive;
+    my $spvmcc_info_archive;
     if (defined $spvm_archive) {
       my $spvm_archive_tmp_dir = $self->{spvm_archive_tmp_dir};
       
-      my $spvmcc_info_archive = $self->{spvmcc_info_archive};
+      $spvmcc_info_archive = $self->{spvmcc_info_archive};
       $self->add_dir_to_tar($spvm_archive_tmp_dir, $tar, $spvmcc_info_archive->{classes_h}, $spvmcc_info_archive->{skip_classes_h});
     }
+    
+    my $merged_spvmcc_info = $self->merge_spvmcc_info($spvmcc_info_archive, $spvmcc_info);
+    my $merged_spvmcc_json = JSON::PP->new->pretty->canonical(1)->encode($merged_spvmcc_info);
+    
+    $tar->add_data('spvmcc.json', $merged_spvmcc_json)
+      or Carp::confess $tar->error;
     
     $tar->write($spvm_archive_file, COMPRESS_GZIP)
       or Carp::confess $tar->error;
@@ -1571,6 +1572,40 @@ sub add_dir_to_tar {
     },
     $dir
   );
+}
+
+sub merge_spvmcc_info {
+  my ($self, $spvmcc_info_archive, $spvmcc_info) = @_;
+  
+  my $merged_spvmcc_info = {};
+  $merged_spvmcc_info->{app_name} = $spvmcc_info->{app_name};
+  $merged_spvmcc_info->{classes_h} = {};
+  
+  if ($spvmcc_info_archive) {
+    for my $class_name (keys %{$spvmcc_info_archive->{classes_h}}) {
+      unless ($spvmcc_info_archive->{skip_classes_h}{$class_name}) {
+        $merged_spvmcc_info->{classes_h}{$class_name} = $spvmcc_info_archive->{classes_h}{$class_name};
+      }
+    }
+  }
+  
+  for my $class_name (keys %{$spvmcc_info->{classes_h}}) {
+    $merged_spvmcc_info->{classes_h}{$class_name} = $spvmcc_info->{classes_h}{$class_name};
+  }
+  
+  my $classes_h = delete $merged_spvmcc_info->{classes_h};
+  
+  my $classes = [];
+  for my $class_name (keys %$classes_h) {
+    next if $class_name =~ /^eval::anon_class::\d+$/a;
+    my $class = $classes_h->{$class_name};
+    $class->{name} = $class_name;
+    push @$classes, $class;
+  }
+  
+  $merged_spvmcc_info->{classes} = $classes;
+  
+  return $merged_spvmcc_info;
 }
 
 1;
