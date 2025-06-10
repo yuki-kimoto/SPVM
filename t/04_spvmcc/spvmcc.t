@@ -47,7 +47,7 @@ sub to_cmd {
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    ok(-f "$exe_dir/myapp.spvm-archive.tar.gz");
+    ok(-f "t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz");
   }
   
   # load_spvm_archive
