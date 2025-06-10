@@ -300,21 +300,27 @@ sub new {
     
     my @tar_files = $tar->list_files;
     
-    my $spvmcc_json;
+    my $spvmcc_json_archive;
     for my $tar_file (@tar_files) {
       if ($tar_file eq 'spvmcc.json') {
-        $spvmcc_json = $tar->get_content($tar_file);
+        $spvmcc_json_archive = $tar->get_content($tar_file);
         last;
       }
     }
     
-    unless ($spvmcc_json) {
+    unless ($spvmcc_json_archive) {
       Carp::confess "SVPM archive \"$spvm_archive\" must contain spvmcc.json";
     }
     
-    my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
+    my $spvmcc_info_archive = JSON::PP->new->decode($spvmcc_json_archive);
     
-    my $spvm_archive_classes_h = {map { $_->{name} => 1} @{$spvmcc_info->{classes}}};
+    my $spvm_archive_classes_h = {map { $_->{name} => 1} @{$spvmcc_info_archive->{classes}}};
+    
+    $spvmcc_info_archive->{classes_h} = $spvm_archive_classes_h;
+    
+    $spvmcc_info_archive->{skip_classes_h} = $spvm_archive_skip_classes_h;
+    
+    $self->{spvmcc_info_archive} = $spvmcc_info_archive;
     
     $tar->extract_file('spvmcc.json', "$spvm_archive_tmp_dir/spvmcc.json");
     for my $tar_file (@tar_files) {
