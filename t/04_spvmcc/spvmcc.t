@@ -12,6 +12,7 @@ use File::Path 'mkpath', 'rmtree';
 use File::Spec;
 use SPVM::Builder::Util;
 use Archive::Tar;
+use JSON::PP;
 
 use SPVM::Builder;
 use File::Spec;
@@ -97,8 +98,30 @@ sub to_cmd {
     
     ok(-f "t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz");
     ok(-s "t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz" > 1_000);
+    my $tar = Archive::Tar->new;
+    my $success = $tar->read("t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz");
+    ok($success);
+    
+    my $spvmcc_json = $tar->get_content("spvmcc.json");
+    my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
+    is($spvmcc_info->{app_name}, "myapp");
+    my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};
+    is($classes_h->{'TestCase::NativeAPI2'}{name}, 'TestCase::NativeAPI2');
+    is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
+    is($classes_h->{'TestCase::NativeAPI2'}{precompile}, 1);
+    ok($classes_h->{'TestCase::Precompile'});
+    ok($classes_h->{'TestCase::Resource::Mylib1'});
+    ok($classes_h->{'TestCase::Resource::Mylib2'});
+    my @tar_files = $tar->list_files;
+    my $tar_files_h = {map { $_ => 1} @tar_files};
+    ok($tar_files_h->{'object/SPVM/TestCase/NativeAPI2.o'});
+    ok($tar_files_h->{'object/SPVM/TestCase/NativeAPI2.native/foo.o'});
+    ok($tar_files_h->{'object/SPVM/TestCase/Resource/Mylib1.native/mylib1_source1.o'});
+    ok($tar_files_h->{'object/SPVM/TestCase/Resource/Mylib2.native/mylib2_source1.o'});
+    ok($tar_files_h->{'SPVM/TestCase/NativeAPI2.spvm'});
+    ok($tar_files_h->{'SPVM/TestCase/Precompile.spvm'});
   }
-
+  
   # load_spvm_archive
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/load-spvm-archive t/04_spvmcc/script/load-spvm-archive.spvm);
@@ -119,10 +142,35 @@ sub to_cmd {
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
     ok(-f "t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz");
+    my $tar = Archive::Tar->new;
+    my $success = $tar->read("t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz");
+    ok($success);
+    
+    my $spvmcc_json = $tar->get_content("spvmcc.json");
+    my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
+    is($spvmcc_info->{app_name}, "load-spvm-archive");
+    my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};
+    is($classes_h->{'TestCase::NativeAPI2'}{name}, 'TestCase::NativeAPI2');
+    is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
+    is($classes_h->{'TestCase::NativeAPI2'}{precompile}, 1);
+    is($classes_h->{'TestCase::NativeAPI3'}{name}, 'TestCase::NativeAPI3');
+    is($classes_h->{'TestCase::NativeAPI3'}{native}, 1);
+    ok(!$classes_h->{'TestCase::Precompile'});
+    ok($classes_h->{'TestCase::Resource::Mylib1'});
+    ok($classes_h->{'TestCase::Resource::Mylib2'});
+    my @tar_files = $tar->list_files;
+    my $tar_files_h = {map { $_ => 1} @tar_files};
+    ok($tar_files_h->{'object/SPVM/TestCase/NativeAPI2.o'});
+    ok($tar_files_h->{'object/SPVM/TestCase/NativeAPI2.native/foo.o'});
+    ok($tar_files_h->{'object/SPVM/TestCase/Resource/Mylib1.native/mylib1_source1.o'});
+    ok($tar_files_h->{'object/SPVM/TestCase/Resource/Mylib2.native/mylib2_source1.o'});
+    ok($tar_files_h->{'SPVM/TestCase/NativeAPI2.spvm'});
+    ok(!$tar_files_h->{'SPVM/TestCase/Precompile.spvm'});
+    ok($tar_files_h->{'SPVM/TestCase/Resource/Mylib1.spvm'});
+    ok($tar_files_h->{'SPVM/TestCase/Resource/Mylib2.spvm'});
   }
   
 }
-
 
 # External objects
 {
