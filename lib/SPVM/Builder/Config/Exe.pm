@@ -470,9 +470,26 @@ sub add_external_object_file {
 }
 
 sub load_spvm_archive {
-  my ($self, $spvm_arvhice) = @_;
+  my ($self, $spvm_arvhice, $options) = @_;
+  
+  $options //= {};
   
   $self->{spvm_archive} = $_[0];
+  
+  for my $key (keys %$options) {
+    unless ($key eq 'skip') {
+      Carp::confess "\"$key\" option is not available.";
+    }
+  }
+  
+  my $skip = $options->{skip};
+  
+  if (defined $skip) {
+    unless (ref $skip eq 'ARRAY') {
+      Carp::confess "The value of \"skip\" option must be an array reference.";
+    }
+    $self->{spvm_archive_skip_classes} = $options->{skip};
+  }
   
   return $self;
 }
@@ -710,6 +727,15 @@ An SPVM archive.
 
 See L</"load_spvm_archive"> and L</"get_spvm_archive">.
 
+=head2 spvm_archive_skip_classes
+
+  my $spvm_archive_skip_classes = $config->spvm_archive_skip_classes;
+  $config->spvm_archive_skip_classes($spvm_archive_skip_classes);
+
+Gets and sets C<spvm_archive_skip_classes> field, an array reference containg the names of classes in an SPVM archive you do not want to load.
+
+See also L</"load_spvm_archive">.
+
 =head1 Methods
 
 =head2 new
@@ -881,10 +907,29 @@ Adds @external_object_files to the end of L</"external_object_files"> field.
 =head2 load_spvm_archive
 
   $config->load_spvm_archive($spvm_archive);
+  $config->load_spvm_archive($spvm_archive, $options);
 
 Loads an SPVM archive.
 
-Actually, L</"spvm_archive"> field is just set to $spvm_archive, and the loading happens later.
+Actually, L</"spvm_archive"> field is just set to $spvm_archive, and L</"spvm_archive_skip_classes"> field is set to the vlaue of C<skip> option, and the loading happens later.
+
+Options:
+
+=over 2
+
+=item * skip
+
+An array reference containg the names of classes you do not want to load.
+
+=back
+
+Examples:
+
+  my $config_dir = File::Basename::dirname __FILE__;
+  
+  $config->load_spvm_archive("$config_dir/myapp.spvm-archive.tar.gz);
+  
+  $config->load_spvm_archive("$config_dir/myapp.spvm-archive.tar.gz, {skip => ['SomeClass1', 'SomeClass2]});
 
 =head2 get_spvm_archive
 
