@@ -432,34 +432,7 @@ sub build_exe_file {
     $tar->rename($spvmcc_json_file, basename $spvmcc_json_file)
       or Carp::confess $tar->error;
     
-    find(
-      {
-        wanted => sub {
-          my $name = $File::Find::name;
-          
-          return unless $name =~ /\.spvm$/ || $name =~ /\.o$/;
-          return unless -f $name;
-          
-          my $name_rel = $name;
-          $name_rel =~ s/^\Q$build_work_dir\///;
-          
-          return unless $name_rel =~ m|^(object/)?SPVM/|;
-          
-          my $class_name_by_path = &extract_class_name_from_tar_file($name_rel);
-          
-          unless ($spvmcc_info->{classes_h}{$class_name_by_path}) {
-            return;
-          }
-          
-          $tar->add_files($name)
-            or Carp::confess $tar->error;
-          $tar->rename($name, $name_rel)
-            or Carp::confess $tar->error;
-        },
-        no_chdir => 1,
-      },
-      $build_work_dir
-    );
+    $self->add_dir_to_tar($build_work_dir, $tar, $spvmcc_info->{classes_h});
     
     $tar->write($spvm_archive_file, COMPRESS_GZIP)
       or Carp::confess $tar->error;
@@ -1555,6 +1528,41 @@ sub exists_in_spvm_archive {
   }
   
   return $exists_in_spvm_archive;
+}
+
+sub add_dir_to_tar {
+  my ($self, $dir, $tar, $classes_h, $skip_classes_h) = @_;
+  
+  $skip_classes_h //= {};
+  
+  find(
+    {
+      wanted => sub {
+        my $name = $File::Find::name;
+        
+        return unless $name =~ /\.spvm$/ || $name =~ /\.o$/;
+        return unless -f $name;
+        
+        my $name_rel = $name;
+        $name_rel =~ s/^\Q$dir\///;
+        
+        return unless $name_rel =~ m|^(object/)?SPVM/|;
+        
+        my $class_name_by_path = &extract_class_name_from_tar_file($name_rel);
+        
+        unless ($classes_h->{$class_name_by_path}) {
+          return;
+        }
+        
+        $tar->add_files($name)
+          or Carp::confess $tar->error;
+        $tar->rename($name, $name_rel)
+          or Carp::confess $tar->error;
+      },
+      no_chdir => 1,
+    },
+    $dir
+  );
 }
 
 1;
