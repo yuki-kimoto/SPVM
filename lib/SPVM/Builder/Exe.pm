@@ -301,6 +301,22 @@ sub new {
   $config->optimize_precompile($self->{optimize_precompile});
   $config->external_object_files($self->{external_object_files});
   
+  # Extract SPVM archive
+  my $spvm_archive = $self->spvm_archive;
+  if (defined $spvm_archive) {
+    my $spvm_archive_tmp_dir = File::Temp->newdir;
+    $self->{spvm_archive_tmp_dir} = $spvm_archive_tmp_dir;
+    
+    my $tar = Archive::Tar->new;
+    $tar->read($spvm_archive)
+      or die $tar->error;
+    
+    my @tar_files = $tar->list_files;
+    for my $tar_file (@tar_files) {
+      $tar->extract_file($tar_file, "$spvm_archive_tmp_dir/$tar_file");
+    }
+  }
+  
   $self->compile;
   
   return $self;
@@ -348,23 +364,11 @@ sub build_exe_file {
   }
   
   # spvm_archive
-  my $tmp_dir = File::Temp->newdir;
   my $spvm_archive = $self->spvm_archive;
   if (defined $spvm_archive) {
+    my $spvm_archive_tmp_dir = $self->{spvm_archive_tmp_dir};
     
-    my $tar = Archive::Tar->new;
-    $tar->read($spvm_archive)
-      or die $tar->error;
-    
-    my $spvm_archive_base_name = basename $spvm_archive;
-    $spvm_archive_base_name =~ s/\..+$//;
-    
-    my @tar_files = $tar->list_files;
-    for my $tar_file (@tar_files) {
-      $tar->extract_file($tar_file, "$tmp_dir/$spvm_archive_base_name/$tar_file");
-    }
-    
-    my $object_files_in_spvm_archive = SPVM::Builder::Exe->find_object_files("$tmp_dir/$spvm_archive_base_name");
+    my $object_files_in_spvm_archive = SPVM::Builder::Exe->find_object_files("$spvm_archive_tmp_dir");
     
     for my $object_file_in_spvm_archive (@$object_files_in_spvm_archive) {
       push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $object_file_in_spvm_archive);
