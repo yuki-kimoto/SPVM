@@ -39,12 +39,6 @@ sub to_cmd {
   return $cmd;
 }
 
-sub system_silence {
-  my ($cmd) = @_;
-  
-  return system("$cmd > $dev_null");
-}
-
 {
   # Basic
   {
@@ -82,8 +76,8 @@ sub system_silence {
 {
   # lib directive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --build-dir $build_dir -o $exe_dir/use-class --no-config t/04_spvmcc/script/use-class.spvm);
-    &system_silence($spvmcc_cmd) == 0
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -q --build-dir $build_dir -o $exe_dir/use-class --no-config t/04_spvmcc/script/use-class.spvm);
+    system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
     my $execute_cmd = &to_cmd("$exe_dir/use-class");
@@ -97,8 +91,8 @@ sub system_silence {
   # --build-spvm-archive
   {
     mkpath "t/04_spvmcc/script/.tmp";
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -B $build_dir -I $test_dir/lib/SPVM -o t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz --build-spvm-archive t/04_spvmcc/script/myapp.spvm);
-    &system_silence($spvmcc_cmd) == 0
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib/SPVM -o t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz --build-spvm-archive t/04_spvmcc/script/myapp.spvm);
+    system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
     ok(-f "t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz");
@@ -106,8 +100,8 @@ sub system_silence {
   
   # load_spvm_archive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/load-spvm-archive t/04_spvmcc/script/load-spvm-archive.spvm);
-    &system_silence($spvmcc_cmd) == 0
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/load-spvm-archive t/04_spvmcc/script/load-spvm-archive.spvm);
+    system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
     my $execute_cmd = &to_cmd("$exe_dir/load-spvm-archive");
@@ -121,13 +115,13 @@ sub system_silence {
 # External objects
 {
   my $cc_cmd = qq($Config{cc} -c -o $external_object_dir/external.o t/04_spvmcc/lib/SPVM/external.c);
-  &system_silence($cc_cmd) == 0
+  system($cc_cmd) == 0
     or die "Can't execute cc command $cc_cmd:$!";
   
   # --object-file
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -B $build_dir -I $test_dir/lib/SPVM --object-file $external_object_dir/external.o -o $exe_dir/external --no-config t/04_spvmcc/script/external.spvm);
-    &system_silence($spvmcc_cmd) == 0
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib/SPVM --object-file $external_object_dir/external.o -o $exe_dir/external --no-config t/04_spvmcc/script/external.spvm);
+    system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
     my $execute_cmd = &to_cmd("$exe_dir/external");
@@ -142,16 +136,16 @@ sub system_silence {
 # Failed to parse options.
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --not-exist t/04_spvmcc/script/myapp.spvm);
-    my $status = &system_silence($spvmcc_cmd);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet --not-exist t/04_spvmcc/script/myapp.spvm);
+    my $status = system($spvmcc_cmd);
     isnt($status, 0);
   }
 }
 
 # Compilation Error
 {
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -o $exe_dir/myapp_compile_error --no-config t/04_spvmcc/script/myapp_compile_error.spvm);
-  my $status = &system_silence($spvmcc_cmd);
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -o $exe_dir/myapp_compile_error --no-config t/04_spvmcc/script/myapp_compile_error.spvm);
+  my $status = system($spvmcc_cmd);
   ok($status != 0);
   
   my $error = `$spvmcc_cmd 2>&1 1>$devnull`;
@@ -162,8 +156,8 @@ sub system_silence {
 {
   {
     
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -o $exe_dir/myapp_runtime_error --no-config t/04_spvmcc/script/myapp_compile_error/main_instant_method.spvm);
-    my $status = &system_silence($spvmcc_cmd);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -o $exe_dir/myapp_runtime_error --no-config t/04_spvmcc/script/myapp_compile_error/main_instant_method.spvm);
+    my $status = system($spvmcc_cmd);
     ok($status == 0);
     
     my $execute_cmd = &to_cmd("$exe_dir/myapp_runtime_error");
@@ -176,8 +170,8 @@ sub system_silence {
   sleep 1;
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -o $exe_dir/myapp_runtime_error --no-config t/04_spvmcc/script/myapp_compile_error/main_has_arguments.spvm);
-    my $status = &system_silence($spvmcc_cmd);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -o $exe_dir/myapp_runtime_error --no-config t/04_spvmcc/script/myapp_compile_error/main_has_arguments.spvm);
+    my $status = system($spvmcc_cmd);
     ok($status == 0);
     
     my $execute_cmd = &to_cmd("$exe_dir/myapp_runtime_error");
@@ -190,8 +184,8 @@ sub system_silence {
   sleep 1;
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -o $exe_dir/myapp_runtime_error --no-config t/04_spvmcc/script/myapp_compile_error/main_not_found.spvm);
-    my $status = &system_silence($spvmcc_cmd);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -o $exe_dir/myapp_runtime_error --no-config t/04_spvmcc/script/myapp_compile_error/main_not_found.spvm);
+    my $status = system($spvmcc_cmd);
     ok($status == 0);
     
     my $execute_cmd = &to_cmd("$exe_dir/myapp_runtime_error");
@@ -206,7 +200,7 @@ sub system_silence {
   # --optimize="-O0 -g"
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize="-O0 -g" -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp t/04_spvmcc/script/myapp.spvm);
-    &system_silence($spvmcc_cmd) == 0
+    system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
     my $execute_cmd = &to_cmd("$exe_dir/myapp");
@@ -239,8 +233,8 @@ sub system_silence {
 
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -B $build_dir -o $exe_dir/program_name --no-config t/04_spvmcc/script/program_name.spvm);
-    &system_silence($spvmcc_cmd) == 0
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -o $exe_dir/program_name --no-config t/04_spvmcc/script/program_name.spvm);
+    system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
     my $execute_cmd = &to_cmd("$exe_dir/program_name");
@@ -293,7 +287,7 @@ sub system_silence {
     
     my $compiler_options_string = join(' ', @compiler_options);
     
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --mode debug $compiler_options_string t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --mode debug $compiler_options_string t/04_spvmcc/script/myapp.spvm);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
@@ -349,8 +343,8 @@ sub system_silence {
 
 # Execute solo test. This is described in DEVELOPMENT.txt
 {
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -I solo/lib/SPVM -o $exe_dir/myapp_solo --no-config solo/script/myapp.spvm foo bar);
-  &system_silence($spvmcc_cmd) == 0
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -I solo/lib/SPVM -o $exe_dir/myapp_solo --no-config solo/script/myapp.spvm foo bar);
+  system($spvmcc_cmd) == 0
    or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
   my $execute_cmd = &to_cmd("$exe_dir/myapp_solo");
