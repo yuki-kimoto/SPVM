@@ -4824,6 +4824,50 @@ add_include_dir(...)
   XSRETURN(0);
 }
 
+SV*
+get_include_dir(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  
+  SV* sv_index = ST(1);
+  
+  int32_t index = SvIV(sv_index);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  const char* include_dir = boot_env->api->compiler->get_include_dir(compiler, index);
+  
+  SV* sv_include_dir = sv_2mortal(newSVpv(include_dir, 0));
+  
+  XPUSHs(sv_include_dir);
+  
+  XSRETURN(1);
+}
+
+SV*
+get_include_dirs_length(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  int32_t include_dirs_length = boot_env->api->compiler->get_include_dirs_length(compiler);
+  
+  SV* sv_include_dirs_length = sv_2mortal(newSViv(include_dirs_length));
+  
+  XPUSHs(sv_include_dirs_length);
+  
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Builder::Native::Runtime		PACKAGE = SPVM::Builder::Native::Runtime
 
 SV*
