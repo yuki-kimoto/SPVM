@@ -560,6 +560,9 @@ sub compile_classes {
   my $object_files = [];
   for my $class_name (@$class_names) {
     
+    my $exists_in_spvm_archive = $self->exists_in_spvm_archive($class_name);
+    next if $exists_in_spvm_archive;
+    
     $spvmcc_info->{classes_h}{$class_name} = {};
     
     my $precompile_object_files = $self->compile_precompile_class($class_name);
