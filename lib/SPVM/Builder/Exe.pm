@@ -326,13 +326,8 @@ sub new {
     for my $tar_file (@tar_files) {
       my $class_name_by_tar_file = &extract_class_name_from_tar_file($tar_file);
       
-      if ($spvm_archive_classes_h->{$class_name_by_tar_file}) {
-        if ($spvm_archive_skip_classes_h->{$class_name_by_tar_file}) {
-          # Skip
-        }
-        else {
-          $tar->extract_file($tar_file, "$spvm_archive_tmp_dir/$tar_file");
-        }
+      if ($self->exists_in_spvm_archive($class_name_by_tar_file)) {
+        $tar->extract_file($tar_file, "$spvm_archive_tmp_dir/$tar_file");
       }
     }
     
@@ -1536,6 +1531,27 @@ sub extract_class_name_from_tar_file {
   $class_name =~ s/^SPVM:://;
   
   return $class_name;
+}
+
+sub exists_in_spvm_archive {
+  my ($self, $class_name) = @_;
+  
+  my $exists_in_spvm_archive;
+  my $spvmcc_info_archive = $self->{spvmcc_info_archive};
+  if ($spvmcc_info_archive) {
+    
+    my $classes_h = $spvmcc_info_archive->{classes_h};
+    
+    my $skip_classes_h = $spvmcc_info_archive->{skip_classes_h};
+    
+    if ($classes_h->{$class_name}) {
+      unless ($skip_classes_h->{$class_name}) {
+        $exists_in_spvm_archive = 1;
+      }
+    }
+  }
+  
+  return $exists_in_spvm_archive;
 }
 
 1;
