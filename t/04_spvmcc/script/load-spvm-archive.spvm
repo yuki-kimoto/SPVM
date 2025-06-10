@@ -1,0 +1,7 @@
+class {
+  static method main : void () {
+    
+    print "load-spvm-archive";
+  }
+  
+}

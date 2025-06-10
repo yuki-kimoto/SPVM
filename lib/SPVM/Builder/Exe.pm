@@ -143,17 +143,6 @@ sub mode {
   }
 }
 
-sub spvm_archive {
-  my $self = shift;
-  if (@_) {
-    $self->{spvm_archive} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{spvm_archive};
-  }
-}
-
 sub build_spvm_archive {
   my $self = shift;
   if (@_) {
@@ -302,7 +291,7 @@ sub new {
   $config->external_object_files($self->{external_object_files});
   
   # Extract SPVM archive
-  my $spvm_archive = $self->spvm_archive;
+  my $spvm_archive = $config->get_spvm_archive;
   if (defined $spvm_archive) {
     my $spvm_archive_tmp_dir = File::Temp->newdir;
     $self->{spvm_archive_tmp_dir} = $spvm_archive_tmp_dir;
@@ -364,7 +353,7 @@ sub build_exe_file {
   }
   
   # spvm_archive
-  my $spvm_archive = $self->spvm_archive;
+  my $spvm_archive = $self->config->get_spvm_archive;
   if (defined $spvm_archive) {
     my $spvm_archive_tmp_dir = $self->{spvm_archive_tmp_dir};
     
@@ -427,9 +416,9 @@ sub build_exe_file {
           }
           
           $tar->add_files($name)
-            or Carp::Confess $tar->error;
+            or Carp::confess $tar->error;
           $tar->rename($name, $name_rel)
-            or Carp::Confess $tar->error;
+            or Carp::confess $tar->error;
         },
         no_chdir => 1,
       },
@@ -437,7 +426,7 @@ sub build_exe_file {
     );
     
     $tar->write($spvm_archive_file, COMPRESS_GZIP)
-      or Carp::Confess $tar->error;
+      or Carp::confess $tar->error;
   }
   
   {

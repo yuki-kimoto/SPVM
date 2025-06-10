@@ -6,7 +6,8 @@
     * Add SPVM::Builder::Config::Exe#load_spvm_archive method.
     * Add SPVM::Builder::Config::Exe#get_spvm_archive method.
     * Add SPVM::Builder::Config::Exe#spvm_archive_skip_classes field.
-    
+  [Internal Changes]
+    * Remove --load-spvm-archive option from spvmcc command.
 0.990064 2025-06-09
   [Incompatible Changes]
     * In this release, the resource "mode" feature is removed.

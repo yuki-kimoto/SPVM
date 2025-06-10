@@ -470,11 +470,15 @@ sub add_external_object_file {
 }
 
 sub load_spvm_archive {
-  my ($self, $spvm_arvhice, $options) = @_;
+  my ($self, $spvm_archive, $options) = @_;
   
   $options //= {};
   
-  $self->{spvm_archive} = $_[0];
+  unless (ref $options eq 'HASH') {
+    Carp::confess "The options \$options must be a hash reference.";
+  }
+  
+  $self->{spvm_archive} = $spvm_archive;
   
   for my $key (keys %$options) {
     unless ($key eq 'skip') {
