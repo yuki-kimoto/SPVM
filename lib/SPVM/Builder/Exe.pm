@@ -283,6 +283,8 @@ sub new {
   $config->optimize_precompile($self->{optimize_precompile});
   $config->external_object_files($self->{external_object_files});
   
+  my $compiler = SPVM::Builder::Native::Compiler->new;
+  
   # Extract SPVM archive
   my $spvm_archive = $config->get_spvm_archive;
   if (defined $spvm_archive) {
@@ -331,9 +333,10 @@ sub new {
         }
       }
     }
+    
+    $compiler->add_include_dir("$spvm_archive_tmp_dir/SPVM");
   }
   
-  my $compiler = SPVM::Builder::Native::Compiler->new;
   for my $include_dir (@{$builder->include_dirs}) {
     $compiler->add_include_dir($include_dir);
   }
