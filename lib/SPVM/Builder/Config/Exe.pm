@@ -288,6 +288,17 @@ sub external_object_files {
   }
 }
 
+sub spvm_archive_skip_classes {
+  my $self = shift;
+  if (@_) {
+    $self->{spvm_archive_skip_classes} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{spvm_archive_skip_classes};
+  }
+}
+
 # Class Methods
 sub new {
   my $self = shift;

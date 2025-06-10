@@ -300,9 +300,23 @@ sub new {
     $tar->read($spvm_archive)
       or die $tar->error;
     
+    my $spvm_archive_skip_classes = $config->spvm_archive_skip_classes // [];
+    my $spvm_archive_skip_classes_h = {map { $_ => 1} @$spvm_archive_skip_classes};
+    
     my @tar_files = $tar->list_files;
     for my $tar_file (@tar_files) {
-      $tar->extract_file($tar_file, "$spvm_archive_tmp_dir/$tar_file");
+      my $class_name_by_path = $tar_file;
+      $class_name_by_path =~ s|^object/||;
+      $class_name_by_path =~ s/\..+$//;
+      $class_name_by_path =~ s/\//::/g;
+      $class_name_by_path =~ s/^SPVM:://;
+      
+      if ($spvm_archive_skip_classes_h->{$class_name_by_path}) {
+        # Skip
+      }
+      else {
+        $tar->extract_file($tar_file, "$spvm_archive_tmp_dir/$tar_file");
+      }
     }
   }
   
