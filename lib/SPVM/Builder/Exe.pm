@@ -434,6 +434,14 @@ sub build_exe_file {
     
     $self->add_dir_to_tar($build_work_dir, $tar, $spvmcc_info->{classes_h});
     
+    my $spvm_archive = $config_exe->get_spvm_archive;
+    if (defined $spvm_archive) {
+      my $spvm_archive_tmp_dir = $self->{spvm_archive_tmp_dir};
+      
+      my $spvmcc_info_archive = $self->{spvmcc_info_archive};
+      $self->add_dir_to_tar($spvm_archive_tmp_dir, $tar, $spvmcc_info_archive->{classes_h}, $spvmcc_info_archive->{skip_classes_h});
+    }
+    
     $tar->write($spvm_archive_file, COMPRESS_GZIP)
       or Carp::confess $tar->error;
   }
