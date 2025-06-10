@@ -1082,6 +1082,9 @@ t/04_spvmcc/script/use-class.spvm
 t/04_spvmcc/SPVM-Builder-Exe.t
 t/04_spvmcc/spvm.t
 t/04_spvmcc/spvmcc.t
+t/04_spvmcc/spvmcc_archive.t
+t/04_spvmcc/spvmcc_error.t
+t/04_spvmcc/spvmcc_solo.t
 t/04_spvmcc/spvmdeps.t
 t/05_spvmdist/command.t
 t/05_spvmdist/module.t

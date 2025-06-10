@@ -2,20 +2,17 @@ use lib "t/testlib";
 use TestAuto;
 
 use Test::More;
+
 use strict;
 use warnings;
 use utf8;
-use Data::Dumper;
-use File::Basename 'basename';
 use Config;
+use File::Basename 'basename';
 use File::Path 'mkpath', 'rmtree';
 use File::Spec;
-use SPVM::Builder::Util;
-use Archive::Tar;
-use JSON::PP;
 
 use SPVM::Builder;
-use File::Spec;
+use SPVM::Builder::Util;
 
 my $devnull = File::Spec->devnull;
 
@@ -88,90 +85,6 @@ sub to_cmd {
   }
 }
 
-{
-  # --build-spvm-archive
-  {
-    mkpath "t/04_spvmcc/script/.tmp";
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib/SPVM -o t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz --build-spvm-archive t/04_spvmcc/script/myapp.spvm);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
-    
-    ok(-f "t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz");
-    ok(-s "t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz" > 1_000);
-    my $tar = Archive::Tar->new;
-    my $success = $tar->read("t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz");
-    ok($success);
-    
-    my $spvmcc_json = $tar->get_content("spvmcc.json");
-    my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
-    is($spvmcc_info->{app_name}, "myapp");
-    my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};
-    is($classes_h->{'TestCase::NativeAPI2'}{name}, 'TestCase::NativeAPI2');
-    is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
-    is($classes_h->{'TestCase::NativeAPI2'}{precompile}, 1);
-    ok($classes_h->{'TestCase::Precompile'});
-    ok($classes_h->{'TestCase::Resource::Mylib1'});
-    ok($classes_h->{'TestCase::Resource::Mylib2'});
-    my @tar_files = $tar->list_files;
-    my $tar_files_h = {map { $_ => 1} @tar_files};
-    ok($tar_files_h->{'object/SPVM/TestCase/NativeAPI2.o'});
-    ok($tar_files_h->{'object/SPVM/TestCase/NativeAPI2.native/foo.o'});
-    ok($tar_files_h->{'object/SPVM/TestCase/Resource/Mylib1.native/mylib1_source1.o'});
-    ok($tar_files_h->{'object/SPVM/TestCase/Resource/Mylib2.native/mylib2_source1.o'});
-    ok($tar_files_h->{'SPVM/TestCase/NativeAPI2.spvm'});
-    ok($tar_files_h->{'SPVM/TestCase/Precompile.spvm'});
-  }
-  
-  # load_spvm_archive
-  {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/load-spvm-archive t/04_spvmcc/script/load-spvm-archive.spvm);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
-    
-    my $execute_cmd = &to_cmd("$exe_dir/load-spvm-archive");
-    my $output = `$execute_cmd`;
-    chomp $output;
-    my $output_expect = "load-spvm-archive 74,skip_class:1,api3:60";
-    is($output, $output_expect);
-  }
-  
-  # load_spvm_archive and --build-spvm-archive
-  {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz --build-spvm-archive t/04_spvmcc/script/load-spvm-archive.spvm);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
-    
-    ok(-f "t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz");
-    my $tar = Archive::Tar->new;
-    my $success = $tar->read("t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz");
-    ok($success);
-    
-    my $spvmcc_json = $tar->get_content("spvmcc.json");
-    my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
-    is($spvmcc_info->{app_name}, "load-spvm-archive");
-    my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};
-    is($classes_h->{'TestCase::NativeAPI2'}{name}, 'TestCase::NativeAPI2');
-    is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
-    is($classes_h->{'TestCase::NativeAPI2'}{precompile}, 1);
-    is($classes_h->{'TestCase::NativeAPI3'}{name}, 'TestCase::NativeAPI3');
-    is($classes_h->{'TestCase::NativeAPI3'}{native}, 1);
-    ok(!$classes_h->{'TestCase::Precompile'});
-    ok($classes_h->{'TestCase::Resource::Mylib1'});
-    ok($classes_h->{'TestCase::Resource::Mylib2'});
-    my @tar_files = $tar->list_files;
-    my $tar_files_h = {map { $_ => 1} @tar_files};
-    ok($tar_files_h->{'object/SPVM/TestCase/NativeAPI2.o'});
-    ok($tar_files_h->{'object/SPVM/TestCase/NativeAPI2.native/foo.o'});
-    ok($tar_files_h->{'object/SPVM/TestCase/Resource/Mylib1.native/mylib1_source1.o'});
-    ok($tar_files_h->{'object/SPVM/TestCase/Resource/Mylib2.native/mylib2_source1.o'});
-    ok($tar_files_h->{'SPVM/TestCase/NativeAPI2.spvm'});
-    ok(!$tar_files_h->{'SPVM/TestCase/Precompile.spvm'});
-    ok($tar_files_h->{'SPVM/TestCase/Resource/Mylib1.spvm'});
-    ok($tar_files_h->{'SPVM/TestCase/Resource/Mylib2.spvm'});
-  }
-  
-}
-
 # External objects
 {
   my $cc_cmd = qq($Config{cc} -c -o $external_object_dir/external.o t/04_spvmcc/lib/SPVM/external.c);
@@ -191,69 +104,6 @@ sub to_cmd {
     is($output, $output_expect);
   }
   
-}
-
-# Failed to parse options.
-{
-  {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet --not-exist t/04_spvmcc/script/myapp.spvm);
-    my $status = system($spvmcc_cmd);
-    isnt($status, 0);
-  }
-}
-
-# Compilation Error
-{
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -o $exe_dir/myapp_compile_error --no-config t/04_spvmcc/script/myapp_compile_error.spvm);
-  my $status = system($spvmcc_cmd);
-  ok($status != 0);
-  
-  my $error = `$spvmcc_cmd 2>&1 1>$devnull`;
-  like($error, qr|Compilation Error|);
-}
-
-# Runtime error
-{
-  {
-    
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -o $exe_dir/myapp_runtime_error --no-config t/04_spvmcc/script/myapp_compile_error/main_instant_method.spvm);
-    my $status = system($spvmcc_cmd);
-    ok($status == 0);
-    
-    my $execute_cmd = &to_cmd("$exe_dir/myapp_runtime_error");
-    my $execute_cmd_with_args = "$execute_cmd args1 args2";
-    
-    my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
-    like($error, qr|.+#main method must be a class method|);
-  }
-  
-  sleep 1;
-  
-  {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -o $exe_dir/myapp_runtime_error --no-config t/04_spvmcc/script/myapp_compile_error/main_has_arguments.spvm);
-    my $status = system($spvmcc_cmd);
-    ok($status == 0);
-    
-    my $execute_cmd = &to_cmd("$exe_dir/myapp_runtime_error");
-    my $execute_cmd_with_args = "$execute_cmd args1 args2";
-    
-    my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
-    like($error, qr|The length of the arguments of .+#main method must be 0|);
-  }
-  
-  sleep 1;
-  
-  {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -o $exe_dir/myapp_runtime_error --no-config t/04_spvmcc/script/myapp_compile_error/main_not_found.spvm);
-    my $status = system($spvmcc_cmd);
-    ok($status == 0);
-    
-    my $execute_cmd = &to_cmd("$exe_dir/myapp_runtime_error");
-    my $execute_cmd_with_args = "$execute_cmd args1 args2";
-    
-    my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
-    like($error, qr|.+#main method must be defined|);
-  }
 }
 
 {
@@ -399,20 +249,6 @@ sub to_cmd {
     }
   }
 
-}
-
-# Execute solo test. This is described in DEVELOPMENT.txt
-{
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -I solo/lib/SPVM -o $exe_dir/myapp_solo --no-config solo/script/myapp.spvm foo bar);
-  system($spvmcc_cmd) == 0
-   or die "Can't execute spvmcc command $spvmcc_cmd:$!";
-
-  my $execute_cmd = &to_cmd("$exe_dir/myapp_solo");
-  my $execute_cmd_with_args = "$execute_cmd foo bar";
-  system("$execute_cmd_with_args > $dev_null 2>&1") == 0
-    or die "Can't execute command:$execute_cmd_with_args:$!";
-  
-  ok(1);
 }
 
 done_testing;
