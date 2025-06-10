@@ -318,14 +318,10 @@ sub new {
     
     $tar->extract_file('spvmcc.json', "$spvm_archive_tmp_dir/spvmcc.json");
     for my $tar_file (@tar_files) {
-      my $class_name_by_path = $tar_file;
-      $class_name_by_path =~ s|^object/||;
-      $class_name_by_path =~ s/\..+$//;
-      $class_name_by_path =~ s/\//::/g;
-      $class_name_by_path =~ s/^SPVM:://;
+      my $class_name_by_tar_file = &extract_class_name_from_tar_file($tar_file);
       
-      if ($spvm_archive_classes_h->{$class_name_by_path}) {
-        if ($spvm_archive_skip_classes_h->{$class_name_by_path}) {
+      if ($spvm_archive_classes_h->{$class_name_by_tar_file}) {
+        if ($spvm_archive_skip_classes_h->{$class_name_by_tar_file}) {
           # Skip
         }
         else {
@@ -448,11 +444,7 @@ sub build_exe_file {
           
           return unless $name_rel =~ m|^(object/)?SPVM/|;
           
-          my $class_name_by_path = $name_rel;
-          $class_name_by_path =~ s|^object/||;
-          $class_name_by_path =~ s/\..+$//;
-          $class_name_by_path =~ s/\//::/g;
-          $class_name_by_path =~ s/^SPVM:://;
+          my $class_name_by_path = &extract_class_name_from_tar_file($name_rel);
           
           unless ($spvmcc_info->{classes_h}{$class_name_by_path}) {
             return;
@@ -1526,6 +1518,18 @@ sub copy_with_timestamps {
     or Carp::confess "Failed to restore timestamp for '$dest_file': $!\n";
   
   return 1;
+}
+
+sub extract_class_name_from_tar_file {
+  my ($tar_file) = @_;
+  
+  my $class_name = $tar_file;
+  $class_name =~ s|^object/||;
+  $class_name =~ s/\..+$//;
+  $class_name =~ s/\//::/g;
+  $class_name =~ s/^SPVM:://;
+  
+  return $class_name;
 }
 
 1;
