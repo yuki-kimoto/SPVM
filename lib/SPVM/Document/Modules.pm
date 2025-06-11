@@ -68,6 +68,8 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<Error::FieldNotSpecified|SPVM::Error::FieldNotSpecified>
 
+=item * L<Error::MethodCallNotPermitted|SPVM::Error::MethodCallNotPermitted>
+
 =item * L<Error::NotSupported|SPVM::Error::NotSupported>
 
 =item * L<Error::System|SPVM::Error::System>

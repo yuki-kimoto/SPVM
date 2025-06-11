@@ -45,6 +45,7 @@ const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void) {
     "Address",
     "Error::Compile",
     "SPVM",
+    "Error::MethodCallNotPermitted",
   };
   
   return id_names;

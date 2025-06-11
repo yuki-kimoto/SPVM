@@ -610,6 +610,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS != 22) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS != 23) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_SPVM_CLASS != 24) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_METHOD_CALL_NOT_PERMITTED_CLASS != 25) { stack[0].ival = 0; return 0; }
   }
 
   // Basic Type Category IDs

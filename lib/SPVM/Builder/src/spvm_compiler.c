@@ -492,6 +492,7 @@ void SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_use(compiler, "Address", "Address", 0);
   SPVM_COMPILER_use(compiler, "Error::Compile", "Error::Compile", 0);
   SPVM_COMPILER_use(compiler, "SPVM", "SPVM", 0);
+  SPVM_COMPILER_use(compiler, "Error::MethodCallNotPermitted", "Error::MethodCallNotPermitted", 0);
 }
 
 void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
@@ -605,6 +606,14 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* rel_file = "SPVM.spvm";
     char content[512] = {0};
     snprintf(content, 512, "class SPVM {\n  version \"%s\";\n}", SPVM_NATIVE_VERSION_STRING);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
+  }
+  
+  // Add Error::MethodCallNotPermitted class file
+  {
+    const char* class_name = "Error::MethodCallNotPermitted";
+    const char* rel_file = "Error/MethodCallNotPermitted.spvm";
+    const char* content = "class Error::MethodCallNotPermitted extends Error {\n  version_from SPVM;\n}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   

@@ -2903,6 +2903,9 @@ Native APIs have its IDs.
   <tr>
     <td>24</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_SPVM_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Error::Compile">Error::Compile</a> class</td>
   </tr>
+  <tr>
+    <td>25</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_METHOD_CALL_NOT_PERMITTED_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Error::MethodCallNotPermitted">Error::MethodCallNotPermitted</a> class</td>
+  </tr>
 </table>
 
 =end html
