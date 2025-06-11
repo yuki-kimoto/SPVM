@@ -222,7 +222,7 @@ sub compile_source_file {
         
         my $resource_config_file = $config->file;
         
-        $message = "[Compile a source file in $resource_class_name resource. The resouce is used from $resource_loader_config_class_name class]";
+        $message = "[Compile a source file in $resource_class_name resource. The resource is used from $resource_loader_config_class_name class]";
       }
       else {
         my $config_class_name = $config->class_name;
@@ -438,8 +438,8 @@ sub compile_class {
         config => $resource_config,
       };
       
-      my $resouce_object_files = $builder_cc_resource->compile_class($resource_class_name, $compile_options);
-      push @$object_files, @$resouce_object_files;
+      my $resource_object_files = $builder_cc_resource->compile_class($resource_class_name, $compile_options);
+      push @$object_files, @$resource_object_files;
     }
   }
   
