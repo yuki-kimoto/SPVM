@@ -11,6 +11,8 @@
     * Remove --load-spvm-archive option from spvmcc command.
   [Incompatibe Changes]
     * The messages from SPVM::Builder::CC and spvmcc are printed to STDIO instead of STDERR.
+    * utf8 pragma is enabled in config file.
+    
   [Bug Fix]
     * Fix a bug that spvmcc --quiet option does not work in the compilation of resouce classes.
   [Changes]

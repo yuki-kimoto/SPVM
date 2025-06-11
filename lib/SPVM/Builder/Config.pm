@@ -855,7 +855,7 @@ sub load_config {
 
 sub _eval_config_content {
   
-  $_[0] = qq|{\nuse strict;\nuse warnings;\nuse SPVM::Builder::Config;\nuse SPVM::Builder::Config::Exe;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
+  $_[0] = qq|{\nuse strict;\nuse warnings;use utf8;\n\nuse SPVM::Builder::Config;\nuse SPVM::Builder::Config::Exe;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
   
   return eval $_[0];
 }
