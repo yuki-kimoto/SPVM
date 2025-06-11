@@ -200,19 +200,9 @@ sub new {
     %options
   }, $class;
   
-  my $spvmcc_info = {};
-  
-  $self->spvmcc_info($spvmcc_info);
-  
   my $script_name = $self->{script_name};
   
   $self->check_script_name;
-  
-  my $app_name = $self->app_name;
-  
-  $spvmcc_info->{app_name} = $app_name;
-  
-  $spvmcc_info->{classes_h} = {};
   
   # Excutable file name
   my $output_file = $self->{output_file};
@@ -223,6 +213,8 @@ sub new {
   unless (defined $build_dir) {
     $build_dir = '.spvm_build';
   }
+  
+  my $app_name = $self->app_name;
   
   # New SPVM::Builder object
   my $work_dir = "spvmcc/$app_name";
@@ -263,6 +255,20 @@ sub new {
   }
   
   $self->{config} = $config;
+  
+  my $spvmcc_info = {};
+  
+  $self->spvmcc_info($spvmcc_info);
+  
+  $spvmcc_info->{app_name} = $app_name;
+  
+  my $config_exe = $self->config;
+  
+  if (defined $config_exe->mode) {
+    $spvmcc_info->{mode} = $config_exe->mode;
+  }
+  
+  $spvmcc_info->{classes_h} = {};
   
   $self->{builder} = $builder;
   
@@ -1579,6 +1585,7 @@ sub merge_spvmcc_info {
   
   my $merged_spvmcc_info = {};
   $merged_spvmcc_info->{app_name} = $spvmcc_info->{app_name};
+  $merged_spvmcc_info->{mode} = $spvmcc_info->{mode};
   $merged_spvmcc_info->{classes_h} = {};
   
   if ($spvmcc_info_archive) {

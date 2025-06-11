@@ -56,6 +56,7 @@ sub to_cmd {
     my $spvmcc_json = $tar->get_content("spvmcc.json");
     my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
     is($spvmcc_info->{app_name}, "myapp");
+    ok(!$spvmcc_info->{mode});
     my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};
     is($classes_h->{'TestCase::NativeAPI2'}{name}, 'TestCase::NativeAPI2');
     is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
@@ -88,7 +89,7 @@ sub to_cmd {
   
   # load_spvm_archive and --build-spvm-archive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz --build-spvm-archive t/04_spvmcc/script/load-spvm-archive.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz --build-spvm-archive --mode linux-64bit t/04_spvmcc/script/load-spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -100,6 +101,7 @@ sub to_cmd {
     my $spvmcc_json = $tar->get_content("spvmcc.json");
     my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
     is($spvmcc_info->{app_name}, "load-spvm-archive");
+    is($spvmcc_info->{mode}, "linux-64bit");
     my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};
     is($classes_h->{'TestCase::NativeAPI2'}{name}, 'TestCase::NativeAPI2');
     is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
