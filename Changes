@@ -1,5 +1,6 @@
 0.990065 2025-06-09
   [New Features]
+    * Add SPVM archive feature to spvmcc command.
     * Add --build-spvm-archive option to spvmcc command.
     * Add SPVM::Builder::Config::Exe#external_object_files field.
     * Add SPVM::Builder::Config::Exe#add_external_object_file method.

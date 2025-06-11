@@ -211,6 +211,7 @@ The spvmcc command generates an executable file from SPVM classes.
                                              
     --include-dir-precompile DIR    Same as --include-dir,
                                     but only precompile class source files
+    --build-spvm-archive            Generate an SPVM archive
 
 =head1 Details
 
