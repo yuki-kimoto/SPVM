@@ -42,7 +42,7 @@ SPVM_API_METHOD* SPVM_API_METHOD_new_api() {
     SPVM_API_METHOD_set_native_address,
     SPVM_API_METHOD_get_precompile_address,
     SPVM_API_METHOD_set_precompile_address,
-    SPVM_API_METHOD_is_precompile,
+    SPVM_API_METHOD_is_precompile_fallback,
     SPVM_API_METHOD_set_is_precompile_fallback,
   };
   

@@ -373,6 +373,8 @@ ok(SPVM::TestCase::NativeAPI->get_compile_type_name);
 
 ok(SPVM::TestCase::NativeAPI->runtime_get_method_is_enum);
 
+ok(SPVM::TestCase::NativeAPI->method_native_api);
+
 # get string field
 {
   ok(SPVM::TestCase::NativeAPI->floating_point_constant);

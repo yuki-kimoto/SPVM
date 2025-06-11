@@ -3970,7 +3970,30 @@ int32_t SPVM__TestCase__NativeAPI__runtime_get_method_is_enum(SPVM_ENV* env, SPV
   
   int32_t is_enum = env->api->method->is_enum(env->runtime, method);
   if (!is_enum) {
-      stack[0].ival = 0;
+    stack[0].ival = 0;
+  }
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__method_native_api(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  stack[0].ival = 1;
+  
+  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
+  void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "precompile_sum");
+  assert(method);
+  
+  if (!(env->api->method->is_precompile_fallback(env->runtime, method) == 0)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  env->api->method->set_is_precompile_fallback(env->runtime, method, 1);
+  
+  if (!(env->api->method->is_precompile_fallback(env->runtime, method) == 1)) {
+    stack[0].ival = 0;
+    return 0;
   }
   
   return 0;

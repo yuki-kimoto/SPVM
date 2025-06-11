@@ -1643,6 +1643,8 @@ class TestCase::NativeAPI {
   
   native static method runtime_get_method_is_enum : int ();
   
+  native static method method_native_api : int ();
+  
   native static method check_stdio_binary_mode : int ();
   
   static method get_string_field : int () {
@@ -1728,5 +1730,9 @@ class TestCase::NativeAPI {
   native static method print_exception_to_stderr : int ();
   
   native static method extra : int ();
+  
+  precompile static method precompile_sum : int ($x : int, $y : int) {
+    return $x + $y;
+  }
   
 }

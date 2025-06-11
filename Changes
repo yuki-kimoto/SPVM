@@ -1,3 +1,7 @@
+0.990065 2025-06-12
+  [Bug Fix]
+    * Fix a bug that is_precompile_fallback method native API retunrs a correct value.
+    
 0.990065 2025-06-11
   [New Features]
     * Add SPVM archive feature to spvmcc command.
