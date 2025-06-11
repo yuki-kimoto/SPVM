@@ -594,10 +594,6 @@ sub generate_native_config_file {
 # Copyright (c) $year $user_name
 # MIT License
 
-use strict;
-use warnings;
-use SPVM::Builder::Config;
-
 my \$config = SPVM::Builder::Config->$new_method;
 
 $is_resource_code
@@ -1077,9 +1073,6 @@ sub generate_basic_test_native_config_file {
   
   # Content
   my $basic_test_native_config_content = <<"EOS";
-use strict;
-use warnings;
-
 my \$config = SPVM::Builder::Config->$new_method;
 
 \$config->use_resource('$class_name');

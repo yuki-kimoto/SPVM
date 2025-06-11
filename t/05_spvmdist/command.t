@@ -317,7 +317,6 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
-  ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_gnu99'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'Copyright'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'MIT License'));
@@ -357,7 +356,6 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
 
   my $native_config_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.config";
   ok(-f $native_config_file);
-  ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_gnu99'));
   
   my $native_class_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.c";
@@ -393,7 +391,6 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
-  ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_cpp'));
   
   my $native_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.cpp";
@@ -724,7 +721,6 @@ for my $test_index (0 .. 1) {
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
-  ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_gnu99'));
   
   my $native_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
@@ -789,7 +785,6 @@ for my $test_index (0 .. 1) {
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
-  ok(SPVM::Builder::Util::file_contains($native_config_file, 'use SPVM::Builder::Config;'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_cpp'));
   
   my $native_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
