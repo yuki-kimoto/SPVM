@@ -1,4 +1,4 @@
-0.990065 2025-06-09
+0.990065 2025-06-11
   [New Features]
     * Add SPVM archive feature to spvmcc command.
     * Add --build-spvm-archive option to spvmcc command.
