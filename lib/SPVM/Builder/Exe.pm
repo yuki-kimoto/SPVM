@@ -499,6 +499,14 @@ sub generate_spvm_class_files_into_work_dir {
     mkpath dirname $spvm_class_path;
     
     my $class = $self->runtime->get_basic_type_by_name($class_name);
+    
+    if ($class_name =~ /^eval::anon_class::0$/) {
+      my $version_string = $self->runtime->get_basic_type_by_name($class_name)->get_version_string($class_name);
+      if (defined $version_string) {
+        $self->spvmcc_info->{version} = $version_string;
+      }
+    }
+    
     my $class_file = $compiler->get_class_file($class_name);
     my $class_file_content = $class_file->get_content;
     my $class_file_content_length = $class_file->get_content_length;
@@ -1585,7 +1593,13 @@ sub merge_spvmcc_info {
   
   my $merged_spvmcc_info = {};
   $merged_spvmcc_info->{app_name} = $spvmcc_info->{app_name};
-  $merged_spvmcc_info->{mode} = $spvmcc_info->{mode};
+  if (defined $spvmcc_info->{mode}) {
+    $merged_spvmcc_info->{mode} = $spvmcc_info->{mode};
+  }
+  if (defined $spvmcc_info->{version}) {
+    $merged_spvmcc_info->{version} = $spvmcc_info->{version};
+  }
+  
   $merged_spvmcc_info->{classes_h} = {};
   
   if ($spvmcc_info_archive) {

@@ -1,4 +1,6 @@
 class {
+  version "1.005";
+  
   use TestCase::NativeAPI;
   use TestCase::NativeAPI3;
   static method main : void () {

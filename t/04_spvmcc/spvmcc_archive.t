@@ -57,6 +57,7 @@ sub to_cmd {
     my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
     is($spvmcc_info->{app_name}, "myapp");
     ok(!$spvmcc_info->{mode});
+    ok(!$spvmcc_info->{version});
     my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};
     is($classes_h->{'TestCase::NativeAPI2'}{name}, 'TestCase::NativeAPI2');
     is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
@@ -102,6 +103,7 @@ sub to_cmd {
     my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
     is($spvmcc_info->{app_name}, "load-spvm-archive");
     is($spvmcc_info->{mode}, "linux-64bit");
+    is($spvmcc_info->{version}, "1.005");
     my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};
     is($classes_h->{'TestCase::NativeAPI2'}{name}, 'TestCase::NativeAPI2');
     is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
