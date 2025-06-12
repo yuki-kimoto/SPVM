@@ -1,4 +1,4 @@
-0.990065 2025-06-12
+0.990066 2025-06-12
   [Bug Fix]
     * Fix a bug that is_precompile_fallback method native API retunrs a correct value.
   [New Features]
