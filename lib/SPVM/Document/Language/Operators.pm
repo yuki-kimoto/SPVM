@@ -2918,6 +2918,7 @@ Examples:
 The C<isa> operator checks whether an operand can be assigned to a type.
 
   OPERAND isa TYPE
+  $@      isa TYPE_WITHOUT_STRING
 
 If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, this operator checks L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data convertion.
 
@@ -2928,6 +2929,16 @@ If I<TYPE> is an object type, this operator checks L<assignment requirement|SPVM
 If the assignment requirement at runtime is satisfied, this operator returns 1, otherwise returns 0.
 
 The return type is int type.
+
+If the left operand is $@ and the right type is not string type, a special interpretation is applied.
+
+  $@ isa TYPE_WITHOUT_STRING
+
+is replaced with
+
+  $@ && eval_error_id isa_error TYPE_WITHOUT_STRING
+
+See also L</"eval_error_id Operator"> and L</"isa_error Operator">.
 
 Compilation Errors:
 
@@ -2956,12 +2967,17 @@ Examples:
   if ($value isa int) {
     
   }
+  
+  if ($@ isa Error::System) {
+    
+  }
 
 =head2 is_type Operator
 
 The C<is_type> operator checks if the type of an operand is equal to a type.
 
   OPERAND is_type TYPE
+  $@      is_type TYPE_WITHOUT_STRING
 
 If the type I<TYPE> is a numeric type, a multi-numeric type, or a reference type, this operator checks if the compilation type of I<OPERAND> is equal to I<TYPE>.
 
@@ -2972,6 +2988,16 @@ If I<TYPE> is an object type, this operator checks if the runtime type of I<OPER
 If it is true, this operator returns 1, otherwise returns 0.
 
 The return type is int type.
+
+If the left operand is $@ and the right type is not string type, a special interpretation is applied.
+
+  $@ is_type TYPE_WITHOUT_STRING
+
+is replaced with
+
+  $@ && eval_error_id is_error TYPE_WITHOUT_STRING
+
+See also L</"eval_error_id Operator"> and L</"is_error Operator">.
 
 Compilation Errors:
 
@@ -2994,6 +3020,10 @@ Examples:
   }
   
   if ($object is_type Stringable[]) {
+    
+  }
+  
+  if ($@ is_type Error::System) {
     
   }
 

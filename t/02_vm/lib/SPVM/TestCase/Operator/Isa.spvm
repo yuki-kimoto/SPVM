@@ -184,6 +184,40 @@ class TestCase::Operator::Isa {
       }
     }
     
+    # Exception variable
+    {
+      eval {
+        die Error::System "[System Error]";
+      }
+      
+      unless ($@ isa Error::System) {
+        return 0;
+      }
+      
+      unless ($@ isa Error) {
+        return 0;
+      }
+      
+      unless ($@ isa string) {
+        return 0;
+      }
+      
+      $@ = undef;
+      
+      if ($@ isa Error::System) {
+        return 0;
+      }
+      
+      if ($@ isa Error) {
+        return 0;
+      }
+      
+      if ($@ isa string) {
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
   

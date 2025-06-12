@@ -2532,8 +2532,40 @@ SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_
 
 SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_operand, SPVM_OP* op_type) {
   
-  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_operand);
-  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_type);
+  // $@ isa TYPE (TYPE is not string type)
+  int32_t check_eval_error_id = 0;
+  if (op_is->id == SPVM_OP_C_ID_IS_TYPE || op_is->id == SPVM_OP_C_ID_ISA) {
+    if (op_operand->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
+      SPVM_TYPE* type = op_type->uv.type;
+      if (!(strcmp(type->basic_type->name, "string") == 0 && type->dimension == 0)) {
+        check_eval_error_id = 1;
+      }
+    }
+  }
+  
+  if (check_eval_error_id) {
+    SPVM_OP* op_is_error = NULL;
+    if (op_is->id == SPVM_OP_C_ID_IS_TYPE) {
+      op_is_error = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IS_ERROR, op_is->file, op_is->line);
+    }
+    else if (op_is->id == SPVM_OP_C_ID_ISA) {
+      op_is_error = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ISA_ERROR, op_is->file, op_is->line);
+    }
+    else {
+      assert(0);
+    }
+    
+    SPVM_OP* op_eval_error_id = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EVAL_ERROR_ID, op_is->file, op_is->line);
+    
+    op_is_error = SPVM_OP_build_type_check(compiler, op_is_error, op_eval_error_id, op_type);
+    
+    SPVM_OP* op_logical_and = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOGICAL_AND, op_is->file, op_is->line);
+    op_is = SPVM_OP_build_logical_and(compiler, op_logical_and, op_operand, op_is_error);
+  }
+  else {
+    SPVM_OP_insert_child(compiler, op_is, op_is->last, op_operand);
+    SPVM_OP_insert_child(compiler, op_is, op_is->last, op_type);
+  }
   
   return op_is;
 }

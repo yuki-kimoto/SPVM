@@ -1,3 +1,11 @@
+0.990067 2025-06-12
+  [Incompatible Changes]
+    * Add the following syntax to isa operator and is_type operator.
+    
+      $@ isa TYPE_WITHOUT_STRING
+      
+      $@ is_type TYPE_WITHOUT_STRING
+    
 0.990066 2025-06-12
   [Bug Fix]
     * Fix a bug that is_precompile_fallback method native API retunrs a correct value.
@@ -6,7 +14,6 @@
     * Add set_is_not_permitted native method API.
     * Add is_not_permitted native method API.
     * Add new_stack_with_all_method_call_permitted native API.
-    
 0.990065 2025-06-11
   [New Features]
     * Add SPVM archive feature to spvmcc command.

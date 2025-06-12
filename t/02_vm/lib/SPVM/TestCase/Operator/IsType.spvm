@@ -211,6 +211,40 @@ class TestCase::Operator::IsType {
       }
     }
     
+    # Exception variable
+    {
+      eval {
+        die Error::System "[System Error]";
+      }
+      
+      unless ($@ is_type Error::System) {
+        return 0;
+      }
+      
+      if ($@ is_type Error) {
+        return 0;
+      }
+      
+      unless ($@ is_type string) {
+        return 0;
+      }
+      
+      $@ = undef;
+      
+      if ($@ is_type Error::System) {
+        return 0;
+      }
+      
+      if ($@ is_type Error) {
+        return 0;
+      }
+      
+      if ($@ is_type string) {
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
   
