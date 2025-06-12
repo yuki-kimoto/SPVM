@@ -3982,8 +3982,8 @@ int32_t SPVM__TestCase__NativeAPI__runtime_get_method_is_enum(SPVM_ENV* env, SPV
 }
 
 int32_t SPVM__TestCase__NativeAPI__method_native_api(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  stack[0].ival = 1;
+  
+  int32_t error_id = 0;
   
   // is_precompile_fallback, set_is_precompile_fallback
   {
@@ -4021,8 +4021,19 @@ int32_t SPVM__TestCase__NativeAPI__method_native_api(SPVM_ENV* env, SPVM_VALUE* 
       return 0;
     }
     
+    stack[0].ival = 1;
+    stack[0].ival = 2;
+    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "precompile_sum", 2, &error_id, __func__, FILE_NAME, __LINE__);
+    
     env->api->method->set_is_not_permitted(env->runtime, method, 0);
+    
+    if (!(error_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_METHOD_CALL_NOT_PERMITTED_CLASS)) {
+      stack[0].ival = 0;
+      return 0;
+    }
   }
+  
+  stack[0].ival = 1;
   
   return 0;
 }

@@ -224,6 +224,8 @@ C<void (*set_is_not_permitted)(void* runtime, void* method, int32_t is_not_permi
 
 Sets the C<is_not_permitted> field to I<is_not_permitted>. 
 
+This native API is intended for use by browser applications that want to implement a security sandbox.
+
 =head1 Native API IDs
 
   0 get_name
