@@ -328,6 +328,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_basic_type_name_in_version_from,
     SPVM_API_set_command_info_warning,
     SPVM_API_destroy_cache_class_vars,
+    SPVM_API_new_stack_with_all_method_call_permitted,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -2717,6 +2718,15 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   return stack;
 }
 
+SPVM_VALUE* SPVM_API_new_stack_with_all_method_call_permitted(SPVM_ENV* env) {
+  
+  SPVM_VALUE* stack = SPVM_API_new_stack(env);
+  
+  stack[SPVM_API_C_STACK_INDEX_ALL_METHOD_CALL_PERMITTED].ival = 1;
+  
+  return stack;
+}
+
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -4820,7 +4830,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     error_id = SPVM_API_die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d.", max_call_depth, __func__, FILE_NAME, __LINE__);
     goto END_OF_FUNC;
   }
-  else if (method->is_not_permitted) {
+  else if (method->is_not_permitted && !stack[SPVM_API_C_STACK_INDEX_ALL_METHOD_CALL_PERMITTED].ival) {
     SPVM_API_die(env, stack, "The call to %s#%s method is not permmited.", current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
     error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_METHOD_CALL_NOT_PERMITTED_CLASS;
     goto END_OF_FUNC;

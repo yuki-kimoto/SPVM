@@ -2582,6 +2582,14 @@ C<void (*destroy_cache_class_vars)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Sets all class variables of all classes that is a object type and C<cache> class variable attribute is specified to undef.
 
+=head2 new_stack_with_all_method_call_permitted
+
+C<SPVM_VALUE* (*new_stack_with_all_method_call_permitted)(SPVM_ENV* env);>
+
+Creates a new L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> with all method call are permitted.
+
+This native API is intended for use by browser applications that want to implement a security sandbox.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.

@@ -4022,7 +4022,7 @@ int32_t SPVM__TestCase__NativeAPI__method_native_api(SPVM_ENV* env, SPVM_VALUE* 
     }
     
     stack[0].ival = 1;
-    stack[0].ival = 2;
+    stack[1].ival = 2;
     env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "precompile_sum", 2, &error_id, __func__, FILE_NAME, __LINE__);
     
     env->api->method->set_is_not_permitted(env->runtime, method, 0);
@@ -4030,6 +4030,27 @@ int32_t SPVM__TestCase__NativeAPI__method_native_api(SPVM_ENV* env, SPVM_VALUE* 
     if (!(error_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_METHOD_CALL_NOT_PERMITTED_CLASS)) {
       stack[0].ival = 0;
       return 0;
+    }
+    
+    {
+      SPVM_VALUE* stack_with_all_method_call_permitted = env->new_stack_with_all_method_call_permitted(env);
+      
+      stack_with_all_method_call_permitted[0].ival = 1;
+      stack_with_all_method_call_permitted[1].ival = 2;
+      env->call_class_method_by_name(env,  stack_with_all_method_call_permitted, "TestCase::NativeAPI", "precompile_sum", 2, &error_id, __func__, FILE_NAME, __LINE__);
+      int32_t ret = stack_with_all_method_call_permitted[0].ival;
+      
+      env->free_stack(env, stack_with_all_method_call_permitted);
+      
+      if (error_id) {
+        stack[0].ival = 0;
+        return 0;
+      }
+      
+      if (!(ret == 3)) {
+        stack[0].ival = 0;
+        return 0;
+      }
     }
   }
   

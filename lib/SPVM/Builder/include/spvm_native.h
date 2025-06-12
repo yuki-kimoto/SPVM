@@ -328,6 +328,7 @@ struct spvm_env {
   const char* (*get_basic_type_name_in_version_from)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
   int32_t (*set_command_info_warning)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t warning);
   void (*destroy_cache_class_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
+  SPVM_VALUE* (*new_stack_with_all_method_call_permitted)(SPVM_ENV* env);
 };
 
 struct spvm_env_api {

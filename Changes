@@ -5,6 +5,7 @@
     * Add Error::MethodCallNotPermitted class.
     * Add set_is_not_permitted native method API.
     * Add is_not_permitted native method API.
+    * Add new_stack_with_all_method_call_permitted native API.
     
 0.990065 2025-06-11
   [New Features]

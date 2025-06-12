@@ -22,6 +22,7 @@ enum {
   SPVM_API_C_STACK_INDEX_ENV = 377,
   SPVM_API_C_STACK_INDEX_SEED = 376,
   SPVM_API_C_STACK_INDEX_SEED_INITIALIZED = 375,
+  SPVM_API_C_STACK_INDEX_ALL_METHOD_CALL_PERMITTED = 374,
 };
 
 /*
@@ -31,6 +32,7 @@ enum {
 SPVM_ENV* SPVM_API_new_env(void);
 void SPVM_API_free_env(SPVM_ENV* env);
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
+SPVM_VALUE* SPVM_API_new_stack_with_all_method_call_permitted(SPVM_ENV* env);
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 
 int32_t SPVM_API_args_width(SPVM_ENV* env, SPVM_VALUE* stack);
