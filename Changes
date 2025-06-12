@@ -5,6 +5,9 @@
       $@ isa TYPE_WITHOUT_STRING
       
       $@ is_type TYPE_WITHOUT_STRING
+    * Add the following syntax to die stateiment.
+    
+      die $@;
     
 0.990066 2025-06-12
   [Bug Fix]

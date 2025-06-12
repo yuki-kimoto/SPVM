@@ -3276,7 +3276,13 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_die, op_die->last, op_assign);
   
   if (!op_type) {
-    op_type = SPVM_OP_new_op_unresolved_type(compiler, "Error", 0, 0, op_die->file, op_die->line);
+    if (op_operand->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
+      SPVM_OP* op_eval_error_id = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EVAL_ERROR_ID, op_die->file, op_die->line);
+      op_type = op_eval_error_id;
+    }
+    else {
+      op_type = SPVM_OP_new_op_unresolved_type(compiler, "Error", 0, 0, op_die->file, op_die->line);
+    }
   }
   
   SPVM_OP_insert_child(compiler, op_die, op_die->last, op_type);

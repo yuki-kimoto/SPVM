@@ -513,6 +513,7 @@ C<die> statement throws an L<exception|SPVM::Document::Language::ExceptionHandli
   
   # die statement with the basic type ID of an error class
   die OPERAND_ERROR_ID, OPERAND_MESSAGE
+  die $@
 
 I<OPERAND_MESSAGE> is a string of string type for an error message. If the exception thrown by the C<die> statement is catched, L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> C<$@> is set to I<OPERAND_MESSAGE> with stack traces added.
 
@@ -534,6 +535,16 @@ I<OPERAND_ERROR_ID> is an integer value within int type. If it is given and the 
 
 See also L<Exception Handling|SPVM::Document::Language::ExceptionHandling> for exception handling using the C<die> statement.
 
+If the operand is $@ and I<OPERAND_ERROR_ID> is not specified, a special interpretation is applied.
+
+  die $@
+
+is replaced with
+
+  die eval_error_id, $@
+  
+See also L<eval_error_id operator|SPVM::Document::Language::Operators/"eval_error_id Operator">.
+
 Comlication Errors:
 
 I<OPERAND_MESSAGE> must be string type or the undef type. Otherwise, a compilation error occurs.
@@ -554,12 +565,24 @@ Examples:
   }
   
   # die statement with an error class
-  die Error::System "System Error";
+  eval {
+    die Error::System "System Error";
+  }
+  
+  # Check error class
+  if ($@) {
+    if ($@ isa Error::System) {
+      # Do something for a system error.
+    }
+    else {
+      die $@;
+    }
+  }
   
   # die statement with the basic type ID of an error class
   my $error_id = Fn->get_basic_type_id("Error::System");
   die $error_id, "System Error";
-
+  
 =head2 Operator Statement
 
 The operator statement operates an L<operator|SPVM::Document::Language::Operators/"Operators">.

@@ -312,7 +312,39 @@ class TestCase::Exception {
       }
     }
     
-    $@ = undef;
+    # die $@
+    {
+      {
+        eval {
+          eval {
+            die Error::System "System Error";
+          }
+          
+          die $@;
+        }
+        
+        unless ($@ isa Error::System) {
+          return 0;
+        }
+      }
+      
+      {
+        eval {
+          eval {
+            die Error::System "System Error";
+          }
+          
+          my $error_id = Fn->get_basic_type_id("Error::NotSupported");
+          
+          die $error_id, $@;
+        }
+        
+        unless ($@ isa Error::NotSupported) {
+          return 0;
+        }
+      }
+      
+    }
     
     return 1;
   }
