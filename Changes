@@ -1,5 +1,35 @@
 0.990067 2025-06-12
   [Incompatible Changes]
+    * In this release, the syntax of exception handling for error classes is improved.
+      
+      [Before]
+      eval {
+        die Error::System "System Error";
+      }
+      
+      if ($@) {
+        if (eval_error_id isa_error Error::System) {
+          # Do something for a system error
+        }
+        else {
+          die eval_error_id, $@;
+        }
+      }
+      
+      [After]
+      eval {
+        die Error::System "System Error";
+      }
+      
+      if ($@) {
+        if ($@ isa Error::System) {
+          # Do something for a system error
+        }
+        else {
+          die $@;
+        }
+      }
+      
     * Add the following syntax to isa operator and is_type operator.
     
       $@ isa TYPE_WITHOUT_STRING
