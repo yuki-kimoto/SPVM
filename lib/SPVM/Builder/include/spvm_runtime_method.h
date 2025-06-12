@@ -39,6 +39,7 @@ struct spvm_runtime_method {
   int8_t is_destroy_method;
   int8_t is_required;
   int8_t is_precompile_fallback;
+  int8_t is_not_permitted;
 };
 
 #endif

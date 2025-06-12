@@ -204,11 +204,25 @@ Gets the C<is_precompile_fallback> field.
 
 If this field is a true value, the precompilation method that does not have the execution address is fallback to the vm method.
 
-=head2 
+=head2 set_is_precompile_fallback
 
 C<void (*set_is_precompile_fallback)(void* runtime, void* method, int32_t is_precompile_fallback);>
 
 Sets the C<is_precompile_fallback> field to I<is_precompile_fallback>. 
+
+=head2 is_not_permitted
+
+C<int32_t (*is_not_permitted)(void* runtime, void* method);>
+
+Gets the C<is_not_permitted> field.
+
+If this field is a true value, the method throw an exception with C<eval_error_id> set to the basic type ID of L<
+
+=head2 set_is_not_permitted
+
+C<void (*set_is_not_permitted)(void* runtime, void* method, int32_t is_not_permitted);>
+
+Sets the C<is_not_permitted> field to I<is_not_permitted>. 
 
 =head1 Native API IDs
 
@@ -243,6 +257,8 @@ Sets the C<is_precompile_fallback> field to I<is_precompile_fallback>.
   28 set_precompile_address
   29 is_precompile_fallback
   30 set_is_precompile_fallback
+  31 is_not_permitted
+  32 set_is_not_permitted
 
 =head1 See Also
 

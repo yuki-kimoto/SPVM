@@ -470,6 +470,10 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_method_ids(SPVM_ENV* env, SP
   if ((void*)&env->api->method->set_native_address != &env_array[26]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->method->get_precompile_address != &env_array[27]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->method->set_precompile_address != &env_array[28]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->is_precompile_fallback != &env_array[29]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->set_is_precompile_fallback != &env_array[30]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->is_not_permitted != &env_array[31]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->set_is_not_permitted != &env_array[32]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
@@ -3981,20 +3985,43 @@ int32_t SPVM__TestCase__NativeAPI__method_native_api(SPVM_ENV* env, SPVM_VALUE* 
 
   stack[0].ival = 1;
   
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
-  void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "precompile_sum");
-  assert(method);
-  
-  if (!(env->api->method->is_precompile_fallback(env->runtime, method) == 0)) {
-    stack[0].ival = 0;
-    return 0;
+  // is_precompile_fallback, set_is_precompile_fallback
+  {
+    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
+    void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "precompile_sum");
+    assert(method);
+    
+    if (!(env->api->method->is_precompile_fallback(env->runtime, method) == 0)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    env->api->method->set_is_precompile_fallback(env->runtime, method, 1);
+    
+    if (!(env->api->method->is_precompile_fallback(env->runtime, method) == 1)) {
+      stack[0].ival = 0;
+      return 0;
+    }
   }
   
-  env->api->method->set_is_precompile_fallback(env->runtime, method, 1);
-  
-  if (!(env->api->method->is_precompile_fallback(env->runtime, method) == 1)) {
-    stack[0].ival = 0;
-    return 0;
+  {
+    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
+    void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "precompile_sum");
+    assert(method);
+    
+    if (!(env->api->method->is_not_permitted(env->runtime, method) == 0)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    env->api->method->set_is_not_permitted(env->runtime, method, 1);
+    
+    if (!(env->api->method->is_not_permitted(env->runtime, method) == 1)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    env->api->method->set_is_not_permitted(env->runtime, method, 0);
   }
   
   return 0;
