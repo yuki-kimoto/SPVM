@@ -327,6 +327,8 @@ sub new {
     include_dirs_native_class => {},
     include_dirs_precompile => [],
     external_object_files => [],
+    optimize => '-O3 -flto', # Link Time Optimization
+    ld_optimize => '-O2 -flto', # Link Time Optimization
     @_,
   );
   
