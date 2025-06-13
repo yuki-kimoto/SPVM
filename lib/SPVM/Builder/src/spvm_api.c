@@ -5687,10 +5687,10 @@ void SPVM_API_call_instance_method_impl(SPVM_ENV* env, SPVM_VALUE* stack, const 
   
   void* method = NULL;
   if (object) {
-    method = env->get_instance_method(env, stack, object, method_name);
+    method = SPVM_API_get_instance_method(env, stack, object, method_name);
     
     if (method) {
-      *error_id = env->call_method_no_mortal(env, stack, method, args_width);
+      *error_id = SPVM_API_call_method_no_mortal(env, stack, method, args_width);
     }
     else {
       char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
