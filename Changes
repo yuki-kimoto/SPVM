@@ -6,6 +6,14 @@
       [After]
       The invocant of a method call must be defined.
     
+    * Change an exception message when instance method call when the method is not found.
+      Reported class name becomes the class name of the invocant instead of a declared class name.
+      
+      [Before]
+      An instance method call failed. The implementation of %s#%s method is not found.
+      [After]
+      An instance method call failed. %s#%s method is not found.
+
 0.990067 2025-06-13
   [Incompatible Changes]
     * In this release, the syntax of exception handling for error classes is improved.

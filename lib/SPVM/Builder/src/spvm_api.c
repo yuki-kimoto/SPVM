@@ -5693,8 +5693,13 @@ void SPVM_API_call_instance_method_impl(SPVM_ENV* env, SPVM_VALUE* stack, const 
       *error_id = SPVM_API_call_method_no_mortal(env, stack, method, args_width);
     }
     else {
+      int32_t scope_id = env->enter_scope(env, stack);
+      void* obj_invocant_type_name = env->get_type_name(env, stack, object);
+      const char* invocant_type_name = env->get_chars(env, stack, obj_invocant_type_name);
+      
       char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND], interface_name, method_name);
+      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND], invocant_type_name, method_name);
+      env->leave_scope(env, stack, scope_id);
       void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
       env->set_exception(env, stack, exception);
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
