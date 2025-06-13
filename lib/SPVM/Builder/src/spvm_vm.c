@@ -2380,7 +2380,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t decl_method_index = opcode->operand1;
         int32_t args_width = opcode->operand2;
         
-        SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = runtime->basic_types[invocant_decl_basic_type_id];
         
         SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, invocant_decl_basic_type, decl_method_index);
         
@@ -2393,7 +2393,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t decl_method_index = opcode->operand1;
         int32_t args_width = opcode->operand2;
         
-        SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = runtime->basic_types[invocant_decl_basic_type_id];
         
         SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, invocant_decl_basic_type, decl_method_index);
         
@@ -2405,7 +2405,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t decl_method_index = opcode->operand1;
         int32_t args_width = opcode->operand2;
         
-        SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = runtime->basic_types[invocant_decl_basic_type_id];
         
         SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, invocant_decl_basic_type, decl_method_index);
         const char* method_name = method->name;
