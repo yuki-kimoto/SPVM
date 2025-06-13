@@ -394,6 +394,6 @@ const char* SPVM_API_get_basic_type_name_in_version_from(SPVM_ENV* env, SPVM_VAL
 
 int32_t SPVM_API_set_command_info_warning(SPVM_ENV* env, SPVM_VALUE* stack, int32_t warning);
 
-void SPVM_API_call_instance_method_impl(SPVM_ENV* env, SPVM_VALUE* stack, const char* interface_name, const char* method_name, int32_t args_width, int32_t* error_id);
+void SPVM_API_call_instance_method_impl(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id);
 
 #endif

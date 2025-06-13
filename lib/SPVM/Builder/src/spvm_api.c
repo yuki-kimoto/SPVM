@@ -5679,7 +5679,7 @@ int32_t SPVM_API_set_command_info_warning(SPVM_ENV* env, SPVM_VALUE* stack, int3
   return 0;
 }
 
-void SPVM_API_call_instance_method_impl(SPVM_ENV* env, SPVM_VALUE* stack, const char* interface_name, const char* method_name, int32_t args_width, int32_t* error_id) {
+void SPVM_API_call_instance_method_impl(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id) {
   
   void* object = stack[0].oval;
   
