@@ -429,7 +429,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_internal_ids(SPVM_ENV* env, 
   if ((void*)&env->api->internal->removed3 != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->internal->get_stack_tmp_buffer != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->internal->leave_scope_local != &env_array[5]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->internal->call_instance_method_impl != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->call_instance_method_no_mortal != &env_array[6]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

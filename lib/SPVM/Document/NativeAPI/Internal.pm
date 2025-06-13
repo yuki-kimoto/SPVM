@@ -50,11 +50,11 @@ Performs a leaveing scope operation for local variables given object variables I
 
 The value referenced by I<mortal_stack_top_ptr> is updated.
 
-=head2 call_instance_method_impl
+=head2 call_instance_method_no_mortal
 
-void (*call_instance_method_impl)(SPVM_ENV* env, SPVM_VALUE* stack, const char* interface_name, const char* method_name, int32_t args_width, int32_t* error_id)
+int32_t (*call_instance_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width)
 
-Call an instance method from vertual machine and precompied codes.
+Call an instance method.
 
 =head1 Native API IDs
 
