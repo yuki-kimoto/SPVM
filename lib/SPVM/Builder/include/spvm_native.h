@@ -508,7 +508,7 @@ struct spvm_api_internal {
   void (*removed3)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
   char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack_typed_var_index, int32_t* mortal_stack_top_ptr, int32_t* mortal_stack_tops, int32_t mortal_stack_tops_index);
-  void (*call_instance_method_impl)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id);
+  int32_t (*call_instance_method_impl)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);
 };
 
 struct spvm_api_mutex {

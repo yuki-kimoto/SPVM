@@ -5679,18 +5679,18 @@ int32_t SPVM_API_set_command_info_warning(SPVM_ENV* env, SPVM_VALUE* stack, int3
   return 0;
 }
 
-void SPVM_API_call_instance_method_impl(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id) {
+int32_t SPVM_API_call_instance_method_impl(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
+  
+  int32_t error_id = 0;
   
   void* object = stack[0].oval;
-  
-  *error_id = 0;
   
   void* method = NULL;
   if (object) {
     method = SPVM_API_get_instance_method(env, stack, object, method_name);
     
     if (method) {
-      *error_id = SPVM_API_call_method_no_mortal(env, stack, method, args_width);
+      error_id = SPVM_API_call_method_no_mortal(env, stack, method, args_width);
     }
     else {
       int32_t scope_id = env->enter_scope(env, stack);
@@ -5702,12 +5702,14 @@ void SPVM_API_call_instance_method_impl(SPVM_ENV* env, SPVM_VALUE* stack, const 
       env->leave_scope(env, stack, scope_id);
       void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
       env->set_exception(env, stack, exception);
-      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+      error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
   }
   else {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_INVOCANT_UNDEF]);
     env->set_exception(env, stack, exception);
-    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+    error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
+  
+  return error_id;
 }
