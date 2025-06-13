@@ -2948,32 +2948,7 @@ static inline void SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE
 
 static inline void SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(SPVM_ENV* env, SPVM_VALUE* stack, const char* interface_name, const char* method_name, int32_t args_width, int32_t* error_id) {
   
-  void* object = stack[0].oval;
-  
-  *error_id = 0;
-  
-  void* method = NULL;
-  if (object) {
-    method = env->get_instance_method(env, stack, object, method_name);
-    
-    if (method) {
-      *error_id = env->call_method_no_mortal(env, stack, method, args_width);
-    }
-    else {
-      char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND], interface_name, method_name);
-      void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
-      env->set_exception(env, stack, exception);
-      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
-  }
-  else {
-    char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_INVOCANT_UNDEF], interface_name, method_name);
-    void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
-    env->set_exception(env, stack, exception);
-    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-  }
+  env->api->internal->call_instance_method_impl(env, stack, interface_name, method_name, args_width, error_id);
 }
 
 #endif

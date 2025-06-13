@@ -18,6 +18,7 @@ SPVM_API_INTERNAL* SPVM_API_INTERNAL_new_api() {
     SPVM_API_leave_scope_local_removed3,
     SPVM_API_get_stack_tmp_buffer,
     SPVM_API_leave_scope_local,
+    SPVM_API_call_instance_method_impl,
   };
   SPVM_API_INTERNAL* env_internal = calloc(1, sizeof(env_internal_init));
   memcpy(env_internal, env_internal_init, sizeof(env_internal_init));

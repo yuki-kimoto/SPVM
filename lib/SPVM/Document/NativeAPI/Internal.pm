@@ -50,6 +50,12 @@ Performs a leaveing scope operation for local variables given object variables I
 
 The value referenced by I<mortal_stack_top_ptr> is updated.
 
+=head2 call_instance_method_impl
+
+void (*call_instance_method_impl)(SPVM_ENV* env, SPVM_VALUE* stack, const char* interface_name, const char* method_name, int32_t args_width, int32_t* error_id)
+
+Call an instance method from vertual machine and precompied codes.
+
 =head1 Native API IDs
 
   0 get_ref_count
@@ -58,6 +64,7 @@ The value referenced by I<mortal_stack_top_ptr> is updated.
   3 removed3
   4 get_stack_tmp_buffer
   5 leave_scope_local
+  6 call_instance_method_impl
 
 =head1 See Also
 
