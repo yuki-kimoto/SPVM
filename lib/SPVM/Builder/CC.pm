@@ -214,12 +214,6 @@ sub compile_source_file {
       my $message;
       if ($resource_loader_config) {
         
-        warn $quiet;
-        
-        warn $compile_info->config->class_name;
-        
-        warn $config->resource_loader_config->class_name;
-        
         my $resource_loader_config_class_name = $resource_loader_config->class_name;
         
         my $resource_loader_config_file = $resource_loader_config->file;
