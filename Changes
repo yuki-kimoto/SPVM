@@ -1,4 +1,12 @@
 0.990067 2025-06-13
+  [Exception Message Changes]
+    * Change an exception message when instance method call without invocant.
+      [Before]
+      An instance method call failed. The invocant of the method call for %s#%s method must be defined.
+      [After]
+      The invocant of a method call must be defined.
+    
+0.990067 2025-06-13
   [Incompatible Changes]
     * In this release, the syntax of exception handling for error classes is improved.
       

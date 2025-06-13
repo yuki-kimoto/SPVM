@@ -2058,7 +2058,7 @@ class TestCase::Operator::MethodCall {
       
       eval { $interface->to_string; }
       
-      unless (Fn->contains($@, "An instance method call failed. The invocant of the method call for TestCase::Interface::Type#to_string method must be defined.")) {
+      unless (Fn->contains($@, "The invocant of a method call must be defined.")) {
         return 0;
       }
     }
