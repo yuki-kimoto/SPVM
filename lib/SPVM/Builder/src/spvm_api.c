@@ -329,7 +329,9 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_set_command_info_warning,
     SPVM_API_destroy_cache_class_vars,
     SPVM_API_new_stack_with_all_method_call_permitted,
+    SPVM_API_call_instance_method_no_mortal,
   };
+  
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
     return NULL;

@@ -248,6 +248,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->get_basic_type_name_in_version_from != &env_array[228]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_command_info_warning != &env_array[229]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->destroy_cache_class_vars != &env_array[230]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_stack_with_all_method_call_permitted != &env_array[231]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->call_instance_method_no_mortal != &env_array[232]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
@@ -429,7 +431,6 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_internal_ids(SPVM_ENV* env, 
   if ((void*)&env->api->internal->removed3 != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->internal->get_stack_tmp_buffer != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->internal->leave_scope_local != &env_array[5]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->internal->call_instance_method_no_mortal != &env_array[6]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

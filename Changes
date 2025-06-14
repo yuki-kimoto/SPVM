@@ -13,6 +13,8 @@
       An instance method call failed. The implementation of %s#%s method is not found.
       [After]
       An instance method call failed. %s#%s method is not found.
+  [New Features]
+    * Add call_instance_method_no_mortal native API.
 
 0.990067 2025-06-13
   [Incompatible Changes]

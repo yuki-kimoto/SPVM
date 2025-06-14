@@ -1257,7 +1257,7 @@ Calls the method I<method> given the L<width of the argument|SPVM::Document::Nat
 
 If the method throws an exception, returns a basic type ID of an error class. Otherwise, returns 0.
 
-C<stack[0]> is set to the return value of the method.
+C<stack[0].oval> is set to the return value of the method.
 
 This native API should not be used unless special purposes are intended. Normally, use L</"call_method"> native API.
 
@@ -2590,6 +2590,20 @@ Creates a new L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> with 
 
 This native API is intended for use by browser applications that want to implement a security sandbox.
 
+=head2 call_instance_method_no_mortal
+
+C<int32_t (*call_instance_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);>
+
+Call an instance method given the method name I<method_name>, the L<width of the argument|SPVM::Document::NativeClass/"Arguments Width"> I<args_width>
+
+C<stack[0].oval> must be a invocant.
+
+If the method throws an exception, returns a basic type ID of an error class. Otherwise, returns 0.
+
+C<stack[0].oval> is set to the return value of the method.
+
+This native API should not be used unless special purposes are intended. Normally, use L</"call_instance_method"> native API.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2825,6 +2839,8 @@ Native APIs have its IDs.
   228 get_basic_type_name_in_version_from
   229 set_command_info_warning
   230 destroy_cache_class_vars
+  231 new_stack_with_all_method_call_permitted
+  232 call_instance_method_no_mortal
 
 =head1 Constant Values
 
