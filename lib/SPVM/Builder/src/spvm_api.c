@@ -4906,7 +4906,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   }
   else {
     error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
-    if (error_id) {
+    if (__builtin_expect(error_id, 0)) {
       goto END_OF_FUNC;
     }
   }
