@@ -5667,10 +5667,10 @@ inline static int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_V
   void* object = stack[0].oval;
   
   void* method = NULL;
-  if (object) {
+  if (__builtin_expect(!!object, 1)) {
     method = SPVM_API_get_instance_method(env, stack, object, method_name);
     
-    if (method) {
+    if (__builtin_expect(!!method, 1)) {
       error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal);
     }
     else {
