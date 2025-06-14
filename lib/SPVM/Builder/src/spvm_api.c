@@ -42,6 +42,7 @@
 #include "spvm_api_mutex.h"
 #include "spvm_mutex.h"
 #include "spvm_utf8.h"
+#include "spvm_type.h"
 
 static const char* FILE_NAME = "spvm_api.c";
 
@@ -450,7 +451,7 @@ static void SPVM_API_destroy_class_vars_common(SPVM_ENV* env, SPVM_VALUE* stack,
       int32_t class_var_type_dimension = class_var->type_dimension;
       int32_t class_var_type_flag = class_var->type_flag;
       int32_t class_var_is_cache = class_var->is_cache;
-      int32_t class_var_type_is_object = SPVM_API_TYPE_is_object_type(runtime, class_var_basic_type, class_var_type_dimension, class_var_type_flag);
+      int32_t class_var_type_is_object = SPVM_API_is_object_type(runtime, class_var_basic_type, class_var_type_dimension, class_var_type_flag);
       
       int32_t do_free = 0;
       if (only_cache) {
@@ -844,7 +845,7 @@ int8_t SPVM_API_get_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -890,7 +891,7 @@ int16_t SPVM_API_get_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, c
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -940,7 +941,7 @@ int32_t SPVM_API_get_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -994,7 +995,7 @@ int64_t SPVM_API_get_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, co
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1052,7 +1053,7 @@ float SPVM_API_get_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1114,7 +1115,7 @@ double SPVM_API_get_class_var_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, c
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1180,7 +1181,7 @@ SPVM_OBJECT* SPVM_API_get_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* st
     return 0;
   };
   
-  int32_t is_object_type = SPVM_API_TYPE_is_object_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_object_type = SPVM_API_is_object_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1223,7 +1224,7 @@ void SPVM_API_set_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const
     return;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1286,7 +1287,7 @@ void SPVM_API_set_class_var_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, cons
     return;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1345,7 +1346,7 @@ void SPVM_API_set_class_var_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const 
     return;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1400,7 +1401,7 @@ void SPVM_API_set_class_var_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const
     return;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1451,7 +1452,7 @@ void SPVM_API_set_class_var_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, cons
     return;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1498,7 +1499,7 @@ void SPVM_API_set_class_var_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
     return;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1541,7 +1542,7 @@ void SPVM_API_set_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
     return;
   };
   
-  int32_t is_object_type = SPVM_API_TYPE_is_object_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
+  int32_t is_object_type = SPVM_API_is_object_type(runtime, class_var->basic_type, class_var->type_dimension, class_var->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1683,7 +1684,7 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1697,7 +1698,7 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1740,7 +1741,7 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1754,7 +1755,7 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1801,7 +1802,7 @@ int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1815,7 +1816,7 @@ int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1866,7 +1867,7 @@ int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1880,7 +1881,7 @@ int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -1935,7 +1936,7 @@ float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -1949,7 +1950,7 @@ float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -2008,7 +2009,7 @@ double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -2022,7 +2023,7 @@ double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -2085,7 +2086,7 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -2099,7 +2100,7 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
     return NULL;
   };
   
-  int32_t is_object_type = SPVM_API_TYPE_is_object_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_object_type = SPVM_API_is_object_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -2134,7 +2135,7 @@ SPVM_OBJECT** SPVM_API_get_field_object_ref_by_name(SPVM_ENV* env, SPVM_VALUE* s
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -2149,7 +2150,7 @@ SPVM_OBJECT** SPVM_API_get_field_object_ref_by_name(SPVM_ENV* env, SPVM_VALUE* s
     return NULL;
   };
   
-  int32_t is_object_type = SPVM_API_TYPE_is_object_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_object_type = SPVM_API_is_object_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -2230,7 +2231,7 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -2244,7 +2245,7 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     return;
   }
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -2304,7 +2305,7 @@ void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -2318,7 +2319,7 @@ void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
     return;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -2374,7 +2375,7 @@ void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -2388,7 +2389,7 @@ void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
     return;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -2440,7 +2441,7 @@ void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -2454,7 +2455,7 @@ void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     return;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -2502,7 +2503,7 @@ void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -2516,7 +2517,7 @@ void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
     return;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -2560,7 +2561,7 @@ void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -2574,7 +2575,7 @@ void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     return;
   };
   
-  int32_t is_numeric_type = SPVM_API_TYPE_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -2614,7 +2615,7 @@ void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   int32_t object_type_dimension = object->type_dimension;
   
-  int32_t object_is_class_type = SPVM_API_TYPE_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
   
   if (!object_is_class_type) {
     *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
@@ -2629,7 +2630,7 @@ void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   };
   
   
-  int32_t is_object_type = SPVM_API_TYPE_is_object_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  int32_t is_object_type = SPVM_API_is_object_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
   
   int32_t is_invalid_type = 0;
   
@@ -2821,7 +2822,7 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
       SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
       int32_t element_type_dimension = 0;
       int32_t type_flag = 0;
-      is_object_array = SPVM_API_TYPE_is_object_type(env->runtime, object_basic_type, element_type_dimension, type_flag);
+      is_object_array = SPVM_API_is_object_type(env->runtime, object_basic_type, element_type_dimension, type_flag);
     }
     else if (object_type_dimension > 1) {
       is_object_array = 1;
@@ -4571,7 +4572,7 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM
       isa = 0;
     }
     else {
-      isa = SPVM_API_TYPE_can_assign(env->runtime, basic_type, type_dimension, 0, object_basic_type, object_type_dimension, 0);
+      isa = SPVM_API_can_assign(env->runtime, basic_type, type_dimension, 0, object_basic_type, object_type_dimension, 0);
     }
   }
   
@@ -4762,7 +4763,7 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     void* method_return_basic_type = method->return_basic_type;
     int32_t method_return_type_dimension = method->return_type_dimension;
     int32_t method_return_type_flag = method->return_type_flag;
-    int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
+    int32_t method_return_type_is_object = SPVM_API_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
   
     // Increment ref count of return value
     if (!error_id) {
@@ -4833,7 +4834,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
     SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
     
-    int32_t arg_type_width = SPVM_API_TYPE_get_type_width(runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
+    int32_t arg_type_width = SPVM_API_get_type_width(runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
     args_type_width += arg_type_width;
     
     if (!arg->is_optional) {
@@ -4843,7 +4844,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     // Type check
     int32_t arg_stack_index = arg->stack_index;
     if (arg_stack_index < args_width) {
-      int32_t arg_is_object_type = SPVM_API_TYPE_is_object_type(env->runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
+      int32_t arg_is_object_type = SPVM_API_is_object_type(env->runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
       if (arg_is_object_type) {
         SPVM_OBJECT* obj_arg = stack[arg_stack_index].oval;
         
@@ -4913,7 +4914,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   void* method_return_basic_type = method->return_basic_type;
   int32_t method_return_type_dimension = method->return_type_dimension;
   int32_t method_return_type_flag = method->return_type_flag;
-  int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
+  int32_t method_return_type_is_object = SPVM_API_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
   
   if (mortal && method_return_type_is_object) {
     SPVM_API_push_mortal(env, stack, stack[0].oval);
@@ -5284,7 +5285,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             void* field_basic_type = field->basic_type;
             int32_t field_type_dimension = field->type_dimension;
             int32_t field_type_flag = field->type_flag;
-            int32_t field_type_is_released_object = SPVM_API_TYPE_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
+            int32_t field_type_is_released_object = SPVM_API_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
             
             if (field_type_is_released_object) {
               SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)released_object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
@@ -5711,3 +5712,117 @@ int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, const ch
   
   return error_id;
 }
+
+/*
+  Type native APIs
+*/
+
+int32_t SPVM_API_is_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_object_type = SPVM_TYPE_is_object_type(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return is_object_type;
+}
+
+int32_t SPVM_API_is_any_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_any_object_type = SPVM_TYPE_is_any_object_type(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return is_any_object_type;
+}
+
+int32_t SPVM_API_is_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_object_array_type = SPVM_TYPE_is_object_array_type(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return is_object_array_type;
+}
+
+int32_t SPVM_API_is_any_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_any_object_array_type = SPVM_TYPE_is_any_object_array_type(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return is_any_object_array_type;
+}
+
+int32_t SPVM_API_get_type_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t type_width = SPVM_TYPE_get_type_width(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return type_width;
+}
+
+int32_t SPVM_API_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, SPVM_RUNTIME_BASIC_TYPE* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag) {
+  
+  int32_t isa = 0;
+  
+  char assinability_key[256] = {0};
+  snprintf(assinability_key, 255, "%d-%d-%d-%d-%d-%d", dist_basic_type->id, dist_type_dimension, dist_type_flag, src_basic_type->id, src_type_dimension, src_type_flag);
+  
+  SPVM_MUTEX* runtime_mutex = runtime->mutex;
+  
+  SPVM_MUTEX_reader_lock(runtime_mutex);
+  
+  int32_t can_assign = (intptr_t)SPVM_HASH_get(runtime->assignment_requirement_symtable, assinability_key, strlen(assinability_key));
+  
+  SPVM_MUTEX_reader_unlock(runtime_mutex);
+  
+  if (can_assign > 0) {
+    isa = 1;
+  }
+  else if (can_assign < 0) {
+    isa = 0;
+  }
+  else {
+    
+    SPVM_COMPILER* compiler = runtime->compiler;
+    
+    isa = SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion(
+      compiler,
+      dist_basic_type->id, dist_type_dimension, 0,
+      src_basic_type->id, src_type_dimension, 0,
+      NULL
+    );
+    
+    SPVM_MUTEX_lock(runtime_mutex);
+    
+    SPVM_HASH_set(runtime->assignment_requirement_symtable, assinability_key, strlen(assinability_key), (void*)(intptr_t)(isa ? 1 : -1));
+    
+    SPVM_MUTEX_unlock(runtime_mutex);
+  }
+  
+  return isa;
+}
+
+int32_t SPVM_API_is_numeric_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_numeric_type = SPVM_TYPE_is_numeric_type(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return is_numeric_type;
+}
+
+int32_t SPVM_API_is_class_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_class_type = SPVM_TYPE_is_class_type(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return is_class_type;
+}
+
+/*
+  The end of type native APIs
+*/
+
