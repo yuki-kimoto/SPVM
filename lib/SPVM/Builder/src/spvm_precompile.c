@@ -19,7 +19,6 @@
 #include "spvm_api_field.h"
 #include "spvm_api_method.h"
 #include "spvm_api_arg.h"
-#include "spvm_api_type.h"
 #include "spvm_string_buffer.h"
 #include "spvm_opcode.h"
 #include "spvm_runtime_class_var.h"
@@ -27,6 +26,8 @@
 #include "spvm_runtime_method.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_string.h"
+#include "spvm_type.h"
+#include "spvm_runtime.h"
 
 SPVM_PRECOMPILE* SPVM_PRECOMPILE_new(void) {
   SPVM_PRECOMPILE* precompile = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_PRECOMPILE));
@@ -5067,7 +5068,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_RUNTIME_BASIC_TYPE* current_method_return_basic_type = current_method->return_basic_type;
   int32_t current_method_return_type_dimension = current_method->return_type_dimension;
   int32_t current_method_return_type_flag =current_method->return_type_flag;
-  int32_t method_return_type_is_object = SPVM_API_is_object_type(runtime, current_method_return_basic_type, current_method_return_type_dimension, current_method_return_type_flag);
+  int32_t method_return_type_is_object = SPVM_TYPE_is_object_type(runtime->compiler, current_method_return_basic_type->id, current_method_return_type_dimension, current_method_return_type_flag);
   if (method_return_type_is_object) {
     SPVM_STRING_BUFFER_add(string_buffer, "  if (stack[0].oval != NULL) {\n"
                                           "    env->api->internal->dec_ref_count(env, stack, stack[0].oval);\n"

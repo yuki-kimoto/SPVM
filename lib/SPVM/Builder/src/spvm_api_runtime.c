@@ -31,7 +31,7 @@
 #include "spvm_runtime_arg.h"
 #include "spvm_precompile.h"
 #include "spvm_api.h"
-#include "spvm_api_type.h"
+#include "spvm_type.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_api_basic_type.h"
 #include "spvm_mutex.h"
@@ -203,7 +203,7 @@ int32_t SPVM_API_RUNTIME_is_any_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_
 int32_t SPVM_API_RUNTIME_is_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t dimension, int32_t flag) {
   
   if (dimension > 0) {
-    if (SPVM_API_is_object_type(runtime, basic_type, dimension - 1, flag)) {
+    if (SPVM_TYPE_is_object_type(runtime->compiler, basic_type->id, dimension - 1, flag)) {
       return 1;
     }
     else {
