@@ -597,29 +597,7 @@ void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* sta
 
 void SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
   
-  *error_id = 0;
-  
-  SPVM_OBJECT* object = stack[0].oval;
-  
-  if (!object) {
-    *error_id = SPVM_API_die(env, stack, "The invocant must be defined.", func_name, file, line);
-    return;
-  };
-  
-  if (object->type_dimension > 0) {
-    *error_id = SPVM_API_die(env, stack, "The type dimension of the invocant must be equal to 0.", func_name, file, line);
-    return;
-  };
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_instance_method(env, stack, object, method_name);
-  
-  if (!method) {
-    const char* basic_type_name = SPVM_API_get_object_basic_type_name(env, stack, object);
-    *error_id = SPVM_API_die(env, stack, "%s#%s instance method is not found in the invocant class or its super classes.", basic_type_name, method_name, func_name, file, line);
-    return;
-  };
-  
-  *error_id = SPVM_API_call_method(env, stack, method, args_width);
+  *error_id = SPVM_API_call_instance_method(env, stack, method_name, args_width);
   
   if (*error_id) {
     const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));

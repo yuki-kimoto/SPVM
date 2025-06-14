@@ -2772,7 +2772,9 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
         return 0;
       }
       
-      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "TestCase::NativeAPI#not_found instance method is not found in the invocant class or its super classes.")) {
+      spvm_warn("%s", env->get_chars(env, stack, env->get_exception(env, stack)));
+      
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "n instance method call failed. TestCase::NativeAPI#not_found method is not found.")) {
         stack[0].ival = 0;
         return 0;
       }
