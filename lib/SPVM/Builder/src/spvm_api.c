@@ -5681,7 +5681,7 @@ int32_t SPVM_API_set_command_info_warning(SPVM_ENV* env, SPVM_VALUE* stack, int3
   return 0;
 }
 
-int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
+inline static int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal) {
   
   int32_t error_id = 0;
   
@@ -5692,7 +5692,7 @@ int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
     method = SPVM_API_get_instance_method(env, stack, object, method_name);
     
     if (method) {
-      error_id = SPVM_API_call_method_no_mortal(env, stack, method, args_width);
+      error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal);
     }
     else {
       int32_t scope_id = env->enter_scope(env, stack);
@@ -5712,6 +5712,14 @@ int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
     env->set_exception(env, stack, exception);
     error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
+  
+  return error_id;
+}
+
+int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
+  
+  int32_t mortal = 0;
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal);
   
   return error_id;
 }
