@@ -4911,13 +4911,15 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     }
   }
   
-  void* method_return_basic_type = method->return_basic_type;
-  int32_t method_return_type_dimension = method->return_type_dimension;
-  int32_t method_return_type_flag = method->return_type_flag;
-  int32_t method_return_type_is_object = SPVM_API_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
-  
-  if (mortal && method_return_type_is_object) {
-    SPVM_API_push_mortal(env, stack, stack[0].oval);
+  if (__builtin_expect(mortal, 0)) {
+    void* method_return_basic_type = method->return_basic_type;
+    int32_t method_return_type_dimension = method->return_type_dimension;
+    int32_t method_return_type_flag = method->return_type_flag;
+    int32_t method_return_type_is_object = SPVM_API_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
+    
+    if (method_return_type_is_object) {
+      SPVM_API_push_mortal(env, stack, stack[0].oval);
+    }
   }
   
   END_OF_FUNC:
