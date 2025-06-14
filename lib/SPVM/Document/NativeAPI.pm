@@ -2604,6 +2604,12 @@ C<stack[0].oval> is set to the return value of the method.
 
 This native API should not be used unless special purposes are intended. Normally, use L</"call_instance_method"> native API.
 
+=head2 call_instance_method
+
+C<int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);>
+
+Calls L</"call_method_no_mortal"> native API and if the type of the its return value is an object type, it is push to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2841,6 +2847,7 @@ Native APIs have its IDs.
   230 destroy_cache_class_vars
   231 new_stack_with_all_method_call_permitted
   232 call_instance_method_no_mortal
+  233 call_instance_method
 
 =head1 Constant Values
 

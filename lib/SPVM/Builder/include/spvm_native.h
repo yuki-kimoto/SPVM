@@ -330,6 +330,7 @@ struct spvm_env {
   void (*destroy_cache_class_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
   SPVM_VALUE* (*new_stack_with_all_method_call_permitted)(SPVM_ENV* env);
   int32_t (*call_instance_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);
+  int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);
 };
 
 struct spvm_env_api {
