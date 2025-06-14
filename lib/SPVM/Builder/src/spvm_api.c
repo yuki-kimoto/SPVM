@@ -4798,26 +4798,27 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
 
 int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal) {
   
+  int32_t error_id = 0;
+  
   SPVM_RUNTIME* runtime = env->runtime;
   
-  int32_t error_id = 0;
   stack[SPVM_API_C_STACK_INDEX_ARGS_WIDTH].ival = args_width;
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival++;
   
   SPVM_RUNTIME_BASIC_TYPE* current_basic_type = method->current_basic_type;
   
   int32_t max_call_depth = 1000;
-  if (stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival > max_call_depth) {
+  if (__builtin_expect(stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival > max_call_depth, 0)) {
     error_id = SPVM_API_die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d.", max_call_depth, __func__, FILE_NAME, __LINE__);
     goto END_OF_FUNC;
   }
-  else if (method->is_not_permitted && !stack[SPVM_API_C_STACK_INDEX_ALL_METHOD_CALL_PERMITTED].ival) {
+  else if (__builtin_expect(method->is_not_permitted && !stack[SPVM_API_C_STACK_INDEX_ALL_METHOD_CALL_PERMITTED].ival, 0)) {
     SPVM_API_die(env, stack, "The call to %s#%s method is not permmited.", current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
     error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_METHOD_CALL_NOT_PERMITTED_CLASS;
     goto END_OF_FUNC;
   }
   
-  if (method->is_init_method) {
+  if (__builtin_expect(method->is_init_method, 0)) {
     if (current_basic_type->initialized) {
       goto END_OF_FUNC;
     }
