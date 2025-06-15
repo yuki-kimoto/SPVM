@@ -5719,6 +5719,15 @@ int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, const ch
   Type native APIs
 */
 
+int32_t SPVM_API_is_numeric_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_numeric_type = SPVM_TYPE_is_numeric_type(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return is_numeric_type;
+}
+
 int32_t SPVM_API_is_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
   
   if (type_dimension > 0) {
@@ -5730,6 +5739,15 @@ int32_t SPVM_API_is_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* 
   else {
     return 0;
   }
+}
+
+int32_t SPVM_API_is_class_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_class_type = SPVM_TYPE_is_class_type(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return is_class_type;
 }
 
 int32_t SPVM_API_is_any_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
@@ -5769,24 +5787,6 @@ int32_t SPVM_API_get_type_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* 
   int32_t type_width = SPVM_TYPE_get_type_width(compiler, basic_type->id, type_dimension, type_flag);
   
   return type_width;
-}
-
-int32_t SPVM_API_is_numeric_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
-  
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  int32_t is_numeric_type = SPVM_TYPE_is_numeric_type(compiler, basic_type->id, type_dimension, type_flag);
-  
-  return is_numeric_type;
-}
-
-int32_t SPVM_API_is_class_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
-  
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  int32_t is_class_type = SPVM_TYPE_is_class_type(compiler, basic_type->id, type_dimension, type_flag);
-  
-  return is_class_type;
 }
 
 int32_t SPVM_API_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, SPVM_RUNTIME_BASIC_TYPE* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag) {
