@@ -5771,6 +5771,24 @@ int32_t SPVM_API_get_type_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* 
   return type_width;
 }
 
+int32_t SPVM_API_is_numeric_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_numeric_type = SPVM_TYPE_is_numeric_type(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return is_numeric_type;
+}
+
+int32_t SPVM_API_is_class_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  SPVM_COMPILER* compiler = runtime->compiler;
+  
+  int32_t is_class_type = SPVM_TYPE_is_class_type(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return is_class_type;
+}
+
 int32_t SPVM_API_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, SPVM_RUNTIME_BASIC_TYPE* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag) {
   
   int32_t isa = 0;
@@ -5811,24 +5829,6 @@ int32_t SPVM_API_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* dist
   }
   
   return isa;
-}
-
-int32_t SPVM_API_is_numeric_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
-  
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  int32_t is_numeric_type = SPVM_TYPE_is_numeric_type(compiler, basic_type->id, type_dimension, type_flag);
-  
-  return is_numeric_type;
-}
-
-int32_t SPVM_API_is_class_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
-  
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  int32_t is_class_type = SPVM_TYPE_is_class_type(compiler, basic_type->id, type_dimension, type_flag);
-  
-  return is_class_type;
 }
 
 /*
