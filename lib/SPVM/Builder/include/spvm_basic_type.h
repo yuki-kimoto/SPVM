@@ -96,4 +96,6 @@ int32_t SPVM_BASIC_TYPE_is_super_class(SPVM_COMPILER* compiler, int32_t dist_bas
 
 SPVM_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* value, int32_t length);
 
+int32_t SPVM_BASIC_TYPE_is_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id);
+
 #endif

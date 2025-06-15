@@ -369,3 +369,23 @@ SPVM_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compiler, SPVM_B
     return string;
   }
 }
+
+int32_t SPVM_BASIC_TYPE_is_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id) {
+  
+  if (SPVM_BASIC_TYPE_is_string_type(compiler, basic_type_id)) {
+    return 1;
+  }
+  else if (SPVM_BASIC_TYPE_is_class_type(compiler, basic_type_id)) {
+    return 1;
+  }
+  else if (SPVM_BASIC_TYPE_is_interface_type(compiler, basic_type_id)) {
+    return 1;
+  }
+  else if (SPVM_BASIC_TYPE_is_any_object_type(compiler, basic_type_id)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+  
+}
