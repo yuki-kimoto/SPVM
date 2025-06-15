@@ -5734,11 +5734,12 @@ int32_t SPVM_API_is_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* 
 
 int32_t SPVM_API_is_any_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
   
-  SPVM_COMPILER* compiler = runtime->compiler;
-  
-  int32_t is_any_object_type = SPVM_TYPE_is_any_object_type(compiler, basic_type->id, type_dimension, type_flag);
-  
-  return is_any_object_type;
+  if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT && type_dimension == 0 && !(type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
 }
 
 int32_t SPVM_API_is_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
