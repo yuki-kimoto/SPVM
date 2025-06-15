@@ -5781,6 +5781,16 @@ int32_t SPVM_API_is_any_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BA
   }
 }
 
+int32_t SPVM_API_is_mulnum_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM && type_dimension == 0 && !(type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 int32_t SPVM_API_get_type_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
   
   SPVM_COMPILER* compiler = runtime->compiler;
