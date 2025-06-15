@@ -983,6 +983,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     
     runtime_basic_type->is_pointer = basic_type->is_pointer;
     
+    runtime_basic_type->is_object_type = SPVM_BASIC_TYPE_is_object_type(compiler, basic_type->id);
+    
     if (basic_type->parent) {
       SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->parent->name, strlen(basic_type->parent->name));
       runtime_basic_type->parent = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, parent_basic_type->id);

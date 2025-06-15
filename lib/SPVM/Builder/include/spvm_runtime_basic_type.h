@@ -35,6 +35,7 @@ struct spvm_runtime_basic_type {
   int8_t is_anon;
   int8_t is_pointer;
   int8_t initialized;
+  int8_t is_object_type;
 };
 
 #endif

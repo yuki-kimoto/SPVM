@@ -1,3 +1,7 @@
+0.990068 2025-06-16
+  [Internal Changes]
+    * Add is_object_type member variable to spvm_runtime_basic_type.h.
+  
 0.990067 2025-06-13
   [Exception Message Changes]
     * Change an exception message when instance method call without invocant.
