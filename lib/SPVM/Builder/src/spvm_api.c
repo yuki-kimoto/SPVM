@@ -3018,12 +3018,7 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
 
 int32_t SPVM_API_enter_scope(SPVM_ENV* env, SPVM_VALUE* stack){
   
-
-  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
-  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
-  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
-  
-  int32_t mortal_stack_top = *current_mortal_stack_top_ptr ;
+  int32_t mortal_stack_top = *(int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
   
   return mortal_stack_top;
 }
