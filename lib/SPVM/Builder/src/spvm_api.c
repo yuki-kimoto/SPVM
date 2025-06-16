@@ -3671,7 +3671,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
 void SPVM_API_make_read_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
   SPVM_RUNTIME_BASIC_TYPE* string_basic_type = SPVM_API_get_object_basic_type(env, stack, string);
   if (string && string_basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && string->type_dimension == 0) {
-    string->flag |= SPVM_OBJECT_C_FLAG_IS_READ_ONLY;
+    __sync_fetch_and_or(&string->flag, SPVM_OBJECT_C_FLAG_IS_READ_ONLY);
   }
 }
 
@@ -5293,15 +5293,7 @@ void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     int32_t ref_count = SPVM_API_get_ref_count(env, stack, object);
     assert(ref_count >= 0);
     
-    SPVM_RUNTIME* runtime = env->runtime;
-    
-    SPVM_MUTEX* runtime_mutex_atomic = runtime->mutex_atomic;
-    
-    {
-      SPVM_MUTEX_lock(runtime_mutex_atomic);
-      object->ref_count++;
-      SPVM_MUTEX_unlock(runtime_mutex_atomic);
-    }
+    __sync_fetch_and_add(&object->ref_count, 1);
   }
 }
 
@@ -5313,17 +5305,8 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     int32_t ref_count = SPVM_API_get_ref_count(env, stack, object);
     assert(ref_count > 0);
     
-    SPVM_RUNTIME* runtime = env->runtime;
-    
-    SPVM_MUTEX* runtime_mutex_atomic = runtime->mutex_atomic;
-    
-    {
-      SPVM_MUTEX_lock(runtime_mutex_atomic);
-      object->ref_count--;
-      SPVM_MUTEX_unlock(runtime_mutex_atomic);
-    }
+    __sync_fetch_and_add(&object->ref_count, -1);
   }
-  
 }
 
 int32_t SPVM_API_get_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
