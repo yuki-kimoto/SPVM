@@ -2,6 +2,7 @@
   [Internal Chnages]
     * Use __sync_fetch_and_add to get and set runtime memory_blocks_count member variable.
     * Use __sync_fetch_and_add to get and set object ref_count member variable.
+    * Improve isa performance when types are exactly mached.
   [Changes]
     * make_read_only operator becomes thread safe.
     * set_no_free native API becomes thread safe.]
