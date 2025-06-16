@@ -579,6 +579,29 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_type_ids(SPVM_ENV* env, SPVM
     }
   }
   
+  {
+    void* basic_type = env->get_basic_type(env, stack, "Complex_2d");
+    
+    {
+      int32_t can_assign = env->api->type->can_assign(env->runtime, basic_type, 1, SPVM_NATIVE_C_TYPE_FLAG_REF, basic_type, 1, SPVM_NATIVE_C_TYPE_FLAG_REF);
+      
+      if (!can_assign) {
+        stack[0].ival = 0;
+        return 0;
+      }
+    }
+    
+    {
+      int32_t can_assign = env->api->type->can_assign(env->runtime, basic_type, 1, SPVM_NATIVE_C_TYPE_FLAG_REF, basic_type, 1, 0);
+      
+      if (can_assign) {
+        stack[0].ival = 0;
+        return 0;
+      }
+    }
+    
+  }
+  
   stack[0].ival = 1;
   
   return 0;

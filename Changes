@@ -4,7 +4,10 @@
     * Use __sync_fetch_and_add to get and set object ref_count member variable.
   [Changes]
     * make_read_only operator becomes thread safe.
-    * set_no_free native API becomes thread safe.
+    * set_no_free native API becomes thread safe.]
+  [Bug Fix]
+    Fix bugs that can_assign type API did not work with type flags.
+    
 0.990068 2025-06-16
   [Performance Improvement]
     * Improve peformance of method call, entering scope, leaving scope.
