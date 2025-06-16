@@ -4369,18 +4369,11 @@ void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   void* block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged((size_t)size);
   
   if (block) {
-    SPVM_MUTEX* runtime_mutex_atomic = runtime->mutex_atomic;
-    
-    SPVM_MUTEX_lock(runtime_mutex_atomic);
-    
-    runtime->memory_blocks_count++;
+    int32_t save_memory_blocks_count = __sync_fetch_and_add(&runtime->memory_blocks_count, 1);
     
 #ifdef SPVM_DEBUG_MEMORY
-    fprintf(runtime->spvm_stderr, "[Debug]Function : new_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d.\n", block, stack, runtime->memory_blocks_count);
+    fprintf(runtime->spvm_stderr, "[Debug]Function : new_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d.\n", block, stack, save_memory_blocks_count + 1);
 #endif
-    
-    SPVM_MUTEX_unlock(runtime_mutex_atomic);
-    
   }
   
   return block;
@@ -4394,18 +4387,12 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
   if (block) {
     SPVM_ALLOCATOR_free_memory_block_unmanaged(block);
     
-    SPVM_MUTEX* runtime_mutex_atomic = runtime->mutex_atomic;
-    {
-      SPVM_MUTEX_lock(runtime_mutex_atomic);
-      
-      runtime->memory_blocks_count--;
-      
+    int32_t save_memory_blocks_count = __sync_fetch_and_add(&runtime->memory_blocks_count, -1);
+    
 #ifdef SPVM_DEBUG_MEMORY
-      fprintf(runtime->spvm_stderr, "[Debug]Function : free_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d.\n", block, stack, runtime->memory_blocks_count);
+    fprintf(runtime->spvm_stderr, "[Debug]Function : free_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d.\n", block, stack, save_memory_blocks_count - 1);
 #endif
       
-      SPVM_MUTEX_unlock(runtime_mutex_atomic);
-    }
   }
 }
 
