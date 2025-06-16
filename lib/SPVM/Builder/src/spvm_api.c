@@ -4828,36 +4828,19 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     }
   }
   
+  // Set default values for optional arguments
   int32_t args_length = method->args_length;
-  int32_t args_type_width = 0;
-  int32_t required_args_type_width = 0;
   for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
     SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
     
-    int32_t arg_type_width = SPVM_API_get_type_width(runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
-    args_type_width += arg_type_width;
-    
-    if (!arg->is_optional) {
-      required_args_type_width += arg_type_width;
-    }
-    
-    // Set a default value of an optional argument
     int32_t arg_stack_index = arg->stack_index;
     if (arg_stack_index >= args_width) {
       if (arg->is_optional) {
         stack[arg_stack_index] = arg->default_value;
       }
-    }
-  }
-  
-  if (args_width > args_type_width) {
-    args_width = args_type_width;
-  }
-  
-  if (args_width < required_args_type_width) {
-    error_id = SPVM_API_die(env, stack, "Too few arguments are passed to %s#%s method.", current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
-    if (error_id) {
-      goto END_OF_FUNC;
+      else {
+        memset(&stack[arg_stack_index], 0, sizeof(SPVM_VALUE));
+      }
     }
   }
   
