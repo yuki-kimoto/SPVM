@@ -4764,9 +4764,9 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   int32_t method_return_type_dimension = method->return_type_dimension;
   int32_t method_return_type_flag = method->return_type_flag;
   int32_t method_return_type_is_object = SPVM_API_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
-
+  
   // Increment ref count of return value
-  if (!error_id) {
+  if (__builtin_expect(!error_id,1)) {
     if (method_return_type_is_object) {
       SPVM_OBJECT* return_object = *(SPVM_OBJECT**)&stack[0];
       if (return_object != NULL) {
@@ -4778,7 +4778,7 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   SPVM_API_leave_scope(env, stack, native_mortal_stack_top);
   
   // Decrement ref count of return value
-  if (!error_id) {
+  if (__builtin_expect(!error_id, 1)) {
     if (method_return_type_is_object) {
       SPVM_OBJECT* return_object = *(SPVM_OBJECT**)&stack[0];
       if (return_object != NULL) {
@@ -4790,7 +4790,7 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   END_OF_FUNC:
   
   // Set an default exception message
-  if (error_id) {
+  if (__builtin_expect(error_id, 0)) {
     if (SPVM_API_get_exception(env, stack) == NULL) {
       void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Error");
       SPVM_API_set_exception(env, stack, exception);
