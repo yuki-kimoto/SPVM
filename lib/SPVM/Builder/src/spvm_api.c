@@ -3253,13 +3253,13 @@ void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const 
       fprintf(spvm_stderr, "\n  %s->%s at %s line %d\n", basic_type_name, method_name, file, line);
     }
     else {
-      int32_t scope_id = env->enter_scope(env, stack);
+      int32_t scope_id = SPVM_API_enter_scope(env, stack);
       void* obj_type_name = env->get_type_name(env, stack, string);
       const char* type_name = env->get_chars(env, stack, obj_type_name);
       
       fprintf(spvm_stderr, "%s", type_name);
       fprintf(spvm_stderr, "(0x%" PRIxPTR ")\n  %s->%s at %s line %d\n", (uintptr_t)string, basic_type_name, method_name, file, line);
-      env->leave_scope(env, stack, scope_id);
+      SPVM_API_leave_scope(env, stack, scope_id);
     }
   }
   else {
@@ -5663,13 +5663,13 @@ inline static int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_V
       error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal);
     }
     else {
-      int32_t scope_id = env->enter_scope(env, stack);
+      int32_t scope_id = SPVM_API_enter_scope(env, stack);
       void* obj_invocant_type_name = env->get_type_name(env, stack, object);
       const char* invocant_type_name = env->get_chars(env, stack, obj_invocant_type_name);
       
       char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
       snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND], invocant_type_name, method_name);
-      env->leave_scope(env, stack, scope_id);
+      SPVM_API_leave_scope(env, stack, scope_id);
       void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
       env->set_exception(env, stack, exception);
       error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
