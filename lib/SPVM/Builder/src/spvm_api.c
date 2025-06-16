@@ -4839,7 +4839,8 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         stack[arg_stack_index] = arg->default_value;
       }
       else {
-        memset(&stack[arg_stack_index], 0, sizeof(SPVM_VALUE));
+        int32_t arg_type_width = SPVM_API_get_type_width(runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
+        memset(&stack[arg_stack_index], 0, sizeof(SPVM_VALUE) * arg_type_width);
       }
     }
   }
