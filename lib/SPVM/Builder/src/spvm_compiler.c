@@ -936,6 +936,10 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         }
         
         runtime_method->required_args_length = method->required_args_length;
+        
+        if (SPVM_TYPE_is_object_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
+          runtime_method->return_type_is_object = 1;
+        }
       }
       runtime_basic_type->methods = runtime_methods;
       runtime_basic_type->methods_length = basic_type->methods->length;

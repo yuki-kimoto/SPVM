@@ -41,6 +41,7 @@ struct spvm_runtime_method {
   int8_t is_precompile_fallback;
   int8_t is_not_permitted;
   int8_t has_object_args;
+  int8_t return_type_is_object;
 };
 
 #endif
