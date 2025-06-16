@@ -4787,13 +4787,15 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     }
   }
   
-  // Set default exception message
-  if (error_id && SPVM_API_get_exception(env, stack) == NULL) {
-    void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Error");
-    SPVM_API_set_exception(env, stack, exception);
-  }
-  
   END_OF_FUNC:
+  
+  // Set an default exception message
+  if (error_id) {
+    if (SPVM_API_get_exception(env, stack) == NULL) {
+      void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Error");
+      SPVM_API_set_exception(env, stack, exception);
+    }
+  }
   
   return error_id;
 }
