@@ -3016,13 +3016,6 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
   return elem_size;
 }
 
-int32_t SPVM_API_enter_scope(SPVM_ENV* env, SPVM_VALUE* stack){
-  
-  int32_t mortal_stack_top = *(int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
-  
-  return mortal_stack_top;
-}
-
 SPVM_OBJECT* SPVM_API_get_type_name_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   assert(object);
@@ -4959,6 +4952,13 @@ void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mor
   }
   
   *current_mortal_stack_top_ptr = original_mortal_stack_top;
+}
+
+int32_t SPVM_API_enter_scope(SPVM_ENV* env, SPVM_VALUE* stack){
+  
+  int32_t mortal_stack_top = *(int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+  
+  return mortal_stack_top;
 }
 
 void SPVM_API_leave_scope_local_removed3(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack_typed_var_index, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
