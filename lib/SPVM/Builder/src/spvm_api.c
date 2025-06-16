@@ -4760,7 +4760,9 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     }
   }
   
-  SPVM_API_leave_scope(env, stack, native_mortal_stack_top);
+  if (*(int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP] > native_mortal_stack_top) {
+    SPVM_API_leave_scope(env, stack, native_mortal_stack_top);
+  }
   
   // Decrement ref count of return value
   if (__builtin_expect(!error_id, 1)) {
@@ -4940,10 +4942,8 @@ void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mor
   
   SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
   int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
-  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
   
-  int32_t mortal_stack_index;
-  for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
+  for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
     
     SPVM_OBJECT** ref = &(*current_mortal_stack_ptr)[mortal_stack_index];
     
