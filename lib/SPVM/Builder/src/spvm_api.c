@@ -4400,14 +4400,7 @@ int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_MUTEX* runtime_mutex_atomic = runtime->mutex_atomic;
-  
-  int32_t memory_blocks_count = 0;
-  {
-    SPVM_MUTEX_reader_lock(runtime_mutex_atomic);
-    memory_blocks_count = runtime->memory_blocks_count;
-    SPVM_MUTEX_reader_unlock(runtime_mutex_atomic);
-  }
+  int32_t memory_blocks_count = runtime->memory_blocks_count;
   
   return memory_blocks_count;
 }

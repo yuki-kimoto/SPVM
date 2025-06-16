@@ -1,3 +1,6 @@
+0.990069 2025-06-16
+  [Internal Chnages]
+    * Use __sync_fetch_and_add to get and set runtime memory_blocks_count member variable.
 0.990068 2025-06-16
   [Performance Improvement]
     * Improve peformance of method call, entering scope, leaving scope.
