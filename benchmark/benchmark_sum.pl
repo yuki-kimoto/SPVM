@@ -16,7 +16,7 @@ use Benchmark qw/timethese cmpthese/;
 
 use SPVM 'MyMath';
 
-my $bench_count = 1000;
+my $bench_count = 3000;
 my $loop_count = 100000;
 my $result = timethese($bench_count, {
   perl_sum => sub {
@@ -48,17 +48,17 @@ sub perl_sum {
 
 =pod a result
 
-Benchmark: timing 1000 iterations of perl_sum, spvm_sum, spvm_sum_native, spvm_sum_precompile...
-  perl_sum:  5 wallclock secs ( 4.98 usr +  0.00 sys =  4.98 CPU) @ 200.80/s (n=1000)
-  spvm_sum:  4 wallclock secs ( 3.45 usr +  0.00 sys =  3.45 CPU) @ 289.86/s (n=1000)
-spvm_sum_native:  0 wallclock secs ( 0.01 usr +  0.00 sys =  0.01 CPU) @ 100000.00/s (n=1000)
+Benchmark: timing 3000 iterations of perl_sum, spvm_sum, spvm_sum_native, spvm_sum_precompile...
+  perl_sum: 15 wallclock secs (14.79 usr +  0.00 sys = 14.79 CPU) @ 202.84/s (n=3000)
+  spvm_sum:  9 wallclock secs ( 9.24 usr +  0.00 sys =  9.24 CPU) @ 324.68/s (n=3000)
+spvm_sum_native:  0 wallclock secs ( 0.03 usr +  0.00 sys =  0.03 CPU) @ 100000.00/s (n=3000)
             (warning: too few iterations for a reliable count)
-spvm_sum_precompile:  0 wallclock secs ( 0.01 usr +  0.00 sys =  0.01 CPU) @ 100000.00/s (n=1000)
+spvm_sum_precompile:  0 wallclock secs ( 0.03 usr +  0.00 sys =  0.03 CPU) @ 100000.00/s (n=3000)
             (warning: too few iterations for a reliable count)
-                        Rate perl_sum spvm_sum spvm_sum_precompile spvm_sum_native
-perl_sum               201/s       --     -31%               -100%           -100%
-spvm_sum               290/s      44%       --               -100%           -100%
-spvm_sum_precompile 100000/s   49700%   34400%                  --              0%
-spvm_sum_native     100000/s   49700%   34400%                  0%              -
+                        Rate perl_sum spvm_sum spvm_sum_native spvm_sum_precompile
+perl_sum               203/s       --     -38%           -100%               -100%
+spvm_sum               325/s      60%       --           -100%               -100%
+spvm_sum_native     100000/s   49200%   30700%              --                  0%
+spvm_sum_precompile 100000/s   49200%   30700%              0%                  --
 
 =cut
