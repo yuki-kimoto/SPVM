@@ -5500,10 +5500,10 @@ int32_t SPVM_API_no_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) 
 void SPVM_API_set_no_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t no_free) {
   
   if (no_free) {
-    object->flag |= SPVM_OBJECT_C_FLAG_NO_FREE;
+    __sync_fetch_and_or(&object->flag, SPVM_OBJECT_C_FLAG_NO_FREE);
   }
   else {
-    object->flag ^= SPVM_OBJECT_C_FLAG_NO_FREE;
+    __sync_fetch_and_xor(&object->flag, SPVM_OBJECT_C_FLAG_NO_FREE);
   }
 }
 
