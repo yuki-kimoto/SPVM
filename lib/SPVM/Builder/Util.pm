@@ -318,7 +318,6 @@ sub get_dependent_files {
   my $spvm_class_rel_file = "$spvm_class_file_without_ext.spvm";
   
   my $spvm_class_file = "$spvm_class_file_without_ext.spvm";
-  push @dependent_files, $spvm_class_file;
   
   my $spvm_version_header_file = &get_spvm_version_header_file;
   push @dependent_files, $spvm_version_header_file;
@@ -389,6 +388,9 @@ sub get_dependent_files {
         push @dependent_files, @resource_native_src_files;
       }
     }
+  }
+  elsif ($category eq 'precompile') {
+    push @dependent_files, $spvm_class_file;
   }
   
   return \@dependent_files;

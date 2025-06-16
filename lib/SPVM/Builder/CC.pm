@@ -613,7 +613,7 @@ sub compile_class {
         }
       }
       
-      my $input_files = [$source_file, $class_file, @native_header_files, @resource_native_header_files, @resource_config_files];
+      my $input_files = [$source_file, @native_header_files, @resource_native_header_files, @resource_config_files];
       
       if (defined $config->file) {
         push @$input_files, $config->file;

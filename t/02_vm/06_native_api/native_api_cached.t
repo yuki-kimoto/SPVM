@@ -137,7 +137,7 @@ system($compile_native_api_prgoram) == 0 or die;
   my $start_native_object_file_mtime;
   $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
-
+  
   my $precompile_object_file;
   my $start_precompile_object_file_mtime;
   $precompile_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.precompile.o";
@@ -145,39 +145,40 @@ system($compile_native_api_prgoram) == 0 or die;
    ok(-f $precompile_object_file);
    $start_precompile_object_file_mtime = (stat $precompile_object_file)[9];
   }
-
+  
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
    $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-
+  
   my $precompile_shared_lib_file;
   my $start_precompile_shared_lib_file_mtime;
-   $precompile_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{dlext}";
-   if ($ENV{SPVM_TEST_PRECOMPILE}) {
-     ok(-f $precompile_shared_lib_file);
-     $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
-   }
-
+  $precompile_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{dlext}";
+  if ($ENV{SPVM_TEST_PRECOMPILE}) {
+   ok(-f $precompile_shared_lib_file);
+   $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
+  }
+  
   # Update class file
   sleep $wait_time;
   my $now = time;
   utime $now, $now, $class_file;
   system($compile_native_api_prgoram) == 0 or die;
-
-  # Native object file is cached
+  
+  # Native object file is not compiled
   my $native_object_file_mtime = (stat $native_object_file)[9];
-  isnt($native_object_file_mtime, $start_native_object_file_mtime);
-
+  is($native_object_file_mtime, $start_native_object_file_mtime);
+  
+  # Precompililation object file is compiled
   my $precompile_object_file_mtime = (stat $precompile_object_file)[9];
   if ($ENV{SPVM_TEST_PRECOMPILE}) {
     isnt($precompile_object_file_mtime, $start_precompile_object_file_mtime);
   }
-
-  # Native shared_lib file is cached
+  
+  # Native shared_lib file is not linked
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-  isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
-
+  is($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
+  
   my $precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
   if ($ENV{SPVM_TEST_PRECOMPILE}) {
     isnt($precompile_shared_lib_file_mtime, $start_precompile_shared_lib_file_mtime);
@@ -202,11 +203,11 @@ system($compile_native_api_prgoram) == 0 or die;
   utime $now, $now, $native_class_file;
   system($compile_native_api_prgoram) == 0 or die;
 
-  # Native object file is cached
+  # Native object file is compiled
   my $native_object_file_mtime = (stat $native_object_file)[9];
   isnt($native_object_file_mtime, $start_native_object_file_mtime);
   
-  # Native shared_lib file is cached
+  # Native shared_lib file is linked
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 }
@@ -217,18 +218,18 @@ system($compile_native_api_prgoram) == 0 or die;
   my $start_native_src_object_file_mtime;
   $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.native/baz/baz.o";
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
-
+  
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
-   $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-
+  $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
+  $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
+  
   # Update src file
   sleep $wait_time;
   my $now = time;
   utime $now, $now, $native_src_file;
   system($compile_native_api_prgoram) == 0 or die;
-
+  
   # Native object file is cached
   my $native_src_object_file_mtime = (stat $native_src_object_file)[9];
   isnt($native_src_object_file_mtime, $start_native_src_object_file_mtime);
