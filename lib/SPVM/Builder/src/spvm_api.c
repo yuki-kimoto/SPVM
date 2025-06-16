@@ -4751,7 +4751,7 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   
   // Call native method
   int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = method->native_address;
-  if (!native_address) {
+  if (__builtin_expect(!native_address, 0)) {
     error_id = SPVM_API_die(env, stack, "The execution address of %s#%s native method must not be NULL. Loading the dynamic link library maybe failed.", method->current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
   }
   
