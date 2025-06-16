@@ -1,6 +1,7 @@
 0.990068 2025-06-16
   [Internal Changes]
     * Add is_object_type member variable to spvm_runtime_basic_type.h.
+    * Add has_object_args member variable to spvm_runtime_method.h.
   [Changes]
     * When calling a method from a native class,
       if the argument length is insufficient and no optional arguments are specified,

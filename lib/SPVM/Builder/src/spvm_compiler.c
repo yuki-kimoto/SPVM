@@ -928,7 +928,11 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
             runtime_arg->current_method = runtime_method;
             runtime_arg->default_value = arg_var_decl->arg_default_value;
             runtime_arg->is_optional = arg_var_decl->is_optional_arg;
+            if (SPVM_TYPE_is_object_type(compiler, arg_var_decl->type->basic_type->id, arg_var_decl->type->dimension, arg_var_decl->type->flag)) {
+              runtime_method->has_object_args = 1;
+            }
           }
+          
         }
         
         runtime_method->required_args_length = method->required_args_length;
