@@ -2179,14 +2179,14 @@ SPVM_OBJECT* SPVM_API_get_field_object_defined_and_has_pointer_by_name(SPVM_ENV*
   if (*error_id) { return NULL; }
   
   if (!obj_field) {
-    *error_id = env->die(env, stack, "%s field must be defined.", field_name, func_name, file_name, line);
+    *error_id = SPVM_API_die(env, stack, "%s field must be defined.", field_name, func_name, file_name, line);
     return obj_field;
   }
   
   void* field = env->get_pointer(env, stack, obj_field);
   
   if (!field) {
-    *error_id = env->die(env, stack, "The pointer of %s field must be defined.", field_name, func_name, file_name, line);
+    *error_id = SPVM_API_die(env, stack, "The pointer of %s field must be defined.", field_name, func_name, file_name, line);
   }
   
   return obj_field;
@@ -5390,23 +5390,23 @@ int32_t SPVM_API_check_bootstrap_method(SPVM_ENV* env, SPVM_VALUE* stack, const 
       int32_t args_length = env->api->method->get_args_length(env->runtime, method);
       
       if (!(args_length == 0)) {
-        error_id = env->die(env, stack, "The length of the arguments of %s#main method must be 0.", basic_type_name, __func__, FILE_NAME, __LINE__);
+        error_id = SPVM_API_die(env, stack, "The length of the arguments of %s#main method must be 0.", basic_type_name, __func__, FILE_NAME, __LINE__);
       }
       else {
         void* return_basic_type = env->api->method->get_return_basic_type(env->runtime, method);
         const char* return_basic_type_name = env->api->basic_type->get_name(env->runtime, return_basic_type);
         
         if (!(strcmp(return_basic_type_name, "void") == 0)) {
-          error_id = env->die(env, stack, "The return type of %s#main method must be the void type.", basic_type_name, __func__, FILE_NAME, __LINE__);
+          error_id = SPVM_API_die(env, stack, "The return type of %s#main method must be the void type.", basic_type_name, __func__, FILE_NAME, __LINE__);
         }
       }
     }
     else {
-      error_id = env->die(env, stack, "%s#main method must be a class method.", basic_type_name, __func__, FILE_NAME, __LINE__);
+      error_id = SPVM_API_die(env, stack, "%s#main method must be a class method.", basic_type_name, __func__, FILE_NAME, __LINE__);
     }
   }
   else {
-    error_id = env->die(env, stack, "%s#main method must be defined.", basic_type_name, __func__, FILE_NAME, __LINE__);
+    error_id = SPVM_API_die(env, stack, "%s#main method must be defined.", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   
   return error_id;
