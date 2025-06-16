@@ -5793,9 +5793,15 @@ int32_t SPVM_API_is_mulnum_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* 
 
 int32_t SPVM_API_get_type_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
   
-  SPVM_COMPILER* compiler = runtime->compiler;
+  int32_t is_mulnum_type = SPVM_API_is_mulnum_type(runtime, basic_type, type_dimension, type_flag);
   
-  int32_t type_width = SPVM_TYPE_get_type_width(compiler, basic_type->id, type_dimension, type_flag);
+  int32_t type_width = -1;
+  if (is_mulnum_type) {
+    type_width = basic_type->fields_length;
+  }
+  else {
+    type_width = 1;
+  }
   
   return type_width;
 }
