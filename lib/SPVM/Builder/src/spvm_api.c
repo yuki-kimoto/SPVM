@@ -4760,10 +4760,7 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   
   error_id = (*native_address)(env, stack);
   
-  void* method_return_basic_type = method->return_basic_type;
-  int32_t method_return_type_dimension = method->return_type_dimension;
-  int32_t method_return_type_flag = method->return_type_flag;
-  int32_t method_return_type_is_object = SPVM_API_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
+  int32_t method_return_type_is_object = method->return_type_is_object;
   
   // Increment ref count of return value
   if (__builtin_expect(!error_id,1)) {
