@@ -398,13 +398,19 @@ int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, c
   
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJECT* object = stack[0].oval;
   
-  void* method = NULL;
+  SPVM_RUNTIME_METHOD* method = NULL;
   if (__builtin_expect(!!object, 1)) {
     method = SPVM_API_get_instance_method(env, stack, object, method_name);
     
     if (__builtin_expect(!!method, 1)) {
+      if (check_args_level == SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_AUTO_CHECK) {
+        if (strcmp(method->current_basic_type->name, decl_basic_type_name) == 0) {
+          check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_NO_CHECK;
+        }
+      }
+      
       error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, check_args_level);
     }
     else {
