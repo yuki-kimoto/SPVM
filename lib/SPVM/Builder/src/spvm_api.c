@@ -390,7 +390,7 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   int32_t method_return_type_is_object = method->return_type_is_object;
   
   // Increment ref count of return value
-  if (__builtin_expect(!error_id,1)) {
+  if (__builtin_expect(!error_id, 1)) {
     if (method_return_type_is_object) {
       SPVM_OBJECT* return_object = *(SPVM_OBJECT**)&stack[0];
       if (return_object != NULL) {
