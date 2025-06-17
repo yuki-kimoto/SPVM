@@ -405,7 +405,6 @@ int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, c
     method = SPVM_API_get_instance_method(env, stack, object, method_name);
     
     if (__builtin_expect(!!method, 1)) {
-      int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_FULL_CHECK;
       error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, check_args_level);
     }
     else {
