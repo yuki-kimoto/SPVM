@@ -4809,7 +4809,7 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM
     isa = 1;
   }
   else {
-    SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
+    SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
     int32_t object_type_dimension = object->type_dimension;
     if (!basic_type) {
       isa = 0;
