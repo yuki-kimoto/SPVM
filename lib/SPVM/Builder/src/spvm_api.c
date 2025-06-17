@@ -4804,7 +4804,7 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  int32_t isa;
+  int32_t isa = 0;
   if (object == NULL) {
     isa = 1;
   }
@@ -4815,12 +4815,27 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM
       isa = 0;
     }
     else {
+      // Check type by an easy way at first
       if (type_dimension == object_type_dimension) {
         if (object_basic_type->id == basic_type->id) {
           isa = 1;
         }
         else {
-          isa = 0;
+          SPVM_RUNTIME_BASIC_TYPE* parent_object_basic_type = object_basic_type->parent;
+          while (1) {
+            if (parent_object_basic_type) {
+              if (parent_object_basic_type->id == basic_type->id) {
+                isa = 1;
+                break;
+              }
+              else {
+                parent_object_basic_type = parent_object_basic_type->parent;
+              }
+            }
+            else {
+              break;
+            }
+          }
         }
       }
       
