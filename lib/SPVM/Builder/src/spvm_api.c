@@ -75,7 +75,6 @@ SPVM_ENV* SPVM_API_new_env(void) {
   SPVM_API_ARG* api_arg = SPVM_API_ARG_new_api();
   
   SPVM_API_INTERNAL* api_internal = SPVM_API_INTERNAL_new_api();
-  
   SPVM_API_MUTEX* api_mutex = SPVM_API_MUTEX_new_api();
   
   void* env_api_init[]  = {
@@ -95,7 +94,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
   };
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));
-
+  
   // Native APIs
   void* env_init[]  = {
     NULL, // runtime
@@ -332,6 +331,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_new_stack_with_all_method_call_permitted,
     SPVM_API_call_instance_method_no_mortal,
     SPVM_API_call_instance_method,
+    SPVM_API_call_method_no_mortal_less_check_args,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
