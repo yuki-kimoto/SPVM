@@ -2656,8 +2656,6 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* en
         return 0;
       }
       
-      spvm_warn("%s", env->get_chars(env, stack, env->get_exception(env, stack)));
-      
       if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The 1th argument must be assigned to the type of 1th argument of TestCase::NativeAPI#arg_int_object method.")) {
         stack[0].ival = 0;
         return 0;
@@ -2746,6 +2744,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_native(SP
         return 0;
       }
     }
+    
   }
   
   stack[0].ival = 1;
@@ -2816,13 +2815,79 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
         return 0;
       }
       
-      spvm_warn("%s", env->get_chars(env, stack, env->get_exception(env, stack)));
-      
       if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "n instance method call failed. TestCase::NativeAPI#not_found method is not found.")) {
         stack[0].ival = 0;
         return 0;
       }
     }
+    
+    {
+      int32_t error_id = 0;
+      
+      env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "new", 0, &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      void* object = stack[0].oval;
+      
+      stack[0].oval = object;
+      stack[1].oval = NULL;
+      env->call_instance_method_by_name(env, stack, "arg_int_object_instance", 2, &error_id, __func__, FILE_NAME, __LINE__);
+      
+      if (error_id) {
+        stack[0].ival = 0;
+        return 0;
+      }
+      
+      void* obj_ret = stack[0].oval;
+      if (obj_ret) {
+        stack[0].ival = 0;
+        return 0;
+      }
+    }
+      
+    {
+      int32_t error_id = 0;
+      
+      env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "new", 0, &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      void* object = stack[0].oval;
+      
+      stack[0].oval = env->new_string_nolen(env, stack, "a");
+      stack[1].oval = NULL;
+      env->call_instance_method_by_name(env, stack, "arg_int_object_instance", 2, &error_id, __func__, FILE_NAME, __LINE__);
+      
+      if (!error_id) {
+        stack[0].ival = 0;
+        return 0;
+      }
+      
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "An instance method call failed. string#arg_int_object_instance method is not found.")) {
+        stack[0].ival = 0;
+        return 0;
+      }
+    }
+    
+    {
+      int32_t error_id = 0;
+      
+      env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "new", 0, &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      void* object = stack[0].oval;
+      
+      stack[0].oval = object;
+      stack[1].oval = env->new_string_nolen(env, stack, "a");
+      env->call_instance_method_by_name(env, stack, "arg_int_object_instance", 2, &error_id, __func__, FILE_NAME, __LINE__);
+      
+      if (!error_id) {
+        stack[0].ival = 0;
+        return 0;
+      }
+      
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The 1th argument must be assigned to the type of 1th argument of TestCase::NativeAPI#arg_int_object_instance method.")) {
+        stack[0].ival = 0;
+        return 0;
+      }
+    }
+    
   }
   
   stack[0].ival = 1;
