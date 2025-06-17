@@ -2643,6 +2643,27 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* en
         return 0;
       }
     }
+    
+    {
+      int32_t error_id = 0;
+      
+      stack[0].oval = env->new_string_nolen(env, stack, "a");
+      
+      env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "arg_int_object", 1, &error_id, __func__, FILE_NAME, __LINE__);
+      
+      if (!error_id) {
+        stack[0].ival = 0;
+        return 0;
+      }
+      
+      spvm_warn("%s", env->get_chars(env, stack, env->get_exception(env, stack)));
+      
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The 1th argument must be assigned to the type of 1th argument of TestCase::NativeAPI#arg_int_object method.")) {
+        stack[0].ival = 0;
+        return 0;
+      }
+    }
+    
   }
   
   stack[0].ival = 1;

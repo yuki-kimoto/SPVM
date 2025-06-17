@@ -541,7 +541,9 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           if (obj_arg) {
             int32_t can_assign = SPVM_API_isa(env, stack, obj_arg, arg->basic_type, arg->type_dimension);
             if (!can_assign) {
-              error_id = SPVM_API_die(env, stack, "The %ith argument must be assigned to the type of %ith argument of %s#%s method.", arg_index, arg_index, current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
+              int32_t arg_index_nth = method->is_class_method ? arg_index + 1 : arg_index;
+              
+              error_id = SPVM_API_die(env, stack, "The %ith argument must be assigned to the type of %ith argument of %s#%s method.", arg_index_nth, arg_index_nth, current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
               goto END_OF_FUNC;
             }
           }

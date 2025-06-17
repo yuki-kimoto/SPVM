@@ -1735,4 +1735,7 @@ class TestCase::NativeAPI {
     return $x + $y;
   }
   
+  static method arg_int_object : Int ($object : Int) {
+    return $object;
+  }
 }
