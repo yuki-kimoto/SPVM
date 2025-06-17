@@ -332,6 +332,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_call_instance_method_no_mortal,
     SPVM_API_call_instance_method,
     SPVM_API_call_method_no_mortal_less_check_args,
+    SPVM_API_call_instance_method_no_mortal_less_check_args,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));

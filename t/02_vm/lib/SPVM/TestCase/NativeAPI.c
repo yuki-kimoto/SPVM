@@ -252,6 +252,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->call_instance_method_no_mortal != &env_array[232]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_instance_method != &env_array[233]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_method_no_mortal_less_check_args != &env_array[234]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->call_instance_method_no_mortal_less_check_args != &env_array[235]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

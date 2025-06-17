@@ -2616,6 +2616,12 @@ C<int32_t (*call_method_no_mortal_less_check_args)(SPVM_ENV* env, SPVM_VALUE* st
 
 Same as L</"call_method_no_mortal">, but does not perform any type checking that can be checked at compile time.
 
+=head2 call_instance_method_no_mortal_less_check_args
+
+C<int32_t (*call_instance_method_no_mortal_less_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);>
+
+Same as L</"call_instance_method_no_mortal">, but does not perform any type checking that can be checked at compile time.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.

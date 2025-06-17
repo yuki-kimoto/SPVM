@@ -332,6 +332,7 @@ struct spvm_env {
   int32_t (*call_instance_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);
   int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);
   int32_t (*call_method_no_mortal_less_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width);
+  int32_t (*call_instance_method_no_mortal_less_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);
 };
 
 struct spvm_env_api {
