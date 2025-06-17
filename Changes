@@ -1,3 +1,6 @@
+0.990071 2025-06-18
+  [Incompatibe Changes]
+    * Rename call_method_no_mortal_less_check_args native API to call_method_no_mortal_no_check_args.
 0.990070 2025-06-17
   [New Features]
     * Add call_method_no_mortal_less_check_args native API.

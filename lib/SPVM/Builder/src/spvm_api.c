@@ -331,7 +331,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_new_stack_with_all_method_call_permitted,
     SPVM_API_call_instance_method_no_mortal,
     SPVM_API_call_instance_method,
-    SPVM_API_call_method_no_mortal_less_check_args,
+    SPVM_API_call_method_no_mortal_no_check_args,
     SPVM_API_call_instance_method_no_mortal_less_check_args,
   };
   
@@ -385,7 +385,7 @@ int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METH
   return error_id;
 }
 
-int32_t SPVM_API_call_method_no_mortal_less_check_args(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
+int32_t SPVM_API_call_method_no_mortal_no_check_args(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
   
   int32_t mortal = 0;
   int32_t less_check_args = 1;

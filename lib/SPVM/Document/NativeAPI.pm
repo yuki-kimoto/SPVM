@@ -2610,11 +2610,11 @@ C<int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
 
 Calls L</"call_method_no_mortal"> native API and if the type of the its return value is an object type, it is push to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
-=head2 call_method_no_mortal_less_check_args
+=head2 call_method_no_mortal_no_check_args
 
-C<int32_t (*call_method_no_mortal_less_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width);>
+C<int32_t (*call_method_no_mortal_no_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width);>
 
-Same as L</"call_method_no_mortal">, but does not perform any type checking that can be checked at compile time.
+Same as L</"call_method_no_mortal">, but does not perform any type checking of arguments.
 
 =head2 call_instance_method_no_mortal_less_check_args
 
@@ -2860,7 +2860,7 @@ Native APIs have its IDs.
   231 new_stack_with_all_method_call_permitted
   232 call_instance_method_no_mortal
   233 call_instance_method
-  234 call_method_no_mortal_less_check_args
+  234 call_method_no_mortal_no_check_args
 
 =head1 Constant Values
 
