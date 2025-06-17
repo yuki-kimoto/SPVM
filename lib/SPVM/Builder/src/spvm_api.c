@@ -4815,10 +4815,16 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM
       isa = 0;
     }
     else {
-      if (basic_type->id == object_basic_type->id && type_dimension ==  object_type_dimension) {
-        isa = 1;
+      if (type_dimension == object_type_dimension) {
+        if (object_basic_type->id == basic_type->id) {
+          isa = 1;
+        }
+        else {
+          isa = 0;
+        }
       }
-      else {
+      
+      if (!isa) {
         isa = SPVM_API_can_assign(env->runtime, basic_type, type_dimension, 0, object_basic_type, object_type_dimension, 0);
       }
     }
