@@ -366,10 +366,6 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   env = NULL;
 }
 
-int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
-  return SPVM_VM_call_method(env, stack, method, args_width);
-}
-
 int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -513,7 +509,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
       }
     }
     else if (method->is_precompile_fallback) {
-      error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
+      error_id = SPVM_VM_call_method(env, stack, method, args_width);
       if (error_id) {
         goto END_OF_FUNC;
       }
@@ -524,7 +520,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     }
   }
   else {
-    error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
+    error_id = SPVM_VM_call_method(env, stack, method, args_width);
     if (__builtin_expect(error_id, 0)) {
       goto END_OF_FUNC;
     }
