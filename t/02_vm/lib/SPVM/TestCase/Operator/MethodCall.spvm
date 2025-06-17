@@ -2157,6 +2157,30 @@ class TestCase::Operator::MethodCall {
             return 0;
           }
         }
+        
+        {
+          my $simple = TestCase::SimpleChildOfChild->new;
+          
+          my $input = new string[0];
+          
+          my $ret = $simple->(TestCase::Simple)->arg_any_object_array($input);
+          
+          unless ($ret == $input) {
+            return 0;
+          }
+        }
+        
+        {
+          my $simple = TestCase::SimpleChildOfChild->new;
+          
+          my $input = new Int[0];
+          
+          eval { $simple->(TestCase::Simple)->arg_any_object_array($input); }
+          
+          unless (Fn->contains($@, q'he 1th argument must be assigned to the type of 1th argument of TestCase::SimpleChildOfChild#arg_any_object_array method.')) {
+            return 0;
+          }
+        }
       }
       
       {

@@ -1,3 +1,11 @@
 class TestCase::SimpleChildOfChild extends TestCase::SimpleChild {
   
+  static method new : TestCase::SimpleChildOfChild () {
+    return new TestCase::SimpleChildOfChild;
+  }
+  
+  method arg_any_object_array : string[] ($objects : string[]) {
+    return $objects;
+  }
+  
 }

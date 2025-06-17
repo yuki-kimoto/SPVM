@@ -146,4 +146,9 @@ class TestCase::Simple : public {
   method arg_object_option : object () {
     return undef;
   }
+  
+  method arg_any_object_array : object ($objects : object[]) {
+    return $objects;
+  }
+  
 }
