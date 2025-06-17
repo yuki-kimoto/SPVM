@@ -5036,11 +5036,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
         SPVM_RUNTIME_METHOD* decl_method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, invocant_decl_basic_type, decl_method_index);
         const char* method_name = decl_method->name;
-        const char* basic_type_name = invocant_decl_basic_type->name;
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  method_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
@@ -5050,7 +5045,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add_int(string_buffer, args_width);
         SPVM_STRING_BUFFER_add(string_buffer,
                                               ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)invocant_decl_basic_type->name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width, basic_type_name);\n");
         
         break;
       }

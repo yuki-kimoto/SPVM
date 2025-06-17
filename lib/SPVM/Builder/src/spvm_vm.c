@@ -2412,7 +2412,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         const char* method_name = method->name;
         const char* basic_type_name = method->current_basic_type->name;
         
-        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width);
+        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width, invocant_decl_basic_type->name);
         
         break;
       }

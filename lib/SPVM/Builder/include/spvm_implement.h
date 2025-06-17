@@ -2948,6 +2948,6 @@ static inline void SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE
 
 #define SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, method, args_width) (error_id = env->call_method_no_mortal_no_check_args(env, stack, method, args_width))
 
-#define SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width) (error_id = env->call_instance_method_no_mortal_less_check_args(env, stack, method_name, args_width))
+#define SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width, decl_basic_type_name) (error_id = env->call_instance_method_no_mortal_less_check_args(env, stack, method_name, args_width, decl_basic_type_name))
 
 #endif

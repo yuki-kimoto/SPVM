@@ -438,7 +438,7 @@ int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
   return error_id;
 }
 
-int32_t SPVM_API_call_instance_method_no_mortal_less_check_args(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
+int32_t SPVM_API_call_instance_method_no_mortal_less_check_args(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* decl_basic_type_name) {
   
   int32_t mortal = 0;
   int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_AUTO_CHECK;
