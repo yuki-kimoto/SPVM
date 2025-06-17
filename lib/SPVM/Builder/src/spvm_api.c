@@ -370,8 +370,8 @@ void SPVM_API_free_env(SPVM_ENV* env) {
 int32_t SPVM_API_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
   
   int32_t mortal = 0;
-  int32_t less_check_args = 0;
-  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, less_check_args);
+  int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_FULL_CHECK;
+  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, check_args_level);
   
   return error_id;
 }
@@ -379,8 +379,8 @@ int32_t SPVM_API_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RU
 int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
   
   int32_t mortal = 1;
-  int32_t less_check_args = 0;
-  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, less_check_args);
+  int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_FULL_CHECK;
+  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, check_args_level);
   
   return error_id;
 }
@@ -388,13 +388,13 @@ int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METH
 int32_t SPVM_API_call_method_no_mortal_no_check_args(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
   
   int32_t mortal = 0;
-  int32_t less_check_args = 1;
-  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, less_check_args);
+  int32_t less_check_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_NO_CHECK;
+  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, less_check_level);
   
   return error_id;
 }
 
-int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal, int32_t less_check_args) {
+int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal, int32_t check_args_level) {
   
   int32_t error_id = 0;
   
@@ -405,8 +405,8 @@ int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, c
     method = SPVM_API_get_instance_method(env, stack, object, method_name);
     
     if (__builtin_expect(!!method, 1)) {
-      int32_t less_check_args = 0;
-      error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, less_check_args);
+      int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_FULL_CHECK;
+      error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, check_args_level);
     }
     else {
       int32_t scope_id = SPVM_API_enter_scope(env, stack);
@@ -433,8 +433,8 @@ int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, c
 int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
   
   int32_t mortal = 0;
-  int32_t less_check_args = 0;
-  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, less_check_args);
+  int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_FULL_CHECK;
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, check_args_level);
   
   return error_id;
 }
@@ -442,8 +442,8 @@ int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
 int32_t SPVM_API_call_instance_method_no_mortal_less_check_args(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
   
   int32_t mortal = 0;
-  int32_t less_check_args = 1;
-  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, less_check_args);
+  int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_AUTO_CHECK;
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, check_args_level);
   
   return error_id;
 }
@@ -451,13 +451,13 @@ int32_t SPVM_API_call_instance_method_no_mortal_less_check_args(SPVM_ENV* env, S
 int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
   
   int32_t mortal = 1;
-  int32_t less_check_args = 0;
-  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, less_check_args);
+  int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_FULL_CHECK;
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, check_args_level);
   
   return error_id;
 }
 
-int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal, int32_t less_check_args) {
+int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal, int32_t check_args_level) {
   
   int32_t error_id = 0;
   
@@ -505,46 +505,41 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     }
   }
   
-  // 0 : none, 1 : less, 2 : full
-  int32_t check_args_level;
-  if (method->has_object_args) {
-    if (less_check_args) {
-      if (method->is_class_method) {
-        check_args_level = 0;
-      }
-      else {
-        check_args_level = 1;
+  if (!(check_args_level == SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_NO_CHECK)) {
+    if (check_args_level == SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_FULL_CHECK) {
+      // Do nothing
+    }
+    else if (check_args_level == SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_AUTO_CHECK) {
+      if (!method->has_object_args) {
+        check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_NO_CHECK;
       }
     }
     else {
-      check_args_level = 2;
+      assert(0);
     }
-  }
-  else {
-    check_args_level = 0;
-  }
-  
-  if (check_args_level > 0) {
-    int32_t arg_index = 0;
-    if (check_args_level == 1) {
-      arg_index = 1;
-    }
-    for (; arg_index < method->args_length; arg_index++) {
-      SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
-      
-      int32_t arg_stack_index = arg->stack_index;
-      if (arg_stack_index < args_width) {
-        int32_t arg_is_object_type = SPVM_API_is_object_type(env->runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
-        if (arg_is_object_type) {
-          SPVM_OBJECT* obj_arg = stack[arg_stack_index].oval;
-          
-          if (obj_arg) {
-            int32_t can_assign = SPVM_API_isa(env, stack, obj_arg, arg->basic_type, arg->type_dimension);
-            if (!can_assign) {
-              int32_t arg_index_nth = method->is_class_method ? arg_index + 1 : arg_index;
-              
-              error_id = SPVM_API_die(env, stack, "The %ith argument must be assigned to the type of %ith argument of %s#%s method.", arg_index_nth, arg_index_nth, current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
-              goto END_OF_FUNC;
+    
+    if (!(check_args_level == SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_NO_CHECK)) {
+      int32_t arg_index = 0;
+      if (check_args_level == SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_AUTO_CHECK && !method->is_class_method) {
+        arg_index = 1;
+      }
+      for (; arg_index < method->args_length; arg_index++) {
+        SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
+        
+        int32_t arg_stack_index = arg->stack_index;
+        if (arg_stack_index < args_width) {
+          int32_t arg_is_object_type = SPVM_API_is_object_type(env->runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
+          if (arg_is_object_type) {
+            SPVM_OBJECT* obj_arg = stack[arg_stack_index].oval;
+            
+            if (obj_arg) {
+              int32_t can_assign = SPVM_API_isa(env, stack, obj_arg, arg->basic_type, arg->type_dimension);
+              if (!can_assign) {
+                int32_t arg_index_nth = method->is_class_method ? arg_index + 1 : arg_index;
+                
+                error_id = SPVM_API_die(env, stack, "The %ith argument must be assigned to the type of %ith argument of %s#%s method.", arg_index_nth, arg_index_nth, current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
+                goto END_OF_FUNC;
+              }
             }
           }
         }

@@ -26,9 +26,9 @@ enum {
 };
 
 enum {
-  SPVM_API_C_CALL_METHOD_NO_CHECK_ARGS,
-  SPVM_API_C_CALL_METHOD_CHECK_ARGS_WITHOUT_INVOCANT,
-  SPVM_API_C_CALL_METHOD_CHECK_ARGS,
+  SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_NO_CHECK,
+  SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_AUTO_CHECK,
+  SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_FULL_CHECK,
 };
 
 /*
@@ -162,7 +162,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method_static(SPVM_ENV* env, SPVM_VAL
 SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name);
 
 // Call Method
-int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal, int32_t less_check_args);
+int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal, int32_t check_args_level);
 int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width);
 int32_t SPVM_API_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width);
 int32_t SPVM_API_call_method_no_mortal_no_check_args(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width);
