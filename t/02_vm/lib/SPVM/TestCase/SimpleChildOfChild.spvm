@@ -1,0 +1,3 @@
+class TestCase::SimpleChildOfChild extends TestCase::SimpleChild {
+  
+}

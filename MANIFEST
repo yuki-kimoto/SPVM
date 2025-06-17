@@ -993,6 +993,7 @@ t/02_vm/lib/SPVM/TestCase/Resource/Mylib2.spvm
 t/02_vm/lib/SPVM/TestCase/Scope.spvm
 t/02_vm/lib/SPVM/TestCase/Simple.spvm
 t/02_vm/lib/SPVM/TestCase/SimpleChild.spvm
+t/02_vm/lib/SPVM/TestCase/SimpleChildOfChild.spvm
 t/02_vm/lib/SPVM/TestCase/Statement/For.spvm
 t/02_vm/lib/SPVM/TestCase/Statement/If.spvm
 t/02_vm/lib/SPVM/TestCase/Statement/IfRequire.spvm

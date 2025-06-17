@@ -17,6 +17,7 @@ class TestCase::Operator::MethodCall {
   use Array;
   use Point;
   use TestCase::Interface::OptionalArgument;
+  use TestCase::SimpleChildOfChild;
   
   # Use keyword name as method name
   static method int : int () {
