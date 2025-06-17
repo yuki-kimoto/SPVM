@@ -505,11 +505,33 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     }
   }
   
+  // 0 : none, 1 : less, 2 : full
+  int32_t check_args_level;
   if (method->has_object_args) {
-    for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
+    if (less_check_args) {
+      if (method->is_class_method) {
+        check_args_level = 0;
+      }
+      else {
+        check_args_level = 1;
+      }
+    }
+    else {
+      check_args_level = 2;
+    }
+  }
+  else {
+    check_args_level = 0;
+  }
+  
+  if (check_args_level > 0) {
+    int32_t arg_index = 0;
+    if (check_args_level == 1) {
+      arg_index = 1;
+    }
+    for (; arg_index < method->args_length; arg_index++) {
       SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
       
-      // Type check
       int32_t arg_stack_index = arg->stack_index;
       if (arg_stack_index < args_width) {
         int32_t arg_is_object_type = SPVM_API_is_object_type(env->runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
