@@ -7,7 +7,8 @@
     * make_read_only operator becomes thread safe.
     * set_no_free native API becomes thread safe.]
   [Bug Fix]
-    Fix bugs that can_assign type API did not work with type flags.
+    * Fix bugs that can_assign type API did not work with type flags.
+    * Fix bugs that compilation of resources detect force and quiet corectly in jit.
   [Changes]
     * Native class is not compiled when its SPVM class file is updaed.
     * Remove force => 1 from build_dynamic_lib_dist_native and build_dynamic_lib_dist_precompile written in Makefile.PL.

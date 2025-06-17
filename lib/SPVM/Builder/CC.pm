@@ -405,8 +405,8 @@ sub compile_class {
       # Build native classes
       my $builder_cc_resource = SPVM::Builder::CC->new(
         builder => $self->builder,
-        quiet => $self->detect_quiet,
-        force => $self->detect_force,
+        quiet => $self->detect_quiet($config),
+        force => $self->detect_force($config),
       );
       
       my $resource_class_name;
