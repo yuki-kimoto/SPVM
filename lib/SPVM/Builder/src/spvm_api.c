@@ -384,7 +384,16 @@ int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METH
   return error_id;
 }
 
-inline static int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal) {
+int32_t SPVM_API_call_method_no_mortal_less_check_args(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
+  
+  int32_t mortal = 0;
+  int32_t less_check_args = 1;
+  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, less_check_args);
+  
+  return error_id;
+}
+
+int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal, int32_t less_check_args) {
   
   int32_t error_id = 0;
   
@@ -423,7 +432,17 @@ inline static int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_V
 int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
   
   int32_t mortal = 0;
-  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal);
+  int32_t less_check_args = 0;
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, less_check_args);
+  
+  return error_id;
+}
+
+int32_t SPVM_API_call_instance_method_no_mortal_less_check_args(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
+  
+  int32_t mortal = 0;
+  int32_t less_check_args = 1;
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, less_check_args);
   
   return error_id;
 }
@@ -431,7 +450,8 @@ int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
 int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
   
   int32_t mortal = 1;
-  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal);
+  int32_t less_check_args = 0;
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, less_check_args);
   
   return error_id;
 }
