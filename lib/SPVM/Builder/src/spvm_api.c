@@ -4815,7 +4815,7 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM
       isa = 0;
     }
     else {
-      // Check type by an easy way at first
+      // Check type by an easy way at first because SPVM_API_can_assign uses hash and mutex lock.
       if (type_dimension == object_type_dimension) {
         if (object_basic_type->id == basic_type->id) {
           isa = 1;
