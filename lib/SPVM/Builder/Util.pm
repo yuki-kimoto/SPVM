@@ -304,7 +304,7 @@ sub create_make_rule_precompile {
   create_make_rule($class_name, 'precompile', @_);
 }
 
-sub get_dependent_files {
+sub get_possible_dependent_files {
   my ($class_name, $category, $options) = @_;
   
   my @dependent_files;
@@ -411,9 +411,9 @@ sub create_make_rule {
   $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
   
   # Get source files
-  my $dependent_files = &get_dependent_files($class_name, $category, $options);
+  my $dependent_files = &get_possible_dependent_files($class_name, $category, $options);
   $make_rule .= "$dynamic_lib_file :: @$dependent_files\n";
-  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new(build_dir => '.spvm_build')->build_dynamic_lib_dist_$category('$class_name', {force => 1})\"\n\n";
+  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new(build_dir => '.spvm_build')->build_dynamic_lib_dist_$category('$class_name')\"\n\n";
   
   return $make_rule;
 }

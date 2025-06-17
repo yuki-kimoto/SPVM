@@ -10,6 +10,10 @@
     Fix bugs that can_assign type API did not work with type flags.
   [Changes]
     * Native class is not compiled when its SPVM class file is updaed.
+    * Remove force => 1 from build_dynamic_lib_dist_native and build_dynamic_lib_dist_precompile written in Makefile.PL.
+      And all possible depenent files are written in Makefile.
+      This fixed the bug that all resource files are compiled if they are not updated.
+      
   
 0.990068 2025-06-16
   [Performance Improvement]
