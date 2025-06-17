@@ -366,6 +366,415 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   env = NULL;
 }
 
+int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
+  return SPVM_VM_call_method(env, stack, method, args_width);
+}
+
+int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int32_t error_id = 0;
+  
+  // Call native method
+  int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = method->native_address;
+  if (__builtin_expect(!native_address, 0)) {
+    error_id = SPVM_API_die(env, stack, "The execution address of %s#%s native method must not be NULL. Loading the dynamic link library maybe failed.", method->current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
+    goto END_OF_FUNC;
+  }
+  
+  int32_t native_mortal_stack_top = SPVM_API_enter_scope(env, stack);
+  
+  error_id = (*native_address)(env, stack);
+  
+  int32_t method_return_type_is_object = method->return_type_is_object;
+  
+  // Increment ref count of return value
+  if (__builtin_expect(!error_id,1)) {
+    if (method_return_type_is_object) {
+      SPVM_OBJECT* return_object = *(SPVM_OBJECT**)&stack[0];
+      if (return_object != NULL) {
+        SPVM_API_inc_ref_count(env, stack, return_object);
+      }
+    }
+  }
+  
+  if (*(int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP] > native_mortal_stack_top) {
+    SPVM_API_leave_scope(env, stack, native_mortal_stack_top);
+  }
+  
+  // Decrement ref count of return value
+  if (__builtin_expect(!error_id, 1)) {
+    if (method_return_type_is_object) {
+      SPVM_OBJECT* return_object = *(SPVM_OBJECT**)&stack[0];
+      if (return_object != NULL) {
+        SPVM_API_dec_ref_count(env, stack, return_object);
+      }
+    }
+  }
+  
+  END_OF_FUNC:
+  
+  // Set an default exception message
+  if (__builtin_expect(error_id, 0)) {
+    if (SPVM_API_get_exception(env, stack) == NULL) {
+      void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Error");
+      SPVM_API_set_exception(env, stack, exception);
+    }
+  }
+  
+  return error_id;
+}
+
+int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal) {
+  
+  int32_t error_id = 0;
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  stack[SPVM_API_C_STACK_INDEX_ARGS_WIDTH].ival = args_width;
+  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival++;
+  
+  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = method->current_basic_type;
+  
+  int32_t max_call_depth = 1000;
+  if (__builtin_expect(stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival > max_call_depth, 0)) {
+    error_id = SPVM_API_die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d.", max_call_depth, __func__, FILE_NAME, __LINE__);
+    goto END_OF_FUNC;
+  }
+  else if (__builtin_expect(method->is_not_permitted && !stack[SPVM_API_C_STACK_INDEX_ALL_METHOD_CALL_PERMITTED].ival, 0)) {
+    SPVM_API_die(env, stack, "The call to %s#%s method is not permmited.", current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
+    error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_METHOD_CALL_NOT_PERMITTED_CLASS;
+    goto END_OF_FUNC;
+  }
+  
+  if (__builtin_expect(method->is_init_method, 0)) {
+    if (current_basic_type->initialized) {
+      goto END_OF_FUNC;
+    }
+    else {
+      current_basic_type->initialized = 1;
+    }
+  }
+  
+  // Set default values for optional arguments
+  int32_t args_length = method->args_length;
+  for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
+    SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
+    
+    int32_t arg_stack_index = arg->stack_index;
+    if (arg_stack_index >= args_width) {
+      if (arg->is_optional) {
+        stack[arg_stack_index] = arg->default_value;
+      }
+      else {
+        int32_t arg_type_width = SPVM_API_get_type_width(runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
+        memset(&stack[arg_stack_index], 0, sizeof(SPVM_VALUE) * arg_type_width);
+      }
+    }
+  }
+  
+  if (method->has_object_args) {
+    for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
+      SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
+      
+      // Type check
+      int32_t arg_stack_index = arg->stack_index;
+      if (arg_stack_index < args_width) {
+        int32_t arg_is_object_type = SPVM_API_is_object_type(env->runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
+        if (arg_is_object_type) {
+          SPVM_OBJECT* obj_arg = stack[arg_stack_index].oval;
+          
+          if (obj_arg) {
+            int32_t can_assign = SPVM_API_isa(env, stack, obj_arg, arg->basic_type, arg->type_dimension);
+            if (!can_assign) {
+              error_id = SPVM_API_die(env, stack, "The %ith argument must be assigned to the type of %ith argument of %s#%s method.", arg_index, arg_index, current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
+              goto END_OF_FUNC;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  if (method->is_native) {
+    error_id = SPVM_API_call_method_native(env, stack, method, args_width);
+    if (error_id) {
+      goto END_OF_FUNC;
+    }
+  }
+  else if (method->is_precompile) {
+    void* method_precompile_address = method->precompile_address;
+    if (method_precompile_address) {
+      int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
+      error_id = (*precompile_address)(env, stack);
+      if (error_id) {
+        goto END_OF_FUNC;
+      }
+    }
+    else if (method->is_precompile_fallback) {
+      error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
+      if (error_id) {
+        goto END_OF_FUNC;
+      }
+    }
+    else {
+      error_id = SPVM_API_die(env, stack, "The execution address of %s#%s precompile method must not be NULL. Loading the dynamic link library maybe failed.", method->current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
+      goto END_OF_FUNC;
+    }
+  }
+  else {
+    error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
+    if (__builtin_expect(error_id, 0)) {
+      goto END_OF_FUNC;
+    }
+  }
+  
+  if (__builtin_expect(mortal, 0)) {
+    void* method_return_basic_type = method->return_basic_type;
+    int32_t method_return_type_dimension = method->return_type_dimension;
+    int32_t method_return_type_flag = method->return_type_flag;
+    int32_t method_return_type_is_object = SPVM_API_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
+    
+    if (method_return_type_is_object) {
+      SPVM_API_push_mortal(env, stack, stack[0].oval);
+    }
+  }
+  
+  END_OF_FUNC:
+  
+  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival--;
+  
+  return error_id;
+}
+
+int32_t SPVM_API_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
+  
+  int32_t mortal = 0;
+  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal);
+  
+  return error_id;
+}
+
+int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
+  
+  int32_t mortal = 1;
+  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal);
+  
+  return error_id;
+}
+
+inline static int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal) {
+  
+  int32_t error_id = 0;
+  
+  void* object = stack[0].oval;
+  
+  void* method = NULL;
+  if (__builtin_expect(!!object, 1)) {
+    method = SPVM_API_get_instance_method(env, stack, object, method_name);
+    
+    if (__builtin_expect(!!method, 1)) {
+      error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal);
+    }
+    else {
+      int32_t scope_id = SPVM_API_enter_scope(env, stack);
+      void* obj_invocant_type_name = env->get_type_name(env, stack, object);
+      const char* invocant_type_name = env->get_chars(env, stack, obj_invocant_type_name);
+      
+      char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND], invocant_type_name, method_name);
+      SPVM_API_leave_scope(env, stack, scope_id);
+      void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
+      env->set_exception(env, stack, exception);
+      error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+    }
+  }
+  else {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_INVOCANT_UNDEF]);
+    env->set_exception(env, stack, exception);
+    error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  
+  return error_id;
+}
+
+int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
+  
+  int32_t mortal = 0;
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal);
+  
+  return error_id;
+}
+
+int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
+  
+  int32_t mortal = 1;
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal);
+  
+  return error_id;
+}
+
+void SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
+  *error_id = 0;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
+  
+  if (!basic_type) {
+    *error_id = SPVM_API_die(env, stack, "%s class is not found.", basic_type_name, func_name, file, line);
+    return;
+  }
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
+  
+  if (!method) {
+    *error_id = SPVM_API_die(env, stack, "%s#%s method is not found.", basic_type_name, method_name, func_name, file, line);
+    return;
+  }
+  
+  if (!method->is_class_method) {
+    *error_id = SPVM_API_die(env, stack, "%s#%s method must be a class method.", basic_type_name, method_name, func_name, file, line);
+    return;
+  }
+  
+  *error_id = SPVM_API_call_method(env, stack, method, args_width);
+  
+  if (*error_id) {
+    const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
+    SPVM_API_die(env, stack, "%s", message, func_name, file, line);
+  }
+}
+
+void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
+  *error_id = 0;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
+  
+  if (!basic_type) {
+    *error_id = SPVM_API_die(env, stack, "%s class is not found.", basic_type_name, func_name, file, line);
+    return;
+  }
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
+  
+  if (!method) {
+    *error_id = SPVM_API_die(env, stack, "%s#%s method is not found.", basic_type_name, method_name, func_name, file, line);
+    return;
+  }
+  
+  if (method->is_class_method) {
+    *error_id = SPVM_API_die(env, stack, "%s#%s method must be an instance method.", basic_type_name, method_name, func_name, file, line);
+    return;
+  }
+  
+  SPVM_OBJECT* object = stack[0].oval;
+  
+  if (!object) {
+    *error_id = SPVM_API_die(env, stack, "The invocant must be defined.", func_name, file, line);
+    return;
+  };
+  
+  if (!SPVM_API_isa(env, stack, object, basic_type, 0)) {
+    *error_id = SPVM_API_die(env, stack, "The invocant must be assigned to %s class.", basic_type_name, func_name, file, line);
+    return;
+  };
+  
+  *error_id = SPVM_API_call_method(env, stack, method, args_width);
+  
+  if (*error_id) {
+    const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
+    SPVM_API_die(env, stack, "%s", message, func_name, file, line);
+  }
+}
+
+void SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
+  *error_id = SPVM_API_call_instance_method(env, stack, method_name, args_width);
+  
+  if (*error_id) {
+    const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
+    SPVM_API_die(env, stack, "%s", message, func_name, file, line);
+  }
+}
+
+SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
+  
+  if (!basic_type) {
+    return NULL;
+  }
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
+  
+  return method;
+}
+
+SPVM_RUNTIME_METHOD* SPVM_API_get_class_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, stack, basic_type_name, method_name);
+  
+  if (method) {
+    if (!method->is_class_method) {
+      return NULL;
+    }
+  }
+  
+  return method;
+}
+
+SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, stack, basic_type_name, method_name);
+  
+  if (method) {
+    if (method->is_class_method) {
+      return NULL;
+    }
+  }
+  
+  return method;
+}
+
+SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name) {
+  
+  // Method
+  SPVM_RUNTIME_METHOD* method = NULL;
+  
+  // Compiler
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  if (!object) {
+    return NULL;
+  }
+  
+  // Basic type
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
+  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = object_basic_type;
+  
+  while (1) {
+    if (!parent_basic_type) {
+      break;
+    }
+    
+    // Method
+    method = SPVM_API_BASIC_TYPE_get_method_by_name(runtime, parent_basic_type, method_name);
+    if (method) {
+      // Instance method
+      if (method->is_class_method) {
+        method = NULL;
+      }
+      break;
+    }
+    
+    parent_basic_type = parent_basic_type->parent;
+  }
+  
+  return method;
+}
+
 int32_t SPVM_API_call_init_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
@@ -520,90 +929,6 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env, SPVM_VALUE* stac
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
   
   return basic_type;
-}
-
-void SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
-  
-  *error_id = 0;
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
-  
-  if (!basic_type) {
-    *error_id = SPVM_API_die(env, stack, "%s class is not found.", basic_type_name, func_name, file, line);
-    return;
-  }
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
-  
-  if (!method) {
-    *error_id = SPVM_API_die(env, stack, "%s#%s method is not found.", basic_type_name, method_name, func_name, file, line);
-    return;
-  }
-  
-  if (!method->is_class_method) {
-    *error_id = SPVM_API_die(env, stack, "%s#%s method must be a class method.", basic_type_name, method_name, func_name, file, line);
-    return;
-  }
-  
-  *error_id = SPVM_API_call_method(env, stack, method, args_width);
-  
-  if (*error_id) {
-    const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
-    SPVM_API_die(env, stack, "%s", message, func_name, file, line);
-  }
-}
-
-void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
-  
-  *error_id = 0;
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
-  
-  if (!basic_type) {
-    *error_id = SPVM_API_die(env, stack, "%s class is not found.", basic_type_name, func_name, file, line);
-    return;
-  }
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
-  
-  if (!method) {
-    *error_id = SPVM_API_die(env, stack, "%s#%s method is not found.", basic_type_name, method_name, func_name, file, line);
-    return;
-  }
-  
-  if (method->is_class_method) {
-    *error_id = SPVM_API_die(env, stack, "%s#%s method must be an instance method.", basic_type_name, method_name, func_name, file, line);
-    return;
-  }
-  
-  SPVM_OBJECT* object = stack[0].oval;
-  
-  if (!object) {
-    *error_id = SPVM_API_die(env, stack, "The invocant must be defined.", func_name, file, line);
-    return;
-  };
-  
-  if (!SPVM_API_isa(env, stack, object, basic_type, 0)) {
-    *error_id = SPVM_API_die(env, stack, "The invocant must be assigned to %s class.", basic_type_name, func_name, file, line);
-    return;
-  };
-  
-  *error_id = SPVM_API_call_method(env, stack, method, args_width);
-  
-  if (*error_id) {
-    const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
-    SPVM_API_die(env, stack, "%s", message, func_name, file, line);
-  }
-}
-
-void SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
-  
-  *error_id = SPVM_API_call_instance_method(env, stack, method_name, args_width);
-  
-  if (*error_id) {
-    const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
-    SPVM_API_die(env, stack, "%s", message, func_name, file, line);
-  }
 }
 
 void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
@@ -2726,22 +3051,6 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   stack = NULL;
 }
 
-int32_t SPVM_API_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
-  
-  int32_t mortal = 0;
-  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal);
-  
-  return error_id;
-}
-
-int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
-  
-  int32_t mortal = 1;
-  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal);
-  
-  return error_id;
-}
-
 int32_t SPVM_API_is_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   int32_t is_array;
@@ -4286,82 +4595,6 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, SPVM_VALUE* stack,
   return class_var;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
-  
-  if (!basic_type) {
-    return NULL;
-  }
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
-  
-  return method;
-}
-
-SPVM_RUNTIME_METHOD* SPVM_API_get_class_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, stack, basic_type_name, method_name);
-  
-  if (method) {
-    if (!method->is_class_method) {
-      return NULL;
-    }
-  }
-  
-  return method;
-}
-
-SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method_static(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_get_method(env, stack, basic_type_name, method_name);
-  
-  if (method) {
-    if (method->is_class_method) {
-      return NULL;
-    }
-  }
-  
-  return method;
-}
-
-SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name) {
-  
-  // Method
-  SPVM_RUNTIME_METHOD* method = NULL;
-  
-  // Compiler
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  if (!object) {
-    return NULL;
-  }
-  
-  // Basic type
-  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
-  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = object_basic_type;
-  
-  while (1) {
-    if (!parent_basic_type) {
-      break;
-    }
-    
-    // Method
-    method = SPVM_API_BASIC_TYPE_get_method_by_name(runtime, parent_basic_type, method_name);
-    if (method) {
-      // Instance method
-      if (method->is_class_method) {
-        method = NULL;
-      }
-      break;
-    }
-    
-    parent_basic_type = parent_basic_type->parent;
-  }
-  
-  return method;
-}
-
 void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -4710,188 +4943,6 @@ int32_t SPVM_API_is_binary_compatible_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   return is_binary_compatible_stack;
-}
-
-int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
-  return SPVM_VM_call_method(env, stack, method, args_width);
-}
-
-int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  int32_t error_id = 0;
-  
-  // Call native method
-  int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = method->native_address;
-  if (__builtin_expect(!native_address, 0)) {
-    error_id = SPVM_API_die(env, stack, "The execution address of %s#%s native method must not be NULL. Loading the dynamic link library maybe failed.", method->current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
-    goto END_OF_FUNC;
-  }
-  
-  int32_t native_mortal_stack_top = SPVM_API_enter_scope(env, stack);
-  
-  error_id = (*native_address)(env, stack);
-  
-  int32_t method_return_type_is_object = method->return_type_is_object;
-  
-  // Increment ref count of return value
-  if (__builtin_expect(!error_id,1)) {
-    if (method_return_type_is_object) {
-      SPVM_OBJECT* return_object = *(SPVM_OBJECT**)&stack[0];
-      if (return_object != NULL) {
-        SPVM_API_inc_ref_count(env, stack, return_object);
-      }
-    }
-  }
-  
-  if (*(int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP] > native_mortal_stack_top) {
-    SPVM_API_leave_scope(env, stack, native_mortal_stack_top);
-  }
-  
-  // Decrement ref count of return value
-  if (__builtin_expect(!error_id, 1)) {
-    if (method_return_type_is_object) {
-      SPVM_OBJECT* return_object = *(SPVM_OBJECT**)&stack[0];
-      if (return_object != NULL) {
-        SPVM_API_dec_ref_count(env, stack, return_object);
-      }
-    }
-  }
-  
-  END_OF_FUNC:
-  
-  // Set an default exception message
-  if (__builtin_expect(error_id, 0)) {
-    if (SPVM_API_get_exception(env, stack) == NULL) {
-      void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Error");
-      SPVM_API_set_exception(env, stack, exception);
-    }
-  }
-  
-  return error_id;
-}
-
-int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal) {
-  
-  int32_t error_id = 0;
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  stack[SPVM_API_C_STACK_INDEX_ARGS_WIDTH].ival = args_width;
-  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival++;
-  
-  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = method->current_basic_type;
-  
-  int32_t max_call_depth = 1000;
-  if (__builtin_expect(stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival > max_call_depth, 0)) {
-    error_id = SPVM_API_die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d.", max_call_depth, __func__, FILE_NAME, __LINE__);
-    goto END_OF_FUNC;
-  }
-  else if (__builtin_expect(method->is_not_permitted && !stack[SPVM_API_C_STACK_INDEX_ALL_METHOD_CALL_PERMITTED].ival, 0)) {
-    SPVM_API_die(env, stack, "The call to %s#%s method is not permmited.", current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
-    error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_METHOD_CALL_NOT_PERMITTED_CLASS;
-    goto END_OF_FUNC;
-  }
-  
-  if (__builtin_expect(method->is_init_method, 0)) {
-    if (current_basic_type->initialized) {
-      goto END_OF_FUNC;
-    }
-    else {
-      current_basic_type->initialized = 1;
-    }
-  }
-  
-  // Set default values for optional arguments
-  int32_t args_length = method->args_length;
-  for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
-    SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
-    
-    int32_t arg_stack_index = arg->stack_index;
-    if (arg_stack_index >= args_width) {
-      if (arg->is_optional) {
-        stack[arg_stack_index] = arg->default_value;
-      }
-      else {
-        int32_t arg_type_width = SPVM_API_get_type_width(runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
-        memset(&stack[arg_stack_index], 0, sizeof(SPVM_VALUE) * arg_type_width);
-      }
-    }
-  }
-  
-  if (method->has_object_args) {
-    for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
-      SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
-      
-      // Type check
-      int32_t arg_stack_index = arg->stack_index;
-      if (arg_stack_index < args_width) {
-        int32_t arg_is_object_type = SPVM_API_is_object_type(env->runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
-        if (arg_is_object_type) {
-          SPVM_OBJECT* obj_arg = stack[arg_stack_index].oval;
-          
-          if (obj_arg) {
-            int32_t can_assign = SPVM_API_isa(env, stack, obj_arg, arg->basic_type, arg->type_dimension);
-            if (!can_assign) {
-              error_id = SPVM_API_die(env, stack, "The %ith argument must be assigned to the type of %ith argument of %s#%s method.", arg_index, arg_index, current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
-              goto END_OF_FUNC;
-            }
-          }
-        }
-      }
-    }
-  }
-  
-  if (method->is_native) {
-    error_id = SPVM_API_call_method_native(env, stack, method, args_width);
-    if (error_id) {
-      goto END_OF_FUNC;
-    }
-  }
-  else if (method->is_precompile) {
-    void* method_precompile_address = method->precompile_address;
-    if (method_precompile_address) {
-      int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
-      error_id = (*precompile_address)(env, stack);
-      if (error_id) {
-        goto END_OF_FUNC;
-      }
-    }
-    else if (method->is_precompile_fallback) {
-      error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
-      if (error_id) {
-        goto END_OF_FUNC;
-      }
-    }
-    else {
-      error_id = SPVM_API_die(env, stack, "The execution address of %s#%s precompile method must not be NULL. Loading the dynamic link library maybe failed.", method->current_basic_type->name, method->name, __func__, FILE_NAME, __LINE__);
-      goto END_OF_FUNC;
-    }
-  }
-  else {
-    error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
-    if (__builtin_expect(error_id, 0)) {
-      goto END_OF_FUNC;
-    }
-  }
-  
-  if (__builtin_expect(mortal, 0)) {
-    void* method_return_basic_type = method->return_basic_type;
-    int32_t method_return_type_dimension = method->return_type_dimension;
-    int32_t method_return_type_flag = method->return_type_flag;
-    int32_t method_return_type_is_object = SPVM_API_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
-    
-    if (method_return_type_is_object) {
-      SPVM_API_push_mortal(env, stack, stack[0].oval);
-    }
-  }
-  
-  END_OF_FUNC:
-  
-  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival--;
-  
-  return error_id;
 }
 
 int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
@@ -5613,57 +5664,6 @@ int32_t SPVM_API_set_command_info_warning(SPVM_ENV* env, SPVM_VALUE* stack, int3
   if (error_id) { return error_id; }
   
   return 0;
-}
-
-inline static int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal) {
-  
-  int32_t error_id = 0;
-  
-  void* object = stack[0].oval;
-  
-  void* method = NULL;
-  if (__builtin_expect(!!object, 1)) {
-    method = SPVM_API_get_instance_method(env, stack, object, method_name);
-    
-    if (__builtin_expect(!!method, 1)) {
-      error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal);
-    }
-    else {
-      int32_t scope_id = SPVM_API_enter_scope(env, stack);
-      void* obj_invocant_type_name = env->get_type_name(env, stack, object);
-      const char* invocant_type_name = env->get_chars(env, stack, obj_invocant_type_name);
-      
-      char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND], invocant_type_name, method_name);
-      SPVM_API_leave_scope(env, stack, scope_id);
-      void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
-      env->set_exception(env, stack, exception);
-      error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
-  }
-  else {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_INVOCANT_UNDEF]);
-    env->set_exception(env, stack, exception);
-    error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-  }
-  
-  return error_id;
-}
-
-int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
-  
-  int32_t mortal = 0;
-  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal);
-  
-  return error_id;
-}
-
-int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
-  
-  int32_t mortal = 1;
-  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal);
-  
-  return error_id;
 }
 
 /*
