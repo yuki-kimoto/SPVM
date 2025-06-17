@@ -2181,6 +2181,30 @@ class TestCase::Operator::MethodCall {
             return 0;
           }
         }
+        
+        {
+          my $simple = TestCase::SimpleChildOfChild->new;
+          
+          my $input = new Point3D[0];
+          
+          my $ret = $simple->(TestCase::Simple)->arg_inheritance($input);
+          
+          unless ($ret == $input) {
+            return 0;
+          }
+        }
+        
+        {
+          my $simple = TestCase::SimpleChildOfChild->new;
+          
+          my $input = new Point[0];
+          
+          eval { $simple->(TestCase::Simple)->arg_inheritance($input); }
+          
+          unless (Fn->contains($@, q'he 1th argument must be assigned to the type of 1th argument of TestCase::SimpleChildOfChild#arg_inheritance method.')) {
+            return 0;
+          }
+        }
       }
       
       {

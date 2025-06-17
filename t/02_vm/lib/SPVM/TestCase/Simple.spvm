@@ -151,4 +151,8 @@ class TestCase::Simple : public {
     return $objects;
   }
   
+  method arg_inheritance : Point[] ($objects : Point[]) {
+    return $objects;
+  }
+  
 }

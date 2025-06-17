@@ -1,5 +1,7 @@
 class TestCase::SimpleChildOfChild extends TestCase::SimpleChild {
   
+  use Point3D;
+  
   static method new : TestCase::SimpleChildOfChild () {
     return new TestCase::SimpleChildOfChild;
   }
@@ -8,4 +10,7 @@ class TestCase::SimpleChildOfChild extends TestCase::SimpleChild {
     return $objects;
   }
   
+  method arg_inheritance : Point3D[] ($objects : Point3D[]) {
+    return $objects;
+  }
 }
