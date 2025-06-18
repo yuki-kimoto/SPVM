@@ -489,3 +489,25 @@ int32_t SPVM__Native__Method__set_is_precompile_fallback(SPVM_ENV* env, SPVM_VAL
   return 0;
 }
 
+int32_t SPVM__Native__Method__get_args_signature(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* self = env->get_pointer(env, stack, obj_self);
+  
+  void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  const char* args_signature = env->api->method->get_args_signature(runtime, self);
+  
+  void* obj_args_signature = env->new_string_nolen(env, stack, args_signature);
+  
+  stack[0].oval = obj_args_signature;
+  
+  return 0;
+}
+

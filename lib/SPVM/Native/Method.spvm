@@ -64,4 +64,7 @@ class Native::Method : pointer {
   native method is_precompile_fallback : int ();
   
   native method set_is_precompile_fallback : void ($is_precompile_fallback : int);
+  
+  native method get_args_signature : string ();
+  
 }

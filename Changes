@@ -9,6 +9,7 @@
     * Improve the logic of instance method call. If argument signature is matched, runtime type checking is skipped.
   [New Features]
     * Add get_args_signature method native API.
+    * Add get_args_signature method to Native::Method class.
     
 0.990070 2025-06-17
   [New Features]

@@ -155,4 +155,12 @@ class TestCase::Simple : public {
     return $objects;
   }
   
+  static method args_signature_class_method : void ($args1 : string, $args2 : mutable string, $args3 : string[], $args4 : Point[][], $args5 : int*) {
+  
+  }
+  
+  method args_signature_instance_method : void ($args1 : string, $args2 : mutable string, $args3 : string[], $args4 : Point[][], $args5 : int*) {
+  
+  }
+  
 }

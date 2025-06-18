@@ -174,6 +174,14 @@ C<method set_is_precompile_fallback : void ($is_precompile_fallback : int);>
 
 Sets the C<is_precompile_fallback>.
 
+=head2 get_args_signature
+
+C<method get_args_signature : string ();>
+
+Returns the arguments signature.
+
+If a memory error occurs, an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

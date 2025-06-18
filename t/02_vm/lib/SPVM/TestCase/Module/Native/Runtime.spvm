@@ -5,6 +5,7 @@ class TestCase::Module::Native::Runtime {
   use Callback;
   use Point;
   use Native::Constant as NATIVE;
+  use TestCase::Simple;
   
   static method get_method_by_name : int () {
     
@@ -47,6 +48,31 @@ class TestCase::Module::Native::Runtime {
         my $arg_basic_type = $arg->get_basic_type;
       }
       
+    }
+    
+    # get_args_signature
+    {
+      {
+        my $current_rntime = Native->get_current_runtime;
+        
+        my $method = $current_rntime->get_method_by_name("TestCase::Simple", "args_signature_class_method");
+        
+        unless ($method->get_args_signature eq "string,mutable string,string[],Point[][],int*") {
+          warn $method->get_args_signature;
+          return 0;
+        }
+      }
+      
+      {
+        my $current_rntime = Native->get_current_runtime;
+        
+        my $method = $current_rntime->get_method_by_name("TestCase::Simple", "args_signature_instance_method");
+        
+        unless ($method->get_args_signature eq "string,mutable string,string[],Point[][],int*") {
+          warn $method->get_args_signature;
+          return 0;
+        }
+      }
     }
     
     return 1;
