@@ -486,6 +486,7 @@ struct spvm_api_method {
   void (*set_is_precompile_fallback)(void* runtime, void* method, int32_t is_precompile_fallback);
   int32_t (*is_not_permitted)(void* runtime, void* method);
   void (*set_is_not_permitted)(void* runtime, void* method, int32_t is_not_permitted);
+  const char* (*get_args_signature)(void* runtime, void* method);
 };
 
 struct spvm_api_runtime {

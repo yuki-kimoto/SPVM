@@ -77,4 +77,6 @@ int32_t SPVM_API_METHOD_is_not_permitted(SPVM_RUNTIME* runtime, SPVM_RUNTIME_MET
 
 void SPVM_API_METHOD_set_is_not_permitted(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t is_not_permitted);
 
+const char* SPVM_API_METHOD_get_args_signature(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
+
 #endif

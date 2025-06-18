@@ -7,6 +7,9 @@
     * Add args_signature member variable to spvm_runtime_method.h.
   [Performance Improvement]
     * Improve the logic of instance method call. If argument signature is matched, runtime type checking is skipped.
+  [New Features]
+    * Add get_args_signature method native API.
+    
 0.990070 2025-06-17
   [New Features]
     * Add call_method_no_mortal_less_check_args native API.

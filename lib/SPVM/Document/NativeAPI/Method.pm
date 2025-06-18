@@ -226,6 +226,12 @@ Sets the C<is_not_permitted> field to I<is_not_permitted>.
 
 This native API is intended for use by browser applications that want to implement a security sandbox.
 
+=head2 get_args_signature
+
+C<const char* (*get_args_signature)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
+
+Returns the arguments signature of the method I<method>.
+
 =head1 Native API IDs
 
   0 get_name
@@ -261,6 +267,7 @@ This native API is intended for use by browser applications that want to impleme
   30 set_is_precompile_fallback
   31 is_not_permitted
   32 set_is_not_permitted
+  32 args_signature
 
 =head1 See Also
 
