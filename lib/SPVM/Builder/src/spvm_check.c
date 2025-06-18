@@ -753,6 +753,10 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
           
           SPVM_TYPE* arg_type = arg_var_decl->type;
           
+          if (arg_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE) {
+            args_signature_tmp_length += strlen("mutable ");
+          }
+          
           args_signature_tmp_length += strlen(arg_type->basic_type->name);
           
           args_signature_tmp_length += arg_type->dimension * 2;
@@ -778,6 +782,11 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
           
           memcpy(args_signature_tmp + args_signature_tmp_offset, arg_type->basic_type->name, strlen(arg_type->basic_type->name));
           args_signature_tmp_offset += strlen(arg_type->basic_type->name);
+          
+          if (arg_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE) {
+            memcpy(args_signature_tmp + args_signature_tmp_offset, "mutable ", strlen("mutable "));
+            args_signature_tmp_offset += strlen("mutable ");
+          }
           
           for (int32_t i = 0; i < arg_type->dimension; i++) {
             memcpy(args_signature_tmp + args_signature_tmp_offset, "[]", 2);
