@@ -70,7 +70,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   int32_t eval_error_id = 0;
   
   // Mortal stack for object variable indexes
-  int32_t* mortal_stack_object_var_indexes = NULL;
+  int32_t* mortal_stack = NULL;
   int32_t mortal_stack_top = 0;
   int32_t* mortal_stack_tops = NULL;
   
@@ -152,8 +152,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     int_vars = (int32_t*)&call_stack[call_stack_offset];
     call_stack_offset += current_method->int_vars_width * sizeof(int32_t);
     
-    // Mortal stack(typed var index)
-    mortal_stack_object_var_indexes = (int32_t*)&call_stack[call_stack_offset];
+    // Mortal stack - object variable indexes
+    mortal_stack = (int32_t*)&call_stack[call_stack_offset];
     call_stack_offset += current_method->mortal_stack_length * sizeof(int32_t);
     
     // Mortal stack tops
@@ -179,8 +179,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     call_stack_offset += current_method->ref_vars_width * sizeof(void*);
   }
   
+  memset(mortal_stack, -1, current_method->mortal_stack_length * sizeof(int32_t));
   memset(mortal_stack_tops, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
-  memset(mortal_stack_object_var_indexes, -1, current_method->mortal_stack_length * sizeof(int32_t));
   
   int32_t object_data_offset = env->api->runtime->get_object_data_offset(env->runtime);
   int32_t object_ref_count_offset = env->api->runtime->get_object_ref_count_offset(env->runtime);
@@ -291,7 +291,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         continue;
       }
       case SPVM_OPCODE_C_ID_PUSH_MORTAL: {
-        SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack_object_var_indexes, mortal_stack_top, opcode->operand0);
+        SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack, mortal_stack_top, opcode->operand0);
         break;
       }
       case SPVM_OPCODE_C_ID_ENTER_SCOPE: {
@@ -301,7 +301,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
         int32_t mortal_stack_tops_index = opcode->operand0;
-        SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack_object_var_indexes, &mortal_stack_top, mortal_stack_tops, mortal_stack_tops_index);
+        SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack, &mortal_stack_top, mortal_stack_tops, mortal_stack_tops_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_BYTE_ZERO: {
