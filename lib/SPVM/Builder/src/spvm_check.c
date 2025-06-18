@@ -745,6 +745,61 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
         return;
       }
       
+      int32_t args_signature_tmp_length = 0;
+      for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
+        
+        if (!(!method->is_class_method && arg_index == 0)) {
+          SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
+          
+          SPVM_TYPE* arg_type = arg_var_decl->type;
+          
+          args_signature_tmp_length += strlen(arg_type->basic_type->name);
+          
+          args_signature_tmp_length += arg_type->dimension * 2;
+          
+          if (arg_type->flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
+            args_signature_tmp_length += 1;
+          }
+          
+          if (arg_index < method->args_length - 1) {
+            args_signature_tmp_length += 1;
+          }
+        }
+      }
+      
+      char* args_signature_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, args_signature_tmp_length + 1);
+      
+      int32_t args_signature_tmp_offset = 0;
+      for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
+        if (!(!method->is_class_method && arg_index == 0)) {
+          SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
+          
+          SPVM_TYPE* arg_type = arg_var_decl->type;
+          
+          memcpy(args_signature_tmp + args_signature_tmp_offset, arg_type->basic_type->name, strlen(arg_type->basic_type->name));
+          args_signature_tmp_offset += strlen(arg_type->basic_type->name);
+          
+          for (int32_t i = 0; i < arg_type->dimension; i++) {
+            memcpy(args_signature_tmp + args_signature_tmp_offset, "[]", 2);
+            args_signature_tmp_offset += 2;
+          }
+          
+          if (arg_type->flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
+            args_signature_tmp[args_signature_tmp_offset] = '*';
+            args_signature_tmp_offset += 1;
+          }
+          
+          if (arg_index < method->args_length - 1) {
+            args_signature_tmp[args_signature_tmp_offset] = ',';
+            args_signature_tmp_offset += 1;
+          }
+        }
+      }
+      
+      SPVM_STRING* args_signature_string = SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, args_signature_tmp, args_signature_tmp_length);
+      
+      method->args_signature = args_signature_string->value;
+      
       // Can't return refernece type
       if (SPVM_TYPE_is_ref_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
         SPVM_COMPILER_error(compiler, "The return type cannnot be a reference type.\n  at %s line %d", method->op_method->file, method->op_method->line);

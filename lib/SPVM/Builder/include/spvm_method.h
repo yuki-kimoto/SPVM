@@ -18,6 +18,7 @@ struct spvm_method {
   const char* abs_name;
   SPVM_BASIC_TYPE* current_basic_type;
   const char* outmost_basic_type_name;
+  const char* args_signature;
   int32_t enum_value;
   int32_t args_length;
   int32_t required_args_length;
