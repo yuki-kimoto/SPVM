@@ -267,7 +267,7 @@ Returns the arguments signature of the method I<method>.
   30 set_is_precompile_fallback
   31 is_not_permitted
   32 set_is_not_permitted
-  32 args_signature
+  32 get_args_signature
 
 =head1 See Also
 
