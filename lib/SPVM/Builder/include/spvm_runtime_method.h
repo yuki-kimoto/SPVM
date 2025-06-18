@@ -15,6 +15,7 @@ struct spvm_runtime_method {
   SPVM_RUNTIME_BASIC_TYPE* current_basic_type;
   SPVM_RUNTIME_BASIC_TYPE* return_basic_type;
   SPVM_RUNTIME_ARG* args;
+  const char* args_signature;
   int32_t index;
   int32_t args_length;
   int32_t required_args_length;

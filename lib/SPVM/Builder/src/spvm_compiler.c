@@ -910,6 +910,9 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         SPVM_STRING* method_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, method->name, strlen(method->name));
         runtime_method->name = runtime_basic_type->constant_strings[method_name_string->index].value;
         
+        SPVM_STRING* method_args_signature_string = SPVM_HASH_get(basic_type->constant_string_symtable, method->args_signature, strlen(method->args_signature));
+        runtime_method->args_signature = runtime_basic_type->constant_strings[method_args_signature_string->index].value;
+        
         if (method->args_length > 0) {
           runtime_method->args = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_ARG) * method->args_length);
           runtime_method->args_length = method->args_length;
