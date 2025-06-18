@@ -1782,6 +1782,22 @@ Normally a method has a method block. L<Statements|SPVM::Document::Language::Sta
 
 SPVM operation codes are generated from a method implementation.
 
+=head2 Arguments Signature
+
+An arguments signature uniquely identifies the sequence of argument types without the type of invocant.
+
+  TYPE1,TYPE2,TYPEn
+
+The arguments signature of the following class method and instance method is C<string,mutable string,string[],Point[][],int*>.
+
+  static method args_signature_class_method : void ($args1 : string, $args2 : mutable string, $args3 : string[], $args4 : Point[][], $args5 : int*) {
+  
+  }
+  
+  method args_signature_instance_method : void ($args1 : string, $args2 : mutable string, $args3 : string[], $args4 : Point[][], $args5 : int*) {
+  
+  }
+
 =head1 Local Variable
 
 A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.
