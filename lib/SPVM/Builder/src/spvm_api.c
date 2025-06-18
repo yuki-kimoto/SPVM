@@ -394,7 +394,7 @@ int32_t SPVM_API_call_method_no_mortal_no_check_args(SPVM_ENV* env, SPVM_VALUE* 
   return error_id;
 }
 
-int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal, int32_t check_args_level, const char* decl_basic_type_name) {
+int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal, int32_t check_args_level, const char* decl_args_signature) {
   
   int32_t error_id = 0;
   
@@ -406,7 +406,7 @@ int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, c
     
     if (__builtin_expect(!!method, 1)) {
       if (check_args_level == SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_AUTO_CHECK) {
-        if (strcmp(method->current_basic_type->name, decl_basic_type_name) == 0) {
+        if (strcmp(method->args_signature, decl_args_signature) == 0) {
           check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_NO_CHECK;
         }
       }
@@ -444,11 +444,11 @@ int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
   return error_id;
 }
 
-int32_t SPVM_API_call_instance_method_no_mortal_less_check_args(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* decl_basic_type_name) {
+int32_t SPVM_API_call_instance_method_no_mortal_less_check_args(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* decl_args_signature) {
   
   int32_t mortal = 0;
   int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_AUTO_CHECK;
-  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, check_args_level, decl_basic_type_name);
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, check_args_level, decl_args_signature);
   
   return error_id;
 }
@@ -524,6 +524,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     }
     
     if (!(check_args_level == SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_NO_CHECK)) {
+      
       int32_t arg_index = 0;
       if (check_args_level == SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_AUTO_CHECK && !method->is_class_method) {
         arg_index = 1;

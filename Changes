@@ -1,10 +1,12 @@
 0.990071 2025-06-18
   [Incompatibe Changes]
     * Rename call_method_no_mortal_less_check_args native API to call_method_no_mortal_no_check_args.
-    * Add decl_basic_type_name argument to call_method_no_mortal_less_check_args native API.
+    * Add decl_args_signature argument to call_method_no_mortal_less_check_args native API.
   [Ingernal Changes]
     * Add args_signature member variable to spvm_method.h.
     * Add args_signature member variable to spvm_runtime_method.h.
+  [Performance Improvement]
+    * Improve the logic of instance method call. If argument signature is matched, runtime type checking is skipped.
 0.990070 2025-06-17
   [New Features]
     * Add call_method_no_mortal_less_check_args native API.

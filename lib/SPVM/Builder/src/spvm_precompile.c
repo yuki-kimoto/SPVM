@@ -310,6 +310,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t cmp;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int8_t* element_ptr_byte;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* basic_type_name;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* args_signature;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* field_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* method_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* constant_string;\n");
@@ -5045,11 +5046,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add_int(string_buffer, args_width);
         SPVM_STRING_BUFFER_add(string_buffer,
                                               ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)invocant_decl_basic_type->name);
+        SPVM_STRING_BUFFER_add(string_buffer, "  args_signature = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method->args_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width, basic_type_name);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width, args_signature);\n");
         
         break;
       }

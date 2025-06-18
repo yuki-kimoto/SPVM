@@ -2618,9 +2618,9 @@ Same as L</"call_method_no_mortal">, but does not perform any type checking of a
 
 =head2 call_instance_method_no_mortal_less_check_args
 
-C<int32_t (*call_instance_method_no_mortal_less_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* decl_basic_type_name);>
+C<int32_t (*call_instance_method_no_mortal_less_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* decl_args_signature);>
 
-Same as L</"call_instance_method_no_mortal">, but does not perform less type checking of arguments with a hint I<decl_basic_type_name>.
+Same as L</"call_instance_method_no_mortal">, but does not perform less type checking of arguments with a hint I<decl_args_signature>.
 
 =head1 Native API IDs
 
