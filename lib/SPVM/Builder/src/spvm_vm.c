@@ -120,7 +120,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     
     local_vars_stack_frame = (char*)SPVM_API_new_local_vars_stack_frame(env, stack, total_vars_size);
     if (local_vars_stack_frame == NULL) {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, "A creation of a local variable stack frame failed.");
+      void* exception = env->new_string_nolen_no_mortal(env, stack, "A creation of a local variables stack frame failed.");
       env->set_exception(env, stack, exception);
       error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
       goto END_OF_FUNC;
