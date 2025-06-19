@@ -120,10 +120,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     
     local_vars_stack_frame = (char*)SPVM_API_new_local_vars_stack_frame(env, stack, total_vars_size);
     if (local_vars_stack_frame == NULL) {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, "A creation of a method call stack failed. The memory allocation failed.");
+      void* exception = env->new_string_nolen_no_mortal(env, stack, "A creation of a local variable stack frame failed.");
       env->set_exception(env, stack, exception);
       error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-      return error_id;
+      goto END_OF_FUNC;
     }
     
     int32_t local_vars_stack_frame_offset = 0;
@@ -201,7 +201,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     switch (opcode_id) {
 
       case SPVM_OPCODE_C_ID_END_METHOD: {
-        goto label_END_OF_METHOD;
+        goto END_OF_FUNC;
       }
       case SPVM_OPCODE_C_ID_GOTO: {
         opcode_rel_index = opcode->operand0;
@@ -2423,9 +2423,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     opcode_rel_index++;
   }
   
-  label_END_OF_METHOD: {
+  END_OF_FUNC: {
     
-    if (error_id == 0) {
+    if (__builtin_expect(error_id == 0, 1)) {
       SPVM_RUNTIME_BASIC_TYPE* current_method_return_basic_type = current_method->return_basic_type;
       int32_t current_method_return_type_dimension = current_method->return_type_dimension;
       int32_t current_method_return_type_flag =current_method->return_type_flag;
@@ -2437,8 +2437,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
     }
     
-    SPVM_API_free_memory_block(env, stack, local_vars_stack_frame);
-    local_vars_stack_frame = NULL;
+    if (__builtin_expect(!!local_vars_stack_frame, 1)) {
+      SPVM_API_free_memory_block(env, stack, local_vars_stack_frame);
+      local_vars_stack_frame = NULL;
+    }
     
     return error_id;
   }
