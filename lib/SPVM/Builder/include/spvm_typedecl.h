@@ -7,6 +7,9 @@
 #include <stdint.h>
 #include <stddef.h>
 
+struct spvm_runtime_local_vars_base;
+typedef struct spvm_runtime_local_vars_base SPVM_RUNTIME_LOCAL_VARS_BASE;
+
 struct spvm_mutex;
 typedef struct spvm_mutex SPVM_MUTEX;
 
