@@ -117,8 +117,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     
     local_vars_stack_frame = (char*)SPVM_VM_new_local_vars_stack_frame(env, stack, total_vars_size);
     if (local_vars_stack_frame == NULL) {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, "A creation of a local variables stack frame failed.");
-      env->set_exception(env, stack, exception);
+      void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "A creation of a local variables stack frame failed.");
+      SPVM_API_set_exception(env, stack, exception);
       error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
       goto END_OF_FUNC;
     }
@@ -224,7 +224,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
           int32_t line = opcode->operand2;
           eval_error_id = error_id;
           error_id = 0;
-          env->set_exception(env, stack, env->new_stack_trace_no_mortal(env, stack, env->get_exception(env, stack), current_method, line));
+          SPVM_API_set_exception(env, stack, SPVM_API_new_stack_trace_no_mortal(env, stack, SPVM_API_get_exception(env, stack), current_method, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -233,7 +233,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       case SPVM_OPCODE_C_ID_RETURN_ON_EXCEPTION: {
         if (__builtin_expect(error_id, 0)) {
           int32_t line = opcode->operand2;
-          env->set_exception(env, stack, env->new_stack_trace_no_mortal(env, stack, env->get_exception(env, stack), current_method, line));
+          SPVM_API_set_exception(env, stack, SPVM_API_new_stack_trace_no_mortal(env, stack, SPVM_API_get_exception(env, stack), current_method, line));
           opcode_rel_index = opcode->operand0; 
           continue;
         }
@@ -2430,7 +2430,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       int32_t method_return_type_is_object = SPVM_TYPE_is_object_type(runtime->compiler, current_method_return_basic_type->id, current_method_return_type_dimension, current_method_return_type_flag);
       if (method_return_type_is_object) {
         if (*(void**)&stack[0] != NULL) {
-          env->api->internal->dec_ref_count(env, stack, *(void**)&stack[0]);
+          SPVM_API_dec_ref_count(env, stack, *(void**)&stack[0]);
         }
       }
     }
