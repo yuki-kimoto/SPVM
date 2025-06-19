@@ -3059,19 +3059,18 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   
   SPVM_VALUE* stack = env->new_memory_block(env, NULL, sizeof(SPVM_VALUE) * SPVM_API_C_STACK_LENGTH);
   
-  int32_t native_mortal_stack_capacity = 1;
-  void* native_mortal_stack = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_OBJECT*) * native_mortal_stack_capacity);
+  stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival = 1;
+  void* native_mortal_stack = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_OBJECT*) * stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival);
   if (native_mortal_stack == NULL) {
     return NULL;
   }
-  stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival = native_mortal_stack_capacity;
   stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].oval = native_mortal_stack;
   stack[SPVM_API_C_STACK_INDEX_ENV].oval = env;
   
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival = -1;
   
-  int32_t local_vars_bases_capacity = 1;
-  stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE*) * local_vars_bases_capacity);
+  stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival = 1;
+  stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE) * stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival);
   
   return stack;
 }
