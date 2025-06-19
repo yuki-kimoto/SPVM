@@ -186,9 +186,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   memset(mortal_stack, -1, current_method->mortal_stack_length * sizeof(int32_t));
   memset(mortal_stack_tops, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
   
-  int32_t object_data_offset = env->api->runtime->get_object_data_offset(runtime);
-  int32_t object_ref_count_offset = env->api->runtime->get_object_ref_count_offset(runtime);
-  int32_t object_length_offset = env->api->runtime->get_object_length_offset(runtime);
+  int32_t object_data_offset = sizeof(SPVM_OBJECT);
+  int32_t object_ref_count_offset = offsetof(SPVM_OBJECT, ref_count);
+  int32_t object_length_offset = offsetof(SPVM_OBJECT, length);
   
   // Execute operation codes
   while (1) {
