@@ -178,7 +178,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     local_vars_stack_frame_offset += current_method->byte_vars_width * sizeof(int8_t);
     local_vars_base.byte_vars_base = (void*)&byte_vars;
     
-    SPVM_API_push_local_vars_base(env, stack, &local_vars_base);
+    // TODO
+    // SPVM_API_push_local_vars_base(env, stack, &local_vars_base);
   }
   
   memset(mortal_stack, -1, current_method->mortal_stack_length * sizeof(int32_t));
