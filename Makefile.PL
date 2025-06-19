@@ -120,7 +120,6 @@ WriteMakefile(
     (ABSTRACT_FROM => 'lib/SPVM.pm', # retrieve abstract from module
      AUTHOR => 'Yuki Kimoto<kimoto.yuki@gmail.com>') : ()),
   CCFLAGS => $ccflags,
-  LDDLFLAGS => $lddlflags,
   OPTIMIZE => $optimize,
   LDDLFLAGS => $lddlflags,
   C => [@csource_files],
