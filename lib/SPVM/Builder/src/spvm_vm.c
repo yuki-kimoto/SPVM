@@ -1380,7 +1380,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t basic_type_id = opcode->operand2;
         int32_t type_dimension = opcode->operand3;
         
-        void* src_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, src_basic_type_id);
+        void* src_basic_type = runtime->basic_types[src_basic_type_id];
         
         SPVM_RUNTIME_BASIC_TYPE* basic_type = runtime->basic_types[basic_type_id];
         
@@ -1404,7 +1404,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         SPVM_RUNTIME_BASIC_TYPE* basic_type = runtime->basic_types[basic_type_id];
         
-        void* src_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, src_basic_type_id);
+        void* src_basic_type = runtime->basic_types[src_basic_type_id];
         
         SPVM_IMPLEMENT_IS_ERROR(env, stack, &int_vars[opcode->operand0], src_basic_type, basic_type, type_dimension);
         break;
