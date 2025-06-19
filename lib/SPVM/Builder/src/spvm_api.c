@@ -3078,10 +3078,6 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   return stack;
 }
 
-void* SPVM_API_new_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, int32_t local_vars_stack_frame_size) {
-  return SPVM_API_new_memory_block(env, stack, local_vars_stack_frame_size);
-}
-
 void SPVM_API_push_local_vars_base(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_LOCAL_VARS_BASE* local_vars_base) {
   
   int32_t call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;

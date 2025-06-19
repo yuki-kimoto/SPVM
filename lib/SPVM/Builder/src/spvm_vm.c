@@ -115,7 +115,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     total_vars_size += current_method->short_vars_width * sizeof(int16_t);
     total_vars_size += current_method->byte_vars_width * sizeof(int8_t);
     
-    local_vars_stack_frame = (char*)SPVM_API_new_local_vars_stack_frame(env, stack, total_vars_size);
+    local_vars_stack_frame = (char*)SPVM_VM_new_local_vars_stack_frame(env, stack, total_vars_size);
     if (local_vars_stack_frame == NULL) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, "A creation of a local variables stack frame failed.");
       env->set_exception(env, stack, exception);
@@ -2442,4 +2442,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     
     return error_id;
   }
+}
+
+void* SPVM_VM_new_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, int32_t local_vars_stack_frame_size) {
+  return SPVM_API_new_memory_block(env, stack, local_vars_stack_frame_size);
 }
