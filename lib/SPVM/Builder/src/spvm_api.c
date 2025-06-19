@@ -43,6 +43,7 @@
 #include "spvm_mutex.h"
 #include "spvm_utf8.h"
 #include "spvm_type.h"
+#include "spvm_runtime_local_vars_base.h"
 
 static const char* FILE_NAME = "spvm_api.c";
 

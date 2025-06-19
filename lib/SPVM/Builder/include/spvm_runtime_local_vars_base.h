@@ -1,8 +1,8 @@
 // Copyright (c) 2023 Yuki Kimoto
 // MIT License
 
-#IFNDEF SPVM_RUNTIME_LOCAL_VARS_BASE_H
-#DEFINE SPVM_RUNTIME_LOCAL_VARS_BASE_H
+#ifndef SPVM_RUNTIME_LOCAL_VARS_BASE_H
+#define SPVM_RUNTIME_LOCAL_VARS_BASE_H
 
 #include "spvm_typedecl.h"
 
