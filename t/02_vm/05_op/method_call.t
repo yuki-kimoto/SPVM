@@ -229,15 +229,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
-=pod
-
 # Deep recursion
 {
   # ok(SPVM::TestCase::Operator::MethodCall->deep_recursion);
   1;
 }
-
-=cut
 
 # Optional arguments
 {
@@ -256,16 +252,12 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   }
 }
 
-=pod
-
 # Interface Methods
 {
   {
     ok(SPVM::TestCase::Operator::MethodCall->call_recursive);
   }
 }
-
-=cut
 
 # Inheritance
 {
