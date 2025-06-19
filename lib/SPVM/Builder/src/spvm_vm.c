@@ -118,7 +118,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     total_vars_size += current_method->short_vars_width * sizeof(int16_t);
     total_vars_size += current_method->byte_vars_width * sizeof(int8_t);
     
-    local_vars_stack_frame = (char*)SPVM_API_new_local_vars_stack_frame(env, stack, total_vars_size + 1);
+    local_vars_stack_frame = (char*)SPVM_API_new_local_vars_stack_frame(env, stack, total_vars_size);
     if (local_vars_stack_frame == NULL) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, "A creation of a method call stack failed. The memory allocation failed.");
       env->set_exception(env, stack, exception);
