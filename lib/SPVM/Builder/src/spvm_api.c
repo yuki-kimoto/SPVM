@@ -634,7 +634,7 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     }
   }
   
-  if (*(int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP] > native_mortal_stack_top) {
+  if (*(int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_LENGTH] > native_mortal_stack_top) {
     SPVM_API_leave_scope(env, stack, native_mortal_stack_top);
   }
   
@@ -3068,6 +3068,8 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].oval = native_mortal_stack;
   stack[SPVM_API_C_STACK_INDEX_ENV].oval = env;
   
+  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival = -1;
+  
   int32_t local_vars_bases_capacity = 1;
   stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE*) * local_vars_bases_capacity);
   
@@ -5028,7 +5030,7 @@ int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
   
   if (object != NULL) {
     SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
-    int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+    int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_LENGTH];
     int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
     
     // Extend mortal stack
@@ -5056,7 +5058,7 @@ int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
 void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top) {
   
   SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
-  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_LENGTH];
   
   for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
     
@@ -5071,7 +5073,7 @@ void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mor
 
 int32_t SPVM_API_enter_scope(SPVM_ENV* env, SPVM_VALUE* stack){
   
-  int32_t mortal_stack_top = *(int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+  int32_t mortal_stack_top = *(int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_LENGTH];
   
   return mortal_stack_top;
 }
