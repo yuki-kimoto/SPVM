@@ -3068,6 +3068,9 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].oval = native_mortal_stack;
   stack[SPVM_API_C_STACK_INDEX_ENV].oval = env;
   
+  int32_t local_vars_bases_capacity = 1;
+  stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE*) * local_vars_bases_capacity);
+  
   return stack;
 }
 
@@ -3092,6 +3095,8 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_API_free_memory_block(env, stack, mortal_stack);
     mortal_stack = NULL;
   }
+  
+  SPVM_API_free_memory_block(env, stack, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval);
   
   env->free_memory_block(env, stack, stack);
   stack = NULL;
