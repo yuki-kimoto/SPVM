@@ -106,28 +106,17 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   {
     SPVM_RUNTIME_LOCAL_VARS_BASE local_vars_base = {0};
     
-    // Numeric area byte size
-    int32_t numeric_vars_size = 0;
-    numeric_vars_size += current_method->long_vars_width * sizeof(int64_t);
-    numeric_vars_size += current_method->double_vars_width * sizeof(double);
-    numeric_vars_size += current_method->int_vars_width * sizeof(int32_t);
-    numeric_vars_size += current_method->float_vars_width * sizeof(float);
-    numeric_vars_size += current_method->mortal_stack_length * sizeof(int32_t);
-    numeric_vars_size += current_method->mortal_stack_tops_length * sizeof(int32_t);
-    numeric_vars_size += current_method->short_vars_width * sizeof(int16_t);
-    numeric_vars_size += current_method->byte_vars_width * sizeof(int8_t);
-    
-    if (numeric_vars_size % 8 != 0) {
-      numeric_vars_size += (8 - (numeric_vars_size % 8));
-    }
-    
-    // Address area byte size
-    int32_t address_vars_size = 0;
-    address_vars_size += current_method->object_vars_width * sizeof(void*);
-    address_vars_size += current_method->ref_vars_width * sizeof(void*);
-    
-    // Total area byte size
-    int32_t total_vars_size = numeric_vars_size + address_vars_size;
+    int32_t total_vars_size = 0;
+    total_vars_size += current_method->long_vars_width * sizeof(int64_t);
+    total_vars_size += current_method->double_vars_width * sizeof(double);
+    total_vars_size += current_method->object_vars_width * sizeof(void*);
+    total_vars_size += current_method->ref_vars_width * sizeof(void*);
+    total_vars_size += current_method->int_vars_width * sizeof(int32_t);
+    total_vars_size += current_method->float_vars_width * sizeof(float);
+    total_vars_size += current_method->mortal_stack_length * sizeof(int32_t);
+    total_vars_size += current_method->mortal_stack_tops_length * sizeof(int32_t);
+    total_vars_size += current_method->short_vars_width * sizeof(int16_t);
+    total_vars_size += current_method->byte_vars_width * sizeof(int8_t);
     
     local_vars_stack_frame = (char*)SPVM_API_new_local_vars_stack_frame(env, stack, total_vars_size + 1);
     if (local_vars_stack_frame == NULL) {
@@ -139,55 +128,59 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     
     int32_t local_vars_stack_frame_offset = 0;
     
-    // Double variables
+    // Alignment is important for performance
+    
+    // Double variables 8 bytes
     double_vars = (double*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->double_vars_width * sizeof(double);
     local_vars_base.double_vars_base = (void*)&double_vars;
     local_vars_base.head = local_vars_base.double_vars_base;
-    // Long varialbes
+    
+    // Long varialbes 8 bytes
     long_vars = (int64_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->long_vars_width * sizeof(int64_t);
     local_vars_base.long_vars_base = (void*)&long_vars;
     
-    // Float variables
+    // Object variables 4 or 8 bytes
+    object_vars = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
+    local_vars_stack_frame_offset += current_method->object_vars_width * sizeof(void*);
+    local_vars_base.object_vars_base = (void*)&object_vars;
+    
+    // Refernce variables 4 or 8 bytes
+    ref_vars = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
+    local_vars_stack_frame_offset += current_method->ref_vars_width * sizeof(void*);
+    local_vars_base.ref_vars_base = (void*)&ref_vars;
+    
+    // Float variables 4 bytes
     float_vars = (float*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->float_vars_width * sizeof(float);
     local_vars_base.float_vars_base = (void*)&float_vars;
     
-    // Int variables
+    // Int variables 4 bytes
     int_vars = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->int_vars_width * sizeof(int32_t);
     local_vars_base.int_vars_base = (void*)&int_vars;
     
-    // Mortal stack - object variable indexes
+    // Mortal stack - object variable indexes  4 bytes
     mortal_stack = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->mortal_stack_length * sizeof(int32_t);
     local_vars_base.mortal_stack_base = (void*)&mortal_stack;
     
-    // Mortal stack tops
+    // Mortal stack tops 4 bytes
     mortal_stack_tops = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->mortal_stack_tops_length * sizeof(int32_t);
     local_vars_base.mortal_stack_tops_base = (void*)&mortal_stack_tops;
     
-    // Short variables
+    // Short variables 2 bytes
     short_vars = (int16_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->short_vars_width * sizeof(int16_t);
     local_vars_base.short_vars_base = (void*)&short_vars;
     
-    // Byte variables
+    // Byte variables 1 bytes
     byte_vars = (int8_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->byte_vars_width * sizeof(int8_t);
     local_vars_base.byte_vars_base = (void*)&byte_vars;
     
-    local_vars_stack_frame_offset = numeric_vars_size;
-    
-    // Object variables
-    object_vars = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_stack_frame_offset += current_method->object_vars_width * sizeof(void*);
-    
-    // Refernce variables
-    ref_vars = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_stack_frame_offset += current_method->ref_vars_width * sizeof(void*);
   }
   
   memset(mortal_stack, -1, current_method->mortal_stack_length * sizeof(int32_t));
