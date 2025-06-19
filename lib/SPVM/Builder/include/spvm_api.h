@@ -45,9 +45,10 @@ void SPVM_API_free_env(SPVM_ENV* env);
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
 SPVM_VALUE* SPVM_API_new_stack_with_all_method_call_permitted(SPVM_ENV* env);
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
+
 void SPVM_API_push_local_vars_base(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_LOCAL_VARS_BASE* local_vars_base);
-void* SPVM_API_new_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, int32_t local_vars_stack_frame_size);
-void SPVM_API_free_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, void* local_vars_stack_frame);
+void* SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, int32_t local_vars_stack_frame_size);
+void SPVM_API_pop_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, void* local_vars_stack_frame, int32_t local_vars_stack_frame_size);
 
 int32_t SPVM_API_args_width(SPVM_ENV* env, SPVM_VALUE* stack);
 

@@ -3102,11 +3102,11 @@ void SPVM_API_push_local_vars_base(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
   memcpy(&stack_index_local_vars_bases[call_depth], local_vars_base, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE));
 }
 
-void* SPVM_API_new_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, int32_t local_vars_stack_frame_size) {
+void* SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, int32_t local_vars_stack_frame_size) {
   return SPVM_API_new_memory_block(env, stack, local_vars_stack_frame_size);
 }
 
-void SPVM_API_free_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, void* local_vars_stack_frame) {
+void SPVM_API_pop_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, void* local_vars_stack_frame, int32_t local_vars_stack_frame_size) {
   SPVM_API_free_memory_block(env, stack, local_vars_stack_frame);
 }
 

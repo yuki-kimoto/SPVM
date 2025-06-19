@@ -100,22 +100,22 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   // Allignment is 8. This is numeric type max byte size
   // Order 8, 4, 2, 1 numeric variable, and addrress variables
   char* local_vars_stack_frame = NULL;
+  int32_t local_vars_stack_frame_size = 0;
   {
     SPVM_RUNTIME_LOCAL_VARS_BASE local_vars_base = {0};
     
-    int32_t total_vars_size = 0;
-    total_vars_size += current_method->long_vars_width * sizeof(int64_t);
-    total_vars_size += current_method->double_vars_width * sizeof(double);
-    total_vars_size += current_method->object_vars_width * sizeof(void*);
-    total_vars_size += current_method->ref_vars_width * sizeof(void*);
-    total_vars_size += current_method->int_vars_width * sizeof(int32_t);
-    total_vars_size += current_method->float_vars_width * sizeof(float);
-    total_vars_size += current_method->mortal_stack_length * sizeof(int32_t);
-    total_vars_size += current_method->mortal_stack_tops_length * sizeof(int32_t);
-    total_vars_size += current_method->short_vars_width * sizeof(int16_t);
-    total_vars_size += current_method->byte_vars_width * sizeof(int8_t);
+    local_vars_stack_frame_size += current_method->long_vars_width * sizeof(int64_t);
+    local_vars_stack_frame_size += current_method->double_vars_width * sizeof(double);
+    local_vars_stack_frame_size += current_method->object_vars_width * sizeof(void*);
+    local_vars_stack_frame_size += current_method->ref_vars_width * sizeof(void*);
+    local_vars_stack_frame_size += current_method->int_vars_width * sizeof(int32_t);
+    local_vars_stack_frame_size += current_method->float_vars_width * sizeof(float);
+    local_vars_stack_frame_size += current_method->mortal_stack_length * sizeof(int32_t);
+    local_vars_stack_frame_size += current_method->mortal_stack_tops_length * sizeof(int32_t);
+    local_vars_stack_frame_size += current_method->short_vars_width * sizeof(int16_t);
+    local_vars_stack_frame_size += current_method->byte_vars_width * sizeof(int8_t);
     
-    local_vars_stack_frame = (char*)SPVM_API_new_local_vars_stack_frame(env, stack, total_vars_size);
+    local_vars_stack_frame = (char*)SPVM_API_push_local_vars_stack_frame(env, stack, local_vars_stack_frame_size);
     if (local_vars_stack_frame == NULL) {
       void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "A creation of a local variables stack frame failed.");
       SPVM_API_set_exception(env, stack, exception);
@@ -2438,7 +2438,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     }
     
     if (__builtin_expect(!!local_vars_stack_frame, 1)) {
-      SPVM_API_free_local_vars_stack_frame(env, stack, local_vars_stack_frame);
+      SPVM_API_pop_local_vars_stack_frame(env, stack, local_vars_stack_frame, local_vars_stack_frame_size);
       local_vars_stack_frame = NULL;
     }
     
