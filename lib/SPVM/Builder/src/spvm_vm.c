@@ -42,6 +42,7 @@
 
 #include "spvm_implement.h"
 #include "spvm_type.h"
+#include "spvm_runtime_local_vars_base.h"
 
 static const char* FILE_NAME = "spvm_vm.c";
 
@@ -103,6 +104,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   // Order 8, 4, 2, 1 numeric variable, and addrress variables
   char* local_vars_stack_frame = NULL;
   {
+    SPVM_RUNTIME_LOCAL_VARS_BASE local_vars_base = {0};
+    
     // Numeric area byte size
     int32_t numeric_vars_size = 0;
     numeric_vars_size += current_method->long_vars_width * sizeof(int64_t);
@@ -139,34 +142,42 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     // Double variables
     double_vars = (double*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->double_vars_width * sizeof(double);
-    
+    local_vars_base.double_vars_base = (void*)&double_vars;
+    local_vars_base.head = local_vars_base.double_vars_base;
     // Long varialbes
     long_vars = (int64_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->long_vars_width * sizeof(int64_t);
+    local_vars_base.long_vars_base = (void*)&long_vars;
     
     // Float variables
     float_vars = (float*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->float_vars_width * sizeof(float);
+    local_vars_base.float_vars_base = (void*)&float_vars;
     
     // Int variables
     int_vars = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->int_vars_width * sizeof(int32_t);
+    local_vars_base.int_vars_base = (void*)&int_vars;
     
     // Mortal stack - object variable indexes
     mortal_stack = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->mortal_stack_length * sizeof(int32_t);
+    local_vars_base.mortal_stack_base = (void*)&mortal_stack;
     
     // Mortal stack tops
     mortal_stack_tops = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->mortal_stack_tops_length * sizeof(int32_t);
+    local_vars_base.mortal_stack_tops_base = (void*)&mortal_stack_tops;
     
     // Short variables
     short_vars = (int16_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->short_vars_width * sizeof(int16_t);
+    local_vars_base.short_vars_base = (void*)&short_vars;
     
     // Byte variables
     byte_vars = (int8_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->byte_vars_width * sizeof(int8_t);
+    local_vars_base.byte_vars_base = (void*)&byte_vars;
     
     local_vars_stack_frame_offset = numeric_vars_size;
     
