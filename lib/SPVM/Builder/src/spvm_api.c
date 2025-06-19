@@ -3078,6 +3078,10 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   return stack;
 }
 
+void* SPVM_API_new_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, int32_t local_vars_stack_frame_size) {
+  return SPVM_API_new_memory_block(env, stack, local_vars_stack_frame_size);
+}
+
 SPVM_VALUE* SPVM_API_new_stack_with_all_method_call_permitted(SPVM_ENV* env) {
   
   SPVM_VALUE* stack = SPVM_API_new_stack(env);
