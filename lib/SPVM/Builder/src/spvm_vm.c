@@ -48,9 +48,6 @@ static const char* FILE_NAME = "spvm_vm.c";
 
 int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* current_method, int32_t args_width) {
   
-  // Opcode relative index
-  register int32_t opcode_rel_index = 0;
-  
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -191,6 +188,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   int32_t object_length_offset = offsetof(SPVM_OBJECT, length);
   
   // Execute operation codes
+  int32_t opcode_rel_index = 0;
   while (1) {
     SPVM_OPCODE* opcode = &(opcodes[opcode_rel_index]);
     
