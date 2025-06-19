@@ -57,6 +57,8 @@ my $optimize;
 GetOptions(
   "DEFINE=s" => \@defines,
   "OPTIMIZE=s" => \$optimize,
+  "CCFLAGS=s" => \my @ccflags,
+  "LDDLFLAGS=s" => \my @lddlflags,
   'meta' => \my $meta,
   'no-build-spvm-modules' => \my $no_build_spvm_modules,
   'no-precompile-tests' => \my $no_precompile_tests,
@@ -83,12 +85,12 @@ my $ccflags = $Config{ccflags};
 
 $ccflags .= " -std=$std";
 
-$ccflags .= " " . join(' ', @{$default_config->thread_ccflags});
+$ccflags .= " " . join(' ', @{$default_config->thread_ccflags}, @ccflags);
 
 # LDDLFLAGS
 my $lddlflags = $Config{lddlflags};
 
-$lddlflags .= " " . join(' ', @{$default_config->thread_ldflags});
+$lddlflags .= " " . join(' ', @{$default_config->thread_ldflags}, @lddlflags);
 
 # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
 # so I dicide not to print warning in release version
