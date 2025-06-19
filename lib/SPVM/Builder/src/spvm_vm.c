@@ -412,7 +412,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t dist_basic_type_id = opcode->operand2;
         int32_t dist_type_dimension = opcode->operand3;
         
-        void* dist_basic_type = env->api->runtime->get_basic_type_by_id(runtime, dist_basic_type_id);
+        void* dist_basic_type = runtime->basic_types[dist_basic_type_id];
         
         SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], dist_basic_type, dist_type_dimension, &error_id);
         break;
