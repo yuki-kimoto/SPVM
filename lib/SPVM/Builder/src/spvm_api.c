@@ -3069,7 +3069,7 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival = -1;
   
-  stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_CAPACITY].ival = 2048;
+  stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_CAPACITY].ival = 2048 * 100;
   stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK].oval = SPVM_API_new_memory_block(env, stack, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_CAPACITY].ival);
   
   stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival = 1;
@@ -3110,11 +3110,79 @@ void SPVM_API_pop_local_vars_base(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 void* SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, int32_t local_vars_stack_frame_size) {
-  return SPVM_API_new_memory_block(env, stack, local_vars_stack_frame_size);
+  
+  // Adjust allignment
+  local_vars_stack_frame_size = (local_vars_stack_frame_size + 7) & ~7;
+  assert(local_vars_stack_frame_size % 8 == 0);
+  
+  int32_t local_vars_stack_capacity = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_CAPACITY].ival;
+  
+  int32_t local_vars_stack_length = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_LENGTH].ival;
+  
+  stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_LENGTH].ival += local_vars_stack_frame_size;
+  
+  if (local_vars_stack_length + local_vars_stack_frame_size >= local_vars_stack_capacity) {
+    
+    int32_t new_local_vars_stack_capacity = (local_vars_stack_length + local_vars_stack_frame_size) * 2;
+    void* new_local_vars_stack = SPVM_API_new_memory_block(env, stack, new_local_vars_stack_capacity);
+    
+    memcpy(new_local_vars_stack, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK].oval, local_vars_stack_length);
+    stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_CAPACITY].ival = new_local_vars_stack_capacity;
+    
+    SPVM_RUNTIME_LOCAL_VARS_BASE* local_vars_bases = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval;
+    
+    int32_t local_vars_bases_length = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_LENGTH].ival;
+    
+    for (int32_t i = 0; i < local_vars_bases_length; i++) {
+      SPVM_RUNTIME_LOCAL_VARS_BASE* local_vars_base = &local_vars_bases[i];
+      
+      void** head = local_vars_base->head;
+      void** byte_vars_base = local_vars_base->byte_vars_base;
+      void** short_vars_base = local_vars_base->short_vars_base;
+      void** int_vars_base = local_vars_base->int_vars_base;
+      void** long_vars_base = local_vars_base->long_vars_base;
+      void** float_vars_base = local_vars_base->float_vars_base;
+      void** double_vars_base = local_vars_base->double_vars_base;
+      void** object_vars_base = local_vars_base->object_vars_base;
+      void** ref_vars_base = local_vars_base->ref_vars_base;
+      void** mortal_stack_base = local_vars_base->mortal_stack_base;
+      void** mortal_stack_tops_base = local_vars_base->mortal_stack_tops_base;
+      
+      *local_vars_base->byte_vars_base = new_local_vars_stack + (byte_vars_base - head);
+      *local_vars_base->short_vars_base = new_local_vars_stack + (short_vars_base - head);
+      *local_vars_base->int_vars_base = new_local_vars_stack + (int_vars_base - head);
+      *local_vars_base->long_vars_base = new_local_vars_stack + (long_vars_base - head);
+      *local_vars_base->float_vars_base = new_local_vars_stack + (float_vars_base - head);
+      *local_vars_base->double_vars_base = new_local_vars_stack + (double_vars_base - head);
+      *local_vars_base->object_vars_base = new_local_vars_stack + (object_vars_base - head);
+      *local_vars_base->ref_vars_base = new_local_vars_stack + (ref_vars_base - head);
+      *local_vars_base->mortal_stack_base = new_local_vars_stack + (mortal_stack_base - head);
+      *local_vars_base->mortal_stack_tops_base = new_local_vars_stack + (mortal_stack_tops_base - head);
+      
+    }
+    
+    SPVM_API_free_memory_block(env, stack, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK].oval);
+    
+    stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK].oval = new_local_vars_stack;
+  }
+  
+  char* local_vars_stack = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK].oval;
+  
+  void* local_vars_stack_frame = (void*)&local_vars_stack[local_vars_stack_length];
+  memset(local_vars_stack_frame, 0, local_vars_stack_frame_size);
+  
+  assert((intptr_t)local_vars_stack_frame % 8 == 0);
+  
+  return local_vars_stack_frame;
 }
 
 void SPVM_API_pop_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, void* local_vars_stack_frame, int32_t local_vars_stack_frame_size) {
-  SPVM_API_free_memory_block(env, stack, local_vars_stack_frame);
+  
+  // Adjust allignment
+  local_vars_stack_frame_size = (local_vars_stack_frame_size + 7) & ~7;
+  assert(local_vars_stack_frame_size % 8 == 0);
+  
+  stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_LENGTH].ival -= local_vars_stack_frame_size;
 }
 
 SPVM_VALUE* SPVM_API_new_stack_with_all_method_call_permitted(SPVM_ENV* env) {
