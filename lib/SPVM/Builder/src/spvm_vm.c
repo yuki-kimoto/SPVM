@@ -106,43 +106,43 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     // Alignment is important for performance
     
     // Long varialbes 8 bytes
-    long_vars = (int64_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+    *local_vars_base->long_vars_base = (int64_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->long_vars_width * sizeof(int64_t);
     
     // Double variables 8 bytes
-    double_vars = (double*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+    *local_vars_base->double_vars_base = (double*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->double_vars_width * sizeof(double);
     
     // Object variables 4 or 8 bytes
-    object_vars = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
+    *local_vars_base->object_vars_base = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->object_vars_width * sizeof(void*);
     
     // Refernce variables 4 or 8 bytes
-    ref_vars = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
+    *local_vars_base->ref_vars_base = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->ref_vars_width * sizeof(void*);
     
     // Int variables 4 bytes
-    int_vars = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+    *local_vars_base->int_vars_base = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->int_vars_width * sizeof(int32_t);
     
     // Float variables 4 bytes
-    float_vars = (float*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+    *local_vars_base->float_vars_base = (float*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->float_vars_width * sizeof(float);
     
     // Mortal stack - object variable indexes  4 bytes
-    mortal_stack = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+    *local_vars_base->mortal_stack_base = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->mortal_stack_length * sizeof(int32_t);
     
     // Mortal stack tops 4 bytes
-    mortal_stack_tops = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+    *local_vars_base->mortal_stack_tops_base = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->mortal_stack_tops_length * sizeof(int32_t);
     
     // Short variables 2 bytes
-    short_vars = (int16_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+    *local_vars_base->short_vars_base = (int16_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->short_vars_width * sizeof(int16_t);
     
     // Byte variables 1 bytes
-    byte_vars = (int8_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+    *local_vars_base->byte_vars_base = (int8_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->byte_vars_width * sizeof(int8_t);
     
     memset(mortal_stack, -1, current_method->mortal_stack_length * sizeof(int32_t));
