@@ -3136,28 +3136,27 @@ void* SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, int
     for (int32_t i = 0; i < local_vars_bases_length; i++) {
       SPVM_RUNTIME_LOCAL_VARS_BASE* local_vars_base = &local_vars_bases[i];
       
-      void** head = local_vars_base->head;
-      void** byte_vars_base = local_vars_base->byte_vars_base;
-      void** short_vars_base = local_vars_base->short_vars_base;
-      void** int_vars_base = local_vars_base->int_vars_base;
-      void** long_vars_base = local_vars_base->long_vars_base;
-      void** float_vars_base = local_vars_base->float_vars_base;
-      void** double_vars_base = local_vars_base->double_vars_base;
-      void** object_vars_base = local_vars_base->object_vars_base;
-      void** ref_vars_base = local_vars_base->ref_vars_base;
-      void** mortal_stack_base = local_vars_base->mortal_stack_base;
-      void** mortal_stack_tops_base = local_vars_base->mortal_stack_tops_base;
+      int8_t** byte_vars_base = local_vars_base->byte_vars_base;
+      int16_t** short_vars_base = local_vars_base->short_vars_base;
+      int32_t** int_vars_base = local_vars_base->int_vars_base;
+      int64_t** long_vars_base = local_vars_base->long_vars_base;
+      float** float_vars_base = local_vars_base->float_vars_base;
+      double** double_vars_base = local_vars_base->double_vars_base;
+      void*** object_vars_base = local_vars_base->object_vars_base;
+      void*** ref_vars_base = local_vars_base->ref_vars_base;
+      int32_t** mortal_stack_base = local_vars_base->mortal_stack_base;
+      int32_t** mortal_stack_tops_base = local_vars_base->mortal_stack_tops_base;
       
-      *local_vars_base->byte_vars_base = new_local_vars_stack + (byte_vars_base - head);
-      *local_vars_base->short_vars_base = new_local_vars_stack + (short_vars_base - head);
-      *local_vars_base->int_vars_base = new_local_vars_stack + (int_vars_base - head);
-      *local_vars_base->long_vars_base = new_local_vars_stack + (long_vars_base - head);
-      *local_vars_base->float_vars_base = new_local_vars_stack + (float_vars_base - head);
-      *local_vars_base->double_vars_base = new_local_vars_stack + (double_vars_base - head);
-      *local_vars_base->object_vars_base = new_local_vars_stack + (object_vars_base - head);
-      *local_vars_base->ref_vars_base = new_local_vars_stack + (ref_vars_base - head);
-      *local_vars_base->mortal_stack_base = new_local_vars_stack + (mortal_stack_base - head);
-      *local_vars_base->mortal_stack_tops_base = new_local_vars_stack + (mortal_stack_tops_base - head);
+      *local_vars_base->byte_vars_base = new_local_vars_stack + ((intptr_t)byte_vars_base);
+      *local_vars_base->short_vars_base = new_local_vars_stack + ((intptr_t)short_vars_base);
+      *local_vars_base->int_vars_base = new_local_vars_stack + ((intptr_t)int_vars_base);
+      *local_vars_base->long_vars_base = new_local_vars_stack + ((intptr_t)long_vars_base);
+      *local_vars_base->float_vars_base = new_local_vars_stack + ((intptr_t)float_vars_base);
+      *local_vars_base->double_vars_base = new_local_vars_stack + ((intptr_t)double_vars_base);
+      *local_vars_base->object_vars_base = new_local_vars_stack + ((intptr_t)object_vars_base);
+      *local_vars_base->ref_vars_base = new_local_vars_stack + ((intptr_t)ref_vars_base);
+      *local_vars_base->mortal_stack_base = new_local_vars_stack + ((intptr_t)mortal_stack_base);
+      *local_vars_base->mortal_stack_tops_base = new_local_vars_stack + ((intptr_t)mortal_stack_tops_base);
       
     }
     
