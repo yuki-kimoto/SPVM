@@ -89,66 +89,15 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   // Allignment is 8. This is numeric type max byte size
   // Order 8, 4, 2, 1 numeric variable, and addrress variables
   int32_t success_push_local_vars_stack_frame = 0;
-  {
-    char* local_vars_stack_frame = (char*)SPVM_API_push_local_vars_stack_frame(env, stack, current_method);
-    if (local_vars_stack_frame) {
-      success_push_local_vars_stack_frame = 1;
-    }
-    else {
-      void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "A creation of a local variables stack frame failed.");
-      SPVM_API_set_exception(env, stack, exception);
-      error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-      goto END_OF_FUNC;
-    }
-    
-    int32_t local_vars_stack_frame_offset = 0;
-    
-    // Alignment is important for performance
-    
-    // Long varialbes 8 bytes
-    *local_vars_base->long_vars_base = (int64_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_stack_frame_offset += current_method->long_vars_width * sizeof(int64_t);
-    
-    // Double variables 8 bytes
-    *local_vars_base->double_vars_base = (double*)&local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_stack_frame_offset += current_method->double_vars_width * sizeof(double);
-    
-    // Object variables 4 or 8 bytes
-    *local_vars_base->object_vars_base = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_stack_frame_offset += current_method->object_vars_width * sizeof(void*);
-    
-    // Refernce variables 4 or 8 bytes
-    *local_vars_base->ref_vars_base = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_stack_frame_offset += current_method->ref_vars_width * sizeof(void*);
-    
-    // Int variables 4 bytes
-    *local_vars_base->int_vars_base = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_stack_frame_offset += current_method->int_vars_width * sizeof(int32_t);
-    
-    // Float variables 4 bytes
-    *local_vars_base->float_vars_base = (float*)&local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_stack_frame_offset += current_method->float_vars_width * sizeof(float);
-    
-    // Mortal stack - object variable indexes  4 bytes
-    *local_vars_base->mortal_stack_base = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_stack_frame_offset += current_method->mortal_stack_length * sizeof(int32_t);
-    
-    // Mortal stack tops 4 bytes
-    *local_vars_base->mortal_stack_tops_base = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_stack_frame_offset += current_method->mortal_stack_tops_length * sizeof(int32_t);
-    
-    // Short variables 2 bytes
-    *local_vars_base->short_vars_base = (int16_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_stack_frame_offset += current_method->short_vars_width * sizeof(int16_t);
-    
-    // Byte variables 1 bytes
-    *local_vars_base->byte_vars_base = (int8_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_stack_frame_offset += current_method->byte_vars_width * sizeof(int8_t);
-    
-    memset(*local_vars_base->mortal_stack_base, -1, current_method->mortal_stack_length * sizeof(int32_t));
-    memset(*local_vars_base->mortal_stack_tops_base, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
-    
-    SPVM_API_push_local_vars_base(env, stack, local_vars_base);
+  char* local_vars_stack_frame = (char*)SPVM_API_push_local_vars_stack_frame(env, stack, current_method, local_vars_base);
+  if (local_vars_stack_frame) {
+    success_push_local_vars_stack_frame = 1;
+  }
+  else {
+    void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "A creation of a local variables stack frame failed.");
+    SPVM_API_set_exception(env, stack, exception);
+    error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+    goto END_OF_FUNC;
   }
   
   SPVM_RUNTIME* runtime = env->runtime;
