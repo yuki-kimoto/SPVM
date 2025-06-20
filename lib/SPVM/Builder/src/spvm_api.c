@@ -3175,6 +3175,27 @@ void* SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, int
   return local_vars_stack_frame;
 }
 
+int32_t SPVM_API_get_local_vars_stack_frame_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method) {
+  
+  int32_t local_vars_stack_frame_size = 0;
+  local_vars_stack_frame_size += method->long_vars_width * sizeof(int64_t);
+  local_vars_stack_frame_size += method->double_vars_width * sizeof(double);
+  local_vars_stack_frame_size += method->object_vars_width * sizeof(void*);
+  local_vars_stack_frame_size += method->ref_vars_width * sizeof(void*);
+  local_vars_stack_frame_size += method->int_vars_width * sizeof(int32_t);
+  local_vars_stack_frame_size += method->float_vars_width * sizeof(float);
+  local_vars_stack_frame_size += method->mortal_stack_length * sizeof(int32_t);
+  local_vars_stack_frame_size += method->mortal_stack_tops_length * sizeof(int32_t);
+  local_vars_stack_frame_size += method->short_vars_width * sizeof(int16_t);
+  local_vars_stack_frame_size += method->byte_vars_width * sizeof(int8_t);
+  
+  // Adjust allignment
+  local_vars_stack_frame_size = (local_vars_stack_frame_size + 7) & ~7;
+  assert(local_vars_stack_frame_size % 8 == 0);
+  
+  return local_vars_stack_frame_size;
+}
+
 void SPVM_API_pop_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, void* local_vars_stack_frame, int32_t local_vars_stack_frame_size) {
   
   // Adjust allignment
