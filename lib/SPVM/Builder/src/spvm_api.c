@@ -3182,6 +3182,8 @@ void SPVM_API_pop_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, void*
   assert(local_vars_stack_frame_size % 8 == 0);
   
   stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_LENGTH].ival -= local_vars_stack_frame_size;
+  
+  SPVM_API_pop_local_vars_base(env, stack);
 }
 
 SPVM_VALUE* SPVM_API_new_stack_with_all_method_call_permitted(SPVM_ENV* env) {

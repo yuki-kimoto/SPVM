@@ -2437,8 +2437,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     
     if (__builtin_expect(!!local_vars_stack_frame, 1)) {
       SPVM_API_pop_local_vars_stack_frame(env, stack, local_vars_stack_frame, local_vars_stack_frame_size);
-      local_vars_stack_frame = NULL;
-      SPVM_API_pop_local_vars_base(env, stack);
     }
     
     return error_id;
