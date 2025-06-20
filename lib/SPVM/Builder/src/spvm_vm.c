@@ -88,12 +88,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   // Alloc variable memory
   // Allignment is 8. This is numeric type max byte size
   // Order 8, 4, 2, 1 numeric variable, and addrress variables
-  int32_t success_push_local_vars_stack_frame = 0;
-  char* local_vars_stack_frame = (char*)SPVM_API_push_local_vars_stack_frame(env, stack, current_method, local_vars_base);
-  if (local_vars_stack_frame) {
-    success_push_local_vars_stack_frame = 1;
-  }
-  else {
+  int32_t success_push_local_vars_stack_frame = SPVM_API_push_local_vars_stack_frame(env, stack, current_method, local_vars_base);
+  if (!success_push_local_vars_stack_frame) {
     void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "A creation of a local variables stack frame failed.");
     SPVM_API_set_exception(env, stack, exception);
     error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
