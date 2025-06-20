@@ -3109,7 +3109,7 @@ void SPVM_API_pop_local_vars_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_LENGTH].ival--;
 }
 
-void* SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, int32_t local_vars_stack_frame_size) {
+void* SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, int32_t local_vars_stack_frame_size, SPVM_RUNTIME_METHOD* method) {
   
   // Adjust allignment
   local_vars_stack_frame_size = (local_vars_stack_frame_size + 7) & ~7;
