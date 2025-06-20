@@ -3196,11 +3196,9 @@ int32_t SPVM_API_get_local_vars_stack_frame_size(SPVM_ENV* env, SPVM_VALUE* stac
   return local_vars_stack_frame_size;
 }
 
-void SPVM_API_pop_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, void* local_vars_stack_frame, int32_t local_vars_stack_frame_size) {
+void SPVM_API_pop_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method) {
   
-  // Adjust allignment
-  local_vars_stack_frame_size = (local_vars_stack_frame_size + 7) & ~7;
-  assert(local_vars_stack_frame_size % 8 == 0);
+  int32_t local_vars_stack_frame_size = SPVM_API_get_local_vars_stack_frame_size(env, stack, method);
   
   stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_LENGTH].ival -= local_vars_stack_frame_size;
   
