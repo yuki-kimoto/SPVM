@@ -126,8 +126,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     int32_t local_vars_stack_frame_offset = 0;
     
     // Alignment is important for performance
-    char* head = &local_vars_stack_frame[local_vars_stack_frame_offset];
-    local_vars_base.head = head;
     
     // Double variables 8 bytes
     double_vars = (double*)&local_vars_stack_frame[local_vars_stack_frame_offset];
