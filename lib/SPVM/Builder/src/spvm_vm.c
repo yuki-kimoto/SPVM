@@ -159,11 +159,11 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     byte_vars = (int8_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
     local_vars_stack_frame_offset += current_method->byte_vars_width * sizeof(int8_t);
     
+    memset(mortal_stack, -1, current_method->mortal_stack_length * sizeof(int32_t));
+    memset(mortal_stack_tops, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
+    
     SPVM_API_push_local_vars_base(env, stack, local_vars_base);
   }
-  
-  memset(mortal_stack, -1, current_method->mortal_stack_length * sizeof(int32_t));
-  memset(mortal_stack_tops, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
   
   SPVM_RUNTIME* runtime = env->runtime;
   SPVM_RUNTIME_BASIC_TYPE* current_basic_type = current_method->current_basic_type;
