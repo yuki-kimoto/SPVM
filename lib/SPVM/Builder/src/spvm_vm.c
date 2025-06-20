@@ -48,41 +48,18 @@ static const char* FILE_NAME = "spvm_vm.c";
 
 int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* current_method, int32_t args_width) {
   
-  // Runtime
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  const char* current_method_name = current_method->name;
-  
-  // Current basic type
-  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = current_method->current_basic_type;
-  
-  const char* current_basic_type_name = current_basic_type->name;
-  
-  // Operation codes
-  SPVM_OPCODE* opcodes = current_method->opcodes;
-  
-  // Error
   int32_t error_id = 0;
   
-  // Caught eval error_id
-  int32_t eval_error_id = 0;
-  
-  // long variables
   int64_t* long_vars = NULL;
   
-  // double variables
   double* double_vars = NULL;
   
-  // object variables
   void** object_vars = NULL;
   
-  // ref variables
   void** ref_vars = NULL;
   
-  // int variables
   int32_t* int_vars = NULL;
   
-  // float variables
   float* float_vars = NULL;
   
   // Mortal stack for object variable indexes
@@ -90,10 +67,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   int32_t mortal_stack_top = 0;
   int32_t* mortal_stack_tops = NULL;
   
-  // short variables
   int16_t* short_vars = NULL;
   
-  // byte variables
   int8_t* byte_vars = NULL;
   
   // Alloc variable memory
@@ -188,9 +163,12 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   memset(mortal_stack, -1, current_method->mortal_stack_length * sizeof(int32_t));
   memset(mortal_stack_tops, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
   
+  SPVM_RUNTIME* runtime = env->runtime;
+  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = current_method->current_basic_type;
   int32_t object_data_offset = sizeof(SPVM_OBJECT);
-  int32_t object_ref_count_offset = offsetof(SPVM_OBJECT, ref_count);
   int32_t object_length_offset = offsetof(SPVM_OBJECT, length);
+  SPVM_OPCODE* opcodes = current_method->opcodes;
+  int32_t eval_error_id = 0;
   
   // Execute operation codes
   int32_t opcode_rel_index = 0;
