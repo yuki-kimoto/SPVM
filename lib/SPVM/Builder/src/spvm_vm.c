@@ -110,7 +110,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     
     int32_t opcode_id = opcode->id;
     
-    //spvm_warn("[OPCODE]%s %s#%s", SPVM_OPCODE_get_opcode_name(opcode_id), current_basic_type->name, current_method->name);
+    // spvm_warn("[OPCODE]%s %s#%s", SPVM_OPCODE_get_opcode_name(opcode_id), current_basic_type->name, current_method->name);
     
     switch (opcode_id) {
 
