@@ -943,6 +943,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         if (SPVM_TYPE_is_object_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
           runtime_method->return_type_is_object = 1;
         }
+        
+        runtime_method->local_vars_stack_frame_size = SPVM_API_get_local_vars_stack_frame_size(runtime_method);
       }
       runtime_basic_type->methods = runtime_methods;
       runtime_basic_type->methods_length = basic_type->methods->length;
