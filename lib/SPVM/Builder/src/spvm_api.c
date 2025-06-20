@@ -3143,8 +3143,6 @@ int32_t SPVM_API_set_local_vars_base(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNT
   *local_vars_base->byte_vars_base = (int8_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
   local_vars_stack_frame_offset += method->byte_vars_width * sizeof(int8_t);
   
-  local_vars_base->method = method;
-  
 }
 
 int32_t SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* current_method, SPVM_RUNTIME_LOCAL_VARS_BASE* current_local_vars_base) {
@@ -3218,6 +3216,8 @@ int32_t SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, S
   
   memset(*current_local_vars_base->mortal_stack_base, -1, current_method->mortal_stack_length * sizeof(int32_t));
   memset(*current_local_vars_base->mortal_stack_tops_base, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
+  
+  current_local_vars_base->method = current_method;
   
   int32_t status_push_local_vars_base = SPVM_API_push_local_vars_base(env, stack, current_local_vars_base);
   if (!(status_push_local_vars_base == 0)) {
