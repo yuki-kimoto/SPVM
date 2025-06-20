@@ -3087,23 +3087,23 @@ void SPVM_API_push_local_vars_base(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
   
   if (local_vars_bases_length >= stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival) {
     
-    int32_t stack_index_local_vars_bases_capacity = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival;
+    int32_t local_vars_bases_capacity = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival;
     
-    int32_t new_stack_index_local_vars_bases_capacity = stack_index_local_vars_bases_capacity * 2;
+    int32_t new_local_vars_bases_capacity = local_vars_bases_capacity * 2;
     
-    void* new_stack_index_local_vars_bases = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE) * new_stack_index_local_vars_bases_capacity);
+    void* new_local_vars_bases = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE) * new_local_vars_bases_capacity);
     
-    memcpy(new_stack_index_local_vars_bases, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval, stack_index_local_vars_bases_capacity);
-    stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival = new_stack_index_local_vars_bases_capacity;
+    memcpy(new_local_vars_bases, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval, local_vars_bases_capacity);
+    stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival = new_local_vars_bases_capacity;
     
     SPVM_API_free_memory_block(env, stack, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval);
     
-    stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval = new_stack_index_local_vars_bases;
+    stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval = new_local_vars_bases;
   }
   
-  SPVM_RUNTIME_LOCAL_VARS_BASE* stack_index_local_vars_bases = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval;
+  SPVM_RUNTIME_LOCAL_VARS_BASE* local_vars_bases = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval;
   
-  memcpy(&stack_index_local_vars_bases[local_vars_bases_length], local_vars_base, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE));
+  memcpy(&local_vars_bases[local_vars_bases_length], local_vars_base, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE));
 }
 
 void SPVM_API_pop_local_vars_base(SPVM_ENV* env, SPVM_VALUE* stack) {
