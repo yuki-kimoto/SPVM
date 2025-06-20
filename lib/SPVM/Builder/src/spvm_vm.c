@@ -90,21 +90,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   // Order 8, 4, 2, 1 numeric variable, and addrress variables
   int32_t success_push_local_vars_stack_frame = 0;
   {
-    char* local_vars_stack_frame = NULL;
-    int32_t local_vars_stack_frame_size = 0;
-    
-    local_vars_stack_frame_size += current_method->long_vars_width * sizeof(int64_t);
-    local_vars_stack_frame_size += current_method->double_vars_width * sizeof(double);
-    local_vars_stack_frame_size += current_method->object_vars_width * sizeof(void*);
-    local_vars_stack_frame_size += current_method->ref_vars_width * sizeof(void*);
-    local_vars_stack_frame_size += current_method->int_vars_width * sizeof(int32_t);
-    local_vars_stack_frame_size += current_method->float_vars_width * sizeof(float);
-    local_vars_stack_frame_size += current_method->mortal_stack_length * sizeof(int32_t);
-    local_vars_stack_frame_size += current_method->mortal_stack_tops_length * sizeof(int32_t);
-    local_vars_stack_frame_size += current_method->short_vars_width * sizeof(int16_t);
-    local_vars_stack_frame_size += current_method->byte_vars_width * sizeof(int8_t);
-    
-    local_vars_stack_frame = (char*)SPVM_API_push_local_vars_stack_frame(env, stack, local_vars_stack_frame_size, current_method);
+    char* local_vars_stack_frame = (char*)SPVM_API_push_local_vars_stack_frame(env, stack, current_method);
     if (local_vars_stack_frame) {
       success_push_local_vars_stack_frame = 1;
     }
