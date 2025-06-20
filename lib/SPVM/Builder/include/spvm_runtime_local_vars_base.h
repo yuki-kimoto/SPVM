@@ -7,6 +7,7 @@
 #include "spvm_typedecl.h"
 
 struct spvm_runtime_local_vars_base {
+  SPVM_RUNTIME_METHOD* method;
   int64_t** long_vars_base;
   double** double_vars_base;
   void*** object_vars_base;
