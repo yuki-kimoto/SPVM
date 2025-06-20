@@ -3092,7 +3092,7 @@ void SPVM_API_push_local_vars_base(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
     
     void* new_local_vars_bases = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE) * new_local_vars_bases_capacity);
     
-    memcpy(new_local_vars_bases, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval, local_vars_bases_capacity);
+    memcpy(new_local_vars_bases, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE) * local_vars_bases_length);
     stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival = new_local_vars_bases_capacity;
     
     SPVM_API_free_memory_block(env, stack, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval);
@@ -3138,7 +3138,9 @@ int32_t SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, S
       
       *local_vars_base->long_vars_base         = (int64_t*)new_local_vars_stack_ptr;
       new_local_vars_stack_ptr += method->long_vars_width * sizeof(int64_t);
+      
       *local_vars_base->double_vars_base       = (double*)new_local_vars_stack_ptr;
+      
       new_local_vars_stack_ptr += method->double_vars_width * sizeof(double);
       *local_vars_base->object_vars_base       = (void**)new_local_vars_stack_ptr;
       new_local_vars_stack_ptr += method->object_vars_width * sizeof(void*);
