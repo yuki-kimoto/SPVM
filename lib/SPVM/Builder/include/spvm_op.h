@@ -253,6 +253,7 @@ enum {
   SPVM_OP_C_ID_DEFINED_OR,
   SPVM_OP_C_ID_TERNARY_OP,
   SPVM_OP_C_ID_COPY_FIELDS,
+  SPVM_OP_C_ID_ADDRESS,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);

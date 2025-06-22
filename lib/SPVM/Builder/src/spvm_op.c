@@ -253,6 +253,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "DEFINED_OR",
     "TERNARY_OP",
     "COPY_FIELDS",
+    "ADDRESS",
   };
   
   return id_names;

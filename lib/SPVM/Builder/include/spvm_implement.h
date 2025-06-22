@@ -1438,6 +1438,17 @@ static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, void** 
   env->assign_object(env, stack, out, object_copy);
 }
 
+static inline void SPVM_IMPLEMENT_GET_ADDRESS(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* address) {
+  
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  
+  sprintf(tmp_buffer, "%p", address);
+  
+  void* object_address = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
+  
+  env->assign_object(env, stack, out, object_address);
+}
+
 #define SPVM_IMPLEMENT_REF_BYTE(out, in) (out = in)
 #define SPVM_IMPLEMENT_REF_SHORT(out, in) (out = in)
 #define SPVM_IMPLEMENT_REF_INT(out, in) (out = in)

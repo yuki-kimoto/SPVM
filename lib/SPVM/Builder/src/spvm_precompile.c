@@ -252,6 +252,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  void* object1 = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* object2 = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* object_address = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  void* ref = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* new_object_no_mortal = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* array = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index = 0;\n");
@@ -5052,6 +5053,26 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width, args_signature);\n");
         
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ADDRESS_OBJECT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_ADDRESS(env, stack, ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_GET_ADDRESS_REF: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  ref = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_ADDRESS(env, stack, ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ref);\n");
         break;
       }
       default: {
