@@ -5,6 +5,7 @@ class TestCase::Operator::Ref {
   use TestCase::Point_3l;
   use TestCase::Point_3f;
   use TestCase::Point_3d;
+  use Complex_2d;
   use Fn;
   use Array;
 
@@ -570,5 +571,67 @@ class TestCase::Operator::Ref {
     $x_out->{x} = $x_in1->{x} + $x_in2->{x};
     $x_out->{y} = $x_in1->{y} + $x_in2->{y};
     $x_out->{z} = $x_in1->{z} + $x_in2->{z};
+  }
+  
+  static method deep_call : int () {
+    
+    my $count = 5;
+    
+    my $count_ref = \$count;
+    
+    &method_for_deep_call_only_count($count_ref);
+    
+    unless ($count == 0) {
+      warn $count;
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method method_for_deep_call_only_count : void ($count_ref : int*) {
+    
+    $$count_ref--;
+    
+    if ($$count_ref > 0) {
+      &method_for_deep_call_only_count($count_ref);
+    }
+    
+  }
+  
+  static method deep_call_ : int () {
+    
+    my $count = 500;
+    
+    my $arg_int = 0;
+    my $arg_double_complex = Complex_2d->new;
+    
+    &method_for_deep_call (\$count, \$arg_int, \$arg_double_complex);
+    
+    unless ($arg_int == 5) {
+      return 0;
+    }
+    
+    unless ($arg_double_complex->{re} == 1) {
+      return 0;
+    }
+    
+    unless ($arg_double_complex->{im} == 2) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method method_for_deep_call : void ($count_ref : int*, $arg_int_ref : int*, $arg_double_complex_ref : Complex_2d*) {
+    #$$arg_int_ref = 5;
+    #$arg_double_complex_ref->{re} = 1;
+    #$arg_double_complex_ref->{im} = 2;
+    
+    $$count_ref--;
+    
+    if ($$count_ref > 0) {
+      &method_for_deep_call($count_ref, $arg_int_ref, $arg_double_complex_ref);
+    }
   }
 }

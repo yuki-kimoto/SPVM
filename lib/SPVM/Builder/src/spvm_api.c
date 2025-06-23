@@ -3181,16 +3181,35 @@ int32_t SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, S
       
       SPVM_API_set_local_vars_base(env, stack, method, local_vars_base, new_local_vars_stack_frame);
       
+      char* local_vars_stack = (char*)stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK].oval;
+      
+      // Update local variables
       void** ref_vars = *local_vars_base->ref_vars_base;
       int32_t ref_vars_width = method->ref_vars_width;
       for (int32_t ref_var_index = 0; ref_var_index < ref_vars_width; ref_var_index++) {
         void* ref_var = ref_vars[ref_var_index];
         
-        char* local_vars_stack = (char*)stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK].oval;
-        
         if ((void*)ref_var >= (void*)local_vars_stack && (void*)ref_var < (void*)(local_vars_stack + local_vars_stack_length)) {
           ptrdiff_t ref_var_diff = (char*)ref_var - (char*)local_vars_stack;
           ref_vars[ref_var_index] = (void*)(new_local_vars_stack + ref_var_diff);
+        }
+      }
+      
+      // Update arguments
+      SPVM_RUNTIME_ARG* args = method->args;
+      int32_t args_length = method->args_length;
+      for (int32_t arg_index = 0; arg_index < args_length; arg_index++) {
+        SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
+        
+        if (arg->type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
+          int32_t arg_stack_index = arg->stack_index;
+          
+          void* ref_var = stack[arg_stack_index].oval;
+          
+          if ((void*)ref_var >= (void*)local_vars_stack && (void*)ref_var < (void*)(local_vars_stack + local_vars_stack_length)) {
+            ptrdiff_t ref_var_diff = (char*)ref_var - (char*)local_vars_stack;
+            stack[arg_stack_index].oval = (void*)(new_local_vars_stack + ref_var_diff);
+          }
         }
       }
       
