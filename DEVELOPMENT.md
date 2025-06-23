@@ -108,6 +108,12 @@ If core file is not output, set the following.
 ulimit -c unlimited
 ```
 
+Check memory with valgrind
+
+```
+valgrind --leak-check=full --track-origins=yes perl -Mblib t/02_vm/05_op/reference.t
+```
+
 ## Portability Note
   
 SPVM is run on various environments.
