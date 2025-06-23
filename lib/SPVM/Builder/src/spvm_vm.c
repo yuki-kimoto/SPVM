@@ -84,12 +84,13 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   call_stack_frame_info->mortal_stack_tops_address = &mortal_stack_tops;
   call_stack_frame_info->short_vars_address = &short_vars;
   call_stack_frame_info->byte_vars_address = &byte_vars;
+  call_stack_frame_info->method = current_method;
   
   // Alloc variable memory
   // Allignment is 8. This is numeric type max byte size
   // Order 8, 4, 2, 1 numeric variable, and addrress variables
-  int32_t status_push_stack_frame = SPVM_API_push_stack_frame(env, stack, current_method, call_stack_frame_info);
-  if (!(status_push_stack_frame == 0)) {
+  int32_t status_push_call_stack_frame = SPVM_API_push_call_stack_frame(env, stack, call_stack_frame_info);
+  if (!(status_push_call_stack_frame == 0)) {
     void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "A creation of a local variables stack frame failed.");
     SPVM_API_set_exception(env, stack, exception);
     error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -2362,8 +2363,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
     }
     
-    if (__builtin_expect(status_push_stack_frame == 0, 1)) {
-      SPVM_API_pop_stack_frame(env, stack, current_method);
+    if (__builtin_expect(status_push_call_stack_frame == 0, 1)) {
+      SPVM_API_pop_call_stack_frame(env, stack, call_stack_frame_info);
     }
     
     return error_id;
