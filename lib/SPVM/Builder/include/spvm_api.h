@@ -49,10 +49,10 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 
 int32_t SPVM_API_push_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_STACK_FRAME_INFO* stack_frame_info);
 void SPVM_API_pop_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, SPVM_RUNTIME_STACK_FRAME_INFO* current_stack_frame_info);
-void SPVM_API_pop_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method);
-int32_t SPVM_API_get_local_vars_stack_frame_size(SPVM_RUNTIME_METHOD* method);
-int32_t SPVM_API_set_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, SPVM_RUNTIME_STACK_FRAME_INFO* stack_frame_info, char* local_vars_stack_frame);
+int32_t SPVM_API_push_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, SPVM_RUNTIME_STACK_FRAME_INFO* current_stack_frame_info);
+void SPVM_API_pop_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method);
+int32_t SPVM_API_get_stack_frame_size(SPVM_RUNTIME_METHOD* method);
+int32_t SPVM_API_set_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, SPVM_RUNTIME_STACK_FRAME_INFO* stack_frame_info, char* stack_frame);
 
 int32_t SPVM_API_args_width(SPVM_ENV* env, SPVM_VALUE* stack);
 
