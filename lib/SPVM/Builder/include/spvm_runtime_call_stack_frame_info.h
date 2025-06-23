@@ -20,6 +20,7 @@ struct spvm_runtime_call_stack_frame_info {
   int8_t** byte_vars_address;
   void* memory_block;
   int32_t memory_block_offset;
+  int8_t heap;
 };
 
 #endif
