@@ -3181,6 +3181,19 @@ int32_t SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, S
       
       SPVM_API_set_local_vars_base(env, stack, method, local_vars_base, new_local_vars_stack_frame);
       
+      void** ref_vars = *local_vars_base->ref_vars_base;
+      int32_t ref_vars_width = method->ref_vars_width;
+      for (int32_t ref_var_index = 0; ref_var_index < ref_vars_width; ref_var_index++) {
+        void* ref_var = ref_vars[ref_var_index];
+        
+        char* local_vars_stack = (char*)stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK].oval;
+        
+        if ((void*)ref_var >= (void*)local_vars_stack && (void*)ref_var < (void*)(local_vars_stack + local_vars_stack_length)) {
+          ptrdiff_t ref_var_diff = (char*)ref_var - (char*)local_vars_stack;
+          ref_vars[ref_var_index] = (void*)(new_local_vars_stack + ref_var_diff);
+        }
+      }
+      
       local_vars_stack_frame_offset += method->local_vars_stack_frame_size;
     }
     
