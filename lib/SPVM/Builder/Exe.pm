@@ -751,71 +751,73 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
   
-  SPVM_VALUE* stack = env->new_stack(env);
+  const char* class_name = "$class_name";
   
-  // Set the program name and the command line arguments
+  // Set the program name and the command line arguments and call INIT methods.
   {
-    int32_t mortal_stack_top = env->enter_scope(env, stack);
+    SPVM_VALUE* stack_tmp = env->new_stack(env);
     
-    void* obj_program_name = env->new_string(env, stack, command_args[0], strlen(command_args[0]));
+    int32_t mortal_stack_top = env->enter_scope(env, stack_tmp);
+    
+    void* obj_program_name = env->new_string(env, stack_tmp, command_args[0], strlen(command_args[0]));
     
     // ARGV - string[]
-    void* obj_argv = env->new_string_array(env, stack, command_args_length - 1);
+    void* obj_argv = env->new_string_array(env, stack_tmp, command_args_length - 1);
     for (int32_t arg_index = 1; arg_index < command_args_length; arg_index++) {
-      void* obj_arg = env->new_string(env, stack, command_args[arg_index], strlen(command_args[arg_index]));
-      env->set_elem_object(env, stack, obj_argv, arg_index - 1, obj_arg);
+      void* obj_arg = env->new_string(env, stack_tmp, command_args[arg_index], strlen(command_args[arg_index]));
+      env->set_elem_object(env, stack_tmp, obj_argv, arg_index - 1, obj_arg);
     }
     
     int64_t base_time = time(NULL);
     
     // Set command line info
     {
-      error_id = env->set_command_info_program_name(env, stack, obj_program_name);
+      error_id = env->set_command_info_program_name(env, stack_tmp, obj_program_name);
       
       if (error_id) {
-        env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+        env->die(env, stack_tmp, env->get_chars(env, stack_tmp, env->get_exception(env, stack_tmp)), __func__, __FILE__, __LINE__);
         goto END_OF_FUNC;
       }
       
-      error_id = env->set_command_info_argv(env, stack, obj_argv);
+      error_id = env->set_command_info_argv(env, stack_tmp, obj_argv);
       
       if (error_id) {
-        env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+        env->die(env, stack_tmp, env->get_chars(env, stack_tmp, env->get_exception(env, stack_tmp)), __func__, __FILE__, __LINE__);
         goto END_OF_FUNC;
       }
       
-      error_id = env->set_command_info_basetime(env, stack, base_time);
+      error_id = env->set_command_info_basetime(env, stack_tmp, base_time);
       if (error_id) {
-        env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+        env->die(env, stack_tmp, env->get_chars(env, stack_tmp, env->get_exception(env, stack_tmp)), __func__, __FILE__, __LINE__);
         goto END_OF_FUNC;
       }
       
-      error_id = env->set_command_info_warning(env, stack, $warning);
+      error_id = env->set_command_info_warning(env, stack_tmp, $warning);
       if (error_id) {
-        env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+        env->die(env, stack_tmp, env->get_chars(env, stack_tmp, env->get_exception(env, stack_tmp)), __func__, __FILE__, __LINE__);
         goto END_OF_FUNC;
       }
     }
     
-    env->leave_scope(env, stack, mortal_stack_top);
-  }
-  
-  const char* class_name = "$class_name";
-  
-  error_id = env->check_bootstrap_method(env, stack, class_name);
-  
-  if (error_id) {
-    env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
-    goto END_OF_FUNC;
-  }
-  
-  error_id = env->call_init_methods(env, stack);
-  if (error_id) {
-    goto END_OF_FUNC;
+    error_id = env->check_bootstrap_method(env, stack_tmp, class_name);
+    
+    if (error_id) {
+      env->die(env, stack_tmp, env->get_chars(env, stack_tmp, env->get_exception(env, stack_tmp)), __func__, __FILE__, __LINE__);
+      goto END_OF_FUNC;
+    }
+    
+    error_id = env->call_init_methods(env, stack_tmp);
+    if (error_id) {
+      goto END_OF_FUNC;
+    }
+    
+    env->free_stack(env, stack_tmp);
   }
   
   void* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
   void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, "main");
+  
+  SPVM_VALUE* stack = env->new_stack(env);
   
   int32_t args_width = 0;
   error_id = env->call_method(env, stack, method, args_width);
