@@ -1,5 +1,4 @@
 .gitattributes
-.github/workflows/linux-ubuntu-latest-32bit.yml
 .github/workflows/linux-ubuntu-latest-perl-v5.20.3.yml
 .github/workflows/linux-ubuntu-latest.yml
 .github/workflows/macos-latest.yml
