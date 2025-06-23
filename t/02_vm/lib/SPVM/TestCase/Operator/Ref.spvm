@@ -599,7 +599,7 @@ class TestCase::Operator::Ref {
     
   }
   
-  static method deep_call_ : int () {
+  static method deep_call : int () {
     
     my $count = 500;
     
@@ -624,14 +624,15 @@ class TestCase::Operator::Ref {
   }
   
   static method method_for_deep_call : void ($count_ref : int*, $arg_int_ref : int*, $arg_double_complex_ref : Complex_2d*) {
-    #$$arg_int_ref = 5;
-    #$arg_double_complex_ref->{re} = 1;
-    #$arg_double_complex_ref->{im} = 2;
+    $$arg_int_ref = 5;
+    $arg_double_complex_ref->{re} = 1;
+    $arg_double_complex_ref->{im} = 2;
     
     $$count_ref--;
     
     if ($$count_ref > 0) {
       &method_for_deep_call($count_ref, $arg_int_ref, $arg_double_complex_ref);
     }
+    
   }
 }
