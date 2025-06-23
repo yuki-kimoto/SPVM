@@ -104,9 +104,11 @@ sub build_class_common {
       &load_dynamic_lib($runtime, $class_name);
     }
     
-    my $stack = $api->stack;
-    
-    $env->call_init_methods($stack);
+    {
+      my $new_stack = $env->new_stack;
+      
+      $env->call_init_methods($new_stack);
+    }
     
     &bind_to_perl($class_name);
   }
@@ -149,16 +151,19 @@ sub init_api {
     $COMPILER = $compiler;
     $API = $api;
     
-    $env->set_command_info_program_name($stack, $0);
-    
-    $env->set_command_info_argv($stack, \@ARGV);
-    my $base_time = $^T + 0; # For Perl 5.8.9
-    $env->set_command_info_basetime($stack, $base_time);
-    
-    $env->set_command_info_basetime($stack, $base_time);
-    
-    my $warning = $^W ? 1 : 0;
-    $env->set_command_info_warning($stack, $warning);
+    {
+      my $new_stack = $env->new_stack;
+      $env->set_command_info_program_name($new_stack, $0);
+      
+      $env->set_command_info_argv($new_stack, \@ARGV);
+      my $base_time = $^T + 0; # For Perl 5.8.9
+      $env->set_command_info_basetime($new_stack, $base_time);
+      
+      $env->set_command_info_basetime($new_stack, $base_time);
+      
+      my $warning = $^W ? 1 : 0;
+      $env->set_command_info_warning($new_stack, $warning);
+    }
   }
 }
 

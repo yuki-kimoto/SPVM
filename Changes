@@ -1,4 +1,8 @@
-0.990072 2025-06-18
+0.990073 2025-06-23
+  [Internal Changes]
+    * Class variable settings and calling INIT methods are executed on a new other execution stack.
+    
+0.990072 2025-06-23
   [New Features]
     Add address operator.
     
