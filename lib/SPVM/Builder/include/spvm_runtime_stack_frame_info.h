@@ -1,12 +1,12 @@
 // Copyright (c) 2023 Yuki Kimoto
 // MIT License
 
-#ifndef SPVM_RUNTIME_LOCAL_VARS_BASE_H
-#define SPVM_RUNTIME_LOCAL_VARS_BASE_H
+#ifndef SPVM_RUNTIME_STACK_FRAME_INFO_H
+#define SPVM_RUNTIME_STACK_FRAME_INFO_H
 
 #include "spvm_typedecl.h"
 
-struct spvm_runtime_local_vars_base {
+struct spvm_runtime_stack_frame_info {
   SPVM_RUNTIME_METHOD* method;
   int64_t** long_vars_base;
   double** double_vars_base;

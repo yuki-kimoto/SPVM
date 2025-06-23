@@ -43,7 +43,7 @@
 #include "spvm_mutex.h"
 #include "spvm_utf8.h"
 #include "spvm_type.h"
-#include "spvm_runtime_local_vars_base.h"
+#include "spvm_runtime_stack_frame_info.h"
 
 static const char* FILE_NAME = "spvm_api.c";
 
@@ -3073,7 +3073,7 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK].oval = SPVM_API_new_memory_block(env, stack, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_CAPACITY].ival);
   
   stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival = 1;
-  stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE) * stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival);
+  stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_RUNTIME_STACK_FRAME_INFO) * stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival);
   
   return stack;
 }
@@ -3099,55 +3099,55 @@ int32_t SPVM_API_get_local_vars_stack_frame_size(SPVM_RUNTIME_METHOD* method) {
   return local_vars_stack_frame_size;
 }
 
-int32_t SPVM_API_set_local_vars_base(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, SPVM_RUNTIME_LOCAL_VARS_BASE* local_vars_base, char* local_vars_stack_frame) {
+int32_t SPVM_API_set_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, SPVM_RUNTIME_STACK_FRAME_INFO* stack_frame_info, char* local_vars_stack_frame) {
   
   // Alignment is important for performance
   // + 1 is needed for pointing a different address when width is 0.
   int32_t local_vars_stack_frame_offset = 0;
   
   // Long varialbes 8 bytes
-  *local_vars_base->long_vars_base = (int64_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+  *stack_frame_info->long_vars_base = (int64_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
   local_vars_stack_frame_offset += (method->long_vars_width + 1) * sizeof(int64_t);
   
   // Double variables 8 bytes
-  *local_vars_base->double_vars_base = (double*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+  *stack_frame_info->double_vars_base = (double*)&local_vars_stack_frame[local_vars_stack_frame_offset];
   local_vars_stack_frame_offset += (method->double_vars_width + 1) * sizeof(double);
   
   // Object variables 4 or 8 bytes
-  *local_vars_base->object_vars_base = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
+  *stack_frame_info->object_vars_base = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
   local_vars_stack_frame_offset += (method->object_vars_width + 1) * sizeof(void*);
   
   // Refernce variables 4 or 8 bytes
-  *local_vars_base->ref_vars_base = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
+  *stack_frame_info->ref_vars_base = (void**)&local_vars_stack_frame[local_vars_stack_frame_offset];
   local_vars_stack_frame_offset += (method->ref_vars_width + 1) * sizeof(void*);
   
   // Int variables 4 bytes
-  *local_vars_base->int_vars_base = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+  *stack_frame_info->int_vars_base = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
   local_vars_stack_frame_offset += (method->int_vars_width + 1) * sizeof(int32_t);
   
   // Float variables 4 bytes
-  *local_vars_base->float_vars_base = (float*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+  *stack_frame_info->float_vars_base = (float*)&local_vars_stack_frame[local_vars_stack_frame_offset];
   local_vars_stack_frame_offset += (method->float_vars_width + 1) * sizeof(float);
   
   // Mortal stack - object variable indexes  4 bytes
-  *local_vars_base->mortal_stack_base = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+  *stack_frame_info->mortal_stack_base = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
   local_vars_stack_frame_offset += (method->mortal_stack_length + 1) * sizeof(int32_t);
   
   // Mortal stack tops 4 bytes
-  *local_vars_base->mortal_stack_tops_base = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+  *stack_frame_info->mortal_stack_tops_base = (int32_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
   local_vars_stack_frame_offset += (method->mortal_stack_tops_length + 1) * sizeof(int32_t);
   
   // Short variables 2 bytes
-  *local_vars_base->short_vars_base = (int16_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+  *stack_frame_info->short_vars_base = (int16_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
   local_vars_stack_frame_offset += (method->short_vars_width + 1) * sizeof(int16_t);
   
   // Byte variables 1 bytes
-  *local_vars_base->byte_vars_base = (int8_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
+  *stack_frame_info->byte_vars_base = (int8_t*)&local_vars_stack_frame[local_vars_stack_frame_offset];
   local_vars_stack_frame_offset += (method->byte_vars_width + 1) * sizeof(int8_t);
   
 }
 
-int32_t SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* current_method, SPVM_RUNTIME_LOCAL_VARS_BASE* current_local_vars_base) {
+int32_t SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* current_method, SPVM_RUNTIME_STACK_FRAME_INFO* current_stack_frame_info) {
   
   int32_t local_vars_stack_frame_size = current_method->local_vars_stack_frame_size;
   
@@ -3166,25 +3166,25 @@ int32_t SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, S
     memcpy(new_local_vars_stack, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK].oval, local_vars_stack_length);
     stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_CAPACITY].ival = new_local_vars_stack_capacity;
     
-    SPVM_RUNTIME_LOCAL_VARS_BASE* local_vars_bases = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval;
+    SPVM_RUNTIME_STACK_FRAME_INFO* stack_frame_infos = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval;
     
-    int32_t local_vars_bases_length = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_LENGTH].ival;
+    int32_t stack_frame_infos_length = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_LENGTH].ival;
     
     int32_t local_vars_stack_frame_offset = 0;
-    for (int32_t i = 0; i < local_vars_bases_length; i++) {
+    for (int32_t i = 0; i < stack_frame_infos_length; i++) {
       
-      SPVM_RUNTIME_LOCAL_VARS_BASE* local_vars_base = &local_vars_bases[i];
+      SPVM_RUNTIME_STACK_FRAME_INFO* stack_frame_info = &stack_frame_infos[i];
       
-      SPVM_RUNTIME_METHOD* method = local_vars_base->method;
+      SPVM_RUNTIME_METHOD* method = stack_frame_info->method;
       
       char* new_local_vars_stack_frame = new_local_vars_stack + local_vars_stack_frame_offset;
       
-      SPVM_API_set_local_vars_base(env, stack, method, local_vars_base, new_local_vars_stack_frame);
+      SPVM_API_set_stack_frame_info(env, stack, method, stack_frame_info, new_local_vars_stack_frame);
       
       char* local_vars_stack = (char*)stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK].oval;
       
       // Update local variables
-      void** ref_vars = *local_vars_base->ref_vars_base;
+      void** ref_vars = *stack_frame_info->ref_vars_base;
       int32_t ref_vars_width = method->ref_vars_width;
       for (int32_t ref_var_index = 0; ref_var_index < ref_vars_width; ref_var_index++) {
         void* ref_var = ref_vars[ref_var_index];
@@ -3227,15 +3227,15 @@ int32_t SPVM_API_push_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, S
   
   assert((intptr_t)local_vars_stack_frame % 8 == 0);
   
-  SPVM_API_set_local_vars_base(env, stack, current_method, current_local_vars_base, local_vars_stack_frame);
+  SPVM_API_set_stack_frame_info(env, stack, current_method, current_stack_frame_info, local_vars_stack_frame);
   
-  memset(*current_local_vars_base->mortal_stack_base, -1, current_method->mortal_stack_length * sizeof(int32_t));
-  memset(*current_local_vars_base->mortal_stack_tops_base, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
+  memset(*current_stack_frame_info->mortal_stack_base, -1, current_method->mortal_stack_length * sizeof(int32_t));
+  memset(*current_stack_frame_info->mortal_stack_tops_base, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
   
-  current_local_vars_base->method = current_method;
+  current_stack_frame_info->method = current_method;
   
-  int32_t status_push_local_vars_base = SPVM_API_push_local_vars_base(env, stack, current_local_vars_base);
-  if (!(status_push_local_vars_base == 0)) {
+  int32_t status_push_stack_frame_info = SPVM_API_push_stack_frame_info(env, stack, current_stack_frame_info);
+  if (!(status_push_stack_frame_info == 0)) {
     return -1;
   }
   
@@ -3250,41 +3250,41 @@ void SPVM_API_pop_local_vars_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   
   stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_STACK_LENGTH].ival -= local_vars_stack_frame_size;
   
-  SPVM_API_pop_local_vars_base(env, stack);
+  SPVM_API_pop_stack_frame_info(env, stack);
 }
 
-int32_t SPVM_API_push_local_vars_base(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_LOCAL_VARS_BASE* local_vars_base) {
+int32_t SPVM_API_push_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_STACK_FRAME_INFO* stack_frame_info) {
   
-  int32_t local_vars_bases_length = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_LENGTH].ival;
+  int32_t stack_frame_infos_length = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_LENGTH].ival;
   
-  if (local_vars_bases_length >= stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival) {
-    int32_t local_vars_bases_capacity = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival;
+  if (stack_frame_infos_length >= stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival) {
+    int32_t stack_frame_infos_capacity = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival;
     
-    int32_t new_local_vars_bases_capacity = local_vars_bases_capacity * 2;
+    int32_t new_stack_frame_infos_capacity = stack_frame_infos_capacity * 2;
     
-    void* new_local_vars_bases = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE) * new_local_vars_bases_capacity);
-    if (!new_local_vars_bases) {
+    void* new_stack_frame_infos = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_RUNTIME_STACK_FRAME_INFO) * new_stack_frame_infos_capacity);
+    if (!new_stack_frame_infos) {
       return -1;
     }
     
-    memcpy(new_local_vars_bases, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE) * local_vars_bases_length);
-    stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival = new_local_vars_bases_capacity;
+    memcpy(new_stack_frame_infos, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval, sizeof(SPVM_RUNTIME_STACK_FRAME_INFO) * stack_frame_infos_length);
+    stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_CAPACITY].ival = new_stack_frame_infos_capacity;
     
     SPVM_API_free_memory_block(env, stack, stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval);
     
-    stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval = new_local_vars_bases;
+    stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval = new_stack_frame_infos;
   }
   
-  SPVM_RUNTIME_LOCAL_VARS_BASE* local_vars_bases = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval;
+  SPVM_RUNTIME_STACK_FRAME_INFO* stack_frame_infos = stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES].oval;
   
-  memcpy(&local_vars_bases[local_vars_bases_length], local_vars_base, sizeof(SPVM_RUNTIME_LOCAL_VARS_BASE));
+  memcpy(&stack_frame_infos[stack_frame_infos_length], stack_frame_info, sizeof(SPVM_RUNTIME_STACK_FRAME_INFO));
   
   stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_LENGTH].ival++;
   
   return 0;
 }
 
-void SPVM_API_pop_local_vars_base(SPVM_ENV* env, SPVM_VALUE* stack) {
+void SPVM_API_pop_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack) {
   stack[SPVM_API_C_STACK_INDEX_LOCAL_VARS_BASES_LENGTH].ival--;
 }
 
