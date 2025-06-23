@@ -573,7 +573,7 @@ class TestCase::Operator::Ref {
     $x_out->{z} = $x_in1->{z} + $x_in2->{z};
   }
   
-  static method deep_call : int () {
+  static method deep_call_simple : int () {
     
     my $count = 5;
     
