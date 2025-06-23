@@ -2632,6 +2632,20 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
+          case SPVM_OP_C_ID_ADDRESS: {
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            
+            int32_t is_object_or_ref_type
+              =  SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)
+              || SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+            
+            if (!is_object_or_ref_type) {
+              SPVM_COMPILER_error(compiler, "The type of the operand of address operator must be an object type or a reference type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            break;
+          }
           case SPVM_OP_C_ID_BIT_NOT: {
             SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
@@ -3683,6 +3697,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_MINUS:
               case SPVM_OP_C_ID_PLUS:
               case SPVM_OP_C_ID_COPY:
+              case SPVM_OP_C_ID_ADDRESS:
               case SPVM_OP_C_ID_ARRAY_LENGTH:
               case SPVM_OP_C_ID_STRING_LENGTH:
               case SPVM_OP_C_ID_NEW:
@@ -4702,6 +4717,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_COMPILE_TYPE_NAME:
     case SPVM_OP_C_ID_DUMP:
     case SPVM_OP_C_ID_EXCEPTION_VAR:
+    case SPVM_OP_C_ID_ADDRESS:
     {
       type = SPVM_TYPE_new_string_type(compiler);
       break;
@@ -4818,6 +4834,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     default: {
+      fprintf(stderr, "%s\n", SPVM_OP_get_op_name(compiler, op->id));
       assert(0);
     }
   }

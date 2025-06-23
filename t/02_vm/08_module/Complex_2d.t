@@ -11,7 +11,7 @@ use SPVM 'TestCase::Module::Complex_2d';
 my $api = SPVM::api();
 
 # Start objects count
-my $start_memory_blocks_count = $api->get_memory_blocks_count();
+my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 # SPVM::Int
 {
@@ -28,7 +28,7 @@ $api->set_exception(undef);
 
 # All object is freed
 $api->set_exception(undef);
-my $end_memory_blocks_count = $api->get_memory_blocks_count();
+my $end_memory_blocks_count = $api->get_memory_blocks_count;
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
 done_testing;

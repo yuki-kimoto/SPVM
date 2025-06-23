@@ -18,7 +18,7 @@ use SPVM 'Double';
 
 # Start objects count
 my $api = SPVM::api();
-my $start_memory_blocks_count = $api->get_memory_blocks_count();
+my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 # sprintf
 {
@@ -310,7 +310,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # All object is freed
 $api->set_exception(undef);
-my $end_memory_blocks_count = $api->get_memory_blocks_count();
+my $end_memory_blocks_count = $api->get_memory_blocks_count;
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
 done_testing;

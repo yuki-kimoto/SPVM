@@ -15,7 +15,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 # Start objects count
 my $api = SPVM::api();
-my $start_memory_blocks_count = $api->get_memory_blocks_count();
+my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 {
   my $link_info = $main::NATIVE_API_LINK_INFO;
@@ -40,7 +40,7 @@ $api->set_exception(undef);
 
 # All object is freed
 $api->set_exception(undef);
-my $end_memory_blocks_count = $api->get_memory_blocks_count();
+my $end_memory_blocks_count = $api->get_memory_blocks_count;
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
 done_testing;

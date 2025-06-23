@@ -3,22 +3,19 @@ use TestAuto;
 
 use strict;
 use warnings;
+use utf8;
 
 use Test::More;
 
-use SPVM 'TestCase::LINEN';
-use SPVM 'TestCase::LINER';
-use SPVM 'TestCase::LINERN';
-
-
+use SPVM 'TestCase::Operator::Address';
 
 # Start objects count
 my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
-ok(SPVM::TestCase::LINEN->line);
-ok(SPVM::TestCase::LINER->line);
-ok(SPVM::TestCase::LINERN->line);
+{
+  ok(SPVM::TestCase::Operator::Address->address);
+}
 
 # All object is freed
 $api->set_exception(undef);

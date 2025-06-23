@@ -2649,6 +2649,29 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       break;
                     }
+                    case SPVM_OP_C_ID_ADDRESS : {
+                      
+                      SPVM_OPCODE opcode = {0};
+                      
+                      SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_assign_src->first);
+                      int32_t is_ref_type = SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+                      
+                      if (is_ref_type) {
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ADDRESS_REF);
+                      }
+                      else {
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_ADDRESS_OBJECT);
+                      }
+                      int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
+                      int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
+                      
+                      opcode.operand0 = typed_var_index_out;
+                      opcode.operand1 = typed_var_index_in;
+                      
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      
+                      break;
+                    }
                     case SPVM_OP_C_ID_MINUS : {
                       
                       SPVM_OPCODE opcode = {0};

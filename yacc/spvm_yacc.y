@@ -69,7 +69,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
-%right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
+%right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY ADDRESS
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 %nonassoc <opval> ')'
@@ -1098,6 +1098,10 @@ unary_operator
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
   | array_length
+  | ADDRESS operator
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
 
 array_length
   : '@' operator

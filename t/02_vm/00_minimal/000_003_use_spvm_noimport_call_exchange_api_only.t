@@ -7,7 +7,7 @@ use SPVM ();
 
 my $api = SPVM::api();
 
-$api->get_memory_blocks_count();
+$api->get_memory_blocks_count;
 
 ok(1);
 

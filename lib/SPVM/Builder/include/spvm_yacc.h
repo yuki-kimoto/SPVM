@@ -165,9 +165,10 @@ extern int SPVM_yydebug;
     NEW_STRING_LEN = 375,
     IS_READ_ONLY = 376,
     COPY = 377,
-    INC = 378,
-    DEC = 379,
-    ARROW = 380
+    ADDRESS = 378,
+    INC = 379,
+    DEC = 380,
+    ARROW = 381
   };
 #endif
 

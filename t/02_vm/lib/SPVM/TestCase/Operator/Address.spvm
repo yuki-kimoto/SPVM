@@ -1,0 +1,46 @@
+class TestCase::Operator::Address {
+  
+  static method address : int () {
+    
+    # object
+    {
+      {
+        my $int_object = (Int)undef;
+        
+        my $address = address $int_object;
+        
+        warn "[Test Output]$address";
+      }
+      
+      {
+        my $int_object = Int->new(1);
+        
+        my $address = address $int_object;
+        
+        warn "[Test Output]$address";
+      }
+    }
+    
+    # Reference
+    {
+      {
+        my $int_ref = (int*)undef;
+        
+        my $address = address $int_ref;
+        
+        warn "[Test Output]$address";
+      }
+      
+      {
+        my $int = 1;
+        my $int_ref = \$int;
+        
+        my $address = address $int_ref;
+        
+        warn "[Test Output]$address";
+      }
+    }
+    
+    return 1;
+  }
+}

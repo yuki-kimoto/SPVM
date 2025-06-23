@@ -643,6 +643,7 @@ t/02_vm/05_op/__FILE__.t
 t/02_vm/05_op/__LINE__.t
 t/02_vm/05_op/__PACKAGE__.t
 t/02_vm/05_op/addition.t
+t/02_vm/05_op/address.t
 t/02_vm/05_op/anon_method.t
 t/02_vm/05_op/array_access.t
 t/02_vm/05_op/array_big_size.t
@@ -908,6 +909,7 @@ t/02_vm/lib/SPVM/TestCase/NativeAPISrc.native/src/noneed.txt
 t/02_vm/lib/SPVM/TestCase/NativeAPISrc.spvm
 t/02_vm/lib/SPVM/TestCase/OnlyField.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Add.spvm
+t/02_vm/lib/SPVM/TestCase/Operator/Address.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/AnonMethod.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/AnonMethod/AnonMethod.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/AnonMethod/ImplementAnonMethod1.spvm

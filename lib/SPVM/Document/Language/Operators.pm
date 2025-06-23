@@ -1260,6 +1260,22 @@ Examples:
   my $point = Point->new;
   warn $point;
 
+=head2 address operator
+
+The C<address> operator gets the address of an operand as an string.
+
+  address OPERAND
+
+This operator gets the address of I<OPERAND> and converts it to a hex string(such as 0x7ffee23b8ac4), and returns it.
+
+The return type is string type.
+
+The type of I<OPERAND> must be an object type or a reference type.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be an object type or a reference type. Otherwise compilation error occurs.
+
 =head2 __FILE__ Operator
 
 The C<__FILE__> operator gets the path of the file where the current class is defined.
