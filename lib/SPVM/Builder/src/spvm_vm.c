@@ -91,7 +91,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   // Order 8, 4, 2, 1 numeric variable, and addrress variables
   int32_t status_push_call_stack_frame = SPVM_API_push_call_stack_frame(env, stack, call_stack_frame_info);
   if (!(status_push_call_stack_frame == 0)) {
-    void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "A creation of a local variables stack frame failed.");
+    void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "A creation of a stack frame failed.");
     SPVM_API_set_exception(env, stack, exception);
     error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     goto END_OF_FUNC;

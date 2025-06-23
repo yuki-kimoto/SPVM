@@ -3073,7 +3073,11 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS].oval = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_RUNTIME_CALL_STACK_FRAME_INFO) * stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival);
   
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival = 1;
-  stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval = SPVM_API_new_memory_block(env, stack, sizeof(void*) * stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival);
+  void** call_stack_memory_blocks = SPVM_API_new_memory_block(env, stack, sizeof(void*) * stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival);
+  for (int32_t i = 0; i < stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival; i++) {
+    call_stack_memory_blocks[i] = SPVM_API_new_memory_block(env, stack, SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE);
+  }
+  stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval = call_stack_memory_blocks;
   
   return stack;
 }
@@ -3100,9 +3104,20 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
     mortal_stack = NULL;
   }
   
-  SPVM_API_free_memory_block(env, stack, stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS].oval);
+  void** call_stack_memory_blocks = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval;
+  int32_t call_stack_memory_blocks_capacity = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival;
+  for (int32_t i = 0; i < call_stack_memory_blocks_capacity; i++) {
+    void* call_stack_memory_block = call_stack_memory_blocks[i];
+    SPVM_API_free_memory_block(env, stack, call_stack_memory_block);
+    call_stack_memory_block = NULL;
+  }
   
-  SPVM_API_free_memory_block(env, stack, stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval);
+  SPVM_API_free_memory_block(env, stack, call_stack_memory_blocks);
+  call_stack_memory_blocks = NULL;
+  
+  void** call_stack_frame_infos = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS].oval;
+  SPVM_API_free_memory_block(env, stack, call_stack_frame_infos);
+  call_stack_frame_infos = NULL;
   
   env->free_memory_block(env, stack, stack);
   stack = NULL;
@@ -5968,75 +5983,77 @@ int32_t SPVM_API_push_call_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RU
   
   int32_t call_stack_frame_size = method->call_stack_frame_size;
   
-  char* call_stack_memory_blocks = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval;
-  
-  void* call_stack_frame = NULL;
+  char* call_stack_frame = NULL;
   if (call_stack_frame_size > SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE) {
     call_stack_frame = SPVM_API_new_memory_block(env, stack, call_stack_frame_size);
+    if (!call_stack_frame) {
+      return -1;
+    }
+    call_stack_frame_info->on_heap = 1;
   }
   else {
-    int32_t call_stack_memory_block_offset = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCK_OFFSET].ival;
+    void** call_stack_memory_blocks = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval;
     
-    if (call_stack_memory_block_offset + call_stack_frame_size > SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE) {
-      int32_t call_stack_memory_blocks_length = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_LENGTH].ival;
-      int32_t call_stack_memory_blocks_capacity = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival;
+    int32_t call_stack_offset = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_OFFSET].ival;
+    
+    int32_t call_stack_memory_blocks_index = call_stack_offset / SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE;
+    
+    int32_t call_stack_memory_block_offset = call_stack_offset - (SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE * call_stack_memory_blocks_index);
+    
+    int32_t call_stack_memory_blocks_capacity = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival;
+    
+    if (call_stack_memory_blocks_index >= call_stack_memory_blocks_capacity) {
       
-      if (call_stack_memory_blocks_length >= call_stack_memory_blocks_capacity - 1) {
-        
-        int32_t call_stack_memory_blocks_capacity = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival;
-        
-        int32_t new_call_stack_memory_blocks_capacity = call_stack_memory_blocks_length * 2;
-        char* new_call_stack_memory_blocks = SPVM_API_new_memory_block(env, stack, sizeof(void*) * new_call_stack_memory_blocks_capacity);
-        if (!new_local_vars_stack) {
-          return -1;
-        }
-        
-        memcpy(new_call_stack_memory_blocks, call_stack_memory_blocks, sizeof(void*) * call_stack_memory_blocks_capacity);
-        
-        stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval = new_call_stack_memory_blocks;
-        stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival = new_call_stack_memory_blocks_capacity;
-        
-        SPVM_API_free_memory_block(env, stack, call_stack_memory_blocks);
+      int32_t new_call_stack_memory_blocks_capacity = call_stack_memory_blocks_capacity * 2;
+      void** new_call_stack_memory_blocks = SPVM_API_new_memory_block(env, stack, sizeof(void*) * new_call_stack_memory_blocks_capacity);
+      if (!new_call_stack_memory_blocks) {
+        return -1;
       }
+      
+      memcpy(new_call_stack_memory_blocks, call_stack_memory_blocks, sizeof(void*) * call_stack_memory_blocks_capacity);
+      
+      stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval = new_call_stack_memory_blocks;
+      stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival = new_call_stack_memory_blocks_capacity;
+      
+      SPVM_API_free_memory_block(env, stack, call_stack_memory_blocks);
+      
+      for (int32_t i = 0; i < new_call_stack_memory_blocks_capacity; i++) {
+        if (i > call_stack_memory_blocks_capacity) {
+          new_call_stack_memory_blocks[i] = SPVM_API_new_memory_block(env, stack, SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE);
+        }
+      }
+      
+      call_stack_memory_blocks = new_call_stack_memory_blocks;
     }
     
-    stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCK_OFFSET].ival = 0;
+    char* call_stck_memory_block = call_stack_memory_blocks[call_stack_memory_blocks_index];
     
-    void* call_stack_memory_blocks = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval;
+    call_stack_frame = &call_stck_memory_block[call_stack_memory_block_offset];
     
-    void* call_stck_memory_block = call_stack_memory_blocks[stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_LENGTH].ival - 1];
-    
-    call_stack_frame = call_stck_memory_block[stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCK_OFFSET].ival];
-    
-    stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCK_OFFSET].ival += call_stack_frame_size;
-    
+    stack[SPVM_API_C_STACK_INDEX_CALL_STACK_OFFSET].ival += call_stack_frame_size;
   }
   
   memset(call_stack_frame, 0, call_stack_frame_size);
   
   assert((intptr_t)call_stack_frame % 8 == 0);
   
-  SPVM_API_set_call_stack_frame_info(env, stack, method, call_stack_frame_info, call_stack_frame);
+  SPVM_API_set_call_stack_frame_info(env, stack, call_stack_frame_info, call_stack_frame);
   
   memset(*call_stack_frame_info->mortal_stack_address, -1, method->mortal_stack_length * sizeof(int32_t));
   memset(*call_stack_frame_info->mortal_stack_tops_address, -1, method->mortal_stack_tops_length * sizeof(int32_t));
+  
+  call_stack_frame_info->call_stack_frame = call_stack_frame;
   
   return 0;
 }
 
 void SPVM_API_pop_call_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info) {
   
-  int32_t call_stack_frame_size = method->call_stack_frame_size;
-  
-  stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_LENGTH].ival -= call_stack_frame_size;
-  
-  if (call_stack_frame_info->memory_block_on_heap) {
-    SPVM_API_free_memory_block(env, stack, call_stack_frame_info->memoery_block);
+  if (call_stack_frame_info->on_heap) {
+    SPVM_API_free_memory_block(env, stack, call_stack_frame_info->call_stack_frame);
   }
   else {
-    stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_LENGTH].ival = call_stack_frame_info->memory_blocks_index + 1;
-    
-    stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCK_OFFSET].ival = call_stack_frame_info->memory_block_offset;
+    stack[SPVM_API_C_STACK_INDEX_CALL_STACK_OFFSET].ival = call_stack_frame_info->call_stack_offset;
   }
 }
 

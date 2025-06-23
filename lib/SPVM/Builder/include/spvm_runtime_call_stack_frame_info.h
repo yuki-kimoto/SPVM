@@ -18,10 +18,9 @@ struct spvm_runtime_call_stack_frame_info {
   int32_t** mortal_stack_tops_address;
   int16_t** short_vars_address;
   int8_t** byte_vars_address;
-  void* memory_block;
-  int32_t memory_blocks_index;
-  int32_t memory_block_offset;
-  int8_t memory_block_on_heap;
+  char* call_stack_frame;
+  int32_t call_stack_offset;
+  int8_t on_heap;
 };
 
 #endif
