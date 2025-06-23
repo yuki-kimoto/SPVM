@@ -3081,10 +3081,10 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
 int32_t SPVM_API_get_stack_frame_size(SPVM_RUNTIME_METHOD* method) {
   
   int32_t stack_frame_size = 0;
-  stack_frame_size += (method->long_vars_width + 1) * sizeof(int64_t);
-  stack_frame_size += (method->double_vars_width + 1) * sizeof(double);
   stack_frame_size += (method->object_vars_width + 1) * sizeof(void*);
   stack_frame_size += (method->ref_vars_width + 1) * sizeof(void*);
+  stack_frame_size += (method->long_vars_width + 1) * sizeof(int64_t);
+  stack_frame_size += (method->double_vars_width + 1) * sizeof(double);
   stack_frame_size += (method->int_vars_width + 1) * sizeof(int32_t);
   stack_frame_size += (method->float_vars_width + 1) * sizeof(float);
   stack_frame_size += (method->mortal_stack_length + 1) * sizeof(int32_t);
@@ -3105,43 +3105,43 @@ int32_t SPVM_API_set_call_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   // + 1 is needed for pointing a different address when width is 0.
   int32_t stack_frame_offset = 0;
   
-  // Long varialbes 8 bytes
-  *call_stack_frame_info->long_vars_base = (int64_t*)&stack_frame[stack_frame_offset];
-  stack_frame_offset += (method->long_vars_width + 1) * sizeof(int64_t);
-  
-  // Double variables 8 bytes
-  *call_stack_frame_info->double_vars_base = (double*)&stack_frame[stack_frame_offset];
-  stack_frame_offset += (method->double_vars_width + 1) * sizeof(double);
-  
-  // Object variables 4 or 8 bytes
+  // Object variables. 8 bytes in 64bit architecture 
   *call_stack_frame_info->object_vars_base = (void**)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->object_vars_width + 1) * sizeof(void*);
   
-  // Refernce variables 4 or 8 bytes
+  // Refernce variables. 8 bytes in 64bit architecture 
   *call_stack_frame_info->ref_vars_base = (void**)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->ref_vars_width + 1) * sizeof(void*);
   
-  // Int variables 4 bytes
+  // Long varialbes. 8 bytes
+  *call_stack_frame_info->long_vars_base = (int64_t*)&stack_frame[stack_frame_offset];
+  stack_frame_offset += (method->long_vars_width + 1) * sizeof(int64_t);
+  
+  // Double variables. 8 bytes
+  *call_stack_frame_info->double_vars_base = (double*)&stack_frame[stack_frame_offset];
+  stack_frame_offset += (method->double_vars_width + 1) * sizeof(double);
+  
+  // Int variables. 4 bytes
   *call_stack_frame_info->int_vars_base = (int32_t*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->int_vars_width + 1) * sizeof(int32_t);
   
-  // Float variables 4 bytes
+  // Float variables. 4 bytes
   *call_stack_frame_info->float_vars_base = (float*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->float_vars_width + 1) * sizeof(float);
   
-  // Mortal stack - object variable indexes  4 bytes
+  // Mortal stack. 4 bytes
   *call_stack_frame_info->mortal_stack_base = (int32_t*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->mortal_stack_length + 1) * sizeof(int32_t);
   
-  // Mortal stack tops 4 bytes
+  // Mortal stack tops. 4 bytes
   *call_stack_frame_info->mortal_stack_tops_base = (int32_t*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->mortal_stack_tops_length + 1) * sizeof(int32_t);
   
-  // Short variables 2 bytes
+  // Short variables. 2 bytes
   *call_stack_frame_info->short_vars_base = (int16_t*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->short_vars_width + 1) * sizeof(int16_t);
   
-  // Byte variables 1 bytes
+  // Byte variables. 1 bytes
   *call_stack_frame_info->byte_vars_base = (int8_t*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->byte_vars_width + 1) * sizeof(int8_t);
   
