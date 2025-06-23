@@ -26,9 +26,9 @@ enum {
   SPVM_API_C_STACK_INDEX_CALL_STACK = 373,
   SPVM_API_C_STACK_INDEX_CALL_STACK_LENGTH = 372,
   SPVM_API_C_STACK_INDEX_CALL_STACK_CAPACITY = 371,
-  SPVM_API_C_STACK_INDEX_STACK_FRAME_INFOS = 370,
-  SPVM_API_C_STACK_INDEX_STACK_FRAME_INFOS_LENGTH = 369,
-  SPVM_API_C_STACK_INDEX_STACK_FRAME_INFOS_CAPACITY = 368,
+  SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS = 370,
+  SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_LENGTH = 369,
+  SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY = 368,
 };
 
 enum {
@@ -47,12 +47,12 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
 SPVM_VALUE* SPVM_API_new_stack_with_all_method_call_permitted(SPVM_ENV* env);
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 
-int32_t SPVM_API_push_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_STACK_FRAME_INFO* stack_frame_info);
-void SPVM_API_pop_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPVM_API_push_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, SPVM_RUNTIME_STACK_FRAME_INFO* current_stack_frame_info);
+int32_t SPVM_API_push_call_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info);
+void SPVM_API_pop_call_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM_API_push_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, SPVM_RUNTIME_CALL_STACK_FRAME_INFO* current_call_stack_frame_info);
 void SPVM_API_pop_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method);
 int32_t SPVM_API_get_stack_frame_size(SPVM_RUNTIME_METHOD* method);
-int32_t SPVM_API_set_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, SPVM_RUNTIME_STACK_FRAME_INFO* stack_frame_info, char* stack_frame);
+int32_t SPVM_API_set_call_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info, char* stack_frame);
 
 int32_t SPVM_API_args_width(SPVM_ENV* env, SPVM_VALUE* stack);
 

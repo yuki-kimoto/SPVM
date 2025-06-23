@@ -42,7 +42,7 @@
 
 #include "spvm_implement.h"
 #include "spvm_type.h"
-#include "spvm_runtime_stack_frame_info.h"
+#include "spvm_runtime_call_stack_frame_info.h"
 
 static const char* FILE_NAME = "spvm_vm.c";
 
@@ -71,24 +71,24 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   
   int8_t* byte_vars = NULL;
   
-  SPVM_RUNTIME_STACK_FRAME_INFO stack_frame_info_st = {0};
-  SPVM_RUNTIME_STACK_FRAME_INFO* stack_frame_info = &stack_frame_info_st;
+  SPVM_RUNTIME_CALL_STACK_FRAME_INFO call_stack_frame_info_st = {0};
+  SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info = &call_stack_frame_info_st;
   
-  stack_frame_info->long_vars_base = &long_vars;
-  stack_frame_info->double_vars_base = &double_vars;
-  stack_frame_info->object_vars_base = &object_vars;
-  stack_frame_info->ref_vars_base = &ref_vars;
-  stack_frame_info->int_vars_base = &int_vars;
-  stack_frame_info->float_vars_base = &float_vars;
-  stack_frame_info->mortal_stack_base = &mortal_stack;
-  stack_frame_info->mortal_stack_tops_base = &mortal_stack_tops;
-  stack_frame_info->short_vars_base = &short_vars;
-  stack_frame_info->byte_vars_base = &byte_vars;
+  call_stack_frame_info->long_vars_base = &long_vars;
+  call_stack_frame_info->double_vars_base = &double_vars;
+  call_stack_frame_info->object_vars_base = &object_vars;
+  call_stack_frame_info->ref_vars_base = &ref_vars;
+  call_stack_frame_info->int_vars_base = &int_vars;
+  call_stack_frame_info->float_vars_base = &float_vars;
+  call_stack_frame_info->mortal_stack_base = &mortal_stack;
+  call_stack_frame_info->mortal_stack_tops_base = &mortal_stack_tops;
+  call_stack_frame_info->short_vars_base = &short_vars;
+  call_stack_frame_info->byte_vars_base = &byte_vars;
   
   // Alloc variable memory
   // Allignment is 8. This is numeric type max byte size
   // Order 8, 4, 2, 1 numeric variable, and addrress variables
-  int32_t status_push_stack_frame = SPVM_API_push_stack_frame(env, stack, current_method, stack_frame_info);
+  int32_t status_push_stack_frame = SPVM_API_push_stack_frame(env, stack, current_method, call_stack_frame_info);
   if (!(status_push_stack_frame == 0)) {
     void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "A creation of a local variables stack frame failed.");
     SPVM_API_set_exception(env, stack, exception);
