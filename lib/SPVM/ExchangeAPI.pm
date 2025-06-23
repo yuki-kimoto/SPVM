@@ -1093,20 +1093,20 @@ Examples:
 
 =head2 get_memory_blocks_count
 
-  my $count = $api->get_memory_blocks_count();
+  my $count = $api->get_memory_blocks_count;
 
 Returns the count of memory blocks the current runtime allocates.
 
 Examples:
 
   # First Memory Blocks Count
-  my $start_memory_blocks_count = $api->get_memory_blocks_count();
+  my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
   # Processing
   # ...
 
   # Last Memory Blocks Count
-  my $end_memory_blocks_count = $api->get_memory_blocks_count();
+  my $end_memory_blocks_count = $api->get_memory_blocks_count;
 
   unless ($end_memory_blocks_count == $start_memory_blocks_count) {
     die"Memroy leak";
