@@ -3189,8 +3189,8 @@ int32_t SPVM_API_push_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
       for (int32_t ref_var_index = 0; ref_var_index < ref_vars_width; ref_var_index++) {
         void* ref_var = ref_vars[ref_var_index];
         
-        if ((void*)ref_var >= (void*)local_vars_stack && (void*)ref_var < (void*)(local_vars_stack + local_vars_stack_length)) {
-          ptrdiff_t ref_var_diff = (char*)ref_var - (char*)local_vars_stack;
+        if ((uintptr_t)ref_var >= (uintptr_t)local_vars_stack && (uintptr_t)ref_var < (uintptr_t)local_vars_stack + local_vars_stack_length) {
+          intptr_t ref_var_diff = (intptr_t)ref_var - (intptr_t)local_vars_stack;
           ref_vars[ref_var_index] = (void*)(new_local_vars_stack + ref_var_diff);
         }
       }
@@ -3206,8 +3206,8 @@ int32_t SPVM_API_push_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
           
           void* ref_var = stack[arg_stack_index].oval;
           
-          if ((void*)ref_var >= (void*)local_vars_stack && (void*)ref_var < (void*)(local_vars_stack + local_vars_stack_length)) {
-            ptrdiff_t ref_var_diff = (char*)ref_var - (char*)local_vars_stack;
+          if ((uintptr_t)ref_var >= (uintptr_t)local_vars_stack && (uintptr_t)ref_var < (uintptr_t)local_vars_stack + local_vars_stack_length) {
+            intptr_t ref_var_diff = (intptr_t)ref_var - (intptr_t)local_vars_stack;
             stack[arg_stack_index].oval = (void*)(new_local_vars_stack + ref_var_diff);
           }
         }
