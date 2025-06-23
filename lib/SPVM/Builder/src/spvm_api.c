@@ -3106,43 +3106,43 @@ int32_t SPVM_API_set_call_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   int32_t stack_frame_offset = 0;
   
   // Object variables. 8 bytes in 64bit architecture 
-  *call_stack_frame_info->object_vars_base = (void**)&stack_frame[stack_frame_offset];
+  *call_stack_frame_info->object_vars_address = (void**)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->object_vars_width + 1) * sizeof(void*);
   
   // Refernce variables. 8 bytes in 64bit architecture 
-  *call_stack_frame_info->ref_vars_base = (void**)&stack_frame[stack_frame_offset];
+  *call_stack_frame_info->ref_vars_address = (void**)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->ref_vars_width + 1) * sizeof(void*);
   
   // Long varialbes. 8 bytes
-  *call_stack_frame_info->long_vars_base = (int64_t*)&stack_frame[stack_frame_offset];
+  *call_stack_frame_info->long_vars_address = (int64_t*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->long_vars_width + 1) * sizeof(int64_t);
   
   // Double variables. 8 bytes
-  *call_stack_frame_info->double_vars_base = (double*)&stack_frame[stack_frame_offset];
+  *call_stack_frame_info->double_vars_address = (double*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->double_vars_width + 1) * sizeof(double);
   
   // Int variables. 4 bytes
-  *call_stack_frame_info->int_vars_base = (int32_t*)&stack_frame[stack_frame_offset];
+  *call_stack_frame_info->int_vars_address = (int32_t*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->int_vars_width + 1) * sizeof(int32_t);
   
   // Float variables. 4 bytes
-  *call_stack_frame_info->float_vars_base = (float*)&stack_frame[stack_frame_offset];
+  *call_stack_frame_info->float_vars_address = (float*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->float_vars_width + 1) * sizeof(float);
   
   // Mortal stack. 4 bytes
-  *call_stack_frame_info->mortal_stack_base = (int32_t*)&stack_frame[stack_frame_offset];
+  *call_stack_frame_info->mortal_stack_address = (int32_t*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->mortal_stack_length + 1) * sizeof(int32_t);
   
   // Mortal stack tops. 4 bytes
-  *call_stack_frame_info->mortal_stack_tops_base = (int32_t*)&stack_frame[stack_frame_offset];
+  *call_stack_frame_info->mortal_stack_tops_address = (int32_t*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->mortal_stack_tops_length + 1) * sizeof(int32_t);
   
   // Short variables. 2 bytes
-  *call_stack_frame_info->short_vars_base = (int16_t*)&stack_frame[stack_frame_offset];
+  *call_stack_frame_info->short_vars_address = (int16_t*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->short_vars_width + 1) * sizeof(int16_t);
   
   // Byte variables. 1 bytes
-  *call_stack_frame_info->byte_vars_base = (int8_t*)&stack_frame[stack_frame_offset];
+  *call_stack_frame_info->byte_vars_address = (int8_t*)&stack_frame[stack_frame_offset];
   stack_frame_offset += (method->byte_vars_width + 1) * sizeof(int8_t);
   
 }
@@ -3184,7 +3184,7 @@ int32_t SPVM_API_push_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
       char* local_vars_stack = (char*)stack[SPVM_API_C_STACK_INDEX_CALL_STACK].oval;
       
       // Reallocate reference local variables
-      void** ref_vars = *call_stack_frame_info->ref_vars_base;
+      void** ref_vars = *call_stack_frame_info->ref_vars_address;
       int32_t ref_vars_width = method->ref_vars_width;
       for (int32_t ref_var_index = 0; ref_var_index < ref_vars_width; ref_var_index++) {
         void* ref_var = ref_vars[ref_var_index];
@@ -3229,8 +3229,8 @@ int32_t SPVM_API_push_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
   
   SPVM_API_set_call_stack_frame_info(env, stack, current_method, current_call_stack_frame_info, stack_frame);
   
-  memset(*current_call_stack_frame_info->mortal_stack_base, -1, current_method->mortal_stack_length * sizeof(int32_t));
-  memset(*current_call_stack_frame_info->mortal_stack_tops_base, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
+  memset(*current_call_stack_frame_info->mortal_stack_address, -1, current_method->mortal_stack_length * sizeof(int32_t));
+  memset(*current_call_stack_frame_info->mortal_stack_tops_address, -1, current_method->mortal_stack_tops_length * sizeof(int32_t));
   
   current_call_stack_frame_info->method = current_method;
   

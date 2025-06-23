@@ -74,16 +74,16 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   SPVM_RUNTIME_CALL_STACK_FRAME_INFO call_stack_frame_info_st = {0};
   SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info = &call_stack_frame_info_st;
   
-  call_stack_frame_info->long_vars_base = &long_vars;
-  call_stack_frame_info->double_vars_base = &double_vars;
-  call_stack_frame_info->object_vars_base = &object_vars;
-  call_stack_frame_info->ref_vars_base = &ref_vars;
-  call_stack_frame_info->int_vars_base = &int_vars;
-  call_stack_frame_info->float_vars_base = &float_vars;
-  call_stack_frame_info->mortal_stack_base = &mortal_stack;
-  call_stack_frame_info->mortal_stack_tops_base = &mortal_stack_tops;
-  call_stack_frame_info->short_vars_base = &short_vars;
-  call_stack_frame_info->byte_vars_base = &byte_vars;
+  call_stack_frame_info->long_vars_address = &long_vars;
+  call_stack_frame_info->double_vars_address = &double_vars;
+  call_stack_frame_info->object_vars_address = &object_vars;
+  call_stack_frame_info->ref_vars_address = &ref_vars;
+  call_stack_frame_info->int_vars_address = &int_vars;
+  call_stack_frame_info->float_vars_address = &float_vars;
+  call_stack_frame_info->mortal_stack_address = &mortal_stack;
+  call_stack_frame_info->mortal_stack_tops_address = &mortal_stack_tops;
+  call_stack_frame_info->short_vars_address = &short_vars;
+  call_stack_frame_info->byte_vars_address = &byte_vars;
   
   // Alloc variable memory
   // Allignment is 8. This is numeric type max byte size
