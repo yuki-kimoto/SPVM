@@ -5904,8 +5904,10 @@ int32_t SPVM_API_get_stack_frame_size(SPVM_RUNTIME_METHOD* method) {
   stack_frame_size += (method->byte_vars_width + 1) * sizeof(int8_t);
   
   // Adjust allignment
-  stack_frame_size = (stack_frame_size + 7) & ~7;
-  assert(stack_frame_size % 8 == 0);
+  int32_t alignment = sizeof(void*) > sizeof(int64_t) ? sizeof(void*) : sizeof(int64_t);
+  assert(alignment >= 8);
+  stack_frame_size = (stack_frame_size + (alignment - 1)) & ~(alignment - 1);
+  assert(stack_frame_size % alignment == 0);
   
   return stack_frame_size;
 }
