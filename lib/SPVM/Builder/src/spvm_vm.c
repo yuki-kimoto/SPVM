@@ -2341,9 +2341,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       
       case SPVM_OPCODE_C_ID_GET_ADDRESS_REF: {
         void* ref = ref_vars[opcode->operand1];
-        
-        spvm_warn("%p", ref);
-        
         SPVM_IMPLEMENT_GET_ADDRESS(env, stack, &object_vars[opcode->operand0], ref);
         break;
       }
