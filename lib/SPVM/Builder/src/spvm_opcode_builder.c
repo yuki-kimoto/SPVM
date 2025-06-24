@@ -235,6 +235,10 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       int32_t mortal_stack_tops_index = 0;
       
+      int32_t mortal_stack_max = 0;
+      
+      int32_t mortal_stack_tops_max = 0;
+      
       if (method->is_native) {
         goto END_OF_FUNCTION;
       }
@@ -264,10 +268,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       SPVM_LIST* return_on_exception_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       SPVM_LIST* mortal_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-      
-      int32_t mortal_stack_max = 0;
-      
-      int32_t mortal_stack_tops_max = 0;
       
       // Run OPs
       SPVM_OP* op_base = method->op_block;
