@@ -1,10 +1,8 @@
 0.990073 2025-06-23
   [Performance Improvement]
-    * Improve the logic of instance method call. malloc is not called each time a method is called. continuous stack frames are implemented.
+    * Improve the logic of instance method call. malloc is not called each time when a method is called. Reused stack frames are implemented.
   [Internal Changes]
-    * continuous stack frames are implemented. This is a gib internal change with potential for memory corruption.
-  [Support Changes]
-    * Drop support for 32bit architecture.
+    * Reused stack frames are implemented. This is a big internal change with potential for memory corruption.
   [Bug Fix]
     * Fix a bug that "SPVM_OPCODE_BUILDER_build_opcodes: Assertion `mortal_stack_tops_index == 0'" occurs sometimes  in native methods.
     
