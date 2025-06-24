@@ -5910,10 +5910,10 @@ int32_t SPVM_API_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* dist
 int32_t SPVM_API_get_call_stack_frame_size(SPVM_RUNTIME_METHOD* method) {
   
   int32_t call_stack_frame_size = 0;
-  call_stack_frame_size += (method->object_vars_width + 1) * sizeof(void*);
-  call_stack_frame_size += (method->ref_vars_width + 1) * sizeof(void*);
   call_stack_frame_size += (method->long_vars_width + 1) * sizeof(int64_t);
   call_stack_frame_size += (method->double_vars_width + 1) * sizeof(double);
+  call_stack_frame_size += (method->object_vars_width + 1) * sizeof(void*);
+  call_stack_frame_size += (method->ref_vars_width + 1) * sizeof(void*);
   call_stack_frame_size += (method->int_vars_width + 1) * sizeof(int32_t);
   call_stack_frame_size += (method->float_vars_width + 1) * sizeof(float);
   call_stack_frame_size += (method->mortal_stack_length + 1) * sizeof(int32_t);
@@ -5938,14 +5938,6 @@ int32_t SPVM_API_set_call_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   // + 1 is needed for pointing a different address when width is 0.
   int32_t call_stack_frame_offset = 0;
   
-  // Object variables. 8 bytes in 64bit architecture 
-  *call_stack_frame_info->object_vars_address = (void**)&call_stack_frame[call_stack_frame_offset];
-  call_stack_frame_offset += (method->object_vars_width + 1) * sizeof(void*);
-  
-  // Refernce variables. 8 bytes in 64bit architecture 
-  *call_stack_frame_info->ref_vars_address = (void**)&call_stack_frame[call_stack_frame_offset];
-  call_stack_frame_offset += (method->ref_vars_width + 1) * sizeof(void*);
-  
   // Long varialbes. 8 bytes
   *call_stack_frame_info->long_vars_address = (int64_t*)&call_stack_frame[call_stack_frame_offset];
   call_stack_frame_offset += (method->long_vars_width + 1) * sizeof(int64_t);
@@ -5953,6 +5945,14 @@ int32_t SPVM_API_set_call_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   // Double variables. 8 bytes
   *call_stack_frame_info->double_vars_address = (double*)&call_stack_frame[call_stack_frame_offset];
   call_stack_frame_offset += (method->double_vars_width + 1) * sizeof(double);
+  
+  // Object variables. 8 bytes in 64bit architecture, 4 bytes in 32bit architecture
+  *call_stack_frame_info->object_vars_address = (void**)&call_stack_frame[call_stack_frame_offset];
+  call_stack_frame_offset += (method->object_vars_width + 1) * sizeof(void*);
+  
+  // Refernce variables. 8 bytes in 64bit architecture, 4 bytes in 32bit architecture
+  *call_stack_frame_info->ref_vars_address = (void**)&call_stack_frame[call_stack_frame_offset];
+  call_stack_frame_offset += (method->ref_vars_width + 1) * sizeof(void*);
   
   // Int variables. 4 bytes
   *call_stack_frame_info->int_vars_address = (int32_t*)&call_stack_frame[call_stack_frame_offset];
