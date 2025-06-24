@@ -12,7 +12,7 @@ enum {
 };
 
 enum {
-  SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE = 2048 * 100,
+  SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE = 512,
 };
 
 enum {
@@ -442,5 +442,8 @@ int32_t SPVM_API_get_call_stack_frame_size(SPVM_RUNTIME_METHOD* method);
 int32_t SPVM_API_push_call_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info);
 void SPVM_API_pop_call_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info);
 int32_t SPVM_API_set_call_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info, char* call_stack_frame);
+void* SPVM_API_new_memory_block_for_call_stack(SPVM_ENV* env, SPVM_VALUE* stack, int32_t size);
+
+void SPVM_API_free_memory_block_for_call_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
 
 #endif
