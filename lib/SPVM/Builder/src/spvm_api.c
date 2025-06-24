@@ -3120,6 +3120,8 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_API_free_memory_block_for_call_stack(env, stack, call_stack_frame_infos);
   call_stack_frame_infos = NULL;
   
+  assert(stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_FOR_CALL_STACK].ival == 0);
+  
   env->free_memory_block(env, stack, stack);
   stack = NULL;
 }
@@ -6068,9 +6070,20 @@ void SPVM_API_pop_call_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
 }
 
 void* SPVM_API_new_memory_block_for_call_stack(SPVM_ENV* env, SPVM_VALUE* stack, int32_t size) {
-  return SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size);
+  
+  void* memory_block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size);
+  if (memory_block) {
+    stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_FOR_CALL_STACK].ival++;
+  }
+  
+  return memory_block;
 }
 
 void SPVM_API_free_memory_block_for_call_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
-  SPVM_ALLOCATOR_free_memory_block_unmanaged(block);
+  
+  if (block) {
+    SPVM_ALLOCATOR_free_memory_block_unmanaged(block);
+    stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_FOR_CALL_STACK].ival--;
+  }
+  
 }
