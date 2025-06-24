@@ -12,7 +12,7 @@ enum {
 };
 
 enum {
-  SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE = 512,
+  SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE = 2048,
 };
 
 enum {
