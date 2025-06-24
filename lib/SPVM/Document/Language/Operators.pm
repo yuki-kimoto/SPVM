@@ -1239,6 +1239,8 @@ If the type of I<OPERAND> is string type and I<OPERAND> is defined, this operato
 
 If the type of I<OPERAND> is an object type except for string type and I<OPERAND> is defined, this operator outputs the type name and the address of I<OPERAND>, such as C<"Point(0x55d8a44ed090)">.
 
+If the type of I<OPERAND> is a reference type, this operator outputs the return value of L</"address Operator"> such as C<"0x55d8a44ed090">.
+
 This operator outputs a newline, two tabs and a stack trace information following the output above.
 
 A stack trace information consists of the current method name, file name, and line number.
@@ -1249,7 +1251,7 @@ The return type is the void type.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be an object type. Otherwise, a compilation error occurs.
+The type of I<OPERAND> must be a numeric type, an object type, or a reference type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1260,9 +1262,9 @@ Examples:
   my $point = Point->new;
   warn $point;
 
-=head2 address operator
+=head2 address Operator
 
-The C<address> operator gets the address of an operand as an string.
+The C<address> operator gets the address of an object or a reference as a hex string.
 
   address OPERAND
 

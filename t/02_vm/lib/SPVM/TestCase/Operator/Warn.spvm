@@ -78,4 +78,14 @@ class TestCase::Operator::Warn { use Fn;
     return 1;
   }
   
+  static method warn_ref : int () {
+    
+    my $num = 1;
+    my $num_ref = \$num;
+    
+    warn $num_ref;
+    
+    return 1;
+  }
+  
 }

@@ -817,11 +817,11 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { my $num = 1; my $num_ref = \$num; warn $num_ref; } }';
-    compile_not_ok($source, q|The type of the operand of warn operator must be an object type.|);
+    compile_ok($source);
   }
   {
     my $source = 'class MyClass { static method main : void () { warn undef; } }';
-    compile_not_ok($source, q|The type of the operand of warn operator must be an object type.|);
+    compile_not_ok($source, q|The type of the operand of warn operator must be a numeric type, an object type, or a reference type.|);
   }
 }
 

@@ -3053,11 +3053,25 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   return;
                 }
               }
+              else if (SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                
+                SPVM_OP* op_operand = op_cur->first;
+                
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand);
+                
+                SPVM_OP* op_address = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADDRESS, op_cur->first->file, op_cur->first->line);
+                
+                op_address = SPVM_OP_build_unary_op(compiler, op_address, op_operand);
+                
+                SPVM_OP_replace_op(compiler, op_stab, op_address);
+                
+                op_cur->first = op_address;
+              }
               
               operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
               
               if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The type of the operand of warn operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The type of the operand of warn operator must be a numeric type, an object type, or a reference type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
             }

@@ -5,6 +5,8 @@
     * Reused stack frames are implemented. This is a big internal change with potential for memory corruption.
   [Bug Fix]
     * Fix a bug that "SPVM_OPCODE_BUILDER_build_opcodes: Assertion `mortal_stack_tops_index == 0'" occurs sometimes  in native methods.
+  [New Features]
+    * warn operator can receive an operand of a reference type.
     
 0.990072 2025-06-23
   [New Features]
