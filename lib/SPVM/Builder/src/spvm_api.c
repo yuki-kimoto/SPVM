@@ -6002,6 +6002,11 @@ int32_t SPVM_API_push_call_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RU
     
     int32_t call_stack_memory_block_offset = call_stack_offset - (SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE * call_stack_memory_blocks_index);
     
+    if (call_stack_memory_block_offset + call_stack_frame_size >= SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE) {
+      call_stack_memory_blocks_index++;
+      call_stack_memory_block_offset = 0;
+    }
+    
     int32_t call_stack_memory_blocks_capacity = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival;
     
     if (call_stack_memory_blocks_index >= call_stack_memory_blocks_capacity) {
@@ -6031,11 +6036,11 @@ int32_t SPVM_API_push_call_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RU
     
     call_stack_frame = &call_stck_memory_block[call_stack_memory_block_offset];
     
-    stack[SPVM_API_C_STACK_INDEX_CALL_STACK_OFFSET].ival += call_stack_frame_size;
-    
-    assert(stack[SPVM_API_C_STACK_INDEX_CALL_STACK_OFFSET].ival > 0);
-    
     call_stack_frame_info->call_stack_offset = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_OFFSET].ival;
+    
+    int32_t new_call_stack_offset = SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE * call_stack_memory_blocks_index + call_stack_memory_block_offset + call_stack_frame_size;
+    
+    stack[SPVM_API_C_STACK_INDEX_CALL_STACK_OFFSET].ival = new_call_stack_offset;
   }
   
   memset(call_stack_frame, 0, call_stack_frame_size);
