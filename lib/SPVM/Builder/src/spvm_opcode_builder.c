@@ -233,6 +233,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
       }
       
+      int32_t mortal_stack_tops_index = 0;
+      
       if (method->is_native) {
         goto END_OF_FUNCTION;
       }
@@ -264,8 +266,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       SPVM_LIST* mortal_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       int32_t mortal_stack_max = 0;
-      
-      int32_t mortal_stack_tops_index = 0;
       
       int32_t mortal_stack_tops_max = 0;
       
@@ -329,7 +329,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               opcode.operand0 = mortal_stack_tops_index;
               block->mortal_stack_tops_index = mortal_stack_tops_index;
               mortal_stack_tops_index++;
-              
               if (mortal_stack_tops_index > mortal_stack_tops_max) {
                 mortal_stack_tops_max = mortal_stack_tops_index;
               }
@@ -5149,7 +5148,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
             }
             
             // [END]Postorder traversal position
-            
             if (op_cur == op_base) {
               finish = 1;
               break;

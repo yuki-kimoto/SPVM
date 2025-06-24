@@ -5,6 +5,9 @@
     * continuous stack frames are implemented. This is a gib internal change with potential for memory corruption.
   [Support Changes]
     * Drop support for 32bit architecture.
+  [Bug Fix]
+    * Fix a bug that "SPVM_OPCODE_BUILDER_build_opcodes: Assertion `mortal_stack_tops_index == 0'" occurs sometimes  in native methods.
+    
 0.990072 2025-06-23
   [New Features]
     Add address operator.
