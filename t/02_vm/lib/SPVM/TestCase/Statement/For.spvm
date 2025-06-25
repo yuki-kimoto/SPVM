@@ -181,9 +181,23 @@ class TestCase::Statement::For {
       }
     }
     
+    # No condition operand
+    {
+      my $enter_block = 0;
+      
+      for (;;) {
+        $enter_block = 1;
+        last;
+      }
+      
+      unless ($enter_block) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
-
+  
   static method next_statement : int () {
     my $total = 0;
     for (my $i = 0; $i < 5; $i++) {

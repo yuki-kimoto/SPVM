@@ -438,6 +438,8 @@ A C<for> statement is expanded to the following code using a L<while statement|/
     }
   }
 
+If I<CONDITION> is not specified, it is set to 1.
+
 Exampels:
 
   # for statement

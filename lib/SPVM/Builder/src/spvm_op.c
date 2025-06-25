@@ -1921,6 +1921,10 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   
   SPVM_OP* op_loop = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_LOOP, op_for->file, op_for->line);
   
+  if (op_condition_operand->id == SPVM_OP_C_ID_DO_NOTHING) {
+    op_condition_operand = SPVM_OP_new_op_constant_int(compiler, 1, op_for->file, op_for->line);
+  }
+  
   SPVM_OP_build_loop_statement(compiler, op_loop, op_init, op_condition_operand, op_increment, op_block);
   
   return op_loop;

@@ -754,7 +754,7 @@ warn
     }
 
 for_statement
-  : FOR '(' opt_operator ';' operator ';' opt_operator ')' block
+  : FOR '(' opt_operator ';' opt_operator ';' opt_operator ')' block
     {
       $$ = SPVM_OP_build_for_statement(compiler, $1, $3, $5, $7, $9);
     }
