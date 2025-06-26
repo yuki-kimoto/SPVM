@@ -97,6 +97,85 @@ class TestCase::Operator::ArrayInit {
       }
     }
     
+    # options flag
+    {
+      {
+        my $options = {foo => 1, bar => 2};
+        
+        unless (is_options $options) {
+          return 0;
+        }
+      }
+      
+      {
+        my $options = [(object)foo => 1, bar => 2];
+        
+        if (is_options $options) {
+          return 0;
+        }
+      }
+    }
+    
+    # enable_options
+    {
+      {
+        my $options = [(object)foo => 1, bar => 2];
+        enable_options $options;
+        
+        unless (is_options $options) {
+          return 0;
+        }
+      }
+      
+      {
+        my $options = (object[])undef;
+        enable_options $options;
+      }
+    }
+    
+    # disable_options
+    {
+      {
+        my $options = {(object)foo => 1, bar => 2};
+        disable_options $options;
+        
+        if (is_options $options) {
+          return 0;
+        }
+      }
+      
+      {
+        my $options = (object[])undef;
+        disable_options $options;
+      }
+    }
+    
+    # is_options
+    {
+      {
+        my $options = [(object)foo => 1, bar => 2];
+        enable_options $options;
+        
+        unless (is_options $options == 1) {
+          return 0;
+        }
+        
+        disable_options $options;
+        
+        unless (is_options $options == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $options = (object[])undef;
+        
+        if (is_options $options) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   

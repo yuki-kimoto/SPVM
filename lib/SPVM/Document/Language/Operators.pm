@@ -1170,6 +1170,66 @@ Examples:
   # The conversion to the mutable string type throw an exception.
   my $string_mutable = (mutable string)$string;
 
+=head2 enable_options Operator
+
+The C<enable_options> operator enables C<options> flag of an object.
+
+  enable_options OPERAND
+
+If the object I<OPERAND> is defined, this operator enables C<options> flag of I<OPERAND>.
+
+The return type is the void type.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be any object array type. Otherwise, a compilation error occurs.
+
+Examples:
+
+  # Examples of the enable_options operator
+  my $options = [(object)max => 1, title => "Hello"];
+  enable_options $options;
+
+=head2 disable_options Operator
+
+The C<disable_options> operator disables C<options> flag of an object.
+
+  disable_options OPERAND
+
+If the object I<OPERAND> is defined, this operator disables C<options> flag of I<OPERAND>.
+
+The return type is the void type.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be any object array type. Otherwise, a compilation error occurs.
+
+Examples:
+
+  # Examples of the disable_options operator
+  my $options = {max => 1, title => "Hello"};
+  disable_options $options;
+
+=head2 is_options Operator
+
+The C<is_options> operator checks if C<options> flag of an object is enabled.
+
+  is_options OPERAND
+
+If the object I<OPERAND> is defined and C<options> flag of an object is enabled, the C<is_options> operator returns 1; otherwise returns 0.
+
+The return type is int type.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be any object array type. Otherwise, a compilation error occurs.
+
+Examples:
+  
+  # Examples of the is_options operator
+  my $options = {max => 1, title => "Hello"};
+  my $is_options = is_options $options;
+
 =head2 is_read_only Operator
 
 The C<is_read_only> operator checks if a string is read-only.
@@ -1509,7 +1569,7 @@ This syntax is the same as L</"Array Initialization">, but the return type is al
 
 And the length of the elements must be an even number.
 
-The array created in this way is called "Options".
+The array created in this way is called "Options" and C<options> flag of this object is enabled.
 
 Compilation Errors:
 
