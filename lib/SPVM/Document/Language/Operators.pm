@@ -1509,6 +1509,8 @@ This syntax is the same as L</"Array Initialization">, but the return type is al
 
 And the length of the elements must be an even number.
 
+The array created in this way is called "Options".
+
 Compilation Errors:
 
 The length of the elements must be an even number, a compilation error occurs.
