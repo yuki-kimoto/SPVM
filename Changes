@@ -1,3 +1,9 @@
+0.990075 2025-06-26
+  [New Features]
+    * Add enable_options native API.
+    * Add disable_options native API.
+    * Add is_options native API.
+    
 0.990074 2025-06-26
   [New Features]
     * Allow for(;;) { } syntax.

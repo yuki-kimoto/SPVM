@@ -334,6 +334,9 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_call_instance_method,
     SPVM_API_call_method_no_mortal_no_check_args,
     SPVM_API_call_instance_method_no_mortal_less_check_args,
+    SPVM_API_enable_options,
+    SPVM_API_disable_options,
+    SPVM_API_is_options,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -6086,4 +6089,36 @@ void SPVM_API_free_memory_block_for_call_stack(SPVM_ENV* env, SPVM_VALUE* stack,
     stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_FOR_CALL_STACK].ival--;
   }
   
+}
+
+void SPVM_API_enable_options(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  if (object) {
+    __sync_fetch_and_or(&object->flag, SPVM_OBJECT_C_FLAG_IS_OPTIONS);
+  }
+}
+
+void SPVM_API_disable_options(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  if (object) {
+    __sync_fetch_and_and(&object->flag, ~SPVM_OBJECT_C_FLAG_IS_OPTIONS);
+  }
+}
+
+int32_t SPVM_API_is_options(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  int32_t is_options;
+  if (object) {
+    if (object->flag & SPVM_OBJECT_C_FLAG_IS_OPTIONS) {
+      is_options = 1;
+    }
+    else {
+      is_options = 0;
+    }
+  }
+  else {
+    is_options = 0;
+  }
+  
+  return is_options;
 }

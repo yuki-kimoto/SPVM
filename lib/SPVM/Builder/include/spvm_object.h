@@ -21,7 +21,7 @@ struct spvm_object {
 enum {
   SPVM_OBJECT_C_FLAG_IS_READ_ONLY = 1,
   SPVM_OBJECT_C_FLAG_NO_FREE = 2,
-  SPVM_OBJECT_C_FLAG_OPTIONS = 4,
+  SPVM_OBJECT_C_FLAG_IS_OPTIONS = 4,
 };
 
 #endif

@@ -2622,6 +2622,24 @@ C<int32_t (*call_instance_method_no_mortal_less_check_args)(SPVM_ENV* env, SPVM_
 
 Same as L</"call_instance_method_no_mortal">, but does not perform less type checking of arguments with a hint I<decl_args_signature>.
 
+=head2 enable_options
+
+C<void (*enable_options)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+
+Turns on C<options> flag of the object I<object>.
+
+=head2 disable_options
+
+C<void (*disable_options)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+
+Turns off C<options> flag of the object I<object>.
+
+=head2 is_options
+
+C<int32_t (*is_options)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+
+If C<options> flag of the object I<object> is set, returns 1; otherwise returns 0.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2861,6 +2879,10 @@ Native APIs have its IDs.
   232 call_instance_method_no_mortal
   233 call_instance_method
   234 call_method_no_mortal_no_check_args
+  235 call_instance_method_no_mortal_less_check_args
+  236 enable_options
+  237 disable_options
+  237 is_options
 
 =head1 Constant Values
 

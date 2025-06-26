@@ -447,4 +447,8 @@ void* SPVM_API_new_memory_block_for_call_stack(SPVM_ENV* env, SPVM_VALUE* stack,
 
 void SPVM_API_free_memory_block_for_call_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
 
+void SPVM_API_enable_options(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
+void SPVM_API_disable_options(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
+int32_t SPVM_API_is_options(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
+
 #endif
