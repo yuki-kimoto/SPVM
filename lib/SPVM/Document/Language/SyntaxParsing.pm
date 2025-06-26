@@ -27,8 +27,8 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN
   %type <opval> grammar
   %type <opval> field_name method_name class_name
-  %type <opval> type qualified_type basic_type array_type opt_basic_type
-  %type <opval> array_type_with_length ref_type return_type type_comment opt_type_comment union_type
+  %type <opval> basic_type  opt_basic_type array_type array_type_with_length type ref_type return_type
+  %type <opval> qualified_type type_comment union_type type_comments opt_type_comments
   %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
   %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
@@ -64,7 +64,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
+  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY ADDRESS
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
   %nonassoc <opval> ')'
@@ -84,8 +84,8 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : SYMBOL_NAME
 
   qualified_type
-    : type
-    | MUTABLE type {
+    : type opt_type_comments
+    | MUTABLE type opt_type_comments {
 
   type
     : basic_type
@@ -115,11 +115,15 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | array_type '[' operator ']'
 
   return_type
-    : qualified_type opt_type_comment
+    : qualified_type
     | VOID
 
-  opt_type_comment
+  opt_type_comments
     : /* Empty */
+    | type_comments
+
+  type_comments
+    : type_comments type_comment
     | type_comment
 
   type_comment
@@ -220,10 +224,10 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | method_name ASSIGN CONSTANT
 
   our
-    : OUR VAR_NAME ':' opt_attributes qualified_type opt_type_comment ';'
+    : OUR VAR_NAME ':' opt_attributes qualified_type ';'
 
   has
-    : HAS field_name ':' opt_attributes qualified_type opt_type_comment
+    : HAS field_name ':' opt_attributes qualified_type
 
   method
     : opt_attributes METHOD method_name ':' return_type '(' opt_args ')' block
@@ -245,8 +249,8 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | arg
 
   arg
-    : var ':' qualified_type opt_type_comment
-    | var ':' qualified_type opt_type_comment ASSIGN operator
+    : var ':' qualified_type
+    | var ':' qualified_type ASSIGN operator
 
   anon_method_fields
     : anon_method_fields ',' anon_method_field
@@ -254,10 +258,10 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | anon_method_field
 
   anon_method_field
-    : HAS field_name ':' opt_attributes qualified_type opt_type_comment
-    | HAS field_name ':' opt_attributes qualified_type opt_type_comment ASSIGN operator
-    | var ':' opt_attributes qualified_type opt_type_comment
-    | var ':' opt_attributes qualified_type opt_type_comment ASSIGN operator
+    : HAS field_name ':' opt_attributes qualified_type
+    | HAS field_name ':' opt_attributes qualified_type ASSIGN operator
+    | var ':' opt_attributes qualified_type
+    | var ':' opt_attributes qualified_type ASSIGN operator
 
   opt_attributes
     : /* Empty */
@@ -320,7 +324,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | WARN
 
   for_statement
-    : FOR '(' opt_operator ';' operator ';' opt_operator ')' block
+    : FOR '(' opt_operator ';' opt_operator ';' opt_operator ')' block
 
   foreach_statement
     : FOR var_decl '(' '@' operator ')' block
@@ -372,7 +376,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : EVAL block
 
   var_decl
-    : MY var ':' qualified_type opt_type_comment
+    : MY var ':' qualified_type
     | MY var
 
   var
@@ -438,6 +442,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | COPY operator
     | IS_READ_ONLY operator
     | array_length
+    | ADDRESS operator
 
   array_length
     : '@' operator
@@ -574,6 +579,9 @@ These are tokens for L<grammer/"Grammer">.
 <table>
   <tr>
     <th>Tokens</td><th>Token Values</th>
+  </tr>
+  <tr>
+    <td>ADDRESS</td><td>address</td>
   </tr>
   <tr>
     <td>ALIAS</td><td>alias</td>
