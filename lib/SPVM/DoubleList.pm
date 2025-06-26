@@ -271,7 +271,7 @@ Clones this instance and returns it.
 
 =head2 push_array
 
-C<method push_array : void ($elements : byte[]);>
+C<method push_array : void ($elements : double[]);>
 
 Adds the elements $elements after the end of this list.
 
@@ -285,7 +285,7 @@ Exceptions thrown by L</"push"> method could be thrown.
 
 =head2 unshift_array
 
-C<method unshift_array : void ($elements : byte[]);>
+C<method unshift_array : void ($elements : double[]);>
 
 Inserts the elemnets $elements at the beginning of the list.
 

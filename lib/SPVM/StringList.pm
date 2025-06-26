@@ -224,7 +224,7 @@ Each element is cloned by C<copy> operator.
 
 =head2 push_array
 
-C<method push_array : void ($elements : byte[]);>
+C<method push_array : void ($elements : string[]);>
 
 Adds the elements $elements after the end of this list.
 
@@ -238,7 +238,7 @@ Exceptions thrown by L</"push"> method could be thrown.
 
 =head2 unshift_array
 
-C<method unshift_array : void ($elements : byte[]);>
+C<method unshift_array : void ($elements : string[]);>
 
 Inserts the elements $elements at the beginning of the list.
 
