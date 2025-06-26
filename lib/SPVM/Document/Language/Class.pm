@@ -2320,10 +2320,16 @@ I<TYPE> is a type used in L<field definition|/"Field Definition">, L<class varia
 
 I<TYPE_COMMENT> is a L<type|SPVM::Document::Language::Types/"Types">.
 
+Type comments can be repeated.
+
+  TYPE of TYPE_COMMENT1 of TYPE_COMMENT2
+
 Examples:
 
   # Examples of type comments
   has points : List of Point;
+  
+  has hash_of_list_of_point : Hash of List of Point;
   
   our $POINTS : List of Point;
   

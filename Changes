@@ -1,7 +1,15 @@
 0.990074 2025-06-26
   [New Features]
     * Allow for(;;) { } syntax.
-  
+    * Allow repeated type comments.
+      
+      Hash of List of Point
+    * Allow type comments in tyep cast operator
+      
+      (Hash of List of Point)$object
+  [Internal Changes]
+    * Change yacc. Qualified Type contains type comments.
+    
 0.990073 2025-06-24
   [Performance Improvement]
     * Improve the logic of instance method call. malloc is not called each time when a method is called. Reused stack frames are implemented.

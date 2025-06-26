@@ -8,12 +8,18 @@ class TestCase::TypeComment {
 
   has union_type : object of string|Point;
   has union_type3 : object of string|Point|Point3D;
+  
+  has hash_of_list_of_point : Hash of List of Point;
 
   our $MINIMALS : List of TestCase::Minimal;
   
   static method pass_throw_minimals : List of TestCase::Minimal ($minimals : List of TestCase::Minimal) {
     
     my $minimals_local : List of TestCase::Minimal = $minimals;
+    
+    my $mutable_string : mutable string of Point;
+    
+    my $hash_of_list_of_point = (Hash of List of Point)undef;
     
     return $minimals_local;
   }

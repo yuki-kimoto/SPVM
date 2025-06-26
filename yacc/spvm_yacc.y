@@ -31,8 +31,8 @@
 
 %type <opval> grammar
 %type <opval> field_name method_name class_name
-%type <opval> type qualified_type basic_type array_type opt_basic_type
-%type <opval> array_type_with_length ref_type return_type type_comment opt_type_comment union_type
+%type <opval> basic_type  opt_basic_type array_type array_type_with_length type ref_type return_type
+%type <opval> qualified_type type_comment union_type type_comments opt_type_comments
 %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
@@ -91,8 +91,8 @@ class_name
   : SYMBOL_NAME
 
 qualified_type
-  : type
-  | MUTABLE type {
+  : type opt_type_comments
+  | MUTABLE type opt_type_comments {
     $$ = SPVM_OP_build_mutable_type(compiler, $2);
   }
 
@@ -181,19 +181,23 @@ array_type_with_length
     }
 
 return_type
-  : qualified_type opt_type_comment
+  : qualified_type
   | VOID
     {
       $$ = SPVM_OP_new_op_void_type(compiler, compiler->current_file, compiler->current_line);
     }
 
-opt_type_comment
+opt_type_comments
   : /* Empty */
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
     }
-  | type_comment
+  | type_comments
 
+type_comments
+  : type_comments type_comment
+  | type_comment
+  
 type_comment
   : OF union_type
     {
@@ -461,13 +465,13 @@ enumeration_item
     }
 
 our
-  : OUR VAR_NAME ':' opt_attributes qualified_type opt_type_comment ';'
+  : OUR VAR_NAME ':' opt_attributes qualified_type ';'
     {
       $$ = SPVM_OP_build_class_var(compiler, $1, $2, $4, $5);
     }
 
 has
-  : HAS field_name ':' opt_attributes qualified_type opt_type_comment
+  : HAS field_name ':' opt_attributes qualified_type
     {
       $$ = SPVM_OP_build_field(compiler, $1, $2, $4, $5);
     }
@@ -547,13 +551,13 @@ args
   | arg
 
 arg
-  : var ':' qualified_type opt_type_comment
+  : var ':' qualified_type
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, NULL);
     }
-  | var ':' qualified_type opt_type_comment ASSIGN operator
+  | var ':' qualified_type ASSIGN operator
     {
-      $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, $6);
+      $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, $5);
     }
 
 anon_method_fields
@@ -575,25 +579,25 @@ anon_method_fields
   | anon_method_field
 
 anon_method_field
-  : HAS field_name ':' opt_attributes qualified_type opt_type_comment
+  : HAS field_name ':' opt_attributes qualified_type
     {
       $$ = SPVM_OP_build_anon_method_field(compiler, $1, $2, $4, $5, NULL);
     }
-  | HAS field_name ':' opt_attributes qualified_type opt_type_comment ASSIGN operator
+  | HAS field_name ':' opt_attributes qualified_type ASSIGN operator
     {
-      $$ = SPVM_OP_build_anon_method_field(compiler, $1, $2, $4, $5, $8);
+      $$ = SPVM_OP_build_anon_method_field(compiler, $1, $2, $4, $5, $7);
     }
-  | var ':' opt_attributes qualified_type opt_type_comment
+  | var ':' opt_attributes qualified_type
     {
       SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, $1->file, $1->line);
       
       $$ = SPVM_OP_build_anon_method_field(compiler, op_field, NULL, $3, $4, $1);
     }
-  | var ':' opt_attributes qualified_type opt_type_comment ASSIGN operator
+  | var ':' opt_attributes qualified_type ASSIGN operator
     {
       SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, $1->file, $1->line);
       
-      $$ = SPVM_OP_build_anon_method_field(compiler, op_field, $1, $3, $4, $7);
+      $$ = SPVM_OP_build_anon_method_field(compiler, op_field, $1, $3, $4, $6);
     }
     
 opt_attributes
@@ -916,7 +920,7 @@ eval_block
     }
 
 var_decl
-  : MY var ':' qualified_type opt_type_comment
+  : MY var ':' qualified_type
     {
       $$ = SPVM_OP_build_var_decl(compiler, $1, $2, $4, NULL);
     }
