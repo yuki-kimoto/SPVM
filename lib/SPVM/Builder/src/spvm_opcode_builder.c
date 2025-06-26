@@ -1012,12 +1012,12 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                       int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
-
+                      
                       opcode.operand0 = typed_var_index_out;
                       opcode.operand1 = typed_var_index_in;
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-
+                      
                       check_exception = 1;
                       
                       break;
@@ -1032,7 +1032,24 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                       int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
-
+                      
+                      opcode.operand0 = typed_var_index_out;
+                      opcode.operand1 = typed_var_index_in;
+                      
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      break;
+                    }
+                    case SPVM_OP_C_ID_IS_OPTIONS : {
+                      
+                      SPVM_TYPE* first_type = SPVM_CHECK_get_type(compiler, op_assign_src->first);
+                      
+                      SPVM_OPCODE opcode = {0};
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_OPTIONS);
+                      
+                      int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
+                      int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
+                      
                       opcode.operand0 = typed_var_index_out;
                       opcode.operand1 = typed_var_index_in;
                       
@@ -1040,7 +1057,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       break;
                     }
                     case SPVM_OP_C_ID_UNDEF : {
-
+                      
                       SPVM_OPCODE opcode = {0};
                       
                       if (SPVM_TYPE_is_object_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
@@ -4348,6 +4365,34 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MAKE_READ_ONLY);
+                      
+                      int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
+                      opcode.operand0 = typed_var_index_in;
+                      
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      
+                      break;
+                    }
+                    case SPVM_OP_C_ID_ENABLE_OPTIONS: {
+                      
+                      SPVM_OPCODE opcode = {0};
+                      
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ENABLE_OPTIONS);
+                      
+                      int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
+                      opcode.operand0 = typed_var_index_in;
+                      
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      
+                      break;
+                    }
+                    case SPVM_OP_C_ID_DISABLE_OPTIONS: {
+                      
+                      SPVM_OPCODE opcode = {0};
+                      
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DISABLE_OPTIONS);
                       
                       int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                       opcode.operand0 = typed_var_index_in;

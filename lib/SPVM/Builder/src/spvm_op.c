@@ -254,6 +254,9 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "TERNARY_OP",
     "COPY_FIELDS",
     "ADDRESS",
+    "ENABLE_OPTIONS",
+    "DISABLE_OPTIONS",
+    "IS_OPTIONS",
   };
   
   return id_names;
@@ -3325,6 +3328,20 @@ SPVM_OP* SPVM_OP_build_make_read_only(SPVM_COMPILER* compiler, SPVM_OP* op_make_
   SPVM_OP_insert_child(compiler, op_make_read_only, op_make_read_only->last, op_operand);
   
   return op_make_read_only;
+}
+
+SPVM_OP* SPVM_OP_build_enable_options(SPVM_COMPILER* compiler, SPVM_OP* op_enable_options, SPVM_OP* op_operand) {
+  
+  SPVM_OP_insert_child(compiler, op_enable_options, op_enable_options->last, op_operand);
+  
+  return op_enable_options;
+}
+
+SPVM_OP* SPVM_OP_build_disable_options(SPVM_COMPILER* compiler, SPVM_OP* op_disable_options, SPVM_OP* op_operand) {
+  
+  SPVM_OP_insert_child(compiler, op_disable_options, op_disable_options->last, op_operand);
+  
+  return op_disable_options;
 }
 
 SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {

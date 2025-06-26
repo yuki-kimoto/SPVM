@@ -27,7 +27,7 @@
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
 %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
-%token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN
+%token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
 
 %type <opval> grammar
 %type <opval> field_name method_name class_name
@@ -69,7 +69,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
-%right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY ADDRESS
+%right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY ADDRESS IS_OPTIONS
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 %nonassoc <opval> ')'
@@ -746,6 +746,14 @@ void_return_operator
     {
       $$ = SPVM_OP_build_make_read_only(compiler, $1, $2);
     }
+  | ENABLE_OPTIONS operator
+    {
+      $$ = SPVM_OP_build_enable_options(compiler, $1, $2);
+    }
+  | DISABLE_OPTIONS operator
+    {
+      $$ = SPVM_OP_build_disable_options(compiler, $1, $2);
+    }
 
 warn
   : WARN operator
@@ -1103,6 +1111,10 @@ unary_operator
     }
   | array_length
   | ADDRESS operator
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+  | IS_OPTIONS operator
     {
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }

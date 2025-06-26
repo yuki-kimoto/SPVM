@@ -3117,10 +3117,26 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           case SPVM_OP_C_ID_MAKE_READ_ONLY: {
             SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
             if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The type of the operand of make_read_only operator must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            break;
+          }
+          case SPVM_OP_C_ID_ENABLE_OPTIONS: {
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            
+            if (!SPVM_TYPE_is_any_object_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The type of the operand of enable_options operator must be any object array type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            break;
+          }
+          case SPVM_OP_C_ID_DISABLE_OPTIONS: {
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            
+            if (!SPVM_TYPE_is_any_object_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The type of the operand of disable_options operator must be any object array type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             break;
@@ -3132,6 +3148,17 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The type of the operand of is_read_only operator must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            break;
+          }
+          case SPVM_OP_C_ID_IS_OPTIONS: {
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            
+            operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            
+            if (!SPVM_TYPE_is_any_object_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The type of the operand of is_options operator must be any object type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             break;
@@ -3689,7 +3716,10 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_PRINT:
               case SPVM_OP_C_ID_SAY:
               case SPVM_OP_C_ID_MAKE_READ_ONLY:
+              case SPVM_OP_C_ID_ENABLE_OPTIONS:
+              case SPVM_OP_C_ID_DISABLE_OPTIONS:
               case SPVM_OP_C_ID_IS_READ_ONLY:
+              case SPVM_OP_C_ID_IS_OPTIONS:
               case SPVM_OP_C_ID_ISWEAK_FIELD:
               case SPVM_OP_C_ID_CAN:
               case SPVM_OP_C_ID_ADD:
@@ -4575,6 +4605,8 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_PRINT:
     case SPVM_OP_C_ID_SAY:
     case SPVM_OP_C_ID_MAKE_READ_ONLY:
+    case SPVM_OP_C_ID_ENABLE_OPTIONS:
+    case SPVM_OP_C_ID_DISABLE_OPTIONS:
     {
       // Dummy int variable
       type = SPVM_TYPE_new_int_type(compiler);
@@ -4602,6 +4634,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_IF:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
     case SPVM_OP_C_ID_IS_READ_ONLY:
+    case SPVM_OP_C_ID_IS_OPTIONS:
     case SPVM_OP_C_ID_CAN:
     case SPVM_OP_C_ID_BASIC_TYPE_ID:
     case SPVM_OP_C_ID_EVAL_ERROR_ID:

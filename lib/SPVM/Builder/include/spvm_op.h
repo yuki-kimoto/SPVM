@@ -254,6 +254,9 @@ enum {
   SPVM_OP_C_ID_TERNARY_OP,
   SPVM_OP_C_ID_COPY_FIELDS,
   SPVM_OP_C_ID_ADDRESS,
+  SPVM_OP_C_ID_ENABLE_OPTIONS,
+  SPVM_OP_C_ID_DISABLE_OPTIONS,
+  SPVM_OP_C_ID_IS_OPTIONS,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -599,5 +602,9 @@ void SPVM_OP_insert_child(SPVM_COMPILER* compiler, SPVM_OP* parent, SPVM_OP* sta
 SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* op);
 
 const char* SPVM_OP_get_op_name(SPVM_COMPILER* compiler, int32_t op_id);
+
+SPVM_OP* SPVM_OP_build_enable_options(SPVM_COMPILER* compiler, SPVM_OP* op_enable_options, SPVM_OP* op_operand);
+
+SPVM_OP* SPVM_OP_build_disable_options(SPVM_COMPILER* compiler, SPVM_OP* op_disable_options, SPVM_OP* op_operand);
 
 #endif

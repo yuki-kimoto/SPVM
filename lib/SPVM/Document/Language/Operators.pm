@@ -1525,6 +1525,13 @@ Examples:
   # Key values
   my $key_values = {foo => 1, bar => "Hello"};
 
+=head4 Options
+
+The object of C<object[]> type created by L</"Key-Value Array Initialization"> is called "Options".
+  
+  # Called "Options"
+  {foo => 1, bar => 2}
+
 =head2 Anon Method Operator
 
 An anon method operator creates an object of an L<anon method class|SPVM::Document::Language::Class/"Anon Method Class">.

@@ -506,6 +506,9 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "CALL_INSTANCE_METHOD_DYNAMIC",
     "GET_ADDRESS_OBJECT",
     "GET_ADDRESS_REF",
+    "ENABLE_OPTIONS",
+    "DISABLE_OPTIONS",
+    "IS_OPTIONS",
   };
   
   return id_names;

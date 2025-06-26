@@ -3,6 +3,9 @@
     * Add enable_options native API.
     * Add disable_options native API.
     * Add is_options native API.
+    * Add enable_options operator.
+    * Add disable_options operator.
+    * Add is_options operator.
     
 0.990074 2025-06-26
   [New Features]

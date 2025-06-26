@@ -788,7 +788,13 @@ static inline void SPVM_IMPLEMENT_NEW_STRING_LEN(SPVM_ENV* env, SPVM_VALUE* stac
 
 #define SPVM_IMPLEMENT_IS_READ_ONLY(env, stack, out, in) (out = env->is_read_only(env, stack, in))
 
+#define SPVM_IMPLEMENT_IS_OPTIONS(env, stack, out, in) (out = env->is_options(env, stack, in))
+
 #define SPVM_IMPLEMENT_MAKE_READ_ONLY(env, stack, in) (env->make_read_only(env, stack, in))
+
+#define SPVM_IMPLEMENT_ENABLE_OPTIONS(env, stack, in) (env->enable_options(env, stack, in))
+
+#define SPVM_IMPLEMENT_DISABLE_OPTIONS(env, stack, in) (env->disable_options(env, stack, in))
 
 static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* array, int32_t index, int32_t* error_id, int32_t object_data_offset, int32_t object_length_offset) {
   

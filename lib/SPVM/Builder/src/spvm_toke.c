@@ -2153,6 +2153,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DIE);
                   keyword_token = DIE;
                 }
+                else if (strcmp(symbol_name, "disable_options") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DISABLE_OPTIONS);
+                  keyword_token = DISABLE_OPTIONS;
+                }
                 else if (strcmp(symbol_name, "div_uint") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT);
                   keyword_token = DIVIDE_UNSIGNED_INT;
@@ -2179,6 +2183,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(symbol_name, "else") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ELSE);
                   keyword_token = ELSE;
+                }
+                else if (strcmp(symbol_name, "enable_options") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ENABLE_OPTIONS);
+                  keyword_token = ENABLE_OPTIONS;
                 }
                 else if (strcmp(symbol_name, "enum") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ENUM);
@@ -2269,6 +2277,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(symbol_name, "is_compile_type") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IS_COMPILE_TYPE);
                   keyword_token = IS_COMPILE_TYPE;
+                }
+                else if (strcmp(symbol_name, "is_options") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IS_OPTIONS);
+                  keyword_token = IS_OPTIONS;
                 }
                 else if (strcmp(symbol_name, "is_type") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IS_TYPE);
