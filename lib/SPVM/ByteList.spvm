@@ -323,7 +323,7 @@ class ByteList {
     return $clone;
   }
   
-  method push_array : void ($elements : byte[]) {
+  method push_ : void ($elements : byte[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";
@@ -335,7 +335,7 @@ class ByteList {
     
   }
   
-  method unshift_array : void ($elements : byte[]) {
+  method unshift_ : void ($elements : byte[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";

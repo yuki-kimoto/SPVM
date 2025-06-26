@@ -269,9 +269,9 @@ C<method clone : L<DoubleList|SPVM::DoubleList> ();>
 
 Clones this instance and returns it.
 
-=head2 push_array
+=head2 push_
 
-C<method push_array : void ($elements : double[]);>
+C<method push_ : void ($elements : double[]);>
 
 Adds the elements $elements after the end of this list.
 
@@ -283,9 +283,9 @@ The elements $elements must be defined.
 
 Exceptions thrown by L</"push"> method could be thrown.
 
-=head2 unshift_array
+=head2 unshift_
 
-C<method unshift_array : void ($elements : double[]);>
+C<method unshift_ : void ($elements : double[]);>
 
 Inserts the elemnets $elements at the beginning of the list.
 

@@ -321,7 +321,7 @@ class FloatList {
     return $clone;
   }
   
-  method push_array : void ($elements : float[]) {
+  method push_ : void ($elements : float[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";
@@ -333,7 +333,7 @@ class FloatList {
     
   }
   
-  method unshift_array : void ($elements : float[]) {
+  method unshift_ : void ($elements : float[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";

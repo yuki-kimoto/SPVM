@@ -872,12 +872,12 @@ class TestCase::Module::DoubleList {
     return 1;
   }
   
-  static method push_array : int () {
+  static method push_ : int () {
     
     {
       my $list = DoubleList->new_len(0);
       
-      $list->push_array([(double)3, 5, (double)Fn->DOUBLE_MAX]);
+      $list->push_([(double)3, 5, (double)Fn->DOUBLE_MAX]);
       
       my $length = $list->length;
       unless ($length == 3) {
@@ -892,11 +892,11 @@ class TestCase::Module::DoubleList {
     return 1;
   }
   
-  static method unshift_array : int () {
+  static method unshift_ : int () {
     {
       my $list = DoubleList->new_len(0);
       
-      $list->unshift_array([(double)3, 5, (double)Fn->DOUBLE_MAX]);
+      $list->unshift_([(double)3, 5, (double)Fn->DOUBLE_MAX]);
       
       my $length = $list->length;
       unless ($length == 3) {

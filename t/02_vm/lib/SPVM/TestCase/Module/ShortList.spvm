@@ -872,12 +872,12 @@ class TestCase::Module::ShortList {
     return 1;
   }
   
-  static method push_array : int () {
+  static method push_ : int () {
     
     {
       my $list = ShortList->new_len(0);
       
-      $list->push_array([(short)3, 5, (short)Fn->SHORT_MAX]);
+      $list->push_([(short)3, 5, (short)Fn->SHORT_MAX]);
       
       my $length = $list->length;
       unless ($length == 3) {
@@ -892,11 +892,11 @@ class TestCase::Module::ShortList {
     return 1;
   }
   
-  static method unshift_array : int () {
+  static method unshift_ : int () {
     {
       my $list = ShortList->new_len(0);
       
-      $list->unshift_array([(short)3, 5, (short)Fn->SHORT_MAX]);
+      $list->unshift_([(short)3, 5, (short)Fn->SHORT_MAX]);
       
       my $length = $list->length;
       unless ($length == 3) {

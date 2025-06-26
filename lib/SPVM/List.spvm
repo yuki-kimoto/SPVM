@@ -417,7 +417,7 @@ class List {
     return $clone;
   }
   
-  method push_array : void ($elements : object[]) {
+  method push_ : void ($elements : object[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";
@@ -429,7 +429,7 @@ class List {
     
   }
   
-  method unshift_array : void ($elements : object[]) {
+  method unshift_ : void ($elements : object[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";

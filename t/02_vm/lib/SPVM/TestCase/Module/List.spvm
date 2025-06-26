@@ -963,12 +963,12 @@ class TestCase::Module::List {
     return 1;
   }
   
-  static method push_array : int () {
+  static method push_ : int () {
     
     {
       my $list = List->new_len(new string[0], 0);
       
-      $list->push_array([(string)3, 5, 7]);
+      $list->push_([(string)3, 5, 7]);
       
       my $length = $list->length;
       unless ($length == 3) {
@@ -983,11 +983,11 @@ class TestCase::Module::List {
     return 1;
   }
   
-  static method unshift_array : int () {
+  static method unshift_ : int () {
     {
       my $list = List->new_len(new string[0], 0);
       
-      $list->unshift_array([(string)3, 5, 7]);
+      $list->unshift_([(string)3, 5, 7]);
       
       my $length = $list->length;
       unless ($length == 3) {

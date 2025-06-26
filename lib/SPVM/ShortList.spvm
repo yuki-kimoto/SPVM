@@ -321,7 +321,7 @@ class ShortList {
     return $clone;
   }
   
-  method push_array : void ($elements : short[]) {
+  method push_ : void ($elements : short[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";
@@ -333,7 +333,7 @@ class ShortList {
     
   }
   
-  method unshift_array : void ($elements : short[]) {
+  method unshift_ : void ($elements : short[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";

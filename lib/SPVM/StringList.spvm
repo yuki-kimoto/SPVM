@@ -88,7 +88,7 @@ class StringList extends List {
     return $clone;
   }
   
-  method push_array : void ($elements : string[]) {
+  method push_ : void ($elements : string[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";
@@ -100,7 +100,7 @@ class StringList extends List {
     
   }
   
-  method unshift_array : void ($elements : string[]) {
+  method unshift_ : void ($elements : string[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";

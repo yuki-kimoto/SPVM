@@ -321,7 +321,7 @@ class IntList {
     return $clone;
   }
   
-  method push_array : void ($elements : int[]) {
+  method push_ : void ($elements : int[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";
@@ -333,7 +333,7 @@ class IntList {
     
   }
   
-  method unshift_array : void ($elements : int[]) {
+  method unshift_ : void ($elements : int[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";

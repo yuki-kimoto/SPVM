@@ -872,12 +872,12 @@ class TestCase::Module::FloatList {
     return 1;
   }
   
-  static method push_array : int () {
+  static method push_ : int () {
     
     {
       my $list = FloatList->new_len(0);
       
-      $list->push_array([(float)3, 5, (float)Fn->FLOAT_MAX]);
+      $list->push_([(float)3, 5, (float)Fn->FLOAT_MAX]);
       
       my $length = $list->length;
       unless ($length == 3) {
@@ -892,11 +892,11 @@ class TestCase::Module::FloatList {
     return 1;
   }
   
-  static method unshift_array : int () {
+  static method unshift_ : int () {
     {
       my $list = FloatList->new_len(0);
       
-      $list->unshift_array([(float)3, 5, (float)Fn->FLOAT_MAX]);
+      $list->unshift_([(float)3, 5, (float)Fn->FLOAT_MAX]);
       
       my $length = $list->length;
       unless ($length == 3) {

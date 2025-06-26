@@ -321,7 +321,7 @@ class LongList {
     return $clone;
   }
   
-  method push_array : void ($elements : long[]) {
+  method push_ : void ($elements : long[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";
@@ -333,7 +333,7 @@ class LongList {
     
   }
   
-  method unshift_array : void ($elements : long[]) {
+  method unshift_ : void ($elements : long[]) {
     
     unless ($elements) {
       die "The elements \$elements must be defined.";
