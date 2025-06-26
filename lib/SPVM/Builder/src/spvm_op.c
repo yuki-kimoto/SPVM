@@ -2321,6 +2321,14 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
       }
     }
     
+    if (is_key_value_pairs) {
+      // enable_options $array
+      SPVM_OP* op_var_array_enable_options = SPVM_OP_clone_op_var(compiler, op_var_array_new);
+      SPVM_OP* op_enable_options = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ENABLE_OPTIONS, op_array_init->file, op_array_init->line);
+      op_enable_options = SPVM_OP_build_enable_options(compiler, op_enable_options, op_var_array_enable_options);
+      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_enable_options);
+    }
+    
     // $array
     SPVM_OP* op_var_array_ret = SPVM_OP_clone_op_var(compiler, op_var_array_new);
     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_array_ret);
