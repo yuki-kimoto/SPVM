@@ -256,6 +256,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->enable_options != &env_array[236]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->disable_options != &env_array[237]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_options != &env_array[238]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_any_object_array != &env_array[239]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

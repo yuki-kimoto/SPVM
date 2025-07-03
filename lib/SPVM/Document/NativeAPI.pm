@@ -2640,6 +2640,12 @@ C<int32_t (*is_options)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 If C<options> flag of the object I<object> is set, returns 1; otherwise returns 0.
 
+=head2 is_any_object_array
+
+C<int32_t (*is_any_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+
+If the object I<object> is not C<NULL> and its type is any object array C<object[]>, returns 1; otherwise returns 0.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2882,7 +2888,8 @@ Native APIs have its IDs.
   235 call_instance_method_no_mortal_less_check_args
   236 enable_options
   237 disable_options
-  237 is_options
+  238 is_options
+  239 is_any_object_array
 
 =head1 Constant Values
 

@@ -336,6 +336,7 @@ struct spvm_env {
   void (*enable_options)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*disable_options)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*is_options)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  int32_t (*is_any_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 };
 
 struct spvm_env_api {

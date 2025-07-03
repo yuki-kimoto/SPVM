@@ -337,6 +337,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_enable_options,
     SPVM_API_disable_options,
     SPVM_API_is_options,
+    SPVM_API_is_any_object_array,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -3294,6 +3295,20 @@ int32_t SPVM_API_is_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object)
   }
   
   return is_class;
+}
+
+int32_t SPVM_API_is_any_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  int32_t is_any_object_array;
+  if (object) {
+    SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
+    is_any_object_array = (object_basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && object->type_dimension == 1);
+  }
+  else {
+    is_any_object_array = 0;
+  }
+  
+  return is_any_object_array;
 }
 
 int32_t SPVM_API_is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
