@@ -1227,6 +1227,8 @@ class Fn {
     
     my $merged_options = Array->merge_object($options1, $options2);
     
+    enable_options $merged_options;
+    
     return $merged_options;
   }
   

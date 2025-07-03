@@ -10,7 +10,8 @@
     * Ternary operator couses a compilation error if the types of the left and right operands are not the same type.
   [New Features]
     * Add Hash#new_from_keys method.
-
+  [Changes]
+    * The return value of Fn#merge_options method is enabled options flag.
 0.990075 2025-06-26
   [New Features]
     * Add enable_options native API.

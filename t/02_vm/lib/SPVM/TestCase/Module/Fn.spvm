@@ -4366,6 +4366,15 @@ class TestCase::Module::Fn {
       }
     }
     
+    # enable_options
+    {
+      my $merged_options = Fn->merge_options({key1 => 1, key2 => 2}, {key3 => "abc", key4 => "def"});
+      
+      unless (is_options $merged_options) {
+        return 0;
+      }
+    }
+    
     # Exceptions
     {
       {
