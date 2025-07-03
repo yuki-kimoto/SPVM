@@ -2675,8 +2675,32 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             else if (op_cur->original_id == SPVM_OP_C_ID_TERNARY_OP) {
               
               // Type cast to the type of the left operand
-              SPVM_OP* op_left_operand = (SPVM_OP*)op_cur->uv.any;
+              SPVM_OP* op_tmp = (SPVM_OP*)op_cur->uv.any;
+              
+              SPVM_OP* op_left_operand = op_tmp->first;
+              SPVM_OP* op_right_operand = op_tmp->last;
               SPVM_TYPE* type_left_operand = SPVM_CHECK_get_type(compiler, op_left_operand);
+              SPVM_TYPE* type_right_operand = SPVM_CHECK_get_type(compiler, op_right_operand);
+              
+              int32_t check_same_type;
+              if (SPVM_TYPE_is_object_type(compiler, type_left_operand->basic_type->id, type_left_operand->dimension, type_left_operand->flag)) {
+                if (SPVM_TYPE_is_undef_type(compiler, type_right_operand->basic_type->id, type_right_operand->dimension, type_right_operand->flag)) {
+                  check_same_type = 0;
+                }
+                else {
+                  check_same_type = 1;
+                }
+              }
+              else {
+                check_same_type = 1;
+              }
+              if (check_same_type) {
+                if (!SPVM_TYPE_equals(compiler, type_left_operand->basic_type->id, type_left_operand->dimension, type_left_operand->flag, type_right_operand->basic_type->id, type_right_operand->dimension, type_right_operand->flag)) {
+                  SPVM_COMPILER_error(compiler, "The types of the left and right operands of ternary operator must be the same type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              
               SPVM_OP* op_ret = op_cur->last;
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur->last);
               SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_ret->file, op_ret->line);

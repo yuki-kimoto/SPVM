@@ -707,6 +707,10 @@ If the evaluated value is not 0, it returns I<LEFT_OPERAND>. Otherwise, returns 
 
 The return type is the type of I<LEFT_OPERAND>.
 
+Compilation Errors:
+
+
+
 Examples:
 
   # Examples of ternary operator

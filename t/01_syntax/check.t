@@ -1671,6 +1671,15 @@ use Test::More;
   }
 }
 
+# Ternary operator
+{
+  {
+    my $source = 'class MyClass  { static method main : void () { 0 ? (double)1.5 : 1; } }';
+    compile_not_ok($source, qr|The types of the left and right operands of ternary operator must be the same type.|);
+  }
+  
+}
+
 # Extra
 {
   {

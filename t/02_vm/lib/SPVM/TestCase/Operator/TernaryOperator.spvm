@@ -123,6 +123,18 @@ class TestCase::Operator::TernaryOperator {
       }
     }
     
+    {
+      my $name = 0 ? "abc" : undef;
+      
+      unless ($name is_compile_type string) {
+        return 0;
+      }
+      
+      if ($name) {
+        return 0;
+      }
+      
+    }
     return 1;
   }
   

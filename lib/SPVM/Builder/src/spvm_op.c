@@ -3185,7 +3185,8 @@ SPVM_OP* SPVM_OP_build_ternary_op(SPVM_COMPILER* compiler, SPVM_OP* op_ternary, 
   
   /*
     [Before]
-    DEFINED_OR
+    TERNARY
+      condition
       left_operand
       right_operand
   */
@@ -3239,7 +3240,11 @@ SPVM_OP* SPVM_OP_build_ternary_op(SPVM_COMPILER* compiler, SPVM_OP* op_ternary, 
   
   SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
   
-  op_sequence->uv.any = op_left_operand;
+  // This is bad usage.
+  op_ternary->first = op_left_operand;
+  op_ternary->last = op_right_operand;
+  
+  op_sequence->uv.any = op_ternary;
   
   return op_sequence;
 }
