@@ -6110,7 +6110,9 @@ void SPVM_API_free_memory_block_for_call_stack(SPVM_ENV* env, SPVM_VALUE* stack,
 void SPVM_API_enable_options(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   if (object) {
-    __sync_fetch_and_or(&object->flag, SPVM_OBJECT_C_FLAG_IS_OPTIONS);
+    if (SPVM_API_is_object_array(env, stack, object)) {
+      __sync_fetch_and_or(&object->flag, SPVM_OBJECT_C_FLAG_IS_OPTIONS);
+    }
   }
 }
 

@@ -2626,7 +2626,7 @@ Same as L</"call_instance_method_no_mortal">, but does not perform less type che
 
 C<void (*enable_options)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
-Turns on C<options> flag of the object I<object>.
+Turns on C<options> flag of the object I<object> if the type of I<object> is any object array C<object[]>.
 
 =head2 disable_options
 
