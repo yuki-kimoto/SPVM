@@ -73,6 +73,21 @@ class Hash {
   
   native static method _murmur_hash : long ($string : string, $seed : int);
   
+  static method new_from_keys : Hash ($keys : string[], $value : object) {
+    
+    my $hash = Hash->new;
+    
+    unless ($keys) {
+      die "The keys \$keys must be defined.";
+    }
+    
+    for my $key (@$keys) {
+      $hash->set($key => $value);
+    }
+    
+    return $hash;
+  }
+  
   # Instance Methods
   precompile method copy : Hash () {
     my $ret = Hash->new;
@@ -720,4 +735,5 @@ class Hash {
     }
     $self->{entries} = $new_entries;
   }
+  
 }

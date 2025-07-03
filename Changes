@@ -8,7 +8,9 @@
   [Incompatible Changes]
     * The type of the left operand of the ternary operator must be the same as the type of the right operand.
     * Ternary operator couses a compilation error if the types of the left and right operands are not the same type.
-    
+  [New Features]
+    * Add Hash#new_from_keys method.
+
 0.990075 2025-06-26
   [New Features]
     * Add enable_options native API.

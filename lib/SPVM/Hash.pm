@@ -61,6 +61,16 @@ Examples:
   my $book = Hash->new({});
   my $book = Hash->new({id => 4, name => "Perl"});
 
+=head2 new_from_keys
+
+C<static method new_from_keys : void ($keys : string[], $value : object);>
+
+Creates a new hash with the keys $keys and the value $value shared by all keys, and returns the new hash.
+
+Exceptions:
+
+The keys $keys must be defined. Otherwise an exception is thrown.
+
 =head1 Instance Methods
 
 =head2 copy
