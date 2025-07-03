@@ -14,6 +14,7 @@
   [Changes]
     * The return value of Fn#merge_options method is enabled options flag.
     * enable_options native API turn on C<options> flag only if the type of the object is any object array.
+    * enable_options, disable_options, is_options receives the value of an object type instead of any object array type.
 0.990075 2025-06-26
   [New Features]
     * Add enable_options native API.

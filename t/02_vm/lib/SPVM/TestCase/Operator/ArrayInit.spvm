@@ -128,6 +128,22 @@ class TestCase::Operator::ArrayInit {
       }
       
       {
+        my $string = "abc";
+        enable_options $string;
+        
+        if (is_options $string) {
+          return 0;
+        }
+        
+        disable_options $string;
+        
+        if (is_options $string) {
+          return 0;
+        }
+        
+      }
+      
+      {
         my $options = (object[])undef;
         enable_options $options;
       }

@@ -1680,6 +1680,30 @@ use Test::More;
   
 }
 
+# enable_options
+{
+  {
+    my $source = 'class MyClass  { static method main : void () { my $num = 1; enable_options $num; } }';
+    compile_not_ok($source, qr|he type of the operand of enable_options operator must be an object type.|);
+  }
+}
+
+# disable_options
+{
+  {
+    my $source = 'class MyClass  { static method main : void () { my $num = 1; disable_options $num; } }';
+    compile_not_ok($source, qr|he type of the operand of disable_options operator must be an object type.|);
+  }
+}
+
+# is_options
+{
+  {
+    my $source = 'class MyClass  { static method main : void () { my $num = 1; is_options $num; } }';
+    compile_not_ok($source, qr|he type of the operand of is_options operator must be an object type.|);
+  }
+}
+
 # Extra
 {
   {

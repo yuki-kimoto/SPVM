@@ -1180,13 +1180,15 @@ The C<enable_options> operator enables C<options> flag of an object.
 
   enable_options OPERAND
 
-If the object I<OPERAND> is defined, this operator enables C<options> flag of I<OPERAND>.
+The type of object I<OPERAND> must be an object type.
+
+If I<OPERAND> is defined and its type is any object array type C<object[]>, this operator enables C<options> flag of I<OPERAND>.
 
 The return type is the void type.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be any object array type. Otherwise, a compilation error occurs.
+The type of I<OPERAND> must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -1200,13 +1202,15 @@ The C<disable_options> operator disables C<options> flag of an object.
 
   disable_options OPERAND
 
-If the object I<OPERAND> is defined, this operator disables C<options> flag of I<OPERAND>.
+The type of object I<OPERAND> must be an object type.
+
+If I<OPERAND> is defined, this operator disables C<options> flag of I<OPERAND>.
 
 The return type is the void type.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be any object array type. Otherwise, a compilation error occurs.
+The type of I<OPERAND> must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -1220,13 +1224,15 @@ The C<is_options> operator checks if C<options> flag of an object is enabled.
 
   is_options OPERAND
 
-If the object I<OPERAND> is defined and C<options> flag of an object is enabled, the C<is_options> operator returns 1; otherwise returns 0.
+The type of object I<OPERAND> must be an object type.
+
+If I<OPERAND> is defined and C<options> flag of I<OPERAND> is enabled, the C<is_options> operator returns 1; otherwise returns 0.
 
 The return type is int type.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be any object array type. Otherwise, a compilation error occurs.
+The type of I<OPERAND> must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
   
