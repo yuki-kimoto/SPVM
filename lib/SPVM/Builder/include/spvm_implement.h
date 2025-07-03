@@ -79,7 +79,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "%s#%s field is not found.",
   "%s#%s class variable is not found.",
   "%s#%s method is not found.",
-  "The invocant of a method call must be defined.",
+  "Can't call %s method on undefined value.",
   "An instance method call failed. %s#%s method is not found.",
   "An reference access failed. The reference must be defined.",
 };

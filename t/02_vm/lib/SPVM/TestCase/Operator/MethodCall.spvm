@@ -2059,7 +2059,7 @@ class TestCase::Operator::MethodCall {
       
       eval { $interface->to_string; }
       
-      unless (Fn->contains($@, "The invocant of a method call must be defined.")) {
+      unless (Fn->contains($@, "Can't call to_string method on undefined value.")) {
         return 0;
       }
     }
