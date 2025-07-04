@@ -776,8 +776,8 @@ class Fn {
         
         my $part = &substr($string, $offset, $match_offset - $offset);
         $parts_list->push($part);
-        my $match_legnth = $separator_length;
-        $offset = $match_offset + $match_legnth;
+        my $match_length = $separator_length;
+        $offset = $match_offset + $match_length;
       }
     }
     if ($offset == $string_length) {
@@ -1330,19 +1330,28 @@ class Fn {
       die "The callback \$callback must be defined.";
     }
     
-    my $proto_array = Array->new_proto($array, 0);
+    my $array_length = @$array;
     
-    my $list = List->new($proto_array);
+    my $new_array_tmp = Array->new_proto($array, $array_length);
     
-    for my $element (@$array) {
+    my $new_array_length = 0;
+    for (my $i = 0; $i < $array_length; $i++) {
+      
+      my $element = $array->[$i];
+      
       my $ok = $callback->($element);
       
       if ($ok) {
-        $list->push($element);
+        $new_array_tmp->[$new_array_length] = $array->[$i];
+        $new_array_length++;
       }
     }
     
-    my $new_array = $list->to_array;
+    my $new_array = Array->new_proto($array, $new_array_length);
+    
+    for (my $i = 0; $i < $new_array_length; $i++) {
+      $new_array->[$i] = $new_array_tmp->[$i];
+    }
     
     return $new_array;
   }
