@@ -20,8 +20,6 @@
       Callback::Grep::Int
       Callback::Grep::Long
       Callback::Grep::Short
-  [Internal Changes]
-    * 
             
 0.990076 2025-07-03
   [Exception Messages Improvement]
