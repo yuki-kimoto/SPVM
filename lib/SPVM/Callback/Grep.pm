@@ -6,21 +6,17 @@ package SPVM::Callback::Grep;
 
 =head1 Name
 
-SPVM::Callback::Grep - A Callback for The grep Method
+SPVM::Callback::Grep - A Callback Interface for grep Method
 
 =head1 Description
 
-The Callback::Grep interface in L<SPVM> has interface methods for L<Fn#grep|SPVM::Fn/"grep">.
-
-=head1 Usage
-
-  interface Callback::Grep;
+Callback::Grep interface in L<SPVM> is a callback interface for L<Fn#grep|SPVM::Fn/"grep"> method.
 
 =head1 Interface Methods
 
 C<required method : int ($element : object);>
 
-Returns a true value if the condition corresponding to the element $element is satisfied. Otherwise, returns 0.
+If a condition for the element $element is satisfied, returns 1; otherwise returns 0.
 
 =head1 Copyright & License
 

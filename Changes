@@ -1,6 +1,16 @@
 0.990077 2025-07-04
   [Performance Improvement]
     * Ternary operator does not performe type cast from/to any object type internally.
+  [New Features]
+    * Add the following interfaces.
+
+      Callback::Grep::Byte
+      Callback::Grep::Double
+      Callback::Grep::Float
+      Callback::Grep::Int
+      Callback::Grep::Long
+      Callback::Grep::Short
+            
 0.990076 2025-07-03
   [Exception Messages Improvement]
     * Improve an exception message.

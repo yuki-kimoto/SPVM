@@ -1,0 +1,9 @@
+# Copyright (c) 2025 Yuki Kimoto
+# MIT License
+
+class Callback::Grep::Double : interface_t {
+  version_from SPVM;
+  
+  # Interface Methods
+  required method : int ($element : double);
+}
