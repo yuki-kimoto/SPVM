@@ -2701,13 +2701,34 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 }
               }
               
+              // Replace any object type with the type of left operand and remove type cast operators.
               SPVM_OP* op_ret = op_cur->last;
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur->last);
-              SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_ret->file, op_ret->line);
-              SPVM_OP* op_type_left_operand = SPVM_CHECK_new_op_type_shared(compiler, type_left_operand, op_ret->file, op_ret->line);
-              SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_left_operand, op_ret);
-              SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
+              SPVM_VAR_DECL* var_decl_ret = op_ret->uv.var->var_decl;
+              var_decl_ret->type = type_left_operand;
               
+              SPVM_OP* op_block_true = SPVM_OP_sibling(compiler, SPVM_OP_sibling(compiler, op_cur->first)->first);
+              SPVM_OP* op_block_false = SPVM_OP_sibling(compiler, op_block_true);
+              
+              SPVM_OP* op_block_true_assign = SPVM_OP_sibling(compiler, op_block_true->first->first);
+              SPVM_OP* op_block_false_assign = SPVM_OP_sibling(compiler, op_block_false->first->first);
+              
+              if (op_block_true_assign->first->id == SPVM_OP_C_ID_TYPE_CAST) {
+                SPVM_OP* op_block_true_type_cast = op_block_true_assign->first;
+                
+                SPVM_OP* op_block_true_var = op_block_true_type_cast->first;
+                SPVM_OP_cut_op(compiler, op_block_true_type_cast->first);
+                
+                SPVM_OP_replace_op(compiler, op_block_true_type_cast, op_block_true_var);
+              }
+              
+              if (op_block_false_assign->first->id == SPVM_OP_C_ID_TYPE_CAST) {
+                SPVM_OP* op_block_false_type_cast = op_block_false_assign->first;
+                
+                SPVM_OP* op_block_false_var = op_block_false_type_cast->first;
+                SPVM_OP_cut_op(compiler, op_block_false_type_cast->first);
+                
+                SPVM_OP_replace_op(compiler, op_block_false_type_cast, op_block_false_var);
+              }
             }
             
             break;

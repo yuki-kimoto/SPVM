@@ -1,3 +1,6 @@
+0.990077 2025-07-04
+  [Performance Improvement]
+    * Ternary operator does not performe type cast from/to any object type internally.
 0.990076 2025-07-03
   [Exception Messages Improvement]
     * Improve an exception message.
