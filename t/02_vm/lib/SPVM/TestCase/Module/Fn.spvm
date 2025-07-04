@@ -4905,6 +4905,246 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method grep_byte : int () {
+    
+    {
+      my $array = [(byte)1, 2, 3, 4];
+      
+      my $array_out = Fn->grep_byte(method : int ($element : byte) {
+        if ($element == 2) {
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      }, $array);
+      
+      unless (Array->equals($array_out, [(byte)2])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Fn->grep_byte(method : int ($array : byte) {}, undef); };
+        unless (Fn->contains($@, "The array \$array must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Fn->grep_byte(undef, [(byte)1]); };
+        unless (Fn->contains($@, "The callback \$callback must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method grep_short : int () {
+    
+    {
+      my $array = [(short)1, 2, 3, 4];
+      
+      my $array_out = Fn->grep_short(method : int ($element : short) {
+        if ($element == 2) {
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      }, $array);
+      
+      unless (Array->equals($array_out, [(short)2])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Fn->grep_short(method : int ($array : short) {}, undef); };
+        unless (Fn->contains($@, "The array \$array must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Fn->grep_short(undef, [(short)1]); };
+        unless (Fn->contains($@, "The callback \$callback must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method grep_int : int () {
+    
+    {
+      my $array = [(int)1, 2, 3, 4];
+      
+      my $array_out = Fn->grep_int(method : int ($element : int) {
+        if ($element == 2) {
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      }, $array);
+      
+      unless (Array->equals($array_out, [(int)2])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Fn->grep_int(method : int ($array : int) {}, undef); };
+        unless (Fn->contains($@, "The array \$array must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Fn->grep_int(undef, [(int)1]); };
+        unless (Fn->contains($@, "The callback \$callback must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method grep_long : int () {
+    
+    {
+      my $array = [(long)1, 2, 3, 4];
+      
+      my $array_out = Fn->grep_long(method : int ($element : long) {
+        if ($element == 2) {
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      }, $array);
+      
+      unless (Array->equals($array_out, [(long)2])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Fn->grep_long(method : int ($array : long) {}, undef); };
+        unless (Fn->contains($@, "The array \$array must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Fn->grep_long(undef, [(long)1]); };
+        unless (Fn->contains($@, "The callback \$callback must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method grep_float : int () {
+    
+    {
+      my $array = [(float)1, 2, 3, 4];
+      
+      my $array_out = Fn->grep_float(method : int ($element : float) {
+        if ($element == 2) {
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      }, $array);
+      
+      unless (Array->equals($array_out, [(float)2])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Fn->grep_float(method : int ($array : float) {}, undef); };
+        unless (Fn->contains($@, "The array \$array must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Fn->grep_float(undef, [(float)1]); };
+        unless (Fn->contains($@, "The callback \$callback must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method grep_double : int () {
+    
+    {
+      my $array = [(double)1, 2, 3, 4];
+      
+      my $array_out = Fn->grep_double(method : int ($element : double) {
+        if ($element == 2) {
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      }, $array);
+      
+      unless (Array->equals($array_out, [(double)2])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Fn->grep_double(method : int ($array : double) {}, undef); };
+        unless (Fn->contains($@, "The array \$array must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Fn->grep_double(undef, [(double)1]); };
+        unless (Fn->contains($@, "The callback \$callback must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
   static method map : int () {
     
     {

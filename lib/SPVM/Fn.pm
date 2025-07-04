@@ -1234,6 +1234,78 @@ The array $array must be defined. Otherwise, an exception is thrown.
 
 The callback $callback must be defined. Otherwise, an exception is thrown.
 
+=head2 grep_byte
+
+C<static method grep_byte : byte[] ($callback : L<Callback::Grep::Byte|SPVM::Callback::Grep::Byte>, $array : byte[]);>
+
+Returns a new array containing only the elements of the array $array for which the callback $callback returned a true value.
+
+Exceptions:
+
+The array $array must be defined. Otherwise, an exception is thrown.
+
+The callback $callback must be defined. Otherwise, an exception is thrown.
+
+=head2 grep_short
+
+C<static method grep_short : short[] ($callback : L<Callback::Grep::Short|SPVM::Callback::Grep::Short>, $array : short[]);>
+
+Returns a new array containing only the elements of the array $array for which the callback $callback returned a true value.
+
+Exceptions:
+
+The array $array must be defined. Otherwise, an exception is thrown.
+
+The callback $callback must be defined. Otherwise, an exception is thrown.
+
+=head2 grep_int
+
+C<static method grep_int : int[] ($callback : L<Callback::Grep::Int|SPVM::Callback::Grep::Int>, $array : int[]);>
+
+Returns a new array containing only the elements of the array $array for which the callback $callback returned a true value.
+
+Exceptions:
+
+The array $array must be defined. Otherwise, an exception is thrown.
+
+The callback $callback must be defined. Otherwise, an exception is thrown.
+
+=head2 grep_long
+
+C<static method grep : long[] ($callback : L<Callback::Grep::Long|SPVM::Callback::Grep::Long>, $array : long[]);>
+
+Returns a new array containing only the elements of the array $array for which the callback $callback returned a true value.
+
+Exceptions:
+
+The array $array must be defined. Otherwise, an exception is thrown.
+
+The callback $callback must be defined. Otherwise, an exception is thrown.
+
+=head2 grep_float
+
+C<static method grep_float : float[] ($callback : L<Callback::Grep::Float|SPVM::Callback::Grep::Float>, $array : float[]);>
+
+Returns a new array containing only the elements of the array $array for which the callback $callback returned a true value.
+
+Exceptions:
+
+The array $array must be defined. Otherwise, an exception is thrown.
+
+The callback $callback must be defined. Otherwise, an exception is thrown.
+
+=head2 grep_double
+
+C<static method grep_double : double[] ($callback : L<Callback::Grep::Double|SPVM::Callback::Grep::Double>, $array : double[]);>
+
+Returns a new array containing only the elements of the array $array for which the callback $callback returned a true value.
+
+Exceptions:
+
+The array $array must be defined. Otherwise, an exception is thrown.
+
+The callback $callback must be defined. Otherwise, an exception is thrown.
+
 =head2 map
 
 C<static method map : object[] ($callback : L<Callback::Map|SPVM::Callback::Map>, $array : object[]);>

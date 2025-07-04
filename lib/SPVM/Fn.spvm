@@ -15,6 +15,12 @@ class Fn {
   use Format;
   use Error::Unicode::InvalidUTF8;
   use Callback::Grep;
+  use Callback::Grep::Byte;
+  use Callback::Grep::Short;
+  use Callback::Grep::Int;
+  use Callback::Grep::Long;
+  use Callback::Grep::Float;
+  use Callback::Grep::Double;
   use Callback::Map;
   use Callback::MapExpand;
   use Cloneable;
@@ -1348,6 +1354,222 @@ class Fn {
     }
     
     my $new_array = Array->new_proto($array, $new_array_length);
+    
+    for (my $i = 0; $i < $new_array_length; $i++) {
+      $new_array->[$i] = $new_array_tmp->[$i];
+    }
+    
+    return $new_array;
+  }
+  
+  precompile static method grep_byte : byte[] ($callback : Callback::Grep::Byte, $array : byte[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless ($callback) {
+      die "The callback \$callback must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    my $new_array_tmp = new byte[$array_length];
+    
+    my $new_array_length = 0;
+    for (my $i = 0; $i < $array_length; $i++) {
+      
+      my $element = $array->[$i];
+      
+      my $ok = $callback->($element);
+      
+      if ($ok) {
+        $new_array_tmp->[$new_array_length] = $array->[$i];
+        $new_array_length++;
+      }
+    }
+    
+    my $new_array = new byte[$new_array_length];
+    
+    for (my $i = 0; $i < $new_array_length; $i++) {
+      $new_array->[$i] = $new_array_tmp->[$i];
+    }
+    
+    return $new_array;
+  }
+  
+  precompile static method grep_short : short[] ($callback : Callback::Grep::Short, $array : short[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless ($callback) {
+      die "The callback \$callback must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    my $new_array_tmp = new short[$array_length];
+    
+    my $new_array_length = 0;
+    for (my $i = 0; $i < $array_length; $i++) {
+      
+      my $element = $array->[$i];
+      
+      my $ok = $callback->($element);
+      
+      if ($ok) {
+        $new_array_tmp->[$new_array_length] = $array->[$i];
+        $new_array_length++;
+      }
+    }
+    
+    my $new_array = new short[$new_array_length];
+    
+    for (my $i = 0; $i < $new_array_length; $i++) {
+      $new_array->[$i] = $new_array_tmp->[$i];
+    }
+    
+    return $new_array;
+  }
+  
+  precompile static method grep_int : int[] ($callback : Callback::Grep::Int, $array : int[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless ($callback) {
+      die "The callback \$callback must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    my $new_array_tmp = new int[$array_length];
+    
+    my $new_array_length = 0;
+    for (my $i = 0; $i < $array_length; $i++) {
+      
+      my $element = $array->[$i];
+      
+      my $ok = $callback->($element);
+      
+      if ($ok) {
+        $new_array_tmp->[$new_array_length] = $array->[$i];
+        $new_array_length++;
+      }
+    }
+    
+    my $new_array = new int[$new_array_length];
+    
+    for (my $i = 0; $i < $new_array_length; $i++) {
+      $new_array->[$i] = $new_array_tmp->[$i];
+    }
+    
+    return $new_array;
+  }
+  
+  precompile static method grep_long : long[] ($callback : Callback::Grep::Long, $array : long[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless ($callback) {
+      die "The callback \$callback must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    my $new_array_tmp = new long[$array_length];
+    
+    my $new_array_length = 0;
+    for (my $i = 0; $i < $array_length; $i++) {
+      
+      my $element = $array->[$i];
+      
+      my $ok = $callback->($element);
+      
+      if ($ok) {
+        $new_array_tmp->[$new_array_length] = $array->[$i];
+        $new_array_length++;
+      }
+    }
+    
+    my $new_array = new long[$new_array_length];
+    
+    for (my $i = 0; $i < $new_array_length; $i++) {
+      $new_array->[$i] = $new_array_tmp->[$i];
+    }
+    
+    return $new_array;
+  }
+  
+  precompile static method grep_float : float[] ($callback : Callback::Grep::Float, $array : float[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless ($callback) {
+      die "The callback \$callback must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    my $new_array_tmp = new float[$array_length];
+    
+    my $new_array_length = 0;
+    for (my $i = 0; $i < $array_length; $i++) {
+      
+      my $element = $array->[$i];
+      
+      my $ok = $callback->($element);
+      
+      if ($ok) {
+        $new_array_tmp->[$new_array_length] = $array->[$i];
+        $new_array_length++;
+      }
+    }
+    
+    my $new_array = new float[$new_array_length];
+    
+    for (my $i = 0; $i < $new_array_length; $i++) {
+      $new_array->[$i] = $new_array_tmp->[$i];
+    }
+    
+    return $new_array;
+  }
+  
+  precompile static method grep_double : double[] ($callback : Callback::Grep::Double, $array : double[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless ($callback) {
+      die "The callback \$callback must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    my $new_array_tmp = new double[$array_length];
+    
+    my $new_array_length = 0;
+    for (my $i = 0; $i < $array_length; $i++) {
+      
+      my $element = $array->[$i];
+      
+      my $ok = $callback->($element);
+      
+      if ($ok) {
+        $new_array_tmp->[$new_array_length] = $array->[$i];
+        $new_array_length++;
+      }
+    }
+    
+    my $new_array = new double[$new_array_length];
     
     for (my $i = 0; $i < $new_array_length; $i++) {
       $new_array->[$i] = $new_array_tmp->[$i];

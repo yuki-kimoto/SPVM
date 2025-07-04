@@ -3,6 +3,15 @@
     * Ternary operator does not performe type cast from/to any object type internally.
     * Improve performance of Fn#grep method. List class is not used.
   [New Features]
+    * Add the following methods to Fn class.
+    
+      grep_byte
+      grep_short
+      grep_int
+      grep_long
+      grep_float
+      grep_double
+    
     * Add the following interfaces.
 
       Callback::Grep::Byte

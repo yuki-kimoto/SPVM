@@ -182,6 +182,18 @@ my $seed = time();
     
     ok(SPVM::TestCase::Module::Fn->grep);
     
+    ok(SPVM::TestCase::Module::Fn->grep_byte);
+    
+    ok(SPVM::TestCase::Module::Fn->grep_short);
+    
+    ok(SPVM::TestCase::Module::Fn->grep_int);
+    
+    ok(SPVM::TestCase::Module::Fn->grep_long);
+    
+    ok(SPVM::TestCase::Module::Fn->grep_float);
+    
+    ok(SPVM::TestCase::Module::Fn->grep_double);
+    
     ok(SPVM::TestCase::Module::Fn->map);
     
     ok(SPVM::TestCase::Module::Fn->map_expand);
