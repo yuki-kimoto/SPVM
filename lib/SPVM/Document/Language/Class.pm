@@ -1857,7 +1857,7 @@ Examples:
 
 =head3 Type Inference
 
-If the type of the local variable declaration is ommited, the type of the local variable is set to the type of the right operand of assignment operator. This is called type inference.
+If the type of the local variable declaration is ommited, the type of the local variable is set to the right operand type of assignment operator. This is called type inference.
 
   # int
   my $num = 1;

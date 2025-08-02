@@ -143,7 +143,7 @@ The return type is the type after L<binary numeric conversion|/"Binary Numeric C
 
 Exceptions:
 
-If the type of the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND> are an integer type and I<RIGHT_OPERAND> is 0, an exception is thrown.
+If the left operand type I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND> are an integer type and I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Compilation Errors:
 
@@ -683,7 +683,7 @@ The return type is the type of I<LEFT_OPERAND>.
 
 Compilation Errors:
 
-The type of the left operand of defined-or operator // must be an object type. Otherwise, an compication error occurs.
+The left operand type of defined-or operator // must be an object type. Otherwise, an compication error occurs.
 
 Examples:
 
@@ -723,7 +723,7 @@ Examples:
 
 The condition evaluation is the operation performed on the operand at a conditional part of L<if statement|SPVM::Document::Language::Statements/"if Statement">, L<while statement|SPVM::Document::Language::Statements/"while Statement">, and L<logical operators|/"Logical Operators">.
 
-The condition evaluation performs the following operations corresponding to the type of the operand.
+The condition evaluation performs the following operations corresponding to the operand type.
 
 The return type is int type.
 
@@ -765,7 +765,7 @@ If the compile type of the operand is not L<Bool|SPVM::Bool> class, performs the
 
 Compilation Errors:
 
-The type of the operand of the condition evaluation must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, a L<reference type|SPVM::Document::Language::Types/"Reference Types">, or L<undef type|SPVM::Document::Language::Types/"undef Type">. Otherwise, a compilation error occurs.
+The operand type of the condition evaluation must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, a L<reference type|SPVM::Document::Language::Types/"Reference Types">, or L<undef type|SPVM::Document::Language::Types/"undef Type">. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1671,7 +1671,7 @@ The return type is the type of I<OPERAND>.
 
 Compilation Errors:
 
-The type of the operand must be string type, a numeric array type, or a multi-numeric array type. Otherwise, a compilation error occurs.
+The operand type must be string type, a numeric array type, or a multi-numeric array type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -2604,13 +2604,13 @@ The binary numeric conversion is the data conversion to upgrade L<numeric type|S
 
 This conversion performs the following operations.
 
-If the type of the left operand is smaller than the right operand, L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the left operand to the type of the right operand is performed on the left operand.
+If the left operand type is smaller than the right operand, L<numeric widening conversion|/"Numeric Widening Conversion"> from the left operand type to the right operand type is performed on the left operand.
 
-If the type of the right operand is smaller than the left operand, L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the right operand to the type of the left operand is performed on the right operand.
+If the right operand type is smaller than the left operand, L<numeric widening conversion|/"Numeric Widening Conversion"> from the right operand type to the left operand type is performed on the right operand.
 
-If the converted type of the left operand is the smaller than int type, L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the left operand to int type is performed on the left operand.
+If the converted type of the left operand is the smaller than int type, L<numeric widening conversion|/"Numeric Widening Conversion"> from the left operand type to int type is performed on the left operand.
 
-If the converted type of the right operand is the smaller than int type, L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the right operand to int type is performed on the right operand.
+If the converted type of the right operand is the smaller than int type, L<numeric widening conversion|/"Numeric Widening Conversion"> from the right operand type to int type is performed on the right operand.
 
 =head3 Numeric-to-String Conversion
 
@@ -3041,7 +3041,7 @@ Compilation Errors:
 
 The right type I<TYPE> of isa operator must not be any object type. Otherwise, a compilation error occurs.
 
-The type of the left operand I<OPERAND> of isa operator must be an object type. Otherwise, a compilation error occurs.
+The left operand type I<OPERAND> of isa operator must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -3100,7 +3100,7 @@ Compilation Errors:
 
 The right type I<TYPE> of is_type operator must not be any object type. Otherwise, a compilation error occurs.
 
-The type of the left operand I<OPERAND> of is_type operator must be an object type. Otherwise, a compilation error occurs.
+The left operand type I<OPERAND> of is_type operator must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
 

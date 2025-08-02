@@ -419,7 +419,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { version 1.001; }';
-    compile_not_ok($source,q|The type of the operand of version statement must be string type.|);
+    compile_not_ok($source,q|The operand type of version statement must be string type.|);
   }
 }
 
@@ -471,7 +471,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { version 1.001; }';
-    compile_not_ok($source,q|The type of the operand of version statement must be string type.|);
+    compile_not_ok($source,q|The operand type of version statement must be string type.|);
   }
 }
 
