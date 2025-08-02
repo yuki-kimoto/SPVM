@@ -26,7 +26,7 @@ use Test::More;
 
 # Extra
 {
-  # allow - Hash::Entry class uses the allow statement
+  # allow - Hash::Entry class uses allow statement
   use SPVM 'Hash';
 }
 
@@ -120,7 +120,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { switch (1d) { } } }';
-    compile_not_ok($source, q|The condition of the switch statement must be an integer type within int|);
+    compile_not_ok($source, q|The condition of switch statement must be an integer type within int|);
   }
   {
     my $source = 'class MyClass { static method main : void () { switch (1) { case Int->new(1): { } } } }';
@@ -132,7 +132,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { switch (1) { case 1: { } case 1: { } } } }';
-    compile_not_ok($source, q|The value of the case statement cannnot be duplicated|);
+    compile_not_ok($source, q|The value of case statement cannnot be duplicated|);
   }
   {
     my $source = 'class MyClass { static method main : void () { switch (1) { case 1: { } default: { } default: { } } } }';
@@ -804,7 +804,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { die byte; } }';
-    compile_not_ok($source, q|The error class of the die statement must be a class type|);
+    compile_not_ok($source, q|The error class of die statement must be a class type|);
   }
 }
 
@@ -1143,7 +1143,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : mutable string () { return "abc"; } }';
-    compile_not_ok($source, q|string type cannot be assigned to mutable string type in the return statement.|);
+    compile_not_ok($source, q|string type cannot be assigned to mutable string type in return statement.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo("abc"); } static method foo : int ($string : mutable string) { }}';
@@ -1477,7 +1477,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass  { interface Point; }';
-    compile_not_ok($source, q|The interface specified by the interface statement must be an interface type|);
+    compile_not_ok($source, q|The interface specified by interface statement must be an interface type|);
   }
   {
     my $source = 'class MyClass  { interface Stringable; method to_string : string ($arg : int) {} }';

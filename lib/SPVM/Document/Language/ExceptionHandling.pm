@@ -14,11 +14,11 @@ The L<die statement|SPVM::Document::Language::Statements/"die Statement"> throws
 
   die "This value is invalid.";
 
-A basic type ID can be given to the die statement. This is set to C<eval_error_id> if an exception is thrown.
+A basic type ID can be given to die statement. This is set to C<eval_error_id> if an exception is thrown.
 
   die basic_type_id Error::System, "This value is invalid.";
 
-A class name can be given to the die statement. This is the same as the above code.
+A class name can be given to die statement. This is the same as the above code.
 
   die Error::System "This value is invalid.";
 
@@ -36,7 +36,7 @@ C<undef> is set to L<$@|/"Exception Variable"> at the beginning of each eval blo
 
 0 is set to C<eval_error_id> at the beginning of each eval block.
 
-If an exception is thrown, the message passed to the die statement is set to L<$@|/"Exception Variable">, and the basic type ID passed to the die statement is set to C<eval_error_id>.
+If an exception is thrown, the message passed to die statement is set to L<$@|/"Exception Variable">, and the basic type ID passed to die statement is set to C<eval_error_id>.
 
   if ($@) {
     # Do something if an exception is thrwon

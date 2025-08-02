@@ -312,7 +312,7 @@ If I<BASIC_TYPE> does not found, a compilation error occurs.
 
 Examples:
 
-  # Examples of the use statement
+  # Examples of use statement
   class MyClass {
     use Foo;
   }
@@ -544,7 +544,7 @@ The current class must satisfy L<interface requirement|SPVM::Document::Language:
 
 Examples:
   
-  # Examples of the interface statement
+  # Examples of interface statement
   class Point {
     interface Stringable;
     

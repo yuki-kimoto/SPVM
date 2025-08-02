@@ -316,7 +316,7 @@ class TestCase::Statement::Switch {
       }
     }
     
-    # return statement in the switch statement
+    # return statement in switch statement
     {
       my $ret = TestCase::Statement::Switch->switch_return_method();
       
@@ -341,7 +341,7 @@ class TestCase::Statement::Switch {
       }
     }
     
-    # The type of the operand of the case statement is byte type
+    # The type of the operand of case statement is byte type
     {
       my $char = (int)'[';
       

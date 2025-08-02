@@ -119,7 +119,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, interface_decl->op_type->uv.type->unresolved_basic_type_name, strlen(interface_decl->op_type->uv.type->unresolved_basic_type_name));
       
       if (!SPVM_BASIC_TYPE_is_interface_type(compiler, interface_basic_type->id)) {
-        SPVM_COMPILER_error(compiler, "The interface specified by the interface statement must be an interface type.\n  at %s line %d", interface_decl->op_interface->file, interface_decl->op_interface->line);
+        SPVM_COMPILER_error(compiler, "The interface specified by interface statement must be an interface type.\n  at %s line %d", interface_decl->op_interface->file, interface_decl->op_interface->line);
         return;
       }
       
@@ -1663,7 +1663,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_switch_condition->first);
             if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The condition of the switch statement must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The condition of switch statement must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             
@@ -1693,7 +1693,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               SPVM_CASE_INFO* case_info = SPVM_LIST_get(switch_info->case_infos, i);
               SPVM_CASE_INFO* case_info_next = SPVM_LIST_get(switch_info->case_infos, i + 1);
               if (case_info->case_value == case_info_next->case_value) {
-                SPVM_COMPILER_error(compiler, "The value of the case statement cannnot be duplicated.\n  at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
+                SPVM_COMPILER_error(compiler, "The value of case statement cannnot be duplicated.\n  at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
               }
             }
             
@@ -2574,7 +2574,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             }
             else {
               if (op_operand) {
-                SPVM_CHECK_check_assign(compiler, method->return_type, op_operand, "the return statement", op_cur->file, op_cur->line);
+                SPVM_CHECK_check_assign(compiler, method->return_type, op_operand, "return statement", op_cur->file, op_cur->line);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -3072,7 +3072,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             // Type
             if (op_cur->last->id == SPVM_OP_C_ID_TYPE) {
               if (!SPVM_TYPE_is_class_type(compiler, error_type->basic_type->id, error_type->dimension, error_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The error class of the die statement must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The error class of die statement must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
             }

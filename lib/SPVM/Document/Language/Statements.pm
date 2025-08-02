@@ -180,7 +180,7 @@ C<switch> statement is a conditional statement with the following syntax.
 
 The L<integer promotional conversion|SPVM::Document::Language::Operators/"Integer Promotional Conversion"> is performed on the condition I<CONDITION>.
 
-The operand of the case statement I<CASEn> must be a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, an L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literals"> and an L<inline-expaned class method call to get an enumeration value|SPVM::Document::Language::Class/"Inline Expansion of Method Call to Get an Enuemration Value">.
+The operand of case statement I<CASEn> must be a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, an L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literals"> and an L<inline-expaned class method call to get an enumeration value|SPVM::Document::Language::Class/"Inline Expansion of Method Call to Get an Enuemration Value">.
 
 If I<CASEn> is a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, the value is converted to int type at compile-time.
 
@@ -388,7 +388,7 @@ Examples:
 
   my $i = 0;
   
-  # beginning of the while statement
+  # beginning of while statement
   while ($i < 5) {
   
     if ($i == 3) {
@@ -415,7 +415,7 @@ Examples:
     # last statement makes the program jump to the end fo the current while statement.
     last;
   }
-  # end fo the while statement
+  # end fo while statement
 
 =head3 for Statement
 
