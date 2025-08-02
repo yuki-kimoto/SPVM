@@ -3758,6 +3758,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
             switch (op_cur->id) {
               case SPVM_OP_C_ID_TYPE_CAST:
               case SPVM_OP_C_ID_WARN:
+              case SPVM_OP_C_ID_COPY_FIELDS:
               case SPVM_OP_C_ID_PRINT:
               case SPVM_OP_C_ID_SAY:
               case SPVM_OP_C_ID_MAKE_READ_ONLY:

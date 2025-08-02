@@ -3452,7 +3452,36 @@ Examples:
   # Exmaples of isweak operator
   my $isweak = isweak $object->{point};
 
-=head2 Scope Operations
+=head2 copy_fields Operator
+
+The C<copy_fields> operator copies fields.
+
+  copy_fields DIST_OPERAND, SRC_OPERAND, TYPE;
+
+The type of I<TYPE> must be a class type.
+
+The copy_fields operator copies every field from I<SRC_OPERAND> to I<DIST_OPERAND> using all the field names defined in I<TYPE> class.
+
+For example, if the field names defined in I<TYPE> class are C<x>, C<y>, and C<z>, then copy_field operator is expanded to the following codes:
+
+  DIST_OPERAND->{x} = SRC_OPERAND->{x};
+  DIST_OPERAND->{y} = SRC_OPERAND->{y};
+  DIST_OPERAND->{z} = SRC_OPERAND->{z};
+
+Compilation Errors:
+
+The type of I<TYPE> must be a class type. Otherwise, a compilation error occurs. 
+
+Examples:
+  
+  # Exampels of copy_fields operator
+  my $object = MyClass->new;
+  
+  my $object_child = MyClass::Child->new;
+  
+  copy_fields $object_child, $object, MyClass;
+
+=head1 Scope Operations
 
 See the doc of L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about scope operations.
 

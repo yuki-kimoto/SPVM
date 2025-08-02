@@ -1,7 +1,8 @@
 0.990078 2025-08-03
   [Exception Message Changes]
     * Fix English in exception messages.
-    
+  [Internal Changes with Document Changes]
+    * copy_fields statement is renamed to copy_fileds operator.
 0.990077 2025-07-04
   [Performance Improvement]
     * Ternary operator does not performe type cast from/to any object type internally.

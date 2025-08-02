@@ -700,13 +700,6 @@ statement
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
     }
-  | copy_fields
-
-copy_fields
-  : COPY_FIELDS operator ',' operator ',' type';'
-    {
-      $$ = SPVM_OP_build_copy_fields(compiler, $1, $2, $4, $6);
-    }
 
 die
   : DIE operator
@@ -754,16 +747,7 @@ void_return_operator
     {
       $$ = SPVM_OP_build_disable_options(compiler, $1, $2);
     }
-
-warn
-  : WARN operator
-    {
-      $$ = SPVM_OP_build_warn(compiler, $1, $2);
-    }
-  | WARN
-    {
-      $$ = SPVM_OP_build_warn(compiler, $1, NULL);
-    }
+  | copy_fields
 
 for_statement
   : FOR '(' opt_operator ';' opt_operator ';' opt_operator ')' block
@@ -1512,6 +1496,22 @@ isweak_field
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       SPVM_OP_build_field_access(compiler, op_field_access, $2, $5);
       $$ = SPVM_OP_build_isweak_field(compiler, $1, op_field_access);
+    }
+
+warn
+  : WARN operator
+    {
+      $$ = SPVM_OP_build_warn(compiler, $1, $2);
+    }
+  | WARN
+    {
+      $$ = SPVM_OP_build_warn(compiler, $1, NULL);
+    }
+
+copy_fields
+  : COPY_FIELDS operator ',' operator ',' type
+    {
+      $$ = SPVM_OP_build_copy_fields(compiler, $1, $2, $4, $6);
     }
 
 %%
