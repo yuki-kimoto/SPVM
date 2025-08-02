@@ -2475,7 +2475,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
             
             if (!SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              SPVM_COMPILER_error(compiler, "The type given to isa_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The right type of isa_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             
@@ -2493,7 +2493,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
             
             if (!SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              SPVM_COMPILER_error(compiler, "The type given to is_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The right type of is_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             
