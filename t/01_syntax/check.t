@@ -429,12 +429,12 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { 1 isa_error Error[]; } }';
-    compile_not_ok($source, 'The type given to the isa_error operator must be a class type.');
+    compile_not_ok($source, 'The type given to isa_error operator must be a class type.');
   }
   
   {
     my $source = 'class MyClass { static method main : void () { 1 isa_error byte; } }';
-    compile_not_ok($source, 'The type given to the isa_error operator must be a class type.');
+    compile_not_ok($source, 'The type given to isa_error operator must be a class type.');
   }
   
   {
@@ -480,12 +480,12 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { 1 is_error Error[]; } }';
-    compile_not_ok($source, 'The type given to the is_error operator must be a class type.');
+    compile_not_ok($source, 'The type given to is_error operator must be a class type.');
   }
   
   {
     my $source = 'class MyClass { static method main : void () { 1 is_error byte; } }';
-    compile_not_ok($source, 'The type given to the is_error operator must be a class type.');
+    compile_not_ok($source, 'The type given to is_error operator must be a class type.');
   }
 }
 

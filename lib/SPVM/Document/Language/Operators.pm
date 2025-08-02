@@ -74,7 +74,7 @@ The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::
 
 Examples:
 
-  # Examples of the addition operator
+  # Examples of addition operator
   my $result = 1 + 2;
 
 =head3 Subtraction Operator
@@ -99,7 +99,7 @@ The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::
 
 Examples:
 
-  # Examples of the subtraction operator
+  # Examples of subtraction operator
   my $result = 1 - 2;
 
 =head3 Multiplication Operator
@@ -124,7 +124,7 @@ The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::
 
 Examples:
 
-  # Examples of the multiplication operator
+  # Examples of multiplication operator
   my $result = 1 * 2;
 
 =head3 Division Operator
@@ -153,7 +153,7 @@ The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::
 
 Examples:
 
-  # Examples of the division operator
+  # Examples of division operator
   my $result = 1 / 2;
 
 =head3 Division Unsigned Int Operator
@@ -237,7 +237,7 @@ The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language:
 
 Examples:
 
-  # Examples of the modulo operator
+  # Examples of modulo operator
   my $result = 1 % 2;
 
 =head3 Modulo Unsigned Int Operator
@@ -867,7 +867,7 @@ I<OPERAND> must be L<array length operator|/"Array Length Operator">. Otherwise,
 
 Examples:
   
-  # Examples of the scalar operator
+  # Examples of scalar operator
   my $nums = new int[3];
   say scalar @$nums;
 
@@ -887,7 +887,7 @@ The L<if statement|SPVM::Document::Language::Statements/"if Statement"> C<IF_STA
 
 Examples:
 
-  # Examples of the sequential operator
+  # Examples of sequential operator
   
   # 3 is assigned to $foo
   my $foo = (1, 2, 3);
@@ -1142,7 +1142,7 @@ The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types
 
 Examples:
   
-  # Examples of the new_string_len operator
+  # Examples of new_string_len operator
   my $message = new_string_len 5;
 
 =head2 make_read_only Operator
@@ -1163,7 +1163,7 @@ I<OPERAND> must be string type. Otherwise, a compilation error occurs.
 
 Examples:
 
-  # Examples of the make_read_only operator
+  # Examples of make_read_only operator
   
   # A string
   my $string = new_string_len 3;
@@ -1192,7 +1192,7 @@ The type of I<OPERAND> must be an object type. Otherwise, a compilation error oc
 
 Examples:
 
-  # Examples of the enable_options operator
+  # Examples of enable_options operator
   my $options = [(object)max => 1, title => "Hello"];
   enable_options $options;
 
@@ -1214,7 +1214,7 @@ The type of I<OPERAND> must be an object type. Otherwise, a compilation error oc
 
 Examples:
 
-  # Examples of the disable_options operator
+  # Examples of disable_options operator
   my $options = {max => 1, title => "Hello"};
   disable_options $options;
 
@@ -1236,7 +1236,7 @@ The type of I<OPERAND> must be an object type. Otherwise, a compilation error oc
 
 Examples:
   
-  # Examples of the is_options operator
+  # Examples of is_options operator
   my $options = {max => 1, title => "Hello"};
   my $is_options = is_options $options;
 
@@ -1256,7 +1256,7 @@ I<OPERAND> must be string type. Otherwise, a compilation error occurs.
 
 Examples:
   
-  # Examples of the is_read_only operator
+  # Examples of is_read_only operator
   my $message = "Hello";
   my $is_read_only = is_read_only $message;
 
@@ -1362,7 +1362,7 @@ The return value can be changed by L<file directive|SPVM::Document::Language::To
 
 Examples:
   
-  # Examples of the __FILE__ operator
+  # Examples of __FILE__ operator
   class Foo::Bar {
     static method baz : void () {
       # path/SPVM/Foo/Bar.spvm
@@ -1382,7 +1382,7 @@ The return type is int type.
 
 Examples:
 
-  # Examples of the __LINE__ operator
+  # Examples of __LINE__ operator
   class Foo::Bar {
     static method baz : void () {
       my $line = __LINE__;
@@ -1423,7 +1423,7 @@ See also L<SPVM::Document::Language::GarbageCollection> about garbage collection
 
 =head3 Creating an Object
 
-The following syntax of the new operator creates a new object.
+The following syntax of new operator creates a new object.
 
   new CLASS_TYPE;
 
@@ -1441,12 +1441,12 @@ I<CLASS_TYPE> must be a loaded class type. Otherwise, a compilation error occurs
 
 Examples:
 
-  # Examples of the new operator - Creating a new object
+  # Examples of new operator - Creating a new object
   my $object = new Foo;
 
 =head3 Creating an Array
 
-The following syntax of the new operator creates a new array.
+The following syntax of new operator creates a new array.
 
   new BASIC_TYPE[LENGTH]
 
@@ -1472,7 +1472,7 @@ I<LENGTH> must be an L<integer type|SPVM::Document::Language::Types/"Integer Typ
 
 Examples:
 
-  # Examples of the new operator - Creating a new array
+  # Examples of new operator - Creating a new array
   my $values = new int[3];
   my $objects = new Foo[3];
   my $objects = new object[3];
@@ -1480,7 +1480,7 @@ Examples:
 
 =head3 Creating a Multi-Dimensional Array
 
-The following syntax of the new operator creates a new multi-dimensional array.
+The following syntax of new operator creates a new multi-dimensional array.
 
   new BASIC_TYPE[]..[LENGTH]
 
@@ -1510,7 +1510,7 @@ The type dimension must be less than or equal to 255. Otherwise, a compilation e
 
 Examples:
 
-  # Examples of the new operator - Creating a new multi-dimensional array
+  # Examples of new operator - Creating a new multi-dimensional array
   
   # 2 dimentional int array
   my $muldim_values = new int[][3];
@@ -1643,7 +1643,7 @@ The return type is L<undef type|SPVM::Document::Language::Types/"undef Type">.
 
 Examples:
   
-  # Examples of the undef operator
+  # Examples of undef operator
   my $string = (string)undef;
   
   if (undef) {
@@ -1675,7 +1675,7 @@ The type of the operand must be string type, a numeric array type, or a multi-nu
 
 Examples:
   
-  # Exampels of the copy operator
+  # Exampels of copy operator
   my $message = copy "abc";
 
 =head2 dump Operator
@@ -1688,7 +1688,7 @@ This operator creates a new string with the string representation dumping the da
 
 The following is an example of the return value the C<dump> operator.
   
-  # An return vlaue of the dump operator
+  # An return vlaue of dump operator
   TestCase::Operator::DumpTest1 (0x55f21f7e6050) {
     byte_value => 1,
     short_value => 2,
@@ -1741,7 +1741,7 @@ I<VARIALBE> must be a local variable of a numeric type or a multi-numeric type. 
 
 Examples:
   
-  # Examples of the reference operator
+  # Examples of reference operator
   
   # Create a reference of a numeric type
   my $num : int;
@@ -1771,7 +1771,7 @@ If I<VARIABLE> is undef, an exception is thrown.
 
 Examples:
   
-  # Examples of the dereference operator
+  # Examples of dereference operator
   my $num : int;
   my $num_ref = \$num;
   my $num_deref = $$num_ref;
@@ -1788,7 +1788,7 @@ The assignment operator C<=> performs an assignment.
 
 A data conversion described in L<Assignment Requirement|SPVM::Document::Language::Types/"Assignment Requirement"> is performed on I<RIGHTH_OPERAND> if necessary.
 
-And the assignment operator performs different operations depending on the left operand I<LEFT_OPERAND>.
+And assignment operator performs different operations depending on the left operand I<LEFT_OPERAND>.
 
 If I<LEFT_OPERAND> is a local variable, this operator performs the operation that L<sets a local variable|/"Setting a Local Variable">.
 
@@ -1802,11 +1802,11 @@ If I<LEFT_OPERAND> is a dereference, this operator performs the operation that L
 
 If I<LEFT_OPERAND> is the exception variable, this operator performs the operation that L<sets the exception variable|/"Setting the Exception Variable">.
 
-See also L<SPVM::Document::Language::GarbageCollection/"Assignment"> about how the assignment operator changes the reference counts of I<LEFT_OPERAND> and I<RIGHTH_OPERAND>.
+See also L<SPVM::Document::Language::GarbageCollection/"Assignment"> about how assignment operator changes the reference counts of I<LEFT_OPERAND> and I<RIGHTH_OPERAND>.
 
 Examples:
   
-  # Examples of the assignment operator
+  # Examples of assignment operator
   
   # A local variable
   $num = 1;
@@ -3403,7 +3403,7 @@ The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type. Otherwise, a c
 
 Examples:
 
-  # Exmaples of the weaken operator
+  # Exmaples of weaken operator
   weaken $object->{point};
 
 =head2 unweaken Operator
@@ -3426,7 +3426,7 @@ The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type. Otherwise, a c
 
 Examples:
 
-  # Exmaples of the unweaken operator
+  # Exmaples of unweaken operator
   unweaken $object->{point};
 
 =head2 isweak Operator
@@ -3449,7 +3449,7 @@ The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type. Otherwise, a c
 
 Examples:
 
-  # Exmaples of the isweak operator
+  # Exmaples of isweak operator
   my $isweak = isweak $object->{point};
 
 =head2 Scope Operations

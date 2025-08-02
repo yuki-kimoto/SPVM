@@ -71,7 +71,7 @@ Normally, a string is created by a L<string literal|SPVM::Document::Language::To
   my $string = "Hello";
   my $char = $string->[0];
   
-  # A mutable string created by the new_string_len operator
+  # A mutable string created by new_string_len operator
   my $string = new_string_len 3;
   $string->[0] = 'a';
 
@@ -124,7 +124,7 @@ An array is an L<object|/"Object">.
 
 Normally, an array is created by L<new Operator|SPVM::Document::Language::Operators/"Creating an Array"> and an L<array initialization|SPVM::Document::Language::Operators/"Array Initialization">.
   
-  # An array created by the new operator
+  # An array created by new operator
   my $numbers = new int[3];
   $numbergers->[0] = 1;
   
@@ -177,7 +177,7 @@ An objcet of L<class type|/"Class Types"> has its fields. A field is a L<number|
 
 Normally, an object is created by L<new|SPVM::Document::Language::Operators/"new"> operator.
 
-  # An object created by the new operator
+  # An object created by new operator
   my $point = new Point;
 
 When an object is created, memory for the object is allocated in heap memory.

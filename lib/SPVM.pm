@@ -57,7 +57,7 @@ Run a one liner with loading a class.
 
 =head2 Executing An SPVM Program
 
-Write a L<SPVM class|SPVM::Document::Language::Class> named C<hello.spvm> to print "Hello World!" using L<the say operator|SPVM::Document::Language::Operators/"say Operator">.
+Write a L<SPVM class|SPVM::Document::Language::Class> named C<hello.spvm> to print "Hello World!" using L<say operator|SPVM::Document::Language::Operators/"say Operator">.
 
   # hello.spvm
   class {
