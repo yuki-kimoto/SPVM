@@ -24,7 +24,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
   %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
-  %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN
+  %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
   %type <opval> grammar
   %type <opval> field_name method_name class_name
   %type <opval> basic_type  opt_basic_type array_type array_type_with_length type ref_type return_type
@@ -64,7 +64,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY ADDRESS
+  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY ADDRESS IS_OPTIONS
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
   %nonassoc <opval> ')'
@@ -295,14 +295,10 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | BREAK ';'
     | RETURN ';'
     | RETURN operator ';'
+    | die ';'
     | operator ';'
     | void_return_operator ';'
     | ';'
-    | die ';'
-    | copy_fields
-
-  copy_fields
-    : COPY_FIELDS operator ',' operator ',' type';'
 
   die
     : DIE operator
@@ -318,10 +314,9 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | weaken_field
     | unweaken_field
     | MAKE_READ_ONLY operator
-
-  warn
-    : WARN operator
-    | WARN
+    | ENABLE_OPTIONS operator
+    | DISABLE_OPTIONS operator
+    | copy_fields
 
   for_statement
     : FOR '(' opt_operator ';' opt_operator ';' opt_operator ')' block
@@ -443,6 +438,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | IS_READ_ONLY operator
     | array_length
     | ADDRESS operator
+    | IS_OPTIONS operator
 
   array_length
     : '@' operator
@@ -570,6 +566,13 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   isweak_field
     : ISWEAK var ARROW '{' field_name '}'
 
+  warn
+    : WARN operator
+    | WARN
+
+  copy_fields
+    : COPY_FIELDS operator ',' operator ',' type
+
 =head2 Grammer Token
 
 These are tokens for L<grammer/"Grammer">.
@@ -597,6 +600,9 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>ASSIGN</td><td>=</td>
+  </tr>
+  <tr>
+    <td>ATTRIBUTE</td><td>An attribute name</td>
   </tr>
   <tr>
     <td>BIT_AND</td><td>&</td>
@@ -659,10 +665,10 @@ These are tokens for L<grammer/"Grammer">.
     <td>DEREFERENCE</td><td>$</td>
   </tr>
   <tr>
-    <td>ATTRIBUTE</td><td>An attribute name</td>
+    <td>DIE</td><td>die</td>
   </tr>
   <tr>
-    <td>DIE</td><td>die</td>
+    <td>DISABLE_OPTIONS</td><td>disable_options</td>
   </tr>
   <tr>
     <td>DIVIDE</td><td>/</td>
@@ -684,6 +690,9 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>ELSIF</td><td>elsif</td>
+  </tr>
+  <tr>
+    <td>ENABLE_OPTIONS</td><td>enable_options</td>
   </tr>
   <tr>
     <td>END_OF_FILE</td><td>The end of the file</td>
@@ -741,6 +750,9 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>IS_TYPE</td><td>is_type</td>
+  </tr>
+  <tr>
+    <td>IS_OPTIONS</td><td>is_options</td>
   </tr>
   <tr>
     <td>IS_READ_ONLY</td><td>is_read_only</td>
