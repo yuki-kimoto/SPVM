@@ -690,6 +690,7 @@ statement
     {
       $$ = SPVM_OP_build_return(compiler, $1, $2);
     }
+  | die ';'
   | operator ';'
     {
       $$ = SPVM_OP_build_operator_statement(compiler, $1);
@@ -699,7 +700,6 @@ statement
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
     }
-  | die ';'
   | copy_fields
 
 copy_fields
