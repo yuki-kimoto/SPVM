@@ -1156,11 +1156,21 @@ Examples:
 
   # Examples of class variable getter methods
   class MyClass {
-    our $NUM : ro int;
+    our $VALUE : ro int;
     
     static method main : void {
-      my $num = Foo->NUM;
+      my $num = Foo->VALUE;
     }
+  }
+
+A user defined class variable getter can be defined with C<get> keyword.
+
+  class MyClass {
+    our $VALUE : ro int
+      get {
+        return $VALUE;
+      }
+    ;
   }
 
 =head3 Class Variable Setter Method
@@ -1184,6 +1194,16 @@ Examples:
     static method main : void {
       Foo->SET_NUM(3);
     }
+  }
+
+A user defined class variable setter can be defined with C<set> keyword. The passed value is assigned to C<$_>.
+
+  class MyClass {
+    our $VALUE : wo int
+      set {
+        $VALUE = $_;
+      }
+    ;
   }
 
 =head1 Field
@@ -1334,7 +1354,7 @@ Examples:
 
   # Examples of field getter methods
   class MyClass {
-    has num : ro int;
+    has value : ro int;
     
     static method new {
       return new Foo;
@@ -1343,8 +1363,31 @@ Examples:
     static method main : void {
       my $foo = Foo->new;
       
-      my $num = $foo->num;
+      my $value = $foo->value;
     }
+  }
+
+A user defined field getter can be defined with C<get> keyword.
+
+  class MyClass {
+    has value : ro int
+      get {
+        return $self->{value};
+      }
+    ;
+  }
+
+User defined getter and setter can be defined at once.
+
+  class MyClass {
+    has value : rw int
+      get {
+        return $self->{value};
+      }
+      set {
+        $self->{value} = $_;
+      }
+    ;
   }
 
 =head3 Field Setter Method
@@ -1363,7 +1406,7 @@ Examples:
 
   # Examples of field setter methods
   class MyClass {
-    has num : wo int;
+    has value : wo int;
     
     static method new {
       return new Foo;
@@ -1372,8 +1415,18 @@ Examples:
     static method main : void {
       my $foo = Foo->new;
       
-      $foo->set_num(3);
+      $foo->set_value(3);
     }
+  }
+
+A user defined field setter can be defined with C<set> keyword. The passed value is assigned to C<$_>.
+
+  class MyClass {
+    has value : wo int
+      set {
+        $self->{value} = $_;
+      }
+    ;
   }
 
 =head1 Method

@@ -18,20 +18,20 @@ class TestCase::Accessor {
   has value_object : rw Point;
   
   our $VALUE_BYTE_USER_DEFINED : rw byte
-    GET {
+    get {
       return $VALUE_BYTE_USER_DEFINED * 2;
     }
-    SET {
-      $VALUE_BYTE_USER_DEFINED = (BYTE)($_ * 3);
+    set {
+      $VALUE_BYTE_USER_DEFINED = (byte)($_ * 3);
     }
   ;
   
   our $VALUE_INT_USER_DEFINED : rw int
-    GET {
-      return $VALUE_BYTE_USER_DEFINED * 2;
+    get {
+      return $VALUE_INT_USER_DEFINED * 2;
     }
-    SET {
-      $VALUE_BYTE_USER_DEFINED = $_ * 3;
+    set {
+      $VALUE_INT_USER_DEFINED = $_ * 3;
     }
   ;
   
