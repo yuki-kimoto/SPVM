@@ -18,7 +18,7 @@ Syntax parsing is performed according to the grammer of the SPVM language.
 
 The grammer of the SPVM language is described using L<GNU Bison|https://en.wikipedia.org/wiki/GNU_Bison> syntax.
 
-  %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
+  %token <opval> CLASS HAS GET SET METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
   %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS
@@ -32,7 +32,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
   %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
-  %type <opval> method anon_method opt_args args arg use require class_alias our has anon_method_fields anon_method_field interface allow
+  %type <opval> method anon_method opt_args args arg use require class_alias our has getter opt_getter setter opt_setter anon_method_fields anon_method_field interface allow
   %type <opval> opt_attributes attributes
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement foreach_statement
@@ -224,10 +224,24 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | method_name ASSIGN CONSTANT
 
   our
-    : OUR VAR_NAME ':' opt_attributes qualified_type ';'
+    : OUR VAR_NAME ':' opt_attributes qualified_type opt_getter opt_setter ';'
 
   has
-    : HAS field_name ':' opt_attributes qualified_type
+    : HAS field_name ':' opt_attributes qualified_type opt_getter opt_setter
+
+  opt_getter
+    : /* Empty */
+    | getter
+
+  getter
+    : GET block
+
+  opt_setter
+    : /* Empty */
+    | setter
+
+  setter
+    : SET block
 
   method
     : opt_attributes METHOD method_name ':' return_type '(' opt_args ')' block
@@ -722,6 +736,9 @@ These are tokens for L<grammer/"Grammer">.
     <td>FOR</td><td>for</td>
   </tr>
   <tr>
+    <td>GET</td><td>get</td>
+  </tr>
+  <tr>
     <td>HAS</td><td>has</td>
   </tr>
   <tr>
@@ -792,9 +809,6 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>MY</td><td>my</td>
-  </tr>
-  <tr>
-    <td>SYMBOL_NAME</td><td>A symbol name</td>
   </tr>
   <tr>
     <td>NEW</td><td>new</td>
@@ -875,7 +889,7 @@ These are tokens for L<grammer/"Grammer">.
     <td>SCALAR</td><td>scalar</td>
   </tr>
   <tr>
-    <td>SELF</td><td>self</td>
+    <td>SET</td><td>set</td>
   </tr>
   <tr>
     <td>SHIFT</td><td>&lt;&lt;<br>&gt;&gt;<br>&gt;&gt;&gt;</td>
@@ -909,6 +923,9 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>STRNE</td><td>ne</td>
+  </tr>
+  <tr>
+    <td>SYMBOL_NAME</td><td>A symbol name</td>
   </tr>
   <tr>
     <td>SWITCH</td><td>switch</td>
