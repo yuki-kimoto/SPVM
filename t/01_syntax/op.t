@@ -62,11 +62,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass : mulnum_t pointer interface_t;';
-    compile_not_ok($source, qr/Only one of class attributes "mulnum_t", "pointer" or "interface_t" can be specified/);
+    compile_not_ok($source, qr/Only one of class attributes 'mulnum_t', 'pointer' or 'interface_t' can be specified/);
   }
   {
     my $source = 'class MyClass : private public;';
-    compile_not_ok($source, qr/Only one of class attributes "private", "protected" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of class attributes 'private', 'protected' or 'public' can be specified/);
   }
 }
 
@@ -210,7 +210,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { required method foo : void () { } }';
-    compile_not_ok($source, qr/MyClass#foo method cannnot have the method attribute "required"/);
+    compile_not_ok($source, qr/MyClass#foo method cannnot have the method attribute 'required'/);
   }
   {
     my $source = 'class MyClass { method foo : void () { } method foo : void () { } }';
@@ -258,11 +258,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { our $FOO : ro wo rw int; }';
-    compile_not_ok($source, qr/Only one of class variable attributes "rw", "ro", "wo" can be specifed/);
+    compile_not_ok($source, qr/Only one of class variable attributes 'rw', 'ro', 'wo' can be specifed/);
   }
   {
     my $source = 'class MyClass { our $FOO : private public int; }';
-    compile_not_ok($source, qr/Only one of class variable attributes "private", "protected" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of class variable attributes 'private', 'protected' or 'public' can be specified/);
   }
 }
 
@@ -282,11 +282,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { has foo : ro wo rw int; }';
-    compile_not_ok($source, qr/Only one of field attributes "rw", "ro" or "wo" can be specifed/);
+    compile_not_ok($source, qr/Only one of field attributes 'rw', 'ro' or 'wo' can be specifed/);
   }
   {
     my $source = 'class MyClass { has foo : private public int; }';
-    compile_not_ok($source, qr/Only one of field attributes "private", "protected" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of field attributes 'private', 'protected' or 'public' can be specified/);
   }
 }
 
@@ -298,7 +298,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { method INIT : void () { } }';
-    compile_not_ok($source, qr/"INIT" cannnot be used as a method name/);
+    compile_not_ok($source, qr/'INIT' cannnot be used as a method name/);
   }
   {
     my $source = 'class MyClass { ro method foo : void () { } }';
@@ -306,7 +306,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { native precompile method foo : void () { } }';
-    compile_not_ok($source, qr/Only one of method attributes "native" and "precompile" can be specified/);
+    compile_not_ok($source, qr/Only one of method attributes 'native' and 'precompile' can be specified/);
   }
   {
     my $source = 'class MyClass { native method foo : void () { } }';
@@ -339,7 +339,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { private public enum { FOO = 1 } }';
-    compile_not_ok($source, qr/Only one of enumeration attributes "private", "protected" or "public" can be specified/);
+    compile_not_ok($source, qr/Only one of enumeration attributes 'private', 'protected' or 'public' can be specified/);
   }
 }
 

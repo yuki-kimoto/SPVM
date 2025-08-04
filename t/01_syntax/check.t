@@ -1200,7 +1200,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : mutable int;} }';
-    compile_not_ok($source, q|The type qualifier "mutable" is only allowed in string type|);
+    compile_not_ok($source, q|The type qualifier 'mutable' is only allowed in string type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : object[][];} }';

@@ -21,6 +21,8 @@
         ;
       }
       
+  [Compilation Error Message Changes]
+    * Fix English in compilation error messages.
   [Exception Message Changes]
     * Fix English in exception messages.
   [Internal Changes with Document Changes]

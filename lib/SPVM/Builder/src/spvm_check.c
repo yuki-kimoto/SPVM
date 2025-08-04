@@ -1005,7 +1005,7 @@ void SPVM_CHECK_check_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
 
   // mutable only allow string type
   if (type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
-    SPVM_COMPILER_error(compiler, "The type qualifier \"mutable\" is only allowed in string type.\n  at %s line %d", op_type->file, op_type->line);
+    SPVM_COMPILER_error(compiler, "The type qualifier 'mutable' is only allowed in string type.\n  at %s line %d", op_type->file, op_type->line);
   }
   
   if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {

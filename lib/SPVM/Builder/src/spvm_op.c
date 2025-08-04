@@ -401,10 +401,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
     }
     if (class_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of class attributes \"mulnum_t\", \"pointer\" or \"interface_t\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
+      SPVM_COMPILER_error(compiler, "Only one of class attributes 'mulnum_t', 'pointer' or 'interface_t' can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
     }
     if (access_control_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of class attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
+      SPVM_COMPILER_error(compiler, "Only one of class attributes 'private', 'protected' or 'public' can be specified.\n  at %s line %d", op_list_attributes->file, op_list_attributes->line);
     }
   }
   
@@ -496,7 +496,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             char *end;
             double double_value = strtod(version_string, &end);
             if (*end != '\0') {
-              SPVM_COMPILER_error(compiler, "A version string must be able to be parsed by the \"strtod\" C function.\n  at %s line %d", op_decl->file, op_decl->line);
+              SPVM_COMPILER_error(compiler, "A version string must be able to be parsed by the 'strtod' C function.\n  at %s line %d", op_decl->file, op_decl->line);
               break;
             }
           }
@@ -1013,7 +1013,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     
     if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
       if (method->is_required) {
-        SPVM_COMPILER_error(compiler, "%s#%s method cannnot have the method attribute \"required\".\n  at %s line %d", basic_type_name, method->name, method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "%s#%s method cannnot have the method attribute 'required'.\n  at %s line %d", basic_type_name, method->name, method->op_method->file, method->op_method->line);
       }
     }
     
@@ -1194,7 +1194,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
         }
       }
       if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of enumeration attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_method->file, op_method->line);
+        SPVM_COMPILER_error(compiler, "Only one of enumeration attributes 'private', 'protected' or 'public' can be specified.\n  at %s line %d", op_method->file, op_method->line);
       }
     }
     
@@ -1334,10 +1334,10 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
         }
       }
       if (field_method_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"rw\", \"ro\", \"wo\" can be specifed.\n  at %s line %d", op_class_var->file, op_class_var->line);
+        SPVM_COMPILER_error(compiler, "Only one of class variable attributes 'rw', 'ro', 'wo' can be specifed.\n  at %s line %d", op_class_var->file, op_class_var->line);
       }
       if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_class_var->file, op_class_var->line);
+        SPVM_COMPILER_error(compiler, "Only one of class variable attributes 'private', 'protected' or 'public' can be specified.\n  at %s line %d", op_class_var->file, op_class_var->line);
       }
     }
   }
@@ -1427,11 +1427,11 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
       }
       
       if (field_method_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of field attributes \"rw\", \"ro\" or \"wo\" can be specifed.\n  at %s line %d", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "Only one of field attributes 'rw', 'ro' or 'wo' can be specifed.\n  at %s line %d", op_field->file, op_field->line);
       }
       
       if (access_control_attributes_count > 1) {
-        SPVM_COMPILER_error(compiler, "Only one of field attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "Only one of field attributes 'private', 'protected' or 'public' can be specified.\n  at %s line %d", op_field->file, op_field->line);
       }
     }
   }
@@ -1482,7 +1482,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   }
   
   if (!method->is_init_method && strcmp(method_name, "INIT") == 0) {
-    SPVM_COMPILER_error(compiler, "\"INIT\" cannnot be used as a method name.\n  at %s line %d", op_name_method->file, op_name_method->line);
+    SPVM_COMPILER_error(compiler, "'INIT' cannnot be used as a method name.\n  at %s line %d", op_name_method->file, op_name_method->line);
   }
   
   // Method attributes
@@ -1531,10 +1531,10 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     }
     
     if (method->is_native && method->is_precompile) {
-      SPVM_COMPILER_error(compiler, "Only one of method attributes \"native\" and \"precompile\" can be specified.\n  at %s line %d", op_attributes->file, op_attributes->line);
+      SPVM_COMPILER_error(compiler, "Only one of method attributes 'native' and 'precompile' can be specified.\n  at %s line %d", op_attributes->file, op_attributes->line);
     }
     if (access_control_attributes_count > 1) {
-      SPVM_COMPILER_error(compiler, "Only one of method attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "Only one of method attributes 'private', 'protected' or 'public' can be specified.\n  at %s line %d", op_method->file, op_method->line);
     }
   }
   
