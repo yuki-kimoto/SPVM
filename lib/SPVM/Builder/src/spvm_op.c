@@ -598,20 +598,26 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
           
-          SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
-          SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-          SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_decl->file, op_decl->line);
-          
-          SPVM_OP* op_name_basic_type_var = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_var_class_var = SPVM_OP_new_op_var(compiler, op_name_basic_type_var);
-          
-          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var_class_var);
-          SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
-          SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
-          
           SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_decl->file, op_decl->line);
           SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
+          
+          SPVM_OP* op_block = NULL;
+          if (class_var->op_getter) {
+            op_block = class_var->op_getter->first;
+          }
+          else {
+            op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
+            SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+            SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_decl->file, op_decl->line);
+            
+            SPVM_OP* op_name_basic_type_var = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
+            SPVM_OP* op_var_class_var = SPVM_OP_new_op_var(compiler, op_name_basic_type_var);
+            
+            SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var_class_var);
+            SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
+            SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
+          }
           
           SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block);
           
