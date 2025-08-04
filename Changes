@@ -1,4 +1,4 @@
-0.990078 2025-08-03
+0.990078 2025-08-04
   [New Features]
     * Add user defined field and class variable setter/getter syntax.
       class MyClass {
