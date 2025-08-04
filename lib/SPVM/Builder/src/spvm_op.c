@@ -774,11 +774,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           }
           SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_type->unresolved_basic_type_name, arg_type->basic_type, arg_type->dimension, arg_type->flag, op_decl->file, op_decl->line);
           
-          char* arg_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, 1 + strlen(field->name) + 1);
-          memcpy(arg_name_tmp, "$", 1);
-          memcpy(arg_name_tmp + 1, field->name, strlen(field->name));
-          SPVM_STRING* arg_name_string = SPVM_STRING_new(compiler, arg_name_tmp, strlen(arg_name_tmp));
-          const char* arg_name = arg_name_string->value;
+          const char* arg_name = "$_";
+          SPVM_STRING* arg_name_string = SPVM_STRING_new(compiler, arg_name, strlen(arg_name));
           SPVM_OP* op_name_arg = SPVM_OP_new_op_name(compiler, arg_name, op_decl->file, op_decl->line);
           
           SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, arg_name, op_decl->file, op_decl->line);
