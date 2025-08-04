@@ -51,14 +51,14 @@ use Test::More;
 
 # Basic Type Name
 {
-  compile_not_ok_file('CompileError::Class::ClassNameDifferntFromClassFileName', qr/The class name "ClassNameDifferntFromClassFileNameXXXXXXX" must be "CompileError::Class::ClassNameDifferntFromClassFileName"/);
+  compile_not_ok_file('CompileError::Class::ClassNameDifferntFromClassFileName', qr/The class name 'ClassNameDifferntFromClassFileNameXXXXXXX' must be 'CompileError::Class::ClassNameDifferntFromClassFileName'/);
 }
 
 # Class Descripter
 {
   {
     my $source = 'class MyClass : native;';
-    compile_not_ok($source, qr/Invalid class attribute "native"/);
+    compile_not_ok($source, qr/Invalid class attribute 'native'/);
   }
   {
     my $source = 'class MyClass : mulnum_t pointer interface_t;';
@@ -74,11 +74,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { use Point as point; }';
-    compile_not_ok($source, qr/The alias name "point" must begin with an upper case character/);
+    compile_not_ok($source, qr/The alias name 'point' must begin with an upper case character/);
   }
   {
     my $source = 'class MyClass { use Point as Po; use Point as Po; }';
-    compile_not_ok($source, qr/The alias name "Po" is already used/);
+    compile_not_ok($source, qr/The alias name 'Po' is already used/);
   }
 }
 
@@ -246,7 +246,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { our $MyClass::FOO : int; }';
-    compile_not_ok($source, qr/The class varaible name "\$MyClass::FOO" cannnot contain "::"/);
+    compile_not_ok($source, qr/The class varaible name '\$MyClass::FOO' cannnot contain "::"/);
   }
 }
 
@@ -254,7 +254,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { our $FOO : native int; }';
-    compile_not_ok($source, qr/Invalid class variable attribute "native"/);
+    compile_not_ok($source, qr/Invalid class variable attribute 'native'/);
   }
   {
     my $source = 'class MyClass { our $FOO : ro wo rw int; }';
@@ -270,7 +270,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { has MyClass::foo : int; }';
-    compile_not_ok($source, qr/The field name "MyClass::foo" cannnot contain "::"/);
+    compile_not_ok($source, qr/The field name 'MyClass::foo' cannnot contain "::"/);
   }
 }
 
@@ -278,7 +278,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { has foo : native int; }';
-    compile_not_ok($source, qr/Invalid field attribute "native"/);
+    compile_not_ok($source, qr/Invalid field attribute 'native'/);
   }
   {
     my $source = 'class MyClass { has foo : ro wo rw int; }';
@@ -294,7 +294,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { method MyClass::foo : void () { } }';
-    compile_not_ok($source, qr/The method name "MyClass::foo" cannnot contain "::"/);
+    compile_not_ok($source, qr/The method name 'MyClass::foo' cannnot contain "::"/);
   }
   {
     my $source = 'class MyClass { method INIT : void () { } }';
@@ -302,7 +302,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { ro method foo : void () { } }';
-    compile_not_ok($source, qr/Invalid method attribute "ro"/);
+    compile_not_ok($source, qr/Invalid method attribute 'ro'/);
   }
   {
     my $source = 'class MyClass { native precompile method foo : void () { } }';
@@ -335,7 +335,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { ro enum { FOO = 1 } }';
-    compile_not_ok($source, qr/Invalid enumeration attribute "ro"/);
+    compile_not_ok($source, qr/Invalid enumeration attribute 'ro'/);
   }
   {
     my $source = 'class MyClass { private public enum { FOO = 1 } }';
@@ -347,7 +347,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { my $MyClass::foo; }; }';
-    compile_not_ok($source, qr/The local variable name "\$MyClass::foo" cannnot contain "::"/);
+    compile_not_ok($source, qr/The local variable name '\$MyClass::foo' cannnot contain "::"/);
   }
 }
 
@@ -407,15 +407,15 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { version "1.001.001"; }';
-    compile_not_ok($source, qr|The number of "." in a version string must be less than or equal to 1|);
+    compile_not_ok($source, qr|The number of '.' in a version string must be less than or equal to 1|);
   }
   {
     my $source = 'class MyClass { version "1.00101"; }';
-    compile_not_ok($source, qr|The length of characters after "." in a version string must be divisible by 3|);
+    compile_not_ok($source, q|The length of characters after '.' in a version string must be divisible by 3|);
   }
   {
     my $source = 'class MyClass { version "1.0011"; }';
-    compile_not_ok($source, qr|The length of characters after "." in a version string must be divisible by 3|);
+    compile_not_ok($source, q|The length of characters after '.' in a version string must be divisible by 3|);
   }
   {
     my $source = 'class MyClass { version 1.001; }';
@@ -459,15 +459,15 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { version "1.001.001"; }';
-    compile_not_ok($source, qr|The number of "." in a version string must be less than or equal to 1|);
+    compile_not_ok($source, qr|The number of '.' in a version string must be less than or equal to 1|);
   }
   {
     my $source = 'class MyClass { version "1.00101"; }';
-    compile_not_ok($source, qr|The length of characters after "." in a version string must be divisible by 3|);
+    compile_not_ok($source, qr|The length of characters after '.' in a version string must be divisible by 3|);
   }
   {
     my $source = 'class MyClass { version "1.0011"; }';
-    compile_not_ok($source, qr|The length of characters after "." in a version string must be divisible by 3|);
+    compile_not_ok($source, qr|The length of characters after '.' in a version string must be divisible by 3|);
   }
   {
     my $source = 'class MyClass { version 1.001; }';

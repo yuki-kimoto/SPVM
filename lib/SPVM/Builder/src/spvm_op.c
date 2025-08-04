@@ -336,7 +336,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     
     // If class name is different from the class name corresponding to the class file, compile error occur.
     if (strcmp(basic_type_name, compiler->current_outmost_class_name) != 0) {
-      SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->current_outmost_class_name, op_class->file, op_class->line);
+      SPVM_COMPILER_error(compiler, "The class name '%s' must be '%s'.\n  at %s line %d", basic_type_name, compiler->current_outmost_class_name, op_class->file, op_class->line);
       return op_class;
     }
     
@@ -396,7 +396,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid class attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_class->file, op_class->line);
+          SPVM_COMPILER_error(compiler, "Invalid class attribute '%s'.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_class->file, op_class->line);
         }
       }
     }
@@ -483,12 +483,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           }
           
           if (!(dot_count <= 1)) {
-            SPVM_COMPILER_error(compiler, "The number of \".\" in a version string must be less than or equal to 1.\n  at %s line %d", op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "The number of '.' in a version string must be less than or equal to 1.\n  at %s line %d", op_decl->file, op_decl->line);
             break;
           }
           
           if (!(digits_after_dot % 3 == 0)) {
-            SPVM_COMPILER_error(compiler, "The length of characters after \".\" in a version string must be divisible by 3.\n  at %s line %d", op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "The length of characters after '.' in a version string must be divisible by 3.\n  at %s line %d", op_decl->file, op_decl->line);
             break;
           }
           
@@ -536,13 +536,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           // Basic type name must begin with upper case. Otherwise, compiler error occur.
           // (Invalid example) Foo::bar
           if (islower(alias_name[0])) {
-            SPVM_COMPILER_error(compiler, "The alias name \"%s\" must begin with an upper case character.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "The alias name '%s' must begin with an upper case character.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);
           }
           else {
             const char* use_basic_type_name = op_use->uv.use->op_type->uv.type->unresolved_basic_type_name;
             const char* use_basic_type_name_exists = SPVM_HASH_get(type->basic_type->alias_symtable, alias_name, strlen(alias_name));
             if (use_basic_type_name_exists) {
-              SPVM_COMPILER_error(compiler, "The alias name \"%s\" is already used.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);
+              SPVM_COMPILER_error(compiler, "The alias name '%s' is already used.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);
             }
             else {
               SPVM_HASH_set(type->basic_type->alias_symtable, alias_name, strlen(alias_name), (void*)use_basic_type_name);
@@ -1026,7 +1026,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     else {
       const char* found_method_name = SPVM_HASH_get(type->basic_type->method_symtable, method_name, strlen(method_name));
       if (found_method_name) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" method.\n  at %s line %d", method_name, method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of the '%s' method.\n  at %s line %d", method_name, method->op_method->file, method->op_method->line);
       }
       else {
         // Bind standard functions
@@ -1147,7 +1147,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
     // A alias name cannnot end with "::"
     int32_t alias_name_length = strlen(alias_name);
     if (alias_name_length >= 2 && alias_name[alias_name_length - 2] == ':' && alias_name[alias_name_length - 1] == ':' ) {
-      SPVM_COMPILER_error(compiler, "The alias name \"%s\" cannnot end with \"::\".\n  at %s line %d", alias_name, op_name_alias->file, op_name_alias->line);
+      SPVM_COMPILER_error(compiler, "The alias name '%s' cannnot end with \"::\".\n  at %s line %d", alias_name, op_name_alias->file, op_name_alias->line);
     }
   }
   
@@ -1189,7 +1189,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
             break;
           }
           default: {
-            SPVM_COMPILER_error(compiler, "Invalid enumeration attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+            SPVM_COMPILER_error(compiler, "Invalid enumeration attribute '%s'.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
           }
         }
       }
@@ -1276,7 +1276,7 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
   class_var->name = op_name->uv.name;
   
   if (strstr(name, "::")) {
-    SPVM_COMPILER_error(compiler, "The class varaible name \"%s\" cannnot contain \"::\".\n  at %s line %d", class_var->name, op_name->file, op_name->line);
+    SPVM_COMPILER_error(compiler, "The class varaible name '%s' cannnot contain \"::\".\n  at %s line %d", class_var->name, op_name->file, op_name->line);
   }
   
   class_var->op_name = op_name;
@@ -1330,7 +1330,7 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid class variable attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+          SPVM_COMPILER_error(compiler, "Invalid class variable attribute '%s'.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
         }
       }
       if (field_method_attributes_count > 1) {
@@ -1372,7 +1372,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
   field->name = op_name_field->uv.name;
 
   if (strstr(field->op_name->uv.name, "::")) {
-    SPVM_COMPILER_error(compiler, "The field name \"%s\" cannnot contain \"::\".\n  at %s line %d", field->name, op_name_field->file, op_name_field->line);
+    SPVM_COMPILER_error(compiler, "The field name '%s' cannnot contain \"::\".\n  at %s line %d", field->name, op_name_field->file, op_name_field->line);
   }
 
   // Type
@@ -1422,7 +1422,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid field attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+          SPVM_COMPILER_error(compiler, "Invalid field attribute '%s'.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
         }
       }
       
@@ -1464,7 +1464,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   }
   const char* method_name = op_name_method->uv.name;
   if (strstr(method_name, "::")) {
-    SPVM_COMPILER_error(compiler, "The method name \"%s\" cannnot contain \"::\".\n  at %s line %d", method_name, op_name_method->file, op_name_method->line);
+    SPVM_COMPILER_error(compiler, "The method name '%s' cannnot contain \"::\".\n  at %s line %d", method_name, op_name_method->file, op_name_method->line);
   }
   
   // Create method information
@@ -1525,7 +1525,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid method attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+          SPVM_COMPILER_error(compiler, "Invalid method attribute '%s'.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
         }
       }
     }
@@ -2515,7 +2515,7 @@ SPVM_OP* SPVM_OP_build_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_var_decl, S
   op_var->uv.var->var_decl = var_decl;
   
   if (strstr(op_var->uv.var->name, "::")) {
-    SPVM_COMPILER_error(compiler, "The local variable name \"%s\" cannnot contain \"::\".\n  at %s line %d", op_var->uv.var->name, op_var->file, op_var->line);
+    SPVM_COMPILER_error(compiler, "The local variable name '%s' cannnot contain \"::\".\n  at %s line %d", op_var->uv.var->name, op_var->file, op_var->line);
   }
   
   return op_var;

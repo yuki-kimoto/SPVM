@@ -73,12 +73,12 @@ use Test::More;
   
   {
     my $source = "class MyClass { static method main : void () {\n#line a\n} }";
-    compile_not_ok($source, q|A line directive must end with "\n".|);
+    compile_not_ok($source, q|A line directive must end with '\n'.|);
   }
   
   {
     my $source = "class MyClass { static method main : void () {\n#line 12a\n} }";
-    compile_not_ok($source, q|A line directive must end with "\n".|);
+    compile_not_ok($source, q|A line directive must end with '\n'.|);
   }
   
   {
@@ -122,7 +122,7 @@ use Test::More;
   
   {
     my $source = qq|#file "/foo/bar.txt"a\nclass MyClass { static method main : void () {} }|;
-    compile_not_ok($source, q|A file directive must end with "\n".|);
+    compile_not_ok($source, q|A file directive must end with '\n'.|);
   }
   
   {
@@ -161,7 +161,7 @@ use Test::More;
   
   {
     my $source = qq|#lib "/foo/bar"a\nclass MyClass { static method main : void () {} }|;
-    compile_not_ok($source, q|The directory specified by a lib directive must end with "\n".|);
+    compile_not_ok($source, q|The directory specified by a lib directive must end with '\n'.|);
   }
   
   {
@@ -255,35 +255,35 @@ use Test::More;
 {
   {
     my $source = 'class myclass;';
-    compile_not_ok($source, qr|The class name "myclass" must begin with an upper case character|);
+    compile_not_ok($source, qr|The class name 'myclass' must begin with an upper case character|);
   }
   {
     my $source = 'class Myclass::foo;';
-    compile_not_ok($source, qr|The part names of the "Myclass::foo" module must begin with an upper case character|);
+    compile_not_ok($source, qr|The part names of the 'Myclass::foo' module must begin with an upper case character|);
   }
   {
     my $source = 'class Myclass::Foo::bar;';
-    compile_not_ok($source, qr|The part names of the "Myclass::Foo::bar" module must begin with an upper case character|);
+    compile_not_ok($source, qr|The part names of the 'Myclass::Foo::bar' module must begin with an upper case character|);
   }
   {
     my $source = 'class Myclass__Foo;';
-    compile_not_ok($source, qr|The class name "Myclass__Foo" cannnot constain "__"|);
+    compile_not_ok($source, qr|The class name 'Myclass__Foo' cannnot constain "__"|);
   }
   {
     my $source = 'class Myclass::;';
-    compile_not_ok($source, qr|The class name "Myclass::" cannnot end with "::"|);
+    compile_not_ok($source, qr|The class name 'Myclass::' cannnot end with "::"|);
   }
   {
     my $source = 'class MyClass::::Foo;';
-    compile_not_ok($source, qr|The class name "MyClass::::Foo" cannnot contains "::::"|);
+    compile_not_ok($source, qr|The class name 'MyClass::::Foo' cannnot contains "::::"|);
   }
   {
     my $source = 'class ::MyClass;';
-    compile_not_ok($source, qr|The class name "::MyClass" cannnot begin with "::"|);
+    compile_not_ok($source, qr|The class name '::MyClass' cannnot begin with "::"|);
   }
   {
     my $source = 'class 6MyClass;';
-    compile_not_ok($source, qr|The class name "6MyClass" cannnot begin with a number|);
+    compile_not_ok($source, qr|The class name '6MyClass' cannnot begin with a number|);
   }
 }
 
@@ -291,7 +291,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { use NotFoundClass; }';
-    compile_not_ok($source, qr|\QFailed to load the "NotFoundClass" module. The class file "NotFoundClass.spvm" is not found|);
+    compile_not_ok($source, qr|\QFailed to load the 'NotFoundClass' module. The class file 'NotFoundClass.spvm' is not found|);
   }
 }
 
@@ -305,11 +305,11 @@ use Test::More;
     }
     {
       my $source = q|class MyClass { static method main : void () { '\xG'; } }|;
-      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be followed by "\x" of the hexadecimal escape character/);
+      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be followed by '\x' of the hexadecimal escape character/);
     }
     {
       my $source = q|class MyClass { static method main : void () { '\xg'; } }|;
-      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be followed by "\x" of the hexadecimal escape character/);
+      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be followed by '\x' of the hexadecimal escape character/);
     }
     {
       my $source = q|class MyClass { static method main : void () { '\x{a'; } }|;
@@ -317,7 +317,7 @@ use Test::More;
     }
     {
       my $source = q|class MyClass { static method main : void () { '\A'; } }|;
-      compile_not_ok($source, qr/\Q"\A" is the invalid charater literal escape character/);
+      compile_not_ok($source, q|'\A' is the invalid charater literal escape character|);
     }
     {
       my $source = q|class MyClass { static method main : void () { '\xa; } }|;
@@ -357,7 +357,7 @@ use Test::More;
     
     {
       my $source = q|class MyClass { static method main : void () { '\o{}'; } }|;
-      compile_not_ok($source, qr|At least one octal number must be followed by "\\o\{" of the octal escape character|);
+      compile_not_ok($source, q|At least one octal number must be followed by '\o{' of the octal escape character|);
     }
     {
       my $source = q|class MyClass { static method main : void () { '\o{400}'; } }|;
@@ -373,7 +373,7 @@ use Test::More;
   {
     {
       my $source = q|class Tmp { static method main : void () { "Foo \xg Bar" } }|;
-      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be followed by "\x" of the hexadecimal escape character/);
+      compile_not_ok($source, qr/\QOne or tow hexadecimal numbers must be followed by '\x' of the hexadecimal escape character/);
     }
     {
       my $source = q|class Tmp { static method main : void () { "Foo \x{a Bar" } }|;
@@ -381,14 +381,14 @@ use Test::More;
     }
     {
       my $source = q|class Tmp { static method main : void () { "\u" }|;
-      compile_not_ok($source, qr/Invalid string literal escape character "\\u"/);
+      compile_not_ok($source, q|Invalid string literal escape character '\u'|);
     }
     
     # Unicode escape character
     {
       {
         my $source = q|class Tmp { static method main : void () { "\N{U+}" }|;
-        compile_not_ok($source, qr/One or more than one hexadecimal numbers must be followed by "\\N\{U\+" of the Unicode escape character/);
+        compile_not_ok($source, q|One or more than one hexadecimal numbers must be followed by '\N{U+' of the Unicode escape character|);
       }
       {
         my $source = q|class Tmp { static method main : void () { "\N{U+FFFFFFFFA}" }|;
@@ -429,7 +429,7 @@ use Test::More;
   {
     {
       my $source = q|class Tmp { static method main : void () { q'\t'; }|;
-      compile_not_ok($source, q|The escape character "\t" in a single-quoted string literal is invalid.|);
+      compile_not_ok($source, q|The escape character '\t' in a single-quoted string literal is invalid.|);
     }
   }
   
@@ -437,26 +437,26 @@ use Test::More;
   {
     # Integer literal decimal notation
     {
-      compile_not_ok_file('CompileError::Literal::Integer::IntOutOfRange', qr/The numeric literal "8232624535311216194" is out of range of maximum and minimum values of int type/);
+      compile_not_ok_file('CompileError::Literal::Integer::IntOutOfRange', qr/The numeric literal '8232624535311216194' is out of range of maximum and minimum values of int type/);
       {
         # Greater than int max value
         my $source = 'class Tmp { static method main : void () { 2147483648; } }';
-        compile_not_ok($source, qr/The numeric literal "2147483648" is out of range of maximum and minimum values of int type/);
+        compile_not_ok($source, qr/The numeric literal '2147483648' is out of range of maximum and minimum values of int type/);
       }
       {
         # Less than int minimal value
         my $source = 'class Tmp { static method main : void () { -2147483649; } }';
-        compile_not_ok($source, qr/The numeric literal "-2147483649" is out of range of maximum and minimum values of int type/);
+        compile_not_ok($source, qr/The numeric literal '-2147483649' is out of range of maximum and minimum values of int type/);
       }
       {
         # Greater than long max value
         my $source = 'class Tmp { static method main : void () { 9223372036854775808L; } }';
-        compile_not_ok($source, qr/The numeric literal "9223372036854775808L" is out of range of maximum and minimum values of long type/);
+        compile_not_ok($source, qr/The numeric literal '9223372036854775808L' is out of range of maximum and minimum values of long type/);
       }
       {
         # Less than long minimal value
         my $source = 'class Tmp { static method main : void () { -9223372036854775809L; } }';
-        compile_not_ok($source, qr/The numeric literal "-9223372036854775809L" is out of range of maximum and minimum values of long type/);
+        compile_not_ok($source, qr/The numeric literal '-9223372036854775809L' is out of range of maximum and minimum values of long type/);
       }
       {
         # Invalid "_"
@@ -485,12 +485,12 @@ use Test::More;
       {
         # Greater than int max value
         my $source = 'class Tmp { static method main : void () { 0x100000000; } }';
-        compile_not_ok($source, qr/The numeric literal "0x100000000" is out of range of maximum and minimum values of int type/);
+        compile_not_ok($source, qr/The numeric literal '0x100000000' is out of range of maximum and minimum values of int type/);
       }
       {
         # Greater than long max value
         my $source = 'class Tmp { static method main : void () { 0x10000000000000000L; } }';
-        compile_not_ok($source, qr/The numeric literal "0x10000000000000000L" is out of range of maximum and minimum values of long type/);
+        compile_not_ok($source, qr/The numeric literal '0x10000000000000000L' is out of range of maximum and minimum values of long type/);
       }
       {
         # Invalid "_"
@@ -514,12 +514,12 @@ use Test::More;
       {
         # Greater than int max value
         my $source = 'class Tmp { static method main : void () { 040000000000; } }';
-        compile_not_ok($source, qr/The numeric literal "040000000000" is out of range of maximum and minimum values of int type/);
+        compile_not_ok($source, qr/The numeric literal '040000000000' is out of range of maximum and minimum values of int type/);
       }
       {
         # Greater than long max value
         my $source = 'class Tmp { static method main : void () { 0x2000000000000000000000L; } }';
-        compile_not_ok($source, qr/The numeric literal "0x2000000000000000000000L" is out of range of maximum and minimum values of long type/);
+        compile_not_ok($source, qr/The numeric literal '0x2000000000000000000000L' is out of range of maximum and minimum values of long type/);
       }
       {
         # Invalid "_"
@@ -538,12 +538,12 @@ use Test::More;
       {
         # Greater than int max value
         my $source = 'class Tmp { static method main : void () { 0b100000000000000000000000000000000; } }';
-        compile_not_ok($source, qr/The numeric literal "0b100000000000000000000000000000000" is out of range of maximum and minimum values of int type/);
+        compile_not_ok($source, qr/The numeric literal '0b100000000000000000000000000000000' is out of range of maximum and minimum values of int type/);
       }
       {
         # Greater than long max value
         my $source = 'class Tmp { static method main : void () { 0b10000000000000000000000000000000000000000000000000000000000000000L; } }';
-        compile_not_ok($source, qr/The numeric literal "0b10000000000000000000000000000000000000000000000000000000000000000L" is out of range of maximum and minimum values of long type/);
+        compile_not_ok($source, qr/The numeric literal '0b10000000000000000000000000000000000000000000000000000000000000000L' is out of range of maximum and minimum values of long type/);
       }
       {
         # Invalid "_"
@@ -649,27 +649,27 @@ use Test::More;
       }
       {
         my $source = 'class MyClass { static method main : void () { my $Foo::name : int; } }';
-        compile_not_ok($source, qr/The local variable name "\$Foo::name" cannnot contain "::"/);
+        compile_not_ok($source, qr/The local variable name '\$Foo::name' cannnot contain "::"/);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $foo__bar : int; } }';
-        compile_not_ok($source, qr/The variable name "\$foo__bar" cannnot contain "__"/);
+        compile_not_ok($source, qr/The variable name '\$foo__bar' cannnot contain "__"/);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $::foo : int; } }';
-        compile_not_ok($source, qr/The variable name "\$::foo" cannnot begin with "\$::"/);
+        compile_not_ok($source, qr/The variable name '\$::foo' cannnot begin with "\$::"/);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $foo:: : int; } }';
-        compile_not_ok($source, qr/The variable name "\$foo::" cannnot end with "::"/);
+        compile_not_ok($source, qr/The variable name '\$foo::' cannnot end with "::"/);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $foo::::bar : int; } }';
-        compile_not_ok($source, qr/The variable name "\$foo::::bar" cannnot contain "::::"/);
+        compile_not_ok($source, qr/The variable name '\$foo::::bar' cannnot contain "::::"/);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $3foo : int; } }';
-        compile_not_ok($source, qr/The symbol name part of the variable name "\$3foo" cannnot begin with a number/);
+        compile_not_ok($source, qr/The symbol name part of the variable name '\$3foo' cannnot begin with a number/);
       }
     }
     
@@ -687,19 +687,19 @@ use Test::More;
     # A symbol name cannnot conatain "__"
     {
       my $source = 'class MyClass { use Int as Foo__Bar; static method main : void () { } }';
-      compile_not_ok($source, qr/\QThe symbol name "Foo__Bar" cannnot constain "__"/);
+      compile_not_ok($source, qr/\QThe symbol name 'Foo__Bar' cannnot constain "__"/);
     }
     
     # A symbol name cannnot end with "::"
     {
       my $source = 'class MyClass { use Int as Foo::; static method main : void () { } }';
-      compile_not_ok($source, qr/\QThe alias name "Foo::" cannnot end with "::"/);
+      compile_not_ok($source, qr/\QThe alias name 'Foo::' cannnot end with "::"/);
     }
     
     # A symbol name cannnot contains "::::".
     {
       my $source = 'class MyClass { use Int as Foo::::Bar; static method main : void () { } }';
-      compile_not_ok($source, qr/\QThe symbol name "Foo::::Bar" cannnot contains "::::"/);
+      compile_not_ok($source, qr/\QThe symbol name 'Foo::::Bar' cannnot contains "::::"/);
     }
   }
 }
@@ -709,7 +709,7 @@ use Test::More;
   # The string literal of the left operand of the fat camma cannnot contains "::".
   {
     my $source = 'class MyClass { static method main : void () { {Foo::Bar => 1}; } }';
-    compile_not_ok($source, qr/\QThe string literal "Foo::Bar" of the left operand of the fat camma cannnot contains "::"/);
+    compile_not_ok($source, qr/\QThe string literal 'Foo::Bar' of the left operand of the fat camma cannnot contains "::"/);
   }
 }
 
@@ -784,7 +784,7 @@ use Test::More;
     
     eval { do $test_file or die $@ };
     
-    like ($@, qr|\Q[Compilation Error]The class name "CompileError::Class::ClassNameDifferntFromClassFileNameWithAnonFieldXXXXXXX" must be "CompileError::Class::ClassNameDifferntFromClassFileNameWithAnonField".|);
+    like ($@, qr|\Q[Compilation Error]The class name 'CompileError::Class::ClassNameDifferntFromClassFileNameWithAnonFieldXXXXXXX' must be 'CompileError::Class::ClassNameDifferntFromClassFileNameWithAnonField'.|);
   }
   
 }
