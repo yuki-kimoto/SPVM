@@ -1339,20 +1339,20 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
       if (access_control_attributes_count > 1) {
         SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_class_var->file, op_class_var->line);
       }
-      
-      if (!class_var->has_getter && op_getter) {
-        SPVM_COMPILER_error(compiler, "A class variable attribute of either 'ro' or 'rw' must be specified when the getter is defined.\n  at %s line %d", op_class_var->file, op_class_var->line);
-      }
-      
-      class_var->op_getter = op_getter;
-      
-      if (!class_var->has_setter && op_setter) {
-        SPVM_COMPILER_error(compiler, "A class variable attribute of either 'wo' or 'rw' must be specified when the setter is defined.\n  at %s line %d", op_class_var->file, op_class_var->line);
-      }
-      
-      class_var->op_setter = op_setter;
     }
   }
+  
+  if (!class_var->has_getter && op_getter) {
+    SPVM_COMPILER_error(compiler, "A class variable attribute of either 'ro' or 'rw' must be specified when the getter is defined.\n  at %s line %d", op_class_var->file, op_class_var->line);
+  }
+  
+  class_var->op_getter = op_getter;
+  
+  if (!class_var->has_setter && op_setter) {
+    SPVM_COMPILER_error(compiler, "A class variable attribute of either 'wo' or 'rw' must be specified when the setter is defined.\n  at %s line %d", op_class_var->file, op_class_var->line);
+  }
+  
+  class_var->op_setter = op_setter;
   
   // The default of the access controll of the class variable is private.
   if (class_var->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
@@ -1433,20 +1433,21 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
       if (access_control_attributes_count > 1) {
         SPVM_COMPILER_error(compiler, "Only one of field attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_field->file, op_field->line);
       }
-      
-      if (!field->has_getter && op_getter) {
-        SPVM_COMPILER_error(compiler, "A field attribute of either 'ro' or 'rw' must be specified when the getter is defined.\n  at %s line %d", op_field->file, op_field->line);
-      }
-      
-      field->op_getter = op_getter;
-      
-      if (!field->has_setter && op_setter) {
-        SPVM_COMPILER_error(compiler, "A field attribute of either 'wo' or 'rw' must be specified when the setter is defined.\n  at %s line %d", op_field->file, op_field->line);
-      }
-      
-      field->op_setter = op_setter;
     }
   }
+  
+      
+  if (!field->has_getter && op_getter) {
+    SPVM_COMPILER_error(compiler, "A field attribute of either 'ro' or 'rw' must be specified when the getter is defined.\n  at %s line %d", op_field->file, op_field->line);
+  }
+  
+  field->op_getter = op_getter;
+  
+  if (!field->has_setter && op_setter) {
+    SPVM_COMPILER_error(compiler, "A field attribute of either 'wo' or 'rw' must be specified when the setter is defined.\n  at %s line %d", op_field->file, op_field->line);
+  }
+  
+  field->op_setter = op_setter;
   
   field->op_field = op_field;
   

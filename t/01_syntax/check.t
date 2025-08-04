@@ -946,6 +946,21 @@ use Test::More;
     ];
     compile_not_ok($source, q|The private $MyClass2::FOO class variable cannnot be accessed from the current class MyClass.|);
   }
+  
+  {
+    my $source = [
+      'class MyClass { our $X : int get {}; }',
+    ];
+    compile_not_ok($source, q|A class variable attribute of either 'ro' or 'rw' must be specified when the getter is defined.|);
+  }
+  
+  {
+    my $source = [
+      'class MyClass { our $X : int set {}; }',
+    ];
+    compile_not_ok($source, q|A class variable attribute of either 'wo' or 'rw' must be specified when the setter is defined.|);
+  }
+  
 }
 
 # Class Variable Definition
@@ -1044,6 +1059,20 @@ use Test::More;
   {
     my $source = 'class MyClass { use Fn as FUNC; method foo : void () { method : void () { FUNC->INT_MAX; }; } }';
     compile_ok($source);
+  }
+  
+  {
+    my $source = [
+      'class MyClass { has x : int get {}; }',
+    ];
+    compile_not_ok($source, q|A field attribute of either 'ro' or 'rw' must be specified when the getter is defined.|);
+  }
+  
+  {
+    my $source = [
+      'class MyClass { has x : int set {}; }',
+    ];
+    compile_not_ok($source, q|A field attribute of either 'wo' or 'rw' must be specified when the setter is defined.|);
   }
   
 }
