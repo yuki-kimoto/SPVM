@@ -17,6 +17,24 @@ class TestCase::Accessor {
   has value_double : rw double;
   has value_object : rw Point;
   
+  our $VALUE_BYTE_USER_DEFINED : rw byte
+    GET {
+      return $VALUE_BYTE_USER_DEFINED * 2;
+    }
+    SET {
+      $VALUE_BYTE_USER_DEFINED = (BYTE)($_ * 3);
+    }
+  ;
+  
+  our $VALUE_INT_USER_DEFINED : rw int
+    GET {
+      return $VALUE_BYTE_USER_DEFINED * 2;
+    }
+    SET {
+      $VALUE_BYTE_USER_DEFINED = $_ * 3;
+    }
+  ;
+  
   has value_byte_user_defined : rw byte
     get {
       return $self->{value_byte_user_defined} * 2;
@@ -385,4 +403,34 @@ class TestCase::Accessor {
     return 1;
   }
 
+  static method class_var_user_defined : int () {
+    {
+      &SET_VALUE_INT_USER_DEFINED(2);
+      
+      unless ($VALUE_INT_USER_DEFINED == 6) {
+        return 0;
+      }
+      
+      unless (&VALUE_INT_USER_DEFINED == 12) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      &SET_VALUE_BYTE_USER_DEFINED(2);
+      
+      unless ($VALUE_BYTE_USER_DEFINED == 6) {
+        return 0;
+      }
+      
+      unless (&VALUE_BYTE_USER_DEFINED == 12) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
 }
