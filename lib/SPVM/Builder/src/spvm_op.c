@@ -257,6 +257,8 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "ENABLE_OPTIONS",
     "DISABLE_OPTIONS",
     "IS_OPTIONS",
+    "GET",
+    "SET",
   };
   
   return id_names;

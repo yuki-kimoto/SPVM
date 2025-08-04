@@ -21,7 +21,7 @@
   #include "spvm_string.h"
 %}
 
-%token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
+%token <opval> CLASS HAS GET SET METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
 %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS
@@ -36,7 +36,7 @@
 %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
-%type <opval> method anon_method opt_args args arg use require class_alias our has anon_method_fields anon_method_field interface allow
+%type <opval> method anon_method opt_args args arg use require class_alias our has getter setter anon_method_fields anon_method_field interface allow
 %type <opval> opt_attributes attributes
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement foreach_statement
@@ -471,10 +471,24 @@ our
     }
 
 has
-  : HAS field_name ':' opt_attributes qualified_type
+  : HAS field_name ':' opt_attributes qualified_type opt_getter opt_setter
     {
       $$ = SPVM_OP_build_field(compiler, $1, $2, $4, $5);
     }
+
+opt_getter
+  : /* Empty */
+  | getter
+
+getter
+  : GET block
+
+opt_setter
+  : /* Empty */
+  | setter
+
+setter
+  : SET block
 
 method
   : opt_attributes METHOD method_name ':' return_type '(' opt_args ')' block

@@ -2234,6 +2234,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_STRING_COMPARISON_GE);
                   keyword_token = STRGE;
                 }
+                else if (strcmp(symbol_name, "get") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_GET);
+                  keyword_token = GET;
+                }
                 break;
               }
               case 'h' : {
@@ -2467,6 +2471,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (strcmp(symbol_name, "say") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SAY);
                   keyword_token = SAY;
+                }
+                else if (strcmp(symbol_name, "set") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SET);
+                  keyword_token = SET;
                 }
                 else if (strcmp(symbol_name, "static") == 0) {
                   SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->current_file, compiler->current_line);
