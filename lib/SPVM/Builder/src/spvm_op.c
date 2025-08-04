@@ -1248,7 +1248,7 @@ SPVM_OP* SPVM_OP_build_enumeration_item(SPVM_COMPILER* compiler, SPVM_OP* op_nam
   return op_method;
 }
 
-SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_OP* op_name, SPVM_OP* op_attributes, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_OP* op_name, SPVM_OP* op_attributes, SPVM_OP* op_type, SPVM_OP* op_getter, SPVM_OP* op_setter) {
   
   SPVM_CLASS_VAR* class_var = SPVM_CLASS_VAR_new(compiler);
   
@@ -1319,6 +1319,18 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
       if (access_control_attributes_count > 1) {
         SPVM_COMPILER_error(compiler, "Only one of class variable attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_class_var->file, op_class_var->line);
       }
+      
+      if (!class_var->has_getter && op_getter) {
+        SPVM_COMPILER_error(compiler, "A class variable attribute of either 'ro' or 'rw' must be specified when the getter is defined.\n  at %s line %d", op_class_var->file, op_class_var->line);
+      }
+      
+      class_var->op_getter = op_getter;
+      
+      if (!class_var->has_setter && op_setter) {
+        SPVM_COMPILER_error(compiler, "A class variable attribute of either 'wo' or 'rw' must be specified when the setter is defined.\n  at %s line %d", op_class_var->file, op_class_var->line);
+      }
+      
+      class_var->op_setter = op_setter;
     }
   }
   

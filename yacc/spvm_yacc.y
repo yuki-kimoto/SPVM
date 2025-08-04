@@ -465,9 +465,9 @@ enumeration_item
     }
 
 our
-  : OUR VAR_NAME ':' opt_attributes qualified_type ';'
+  : OUR VAR_NAME ':' opt_attributes qualified_type opt_getter opt_setter ';'
     {
-      $$ = SPVM_OP_build_class_var(compiler, $1, $2, $4, $5);
+      $$ = SPVM_OP_build_class_var(compiler, $1, $2, $4, $5, $6, $7);
     }
 
 has

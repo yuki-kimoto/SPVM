@@ -12,6 +12,8 @@ struct spvm_class_var {
   SPVM_BASIC_TYPE* current_basic_type;
   SPVM_OP* op_class_var;
   SPVM_OP* op_name;
+  SPVM_OP* op_getter;
+  SPVM_OP* op_setter;
   int32_t index;
   int8_t has_setter;
   int8_t has_getter;
