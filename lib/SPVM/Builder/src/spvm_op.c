@@ -1330,7 +1330,7 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
   return op_class_var;
 }
 
-SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type, SPVM_OP* getter, SPVM_OP* setter) {
+SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type, SPVM_OP* op_getter, SPVM_OP* op_setter) {
 
   // Create field information
   SPVM_FIELD* field = SPVM_FIELD_new(compiler);
@@ -1397,9 +1397,22 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
       if (field_method_attributes_count > 1) {
         SPVM_COMPILER_error(compiler, "Only one of field attributes \"rw\", \"ro\" or \"wo\" can be specifed.\n  at %s line %d", op_field->file, op_field->line);
       }
+      
       if (access_control_attributes_count > 1) {
         SPVM_COMPILER_error(compiler, "Only one of field attributes \"private\", \"protected\" or \"public\" can be specified.\n  at %s line %d", op_field->file, op_field->line);
       }
+      
+      if (!field->has_getter && op_getter) {
+        SPVM_COMPILER_error(compiler, "A field attribute of either 'ro' or 'rw' must be specified when the getter is defined.\n  at %s line %d", op_field->file, op_field->line);
+      }
+      
+      field->op_getter = op_getter;
+      
+      if (!field->has_setter && op_setter) {
+        SPVM_COMPILER_error(compiler, "A field attribute of either 'wo' or 'rw' must be specified when the setter is defined.\n  at %s line %d", op_field->file, op_field->line);
+      }
+      
+      field->op_setter = op_setter;
     }
   }
   
