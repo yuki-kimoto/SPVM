@@ -485,6 +485,9 @@ opt_getter
 
 getter
   : GET block
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
 
 opt_setter
   : /* Empty */
@@ -495,6 +498,9 @@ opt_setter
 
 setter
   : SET block
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
 
 method
   : opt_attributes METHOD method_name ':' return_type '(' opt_args ')' block
