@@ -77,7 +77,7 @@ sub new {
   my $script_name = $self->{script_name};
   
   unless (defined $script_name || defined $class_name) {
-    confess("The \"script_name\" option or the \"class_name\" option must be defined.");
+    confess("'script_name' option or 'class_name' option must be defined.");
   }
   
   # New SPVM::Builder object
@@ -108,7 +108,7 @@ sub compile {
   my $source;
   if (defined $script_name) {
     open my $fh, '<', $script_name
-      or confess "Can't open file \"$script_name\":$!";
+      or confess "Can't open file '$script_name':$!";
     
     $source = do { undef $/; <$fh> };
   }
@@ -199,7 +199,7 @@ sub get_config_file {
   my $config_file = SPVM::Builder::Util::search_config_file($class_name);
   
   unless ($config_file) {
-    confess("The config file for the class \"$class_name\" is not found.");
+    confess("The config file for '$class_name' class is not found.");
   }
   
   return $config_file;

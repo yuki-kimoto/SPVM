@@ -242,7 +242,7 @@ sub new {
       $config = SPVM::Builder::Config::Exe->new;
     }
     else {
-      Carp::confess("The config file \"$config_file\" is not found.");
+      Carp::confess("The config file '$config_file' is not found.");
     }
   }
   
@@ -251,7 +251,7 @@ sub new {
   }
   
   unless ($config->output_type eq 'exe') {
-    Carp::confess("output_type field in the config file \"$config_file\" for creating an executable file must be \"exe\".");
+    Carp::confess("output_type field in the config file '$config_file' for creating an executable file must be 'exe'.");
   }
   
   $self->{config} = $config;
@@ -315,7 +315,7 @@ sub new {
     }
     
     unless ($spvmcc_json_archive) {
-      Carp::confess "SVPM archive \"$spvm_archive\" must contain spvmcc.json";
+      Carp::confess "SVPM archive '$spvm_archive' must contain spvmcc.json";
     }
     
     my $spvmcc_info_archive = JSON::PP->new->decode($spvmcc_json_archive);
@@ -475,7 +475,7 @@ sub build_exe_file {
     my $spvmcc_json_file = "$build_work_dir/spvmcc.json";
     
     open my $fh, '>', $spvmcc_json_file
-      or die "Cannot open the file \"$spvmcc_json_file\":$!";
+      or die "Cannot open the file '$spvmcc_json_file':$!";
     
     print $fh $spvmcc_json;
   }
@@ -512,7 +512,7 @@ sub generate_spvm_class_files_into_work_dir {
     my $class_file_content_length = $class_file->get_content_length;
     
     open my $fh, '>', $spvm_class_path
-      or die "Cannot open the file \"$spvm_class_path\":$!";
+      or die "Cannot open the file '$spvm_class_path':$!";
     
     syswrite($fh, $class_file_content, $class_file_content_length);
   }
@@ -529,7 +529,7 @@ sub compile {
   my $compiler = $self->compiler;
   
   open my $script_fh, '<', $script_name
-    or die "Can't open file \"$script_name\":$!";
+    or die "Can't open file '$script_name':$!";
     
   my $source = do { local $/; <$script_fh> };
   
@@ -1396,7 +1396,7 @@ sub parse_option_values_native_class {
       }
     }
     else {
-      Carp::confess "Invalid option value \"$option_value\" for $option_name option.";
+      Carp::confess "Invalid option value '$option_value' for $option_name option.";
     }
   }
   
@@ -1441,15 +1441,15 @@ sub check_script_name {
   my ($script_name_base) = fileparse $script_name;
   
   unless ($script_name_base =~ /^[a-zA-Z_][a-zA-Z_0-9\-]*\.spvm$/) {
-    Carp::confess "The script base name must match the regex qr/^[a-zA-Z_][a-zA-Z_0-9\\-]*\\.spvm\$/. SCRIPT_NAME=\"$script_name\".";
+    Carp::confess "The script base name must match the regex qr/^[a-zA-Z_][a-zA-Z_0-9\\-]*\\.spvm\$/. SCRIPT_NAME='$script_name'.";
   }
   
   if ($script_name_base =~ /--/) {
-    Carp::confess "The script base name cannnot contain \"--\". SCRIPT_NAME=$script_name.";
+    Carp::confess "The script base name cannnot contain '--'. SCRIPT_NAME=$script_name.";
   }
   
   if ($script_name_base =~ /__/) {
-    Carp::confess "The script base name cannot contain \"__\". SCRIPT_NAME=$script_name.";
+    Carp::confess "The script base name cannot contain '__'. SCRIPT_NAME=$script_name.";
   }
   
 }
@@ -1561,7 +1561,7 @@ sub add_dir_to_tar {
   my $cwd = Cwd::getcwd;
   
   chdir $dir
-    or Carp::confess "Cannot change directory to \"$dir\":$!";
+    or Carp::confess "Cannot change directory to '$dir':$!";
   
   eval { 
     find(
@@ -1592,7 +1592,7 @@ sub add_dir_to_tar {
   };
   
   chdir $cwd
-    or Carp::confess "Cannot change directory to \"$cwd\":$!";
+    or Carp::confess "Cannot change directory to '$cwd':$!";
   
   if ($@) {
     Carp::confess $@;

@@ -24,7 +24,7 @@ sub get_spvm_version_header_file {
   my $spvm_version_header_file = "$builder_dir/include/spvm_version.h";
   
   unless (-f $spvm_version_header_file) {
-    confess("The SPVM version header file \"$spvm_version_header_file\" is not found.");
+    confess("The SPVM version header file '$spvm_version_header_file' is not found.");
   }
   
   return $spvm_version_header_file;
@@ -146,7 +146,7 @@ sub slurp_binary {
   my ($file) = @_;
   
   open my $fh, '<', $file
-    or confess("Can't open file \"$file\":$!");
+    or confess("Can't open file '$file':$!");
     
   my $content = do { local $/; <$fh> };
   
@@ -186,7 +186,7 @@ sub spurt_binary {
   mkpath dirname $file;
   
   open my $fh, '>:raw', $file
-    or confess("Can't open file \"$file\":$!");
+    or confess("Can't open file '$file':$!");
     
   print $fh $content;
 }
@@ -476,7 +476,7 @@ sub get_normalized_env {
 sub get_version_string {
   my ($spvm_class_file) = @_;
   
-  open my $spvm_module_fh, '<', $spvm_class_file or die "Can't open the file \"$spvm_class_file\": $!";
+  open my $spvm_module_fh, '<', $spvm_class_file or die "Can't open the file '$spvm_class_file': $!";
   local $/;
   my $content = <$spvm_module_fh>;
   my $version_string;
@@ -497,7 +497,7 @@ sub get_spvm_version_string {
   my $spvm_version_header_file = "$builder_dir/include/spvm_version.h";
   
   open my $spvm_module_fh, '<', $spvm_version_header_file
-    or die "Can't open the file \"$spvm_version_header_file\": $!";
+    or die "Can't open the file '$spvm_version_header_file': $!";
   local $/;
   my $content = <$spvm_module_fh>;
   my $version_string;
@@ -506,7 +506,7 @@ sub get_spvm_version_string {
   }
   
   unless (defined $version_string) {
-    confess("The version string can't be found in \"$spvm_version_header_file\"");
+    confess("The version string can't be found in '$spvm_version_header_file'");
   }
   
   return $version_string;
@@ -582,7 +582,7 @@ sub get_method_addresses {
           unless ($cfunc_address) {
             my $dl_error = DynaLoader::dl_error();
             my $error = <<"EOS";
-Can't find native function \"$cfunc_name\" corresponding to ${class_name}->$method_name in \"$dynamic_lib_file\"
+Can't find native function '$cfunc_name' corresponding to ${class_name}->$method_name in '$dynamic_lib_file'
 
 You must write the following definition.
 --------------------------------------------------
@@ -601,7 +601,7 @@ EOS
         }
         else {
           my $dl_error = DynaLoader::dl_error();
-          confess("The DynaLoader::dl_load_file function failed:Can't load the \"$dynamic_lib_file\" file for $category methods in $class_name class: $dl_error");
+          confess("The DynaLoader::dl_load_file function failed:Can't load the '$dynamic_lib_file' file for $category methods in $class_name class: $dl_error");
         }
       }
       else {

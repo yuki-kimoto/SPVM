@@ -346,7 +346,7 @@ sub load_mode_config {
   $mode_config_file .= ".config";
   
   unless (-f $mode_config_file) {
-    confess("Can't find the config file \"$mode_config_file\"");
+    confess("Can't find the config file '$mode_config_file'");
   }
   
   my $config = $self->load_config($mode_config_file);
@@ -493,7 +493,7 @@ sub load_spvm_archive {
   
   for my $key (keys %$options) {
     unless ($key eq 'skip') {
-      Carp::confess "\"$key\" option is not available.";
+      Carp::confess "'$key' option is not available.";
     }
   }
   
@@ -501,7 +501,7 @@ sub load_spvm_archive {
   
   if (defined $skip) {
     unless (ref $skip eq 'ARRAY') {
-      Carp::confess "The value of \"skip\" option must be an array reference.";
+      Carp::confess "The value of 'skip' option must be an array reference.";
     }
     $self->{spvm_archive_skip_classes} = $options->{skip};
   }
