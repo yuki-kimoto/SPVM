@@ -4643,7 +4643,7 @@ class TestCase::Module::Fn {
       
       eval { Fn->check_option_names($options, $available_option_names); }
       
-      unless (Fn->contains($@, "The \"bar\" option is not available.")) {
+      unless (Fn->contains($@, "'bar' option is not available.")) {
         return 0;
       }
     }

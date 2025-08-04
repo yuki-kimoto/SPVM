@@ -34,7 +34,7 @@ class Packer {
     my $objects_length = @$objects;
     
     unless ($specifiers_length <= $objects_length) {
-      die "The length of the specifiers in the template \"$template\" must be less than or equal to the lenght of the objects \$objects.";
+      die "The length of the specifiers in the template '$template' must be less than or equal to the lenght of the objects \$objects.";
     }
     
     my $binary_buffer = StringBuffer->new;
@@ -553,7 +553,7 @@ class Packer {
           $specifier_type = Packer::Specifier->TYPE_DOUBLE;
         }
         default : {
-          die "Invalid specifier " . Fn->chr($ch) . " in the template \"$template\".";
+          die "Invalid specifier " . Fn->chr($ch) . " in the template '$template'.";
         }
       }
       
@@ -603,7 +603,7 @@ class Packer {
           $length = Fn->to_int($length_string);
           
           unless ($length > 0) {
-            die "The data length $length in the template in the template \"$template\" must be a positive value.";
+            die "The data length $length in the template in the template '$template' must be a positive value.";
           }
         }
         else {
@@ -615,7 +615,7 @@ class Packer {
         
       if ($specifier_type == Packer::Specifier->TYPE_STRING) {
         if ($is_numeric_object) {
-          die "The data length $length for \"a\" in the template in the template \"$template\" must be specified.";
+          die "The data length $length for 'a' in the template in the template '$template' must be specified.";
         }
       }
       

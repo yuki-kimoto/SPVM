@@ -1186,7 +1186,7 @@ class Fn {
       }
       elsif ($code_points_index == 1) {
         unless ($code_point == '-') {
-          die "The second character ot the range format of the argument name $arg_name must be \"-\".";
+          die "The second character ot the range format of the argument name $arg_name must be '-'.";
         }
       }
       elsif ($code_points_index == 2) {
@@ -1273,7 +1273,7 @@ class Fn {
       my $option_name = (string)$options->[$i];
       
       unless ($available_option_names_h->get($option_name)) {
-        die "The \"$option_name\" option is not available.";
+        die "'$option_name' option is not available.";
       }
     }
   }

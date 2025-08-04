@@ -323,7 +323,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Byte) {
-      die "The type of the value for the key \"$key\" must Byte type.";
+      die "The type of the value for the key '$key' must Byte type.";
     }
     
     return (int)(byte)$object;
@@ -341,7 +341,7 @@ class Hash {
       $value = (int)(short)$object;
     }
     else {
-      die "The type of the value for the key \"$key\" must Short type or Byte type.";
+      die "The type of the value for the key '$key' must Short type or Byte type.";
     }
     
     return $value;
@@ -362,7 +362,7 @@ class Hash {
       $value = (int)$object;
     }
     else {
-      die "The type of the value for the key \"$key\" must Int type, Short type or Byte type.";
+      die "The type of the value for the key '$key' must Int type, Short type or Byte type.";
     }
     
     return $value;
@@ -386,7 +386,7 @@ class Hash {
       $value = (long)$object;
     }
     else {
-      die "The type of the value for the key \"$key\" must Long type, Int type, Short type or Byte type.";
+      die "The type of the value for the key '$key' must Long type, Int type, Short type or Byte type.";
     }
     
     return $value;
@@ -396,7 +396,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Float) {
-      die "The type of the value for the key \"$key\" must Float type.";
+      die "The type of the value for the key '$key' must Float type.";
     }
     
     return (float)$object;
@@ -406,7 +406,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Double) {
-      die "The type of the value for the key \"$key\" must Double type.";
+      die "The type of the value for the key '$key' must Double type.";
     }
     
     return (double)$object;
@@ -416,7 +416,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless (!$object || $object is_type string) {
-      die "The type of the value for the key \"$key\" must be string type.";
+      die "The type of the value for the key '$key' must be string type.";
     }
     
     return (string)$object;

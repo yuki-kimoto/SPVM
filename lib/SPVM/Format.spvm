@@ -123,8 +123,8 @@ class Format {
         }
         
         unless ($index < $format_length) {
-          die "Invalid conversion in sprintf: \""
-              . Fn->substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
+          die "Invalid conversion in sprintf: '"
+              . Fn->substr($format, $specifier_base_index, $index - $specifier_base_index) . "'";
         }
         
         my $specifier_first_char = $format->[$index];
@@ -296,7 +296,7 @@ class Format {
           &_push_formatted_string_unsigned($buffer, $formatted_value, $width, $pad_char, $left_justified);
         }
         else {
-          die "Invalid specifier \"%$specifier\".";
+          die "Invalid specifier '%$specifier'.";
         }
         
         ++$arg_count;
