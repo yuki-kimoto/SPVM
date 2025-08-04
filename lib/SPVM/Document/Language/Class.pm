@@ -1173,6 +1173,19 @@ A user defined class variable getter can be defined with C<get> keyword.
     ;
   }
 
+User defined getter and setter can be defined at once.
+
+  class MyClass {
+    our $VALUE : rw int
+      get {
+        return $VALUE;
+      }
+      set {
+        $VALUE = $_;
+      }
+    ;
+  }
+
 =head3 Class Variable Setter Method
 
 A class variable setter method is a method to perform the operation of L<setting a class variable|SPVM::Document::Language::Operators/"Setting a Class Variable">.

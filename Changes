@@ -1,4 +1,26 @@
 0.990078 2025-08-03
+  [New Features]
+    * Add user defined field and class variable setter/getter syntax.
+      class MyClass {
+        our $VALUE : rw int
+          get {
+            return $VALUE;
+          }
+          set {
+            $VALUE = $_;
+          }
+        ;
+        
+        has value : rw int
+          get {
+            return $self->{value};
+          }
+          set {
+            $self->{value} = $_;
+          }
+        ;
+      }
+      
   [Exception Message Changes]
     * Fix English in exception messages.
   [Internal Changes with Document Changes]
