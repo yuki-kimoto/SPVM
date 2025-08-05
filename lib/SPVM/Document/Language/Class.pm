@@ -1132,6 +1132,14 @@ The List of Class Variable Attributes:
       This class variable is used for cache in runtime.
     </td>
   </tr>
+  <tr>
+    <td>
+      <b>virtual</b>
+    </td>
+    <td>
+      The class variable is not defined, but you can defined accessors.
+    </td>
+  </tr>
 </table>
 
 =end html
@@ -1341,6 +1349,14 @@ The List of Field Attributes:
     </td>
     <td>
       This field defines a <a href="#Field-Getter-Method">getter method</a> and a <a href="#Field-Setter-Method">setter method</a>.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>virtual</b>
+    </td>
+    <td>
+      The field is not defined, but you can defined accessors.
     </td>
   </tr>
 </table>

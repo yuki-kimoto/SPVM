@@ -961,6 +961,13 @@ use Test::More;
     compile_not_ok($source, q|A class variable attribute of either 'wo' or 'rw' must be specified when the setter is defined.|);
   }
   
+  {
+    my $source = [
+      'class MyClass { our $X : virtual int; static method main : void () { $X; } }',
+    ];
+    compile_not_ok($source, q|$X is not found.|);
+  }
+  
 }
 
 # Class Variable Definition
@@ -1073,6 +1080,13 @@ use Test::More;
       'class MyClass { has x : int set {}; }',
     ];
     compile_not_ok($source, q|A field attribute of either 'wo' or 'rw' must be specified when the setter is defined.|);
+  }
+  
+  {
+    my $source = [
+      'class MyClass { has x : virtual int; static method main : void () { my $object = new MyClass; $object->{x}; } }',
+    ];
+    compile_not_ok($source, q|x field is not found in MyClass class or its super classes.|);
   }
   
 }

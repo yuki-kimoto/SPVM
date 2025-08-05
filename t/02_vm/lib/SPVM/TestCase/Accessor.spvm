@@ -9,6 +9,16 @@ class TestCase::Accessor {
   our $VALUE_DOUBLE : rw double;
   our $VALUE_OBJECT : rw Point;
   
+  our $VALUE_REAL : int;
+  our $VALUE_VIRTUAL : virtual rw int
+    get {
+      return $VALUE_REAL;
+    }
+    set {
+      $VALUE_REAL = $_;
+    }
+  ;
+  
   has value_byte : rw byte;
   has value_short : rw short;
   has value_int : rw int;
@@ -16,6 +26,16 @@ class TestCase::Accessor {
   has value_float : rw float;
   has value_double : rw double;
   has value_object : rw Point;
+  
+  has value_real : int;
+  has value_virtual : virtual rw int
+    get {
+      return $self->{value_real};
+    }
+    set {
+      $self->{value_real} = $_;
+    }
+  ;
   
   our $VALUE_BYTE_USER_DEFINED : rw byte
     get {
@@ -229,7 +249,17 @@ class TestCase::Accessor {
         return 0;
       }
     }
-
+    
+    {
+      my $object = new TestCase::Accessor;
+      
+      $object->set_value_virtual(1);
+      
+      unless ($object->value_virtual == 1) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 
@@ -398,6 +428,13 @@ class TestCase::Accessor {
         return 0;
       }
       $VALUE_OBJECT = undef;
+    }
+    
+    {
+      TestCase::Accessor->SET_VALUE_VIRTUAL(1);
+      unless (TestCase::Accessor->VALUE_VIRTUAL == 1) {
+        return 0;
+      }
     }
     
     return 1;

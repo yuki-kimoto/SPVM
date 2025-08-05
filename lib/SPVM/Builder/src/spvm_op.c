@@ -570,7 +570,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "An interface cannnot have class variables.\n  at %s line %d", op_decl->file, op_decl->line);
         }
-        SPVM_LIST_push(type->basic_type->class_vars, op_decl->uv.class_var);
         
         // Getter
         if (class_var->has_getter) {
@@ -696,6 +695,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
         }
+        
+        if (!class_var->is_virtual) {
+          SPVM_LIST_push(type->basic_type->class_vars, op_decl->uv.class_var);
+        }
       }
       // Field declarations
       else if (op_decl->id == SPVM_OP_C_ID_FIELD) {
@@ -704,7 +707,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "An interface cannnot have fields.\n  at %s line %d", op_decl->file, op_decl->line);
         }
-        SPVM_LIST_push(type->basic_type->unmerged_fields, field);
         
         // Getter
         if (field->has_getter) {
@@ -828,6 +830,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block);
           
           SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
+        }
+        
+        if (!field->is_virtual) {
+          SPVM_LIST_push(type->basic_type->unmerged_fields, field);
         }
       }
       // Enumeration definition
@@ -1329,6 +1335,10 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
           class_var->is_cache = 1;
           break;
         }
+        case SPVM_ATTRIBUTE_C_ID_VIRTUAL: {
+          class_var->is_virtual = 1;
+          break;
+        }
         default: {
           SPVM_COMPILER_error(compiler, "Invalid class variable attribute '%s'.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
         }
@@ -1419,6 +1429,10 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
         case SPVM_ATTRIBUTE_C_ID_WO: {
           field->has_setter = 1;
           field_method_attributes_count++;
+          break;
+        }
+        case SPVM_ATTRIBUTE_C_ID_VIRTUAL: {
+          field->is_virtual = 1;
           break;
         }
         default: {

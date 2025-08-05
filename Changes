@@ -5,7 +5,9 @@
       =encoding utf8
       
       =head1 Well Known Child Classes
-      
+  [New Features]
+    * Add virtual class attribute and field attribute.
+    
 0.990078 2025-08-04
   [New Features]
     * Add user defined field and class variable setter/getter syntax.
