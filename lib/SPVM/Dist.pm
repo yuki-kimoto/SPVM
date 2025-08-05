@@ -505,6 +505,10 @@ EOS
 
 
 
+=head1 Well Known Child Classes
+
+
+
 =head1 See Also
 
 
@@ -527,6 +531,8 @@ package SPVM::$class_name;
 $version_decl
 
 1;
+
+=encoding utf8
 
 =head1 Name
 
