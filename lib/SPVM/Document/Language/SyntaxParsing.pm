@@ -242,6 +242,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
 
   setter
     : SET block
+    | SET '(' arg ')' block
 
   method
     : opt_attributes METHOD method_name ':' return_type '(' opt_args ')' block
