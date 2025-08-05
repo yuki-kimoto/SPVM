@@ -55,6 +55,12 @@ class TestCase::Accessor {
     }
   ;
   
+  our $VALUE_INT_USER_DEFINED_WITH_ARG : rw int
+    set ($_ : object) {
+      $VALUE_INT_USER_DEFINED_WITH_ARG = (int)$_;
+    }
+  ;
+  
   has value_byte_user_defined : rw byte
     get {
       return $self->{value_byte_user_defined} * 2;
@@ -70,6 +76,12 @@ class TestCase::Accessor {
     }
     set {
       $self->{value_int_user_defined} = $_ * 3;
+    }
+  ;
+  
+  has value_int_user_defined_with_arg : rw int
+    set ($value : object) {
+      $self->{value_int_user_defined_with_arg} = (int)$value;
     }
   ;
   
@@ -264,6 +276,7 @@ class TestCase::Accessor {
   }
 
   static method field_accessor_user_defined : int () {
+    
     {
       my $object = new TestCase::Accessor;
       
@@ -292,6 +305,16 @@ class TestCase::Accessor {
         return 0;
       }
       
+    }
+    
+    {
+      my $object = new TestCase::Accessor;
+      
+      $object->set_value_int_user_defined_with_arg((object)2);
+      
+      unless ($object->value_int_user_defined_with_arg == 2) {
+        return 0;
+      }
     }
     
     return 1;
@@ -441,6 +464,7 @@ class TestCase::Accessor {
   }
 
   static method class_var_user_defined : int () {
+    
     {
       &SET_VALUE_INT_USER_DEFINED(2);
       
@@ -462,6 +486,15 @@ class TestCase::Accessor {
       }
       
       unless (&VALUE_BYTE_USER_DEFINED == 12) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      &SET_VALUE_INT_USER_DEFINED_WITH_ARG((object)2);
+      
+      unless (&VALUE_INT_USER_DEFINED_WITH_ARG == 2) {
         return 0;
       }
       

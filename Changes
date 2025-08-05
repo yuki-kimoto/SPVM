@@ -7,6 +7,7 @@
       =head1 Well Known Child Classes
   [New Features]
     * Add virtual class attribute and field attribute.
+    * set syntax allow the setter defining the argument.
     
 0.990078 2025-08-04
   [New Features]

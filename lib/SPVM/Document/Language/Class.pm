@@ -1227,6 +1227,16 @@ A user defined class variable setter can be defined with C<set> keyword. The pas
     ;
   }
 
+The argument can be replaced.
+
+  class MyClass {
+    our $VALUE : wo int
+      set ($VAL : object) {
+        $VALUE = (int)$VAL;
+      }
+    ;
+  }
+
 =head1 Field
 
 A field is a data member of a L<class|/"Class">.
@@ -1454,6 +1464,16 @@ A user defined field setter can be defined with C<set> keyword. The passed value
     has value : wo int
       set {
         $self->{value} = $_;
+      }
+    ;
+  }
+
+The argument can be replaced.
+
+  class MyClass {
+    has value : wo int
+      set ($value : object) {
+        $self->{value} = (int)$value;
       }
     ;
   }

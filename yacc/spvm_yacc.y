@@ -503,6 +503,10 @@ setter
       SPVM_OP* op_arg = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
       $$ = SPVM_OP_build_accessor(compiler, $1, op_arg, $2);
     }
+  | SET '(' arg ')' block
+    {
+      $$ = SPVM_OP_build_accessor(compiler, $1, $3, $5);
+    }
 
 method
   : opt_attributes METHOD method_name ':' return_type '(' opt_args ')' block

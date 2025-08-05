@@ -668,6 +668,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_block = NULL;
           if (class_var->op_setter) {
             op_block = class_var->op_setter->last;
+            
+            SPVM_OP* op_arg = class_var->op_setter->first;
+            if (!(op_arg->id == SPVM_OP_C_ID_DO_NOTHING)) {
+              SPVM_OP_cut_op(compiler, op_arg);
+              op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+              SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg);
+            }
           }
           else {
             op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
@@ -801,6 +808,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_block = NULL;
           if (field->op_setter) {
             op_block = field->op_setter->last;
+            
+            SPVM_OP* op_arg = field->op_setter->first;
+            if (!(op_arg->id == SPVM_OP_C_ID_DO_NOTHING)) {
+              SPVM_OP_cut_op(compiler, op_arg);
+              op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+              SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg);
+            }
           }
           else {
             op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
