@@ -25,6 +25,7 @@ const char* const* SPVM_ATTRIBUTE_C_ID_NAMES(void) {
     "interface_t",
     "required",
     "cache",
+    "virtual",
   };
   
   return id_names;
