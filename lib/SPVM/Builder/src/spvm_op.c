@@ -603,7 +603,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP* op_block = NULL;
           if (class_var->op_getter) {
-            op_block = class_var->op_getter->first;
+            op_block = class_var->op_getter->last;
           }
           else {
             op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
@@ -667,7 +667,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP* op_block = NULL;
           if (class_var->op_setter) {
-            op_block = class_var->op_setter->first;
+            op_block = class_var->op_setter->last;
           }
           else {
             op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
@@ -734,7 +734,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP* op_block = NULL;
           if (field->op_getter) {
-            op_block = field->op_getter->first;
+            op_block = field->op_getter->last;
           }
           else {
             op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
@@ -800,7 +800,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP* op_block = NULL;
           if (field->op_setter) {
-            op_block = field->op_setter->first;
+            op_block = field->op_setter->last;
           }
           else {
             op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
@@ -2606,6 +2606,14 @@ SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_
   SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_right_operand);
   
   return op_bin;
+}
+
+SPVM_OP* SPVM_OP_build_accessor(SPVM_COMPILER* compiler, SPVM_OP* op_accessor, SPVM_OP* op_arg, SPVM_OP* op_block) {
+  
+  SPVM_OP_insert_child(compiler, op_accessor, op_accessor->last, op_arg);
+  SPVM_OP_insert_child(compiler, op_accessor, op_accessor->last, op_block);
+  
+  return op_accessor;
 }
 
 SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_operand, SPVM_OP* op_type) {

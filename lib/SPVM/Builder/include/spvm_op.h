@@ -441,6 +441,8 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
 
 SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_operand);
 
+SPVM_OP* SPVM_OP_build_accessor(SPVM_COMPILER* compiler, SPVM_OP* op_accessor, SPVM_OP* op_block, SPVM_OP* op_arg);
+
 SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_operand);
 
 SPVM_OP* SPVM_OP_build_element_access(SPVM_COMPILER* compiler, SPVM_OP* op_element_access, SPVM_OP* op_var, SPVM_OP* op_operand);

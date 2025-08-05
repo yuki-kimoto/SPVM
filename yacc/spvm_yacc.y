@@ -486,7 +486,8 @@ opt_getter
 getter
   : GET block
     {
-      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+      SPVM_OP* op_arg = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_accessor(compiler, $1, op_arg, $2);
     }
 
 opt_setter
@@ -499,7 +500,8 @@ opt_setter
 setter
   : SET block
     {
-      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+      SPVM_OP* op_arg = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_accessor(compiler, $1, op_arg, $2);
     }
 
 method
