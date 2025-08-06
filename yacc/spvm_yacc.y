@@ -486,8 +486,9 @@ opt_getter
 getter
   : GET block
     {
+      SPVM_OP* op_return_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
       SPVM_OP* op_arg = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_accessor(compiler, $1, op_arg, $2, NULL);
+      $$ = SPVM_OP_build_accessor(compiler, $1, op_arg, $2, op_return_type);
     }
 
 opt_setter
@@ -500,12 +501,24 @@ opt_setter
 setter
   : SET block
     {
+      SPVM_OP* op_return_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
       SPVM_OP* op_arg = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_accessor(compiler, $1, op_arg, $2, NULL);
+      $$ = SPVM_OP_build_accessor(compiler, $1, op_arg, $2, op_return_type);
     }
   | SET '(' arg ')' block
     {
-      $$ = SPVM_OP_build_accessor(compiler, $1, $3, $5, NULL);
+      SPVM_OP* op_return_type = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_accessor(compiler, $1, $3, $5, op_return_type);
+    }
+  | SET ':' return_type '(' arg ')' block
+    {
+      $$ = SPVM_OP_build_accessor(compiler, $1, $5, $7, $3);
+    }
+  | SET ':' return_type
+    {
+      SPVM_OP* op_arg = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
+      SPVM_OP* op_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_accessor(compiler, $1, op_arg, op_block, $3);
     }
 
 method

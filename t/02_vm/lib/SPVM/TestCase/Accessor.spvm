@@ -85,6 +85,17 @@ class TestCase::Accessor {
     }
   ;
   
+  has value_int_user_defined_with_arg_and_return_type : rw int
+    set : TestCase::Accessor ($_ : int) {
+      $self->{value_int_user_defined_with_arg_and_return_type} = $_;
+      return $self;
+    }
+  ;
+  
+  has value_int_return_type : rw int
+    set : TestCase::Accessor
+  ;
+  
   static method field_accessor : int () {
     {
       my $object = new TestCase::Accessor;
@@ -313,6 +324,34 @@ class TestCase::Accessor {
       $object->set_value_int_user_defined_with_arg((object)2);
       
       unless ($object->value_int_user_defined_with_arg == 2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object = new TestCase::Accessor;
+      
+      my $ret = $object->set_value_int_user_defined_with_arg_and_return_type(2);
+      
+      unless ($object->{value_int_user_defined_with_arg_and_return_type} == 2) {
+        return 0;
+      }
+      
+      unless ($ret is_type TestCase::Accessor) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object = new TestCase::Accessor;
+      
+      my $ret = $object->set_value_int_return_type(2);
+      
+      unless ($object->{value_int_return_type} == 2) {
+        return 0;
+      }
+      
+      unless ($ret is_type TestCase::Accessor) {
         return 0;
       }
     }
