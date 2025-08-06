@@ -1478,6 +1478,25 @@ The argument can be replaced.
     ;
   }
 
+The return type can be replaced.
+
+  class MyClass {
+    has value : wo int
+      set : MyClass ($value : object) {
+        $self->{value} = (int)$value;
+        return $self;
+      }
+    ;
+  }
+
+If there is no method block and a return type is specified, the default setter returns the invocant.
+
+  class MyClass {
+    has value : wo int
+      set : MyClass
+    ;
+  }
+
 =head1 Method
 
 =head2 Method Definition

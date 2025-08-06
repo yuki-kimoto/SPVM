@@ -968,6 +968,34 @@ use Test::More;
     compile_not_ok($source, q|$X is not found.|);
   }
   
+  {
+    my $source = [
+      'class MyClass { our $X : wo int get : MyClass; }',
+    ];
+    compile_not_ok($source, q|Unexpected token|);
+  }
+  
+  {
+    my $source = [
+      'class MyClass { our $X : wo int get : MyClass {} }',
+    ];
+    compile_not_ok($source, q|Unexpected token|);
+  }
+  
+  {
+    my $source = [
+      'class MyClass { our $X : wo int get : MyClass ($_ : int) {} }',
+    ];
+    compile_not_ok($source, q|Unexpected token|);
+  }
+  
+  {
+    my $source = [
+      'class MyClass { our $X : wo int set : MyClass; }',
+    ];
+    compile_not_ok($source, q|A return type cannot be specified for a class variable setter.|);
+  }
+  
 }
 
 # Class Variable Definition

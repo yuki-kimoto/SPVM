@@ -601,14 +601,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_decl->file, op_decl->line);
           SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
           
-          SPVM_OP* op_return_type_tmp = NULL;
-          if (class_var->op_getter) {
-            op_return_type_tmp = SPVM_OP_sibling(compiler, class_var->op_getter->first);
-            if (!(op_return_type_tmp->id == SPVM_OP_C_ID_DO_NOTHING)) {
-              SPVM_COMPILER_error(compiler, "A return type cannot be specified for a class variable getter.\n  at %s line %d", op_decl->file, op_decl->line);
-            }
-          }
-          
           SPVM_OP* op_block = NULL;
           if (class_var->op_getter) {
             SPVM_OP* op_block_tmp = class_var->op_getter->last;
@@ -681,8 +673,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
           
           SPVM_OP* op_return_type_tmp = NULL;
-          if (class_var->op_getter) {
-            op_return_type_tmp = SPVM_OP_sibling(compiler, class_var->op_getter->first);
+          if (class_var->op_setter) {
+            op_return_type_tmp = SPVM_OP_sibling(compiler, class_var->op_setter->first);
             if (!(op_return_type_tmp->id == SPVM_OP_C_ID_DO_NOTHING)) {
               SPVM_COMPILER_error(compiler, "A return type cannot be specified for a class variable setter.\n  at %s line %d", op_decl->file, op_decl->line);
             }
@@ -769,14 +761,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type->unresolved_basic_type_name, return_type->basic_type, return_type->dimension, return_type->flag, op_decl->file, op_decl->line);
           
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-          
-          SPVM_OP* op_return_type_tmp = NULL;
-          if (field->op_getter) {
-            op_return_type_tmp = SPVM_OP_sibling(compiler, field->op_getter->first);
-            if (!(op_return_type_tmp->id == SPVM_OP_C_ID_DO_NOTHING)) {
-              SPVM_COMPILER_error(compiler, "A return type cannot be specified for a field getter.\n  at %s line %d", op_decl->file, op_decl->line);
-            }
-          }
           
           SPVM_OP* op_block = NULL;
           if (field->op_getter) {
