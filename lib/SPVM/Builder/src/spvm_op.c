@@ -2622,9 +2622,12 @@ SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_
   return op_bin;
 }
 
-SPVM_OP* SPVM_OP_build_accessor(SPVM_COMPILER* compiler, SPVM_OP* op_accessor, SPVM_OP* op_arg, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_accessor(SPVM_COMPILER* compiler, SPVM_OP* op_accessor, SPVM_OP* op_arg, SPVM_OP* op_block, SPVM_OP* op_return_type) {
   
   SPVM_OP_insert_child(compiler, op_accessor, op_accessor->last, op_arg);
+  if (op_return_type) {
+    SPVM_OP_insert_child(compiler, op_accessor, op_accessor->last, op_return_type);
+  }
   SPVM_OP_insert_child(compiler, op_accessor, op_accessor->last, op_block);
   
   return op_accessor;

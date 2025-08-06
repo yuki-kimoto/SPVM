@@ -487,7 +487,7 @@ getter
   : GET block
     {
       SPVM_OP* op_arg = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_accessor(compiler, $1, op_arg, $2);
+      $$ = SPVM_OP_build_accessor(compiler, $1, op_arg, $2, NULL);
     }
 
 opt_setter
@@ -501,11 +501,11 @@ setter
   : SET block
     {
       SPVM_OP* op_arg = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_accessor(compiler, $1, op_arg, $2);
+      $$ = SPVM_OP_build_accessor(compiler, $1, op_arg, $2, NULL);
     }
   | SET '(' arg ')' block
     {
-      $$ = SPVM_OP_build_accessor(compiler, $1, $3, $5);
+      $$ = SPVM_OP_build_accessor(compiler, $1, $3, $5, NULL);
     }
 
 method
