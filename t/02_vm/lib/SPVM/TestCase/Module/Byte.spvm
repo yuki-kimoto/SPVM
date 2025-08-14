@@ -2,11 +2,26 @@ class TestCase::Module::Byte {
   use Fn;
   
   static method basic : int () {
-    my $numeric_object = Byte->new(Fn->INT8_MIN());
-    my $value = $numeric_object->value;
     
-    unless ($value == Fn->INT8_MIN()) {
-      return 0;
+    {
+      my $numeric_object = Byte->new(Fn->INT8_MIN());
+      my $value = $numeric_object->value;
+      
+      unless ($value == Fn->INT8_MIN()) {
+        return 0;
+      }
+    }
+    
+    {
+      my $numeric_object = Byte->new(1);
+      
+      unless ($numeric_object isa Stringable) {
+        return 0;
+      }
+      
+      unless ($numeric_object->to_string eq "1") {
+        return 0;
+      }
     }
     
     return 1;

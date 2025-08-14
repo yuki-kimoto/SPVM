@@ -8,7 +8,7 @@ SPVM::Float - A float value as An Object
 
 =head1 Description
 
-The Float class in L<SPVM> represents a float value as an object.
+Float class in L<SPVM> represents a float value as an object.
 
 =head1 Usage
   
@@ -20,6 +20,14 @@ The Float class in L<SPVM> represents a float value as an object.
 This class is immutable.
 
 This class is automatically loaded.
+
+=head1 Interfaces
+
+=over 2
+
+=item * L<Stringable|SPVM::Stringable>
+
+=back
 
 =head1 Fields
 
@@ -36,6 +44,14 @@ The value.
 C<static method new : L<Float|SPVM::Float> ($value : float);>
 
 Creates a new L<Float|SPVM::Float> object with a C<float> $value.
+
+=head1 Instance Methods
+
+=head2 to_string
+
+C<method to_string : string ();>
+
+Casts the value to string type and returns it.
 
 =head1 Copyright & License
 

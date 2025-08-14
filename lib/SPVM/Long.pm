@@ -8,7 +8,7 @@ SPVM::Long - A long value as An Object
 
 =head1 Description
 
-The Long class in L<SPVM> represents a long value as an object.
+Long class in L<SPVM> represents a long value as an object.
 
 =head1 Usage
   
@@ -20,6 +20,14 @@ The Long class in L<SPVM> represents a long value as an object.
 This class is immutable.
 
 This class is automatically loaded.
+
+=head1 Interfaces
+
+=over 2
+
+=item * L<Stringable|SPVM::Stringable>
+
+=back
 
 =head1 Fields
 
@@ -36,6 +44,14 @@ The value.
 C<static method new : L<Long|SPVM::Long> ($value : long);>
 
 Creates a new L<Long|SPVM::Long> object with a C<long> $value.
+
+=head1 Instance Methods
+
+=head2 to_string
+
+C<method to_string : string ();>
+
+Casts the value to string type and returns it.
 
 =head1 Copyright & License
 

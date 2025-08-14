@@ -1,9 +1,12 @@
 0.990081 2025-08-15
+  [New Features]
+    * Byte, Short, Int, Long, Float, Double classes has Stringable interface.
+    * Add to_string method to Byte, Short, Int, Long, Float, Double classes.
+    
   [Document Inprovement]
     * Improve the documents for Error classes.
   [Change]
     * Stringable class becomes a default loaded class.
-    
 0.990080 2025-08-06
   [New Features]
     * set syntax allow the setter to define the return type.

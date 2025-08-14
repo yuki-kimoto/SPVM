@@ -8,7 +8,7 @@ SPVM::Byte - A byte Value as An Object
 
 =head1 Description
 
-The Byte class in L<SPVM> represents a byte value as an object.
+Byte class in L<SPVM> represents a byte value as an object.
 
 =head1 Usage
   
@@ -20,6 +20,14 @@ The Byte class in L<SPVM> represents a byte value as an object.
 This class is immutable.
 
 This class is automatically loaded.
+
+=head1 Interfaces
+
+=over 2
+
+=item * L<Stringable|SPVM::Stringable>
+
+=back
 
 =head1 Fields
 
@@ -36,6 +44,14 @@ The value.
 C<static method new : L<Byte|SPVM::Byte> ($value : int);>
 
 Creates a new L<Byte|SPVM::Byte> object with a C<byte> $value.
+
+=head1 Instance Methods
+
+=head2 to_string
+
+C<method to_string : string ();>
+
+Casts the value to string type and returns it.
 
 =head1 Copyright & License
 

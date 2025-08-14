@@ -7,7 +7,7 @@ package SPVM::Int;
 SPVM::Int - An int value as An Object
 =head1 Description
 
-The Int class in L<SPVM> represents an int value as an object.
+Int class in L<SPVM> represents an int value as an object.
 
 =head1 Usage
   
@@ -19,6 +19,14 @@ The Int class in L<SPVM> represents an int value as an object.
 This class is immutable.
 
 This class is automatically loaded.
+
+=head1 Interfaces
+
+=over 2
+
+=item * L<Stringable|SPVM::Stringable>
+
+=back
 
 =head1 Fields
 
@@ -35,6 +43,14 @@ The value.
 C<static method new : L<Int|SPVM::Int> ($value : int);>
 
 Creates a new L<Int|SPVM::Int> object with a C<int> $value.
+
+=head1 Instance Methods
+
+=head2 to_string
+
+C<method to_string : string ();>
+
+Casts the value to string type and returns it.
 
 =head1 Copyright & License
 

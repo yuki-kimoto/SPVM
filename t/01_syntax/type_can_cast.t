@@ -777,8 +777,8 @@ use Test::More;
   # Source type is other type
   {
     {
-      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Int[]; my $dist = (Stringable[])$source; } }';
-      compile_not_ok($source, q|Int class must define to_string method because its interface method is defined as a required method in Stringable interface.|);
+      my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Error[]; my $dist = (Stringable[])$source; } }';
+      compile_not_ok($source, q|Error class must define to_string method because its interface method is defined as a required method in Stringable interface.|);
     }
   }
 }

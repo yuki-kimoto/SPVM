@@ -2,11 +2,25 @@ class TestCase::Module::Long {
   use Fn;
   
   static method basic : int () {
-    my $numeric_object = Long->new(Fn->INT64_MIN());
-    my $value = $numeric_object->value;
+    {
+      my $numeric_object = Long->new(Fn->INT64_MIN());
+      my $value = $numeric_object->value;
+      
+      unless ($value == Fn->INT64_MIN()) {
+        return 0;
+      }
+    }
     
-    unless ($value == Fn->INT64_MIN()) {
-      return 0;
+    {
+      my $numeric_object = Long->new(1);
+      
+      unless ($numeric_object isa Stringable) {
+        return 0;
+      }
+      
+      unless ($numeric_object->to_string eq "1") {
+        return 0;
+      }
     }
     
     return 1;
