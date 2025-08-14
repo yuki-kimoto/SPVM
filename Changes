@@ -1,6 +1,8 @@
 0.990081 2025-08-15
   [Document Inprovement]
     * Improve the documents for Error classes.
+  [Change]
+    * Stringable class becomes a default loaded class.
     
 0.990080 2025-08-06
   [New Features]

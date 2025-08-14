@@ -421,7 +421,6 @@ lib/SPVM/Sort.pm
 lib/SPVM/Sort.spvm
 lib/SPVM/SPVM.pm
 lib/SPVM/Stringable.pm
-lib/SPVM/Stringable.spvm
 lib/SPVM/StringBuffer.pm
 lib/SPVM/StringBuffer.spvm
 lib/SPVM/Stringer.pm

@@ -367,6 +367,10 @@ The following classes are loaded by default.
 
 =item * L<SPVM|SPVM::SPVM>
 
+=item * L<Error::MethodCallNotPermitted|SPVM::Error::MethodCallNotPermitted>
+
+=item * L<Stringable|SPVM::Stringable>
+
 =back
 
 =head2 alias Statement
