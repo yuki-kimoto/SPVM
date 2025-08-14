@@ -6,13 +6,13 @@ package SPVM::Error::FieldNotSpecified;
 
 SPVM::Error::FieldNotSpecified - Field Not Specified Errors
 
+=head1 Description
+
+Error::FieldNotSpecified class in L<SPVM> is the error class to indicate a field value is not specifeid.
+
 =head1 Usage
 
   use Error::FieldNotSpecified;
-
-=head1 Description
-
-C<Error::FieldNotSpecified> is the error class to indicate a field value is not specifeid.
 
 =head1 Super Class
 

@@ -6,23 +6,27 @@ package SPVM::Error;
 
 SPVM::Error - Error
 
+=head1 Description
+
+Error class in L<SPVM> represents errors.
+
 =head1 Usage
 
   use Error;
-
-=head1 Description
-
-The Error class in L<SPVM> represents errors.
 
 =head1 Well Known Child Classes
 
 =over 2
 
-=item * L<Error::System|SPVM::Error::System>
-
 =item * L<Error::Compile|SPVM::Error::Compile>
 
+=item * L<Error::FieldNotSpecified|SPVM::Error::FieldNotSpecified>
+
+=item * L<Error::MethodCallNotPermitted|SPVM::Error::MethodCallNotPermitted>
+
 =item * L<Error::NotSupported|SPVM::Error::NotSupported>
+
+=item * L<Error::System|SPVM::Error::System>
 
 =item * L<Error::Unicode::InvalidUTF8|SPVM::Error::Unicode::InvalidUTF8>
 

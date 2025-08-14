@@ -6,13 +6,12 @@ package SPVM::Error::Compile;
 
 SPVM::Error::Compile - Compilation Errors
 
+=head1 Description
+
+Error::Compile class in L<SPVM> represents compilation errors.
 =head1 Usage
 
   use Error::Compile;
-
-=head1 Description
-
-C<Error::Compile> is the error class for compilation errors.
 
 =head1 Super Class
 

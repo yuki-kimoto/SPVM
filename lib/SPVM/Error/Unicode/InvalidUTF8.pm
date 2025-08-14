@@ -10,7 +10,7 @@ SPVM::Error::Unicode::InvalidUTF8 - Invalid UTF8 Errors
 
 =head1 Description
 
-The Error::Unicode::InvalidUTF8 class of L<SPVM> represents Invalid UTF8 errors
+Error::Unicode::InvalidUTF8 class in L<SPVM> represents Invalid UTF8 errors
 
 =head1 Usage
 

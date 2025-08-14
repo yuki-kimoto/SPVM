@@ -12,7 +12,7 @@ SPVM::Error::System - System Error
 
 =head1 Description
 
-The Error::System class represents system errors.
+Error::System class in L<SPVM> represents system errors.
 
 =head1 Super Class
 
