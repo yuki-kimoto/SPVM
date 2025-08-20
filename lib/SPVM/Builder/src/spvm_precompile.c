@@ -2464,47 +2464,47 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_BYTE(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_SHORT(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_INT(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_LONG(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_FLOAT(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_DOUBLE(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_OBJECT(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_UNDEF(env, stack, object, decl_field_offset, &error_id, object_header_size);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_UNDEF(env, stack, object, decl_field_offset, &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
             break;
           }
           default: {

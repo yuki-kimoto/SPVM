@@ -1007,7 +1007,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_FIELD* field = &field_current_basic_type->fields[field_index];
         int32_t field_offset = field->offset;
         
-        SPVM_IMPLEMENT_SET_FIELD_BYTE(env, stack, object, field_offset, byte_vars[opcode->operand1], &error_id, object_data_offset);
+        int32_t fields_size = field_current_basic_type->fields_size;
+        
+        SPVM_IMPLEMENT_SET_FIELD_BYTE(env, stack, object, field_offset, byte_vars[opcode->operand1], &error_id, object_data_offset, fields_size, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
@@ -1019,7 +1021,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_FIELD* field = &field_current_basic_type->fields[field_index];
         int32_t field_offset = field->offset;
         
-        SPVM_IMPLEMENT_SET_FIELD_SHORT(env, stack, object, field_offset, short_vars[opcode->operand1], &error_id, object_data_offset);
+        int32_t fields_size = field_current_basic_type->fields_size;
+        
+        SPVM_IMPLEMENT_SET_FIELD_SHORT(env, stack, object, field_offset, short_vars[opcode->operand1], &error_id, object_data_offset, fields_size, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
@@ -1031,7 +1035,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_FIELD* field = &field_current_basic_type->fields[field_index];
         int32_t field_offset = field->offset;
         
-        SPVM_IMPLEMENT_SET_FIELD_INT(env, stack, object, field_offset, int_vars[opcode->operand1], &error_id, object_data_offset);
+        int32_t fields_size = field_current_basic_type->fields_size;
+        
+        SPVM_IMPLEMENT_SET_FIELD_INT(env, stack, object, field_offset, int_vars[opcode->operand1], &error_id, object_data_offset, fields_size, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
@@ -1043,7 +1049,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_FIELD* field = &field_current_basic_type->fields[field_index];
         int32_t field_offset = field->offset;
         
-        SPVM_IMPLEMENT_SET_FIELD_LONG(env, stack, object, field_offset, long_vars[opcode->operand1], &error_id, object_data_offset);
+        int32_t fields_size = field_current_basic_type->fields_size;
+        
+        SPVM_IMPLEMENT_SET_FIELD_LONG(env, stack, object, field_offset, long_vars[opcode->operand1], &error_id, object_data_offset, fields_size, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
@@ -1055,7 +1063,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_FIELD* field = &field_current_basic_type->fields[field_index];
         int32_t field_offset = field->offset;
         
-        SPVM_IMPLEMENT_SET_FIELD_FLOAT(env, stack, object, field_offset, float_vars[opcode->operand1], &error_id, object_data_offset);
+        int32_t fields_size = field_current_basic_type->fields_size;
+        
+        SPVM_IMPLEMENT_SET_FIELD_FLOAT(env, stack, object, field_offset, float_vars[opcode->operand1], &error_id, object_data_offset, fields_size, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
@@ -1067,7 +1077,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_FIELD* field = &field_current_basic_type->fields[field_index];
         int32_t field_offset = field->offset;
         
-        SPVM_IMPLEMENT_SET_FIELD_DOUBLE(env, stack, object, field_offset, double_vars[opcode->operand1], &error_id, object_data_offset);
+        int32_t fields_size = field_current_basic_type->fields_size;
+        
+        SPVM_IMPLEMENT_SET_FIELD_DOUBLE(env, stack, object, field_offset, double_vars[opcode->operand1], &error_id, object_data_offset, fields_size, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT: {
@@ -1079,7 +1091,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_FIELD* field = &field_current_basic_type->fields[field_index];
         int32_t field_offset = field->offset;
         
-        SPVM_IMPLEMENT_SET_FIELD_OBJECT(env, stack, object, field_offset, object_vars[opcode->operand1], &error_id, object_data_offset);
+        int32_t fields_size = field_current_basic_type->fields_size;
+        
+        SPVM_IMPLEMENT_SET_FIELD_OBJECT(env, stack, object, field_offset, object_vars[opcode->operand1], &error_id, object_data_offset, fields_size, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF: {
@@ -1091,7 +1105,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_FIELD* field = &field_current_basic_type->fields[field_index];
         int32_t field_offset = field->offset;
         
-        SPVM_IMPLEMENT_SET_FIELD_UNDEF(env, stack, object, field_offset, &error_id, object_data_offset);
+        int32_t fields_size = field_current_basic_type->fields_size;
+        
+        SPVM_IMPLEMENT_SET_FIELD_UNDEF(env, stack, object, field_offset, &error_id, object_data_offset, fields_size, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
