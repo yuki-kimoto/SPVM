@@ -5153,9 +5153,9 @@ void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** 
 
 SPVM_OBJECT* SPVM_API_drop_tag_pointers(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  void* object_no_weaken_address = SPVM_IMPLEMENT_DROP_TAG_POINTERS(object);
+  object = SPVM_IMPLEMENT_DROP_TAG_POINTERS(object);
   
-  return object_no_weaken_address;
+  return object;
 }
 
 int32_t SPVM_API_isweak_only_check_flag(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
