@@ -325,8 +325,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_class_var;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_method;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_offset;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_fields_size;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_index;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_exists_offset;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_exists_bit;\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_size = env->api->runtime->get_object_data_offset(env->runtime);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);\n");
@@ -348,8 +348,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_RUNTIME_FIELD* field = NULL;
     SPVM_RUNTIME_METHOD* method = NULL;
     int32_t field_offset = -1;
-    int32_t field_index = -1;
-    int32_t fields_size = -1;
+    int32_t field_exists_offset = -1;
+    int32_t field_exists_bit = -1;
     int32_t id_set = 1;
     switch(opcode_id) {
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECK: {
@@ -403,8 +403,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, basic_type, field_index);
         field_offset = field->offset;
-        field_index = field->index;
-        fields_size = basic_type->fields_size;
         assert(field);
         break;
       }
@@ -426,8 +424,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, basic_type, field_index);
         assert(field);
         field_offset = field->offset;
-        field_index = field->index;
-        fields_size = basic_type->fields_size;
+        field_exists_offset = field->exists_offset;
+        field_exists_bit = field->exists_bit;
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE:
@@ -496,23 +494,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
                                                 "      goto END_OF_METHOD;\n"
                                                 "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-          
-          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
-          SPVM_PRECOMPILE_add_fields_size(precompile, string_buffer, basic_type_name);
-          SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
-          SPVM_PRECOMPILE_add_fields_size(precompile, string_buffer, basic_type_name);
-          SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    ");
-          SPVM_PRECOMPILE_add_fields_size(precompile, string_buffer, basic_type_name);
-          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELDS_SIZE_BY_NAME(env, stack, \"");
-          SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-          SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
-                                                "      goto END_OF_METHOD;\n"
-                                                "    }\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-          
         }
       }
       
@@ -574,14 +555,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           
           SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
-          SPVM_PRECOMPILE_add_field_index(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_PRECOMPILE_add_field_exists_offset(precompile, string_buffer, basic_type_name, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  if (");
-          SPVM_PRECOMPILE_add_field_index(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_PRECOMPILE_add_field_exists_offset(precompile, string_buffer, basic_type_name, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    ");
-          SPVM_PRECOMPILE_add_field_index(precompile, string_buffer, basic_type_name, field_name);
-          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELD_INDEX_BY_NAME(env, stack, \"");
+          SPVM_PRECOMPILE_add_field_exists_offset(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELD_EXISTS_OFFSET_BY_NAME(env, stack, \"");
           SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
           SPVM_STRING_BUFFER_add(string_buffer, field_name);
@@ -590,6 +571,25 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
                                                 "      goto END_OF_METHOD;\n"
                                                 "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
+          SPVM_PRECOMPILE_add_field_exists_bit(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+          SPVM_PRECOMPILE_add_field_exists_bit(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_PRECOMPILE_add_field_exists_bit(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELD_EXISTS_BIT_BY_NAME(env, stack, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+          SPVM_STRING_BUFFER_add(string_buffer, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
+                                                "      goto END_OF_METHOD;\n"
+                                                "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+          
         }
       }
       
@@ -2362,14 +2362,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_fields_size = ");
-        SPVM_PRECOMPILE_add_fields_size(precompile, string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_index = ");
-        SPVM_PRECOMPILE_add_field_index(precompile, string_buffer, basic_type_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_BYTE(env, stack, ");
@@ -2452,59 +2444,59 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_fields_size = ");
-        SPVM_PRECOMPILE_add_fields_size(precompile, string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_exists_offset = ");
+        SPVM_PRECOMPILE_add_field_exists_offset(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_index = ");
-        SPVM_PRECOMPILE_add_field_index(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_exists_bit = ");
+        SPVM_PRECOMPILE_add_field_exists_bit(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_BYTE(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_field_exists_offset, decl_field_exists_bit);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_SHORT(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_field_exists_offset, decl_field_exists_bit);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_INT(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_field_exists_offset, decl_field_exists_bit);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_LONG(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_field_exists_offset, decl_field_exists_bit);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_FLOAT(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_field_exists_offset, decl_field_exists_bit);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_DOUBLE(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_field_exists_offset, decl_field_exists_bit);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_OBJECT(env, stack, object, decl_field_offset, ");
             SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, ", &error_id, object_header_size, decl_field_exists_offset, decl_field_exists_bit);\n");
             break;
           }
           case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF: {
-            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_UNDEF(env, stack, object, decl_field_offset, &error_id, object_header_size, decl_fields_size, decl_field_index);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_FIELD_UNDEF(env, stack, object, decl_field_offset, &error_id, object_header_size, decl_field_exists_offset, decl_field_exists_bit);\n");
             break;
           }
           default: {
@@ -5285,14 +5277,6 @@ void SPVM_PRECOMPILE_add_basic_type(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUF
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
-void SPVM_PRECOMPILE_add_fields_size(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
-  SPVM_STRING_BUFFER_add(string_buffer, "fields_size");
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(basic_type_name));
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-}
-
 void SPVM_PRECOMPILE_add_class_var(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* class_var_name) {
   SPVM_STRING_BUFFER_add(string_buffer, "class_var");
   SPVM_STRING_BUFFER_add(string_buffer, "____");
@@ -5317,6 +5301,28 @@ void SPVM_PRECOMPILE_add_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* 
 
 void SPVM_PRECOMPILE_add_field_offset(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name) {
   SPVM_STRING_BUFFER_add(string_buffer, "field_offset");
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(basic_type_name));
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_STRING_BUFFER_add(string_buffer, field_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(field_name));
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+}
+
+void SPVM_PRECOMPILE_add_field_exists_offset(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, "field_exists_offset");
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(basic_type_name));
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_STRING_BUFFER_add(string_buffer, field_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(field_name));
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+}
+
+void SPVM_PRECOMPILE_add_field_exists_bit(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, "field_exists_bit");
   SPVM_STRING_BUFFER_add(string_buffer, "____");
   SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
   SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(basic_type_name));
