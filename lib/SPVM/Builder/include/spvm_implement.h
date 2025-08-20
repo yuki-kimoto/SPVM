@@ -219,34 +219,25 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_UNDEF(SPVM_ENV* env, SPVM_VALUE* s
   env->assign_object(env, stack, dist_address, NULL);
 }
 
-static inline void SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(void* object, int32_t object_data_offset, int32_t fields_size, int32_t field_index) {
+static inline void SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(void* object, int32_t object_data_offset, int32_t exists_offset, int32_t exists_bit) {
   
-  int32_t block_index = field_index / 8;
-  int32_t bit_index = field_index % 8;
-  uint8_t* blocks = (uint8_t*)((intptr_t)object + object_data_offset + fields_size);
-  uint8_t* block = blocks + block_index;
+  uint8_t* block = (uint8_t*)((intptr_t)object + object_data_offset + exists_offset);
   
-  *block |= (1 << bit_index);
+  *block |= (1 << exists_bit);
 }
 
-static inline void SPVM_IMPLEMENT_DISABLE_EXISTS_FLAG(void* object, int32_t object_data_offset, int32_t fields_size, int32_t field_index) {
+static inline void SPVM_IMPLEMENT_DISABLE_EXISTS_FLAG(void* object, int32_t object_data_offset, int32_t exists_offset, int32_t exists_bit) {
   
-  int32_t block_index = field_index / 8;
-  int32_t bit_index = field_index % 8;
-  uint8_t* blocks = (uint8_t*)((intptr_t)object + object_data_offset + fields_size);
-  uint8_t* block = blocks + block_index;
+  uint8_t* block = (uint8_t*)((intptr_t)object + object_data_offset + exists_offset);
   
-  *block &= ~(1 << bit_index);
+  *block &= ~(1 << exists_bit);
 }
 
-static inline int32_t SPVM_IMPLEMENT_GET_EXISTS_FLAG(void* object, int32_t object_data_offset, int32_t fields_size, int32_t field_index) {
+static inline int32_t SPVM_IMPLEMENT_GET_EXISTS_FLAG(void* object, int32_t object_data_offset, int32_t exists_offset, int32_t exists_bit) {
   
-  int32_t block_index = field_index / 8;
-  int32_t bit_index = field_index % 8;
-  uint8_t* blocks = (uint8_t*)((intptr_t)object + object_data_offset + fields_size);
-  uint8_t* block = blocks + block_index;
+  uint8_t* block = (uint8_t*)((intptr_t)object + object_data_offset + exists_offset);
   
-  int32_t flag = !!(*block & (1 << bit_index));
+  int32_t flag = !!(*block & (1 << exists_bit));
   
   return flag;
 }
