@@ -1,6 +1,12 @@
 0.990082 2025-08-20
   [New Features]
     * Add get_fields_size native basic type API.
+    * Add get_exists_offset native field API.
+    * Add get_exists_bit native field API.
+  [Internal Changes]
+    * Add exists_offset member variable to spvm_field.h and spvm_runtime_field.h.
+    * Add exists_bit member variable to spvm_field.h and spvm_runtime_field.h.
+    
 0.990081 2025-08-15
   [New Features]
     * Byte, Short, Int, Long, Float, Double classes has Stringable interface.

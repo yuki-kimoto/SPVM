@@ -455,6 +455,8 @@ struct spvm_api_field {
   int32_t (*get_type_dimension)(void* runtime, void* field);
   int32_t (*get_type_flag)(void* runtime, void* field);
   void* (*get_current_basic_type)(void* runtime, void* field);
+  int32_t (*get_exists_offset)(void* runtime, void* field);
+  int32_t (*get_exists_bit)(void* runtime, void* field);
 };
 
 struct spvm_api_method {

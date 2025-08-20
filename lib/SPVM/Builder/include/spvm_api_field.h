@@ -25,4 +25,8 @@ int32_t SPVM_API_FIELD_get_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* 
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_FIELD_get_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field);
 
+int32_t SPVM_API_FIELD_get_exists_offset(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field);
+
+int32_t SPVM_API_FIELD_get_exists_bit(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field);
+
 #endif

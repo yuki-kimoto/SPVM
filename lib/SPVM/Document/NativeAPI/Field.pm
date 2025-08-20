@@ -60,6 +60,18 @@ C<void* (*get_current_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Run
 
 Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> that owns the field I<field>.
 
+=head2 get_exists_offset
+
+C<int32_t (*get_exists_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
+
+Returns the byte offset of the exists flag of the field I<field>.
+
+=head2 get_exists_bit
+
+C<int32_t (*get_exists_bit)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
+
+Return the bit shift of the exsits flag of the field I<field>.
+
 =head1 Native API IDs
 
   0 get_name
@@ -69,6 +81,8 @@ Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> that owns the fie
   4 get_type_dimension
   5 get_type_flag
   6 get_current_basic_type
+  7 get_exists_offset
+  8 get_exists_bit
 
 =head1 See Also
 
