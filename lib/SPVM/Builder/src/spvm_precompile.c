@@ -482,13 +482,28 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, "  void* ");
           SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
-          
           SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
           SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
           SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    ");
           SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(env, stack, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
+                                                "      goto END_OF_METHOD;\n"
+                                                "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
+          SPVM_PRECOMPILE_add_fields_size(precompile, string_buffer, basic_type_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
+          SPVM_PRECOMPILE_add_fields_size(precompile, string_buffer, basic_type_name);
+          SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_PRECOMPILE_add_fields_size(precompile, string_buffer, basic_type_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELDS_SIZE_BY_NAME(env, stack, \"");
           SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
