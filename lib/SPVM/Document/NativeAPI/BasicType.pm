@@ -191,6 +191,12 @@ void* (*get_basic_type_in_version_from)(void* runtime, void* basic_type)
 
 Returns the basic type L<basic type|SPVM::Document::NativeAPI::BasicType> object specified by C<version_from> statement.
 
+=head2 get_fields_size
+
+int32_t (*get_fields_size)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);
+
+Retunrs the total byte size of the fields.
+
 =head1 Native API IDs
 
   0 get_name
@@ -218,6 +224,7 @@ Returns the basic type L<basic type|SPVM::Document::NativeAPI::BasicType> object
   22 get_file
   23 get_current_runtime
   24 get_basic_type_in_version_from
+  25 get_fields_size
 
 =head1 See Aloso
 

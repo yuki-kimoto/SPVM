@@ -398,6 +398,7 @@ struct spvm_api_basic_type {
   const char* (*get_file)(void* runtime, void* basic_type);
   void* (*get_current_runtime)(void* runtime, void* basic_type);
   void* (*get_basic_type_in_version_from)(void* runtime, void* basic_type);
+  int32_t (*get_fields_size)(void* runtime, void* basic_type);
 };
 
 struct spvm_api_class_file {

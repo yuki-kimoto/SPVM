@@ -329,6 +329,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_basic_type_ids(SPVM_ENV* env
   if ((void*)&env->api->basic_type->get_file != &env_array[22]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->basic_type->get_current_runtime != &env_array[23]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->basic_type->get_basic_type_in_version_from != &env_array[24]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_fields_size != &env_array[25]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
