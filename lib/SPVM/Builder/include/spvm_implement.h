@@ -228,7 +228,13 @@ static inline void SPVM_IMPLEMENT_DISABLE_EXISTS_FLAG(void* object, int32_t obje
 }
 
 static inline int32_t SPVM_IMPLEMENT_GET_EXISTS_FLAG(void* object, int32_t object_data_offset, int32_t fields_size, int32_t field_index) {
-  return (*(uint8_t*)((intptr_t)object + object_data_offset + fields_size + (field_index / 8)) & (1 << (field_index % 8))) != 0;
+  
+  int32_t block_index = field_index / 8;
+  int32_t bit_index = field_index % 8;
+  uint8_t* blocks = (uint8_t*)((intptr_t)object + object_data_offset + fields_size);
+  int32_t flag = !!(*(blocks + block_index) & (1 << bit_index));
+  
+  return flag;
 }
 
 #define SPVM_IMPLEMENT_DROP_TAG_POINTERS(address) ((void*)((intptr_t)address & ~(intptr_t)1))
@@ -1346,6 +1352,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
   else {
     void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
     env->assign_object(env, stack, ref, in);
+    spvm_warn("%d", SPVM_IMPLEMENT_GET_EXISTS_FLAG(object, object_data_offset, fields_size, field_index));
   }
 }
 
