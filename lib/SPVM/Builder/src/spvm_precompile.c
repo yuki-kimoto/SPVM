@@ -5230,6 +5230,14 @@ void SPVM_PRECOMPILE_add_basic_type(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUF
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
+void SPVM_PRECOMPILE_add_fields_size(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, "fields_size");
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(basic_type_name));
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+}
+
 void SPVM_PRECOMPILE_add_class_var(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* class_var_name) {
   SPVM_STRING_BUFFER_add(string_buffer, "class_var");
   SPVM_STRING_BUFFER_add(string_buffer, "____");
@@ -5254,6 +5262,17 @@ void SPVM_PRECOMPILE_add_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* 
 
 void SPVM_PRECOMPILE_add_field_offset(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name) {
   SPVM_STRING_BUFFER_add(string_buffer, "field_offset");
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(basic_type_name));
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_STRING_BUFFER_add(string_buffer, field_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(field_name));
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+}
+
+void SPVM_PRECOMPILE_add_field_index(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, "field_index");
   SPVM_STRING_BUFFER_add(string_buffer, "____");
   SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
   SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(basic_type_name));
