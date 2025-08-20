@@ -325,6 +325,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_class_var;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_method;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_offset;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_fields_size;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_index;\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_size = env->api->runtime->get_object_data_offset(env->runtime);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);\n");
@@ -2360,6 +2362,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_fields_size = ");
+        SPVM_PRECOMPILE_add_fields_size(precompile, string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_index = ");
+        SPVM_PRECOMPILE_add_field_index(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
             SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_FIELD_BYTE(env, stack, ");
@@ -2440,6 +2450,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
         SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_fields_size = ");
+        SPVM_PRECOMPILE_add_fields_size(precompile, string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_index = ");
+        SPVM_PRECOMPILE_add_field_index(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         switch (opcode_id) {
