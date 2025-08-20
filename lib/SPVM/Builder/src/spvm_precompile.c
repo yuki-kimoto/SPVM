@@ -346,6 +346,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_RUNTIME_FIELD* field = NULL;
     SPVM_RUNTIME_METHOD* method = NULL;
     int32_t field_offset = -1;
+    int32_t field_index = -1;
+    int32_t fields_size = -1;
     int32_t id_set = 1;
     switch(opcode_id) {
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECK: {
@@ -399,6 +401,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, basic_type, field_index);
         field_offset = field->offset;
+        field_index = field->index;
+        fields_size = basic_type->fields_size;
         assert(field);
         break;
       }
@@ -420,6 +424,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, basic_type, field_index);
         assert(field);
         field_offset = field->offset;
+        field_index = field->index;
+        fields_size = basic_type->fields_size;
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE:
