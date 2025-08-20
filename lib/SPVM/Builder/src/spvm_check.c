@@ -345,11 +345,11 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
       for (int32_t basic_type_id = basic_type_merge_stack->length - 1; basic_type_id >= 0; basic_type_id--) {
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_type_merge_stack, basic_type_id);
         
-        SPVM_LIST* fields = basic_type->unmerged_fields;
-        int32_t field_index = 0;
-        int32_t fields_length = fields->length;
-        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
+        SPVM_LIST* unmerged_fields = basic_type->unmerged_fields;
+        
+        int32_t unmerged_fields_length = unmerged_fields->length;
+        for (int32_t unmerged_field_index = 0; unmerged_field_index < unmerged_fields_length; unmerged_field_index++) {
+          SPVM_FIELD* field = SPVM_LIST_get(unmerged_fields, unmerged_field_index);
           
           SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_unmerged_field(compiler, basic_type->parent, field->name);
           if (found_field_in_super_class) {
