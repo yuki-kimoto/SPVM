@@ -17,6 +17,7 @@ struct spvm_field {
   SPVM_OP* op_setter;
   int32_t index;
   int32_t offset;
+  int32_t exists_offset;
   int8_t is_anon_method_field;
   int8_t has_setter;
   int8_t has_getter;
@@ -24,6 +25,7 @@ struct spvm_field {
   int8_t is_decl_var_in_anon_method;
   int8_t is_parent_field;
   int8_t is_virtual;
+  int8_t exists_bit;
 };
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);

@@ -12,8 +12,10 @@ struct spvm_runtime_field {
   SPVM_RUNTIME_BASIC_TYPE* basic_type;
   int32_t index;
   int32_t offset;
+  int32_t exists_offset;
   int32_t type_dimension;
   int32_t type_flag;
+  int8_t exists_bit;
 };
 
 #endif
