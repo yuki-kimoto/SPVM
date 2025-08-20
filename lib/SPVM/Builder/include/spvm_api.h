@@ -304,7 +304,7 @@ void SPVM_API_free_weaken_backrefs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN
 int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref);
 void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref);
 int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref);
-SPVM_OBJECT* SPVM_API_get_object_no_weaken_address(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
+SPVM_OBJECT* SPVM_API_drop_tag_pointers(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 
 // Scope
 int32_t SPVM_API_enter_scope(SPVM_ENV* env, SPVM_VALUE* stack);

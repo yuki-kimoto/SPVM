@@ -1127,7 +1127,7 @@ SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   assert(class_var);
   
   SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)class_var->data.oval;
-  SPVM_OBJECT* value = SPVM_API_get_object_no_weaken_address(env, stack, value_maybe_weaken);
+  SPVM_OBJECT* value = SPVM_API_drop_tag_pointers(env, stack, value_maybe_weaken);
   
   return value;
 }
@@ -1984,7 +1984,7 @@ double SPVM_API_get_field_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
 SPVM_OBJECT* SPVM_API_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
   
   SPVM_OBJECT* value_maybe_weaken = *(SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
-  SPVM_OBJECT* value = SPVM_API_get_object_no_weaken_address(env, stack, value_maybe_weaken);
+  SPVM_OBJECT* value = SPVM_API_drop_tag_pointers(env, stack, value_maybe_weaken);
   
   return value;
 }
@@ -3934,7 +3934,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
         }
         else if (SPVM_API_is_object_array(env, stack, object)) {
           SPVM_OBJECT* element = (((SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index]);
-          element = SPVM_API_get_object_no_weaken_address(env, stack, element);
+          element = SPVM_API_drop_tag_pointers(env, stack, element);
           (*depth)++;
           SPVM_API_dump_recursive(env, stack, element, depth, string_buffer, address_symtable);
           (*depth)--;
@@ -3963,16 +3963,16 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
       }
       
       // If the object is weaken, this get the real address
-      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "(%p)", SPVM_API_get_object_no_weaken_address(env, stack, object));
+      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "(%p)", SPVM_API_drop_tag_pointers(env, stack, object));
       SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
     }
     else {
       // If the object is weaken, this get the real address
-      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%p", SPVM_API_get_object_no_weaken_address(env, stack, object));
+      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%p", SPVM_API_drop_tag_pointers(env, stack, object));
       int32_t exists = (int32_t)(intptr_t)SPVM_HASH_get(address_symtable, tmp_buffer, strlen(tmp_buffer));
       if (exists) {
         // If the object is weaken, this get the real address
-        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "REUSE_OBJECT(%p)", SPVM_API_get_object_no_weaken_address(env, stack, object));
+        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "REUSE_OBJECT(%p)", SPVM_API_drop_tag_pointers(env, stack, object));
         SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
       }
       else {
@@ -4048,7 +4048,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
           }
           else  {
             SPVM_OBJECT* field_value = *(SPVM_OBJECT**)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field_offset);
-            field_value = SPVM_API_get_object_no_weaken_address(env, stack, field_value);
+            field_value = SPVM_API_drop_tag_pointers(env, stack, field_value);
             (*depth)++;
             SPVM_API_dump_recursive(env, stack, field_value, depth, string_buffer, address_symtable);
             (*depth)--;
@@ -4610,7 +4610,7 @@ double* SPVM_API_get_elems_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
 SPVM_OBJECT* SPVM_API_get_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index) {
   
   SPVM_OBJECT* object_maybe_weaken = ((SPVM_OBJECT**)((intptr_t)array + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index];
-  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, object_maybe_weaken);
+  SPVM_OBJECT* object = SPVM_API_drop_tag_pointers(env, stack, object_maybe_weaken);
   
   return object;
 }
@@ -5151,8 +5151,8 @@ void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** 
   mortal_stack_tops[mortal_stack_tops_index] = -1;
 }
 
-SPVM_OBJECT* SPVM_API_get_object_no_weaken_address(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  //  Dropping weaken flag
+SPVM_OBJECT* SPVM_API_drop_tag_pointers(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  // Drap tag pointers. 1th bit: weaken flag.
   void* object_no_weaken_address = (void*)((intptr_t)object & ~(intptr_t)1);
   
   return object_no_weaken_address;
@@ -5172,7 +5172,7 @@ int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
     return 0;
   }
   
-  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
+  SPVM_OBJECT* object = SPVM_API_drop_tag_pointers(env, stack, *ref);
   
   int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, ref);
   
@@ -5193,7 +5193,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
     
     if (!(*ref == NULL)) {
       
-      SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
+      SPVM_OBJECT* object = SPVM_API_drop_tag_pointers(env, stack, *ref);
       
       int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, ref);
       
@@ -5253,7 +5253,7 @@ void SPVM_API_unweaken_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     return;
   }
   
-  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
+  SPVM_OBJECT* object = SPVM_API_drop_tag_pointers(env, stack, *ref);
   
   int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, ref);
   
@@ -5299,7 +5299,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
     assert(ref);
     
     if (!(*ref == NULL)) {
-      SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
+      SPVM_OBJECT* object = SPVM_API_drop_tag_pointers(env, stack, *ref);
       
       SPVM_API_unweaken_thread_unsafe(env, stack, ref);
     }
@@ -5338,7 +5338,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   {
     SPVM_MUTEX_lock(runtime_mutex);
     
-    released_object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
+    released_object = SPVM_API_drop_tag_pointers(env, stack, *ref);
     
     assert(!((intptr_t)object & 1));
     
