@@ -181,6 +181,8 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_UNDEF(SPVM_ENV* env, SPVM_VALUE* s
   env->assign_object(env, stack, dist_address, NULL);
 }
 
+#define SPVM_IMPLEMENT_DROP_TAG_POINTERS(address) ((void*)((intptr_t)address & ~(intptr_t)1))
+
 #define SPVM_IMPLEMENT_ENTER_SCOPE(mortal_stack, mortal_stack_top, mortal_stack_tops, mortal_stack_tops_index) (mortal_stack_tops[mortal_stack_tops_index] = mortal_stack_top)
 
 #define SPVM_IMPLEMENT_PUSH_MORTAL(mortal_stack_typed_var_index, mortal_stack_top, object_vars_index) (mortal_stack_typed_var_index[mortal_stack_top++] = object_vars_index)
@@ -1207,7 +1209,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
   }
   else {
     void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
-    void* object = (void*)((intptr_t)*ref & ~(intptr_t)1);
+    void* object = SPVM_IMPLEMENT_DROP_TAG_POINTERS(*ref);
     env->assign_object(env, stack, out, object);
   }
 }

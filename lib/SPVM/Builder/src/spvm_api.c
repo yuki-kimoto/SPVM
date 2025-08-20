@@ -5152,8 +5152,8 @@ void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** 
 }
 
 SPVM_OBJECT* SPVM_API_drop_tag_pointers(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  // Drap tag pointers. 1th bit: weaken flag.
-  void* object_no_weaken_address = (void*)((intptr_t)object & ~(intptr_t)1);
+  
+  void* object_no_weaken_address = SPVM_IMPLEMENT_DROP_TAG_POINTERS(object);
   
   return object_no_weaken_address;
 }
@@ -5262,7 +5262,7 @@ void SPVM_API_unweaken_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     assert(object->weaken_backref_head);
     
     // Drop weaken flag
-    *ref = (SPVM_OBJECT*)((intptr_t)*ref & ~(intptr_t)1);
+    *ref = SPVM_API_drop_tag_pointers(env, stack, *ref);
     
     SPVM_API_inc_ref_count(env, stack, object);
     
