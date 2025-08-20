@@ -877,6 +877,36 @@ int32_t SPVM_TYPE_get_type_width(SPVM_COMPILER* compiler, int32_t basic_type_id,
   return type_width;
 }
 
+int32_t SPVM_TYPE_get_field_order(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  
+  int32_t is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, basic_type_id, dimension, flag);
+  
+  int32_t type_order = 0;
+  if (SPVM_TYPE_is_object_type(compiler, basic_type_id, dimension, flag)) {
+    type_order = 7;
+  }
+  else if (SPVM_TYPE_is_double_type(compiler, basic_type_id, dimension, flag)) {
+    type_order = 6;
+  }
+  else if (SPVM_TYPE_is_long_type(compiler, basic_type_id, dimension, flag)) {
+    type_order = 5;
+  }
+  else if (SPVM_TYPE_is_float_type(compiler, basic_type_id, dimension, flag)) {
+    type_order = 4;
+  }
+  else if (SPVM_TYPE_is_int_type(compiler, basic_type_id, dimension, flag)) {
+    type_order = 3;
+  }
+  else if (SPVM_TYPE_is_short_type(compiler, basic_type_id, dimension, flag)) {
+    type_order = 2;
+  }
+  else if (SPVM_TYPE_is_byte_type(compiler, basic_type_id, dimension, flag)) {
+    type_order = 1;
+  }
+  
+  return type_order;
+}
+
 int32_t SPVM_TYPE_get_mulnum_field_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   int32_t mulnum_field_basic_type_id;
