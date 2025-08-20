@@ -533,10 +533,27 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t found = SPVM_PRECOMPILE_contains_field_offset(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, field_name);
         
         if (!found) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  void* ");
+          SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (");
+          SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELD_BY_NAME(env, stack, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+          SPVM_STRING_BUFFER_add(string_buffer, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
+                                                "      goto END_OF_METHOD;\n"
+                                                "    }\n");
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
           SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
-          
           SPVM_STRING_BUFFER_add(string_buffer, "  if (");
           SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
