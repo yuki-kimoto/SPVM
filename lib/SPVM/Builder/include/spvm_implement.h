@@ -232,7 +232,9 @@ static inline int32_t SPVM_IMPLEMENT_GET_EXISTS_FLAG(void* object, int32_t objec
   int32_t block_index = field_index / 8;
   int32_t bit_index = field_index % 8;
   uint8_t* blocks = (uint8_t*)((intptr_t)object + object_data_offset + fields_size);
-  int32_t flag = !!(*(blocks + block_index) & (1 << bit_index));
+  uint8_t* block = blocks + block_index;
+  
+  int32_t flag = !!(*block & (1 << bit_index));
   
   return flag;
 }
