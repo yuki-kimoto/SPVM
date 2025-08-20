@@ -4209,7 +4209,9 @@ SPVM_OBJECT* SPVM_API_new_object_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   // Alloc body length + 1
   int32_t fields_length = basic_type->fields_length;
   
-  size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + basic_type->fields_size + 1;
+  int32_t exists_byte_blocks_length = (fields_length + 7) / 8;
+  
+  size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + basic_type->fields_size +(sizeof(uint8_t) * exists_byte_blocks_length);
   
   SPVM_OBJECT* object = SPVM_API_new_object_common(env, stack, alloc_size, basic_type, 0, fields_length, 0);
   
