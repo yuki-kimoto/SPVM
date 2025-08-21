@@ -898,7 +898,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         
         if (!field->is_virtual) {
-          SPVM_LIST_push(type->basic_type->unmerged_fields, field);
+          SPVM_LIST_push(type->basic_type->original_fields, field);
         }
       }
       // Enumeration definition
@@ -921,7 +921,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         for (int32_t i = 0; i < anon_method_fields->length; i++) {
           SPVM_FIELD* anon_method_field = SPVM_LIST_get(anon_method_fields, i);
           
-          SPVM_LIST_push(type->basic_type->unmerged_fields, anon_method_field);
+          SPVM_LIST_push(type->basic_type->original_fields, anon_method_field);
           anon_method_field->is_anon_method_field = 1;
         }
       }
@@ -940,8 +940,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
   
   // Field declarations
-  for (int32_t i = 0; i < type->basic_type->unmerged_fields->length; i++) {
-    SPVM_FIELD* field = SPVM_LIST_get(type->basic_type->unmerged_fields, i);
+  for (int32_t i = 0; i < type->basic_type->original_fields->length; i++) {
+    SPVM_FIELD* field = SPVM_LIST_get(type->basic_type->original_fields, i);
     
     // The default of the access controll of the field is private.
     if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
@@ -962,13 +962,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     field->index = i;
     const char* field_name = field->op_name->uv.name;
     
-    SPVM_FIELD* found_field = SPVM_HASH_get(type->basic_type->unmerged_field_symtable, field_name, strlen(field_name));
+    SPVM_FIELD* found_field = SPVM_HASH_get(type->basic_type->original_field_symtable, field_name, strlen(field_name));
     
     if (found_field) {
       SPVM_COMPILER_error(compiler, "Redeclaration of %s#%s field.\n  at %s line %d", basic_type_name, field_name, field->op_field->file, field->op_field->line);
     }
     else {
-      SPVM_HASH_set(type->basic_type->unmerged_field_symtable, field_name, strlen(field_name), field);
+      SPVM_HASH_set(type->basic_type->original_field_symtable, field_name, strlen(field_name), field);
       
       // Add op class
       field->current_basic_type = type->basic_type;
@@ -1136,10 +1136,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     if (type->basic_type->class_vars->length > 0) {
       SPVM_COMPILER_error(compiler, "A multi-numeric type cannnot have class variables.\n  at %s line %d", op_class->file, op_class->line);
     }
-    if (type->basic_type->unmerged_fields->length == 0) {
+    if (type->basic_type->original_fields->length == 0) {
       SPVM_COMPILER_error(compiler, "A multi-numeric type must have at least one field.\n  at %s line %d", op_class->file, op_class->line);
     }
-    else if (type->basic_type->unmerged_fields->length > 255) {
+    else if (type->basic_type->original_fields->length > 255) {
       SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", op_class->file, op_class->line);
     }
   }

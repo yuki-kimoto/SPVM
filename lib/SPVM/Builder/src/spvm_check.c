@@ -257,7 +257,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
     
     // Multi-numeric type limitation
     if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-      SPVM_LIST* fields = basic_type->unmerged_fields;
+      SPVM_LIST* fields = basic_type->original_fields;
       SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
       SPVM_TYPE* first_field_type = first_field->type;
       if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
@@ -266,7 +266,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
       }
       
       int32_t field_index;
-      for (field_index = 0; field_index < basic_type->unmerged_fields->length; field_index++) {
+      for (field_index = 0; field_index < basic_type->original_fields->length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
         SPVM_TYPE* field_type = field->type;
         if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
@@ -310,8 +310,8 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
     }
     
     // Check fields
-    for (int32_t field_index = 0; field_index < basic_type->unmerged_fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(basic_type->unmerged_fields, field_index);
+    for (int32_t field_index = 0; field_index < basic_type->original_fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_get(basic_type->original_fields, field_index);
       SPVM_TYPE* field_type = field->type;
 
       // valut_t cannnot become field
@@ -345,34 +345,34 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
       for (int32_t basic_type_id = basic_type_merge_stack->length - 1; basic_type_id >= 0; basic_type_id--) {
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_type_merge_stack, basic_type_id);
         
-        SPVM_LIST* unmerged_fields = basic_type->unmerged_fields;
+        SPVM_LIST* original_fields = basic_type->original_fields;
         
-        SPVM_LIST* sorted_unmerged_fields = NULL;
+        SPVM_LIST* sorted_original_fields = NULL;
         
         if (SPVM_BASIC_TYPE_is_class_type(compiler, basic_type->id)) {
-          int32_t unmerged_fields_length = unmerged_fields->length;
+          int32_t original_fields_length = original_fields->length;
           
-          sorted_unmerged_fields = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
-          for (int32_t unmerged_field_index = 0; unmerged_field_index < unmerged_fields_length; unmerged_field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_get(unmerged_fields, unmerged_field_index);
+          sorted_original_fields = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
+          for (int32_t original_field_index = 0; original_field_index < original_fields_length; original_field_index++) {
+            SPVM_FIELD* field = SPVM_LIST_get(original_fields, original_field_index);
             field->order = SPVM_TYPE_get_field_order(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag);
-            SPVM_LIST_push(sorted_unmerged_fields, field);
+            SPVM_LIST_push(sorted_original_fields, field);
           }
           
-          qsort(sorted_unmerged_fields->values, sorted_unmerged_fields->length, sizeof(SPVM_FIELD*), SPVM_CHECK_field_order_compare_cb);
+          qsort(sorted_original_fields->values, sorted_original_fields->length, sizeof(SPVM_FIELD*), SPVM_CHECK_field_order_compare_cb);
           
-          int32_t sorted_unmerged_fields_length = sorted_unmerged_fields->length;
+          int32_t sorted_original_fields_length = sorted_original_fields->length;
           
           // exists fields
           SPVM_FIELD* exists_field = NULL;
           int32_t exists_field_index = 0;
           int32_t exists_field_bit = 0;
-          for (int32_t sorted_unmerged_field_index = 0; sorted_unmerged_field_index < sorted_unmerged_fields_length; sorted_unmerged_field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_get(sorted_unmerged_fields, sorted_unmerged_field_index);
+          for (int32_t sorted_original_field_index = 0; sorted_original_field_index < sorted_original_fields_length; sorted_original_field_index++) {
+            SPVM_FIELD* field = SPVM_LIST_get(sorted_original_fields, sorted_original_field_index);
             
             field->exists_bit = exists_field_bit;
             
-            if (sorted_unmerged_field_index % 8 == 0) {
+            if (sorted_original_field_index % 8 == 0) {
               SPVM_FIELD* exists_field = SPVM_FIELD_new(compiler);
               
               char* exists_field_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, 1 + strlen(current_basic_type->name) + 1 + strlen("exists2147483647") + 1);
@@ -382,7 +382,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
               exists_field->type = SPVM_TYPE_new_byte_type(compiler);
               exists_field->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
               exists_field_index++;
-              SPVM_LIST_push(sorted_unmerged_fields, exists_field);
+              SPVM_LIST_push(sorted_original_fields, exists_field);
             }
             
             field->exists_field = exists_field;
@@ -394,15 +394,15 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
           }
         }
         else {
-          sorted_unmerged_fields = unmerged_fields;
+          sorted_original_fields = original_fields;
         }
         
-        int32_t sorted_unmerged_fields_length = sorted_unmerged_fields->length;
+        int32_t sorted_original_fields_length = sorted_original_fields->length;
         
-        for (int32_t sorted_unmerged_field_index = 0; sorted_unmerged_field_index < sorted_unmerged_fields_length; sorted_unmerged_field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_get(sorted_unmerged_fields, sorted_unmerged_field_index);
+        for (int32_t sorted_original_field_index = 0; sorted_original_field_index < sorted_original_fields_length; sorted_original_field_index++) {
+          SPVM_FIELD* field = SPVM_LIST_get(sorted_original_fields, sorted_original_field_index);
           
-          SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_unmerged_field(compiler, basic_type->parent, field->name);
+          SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_original_field(compiler, basic_type->parent, field->name);
           
           if (found_field_in_super_class) {
             
@@ -781,7 +781,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
         arg_var_decl->stack_index = args_width;
         
         if (is_arg_type_is_mulnum_type) {
-          args_width += arg_type->basic_type->unmerged_fields->length;
+          args_width += arg_type->basic_type->original_fields->length;
         }
         else {
           args_width++;
@@ -3627,16 +3627,16 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
 
             SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
             
-            SPVM_FIELD* found_field_in_current_basic_type = SPVM_HASH_get(method->current_basic_type->unmerged_field_symtable, field_access->field->name, strlen(field_access->field->name));
+            SPVM_FIELD* found_field_in_current_basic_type = SPVM_HASH_get(method->current_basic_type->original_field_symtable, field_access->field->name, strlen(field_access->field->name));
             
             int32_t is_parent_field = !found_field_in_current_basic_type && !method->current_basic_type->is_generated_by_anon_method;
             
             if (!SPVM_CHECK_can_access(compiler, method->current_basic_type,  field_access->field->current_basic_type, field_access->field->access_control_type, is_parent_field)) {
               if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, field->current_basic_type, is_parent_field)) {
                 
-                SPVM_FIELD* found_unmerged_field = SPVM_CHECK_search_unmerged_field(compiler, field->current_basic_type, field->name);
+                SPVM_FIELD* found_original_field = SPVM_CHECK_search_original_field(compiler, field->current_basic_type, field->name);
                 
-                SPVM_COMPILER_error(compiler, "The %s %s#%s field cannnot be accessed from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), found_unmerged_field->current_basic_type->name, found_unmerged_field->name, method->current_basic_type->name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The %s %s#%s field cannnot be accessed from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), found_original_field->current_basic_type->name, found_original_field->name, method->current_basic_type->name, op_cur->file, op_cur->line);
                 return;
               }
             }
@@ -4268,14 +4268,14 @@ SPVM_METHOD* SPVM_CHECK_search_method(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* 
   return found_method;
 }
 
-SPVM_FIELD* SPVM_CHECK_search_unmerged_field(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* field_name) {
+SPVM_FIELD* SPVM_CHECK_search_original_field(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* field_name) {
   SPVM_FIELD* found_field = NULL;
   
   if (basic_type) {
     SPVM_BASIC_TYPE* parent_basic_type = basic_type;
     while (1) {
       found_field = SPVM_HASH_get(
-        parent_basic_type->unmerged_field_symtable,
+        parent_basic_type->original_field_symtable,
         field_name,
         strlen(field_name)
       );

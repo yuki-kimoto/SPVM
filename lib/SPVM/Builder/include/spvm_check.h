@@ -50,7 +50,7 @@ int SPVM_CHECK_field_order_compare_cb(const void* field1_ptr, const void* field2
 
 SPVM_METHOD* SPVM_CHECK_search_method(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* method_name);
 
-SPVM_FIELD* SPVM_CHECK_search_unmerged_field(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* field_name);
+SPVM_FIELD* SPVM_CHECK_search_original_field(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* field_name);
 
 int32_t SPVM_CHECK_check_allow_narrowing_conversion(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, SPVM_OP* op_src);
 

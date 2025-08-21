@@ -28,8 +28,8 @@ struct spvm_basic_type {
   SPVM_STRING_BUFFER* string_pool;
   SPVM_LIST* class_vars;
   SPVM_HASH* class_var_symtable;
-  SPVM_LIST* unmerged_fields;
-  SPVM_HASH* unmerged_field_symtable;
+  SPVM_LIST* original_fields;
+  SPVM_HASH* original_field_symtable;
   SPVM_LIST* fields;
   SPVM_HASH* field_symtable;
   SPVM_LIST* methods;
