@@ -17,7 +17,6 @@
     * Add exists_offset member variable to spvm_field.h and spvm_runtime_field.h.
     * Add exists_bit member variable to spvm_field.h and spvm_runtime_field.h.
     * Fields are sorted by the field order.
-    * A basic type has hidden fields.
   [Document Changes]
     * Change headings for set and get operations.
     
