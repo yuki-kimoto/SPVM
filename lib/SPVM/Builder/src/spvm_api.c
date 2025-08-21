@@ -6150,3 +6150,41 @@ int32_t SPVM_API_exists(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, S
   
   return value;
 }
+
+int32_t SPVM_API_exists_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
+  *error_id = 0;
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  if (object == NULL) {
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    return 0;
+  };
+  
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
+  
+  int32_t object_type_dimension = object->type_dimension;
+  
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  
+  if (!object_is_class_type) {
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    return 0;
+  };
+  
+  SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, stack, object, field_name);
+  if (!field) {
+    const char* basic_type_name = SPVM_API_get_object_basic_type_name(env, stack, object);
+    *error_id = SPVM_API_die(env, stack, "%s#%s field is not found in the class or its super classes.", basic_type_name, field_name, func_name, file, line);
+    return 0;
+  };
+  
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  
+  int32_t is_invalid_type = 0;
+  
+  int32_t exists = SPVM_API_exists(env, stack, object, field);
+  
+  return exists;
+}
