@@ -365,31 +365,34 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
           
           // exists fields
           SPVM_FIELD* exists_field = NULL;
-          int32_t exists_field_index = 0;
-          int32_t exists_field_bit = 0;
+          int32_t field_exists_index = 0;
+          int32_t field_exists_bit = 0;
           for (int32_t unmerged_field_index = 0; unmerged_field_index < unmerged_fields_length; unmerged_field_index++) {
             SPVM_FIELD* field = SPVM_LIST_get(unmerged_fields, unmerged_field_index);
             
-            field->exists_bit = exists_field_bit;
+            // spvm_warn("%s#%s, %p", basic_type->name, field->name, field->exists_field);
             
             if (unmerged_field_index % 8 == 0) {
-              SPVM_FIELD* exists_field = SPVM_FIELD_new(compiler);
+              exists_field = SPVM_FIELD_new(compiler);
               
               char* exists_field_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, 1 + strlen(current_basic_type->name) + 1 + strlen("exists2147483647") + 1);
-              sprintf(exists_field_name, ".%s.exists%d", current_basic_type->name, exists_field_index);
+              sprintf(exists_field_name, ".%s.exists%d", current_basic_type->name, field_exists_index);
               exists_field->name = exists_field_name;
               exists_field->current_basic_type = current_basic_type;
               exists_field->type = SPVM_TYPE_new_byte_type(compiler);
               exists_field->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
-              exists_field_index++;
+              field_exists_index++;
               SPVM_LIST_push(unmerged_fields, exists_field);
             }
             
             field->exists_field = exists_field;
             
-            exists_field_bit++;
-            if (exists_field_bit == 8) {
-              exists_field_bit = 0;
+            field->exists_bit = field_exists_bit;
+            
+            field_exists_bit++;
+            
+            if (field_exists_bit == 8) {
+              field_exists_bit = 0;
             }
           }
         }

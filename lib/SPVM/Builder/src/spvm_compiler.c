@@ -874,6 +874,14 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_field->type_dimension = field->type->dimension;
         runtime_field->type_flag = field->type->flag;
         runtime_field->current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field->current_basic_type->id);
+        if (field->exists_field) {
+          runtime_field->exists_offset = field->exists_field->offset;
+        }
+        else {
+          runtime_field->exists_offset = -1;
+        }
+        
+        runtime_field->exists_bit = field->exists_bit;
         
         SPVM_STRING* field_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field->name, strlen(field->name));
         runtime_field->name = runtime_basic_type->constant_strings[field_name_string->index].value;
