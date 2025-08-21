@@ -1551,6 +1551,24 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         check_exception = 1;
                         
                       }
+                      else if (op_assign_src->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_DELETE) {
+                        SPVM_OPCODE opcode = {0};
+                        
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_DELETE);
+                        
+                        SPVM_OP* op_term_invocant = op_assign_src->first;
+                        int32_t typed_var_index_invocant = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_term_invocant);
+                        
+                        SPVM_FIELD* field = op_assign_src->uv.field_access->field;
+                        
+                        opcode.operand0 = typed_var_index_invocant;
+                        opcode.operand2 = field->current_basic_type->id;
+                        opcode.operand3 = (uint16_t)field->index;
+                        SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                        
+                        check_exception = 1;
+                        
+                      }
                       else {
                         SPVM_OP* op_field_access = op_assign_src;
                         SPVM_OP* op_term_invocant = op_field_access->first;

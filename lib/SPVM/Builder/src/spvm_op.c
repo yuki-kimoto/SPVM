@@ -260,6 +260,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "GET",
     "SET",
     "EXISTS",
+    "DELETE",
   };
   
   return id_names;
@@ -2546,6 +2547,14 @@ SPVM_OP* SPVM_OP_build_exists(SPVM_COMPILER* compiler, SPVM_OP* op_exists, SPVM_
   
   SPVM_OP_insert_child(compiler, op_exists, op_exists->last, op_field_access);
   op_field_access->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS;
+  
+  return op_field_access;
+}
+
+SPVM_OP* SPVM_OP_build_delete(SPVM_COMPILER* compiler, SPVM_OP* op_exists, SPVM_OP* op_field_access) {
+  
+  SPVM_OP_insert_child(compiler, op_exists, op_exists->last, op_field_access);
+  op_field_access->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_DELETE;
   
   return op_field_access;
 }

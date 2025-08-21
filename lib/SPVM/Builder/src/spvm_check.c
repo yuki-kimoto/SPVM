@@ -3833,6 +3833,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_IS_OPTIONS:
               case SPVM_OP_C_ID_ISWEAK_FIELD:
               case SPVM_OP_C_ID_EXISTS:
+              case SPVM_OP_C_ID_DELETE:
               case SPVM_OP_C_ID_CAN:
               case SPVM_OP_C_ID_ADD:
               case SPVM_OP_C_ID_SUBTRACT:
@@ -4743,6 +4744,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_MAKE_READ_ONLY:
     case SPVM_OP_C_ID_ENABLE_OPTIONS:
     case SPVM_OP_C_ID_DISABLE_OPTIONS:
+    case SPVM_OP_C_ID_DELETE:
     {
       // Dummy int variable
       type = SPVM_TYPE_new_int_type(compiler);
@@ -4926,7 +4928,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_FIELD_ACCESS: {
-      if (op->flag & (SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK|SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS)) {
+      if (op->flag & (SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK|SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS|SPVM_OP_C_FLAG_FIELD_ACCESS_DELETE)) {
         type = SPVM_TYPE_new_int_type(compiler);
       }
       else {

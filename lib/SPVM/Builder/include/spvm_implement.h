@@ -1461,6 +1461,7 @@ static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
 }
 
 static inline void SPVM_IMPLEMENT_EXISTS(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t field_exists_offset, int32_t field_exists_bit, int32_t* error_id, int32_t object_data_offset) {
+  
   if (object == NULL) {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
@@ -1468,6 +1469,18 @@ static inline void SPVM_IMPLEMENT_EXISTS(SPVM_ENV* env, SPVM_VALUE* stack, int32
   }
   else {
     *out = SPVM_IMPLEMENT_GET_EXISTS_FLAG(object, object_data_offset, field_exists_offset, field_exists_bit);
+  }
+}
+
+static inline void SPVM_IMPLEMENT_DELETE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_exists_offset, int32_t field_exists_bit, int32_t* error_id, int32_t object_data_offset) {
+  
+  if (object == NULL) {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  else {
+    SPVM_IMPLEMENT_DISABLE_EXISTS_FLAG(object, object_data_offset, field_exists_offset, field_exists_bit);
   }
 }
 

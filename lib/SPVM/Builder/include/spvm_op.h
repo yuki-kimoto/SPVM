@@ -260,6 +260,7 @@ enum {
   SPVM_OP_C_ID_GET,
   SPVM_OP_C_ID_SET,
   SPVM_OP_C_ID_EXISTS,
+  SPVM_OP_C_ID_DELETE,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -287,6 +288,7 @@ enum {
   SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN = 2,
   SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK = 4,
   SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS = 8,
+  SPVM_OP_C_FLAG_FIELD_ACCESS_DELETE = 16,
 };
 enum {
   // ELEMENT_ACCESS flag
@@ -457,6 +459,10 @@ SPVM_OP* SPVM_OP_build_unweaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_unwea
 
 SPVM_OP* SPVM_OP_build_isweak_field(SPVM_COMPILER* compiler, SPVM_OP* op_isweak, SPVM_OP* op_field_access);
 
+SPVM_OP* SPVM_OP_build_exists(SPVM_COMPILER* compiler, SPVM_OP* op_exists, SPVM_OP* op_field_access);
+
+SPVM_OP* SPVM_OP_build_delete(SPVM_COMPILER* compiler, SPVM_OP* op_exists, SPVM_OP* op_field_access);
+
 SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_init, SPVM_OP* op_list_elements, int32_t is_key_values);
 
 SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op_operand);
@@ -612,7 +618,5 @@ const char* SPVM_OP_get_op_name(SPVM_COMPILER* compiler, int32_t op_id);
 SPVM_OP* SPVM_OP_build_enable_options(SPVM_COMPILER* compiler, SPVM_OP* op_enable_options, SPVM_OP* op_operand);
 
 SPVM_OP* SPVM_OP_build_disable_options(SPVM_COMPILER* compiler, SPVM_OP* op_disable_options, SPVM_OP* op_operand);
-
-SPVM_OP* SPVM_OP_build_exists(SPVM_COMPILER* compiler, SPVM_OP* op_exists, SPVM_OP* op_field_access);
 
 #endif

@@ -4,6 +4,7 @@
     * Add get_exists_offset native field API.
     * Add get_exists_bit native field API.
     * Add exists operator.
+    * Add delete operator.
   [Changes]
     * Change the format of the output from dump operator a bit.
     

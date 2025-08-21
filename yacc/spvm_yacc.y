@@ -24,7 +24,7 @@
 %token <opval> CLASS HAS GET SET METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
 %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
-%token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS
+%token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
 %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
 %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
@@ -42,7 +42,7 @@
 %type <opval> for_statement while_statement foreach_statement
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
 %type <opval> block eval_block init_statement switch_block if_require_statement
-%type <opval> die exists
+%type <opval> die exists delete
 %type <opval> var_decl var
 %type <opval> operator opt_operators operators opt_operator
 %type <opval> void_return_operator warn 
@@ -793,6 +793,7 @@ void_return_operator
       $$ = SPVM_OP_build_disable_options(compiler, $1, $2);
     }
   | copy_fields
+  | delete
 
 for_statement
   : FOR '(' opt_operator ';' opt_operator ';' opt_operator ')' block
@@ -1566,6 +1567,14 @@ exists
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       SPVM_OP_build_field_access(compiler, op_field_access, $2, $5);
       $$ = SPVM_OP_build_exists(compiler, $1, op_field_access);
+    }
+
+delete
+  : DELETE var ARROW '{' field_name '}'
+    {
+      SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
+      SPVM_OP_build_field_access(compiler, op_field_access, $2, $5);
+      $$ = SPVM_OP_build_delete(compiler, $1, op_field_access);
     }
 
 %%
