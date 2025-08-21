@@ -1535,7 +1535,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         
                         int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                         
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ISWEAK_FIELD);
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EXISTS);
                         
                         SPVM_OP* op_term_invocant = op_assign_src->first;
                         int32_t typed_var_index_invocant = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_term_invocant);
