@@ -2592,13 +2592,13 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_field_exists_offset(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_exists_bit = ");
-        SPVM_PRECOMPILE_add_field_exists_bit(precompile, string_buffer, basic_type_name, field_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
+        SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0); 
-        SPVM_STRING_BUFFER_add(string_buffer, ", object, decl_field_exists_offset, decl_field_exists_bit, &error_id, object_header_size);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", object, decl_field_offset, &error_id, object_header_size);\n");
         
         break;
       }
