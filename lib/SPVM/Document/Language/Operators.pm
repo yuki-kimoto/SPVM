@@ -3508,7 +3508,7 @@ The C<delete> operator delete a field value.
 
   delete INVOCANT->{FIELD_NAME};
 
-The field exists flag is set to 0, and the value of the field is set to 0 in the case of numeric types or undef in the case of object types.
+The field existence flag is set to 0, and the value of the field is set to 0 in the case of numeric types or undef in the case of object types.
 
 I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
 

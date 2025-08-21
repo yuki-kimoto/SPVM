@@ -777,11 +777,15 @@ C<void (*set_field_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime En
 
 Sets I<value> to the field I<field> of the object I<object> interpreting its type is byte type.
 
+And the field existence flag is set to 1.
+
 =head2 set_field_short
 
 C<void (*set_field_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, int16_t value);>
 
 Sets I<value> to the field I<field> of the object I<object> interpreting its type is short type.
+
+And the field existence flag is set to 1.
 
 =head2 set_field_int
 
@@ -789,11 +793,15 @@ C<void (*set_field_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Env
 
 Sets I<value> to the field I<field> of the object I<object> interpreting its type is int type.
 
+And the field existence flag is set to 1.
+
 =head2 set_field_long
 
 C<void (*set_field_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, int64_t value);>
 
 Sets I<value> to the field I<field> of the object I<object> interpreting its type is long type.
+
+And the field existence flag is set to 1.
 
 =head2 set_field_float
 
@@ -801,11 +809,15 @@ C<void (*set_field_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime E
 
 Sets I<value> to the field I<field> of the object I<object> interpreting its type is float type.
 
+And the field existence flag is set to 1.
+
 =head2 set_field_double
 
 C<void (*set_field_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, double value);>
 
 Sets I<value> to the field I<field> of the object I<object> interpreting its type is double type.
+
+And the field existence flag is set to 1.
 
 =head2 set_field_object
 
@@ -813,11 +825,13 @@ C<void (*set_field_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime 
 
 Sets I<value> to the field I<field> of the object I<object> interpreting its type is an object type.
 
+And the field existence flag is set to 1.
+
 =head2 set_field_string
 
 C<void (*set_field_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, void* value);>
 
-Sets I<value> to the field I<field> interpreting its type is string type.
+Alias for L</"set_field_object">
 
 =head2 get_field_byte_by_name
 
@@ -2650,7 +2664,9 @@ If the object I<object> is not C<NULL> and its type is any object array C<object
 
 C<int32_t (*exists_field)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
 
-If the field I<field> exists, returns 1; otherwise returns 0.
+Checks if the field I<field> exists.
+
+If the field existence flag is a true value, returns 1, otherwise returns 0.
 
 =head2 exists_field_by_name
 
@@ -2662,7 +2678,9 @@ Same as L</"exists_field">, but you can specify a field name.
 
 C<void (*delete_field)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
 
-Delete the field I<field>.
+Deletes the field I<field>.
+
+The field existence flag is set to 0, and the value of the field is set to 0 in the case of numeric types or undef in the case of object types.
 
 =head2 delete_field_by_name
 

@@ -1503,13 +1503,13 @@ If there is no method block and a return type is specified, the default setter r
 
 =head2 Field Existence
 
-An object has field exists flags.
+An object has field existence flags.
 
 When a new object is created, these flags are zero.
 
 When one of field set operations is performed, this flag is set to 1.
   
-  # The field exists flag for "value" field is set to 1.
+  # The field existence flag for "value" field is set to 1.
   $object->{value} = 1;
 
 You can check if a field exists using L<exists operator|SPVM::Document::Language::Operators/"exists Operator">.
@@ -1520,7 +1520,7 @@ You can delete a field using L<delete operator|SPVM::Document::Language::Operato
 
   delete $object->{value};
 
-The field exists flag is set to 0, and the value of the field is set to 0 in the case of numeric types or undef in the case of object types.
+The field existence flag is set to 0, and the value of the field is set to 0 in the case of numeric types or undef in the case of object types.
 
 =head1 Method
 
