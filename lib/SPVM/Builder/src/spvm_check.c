@@ -347,23 +347,63 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
         
         SPVM_LIST* unmerged_fields = basic_type->unmerged_fields;
         
-        SPVM_LIST* sorted_unmerged_fields = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
+        SPVM_LIST* sorted_unmerged_fields = NULL;
         
-        int32_t unmerged_fields_length = unmerged_fields->length;
-        
-        for (int32_t unmerged_field_index = 0; unmerged_field_index < unmerged_fields_length; unmerged_field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_get(unmerged_fields, unmerged_field_index);
-          field->order = SPVM_TYPE_get_field_order(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag);
-          SPVM_LIST_push(sorted_unmerged_fields, field);
+        if (SPVM_BASIC_TYPE_is_class_type(compiler, basic_type->id)) {
+          int32_t unmerged_fields_length = unmerged_fields->length;
+          
+          sorted_unmerged_fields = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
+          for (int32_t unmerged_field_index = 0; unmerged_field_index < unmerged_fields_length; unmerged_field_index++) {
+            SPVM_FIELD* field = SPVM_LIST_get(unmerged_fields, unmerged_field_index);
+            field->order = SPVM_TYPE_get_field_order(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag);
+            SPVM_LIST_push(sorted_unmerged_fields, field);
+          }
+          
+          qsort(sorted_unmerged_fields->values, sorted_unmerged_fields->length, sizeof(SPVM_FIELD*), SPVM_CHECK_field_order_compare_cb);
+          
+          int32_t sorted_unmerged_fields_length = sorted_unmerged_fields->length;
+          
+          // exists fields
+          SPVM_FIELD* exists_field = NULL;
+          int32_t exists_field_index = 0;
+          int32_t exists_field_bit = 0;
+          for (int32_t sorted_unmerged_field_index = 0; sorted_unmerged_field_index < sorted_unmerged_fields_length; sorted_unmerged_field_index++) {
+            SPVM_FIELD* field = SPVM_LIST_get(sorted_unmerged_fields, sorted_unmerged_field_index);
+            
+            field->exists_bit = exists_field_bit;
+            
+            if (sorted_unmerged_field_index % 8 == 0) {
+              SPVM_FIELD* exists_field = SPVM_FIELD_new(compiler);
+              
+              char* exists_field_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, 1 + strlen(current_basic_type->name) + 1 + strlen("exists2147483647") + 1);
+              sprintf(exists_field_name, ".%s.exists%d", current_basic_type->name, exists_field_index);
+              exists_field->name = exists_field_name;
+              exists_field->current_basic_type = current_basic_type;
+              exists_field->type = SPVM_TYPE_new_byte_type(compiler);
+              exists_field->access_control_type = SPVM_ATTRIBUTE_C_ID_PROTECTED;
+              exists_field_index++;
+              SPVM_LIST_push(sorted_unmerged_fields, exists_field);
+            }
+            
+            field->exists_field = exists_field;
+            
+            exists_field_bit++;
+            if (exists_field_bit == 8) {
+              exists_field_bit = 0;
+            }
+          }
+        }
+        else {
+          sorted_unmerged_fields = unmerged_fields;
         }
         
-        qsort(sorted_unmerged_fields->values, sorted_unmerged_fields->length, sizeof(SPVM_FIELD*), SPVM_CHECK_field_order_compare_cb);
-        
         int32_t sorted_unmerged_fields_length = sorted_unmerged_fields->length;
+        
         for (int32_t sorted_unmerged_field_index = 0; sorted_unmerged_field_index < sorted_unmerged_fields_length; sorted_unmerged_field_index++) {
           SPVM_FIELD* field = SPVM_LIST_get(sorted_unmerged_fields, sorted_unmerged_field_index);
           
           SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_unmerged_field(compiler, basic_type->parent, field->name);
+          
           if (found_field_in_super_class) {
             
             if (!SPVM_TYPE_equals(compiler, found_field_in_super_class->type->basic_type->id, found_field_in_super_class->type->dimension, found_field_in_super_class->type->flag, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
@@ -1519,26 +1559,28 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           
           SPVM_FIELD* field = SPVM_LIST_get(dist_fields, i);
           
-          SPVM_OP* op_name_field_access_dist = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
-          
-          SPVM_OP* op_field_access_dist = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
-          
-          SPVM_OP* op_var_dist_field_access = SPVM_OP_clone_op_var(compiler, op_var_dist);
-          
-          SPVM_OP_build_field_access(compiler, op_field_access_dist, op_var_dist_field_access, op_name_field_access_dist);
-          
-          SPVM_OP* op_name_field_access_src = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
-          SPVM_OP* op_field_access_src = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
-          SPVM_OP* op_var_src_field_access = SPVM_OP_clone_op_var(compiler, op_var_src);
-          SPVM_OP_build_field_access(compiler, op_field_access_src, op_var_src_field_access, op_name_field_access_src);
-          
-          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-          SPVM_OP_build_assign(compiler, op_assign, op_field_access_dist, op_field_access_src);
-          
-          SPVM_FIELD_ACCESS* field_access_dist = op_field_access_dist->uv.field_access;
-          SPVM_FIELD_ACCESS* field_access_src = op_field_access_src->uv.field_access;
-          
-          SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign);
+          if (field->name[0] != '.') {
+            SPVM_OP* op_name_field_access_dist = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
+            
+            SPVM_OP* op_field_access_dist = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+            
+            SPVM_OP* op_var_dist_field_access = SPVM_OP_clone_op_var(compiler, op_var_dist);
+            
+            SPVM_OP_build_field_access(compiler, op_field_access_dist, op_var_dist_field_access, op_name_field_access_dist);
+            
+            SPVM_OP* op_name_field_access_src = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
+            SPVM_OP* op_field_access_src = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+            SPVM_OP* op_var_src_field_access = SPVM_OP_clone_op_var(compiler, op_var_src);
+            SPVM_OP_build_field_access(compiler, op_field_access_src, op_var_src_field_access, op_name_field_access_src);
+            
+            SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+            SPVM_OP_build_assign(compiler, op_assign, op_field_access_dist, op_field_access_src);
+            
+            SPVM_FIELD_ACCESS* field_access_dist = op_field_access_dist->uv.field_access;
+            SPVM_FIELD_ACCESS* field_access_src = op_field_access_src->uv.field_access;
+            
+            SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign);
+          }
         }
         
         // Dummy

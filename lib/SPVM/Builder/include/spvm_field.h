@@ -15,9 +15,9 @@ struct spvm_field {
   SPVM_BASIC_TYPE* current_basic_type;
   SPVM_OP* op_getter;
   SPVM_OP* op_setter;
+  SPVM_FIELD* exists_field;
   int32_t index;
   int32_t offset;
-  int32_t exists_offset;
   int32_t order;
   int8_t is_anon_method_field;
   int8_t has_setter;
