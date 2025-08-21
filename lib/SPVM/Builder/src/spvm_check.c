@@ -445,13 +445,21 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
       // Resove field offset
       SPVM_CHECK_check_field_offset(compiler, basic_type, merged_fields);
       
-      for (int32_t field_index = 0; field_index < merged_fields->length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_get(merged_fields, field_index);
-        field->index = field_index;
-        SPVM_HASH_set(basic_type->field_symtable, field->name, strlen(field->name), field);
+      SPVM_LIST* fields = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
+      
+      int32_t field_index = 0;
+      for (int32_t merged_field_index = 0; merged_field_index < merged_fields->length; merged_field_index++) {
+        SPVM_FIELD* field = SPVM_LIST_get(merged_fields, merged_field_index);
+        
+        if (!(field->name[0] == '.')) {
+          field->index = field_index;
+          SPVM_LIST_push(fields, field);
+          SPVM_HASH_set(basic_type->field_symtable, field->name, strlen(field->name), field);
+          field_index++;
+        }
       }
       
-      basic_type->fields = merged_fields;
+      basic_type->fields = fields;
       
       SPVM_LIST_free(basic_type_merge_stack);
       if (compile_error) {
