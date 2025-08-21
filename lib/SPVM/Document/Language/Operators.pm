@@ -3481,6 +3481,50 @@ Examples:
   
   copy_fields $object_child, $object, MyClass;
 
+=head2 exists Operator
+
+The C<exists> operator checks if a field value exists.
+
+  exists INVOCANT->{FIELD_NAME};
+
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
+
+If the field specified by I<FIELD_NAME> of the object I<INVOCANT> exists, this operator returns 1, otherwise returns 0.
+
+The return type is int type.
+
+Compilation Errors:
+
+Compiliation errors caused by the syntax of L<field access|/"Field Access"> could occur.
+
+Examples:
+
+  # Exmaples of exists operator
+  my $exists = exists $object->{point};
+
+=head2 delete Operator
+
+The C<delete> operator delete a field value.
+
+  delete INVOCANT->{FIELD_NAME};
+
+The field exists flag is set to 0, and the value of the field is set to 0 in the case of numeric types or undef in the case of object types.
+
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
+
+This operator enable a weak reference of the field specified by I<FIELD_NAME> of the type of I<INVOCANT>.
+
+The return type is the void type.
+
+Compilation Errors:
+
+Compiliation errors caused by the syntax of L<field access|/"Field Access"> could occur.
+
+Examples:
+
+  # Exmaples of delete operator
+  delete $object->{point};
+
 =head1 Scope Operations
 
 See the doc of L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about scope operations.
