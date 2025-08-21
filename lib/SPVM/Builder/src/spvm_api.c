@@ -6143,3 +6143,10 @@ int32_t SPVM_API_is_options(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   
   return is_options;
 }
+
+int32_t SPVM_API_exists(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+  
+  int32_t value = SPVM_IMPLEMENT_GET_EXISTS_FLAG(object, SPVM_API_RUNTIME_get_object_data_offset(env->runtime), field->exists_offset, field->exists_bit);
+  
+  return value;
+}
