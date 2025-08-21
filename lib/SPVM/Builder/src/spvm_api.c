@@ -338,6 +338,10 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_disable_options,
     SPVM_API_is_options,
     SPVM_API_is_any_object_array,
+    SPVM_API_exists_field,
+    SPVM_API_exists_field_by_name,
+    SPVM_API_delete_field,
+    SPVM_API_delete_field_by_name,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));

@@ -2646,6 +2646,30 @@ C<int32_t (*is_any_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object)
 
 If the object I<object> is not C<NULL> and its type is any object array C<object[]>, returns 1; otherwise returns 0.
 
+=head2 exists_field
+
+C<int32_t (*exists_field)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
+
+If the field I<field> exists, returns 1; otherwise returns 0.
+
+=head2 exists_field_by_name
+
+C<int32_t (*exists_field_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+
+Same as L</"exists_field">, but you can specify a field name.
+
+=head2 delete_field
+
+C<void (*delete_field)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
+
+Delete the field I<field>.
+
+=head2 delete_field_by_name
+
+C<void (*delete_field_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+
+Same as L</"delete_field">, but you can specify a field name.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2890,6 +2914,10 @@ Native APIs have its IDs.
   237 disable_options
   238 is_options
   239 is_any_object_array
+  240 exists_field
+  241 exists_field_by_name
+  242 delete_field
+  243 delete_field_by_name
 
 =head1 Constant Values
 

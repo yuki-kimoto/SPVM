@@ -5,6 +5,11 @@
     * Add get_exists_bit native field API.
     * Add exists operator.
     * Add delete operator.
+    * Add exists_field native API.
+    * Add exists_field_by_name native API.
+    * Add delete_field native API.
+    * Add delete_field_by_name native API.
+    
   [Changes]
     * Change the format of the output from dump operator a bit.
     
