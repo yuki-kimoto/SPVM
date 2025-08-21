@@ -324,7 +324,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t fields_length;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_class_var;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_method;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_field;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_offset;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_exists_offset;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_exists_bit;\n");
@@ -536,9 +536,27 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = basic_type->name;
         
-        int32_t found = SPVM_PRECOMPILE_contains_field_offset(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, field_name);
+        int32_t found = SPVM_PRECOMPILE_contains_field(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, field_name);
         
         if (!found) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  void* ");
+          SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
+          SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    ");
+          SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELD_BY_NAME(env, stack, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+          SPVM_STRING_BUFFER_add(string_buffer, field_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
+                                                "      goto END_OF_METHOD;\n"
+                                                "    }\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+          
           SPVM_STRING_BUFFER_add(string_buffer, "  int32_t ");
           SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
@@ -2659,14 +2677,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
         SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_exists_offset = ");
-        SPVM_PRECOMPILE_add_field_exists_offset(precompile, string_buffer, basic_type_name, field_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_exists_bit = ");
-        SPVM_PRECOMPILE_add_field_exists_bit(precompile, string_buffer, basic_type_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_DELETE(env, stack, object, decl_field, &error_id);\n");
@@ -5444,14 +5454,6 @@ int32_t SPVM_PRECOMPILE_contains_class_var(SPVM_PRECOMPILE* precompile, const ch
 int32_t SPVM_PRECOMPILE_contains_field(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* field_name) {
   
   const char* label = "field";
-  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, field_name);
-  
-  return found;
-}
-
-int32_t SPVM_PRECOMPILE_contains_field_offset(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* field_name) {
-  
-  const char* label = "field_offset";
   int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, field_name);
   
   return found;

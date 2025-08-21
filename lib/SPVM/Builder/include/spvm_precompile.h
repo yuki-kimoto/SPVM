@@ -111,8 +111,6 @@ int32_t SPVM_PRECOMPILE_contains_class_var(SPVM_PRECOMPILE* precompile, const ch
 
 int32_t SPVM_PRECOMPILE_contains_field(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* field_name);
 
-int32_t SPVM_PRECOMPILE_contains_field_offset(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* field_name);
-
 int32_t SPVM_PRECOMPILE_contains_method(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* method_name);
 
 #endif
