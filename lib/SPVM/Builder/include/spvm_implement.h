@@ -1472,7 +1472,7 @@ static inline void SPVM_IMPLEMENT_EXISTS(SPVM_ENV* env, SPVM_VALUE* stack, int32
   }
 }
 
-static inline void SPVM_IMPLEMENT_DELETE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_exists_offset, int32_t field_exists_bit, int32_t* error_id, int32_t object_data_offset) {
+static inline void SPVM_IMPLEMENT_DELETE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t* error_id) {
   
   if (object == NULL) {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1480,7 +1480,7 @@ static inline void SPVM_IMPLEMENT_DELETE(SPVM_ENV* env, SPVM_VALUE* stack, void*
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    SPVM_IMPLEMENT_DISABLE_EXISTS_FLAG(object, object_data_offset, field_exists_offset, field_exists_bit);
+    env->delete_field(env, stack, object, field);
   }
 }
 

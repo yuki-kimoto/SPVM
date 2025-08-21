@@ -1175,10 +1175,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = runtime->basic_types[field_current_basic_type_id];
         SPVM_RUNTIME_FIELD* field = &field_current_basic_type->fields[field_index];
-        int32_t field_exists_offset = field->exists_offset;
-        int32_t field_exists_bit = field->exists_bit;
         
-        SPVM_IMPLEMENT_DELETE(env, stack, object, field_exists_offset, field_exists_bit, &error_id, object_data_offset);
+        SPVM_IMPLEMENT_DELETE(env, stack, object, field, &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE: {
