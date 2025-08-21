@@ -6180,11 +6180,89 @@ int32_t SPVM_API_exists_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* o
     return 0;
   };
   
-  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
-  
-  int32_t is_invalid_type = 0;
-  
   int32_t exists = SPVM_API_exists(env, stack, object, field);
   
   return exists;
+}
+
+void SPVM_API_delete(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int32_t is_numeric_type = SPVM_API_is_numeric_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+  
+  if (is_numeric_type) {
+    switch (field->basic_type->id) {
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+        SPVM_API_set_field_byte(env, stack, object, field, 0);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+        SPVM_API_set_field_short(env, stack, object, field, 0);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+        SPVM_API_set_field_int(env, stack, object, field, 0);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+        SPVM_API_set_field_long(env, stack, object, field, 0);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+        SPVM_API_set_field_float(env, stack, object, field, 0);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+        SPVM_API_set_field_double(env, stack, object, field, 0);
+        break;
+      }
+      default : {
+        assert(0);
+      }
+    }
+  }
+  else {
+    int32_t is_object_type = SPVM_API_is_object_type(runtime, field->basic_type, field->type_dimension, field->type_flag);
+    if (is_object_type) {
+      SPVM_API_set_field_object(env, stack, object, field, NULL);
+    }
+    else {
+      assert(0);
+    }
+  }
+  
+  SPVM_IMPLEMENT_DISABLE_EXISTS_FLAG(object, SPVM_API_RUNTIME_get_object_data_offset(runtime), field->exists_offset, field->exists_bit);
+}
+
+void SPVM_API_delete_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
+  *error_id = 0;
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  if (object == NULL) {
+    *error_id = SPVM_API_die(env, stack, "The object must be defined.", func_name, file, line);
+    return;
+  };
+  
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = object->basic_type;
+  
+  int32_t object_type_dimension = object->type_dimension;
+  
+  int32_t object_is_class_type = SPVM_API_is_class_type(runtime, object_basic_type, object_type_dimension, 0);
+  
+  if (!object_is_class_type) {
+    *error_id = SPVM_API_die(env, stack, "The type of the invocant must be a class type.", func_name, file, line);
+    return;
+  };
+  
+  SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, stack, object, field_name);
+  if (!field) {
+    const char* basic_type_name = SPVM_API_get_object_basic_type_name(env, stack, object);
+    *error_id = SPVM_API_die(env, stack, "%s#%s field is not found in the class or its super classes.", basic_type_name, field_name, func_name, file, line);
+    return;
+  };
+  
+  SPVM_API_delete(env, stack, object, field);
 }

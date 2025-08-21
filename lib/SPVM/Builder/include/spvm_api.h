@@ -456,4 +456,8 @@ int32_t SPVM_API_exists(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, S
 
 int32_t SPVM_API_exists_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
+void SPVM_API_delete(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field);
+
+void SPVM_API_delete_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
 #endif
