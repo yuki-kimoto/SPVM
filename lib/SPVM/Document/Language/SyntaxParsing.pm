@@ -21,7 +21,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %token <opval> CLASS HAS GET SET METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
   %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
-  %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS
+  %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
   %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
@@ -38,7 +38,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> for_statement while_statement foreach_statement
   %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
   %type <opval> block eval_block init_statement switch_block if_require_statement
-  %type <opval> die
+  %type <opval> die exists delete
   %type <opval> var_decl var
   %type <opval> operator opt_operators operators opt_operator
   %type <opval> void_return_operator warn
@@ -334,6 +334,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | ENABLE_OPTIONS operator
     | DISABLE_OPTIONS operator
     | copy_fields
+    | delete
 
   for_statement
     : FOR '(' opt_operator ';' opt_operator ';' opt_operator ')' block
@@ -430,6 +431,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | isweak_field
     | call_method
     | sequential
+    | exists
 
   sequential
     : '(' operators ')'
@@ -590,6 +592,12 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   copy_fields
     : COPY_FIELDS operator ',' operator ',' type
 
+  exists
+    : EXISTS var ARROW '{' field_name '}'
+
+  delete
+    : DELETE var ARROW '{' field_name '}'
+
 =head2 Grammer Token
 
 These are tokens for L<grammer/"Grammer">.
@@ -679,6 +687,9 @@ These are tokens for L<grammer/"Grammer">.
     <td>DEFAULT</td><td>default</td>
   </tr>
   <tr>
+    <td>DELETE</td><td>delete</td>
+  </tr>
+  <tr>
     <td>DEREFERENCE</td><td>$</td>
   </tr>
   <tr>
@@ -728,6 +739,9 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>EXCEPTION_VAR</td><td>$@</td>
+  </tr>
+  <tr>
+    <td>EXISTS</td><td>exists</td>
   </tr>
   <tr>
     <td>FATCAMMA</td><td>=></td>
