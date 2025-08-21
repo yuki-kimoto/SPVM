@@ -1,0 +1,221 @@
+class TestCase::Operator::Delete {
+  
+  has field_byte : byte;
+  has field_short : short;
+  has field_int : int;
+  has field_long : long;
+  has field_float : float;
+  has field_double : double;
+  has field_object : object;
+  has field_undef : object;
+  
+  has tmp1 : byte;
+  has tmp2 : long;
+  has tmp3 : byte;
+  has tmp4 : float;
+  has tmp5 : byte;
+  has tmp6 : int;
+  has tmp7 : byte;
+  has tmp8 : object;
+  has tmp9 : short;
+  has tmp10 : byte;
+  
+  static method delete : int () {
+    
+    {
+      my $object = new TestCase::Operator::Delete;
+      
+      {
+        if (exists $object->{field_byte}) {
+          return 0;
+        }
+        
+        $object->{field_byte} = 1;
+        
+        unless ($object->{field_byte} == 1) {
+          return 0;
+        }
+        
+        unless (exists $object->{field_byte} == 1) {
+          return 0;
+        }
+        
+        delete $object->{field_byte};
+        
+        if (exists $object->{field_byte}) {
+          return 0;
+        }
+        
+        unless ($object->{field_byte} == 0) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        if (exists $object->{field_short}) {
+          return 0;
+        }
+        
+        $object->{field_short} = 1;
+        
+        unless ($object->{field_short} == 1) {
+          return 0;
+        }
+        
+        unless (exists $object->{field_short} == 1) {
+          return 0;
+        }
+        
+        delete $object->{field_short};
+        
+        if (exists $object->{field_short}) {
+          return 0;
+        }
+        
+        unless ($object->{field_short} == 0) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        if (exists $object->{field_int}) {
+          return 0;
+        }
+        
+        $object->{field_int} = 1;
+        
+        unless ($object->{field_int} == 1) {
+          return 0;
+        }
+        
+        unless (exists $object->{field_int} == 1) {
+          return 0;
+        }
+        
+        delete $object->{field_int};
+        
+        if (exists $object->{field_int}) {
+          return 0;
+        }
+        
+        unless ($object->{field_int} == 0) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        if (exists $object->{field_long}) {
+          return 0;
+        }
+        
+        $object->{field_long} = 1;
+        
+        unless ($object->{field_long} == 1) {
+          return 0;
+        }
+        
+        unless (exists $object->{field_long} == 1) {
+          return 0;
+        }
+        
+        delete $object->{field_long};
+        
+        if (exists $object->{field_long}) {
+          return 0;
+        }
+        
+        unless ($object->{field_long} == 0) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        if (exists $object->{field_float}) {
+          return 0;
+        }
+        
+        $object->{field_float} = 1;
+        
+        unless ($object->{field_float} == 1) {
+          return 0;
+        }
+        
+        unless (exists $object->{field_float} == 1) {
+          return 0;
+        }
+        
+        delete $object->{field_float};
+        
+        if (exists $object->{field_float}) {
+          return 0;
+        }
+        
+        unless ($object->{field_float} == 0) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        if (exists $object->{field_double}) {
+          return 0;
+        }
+        
+        $object->{field_double} = 1;
+        
+        unless ($object->{field_double} == 1) {
+          return 0;
+        }
+        
+        unless (exists $object->{field_double} == 1) {
+          return 0;
+        }
+        
+        delete $object->{field_double};
+        
+        if (exists $object->{field_double}) {
+          return 0;
+        }
+        
+        unless ($object->{field_double} == 0) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        if (exists $object->{field_object}) {
+          return 0;
+        }
+        
+        $object->{field_object} = Int->new(1);
+        
+        unless ($object->{field_object}) {
+          return 0;
+        }
+        
+        unless (exists $object->{field_object} == 1) {
+          return 0;
+        }
+        
+        delete $object->{field_object};
+        
+        if (exists $object->{field_object}) {
+          return 0;
+        }
+        
+        unless ($object->{field_object} == undef) {
+          return 0;
+        }
+        
+      }
+      
+    }
+    
+    return 1;
+  }
+}
