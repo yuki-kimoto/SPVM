@@ -1790,17 +1790,17 @@ A data conversion described in L<Assignment Requirement|SPVM::Document::Language
 
 And assignment operator performs different operations depending on the left operand I<LEFT_OPERAND>.
 
-If I<LEFT_OPERAND> is a local variable, this operator performs the operation that L<sets a local variable|/"Setting a Local Variable">.
+If I<LEFT_OPERAND> is a local variable, this operator performs the operation that L<sets a local variable|/"Local Variable Set Operation">.
 
-If I<LEFT_OPERAND> is a class variable, this operator performs the operation that L<sets a class variable|/"Setting a Class Variable">.
+If I<LEFT_OPERAND> is a class variable, this operator performs the operation that L<sets a class variable|/"Class Variable Set Operation">.
 
-If I<LEFT_OPERAND> is an element access, this operator performs the operation that L<sets an array element|/"Setting an Array Element">.
+If I<LEFT_OPERAND> is an element access, this operator performs the operation that L<sets an array element|/"Array Element Set Operation">.
 
-If I<LEFT_OPERAND> is a field access, this operator performs the operation that L<sets a field|/"Setting a Field">.
+If I<LEFT_OPERAND> is a field access, this operator performs the operation that L<sets a field|/"Field Set Operation">.
 
-If I<LEFT_OPERAND> is a dereference, this operator performs the operation that L<sets a referenced value|/"Setting a Referenced Value">.
+If I<LEFT_OPERAND> is a dereference, this operator performs the operation that L<sets a referenced value|/"Referenced Value Set Operation">.
 
-If I<LEFT_OPERAND> is the exception variable, this operator performs the operation that L<sets the exception variable|/"Setting the Exception Variable">.
+If I<LEFT_OPERAND> is the exception variable, this operator performs the operation that L<sets the exception variable|/"Exception Variable Set Operation">.
 
 See also L<SPVM::Document::Language::GarbageCollection/"Assignment"> about how assignment operator changes the reference counts of I<LEFT_OPERAND> and I<RIGHTH_OPERAND>.
 
@@ -1917,9 +1917,9 @@ Examples:
   $x >>>= 1;
   $x .= "abc";
 
-=head2 Getting and Setting Operators
+=head2 Get and Set Operations
 
-=head3 Getting a Local Variable
+=head3 Local Variable Get Operation
 
 The operation of getting local variable gets the value of a L<local variable|SPVM::Document::Language::Class/"Local Variable">.
 
@@ -1939,7 +1939,7 @@ Examples:
 
   $var;
 
-=head3 Setting a Local Variable
+=head3 Local Variable Set Operation
 
 The operation of setting a local variable sets a L<local variable|SPVM::Document::Language::Class/"Local Variable">.
 
@@ -1973,7 +1973,7 @@ Examples:
 
   $var
 
-=head3 Getting a Class Variable
+=head3 Class Variable Get Operation
 
 The operation of getting a class variable gets the value of a L<class variable|SPVM::Document::Language::Class/"Class Variable">.
 
@@ -2009,7 +2009,7 @@ Examples:
     }
   }
 
-=head3 Setting a Class Variable
+=head3 Class Variable Set Operation
 
 The operation of setting a class variable operator sets a L<class variable|SPVM::Document::Language::Class/"Class Variable">.
 
@@ -2059,13 +2059,13 @@ Examples:
   $VAR
   $MyClass::VAR
   
-=head3 Getting an Array Element
+=head3 Array Element Get Operation
 
 The operation of getting an array element gets an element of an L<array|SPVM::Document::Language::Types/"Array">.
 
   ARRAY->[INDEX]
 
-I<ARRAY-E<gt>[INDEX]> is an L<element access|/"Element Access">.
+I<ARRAY-E<gt>[INDEX]> is an L<element access|/"Array Element Access">.
 
 This operator performs L<integer promotional conversion|/"Integer Promotional Conversion"> on I<INDEX>.
 
@@ -2081,7 +2081,7 @@ I<INDEX> must be greater than or equal to 0. Otherwise, an exception is thrown.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of L<element access|/"Element Access"> could occur.
+Compiliation errors caused by the syntax of L<element access|/"Array Element Access"> could occur.
 
 Examples:
 
@@ -2091,13 +2091,13 @@ Examples:
   my $points = new Point[3];
   my $point = $points->[1];
 
-=head3 Setting an Array Element
+=head3 Array Element Set Operation
 
 The operation of setting array element sets an element of an array.
 
   ARRAY->[INDEX] = OPERAND
 
-I<ARRAY-E<gt>[INDEX]> is an L<element access|/"Element Access">.
+I<ARRAY-E<gt>[INDEX]> is an L<element access|/"Array Element Access">.
 
 This operator performs L<integer promotional conversion|/"Integer Promotional Conversion"> on I<INDEX>.
 
@@ -2113,7 +2113,7 @@ I<INDEX> must be greater than or equal to 0. Otherwise, an exception is thrown.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of L<element access|/"Element Access"> could occur.
+Compiliation errors caused by the syntax of L<element access|/"Array Element Access"> could occur.
 
 The assignment must satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
 
@@ -2125,7 +2125,7 @@ Examples:
   my $points = new Point[3];
   $points->[1] = Point->new(1, 2);
   
-=head3 Element Access
+=head3 Array Element Access
 
 The element access has the following syntax.
 
@@ -2141,7 +2141,7 @@ I<ARRAY> must be an array type. Otherwise, a compilation error occurs.
 
 I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
-=head3 Getting a Character
+=head3 Character Get Operation
 
 The operation of getting a character gets a character of a string.
 
@@ -2172,7 +2172,7 @@ Examples:
   my $string = "abc";
   my $char = $string->[0];
 
-=head3 Setting a Character
+=head3 Character Set Operation
 
 The operation of setting a character sets the character of a string.
 
@@ -2221,7 +2221,7 @@ I<STRING> must be string type. Otherwise, a compilation error occurs.
 
 I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
-=head3 Getting a Field
+=head3 Field Get Operation
 
 The operation of getting field gets the value of a field of a class type.
 
@@ -2242,7 +2242,7 @@ Examples:
   my $point = Point->new;
   my $x = $point->{x};
 
-=head3 Setting a Field
+=head3 Field Set Operation
 
 The operation of setting field sets the field of a class type.
 
@@ -2267,7 +2267,7 @@ Examples:
   my $point = Point->new;
   $point->{x} = 1;
 
-=head3 Getting a Multi-Numeric Field
+=head3 Multi-Numeric Field Get Operation
 
 The operation of getting a multi-numeric field gets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
@@ -2290,7 +2290,7 @@ Examples:
   my $z : Complex_2d;
   my $re = $z->{re};
 
-=head3 Setting a Multi-Numeric Field
+=head3 Multi-Numeric Field Set Operation
 
 The operation of setting multi-numeric field sets the field of L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
@@ -2315,7 +2315,7 @@ Examples:
   my $z : Complex_2d;
   $z->{re} = 2.5;
   
-=head3 Getting a Referenced Multi-Numeric Field
+=head3 Referenced Multi-Numeric Field Get Operation
 
 The operation of getting a multi-numeric field gets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> referenced by a multi-numeric Reference Types.
 
@@ -2341,7 +2341,7 @@ Examples:
   my $z_ref = \$z;
   my $re = $z_ref->{re};
 
-=head3 Setting a Referenced Multi-Numeric Field
+=head3 Referenced Multi-Numeric Field Set Operation
 
 The operation of setting a multi-numeric field sets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> referenced by a multi-numeric Reference Types.
 
@@ -2381,13 +2381,13 @@ Examples:
 
   $point->{x}
 
-=head3 Getting a Referenced Value
+=head3 Referenced Value Get Operation
 
 The operation of getting the referenced value gets a referenced value.
 
 See L<dereference operator|/"Dereference Operator">.
 
-=head3 Setting a Referenced Value
+=head3 Referenced Value Set Operation
 
 The operation of setting the referenced value sets a referenced value.
 
@@ -2416,7 +2416,7 @@ Examples:
   
   $$z_ref = $z2;
 
-=head3 Getting the Exception Variable
+=head3 Exception Variable Get Operation
 
 The operation of getting the exception variable gets the string stored in L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
 
@@ -2431,7 +2431,7 @@ Examples:
   # Examples of getting the exception variable
   my $message = $@;
 
-=head3 Setting the Exception Variable
+=head3 Exception Variable Set Operation
 
 The operation of setting the exception variable sets L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
 

@@ -83,9 +83,9 @@ See the following sections about operations for strings.
 
 =item * L<String Concatenation Operator|SPVM::Document::Language::Operators/"String Concatenation Operator">
 
-=item * L<Getting a Character|SPVM::Document::Language::Operators/"Getting a Character">
+=item * L<Character Get Operation|SPVM::Document::Language::Operators/"Character Get Operation">
 
-=item * L<Setting a Character|SPVM::Document::Language::Operators/"Setting a Character">
+=item * L<Character Set Operation|SPVM::Document::Language::Operators/"Character Set Operation">
 
 =item * L<new_string_len Operator|SPVM::Document::Language::Operators/"new_string_len Operator">
 
@@ -159,9 +159,9 @@ See the following sections about operations for arrays.
 
 =item * L<Array Length Operator|SPVM::Document::Language::Operators/"Array Length Operator">
 
-=item * L<Getting an Array Element|SPVM::Document::Language::Operators/"Getting an Array Element">
+=item * L<Array Element Get Operation|SPVM::Document::Language::Operators/"Array Element Get Operation">
 
-=item * L<Setting an Array Element|SPVM::Document::Language::Operators/"Setting an Array Element">
+=item * L<Array Element Set Operation|SPVM::Document::Language::Operators/"Array Element Set Operation">
 
 =back
 
@@ -192,9 +192,9 @@ See the following sections about operations for objects.
 
 =item * L<dump Operator|SPVM::Document::Language::Operators/"dump Operator">
 
-=item * L<Getting a Field|SPVM::Document::Language::Operators/"Getting a Field">
+=item * L<Field Get Operation|SPVM::Document::Language::Operators/"Field Get Operation">
 
-=item * L<Setting a Field|SPVM::Document::Language::Operators/"Setting a Field">
+=item * L<Field Set Operation|SPVM::Document::Language::Operators/"Field Set Operation">
 
 =item * L<isa Operator|SPVM::Document::Language::Operators/"isa Operator">
 
@@ -258,9 +258,9 @@ See the following sections about operations for multi-numeric numbers.
 
 =over 2
 
-=item * L<Getting a Multi-Numeric Field|SPVM::Document::Language::Operators/"Getting a Multi-Numeric Field">
+=item * L<Multi-Numeric Field Get Operation|SPVM::Document::Language::Operators/"Multi-Numeric Field Get Operation">
 
-=item * L<Setting a Multi-Numeric Field|SPVM::Document::Language::Operators/"Setting a Multi-Numeric Field">
+=item * L<Multi-Numeric Field Set Operation|SPVM::Document::Language::Operators/"Multi-Numeric Field Set Operation">
 
 =back
 
@@ -281,17 +281,17 @@ See the following sections about operations for multi-numeric numbers.
 
 =over 2
 
-=item * L<Getting a Referenced Value|SPVM::Document::Language::Operators/"Getting a Referenced Value">
+=item * L<Referenced Value Get Operation|SPVM::Document::Language::Operators/"Referenced Value Get Operation">
 
-=item * L<Setting a Referenced Value|SPVM::Document::Language::Operators/"Setting a Referenced Value">
+=item * L<Referenced Value Set Operation|SPVM::Document::Language::Operators/"Referenced Value Set Operation">
 
 =item * L<Reference Operator|SPVM::Document::Language::Operators/"Reference Operator">
 
 =item * L<Dereference Operator|SPVM::Document::Language::Operators/"Dereference Operator">
 
-=item * L<Getting a Referenced Multi-Numeric Field|SPVM::Document::Language::Operators/"Getting a Referenced Multi-Numeric Field">
+=item * L<Referenced Multi-Numeric Field Get Operation|SPVM::Document::Language::Operators/"Referenced Multi-Numeric Field Get Operation">
 
-=item * L<Setting a Referenced Multi-Numeric Field|SPVM::Document::Language::Operators/"Setting a Referenced Multi-Numeric Field">
+=item * L<Referenced Multi-Numeric Field Set Operation|SPVM::Document::Language::Operators/"Referenced Multi-Numeric Field Set Operation">
 
 =back
 
@@ -697,7 +697,7 @@ The C<mutable> type qualifier qualifies string type.
 
   mutable string;
 
-The string of string type with the C<mutable> type qualifier is able to be L<set a character|SPVM::Document::Language::Operators/"Setting a Character">.
+The string of string type with the C<mutable> type qualifier is able to be L<set a character|SPVM::Document::Language::Operators/"Character Set Operation">.
 
   my $string = (mutable string)copy "abc";
   $string->[0] = 'd';

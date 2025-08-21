@@ -1035,9 +1035,9 @@ I<ATTRIBUTE> is a L<class variable attribute|/"Class Variable Attributes">.
 
 Each class variable is initialized by its L<type initial value|SPVM::Document::Language::Types/"Type Initial Value">.
 
-The value of a class variable is got by the operation of L<getting a class variable|SPVM::Document::Language::Operators/"Getting a Class Variable">.
+The value of a class variable is got by the operation of L<getting a class variable|SPVM::Document::Language::Operators/"Class Variable Get Operation">.
 
-The value of a class variable is set by the operation of L<setting a class variable|SPVM::Document::Language::Operators/"Setting a Class Variable">.
+The value of a class variable is set by the operation of L<setting a class variable|SPVM::Document::Language::Operators/"Class Variable Set Operation">.
 
 Compilation Errors:
 
@@ -1156,7 +1156,7 @@ One of C<ro>, C<wo>, and C<rw> must be specified. Otherwise, a compilation error
 
 =head3 Class Variable Getter Method
 
-A class variable getter method is a method to perform the operation of L<getting a class variable|SPVM::Document::Language::Operators/"Getting a Class Variable">.
+A class variable getter method is a method to perform the operation of L<getting a class variable|SPVM::Document::Language::Operators/"Class Variable Get Operation">.
 
 This method is a class method that has no arguments.
 
@@ -1200,7 +1200,7 @@ User defined getter and setter can be defined at once.
 
 =head3 Class Variable Setter Method
 
-A class variable setter method is a method to perform the operation of L<setting a class variable|SPVM::Document::Language::Operators/"Setting a Class Variable">.
+A class variable setter method is a method to perform the operation of L<setting a class variable|SPVM::Document::Language::Operators/"Class Variable Set Operation">.
 
 This method is a class method that has an argument.
 
@@ -1271,9 +1271,9 @@ I<ATTRIBUTE> is a L<field attribute|/"Field Attributes">.
 
 Each field of an object is initialized by its L<type initial value|SPVM::Document::Language::Types/"Type Initial Value"> when the object is created.
 
-The value of a field is got by the operation of L<getting a field|SPVM::Document::Language::Operators/"Getting a Field">.
+The value of a field is got by the operation of L<getting a field|SPVM::Document::Language::Operators/"Field Get Operation">.
 
-The value of a field is set by the operation of L<setting a field|SPVM::Document::Language::Operators/"Setting a Field">.
+The value of a field is set by the operation of L<setting a field|SPVM::Document::Language::Operators/"Field Set Operation">.
 
 Compilation Errors:
 
@@ -1385,7 +1385,7 @@ One of C<ro>, C<wo>, and C<rw> must be specified. Otherwise, a compilation error
 
 =head3 Field Getter Method
 
-A field getter method is a method to perform the operation of L<getting a field|SPVM::Document::Language::Operators/"Getting a Field">.
+A field getter method is a method to perform the operation of L<getting a field|SPVM::Document::Language::Operators/"Field Get Operation">.
 
 This method is an instance method that has no arguments.
 
@@ -1435,7 +1435,7 @@ User defined getter and setter can be defined at once.
 
 =head3 Field Setter Method
 
-A field setter method is a method to perform the operation of L<setting a field|SPVM::Document::Language::Operators/"Setting a Field">.
+A field setter method is a method to perform the operation of L<setting a field|SPVM::Document::Language::Operators/"Field Set Operation">.
 
 This method is an instance method that has an argument.
 

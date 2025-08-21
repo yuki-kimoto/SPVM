@@ -1383,7 +1383,7 @@ The List of Raw Escape Characters:
 
 =head3 Variable Expansion
 
-The variable expasion is a syntax to embed L<getting a local variable|SPVM::Document::Language::Operators/"Getting a Local Variable">, L<getting a class variables|SPVM::Document::Language::Operators/"Getting a Class Variable">, a L<dereference|SPVM::Document::Language::Operators/"Dereference Operator">, L<getting a field|SPVM::Document::Language::Operators/"Getting a Field">, L<getting an array element|SPVM::Document::Language::Operators/"Getting an Array Element">, L<getting the exception variable|SPVM::Document::Language::Operators/"Getting the Exception Variable"> into a L<string literal|"String Literal">.
+The variable expasion is a syntax to embed L<getting a local variable|SPVM::Document::Language::Operators/"Local Variable Get Operation">, L<getting a class variables|SPVM::Document::Language::Operators/"Class Variable Get Operation">, a L<dereference|SPVM::Document::Language::Operators/"Dereference Operator">, L<getting a field|SPVM::Document::Language::Operators/"Field Get Operation">, L<getting an array element|SPVM::Document::Language::Operators/"Array Element Get Operation">, L<getting the exception variable|SPVM::Document::Language::Operators/"Exception Variable Get Operation"> into a L<string literal|"String Literal">.
 
   "AAA $foo BBB"
   "AAA $FOO BBB"
