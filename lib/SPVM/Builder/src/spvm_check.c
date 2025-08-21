@@ -442,6 +442,9 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
         return;
       }
       
+      // Resove field offset
+      SPVM_CHECK_check_field_offset(compiler, basic_type, merged_fields);
+      
       for (int32_t field_index = 0; field_index < merged_fields->length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(merged_fields, field_index);
         field->index = field_index;
@@ -449,9 +452,6 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
       }
       
       basic_type->fields = merged_fields;
-      
-      // Resove field offset
-      SPVM_CHECK_check_field_offset(compiler, basic_type);
       
       SPVM_LIST_free(basic_type_merge_stack);
       if (compile_error) {
@@ -1173,7 +1173,7 @@ void SPVM_CHECK_check_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_ac
   }
 }
 
-void SPVM_CHECK_check_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type) {
+void SPVM_CHECK_check_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_LIST* merged_fields) {
   if (basic_type->category != SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
     return;
   }
@@ -1191,8 +1191,8 @@ void SPVM_CHECK_check_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* bas
   int32_t offset_size;
   
   // 8 byte data
-  for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
-    SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
+  for (int32_t field_index = 0; field_index < merged_fields->length; field_index++) {
+    SPVM_FIELD* field = SPVM_LIST_get(merged_fields, field_index);
     SPVM_TYPE* field_type = field->type;
     
     int32_t next_offset;
