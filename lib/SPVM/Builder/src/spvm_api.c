@@ -6144,14 +6144,14 @@ int32_t SPVM_API_is_options(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   return is_options;
 }
 
-int32_t SPVM_API_exists(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+int32_t SPVM_API_exists_field(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
   
   int32_t value = SPVM_IMPLEMENT_GET_EXISTS_FLAG(object, SPVM_API_RUNTIME_get_object_data_offset(env->runtime), field->exists_offset, field->exists_bit);
   
   return value;
 }
 
-int32_t SPVM_API_exists_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+int32_t SPVM_API_exists_field_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
   
   *error_id = 0;
   
@@ -6180,12 +6180,12 @@ int32_t SPVM_API_exists_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* o
     return 0;
   };
   
-  int32_t exists = SPVM_API_exists(env, stack, object, field);
+  int32_t exists = SPVM_API_exists_field(env, stack, object, field);
   
   return exists;
 }
 
-void SPVM_API_delete(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+void SPVM_API_delete_field(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -6235,7 +6235,7 @@ void SPVM_API_delete(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM
   SPVM_IMPLEMENT_DISABLE_EXISTS_FLAG(object, SPVM_API_RUNTIME_get_object_data_offset(runtime), field->exists_offset, field->exists_bit);
 }
 
-void SPVM_API_delete_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+void SPVM_API_delete_field_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
   
   *error_id = 0;
   
@@ -6264,5 +6264,5 @@ void SPVM_API_delete_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
     return;
   };
   
-  SPVM_API_delete(env, stack, object, field);
+  SPVM_API_delete_field(env, stack, object, field);
 }
