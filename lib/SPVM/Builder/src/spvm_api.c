@@ -3882,12 +3882,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
               }
             }
             
-            if (field_index == fields_length - 1) {
-              SPVM_STRING_BUFFER_add(string_buffer, "\n");
-            }
-            else {
-              SPVM_STRING_BUFFER_add(string_buffer, ",\n");
-            }
+            SPVM_STRING_BUFFER_add(string_buffer, ",\n");
           }
           
           SPVM_STRING_BUFFER_add(string_buffer, "  }");
@@ -3943,12 +3938,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
           assert(0);
         }
         
-        if (array_index == array_length - 1) {
-          SPVM_STRING_BUFFER_add(string_buffer, "\n");
-        }
-        else {
-          SPVM_STRING_BUFFER_add(string_buffer, ",\n");
-        }
+        SPVM_STRING_BUFFER_add(string_buffer, ",\n");
       }
       
       for (int32_t depth_index = 0; depth_index < *depth; depth_index++) {

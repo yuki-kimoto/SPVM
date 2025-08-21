@@ -3,6 +3,9 @@
     * Add get_fields_size native basic type API.
     * Add get_exists_offset native field API.
     * Add get_exists_bit native field API.
+  [Changes]
+    * Change the format of the output from dump operator a bit.
+    
   [Internal Changes]
     * Add exists_offset member variable to spvm_field.h and spvm_runtime_field.h.
     * Add exists_bit member variable to spvm_field.h and spvm_runtime_field.h.
