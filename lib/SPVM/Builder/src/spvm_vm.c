@@ -1146,6 +1146,19 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[opcode->operand0], object, field_offset, &error_id, object_data_offset);
         break;
       }
+      case SPVM_OPCODE_C_ID_EXISTS: {
+        int32_t field_current_basic_type_id = opcode->operand2;
+        int32_t field_index = (uint16_t)opcode->operand3;
+        void* object = object_vars[opcode->operand1];
+        
+        SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = runtime->basic_types[field_current_basic_type_id];
+        SPVM_RUNTIME_FIELD* field = &field_current_basic_type->fields[field_index];
+        int32_t field_exists_offset = field->exists_offset;
+        int32_t field_exists_bit = field->exists_bit;
+        
+        SPVM_IMPLEMENT_EXISTS(env, stack, &int_vars[opcode->operand0], object, field_exists_offset, field_exists_bit, &error_id, object_data_offset);
+        break;
+      }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE: {
         int32_t class_var_current_basic_type_id = opcode->operand1;
         int32_t class_var_index = opcode->operand2;

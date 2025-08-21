@@ -3635,7 +3635,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 return;
               }
             }
-
+            
             SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
             
             SPVM_FIELD* found_field_in_current_basic_type = SPVM_HASH_get(method->current_basic_type->original_field_symtable, field_access->field->name, strlen(field_access->field->name));
@@ -3832,6 +3832,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_IS_READ_ONLY:
               case SPVM_OP_C_ID_IS_OPTIONS:
               case SPVM_OP_C_ID_ISWEAK_FIELD:
+              case SPVM_OP_C_ID_EXISTS:
               case SPVM_OP_C_ID_CAN:
               case SPVM_OP_C_ID_ADD:
               case SPVM_OP_C_ID_SUBTRACT:
@@ -4768,6 +4769,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_IS_ERROR:
     case SPVM_OP_C_ID_IF:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
+    case SPVM_OP_C_ID_EXISTS:
     case SPVM_OP_C_ID_IS_READ_ONLY:
     case SPVM_OP_C_ID_IS_OPTIONS:
     case SPVM_OP_C_ID_CAN:
@@ -4924,7 +4926,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_FIELD_ACCESS: {
-      if (op->flag & (SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK)) {
+      if (op->flag & (SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN|SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK|SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS)) {
         type = SPVM_TYPE_new_int_type(compiler);
       }
       else {

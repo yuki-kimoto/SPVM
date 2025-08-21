@@ -509,6 +509,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "ENABLE_OPTIONS",
     "DISABLE_OPTIONS",
     "IS_OPTIONS",
+    "EXISTS",
   };
   
   return id_names;

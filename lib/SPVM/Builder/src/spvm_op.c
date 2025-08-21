@@ -259,6 +259,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "IS_OPTIONS",
     "GET",
     "SET",
+    "EXISTS",
   };
   
   return id_names;
@@ -2537,6 +2538,14 @@ SPVM_OP* SPVM_OP_build_isweak_field(SPVM_COMPILER* compiler, SPVM_OP* op_isweak,
   SPVM_OP* op_isweak_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ISWEAK_FIELD, op_isweak->file, op_isweak->line);
   SPVM_OP_insert_child(compiler, op_isweak_field, op_isweak_field->last, op_field_access);
   op_field_access->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK;
+  
+  return op_field_access;
+}
+
+SPVM_OP* SPVM_OP_build_exists(SPVM_COMPILER* compiler, SPVM_OP* op_exists, SPVM_OP* op_field_access) {
+  
+  SPVM_OP_insert_child(compiler, op_exists, op_exists->last, op_field_access);
+  op_field_access->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS;
   
   return op_field_access;
 }

@@ -3,6 +3,7 @@
     * Add get_fields_size native basic type API.
     * Add get_exists_offset native field API.
     * Add get_exists_bit native field API.
+    * Add exists operator.
   [Changes]
     * Change the format of the output from dump operator a bit.
     
