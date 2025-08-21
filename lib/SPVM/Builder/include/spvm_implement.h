@@ -1313,7 +1313,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, int8_t in, int32_t* error_id, int32_t object_data_offset, int32_t fields_size, int32_t field_index) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, int8_t in, int32_t* error_id, int32_t object_data_offset, int32_t exists_offset, int32_t exists_bit) {
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1322,10 +1322,11 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stac
   }
   else {
     *(int8_t*)((intptr_t)object + object_data_offset + field_offset) = in;
+    SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, int16_t in, int32_t* error_id, int32_t object_data_offset, int32_t fields_size, int32_t field_index) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, int16_t in, int32_t* error_id, int32_t object_data_offset, int32_t exists_offset, int32_t exists_bit) {
   
   if (__builtin_expect(object == NULL, 0)) {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
@@ -1334,6 +1335,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* sta
   }
   else {
     *(int16_t*)((intptr_t)object + object_data_offset + field_offset) = in;
+    SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
 
@@ -1346,6 +1348,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack
   }
   else {
     *(int32_t*)((intptr_t)object + object_data_offset + field_offset) = in;
+    SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
 
@@ -1358,6 +1361,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stac
   }
   else {
     *(int64_t*)((intptr_t)object + object_data_offset + field_offset) = in;
+    SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
 
@@ -1370,6 +1374,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* sta
   }
   else {
     *(float*)((intptr_t)object + object_data_offset + field_offset) = in;
+    SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
 
@@ -1382,6 +1387,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* st
   }
   else {
     *(double*)((intptr_t)object + object_data_offset + field_offset) = in;
+    SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
 
@@ -1395,6 +1401,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
   else {
     void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
     env->assign_object(env, stack, ref, in);
+    SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
 
@@ -1408,6 +1415,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* sta
   else {
     void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
     env->assign_object(env, stack, ref, NULL);
+    SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
 
