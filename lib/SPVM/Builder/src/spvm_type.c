@@ -881,27 +881,27 @@ int32_t SPVM_TYPE_get_field_order(SPVM_COMPILER* compiler, int32_t basic_type_id
   
   int32_t is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, basic_type_id, dimension, flag);
   
-  int32_t type_order = 0;
+  int32_t type_order = 100;
   if (SPVM_TYPE_is_object_type(compiler, basic_type_id, dimension, flag)) {
-    type_order = 7;
+    type_order = 1;
   }
   else if (SPVM_TYPE_is_double_type(compiler, basic_type_id, dimension, flag)) {
-    type_order = 6;
+    type_order = 2;
   }
   else if (SPVM_TYPE_is_long_type(compiler, basic_type_id, dimension, flag)) {
-    type_order = 5;
+    type_order = 3;
   }
   else if (SPVM_TYPE_is_float_type(compiler, basic_type_id, dimension, flag)) {
     type_order = 4;
   }
   else if (SPVM_TYPE_is_int_type(compiler, basic_type_id, dimension, flag)) {
-    type_order = 3;
+    type_order = 5;
   }
   else if (SPVM_TYPE_is_short_type(compiler, basic_type_id, dimension, flag)) {
-    type_order = 2;
+    type_order = 6;
   }
   else if (SPVM_TYPE_is_byte_type(compiler, basic_type_id, dimension, flag)) {
-    type_order = 1;
+    type_order = 7;
   }
   
   return type_order;

@@ -46,6 +46,8 @@ void SPVM_CHECK_check_ast_typed_var_indexs(SPVM_COMPILER* compiler, SPVM_BASIC_T
 
 int SPVM_CHECK_method_name_compare_cb(const void* method1_ptr, const void* method2_ptr);
 
+int SPVM_CHECK_field_order_compare_cb(const void* field1_ptr, const void* field2_ptr);
+
 SPVM_METHOD* SPVM_CHECK_search_method(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* method_name);
 
 SPVM_FIELD* SPVM_CHECK_search_unmerged_field(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* field_name);

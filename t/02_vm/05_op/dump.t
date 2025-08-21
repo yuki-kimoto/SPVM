@@ -49,7 +49,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   like(SPVM::TestCase::Operator::Dump->dump_string_array_of_array, qr/^\s*\[\s*\[\s*"abc"\s*,\s*"def"\s*,\s*undef\s*\]\s*[^,]*?,\s*\[\s*"a"\s*,\s*"b"\s*\]\s*[^\]]*\]/s);
   like(SPVM::TestCase::Operator::Dump->dump_string_array_of_array, qr/\s*:\s*string\[\]\[\]/);
 
-  like(SPVM::TestCase::Operator::Dump->dump_object, qr/{\s*byte_value\s*=>\s*1\s*,\s*short_value\s*=>\s*2\s*,\s*int_value\s*=>\s*3\s*,\s*long_value\s*=>\s*4\s*,\s*float_value\s*=>\s*1\.1\s*,\s*double_value\s*=>\s*1\.2,\s*string_value\s*=>\s*"a"\s*,\s*int_array\s*=>\s*\[\s*1\s*,\s*2\s*,\s*3\s*\].[^,]*,\s*object_value\s*=>\s*TestCase::Operator::DumpTest1\s*\(\w+\)\s*{[^}]*}[^}]*}/);
+  like(SPVM::TestCase::Operator::Dump->dump_object, qr/TestCase::Operator::DumpTest1 \(.+\) \{\s+string_value => "a",\s+int_array\s+=>\s+\[\s+1,\s+2,\s+3\s+\]\s+:\s+int\[\]\(.+\),\s+object_value\s+=>\s+TestCase::Operator::DumpTest1\s+\(.+\)\s+\{\s+\s+string_value\s+=>\s+undef,\s+\s+int_array\s+=>\s+undef,\s+\s+object_value\s+=>\s+undef,\s+\s+double_value\s+=>\s+0,\s+\s+long_value\s+=>\s+0,\s+\s+float_value\s+=>\s+0,\s+\s+int_value\s+=>\s+0,\s+\s+short_value\s+=>\s+0,\s+\s+byte_value\s+=>\s+0\s+\s+\},\s+\s+double_value\s+=>\s+1\.2,\s+\s+long_value\s+=>\s+4,\s+\s+float_value\s+=>\s+1\.1,\s+\s+int_value\s+=>\s+3,\s+\s+short_value\s+=>\s+2,\s+\s+byte_value\s+=>\s+1\s+\}/s);
 
   like(SPVM::TestCase::Operator::Dump->dump_object_reuse, qr/object_value\s*=>\s*REUSE_OBJECT/);
   like(SPVM::TestCase::Operator::Dump->dump_object_reuse, qr/REUSE_OBJECT\([^\)]*\)\s*,/);

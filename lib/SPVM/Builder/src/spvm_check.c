@@ -347,9 +347,21 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
         
         SPVM_LIST* unmerged_fields = basic_type->unmerged_fields;
         
+        SPVM_LIST* sorted_unmerged_fields = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
+        
         int32_t unmerged_fields_length = unmerged_fields->length;
+        
         for (int32_t unmerged_field_index = 0; unmerged_field_index < unmerged_fields_length; unmerged_field_index++) {
           SPVM_FIELD* field = SPVM_LIST_get(unmerged_fields, unmerged_field_index);
+          field->order = SPVM_TYPE_get_field_order(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag);
+          SPVM_LIST_push(sorted_unmerged_fields, field);
+        }
+        
+        qsort(sorted_unmerged_fields->values, sorted_unmerged_fields->length, sizeof(SPVM_FIELD*), SPVM_CHECK_field_order_compare_cb);
+        
+        int32_t sorted_unmerged_fields_length = sorted_unmerged_fields->length;
+        for (int32_t sorted_unmerged_field_index = 0; sorted_unmerged_field_index < sorted_unmerged_fields_length; sorted_unmerged_field_index++) {
+          SPVM_FIELD* field = SPVM_LIST_get(sorted_unmerged_fields, sorted_unmerged_field_index);
           
           SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_unmerged_field(compiler, basic_type->parent, field->name);
           if (found_field_in_super_class) {
@@ -4292,6 +4304,30 @@ int SPVM_CHECK_method_name_compare_cb(const void* method1_ptr, const void* metho
   const char* method2_name = method2->name;
   
   return strcmp(method1_name, method2_name);
+}
+
+int SPVM_CHECK_field_order_compare_cb(const void* field1_ptr, const void* field2_ptr) {
+  
+  SPVM_FIELD* field1 = *(SPVM_FIELD**)field1_ptr;
+  SPVM_FIELD* field2 = *(SPVM_FIELD**)field2_ptr;
+  
+  if (field1->order > field2->order) {
+    return 1;
+  }
+  else if (field1->order < field2->order) {
+    return -1;
+  }
+  else {
+    if (field1->index > field2->index) {
+      return 1;
+    }
+    else if (field1->index < field2->index) {
+      return -1;
+    }
+    else {
+      return 0;
+    }
+  }
 }
 
 void SPVM_CHECK_perform_numeric_to_string_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_operand) {

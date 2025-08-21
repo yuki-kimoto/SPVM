@@ -6,7 +6,7 @@
   [Internal Changes]
     * Add exists_offset member variable to spvm_field.h and spvm_runtime_field.h.
     * Add exists_bit member variable to spvm_field.h and spvm_runtime_field.h.
-    
+    * Fields are sorted by the field order.
 0.990081 2025-08-15
   [New Features]
     * Byte, Short, Int, Long, Float, Double classes has Stringable interface.

@@ -18,6 +18,7 @@ struct spvm_field {
   int32_t index;
   int32_t offset;
   int32_t exists_offset;
+  int32_t order;
   int8_t is_anon_method_field;
   int8_t has_setter;
   int8_t has_getter;
