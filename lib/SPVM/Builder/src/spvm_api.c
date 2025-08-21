@@ -2005,39 +2005,53 @@ SPVM_OBJECT* SPVM_API_get_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 
 void SPVM_API_set_field_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int8_t value) {
   
-  *(int8_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset) = value;
+  int32_t object_data_offset = SPVM_API_RUNTIME_get_object_data_offset(env->runtime);
+  *(int8_t*)((intptr_t)object + object_data_offset + field->offset) = value;
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int16_t value) {
   
-  *(int16_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset) = value;
+  int32_t object_data_offset = SPVM_API_RUNTIME_get_object_data_offset(env->runtime);
+  *(int16_t*)((intptr_t)object + object_data_offset + field->offset) = value;
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int32_t value) {
   
-  *(int32_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset) = value;
+  int32_t object_data_offset = SPVM_API_RUNTIME_get_object_data_offset(env->runtime);
+  *(int32_t*)((intptr_t)object + object_data_offset + field->offset) = value;
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int64_t value) {
   
-  *(int64_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset) = value;
+  int32_t object_data_offset = SPVM_API_RUNTIME_get_object_data_offset(env->runtime);
+  *(int64_t*)((intptr_t)object + object_data_offset + field->offset) = value;
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, float value) {
   
-  *(float*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset) = value;
+  int32_t object_data_offset = SPVM_API_RUNTIME_get_object_data_offset(env->runtime);
+  *(float*)((intptr_t)object + object_data_offset + field->offset) = value;
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, double value) {
   
-  *(double*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset) = value;
+  int32_t object_data_offset = SPVM_API_RUNTIME_get_object_data_offset(env->runtime);
+  *(double*)((intptr_t)object + object_data_offset + field->offset) = value;
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
   
-  SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+  int32_t object_data_offset = SPVM_API_RUNTIME_get_object_data_offset(env->runtime);
+  SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)object + object_data_offset + field->offset);
   
   SPVM_API_assign_object(env, stack, ref, value);
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
