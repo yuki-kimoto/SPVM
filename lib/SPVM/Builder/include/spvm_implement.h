@@ -110,25 +110,6 @@ static inline void* SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(SPVM_ENV* env, SPVM_VA
   return basic_type;
 }
 
-static inline int32_t SPVM_IMPLEMENT_GET_FIELDS_SIZE_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id) {
-  
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-  
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
-  
-  if (!basic_type) {
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_BASIC_TYPE_NOT_FOUND], basic_type_name);
-    void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
-    env->set_exception(env, stack, exception);
-    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    return -1;
-  }
-  
-  int32_t fields_size = env->api->basic_type->get_fields_size(env->runtime, basic_type);
-  
-  return fields_size;
-}
-
 static inline void* SPVM_IMPLEMENT_GET_FIELD_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, int32_t* error_id) {
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
@@ -163,25 +144,6 @@ static inline int32_t SPVM_IMPLEMENT_GET_FIELD_OFFSET_BY_NAME(SPVM_ENV* env, SPV
   int32_t field_offset = env->api->field->get_offset(env->runtime, field);
   
   return field_offset;
-}
-
-static inline int32_t SPVM_IMPLEMENT_GET_FIELD_INDEX_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, int32_t* error_id) {
-  
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-  
-  void* field = env->get_field_static(env, stack, basic_type_name, field_name);
-  
-  if (!field) {
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_FIELD_NOT_FOUND], basic_type_name, field_name);
-    void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
-    env->set_exception(env, stack, exception);
-    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    return -1;
-  }
-  
-  int32_t field_index = env->api->field->get_index(env->runtime, field);
-  
-  return field_index;
 }
 
 static inline int32_t SPVM_IMPLEMENT_GET_FIELD_EXISTS_OFFSET_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, int32_t* error_id) {
