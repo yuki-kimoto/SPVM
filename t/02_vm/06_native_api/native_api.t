@@ -403,6 +403,8 @@ ok(SPVM::TestCase::NativeAPI->die);
 
 ok(SPVM::TestCase::NativeAPI->print_exception_to_stderr);
 
+ok(SPVM::TestCase::NativeAPI->field_exists);
+
 ok(SPVM::TestCase::NativeAPI->extra);
 
 # Clear exception

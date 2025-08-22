@@ -1742,4 +1742,7 @@ class TestCase::NativeAPI {
   method arg_int_object_instance : Int ($object : Int) {
     return $object;
   }
+  
+  native static method field_exists : int ();
+  
 }

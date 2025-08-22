@@ -4592,3 +4592,427 @@ int32_t SPVM__TestCase__NativeAPI__extra(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__field_exists(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* object = env->new_object_by_name(env, stack, "TestCase::Simple", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  {
+    {
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->set_field_byte_by_name(env, stack, object, "byte_value", 2, &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int8_t value = env->get_field_byte_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == 2)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 1)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->delete_field_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int8_t value = env->get_field_byte_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+    }
+    
+    {
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "short_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->set_field_short_by_name(env, stack, object, "short_value", 2, &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int8_t value = env->get_field_short_by_name(env, stack, object, "short_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == 2)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "short_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 1)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->delete_field_by_name(env, stack, object, "short_value", &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "short_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int8_t value = env->get_field_short_by_name(env, stack, object, "short_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+    }
+    
+    {
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "int_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->set_field_int_by_name(env, stack, object, "int_value", 2, &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int8_t value = env->get_field_int_by_name(env, stack, object, "int_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == 2)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "int_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 1)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->delete_field_by_name(env, stack, object, "int_value", &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "int_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int8_t value = env->get_field_int_by_name(env, stack, object, "int_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+    }
+    
+    {
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "long_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->set_field_long_by_name(env, stack, object, "long_value", 2, &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int8_t value = env->get_field_long_by_name(env, stack, object, "long_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == 2)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "long_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 1)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->delete_field_by_name(env, stack, object, "long_value", &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "long_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int8_t value = env->get_field_long_by_name(env, stack, object, "long_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+    }
+    
+    {
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "float_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->set_field_float_by_name(env, stack, object, "float_value", 2, &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int8_t value = env->get_field_float_by_name(env, stack, object, "float_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == 2)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "float_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 1)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->delete_field_by_name(env, stack, object, "float_value", &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "float_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int8_t value = env->get_field_float_by_name(env, stack, object, "float_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+    }
+    
+    {
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "double_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->set_field_double_by_name(env, stack, object, "double_value", 2, &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int8_t value = env->get_field_double_by_name(env, stack, object, "double_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == 2)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "double_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 1)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->delete_field_by_name(env, stack, object, "double_value", &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "double_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int8_t value = env->get_field_double_by_name(env, stack, object, "double_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+    }
+    
+    {
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "object_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      void* obj_minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      env->set_field_object_by_name(env, stack, object, "object_value", obj_minimal, &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        void* value = env->get_field_object_by_name(env, stack, object, "object_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == obj_minimal)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "object_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 1)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      env->delete_field_by_name(env, stack, object, "object_value", &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      
+      {
+        int32_t exists = env->exists_field_by_name(env, stack, object, "object_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(exists == 0)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+      
+      {
+        void* value = env->get_field_object_by_name(env, stack, object, "object_value", &error_id, __func__, FILE_NAME, __LINE__);
+        if (error_id) { return error_id; }
+        
+        if (!(value == NULL)) {
+          stack[0].ival = 0;
+          return 0;
+        }
+      }
+    }
+    
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
