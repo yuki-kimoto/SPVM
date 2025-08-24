@@ -1570,28 +1570,26 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           
           SPVM_FIELD* field = SPVM_LIST_get(dist_fields, i);
           
-          if (field->name[0] != '.') {
-            SPVM_OP* op_name_field_access_dist = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
-            
-            SPVM_OP* op_field_access_dist = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
-            
-            SPVM_OP* op_var_dist_field_access = SPVM_OP_clone_op_var(compiler, op_var_dist);
-            
-            SPVM_OP_build_field_access(compiler, op_field_access_dist, op_var_dist_field_access, op_name_field_access_dist);
-            
-            SPVM_OP* op_name_field_access_src = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
-            SPVM_OP* op_field_access_src = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
-            SPVM_OP* op_var_src_field_access = SPVM_OP_clone_op_var(compiler, op_var_src);
-            SPVM_OP_build_field_access(compiler, op_field_access_src, op_var_src_field_access, op_name_field_access_src);
-            
-            SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-            SPVM_OP_build_assign(compiler, op_assign, op_field_access_dist, op_field_access_src);
-            
-            SPVM_FIELD_ACCESS* field_access_dist = op_field_access_dist->uv.field_access;
-            SPVM_FIELD_ACCESS* field_access_src = op_field_access_src->uv.field_access;
-            
-            SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign);
-          }
+          SPVM_OP* op_name_field_access_dist = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
+          
+          SPVM_OP* op_field_access_dist = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+          
+          SPVM_OP* op_var_dist_field_access = SPVM_OP_clone_op_var(compiler, op_var_dist);
+          
+          SPVM_OP_build_field_access(compiler, op_field_access_dist, op_var_dist_field_access, op_name_field_access_dist);
+          
+          SPVM_OP* op_name_field_access_src = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
+          SPVM_OP* op_field_access_src = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+          SPVM_OP* op_var_src_field_access = SPVM_OP_clone_op_var(compiler, op_var_src);
+          SPVM_OP_build_field_access(compiler, op_field_access_src, op_var_src_field_access, op_name_field_access_src);
+          
+          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+          SPVM_OP_build_assign(compiler, op_assign, op_field_access_dist, op_field_access_src);
+          
+          SPVM_FIELD_ACCESS* field_access_dist = op_field_access_dist->uv.field_access;
+          SPVM_FIELD_ACCESS* field_access_src = op_field_access_src->uv.field_access;
+          
+          SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign);
         }
         
         // Dummy
