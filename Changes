@@ -1,3 +1,9 @@
+0.990083 2025-08-25
+  [Compilation Error Message Improvement]
+    * Add the following compilation error message to weak, unweak, isweak, exists, delete operators.
+    
+      The incovant of the field access must be a class type.
+    
 0.990082 2025-08-20
   [New Features]
     * Add get_fields_size native basic type API.

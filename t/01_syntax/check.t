@@ -1037,8 +1037,28 @@ use Test::More;
     compile_not_ok($source, q|MyClass#x field operated by weaken operator must be an object type|);
   }
   {
+    my $source = 'class MyClass { use Complex_2d; has x : int; static method main : void () { my $value = Complex_2d->new; weaken $value->{re}; } }';
+    compile_not_ok($source, q|Invalid use of weaken operator: the incovant of the field access Complex_2d#re must be a class type.|);
+  }
+  {
+    my $source = 'class MyClass { use Complex_2d; has x : int; static method main : void () { my $value = Complex_2d->new; unweaken $value->{re}; } }';
+    compile_not_ok($source, q|Invalid use of unweaken operator: the incovant of the field access Complex_2d#re must be a class type.|);
+  }
+  {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; unweaken $object->{x}; } }';
     compile_not_ok($source, q|MyClass#x field operated by unweaken operator must be an object type|);
+  }
+  {
+    my $source = 'class MyClass { use Complex_2d; has x : int; static method main : void () { my $value = Complex_2d->new; exists $value->{re}; } }';
+    compile_not_ok($source, q|Invalid use of exists operator: the incovant of the field access Complex_2d#re must be a class type.|);
+  }
+  {
+    my $source = 'class MyClass { use Complex_2d; has x : int; static method main : void () { my $value = Complex_2d->new; delete $value->{re}; } }';
+    compile_not_ok($source, q|Invalid use of delete operator: the incovant of the field access Complex_2d#re must be a class type.|);
+  }
+  {
+    my $source = 'class MyClass { use Complex_2d; has x : int; static method main : void () { my $value = Complex_2d->new; isweak $value->{re}; } }';
+    compile_not_ok($source, q|Invalid use of isweak operator: the incovant of the field access Complex_2d#re must be a class type.|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; isweak $object->{x}; } }';

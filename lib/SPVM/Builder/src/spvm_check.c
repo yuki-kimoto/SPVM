@@ -3616,6 +3616,11 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             // weaken operator
             if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN) {
+              if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Invalid use of weaken operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                return;
+              }
+              
               if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
                 SPVM_COMPILER_error(compiler, "The %s#%s field operated by weaken operator must be an object type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
@@ -3623,6 +3628,11 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             }
             // unweaken operator
             else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN) {
+              if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Invalid use of unweaken operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                return;
+              }
+              
               if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
                 SPVM_COMPILER_error(compiler, "The %s#%s field operated by unweaken operator must be an object type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
@@ -3630,8 +3640,37 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             }
             // isweak operator
             else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK) {
+              if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Invalid use of isweak operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                return;
+              }
+              
               if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
                 SPVM_COMPILER_error(compiler, "The %s#%s field operated by isweak operator must be an object type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                return;
+              }
+            }
+            else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS) {
+              if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Invalid use of exists operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (!(SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)
+                || SPVM_TYPE_is_numeric_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag))) {
+                SPVM_COMPILER_error(compiler, "The %s#%s field operated by exists operator must be an object type or a numeric type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                return;
+              }
+            }
+            else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_DELETE) {
+              if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Invalid use of delete operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (!(SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)
+                || SPVM_TYPE_is_numeric_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag))) {
+                SPVM_COMPILER_error(compiler, "The %s#%s field operated by delete operator must be an object type or a numeric type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
             }
