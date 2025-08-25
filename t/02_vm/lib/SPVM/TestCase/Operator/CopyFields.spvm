@@ -5,6 +5,9 @@ class TestCase::Operator::CopyFields {
   use Complex_2d;
   use Complex_2f;
   
+  has value_int : int;
+  has value_int2 : int;
+  
   static method copy_fields : int () {
     
     {
@@ -79,6 +82,33 @@ class TestCase::Operator::CopyFields {
       unless ($simple2->{z} == 7) {
         return 0;
       }
+    }
+    
+    {
+      my $object_src = new TestCase::Operator::CopyFields;
+      
+      $object_src->{value_int} = 1;
+      
+      my $object_dist = new TestCase::Operator::CopyFields;
+      
+      copy_fields $object_dist, $object_src, TestCase::Operator::CopyFields;
+      
+      unless (exists $object_dist->{value_int}) {
+        return 0;
+      }
+      
+      unless ($object_dist->{value_int} == 1) {
+        return 0;
+      }
+      
+      if (exists $object_dist->{value_int2}) {
+        return 0;
+      }
+      
+      unless ($object_dist->{value_int2} == 0) {
+        return 0;
+      }
+      
     }
     
     return 1;

@@ -3,6 +3,8 @@
     * Add the following compilation error message to weak, unweak, isweak, exists, delete operators.
     
       The incovant of the field access must be a class type.
+  [Incompatible Changes]
+    * copy_fields operator do not copy nonexistent fields.
     
 0.990082 2025-08-20
   [New Features]

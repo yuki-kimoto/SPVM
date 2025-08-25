@@ -3521,10 +3521,16 @@ The type of I<TYPE> must be a class type.
 The copy_fields operator copies every field from I<SRC_OPERAND> to I<DIST_OPERAND> using all the field names defined in I<TYPE> class.
 
 For example, if the field names defined in I<TYPE> class are C<x>, C<y>, and C<z>, then copy_field operator is expanded to the following codes:
-
-  DIST_OPERAND->{x} = SRC_OPERAND->{x};
-  DIST_OPERAND->{y} = SRC_OPERAND->{y};
-  DIST_OPERAND->{z} = SRC_OPERAND->{z};
+  
+  if (exists SRC_OPERAND->{x}) {
+    DIST_OPERAND->{x} = SRC_OPERAND->{x};
+  }
+  if (exists SRC_OPERAND->{y}) {
+    DIST_OPERAND->{y} = SRC_OPERAND->{y};
+  }
+  if (exists SRC_OPERAND->{z}) {
+    DIST_OPERAND->{z} = SRC_OPERAND->{z};
+  }
 
 Compilation Errors:
 

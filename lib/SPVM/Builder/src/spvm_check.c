@@ -1570,14 +1570,20 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           
           SPVM_FIELD* field = SPVM_LIST_get(dist_fields, i);
           
+          SPVM_OP* op_name_field_access_exists_dist = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
+          SPVM_OP* op_field_access_exists_dist = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+          SPVM_OP* op_var_dist_field_access_exists = SPVM_OP_clone_op_var(compiler, op_var_dist);
+          SPVM_OP_build_field_access(compiler, op_field_access_exists_dist, op_var_dist_field_access_exists, op_name_field_access_exists_dist);
+          SPVM_OP* op_name_field_access_exists_src = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
+          SPVM_OP* op_field_access_exists_src = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+          SPVM_OP* op_var_src_field_access_exists = SPVM_OP_clone_op_var(compiler, op_var_src);
+          SPVM_OP_build_field_access(compiler, op_field_access_exists_src, op_var_src_field_access_exists, op_name_field_access_exists_src);
+          op_field_access_exists_src->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS;
+          
           SPVM_OP* op_name_field_access_dist = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
-          
           SPVM_OP* op_field_access_dist = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
-          
           SPVM_OP* op_var_dist_field_access = SPVM_OP_clone_op_var(compiler, op_var_dist);
-          
           SPVM_OP_build_field_access(compiler, op_field_access_dist, op_var_dist_field_access, op_name_field_access_dist);
-          
           SPVM_OP* op_name_field_access_src = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
           SPVM_OP* op_field_access_src = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
           SPVM_OP* op_var_src_field_access = SPVM_OP_clone_op_var(compiler, op_var_src);
@@ -1589,7 +1595,12 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           SPVM_FIELD_ACCESS* field_access_dist = op_field_access_dist->uv.field_access;
           SPVM_FIELD_ACCESS* field_access_src = op_field_access_src->uv.field_access;
           
-          SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign);
+          SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_cur->file, op_cur->line);
+          int32_t no_scope = 1;
+          SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_cur->file, op_cur->line);
+          SPVM_OP_build_if_statement(compiler, op_if, op_field_access_exists_src, op_assign, op_do_nothing, no_scope);
+          
+          SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_if);
         }
         
         // Dummy
