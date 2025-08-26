@@ -2,6 +2,9 @@
   [Document Improvement]
     * Improve the document for Stringable interface.
     
+  [Incompatible Changes]
+    * The return value of Hash#to_array is enabled options flag.
+  
 0.990083 2025-08-25
   [Compilation Error Message Improvement]
     * Add the following compilation error message to weak, unweak, isweak, exists, delete operators.

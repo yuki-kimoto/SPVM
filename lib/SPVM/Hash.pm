@@ -285,7 +285,7 @@ Sets the string $value to the hash by the key $key using the L<"set"> method.
 
 C<method to_array : object[] ($sort : int = 0);>
 
-Converts all the key-value pairs in the hash to an array, and returns it.
+Converts all the key-value pairs in the hash to an array, enables options flag, and returns it.
 
 If the option $sort is a positive value, the keys are sorted by ascendant order.
 

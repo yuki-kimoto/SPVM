@@ -294,6 +294,8 @@ class Hash {
       $array->[$i * 2 + 1] = $value;
     }
     
+    enable_options $array;
+    
     return $array;
   }
   

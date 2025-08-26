@@ -1051,6 +1051,16 @@ class TestCase::Module::Hash {
       }
     }
     
+    {
+      my $hash = Hash->new;
+      
+      my $array = $hash->to_array;
+      
+      unless (is_options $array) {
+        return 0;
+      }
+      
+    }
     
     return 1;
   }
