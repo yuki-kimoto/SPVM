@@ -4,14 +4,15 @@ package SPVM::Stringable;
 
 =head1 Name
 
-SPVM::Stringable - A Interface Type to Stringify a Object
+SPVM::Stringable - Stringable Interface
 
 =head1 Usage
   
   class Point {
     interface Stringable;
-  
-C<method to_string : string ();>
+    
+    method to_string : string () {
+      
       my $x = $sel->x;
       my $y = $sel->y;
       
@@ -23,17 +24,15 @@ C<method to_string : string ();>
 
 =head1 Description
 
-L<Stringable|SPVM::Stringable> is an interface type to stringify an object.
+Stringable interface in L<SPVM> is the interface for stringable classes.
 
 =head1 Interface Methods
-
-Interface methods.
 
 =head2 to_string
 
 C<required method to_string : string ();>
 
-The implementation must return the string expression.
+Returns the string representation for the instance.
 
 =head1 Copyright & License
 
