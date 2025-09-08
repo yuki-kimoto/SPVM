@@ -963,6 +963,10 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
           runtime_method->return_type_is_object = 1;
         }
         
+        if (SPVM_TYPE_is_void_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
+          runtime_method->return_type_is_void = 1;
+        }
+        
         runtime_method->call_stack_frame_size = SPVM_API_get_call_stack_frame_size(runtime_method);
       }
       runtime_basic_type->methods = runtime_methods;
