@@ -1,3 +1,7 @@
+0.990086 2025-09-09
+  [New Features]
+    * Add SPVM_NATIVE_C_TYPE_FLAG_VARARGS natvie constant.
+    
 0.990085 2025-09-08
   [Compilation Error Message Changes]
     * Improve English for void return compilation error messages.

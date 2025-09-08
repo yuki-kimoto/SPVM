@@ -3085,6 +3085,9 @@ Native APIs have its IDs.
   <tr>
     <td>2</td><td>SPVM_NATIVE_C_TYPE_FLAG_MUTABLE</td><td>A flag indicating that a mutable modifier is present</td>
   </tr>
+  <tr>
+    <td>4</td><td>SPVM_NATIVE_C_TYPE_FLAG_VARARGS</td><td>A flag indicating that a variable length type</td>
+  </tr>
 </table>
 
 =end html
