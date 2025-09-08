@@ -1,8 +1,10 @@
 0.990085 2025-09-08
   [Compilation Error Message Changes]
     * Improve English for void return compilation error messages.
+  [Changes]
+    * If the type of a method is void, the method call returns undef.
   [Internal Changes]
-    * Add return_type_is_void member variable to spvm_runtime_method.h
+    * Add return_type_is_void member variable to spvm_runtime_method.h.
 0.990084 2025-08-26
   [Document Improvement]
     * Improve the document for Stringable interface.

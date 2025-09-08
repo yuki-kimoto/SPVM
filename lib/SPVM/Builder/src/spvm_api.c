@@ -610,6 +610,10 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   
   END_OF_FUNC:
   
+  if (method->return_type_is_void) {
+    stack[0].oval = NULL;
+  }
+  
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival--;
   
   return error_id;
