@@ -546,11 +546,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { return 1; } }';
-    compile_not_ok($source, q|The void method cannnot return the value|);
+    compile_not_ok($source, q|If the return type is void, the method cannnot return the value.|);
   }
   {
     my $source = 'class MyClass { static method main : int () { return; } }';
-    compile_not_ok($source, q|The non-void method must return a value|);
+    compile_not_ok($source, q|If the return type is non-void, the method must return a value.|);
   }
 }
 

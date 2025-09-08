@@ -2642,7 +2642,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             if (SPVM_TYPE_is_void_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
               if (op_operand) {
-                SPVM_COMPILER_error(compiler, "The void method cannnot return the value.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "If the return type is void, the method cannnot return the value.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
             }
@@ -2654,7 +2654,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 }
               }
               else {
-                SPVM_COMPILER_error(compiler, "The non-void method must return a value.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "If the return type is non-void, the method must return a value.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
             }
