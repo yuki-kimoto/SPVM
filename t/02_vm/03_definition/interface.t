@@ -19,6 +19,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   ok(SPVM::TestCase::Interface->interface_muldim_array);
   ok(SPVM::TestCase::Interface->can);
   ok(SPVM::TestCase::InterfaceNoRequiredMethodTest->basic);
+  ok(SPVM::TestCase::Interface->void_and_any_object_return_type);
 }
 
 # All object is freed

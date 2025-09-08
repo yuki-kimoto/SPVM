@@ -1164,6 +1164,10 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_assign = 1;
     }
+    // Source type is void type
+    else if (SPVM_TYPE_is_void_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = 1;
+    }
     // Source type is other type
     else {
       can_assign = 0;

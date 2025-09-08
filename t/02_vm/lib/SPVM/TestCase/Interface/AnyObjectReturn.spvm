@@ -1,0 +1,4 @@
+class TestCase::Interface::AnyObjectReturn : interface_t {
+  
+  required method : object ();
+}

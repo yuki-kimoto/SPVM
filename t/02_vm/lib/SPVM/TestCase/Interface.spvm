@@ -7,6 +7,7 @@ class TestCase::Interface {
   use Point;
   use TestCase::Interface::Point;
   use TestCase::PointForTest;
+  use TestCase::Interface::AnyObjectReturn;
   
   interface TestCase::Interface::Type;
   
@@ -363,4 +364,25 @@ class TestCase::Interface {
   method call_to_string_precompile : string () {
     return $self->TestCase::Interface::Type::call_to_string_precompile;
   }
+  
+  static method void_and_any_object_return_type : int () {
+    
+    {
+      my $ret = &any_object_interface(method : void () {
+        
+      });
+      
+      unless ($ret == undef) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method any_object_interface : object ($cb : TestCase::Interface::AnyObjectReturn) {
+    
+    return $cb->();
+  }
+  
 }

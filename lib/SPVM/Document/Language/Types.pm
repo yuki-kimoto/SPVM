@@ -1041,6 +1041,7 @@ I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>ObjectX</td><td>No</td></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NumericX</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Boxing-Conversion">Boxing Conversion</a></td></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>undef</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>void</td><td>No</td></tr>
   <tr><td>No</td><td>Any Object <code>object</code></td><td>Other</td><td>No</td></tr>
 </table>
 
