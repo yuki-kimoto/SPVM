@@ -2541,7 +2541,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 'v' : {
-                if (strcmp(symbol_name, "version") == 0) {
+                if (strcmp(symbol_name, "varargs") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_VARARGS);
+                  keyword_token = VARARGS;
+                }
+                else if (strcmp(symbol_name, "version") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_VERSION_DECL);
                   keyword_token = VERSION_DECL;
                 }

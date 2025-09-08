@@ -21,7 +21,7 @@
   #include "spvm_string.h"
 %}
 
-%token <opval> CLASS HAS GET SET METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
+%token <opval> CLASS HAS GET SET METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE VARARGS
 %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
@@ -92,9 +92,14 @@ class_name
 
 qualified_type
   : type opt_type_comments
-  | MUTABLE type opt_type_comments {
-    $$ = SPVM_OP_build_mutable_type(compiler, $2);
-  }
+  | MUTABLE type opt_type_comments
+    {
+      $$ = SPVM_OP_build_mutable_type(compiler, $2);
+    }
+  | VARARGS type opt_type_comments 
+    {
+      $$ = SPVM_OP_build_varargs_type(compiler, $2);
+    }
 
 type
   : basic_type

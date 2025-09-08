@@ -261,6 +261,7 @@ enum {
   SPVM_OP_C_ID_SET,
   SPVM_OP_C_ID_EXISTS,
   SPVM_OP_C_ID_DELETE,
+  SPVM_OP_C_ID_VARARGS,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -476,6 +477,8 @@ SPVM_OP* SPVM_OP_build_make_read_only(SPVM_COMPILER* compiler, SPVM_OP* op_make_
 SPVM_OP* SPVM_OP_build_can(SPVM_COMPILER* compiler, SPVM_OP* op_has_interface, SPVM_OP* op_var, SPVM_OP* op_name);
 
 SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child);
+
+SPVM_OP* SPVM_OP_build_varargs_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child);
 
 SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_basic_type, SPVM_OP* op_name_alias);
 
