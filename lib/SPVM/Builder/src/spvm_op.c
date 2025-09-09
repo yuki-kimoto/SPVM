@@ -1673,7 +1673,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_VAR_DECL* arg_var_decl = op_arg->uv.var->var_decl;
     SPVM_TYPE* arg_var_decl_type = arg_var_decl->type;
     if (arg_var_decl_type->flag & SPVM_NATIVE_C_TYPE_FLAG_VARARGS) {
-      if (method->var_decls->length == method->args_length - 1) {
+      if (!(method->var_decls->length == method->args_length - 1)) {
         SPVM_COMPILER_error(compiler, "The use of variable length arguments must be the last argument.\n  at %s line %d", op_method->file, op_method->line);
       }
     }
@@ -3574,7 +3574,7 @@ SPVM_OP* SPVM_OP_build_varargs_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_el
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type->unresolved_basic_type_name, type->basic_type, type->dimension, type->flag, op_type_elem->file, op_type_elem->line);
   
   // The use of variable length arguments is restricted to object[] type
-  if (strcmp(type->unresolved_basic_type_name, "object") == 0 && type->dimension == 1) {
+  if (!(strcmp(type->unresolved_basic_type_name, "object") == 0 && type->dimension == 1)) {
     SPVM_COMPILER_error(compiler, "The use of variable length arguments is restricted to object[] type.\n  at %s line %d", op_type_elem->file, op_type_elem->line);
   }
   
