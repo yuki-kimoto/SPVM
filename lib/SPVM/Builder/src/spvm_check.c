@@ -3475,31 +3475,36 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(call_method->method->var_decls, call_method_args_length - 1);
                 SPVM_TYPE* arg_var_decl_type = arg_var_decl->type;
                 
-                if (call_method_args_length > args_length) {
-                  int32_t args_length_for_user = args_length;
-                  if (!call_method->method->is_class_method) {
-                    args_length_for_user--;
+                if (arg_var_decl_type->flag & SPVM_NATIVE_C_TYPE_FLAG_VARARGS) {
+                  assert(0);
+                }
+                else {
+                  if (call_method_args_length > args_length) {
+                    int32_t args_length_for_user = args_length;
+                    if (!call_method->method->is_class_method) {
+                      args_length_for_user--;
+                    }
+                    
+                    SPVM_COMPILER_error(compiler, "Too many arguments are passed to %s#%s method.\n  at %s line %d", op_cur->uv.call_method->method->current_basic_type->name, method_name, op_cur->file, op_cur->line);
+                    
+                    return;
                   }
                   
-                  SPVM_COMPILER_error(compiler, "Too many arguments are passed to %s#%s method.\n  at %s line %d", op_cur->uv.call_method->method->current_basic_type->name, method_name, op_cur->file, op_cur->line);
+                  // Check if source can be assigned to dist
+                  // If needed, numeric conversion op is added
+                  char place[255];
+                  int32_t call_method_args_length_for_user = call_method_args_length;
+                  if (!call_method->method->is_class_method) {
+                    call_method_args_length_for_user--;
+                  }
+                  sprintf(place, "the %dth argument of %s#%s method", call_method_args_length_for_user, op_cur->uv.call_method->method->current_basic_type->name, method_name);
                   
-                  return;
-                }
-                
-                // Check if source can be assigned to dist
-                // If needed, numeric conversion op is added
-                char place[255];
-                int32_t call_method_args_length_for_user = call_method_args_length;
-                if (!call_method->method->is_class_method) {
-                  call_method_args_length_for_user--;
-                }
-                sprintf(place, "the %dth argument of %s#%s method", call_method_args_length_for_user, op_cur->uv.call_method->method->current_basic_type->name, method_name);
-                
-                // Invocant is not checked.
-                op_operand = SPVM_CHECK_check_assign(compiler, arg_var_decl_type, op_operand, place, op_cur->file, op_cur->line);
-                
-                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                  return;
+                  // Invocant is not checked.
+                  op_operand = SPVM_CHECK_check_assign(compiler, arg_var_decl_type, op_operand, place, op_cur->file, op_cur->line);
+                  
+                  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                    return;
+                  }
                 }
               }
             }
