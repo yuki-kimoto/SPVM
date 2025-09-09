@@ -21,17 +21,17 @@ Packer class in L<SPVM> has methods for pack and unpack operations
   {
     my $objects = [(object)1, 2L, 0.5, [1, 2], "abc"];
     
-    my $binary = $packer->pack("lqdl2a128");
+    my $binary = $packer->pack("lqdl2a128", $objects);
     
-    my $objects_unpack = $packer->unpack($binary);
+    my $objects_unpack = $packer->unpack("lqdl2a128", $binary);
   }
   
   {
     my $objects = [(object)[1, 2, 3]];
     
-    my $binary = $packer->pack("l*");
+    my $binary = $packer->pack("l*", $objects);
     
-    my $objects_unpack = $packer->unpack($binary);
+    my $objects_unpack = $packer->unpack("l*", $binary);
   }
   
 =head1 Class Methods
