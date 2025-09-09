@@ -1379,6 +1379,13 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
       }
     }
   }
+  
+  if (!SPVM_CHECK_can_access(compiler, current_method->current_basic_type, call_method->method->current_basic_type, call_method->method->access_control_type, 0)) {
+    if (!SPVM_OP_is_allowed(compiler, current_method->current_basic_type, call_method->method->current_basic_type, 0)) {
+      SPVM_COMPILER_error(compiler, "The %s %s#%s method cannnot be called from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->current_basic_type->name, call_method->method->name, current_method->current_basic_type->name, op_call_method->file, op_call_method->line);
+      return;
+    }
+  }
 }
 
 void SPVM_CHECK_check_ast_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
@@ -3455,13 +3462,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
             const char* method_name = call_method->method->name;
-
-            if (!SPVM_CHECK_can_access(compiler, method->current_basic_type, call_method->method->current_basic_type, call_method->method->access_control_type, 0)) {
-              if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, call_method->method->current_basic_type, 0)) {
-                SPVM_COMPILER_error(compiler, "The %s %s#%s method cannnot be called from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->current_basic_type->name, call_method->method->name, method->current_basic_type->name, op_cur->file, op_cur->line);
-                return;
-              }
-            }
             
             int32_t args_length = call_method->method->args_length;
             
