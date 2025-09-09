@@ -370,8 +370,6 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
           for (int32_t unmerged_field_index = 0; unmerged_field_index < unmerged_fields_length; unmerged_field_index++) {
             SPVM_FIELD* field = SPVM_LIST_get(unmerged_fields, unmerged_field_index);
             
-            // spvm_warn("%s#%s, %p", basic_type->name, field->name, field->exists_field);
-            
             if (unmerged_field_index % 8 == 0) {
               exists_field = SPVM_FIELD_new(compiler);
               
@@ -1400,9 +1398,9 @@ SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* 
   
   int32_t call_method_args_length = 0;
   SPVM_OP* op_array_init = NULL;
+  SPVM_OP* op_operand = op_list_args->first;
+  SPVM_OP* previous_op_operand = op_operand;
   {
-    SPVM_OP* op_operand = op_list_args->first;
-    SPVM_OP* previous_op_operand = op_operand;
     while ((op_operand = SPVM_OP_sibling(compiler, op_operand))) {
       call_method_args_length++;
       
@@ -1462,7 +1460,13 @@ SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* 
   
   call_method->varargs_checked = 1;
   
-  return op_array_init;
+  if (op_array_init) {
+    return previous_op_operand;
+  }
+  else {
+    return NULL;
+  }
+  
 }
 
 void SPVM_CHECK_check_call_method_args(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {
@@ -1480,8 +1484,6 @@ void SPVM_CHECK_check_call_method_args(SPVM_COMPILER* compiler, SPVM_OP* op_call
     SPVM_OP* previous_op_operand = op_operand;
     while ((op_operand = SPVM_OP_sibling(compiler, op_operand))) {
       call_method_args_length++;
-      
-      SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, op_operand->file, op_operand->line);
       
       SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(call_method->method->var_decls, call_method_args_length - 1);
       SPVM_TYPE* arg_var_decl_type = arg_var_decl->type;
@@ -1651,7 +1653,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
   int32_t finish = 0;
   while (op_cur) {
     // [START]Preorder traversal position
-    
     switch (op_cur->id) {
       case SPVM_OP_C_ID_BLOCK: {
         SPVM_BLOCK* block = op_cur->uv.block;
@@ -3606,13 +3607,13 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             // Check method call's variable length arguments
             if (!call_method->varargs_checked) {
-              SPVM_OP* op_array_init = SPVM_CHECK_check_call_method_varargs(compiler, op_call_method, method);
+              SPVM_OP* op_previous_args = SPVM_CHECK_check_call_method_varargs(compiler, op_call_method, method);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
               
-              if (op_array_init) {
-                op_cur = op_array_init;
+              if (op_previous_args) {
+                op_cur = op_previous_args;
                 break;
               }
             }
@@ -5004,6 +5005,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_LIST:
     case SPVM_OP_C_ID_SEQUENCE:
+      
       type = SPVM_CHECK_get_type(compiler, op->last);
       break;
     case SPVM_OP_C_ID_ASSIGN: {

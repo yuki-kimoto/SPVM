@@ -266,6 +266,13 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   }
 }
 
+# Variable length arguments - varargs
+{
+  {
+    ok(SPVM::TestCase::Operator::MethodCall->varargs);
+  }
+}
+
 # All object is freed
 $api->set_exception(undef);
 my $end_memory_blocks_count = $api->get_memory_blocks_count;

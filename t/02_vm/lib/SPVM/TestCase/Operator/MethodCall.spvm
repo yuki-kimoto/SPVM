@@ -2252,4 +2252,23 @@ class TestCase::Operator::MethodCall {
     
     return 1;
   }
+  
+  static method varargs : int () {
+    
+    my $ret = &varargs_method(1, "abc", 2);
+    
+    unless ($ret eq "abc2") {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method varargs_method : string ($var1 : int, $args : varargs object[]) {
+    
+    my $ret = $args->[0]->(string) . $args->[1]->(int);
+    
+    return $ret;
+  }
+  
 }
