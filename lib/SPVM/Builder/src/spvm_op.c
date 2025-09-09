@@ -3560,12 +3560,15 @@ SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_el
 
 SPVM_OP* SPVM_OP_build_varargs_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem) {
   
-  // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_type_elem->uv.type->basic_type->id, op_type_elem->uv.type->dimension, op_type_elem->uv.type->flag | SPVM_NATIVE_C_TYPE_FLAG_VARARGS);
   type->unresolved_basic_type_name = op_type_elem->uv.type->unresolved_basic_type_name;
   
-  // Type OP
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type->unresolved_basic_type_name, type->basic_type, type->dimension, type->flag, op_type_elem->file, op_type_elem->line);
+  
+  // The use of variable length arguments is restricted to object[] type
+  if (strcmp(type->unresolved_basic_type_name, "object") == 0 && type->dimension == 1) {
+    SPVM_COMPILER_error(compiler, "The use of variable length arguments is restricted to object[] type.\n  at %s line %d", op_type_elem->file, op_type_elem->line);
+  }
   
   return op_type;
 }
