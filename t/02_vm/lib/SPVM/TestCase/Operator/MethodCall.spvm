@@ -1660,8 +1660,6 @@ class TestCase::Operator::MethodCall {
       return 0;
     }
     
-    $@ = undef;
-    
     return 1;
   }
   
@@ -2063,7 +2061,6 @@ class TestCase::Operator::MethodCall {
         return 0;
       }
     }
-    $@ = undef;
     
     return 1;
   }
@@ -2075,8 +2072,6 @@ class TestCase::Operator::MethodCall {
     unless (Fn->contains($@, "Deep recursion occurs.")) {
       return 0;
     }
-    
-    $@ = undef;
     
     return 1;
   }
@@ -2254,8 +2249,6 @@ class TestCase::Operator::MethodCall {
         }
       }
     }
-    
-    $@ = undef;
     
     return 1;
   }
