@@ -1387,6 +1387,13 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
     }
   }
   
+}
+
+void SPVM_CHECK_check_call_method_args(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {
+  
+  SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
+  const char* method_name = call_method->op_name->uv.name;
+  
   SPVM_OP* op_list_args = op_call_method->first;
   
   int32_t args_length = call_method->method->args_length;
@@ -3561,8 +3568,14 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             assert(op_call_method->first->id == SPVM_OP_C_ID_LIST);
             
-            // Check method
+            // Check method call's call
             SPVM_CHECK_check_call_method_call(compiler, op_call_method, method);
+            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+              return;
+            }
+            
+            // Check method call's args
+            SPVM_CHECK_check_call_method_args(compiler, op_call_method, method);
             if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
               return;
             }
