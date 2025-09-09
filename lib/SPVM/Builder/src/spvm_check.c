@@ -1389,6 +1389,82 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
   
 }
 
+SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {
+  
+  SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
+  const char* method_name = call_method->op_name->uv.name;
+  
+  SPVM_OP* op_list_args = op_call_method->first;
+  
+  int32_t args_length = call_method->method->args_length;
+  
+  int32_t call_method_args_length = 0;
+  SPVM_OP* op_array_init = NULL;
+  {
+    SPVM_OP* op_operand = op_list_args->first;
+    SPVM_OP* previous_op_operand = op_operand;
+    while ((op_operand = SPVM_OP_sibling(compiler, op_operand))) {
+      call_method_args_length++;
+      
+      SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(call_method->method->var_decls, call_method_args_length - 1);
+      SPVM_TYPE* arg_var_decl_type = arg_var_decl->type;
+      
+      SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
+      
+      // Variable length arguments
+      if (arg_var_decl_type->flag & SPVM_NATIVE_C_TYPE_FLAG_VARARGS && !SPVM_TYPE_is_any_object_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+        
+        SPVM_OP* op_list_varargs = SPVM_OP_new_op_list(compiler, op_call_method->file, op_call_method->line);
+        
+        SPVM_TYPE* any_object_type = SPVM_TYPE_new_any_object_type(compiler);
+        
+        char place[255];
+        sprintf(place, "the variable legnth arguments of %s#%s method", op_call_method->uv.call_method->method->current_basic_type->name, method_name);
+        
+        op_operand = previous_op_operand;
+        while ((op_operand = SPVM_OP_sibling(compiler, op_operand))) {
+          
+          op_operand = SPVM_CHECK_check_assign(compiler, any_object_type, op_operand, place, op_list_varargs->file, op_list_varargs->line);
+          if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+            return NULL;
+          }
+          
+          SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
+          
+          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand);
+          
+          if (!SPVM_TYPE_is_any_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+            SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_list_varargs->file, op_list_varargs->line);
+            SPVM_OP* op_dist_type = SPVM_OP_new_op_any_object_type(compiler, op_list_varargs->file, op_list_varargs->line);
+            op_operand = SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_operand);
+          }
+          
+          SPVM_OP_insert_child(compiler, op_list_varargs, op_list_varargs->last, op_operand);
+          
+          op_operand = op_stab;
+        }
+        
+        int32_t is_key_values = 0;
+        op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, op_list_varargs->file, op_list_varargs->line);
+        op_array_init = SPVM_OP_build_array_init(compiler, op_array_init, op_list_varargs, is_key_values);
+        
+        previous_op_operand->sibparent = op_array_init;
+        assert(previous_op_operand->moresib == 1);
+        
+        op_array_init->sibparent = op_list_args;
+        assert(op_array_init->moresib == 0);
+        
+        break;
+      }
+      previous_op_operand = op_operand;
+    }
+  }
+  
+  call_method->varargs_checked = 1;
+  
+  return op_array_init;
+}
+
 void SPVM_CHECK_check_call_method_args(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
@@ -1412,80 +1488,32 @@ void SPVM_CHECK_check_call_method_args(SPVM_COMPILER* compiler, SPVM_OP* op_call
       
       SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
       
-      // Variable length arguments
-      if (arg_var_decl_type->flag & SPVM_NATIVE_C_TYPE_FLAG_VARARGS && !SPVM_TYPE_is_any_object_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-        
-        SPVM_OP* op_list_varargs = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
-        
-        SPVM_TYPE* any_object_type = SPVM_TYPE_new_any_object_type(compiler);
-        
-        char place[255];
-        sprintf(place, "the variable legnth arguments of %s#%s method", op_call_method->uv.call_method->method->current_basic_type->name, method_name);
-        
-        op_operand = previous_op_operand;
-        while ((op_operand = SPVM_OP_sibling(compiler, op_operand))) {
-          
-          op_operand = SPVM_CHECK_check_assign(compiler, any_object_type, op_operand, place, op_list_varargs->file, op_list_varargs->line);
-          if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-            return;
-          }
-          
-          SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
-          
-          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand);
-          
-          if (!SPVM_TYPE_is_any_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-            SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_list_varargs->file, op_list_varargs->line);
-            SPVM_OP* op_dist_type = SPVM_OP_new_op_any_object_type(compiler, op_list_varargs->file, op_list_varargs->line);
-            op_operand = SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_operand);
-          }
-          
-          SPVM_OP_insert_child(compiler, op_list_varargs, op_list_varargs->last, op_operand);
-          
-          op_operand = op_stab;
-        }
-        
-        int32_t is_key_values = 0;
-        op_array_init = SPVM_OP_build_array_init(compiler, op_array_init, op_list_varargs, is_key_values);
-        
-        previous_op_operand->sibparent = op_array_init;
-        assert(previous_op_operand->moresib == 1);
-        
-        op_array_init->sibparent = op_list_args;
-        assert(op_array_init->moresib == 0);
-        
-        break;
-      }
-      else {
-        if (call_method_args_length > args_length) {
-          int32_t args_length_for_user = args_length;
-          if (!call_method->method->is_class_method) {
-            args_length_for_user--;
-          }
-          
-          SPVM_COMPILER_error(compiler, "Too many arguments are passed to %s#%s method.\n  at %s line %d", op_call_method->uv.call_method->method->current_basic_type->name, method_name, op_call_method->file, op_call_method->line);
-          
-          return;
-        }
-        
-        // Check if source can be assigned to dist
-        // If needed, numeric conversion op is added
-        char place[255];
-        int32_t call_method_args_length_for_user = call_method_args_length;
+      if (call_method_args_length > args_length) {
+        int32_t args_length_for_user = args_length;
         if (!call_method->method->is_class_method) {
-          call_method_args_length_for_user--;
+          args_length_for_user--;
         }
-        sprintf(place, "the %dth argument of %s#%s method", call_method_args_length_for_user, op_call_method->uv.call_method->method->current_basic_type->name, method_name);
         
-        // Invocant is not checked.
-        op_operand = SPVM_CHECK_check_assign(compiler, arg_var_decl_type, op_operand, place, op_call_method->file, op_call_method->line);
+        SPVM_COMPILER_error(compiler, "Too many arguments are passed to %s#%s method.\n  at %s line %d", op_call_method->uv.call_method->method->current_basic_type->name, method_name, op_call_method->file, op_call_method->line);
         
-        if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-          return;
-        }
+        return;
       }
       
-      previous_op_operand = op_operand;
+      // Check if source can be assigned to dist
+      // If needed, numeric conversion op is added
+      char place[255];
+      int32_t call_method_args_length_for_user = call_method_args_length;
+      if (!call_method->method->is_class_method) {
+        call_method_args_length_for_user--;
+      }
+      sprintf(place, "the %dth argument of %s#%s method", call_method_args_length_for_user, op_call_method->uv.call_method->method->current_basic_type->name, method_name);
+      
+      // Invocant is not checked.
+      op_operand = SPVM_CHECK_check_assign(compiler, arg_var_decl_type, op_operand, place, op_call_method->file, op_call_method->line);
+      
+      if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+        return;
+      }
     }
   }
   
@@ -3568,20 +3596,34 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             assert(op_call_method->first->id == SPVM_OP_C_ID_LIST);
             
+            SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
+            
             // Check method call's call
             SPVM_CHECK_check_call_method_call(compiler, op_call_method, method);
             if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
               return;
             }
             
-            // Check method call's args
+            // Check method call's variable length arguments
+            if (!call_method->varargs_checked) {
+              SPVM_OP* op_array_init = SPVM_CHECK_check_call_method_varargs(compiler, op_call_method, method);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              if (op_array_init) {
+                op_cur = op_array_init;
+                break;
+              }
+            }
+            
+            // Check method call's arguments
             SPVM_CHECK_check_call_method_args(compiler, op_call_method, method);
             if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
               return;
             }
             
             // A method call to get a enumeration value is replaced to a constant value
-            SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
             if (call_method->method->is_enum) {
               // Replace method to constant
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);

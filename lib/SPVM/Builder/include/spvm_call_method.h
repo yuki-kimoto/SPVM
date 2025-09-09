@@ -15,6 +15,7 @@ struct spvm_call_method {
   int8_t call_super;
   int8_t is_instance_method_static;
   int8_t is_current;
+  int8_t varargs_checked;
 };
 
 SPVM_CALL_METHOD* SPVM_CALL_METHOD_new(SPVM_COMPILER* compiler);
