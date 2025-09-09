@@ -3442,9 +3442,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           case SPVM_OP_C_ID_CALL_METHOD: {
             
             SPVM_OP* op_call_method = op_cur;
-
+            
             assert(op_cur->first->id == SPVM_OP_C_ID_LIST);
-                
             
             // Check method
             SPVM_CHECK_check_call_method(compiler, op_cur, method);
@@ -4043,6 +4042,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
           
           if (convert_to_assign) {
             SPVM_TYPE* tmp_var_type = SPVM_CHECK_get_type(compiler, op_cur);
+            assert(tmp_var_type);
             SPVM_OP* op_var_tmp = SPVM_CHECK_new_op_var_tmp(compiler, tmp_var_type, method, op_cur->file, op_cur->line);
             
             if (op_var_tmp == NULL) {
