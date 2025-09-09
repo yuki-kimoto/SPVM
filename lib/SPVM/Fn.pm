@@ -1559,7 +1559,7 @@ If the system is little-endian, returns 1, otherwise returns 0.
 
 =head2 sprintf
 
-C<static method sprintf : string ($format : string, $args : object[]);>
+C<static method sprintf : string ($format : string, $args : varargs object[]);>
 
 Calls L<Format#sprintf|SPVM::Format/"sprintf"> method and returns its return value.
 
