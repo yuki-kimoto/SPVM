@@ -1795,6 +1795,31 @@ use Test::More;
   }
 }
 
+# Variable length arguments - varargs
+{
+  {
+    my $source = 'class MyClass  { static method main : void () { &varargs("abc", 1); } static method varargs : void ($args : varargs object[]) { } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass  { static method main : void () { &varargs(1, "abc", 1); } static method varargs : void ($arg1 : int, $args : varargs object[]) { } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass  { static method main : void () { &varargs(1, "abc", 1); } static method varargs : void ($args : varargs string[]) { } }';
+    compile_not_ok($source, q|The use of variable length arguments is restricted to object[] type.|);
+  }
+  
+  {
+    my $source = 'class MyClass  { static method main : void () { &varargs("abc", 1); } static method varargs : void ($args : varargs object[], $arg2 : int) { } }';
+    compile_not_ok($source, q|The use of variable length arguments must be the last argument.|);
+  }
+  
+}
+
+
 # Extra
 {
   {
