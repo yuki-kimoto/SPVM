@@ -1808,6 +1808,11 @@ use Test::More;
   }
   
   {
+    my $source = 'class MyClass  { static method main : void () { (new MyClass)->varargs("abc", 1); } method varargs : void ($args : varargs object[]) { } }';
+    compile_ok($source);
+  }
+  
+  {
     my $source = 'class MyClass  { static method main : void () { &varargs(1, "abc", 1); } static method varargs : void ($args : varargs string[]) { } }';
     compile_not_ok($source, q|The use of variable length arguments is restricted to object[] type.|);
   }
