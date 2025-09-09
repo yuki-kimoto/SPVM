@@ -2270,6 +2270,7 @@ class TestCase::Operator::MethodCall {
         return 0;
       }
     }
+    
     return 1;
   }
   
