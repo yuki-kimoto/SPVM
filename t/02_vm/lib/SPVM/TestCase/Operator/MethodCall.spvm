@@ -2255,12 +2255,21 @@ class TestCase::Operator::MethodCall {
   
   static method varargs : int () {
     
-    my $ret = &varargs_method(1, "abc", 2);
-    
-    unless ($ret eq "abc2") {
-      return 0;
+    {
+      my $ret = &varargs_method(1, "abc", 2);
+      
+      unless ($ret eq "abc2") {
+        return 0;
+      }
     }
     
+    {
+      my $ret = &varargs_method(1, [(object)"abc", 2]);
+      
+      unless ($ret eq "abc2") {
+        return 0;
+      }
+    }
     return 1;
   }
   
