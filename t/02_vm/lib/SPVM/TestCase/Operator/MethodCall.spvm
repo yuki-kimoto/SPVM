@@ -2271,6 +2271,22 @@ class TestCase::Operator::MethodCall {
       }
     }
     
+    {
+      my $success = &varargs_method_zero();
+      
+      unless ($success) {
+        return 0;
+      }
+    }
+    
+    {
+      my $success = &varargs_method_zero_no_default();
+      
+      unless ($success) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
@@ -2279,6 +2295,32 @@ class TestCase::Operator::MethodCall {
     my $ret = $args->[0]->(string) . $args->[1]->(int);
     
     return $ret;
+  }
+  
+  static method varargs_method_zero : string ($args : varargs object[] = undef) {
+    
+    unless ($args isa object[]) {
+      return 0;
+    }
+    
+    unless (@$args == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method varargs_method_zero_no_default : string ($args : varargs object[]) {
+    
+    unless ($args isa object[]) {
+      return 0;
+    }
+    
+    unless (@$args == 0) {
+      return 0;
+    }
+    
+    return 1;
   }
   
 }

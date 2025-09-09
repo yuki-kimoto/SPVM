@@ -6743,6 +6743,13 @@ class TestCase::Module::Fn {
       }
     }
     
+    {
+      my $result = Fn->sprintf("Foo");
+      unless ($result eq "Foo") {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   

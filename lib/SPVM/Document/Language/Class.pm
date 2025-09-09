@@ -1960,6 +1960,14 @@ This is expanded to:
 
   &varags_method([(object)"abc", 1]);
 
+If no arguments are specified, zero-length C<object[]> object is passed.
+
+  &varags_method();
+
+This is expanded to:
+
+  &varags_method(new object[0]);
+
 Compilation Errors:
 
 The use of variable length arguments is restricted to object[] type. Otherwise a compilation error occurs.
