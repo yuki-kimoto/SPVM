@@ -1253,7 +1253,7 @@ void SPVM_CHECK_check_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* bas
   basic_type->fields_size = offset;
 }
 
-void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {
+void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
   
@@ -3561,15 +3561,14 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             assert(op_call_method->first->id == SPVM_OP_C_ID_LIST);
             
-            SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
-            
             // Check method
-            SPVM_CHECK_check_call_method(compiler, op_cur, method);
+            SPVM_CHECK_check_call_method_call(compiler, op_call_method, method);
             if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
               return;
             }
             
             // A method call to get a enumeration value is replaced to a constant value
+            SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
             if (call_method->method->is_enum) {
               // Replace method to constant
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
