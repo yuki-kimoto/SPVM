@@ -1944,6 +1944,28 @@ The arguments signature of the following class method and instance method is C<s
   
   }
 
+=head2 Variable Length Arguments
+
+The variable length arguments syntax C<varargs> is a syntax suger to pass a C<object[]> object as an argument.
+
+  static method varargs_method : string ($args : varargs object[]) {
+    
+  }
+
+If the type of an argument is not C<object[]> type in the method call, a C<object[]> object is created with the argument and the rest arguments. Each element is casted to any object type C<object>.
+
+  &varags_method("abc", 1);
+
+This is expanded to:
+
+  &varags_method([(object)"abc", 1]);
+
+Compilation Errors:
+
+The use of variable length arguments is restricted to object[] type. Otherwise a compilation error occurs.
+  
+The use of variable length arguments must be the last argument. Otherwise a compilation error occurs.
+
 =head1 Local Variable
 
 A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.
