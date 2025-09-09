@@ -3568,7 +3568,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             }
             
             SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
-            const char* method_name = call_method->method->name;
             
             // A method call to get a enumeration value is replaced to a constant value
             if (call_method->method->is_enum) {
