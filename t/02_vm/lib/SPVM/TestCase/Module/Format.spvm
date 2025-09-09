@@ -62,11 +62,29 @@ class TestCase::Module::Format {
   }
   
   static method sprintf_basic : int () {
+    
     {
       my $result = Format->sprintf("Foo %d %s %.3f Bar", [(object)123, "abc", 1.115]);
       unless ($result eq "Foo 123 abc 1.115 Bar") {
         return 0;
       }
+    }
+    
+    {
+      my $result = Format->sprintf("Foo %d %s %.3f Bar", 123, "abc", 1.115);
+      unless ($result eq "Foo 123 abc 1.115 Bar") {
+        return 0;
+      }
+    }
+    
+    {
+      my $object = (object)"abc";
+      my $result = Format->sprintf("%p", $object);
+      
+      unless ($result eq Format->sprintf("%p", [(object)$object])) {
+        return 0;
+      }
+      
     }
     
     return 1;

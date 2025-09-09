@@ -6736,6 +6736,13 @@ class TestCase::Module::Fn {
       }
     }
     
+    {
+      my $result = Fn->sprintf("Foo %d %s %.3f Bar", 123, "abc", 1.115);
+      unless ($result eq "Foo 123 abc 1.115 Bar") {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   

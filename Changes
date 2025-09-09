@@ -6,7 +6,11 @@
       static method foo : void ($var1 : int, varargs object[]) {}
       
       &foo(1, "abc", Int->new) is parsed to &foo(1, [(object)"abc", Int->new]);
-      
+  [New Features with Incompatible Changes]
+    * Fn#sprintf and Format#sprintf method can receive variable length arguments.
+    
+      my $ret = Fn->sprintf("Foo %d %s %.3f Bar", 123, "abc", 1.115);
+    
 0.990085 2025-09-08
   [Compilation Error Message Changes]
     * Improve English for void return compilation error messages.
