@@ -1670,6 +1670,14 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   // Variable declarations of arguments
   SPVM_OP* op_arg = op_args->first;
   while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+    SPVM_VAR_DECL* arg_var_decl = op_arg->uv.var->var_decl;
+    SPVM_TYPE* arg_var_decl_type = arg_var_decl->type;
+    if (arg_var_decl_type->flag & SPVM_NATIVE_C_TYPE_FLAG_VARARGS) {
+      if (method->var_decls->length == method->args_length - 1) {
+        SPVM_COMPILER_error(compiler, "The use of variable length arguments must be the last argument.\n  at %s line %d", op_method->file, op_method->line);
+      }
+    }
+    
     SPVM_LIST_push(method->var_decls, op_arg->uv.var->var_decl);
   }
   
