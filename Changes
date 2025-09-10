@@ -1,4 +1,4 @@
-0.990087 2025-09-09
+0.990087 2025-09-10
   [Incompatible Changes]
     * Change variable length arguments syntax.
       
@@ -8,6 +8,12 @@
       [After]
       static method foo : void ($var1 : int, object...) {}
     * The use of variable length arguments cannot have a default value.
+    
+    * Variable length arguments is always expanded even if the type of the argument is object[].
+      And added (object...) type cast not to expand it.
+      
+        (object...)$objects
+    
   [Fix Bugs]
     * Fix the bug that segfault occured in argments check.
 

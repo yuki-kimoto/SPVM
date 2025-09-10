@@ -6731,7 +6731,7 @@ class TestCase::Module::Fn {
   
   static method sprintf : int () {
     {
-      unless (Fn->sprintf("%d", [(object)123]) eq "123") {
+      unless (Fn->sprintf("%d", (object...)[(object)123]) eq "123") {
         return 0;
       }
     }

@@ -395,7 +395,7 @@ class Packer {
           
           my $format = Fn->repeat("%x", $process_length);
           
-          my $hex_string_part = (mutable string)Fn->sprintf($format, (object[])$int_object_array);
+          my $hex_string_part = (mutable string)Fn->sprintf($format, (object...)$int_object_array);
           
           if ($specifier_type == Packer::Specifier->TYPE_HEX_STRING_LOW) {
             for (my $i = 0; $i < $process_length; $i++) {

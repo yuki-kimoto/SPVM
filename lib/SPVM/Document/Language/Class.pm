@@ -1952,21 +1952,19 @@ The variable length arguments syntax C<object...> is a syntax suger to pass a C<
     
   }
 
-If the type of an argument is not C<object[]> type in the method call, a C<object[]> object is created with the argument and the rest arguments. Each element is casted to any object type C<object>.
+A C<object[]> object is created with the arguments. Each element is casted to any object type C<object>.
 
   &varags_method("abc", 1);
-
-This is expanded to:
-
-  &varags_method([(object)"abc", 1]);
 
 If no arguments are specified, zero-length C<object[]> object is passed.
 
   &varags_method();
 
-This is expanded to:
+If you want to pass an C<object[]> object as one argument, you can use the type cast to C<object...>.
 
-  &varags_method(new object[0]);
+  my $objects = [(object)"abc", 1];
+  
+  &varags_method((object...)$objects);
 
 Compilation Errors:
 

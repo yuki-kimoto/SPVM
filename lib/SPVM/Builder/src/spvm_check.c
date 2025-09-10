@@ -1424,7 +1424,7 @@ SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* 
         
         SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
         
-        if (SPVM_TYPE_is_any_object_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+        if (operand_type->flag & SPVM_NATIVE_C_TYPE_FLAG_VARARGS) {
           return NULL;
         }
         
