@@ -1946,9 +1946,9 @@ The arguments signature of the following class method and instance method is C<s
 
 =head2 Variable Length Arguments
 
-The variable length arguments syntax C<varargs> is a syntax suger to pass a C<object[]> object as an argument.
+The variable length arguments syntax C<object...> is a syntax suger to pass a C<object[]> object as an argument.
 
-  static method varargs_method : string ($args : varargs object[]) {
+  static method varargs_method : string ($args : object...) {
     
   }
 

@@ -1,3 +1,13 @@
+0.990087 2025-09-09
+  [Incompatible Changes]
+    * Change variable length arguments syntax.
+      
+      [Before]
+      static method foo : void ($var1 : int, varargs object[]) {}
+      
+      [After]
+      static method foo : void ($var1 : int, object...) {}
+      
 0.990086 2025-09-09
   [New Features]
     * Add SPVM_NATIVE_C_TYPE_FLAG_VARARGS natvie constant.

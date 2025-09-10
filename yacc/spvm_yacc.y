@@ -21,7 +21,7 @@
   #include "spvm_string.h"
 %}
 
-%token <opval> CLASS HAS GET SET METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE VARARGS
+%token <opval> CLASS HAS GET SET METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
 %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
@@ -32,7 +32,7 @@
 %type <opval> grammar
 %type <opval> field_name method_name class_name
 %type <opval> basic_type  opt_basic_type array_type array_type_with_length type ref_type return_type
-%type <opval> qualified_type arg_type type_comment union_type type_comments opt_type_comments
+%type <opval> qualified_type type_comment union_type type_comments opt_type_comments
 %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
@@ -95,13 +95,6 @@ qualified_type
   | MUTABLE type opt_type_comments
     {
       $$ = SPVM_OP_build_mutable_type(compiler, $2);
-    }
-
-arg_type
-  : qualified_type
-  | VARARGS qualified_type
-    {
-      $$ = SPVM_OP_build_varargs_type(compiler, $2);
     }
 
 type
@@ -171,21 +164,26 @@ ref_type
 array_type
   : basic_type '[' ']'
     {
-      $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
+      $$ = SPVM_OP_build_array_type(compiler, $1, NULL, 0);
     }
   | array_type '[' ']'
     {
-      $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
+      $$ = SPVM_OP_build_array_type(compiler, $1, NULL, 0);
+    }
+  | basic_type '.' '.' '.'
+    {
+      
+      $$ = SPVM_OP_build_array_type(compiler, $1, NULL, 1);
     }
 
 array_type_with_length
   : basic_type '[' operator ']'
     {
-      $$ = SPVM_OP_build_array_type(compiler, $1, $3);
+      $$ = SPVM_OP_build_array_type(compiler, $1, $3, 0);
     }
   | array_type '[' operator ']'
     {
-      $$ = SPVM_OP_build_array_type(compiler, $1, $3);
+      $$ = SPVM_OP_build_array_type(compiler, $1, $3, 0);
     }
 
 return_type
@@ -604,11 +602,11 @@ args
   | arg
 
 arg
-  : var ':' arg_type
+  : var ':' qualified_type
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, NULL);
     }
-  | var ':' arg_type ASSIGN operator
+  | var ':' qualified_type ASSIGN operator
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, $5);
     }

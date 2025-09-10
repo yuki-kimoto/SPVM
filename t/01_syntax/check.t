@@ -1795,30 +1795,30 @@ use Test::More;
   }
 }
 
-# Variable length arguments - varargs
+# Variable length arguments - object...
 {
   {
-    my $source = 'class MyClass  { static method main : void () { &varargs("abc", 1); } static method varargs : void ($args : varargs object[]) { } }';
+    my $source = 'class MyClass  { static method main : void () { &varargs("abc", 1); } static method varargs : void ($args : object...) { } }';
     compile_ok($source);
   }
   
   {
-    my $source = 'class MyClass  { static method main : void () { &varargs(1, "abc", 1); } static method varargs : void ($arg1 : int, $args : varargs object[]) { } }';
+    my $source = 'class MyClass  { static method main : void () { &varargs(1, "abc", 1); } static method varargs : void ($arg1 : int, $args : object...) { } }';
     compile_ok($source);
   }
   
   {
-    my $source = 'class MyClass  { static method main : void () { (new MyClass)->varargs("abc", 1); } method varargs : void ($args : varargs object[]) { } }';
+    my $source = 'class MyClass  { static method main : void () { (new MyClass)->varargs("abc", 1); } method varargs : void ($args : object...) { } }';
     compile_ok($source);
   }
   
   {
-    my $source = 'class MyClass  { static method main : void () { &varargs(1, "abc", 1); } static method varargs : void ($args : varargs string[]) { } }';
+    my $source = 'class MyClass  { static method main : void () { &varargs(1, "abc", 1); } static method varargs : void ($args : string...) { } }';
     compile_not_ok($source, q|The use of variable length arguments is restricted to object[] type.|);
   }
   
   {
-    my $source = 'class MyClass  { static method main : void () { &varargs("abc", 1); } static method varargs : void ($args : varargs object[], $arg2 : int) { } }';
+    my $source = 'class MyClass  { static method main : void () { &varargs("abc", 1); } static method varargs : void ($args : object..., $arg2 : int) { } }';
     compile_not_ok($source, q|The use of variable length arguments must be the last argument.|);
   }
   

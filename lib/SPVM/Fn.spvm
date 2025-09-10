@@ -1861,7 +1861,7 @@ class Fn {
   
   native static method system_is_little_endian : int ();
   
-  static method sprintf : string ($format : string, $args : varargs object[]) {
+  static method sprintf : string ($format : string, $args : object...) {
     return Format->sprintf($format, $args);
   }
   
