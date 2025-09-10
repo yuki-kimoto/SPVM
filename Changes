@@ -13,6 +13,9 @@
       And added (object...) type cast not to expand it.
       
         (object...)$objects
+    * The second argument of Format#sprintf method is changed back.
+    
+      static method foo : void ($var1 : int, $args : object[]) {}
     
   [Fix Bugs]
     * Fix the bug that segfault occured in argments check.
