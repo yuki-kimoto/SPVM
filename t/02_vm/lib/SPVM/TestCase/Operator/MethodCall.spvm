@@ -2287,6 +2287,14 @@ class TestCase::Operator::MethodCall {
       }
     }
     
+    {
+      my $success = &varargs_method_no_type_cast((object[])[(object)"abc", 2]);
+      
+      unless ($success) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
