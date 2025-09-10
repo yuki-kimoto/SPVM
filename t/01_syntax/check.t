@@ -935,6 +935,11 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(1, 2, 3); } method foo : void ($arg0 : int, $arg1 : int = 0) { } }';
     compile_not_ok($source, q|Too many arguments are passed to MyClass#foo method|);
   }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { &foo(1); } static method foo : void () { } }';
+    compile_not_ok($source, q|Too many arguments are passed to MyClass#foo method|);
+  }
 }
 
 # Class Variable Access

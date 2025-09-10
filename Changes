@@ -8,7 +8,9 @@
       [After]
       static method foo : void ($var1 : int, object...) {}
     * The use of variable length arguments cannot have a default value.
-      
+  [Fix Bugs]
+    * Fix the bug that segfault occured in argments check.
+
 0.990086 2025-09-09
   [New Features]
     * Add SPVM_NATIVE_C_TYPE_FLAG_VARARGS natvie constant.

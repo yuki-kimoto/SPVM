@@ -1493,9 +1493,6 @@ void SPVM_CHECK_check_call_method_args(SPVM_COMPILER* compiler, SPVM_OP* op_call
     while ((op_operand = SPVM_OP_sibling(compiler, op_operand))) {
       call_method_args_length++;
       
-      SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(call_method->method->var_decls, call_method_args_length - 1);
-      SPVM_TYPE* arg_var_decl_type = arg_var_decl->type;
-      
       SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
       
       if (call_method_args_length > args_length) {
@@ -1508,6 +1505,9 @@ void SPVM_CHECK_check_call_method_args(SPVM_COMPILER* compiler, SPVM_OP* op_call
         
         return;
       }
+      
+      SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(call_method->method->var_decls, call_method_args_length - 1);
+      SPVM_TYPE* arg_var_decl_type = arg_var_decl->type;
       
       // Check if source can be assigned to dist
       // If needed, numeric conversion op is added
