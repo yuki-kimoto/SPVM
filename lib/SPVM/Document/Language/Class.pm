@@ -1974,6 +1974,8 @@ The use of variable length arguments is restricted to object[] type. Otherwise a
   
 The use of variable length arguments must be the last argument. Otherwise a compilation error occurs.
 
+The use of variable length arguments cannot have a default value. If so, a compilation error occurs.
+
 =head1 Local Variable
 
 A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.

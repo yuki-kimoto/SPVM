@@ -1831,6 +1831,13 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   
   op_type->uv.type->resolved_in_ast = 0;
   
+  // The use of variable length arguments is restricted to object[] type
+  if (op_type->uv.type->flag & SPVM_NATIVE_C_TYPE_FLAG_VARARGS) {
+    if (op_arg_default) {
+      SPVM_COMPILER_error(compiler, "The use of variable length arguments cannot have a default value.\n  at %s line %d", op_type->file, op_type->line);
+    }
+  }
+  
   return op_var;
 }
 

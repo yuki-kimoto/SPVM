@@ -1822,6 +1822,11 @@ use Test::More;
     compile_not_ok($source, q|The use of variable length arguments must be the last argument.|);
   }
   
+  {
+    my $source = 'class MyClass  { static method main : void () { &varargs("abc", 1); } static method varargs : void ($args : object... = undef) { } }';
+    compile_not_ok($source, q|The use of variable length arguments cannot have a default value.|);
+  }
+  
 }
 
 
