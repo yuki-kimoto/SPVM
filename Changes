@@ -3,10 +3,10 @@
     * Change variable length arguments syntax.
       
       [Before]
-      static method foo : void ($var1 : int, varargs object[]) {}
+      static method foo : void ($var1 : int, $args : varargs object[]) {}
       
       [After]
-      static method foo : void ($var1 : int, object...) {}
+      static method foo : void ($var1 : int, $args : object...) {}
     * The use of variable length arguments cannot have a default value.
     
     * Variable length arguments is always expanded even if the type of the argument is object[].
