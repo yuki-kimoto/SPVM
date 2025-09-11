@@ -1567,6 +1567,10 @@ Exceptions:
 
 Exceptions thrown by thrown L<Format#sprintf|SPVM::Format/"sprintf"> method could be thrown.
 
+Examples:
+
+  my $ret = Fn->sprintf("%s %d", "abc", 2);
+
 =head2 sort_asc
 
 C<static method sort_asc : object ($array : object);>
@@ -1677,11 +1681,15 @@ Exceptions thrown by L</"change_endian"> method could be thrown.
 
 =head2 pack
 
-C<static method pack : string ($template : string, $objects : object[]);>
+C<static method pack : string ($template : string, $objects : object...);>
 
 Converts the objects $objects to a binary data according to the template $template, and returns it.
 
 This method just creates a L<Packer|SPVM::Packer> object, calls L<Packer#pack|SPVM::Packer/"pack"> method, and returns its return value.
+
+Examples:
+
+  my $binary = Fn->pack("l", 3);
 
 =head2 unpack
 

@@ -2007,7 +2007,7 @@ class Fn {
     
   }
   
-  static method pack : string ($template : string, $objects : object[]) {
+  static method pack : string ($template : string, $objects : object...) {
     return Packer->new->pack($template, $objects);
   }
   

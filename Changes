@@ -1,3 +1,9 @@
+0.990088 2025-09-11
+  [Incompatible Changes]
+    * Fn#pack method receives variable length arguments.
+    
+      my $binary = Fn->pack("l", 3);
+
 0.990087 2025-09-10
   [Incompatible Changes]
     * Change variable length arguments syntax.

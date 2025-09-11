@@ -8001,11 +8001,9 @@ class TestCase::Module::Fn {
     
     # l
     {
-      my $objects = [(object)Fn->INT_MIN];
-      
       my $template = "l";
       
-      my $binary = Fn->pack($template, $objects);
+      my $binary = Fn->pack($template, Fn->INT_MIN);
       
       unless (length $binary == 4) {
         return 0;
