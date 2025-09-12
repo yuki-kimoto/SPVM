@@ -14,6 +14,7 @@ struct spvm_type {
   int32_t dimension;
   int32_t flag;
   int8_t resolved_in_ast;
+  SPVM_TYPE* of;
 };
 
 SPVM_TYPE* SPVM_TYPE_new_uninitialized(SPVM_COMPILER* compiler);
