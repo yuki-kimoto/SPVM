@@ -2180,7 +2180,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 'e' : {
-                if (strcmp(symbol_name, "elsif") == 0) {
+                if (strcmp(symbol_name, "element") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ELEMENT);
+                  keyword_token = ELEMENT;
+                }
+                else if (strcmp(symbol_name, "elsif") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ELSIF);
                   keyword_token = ELSIF;
                 }

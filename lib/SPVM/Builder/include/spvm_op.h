@@ -261,6 +261,7 @@ enum {
   SPVM_OP_C_ID_SET,
   SPVM_OP_C_ID_EXISTS,
   SPVM_OP_C_ID_DELETE,
+  SPVM_OP_C_ID_ELEMENT,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
