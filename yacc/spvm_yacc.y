@@ -207,6 +207,10 @@ opt_type_comments
 
 type_comments
   : type_comments type_comment
+    {
+      $$ = SPVM_OP_build_add_type_comment(compiler, $1, $2);
+    }
+    
   | type_comment
   
 type_comment

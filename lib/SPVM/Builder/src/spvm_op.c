@@ -2582,8 +2582,39 @@ SPVM_OP* SPVM_OP_build_type_cast(SPVM_COMPILER* compiler, SPVM_OP* op_type_cast,
   
   op_type_cast->file = op_type->file;
   op_type_cast->line = op_type->line;
-
+  
   return op_type_cast;
+}
+
+SPVM_OP* SPVM_OP_build_add_type_comment(SPVM_COMPILER* compiler, SPVM_OP* op_type_comments, SPVM_OP* op_child_type) {
+  
+  SPVM_OP* op_parent_type = NULL;
+  if (op_type_comments->id == SPVM_OP_C_ID_LIST) {
+    op_parent_type = op_type_comments->last;
+  }
+  else {
+    op_parent_type = op_type_comments;
+  }
+  
+  SPVM_OP* op_parent_first_type = NULL;
+  if (op_parent_type->id == SPVM_OP_C_ID_LIST) {
+    op_parent_first_type = SPVM_OP_sibling(compiler, op_parent_type->first);
+  }
+  else {
+    op_parent_first_type = op_parent_type;
+  }
+  
+  SPVM_OP* op_child_first_type = NULL;
+  if (op_child_type->id == SPVM_OP_C_ID_LIST) {
+    op_child_first_type = SPVM_OP_sibling(compiler, op_child_type->first);
+  }
+  else {
+    op_child_first_type = op_child_type;
+  }
+  
+  op_parent_first_type->uv.type->of = op_child_first_type->uv.type;
+  
+  return op_type_comments;
 }
 
 SPVM_OP* SPVM_OP_build_interface_statement(SPVM_COMPILER* compiler, SPVM_OP* op_interface, SPVM_OP* op_type) {
