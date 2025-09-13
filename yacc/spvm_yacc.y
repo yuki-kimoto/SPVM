@@ -92,9 +92,13 @@ class_name
 
 qualified_type
   : type opt_type_comments
+    {
+      $$ = SPVM_OP_build_qualified_type(compiler, $1, $2);
+    }
   | MUTABLE type opt_type_comments
     {
-      $$ = SPVM_OP_build_mutable_type(compiler, $2);
+      SPVM_OP* op_type = SPVM_OP_build_qualified_type(compiler, $2, $3);
+      $$ = SPVM_OP_build_mutable_type(compiler, op_type);
     }
 
 type

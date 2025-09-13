@@ -2617,6 +2617,25 @@ SPVM_OP* SPVM_OP_build_add_type_comment(SPVM_COMPILER* compiler, SPVM_OP* op_typ
   return op_type_comments;
 }
 
+SPVM_OP* SPVM_OP_build_qualified_type(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_type_comments) {
+  
+  SPVM_OP* op_first_type_comment = NULL;
+  if (op_type_comments) {
+    if (op_type_comments->id == SPVM_OP_C_ID_LIST) {
+      op_first_type_comment = op_type_comments->first;
+    }
+    else {
+      op_first_type_comment = op_type_comments;
+    }
+  }
+  
+  if (op_first_type_comment && op_first_type_comment->id == SPVM_OP_C_ID_TYPE) {
+    op_type->uv.type->of = op_first_type_comment->uv.type;
+  }
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_build_interface_statement(SPVM_COMPILER* compiler, SPVM_OP* op_interface, SPVM_OP* op_type) {
   
   SPVM_INTERFACE* interface = SPVM_INTERFACE_new(compiler);
