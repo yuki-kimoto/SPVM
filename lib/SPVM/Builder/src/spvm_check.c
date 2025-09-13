@@ -1310,6 +1310,8 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       return;
     }
     
+    op_call_method->uv.call_method->type = type;
+    
     const char* basic_type_name = type->basic_type->name;
     
     SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
@@ -1358,6 +1360,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
         SPVM_COMPILER_error(compiler, "%s method is not found.\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
         return;
       }
+      
     }
     // Instance method
     else {
