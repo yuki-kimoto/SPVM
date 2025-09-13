@@ -1,6 +1,7 @@
 0.990089 2025-09-13
   [New Features]
     * Add element keyword.
+    * Add generics feature only in object's return value.
     
   [Internal Changes]
     * Add of member variable to spvm_type.h.
