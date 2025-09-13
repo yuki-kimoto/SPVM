@@ -3654,7 +3654,13 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 return;
               }
               
-              
+              SPVM_TYPE* element_type = call_method->type->of;
+              if (element_type) {
+                if (!SPVM_TYPE_is_object_type(compiler, element_type->basic_type->id, element_type->dimension, element_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The element type of the invocant of %s#%s method call must be an object type for an element type cast.\n  at %s line %d", call_method->method->current_basic_type->name, call_method->method->name, op_call_method->file, op_call_method->line);
+                  return;
+                }
+              }
             }
             
             if (call_method->method->is_class_method) {
