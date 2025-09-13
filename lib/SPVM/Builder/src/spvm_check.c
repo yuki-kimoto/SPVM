@@ -3645,6 +3645,15 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               op_cur = op_constant;
             }
             
+            if (call_method->method->return_type->is_element_type) {
+              if (call_method->method->is_class_method) {
+                SPVM_COMPILER_error(compiler, "The type of a class method cannot be element type.\n  at %s line %d", op_call_method->file, op_call_method->line);
+                return;
+              }
+              
+              
+            }
+            
             if (call_method->method->is_class_method) {
               SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, call_method->method->current_basic_type->name, strlen(call_method->method->current_basic_type->name));
             }

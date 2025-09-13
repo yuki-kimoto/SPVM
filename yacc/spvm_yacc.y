@@ -158,12 +158,6 @@ basic_type
       
       $$ = op_type;
     }
-  | ELEMENT
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
-      $$ = op_type;
-    }
-
 ref_type
   : basic_type '*'
     {
@@ -200,6 +194,11 @@ return_type
   | VOID
     {
       $$ = SPVM_OP_new_op_void_type(compiler, compiler->current_file, compiler->current_line);
+    }
+  | ELEMENT
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
+      $$ = op_type;
     }
 
 opt_type_comments
