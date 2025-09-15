@@ -16,6 +16,7 @@ struct spvm_type {
   int32_t flag;
   int8_t resolved_in_ast;
   int8_t is_element_type;
+  int8_t is_union_type;
 };
 
 SPVM_TYPE* SPVM_TYPE_new_uninitialized(SPVM_COMPILER* compiler);
