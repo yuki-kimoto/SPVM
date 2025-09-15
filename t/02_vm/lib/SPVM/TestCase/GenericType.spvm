@@ -1,5 +1,6 @@
 class TestCase::GenericType {
   use TestCase::List;
+  use Hash;
   
   static method basic : int () {
     {
@@ -12,6 +13,27 @@ class TestCase::GenericType {
       }
       
       unless ($elem eq "a") {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $list = (TestCase::List of TestCase::List of string)TestCase::List->new([TestCase::List->new(["a", "b"]), TestCase::List->new(["c", "d"])]);
+      
+      my $hash = $list->get(0);
+      
+      unless ($hash is_compile_type TestCase::List) {
+        return 0;
+      }
+      
+      my $value = $hash->get(0);
+      
+      unless ($value is_compile_type string) {
+        return 0;
+      }
+      
+      unless ($value eq "a") {
         return 0;
       }
       
