@@ -202,8 +202,7 @@ return_type
     }
   | ELEMENT
     {
-      SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
-      $$ = op_type;
+      $$ = SPVM_OP_new_op_element_type(compiler, $1->file, $1->line);
     }
 
 union_type

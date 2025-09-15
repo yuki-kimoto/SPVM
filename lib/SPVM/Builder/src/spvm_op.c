@@ -3995,10 +3995,9 @@ SPVM_OP* SPVM_OP_new_op_any_object_type(SPVM_COMPILER* compiler, const char* fil
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_new_op_any_element_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
-  SPVM_TYPE* type = SPVM_TYPE_new_any_object_type(compiler);
-  type->is_element_type = 1;
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type->unresolved_basic_type_name, type->basic_type, type->dimension, type->flag, file, line);  
+SPVM_OP* SPVM_OP_new_op_element_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, file, line);  
+  op_type->uv.type->is_element_type = 1;
   return op_type;
 }
 
