@@ -125,7 +125,7 @@ Examples:
 
 =head2 get
 
-C<method get : object ($index : int);>
+C<method get : element ($index : int);>
 
 Gets the element of the position of $index.
 
@@ -149,7 +149,7 @@ $index must be less than or equal to the length of $list. Otherwise an exception
 
 =head2 pop
 
-C<method pop : object ();>
+C<method pop : element ();>
 
 Removes the last element and return it.
 
@@ -165,7 +165,7 @@ Adds an $element after the end of the list.
 
 =head2 remove
 
-C<method remove : object ($index : int);>
+C<method remove : element ($index : int);>
 
 Removes the element at the position of $index and return it.
 
@@ -231,7 +231,7 @@ $index must be less than the length of $list. Otherwise an exception is thrown.
 
 =head2 shift
 
-C<method shift : object ();>
+C<method shift : element ();>
 
 Removes the first element and return it.
 

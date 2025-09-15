@@ -139,24 +139,39 @@ class TestCase::Module::List {
   }
   
   static method get : int () {
-    my $list = List->new([Int->new(1), undef]);
-    unless (((Int)$list->get(0))->value == 1) {
-      return 0;
-    }
-    unless ($list->get(1) == undef) {
-      return 0;
-    }
     
     {
-      eval { $list->get(-1); };
-      unless (Fn->contains($@, "The index \$index must be greater than or equal to 0")) {
+      my $list = List->new([Int->new(1), undef]);
+      unless (((Int)$list->get(0))->value == 1) {
+        return 0;
+      }
+      unless ($list->get(1) == undef) {
         return 0;
       }
     }
+    
+    # Generics
     {
-      eval { $list->get(3); };
-      unless (Fn->contains($@, "The index \$index must be less than the length of \$list")) {
+      my $list = (List of Int)List->new([Int->new(1), undef]);
+      unless ($list->get(0)->value == 1) {
         return 0;
+      }
+    }
+    
+    {
+      my $list = List->new([Int->new(1), undef]);
+      
+      {
+        eval { $list->get(-1); };
+        unless (Fn->contains($@, "The index \$index must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      {
+        eval { $list->get(3); };
+        unless (Fn->contains($@, "The index \$index must be less than the length of \$list")) {
+          return 0;
+        }
       }
     }
     
@@ -256,6 +271,14 @@ class TestCase::Module::List {
       return 0;
     }
     
+    # Generics
+    {
+      my $list = (List of Int)List->new([Int->new(1), undef, Int->new(2)]);
+      unless ($list->pop->value == 2) {
+        return 0;
+      }
+    }
+    
     {
       my $list = StringList->new_len(0);
       eval { $list->pop; };
@@ -342,6 +365,20 @@ class TestCase::Module::List {
       my $list = List->new([(object)$x1, $x2, $x3]);
       $list->remove(0);
       unless (Array->equals_object_address($list->to_array, [$x2, $x3])) {
+        return 0;
+      }
+    }
+    
+    # Remove
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = (List of string)List->new([$x1, $x2, $x3, $x4]);
+      
+      unless ($list->remove(0) eq "1") {
         return 0;
       }
     }
@@ -652,6 +689,15 @@ class TestCase::Module::List {
     unless (((Int)$list->shift)->value == 2) {
       return 0;
     }
+    
+    # Generics
+    {
+      my $list = (List of Int)List->new([Int->new(1), undef, Int->new(2)]);
+      unless ($list->shift->value == 1) {
+        return 0;
+      }
+    }
+    
     eval {
       $list->shift;
     };
