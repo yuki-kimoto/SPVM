@@ -809,21 +809,21 @@ Examples:
     
   }
   
-=head1 Type Comment
+=head1 Generic Type
 
 The type comment is a syntax to write a comment for a type.
 
-  TYPE of TYPE
+  TYPE of ELEMENT_TYPE
 
 I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
-I<TYPE> is a type used in L<field definition|/"Field Definition">, L<class variable definition|/"Class Variable Definition">, L<local variable declaration|/"Local Variable Declaration">, and the return value and the types of arguments of L<method definition|/"Method Definition">.
+I<ELEMENT_TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
-I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
-
-Type comments can be repeated.
+Generic types can be repeated.
 
   TYPE of TYPE1 of TYPE2
+
+A generic type is treated as C<TYPE>. C<ELEMETN_TYPE> is ignored in most cases.
 
 Examples:
 
