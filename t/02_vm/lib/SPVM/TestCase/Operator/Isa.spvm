@@ -48,21 +48,6 @@ class TestCase::Operator::Isa {
       }
     }
     
-    # Ref
-    {
-      {
-        my $value : byte*;
-        
-        unless ($value isa byte*) {
-          return 0;
-        }
-        
-        if ($value isa short*) {
-          return 0;
-        }
-      }
-    }
-    
     # Any object array
     {
       {

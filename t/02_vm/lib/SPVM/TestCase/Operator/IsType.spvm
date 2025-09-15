@@ -47,21 +47,6 @@ class TestCase::Operator::IsType {
       }
     }
     
-    # Ref
-    {
-      {
-        my $value : byte*;
-        
-        unless ($value is_type byte*) {
-          return 0;
-        }
-        
-        if ($value is_type short*) {
-          return 0;
-        }
-      }
-    }
-    
     # Any object array
     {
       {

@@ -550,6 +550,17 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { my $value = "a"; $value is_type string|string[]; } }';
     compile_not_ok($source, q|Unexpected token|);
   }
+
+  {
+    my $source = 'class MyClass { static method main : void () { my $value = "a"; $value is_type byte*; } }';
+    compile_not_ok($source, q|Unexpected token|);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $value = "a"; $value isa byte*; } }';
+    compile_not_ok($source, q|Unexpected token|);
+  }
+  
 }
 
 done_testing;
