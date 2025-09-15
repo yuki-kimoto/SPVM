@@ -809,9 +809,9 @@ Examples:
     
   }
   
-=head1 Generic Type
+=head2 Generic Type
 
-The type comment is a syntax to write a comment for a type.
+The generic type is a syntax to write a comment for a type.
 
   TYPE of ELEMENT_TYPE
 
@@ -819,15 +819,11 @@ I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
 I<ELEMENT_TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
-Generic types can be repeated.
-
-  TYPE of TYPE1 of TYPE2
-
 A generic type is treated as C<TYPE>. C<ELEMETN_TYPE> is ignored in most cases.
 
 Examples:
 
-  # Examples of type comments
+  # Examples of generic types
   has points : List of Point;
   
   has hash_of_list_of_point : Hash of List of Point;
@@ -842,7 +838,7 @@ Examples:
 
 Compilation Errors:
 
-If the type specified as the type comment is not found, a compilation error occurs.
+If the type specified as the generic type is not found, a compilation error occurs.
 
 =head1 Assignment Requirement
 

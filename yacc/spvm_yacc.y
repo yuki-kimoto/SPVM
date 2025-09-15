@@ -32,7 +32,7 @@
 %type <opval> grammar
 %type <opval> field_name method_name class_name
 %type <opval> basic_type  opt_basic_type array_type array_type_with_length type ref_type return_type
-%type <opval> qualified_type generic_type union_type generic_types opt_generic_types
+%type <opval> qualified_type union_type generic_type
 %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
@@ -91,14 +91,10 @@ class_name
   : SYMBOL_NAME
 
 qualified_type
-  : type opt_generic_types
+  : type
+  | MUTABLE type
     {
-      $$ = SPVM_OP_build_qualified_type(compiler, $1, $2);
-    }
-  | MUTABLE type opt_generic_types
-    {
-      SPVM_OP* op_type = SPVM_OP_build_qualified_type(compiler, $2, $3);
-      $$ = SPVM_OP_build_mutable_type(compiler, op_type);
+      $$ = SPVM_OP_build_mutable_type(compiler, $2);
     }
 
 type
@@ -106,26 +102,12 @@ type
   | array_type
   | ref_type
   | union_type
-
-opt_generic_types
-  : /* Empty */
-    {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
-    }
-  | generic_types
-
-generic_types
-  : generic_types generic_type
-    {
-      $$ = SPVM_OP_build_add_generic_type(compiler, $1, $2);
-    }
-    
   | generic_type
   
 generic_type
-  : OF type
+  : type OF type
     {
-      $$ = $2;
+      $$ = SPVM_OP_build_generic_type(compiler, $1, $3);
     }
 
 basic_type
