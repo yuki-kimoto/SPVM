@@ -27,8 +27,8 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
   %type <opval> grammar
   %type <opval> field_name method_name class_name
-  %type <opval> basic_type  opt_basic_type array_type array_type_with_length type ref_type return_type
-  %type <opval> qualified_type union_type generic_type
+  %type <opval> basic_type  opt_basic_type array_type array_type_with_length type runtime_type compile_type ref_type return_type
+  %type <opval> union_type generic_type
   %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
   %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
@@ -83,16 +83,22 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   class_name
     : SYMBOL_NAME
 
-  qualified_type
-    : type
-    | MUTABLE type
-
-  type
+  runtime_type
     : basic_type
     | array_type
+
+  compile_type
+    : runtime_type
     | ref_type
+    | MUTABLE compile_type
+
+  type
+    : compile_type
     | union_type
     | generic_type
+
+  union_type
+    : type BIT_OR type
 
   generic_type
     : type OF type
@@ -121,12 +127,9 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | array_type '[' operator ']'
 
   return_type
-    : qualified_type
+    : type
     | VOID
     | ELEMENT
-
-  union_type
-    : type BIT_OR type
 
   opt_classes
     : /* Empty */
@@ -219,10 +222,10 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | method_name ASSIGN CONSTANT
 
   our
-    : OUR VAR_NAME ':' opt_attributes qualified_type opt_getter opt_setter ';'
+    : OUR VAR_NAME ':' opt_attributes type opt_getter opt_setter ';'
 
   has
-    : HAS field_name ':' opt_attributes qualified_type opt_getter opt_setter
+    : HAS field_name ':' opt_attributes type opt_getter opt_setter
 
   opt_getter
     : /* Empty */
@@ -261,8 +264,8 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | arg
 
   arg
-    : var ':' qualified_type
-    | var ':' qualified_type ASSIGN operator
+    : var ':' type
+    | var ':' type ASSIGN operator
 
   anon_method_fields
     : anon_method_fields ',' anon_method_field
@@ -270,10 +273,10 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | anon_method_field
 
   anon_method_field
-    : HAS field_name ':' opt_attributes qualified_type
-    | HAS field_name ':' opt_attributes qualified_type ASSIGN operator
-    | var ':' opt_attributes qualified_type
-    | var ':' opt_attributes qualified_type ASSIGN operator
+    : HAS field_name ':' opt_attributes type
+    | HAS field_name ':' opt_attributes type ASSIGN operator
+    | var ':' opt_attributes type
+    | var ':' opt_attributes type ASSIGN operator
 
   opt_attributes
     : /* Empty */
@@ -315,8 +318,8 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   die
     : DIE operator
     | DIE
-    | DIE type operator
-    | DIE type
+    | DIE basic_type operator
+    | DIE basic_type
     | DIE operator ',' operator
 
   void_return_operator
@@ -384,7 +387,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : EVAL block
 
   var_decl
-    : MY var ':' qualified_type
+    : MY var ':' type
     | MY var
 
   var
@@ -524,15 +527,15 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : operator DEFINED_OR operator
 
   type_check
-    : operator ISA type
-    | operator ISA_ERROR type
-    | operator IS_TYPE type
-    | operator IS_ERROR type
-    | operator IS_COMPILE_TYPE qualified_type
+    : operator ISA runtime_type
+    | operator ISA_ERROR runtime_type
+    | operator IS_TYPE runtime_type
+    | operator IS_ERROR runtime_type
+    | operator IS_COMPILE_TYPE compile_type
 
   type_cast
-    : '(' qualified_type ')' operator %prec CONVERT
-    | operator ARROW '(' qualified_type ')' %prec CONVERT
+    : '(' type ')' operator %prec CONVERT
+    | operator ARROW '(' type ')' %prec CONVERT
 
   can
     : operator CAN method_name
