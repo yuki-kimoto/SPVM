@@ -22,13 +22,13 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
-  %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
+  %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
   %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
   %type <opval> grammar
   %type <opval> field_name method_name class_name
   %type <opval> basic_type  opt_basic_type array_type array_type_with_length type ref_type return_type
-  %type <opval> qualified_type type_comment union_type type_comments opt_type_comments
+  %type <opval> qualified_type union_type generic_type
   %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
   %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
@@ -84,13 +84,18 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : SYMBOL_NAME
 
   qualified_type
-    : type opt_type_comments
-    | MUTABLE type opt_type_comments
+    : type
+    | MUTABLE type
 
   type
     : basic_type
     | array_type
     | ref_type
+    | union_type
+    | generic_type
+
+  generic_type
+    : type OF type
 
   basic_type
     : SYMBOL_NAME
@@ -118,21 +123,10 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   return_type
     : qualified_type
     | VOID
-
-  opt_type_comments
-    : /* Empty */
-    | type_comments
-
-  type_comments
-    : type_comments type_comment
-    | type_comment
-
-  type_comment
-    : OF union_type
+    | ELEMENT
 
   union_type
-    : union_type BIT_OR type
-    | type
+    : type BIT_OR type
 
   opt_classes
     : /* Empty */
@@ -713,6 +707,9 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>DUMP</td><td>dump</td>
+  </tr>
+  <tr>
+    <td>ELEMENT</td><td>element</td>
   </tr>
   <tr>
     <td>ELSE</td><td>else</td>
