@@ -1,46 +1,20 @@
 class TestCase::GenericType {
-  use List;
-  use TestCase::Minimal;
-  use Point;
-  use Point3D;
-  
-  has minimals : List of TestCase::Minimal;
-
-  has union_type : object of string|Point;
-  has union_type3 : object of string|Point|Point3D;
-  
-  has hash_of_list_of_point : Hash of List of Point;
-
-  our $MINIMALS : List of TestCase::Minimal;
-  
-  static method pass_throw_minimals : List of TestCase::Minimal ($minimals : List of TestCase::Minimal) {
-    
-    my $minimals_local : List of TestCase::Minimal = $minimals;
-    
-    my $mutable_string : mutable string of Point;
-    
-    my $hash_of_list_of_point = (Hash of List of Point)undef;
-    
-    return $minimals_local;
-  }
+  use TestCase::List;
   
   static method basic : int () {
-    my $minimal = TestCase::Minimal->new;
-    $minimal->set_x(1);
-    my $minimals = List->new([$minimal]);
-    
-    my $minimals2 = &pass_throw_minimals($minimals);
-    
-    my $minimal2 = (TestCase::Minimal)$minimals2->get(0);
-    
-    unless ($minimal2->x == 1) {
-      return 0;
-    }
-    
-    my $union = (string|string[])undef;
-    
-    unless ($union is_compile_type object) {
-      return 0;
+    {
+      my $list = (TestCase::List of string)TestCase::List->new(["a", "b"]);
+      
+      my $elem = $list->get(0);
+      
+      unless ($elem is_compile_type string) {
+        return 0;
+      }
+      
+      unless ($elem eq "a") {
+        return 0;
+      }
+      
     }
     
     return 1;

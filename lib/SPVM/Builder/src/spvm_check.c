@@ -2781,6 +2781,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             // Check if source can be assigned to dist
             // If needed, numeric conversion op is added
             dist_type = SPVM_CHECK_get_type(compiler, op_dist);
+            
             SPVM_CHECK_check_assign(compiler, dist_type, op_src, "assignment operator", op_cur->file, op_cur->line);
             if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
               return;
@@ -3916,6 +3917,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             assert(src_type);
             
             SPVM_TYPE* cast_type = SPVM_CHECK_get_type(compiler, op_cast);
+            
             assert(cast_type);
             
             char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
@@ -3938,7 +3940,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             }
             
             // Remove type cast op if not needed
-            if (SPVM_TYPE_equals(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+            if (SPVM_TYPE_equals(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag, src_type->basic_type->id, src_type->dimension, src_type->flag) && !cast_type->of) {
               SPVM_OP_cut_op(compiler, op_src);
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               SPVM_OP_replace_op(compiler, op_stab, op_src);

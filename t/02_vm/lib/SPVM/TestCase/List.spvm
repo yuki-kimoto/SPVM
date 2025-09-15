@@ -1,0 +1,20 @@
+class TestCase::List {
+  
+  has array : object[];
+  
+  static method new : TestCase::List ($objects : object[]) {
+    
+    my $self = new TestCase::List;
+    
+    $self->{array} = $objects;
+    
+    return $self;
+  }
+  
+  method get : element ($index : int) {
+    
+    return $self->{array}->[$index];
+    
+  }
+  
+}
