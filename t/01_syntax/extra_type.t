@@ -59,9 +59,9 @@ use Test::More;
   compile_not_ok_file('CompileError::Type::MultiDimensionalAnyObject', qr/Multi dimensional array of any object/i);
 }
 
-# Type comment
+# Generic type
 {
-  compile_not_ok_file('CompileError::TypeComment::NotExistType', qr/NotExists::XXXX/);
+  compile_not_ok_file('CompileError::GenericType::NotExistType', qr/NotExists::XXXX/);
 }
 
 

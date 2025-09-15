@@ -545,6 +545,7 @@ t/01_syntax/lib/SPVM/CompileError/Field/HasFieldNameContainsUnderScoreTwice.spvm
 t/01_syntax/lib/SPVM/CompileError/Field/HasFieldNameStartDigit.spvm
 t/01_syntax/lib/SPVM/CompileError/Field/Private.spvm
 t/01_syntax/lib/SPVM/CompileError/ForTest.spvm
+t/01_syntax/lib/SPVM/CompileError/GenericType/NotExistType.spvm
 t/01_syntax/lib/SPVM/CompileError/Interface/ArrayElementCantAssign.spvm
 t/01_syntax/lib/SPVM/CompileError/Interface/HasImplNotFound.spvm
 t/01_syntax/lib/SPVM/CompileError/Interface/HaveBlock.spvm
@@ -594,7 +595,6 @@ t/01_syntax/lib/SPVM/CompileError/Type/MutableNoStringCaseInt.spvm
 t/01_syntax/lib/SPVM/CompileError/Type/MutableNoStringCaseStringArray.spvm
 t/01_syntax/lib/SPVM/CompileError/TypeCantBeDetectedUndef.spvm
 t/01_syntax/lib/SPVM/CompileError/TypeCantBeDetectedUndefDefault.spvm
-t/01_syntax/lib/SPVM/CompileError/TypeComment/NotExistType.spvm
 t/01_syntax/lib/SPVM/CompileError/UnaryMinus/NotNumeric.spvm
 t/01_syntax/lib/SPVM/CompileError/UnaryPlus/NotNumeric.spvm
 t/01_syntax/lib/SPVM/CompileError/Use/AliasDuplication.spvm
@@ -640,7 +640,6 @@ t/02_vm/03_definition/init_statement.t
 t/02_vm/03_definition/interface.t
 t/02_vm/03_definition/mulnum.t
 t/02_vm/03_definition/mulnum_array.t
-t/02_vm/03_definition/type_comment.t
 t/02_vm/04_statement/die.t
 t/02_vm/04_statement/for.t
 t/02_vm/04_statement/if.t
@@ -678,6 +677,7 @@ t/02_vm/05_op/division.t
 t/02_vm/05_op/dump.t
 t/02_vm/05_op/exists.t
 t/02_vm/05_op/field_access.t
+t/02_vm/05_op/generic_type.t
 t/02_vm/05_op/increment.t
 t/02_vm/05_op/is_compile_type.t
 t/02_vm/05_op/is_type.t
@@ -804,6 +804,7 @@ t/02_vm/lib/SPVM/TestCase/Examples.spvm
 t/02_vm/lib/SPVM/TestCase/Exception.spvm
 t/02_vm/lib/SPVM/TestCase/ExchangeAPI.spvm
 t/02_vm/lib/SPVM/TestCase/FatCamma.spvm
+t/02_vm/lib/SPVM/TestCase/GenericType.spvm
 t/02_vm/lib/SPVM/TestCase/Inheritance.spvm
 t/02_vm/lib/SPVM/TestCase/InlineExpansion.spvm
 t/02_vm/lib/SPVM/TestCase/Interface.spvm
@@ -1021,7 +1022,6 @@ t/02_vm/lib/SPVM/TestCase/Statement/Unless.spvm
 t/02_vm/lib/SPVM/TestCase/Statement/While.spvm
 t/02_vm/lib/SPVM/TestCase/SymbolName_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.spvm
 t/02_vm/lib/SPVM/TestCase/ThreadSafe.spvm
-t/02_vm/lib/SPVM/TestCase/TypeComment.spvm
 t/02_vm/lib/SPVM/TestCase/UseResource.spvm
 t/02_vm/lib/SPVM/TestCase/UseResource/Basic.c
 t/02_vm/lib/SPVM/TestCase/UseResource/Basic.config

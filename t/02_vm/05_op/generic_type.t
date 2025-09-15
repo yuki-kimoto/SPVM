@@ -6,15 +6,15 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::TypeComment';
+use SPVM 'TestCase::GenericType';
 
 # Start objects count
 my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
-# Type Comment
+# Generic type
 {
-  ok(SPVM::TestCase::TypeComment->basic);
+  ok(SPVM::TestCase::GenericType->basic);
 }
 
 # All object is freed

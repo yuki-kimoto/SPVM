@@ -1,4 +1,4 @@
-class TestCase::TypeComment {
+class TestCase::GenericType {
   use List;
   use TestCase::Minimal;
   use Point;

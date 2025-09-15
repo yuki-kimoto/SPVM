@@ -1,4 +1,4 @@
-class CompileError::TypeComment::NotExistType {
+class CompileError::GenericType::NotExistType {
   use List;
   
   has values : List of NotExists::XXXX;

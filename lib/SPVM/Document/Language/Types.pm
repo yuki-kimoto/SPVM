@@ -819,7 +819,9 @@ I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
 I<ELEMENT_TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
-A generic type is treated as C<TYPE>. C<ELEMETN_TYPE> is ignored in most cases.
+A generic type is treated as C<TYPE>. C<ELEMETN_TYPE> is ignored in compilation time type checks.
+
+C<ELEMETN_TYPE> is only used for the type cast for C<element> type.
 
 Examples:
 
