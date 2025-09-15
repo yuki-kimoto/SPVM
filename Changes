@@ -18,6 +18,13 @@
       remove
       shift
     
+    * The folowing methods in List class return element type.
+      
+      delete
+      get
+      get_or_default
+      delete_or_default
+    
   [Document Changes]
     * Type Comment is renamed to Generic Type.
     

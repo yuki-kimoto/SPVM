@@ -89,7 +89,7 @@ The alias for L</"copy"> method.
 
 =head2 delete
 
-C<method delete : object ($key : string);>
+C<method delete : element ($key : string);>
 
 Deletes the key and value given by the key $key.
 
@@ -119,7 +119,7 @@ Gets all the values in the hash.
 
 =head2 get
 
-C<method get : object ($key : string);>
+C<method get : element ($key : string);>
 
 Gets the value specifed by the key $key, and returns it.
 
@@ -356,7 +356,7 @@ If the value specified by the key $key does not exists, returns the default valu
 
 =head2 get_or_default
 
-C<method get_or_default : object ($key : string, $default : object;>
+C<method get_or_default : element ($key : string, $default : object;>
 
 If the value specified by the key $key exists, this method calls L</"get"> method
 , and returns the return value of L</"get"> method.
@@ -428,7 +428,7 @@ If the value specified by the key $key does not exists, returns the default valu
 
 =head2 delete_or_default
 
-C<method delete_or_default : object ($key : string, $default : object;>
+C<method delete_or_default : element ($key : string, $default : object;>
 
 If the value specified by the key $key exists, this method calls L</"get"> method
 and L</"delete"> method, and returns the return value of L</"get"> method.
