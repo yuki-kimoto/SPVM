@@ -1974,6 +1974,10 @@ The use of variable length arguments must be the last argument. Otherwise a comp
 
 The use of variable length arguments cannot have a default value. If so, a compilation error occurs.
 
+=head2 Generics
+
+SPVM has generics features. See L<Generic Type|SPVM::Document::Language::Types/"Generic Type"> and L<element Type|SPVM::Document::Language::Types/"element Type"> for details.
+
 =head1 Local Variable
 
 A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.

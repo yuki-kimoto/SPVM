@@ -811,7 +811,7 @@ Examples:
   
 =head2 Generic Type
 
-The generic type is a syntax to write a comment for a type.
+The generic type is
 
   TYPE of ELEMENT_TYPE
 
@@ -841,6 +841,39 @@ Examples:
 Compilation Errors:
 
 If the type specified as the generic type is not found, a compilation error occurs.
+
+=head2 element Type
+
+The C<element> type is the type that represents a method defined by a L<method definition|SPVM::Document::Language::Class/"Method Definition"> return an element type of a L<generic type|/"Generic Type">.
+
+  element
+
+Examples:
+
+  class MyList {
+    
+    has array : object[];
+    
+    static method new : MyList ($objects : object[]) {
+      
+      my $self = new MyList;
+      
+      $self->{array} = $objects;
+      
+      return $self;
+    }
+    
+    method get : element ($index : int) {
+      
+      return $self->{array}->[$index];
+      
+    }
+  }
+  
+  my $list = (MyList of string)MyList->new(["a", "b"]);
+  
+  # $elem is casted to string type implicitly becuase get method returns element type.
+  my $elem = $list->get(0);
 
 =head1 Assignment Requirement
 
