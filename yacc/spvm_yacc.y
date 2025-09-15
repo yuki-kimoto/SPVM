@@ -31,8 +31,8 @@
 
 %type <opval> grammar
 %type <opval> field_name method_name class_name
-%type <opval> basic_type  opt_basic_type array_type array_type_with_length type ref_type return_type
-%type <opval> qualified_type union_type generic_type
+%type <opval> basic_type  opt_basic_type array_type array_type_with_length type runtime_type compile_type ref_type return_type
+%type <opval> union_type generic_type
 %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
@@ -90,20 +90,31 @@ method_name
 class_name
   : SYMBOL_NAME
 
-qualified_type
-  : type
-  | MUTABLE type
+runtime_type
+  : basic_type
+  | array_type
+
+compile_type
+  : runtime_type
+  | ref_type
+  | MUTABLE compile_type
     {
       $$ = SPVM_OP_build_mutable_type(compiler, $2);
     }
 
 type
-  : basic_type
-  | array_type
-  | ref_type
+  : compile_type
   | union_type
   | generic_type
-  
+
+union_type
+  : type BIT_OR type
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
+      op_type->uv.type->is_union_type = 1;
+      $$ = op_type;
+    }
+
 generic_type
   : type OF type
     {
@@ -195,7 +206,7 @@ array_type_with_length
     }
 
 return_type
-  : qualified_type
+  : type
   | VOID
     {
       $$ = SPVM_OP_new_op_void_type(compiler, compiler->current_file, compiler->current_line);
@@ -203,14 +214,6 @@ return_type
   | ELEMENT
     {
       $$ = SPVM_OP_new_op_element_type(compiler, $1->file, $1->line);
-    }
-
-union_type
-  : type BIT_OR type
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
-      op_type->uv.type->is_union_type = 1;
-      $$ = op_type;
     }
 
 opt_classes
@@ -454,13 +457,13 @@ enumeration_item
     }
 
 our
-  : OUR VAR_NAME ':' opt_attributes qualified_type opt_getter opt_setter ';'
+  : OUR VAR_NAME ':' opt_attributes type opt_getter opt_setter ';'
     {
       $$ = SPVM_OP_build_class_var(compiler, $1, $2, $4, $5, $6, $7);
     }
 
 has
-  : HAS field_name ':' opt_attributes qualified_type opt_getter opt_setter
+  : HAS field_name ':' opt_attributes type opt_getter opt_setter
     {
       $$ = SPVM_OP_build_field(compiler, $1, $2, $4, $5, $6, $7);
     }
@@ -585,11 +588,11 @@ args
   | arg
 
 arg
-  : var ':' qualified_type
+  : var ':' type
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, NULL);
     }
-  | var ':' qualified_type ASSIGN operator
+  | var ':' type ASSIGN operator
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, $5);
     }
@@ -613,21 +616,21 @@ anon_method_fields
   | anon_method_field
 
 anon_method_field
-  : HAS field_name ':' opt_attributes qualified_type
+  : HAS field_name ':' opt_attributes type
     {
       $$ = SPVM_OP_build_anon_method_field(compiler, $1, $2, $4, $5, NULL);
     }
-  | HAS field_name ':' opt_attributes qualified_type ASSIGN operator
+  | HAS field_name ':' opt_attributes type ASSIGN operator
     {
       $$ = SPVM_OP_build_anon_method_field(compiler, $1, $2, $4, $5, $7);
     }
-  | var ':' opt_attributes qualified_type
+  | var ':' opt_attributes type
     {
       SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, $1->file, $1->line);
       
       $$ = SPVM_OP_build_anon_method_field(compiler, op_field, NULL, $3, $4, $1);
     }
-  | var ':' opt_attributes qualified_type ASSIGN operator
+  | var ':' opt_attributes type ASSIGN operator
     {
       SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, $1->file, $1->line);
       
@@ -744,11 +747,11 @@ die
     {
       $$ = SPVM_OP_build_die(compiler, $1, NULL, NULL);
     }
-  | DIE type operator
+  | DIE basic_type operator
     {
       $$ = SPVM_OP_build_die(compiler, $1, $3, $2);
     }
-  | DIE type
+  | DIE basic_type
     {
       $$ = SPVM_OP_build_die(compiler, $1, NULL, $2);
     }
@@ -947,7 +950,7 @@ eval_block
     }
 
 var_decl
-  : MY var ':' qualified_type
+  : MY var ':' type
     {
       $$ = SPVM_OP_build_var_decl(compiler, $1, $2, $4, NULL);
     }
@@ -1344,34 +1347,34 @@ defined_or
     }
 
 type_check
-  : operator ISA type
+  : operator ISA runtime_type
     {
       $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
     }
-  | operator ISA_ERROR type
+  | operator ISA_ERROR runtime_type
     {
       $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
     }
-  | operator IS_TYPE type
+  | operator IS_TYPE runtime_type
     {
       $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
     }
-  | operator IS_ERROR type
+  | operator IS_ERROR runtime_type
     {
       $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
     }
-  | operator IS_COMPILE_TYPE qualified_type
+  | operator IS_COMPILE_TYPE compile_type
     {
       $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
     }
 
 type_cast
-  : '(' qualified_type ')' operator %prec CONVERT
+  : '(' type ')' operator %prec CONVERT
     {
       SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, $2->file, $2->line);
       $$ = SPVM_OP_build_type_cast(compiler, op_type_cast, $2, $4);
     }
-  | operator ARROW '(' qualified_type ')' %prec CONVERT
+  | operator ARROW '(' type ')' %prec CONVERT
     {
       SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, $4->file, $4->line);
       $$ = SPVM_OP_build_type_cast(compiler, op_type_cast, $4, $1);

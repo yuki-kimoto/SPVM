@@ -4,6 +4,8 @@ class TestCase::GenericType {
   
   has strings_list : TestCase::List of string;
   
+  has string_or_strings : string|string[];
+  
   static method basic : int () {
     {
       my $list = (TestCase::List of string)TestCase::List->new(["a", "b"]);
@@ -58,6 +60,30 @@ class TestCase::GenericType {
         return 0;
       }
       
+    }
+    
+    {
+      my $self = new TestCase::GenericType;
+      
+      unless ($self->{string_or_strings} is_compile_type object) {
+        return 0;
+      }
+    }
+    
+    {
+      my $var = (string|string[])undef;
+      
+      unless ($var is_compile_type object) {
+        return 0;
+      }
+    }
+    
+    {
+      my $var : string|string[] = undef;
+      
+      unless ($var is_compile_type object) {
+        return 0;
+      }
     }
     
     return 1;
