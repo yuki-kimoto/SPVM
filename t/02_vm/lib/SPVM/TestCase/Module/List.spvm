@@ -251,7 +251,7 @@ class TestCase::Module::List {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -287,7 +287,7 @@ class TestCase::Module::List {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -391,7 +391,7 @@ class TestCase::Module::List {
         return 0;
       }
     }
-    $@ = undef;
+    
     
     # Exception - remove to length
     {
@@ -402,7 +402,7 @@ class TestCase::Module::List {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -495,7 +495,7 @@ class TestCase::Module::List {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -649,7 +649,7 @@ class TestCase::Module::List {
       }
     }
     
-    $@ = undef;
+    
     return 1;
   }
   
@@ -704,7 +704,7 @@ class TestCase::Module::List {
     unless ($@) {
       return 0;
     }
-    $@ = undef;
+    
     
     unless (TestCase::Module::List->equals_list($list, List->new(new object[0]))) {
       return 0;
@@ -737,7 +737,7 @@ class TestCase::Module::List {
       }
     }
     
-    $@ = undef;
+    
     return 1;
   }
   
@@ -775,7 +775,7 @@ class TestCase::Module::List {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
