@@ -8,6 +8,9 @@
     * Add is_element_type member variable to spvm_type.h.
     * Add type member variable to spvm_call_method.h.
     * Union type is treated as any object type.
+  [Change]
+    * Allow union type in all places.
+      A union type is treated as any object type C<object>.
     
 0.990088 2025-09-11
   [Incompatible Changes]

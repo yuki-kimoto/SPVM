@@ -37,6 +37,12 @@ class TestCase::TypeComment {
       return 0;
     }
     
+    my $union = (string|string[])undef;
+    
+    unless ($union is_compile_type object) {
+      return 0;
+    }
+    
     return 1;
   }
 }

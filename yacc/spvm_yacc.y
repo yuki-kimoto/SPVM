@@ -105,6 +105,7 @@ type
   : basic_type
   | array_type
   | ref_type
+  | union_type
 
 basic_type
   : SYMBOL_NAME
@@ -158,6 +159,7 @@ basic_type
       
       $$ = op_type;
     }
+
 ref_type
   : basic_type '*'
     {
@@ -201,6 +203,13 @@ return_type
       $$ = op_type;
     }
 
+union_type
+  : type BIT_OR type
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
+      $$ = op_type;
+    }
+
 opt_type_comments
   : /* Empty */
     {
@@ -217,20 +226,9 @@ type_comments
   | type_comment
   
 type_comment
-  : OF union_type
+  : OF type
     {
       $$ = $2;
-    }
-
-union_type
-  : union_type BIT_OR type
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
-      $$ = op_type;
-    }
-  | type
-    {
-      $$ = $1;
     }
 
 opt_classes

@@ -793,6 +793,57 @@ The type width is the length of L<runtime stack|SPVM::Document::NativeClass/"Run
 
 If the type is a L<multi-numeric type|/"Multi-Numeric Types">, the type width is the length of the fields, owhterwise it is 1.
 
+=head2 Union Type
+
+A union type expresses the logical OR of types.
+
+  TYPE1|TYPE2|TYPEn
+
+A union type is treated as any object type C<object>.
+
+Examples:
+
+  my $union = (string|string[])undef;
+  
+  method : foo ($union : string|string[]) {
+    
+  }
+  
+=head1 Type Comment
+
+The type comment is a syntax to write a comment for a type.
+
+  TYPE of TYPE
+
+I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
+
+I<TYPE> is a type used in L<field definition|/"Field Definition">, L<class variable definition|/"Class Variable Definition">, L<local variable declaration|/"Local Variable Declaration">, and the return value and the types of arguments of L<method definition|/"Method Definition">.
+
+I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
+
+Type comments can be repeated.
+
+  TYPE of TYPE1 of TYPE2
+
+Examples:
+
+  # Examples of type comments
+  has points : List of Point;
+  
+  has hash_of_list_of_point : Hash of List of Point;
+  
+  our $POINTS : List of Point;
+  
+  my $points : List of Point;
+  
+  static method foo : List of Point ($arg : List of Point) { ... }
+  
+  my $replace : object of string|Regex::Replacer;
+
+Compilation Errors:
+
+If the type specified as the type comment is not found, a compilation error occurs.
+
 =head1 Assignment Requirement
 
 The assignment requirement is the requirement whether one type is able to be assigned to another type.
