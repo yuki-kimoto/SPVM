@@ -1,4 +1,6 @@
 0.990090 2025-09-17
+  [New Features]
+    * Add Hash#merge and Hash#merge_options methods.
   [Incompatible Changes]
     * The container type of a generic type must be a basic type.
   [Bug Fix]

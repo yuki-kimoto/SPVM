@@ -435,6 +435,18 @@ and L</"delete"> method, and returns the return value of L</"get"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
+=head2 merge
+
+C<method merge : void ($hash : Hash);>
+
+Merges the hash $hash into the current hash.
+
+=head2 merge_options
+
+C<method merge_options : void ($options : object[]);>
+  
+Merges the options $options into the current hash.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

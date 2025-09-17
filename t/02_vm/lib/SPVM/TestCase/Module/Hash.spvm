@@ -1571,4 +1571,61 @@ class TestCase::Module::Hash {
     
     return 1;
   }
+  
+  static method merge : int () {
+    
+    {
+      my $hash = Hash->new({a => 1});
+      
+      $hash->merge(Hash->new({a => 2, b => 3, c => 4}));
+      
+      unless (@{$hash->keys} == 3) {
+        return 0;
+      }
+      
+      unless ($hash->get_int("a") == 2) {
+        return 0;
+      }
+      
+      unless ($hash->get_int("b") == 3) {
+        return 0;
+      }
+      
+      unless ($hash->get_int("c") == 4) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method merge_options : int () {
+    
+    {
+      my $hash = Hash->new({a => 1});
+      
+      $hash->merge_options({a => 2, b => 3, c => 4});
+      
+      unless (@{$hash->keys} == 3) {
+        return 0;
+      }
+      
+      unless ($hash->get_int("a") == 2) {
+        return 0;
+      }
+      
+      unless ($hash->get_int("b") == 3) {
+        return 0;
+      }
+      
+      unless ($hash->get_int("c") == 4) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
 }

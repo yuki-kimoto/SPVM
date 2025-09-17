@@ -160,6 +160,22 @@ class Hash {
     return $isweak;
   }
   
+  method merge : void ($hash : Hash) {
+    
+    for my $key (@{$hash->keys}) {
+      my $value = $hash->get($key);
+      $self->set($key, $value);
+    }
+    
+  }
+  
+  method merge_options : void ($options : object[]) {
+    
+    my $hash = Hash->new($options);
+    
+    $self->merge($hash);
+  }
+  
   precompile private method get_entry : Hash::Entry ($key : string) {
     
     unless ($key) {
