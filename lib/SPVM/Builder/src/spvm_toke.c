@@ -3208,13 +3208,14 @@ int32_t SPVM_TOKE_islower_ascii(SPVM_COMPILER* compiler, int32_t ch) {
 
 int32_t SPVM_TOKE_isprint_ascii(SPVM_COMPILER* compiler, int32_t ch) {
   
-  int32_t islower_ascii = 0;
+  int32_t isprint_ascii = 0;
   
-  if (isascii(ch) && isprint(ch)) {
-    islower_ascii = 1;
+  // Avoid isprint because it depends locale dependent.
+  if (isascii(ch) && (ch >= 0x20 && ch <= 0x7F)) {
+    isprint_ascii = 1;
   }
   
-  return islower_ascii;
+  return isprint_ascii;
 }
 
 int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler, char** ch_ptr_ptr) {

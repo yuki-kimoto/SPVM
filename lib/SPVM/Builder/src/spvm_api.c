@@ -44,6 +44,7 @@
 #include "spvm_utf8.h"
 #include "spvm_type.h"
 #include "spvm_runtime_call_stack_frame_info.h"
+#include "spvm_toke.h"
 
 static const char* FILE_NAME = "spvm_api.c";
 
@@ -3777,6 +3778,19 @@ const char* SPVM_API_dumpc(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object
   return dump_chars;
 }
 
+// This code is copied from SPVM_TOKE_isprint_ascii
+static int32_t isprint_ascii(int32_t ch) {
+  
+  int32_t isprint_ascii = 0;
+  
+  // Avoid isprint because it depends locale dependent.
+  if (isascii(ch) && (ch >= 0x20 && ch <= 0x7F)) {
+    isprint_ascii = 1;
+  }
+  
+  return isprint_ascii;
+}
+
 void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* depth, SPVM_STRING_BUFFER* string_buffer, SPVM_HASH* address_symtable) {
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -3809,7 +3823,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
         int32_t uchar;
         if (utf8_char_len > 0) {
             
-          if (utf8_char_len == 1 && !isprint(*(chars + offset))) {
+          if (utf8_char_len == 1 && !isprint_ascii(*(chars + offset))) {
             snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "\\x{%02X}", *(chars + offset) & 0xFF);
             
             SPVM_STRING_BUFFER_add_len(string_buffer, tmp_buffer, strlen(tmp_buffer));
