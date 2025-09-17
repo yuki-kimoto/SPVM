@@ -13,6 +13,12 @@
       [After]
       "An assignment failed. %s type cannot be assigned to %s type."
       
+    * Change an exception message.
+      [Before]
+      "An array setting failed. The element does not satisfy type requirement."
+      [After]
+      "An array element set failed. %s type cannot be assigned to %s type."
+      
 0.990089 2025-09-15
   [New Features]
     * Add generics feature.

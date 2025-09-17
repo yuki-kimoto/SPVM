@@ -46,4 +46,17 @@ class TestCase::Operator::ArrayAccess {
     return $total;
   }
   
+  static method set_cannot_assign : int () {
+    
+    my $values = (object[])new Int[][1];
+    
+    eval { $values->[0] = [Long->new(1)]; }
+    
+    unless (Fn->contains($@, "An array element set failed. Long[] type cannot be assigned to Int[] type.")) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
 }

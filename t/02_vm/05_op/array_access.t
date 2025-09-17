@@ -31,6 +31,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   is($total, 6);
 }
 
+ok(SPVM::TestCase::Operator::ArrayAccess->set_cannot_assign);
+
 # All object is freed
 $api->set_exception(undef);
 my $end_memory_blocks_count = $api->get_memory_blocks_count;

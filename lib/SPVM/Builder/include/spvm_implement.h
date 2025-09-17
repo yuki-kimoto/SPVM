@@ -70,7 +70,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The new_string_len operator failed. The length of the string must be a non-negative integer.",
   "An array access failed. The array must be defined.",
   "An array access failed. The index is out of range.",
-  "An array setting failed. The element does not satisfy type requirement.",
+  "An array element set failed. %s type cannot be assigned to %s type.",
   "An field access failed. The invocant must be defined.",
   "An unboxing conversion failed. The operand must defined.",
   "An unboxing conversion failed. The destination type must be a numeric object type corresponding to the source type of the operand.",
@@ -1153,9 +1153,24 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(SPVM_ENV* 
         env->assign_object(env, stack, element_address, object);
       }
       else {
-        void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT]);
+        int32_t scope_id = env->enter_scope(env, stack);
+        
+        void* obj_src_type_name = env->get_type_name(env, stack, object);
+        const char* src_type_name = env->get_chars(env, stack, obj_src_type_name);
+        void* dist_basic_type = env->get_object_basic_type(env, stack, array);
+        const char* dist_basic_type_name = env->api->basic_type->get_name(env->runtime, dist_basic_type);
+        int32_t dist_type_dimension = env->get_object_type_dimension(env, stack, array) - 1;
+        void* obj_dist_type_name = env->get_compile_type_name(env, stack, dist_basic_type_name, dist_type_dimension, 0);
+        const char* dist_type_name = env->get_chars(env, stack, obj_dist_type_name);
+        char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], src_type_name, dist_type_name);
+        
+        int32_t string_length = strlen(tmp_buffer);
+        void* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
         env->set_exception(env, stack, exception);
         *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+        
+        env->leave_scope(env, stack, scope_id);
       }
     }
   }
