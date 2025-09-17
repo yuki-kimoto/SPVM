@@ -2,7 +2,9 @@ class TestCase::GenericType {
   use TestCase::List;
   use Hash;
   
-  has strings_list : TestCase::List of string;
+  our $STRING_LIST : cache ro TestCase::List of string;
+  
+  has strings_list : ro TestCase::List of string;
   
   has string_or_strings : string|string[];
   
@@ -60,6 +62,57 @@ class TestCase::GenericType {
         return 0;
       }
       
+    }
+    
+    {
+      my $self = new TestCase::GenericType;
+      
+      $self->{strings_list} = TestCase::List->new(["a", "b"]);
+      
+      my $list = $self->strings_list;
+      
+      my $elem = $list->get(0);
+      
+      unless ($elem is_compile_type string) {
+        return 0;
+      }
+      
+      unless ($elem eq "a") {
+        return 0;
+      }
+      
+    }
+    
+    {
+      $STRING_LIST = TestCase::List->new(["a", "b"]);
+      
+      my $list = $STRING_LIST;
+      
+      my $elem = $list->get(0);
+      
+      unless ($elem is_compile_type string) {
+        return 0;
+      }
+      
+      unless ($elem eq "a") {
+        return 0;
+      }
+    }
+    
+    {
+      $STRING_LIST = TestCase::List->new(["a", "b"]);
+      
+      my $list = TestCase::GenericType->STRING_LIST;
+      
+      my $elem = $list->get(0);
+      
+      unless ($elem is_compile_type string) {
+        return 0;
+      }
+      
+      unless ($elem eq "a") {
+        return 0;
+      }
     }
     
     {

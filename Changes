@@ -1,6 +1,8 @@
 0.990090 2025-09-17
   [Incompatible Changes]
     * The container type of a generic type must be a basic type.
+  [Bug Fix]
+    * Fix the bugs that accessor generics does not work.
     
 0.990089 2025-09-15
   [New Features]
