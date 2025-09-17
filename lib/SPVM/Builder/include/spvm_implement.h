@@ -459,13 +459,13 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(SPVM_ENV* env, SPV
   else {
     int32_t scope_id = env->enter_scope(env, stack);
     
-    void* obj_object_type_name = env->get_type_name(env, stack, object);
-    const char* object_type_name = env->get_chars(env, stack, obj_object_type_name);
+    void* obj_src_type_name = env->get_type_name(env, stack, object);
+    const char* src_type_name = env->get_chars(env, stack, obj_src_type_name);
     const char* dist_basic_type_name = env->api->basic_type->get_name(env->runtime, dist_basic_type);
     void* obj_dist_type_name = env->get_compile_type_name(env, stack, dist_basic_type_name, dist_type_dimension, 0);
     const char* dist_type_name = env->get_chars(env, stack, obj_dist_type_name);
     char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], object_type_name, dist_type_name);
+    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], src_type_name, dist_type_name);
     
     int32_t string_length = strlen(tmp_buffer);
     void* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
