@@ -116,7 +116,7 @@ union_type
     }
 
 generic_type
-  : type OF type
+  : basic_type OF type
     {
       $$ = SPVM_OP_build_generic_type(compiler, $1, $3);
     }
