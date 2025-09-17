@@ -650,5 +650,18 @@ class TestCase::Operator::Assign {
     
     return 6;
   }
-
+  
+  static method assign_cannot_assign : int () {
+    
+    my $value = (object)new Int[0];
+    
+    eval { my $value2 = (Long[])$value; }
+    
+    unless (Fn->contains($@, "An assignment failed. Int[] type cannot be assigned to Long[] type.")) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
 }
