@@ -101,7 +101,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : type BIT_OR type
 
   generic_type
-    : type OF type
+    : basic_type OF type
 
   basic_type
     : SYMBOL_NAME
