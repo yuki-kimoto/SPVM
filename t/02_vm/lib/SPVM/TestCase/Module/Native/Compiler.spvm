@@ -27,6 +27,7 @@ class TestCase::Module::Native::Compiler {
     {
       my $basic_type_name = "MyPoint";
       $current_compiler->set_start_line(__LINE__ + 1);
+      Native->use($basic_type_name);
       $current_compiler->compile($basic_type_name);
     }
     
@@ -47,7 +48,7 @@ class TestCase::Module::Native::Compiler {
       
       Fn->contains($@, "he \"not_exists\" method in the \"MyPoint\" class cannot be found.");
       
-      $@ = undef;
+      
     }
     
     {
@@ -64,7 +65,31 @@ class TestCase::Module::Native::Compiler {
       }
     }
     
-    $@ = undef;
+    {
+      my $original_inc = Native->inc;
+      
+      Native->set_inc(new string[0]);
+      
+      unless (Array->equals(Native->inc, new string[0])) {
+        return 0;
+      }
+      
+      Native->push_inc("foo");
+      Native->push_inc("bar");
+      Native->unshift_inc("baz");
+      
+      unless (Array->equals(Native->inc, ["baz", "foo", "bar"])) {
+        return 0;
+      }
+      
+      Native->set_inc(["a", "b"]);
+      
+      unless (Array->equals(Native->inc, ["a", "b"])) {
+        return 0;
+      }
+      
+      Native->set_inc($original_inc);
+    }
     
     return 1;
   }
@@ -136,7 +161,7 @@ EOS
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
