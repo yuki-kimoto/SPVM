@@ -88,4 +88,13 @@ class Native {
     }
   }
   
+  static method use_anon_class : string ($source : string) {
+    
+    my $compiler = Native->get_current_compiler;
+    
+    my $anon_class_name = $compiler->compile_anon_class($source);
+    
+    return $anon_class_name;
+  }
+  
 }

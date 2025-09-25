@@ -119,6 +119,23 @@ EOS
       }
     }
     
+    {
+      my $source = <<'EOS';
+class {
+  static method sum : int ($num1 : int, $num2 : int) {
+    return $num1 + $num2;
+  }
+}
+EOS
+      my $anon_class_name = Native->use_anon_class($source);
+      
+      my $ret = Native::MethodCall->call_class_method($anon_class_name, "sum", [(object)1, 2]);
+      
+      unless ($ret->(Int)->value == 3) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
