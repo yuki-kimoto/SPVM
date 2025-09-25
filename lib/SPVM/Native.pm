@@ -60,6 +60,34 @@ C<static method use_anon_class : string ($source : string, $file : string = unde
 
 Compiles the anon class source $source using the compiler of the current runtime.
 
+=head2 eval
+
+C<static method eval : object ($eval_source : string);>
+
+This method emulates L<Perl's string eval|https://perldoc.perl.org/functions/eval#String-eval>.
+
+This method creates the following source code.
+
+  "
+  class {
+  static method eval : object () {
+  #line 1
+  $eval_source
+  }
+  }
+  "
+
+And calls L</"compile_anon_class"> given this source code and gets the anon class name.
+
+And calls L<call_class_method|SPVM::Native::MethodCall/"call_class_method"> in the Native::MethodCall class.
+
+  Native::MethodCall->call_class_method($anon_class_name, "eval");
+
+Examples:
+
+  my $value = (Int)Native->eval("my $total = 1 + 2; return $total;");
+  say $value->value;
+
 =head2 inc
 
 C<static method inc : string[] ();>

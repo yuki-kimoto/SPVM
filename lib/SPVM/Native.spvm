@@ -59,6 +59,33 @@ class Native {
     return $anon_class_name;
   }
   
+  static method eval : object ($eval_source : string, $file : string = undef, $line : int = -1) {
+    
+    unless ($eval_source) {
+      die "The eval source \$eval_source must be defined.";
+    }
+    
+    my $source = "
+class {
+static method eval : object () {
+#line 1
+$eval_source
+}
+}
+";
+    
+    my $compiler = Native->get_current_compiler;
+    
+    $file //= __FILE__;
+    $compiler->set_start_file($file);
+    $compiler->set_start_line($line > -1 ? $line : __LINE__ + 1);
+    my $anon_class_name = $compiler->compile_anon_class($source);
+    
+    my $ret = Native::MethodCall->call_class_method($anon_class_name, "eval");
+    
+    return $ret;
+  }
+  
   static method push_inc : void ($include_dir : string) {
     
     my $compiler = Native->get_current_compiler;

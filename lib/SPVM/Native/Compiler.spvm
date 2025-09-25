@@ -52,26 +52,4 @@ class Native::Compiler : pointer {
   
   native method compile_anon_class : string ($source : string);
   
-  method eval_string : string ($main_source : string) {
-    
-    unless ($main_source) {
-      die "The main source \$main_source must be defined.";
-    }
-    
-    my $source = "
-class {
-static method main : void () {
-#line 1
-$main_source
-}
-}
-";
-    
-    my $anon_class_name = $self->compile_anon_class($source);
-    
-    Native->check_bootstrap_method($anon_class_name);
-    
-    Native::MethodCall->call_class_method($anon_class_name, "main");
-  }
-  
 }

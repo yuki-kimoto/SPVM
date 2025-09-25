@@ -139,35 +139,36 @@ EOS
     return 1;
   }
   
-  static method eval_string : int () {
+  static method eval : int () {
     
     {
       my $compiler = Native->get_current_compiler;
       
-      my $main_source = <<'EOS';
+      my $source = <<'EOS';
 my $total = 1 + 2;
-warn "[Test Output]$total";
+return $total;
 EOS
-      $compiler->set_start_file(__FILE__);
-      $compiler->set_start_line(__LINE__ + 1);
-      my $anon_class_name = (string)undef;
+      my $data = Native->eval($source, __FILE__, __LINE__);
       
-      $compiler->eval_string($main_source);
+      unless ($data is_type Int) {
+        return 0;
+      }
+      
+      unless ($data->(Int)->value == 3) {
+        return 0;
+      }
       
     }
     
     {
       my $compiler = Native->get_current_compiler;
       
-      my $main_source = <<'EOS';
+      my $source = <<'EOS';
 my $total = 1 + 2 foo
-warn "[Test Output]$total";
+return $total;
 EOS
-      $compiler->set_start_file(__FILE__);
-      $compiler->set_start_line(__LINE__ + 1);
-      my $anon_class_name = (string)undef;
-      
-      eval { $compiler->eval_string($main_source); }
+
+      eval { my $data = Native->eval($source, __FILE__, __LINE__); }
       
       unless (Fn->contains($@, "[Compile Error]")) {
         return 0;
@@ -177,8 +178,6 @@ EOS
         return 0;
       }
     }
-    
-    
     
     return 1;
   }

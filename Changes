@@ -5,8 +5,8 @@
     * Add Native#unshift_inc method.
     * Add Native#inc method.
     * Add Native#set_inc method.
-    * Add Native#eval method.
     * Add Native#use_anon_class method.
+    * Add Native#eval method.
     * Add Native::Compiler#get_include_dirs_length method.
     * Add Native::Compiler#get_include_dir method.
     * Add Native::Compiler#prepend_include_dir method.
