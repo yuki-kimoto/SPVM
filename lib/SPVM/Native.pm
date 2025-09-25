@@ -50,9 +50,15 @@ Check the bootstrap method in the basic type $basic_type_name.
 
 =head2 use
 
-C<static method use : void ($class_name : string);>
+C<static method use : void (static method use : void ($class_name : string, $file : string = undef, $line : int = -1));>
 
 Compiles the class $class_name using the compiler of the current runtime.
+
+=head2 use_anon_class
+
+C<static method use_anon_class : string ($source : string, $file : string = undef, $line : int = -1);>
+
+Compiles the anon class source $source using the compiler of the current runtime.
 
 =head2 inc
 

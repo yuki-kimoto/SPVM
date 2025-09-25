@@ -37,11 +37,26 @@ class Native {
   
   native static method check_bootstrap_method : void ($basic_type_name : string);
   
-  static method use : void ($class_name : string) {
+  static method use : void ($class_name : string, $file : string = undef, $line : int = -1) {
     
     my $compiler = Native->get_current_compiler;
     
+    $file //= __FILE__;
+    $compiler->set_start_file($file);
+    $compiler->set_start_line($line > -1 ? $line : __LINE__ + 1);
     $compiler->compile($class_name);
+  }
+  
+  static method use_anon_class : string ($source : string, $file : string = undef, $line : int = -1) {
+    
+    my $compiler = Native->get_current_compiler;
+    
+    $file //= __FILE__;
+    $compiler->set_start_file($file);
+    $compiler->set_start_line($line > -1 ? $line : __LINE__ + 1);
+    my $anon_class_name = $compiler->compile_anon_class($source);
+    
+    return $anon_class_name;
   }
   
   static method push_inc : void ($include_dir : string) {
@@ -86,15 +101,6 @@ class Native {
     for my $_ (@$include_dirs) {
       $compiler->add_include_dir($_);
     }
-  }
-  
-  static method use_anon_class : string ($source : string) {
-    
-    my $compiler = Native->get_current_compiler;
-    
-    my $anon_class_name = $compiler->compile_anon_class($source);
-    
-    return $anon_class_name;
   }
   
 }
