@@ -2064,4 +2064,23 @@ class Fn {
     return $nums;
   }
   
+  static method to_hash : Hash ($options : Hash|object[]) {
+    
+    my $options_h = (Hash)undef;
+    if (!$options) {
+      $options_h = Hash->new;
+    }
+    elsif ($options isa Hash) {
+      $options_h = (Hash)$options;
+    }
+    elsif ($options isa object[]) {
+      $options_h = Hash->new((object[])$options);
+    }
+    else {
+      die "The type of the options \$options must be Hash or object[].";
+    }
+    
+    return $options_h;
+  }
+  
 }

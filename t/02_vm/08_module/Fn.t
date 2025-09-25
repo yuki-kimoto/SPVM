@@ -266,6 +266,7 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->destroy_cache_class_vars);
     ok(SPVM::TestCase::Module::Fn->destroy_runtime_permanent_vars);
     ok(SPVM::TestCase::Module::Fn->range);
+    ok(SPVM::TestCase::Module::Fn->to_hash);
     
   }
   

@@ -1827,6 +1827,22 @@ Exceptions:
 
 $end must be greater than or equal to $begin.
 
+=head2 to_hash
+
+C<static method to_hash : Hash ($options : L<Hash|SPVM::Hash>|object[]);>
+
+Converts the options $options to a L<Hash|SPVM::Hash> object, and returns it.
+
+If $options is C<undef>, returns an empty L<Hash|SPVM::Hash> object.
+
+If $options is a Hash object, returns it.
+
+If $options is an C<object[]> object, it is converted to a L<Hash|SPVM::Hash> object, and returns it.
+
+Exceptions:
+
+If the type of the options \$options must be Hash or object[], an exception is thrown.
+
 =head1 See Also
 
 =over 2

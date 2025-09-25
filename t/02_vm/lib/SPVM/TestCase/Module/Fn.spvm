@@ -8627,4 +8627,55 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method to_hash : int () {
+    
+    {
+      my $hash = Fn->to_hash(undef);
+      
+      unless ($hash is_type Hash) {
+        return 0;
+      }
+      
+      unless ($hash->keys_length == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $_ = Hash->new;
+      my $hash = Fn->to_hash($_);
+      
+      unless ($hash is_type Hash) {
+        return 0;
+      }
+      
+      unless ($hash == $_) {
+        return 0;
+      }
+    }
+    
+    {
+      my $hash = Fn->to_hash({foo => 1});
+      
+      unless ($hash is_type Hash) {
+        return 0;
+      }
+      
+      unless ($hash->get_int("foo") == 1) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      eval { Fn->to_hash(Int->new(1)); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }
