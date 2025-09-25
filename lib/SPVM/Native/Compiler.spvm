@@ -36,9 +36,15 @@ class Native::Compiler : pointer {
   
   native method set_start_line : void ($start_line : int);
   
+  native method get_include_dirs_length : int ();
+  
+  native method get_include_dir : string ($index : int);
+  
   native method add_include_dir : void ($include_dir : string);
   
   native method prepend_include_dir : void ($include_dir : string);
+  
+  native method clear_include_dirs : void ();
   
   native method get_error_messages : string[] ();
   
@@ -67,4 +73,5 @@ $main_source
     
     Native::MethodCall->call_class_method($anon_class_name, "main");
   }
+  
 }

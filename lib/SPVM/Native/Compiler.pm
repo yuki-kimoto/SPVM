@@ -54,11 +54,35 @@ Creates a new C<Native::Compiler> object and returns it.
 
 =head1 Instance Methods
 
+=head2 get_include_dirs_length
+
+C<method get_include_dirs_length : int ();>
+
+Returns the length of the class search directories.
+
+=head2 get_include_dir
+
+C<method get_include_dir : string ($index : int);>
+
+Returns a class search directory at the index $index.
+
 =head2 add_include_dir
 
 C<method add_include_dir : void ($include_dir : string);>
 
-Adds a class directory to search for classes.
+Adds a class search directory at the tail of the current class search directories.
+
+=head2 prepend_include_dir
+
+C<method prepend_include_dir : void ($include_dir : string);>
+
+Adds a class search directory at the head of the current class search directories.
+
+=head2 clear_include_dirs
+
+C<method clear_include_dirs : void ();>
+
+Removes all class search directories.
 
 =head2 set_start_file
 

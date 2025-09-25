@@ -316,3 +316,56 @@ int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* st
   return 0;
 }
 
+int32_t SPVM__Native__Compiler__clear_include_dirs(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* self = env->get_pointer(env, stack, obj_self);
+  
+  env->api->compiler->clear_include_dirs(self);
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Compiler__get_include_dirs_length(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* self = env->get_pointer(env, stack, obj_self);
+  
+  int32_t include_dirs_length = env->api->compiler->get_include_dirs_length(self);
+  
+  stack[0].ival = include_dirs_length;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Compiler__get_include_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  int32_t index = stack[1].ival;
+  
+  void* self = env->get_pointer(env, stack, obj_self);
+  
+  int32_t include_dirs_length = env->api->compiler->get_include_dirs_length(self);
+  
+  if (!(index >= 0 && index < include_dirs_length)) {
+    return env->die(env, stack, "The index $index is out of range.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  const char* include_dir = env->api->compiler->get_include_dir(self, index);
+  
+  void* obj_include_dir = env->new_string_nolen(env, stack, include_dir);
+  
+  stack[0].oval = obj_include_dir;
+  
+  return 0;
+}
+

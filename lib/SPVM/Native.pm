@@ -48,6 +48,36 @@ C<static method check_bootstrap_method : void ($basic_type_name : string);>
 
 Check the bootstrap method in the basic type $basic_type_name.
 
+=head2 use
+
+C<static method use : void ($class_name : string);>
+
+Compiles the class $class_name using the compiler of the current runtime.
+
+=head2 inc
+
+C<static method inc : string[] ();>
+
+Returns the current serach directories of the class search directories of the compiler of the current runtime.
+
+=head2 set_inc
+
+C<static method set_inc : void ($include_dirs : string[]);>
+
+Set the current serach directories $include_dirs to the class search directories of the compiler of the current runtime.
+
+=head2 push_inc
+
+C<static method push_inc : void ($include_dir : string);>
+
+Add the class search directory $include_dir at the tail of the class search directories of the compiler of the current runtime.
+
+=head2 unshift_inc
+
+C<static method unshift_inc : void ($include_dir : string);>
+
+Add the class search directory $include_dir at the head of the class search directories of the compiler of the current runtime.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

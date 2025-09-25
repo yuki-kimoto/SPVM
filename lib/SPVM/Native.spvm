@@ -8,6 +8,7 @@ class Native {
   use Native::Stack;
   use Native::Runtime;
   use Native::Compiler;
+  use StringList;
   
   # Class methods
   native static method get_current_env : Native::Env ();
@@ -35,5 +36,56 @@ class Native {
   }
   
   native static method check_bootstrap_method : void ($basic_type_name : string);
+  
+  static method use : void ($class_name : string) {
+    
+    my $compiler = Native->get_current_compiler;
+    
+    $compiler->compile($class_name);
+  }
+  
+  static method push_inc : void ($include_dir : string) {
+    
+    my $compiler = Native->get_current_compiler;
+    
+    $compiler->add_include_dir($include_dir);
+  }
+  
+  static method unshift_inc : void ($include_dir : string) {
+    
+    my $compiler = Native->get_current_compiler;
+    
+    $compiler->prepend_include_dir($include_dir);
+  }
+  
+  static method inc : string[] () {
+    
+    my $compiler = Native->get_current_compiler;
+    
+    my $length = $compiler->get_include_dirs_length;
+    
+    my $include_dirs_list = StringList->new;
+    for (my $i = 0; $i < $length; $i++) {
+      my $include_dir = $compiler->get_include_dir($i);
+      $include_dirs_list->push($include_dir);
+    }
+    
+    return $include_dirs_list->to_array;
+  }
+  
+  static method set_inc : void ($include_dirs : string[]) {
+    
+    unless ($include_dirs) {
+      die "The include directory \$include_dirs must be defined.";
+    }
+    
+    my $compiler = Native->get_current_compiler;
+    
+    $compiler->clear_include_dirs;
+    
+    for my $_ (@$include_dirs) {
+      $compiler->add_include_dir($_);
+    }
+  }
   
 }
