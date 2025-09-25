@@ -804,7 +804,13 @@ sub generate_readme_markdown_file {
   my $readme_markdown_content = <<"EOS";
 # SPVM::$class_name
 
-<a href="https://metacpan.org/pod/SPVM::$class_name">SPVM::$class_name</a>
+## Document
+
+<a href="https://metacpan.org/pod/SPVM::$class_name">SPVM::$class_name - CPAN</a>
+
+## See Also
+
+<a href="https://github.com/yuki-kimoto/SPVM">SPVM - Github</a>
 
 EOS
   
