@@ -8,6 +8,24 @@ SPVM::Document - SPVM Documents
 
 This document contains all documents for SPVM.
 
+=head1 SPVM Modules
+
+=over 2
+
+=item * L<SPVM Standard Modules|SPVM::Document::Modules>
+
+=item * L<SPVM CPAN Modules|https://github.com/yuki-kimoto/SPVM/wiki/CPAN-Modules>
+
+=back
+
+=head1 Tutorial
+
+=over 2
+
+=item * L<SPVM Tutorial|https://github.com/yuki-kimoto/SPVM/wiki/Tutorial>
+
+=back
+
 =head1 Documents
 
 =over 2
@@ -90,14 +108,6 @@ This document contains all documents for SPVM.
 
 =back
 
-=head2 Tutorial
-
-=over 2
-
-=item * L<SPVM Tutorial|https://github.com/yuki-kimoto/SPVM/wiki/Tutorial>
-
-=back
-
 =head2 Commands
 
 =over 2
@@ -107,16 +117,6 @@ This document contains all documents for SPVM.
 =item * L<spvmcc - Generating Executable Files|spvmcc>
 
 =item * L<spvmdist - Distributing SPVM Modules|spvmdist>
-
-=back
-
-=head2 Modules
-
-=over 2
-
-=item * L<Standard Modules|SPVM::Document::Modules>
-
-=item * L<CPAN Modules|https://github.com/yuki-kimoto/SPVM/wiki/CPAN-Modules>
 
 =back
 
