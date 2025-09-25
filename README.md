@@ -1,6 +1,12 @@
 # SPVM Language
 
-<img src="/logo/spvm_logo.jpg" width="160px">
+<img src="/logo/spvm_logo.jpg" width="120px">
+
+## SPVM Repositories
+
+* <a href="https://github.com/yuki-kimoto/SPVM/wiki/Repositories">SPVM Repositories</a>
+
+## CPAN
 
 <a href="https://metacpan.org/pod/SPVM">SPVM - CPAN</a>
 
@@ -157,6 +163,3 @@
 </li>
 </ul>
 
-### Related Repositories
-
-* <a href="https://github.com/yuki-kimoto/SPVM/wiki/Repositories">Related Repositories</a>
