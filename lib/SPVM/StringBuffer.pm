@@ -225,9 +225,11 @@ This method is a method implementation for L<EqualityCheckable|SPVM::EqualityChe
 
 =head2 substr
 
-C<method substr : string ($offset : int, $length : int = -1);>
+C<method substr : string ($offset : int, $length : int = -1, $replacement : string = undef);>
 
 Calls L<Fn#substr|SPVM::Fn/"substr"> method given the value of L</"string"> field, $offset, $length, and returns its return value.
+
+If the replacement string $replacement is specified, also calls L</"replace"> method.
 
 Exceptions:
 

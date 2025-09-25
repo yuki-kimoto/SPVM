@@ -4,7 +4,13 @@
   [New Features]
     * Add Hash#to_options method.
     * Add Fn#to_hash method.
-    
+    * Add $replacement optional argument to StringBuffer#substr method
+      [Before]
+      method substr : string ($offset : int, $length : int = -1);
+      
+      [After]
+      method substr : string ($offset : int, $length : int = -1, $replacement : string = undef);
+      
   [Incompatible Changes]
     * Revert a change in 0.990084 2025-08-26: The return value of Hash#to_array is enabled options flag.
 0.990090 2025-09-17

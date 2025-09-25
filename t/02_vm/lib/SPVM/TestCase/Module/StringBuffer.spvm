@@ -852,6 +852,21 @@ class TestCase::Module::StringBuffer {
       }
     }
     
+    # Replacement
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      my $ret = $buffer->substr(1, 2, "d");
+      
+      unless ($ret eq "bc") {
+        return 0;
+      }
+      
+      unless ($buffer->to_string eq "ad") {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
