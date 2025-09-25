@@ -8,7 +8,7 @@
 
 ## CPAN
 
-<a href="https://metacpan.org/pod/SPVM">SPVM - CPAN</a>
+* <a href="https://metacpan.org/pod/SPVM">SPVM - CPAN</a>
 
 ## SPVM Tutorial
 
