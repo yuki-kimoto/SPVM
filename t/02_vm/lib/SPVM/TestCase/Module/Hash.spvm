@@ -1072,7 +1072,7 @@ class TestCase::Module::Hash {
       
       my $array = $hash->to_array;
       
-      unless (is_options $array) {
+      if (is_options $array) {
         return 0;
       }
       
@@ -1081,10 +1081,51 @@ class TestCase::Module::Hash {
     return 1;
   }
 
+  static method to_options : int () {
+    
+    {
+      my $hash = Hash->new;
+      for (my $i = 0; $i < 3; ++$i) {
+        $hash->set("key$i", $i);
+      }
+      
+      my $array = $hash->to_options;
+      
+      my $new_hash = Hash->new($array);
+      my $keys_new_hash = $new_hash->keys;
+      unless (@$keys_new_hash == 3) {
+        return 0;
+      }
+      
+      unless ($new_hash->get_int("key0") == 0) {
+        return 0;
+      }
+      unless ($new_hash->get_int("key1") == 1) {
+        return 0;
+      }
+      unless ($new_hash->get_int("key2") == 2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $hash = Hash->new;
+      
+      my $array = $hash->to_options;
+      
+      unless (is_options $array) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
   static method get_or_default : int () {
-
+    
     my $hash = Hash->new;
-
+    
     {
       $hash->set_byte(foo => Fn->INT8_MAX);
       my $value = $hash->get_or_default_byte("foo", Fn->INT8_MIN);

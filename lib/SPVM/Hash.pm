@@ -285,11 +285,17 @@ Sets the string $value to the hash by the key $key using the L<"set"> method.
 
 C<method to_array : object[] ($sort : int = 0);>
 
-Converts all the key-value pairs in the hash to an array, enables options flag, and returns it.
+Converts all the key-value pairs in the hash to an array, and returns it.
 
 If the option $sort is a positive value, the keys are sorted by ascendant order.
 
 If the option $sort is a negative value, the keys are sorted by decendant order.
+
+=head2 to_options
+
+C<method to_options : object[] ($sort : int = 0);>
+
+Same as L</"to_array"> method, but enables options flag using C<enable_options> operator.
 
 =head2 get_or_default_byte
 

@@ -310,9 +310,16 @@ class Hash {
       $array->[$i * 2 + 1] = $value;
     }
     
-    enable_options $array;
-    
     return $array;
+  }
+  
+  method to_options : object[] ($sort : int = 0) {
+    
+    my $options = $self->to_array($sort);
+    
+    enable_options $options;
+    
+    return $options;
   }
   
   method set_byte : void ($key : string, $value : int) {
