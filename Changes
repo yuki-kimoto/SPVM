@@ -11,6 +11,7 @@
     * Add Native::Compiler#get_include_dir method.
     * Add Native::Compiler#prepend_include_dir method.
     * Add Native::Compiler#clear_include_dirs method.
+    * use statement can be used in methods.
   [Incompatible Changes]
     * Rermove Native::Compiler#eval_string method.
     

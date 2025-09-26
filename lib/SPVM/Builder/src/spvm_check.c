@@ -4118,12 +4118,13 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_DO_NOTHING:
               case SPVM_OP_C_ID_WEAKEN_FIELD:
               case SPVM_OP_C_ID_UNWEAKEN_FIELD:
+              case SPVM_OP_C_ID_USE:
               {
                 // Do nothing
                 break;
               }
               default: {
-                fprintf(stderr, "[Unexpected Error]The %s operator", SPVM_OP_get_op_name(compiler, op_cur->id));
+                fprintf(stderr, "[Unexpected Error]The %s operator.", SPVM_OP_get_op_name(compiler, op_cur->id));
                 assert(0);
               }
             }

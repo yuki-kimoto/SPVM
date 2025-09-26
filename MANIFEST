@@ -647,6 +647,7 @@ t/02_vm/04_statement/require.t
 t/02_vm/04_statement/return.t
 t/02_vm/04_statement/switch.t
 t/02_vm/04_statement/unless.t
+t/02_vm/04_statement/use_in_method.t
 t/02_vm/04_statement/while.t
 t/02_vm/05_op/__FILE__.t
 t/02_vm/05_op/__LINE__.t
@@ -1020,6 +1021,7 @@ t/02_vm/lib/SPVM/TestCase/Statement/IfRequire.spvm
 t/02_vm/lib/SPVM/TestCase/Statement/Return.spvm
 t/02_vm/lib/SPVM/TestCase/Statement/Switch.spvm
 t/02_vm/lib/SPVM/TestCase/Statement/Unless.spvm
+t/02_vm/lib/SPVM/TestCase/Statement/UseInMethod.spvm
 t/02_vm/lib/SPVM/TestCase/Statement/While.spvm
 t/02_vm/lib/SPVM/TestCase/SymbolName_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.spvm
 t/02_vm/lib/SPVM/TestCase/ThreadSafe.spvm

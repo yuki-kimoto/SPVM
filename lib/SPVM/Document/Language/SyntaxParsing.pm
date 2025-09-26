@@ -32,7 +32,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
   %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
-  %type <opval> method anon_method opt_args args arg use require class_alias our has getter opt_getter setter opt_setter anon_method_fields anon_method_field interface allow
+  %type <opval> method anon_method opt_args args arg use use_without_alias require class_alias our has getter opt_getter setter opt_setter anon_method_fields anon_method_field interface allow
   %type <opval> opt_attributes attributes
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement foreach_statement
@@ -186,8 +186,11 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   version_from
     : VERSION_FROM basic_type ';'
 
-  use
+  use_without_alias
     : USE basic_type ';'
+
+  use
+    : use_without_alias
     | USE basic_type AS class_name ';'
 
   require
@@ -314,6 +317,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | operator ';'
     | void_return_operator ';'
     | ';'
+    | use_without_alias
 
   die
     : DIE operator

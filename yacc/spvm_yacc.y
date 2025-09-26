@@ -36,7 +36,7 @@
 %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
-%type <opval> method anon_method opt_args args arg use require class_alias our has getter opt_getter setter opt_setter anon_method_fields anon_method_field interface allow
+%type <opval> method anon_method opt_args args arg use use_without_alias require class_alias our has getter opt_getter setter opt_setter anon_method_fields anon_method_field interface allow
 %type <opval> opt_attributes attributes
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement foreach_statement
@@ -357,13 +357,16 @@ version_from
       $$ = SPVM_OP_build_version_from(compiler, $1, $2);
     }
 
-use
+use_without_alias
   : USE basic_type ';'
     {
       int32_t is_require = 0;
       SPVM_OP* op_name_class_alias = NULL;
       $$ = SPVM_OP_build_use(compiler, $1, $2, op_name_class_alias, is_require);
     }
+
+use
+  : use_without_alias
   | USE basic_type AS class_name ';'
     {
       int32_t is_require = 0;
@@ -737,6 +740,7 @@ statement
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
     }
+  | use_without_alias
 
 die
   : DIE operator

@@ -563,4 +563,12 @@ use Test::More;
   
 }
 
+# use
+{
+  {
+    my $source = 'class MyClass { static method main : void () { use Point; my $point = Point->new; } }';
+    compile_ok($source);
+  }
+}
+
 done_testing;

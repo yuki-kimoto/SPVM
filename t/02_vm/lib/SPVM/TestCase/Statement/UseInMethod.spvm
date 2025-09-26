@@ -1,0 +1,15 @@
+class TestCase::Statement::UseInMethod {
+  
+  static method basic : int () {
+    
+    use Point;
+    
+    my $point = Point->new;
+    
+    unless ($point is_type Point) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
