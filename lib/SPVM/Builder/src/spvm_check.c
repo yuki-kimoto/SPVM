@@ -3727,6 +3727,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                     if (SPVM_TYPE_equals(compiler, arg->type->basic_type->id, arg->type->dimension, arg->type->flag, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
                       if (SPVM_TYPE_is_void_type(compiler, setter->return_type->basic_type->id, setter->return_type->dimension, setter->return_type->flag)) {
                         has_setter = 1;
+                        op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS_SETTER;
                       }
                     }
                   }
