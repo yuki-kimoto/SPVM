@@ -3679,6 +3679,9 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS: {
+            SPVM_OP* op_first = op_cur->first;
+            SPVM_OP* op_last = op_cur->last;
+            
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
             
@@ -3737,6 +3740,22 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   const char* type_name = SPVM_TYPE_new_type_name(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag);
                   SPVM_COMPILER_error(compiler, "For an array element access, the invocant has its setter: method set : void ($value : %s).\n  at %s line %d", type_name, op_cur->file, op_cur->line);
                 }
+                else {
+                  SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
+                  SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "set", op_cur->file, op_cur->line);
+                  SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
+                  SPVM_OP_cut_op(compiler, op_first);
+                  SPVM_OP_cut_op(compiler, op_last);
+                  SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_last);
+                  
+                  SPVM_OP_build_call_method(compiler, op_call_method, op_first, op_name_method, op_operators);
+                  
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_call_method);
+                  
+                  op_cur = op_operators->last;
+                }
               }
               else {
                 int32_t has_getter = 0;
@@ -3753,6 +3772,9 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 if (!has_getter) {
                   const char* type_name = SPVM_TYPE_new_type_name(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag);
                   SPVM_COMPILER_error(compiler, "For an array element access, the invocant has its getter: method get : %s ().\n  at %s line %d", type_name, op_cur->file, op_cur->line);
+                }
+                else {
+                  
                 }
               }
             }
