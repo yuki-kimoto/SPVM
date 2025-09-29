@@ -2787,7 +2787,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               return;
             }
             
-            if (op_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS && op_dist->flag & SPVM_OP_C_FLAG_ELEMENT_ACCESS_STRING) {
+            if (op_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS && op_dist->flag & SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING) {
               SPVM_OP* op_array = op_dist->first;
               SPVM_TYPE* array_type = SPVM_CHECK_get_type(compiler, op_array);
               int32_t is_mutable = array_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
@@ -3693,7 +3693,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             // String access
             if (SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              op_cur->flag |= SPVM_OP_C_FLAG_ELEMENT_ACCESS_STRING;
+              op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING;
             }
             
             // Right operand must be integer
