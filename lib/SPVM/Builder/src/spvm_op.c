@@ -189,6 +189,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "ELEMENT_ACCESS",
     "ASSIGN",
     "FIELD_ACCESS",
+    "HASH_ACCESS",
     "VAR",
     "UNDEF",
     "ARRAY_LENGTH",
@@ -2507,6 +2508,18 @@ SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_a
   return op_field_access;
 }
 
+SPVM_OP* SPVM_OP_build_hash_access(SPVM_COMPILER* compiler, SPVM_OP* op_hash_access, SPVM_OP* op_invocant, SPVM_OP* op_operator) {
+  
+  SPVM_OP_insert_child(compiler, op_hash_access, op_hash_access->last, op_invocant);
+  SPVM_OP_insert_child(compiler, op_hash_access, op_hash_access->last, op_operator);
+  
+  SPVM_FIELD_ACCESS* field_access = op_hash_access->uv.field_access;
+  
+  field_access->is_hash_access = 1;
+  
+  return op_hash_access;
+}
+
 SPVM_OP* SPVM_OP_build_can(SPVM_COMPILER* compiler, SPVM_OP* op_can, SPVM_OP* op_var, SPVM_OP* op_name) {
   
   if (op_name->id == SPVM_OP_C_ID_CONSTANT) {
@@ -4079,10 +4092,11 @@ SPVM_OP* SPVM_OP_new_op_false(SPVM_COMPILER* compiler, SPVM_OP* op) {
 }
 
 SPVM_OP* SPVM_OP_new_op_field_access(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  
   SPVM_OP* op_field_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD_ACCESS, file, line);
-
+  
   SPVM_FIELD_ACCESS* field_access = SPVM_FIELD_ACCESS_new(compiler);
-
+  
   op_field_access->uv.field_access = field_access;
   
   return op_field_access;

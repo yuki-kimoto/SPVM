@@ -189,6 +189,7 @@ enum {
   SPVM_OP_C_ID_ELEMENT_ACCESS,
   SPVM_OP_C_ID_ASSIGN,
   SPVM_OP_C_ID_FIELD_ACCESS,
+  SPVM_OP_C_ID_HASH_ACCESS,
   SPVM_OP_C_ID_VAR,
   SPVM_OP_C_ID_UNDEF,
   SPVM_OP_C_ID_ARRAY_LENGTH,
@@ -404,6 +405,8 @@ SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_origin
 
 SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access, SPVM_OP* op_invocant, SPVM_OP* op_name_field);
 
+SPVM_OP* SPVM_OP_build_hash_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access, SPVM_OP* op_invocant, SPVM_OP* op_name_field);
+
 SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_name_basic_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends);
 
 SPVM_OP* SPVM_OP_build_version_decl(SPVM_COMPILER* compiler, SPVM_OP* op_version, SPVM_OP* op_version_string);
@@ -594,7 +597,7 @@ SPVM_OP* SPVM_OP_new_op_constant(SPVM_COMPILER* compiler, const char* file, int3
 
 SPVM_OP* SPVM_OP_new_op_array_field_access(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
-SPVM_OP* SPVM_OP_new_op_field_access(SPVM_COMPILER* compiler, const char* file, int32_t line);
+SPVM_OP* SPVM_OP_new_op_field_access(SPVM_COMPILER* compiler, const char* file, int32_t line); 
 
 SPVM_OP* SPVM_OP_new_op_call_method(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
