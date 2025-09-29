@@ -1753,7 +1753,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
-                    case SPVM_OP_C_ID_ELEMENT_ACCESS : {
+                    case SPVM_OP_C_ID_ARRAY_ACCESS : {
                       
                       // $VAR = $VAR_ARRAY->[$VAR_INDEX]
                       SPVM_OP* op_element_access = op_assign_src;
@@ -4764,7 +4764,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   }
                 }
                 // $array->[$index] = $var
-                else if (op_assign_dist->id == SPVM_OP_C_ID_ELEMENT_ACCESS) {
+                else if (op_assign_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
                   
                   // $VAR_ARRAY->[$VAR_INDEX] = $VAR_TERM
                   

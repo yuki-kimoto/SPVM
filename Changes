@@ -1,7 +1,8 @@
 0.990093 2025-09-29
   [New Features]
     * Add hash access syntax.
-    
+  [Internal Changes]
+    * Rename SPVM_OP_C_ID_ELEMENT_ACCESS to SPVM_OP_C_ID_ARRAY_ACCESS.
 0.990092 2025-09-25
   [New Features]
     * Add Native#use method.
