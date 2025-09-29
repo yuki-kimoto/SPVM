@@ -53,7 +53,7 @@
 %type <opval> new array_init
 %type <opval> type_check type_cast can
 %type <opval> call_method
-%type <opval> array_access field_access hash_access
+%type <opval> array_element_access field_access hash_access
 %type <opval> weaken_field unweaken_field isweak_field
 %type <opval> sequential copy_fields
 
@@ -1025,7 +1025,7 @@ operator
     }
   | can
   | array_init
-  | array_access
+  | array_element_access
   | field_access
   | hash_access
   | isweak_field
@@ -1483,26 +1483,26 @@ call_method
       $$ = SPVM_OP_build_call_method(compiler, op_call_method, $1, op_method_name, $4);
     }
 
-array_access
+array_element_access
   : operator ARROW '[' operator ']'
     {
-      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_element_access(compiler, op_array_access, $1, $4);
+      SPVM_OP* op_array_element_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_element_access(compiler, op_array_element_access, $1, $4);
     }
-  | array_access '[' operator ']'
+  | array_element_access '[' operator ']'
     {
-      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_element_access(compiler, op_array_access, $1, $3);
+      SPVM_OP* op_array_element_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_element_access(compiler, op_array_element_access, $1, $3);
     }
   | field_access '[' operator ']'
     {
-      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_element_access(compiler, op_array_access, $1, $3);
+      SPVM_OP* op_array_element_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_element_access(compiler, op_array_element_access, $1, $3);
     }
   | hash_access '[' operator ']'
     {
-      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_element_access(compiler, op_array_access, $1, $3);
+      SPVM_OP* op_array_element_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_element_access(compiler, op_array_element_access, $1, $3);
     }
 
 field_access
@@ -1511,7 +1511,7 @@ field_access
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       $$ = SPVM_OP_build_field_access(compiler, op_field_access, $1, $4);
     }
-  | array_access '{' field_name '}'
+  | array_element_access '{' field_name '}'
     {
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       $$ = SPVM_OP_build_field_access(compiler, op_field_access, $1, $3);
@@ -1533,7 +1533,7 @@ hash_access
       SPVM_OP* op_hash_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       $$ = SPVM_OP_build_hash_access(compiler, op_hash_access, $1, $4);
     }
-  | array_access '{' operator '}'
+  | array_element_access '{' operator '}'
     {
       SPVM_OP* op_hash_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       $$ = SPVM_OP_build_hash_access(compiler, op_hash_access, $1, $3);

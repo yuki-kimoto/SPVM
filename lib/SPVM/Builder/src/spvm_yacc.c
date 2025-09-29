@@ -660,7 +660,7 @@ static const char *const yytname[] =
   "binary_operator", "arithmetic_operator", "ternary_operator",
   "bit_operator", "comparison_operator", "string_concatenation",
   "logical_operator", "defined_or", "type_check", "type_cast", "can",
-  "assign", "new", "array_init", "call_method", "array_access",
+  "assign", "new", "array_init", "call_method", "array_element_access",
   "field_access", "hash_access", "weaken_field", "unweaken_field",
   "isweak_field", "warn", "copy_fields", "exists", "delete", YY_NULLPTR
 };
@@ -4884,8 +4884,8 @@ yyreduce:
   case 306:
 #line 1488 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
-      (yyval.opval) = SPVM_OP_build_element_access(compiler, op_array_access, (yyvsp[-4].opval), (yyvsp[-1].opval));
+      SPVM_OP* op_array_element_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
+      (yyval.opval) = SPVM_OP_build_element_access(compiler, op_array_element_access, (yyvsp[-4].opval), (yyvsp[-1].opval));
     }
 #line 4891 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -4893,8 +4893,8 @@ yyreduce:
   case 307:
 #line 1493 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
-      (yyval.opval) = SPVM_OP_build_element_access(compiler, op_array_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
+      SPVM_OP* op_array_element_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
+      (yyval.opval) = SPVM_OP_build_element_access(compiler, op_array_element_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
     }
 #line 4900 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -4902,8 +4902,8 @@ yyreduce:
   case 308:
 #line 1498 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
-      (yyval.opval) = SPVM_OP_build_element_access(compiler, op_array_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
+      SPVM_OP* op_array_element_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
+      (yyval.opval) = SPVM_OP_build_element_access(compiler, op_array_element_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
     }
 #line 4909 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -4911,8 +4911,8 @@ yyreduce:
   case 309:
 #line 1503 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
-      (yyval.opval) = SPVM_OP_build_element_access(compiler, op_array_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
+      SPVM_OP* op_array_element_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
+      (yyval.opval) = SPVM_OP_build_element_access(compiler, op_array_element_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
     }
 #line 4918 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
