@@ -2978,7 +2978,7 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
     SPVM_OP* op_dist_clone = op_deref_clone;
     SPVM_OP_build_assign(compiler, op_assign_update, op_dist_clone, op_culc);
   }
-  else if (op_dist->id == SPVM_OP_C_ID_ELEMENT_ACCESS) {
+  else if (op_dist->id == SPVM_OP_C_ID_ELEMENT_ACCESS || op_dist->id == SPVM_OP_C_ID_HASH_ACCESS) {
     SPVM_OP* op_element_access = op_dist;
     
     SPVM_OP* op_array = op_element_access->first;
