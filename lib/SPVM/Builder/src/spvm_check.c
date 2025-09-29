@@ -3722,40 +3722,20 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_TYPE_is_interface_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag))
             {
               if (op_cur->is_dist) {
-                int32_t has_setter = 0;
-                SPVM_METHOD* setter = SPVM_CHECK_search_method(compiler, left_operand_type->basic_type, "set");
-                if (setter) {
-                  if (setter->args_length == 1) {
-                    SPVM_VAR_DECL* arg = SPVM_LIST_get(setter->var_decls, 0);
-                    if (SPVM_TYPE_equals(compiler, arg->type->basic_type->id, arg->type->dimension, arg->type->flag, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-                      if (SPVM_TYPE_is_void_type(compiler, setter->return_type->basic_type->id, setter->return_type->dimension, setter->return_type->flag)) {
-                        has_setter = 1;
-                        op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS_SETTER;
-                      }
-                    }
-                  }
-                }
+                SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
+                SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "set", op_cur->file, op_cur->line);
+                SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
+                SPVM_OP_cut_op(compiler, op_first);
+                SPVM_OP_cut_op(compiler, op_last);
+                SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_last);
                 
-                if (!has_setter) {
-                  const char* type_name = SPVM_TYPE_new_type_name(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag);
-                  SPVM_COMPILER_error(compiler, "For an array element access, the invocant has its setter: method set : void ($value : %s).\n  at %s line %d", type_name, op_cur->file, op_cur->line);
-                }
-                else {
-                  SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
-                  SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "set", op_cur->file, op_cur->line);
-                  SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
-                  SPVM_OP_cut_op(compiler, op_first);
-                  SPVM_OP_cut_op(compiler, op_last);
-                  SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_last);
-                  
-                  SPVM_OP_build_call_method(compiler, op_call_method, op_first, op_name_method, op_operators);
-                  
-                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                  
-                  SPVM_OP_replace_op(compiler, op_stab, op_call_method);
-                  
-                  op_cur = op_operators->last;
-                }
+                SPVM_OP_build_call_method(compiler, op_call_method, op_first, op_name_method, op_operators);
+                
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                
+                SPVM_OP_replace_op(compiler, op_stab, op_call_method);
+                
+                op_cur = op_operators->last;
               }
               else {
                 int32_t has_getter = 0;
