@@ -3714,6 +3714,10 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             if (SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
               op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS_STRING;
             }
+            // set or get method
+            else if (SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+              op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS_ACCESSOR;
+            }
             
             break;
           }
