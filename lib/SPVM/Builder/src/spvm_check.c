@@ -3691,11 +3691,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               return;
             }
             
-            // String access
-            if (SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING;
-            }
-            
             // Right operand must be integer
             if (SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
               SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
@@ -3713,6 +3708,11 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             else {
               SPVM_COMPILER_error(compiler, "The index of the element access must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
+            }
+            
+            // String access
+            if (SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+              op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING;
             }
             
             break;
