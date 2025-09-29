@@ -3717,10 +3717,11 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             if (SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
               op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS_STRING;
             }
-            // set and get method
+            // Replace array access with setter or getter
             else if (SPVM_TYPE_is_class_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) ||
                 SPVM_TYPE_is_interface_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag))
             {
+              // Setter: $array->[$index] = $operator to $array->set($index, $operator);
               if (op_cur->is_dist) {
                 SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
                 SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "set", op_cur->file, op_cur->line);
@@ -3737,25 +3738,21 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 
                 op_cur = op_operators->last;
               }
+              // Getter: $array->[$index] to $array->get($index);
               else {
-                int32_t has_getter = 0;
-                SPVM_METHOD* getter = SPVM_CHECK_search_method(compiler, left_operand_type->basic_type, "get");
-                if (getter) {
-                  if (getter->args_length == 0) {
-                    if (SPVM_TYPE_equals(compiler, getter->return_type->basic_type->id, getter->return_type->dimension, getter->return_type->flag, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-                      has_getter = 1;
-                      op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS_GETTER;
-                    }
-                  }
-                }
+                SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
+                SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "get", op_cur->file, op_cur->line);
+                SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
+                SPVM_OP_cut_op(compiler, op_first);
+                SPVM_OP_cut_op(compiler, op_last);
                 
-                if (!has_getter) {
-                  const char* type_name = SPVM_TYPE_new_type_name(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag);
-                  SPVM_COMPILER_error(compiler, "For an array element access, the invocant has its getter: method get : %s ().\n  at %s line %d", type_name, op_cur->file, op_cur->line);
-                }
-                else {
-                  
-                }
+                SPVM_OP_build_call_method(compiler, op_call_method, op_first, op_name_method, op_operators);
+                
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                
+                SPVM_OP_replace_op(compiler, op_stab, op_call_method);
+                
+                op_cur = op_operators->last;
               }
             }
             
