@@ -173,6 +173,15 @@ class TestCase::Module::Hash {
           return 0;
         }
       }
+      
+      {
+        my $list = (List of Hash of string)List->new([Hash->new({foo => "a"}), Hash->new({bar => "b"})]);
+        
+        unless ($list->[1]{"bar"} eq "b") {
+          return 0;
+        }
+      }
+      
     }
     
     return 1;
