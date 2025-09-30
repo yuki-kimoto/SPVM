@@ -3764,8 +3764,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS: {
-            SPVM_OP* op_first = op_cur->first;
-            SPVM_OP* op_last = op_cur->last;
+            SPVM_OP* op_invocant = op_cur->first;
+            SPVM_OP* op_index = op_cur->last;
             
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
@@ -3822,11 +3822,11 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
                 SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "get", op_cur->file, op_cur->line);
                 SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
-                SPVM_OP_cut_op(compiler, op_first);
-                SPVM_OP_cut_op(compiler, op_last);
-                SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_last);
+                SPVM_OP_cut_op(compiler, op_invocant);
+                SPVM_OP_cut_op(compiler, op_index);
+                SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_index);
                 
-                SPVM_OP_build_call_method(compiler, op_call_method, op_first, op_name_method, op_operators);
+                SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
                 
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 
