@@ -4621,9 +4621,13 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       }
+                      else if (SPVM_TYPE_is_void_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                        // Do nothing
+                      }
                       else {
                         assert(0);
                       }
+                      
                       break;
                     }
                   }

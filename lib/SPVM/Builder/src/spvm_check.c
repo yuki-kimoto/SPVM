@@ -2816,6 +2816,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                 
                 op_cur = op_operators->last;
+                
                 break;
               }
             }
@@ -3818,7 +3819,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             {
               // Setter: $array->[$index] = $operator to $array->set($index, $operator);
               if (!op_cur->is_dist) {
-                
                 SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
                 SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "get", op_cur->file, op_cur->line);
                 SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);

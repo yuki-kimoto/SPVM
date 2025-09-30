@@ -145,7 +145,7 @@ class TestCase::Module::IntList {
     
     # Array access
     {
-      my $list = IntList->new([1, 2, 3]);
+      my $list = IntList->new([1, 2, 3, 4]);
       
       my $value = $list->[1];
       
@@ -162,6 +162,12 @@ class TestCase::Module::IntList {
       $list->[2] = $list->[2] + 5;
       
       unless ($list->[2] == 8) {
+        return 0;
+      }
+      
+      $list->[3] += 5;
+      
+      unless ($list->[3] == 9) {
         return 0;
       }
       

@@ -130,7 +130,7 @@ class TestCase::Module::Hash {
     
     # Hash access
     {
-      my $hash = Hash->new({foo => "4px", bar => 3});
+      my $hash = Hash->new({foo => "4px", bar => 3, baz => 3});
       
       my $value = (string)$hash->{"foo"};
       
@@ -143,6 +143,7 @@ class TestCase::Module::Hash {
       unless ($hash->{"foo"}->(string) eq "2") {
         return 0;
       }
+      
     }
     
     return 1;
