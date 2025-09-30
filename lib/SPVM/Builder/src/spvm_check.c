@@ -2819,6 +2819,32 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 break;
               }
             }
+            else if (op_dist->id == SPVM_OP_C_ID_HASH_ACCESS) {
+              
+              SPVM_OP* op_invocant = op_dist->first;
+              SPVM_OP* op_key = op_dist->last;
+              
+              SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_invocant);
+              
+              // Setter: $hash->{$key} = $operator to $hash->set($key, $operator);
+              SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
+              SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "set", op_cur->file, op_cur->line);
+              SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
+              SPVM_OP_cut_op(compiler, op_invocant);
+              SPVM_OP_cut_op(compiler, op_key);
+              SPVM_OP_cut_op(compiler, op_src);
+              SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_key);
+              SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_src);
+              
+              SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
+              
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+              
+              SPVM_OP_replace_op(compiler, op_stab, op_call_method);
+              
+              op_cur = op_operators->last;
+              break;
+            }
             
             SPVM_TYPE* dist_type = SPVM_CHECK_get_type(compiler, op_dist);
             
@@ -4000,25 +4026,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             }
             
             // Replace hash access with setter or getter
-            // Setter: $hash->{$key} = $operator to $hash->set($key, $operator);
-            if (op_cur->is_dist) {
-              SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
-              SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "set", op_cur->file, op_cur->line);
-              SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
-              SPVM_OP_cut_op(compiler, op_invocant);
-              SPVM_OP_cut_op(compiler, op_key);
-              SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_key);
-              
-              SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
-              
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              
-              SPVM_OP_replace_op(compiler, op_stab, op_call_method);
-              
-              op_cur = op_operators->last;
-            }
             // Getter: $hash->{$key} to $hash->get($key);
-            else {
+            if (!op_cur->is_dist) {
               SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
               SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "get", op_cur->file, op_cur->line);
               SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
