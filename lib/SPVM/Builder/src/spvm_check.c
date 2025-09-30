@@ -3709,12 +3709,23 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
             
+            int32_t allow_array_element_access = 0;
+            if (SPVM_TYPE_is_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+              allow_array_element_access = 1;
+            }
+            else if (SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+              allow_array_element_access = 1;
+            }
+            else if (SPVM_TYPE_is_class_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+              allow_array_element_access = 1;
+            }
+            else if (SPVM_TYPE_is_interface_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+              allow_array_element_access = 1;
+            }
+            
             // Left operand must be an array or string
-            if (!SPVM_TYPE_is_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) &&
-              !SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
-            )
-            {
-              SPVM_COMPILER_error(compiler, "The invocant of the element access must be an array type or string type.\n  at %s line %d", op_cur->file, op_cur->line);
+            if (!allow_array_element_access) {
+              SPVM_COMPILER_error(compiler, "The invocant of the element access must be an array type, string type, a class type, or an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             
@@ -3746,29 +3757,14 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_TYPE_is_interface_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag))
             {
               // Setter: $array->[$index] = $operator to $array->set($index, $operator);
-              if (op_cur->is_dist) {
-                SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
-                SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "set", op_cur->file, op_cur->line);
-                SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
-                SPVM_OP_cut_op(compiler, op_first);
-                SPVM_OP_cut_op(compiler, op_last);
-                SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_last);
+              if (!op_cur->is_dist) {
                 
-                SPVM_OP_build_call_method(compiler, op_call_method, op_first, op_name_method, op_operators);
-                
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                
-                SPVM_OP_replace_op(compiler, op_stab, op_call_method);
-                
-                op_cur = op_operators->last;
-              }
-              // Getter: $array->[$index] to $array->get($index);
-              else {
                 SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
                 SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "get", op_cur->file, op_cur->line);
                 SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
                 SPVM_OP_cut_op(compiler, op_first);
                 SPVM_OP_cut_op(compiler, op_last);
+                SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_last);
                 
                 SPVM_OP_build_call_method(compiler, op_call_method, op_first, op_name_method, op_operators);
                 

@@ -143,6 +143,19 @@ class TestCase::Module::IntList {
       }
     }
     
+    # Array access
+    {
+      my $list = IntList->new([1, 2, 3]);
+      
+      my $value = $list->[1];
+      
+      unless ($value == 2) {
+        return 0;
+      }
+      
+      
+    }
+    
     return 1;
   }
   
