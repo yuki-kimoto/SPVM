@@ -222,7 +222,7 @@ class TestCase::Module::IntList {
         return 0;
       }
       
-      $@ = undef;
+      
     }
     
     return 1;
@@ -280,7 +280,7 @@ class TestCase::Module::IntList {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -323,7 +323,7 @@ class TestCase::Module::IntList {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -409,7 +409,7 @@ class TestCase::Module::IntList {
         return 0;
       }
     }
-    $@ = undef;
+    
     
     # Exception - remove to length
     {
@@ -420,7 +420,7 @@ class TestCase::Module::IntList {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -512,7 +512,7 @@ class TestCase::Module::IntList {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -660,7 +660,7 @@ class TestCase::Module::IntList {
       }
     }
     
-    $@ = undef;
+    
     return 1;
   }
   
@@ -699,7 +699,7 @@ class TestCase::Module::IntList {
         return 0;
       }
       
-      $@ = undef;
+      
     }
     
     return 1;
@@ -735,7 +735,7 @@ class TestCase::Module::IntList {
       unless (Fn->contains($@, "The length of the list \$list must be greater than 0")) {
         return 0;
       }
-      $@ = undef;
+      
     }
     
     return 1;
