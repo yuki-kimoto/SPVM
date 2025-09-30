@@ -2125,6 +2125,50 @@ Examples:
   my $points = new Point[3];
   $points->[1] = Point->new(1, 2);
   
+=head3 List Element Get Operation
+
+The list element get operation gets an element of a list object with an index.
+
+  INVOCANT->[INDEX_OPERAND]
+
+I<INVOCANT-E<gt>[INDEX_OPERAND]> is a L<array element access|/"Array Element Access">.
+
+This operation is replaced with C<get> method call.
+
+  INVOCANT->get(INDEX_OPERAND)
+
+Compilation Errors:
+
+Compiliation errors caused by the syntax of L<array element access|/"Array Element Access"> could occur.
+
+Examples:
+
+  my $list = List->new([1, 2]);
+  my $x = $list->[1];
+
+=head3 List Element Set Operation
+
+The list element set operation gets an element of a list object with an index.
+
+  INVOCANT->[INDEX_OPERAND] = OPERAND
+
+I<INVOCANT-E<gt>[INDEX_OPERAND]> is a L<array element access|/"Array Element Access">.
+
+This operation is replaced with C<set> method call.
+
+  INVOCANT->set(INDEX_OPERAND, OPERAND)
+
+Compilation Errors:
+
+Compiliation errors caused by the syntax of L<array element access|/"Array Element Access"> could occur.
+
+The assignment must satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
+
+Examples:
+
+  my $list = List->new([1, 2]);
+  $list->[1] = 3;
+
 =head3 Array Element Access
 
 The element access has the following syntax.
@@ -2137,7 +2181,7 @@ The type of the index I<INDEX> is an L<integer type|SPVM::Document::Language::Ty
 
 Compilation Errors:
 
-I<ARRAY> must be an array type. Otherwise, a compilation error occurs.
+I<ARRAY> must be an array type, string type, a class type, or an interface type. Otherwise, a compilation error occurs.
 
 I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
@@ -2377,7 +2421,7 @@ The operation of getting field gets the value of a field of a class type.
 
 I<INVOCANT-E<gt>{KEY_OPERAND}> is a L<hash value access|/"Hash Value Access">.
 
-This operation is replaced with C<get> method.
+This operation is replaced with C<get> method call.
 
   INVOCANT->get(KEY_OPERAND)
 
@@ -2398,7 +2442,7 @@ The operation of setting field sets the field of a class type.
 
 I<INVOCANT-E<gt>{KEY_OPERAND}> is a L<hash value access|/"Hash Value Access">.
 
-This operation is replaced with C<set> method.
+This operation is replaced with C<set> method call.
 
   INVOCANT->set(KEY_OPERAND, OPERAND)
 
