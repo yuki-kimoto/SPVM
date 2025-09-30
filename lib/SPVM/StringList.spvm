@@ -8,6 +8,7 @@ class StringList extends List {
   use Array;
   
   interface Cloneable;
+  interface Countable;
   
   # Class methods
   static method new : StringList ($array : string[] = undef, $capacity : int = -1) {

@@ -66,6 +66,8 @@ C<List> is the dynamic object array that has a specified object array type.
 
 =item * L<Cloneable|SPVM::Cloneable>
 
+=item * L<Countable|SPVM::Countable>
+
 =back
 
 =head1 Fields

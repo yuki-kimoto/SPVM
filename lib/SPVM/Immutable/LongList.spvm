@@ -7,6 +7,9 @@ class Immutable::LongList {
   use Fn;
   use Array;
   
+  # Interfaces
+  interface Countable;
+  
   # Fields
   has length : ro int;
   has array : long[];

@@ -55,6 +55,16 @@ C<StringList> is a dynamic C<string> array.
 
 L<List|SPVM::List>.
 
+=head1 Interfaces
+
+=over 2
+
+=item * L<Cloneable|SPVM::Cloneable>
+
+=item * L<Countable|SPVM::Countable>
+
+=back
+
 =head1 Fields
 
 =head2 capacity

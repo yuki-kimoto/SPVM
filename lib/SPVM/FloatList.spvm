@@ -5,6 +5,7 @@ class FloatList {
   version_from SPVM;
   
   interface Cloneable;
+  interface Countable;
   
   use Fn;
   use Array;

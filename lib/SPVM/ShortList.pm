@@ -65,6 +65,8 @@ The elements in the range that is greater than or equal to L</"length"> field an
 
 =item * L<Cloneable|SPVM::Cloneable>
 
+=item * L<Countable|SPVM::Countable>
+
 =back
 
 =head1 Fields

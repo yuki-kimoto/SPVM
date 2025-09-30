@@ -5,10 +5,10 @@ class List {
   version_from SPVM;
   
   interface Cloneable;
+  interface Countable;
   
   use Fn;
   use Array;
-  use Cloneable;
   
   # Enumerations
   private enum {

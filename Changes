@@ -2,7 +2,23 @@
   [New Features]
     * Add hash access syntax.
     * Add Countable interface.
-    
+    * Add Countable interface to the following classes.
+      ByteList
+      DoubleList
+      FloatList
+      IntList
+      List
+      LongList
+      ShortList
+      StringList
+      Immutable::ByteList
+      Immutable::DoubleList
+      Immutable::FloatList
+      Immutable::IntList
+      Immutable::LongList
+      Immutable::ShortList
+      Immutable::StringList
+      
   [Internal Changes]
     * Rename SPVM_OP_C_ID_ELEMENT_ACCESS to SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS.
     * Rename SPVM_OP_C_FLAG_ELEMENT_ACCESS to SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS.
