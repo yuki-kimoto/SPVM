@@ -130,9 +130,15 @@ class TestCase::Module::IntList {
     
     # Countable interface
     {
-      my $list = IntList->new_len(0);
+      my $list = IntList->new_len(3);
       
       unless ($list isa Countable) {
+        return 0;
+      }
+      
+      my $length = @$list;
+      
+      unless ($length == 3) {
         return 0;
       }
     }
