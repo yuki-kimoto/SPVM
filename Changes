@@ -18,7 +18,8 @@
       Immutable::LongList
       Immutable::ShortList
       Immutable::StringList
-      
+    * array length operator @ can be used for the class that has Countable interface.
+    
   [Internal Changes]
     * Rename SPVM_OP_C_ID_ELEMENT_ACCESS to SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS.
     * Rename SPVM_OP_C_FLAG_ELEMENT_ACCESS to SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS.

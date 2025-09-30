@@ -2737,12 +2737,36 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_ARRAY_LENGTH: {
+            SPVM_OP* op_first = op_cur->first;
+            
             SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
+            int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+            
+            SPVM_BASIC_TYPE* countable_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, "Countable", strlen("Countable"));
+            assert(countable_basic_type);
+            char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
+            int32_t has_countable_interface = SPVM_TYPE_has_interface(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag, countable_basic_type->id);
+            
             // First value must be an array
-            if (!SPVM_TYPE_is_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of @ operator must be an array type.\n  at %s line %d", op_cur->file, op_cur->line);
+            if (!(is_array_type || has_countable_interface)) {
+              SPVM_COMPILER_error(compiler, "The right operand type of @ operator must be an array type or has Coutable interface.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
+            }
+            
+            if (has_countable_interface) {
+              SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
+              SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "length", op_cur->file, op_cur->line);
+              SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
+              SPVM_OP_cut_op(compiler, op_first);
+              
+              SPVM_OP_build_call_method(compiler, op_call_method, op_first, op_name_method, op_operators);
+              
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+              
+              SPVM_OP_replace_op(compiler, op_stab, op_call_method);
+              
+              op_cur = op_operators->last;
             }
             
             break;
