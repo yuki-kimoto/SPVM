@@ -49,7 +49,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> new array_init
   %type <opval> type_check type_cast can
   %type <opval> call_method
-  %type <opval> array_element_access field_access
+  %type <opval> array_element_access field_access hash_value_access
   %type <opval> weaken_field unweaken_field isweak_field
   %type <opval> sequential copy_fields
   %left <opval> ',' FATCAMMA
@@ -430,6 +430,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | array_init
     | array_element_access
     | field_access
+    | hash_value_access
     | isweak_field
     | call_method
     | sequential
@@ -572,11 +573,19 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : operator ARROW '[' operator ']'
     | array_element_access '[' operator ']'
     | field_access '[' operator ']'
+    | hash_value_access '[' operator ']'
 
   field_access
     : operator ARROW '{' field_name '}'
-    | field_access '{' field_name '}'
     | array_element_access '{' field_name '}'
+    | field_access '{' field_name '}'
+    | hash_value_access '{' field_name '}'
+
+  hash_value_access
+    : operator ARROW '{' operator '}'
+    | array_element_access '{' operator '}'
+    | field_access '{' operator '}'
+    | hash_value_access '{' operator '}'
 
   weaken_field
     : WEAKEN var ARROW '{' field_name '}'
