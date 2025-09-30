@@ -371,6 +371,8 @@ The following classes are loaded by default.
 
 =item * L<Stringable|SPVM::Stringable>
 
+=item * L<Countable|SPVM::Countable>
+
 =back
 
 =head2 alias Statement

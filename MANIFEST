@@ -256,6 +256,7 @@ lib/SPVM/Complex_2d.pm
 lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
+lib/SPVM/Countable.pm
 lib/SPVM/Dist.pm
 lib/SPVM/Document.pm
 lib/SPVM/Document/EnvironmentVariables.pm

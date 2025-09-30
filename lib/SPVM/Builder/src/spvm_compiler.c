@@ -494,6 +494,7 @@ void SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_use(compiler, "SPVM", "SPVM", 0);
   SPVM_COMPILER_use(compiler, "Error::MethodCallNotPermitted", "Error::MethodCallNotPermitted", 0);
   SPVM_COMPILER_use(compiler, "Stringable", "Stringable", 0);
+  SPVM_COMPILER_use(compiler, "Countable", "Countable", 0);
 }
 
 void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
@@ -623,6 +624,14 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Error::MethodCallNotPermitted";
     const char* rel_file = "Error/MethodCallNotPermitted.spvm";
     const char* content = "class Error::MethodCallNotPermitted extends Error {\n  version_from SPVM;\n}";
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
+  }
+  
+  // Add Countable class file
+  {
+    const char* class_name = "Countable";
+    const char* rel_file = "Countable.spvm";
+    const char* content = "class Countable : interface_t {\n  version_from SPVM;\n  required method length : int ();\n}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   

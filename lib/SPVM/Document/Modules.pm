@@ -52,6 +52,8 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<SPVM::Complex_2f|SPVM::Complex_2f>
 
+=item * L<SPVM::Countable|SPVM::Countable>
+
 =item * L<SPVM::Double|SPVM::Double>
 
 =item * L<SPVM::DoubleList|SPVM::DoubleList>
