@@ -4033,6 +4033,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
               SPVM_OP_cut_op(compiler, op_invocant);
               SPVM_OP_cut_op(compiler, op_key);
+              SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_key);
               
               SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
               
