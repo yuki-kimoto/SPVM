@@ -835,13 +835,17 @@ This operator returns the length the array I<OPERAND>.
 
 The return type is int type.
 
+If I<OPERAND> is a class type or an interface type, this operation is replaced with C<length> method call of L<Countable|SPVM::Countable> interface.
+
+  OPERAND->length
+
 Exceptions:
 
 I<OPERAND> must be defined. Otherwise, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be an array type. Otherwise, a compilation error occurs.
+The type of I<OPERAND> must be an array type or a class with L<Countable|SPVM::Countable> interface. Otherwise, a compilation error occurs.
 
 Examples:
   
