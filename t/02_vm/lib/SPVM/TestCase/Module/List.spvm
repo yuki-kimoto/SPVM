@@ -94,6 +94,21 @@ class TestCase::Module::List {
       }
     }
     
+    # Countable interface
+    {
+      my $list = List->new_len(new Int[0], 3);
+      
+      unless ($list isa Countable) {
+        return 0;
+      }
+      
+      my $length = @$list;
+      
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
