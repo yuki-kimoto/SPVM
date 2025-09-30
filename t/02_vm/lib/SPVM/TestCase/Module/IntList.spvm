@@ -158,6 +158,13 @@ class TestCase::Module::IntList {
       unless ($list->get(1) == 4) {
         return 0;
       }
+      
+      $list->[2] = $list->[2] + 5;
+      
+      unless ($list->[2] == 8) {
+        return 0;
+      }
+      
     }
     
     return 1;
