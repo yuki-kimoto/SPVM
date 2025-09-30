@@ -2783,8 +2783,42 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_ASSIGN: {
+            
             SPVM_OP* op_dist = op_cur->last;
             SPVM_OP* op_src = op_cur->first;
+            
+            // Replace with setter
+            if (op_dist->id == SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS) {
+              
+              SPVM_OP* op_invocant = op_dist->first;
+              SPVM_OP* op_index = op_dist->last;
+              
+              SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_invocant);
+              
+              // Replace array access with setter or getter
+              if (SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag) ||
+                  SPVM_TYPE_is_interface_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag))
+              {
+                // Setter: $array->[$index] = $operator to $array->set($index, $operator);
+                SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
+                SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "set", op_cur->file, op_cur->line);
+                SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
+                SPVM_OP_cut_op(compiler, op_invocant);
+                SPVM_OP_cut_op(compiler, op_index);
+                SPVM_OP_cut_op(compiler, op_src);
+                SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_index);
+                SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_src);
+                
+                SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
+                
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                
+                SPVM_OP_replace_op(compiler, op_stab, op_call_method);
+                
+                op_cur = op_operators->last;
+                break;
+              }
+            }
             
             SPVM_TYPE* dist_type = SPVM_CHECK_get_type(compiler, op_dist);
             

@@ -153,7 +153,11 @@ class TestCase::Module::IntList {
         return 0;
       }
       
+      $list->[1] = 4;
       
+      unless ($list->get(1) == 4) {
+        return 0;
+      }
     }
     
     return 1;
