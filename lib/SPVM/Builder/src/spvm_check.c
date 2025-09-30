@@ -4236,6 +4236,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_REFERENCE:
               case SPVM_OP_C_ID_DEREFERENCE:
               case SPVM_OP_C_ID_FIELD_ACCESS:
+              case SPVM_OP_C_ID_HASH_VALUE_ACCESS:
               case SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS:
               case SPVM_OP_C_ID_CALL_METHOD:
               case SPVM_OP_C_ID_TRUE:
