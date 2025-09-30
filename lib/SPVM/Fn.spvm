@@ -74,7 +74,7 @@ class Fn {
     return $abs;
   }
   
-  static method chomp : void ($string : mutable string) {
+  static method chomp : int ($string : mutable string) {
     
     unless ($string) {
       die "The string \$string must be defined.";
@@ -87,6 +87,10 @@ class Fn {
     elsif ($length >= 1 && $string->[$length - 1] == '\n') {
       &shorten($string, $length - 1);
     }
+    
+    my $removed_length = $length - length $string;
+    
+    return $removed_length;
   }
   
   static method chompr : string ($string : string) {

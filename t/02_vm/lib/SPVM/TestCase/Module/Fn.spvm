@@ -388,18 +388,26 @@ class TestCase::Module::Fn {
     # Basic
     {
       my $line = copy "abc\n";
-      Fn->chomp((mutable string)$line);
+      my $removed_length = Fn->chomp((mutable string)$line);
       
       unless ($line eq "abc") {
+        return 0;
+      }
+      
+      unless ($removed_length == 1) {
         return 0;
       }
     }
 
     {
       my $line = copy "abc\r\n";
-      Fn->chomp((mutable string)$line);
+      my $removed_length = Fn->chomp((mutable string)$line);
       
       unless ($line eq "abc") {
+        return 0;
+      }
+      
+      unless ($removed_length == 2) {
         return 0;
       }
     }

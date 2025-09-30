@@ -23,7 +23,7 @@
     * Array element get operator can be used for tha class that has get method.
     * Hash value set operator can be used for tha class that has set method.
     * Hash value get operator can be used for tha class that has get method.
-    
+    * Fn#chomp method return the removed length.
   [Internal Changes]
     * Rename SPVM_OP_C_ID_ELEMENT_ACCESS to SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS.
     * Rename SPVM_OP_C_FLAG_ELEMENT_ACCESS to SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS.

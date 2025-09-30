@@ -245,9 +245,9 @@ Returns the absolute value of $value.
 
 =head2 chomp
 
-C<static method chomp : void ($string : mutable string);>
+C<static method chomp : int ($string : mutable string);>
 
-Removes C<\r\n> or C<\n> at the end of $string.
+Removes C<\r\n> or C<\n> at the end of $string, and returns the removed length.
 
 Exceptions:
 
