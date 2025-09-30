@@ -4021,7 +4021,13 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               is_valid_invocant_type = 0;
             }
             if (!is_valid_invocant_type) {
-              SPVM_COMPILER_error(compiler, "The invocant of the hash access must be a class type or an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The invocant of the hash value access must be a class type or an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            SPVM_TYPE* key_type = SPVM_CHECK_get_type(compiler, op_key);
+            if (!SPVM_TYPE_is_string_type(compiler, key_type->basic_type->id, key_type->dimension, key_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The key of the hash value access must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             

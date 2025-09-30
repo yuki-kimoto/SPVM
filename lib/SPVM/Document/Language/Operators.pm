@@ -2369,6 +2369,50 @@ Examples:
   my $z_ref = \$z;
   $z_ref->{re} = 2.5;
 
+=head3 Hash Value Get Operation
+
+The operation of getting field gets the value of a field of a class type.
+
+  INVOCANT->{KEY_OPERAND}
+
+I<INVOCANT-E<gt>{KEY_OPERAND}> is a L<hash value access|/"Hash Value Access">.
+
+This operation is replaced with C<get> method.
+
+  INVOCANT->get(KEY_OPERAND)
+
+Compilation Errors:
+
+Compiliation errors caused by the syntax of L<hash value access|/"Hash Value Access"> could occur.
+
+Examples:
+
+  my $hash = Hash->new({x => 1});
+  my $x = $hash->{"x"};
+
+=head3 Hash Value Set Operation
+
+The operation of setting field sets the field of a class type.
+
+  INVOCANT->{KEY_OPERAND} = OPERAND
+
+I<INVOCANT-E<gt>{KEY_OPERAND}> is a L<hash value access|/"Hash Value Access">.
+
+This operation is replaced with C<set> method.
+
+  INVOCANT->set(KEY_OPERAND, OPERAND)
+
+Compilation Errors:
+
+Compiliation errors caused by the syntax of L<hash value access|/"Hash Value Access"> could occur.
+
+The assignment must satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
+
+Examples:
+
+  my $hash = Hash->new({x => 1});
+  $hash->{"x"} = 2;
+
 =head3 Field Access
 
 The field access has the following syntax.
@@ -2380,6 +2424,26 @@ See L<Field Access Resolution|SPVM::Document::Language::Class/"Field Access Reso
 Examples:
 
   $point->{x}
+
+=head3 Hash Value Access
+
+The hash value access has the following syntax.
+
+  INVOCANT->{KEY_OPERAND}
+
+The type of I<INVOCANT> is a class type or an interface type.
+
+The type of I<KEY_OPERAND> is string type.
+
+Examples:
+  
+  $hash->{"x"};
+
+Compilation Errors:
+
+The type of INVOCANT must be a class type or an interface type. Otherwise a compilation error occurs.
+
+The type of KEY_OPERAND must be string type. Otherwise a compilation error occurs.
 
 =head3 Referenced Value Get Operation
 

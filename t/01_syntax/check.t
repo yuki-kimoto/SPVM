@@ -1144,6 +1144,19 @@ use Test::More;
   
 }
 
+# Hash Value Access
+{
+  {
+    my $source = 'class MyClass { static method main : void () { use Hash; my $hash = 1; $hash->{1}; } }';
+    compile_not_ok($source, q|The invocant of the hash value access must be a class type or an interface type.|);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { use Hash; my $hash = Hash->new; $hash->{1}; } }';
+    compile_not_ok($source, q|The key of the hash value access must be string type.|);
+  }
+}
+
 # Field Definition
 {
   {
