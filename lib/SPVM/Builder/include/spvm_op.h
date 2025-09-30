@@ -189,7 +189,7 @@ enum {
   SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS,
   SPVM_OP_C_ID_ASSIGN,
   SPVM_OP_C_ID_FIELD_ACCESS,
-  SPVM_OP_C_ID_HASH_ACCESS,
+  SPVM_OP_C_ID_HASH_VALUE_ACCESS,
   SPVM_OP_C_ID_VAR,
   SPVM_OP_C_ID_UNDEF,
   SPVM_OP_C_ID_ARRAY_LENGTH,
@@ -580,7 +580,7 @@ SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, const char* unresolved_bas
 
 SPVM_OP* SPVM_OP_clone_op_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access, SPVM_OP* op_var_invocant, SPVM_OP* op_name_field);
 
-SPVM_OP* SPVM_OP_clone_op_element_access(SPVM_COMPILER* compiler, SPVM_OP* op_element_access, SPVM_OP* op_var_array, SPVM_OP* op_var_index, int32_t is_hash_access);
+SPVM_OP* SPVM_OP_clone_op_element_access(SPVM_COMPILER* compiler, SPVM_OP* op_element_access, SPVM_OP* op_var_array, SPVM_OP* op_var_index, int32_t is_hash_value_access);
 
 SPVM_OP* SPVM_OP_clone_op_array_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access, SPVM_OP* op_name_field, SPVM_OP* op_element_access, SPVM_OP* op_var_array, SPVM_OP* op_var_index);
 

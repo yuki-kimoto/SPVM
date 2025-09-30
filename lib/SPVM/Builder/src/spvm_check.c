@@ -2820,7 +2820,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 break;
               }
             }
-            else if (op_dist->id == SPVM_OP_C_ID_HASH_ACCESS) {
+            else if (op_dist->id == SPVM_OP_C_ID_HASH_VALUE_ACCESS) {
               
               SPVM_OP* op_invocant = op_dist->first;
               SPVM_OP* op_key = op_dist->last;
@@ -3999,7 +3999,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
-          case SPVM_OP_C_ID_HASH_ACCESS: {
+          case SPVM_OP_C_ID_HASH_VALUE_ACCESS: {
             SPVM_OP* op_invocant = op_cur->first;
             SPVM_OP* op_key = op_cur->last;
             

@@ -53,7 +53,7 @@
 %type <opval> new array_init
 %type <opval> type_check type_cast can
 %type <opval> call_method
-%type <opval> array_element_access field_access hash_access
+%type <opval> array_element_access field_access hash_value_access
 %type <opval> weaken_field unweaken_field isweak_field
 %type <opval> sequential copy_fields
 
@@ -1027,7 +1027,7 @@ operator
   | array_init
   | array_element_access
   | field_access
-  | hash_access
+  | hash_value_access
   | isweak_field
   | call_method
   | sequential
@@ -1499,7 +1499,7 @@ array_element_access
       SPVM_OP* op_array_element_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
       $$ = SPVM_OP_build_element_access(compiler, op_array_element_access, $1, $3);
     }
-  | hash_access '[' operator ']'
+  | hash_value_access '[' operator ']'
     {
       SPVM_OP* op_array_element_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
       $$ = SPVM_OP_build_element_access(compiler, op_array_element_access, $1, $3);
@@ -1521,32 +1521,32 @@ field_access
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       $$ = SPVM_OP_build_field_access(compiler, op_field_access, $1, $3);
     }
-  | hash_access '{' field_name '}'
+  | hash_value_access '{' field_name '}'
     {
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       $$ = SPVM_OP_build_field_access(compiler, op_field_access, $1, $3);
     }
 
-hash_access
+hash_value_access
   : operator ARROW '{' operator '}'
     {
-      SPVM_OP* op_hash_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_ACCESS, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_binary_op(compiler, op_hash_access, $1, $4);
+      SPVM_OP* op_hash_value_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_VALUE_ACCESS, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_binary_op(compiler, op_hash_value_access, $1, $4);
     }
   | array_element_access '{' operator '}'
     {
-      SPVM_OP* op_hash_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_ACCESS, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_binary_op(compiler, op_hash_access, $1, $3);
+      SPVM_OP* op_hash_value_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_VALUE_ACCESS, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_binary_op(compiler, op_hash_value_access, $1, $3);
     }
   | field_access '{' operator '}'
     {
-      SPVM_OP* op_hash_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_ACCESS, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_binary_op(compiler, op_hash_access, $1, $3);
+      SPVM_OP* op_hash_value_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_VALUE_ACCESS, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_binary_op(compiler, op_hash_value_access, $1, $3);
     }
-  | hash_access '{' operator '}'
+  | hash_value_access '{' operator '}'
     {
-      SPVM_OP* op_hash_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_ACCESS, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_binary_op(compiler, op_hash_access, $1, $3);
+      SPVM_OP* op_hash_value_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_VALUE_ACCESS, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_binary_op(compiler, op_hash_value_access, $1, $3);
     }
 
 weaken_field

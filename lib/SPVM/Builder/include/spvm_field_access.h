@@ -9,7 +9,7 @@
 struct spvm_field_access {
   SPVM_OP* op_name;
   SPVM_FIELD* field;
-  int8_t is_hash_access;
+  int8_t is_hash_value_access;
 };
 
 SPVM_FIELD_ACCESS* SPVM_FIELD_ACCESS_new(SPVM_COMPILER* compiler);

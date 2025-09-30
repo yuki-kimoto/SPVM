@@ -661,7 +661,7 @@ static const char *const yytname[] =
   "bit_operator", "comparison_operator", "string_concatenation",
   "logical_operator", "defined_or", "type_check", "type_cast", "can",
   "assign", "new", "array_init", "call_method", "array_element_access",
-  "field_access", "hash_access", "weaken_field", "unweaken_field",
+  "field_access", "hash_value_access", "weaken_field", "unweaken_field",
   "isweak_field", "warn", "copy_fields", "exists", "delete", YY_NULLPTR
 };
 #endif
@@ -4956,8 +4956,8 @@ yyreduce:
   case 314:
 #line 1532 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_hash_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_ACCESS, compiler->current_file, compiler->current_line);
-      (yyval.opval) = SPVM_OP_build_binary_op(compiler, op_hash_access, (yyvsp[-4].opval), (yyvsp[-1].opval));
+      SPVM_OP* op_hash_value_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_VALUE_ACCESS, compiler->current_file, compiler->current_line);
+      (yyval.opval) = SPVM_OP_build_binary_op(compiler, op_hash_value_access, (yyvsp[-4].opval), (yyvsp[-1].opval));
     }
 #line 4963 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -4965,8 +4965,8 @@ yyreduce:
   case 315:
 #line 1537 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_hash_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_ACCESS, compiler->current_file, compiler->current_line);
-      (yyval.opval) = SPVM_OP_build_binary_op(compiler, op_hash_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
+      SPVM_OP* op_hash_value_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_VALUE_ACCESS, compiler->current_file, compiler->current_line);
+      (yyval.opval) = SPVM_OP_build_binary_op(compiler, op_hash_value_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
     }
 #line 4972 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -4974,8 +4974,8 @@ yyreduce:
   case 316:
 #line 1542 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_hash_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_ACCESS, compiler->current_file, compiler->current_line);
-      (yyval.opval) = SPVM_OP_build_binary_op(compiler, op_hash_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
+      SPVM_OP* op_hash_value_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_VALUE_ACCESS, compiler->current_file, compiler->current_line);
+      (yyval.opval) = SPVM_OP_build_binary_op(compiler, op_hash_value_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
     }
 #line 4981 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -4983,8 +4983,8 @@ yyreduce:
   case 317:
 #line 1547 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_hash_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_ACCESS, compiler->current_file, compiler->current_line);
-      (yyval.opval) = SPVM_OP_build_binary_op(compiler, op_hash_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
+      SPVM_OP* op_hash_value_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_HASH_VALUE_ACCESS, compiler->current_file, compiler->current_line);
+      (yyval.opval) = SPVM_OP_build_binary_op(compiler, op_hash_value_access, (yyvsp[-3].opval), (yyvsp[-1].opval));
     }
 #line 4990 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
