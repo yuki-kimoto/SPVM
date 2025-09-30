@@ -1969,3 +1969,15 @@ int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, 
   
   return 1;
 }
+
+int32_t SPVM_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag, int32_t interface_basic_type_id) {
+  
+  int32_t has_interface = 0;
+  
+  if (SPVM_TYPE_is_class_type(compiler, basic_type_id, dimension, flag) || SPVM_TYPE_is_interface_type(compiler, basic_type_id, dimension, flag)) {
+    has_interface = SPVM_BASIC_TYPE_has_interface(compiler, basic_type_id, interface_basic_type_id, NULL);
+  }
+  
+  return has_interface;
+}
+
