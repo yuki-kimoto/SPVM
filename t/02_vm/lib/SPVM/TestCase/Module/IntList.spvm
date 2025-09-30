@@ -128,6 +128,15 @@ class TestCase::Module::IntList {
       }
     }
     
+    # Countable interface
+    {
+      my $list = IntList->new_len(0);
+      
+      unless ($list isa Countable) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
