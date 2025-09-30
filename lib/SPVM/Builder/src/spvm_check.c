@@ -3919,6 +3919,69 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
+          case SPVM_OP_C_ID_HASH_ACCESS: {
+            SPVM_OP* op_invocant = op_cur->first;
+            SPVM_OP* op_key = op_cur->last;
+            
+            // Invokant type check
+            SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_invocant);
+            int32_t is_valid_invocant_type;
+            if (invocant_type) {
+              if (SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                is_valid_invocant_type = 1;
+              }
+              else if (SPVM_TYPE_is_interface_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                is_valid_invocant_type = 1;
+              }
+              else {
+                is_valid_invocant_type = 0;
+              }
+            }
+            else {
+              is_valid_invocant_type = 0;
+            }
+            if (!is_valid_invocant_type) {
+              SPVM_COMPILER_error(compiler, "The invocant of the hash access must be a class type or an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            // Replace hash access with setter or getter
+            // Setter: $hash->{$key} = $operator to $hash->set($key, $operator);
+            if (op_cur->is_dist) {
+              SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
+              SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "set", op_cur->file, op_cur->line);
+              SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
+              SPVM_OP_cut_op(compiler, op_invocant);
+              SPVM_OP_cut_op(compiler, op_key);
+              SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_key);
+              
+              SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
+              
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+              
+              SPVM_OP_replace_op(compiler, op_stab, op_call_method);
+              
+              op_cur = op_operators->last;
+            }
+            // Getter: $hash->{$key} to $hash->get($key);
+            else {
+              SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
+              SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "get", op_cur->file, op_cur->line);
+              SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
+              SPVM_OP_cut_op(compiler, op_invocant);
+              SPVM_OP_cut_op(compiler, op_key);
+              
+              SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
+              
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+              
+              SPVM_OP_replace_op(compiler, op_stab, op_call_method);
+              
+              op_cur = op_operators->last;
+            }
+            
+            break;
+          }
           case SPVM_OP_C_ID_CAN: {
             SPVM_OP* op_var = op_cur->first;
             SPVM_OP* op_name_method = op_cur->last;
