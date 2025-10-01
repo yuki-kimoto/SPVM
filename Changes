@@ -1,6 +1,10 @@
 0.990095 2025-10-01
   [Changes with Performance Degradation]
     * The offset of the internal array in List object always start at 0. shift method becomes O(n) instead of O(1).
+      This is because one wants to sort internal array.
+      
+  [New Features]
+    * Add QueueList class.
     
 0.990094 2025-10-01
   * Support minus index in the following methods.

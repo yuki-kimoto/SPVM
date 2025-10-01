@@ -58,7 +58,7 @@ SPVM::List - Dynamic Object Array
 
 =head1 Description
 
-C<List> is the dynamic object array that has a specified object array type.
+C<List> class in L<SPVM> is the dynamic object array that has a specified object array type.
 
 =head1 Details
 
@@ -82,13 +82,13 @@ The elements in the range that is greater than or equal to L</"length"> field an
 
 =head2 capacity
 
-  has capacity : ro int;
+C<has capacity : ro int;>
 
 The capacity. This is the length of the internally reserved elements to extend the length of the list.
 
 =head2 length
 
-  has length : ro int;
+C<has length : ro int;>
 
 The length of the list.
 

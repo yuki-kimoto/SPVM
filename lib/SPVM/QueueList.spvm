@@ -12,7 +12,7 @@ class QueueList extends List {
     DEFAULT_CAPACITY = 4,
   }
   
-  # Fields
+  # Undocumented Fields
   has offset : int;
   
   # Class methods
