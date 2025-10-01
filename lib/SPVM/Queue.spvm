@@ -1,6 +1,444 @@
-# Copyright (c) 2025 Yuki Kimoto
+# Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class Queue {
+class Queue extends List {
   version_from SPVM;
+  
+  use Fn;
+  use Array;
+  
+  # Enumerations
+  private enum {
+    DEFAULT_CAPACITY = 4,
+  }
+  
+  # Fields
+  has offset : int;
+  
+  # Class methods
+  static method new : Queue ($array : object[] = undef, $capacity : int = -1) {
+    my $self = new Queue;
+    
+    $self->init($array, $capacity);
+    
+    return $self;
+  }
+  
+  protected method init : void ($array : object[] = undef, $capacity : int = -1) {
+    
+    my $length : int;
+    
+    if ($array) {
+      $length = @$array;
+    }
+    else {
+      $length = 0;
+    }
+    
+    $self->init_len($array, $length, $capacity);
+    
+    if ($array) {
+      Array->memcpy_object_address($self->{array}, 0, $array, 0, $length);
+    }
+    
+  }
+  
+  static method new_len : Queue ($proto_array : object[], $length : int, $capacity : int = -1) {
+    my $self = new Queue;
+    
+    $self->init_len($proto_array, $length, $capacity);
+    
+    return $self;
+  }
+  
+  protected method init_len : void ($proto_array : object[], $length : int, $capacity : int = -1) {
+    
+    unless ($proto_array) {
+      $proto_array = new object[0];
+    }
+    
+    unless ($length >= 0) {
+      die "The length \$length must be greater than or equal to 0.";
+    }
+    
+    if ($capacity < 0) {
+      $capacity = &DEFAULT_CAPACITY;
+    }
+    
+    if ($length > $capacity) {
+      $capacity = $length;
+    }
+    
+    $self->{capacity} = $capacity;
+    $self->{length} = $length;
+    $self->{array} = Array->new_proto($proto_array, $capacity);
+  }
+  
+  # Instance methods
+  method get : element ($index : int) {
+    my $length = $self->length;
+    
+    unless ($index >= 0) {
+      $index = $length + $index;
+    }
+    
+    unless ($index >= 0) {
+      die "The index \$index must be greater than or equal to 0.";
+    }
+    
+    unless ($index < $length) {
+      die "The index \$index must be less than the length of \$list.";
+    }
+    
+    my $offset = $self->{offset};
+    
+    my $capacity = $self->{capacity};
+    
+    my $real_index = ($offset + $index) % $capacity;
+    
+    my $element = $self->{array}[$real_index];
+    
+    return $element;
+  }
+  
+  method insert : void ($index : int, $element : object) {
+    my $length = $self->{length};
+    
+    unless ($index >= 0) {
+      die "The index \$index must be greater than or equal to 0.";
+    }
+    
+    unless ($index <= $length) {
+      die "The index \$index must be less than or equal to the length of \$list.";
+    }
+    
+    my $remove_length = 0;
+    
+    my $array = (object[])undef;
+    
+    if ($element) {
+      $array = Array->new_array_proto_element($element, 1);
+      $array->[0] = $element;
+    }
+    
+    $self->replace($index, $remove_length, $array);
+  }
+  
+  method pop : element () {
+    my $length = $self->length;
+    
+    unless ($length > 0) {
+      die "The length of the list \$list must be greater than 0.";
+    }
+    
+    my $index = $length - 1;
+    
+    my $ret = $self->get($index);
+    
+    $self->set($index, undef);
+    
+    --$self->{length};
+    
+    return $ret;
+  }
+  
+  method push : void ($element : object) {
+    
+    my $length = $self->{length};
+    
+    my $capacity = $self->{capacity};
+    
+    my $new_length = $length + 1;
+    
+    $self->_extend($new_length);
+    
+    my $index = $length;
+    
+    $self->{length} = $new_length;
+    
+    $self->set($index, $element);
+  }
+  
+  method remove : element ($index : int) {
+    
+    unless ($index >= 0) {
+      die "The index \$index must be greater than or equal to 0.";
+    }
+    
+    my $length = $self->{length};
+    
+    unless ($index < $length) {
+      die "The index \$index must be less than the length of \$list.";
+    }
+    
+    my $remove_value = $self->get($index);
+    
+    my $remove_length = 1;
+    $self->replace($index, $remove_length, undef);
+    
+    return $remove_value;
+  }
+  
+  method replace : void ($offset : int, $remove_length : int, $replace : object[] = undef) {
+    $self->splice($offset, $remove_length, $replace);
+  }
+  
+  method splice : object[] ($offset : int, $remove_length : int, $replace : object[] = undef) {
+    unless ($offset >= 0) {
+      die "The offset \$offset must be greater than or equal to 0.";
+    }
+    
+    unless ($remove_length >= 0) {
+      die "The removal length \$remove_length must be greater than or equal to 0.";
+    }
+    unless ($offset + $remove_length <= $self->{length}) {
+      die "The offset \$offset + the removal length \$remove_length must be less than or equal to the length of this list.";
+    }
+    
+    my $replace_length = 0;
+    if ($replace) {
+      $replace_length = @$replace;
+    }
+    
+    my $removed_elements = Array->copy_object_address($self->{array}, $offset, $remove_length);
+    
+    my $new_length = $self->{length} - $remove_length + $replace_length;
+    $self->_extend($new_length);
+    
+    my $diff_length = $replace_length - $remove_length;
+    
+    if ($diff_length == 0) {
+      # Do nothing
+    }
+    elsif ($diff_length > 0) {
+      my $move_length = $self->{length} - $offset - $remove_length;
+      
+      $self->{length} += $diff_length;
+      
+      for (my $i = $move_length - 1; $i >= 0; $i--) {
+        my $element = $self->get($offset + $remove_length + $i);
+        $self->set($offset + $replace_length + $i, $element);
+      }
+    }
+    elsif ($diff_length < 0) {
+      my $move_length = $self->{length} - $offset - $remove_length;
+      
+      for (my $i = 0; $i < $move_length; $i++) {
+        my $element = $self->get($offset + $remove_length + $i);
+        $self->set($offset + $replace_length + $i, $element);
+        $self->set($offset + $remove_length + $i, undef);
+      }
+    }
+    
+    $self->{length} = $new_length;
+    
+    if ($replace) {
+      for (my $i = 0; $i < $replace_length; $i++) {
+        my $element = $replace->[$i];
+        $self->set($offset + $i, $element);
+      }
+    }
+    
+    return $removed_elements;
+  }
+  
+  method reserve : void ($new_capacity : int) {
+    my $just = 1;
+    $self->_extend($new_capacity, $just);
+  }
+  
+  method resize : void ($new_length : int) {
+    unless ($new_length >= 0) {
+      die "The new length \$new_length must be greater than or equal to 0.";
+    }
+    
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($new_length > $length) {
+      $self->_extend($new_length);
+    }
+    elsif ($new_length < $length) {
+      for (my $index = $new_length; $index < $length; $index++) {
+        $self->set($index, undef);
+      }
+    }
+    $self->{length} = $new_length;
+  }
+  
+  method set : void ($index : int, $element : object) {
+    my $length = $self->length;
+    
+    unless ($index >= 0) {
+      $index = $length + $index;
+    }
+    
+    unless ($index >= 0) {
+      die "The index \$index must be greater than or equal to 0.";
+    }
+    
+    unless ($index < $length) {
+      die "The index \$index must be less than the length of \$list.";
+    }
+    
+    my $offset = $self->{offset};
+    
+    my $capacity = $self->{capacity};
+    
+    my $real_index = ($offset + $index) % $capacity;
+    
+    $self->{array}[$real_index] = $element;
+  }
+  
+  method shift : element () {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    unless ($length > 0) {
+      die "The length of the list \$list must be greater than 0.";
+    }
+    
+    my $array = $self->{array};
+    
+    my $element = $self->get(0);
+    
+    $self->set(0, undef);
+    
+    $self->{length}--;
+    
+    $self->{offset}++;
+    
+    if ($self->{offset} >= $self->{capacity}) {
+      $self->{offset} -= $self->{capacity};
+    }
+    
+    return $element;
+  }
+  
+  method to_array : object[] () {
+    my $length = $self->{length};
+    
+    my $new_array = Array->new_proto($self->{array}, $length);
+    
+    my $capacity = $self->{capacity};
+    
+    my $offset = $self->{offset};
+    
+    my $array = $self->{array};
+    
+    my $leftover = $length - ($capacity - $offset);
+    
+    if ($leftover > 0) {
+      Array->memcpy_object_address($new_array, 0, $array, $offset, $length - $leftover);
+      Array->memcpy_object_address($new_array, $length - $leftover, $array, 0, $leftover);
+    }
+    else {
+      Array->memcpy_object_address($new_array, 0, $array, $offset, $length);
+    }
+    
+    return $new_array;
+  }
+  
+  method unshift : void ($element : object) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    my $new_length = $length + 1;
+    $self->_extend($new_length);
+    
+    my $array = $self->{array};
+    
+    $self->{offset}--;
+    
+    if ($self->{offset} < 0) {
+      $self->{offset} = $self->{capacity} - 1;
+    }
+    
+    $self->{length}++;
+    
+    $self->set(0, $element);
+    
+  }
+  
+  protected method _extend : void ($new_capacity_at_least : int, $just : int = 0) {
+    my $capacity = $self->{capacity};
+    
+    unless ($new_capacity_at_least > $capacity) {
+      return;
+    }
+    
+    my $new_capacity = 0;
+    
+    if ($just) {
+      $new_capacity = $new_capacity_at_least;
+    }
+    else {
+      my $base_capacity = 0;
+      if ($capacity < $new_capacity_at_least) {
+        $base_capacity = $new_capacity_at_least;
+      }
+      else {
+        $base_capacity = $capacity;
+      }
+      
+      $new_capacity = $base_capacity * 2;
+    }
+    
+    my $new_array = Array->new_proto($self->{array}, $new_capacity);
+    
+    my $length = $self->{length};
+    my $array = $self->{array};
+    
+    unless ($capacity == @$array) {
+      die "[Unexpected Error]The capacity field must be equal to the length of the array field.";
+    }
+    
+    my $offset = $self->{offset};
+    
+    Array->memcpy_object_address($new_array, $offset, $array, $offset, $capacity - $offset);
+    
+    Array->memcpy_object_address($new_array, $capacity, $array, 0, $offset);
+    
+    $self->{array} = $new_array;
+    $self->{capacity} = $new_capacity;
+  }
+  
+  method clone : Queue () {
+    
+    my $clone = &new_len($self->{array}, $self->length, $self->capacity);
+    
+    for (my $i = 0; $i < $self->length; $i++) {
+      if ($self->{array}->[$i]) {
+        $clone->{array}->[$i] = $self->{array}->[$i]->(Cloneable)->clone;
+      }
+    }
+    
+    return $clone;
+  }
+  
+  method push_ : void ($elements : object[]) {
+    
+    unless ($elements) {
+      die "The elements \$elements must be defined.";
+    }
+    
+    for my $element (@$elements) {
+      $self->push($element);
+    }
+    
+  }
+  
+  method unshift_ : void ($elements : object[]) {
+    
+    unless ($elements) {
+      die "The elements \$elements must be defined.";
+    }
+    
+    for (my $i = @$elements - 1; $i >= 0; $i--) {
+      my $element = $elements->[$i];
+      $self->unshift($element);
+    }
+    
+  }
+  
 }

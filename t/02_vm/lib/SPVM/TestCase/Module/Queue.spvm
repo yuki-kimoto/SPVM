@@ -1,0 +1,1021 @@
+class TestCase::Module::Queue {
+  use Int;
+  use Queue;
+  use Fn;
+  use Array;
+  
+  # Fields
+  static method fields : int () {
+    # length
+    {
+      my $list = Queue->new([(string)1, 2, 3]);
+      
+      # length
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      # capacity
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  # Class methods
+  static method new : int () {
+    # new with undef
+    {
+      my $list = Queue->new((object[])undef);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      
+      $list->push(Int->new(1));
+      unless ((int)$list->get(0) == 1) {
+        return 0;
+      }
+    }
+    
+    # new without arguments
+    {
+      my $list = Queue->new;
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+      $list->push(Int->new(1));
+      unless ((int)$list->get(0) == 1) {
+        return 0;
+      }
+    }
+    
+    # new with object[]
+    {
+      my $list = Queue->new(new object[3]);
+      
+      unless ($list->length == 3) {
+        return 0;
+      }
+      
+      unless ($list->to_array isa object[]) {
+        return 0;
+      }
+    }
+    {
+      my $list = Queue->new(new object[5]);
+      
+      unless ($list->length == 5) {
+        return 0;
+      }
+      
+      unless ($list->capacity == 5) {
+        return 0;
+      }
+    }
+    
+    # new with Int[]
+    {
+      my $list = Queue->new(new Int[3]);
+      
+      unless ($list->length == 3) {
+        return 0;
+      }
+      
+      unless ($list->to_array isa Int[]) {
+        return 0;
+      }
+    }
+    
+    # Countable interface
+    {
+      my $list = Queue->new_len(new Int[0], 3);
+      
+      unless ($list isa Countable) {
+        return 0;
+      }
+      
+      my $length = @$list;
+      
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method new_len : int () {
+    {
+      my $list = Queue->new_len(new Int[0], 32);
+      
+      unless ($list->length == 32) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = Queue->new_len(new Int[0], 0, 10);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      unless ($list->capacity == 10) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = Queue->new_len(new Int[0], 0);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    
+    {
+      eval { Queue->new_len(new Int[0], -1); };
+      unless (Fn->contains($@, "The length \$length must be greater than or equal to 0")) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method get : int () {
+    
+    {
+      my $list = Queue->new([Int->new(1), undef]);
+      unless (((Int)$list->get(0))->value == 1) {
+        return 0;
+      }
+      unless ($list->get(1) == undef) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = Queue->new([Int->new(1), undef]);
+      unless (((Int)$list->get(-2))->value == 1) {
+        return 0;
+      }
+    }
+    
+    # Generics
+    {
+      my $list = (Queue of Int)Queue->new([Int->new(1), undef]);
+      unless ($list->get(0)->value == 1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = Queue->new([Int->new(1), undef]);
+      
+      {
+        eval { $list->get(-($list->length + 1)); };
+        unless (Fn->contains($@, "The index \$index must be greater than or equal to 0")) {
+          return 0;
+        }
+      }
+      {
+        eval { $list->get(3); };
+        unless (Fn->contains($@, "The index \$index must be less than the length of \$list")) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  # Instance methods
+  static method insert : int () {
+    # Insert to first
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = Queue->new([(object)$x1, $x2, $x3]);
+      $list->insert(0 => $x4);
+      unless (Array->equals_object_address($list->to_array, [$x4, $x1, $x2, $x3])) {
+        return 0;
+      }
+    }
+    
+    # Insert
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = Queue->new([(object)$x1, $x2, $x3]);
+      $list->insert(2 => $x4);
+      unless (Array->equals_object_address($list->to_array, [$x1, $x2, $x4, $x3])) {
+        return 0;
+      }
+    }
+    
+    # Insert to last
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = Queue->new([(object)$x1, $x2, $x3]);
+      $list->insert(3 => $x4);
+      unless (Array->equals_object_address($list->to_array, [$x1, $x2, $x3, $x4])) {
+        return 0;
+      }
+    }
+    
+    # Extend
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = Queue->new([(object)$x1, $x2, $x3]);
+      $list->insert(0 => $x4);
+    }
+    
+    return 1;
+  }
+  
+  static method pop : int () {
+    my $list = Queue->new([Int->new(1), undef, Int->new(2)]);
+    unless (((Int)$list->pop)->value == 2) {
+      return 0;
+    }
+    unless ($list->pop == undef) {
+      return 0;
+    }
+    unless (((Int)$list->pop)->value == 1) {
+      return 0;
+    }
+    unless (TestCase::Module::Queue->equals_list($list, Queue->new_len([], 0))) {
+      return 0;
+    }
+    
+    # Generics
+    {
+      my $list = (Queue of Int)Queue->new([Int->new(1), undef, Int->new(2)]);
+      unless ($list->pop->value == 2) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method push : int () {
+    my $list = Queue->new_len(new Int[0], 0);
+    
+    my $v1 = Int->new(1);
+    $list->push($v1);
+    unless (TestCase::Module::Queue->equals_list($list, Queue->new([$v1]))) {
+      return 0;
+    }
+    
+    my $v2 = Int->new(2);
+    $list->push($v2);
+    unless (TestCase::Module::Queue->equals_list($list, Queue->new([$v1, $v2]))) {
+      return 0;
+    }
+    
+    my $v3 = Int->new(3);
+    $list->push($v3);
+    unless (TestCase::Module::Queue->equals_list($list, Queue->new([$v1, $v2, $v3]))) {
+      return 0;
+    }
+    
+    # no reallocation
+    my $v4 = Int->new(3);
+    $list->push($v4);
+    unless (TestCase::Module::Queue->equals_list($list, Queue->new([$v1, $v2, $v3, $v4]))) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method remove : int () {
+    # Remove
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = Queue->new([(object)$x1, $x2, $x3, $x4]);
+      my $value = $list->remove(1);
+      unless (Array->equals_object_address($list->to_array, [$x1, $x3, $x4])) {
+        return 0;
+      }
+      unless ($value == $x2) {
+        return 0;
+      }
+    }
+    
+    # Remove last
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = Queue->new([(object)$x1, $x2, $x3]);
+      $list->remove(2);
+      unless (Array->equals_object_address($list->to_array, [$x1, $x2])) {
+        return 0;
+      }
+    }
+    
+    # Remove first
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = Queue->new([(object)$x1, $x2, $x3]);
+      $list->remove(0);
+      unless (Array->equals_object_address($list->to_array, [$x2, $x3])) {
+        return 0;
+      }
+    }
+    
+    # Remove
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = (Queue of string)Queue->new([$x1, $x2, $x3, $x4]);
+      
+      unless ($list->remove(0) eq "1") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method replace : int () {
+    {
+      my $list = Queue->new([(string)1, 2, 3, 4]);
+      $list->replace(1, 2, undef);
+      unless (Array->equals_string((string[])$list->to_array, [(string)1, 4])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = Queue->new([(string)1, 2, 3, 4]);
+      $list->replace(1, 2, [(string)20, 30]);
+      unless (Array->equals_string((string[])$list->to_array, [(string)1, 20, 30, 4])) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = Queue->new([(string)1, 2, 3, 4]);
+      $list->replace(0, 2, [(string)10, 20]);
+      unless (Array->equals_string((string[])$list->to_array, [(string)10, 20, 3, 4])) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = Queue->new([(string)1, 2, 3, 4]);
+      $list->replace(2, 2, [(string)30, 40]);
+      unless (Array->equals_string((string[])$list->to_array, [(string)1, 2, 30, 40])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = Queue->new([(string)1, 2, 3, 4]);
+      $list->replace(4, 0, [(string)50, 60]);
+      unless (Array->equals_string((string[])$list->to_array, [(string)1, 2, 3, 4, 50, 60])) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = Queue->new([(string)1, 2, 3, 4]);
+      eval { $list->replace(-1, 3, [(string)30, 40]); };
+      unless (Fn->contains($@, "The offset \$offset must be greater than or equal to 0")) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = Queue->new([(string)1, 2, 3, 4]);
+      eval { $list->replace(2, 3, [(string)30, 40, 50]); };
+      unless (Fn->contains($@, "The offset \$offset + the removal length \$remove_length must be less than or equal to the length of this list")) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = Queue->new([(string)1]);
+      $list->replace(1, 0, [(string)2, 3]);
+      unless (Array->equals_string((string[])$list->to_array, [(string)1, 2, 3])) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = Queue->new([(string)1]);
+      eval { $list->replace(2, 0, [(string)1, 2]); };
+      unless (Fn->contains($@, "The offset \$offset + the removal length \$remove_length must be less than or equal to the length of this list")) {
+        return 0;
+      }
+    }
+    {
+      my $list = Queue->new([(string)1]);
+      eval { $list->replace(1, 2, [(string)1, 2]); };
+      unless (Fn->contains($@, "The offset \$offset + the removal length \$remove_length must be less than or equal to the length of this list")) {
+        return 0;
+      }
+    }
+
+    {
+      my $list = Queue->new([(string)1]);
+      eval { $list->replace(2, 2, [(string)1, 2]); };
+      unless (Fn->contains($@, "The offset \$offset + the removal length \$remove_length must be less than or equal to the length of this list")) {
+        return 0;
+      }
+    }
+    
+    
+    
+    return 1;
+  }
+  
+  static method splice : int () {
+  
+    {
+      my $list = Queue->new([(string)1, 2, 3, 4]);
+      my $removed = $list->splice(1, 2, [(string)20, 30]);
+      
+      unless (Array->equals_string($list->to_array->(string[]), [(string)1, 20, 30, 4])) {
+        return 0;
+      }
+      
+      unless (Array->equals_string((string[])$removed, [(string)2, 3])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method reserve : int () {
+    {
+      my $list = Queue->new([(object)1]);
+      $list->reserve(4);
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+      $list->reserve(0);
+      unless ($list->capacity == 4) {
+        return 0;
+      }
+    }
+    {
+      my $list = Queue->new([(object)1, 2, 3]);
+      my $array = $list->to_array;
+      $list->reserve(5);
+      unless ($list->capacity == 5) {
+        return 0;
+      }
+      
+      unless (Array->equals_object_address($list->to_array, $array)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method resize : int () {
+    my $a = "a";
+    my $b = "b";
+    my $c = "c";
+    # 3 to 3
+    {
+      my $list = Queue->new([]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(3);
+      unless ($list->length == 3) {
+        return 0;
+      }
+      unless ($list->get(0) == $a && $list->get(1) == $b && $list->get(2) == $c) {
+        return 0;
+      }
+    }
+    # 3 to 0
+    {
+      my $list = Queue->new([]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(0);
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+    # 3 to 4
+    {
+      my $list = Queue->new([]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(4);
+      unless ($list->length == 4) {
+        return 0;
+      }
+      unless ($list->get(3) == undef && $list->get(0) == $a && $list->get(1) == $b && $list->get(2) == $c) {
+        return 0;
+      }
+    }
+    # 3 to 32(over capacity)
+    {
+      my $list = Queue->new([]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(32);
+      unless ($list->length == 32) {
+        return 0;
+      }
+      unless ($list->get(3) == undef && $list->get(31) == undef) {
+        return 0;
+      }
+    }
+    
+    # 3 to 2, 2 to 3 again
+    {
+      my $list = Queue->new([]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(2);
+      
+      unless ($list->length == 2) {
+        return 0;
+      }
+      $list->resize(3);
+      
+      unless ($list->length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(2) == undef) {
+        return 0;
+      }
+    }
+    
+    # Exception - New length must be greater than or equal to 0
+    {
+      my $list = Queue->new([]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      eval { $list->resize(-1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unshift : int () {
+    my $list = Queue->new_len(new Int[0], 0);
+    
+    my $v1 = Int->new(1);
+    $list->unshift($v1);
+    
+    my $v2 = Int->new(2);
+    $list->unshift($v2);
+    
+    my $v3 = Int->new(3);
+    $list->unshift($v3);
+    
+    my $v4 = Int->new(4);
+    $list->unshift($v4);
+    
+    my $v5 = Int->new(5);
+    $list->unshift($v5);
+    
+    unless (TestCase::Module::Queue->equals_list($list, Queue->new([$v5, $v4, $v3, $v2, $v1]))) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method shift : int () {
+    my $list = Queue->new([Int->new(1), undef, Int->new(2)]);
+    unless (((Int)$list->shift)->value == 1) {
+      return 0;
+    }
+    unless ($list->shift == undef) {
+      return 0;
+    }
+    unless (((Int)$list->shift)->value == 2) {
+      return 0;
+    }
+    
+    # Generics
+    {
+      my $list = (Queue of Int)Queue->new([Int->new(1), undef, Int->new(2)]);
+      unless ($list->shift->value == 1) {
+        return 0;
+      }
+    }
+    
+    eval {
+      $list->shift;
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    
+    unless (TestCase::Module::Queue->equals_list($list, Queue->new(new object[0]))) {
+      return 0;
+    }
+    return 1;
+  }
+
+  static method set : int () {
+    my $list = Queue->new([Int->new(1), undef]);
+
+    my $v1 = Int->new(2);
+    $list->set(0, undef);
+    $list->set(1, $v1);
+    my $expected = new Int[2];
+    $expected->[1] = $v1;
+    unless (TestCase::Module::Queue->equals_list($list, Queue->new($expected))) {
+      return 0;
+    }
+    
+    {
+      eval { $list->set(-($list->length + 1), 1); };
+      unless (Fn->contains($@,"The index \$index must be greater than or equal to 0")) {
+        return 0;
+      }
+    }
+    {
+      eval { $list->set(3, 1); };
+      unless (Fn->contains($@, "The index \$index must be less than the length of \$list")) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = Queue->new([(string)0, 0, 0]);
+      
+      $list->set(-1 => "3");
+      
+      unless ($list->get($list->length - 1)->(string) eq "3") {
+        return 0;
+      }
+      
+    }
+    
+    
+    return 1;
+  }
+  
+  static method to_array : int () {
+    {
+      my $list = Queue->new([(object)"abc", 1, 3.14]);
+      my $objects = $list->to_array;
+      
+      unless ($objects isa object[]) {
+        return 0;
+      }
+      
+      unless ((string)($objects->[0]) eq "abc" &&
+          ((Int)$objects->[1])->value == 1 &&
+          ((Double)$objects->[2])->value == 3.14) {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = Queue->new([Int->new(1), Int->new(2)]);
+      my $objects = (Int[])$list->to_array;
+      
+      unless ($objects isa Int[]) {
+        return 0;
+      }
+      
+      unless ($objects->[0]->value == 1 && $objects->[1]->value == 2) {
+        return 0;
+      }
+      
+      eval { (Long[])$list->to_array; };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    
+    
+    return 1;
+  }
+  
+  static method extra : int () {
+    {
+      my $list = Queue->new_len(new Int[0], 4);
+      for (my $i = 0; $i < 16; $i++) {
+        $list->push(1);
+        $list->shift;
+      }
+    }
+    
+    {
+      my $list = Queue->new_len(new Int[0], 4);
+      for (my $i = 0; $i < 16; $i++) {
+        $list->unshift(1);
+        $list->pop;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method equals_list : int ($got : Queue, $expected : Queue) {
+    return Array->equals_object_address($got->to_array, $expected->to_array);
+  }
+  
+  static method check_offset_logic : int () {
+    
+    {
+      my $list = Queue->new(new string[0]);
+      
+      $list->push("1");
+      $list->push("2");
+      $list->push("3");
+      
+      $list->shift;
+      
+      unless (Array->equals_string($list->to_array->(string[]), ["2", "3"])) {
+        return 0;
+      }
+      
+      unless ($list->get(1)->(string) eq "3") {
+        return 0;
+      }
+      
+      $list->set(1, "0");
+      
+      unless ($list->get(1)->(string) eq "0") {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = Queue->new(new string[0]);
+      
+      $list->push("1");
+      $list->push("2");
+      $list->push("3");
+      $list->push("4");
+      $list->push("5");
+      
+      $list->shift;
+      
+      unless (Array->equals_string($list->to_array->(string[]), ["2", "3", "4", "5"])) {
+        return 0;
+      }
+      
+      unless ($list->get(1)->(string) eq "3") {
+        return 0;
+      }
+      
+      $list->set(1, "0");
+      
+      unless ($list->get(1)->(string) eq "0") {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = Queue->new(new string[0]);
+      
+      $list->unshift("1");
+      $list->unshift("2");
+      $list->unshift("3");
+      
+      $list->pop;
+      
+      unless (Array->equals_string($list->to_array->(string[]), ["3", "2"])) {
+        return 0;
+      }
+      
+      unless ($list->get(1)->(string) eq "2") {
+        return 0;
+      }
+      
+      $list->set(1, "0");
+      
+      unless ($list->get(1)->(string) eq "0") {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = Queue->new(new string[0]);
+      
+      $list->unshift("1");
+      $list->unshift("2");
+      $list->unshift("3");
+      $list->unshift("4");
+      $list->unshift("5");
+      
+      $list->pop;
+      
+      unless (Array->equals_string($list->to_array->(string[]), ["5", "4", "3", "2"])) {
+        return 0;
+      }
+      
+      unless ($list->get(1)->(string) eq "4") {
+        return 0;
+      }
+      
+      $list->set(1, "0");
+      
+      unless ($list->get(1)->(string) eq "0") {
+        return 0;
+      }
+    }
+    
+    {
+      {
+        my $list = Queue->new(new string[0]);
+        $list->push("3");
+        $list->push("4");
+        $list->unshift("2");
+        $list->unshift("1");
+        
+        $list->replace(1, 2, undef);
+        unless (Array->equals_string((string[])$list->to_array, [(string)1, 4])) {
+          return 0;
+        }
+      }
+      
+      {
+        my $list = Queue->new(new string[0]);
+        $list->push("3");
+        $list->push("4");
+        $list->unshift("2");
+        $list->unshift("1");
+        $list->replace(1, 2, [(string)20, 30]);
+        unless (Array->equals_string((string[])$list->to_array, [(string)1, 20, 30, 4])) {
+          return 0;
+        }
+      }
+      
+      {
+        my $list = Queue->new(new string[0]);
+        $list->push("3");
+        $list->push("4");
+        $list->unshift("2");
+        $list->unshift("1");
+        
+        $list->replace(0, 2, [(string)10, 20]);
+        unless (Array->equals_string((string[])$list->to_array, [(string)10, 20, 3, 4])) {
+          return 0;
+        }
+      }
+      
+      {
+        my $list = Queue->new(new string[0]);
+        $list->push("3");
+        $list->push("4");
+        $list->unshift("2");
+        $list->unshift("1");
+        
+        $list->replace(2, 2, [(string)30, 40]);
+        unless (Array->equals_string((string[])$list->to_array, [(string)1, 2, 30, 40])) {
+          return 0;
+        }
+      }
+      
+      {
+        my $list = Queue->new(new string[0]);
+        $list->push("3");
+        $list->push("4");
+        $list->unshift("2");
+        $list->unshift("1");
+        
+        $list->replace(4, 0, [(string)50, 60]);
+        unless (Array->equals_string((string[])$list->to_array, [(string)1, 2, 3, 4, 50, 60])) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method clone : int () {
+    
+    {
+      my $array = [(StringBuffer)StringBuffer->new("1"), StringBuffer->new("2")];
+      my $capacity = 3;
+      
+      my $list = Queue->new($array, $capacity);
+      
+      my $clone = $list->clone;
+      
+      unless ($clone is_type Queue) {
+        return 0;
+      }
+      
+      unless ($clone->length == $list->length) {
+        return 0;
+      }
+      
+      unless ($clone->capacity == $list->capacity) {
+        return 0;
+      }
+      
+      if ($clone == $list) {
+        return 0;
+      }
+      
+      unless (Array->equals($array, $clone->to_array)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method push_ : int () {
+    
+    {
+      my $list = Queue->new_len(new string[0], 0);
+      
+      $list->push_([(string)3, 5, 7]);
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0)->(string) eq "3" && $list->get(1)->(string) eq "5" && $list->get(2)->(string) eq "7") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unshift_ : int () {
+    {
+      my $list = Queue->new_len(new string[0], 0);
+      
+      $list->unshift_([(string)3, 5, 7]);
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(0)->(string) eq "3" && $list->get(1)->(string) eq "5" && $list->get(2)->(string) eq "7") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+}
