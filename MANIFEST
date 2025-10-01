@@ -413,6 +413,8 @@ lib/SPVM/Point.pm
 lib/SPVM/Point.spvm
 lib/SPVM/Point3D.pm
 lib/SPVM/Point3D.spvm
+lib/SPVM/Queue.pm
+lib/SPVM/Queue.spvm
 lib/SPVM/Scope/Guard.pm
 lib/SPVM/Scope/Guard.spvm
 lib/SPVM/Short.pm
