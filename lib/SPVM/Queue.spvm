@@ -24,54 +24,12 @@ class Queue extends List {
     return $self;
   }
   
-  protected method init : void ($array : object[] = undef, $capacity : int = -1) {
-    
-    my $length : int;
-    
-    if ($array) {
-      $length = @$array;
-    }
-    else {
-      $length = 0;
-    }
-    
-    $self->init_len($array, $length, $capacity);
-    
-    if ($array) {
-      Array->memcpy_object_address($self->{array}, 0, $array, 0, $length);
-    }
-    
-  }
-  
   static method new_len : Queue ($proto_array : object[], $length : int, $capacity : int = -1) {
     my $self = new Queue;
     
     $self->init_len($proto_array, $length, $capacity);
     
     return $self;
-  }
-  
-  protected method init_len : void ($proto_array : object[], $length : int, $capacity : int = -1) {
-    
-    unless ($proto_array) {
-      $proto_array = new object[0];
-    }
-    
-    unless ($length >= 0) {
-      die "The length \$length must be greater than or equal to 0.";
-    }
-    
-    if ($capacity < 0) {
-      $capacity = &DEFAULT_CAPACITY;
-    }
-    
-    if ($length > $capacity) {
-      $capacity = $length;
-    }
-    
-    $self->{capacity} = $capacity;
-    $self->{length} = $length;
-    $self->{array} = Array->new_proto($proto_array, $capacity);
   }
   
   # Instance methods
