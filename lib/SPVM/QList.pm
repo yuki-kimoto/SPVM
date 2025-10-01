@@ -118,6 +118,16 @@ C<method clone : L<QList|SPVM::QList> ();>
 
 Same as L<List#clone|SPVM::List/"clone"> method.
 
+=head2 get_array_unsafe
+
+C<method get_array_unsafe : object[] ();>
+
+Always throw an exception.
+
+Exceptions:
+
+Cannot get the internal array in QList object.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
