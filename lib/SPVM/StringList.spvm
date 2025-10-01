@@ -114,4 +114,8 @@ class StringList extends List {
     
   }
   
+  method get_array_unsafe : string[] () {
+    return (string[])$self->{array};
+  }
+  
 }

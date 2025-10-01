@@ -299,6 +299,14 @@ The elements $elements must be defined.
 
 Exceptions thrown by L</"unshift"> method could be thrown.
 
+=head2 get_array_unsafe
+
+C<method get_array_unsafe : object[] ();>
+
+Gets the internally array.
+
+This array is unsafe because it continues to point to the old array if the internal array is extended.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
