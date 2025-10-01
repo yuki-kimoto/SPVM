@@ -1,7 +1,7 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class Queue extends List {
+class QueueList extends List {
   version_from SPVM;
   
   use Fn;
@@ -16,16 +16,16 @@ class Queue extends List {
   has offset : int;
   
   # Class methods
-  static method new : Queue ($array : object[] = undef, $capacity : int = -1) {
-    my $self = new Queue;
+  static method new : QueueList ($array : object[] = undef, $capacity : int = -1) {
+    my $self = new QueueList;
     
     $self->init($array, $capacity);
     
     return $self;
   }
   
-  static method new_len : Queue ($proto_array : object[], $length : int, $capacity : int = -1) {
-    my $self = new Queue;
+  static method new_len : QueueList ($proto_array : object[], $length : int, $capacity : int = -1) {
+    my $self = new QueueList;
     
     $self->init_len($proto_array, $length, $capacity);
     
@@ -196,7 +196,7 @@ class Queue extends List {
     $self->{capacity} = $new_capacity;
   }
   
-  method clone : Queue () {
+  method clone : QueueList () {
     
     my $clone = &new_len($self->{array}, $self->length, $self->capacity);
     

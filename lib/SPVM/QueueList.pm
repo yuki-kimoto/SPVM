@@ -1,4 +1,4 @@
-package SPVM::Queue;
+package SPVM::QueueList;
 
 
 
@@ -8,15 +8,15 @@ package SPVM::Queue;
 
 =head1 Name
 
-SPVM::Queue - Short Description
+SPVM::QueueList - Short Description
 
 =head1 Description
 
-Queue class in L<SPVM> has methods to do someting.
+QueueList class in L<SPVM> has methods to do someting.
 
 =head1 Usage
 
-  use Queue;
+  use QueueList;
 
 =head1 Details
 
