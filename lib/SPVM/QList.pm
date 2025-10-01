@@ -1,27 +1,27 @@
-package SPVM::QueueList;
+package SPVM::QList;
 
 1;
 
 =head1 Name
 
-SPVM::QueueList - List with O(1) deque
+SPVM::QList - List with O(1) deque
 
 =head1 Usage
   
-  use QueueList;
+  use QList;
   
   # Create an object list
-  my $list = QueueList->new;
-  my $list = QueueList->new([(object)Byte->new(1), Int->new(2), Long->new(3)]);
+  my $list = QList->new;
+  my $list = QList->new([(object)Byte->new(1), Int->new(2), Long->new(3)]);
 
   # Create a Int list
-  my $list = QueueList->new([Int->new(1), Int->new(2), Int->new(3)]);
+  my $list = QList->new([Int->new(1), Int->new(2), Int->new(3)]);
   
   # Create an object list with length
-  my $list = QueueList->new_len([], 3);
+  my $list = QList->new_len([], 3);
 
   # Create a Int list with length
-  my $list = QueueList->new_len(new Int[0], 3);
+  my $list = QList->new_len(new Int[0], 3);
 
   # Get list length
   my $length = $list->length;
@@ -50,15 +50,15 @@ SPVM::QueueList - List with O(1) deque
   # Remove object value
   my $element = $list->remove(1);
 
-  # Convert QueueList to object array.
+  # Convert QList to object array.
   my $int_array = $list->to_array;
 
-  # Convert QueueList to Int array.
+  # Convert QList to Int array.
   my $int_array = (Int[])$list->to_array;
 
 =head1 Description
 
-QueueList class in L<SPVM> is L<List|SPVM::List> class with O(1) deque
+QList class in L<SPVM> is L<List|SPVM::List> class with O(1) deque
 
 =head1 Details
 
@@ -74,11 +74,11 @@ L<List|SPVM::List>
 
 =head2 new
 
-C<static method new : L<QueueList|SPVM::QueueList> ($array : object[] = undef, $capacity : int = -1);>
+C<static method new : L<QList|SPVM::QList> ($array : object[] = undef, $capacity : int = -1);>
 
 =head2 new_len
 
-C<static method new_len : L<QueueList|SPVM::QueueList> ($proto_array : object[], $length : int, $capacity : int = -1);>
+C<static method new_len : L<QList|SPVM::QList> ($proto_array : object[], $length : int, $capacity : int = -1);>
 
 =head1 Instance methods
 
@@ -114,7 +114,7 @@ Same as L<List#unshift|SPVM::List/"unshift"> method.
 
 =head2 clone
 
-C<method clone : L<QueueList|SPVM::QueueList> ();>
+C<method clone : L<QList|SPVM::QList> ();>
 
 Same as L<List#clone|SPVM::List/"clone"> method.
 

@@ -1,6 +1,6 @@
-class TestCase::Module::QueueList {
+class TestCase::Module::QList {
   use Int;
-  use QueueList;
+  use QList;
   use Fn;
   use Array;
   
@@ -8,7 +8,7 @@ class TestCase::Module::QueueList {
   static method fields : int () {
     # length
     {
-      my $list = QueueList->new([(string)1, 2, 3]);
+      my $list = QList->new([(string)1, 2, 3]);
       
       # length
       my $length = $list->length;
@@ -28,7 +28,7 @@ class TestCase::Module::QueueList {
   static method new : int () {
     # new with undef
     {
-      my $list = QueueList->new((object[])undef);
+      my $list = QList->new((object[])undef);
       
       unless ($list->length == 0) {
         return 0;
@@ -42,7 +42,7 @@ class TestCase::Module::QueueList {
     
     # new without arguments
     {
-      my $list = QueueList->new;
+      my $list = QList->new;
       
       unless ($list->length == 0) {
         return 0;
@@ -59,7 +59,7 @@ class TestCase::Module::QueueList {
     
     # new with object[]
     {
-      my $list = QueueList->new(new object[3]);
+      my $list = QList->new(new object[3]);
       
       unless ($list->length == 3) {
         return 0;
@@ -70,7 +70,7 @@ class TestCase::Module::QueueList {
       }
     }
     {
-      my $list = QueueList->new(new object[5]);
+      my $list = QList->new(new object[5]);
       
       unless ($list->length == 5) {
         return 0;
@@ -83,7 +83,7 @@ class TestCase::Module::QueueList {
     
     # new with Int[]
     {
-      my $list = QueueList->new(new Int[3]);
+      my $list = QList->new(new Int[3]);
       
       unless ($list->length == 3) {
         return 0;
@@ -96,7 +96,7 @@ class TestCase::Module::QueueList {
     
     # Countable interface
     {
-      my $list = QueueList->new_len(new Int[0], 3);
+      my $list = QList->new_len(new Int[0], 3);
       
       unless ($list isa Countable) {
         return 0;
@@ -114,7 +114,7 @@ class TestCase::Module::QueueList {
   
   static method new_len : int () {
     {
-      my $list = QueueList->new_len(new Int[0], 32);
+      my $list = QList->new_len(new Int[0], 32);
       
       unless ($list->length == 32) {
         return 0;
@@ -122,7 +122,7 @@ class TestCase::Module::QueueList {
     }
     
     {
-      my $list = QueueList->new_len(new Int[0], 0, 10);
+      my $list = QList->new_len(new Int[0], 0, 10);
       
       unless ($list->length == 0) {
         return 0;
@@ -133,7 +133,7 @@ class TestCase::Module::QueueList {
     }
 
     {
-      my $list = QueueList->new_len(new Int[0], 0);
+      my $list = QList->new_len(new Int[0], 0);
       
       unless ($list->length == 0) {
         return 0;
@@ -144,7 +144,7 @@ class TestCase::Module::QueueList {
     }
     
     {
-      eval { QueueList->new_len(new Int[0], -1); };
+      eval { QList->new_len(new Int[0], -1); };
       unless (Fn->contains($@, "The length \$length must be greater than or equal to 0")) {
         return 0;
       }
@@ -156,7 +156,7 @@ class TestCase::Module::QueueList {
   static method get : int () {
     
     {
-      my $list = QueueList->new([Int->new(1), undef]);
+      my $list = QList->new([Int->new(1), undef]);
       unless (((Int)$list->get(0))->value == 1) {
         return 0;
       }
@@ -166,7 +166,7 @@ class TestCase::Module::QueueList {
     }
     
     {
-      my $list = QueueList->new([Int->new(1), undef]);
+      my $list = QList->new([Int->new(1), undef]);
       unless (((Int)$list->get(-2))->value == 1) {
         return 0;
       }
@@ -174,14 +174,14 @@ class TestCase::Module::QueueList {
     
     # Generics
     {
-      my $list = (QueueList of Int)QueueList->new([Int->new(1), undef]);
+      my $list = (QList of Int)QList->new([Int->new(1), undef]);
       unless ($list->get(0)->value == 1) {
         return 0;
       }
     }
     
     {
-      my $list = QueueList->new([Int->new(1), undef]);
+      my $list = QList->new([Int->new(1), undef]);
       
       {
         eval { $list->get(-($list->length + 1)); };
@@ -209,7 +209,7 @@ class TestCase::Module::QueueList {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = QueueList->new([(object)$x1, $x2, $x3]);
+      my $list = QList->new([(object)$x1, $x2, $x3]);
       $list->insert(0 => $x4);
       unless (Array->equals_object_address($list->to_array, [$x4, $x1, $x2, $x3])) {
         return 0;
@@ -223,7 +223,7 @@ class TestCase::Module::QueueList {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = QueueList->new([(object)$x1, $x2, $x3]);
+      my $list = QList->new([(object)$x1, $x2, $x3]);
       $list->insert(2 => $x4);
       unless (Array->equals_object_address($list->to_array, [$x1, $x2, $x4, $x3])) {
         return 0;
@@ -237,7 +237,7 @@ class TestCase::Module::QueueList {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = QueueList->new([(object)$x1, $x2, $x3]);
+      my $list = QList->new([(object)$x1, $x2, $x3]);
       $list->insert(3 => $x4);
       unless (Array->equals_object_address($list->to_array, [$x1, $x2, $x3, $x4])) {
         return 0;
@@ -251,7 +251,7 @@ class TestCase::Module::QueueList {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = QueueList->new([(object)$x1, $x2, $x3]);
+      my $list = QList->new([(object)$x1, $x2, $x3]);
       $list->insert(0 => $x4);
     }
     
@@ -259,7 +259,7 @@ class TestCase::Module::QueueList {
   }
   
   static method pop : int () {
-    my $list = QueueList->new([Int->new(1), undef, Int->new(2)]);
+    my $list = QList->new([Int->new(1), undef, Int->new(2)]);
     unless (((Int)$list->pop)->value == 2) {
       return 0;
     }
@@ -269,13 +269,13 @@ class TestCase::Module::QueueList {
     unless (((Int)$list->pop)->value == 1) {
       return 0;
     }
-    unless (TestCase::Module::QueueList->equals_list($list, QueueList->new_len([], 0))) {
+    unless (TestCase::Module::QList->equals_list($list, QList->new_len([], 0))) {
       return 0;
     }
     
     # Generics
     {
-      my $list = (QueueList of Int)QueueList->new([Int->new(1), undef, Int->new(2)]);
+      my $list = (QList of Int)QList->new([Int->new(1), undef, Int->new(2)]);
       unless ($list->pop->value == 2) {
         return 0;
       }
@@ -285,30 +285,30 @@ class TestCase::Module::QueueList {
   }
   
   static method push : int () {
-    my $list = QueueList->new_len(new Int[0], 0);
+    my $list = QList->new_len(new Int[0], 0);
     
     my $v1 = Int->new(1);
     $list->push($v1);
-    unless (TestCase::Module::QueueList->equals_list($list, QueueList->new([$v1]))) {
+    unless (TestCase::Module::QList->equals_list($list, QList->new([$v1]))) {
       return 0;
     }
     
     my $v2 = Int->new(2);
     $list->push($v2);
-    unless (TestCase::Module::QueueList->equals_list($list, QueueList->new([$v1, $v2]))) {
+    unless (TestCase::Module::QList->equals_list($list, QList->new([$v1, $v2]))) {
       return 0;
     }
     
     my $v3 = Int->new(3);
     $list->push($v3);
-    unless (TestCase::Module::QueueList->equals_list($list, QueueList->new([$v1, $v2, $v3]))) {
+    unless (TestCase::Module::QList->equals_list($list, QList->new([$v1, $v2, $v3]))) {
       return 0;
     }
     
     # no reallocation
     my $v4 = Int->new(3);
     $list->push($v4);
-    unless (TestCase::Module::QueueList->equals_list($list, QueueList->new([$v1, $v2, $v3, $v4]))) {
+    unless (TestCase::Module::QList->equals_list($list, QList->new([$v1, $v2, $v3, $v4]))) {
       return 0;
     }
     
@@ -323,7 +323,7 @@ class TestCase::Module::QueueList {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = QueueList->new([(object)$x1, $x2, $x3, $x4]);
+      my $list = QList->new([(object)$x1, $x2, $x3, $x4]);
       my $value = $list->remove(1);
       unless (Array->equals_object_address($list->to_array, [$x1, $x3, $x4])) {
         return 0;
@@ -340,7 +340,7 @@ class TestCase::Module::QueueList {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = QueueList->new([(object)$x1, $x2, $x3]);
+      my $list = QList->new([(object)$x1, $x2, $x3]);
       $list->remove(2);
       unless (Array->equals_object_address($list->to_array, [$x1, $x2])) {
         return 0;
@@ -354,7 +354,7 @@ class TestCase::Module::QueueList {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = QueueList->new([(object)$x1, $x2, $x3]);
+      my $list = QList->new([(object)$x1, $x2, $x3]);
       $list->remove(0);
       unless (Array->equals_object_address($list->to_array, [$x2, $x3])) {
         return 0;
@@ -368,7 +368,7 @@ class TestCase::Module::QueueList {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = (QueueList of string)QueueList->new([$x1, $x2, $x3, $x4]);
+      my $list = (QList of string)QList->new([$x1, $x2, $x3, $x4]);
       
       unless ($list->remove(0) eq "1") {
         return 0;
@@ -380,7 +380,7 @@ class TestCase::Module::QueueList {
   
   static method replace : int () {
     {
-      my $list = QueueList->new([(string)1, 2, 3, 4]);
+      my $list = QList->new([(string)1, 2, 3, 4]);
       $list->replace(1, 2, undef);
       unless (Array->equals_string((string[])$list->to_array, [(string)1, 4])) {
         return 0;
@@ -388,7 +388,7 @@ class TestCase::Module::QueueList {
     }
     
     {
-      my $list = QueueList->new([(string)1, 2, 3, 4]);
+      my $list = QList->new([(string)1, 2, 3, 4]);
       $list->replace(1, 2, [(string)20, 30]);
       unless (Array->equals_string((string[])$list->to_array, [(string)1, 20, 30, 4])) {
         return 0;
@@ -396,7 +396,7 @@ class TestCase::Module::QueueList {
     }
 
     {
-      my $list = QueueList->new([(string)1, 2, 3, 4]);
+      my $list = QList->new([(string)1, 2, 3, 4]);
       $list->replace(0, 2, [(string)10, 20]);
       unless (Array->equals_string((string[])$list->to_array, [(string)10, 20, 3, 4])) {
         return 0;
@@ -404,7 +404,7 @@ class TestCase::Module::QueueList {
     }
 
     {
-      my $list = QueueList->new([(string)1, 2, 3, 4]);
+      my $list = QList->new([(string)1, 2, 3, 4]);
       $list->replace(2, 2, [(string)30, 40]);
       unless (Array->equals_string((string[])$list->to_array, [(string)1, 2, 30, 40])) {
         return 0;
@@ -412,7 +412,7 @@ class TestCase::Module::QueueList {
     }
     
     {
-      my $list = QueueList->new([(string)1, 2, 3, 4]);
+      my $list = QList->new([(string)1, 2, 3, 4]);
       $list->replace(4, 0, [(string)50, 60]);
       unless (Array->equals_string((string[])$list->to_array, [(string)1, 2, 3, 4, 50, 60])) {
         return 0;
@@ -420,7 +420,7 @@ class TestCase::Module::QueueList {
     }
 
     {
-      my $list = QueueList->new([(string)1, 2, 3, 4]);
+      my $list = QList->new([(string)1, 2, 3, 4]);
       eval { $list->replace(-1, 3, [(string)30, 40]); };
       unless (Fn->contains($@, "The offset \$offset must be greater than or equal to 0")) {
         return 0;
@@ -428,7 +428,7 @@ class TestCase::Module::QueueList {
     }
 
     {
-      my $list = QueueList->new([(string)1, 2, 3, 4]);
+      my $list = QList->new([(string)1, 2, 3, 4]);
       eval { $list->replace(2, 3, [(string)30, 40, 50]); };
       unless (Fn->contains($@, "The offset \$offset + the removal length \$remove_length must be less than or equal to the length of this list")) {
         return 0;
@@ -436,7 +436,7 @@ class TestCase::Module::QueueList {
     }
 
     {
-      my $list = QueueList->new([(string)1]);
+      my $list = QList->new([(string)1]);
       $list->replace(1, 0, [(string)2, 3]);
       unless (Array->equals_string((string[])$list->to_array, [(string)1, 2, 3])) {
         return 0;
@@ -444,14 +444,14 @@ class TestCase::Module::QueueList {
     }
 
     {
-      my $list = QueueList->new([(string)1]);
+      my $list = QList->new([(string)1]);
       eval { $list->replace(2, 0, [(string)1, 2]); };
       unless (Fn->contains($@, "The offset \$offset + the removal length \$remove_length must be less than or equal to the length of this list")) {
         return 0;
       }
     }
     {
-      my $list = QueueList->new([(string)1]);
+      my $list = QList->new([(string)1]);
       eval { $list->replace(1, 2, [(string)1, 2]); };
       unless (Fn->contains($@, "The offset \$offset + the removal length \$remove_length must be less than or equal to the length of this list")) {
         return 0;
@@ -459,7 +459,7 @@ class TestCase::Module::QueueList {
     }
 
     {
-      my $list = QueueList->new([(string)1]);
+      my $list = QList->new([(string)1]);
       eval { $list->replace(2, 2, [(string)1, 2]); };
       unless (Fn->contains($@, "The offset \$offset + the removal length \$remove_length must be less than or equal to the length of this list")) {
         return 0;
@@ -474,7 +474,7 @@ class TestCase::Module::QueueList {
   static method splice : int () {
   
     {
-      my $list = QueueList->new([(string)1, 2, 3, 4]);
+      my $list = QList->new([(string)1, 2, 3, 4]);
       my $removed = $list->splice(1, 2, [(string)20, 30]);
       
       unless (Array->equals_string($list->to_array->(string[]), [(string)1, 20, 30, 4])) {
@@ -491,7 +491,7 @@ class TestCase::Module::QueueList {
   
   static method reserve : int () {
     {
-      my $list = QueueList->new([(object)1]);
+      my $list = QList->new([(object)1]);
       $list->reserve(4);
       unless ($list->capacity == 4) {
         return 0;
@@ -502,7 +502,7 @@ class TestCase::Module::QueueList {
       }
     }
     {
-      my $list = QueueList->new([(object)1, 2, 3]);
+      my $list = QList->new([(object)1, 2, 3]);
       my $array = $list->to_array;
       $list->reserve(5);
       unless ($list->capacity == 5) {
@@ -523,7 +523,7 @@ class TestCase::Module::QueueList {
     my $c = "c";
     # 3 to 3
     {
-      my $list = QueueList->new([]);
+      my $list = QList->new([]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -537,7 +537,7 @@ class TestCase::Module::QueueList {
     }
     # 3 to 0
     {
-      my $list = QueueList->new([]);
+      my $list = QList->new([]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -548,7 +548,7 @@ class TestCase::Module::QueueList {
     }
     # 3 to 4
     {
-      my $list = QueueList->new([]);
+      my $list = QList->new([]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -562,7 +562,7 @@ class TestCase::Module::QueueList {
     }
     # 3 to 32(over capacity)
     {
-      my $list = QueueList->new([]);
+      my $list = QList->new([]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -577,7 +577,7 @@ class TestCase::Module::QueueList {
     
     # 3 to 2, 2 to 3 again
     {
-      my $list = QueueList->new([]);
+      my $list = QList->new([]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -599,7 +599,7 @@ class TestCase::Module::QueueList {
     
     # Exception - New length must be greater than or equal to 0
     {
-      my $list = QueueList->new([]);
+      my $list = QList->new([]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -613,7 +613,7 @@ class TestCase::Module::QueueList {
   }
   
   static method unshift : int () {
-    my $list = QueueList->new_len(new Int[0], 0);
+    my $list = QList->new_len(new Int[0], 0);
     
     my $v1 = Int->new(1);
     $list->unshift($v1);
@@ -630,7 +630,7 @@ class TestCase::Module::QueueList {
     my $v5 = Int->new(5);
     $list->unshift($v5);
     
-    unless (TestCase::Module::QueueList->equals_list($list, QueueList->new([$v5, $v4, $v3, $v2, $v1]))) {
+    unless (TestCase::Module::QList->equals_list($list, QList->new([$v5, $v4, $v3, $v2, $v1]))) {
       return 0;
     }
     
@@ -638,7 +638,7 @@ class TestCase::Module::QueueList {
   }
   
   static method shift : int () {
-    my $list = QueueList->new([Int->new(1), undef, Int->new(2)]);
+    my $list = QList->new([Int->new(1), undef, Int->new(2)]);
     unless (((Int)$list->shift)->value == 1) {
       return 0;
     }
@@ -651,7 +651,7 @@ class TestCase::Module::QueueList {
     
     # Generics
     {
-      my $list = (QueueList of Int)QueueList->new([Int->new(1), undef, Int->new(2)]);
+      my $list = (QList of Int)QList->new([Int->new(1), undef, Int->new(2)]);
       unless ($list->shift->value == 1) {
         return 0;
       }
@@ -665,21 +665,21 @@ class TestCase::Module::QueueList {
     }
     
     
-    unless (TestCase::Module::QueueList->equals_list($list, QueueList->new(new object[0]))) {
+    unless (TestCase::Module::QList->equals_list($list, QList->new(new object[0]))) {
       return 0;
     }
     return 1;
   }
 
   static method set : int () {
-    my $list = QueueList->new([Int->new(1), undef]);
+    my $list = QList->new([Int->new(1), undef]);
 
     my $v1 = Int->new(2);
     $list->set(0, undef);
     $list->set(1, $v1);
     my $expected = new Int[2];
     $expected->[1] = $v1;
-    unless (TestCase::Module::QueueList->equals_list($list, QueueList->new($expected))) {
+    unless (TestCase::Module::QList->equals_list($list, QList->new($expected))) {
       return 0;
     }
     
@@ -697,7 +697,7 @@ class TestCase::Module::QueueList {
     }
     
     {
-      my $list = QueueList->new([(string)0, 0, 0]);
+      my $list = QList->new([(string)0, 0, 0]);
       
       $list->set(-1 => "3");
       
@@ -713,7 +713,7 @@ class TestCase::Module::QueueList {
   
   static method to_array : int () {
     {
-      my $list = QueueList->new([(object)"abc", 1, 3.14]);
+      my $list = QList->new([(object)"abc", 1, 3.14]);
       my $objects = $list->to_array;
       
       unless ($objects isa object[]) {
@@ -728,7 +728,7 @@ class TestCase::Module::QueueList {
     }
     
     {
-      my $list = QueueList->new([Int->new(1), Int->new(2)]);
+      my $list = QList->new([Int->new(1), Int->new(2)]);
       my $objects = (Int[])$list->to_array;
       
       unless ($objects isa Int[]) {
@@ -752,7 +752,7 @@ class TestCase::Module::QueueList {
   
   static method extra : int () {
     {
-      my $list = QueueList->new_len(new Int[0], 4);
+      my $list = QList->new_len(new Int[0], 4);
       for (my $i = 0; $i < 16; $i++) {
         $list->push(1);
         $list->shift;
@@ -760,7 +760,7 @@ class TestCase::Module::QueueList {
     }
     
     {
-      my $list = QueueList->new_len(new Int[0], 4);
+      my $list = QList->new_len(new Int[0], 4);
       for (my $i = 0; $i < 16; $i++) {
         $list->unshift(1);
         $list->pop;
@@ -770,14 +770,14 @@ class TestCase::Module::QueueList {
     return 1;
   }
 
-  static method equals_list : int ($got : QueueList, $expected : QueueList) {
+  static method equals_list : int ($got : QList, $expected : QList) {
     return Array->equals_object_address($got->to_array, $expected->to_array);
   }
   
   static method check_offset_logic : int () {
     
     {
-      my $list = QueueList->new(new string[0]);
+      my $list = QList->new(new string[0]);
       
       $list->push("1");
       $list->push("2");
@@ -801,7 +801,7 @@ class TestCase::Module::QueueList {
     }
     
     {
-      my $list = QueueList->new(new string[0]);
+      my $list = QList->new(new string[0]);
       
       $list->push("1");
       $list->push("2");
@@ -827,7 +827,7 @@ class TestCase::Module::QueueList {
     }
     
     {
-      my $list = QueueList->new(new string[0]);
+      my $list = QList->new(new string[0]);
       
       $list->unshift("1");
       $list->unshift("2");
@@ -851,7 +851,7 @@ class TestCase::Module::QueueList {
     }
     
     {
-      my $list = QueueList->new(new string[0]);
+      my $list = QList->new(new string[0]);
       
       $list->unshift("1");
       $list->unshift("2");
@@ -878,7 +878,7 @@ class TestCase::Module::QueueList {
     
     {
       {
-        my $list = QueueList->new(new string[0]);
+        my $list = QList->new(new string[0]);
         $list->push("3");
         $list->push("4");
         $list->unshift("2");
@@ -891,7 +891,7 @@ class TestCase::Module::QueueList {
       }
       
       {
-        my $list = QueueList->new(new string[0]);
+        my $list = QList->new(new string[0]);
         $list->push("3");
         $list->push("4");
         $list->unshift("2");
@@ -903,7 +903,7 @@ class TestCase::Module::QueueList {
       }
       
       {
-        my $list = QueueList->new(new string[0]);
+        my $list = QList->new(new string[0]);
         $list->push("3");
         $list->push("4");
         $list->unshift("2");
@@ -916,7 +916,7 @@ class TestCase::Module::QueueList {
       }
       
       {
-        my $list = QueueList->new(new string[0]);
+        my $list = QList->new(new string[0]);
         $list->push("3");
         $list->push("4");
         $list->unshift("2");
@@ -929,7 +929,7 @@ class TestCase::Module::QueueList {
       }
       
       {
-        my $list = QueueList->new(new string[0]);
+        my $list = QList->new(new string[0]);
         $list->push("3");
         $list->push("4");
         $list->unshift("2");
@@ -951,11 +951,11 @@ class TestCase::Module::QueueList {
       my $array = [(StringBuffer)StringBuffer->new("1"), StringBuffer->new("2")];
       my $capacity = 3;
       
-      my $list = QueueList->new($array, $capacity);
+      my $list = QList->new($array, $capacity);
       
       my $clone = $list->clone;
       
-      unless ($clone is_type QueueList) {
+      unless ($clone is_type QList) {
         return 0;
       }
       
@@ -982,7 +982,7 @@ class TestCase::Module::QueueList {
   static method push_ : int () {
     
     {
-      my $list = QueueList->new_len(new string[0], 0);
+      my $list = QList->new_len(new string[0], 0);
       
       $list->push_([(string)3, 5, 7]);
       
@@ -1001,7 +1001,7 @@ class TestCase::Module::QueueList {
   
   static method unshift_ : int () {
     {
-      my $list = QueueList->new_len(new string[0], 0);
+      my $list = QList->new_len(new string[0], 0);
       
       $list->unshift_([(string)3, 5, 7]);
       

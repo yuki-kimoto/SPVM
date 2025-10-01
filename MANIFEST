@@ -413,6 +413,8 @@ lib/SPVM/Point.pm
 lib/SPVM/Point.spvm
 lib/SPVM/Point3D.pm
 lib/SPVM/Point3D.spvm
+lib/SPVM/QList.pm
+lib/SPVM/QList.spvm
 lib/SPVM/QueueList.pm
 lib/SPVM/QueueList.spvm
 lib/SPVM/Scope/Guard.pm
@@ -763,6 +765,7 @@ t/02_vm/08_module/Native/Runtime.t
 t/02_vm/08_module/Packer.t
 t/02_vm/08_module/Point.t
 t/02_vm/08_module/Point3D.t
+t/02_vm/08_module/QList.t
 t/02_vm/08_module/QueueList.t
 t/02_vm/08_module/Scope_Guard.t
 t/02_vm/08_module/Short.t
@@ -891,6 +894,7 @@ t/02_vm/lib/SPVM/TestCase/Module/Native/Runtime.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Packer.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Point.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Point3D.spvm
+t/02_vm/lib/SPVM/TestCase/Module/QList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/QueueList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Scope/Guard.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Short.spvm

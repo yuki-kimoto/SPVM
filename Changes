@@ -4,7 +4,7 @@
       This is because one wants to sort internal array.
       
   [New Features]
-    * Add QueueList class.
+    * Add QList class.
     
 0.990094 2025-10-01
   * Support minus index in the following methods.
