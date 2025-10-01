@@ -60,6 +60,14 @@ SPVM::List - Dynamic Object Array
 
 C<List> is the dynamic object array that has a specified object array type.
 
+=head1 Details
+
+=head2 Internal Data Structure
+
+The L</"array"> stored in an IntList object always starts at index 0.
+
+The elements in the range that is greater than or equal to L</"length"> field and less than L</"capacity"> field are filled with C<undef>.
+
 =head1 Interfaces
 
 =over 2

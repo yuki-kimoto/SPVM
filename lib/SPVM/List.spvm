@@ -22,8 +22,6 @@ class List {
   
   has array : object[];
   
-  has offset : int;
-  
   # Class methods
   static method new : List ($array : object[] = undef, $capacity : int = -1) {
     my $self = new List;
@@ -99,13 +97,9 @@ class List {
       die "The index \$index must be less than the length of \$list.";
     }
     
-    my $offset = $self->{offset};
-    
     my $capacity = $self->{capacity};
     
-    my $real_index = ($offset + $index) % $capacity;
-    
-    my $element = $self->{array}[$real_index];
+    my $element = $self->{array}[$index];
     
     return $element;
   }
@@ -290,36 +284,27 @@ class List {
       die "The index \$index must be less than the length of \$list.";
     }
     
-    my $offset = $self->{offset};
-    
     my $capacity = $self->{capacity};
     
-    my $real_index = ($offset + $index) % $capacity;
-    
-    $self->{array}[$real_index] = $element;
+    $self->{array}[$index] = $element;
   }
   
   method shift : element () {
     my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     unless ($length > 0) {
       die "The length of the list \$list must be greater than 0.";
     }
     
-    my $array = $self->{array};
+    my $elements = $self->{array};
     
-    my $element = $self->get(0);
+    my $element = $elements->[0];
     
-    $self->set(0, undef);
+    Array->memmove_object_address($elements, 0, $elements, 1, $length - 1);
+    
+    $elements->[$length - 1] = undef;
     
     $self->{length}--;
-    
-    $self->{offset}++;
-    
-    if ($self->{offset} >= $self->{capacity}) {
-      $self->{offset} -= $self->{capacity};
-    }
     
     return $element;
   }
@@ -331,19 +316,9 @@ class List {
     
     my $capacity = $self->{capacity};
     
-    my $offset = $self->{offset};
-    
     my $array = $self->{array};
     
-    my $leftover = $length - ($capacity - $offset);
-    
-    if ($leftover > 0) {
-      Array->memcpy_object_address($new_array, 0, $array, $offset, $length - $leftover);
-      Array->memcpy_object_address($new_array, $length - $leftover, $array, 0, $leftover);
-    }
-    else {
-      Array->memcpy_object_address($new_array, 0, $array, $offset, $length);
-    }
+    Array->memcpy_object_address($new_array, 0, $array, 0, $length);
     
     return $new_array;
   }
@@ -355,18 +330,12 @@ class List {
     my $new_length = $length + 1;
     $self->_extend($new_length);
     
-    my $array = $self->{array};
+    my $elements = $self->{array};
     
-    $self->{offset}--;
+    Array->memmove_object_address($elements, 1, $elements, 0, $length);
     
-    if ($self->{offset} < 0) {
-      $self->{offset} = $self->{capacity} - 1;
-    }
-    
-    $self->{length}++;
-    
-    $self->set(0, $element);
-    
+    $elements->[0] = $element;
+    $self->{length} = $new_length;
   }
   
   protected method _extend : void ($new_capacity_at_least : int, $just : int = 0) {
@@ -402,11 +371,9 @@ class List {
       die "[Unexpected Error]The capacity field must be equal to the length of the array field.";
     }
     
-    my $offset = $self->{offset};
+    Array->memcpy_object_address($new_array, 0, $array, 0, $capacity);
     
-    Array->memcpy_object_address($new_array, $offset, $array, $offset, $capacity - $offset);
-    
-    Array->memcpy_object_address($new_array, $capacity, $array, 0, $offset);
+    Array->memcpy_object_address($new_array, $capacity, $array, 0, 0);
     
     $self->{array} = $new_array;
     $self->{capacity} = $new_capacity;
