@@ -210,6 +210,10 @@ class TestCase::Module::ShortList {
         return 0;
       }
       
+      unless ($list->get(-3) == 3) {
+        return 0;
+      }
+      
       unless ($list->get(0) isa int) {
         return 0;
       }
@@ -227,7 +231,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
       
-      eval { $list->get(-1); };
+      eval { $list->get(-($list->length + 1)); };
       unless (Fn->contains($@, "The index \$index must be greater than or equal to 0")) {
         return 0;
       }
@@ -237,7 +241,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
       
-      $@ = undef;
+      
     }
     
     return 1;
@@ -295,7 +299,7 @@ class TestCase::Module::ShortList {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -338,7 +342,7 @@ class TestCase::Module::ShortList {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -424,7 +428,7 @@ class TestCase::Module::ShortList {
         return 0;
       }
     }
-    $@ = undef;
+    
     
     # Exception - remove to length
     {
@@ -435,7 +439,7 @@ class TestCase::Module::ShortList {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -527,7 +531,7 @@ class TestCase::Module::ShortList {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -675,7 +679,7 @@ class TestCase::Module::ShortList {
       }
     }
     
-    $@ = undef;
+    
     return 1;
   }
   
@@ -704,17 +708,28 @@ class TestCase::Module::ShortList {
         return 0;
       }
       
-      eval { $list->get(-1); };
+      eval { $list->set(-($list->length + 1), 1); };
       unless (Fn->contains($@,"The index \$index must be greater than or equal to 0")) {
         return 0;
       }
       
-      eval { $list->get(3); };
+      eval { $list->set(3, 1); };
       unless (Fn->contains($@, "The index \$index must be less than the length of \$list")) {
         return 0;
       }
       
-      $@ = undef;
+      
+    }
+    
+    {
+      my $list = ShortList->new([(short)0, 0, 0]);
+      
+      $list->set(-1 => 3);
+      
+      unless ($list->get($list->length - 1) == 3) {
+        return 0;
+      }
+      
     }
     
     return 1;
@@ -750,7 +765,7 @@ class TestCase::Module::ShortList {
       unless (Fn->contains($@, "The length of the list \$list must be greater than 0")) {
         return 0;
       }
-      $@ = undef;
+      
     }
     
     return 1;

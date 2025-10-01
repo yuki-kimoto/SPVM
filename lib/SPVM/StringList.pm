@@ -118,6 +118,8 @@ C<method get : string ($index : int);>
 
 Gets the element of the position of $index.
 
+If $index is a netative value, $index is set to L</"length"> plus $index.
+
 Exceptions:
 
 $index must be greater than or equal to 0. Otherwise an exception is thrown.
@@ -195,6 +197,8 @@ $offset + $removing length must be less than or equal to the length of $list. Ot
 C<method set : void ($index : int, $element : string);>
 
 Sets $element at the position of $index.
+
+If $index is a netative value, $index is set to L</"length"> plus $index.
 
 Exceptions:
 

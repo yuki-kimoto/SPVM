@@ -66,6 +66,10 @@ class DoubleList {
     my $length = $self->length;
     
     unless ($index >= 0) {
+      $index = $length + $index;
+    }
+    
+    unless ($index >= 0) {
       die "The index \$index must be greater than or equal to 0.";
     }
     
@@ -228,6 +232,10 @@ class DoubleList {
   
   method set : void ($index : int, $element : double) {
     my $length = $self->length;
+    
+    unless ($index >= 0) {
+      $index = $length + $index;
+    }
     
     unless ($index >= 0) {
       die "The index \$index must be greater than or equal to 0.";

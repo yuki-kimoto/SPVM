@@ -119,6 +119,10 @@ class TestCase::Module::Immutable::ByteList {
         return 0;
       }
       
+      unless ($list->get(-3) == 3) {
+        return 0;
+      }
+      
       unless ($list->get(0) isa int) {
         return 0;
       }
@@ -136,7 +140,7 @@ class TestCase::Module::Immutable::ByteList {
         return 0;
       }
       
-      eval { $list->get(-1); };
+      eval { $list->get(-($list->length + 1)); };
       unless (Fn->contains($@, "The index \$index must be greater than or equal to 0")) {
         return 0;
       }
@@ -146,7 +150,7 @@ class TestCase::Module::Immutable::ByteList {
         return 0;
       }
       
-      $@ = undef;
+      
     }
     
     return 1;

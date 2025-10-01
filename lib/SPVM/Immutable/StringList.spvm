@@ -55,6 +55,10 @@ class Immutable::StringList {
     my $length = $self->length;
     
     unless ($index >= 0) {
+      $index = $length + $index;
+    }
+    
+    unless ($index >= 0) {
       die "The index \$index must be greater than or equal to 0.";
     }
     

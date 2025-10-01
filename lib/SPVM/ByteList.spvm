@@ -68,6 +68,10 @@ class ByteList {
     my $length = $self->length;
     
     unless ($index >= 0) {
+      $index = $length + $index;
+    }
+    
+    unless ($index >= 0) {
       die "The index \$index must be greater than or equal to 0.";
     }
     
@@ -230,6 +234,10 @@ class ByteList {
   
   method set : void ($index : int, $element : int) {
     my $length = $self->length;
+    
+    unless ($index >= 0) {
+      $index = $length + $index;
+    }
     
     unless ($index >= 0) {
       die "The index \$index must be greater than or equal to 0.";

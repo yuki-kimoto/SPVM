@@ -1,3 +1,27 @@
+0.990094 2025-10-01
+  * Support minus index in the following methods.
+    ByteList#get
+    DoubleList#get
+    FloatList#get
+    IntList#get
+    List#get
+    LongList#get
+    ShortList#get
+    ByteList#set
+    DoubleList#set
+    FloatList#set
+    IntList#set
+    List#set
+    LongList#set
+    ShortList#set
+    Immutable::ByteList#get
+    Immutable::DoubleList#get
+    Immutable::FloatList#get
+    Immutable::IntList#get
+    Immutable::LongList#get
+    Immutable::ShortList#get
+    Immutable::StringList#get
+    
 0.990093 2025-09-30
   [New Features]
     * Add hash access syntax.
