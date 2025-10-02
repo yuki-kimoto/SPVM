@@ -188,7 +188,85 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =head1 SPVM CPAN Modules
 
-L<SPVM CPAN Modules - SPVM Wiki|https://github.com/yuki-kimoto/SPVM/wiki/CPAN-Modules>
+=over 2
+
+=item * L<SPVM::Compress::Raw::Zlib>
+
+=item * L<SPVM::Digest::MD5>
+
+=item * L<SPVM::Digest::SHA>
+
+=item * L<SPVM::Errno>
+
+=item * L<SPVM::File::Basename>
+
+=item * L<SPVM::File::Copy>
+
+=item * L<SPVM::File::Find>
+
+=item * L<SPVM::File::Glob>
+
+=item * L<SPVM::File::Path>
+
+=item * L<SPVM::File::Spec>
+
+=item * L<SPVM::File::Temp>
+
+=item * L<SPVM::FindBin>
+
+=item * L<SPVM::Getopt::Long>
+
+=item * L<SPVM::Go>
+
+=item * L<SPVM::HTTP::Tiny>
+
+=item * L<SPVM::IO>
+
+=item * L<SPVM::IO::Socket::SSL>
+
+=item * L<SPVM::JSON>
+
+=item * L<SPVM::Math>
+
+=item * L<SPVM::MIME::Base64>
+
+=item * L<SPVM::Mojolicious>
+
+=item * L<SPVM::Mozilla::CA>
+
+=item * L<SPVM::Net::DNS::Native>
+
+=item * L<SPVM::Net::SSLeay>
+
+=item * L<SPVM::R>
+
+=item * L<SPVM::Regex>
+
+=item * L<SPVM::Resource::Eigen>
+
+=item * L<SPVM::Resource::Libpng>
+
+=item * L<SPVM::Resource::RE2>
+
+=item * L<SPVM::Resource::SocketUtil>
+
+=item * L<SPVM::Resource::Utf8proc>
+
+=item * L<SPVM::Resource::Zlib>
+
+=item * L<SPVM::Sys>
+
+=item * L<SPVM::Thread>
+
+=item * L<SPVM::Time::Local>
+
+=item * L<SPVM::Time::Piece>
+
+=item * L<SPVM::Unicode::Normalize>
+
+=back
+
+See also L<SPVM CPAN Modules - SPVM Wiki|https://github.com/yuki-kimoto/SPVM/wiki/CPAN-Modules>
 
 =head1 See Also
 
