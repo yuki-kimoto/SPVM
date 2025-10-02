@@ -16,8 +16,7 @@ SPVM::Builder::Util::getopt
   'w'               => \my $warning,
   
   # spvm only
-  'E=s' => \my $source,
-  'e=s' => \my $source_in_main,
+  'e=s' => \my $source,
   '-M=s' => \my @use_class_names,
   '-c' => \my $syntax_ok,
 ;
@@ -38,34 +37,20 @@ if (defined $build_dir) {
 
 my $script_name = shift;
 
-if (!defined $script_name && !defined $source_in_main && !defined $source) {
+if (!defined $script_name && !defined $source && !defined $source) {
   die SPVM::Builder::Util::extract_usage;
 }
 
-if (defined $script_name && defined $source_in_main) {
+if (defined $script_name && defined $source) {
   die "[spvm command]Specifying both SCRIPT_NAME and -e option is not allowed.";
 }
 
 if (defined $script_name && defined $source) {
-  die "[spvm command]Specifying both SCRIPT_NAME and -E option is not allowed.";
+  die "[spvm command]Specifying both SCRIPT_NAME and -e option is not allowed.";
 }
 
-if (defined $source_in_main && defined $source) {
-  die "[spvm command]Specifying both -E option and -e option is not allowed.";
-}
-
-if (defined $source_in_main) {
+if (defined $source) {
   $0 = "-e";
-  
-  $source = "
-class {
-static method main : void () {
-#line 1
-$source_in_main
-}
-}
-";
-
 }
 elsif (defined $script_name) {
   
@@ -239,16 +224,6 @@ Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> env
 
 Same as L</"--build-dir">.
 
-=head2 -E
-
-  -E SOURCE
-
-Executes a source code I<SOURCE>.
-
-Examples:
-
-  spvm -E 'class { static method main : void () { say "Hello World!"; } }';
-
 =head2 -e
 
   -e SOURCE
@@ -277,7 +252,7 @@ Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
 
 =head1 lib Directive
 
-If the source code specified by I<SCRIPT_NAME>, C<-E>, or C<-e> option contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
+If the source code specified by I<SCRIPT_NAME>, or C<-e> option contains lib directives, The directories specified by lib directive is prepeneded to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">.
   
   #lib "$FindBin::Bin/lib"
   

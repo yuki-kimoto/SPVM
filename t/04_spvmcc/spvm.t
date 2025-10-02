@@ -77,15 +77,6 @@ my $dev_null = File::Spec->devnull;
   }
   
   
-  # -E
-  {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM -E "class { static method main : void () { warn q'[Test Output]spvm -E option'; } }");
-    system($spvm_cmd) == 0
-     or die "Can't execute spvm command $spvm_cmd:$!";
-    
-    ok(1);
-  }
-  
   # --build-dir and -e
   {
     my $spvm_cmd = qq($^X -Mblib blib/script/spvm --build-dir $build_dir -I solo/lib/SPVM -e "warn q'[Test Output]spvm -e option';");

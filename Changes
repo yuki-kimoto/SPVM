@@ -5,6 +5,8 @@
   [New Features]
     * Add compile_script compiler native API.
     * Add Native::Compiler#compile_script method.
+  [Incompatible Changes]
+    * Remove -E option of spvm command. Use -e instead of -E.
     
 0.990095 2025-10-01
   [Changes with Performance Degradation]
