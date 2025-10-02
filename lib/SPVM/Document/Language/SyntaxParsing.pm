@@ -144,6 +144,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | CLASS opt_basic_type opt_extends ':' opt_attributes class_block END_OF_FILE
     | CLASS opt_basic_type opt_extends ';' END_OF_FILE
     | CLASS opt_basic_type opt_extends ':' opt_attributes ';' END_OF_FILE
+    | opt_statements END_OF_FILE
 
   opt_basic_type
     : /* Empty */
