@@ -5,6 +5,13 @@
   [New Features]
     * Add compile_script compiler native API.
     * Add Native::Compiler#compile_script method.
+    * An SPVM script executed by spvm command or compiled by spvmcc command allows a naked script.
+      
+      # myapp.spvm
+      use Fn;
+      my $var = 1;
+      say $var;
+      
   [Incompatible Changes]
     * Remove -E option of spvm command. Use -e instead of -E.
     

@@ -126,11 +126,27 @@ The C<spvm> command executes a SPVM program.
 
 I<OPTIONS> are L<options|/"Options">.
 
-I<SCRIPT_NAME> is a script path that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> in an L<anon class|SPVM::Document::Language::Class/"Anon Class">.
+I<SCRIPT_NAME> is a script path that contains an SPVM script.
+  
+  # myapp.spvm
+  use Fn;
+  my $var = 1;
+  say $var;
 
+Anon class that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method"> is allowed as an SPVM script.
+
+  # myapp.spvm
   class {
+    
+    version "1.001";
+    
+    our $FOO : int;
+    
+    use Fn;
+    
     static method main : void () {
-      
+      my $var = 1;
+      say $var;
     }
   }
 
@@ -256,10 +272,6 @@ If the source code specified by I<SCRIPT_NAME>, or C<-e> option contains lib dir
   
   #lib "$FindBin::Bin/lib"
   
-  class {
-  
-  }
-
 This directories specified by lib directive is placed after the directories specified by L</"--include-dir"> option.
 
 =head1 Copyright & License
