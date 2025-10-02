@@ -60,12 +60,7 @@ Run a one liner with loading a class.
 Write a L<SPVM class|SPVM::Document::Language::Class> named C<hello.spvm> to print "Hello World!" using L<say operator|SPVM::Document::Language::Operators/"say Operator">.
 
   # hello.spvm
-  class {
-    static method main : void () {
-      
-      say "Hello World!";
-    }
-  }
+  say "Hello World!";
 
 This class is an L<anon class|SPVM::Document::Language::Class/"Anon Class"> and has C<main> method that is an L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method">.
 
