@@ -265,7 +265,7 @@ int32_t SPVM__Native__Compiler__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack)
   return 0;
 }
 
-static int32_t SPVM__Native__Compiler__compile_anon_class_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t is_script) {
+int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
@@ -281,13 +281,7 @@ static int32_t SPVM__Native__Compiler__compile_anon_class_common(SPVM_ENV* env, 
   
   // Compile SPVM
   const char* anon_basic_type_name = NULL;
-  int32_t status;
-  if (is_script) {
-    status = env->api->compiler->compile_script(self, source, &anon_basic_type_name);
-  }
-  else {
-    status = env->api->compiler->compile_anon_class(self, source, &anon_basic_type_name);
-  }
+  int32_t status = env->api->compiler->compile_anon_class(self, source, &anon_basic_type_name);
   
   if (!(status == 0)) {
     
@@ -322,18 +316,9 @@ static int32_t SPVM__Native__Compiler__compile_anon_class_common(SPVM_ENV* env, 
   return 0;
 }
 
-int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t is_script = 0;
-  
-  return SPVM__Native__Compiler__compile_anon_class_common(env, stack, is_script);
-}
-
 int32_t SPVM__Native__Compiler__compile_script(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t is_script = 1;
-  
-  return SPVM__Native__Compiler__compile_anon_class_common(env, stack, is_script);
+  return SPVM__Native__Compiler__compile_anon_class(env, stack);
 }
 
 int32_t SPVM__Native__Compiler__clear_include_dirs(SPVM_ENV* env, SPVM_VALUE* stack) {
