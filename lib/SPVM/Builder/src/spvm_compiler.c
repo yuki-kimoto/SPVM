@@ -146,21 +146,19 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
 }
 
 int32_t SPVM_COMPILER_compile_script(SPVM_COMPILER* compiler, const char* source, const char** anon_basic_type_name_ptr) {
-  int32_t is_script = 1;
-  return SPVM_COMPILER_compile_common(compiler, NULL, source, anon_basic_type_name_ptr, is_script);
+  return SPVM_COMPILER_compile_anon_class(compiler, source, anon_basic_type_name_ptr);
 }
 
 int32_t SPVM_COMPILER_compile_anon_class(SPVM_COMPILER* compiler, const char* source, const char** anon_basic_type_name_ptr) {
-  int32_t is_script = 0;
-  return SPVM_COMPILER_compile_common(compiler, NULL, source, anon_basic_type_name_ptr, is_script);
+  return SPVM_COMPILER_compile_common(compiler, NULL, source, anon_basic_type_name_ptr);
 }
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   int32_t is_script = 0;
-  return SPVM_COMPILER_compile_common(compiler, basic_type_name, NULL, NULL, is_script);
+  return SPVM_COMPILER_compile_common(compiler, basic_type_name, NULL, NULL);
 }
 
-int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_type_name, const char* source, const char** anon_basic_type_name_ptr, int32_t is_script) {
+int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_type_name, const char* source, const char** anon_basic_type_name_ptr) {
   
   SPVM_MUTEX* compiler_mutex_compile = compiler->mutex_compile;
   
@@ -204,20 +202,6 @@ int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_
     sprintf(rel_file, "eval/anon_class/%d.spvm", compiler->eval_anon_classes_length);
     
     compiler->eval_anon_classes_length++;
-    
-    if (is_script) {
-      const char* anon_class_pre = "class {\nstatic method main : void () {\n#line 1\n";
-      
-      const char* anon_class_post = "\n}\n}\n";
-      
-      char* anon_class_source = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, strlen(anon_class_pre) + strlen(source) + strlen(anon_class_post) + 1);
-      
-      memcpy(anon_class_source, anon_class_pre, strlen(anon_class_pre));
-      memcpy(anon_class_source + strlen(anon_class_pre), source, strlen(source));
-      memcpy(anon_class_source + strlen(anon_class_pre) + strlen(source), anon_class_post, strlen(anon_class_post));
-      
-      source = anon_class_source;
-    }
     
     SPVM_COMPILER_set_class_file_with_members(compiler, anon_basic_type_name, rel_file, source);
     

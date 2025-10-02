@@ -174,7 +174,7 @@ Examples:
 
 C<int32_t (*compile_script)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* source, const char** anon_basic_type_name_ptr);>
 
-Same as L</"compile_anon_class">, but I<source> does not need anon class syntax C<class { static main : void () { } }>.
+Same as L</"compile_anon_class">.
 
 Examples:
 
