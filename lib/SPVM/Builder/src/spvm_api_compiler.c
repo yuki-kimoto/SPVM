@@ -39,6 +39,7 @@ SPVM_API_COMPILER* SPVM_API_COMPILER_new_api() {
     SPVM_API_COMPILER_get_runtime,
     SPVM_API_COMPILER_prepend_include_dir,
     SPVM_API_COMPILER_compile_anon_class,
+    SPVM_API_COMPILER_compile_script,
   };
   SPVM_API_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
@@ -124,4 +125,8 @@ void  SPVM_API_COMPILER_free_api(SPVM_API_COMPILER* api) {
 
 int32_t SPVM_API_COMPILER_compile_anon_class(SPVM_COMPILER* compiler, const char* source, const char** anon_basic_type_name_ptr) {
   return SPVM_COMPILER_compile_anon_class(compiler, source, anon_basic_type_name_ptr);
+}
+
+int32_t SPVM_API_COMPILER_compile_script(SPVM_COMPILER* compiler, const char* source, const char** anon_basic_type_name_ptr) {
+  return SPVM_COMPILER_compile_script(compiler, source, anon_basic_type_name_ptr);
 }

@@ -156,6 +156,36 @@ The generated anon class name is set to the value referenced by I<anon_basic_typ
 
 This native API can be called repeatedly to compile other classes.
 
+Examples:
+
+  const char* source = "
+    class {
+      use Fn;
+      
+      static method main : void () {
+        my $var = 1;
+        
+        say $var;
+      }
+    }
+  ";
+
+=head2 compile_script
+
+C<int32_t (*compile_script)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* source, const char** anon_basic_type_name_ptr);>
+
+Same as L</"compile_anon_class">, but I<source> does not need anon class syntax C<class { static main : void () { } }>.
+
+Examples:
+
+  const char* source = "
+    use Fn;
+    
+    my $var = 1;
+    
+    say $var;
+  ";
+
 =head1 Native API IDs
 
   0 new_instance
@@ -177,6 +207,7 @@ This native API can be called repeatedly to compile other classes.
   16 get_runtime
   17 prepend_include_dir
   18 compile_anon_class
+  19 compile_script
 
 =head1 See Also
 

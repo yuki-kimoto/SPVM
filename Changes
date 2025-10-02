@@ -2,22 +2,8 @@
   [Document Improvement]
     * Add links to new standard modules.
     * Add links to CPAN modules.
-  [Incompatible Changes]
-    * SPVM script does not need anon class syntax.
-      [Before]
-        class {
-          use Fn;
-          
-          static method main : void () {
-            my $var = 1;
-            say $var;
-          }
-        }
-      [After]
-        use Fn;
-        
-        my $var = 1;
-        say $var;
+  [New Features]
+    * Add compile_script compiler native API.
     
 0.990095 2025-10-01
   [Changes with Performance Degradation]

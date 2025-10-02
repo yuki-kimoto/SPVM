@@ -51,4 +51,6 @@ void  SPVM_API_COMPILER_free_api(SPVM_API_COMPILER* api);
 
 int32_t SPVM_API_COMPILER_compile_anon_class(SPVM_COMPILER* compiler, const char* source, const char** anon_basic_type_name_ptr);
 
+int32_t SPVM_API_COMPILER_compile_script(SPVM_COMPILER* compiler, const char* source, const char** anon_basic_type_name_ptr);
+
 #endif
