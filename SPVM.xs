@@ -4708,6 +4708,39 @@ compile_anon_class(...)
 }
 
 SV*
+compile_script(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  SV* sv_source = ST(1);
+  
+  const char* source = NULL;
+  if (SvOK(sv_source)) {
+    source = SvPV_nolen(sv_source);
+  }
+  
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  const char* anon_basic_type_name = NULL;
+  int32_t status = boot_env->api->compiler->compile_script(compiler, source, &anon_basic_type_name);
+  
+  if (!(status == 0)) {
+    croak("Failed to compile a source code for an anon class.");
+  }
+  
+  SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
+  
+  XPUSHs(sv_anon_basic_type_name);
+  
+  XSRETURN(1);
+}
+
+SV*
 get_error_messages(...)
   PPCODE:
 {

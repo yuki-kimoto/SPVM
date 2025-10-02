@@ -149,12 +149,13 @@ Examples:
   my $compiler = Native->get_current_compiler;
   
   my $source = <<'EOS';
-class {
-  static method sum : int ($num1 : int, $num2 : int) {
-    return $num1 + $num2;
+  class {
+    use Fn;
+    static method sum : int ($num1 : int, $num2 : int) {
+      return $num1 + $num2;
+    }
   }
-}
-EOS
+  EOS
   $compiler->set_start_file(__FILE__);
   $compiler->set_start_line(__LINE__ + 1);
   my $anon_class_name = $compiler->compile_anon_class($source);;
@@ -162,6 +163,20 @@ EOS
   my $ret = Native::MethodCall->call_class_method($anon_class_name, "sum", [(object)1, 2]);;
   
   say $ret->(Int)->value;
+
+=head2 compile_script
+
+C<native method compile_script : string ($source : string);>
+
+Same as L</"compile_anon_class">, but I<source> does not need anon class syntax C<class { static main : void () { } }>.
+
+Eamples:
+
+  my $source = <<'EOS';
+  use Fn;
+  my $var = 1;
+  say $var;
+  EOS
 
 =head1 See Also
 

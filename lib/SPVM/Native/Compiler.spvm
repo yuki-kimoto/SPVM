@@ -52,4 +52,6 @@ class Native::Compiler : pointer {
   
   native method compile_anon_class : string ($source : string);
   
+  native method compile_script : string ($source : string);
+  
 }

@@ -329,6 +329,13 @@ int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* st
   return SPVM__Native__Compiler__compile_anon_class_common(env, stack, is_script);
 }
 
+int32_t SPVM__Native__Compiler__compile_script(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t is_script = 1;
+  
+  return SPVM__Native__Compiler__compile_anon_class_common(env, stack, is_script);
+}
+
 int32_t SPVM__Native__Compiler__clear_include_dirs(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;

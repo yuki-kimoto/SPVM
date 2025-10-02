@@ -4,6 +4,7 @@
     * Add links to CPAN modules.
   [New Features]
     * Add compile_script compiler native API.
+    * Add Native::Compiler#compile_script method.
     
 0.990095 2025-10-01
   [Changes with Performance Degradation]
