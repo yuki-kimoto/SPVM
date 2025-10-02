@@ -1,7 +1,2 @@
-class {
-  use TestCase::NativeAPI;
-  static method main : void () {
-    print TestCase::NativeAPI->sum(30, 20);
-  }
-  
-}
+use TestCase::NativeAPI;
+print TestCase::NativeAPI->sum(30, 20);

@@ -1,9 +1,4 @@
-class {
-  use TestCase::ExternalFunction;
-  static method main : void () {
-    my $ret = TestCase::ExternalFunction->external_sum(10, 30);
-    
-    print $ret;
-  }
-  
-}
+use TestCase::ExternalFunction;
+my $ret = TestCase::ExternalFunction->external_sum(10, 30);
+
+print $ret;

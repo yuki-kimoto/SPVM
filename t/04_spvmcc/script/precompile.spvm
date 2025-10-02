@@ -1,9 +1,5 @@
-class {
-  use TestCase::Precompile;
-  
-  static method main : void () {
-    my $sum = TestCase::Precompile->sum(1, 2);
-    
-    warn "[Test Output]spvm script:precompile.spvm $sum";
-  }
-}
+use TestCase::Precompile;
+
+my $sum = TestCase::Precompile->sum(1, 2);
+
+warn "[Test Output]spvm script:precompile.spvm $sum";

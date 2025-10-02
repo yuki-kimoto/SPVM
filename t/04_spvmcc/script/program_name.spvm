@@ -1,6 +1,2 @@
-class {
-  use CommandInfo;
-  static method main : void () {
-    say CommandInfo->PROGRAM_NAME;
-  }
-}
+use CommandInfo;
+say CommandInfo->PROGRAM_NAME;

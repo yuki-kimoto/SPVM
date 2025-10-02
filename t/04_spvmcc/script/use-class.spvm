@@ -2,13 +2,8 @@
 
 #lib "$FindBin::Bin/../lib/SPVM"
 
-class {
-  use TestCase;
-  
-  static method main : void () {
-    
-    my $sum = TestCase->sum(1000, 2000);
-    
-    say "$sum";
-  }
-}
+use TestCase;
+
+my $sum = TestCase->sum(1000, 2000);
+
+say "$sum";

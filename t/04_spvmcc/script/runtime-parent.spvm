@@ -1,8 +1,3 @@
-class {
-  use TestCase::NativeAPI;
-  
-  static method main : void () {
-    print "runtime-base.spvm";
-  }
-  
-}
+use TestCase::NativeAPI;
+
+print "runtime-base.spvm";

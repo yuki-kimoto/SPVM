@@ -1,11 +1,5 @@
-class {
+my $cb = method : void () {
   
-  static method main : void () {
-    
-    my $cb = method : void () {
-      
-    };
-    
-    say "OK";
-  }
-}
+};
+
+say "OK";
