@@ -121,6 +121,8 @@ Run the Perl program.
 
 =over 2
 
+=item * L<Perl starndard functions|SPVM::Fn> and L<Perl standard modules|SPVM::Document::Modules>.
+
 =item * L<Native threads|SPVM::Thread> and L<goroutines|SPVM::Go>.
 
 =item * L<Executing SPVM programs|spvm>
