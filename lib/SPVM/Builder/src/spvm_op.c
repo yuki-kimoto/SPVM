@@ -4368,11 +4368,14 @@ SPVM_OP* SPVM_OP_build_anon_class_from_statements(SPVM_COMPILER* compiler, SPVM_
   SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_statements->file, op_statements->line);
   SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
   
+  SPVM_OP* op_attributes = SPVM_OP_new_op_list(compiler, op_statements->file, op_statements->line);
+  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_statements->file, op_statements->line);
+  SPVM_OP_insert_child(compiler, op_attributes, op_attributes->last, op_attribute);
   SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_statements->file, op_statements->line);
   SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "main", op_statements->file, op_statements->line);
   SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, op_statements->file, op_statements->line);
   SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_statements->file, op_statements->line);
-  op_method = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, op_args, NULL, op_block);
+  op_method = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, op_args, op_attributes, op_block);
   
   SPVM_OP* op_definitions = SPVM_OP_new_op_list(compiler, op_statements->file, op_statements->line);
   SPVM_OP_insert_child(compiler, op_definitions, op_definitions->last, op_method);

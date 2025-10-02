@@ -1,9 +1,5 @@
-class {
-  use StringBuffer;
-  
-  static method main : void () {
-    Fn->INT_MAX;
-    StringBuffer->new;
-    warn q'[Test Output]spvm script';
-  }
-}
+use StringBuffer;
+
+Fn->INT_MAX;
+StringBuffer->new;
+warn q'[Test Output]spvm script';
