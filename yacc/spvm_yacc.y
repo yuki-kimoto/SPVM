@@ -80,7 +80,7 @@
 
 grammar
   : opt_classes
-
+  
 field_name
   : SYMBOL_NAME
 
@@ -267,6 +267,7 @@ class
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, $5, $3);
     }
+  | opt_statements END_OF_FILE
 
 opt_basic_type
   : /* Empty */
