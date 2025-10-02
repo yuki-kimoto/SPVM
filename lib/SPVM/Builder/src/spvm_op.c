@@ -4363,4 +4363,26 @@ const char* SPVM_OP_get_op_name(SPVM_COMPILER* compiler, int32_t op_id) {
   return op_name;
 }
 
-
+SPVM_OP* SPVM_OP_build_anon_class_from_statements(SPVM_COMPILER* compiler, SPVM_OP* op_statements) {
+  
+  SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_statements->file, op_statements->line);
+  SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
+  
+  SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_statements->file, op_statements->line);
+  SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "main", op_statements->file, op_statements->line);
+  SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, op_statements->file, op_statements->line);
+  SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_statements->file, op_statements->line);
+  op_method = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, op_args, NULL, op_block);
+  
+  SPVM_OP* op_definitions = SPVM_OP_new_op_list(compiler, op_statements->file, op_statements->line);
+  SPVM_OP_insert_child(compiler, op_definitions, op_definitions->last, op_method);
+  
+  SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, op_statements->file, op_statements->line);
+  SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_definitions);
+  
+  SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_statements->file, op_statements->line);
+  
+  op_class = SPVM_OP_build_class(compiler, op_class, NULL, op_class_block, NULL, NULL);
+  
+  return op_class;
+}

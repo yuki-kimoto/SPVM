@@ -268,7 +268,10 @@ class
       $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, $5, $3);
     }
   | opt_statements END_OF_FILE
-
+    {
+      $$ = SPVM_OP_build_anon_class_from_statements(compiler, $1);
+    }
+  
 opt_basic_type
   : /* Empty */
     {

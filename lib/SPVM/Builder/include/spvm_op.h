@@ -626,4 +626,6 @@ SPVM_OP* SPVM_OP_build_enable_options(SPVM_COMPILER* compiler, SPVM_OP* op_enabl
 
 SPVM_OP* SPVM_OP_build_disable_options(SPVM_COMPILER* compiler, SPVM_OP* op_disable_options, SPVM_OP* op_operand);
 
+SPVM_OP* SPVM_OP_build_anon_class_from_statements(SPVM_COMPILER* compiler, SPVM_OP* op_statements);
+
 #endif
