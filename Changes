@@ -1,3 +1,7 @@
+0.990096 2025-10-02
+  [Document Improvement]
+    * Add links to new standard modules.
+    
 0.990095 2025-10-01
   [Changes with Performance Degradation]
     * The offset of the internal array in List object always start at 0. shift method becomes O(n) instead of O(1).

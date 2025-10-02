@@ -204,7 +204,7 @@ perl -n -e 'if (/^(%token|%type|%right|%nonassoc|%left|[a-zA-Z]|\s+:|\s+\|)(.+)/
 ### Gets the links of SPVM modules for POD
 
 ```
-find lib | grep -P '\.pm$' | grep -v 'SPVM\.pm$' | perl -p -e 's/\.pm$//' | sort | grep -v -P '^lib/SPVM(\.pm|/(ExchangeAPI|Document|Builder|BlessedObject|Dist))' | perl -p -e 'chomp;s|lib/SPVM/||; s|/|::|g; $_ = "=item * L<$_|SPVM::$_>\n\n";'
+find lib | grep -P '\.pm$' | grep -v 'lib/SPVM.pm$' | perl -p -e 's/\.pm$//' | sort | grep -v -P '^lib/SPVM(\.pm|/(Global|ExchangeAPI|Document|Builder|BlessedObject|Dist))' | perl -p -e 'chomp;s|lib/SPVM/||; s|/|::|g; $_ = "=item * L<SPVM::$_|SPVM::$_>\n\n";'
 ```
 
 ## spvmdist

@@ -24,6 +24,18 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<SPVM::Callback::Grep|SPVM::Callback::Grep>
 
+=item * L<SPVM::Callback::Grep::Byte|SPVM::Callback::Grep::Byte>
+
+=item * L<SPVM::Callback::Grep::Double|SPVM::Callback::Grep::Double>
+
+=item * L<SPVM::Callback::Grep::Float|SPVM::Callback::Grep::Float>
+
+=item * L<SPVM::Callback::Grep::Int|SPVM::Callback::Grep::Int>
+
+=item * L<SPVM::Callback::Grep::Long|SPVM::Callback::Grep::Long>
+
+=item * L<SPVM::Callback::Grep::Short|SPVM::Callback::Grep::Short>
+
 =item * L<SPVM::Callback::Map|SPVM::Callback::Map>
 
 =item * L<SPVM::Callback::MapExpand|SPVM::Callback::MapExpand>
@@ -58,11 +70,11 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<SPVM::DoubleList|SPVM::DoubleList>
 
+=item * L<SPVM::EqualityCheckable|SPVM::EqualityCheckable>
+
 =item * L<SPVM::EqualityChecker|SPVM::EqualityChecker>
 
 =item * L<SPVM::EqualityChecker::Address|SPVM::EqualityChecker::Address>
-
-=item * L<SPVM::EqualityCheckable|SPVM::EqualityCheckable>
 
 =item * L<SPVM::Error|SPVM::Error>
 
@@ -116,6 +128,8 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<SPVM::Native|SPVM::Native>
 
+=item * L<SPVM::Native::API|SPVM::Native::API>
+
 =item * L<SPVM::Native::Arg|SPVM::Native::Arg>
 
 =item * L<SPVM::Native::BasicType|SPVM::Native::BasicType>
@@ -125,6 +139,8 @@ This document lists standard modules in the SPVM language. Standard modules are 
 =item * L<SPVM::Native::ClassVar|SPVM::Native::ClassVar>
 
 =item * L<SPVM::Native::Compiler|SPVM::Native::Compiler>
+
+=item * L<SPVM::Native::Constant|SPVM::Native::Constant>
 
 =item * L<SPVM::Native::Env|SPVM::Native::Env>
 
@@ -138,9 +154,15 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<SPVM::Native::Stack|SPVM::Native::Stack>
 
+=item * L<SPVM::Packer|SPVM::Packer>
+
+=item * L<SPVM::Packer::Specifier|SPVM::Packer::Specifier>
+
 =item * L<SPVM::Point|SPVM::Point>
 
 =item * L<SPVM::Point3D|SPVM::Point3D>
+
+=item * L<SPVM::QList|SPVM::QList>
 
 =item * L<SPVM::Scope::Guard|SPVM::Scope::Guard>
 
