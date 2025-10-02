@@ -140,6 +140,7 @@ struct spvm_compiler {
   SPVM_MUTEX* mutex_compile;
   
   int32_t eval_anon_classes_length;
+  
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
@@ -212,7 +213,9 @@ void SPVM_COMPILER_free_memory_tmp_each_compile(SPVM_COMPILER* compiler);
 
 void SPVM_COMPILER_clear_error_messages(SPVM_COMPILER* compiler);
 
-int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_type_name, const char* source, const char** anon_basic_type_name);
+int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_type_name, const char* source, const char** anon_basic_type_name, int32_t is_script);
+
+int32_t SPVM_COMPILER_compile_script(SPVM_COMPILER* compiler, const char* source, const char** anon_basic_type_name);
 
 int32_t SPVM_COMPILER_compile_anon_class(SPVM_COMPILER* compiler, const char* source, const char** anon_basic_type_name);
 
