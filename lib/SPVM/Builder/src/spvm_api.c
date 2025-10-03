@@ -5404,7 +5404,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
       if (SPVM_API_is_object_array(env, stack, released_object)) {
         int32_t length = SPVM_API_length(env, stack, released_object);
         for (int32_t index = 0; index < length; index++) {
-          SPVM_OBJECT** ref = &(((SPVM_OBJECT**)((intptr_t)released_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
+          SPVM_OBJECT** ref = &(((SPVM_OBJECT**)(GET_DATA_ADDRESS(released_object)))[index]);
           SPVM_API_assign_object(env, stack, ref, NULL);
         }
       }
@@ -5459,7 +5459,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             int32_t field_type_is_released_object = SPVM_API_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
             
             if (field_type_is_released_object) {
-              SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)released_object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+              SPVM_OBJECT** ref = (SPVM_OBJECT**)(GET_DATA_ADDRESS(released_object) + field->offset);
               SPVM_API_assign_object(env, stack, ref, NULL);
             }
           }
