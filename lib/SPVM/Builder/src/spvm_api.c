@@ -5073,6 +5073,7 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
     object->basic_type = basic_type;
     object->type_dimension = type_dimension;
     object->flag = flag;
+    object->data = (void*)((intptr_t)object + sizeof(SPVM_OBJECT));
     
     // The length of string can be shorten.
     SPVM_API_set_length(env, stack, object, length);
