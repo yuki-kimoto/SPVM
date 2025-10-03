@@ -5644,49 +5644,49 @@ int32_t SPVM_API_is_binary_compatible_object(SPVM_ENV* env, SPVM_VALUE* stack, S
 
 int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* bool_object) {
   
-  int32_t value = *(int8_t*)((intptr_t)bool_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  int32_t value = *(int8_t*)(GET_DATA_ADDRESS(bool_object));
   
   return value;
 }
 
 int32_t SPVM_API_get_byte_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* byte_object) {
   
-  int32_t value = *(int8_t*)((intptr_t)byte_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  int32_t value = *(int8_t*)(GET_DATA_ADDRESS(byte_object));
   
   return value;
 }
 
 int32_t SPVM_API_get_short_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* short_object) {
   
-  int32_t value = *(int16_t*)((intptr_t)short_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  int32_t value = *(int16_t*)(GET_DATA_ADDRESS(short_object));
   
   return value;
 }
 
 int32_t SPVM_API_get_int_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* int_object) {
   
-  int32_t value = *(int32_t*)((intptr_t)int_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  int32_t value = *(int32_t*)(GET_DATA_ADDRESS(int_object));
   
   return value;
 }
 
 int64_t SPVM_API_get_long_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* long_object) {
   
-  int64_t value = *(int64_t*)((intptr_t)long_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  int64_t value = *(int64_t*)(GET_DATA_ADDRESS(long_object));
   
   return value;
 }
 
 float SPVM_API_get_float_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* float_object) {
   
-  float value = *(float*)((intptr_t)float_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  float value = *(float*)(GET_DATA_ADDRESS(float_object));
   
   return value;
 }
 
 double SPVM_API_get_double_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* double_object) {
   
-  double value = *(double*)((intptr_t)double_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  double value = *(double*)(GET_DATA_ADDRESS(double_object));
   
   return value;
 }
