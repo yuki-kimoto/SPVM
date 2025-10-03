@@ -8,6 +8,7 @@
 #include "spvm_native.h"
 
 // SPVM_OBJECT
+// Note: volatile is for atomic operation
 struct spvm_object {
   void* pointer;
   void* data;

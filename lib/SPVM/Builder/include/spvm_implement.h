@@ -224,21 +224,21 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_UNDEF(SPVM_ENV* env, SPVM_VALUE* s
 
 static inline void SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(void* object, int32_t object_data_offset, int32_t exists_offset, int32_t exists_bit) {
   
-  uint8_t* block = (uint8_t*)((intptr_t)object + object_data_offset + exists_offset);
+  uint8_t* block = (uint8_t*)(GET_DATA_ADDRESS(object) + exists_offset);
   
   *block |= (1 << exists_bit);
 }
 
 static inline void SPVM_IMPLEMENT_DISABLE_EXISTS_FLAG(void* object, int32_t object_data_offset, int32_t exists_offset, int32_t exists_bit) {
   
-  uint8_t* block = (uint8_t*)((intptr_t)object + object_data_offset + exists_offset);
+  uint8_t* block = (uint8_t*)(GET_DATA_ADDRESS(object) + exists_offset);
   
   *block &= ~(1 << exists_bit);
 }
 
 static inline int32_t SPVM_IMPLEMENT_GET_EXISTS_FLAG(void* object, int32_t object_data_offset, int32_t exists_offset, int32_t exists_bit) {
   
-  uint8_t* block = (uint8_t*)((intptr_t)object + object_data_offset + exists_offset);
+  uint8_t* block = (uint8_t*)(GET_DATA_ADDRESS(object) + exists_offset);
   
   int32_t flag = !!(*block & (1 << exists_bit));
   
@@ -1225,7 +1225,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stac
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *out = *(int8_t*)((intptr_t)object + object_data_offset + field_offset);
+    *out = *(int8_t*)(GET_DATA_ADDRESS(object) + field_offset);
   }
 }
 
@@ -1300,7 +1300,7 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    void** ref = (void**)(GET_DATA_ADDRESS(object) + field_offset);
     void* object = SPVM_IMPLEMENT_DROP_TAG_POINTERS(*ref);
     env->assign_object(env, stack, out, object);
   }
@@ -1314,7 +1314,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stac
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *(int8_t*)((intptr_t)object + object_data_offset + field_offset) = in;
+    *(int8_t*)(GET_DATA_ADDRESS(object) + field_offset) = in;
     SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
@@ -1327,7 +1327,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* sta
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *(int16_t*)((intptr_t)object + object_data_offset + field_offset) = in;
+    *(int16_t*)(GET_DATA_ADDRESS(object) + field_offset) = in;
     SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
@@ -1340,7 +1340,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *(int32_t*)((intptr_t)object + object_data_offset + field_offset) = in;
+    *(int32_t*)(GET_DATA_ADDRESS(object) + field_offset) = in;
     SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
@@ -1353,7 +1353,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stac
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *(int64_t*)((intptr_t)object + object_data_offset + field_offset) = in;
+    *(int64_t*)(GET_DATA_ADDRESS(object) + field_offset) = in;
     SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
@@ -1366,7 +1366,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* sta
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *(float*)((intptr_t)object + object_data_offset + field_offset) = in;
+    *(float*)(GET_DATA_ADDRESS(object) + field_offset) = in;
     SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
@@ -1379,7 +1379,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* st
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *(double*)((intptr_t)object + object_data_offset + field_offset) = in;
+    *(double*)(GET_DATA_ADDRESS(object) + field_offset) = in;
     SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
 }
@@ -1392,7 +1392,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    void** ref = (void**)(GET_DATA_ADDRESS(object) + field_offset);
     env->assign_object(env, stack, ref, in);
     SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
@@ -1406,7 +1406,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* sta
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    void** ref = (void**)(GET_DATA_ADDRESS(object) + field_offset);
     env->assign_object(env, stack, ref, NULL);
     SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, object_data_offset, exists_offset, exists_bit);
   }
@@ -1419,7 +1419,7 @@ static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    void** ref = (void**)(GET_DATA_ADDRESS(object) + field_offset);
     int32_t status = env->weaken(env, stack, ref);
     if (status != 0) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED]);
@@ -1436,7 +1436,7 @@ static inline void SPVM_IMPLEMENT_UNWEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stac
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    void** ref = (void**)(GET_DATA_ADDRESS(object) + field_offset);
     env->unweaken(env, stack, ref);
   }
 }
@@ -1448,7 +1448,7 @@ static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    void** ref = (void**)(GET_DATA_ADDRESS(object) + field_offset);
     *out = env->isweak(env, stack, ref);
   }
 }
@@ -2711,7 +2711,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING(SPVM_ENV*
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int8_t value, int32_t object_data_offset) {
   void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS);
   void* object = env->new_object_no_mortal(env, stack, basic_type);
-  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_data_offset);
+  SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(object));
   *(int8_t*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
@@ -2719,7 +2719,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int16_t value, int32_t object_data_offset) {
   void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS);
   void* object = env->new_object_no_mortal(env, stack, basic_type);
-  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_data_offset);
+  SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(object));
   *(int16_t*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
@@ -2727,7 +2727,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(SPVM_ENV
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t value, int32_t object_data_offset) {
   void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS);
   void* object = env->new_object_no_mortal(env, stack, basic_type);
-  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_data_offset);
+  SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(object));
   *(int32_t*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
@@ -2735,7 +2735,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(SPVM_ENV* en
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int64_t value, int32_t object_data_offset) {
   void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS);
   void* object = env->new_object_no_mortal(env, stack, basic_type);
-  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_data_offset);
+  SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(object));
   *(int64_t*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
@@ -2743,7 +2743,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(SPVM_ENV* 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float value, int32_t object_data_offset) {
   void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS);
   void* object = env->new_object_no_mortal(env, stack, basic_type);
-  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_data_offset);
+  SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(object));
   *(float*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
@@ -2751,7 +2751,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(SPVM_ENV
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, double value, int32_t object_data_offset) {
   void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS);
   void* object = env->new_object_no_mortal(env, stack, basic_type);
-  SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_data_offset);
+  SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(object));
   *(double*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
@@ -2764,7 +2764,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE(SPVM_ENV* 
   }
   else {
     if (env->is_type_by_name(env, stack, object, "Byte", 0)) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_data_offset);
+      SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(object));
       *out = *(int8_t*)&fields[0];
     }
     else {
@@ -2783,7 +2783,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT(SPVM_ENV
   }
   else {
     if (env->is_type_by_name(env, stack, object, "Short", 0)) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_data_offset);
+      SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(object));
       *out = *(int16_t*)&fields[0];
     }
     else {
@@ -2802,7 +2802,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_OBJECT_TO_INT(SPVM_ENV* en
   }
   else {
     if (env->is_type_by_name(env, stack, object, "Int", 0)) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_data_offset);
+      SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(object));
       *out = *(int32_t*)&fields[0];
     }
     else {
@@ -2821,7 +2821,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_OBJECT_TO_LONG(SPVM_ENV* 
   }
   else {
     if (env->is_type_by_name(env, stack, object, "Long", 0)) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_data_offset);
+      SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(object));
       *out = *(int64_t*)&fields[0];
     }
     else {
@@ -2840,7 +2840,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT(SPVM_ENV
   }
   else {
     if (env->is_type_by_name(env, stack, object, "Float", 0)) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_data_offset);
+      SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(object));
       *out = *(float*)&fields[0];
     }
     else {
@@ -2859,7 +2859,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_E
   }
   else {
     if (env->is_type_by_name(env, stack, object, "Double", 0)) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + object_data_offset);
+      SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(object));
       *out = *(double*)&fields[0];
     }
     else {
