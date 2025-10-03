@@ -453,6 +453,13 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
         SPVM_FIELD* field = SPVM_LIST_get(merged_fields, merged_field_index);
         
         if (!(field->name[0] == '.')) {
+          if (!field->exists_field) {
+            SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_original_field(compiler, field->current_basic_type->parent, field->name);
+            if (found_field_in_super_class) {
+              field->exists_field = found_field_in_super_class->exists_field;
+            }
+          }
+          
           field->index = field_index;
           SPVM_LIST_push(fields, field);
           SPVM_HASH_set(basic_type->field_symtable, field->name, strlen(field->name), field);
