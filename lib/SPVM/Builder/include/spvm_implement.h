@@ -94,6 +94,8 @@ enum {
   SPVM_IMPLEMENT_C_EXCEPTION_COMPARISON_CMP,
 };
 
+#define GET_DATA_ADDRESS(object) *(void**)((intptr_t)object + sizeof(void*))
+
 static inline void* SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id) {
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
