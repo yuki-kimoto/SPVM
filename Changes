@@ -1,3 +1,8 @@
+0.990097 2025-10-03
+  [Internal Changes with Memory Size Degradation]
+    * Add capacity member variable to spvm_object.h.
+    
+    
 0.990096 2025-10-02
   [Document Improvement]
     * Add links to new standard modules.

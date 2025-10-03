@@ -16,6 +16,7 @@ struct spvm_object {
   uint8_t type_dimension;
   volatile uint8_t flag;
   int32_t length;
+  int32_t capacity;
 };
 
 enum {
