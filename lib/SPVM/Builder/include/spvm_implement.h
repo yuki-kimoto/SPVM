@@ -927,7 +927,7 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_INT(SPVM_ENV* env, SPVM_VALU
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else { 
-      *out = ((int32_t*)((intptr_t)array + object_data_offset))[index];
+      *out = ((int32_t*)GET_DATA_ADDRESS(array))[index];
     }
   }
 }
