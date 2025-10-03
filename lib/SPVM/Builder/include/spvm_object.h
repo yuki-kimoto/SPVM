@@ -15,10 +15,10 @@ struct spvm_object {
   SPVM_WEAKEN_BACKREF* weaken_backref_head;
   SPVM_RUNTIME_BASIC_TYPE* basic_type;
   volatile int32_t ref_count;
-  uint8_t type_dimension;
-  volatile uint8_t flag;
   int32_t length;
   int32_t capacity;
+  uint8_t type_dimension;
+  volatile uint8_t flag;
 };
 
 enum {
