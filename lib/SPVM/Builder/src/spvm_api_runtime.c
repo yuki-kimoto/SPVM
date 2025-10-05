@@ -123,9 +123,7 @@ void SPVM_API_RUNTIME_free_api(SPVM_API_RUNTIME* api) {
 }
 
 int32_t SPVM_API_RUNTIME_get_object_data_offset(SPVM_RUNTIME* runtime) {
-  int32_t object_data_offset = sizeof(SPVM_OBJECT);
-  
-  return object_data_offset;
+  return offsetof(SPVM_OBJECT, data);
 }
 
 int32_t SPVM_API_RUNTIME_get_object_ref_count_offset(SPVM_RUNTIME* runtime) {

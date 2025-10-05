@@ -2,7 +2,7 @@
   [Internal Changes with Memory Size Degradation]
     * Add capacity member variable to spvm_object.h.
     * Add data member variable to spvm_object.h.
-    
+    * get_object_data_offset returns offsetof(SPVM_OBJECT, data).
     
 0.990096 2025-10-02
   [Document Improvement]

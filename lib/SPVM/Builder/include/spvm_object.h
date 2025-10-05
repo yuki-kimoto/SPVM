@@ -11,13 +11,13 @@
 // Note: volatile is for atomic operation
 struct spvm_object {
   void* pointer;
-  void* data;
   SPVM_WEAKEN_BACKREF* weaken_backref_head;
   SPVM_RUNTIME_BASIC_TYPE* basic_type;
   volatile int32_t ref_count;
   uint8_t type_dimension;
   volatile uint8_t flag;
   int32_t length;
+  void* data;
 };
 
 enum {
