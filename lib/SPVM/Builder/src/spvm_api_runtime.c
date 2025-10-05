@@ -122,12 +122,6 @@ void SPVM_API_RUNTIME_free_api(SPVM_API_RUNTIME* api) {
   free(api);
 }
 
-int32_t SPVM_API_RUNTIME_get_object_mutex_offset(SPVM_RUNTIME* runtime) {
-  int32_t object_mutex_offset = sizeof(SPVM_OBJECT);
-  
-  return object_mutex_offset;
-}
-
 int32_t SPVM_API_RUNTIME_get_object_data_offset(SPVM_RUNTIME* runtime) {
   int32_t object_data_offset = sizeof(SPVM_OBJECT);
   
