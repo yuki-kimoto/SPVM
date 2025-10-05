@@ -5067,7 +5067,7 @@ double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
 
 SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t alloc_size, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t length, int32_t flag) {
   
-  SPVM_OBJECT* object = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(alloc_size);
+  SPVM_OBJECT* object = SPVM_API_new_memory_block(env, stack, alloc_size);
   
   if (object) {
     object->basic_type = basic_type;
@@ -5480,7 +5480,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
           }
           
           // Free released_object
-          SPVM_ALLOCATOR_free_memory_block_unmanaged(released_object);
+          SPVM_API_free_memory_block(env, stack, released_object);
           released_object = NULL;
         }
         
