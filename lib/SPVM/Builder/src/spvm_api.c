@@ -2016,37 +2016,37 @@ SPVM_OBJECT* SPVM_API_get_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 void SPVM_API_set_field_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int8_t value) {
   
   *(int8_t*)(GET_DATA_ADDRESS(env, object) + field->offset) = value;
-  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, field->exists_offset, field->exists_bit);
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(env, stack, object, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int16_t value) {
   
   *(int16_t*)(GET_DATA_ADDRESS(env, object) + field->offset) = value;
-  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, field->exists_offset, field->exists_bit);
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(env, stack, object, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int32_t value) {
   
   *(int32_t*)(GET_DATA_ADDRESS(env, object) + field->offset) = value;
-  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, field->exists_offset, field->exists_bit);
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(env, stack, object, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int64_t value) {
   
   *(int64_t*)(GET_DATA_ADDRESS(env, object) + field->offset) = value;
-  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, field->exists_offset, field->exists_bit);
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(env, stack, object, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, float value) {
   
   *(float*)(GET_DATA_ADDRESS(env, object) + field->offset) = value;
-  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, field->exists_offset, field->exists_bit);
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(env, stack, object, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, double value) {
   
   *(double*)(GET_DATA_ADDRESS(env, object) + field->offset) = value;
-  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, field->exists_offset, field->exists_bit);
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(env, stack, object, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
@@ -2054,7 +2054,7 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   SPVM_OBJECT** ref = (SPVM_OBJECT**)(GET_DATA_ADDRESS(env, object) + field->offset);
   
   SPVM_API_assign_object(env, stack, ref, value);
-  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(object, field->exists_offset, field->exists_bit);
+  SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(env, stack, object, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_set_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
@@ -6161,7 +6161,7 @@ int32_t SPVM_API_is_options(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
 
 int32_t SPVM_API_exists_field(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
   
-  int32_t value = SPVM_IMPLEMENT_GET_EXISTS_FLAG(object, field->exists_offset, field->exists_bit);
+  int32_t value = SPVM_IMPLEMENT_GET_EXISTS_FLAG(env, stack, object, field->exists_offset, field->exists_bit);
   
   return value;
 }
@@ -6247,7 +6247,7 @@ void SPVM_API_delete_field(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object
     }
   }
   
-  SPVM_IMPLEMENT_DISABLE_EXISTS_FLAG(object, field->exists_offset, field->exists_bit);
+  SPVM_IMPLEMENT_DISABLE_EXISTS_FLAG(env, stack, object, field->exists_offset, field->exists_bit);
 }
 
 void SPVM_API_delete_field_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
