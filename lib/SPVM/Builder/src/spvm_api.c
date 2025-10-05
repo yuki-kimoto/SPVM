@@ -5069,14 +5069,11 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
   
   SPVM_OBJECT* object = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(alloc_size);
   
-  void* data = SPVM_API_new_memory_block(env, stack, alloc_size);
-  
   if (object) {
     object->basic_type = basic_type;
     object->type_dimension = type_dimension;
     object->flag = flag;
     object->data = (void*)((intptr_t)object + sizeof(SPVM_OBJECT));
-    object->data_tmp = data;
     
     // The length of string can be shorten.
     SPVM_API_set_length(env, stack, object, length);
@@ -5483,8 +5480,6 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
           }
           
           // Free released_object
-          
-          SPVM_API_free_memory_block(env, stack, released_object->data_tmp);
           SPVM_ALLOCATOR_free_memory_block_unmanaged(released_object);
           released_object = NULL;
         }
