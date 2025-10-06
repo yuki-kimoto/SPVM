@@ -4577,16 +4577,32 @@ int32_t SPVM_API_get_object_type_dimension(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   return object->type_dimension;
 }
 
+int32_t SPVM_API_has_dynamic_data(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  int32_t has_dynamic_data = 0;
+  if (object->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING || object->type_dimension > 0) {
+    has_dynamic_data = 1;
+  }
+  
+  return has_dynamic_data;
+}
+
 int32_t SPVM_API_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  int32_t length = object->length;
+  int32_t length = 0;
+  
+  if (SPVM_API_has_dynamic_data(env, stack, object)) {
+    length = object->length;
+  }
   
   return length;
 }
 
 void SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length) {
   
-  object->length = length;
+  if (SPVM_API_has_dynamic_data(env, stack, object)) {
+    object->length = length;
+  }
 }
 
 int8_t* SPVM_API_get_elems_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {

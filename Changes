@@ -1,10 +1,13 @@
 0.990097 2025-10-03
-  [Internal Changes with Memory Size Degradation]
+  [Internal Changes]
     * Add capacity member variable to spvm_object.h.
     * Add data member variable to spvm_object.h.
     * get_object_data_offset returns offsetof(SPVM_OBJECT, data).
     * Remove internale object_data_offset argument of internal functions.
     * Remove internale object_length_offset argument of internal functions.
+    * SPVM_API_length returns 0 if the data is dynamic.
+    * SPVM_API_set_length set the length if the data is dynamic.
+    * Add SPVM_API_has_dynamic_data.
     
 0.990096 2025-10-02
   [Document Improvement]

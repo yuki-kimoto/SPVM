@@ -190,6 +190,7 @@ void SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 // Get spvm_object.h information
 int32_t SPVM_API_string_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 int8_t* SPVM_API_string_bytes(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
+int32_t SPVM_API_has_dynamic_data(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 int32_t SPVM_API_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array);
 void SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length);
 
