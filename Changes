@@ -11,6 +11,7 @@
     * SPVM_API_set_length set the length if the data is dynamic.
     * Add SPVM_API_has_dynamic_data.
     * Add object_data_offset and object_length_offset native APIs.
+    * SPVM_API_new_object_common recieve data size instead of allocation size.
     
 0.990096 2025-10-02
   [Document Improvement]
