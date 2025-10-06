@@ -4579,16 +4579,6 @@ int32_t SPVM_API_get_object_type_dimension(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   return object->type_dimension;
 }
 
-int32_t SPVM_API_has_dynamic_data(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  int32_t has_dynamic_data = 0;
-  if (object->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING || object->type_dimension > 0) {
-    has_dynamic_data = 1;
-  }
-  
-  return has_dynamic_data;
-}
-
 int32_t SPVM_API_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   int32_t length = object->length;
@@ -5894,6 +5884,16 @@ int32_t SPVM_API_is_mulnum_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* 
   else {
     return 0;
   }
+}
+
+int32_t SPVM_API_is_dynamic_data_type(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
+  
+  int32_t is_dynamic_data_type = 0;
+  if (basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING || type_dimension > 0) {
+    is_dynamic_data_type = 1;
+  }
+  
+  return is_dynamic_data_type;
 }
 
 int32_t SPVM_API_get_type_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag) {
