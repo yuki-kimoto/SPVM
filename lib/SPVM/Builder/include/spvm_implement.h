@@ -96,6 +96,8 @@ enum {
 
 #define GET_DATA_ADDRESS(env, stack, object) ((intptr_t)object + (intptr_t)env->object_data_offset)
 
+#define GET_DYNAMIC_DATA_ADDRESS(env, stack, object) GET_DATA_ADDRESS(env, stack, object)
+
 static inline void* SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id) {
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
