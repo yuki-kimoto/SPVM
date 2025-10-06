@@ -1,3 +1,7 @@
+0.990099 2025-10-06
+  [Internal Changes]
+    * Add SPVM_OBJECT_C_FLAG_IS_FIXED_LENGTH object flag.
+    
 0.990098 2025-10-06
   [Internal Changes with Memory Size Degraration]
     * Add data member variable to SPVM_OBJECT.
