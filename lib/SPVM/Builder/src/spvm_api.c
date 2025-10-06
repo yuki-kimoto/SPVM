@@ -4593,40 +4593,56 @@ void SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, 
 
 int8_t* SPVM_API_get_elems_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
+  assert(object);
+  
   return (int8_t*)(GET_DYNAMIC_DATA_ADDRESS(env, stack, object));
 }
 
 const char* SPVM_API_get_chars(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
+  
+  assert(string);
   
   return (const char*)(GET_DYNAMIC_DATA_ADDRESS(env, stack, string));
 }
 
 int16_t* SPVM_API_get_elems_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
+  assert(object);
+  
   return (int16_t*)(GET_DYNAMIC_DATA_ADDRESS(env, stack, object));
 }
 
 int32_t* SPVM_API_get_elems_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  assert(object);
   
   return (int32_t*)(GET_DYNAMIC_DATA_ADDRESS(env, stack, object));
 }
 
 int64_t* SPVM_API_get_elems_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
+  assert(object);
+  
   return (int64_t*)(GET_DYNAMIC_DATA_ADDRESS(env, stack, object));
 }
 
 float* SPVM_API_get_elems_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  assert(object);
   
   return (float*)(GET_DYNAMIC_DATA_ADDRESS(env, stack, object));
 }
 
 double* SPVM_API_get_elems_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
+  assert(object);
+  
   return (double*)(GET_DYNAMIC_DATA_ADDRESS(env, stack, object));
 }
 
 SPVM_OBJECT* SPVM_API_get_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index) {
+  
+  assert(array);
   
   SPVM_OBJECT* object_maybe_weaken = ((SPVM_OBJECT**)(GET_DYNAMIC_DATA_ADDRESS(env, stack, array)))[index];
   SPVM_OBJECT* object = SPVM_API_drop_tag_pointers(env, stack, object_maybe_weaken);
@@ -4635,6 +4651,8 @@ SPVM_OBJECT* SPVM_API_get_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
 }
 
 void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* object) {
+  
+  assert(object);
   
   SPVM_OBJECT** ref = &((SPVM_OBJECT**)(GET_DYNAMIC_DATA_ADDRESS(env, stack, array)))[index];
   
