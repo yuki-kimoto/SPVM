@@ -4591,20 +4591,14 @@ int32_t SPVM_API_has_dynamic_data(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
 
 int32_t SPVM_API_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  int32_t length = 0;
-  
-  if (SPVM_API_has_dynamic_data(env, stack, object)) {
-    length = object->length;
-  }
+  int32_t length = object->length;
   
   return length;
 }
 
 void SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length) {
   
-  if (SPVM_API_has_dynamic_data(env, stack, object)) {
-    object->length = length;
-  }
+  object->length = length;
 }
 
 int8_t* SPVM_API_get_elems_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
