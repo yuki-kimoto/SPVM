@@ -2789,6 +2789,66 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
+          case SPVM_OP_C_ID_SET_LENGTH: {
+            SPVM_TYPE* object_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* length_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+            
+            int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
+            int32_t is_string_type = SPVM_TYPE_is_string_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
+            if (!(is_array_type || is_string_type)) {
+              SPVM_COMPILER_error(compiler, "The first operand type of set_length operator must be an array type or string type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            if (!SPVM_TYPE_is_integer_type(compiler, length_operand_type->basic_type->id, length_operand_type->dimension, length_operand_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The second operand type of set_length operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
+            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+              return;
+            }
+            
+            break;
+          }
+          case SPVM_OP_C_ID_CAPACITY: {
+            SPVM_OP* op_first = op_cur->first;
+            
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            
+            int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+            int32_t is_string_type = SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+            if (!(is_array_type || is_string_type)) {
+              SPVM_COMPILER_error(compiler, "The operand type of capacity operator must be an array type or string type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            break;
+          }
+          case SPVM_OP_C_ID_SET_CAPACITY: {
+            SPVM_TYPE* object_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* capacity_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+            
+            int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
+            int32_t is_string_type = SPVM_TYPE_is_string_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
+            if (!(is_array_type || is_string_type)) {
+              SPVM_COMPILER_error(compiler, "The first operand type of set_capacity operator must be an array type or string type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            if (!SPVM_TYPE_is_integer_type(compiler, capacity_operand_type->basic_type->id, capacity_operand_type->dimension, capacity_operand_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The second operand type of set_capacity operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
+            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+              return;
+            }
+            
+            break;
+          }
           case SPVM_OP_C_ID_ASSIGN: {
             
             SPVM_OP* op_dist = op_cur->last;
@@ -4217,6 +4277,8 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_COPY_FIELDS:
               case SPVM_OP_C_ID_PRINT:
               case SPVM_OP_C_ID_SAY:
+              case SPVM_OP_C_ID_SET_LENGTH:
+              case SPVM_OP_C_ID_SET_CAPACITY:
               case SPVM_OP_C_ID_MAKE_READ_ONLY:
               case SPVM_OP_C_ID_MAKE_FIXED_LENGTH:
               case SPVM_OP_C_ID_ENABLE_OPTIONS:
@@ -4250,6 +4312,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_ADDRESS:
               case SPVM_OP_C_ID_ARRAY_LENGTH:
               case SPVM_OP_C_ID_STRING_LENGTH:
+              case SPVM_OP_C_ID_CAPACITY:
               case SPVM_OP_C_ID_NEW:
               case SPVM_OP_C_ID_BASIC_TYPE_ID:
               case SPVM_OP_C_ID_EVAL_ERROR_ID:
@@ -5137,6 +5200,8 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_WARN:
     case SPVM_OP_C_ID_PRINT:
     case SPVM_OP_C_ID_SAY:
+    case SPVM_OP_C_ID_SET_LENGTH:
+    case SPVM_OP_C_ID_SET_CAPACITY:
     case SPVM_OP_C_ID_MAKE_READ_ONLY:
     case SPVM_OP_C_ID_MAKE_FIXED_LENGTH:
     case SPVM_OP_C_ID_ENABLE_OPTIONS:
@@ -5181,6 +5246,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_ARRAY_LENGTH:
+    case SPVM_OP_C_ID_CAPACITY:
     case SPVM_OP_C_ID_STRING_LENGTH:
     {
       type = SPVM_TYPE_new_int_type(compiler);

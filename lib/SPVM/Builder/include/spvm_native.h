@@ -345,6 +345,10 @@ struct spvm_env {
   void* object_length_offset;
   void (*make_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*is_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void* object_capacity_offset;
+  int32_t (*set_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);
+  int32_t (*capacity)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  int32_t (*set_capacity)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t capacity);
 };
 
 struct spvm_env_api {
@@ -520,6 +524,7 @@ struct spvm_api_runtime {
   FILE* (*get_spvm_stdout)(void* runtime);
   FILE* (*get_spvm_stderr)(void* runtime);
   SPVM_ENV* (*get_env)(void* runtime);
+  int32_t (*get_object_capacity_offset)(void* runtime);
 };
 
 struct spvm_api_internal {

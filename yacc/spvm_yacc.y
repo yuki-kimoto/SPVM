@@ -26,7 +26,7 @@
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
-%token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
+%token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER SET_LENGTH SET_CAPACITY
 %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
 
 %type <opval> grammar
@@ -69,7 +69,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
-%right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY IS_FIXED_LENGTH COPY ADDRESS IS_OPTIONS
+%right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY IS_FIXED_LENGTH COPY ADDRESS IS_OPTIONS CAPACITY
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 %nonassoc <opval> ')'
@@ -798,6 +798,14 @@ void_return_operator
     }
   | copy_fields
   | delete
+  | SET_LENGTH '(' operator ',' operator ')'
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $1, $2, $3);
+    }
+  | SET_CAPACITY '(' operator ',' operator ')'
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $1, $2, $3);
+    }
 
 for_statement
   : FOR '(' opt_operator ';' opt_operator ';' opt_operator ')' block
@@ -1155,6 +1163,10 @@ unary_operator
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
   | IS_OPTIONS operator
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+  | CAPACITY operator
     {
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }

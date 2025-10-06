@@ -919,6 +919,18 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_STRING_LENGTH(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1]);
         break;
       }
+      case SPVM_OPCODE_C_ID_SET_LENGTH: {
+        SPVM_IMPLEMENT_SET_LENGTH(env, stack, object_vars[opcode->operand0], int_vars[opcode->operand1], &error_id);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CAPACITY: {
+        SPVM_IMPLEMENT_CAPACITY(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], &error_id);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_CAPACITY: {
+        SPVM_IMPLEMENT_SET_CAPACITY(env, stack, object_vars[opcode->operand0], int_vars[opcode->operand1], &error_id);
+        break;
+      }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
         void* object = object_vars[opcode->operand1];
         int32_t field_current_basic_type_id = opcode->operand2;

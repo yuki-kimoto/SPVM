@@ -2708,6 +2708,40 @@ C<void (*make_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 C<int32_t (*is_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
+=head2 object_capacity_offset
+
+C<void* object_capacity_offset;>
+
+Returns the offset of C<capacity> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
+
+=head2 set_length
+
+C<int32_t (*set_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);>
+
+Set the length of the object I<object>. The type of I<object> must be string type or an array type.
+
+If succeeded, returns 0, otherwise a non-zero value.
+
+If the length is extended, L</"set_capacity"> is called if needed.
+
+If the length is shorten, unused elements is destroyed.
+
+=head2 capacity
+
+C<int32_t (*capacity)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+
+Returns C<capacity> member variavle in C<SPVM_OBJECT> object.
+
+=head2 set_capacity
+
+C<int32_t (*set_capacity)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t capacity);>
+
+Set the capacity of the object I<object>. The type of I<object> must be string type or an array type.
+
+The new capacity is allocated and old elements are copied on it.
+
+If succeeded, returns 0, otherwise a non-zero value.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2960,6 +2994,10 @@ Native APIs have its IDs.
   245 object_length_offset
   246 make_fixed_length
   247 is_fixed_length
+  248 object_capacity_offset
+  249 set_length
+  250 capacity
+  251 set_capacity
 
 =head1 Constant Values
 

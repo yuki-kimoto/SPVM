@@ -98,6 +98,18 @@ C<FILE* (*get_spvm_stderr)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);
 
 Returns L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
+=head2 get_env
+
+C<SPVM_ENV* (*get_env)(void* runtime);>
+
+Returns the runtime environment.
+
+=head2 get_object_capacity_offset
+
+C<int32_t (*get_object_capacity_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+
+Returns the offset of C<capacity> membar variable in L<SPVM_OBJECT|SPVM::Document::NativeAPI/"SPVM_OBJECT"> struct.
+
 =head1 Native API IDs
 
   0 get_object_data_offset
@@ -113,6 +125,8 @@ Returns L<SPVM's standard error|SPVM::Document::Language::System/"Standard Strea
   10 get_spvm_stdin
   11 get_spvm_stdout
   12 get_spvm_stderr
+  13 get_env
+  14 get_object_capacity_offset
 
 =head1 See Also
 

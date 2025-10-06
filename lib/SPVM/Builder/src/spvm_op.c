@@ -265,6 +265,9 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "EXISTS",
     "DELETE",
     "ELEMENT",
+    "SET_LENGTH",
+    "CAPACITY",
+    "SET_CAPACITY",
   };
   
   return id_names;

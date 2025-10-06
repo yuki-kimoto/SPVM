@@ -1221,6 +1221,49 @@ static inline void SPVM_IMPLEMENT_STRING_LENGTH(SPVM_ENV* env, SPVM_VALUE* stack
   }
 }
 
+static inline void SPVM_IMPLEMENT_CAPACITY(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* array, int32_t* error_id) {
+  if (array == NULL) {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ARRAY_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  else {
+    *out = *(int32_t*)((intptr_t)array + (intptr_t)env->object_capacity_offset);
+  }
+}
+
+static inline void SPVM_IMPLEMENT_SET_LENGTH(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length, int32_t* error_id) {
+  if (object == NULL) {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ARRAY_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  else {
+    int32_t status = env->set_length(env, stack, object, length);
+    if (!(status == 0)) {
+      void* exception = env->new_string_nolen_no_mortal(env, stack, "set_length failed.");
+      env->set_exception(env, stack, exception);
+      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+    }
+  }
+}
+
+static inline void SPVM_IMPLEMENT_SET_CAPACITY(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t capacity, int32_t* error_id) {
+  if (object == NULL) {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ARRAY_UNDEFINED]);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  else {
+    int32_t status = env->set_capacity(env, stack, object, capacity);
+    if (!(status == 0)) {
+      void* exception = env->new_string_nolen_no_mortal(env, stack, "set_capacity failed.");
+      env->set_exception(env, stack, exception);
+      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+    }
+  }
+}
+
 static inline void SPVM_IMPLEMENT_GET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* object, int32_t field_offset, int32_t* error_id) {
   
   if (__builtin_expect(object == NULL, 0)) {

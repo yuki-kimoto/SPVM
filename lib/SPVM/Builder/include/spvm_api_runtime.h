@@ -22,6 +22,8 @@ int32_t SPVM_API_RUNTIME_get_object_ref_count_offset(SPVM_RUNTIME* runtime);
 
 int32_t SPVM_API_RUNTIME_get_object_length_offset(SPVM_RUNTIME* runtime);
 
+int32_t SPVM_API_RUNTIME_get_object_capacity_offset(SPVM_RUNTIME* runtime);
+
 // Basic type
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 

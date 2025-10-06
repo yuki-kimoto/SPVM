@@ -347,6 +347,10 @@ SPVM_ENV* SPVM_API_new_env(void) {
     (void*)offsetof(SPVM_OBJECT, length),
     SPVM_API_make_fixed_length,
     SPVM_API_is_fixed_length,
+    (void*)offsetof(SPVM_OBJECT, capacity),
+    SPVM_API_set_length,
+    SPVM_API_capacity,
+    SPVM_API_set_capacity,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -4613,9 +4617,25 @@ int32_t SPVM_API_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   return length;
 }
 
-void SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length) {
+int32_t SPVM_API_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  int32_t capacity = object->capacity;
+  
+  return capacity;
+}
+
+int32_t SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length) {
   
   object->length = length;
+  
+  return 0;
+}
+
+int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t capacity) {
+  
+  object->capacity = capacity;
+  
+  return 0;
 }
 
 int8_t* SPVM_API_get_elems_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {

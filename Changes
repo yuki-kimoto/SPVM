@@ -4,6 +4,14 @@
   [New Features]
     * Add is_fixed_length operator.
     * Add make_fixed_length operator.
+    * Add set_length operator.
+    * Add capacity operator.
+    * Add set_capacity operator.
+    * Add set_length native API.
+    * Add capacity native API.
+    * Add set_capacity native API.
+    * Add object_capacity_offset native API.
+    * Add get_object_capacity_offset runtime native API.
     
 0.990098 2025-10-06
   [Internal Changes with Memory Size Degraration]

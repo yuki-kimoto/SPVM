@@ -2118,6 +2118,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CAN);
                   keyword_token = CAN;
                 }
+                else if (strcmp(symbol_name, "capacity") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CAPACITY);
+                  keyword_token = CAPACITY;
+                }
                 else if (strcmp(symbol_name, "case") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CASE);
                   keyword_token = CASE;
@@ -2495,6 +2499,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(symbol_name, "set") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SET);
                   keyword_token = SET;
+                }
+                else if (strcmp(symbol_name, "set_length") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SET_LENGTH);
+                  keyword_token = SET_LENGTH;
+                }
+                else if (strcmp(symbol_name, "set_capacity") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SET_CAPACITY);
+                  keyword_token = SET_CAPACITY;
                 }
                 else if (strcmp(symbol_name, "static") == 0) {
                   SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->current_file, compiler->current_line);

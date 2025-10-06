@@ -265,6 +265,10 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->object_length_offset != &env_array[245]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->make_fixed_length != &env_array[246]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_fixed_length != &env_array[247]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->object_capacity_offset != &env_array[248]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_length != &env_array[249]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->capacity != &env_array[250]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_capacity != &env_array[251]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
@@ -540,6 +544,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_ids(SPVM_ENV* env, S
   if ((void*)&env->api->runtime->get_spvm_stdin != &env_array[10]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_spvm_stdout != &env_array[11]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_spvm_stderr != &env_array[12]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_env != &env_array[13]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_object_capacity_offset != &env_array[14]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

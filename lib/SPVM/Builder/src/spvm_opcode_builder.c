@@ -1408,6 +1408,23 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       break;
                     }
+                    case SPVM_OP_C_ID_CAPACITY : {
+                      SPVM_OPCODE opcode = {0};
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CAPACITY);
+                      
+                      int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
+                      int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
+                      
+                      opcode.operand0 = typed_var_index_out;
+                      opcode.operand1 = typed_var_index_in;
+                      
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      
+                      check_exception = 1;
+                      
+                      break;
+                    }
                     case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS : {
                       
                       // $VAR = $VAR_OBJECT->[INDEX]{NAME}
@@ -4413,6 +4430,36 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
+                      break;
+                    }
+                    case SPVM_OP_C_ID_SET_LENGTH: {
+                      
+                      SPVM_OPCODE opcode = {0};
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_LENGTH);
+                      
+                      int32_t typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
+                      int32_t typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
+                      
+                      opcode.operand0 = typed_var_index_in1;
+                      opcode.operand1 = typed_var_index_in2;
+                      
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      break;
+                    }
+                    case SPVM_OP_C_ID_SET_CAPACITY: {
+                      
+                      SPVM_OPCODE opcode = {0};
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_CAPACITY);
+                      
+                      int32_t typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
+                      int32_t typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
+                      
+                      opcode.operand0 = typed_var_index_in1;
+                      opcode.operand1 = typed_var_index_in2;
+                      
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       break;
                     }
                     case SPVM_OP_C_ID_MAKE_READ_ONLY: {
