@@ -2713,7 +2713,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING(SPVM_ENV*
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int8_t value) {
   void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS);
   void* object = env->new_object_no_mortal(env, stack, basic_type);
-  SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(env, stack, object));
+  int8_t** fields = (int8_t**)(GET_DATA_ADDRESS(env, stack, object));
   *(int8_t*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
@@ -2721,7 +2721,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int16_t value) {
   void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS);
   void* object = env->new_object_no_mortal(env, stack, basic_type);
-  SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(env, stack, object));
+  int16_t** fields = (int16_t**)(GET_DATA_ADDRESS(env, stack, object));
   *(int16_t*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
@@ -2729,7 +2729,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(SPVM_ENV
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t value) {
   void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS);
   void* object = env->new_object_no_mortal(env, stack, basic_type);
-  SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(env, stack, object));
+  int32_t** fields = (int32_t**)(GET_DATA_ADDRESS(env, stack, object));
   *(int32_t*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
@@ -2737,7 +2737,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(SPVM_ENV* en
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int64_t value) {
   void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS);
   void* object = env->new_object_no_mortal(env, stack, basic_type);
-  SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(env, stack, object));
+  int64_t** fields = (int64_t**)(GET_DATA_ADDRESS(env, stack, object));
   *(int64_t*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
@@ -2745,7 +2745,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(SPVM_ENV* 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float value) {
   void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS);
   void* object = env->new_object_no_mortal(env, stack, basic_type);
-  SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(env, stack, object));
+  float** fields = (float**)(GET_DATA_ADDRESS(env, stack, object));
   *(float*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
@@ -2753,7 +2753,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(SPVM_ENV
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, double value) {
   void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS);
   void* object = env->new_object_no_mortal(env, stack, basic_type);
-  SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(env, stack, object));
+  double** fields = (double**)(GET_DATA_ADDRESS(env, stack, object));
   *(double*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
@@ -2766,7 +2766,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE(SPVM_ENV* 
   }
   else {
     if (env->is_type_by_name(env, stack, object, "Byte", 0)) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(env, stack, object));
+      int8_t** fields = (int8_t**)(GET_DATA_ADDRESS(env, stack, object));
       *out = *(int8_t*)&fields[0];
     }
     else {
@@ -2785,7 +2785,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT(SPVM_ENV
   }
   else {
     if (env->is_type_by_name(env, stack, object, "Short", 0)) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(env, stack, object));
+      int16_t** fields = (int16_t**)(GET_DATA_ADDRESS(env, stack, object));
       *out = *(int16_t*)&fields[0];
     }
     else {
@@ -2804,7 +2804,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_OBJECT_TO_INT(SPVM_ENV* en
   }
   else {
     if (env->is_type_by_name(env, stack, object, "Int", 0)) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(env, stack, object));
+      int32_t** fields = (int32_t**)(GET_DATA_ADDRESS(env, stack, object));
       *out = *(int32_t*)&fields[0];
     }
     else {
@@ -2823,7 +2823,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_OBJECT_TO_LONG(SPVM_ENV* 
   }
   else {
     if (env->is_type_by_name(env, stack, object, "Long", 0)) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(env, stack, object));
+      int64_t** fields = (int64_t**)(GET_DATA_ADDRESS(env, stack, object));
       *out = *(int64_t*)&fields[0];
     }
     else {
@@ -2842,7 +2842,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT(SPVM_ENV
   }
   else {
     if (env->is_type_by_name(env, stack, object, "Float", 0)) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(env, stack, object));
+      int64_t** fields = (int64_t**)(GET_DATA_ADDRESS(env, stack, object));
       *out = *(float*)&fields[0];
     }
     else {
@@ -2861,7 +2861,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_E
   }
   else {
     if (env->is_type_by_name(env, stack, object, "Double", 0)) {
-      SPVM_VALUE* fields = (SPVM_VALUE*)(GET_DATA_ADDRESS(env, stack, object));
+      double** fields = (double**)(GET_DATA_ADDRESS(env, stack, object));
       *out = *(double*)&fields[0];
     }
     else {
