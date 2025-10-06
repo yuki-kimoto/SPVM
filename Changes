@@ -1,4 +1,6 @@
 0.990097 2025-10-03
+  [Internal Changes with Memory Size Degraration]
+    * Add capacity member variable to SPVM_OBJECT.
   [Internal Changes]
     * Add capacity member variable to spvm_object.h.
     * Add data member variable to spvm_object.h.
