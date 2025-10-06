@@ -1,6 +1,9 @@
 0.990098 2025-10-06
   [Internal Changes]
     * SPVM_API_length returns object->length.
+  [Internal Changes with Incompatible Change Posibility]
+    * string and array data is saved to a different memory from the object itself.
+    
 0.990097 2025-10-06
   [Internal Changes with Memory Size Degraration]
     * Add capacity member variable to SPVM_OBJECT.

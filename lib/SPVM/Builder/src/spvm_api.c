@@ -5062,9 +5062,25 @@ double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
 
 SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t data_size, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t length, int32_t flag) {
   
-  int32_t alloc_size = (intptr_t)env->object_data_offset + data_size;
+  SPVM_OBJECT* object = NULL;
   
-  SPVM_OBJECT* object = SPVM_API_new_memory_block(env, stack, alloc_size);
+  // string or array
+  if (SPVM_API_is_dynamic_data_type(env, stack, basic_type, type_dimension, flag)) {
+    object = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_OBJECT));
+    if (object) {
+      void* data = SPVM_API_new_memory_block(env, stack, data_size);
+      if (data) {
+        object->data = data;
+      }
+      else {
+        SPVM_API_free_memory_block(env, stack, object);
+      }
+    }
+  }
+  // Class
+  else {
+    object = SPVM_API_new_memory_block(env, stack, (intptr_t)env->object_data_offset + data_size);
+  }
   
   if (object) {
     object->basic_type = basic_type;
@@ -5476,6 +5492,13 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
           }
           
           // Free released_object
+          SPVM_RUNTIME_BASIC_TYPE* released_object_basic_type = SPVM_API_get_object_basic_type(env, stack, released_object);
+          int32_t released_object_type_dimension = SPVM_API_get_object_type_dimension(env, stack, released_object);
+          if (SPVM_API_is_dynamic_data_type(env, stack, released_object_basic_type, released_object_type_dimension, 0)) {
+            // spvm_warn("%s %d", released_object_basic_type->name, released_object_type_dimension);
+            SPVM_API_free_memory_block(env, stack, released_object->data);
+            released_object->data = NULL;
+          }
           SPVM_API_free_memory_block(env, stack, released_object);
           released_object = NULL;
         }
