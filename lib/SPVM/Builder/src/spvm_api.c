@@ -4652,7 +4652,7 @@ SPVM_OBJECT* SPVM_API_get_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
 
 void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* object) {
   
-  assert(object);
+  assert(array);
   
   SPVM_OBJECT** ref = &((SPVM_OBJECT**)(GET_DATA_ADDRESS(env, stack, array)))[index];
   
