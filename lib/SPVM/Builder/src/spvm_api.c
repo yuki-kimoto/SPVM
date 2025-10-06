@@ -5110,6 +5110,8 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
     
     // The length of string can be shorten.
     SPVM_API_set_length(env, stack, object, length);
+    
+    object->capacity = length;
   }
   
   return object;
