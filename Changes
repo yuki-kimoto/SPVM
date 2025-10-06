@@ -8,6 +8,7 @@
     * SPVM_API_length returns 0 if the data is dynamic.
     * SPVM_API_set_length set the length if the data is dynamic.
     * Add SPVM_API_has_dynamic_data.
+    * Add object_data_offset and object_length_offset native APIs.
     
 0.990096 2025-10-02
   [Document Improvement]

@@ -2688,6 +2688,18 @@ C<void (*delete_field_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, c
 
 Same as L</"delete_field">, but you can specify a field name.
 
+=head2 object_data_offset
+
+C<void* object_data_offset;>.
+
+Returns the offset of C<data> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
+
+=head2 object_length_offset
+
+C<void* object_length_offset;>
+
+Returns the offset of C<length> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2936,6 +2948,8 @@ Native APIs have its IDs.
   241 exists_field_by_name
   242 delete_field
   243 delete_field_by_name
+  244 object_data_offset
+  245 object_length_offset
 
 =head1 Constant Values
 

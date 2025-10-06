@@ -261,6 +261,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->exists_field_by_name != &env_array[241]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->delete_field != &env_array[242]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->delete_field_by_name != &env_array[243]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->object_data_offset != &env_array[244]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->object_length_offset != &env_array[245]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

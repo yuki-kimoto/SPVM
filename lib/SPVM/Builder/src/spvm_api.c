@@ -343,6 +343,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_exists_field_by_name,
     SPVM_API_delete_field,
     SPVM_API_delete_field_by_name,
+    (void*)offsetof(SPVM_OBJECT, data),
+    (void*)offsetof(SPVM_OBJECT, length),
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
