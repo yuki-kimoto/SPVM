@@ -36,6 +36,32 @@ class TestCase::Operator::String {
       }
     }
     
+    # make_fixed_length
+    {
+      {
+        my $string = Fn->copy_string("abc");
+        if (is_fixed_length $string) {
+          return 0;
+        }
+        make_fixed_length $string;
+        unless (is_fixed_length $string) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = new int[3];
+        if (is_fixed_length $array) {
+          return 0;
+        }
+        make_fixed_length $array;
+        unless (is_fixed_length $array) {
+          return 0;
+        }
+      }
+      
+    }
+    
     # Get the charactor
     {
       my $string = "abc";

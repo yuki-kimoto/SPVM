@@ -2310,6 +2310,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IS_READ_ONLY);
                   keyword_token = IS_READ_ONLY;
                 }
+                else if (strcmp(symbol_name, "is_fixed_length") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IS_FIXED_LENGTH);
+                  keyword_token = IS_FIXED_LENGTH;
+                }
                 break;
               }
               case 'l' : {
@@ -2343,6 +2347,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (strcmp(symbol_name, "make_read_only") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_MAKE_READ_ONLY);
                   keyword_token = MAKE_READ_ONLY;
+                }
+                else if (strcmp(symbol_name, "make_fixed_length") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_MAKE_FIXED_LENGTH);
+                  keyword_token = MAKE_FIXED_LENGTH;
                 }
                 else if (strcmp(symbol_name, "method") == 0) {
                   SPVM_OP* op_method = SPVM_TOKE_new_op_with_column(compiler, SPVM_OP_C_ID_METHOD, column);

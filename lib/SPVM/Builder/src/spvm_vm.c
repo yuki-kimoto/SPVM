@@ -791,12 +791,20 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_IS_READ_ONLY(env, stack, int_vars[opcode->operand0], object_vars[opcode->operand1]);
         break;
       }
+      case SPVM_OPCODE_C_ID_IS_FIXED_LENGTH: {
+        SPVM_IMPLEMENT_IS_FIXED_LENGTH(env, stack, int_vars[opcode->operand0], object_vars[opcode->operand1]);
+        break;
+      }
       case SPVM_OPCODE_C_ID_IS_OPTIONS: {
         SPVM_IMPLEMENT_IS_OPTIONS(env, stack, int_vars[opcode->operand0], object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_MAKE_READ_ONLY: {
         SPVM_IMPLEMENT_MAKE_READ_ONLY(env, stack, object_vars[opcode->operand0]);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_MAKE_FIXED_LENGTH: {
+        SPVM_IMPLEMENT_MAKE_FIXED_LENGTH(env, stack, object_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_ENABLE_OPTIONS: {

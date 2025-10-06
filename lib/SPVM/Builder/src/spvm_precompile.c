@@ -2083,6 +2083,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
+      case SPVM_OPCODE_C_ID_IS_FIXED_LENGTH: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_IS_FIXED_LENGTH(env, stack, ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_IS_OPTIONS: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_IS_OPTIONS(env, stack, ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
@@ -2093,6 +2101,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       }
       case SPVM_OPCODE_C_ID_MAKE_READ_ONLY: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_MAKE_READ_ONLY(env, stack, ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_MAKE_FIXED_LENGTH: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_MAKE_FIXED_LENGTH(env, stack, ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;

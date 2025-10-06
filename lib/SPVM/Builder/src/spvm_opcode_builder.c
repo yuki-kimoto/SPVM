@@ -1039,6 +1039,23 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       break;
                     }
+                    case SPVM_OP_C_ID_IS_FIXED_LENGTH : {
+                      
+                      SPVM_TYPE* first_type = SPVM_CHECK_get_type(compiler, op_assign_src->first);
+                      
+                      SPVM_OPCODE opcode = {0};
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_FIXED_LENGTH);
+                      
+                      int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
+                      int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
+                      
+                      opcode.operand0 = typed_var_index_out;
+                      opcode.operand1 = typed_var_index_in;
+                      
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      break;
+                    }
                     case SPVM_OP_C_ID_IS_OPTIONS : {
                       
                       SPVM_TYPE* first_type = SPVM_CHECK_get_type(compiler, op_assign_src->first);
@@ -4404,6 +4421,20 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MAKE_READ_ONLY);
+                      
+                      int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
+                      opcode.operand0 = typed_var_index_in;
+                      
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      
+                      break;
+                    }
+                    case SPVM_OP_C_ID_MAKE_FIXED_LENGTH: {
+                      
+                      SPVM_OPCODE opcode = {0};
+                      
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MAKE_FIXED_LENGTH);
                       
                       int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                       opcode.operand0 = typed_var_index_in;

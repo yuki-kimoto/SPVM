@@ -1178,6 +1178,32 @@ Examples:
   # The conversion to the mutable string type throw an exception.
   my $string_mutable = (mutable string)$string;
 
+=head2 make_fixed_length Operator
+
+The C<make_fixed_length> operator makes a string or an array fixed length.
+
+  make_fixed_length OPERAND
+
+If I<OPERAND> is defined, this operator makes I<OPERAND> fixed length.
+
+A fixed length string or array cannnot change its length and capacity. If so, an exception is thrown.
+
+The return type is the void type.
+
+Compilation Errors:
+
+I<OPERAND> must be string or an array type. Otherwise, a compilation error occurs.
+
+Examples:
+
+  # Examples of make_fixed_length operator
+  
+  # A string
+  my $string = new_string_len 3;
+  
+  # Make the string read-only
+  make_fixed_length $string;
+  
 =head2 enable_options Operator
 
 The C<enable_options> operator enables C<options> flag of an object.
@@ -1263,6 +1289,26 @@ Examples:
   # Examples of is_read_only operator
   my $message = "Hello";
   my $is_read_only = is_read_only $message;
+
+=head2 is_fixed_length Operator
+
+The C<is_fixed_length> operator checks if a string or array is read-only.
+
+  is_fixed_length OPERAND
+
+If I<OPERAND> is defined and fixed length, the C<is_fixed_length> operator returns 1, otherwise returns 0.
+
+The return type is int type.
+
+Compilation Errors:
+
+I<OPERAND> must be string or an array type. Otherwise, a compilation error occurs.
+
+Examples:
+  
+  # Examples of is_fixed_length operator
+  my $message = (mutable string)copy "Hello";
+  my $is_fixed_length = is_fixed_length $message;
 
 =head2 print Operator
 

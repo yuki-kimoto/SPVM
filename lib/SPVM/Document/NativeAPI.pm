@@ -2700,6 +2700,14 @@ C<void* object_length_offset;>
 
 Returns the offset of C<length> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
 
+=head2 make_fixed_length
+
+C<void (*make_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+
+=head2 is_fixed_length
+
+C<int32_t (*is_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2950,6 +2958,8 @@ Native APIs have its IDs.
   243 delete_field_by_name
   244 object_data_offset
   245 object_length_offset
+  246 make_fixed_length
+  247 is_fixed_length
 
 =head1 Constant Values
 

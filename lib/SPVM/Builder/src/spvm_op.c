@@ -226,6 +226,8 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "NEW_STRING_LEN",
     "IS_READ_ONLY",
     "MAKE_READ_ONLY",
+    "IS_FIXED_LENGTH",
+    "MAKE_FIXED_LENGTH",
     "COPY",
     "TYPE_CAST",
     "CONDITION_EVALUATION",
@@ -3543,6 +3545,13 @@ SPVM_OP* SPVM_OP_build_make_read_only(SPVM_COMPILER* compiler, SPVM_OP* op_make_
   SPVM_OP_insert_child(compiler, op_make_read_only, op_make_read_only->last, op_operand);
   
   return op_make_read_only;
+}
+
+SPVM_OP* SPVM_OP_build_make_fixed_length(SPVM_COMPILER* compiler, SPVM_OP* op_make_fixed_length, SPVM_OP* op_operand) {
+  
+  SPVM_OP_insert_child(compiler, op_make_fixed_length, op_make_fixed_length->last, op_operand);
+  
+  return op_make_fixed_length;
 }
 
 SPVM_OP* SPVM_OP_build_enable_options(SPVM_COMPILER* compiler, SPVM_OP* op_enable_options, SPVM_OP* op_operand) {

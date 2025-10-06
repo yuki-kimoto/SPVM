@@ -343,6 +343,8 @@ struct spvm_env {
   void (*delete_field_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
   void* object_data_offset;
   void* object_length_offset;
+  void (*make_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  int32_t (*is_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 };
 
 struct spvm_env_api {

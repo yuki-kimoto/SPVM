@@ -867,9 +867,13 @@ static inline void SPVM_IMPLEMENT_NEW_STRING_LEN(SPVM_ENV* env, SPVM_VALUE* stac
 
 #define SPVM_IMPLEMENT_IS_READ_ONLY(env, stack, out, in) (out = env->is_read_only(env, stack, in))
 
+#define SPVM_IMPLEMENT_IS_FIXED_LENGTH(env, stack, out, in) (out = env->is_fixed_length(env, stack, in))
+
 #define SPVM_IMPLEMENT_IS_OPTIONS(env, stack, out, in) (out = env->is_options(env, stack, in))
 
 #define SPVM_IMPLEMENT_MAKE_READ_ONLY(env, stack, in) (env->make_read_only(env, stack, in))
+
+#define SPVM_IMPLEMENT_MAKE_FIXED_LENGTH(env, stack, in) (env->make_fixed_length(env, stack, in))
 
 #define SPVM_IMPLEMENT_ENABLE_OPTIONS(env, stack, in) (env->enable_options(env, stack, in))
 

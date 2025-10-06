@@ -1,6 +1,9 @@
 0.990099 2025-10-06
   [Internal Changes]
     * Add SPVM_OBJECT_C_FLAG_IS_FIXED_LENGTH object flag.
+  [New Features]
+    * Add is_fixed_length operator.
+    * Add make_fixed_length operator.
     
 0.990098 2025-10-06
   [Internal Changes with Memory Size Degraration]

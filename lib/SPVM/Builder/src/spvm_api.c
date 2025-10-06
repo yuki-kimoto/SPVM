@@ -345,6 +345,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_delete_field_by_name,
     (void*)offsetof(SPVM_OBJECT, data),
     (void*)offsetof(SPVM_OBJECT, length),
+    SPVM_API_make_fixed_length,
+    SPVM_API_is_fixed_length,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -4095,6 +4097,13 @@ void SPVM_API_make_read_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* stri
   }
 }
 
+void SPVM_API_make_fixed_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
+  if (object && object_basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING || object->type_dimension > 0) {
+    __sync_fetch_and_or(&object->flag, SPVM_OBJECT_C_FLAG_IS_FIXED_LENGTH);
+  }
+}
+
 int32_t SPVM_API_is_read_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
   
   int32_t is_read_only;
@@ -4111,6 +4120,24 @@ int32_t SPVM_API_is_read_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* str
   }
   
   return is_read_only;
+}
+
+int32_t SPVM_API_is_fixed_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  int32_t is_fixed_length;
+  if (object) {
+    if (object->flag & SPVM_OBJECT_C_FLAG_IS_FIXED_LENGTH) {
+      is_fixed_length = 1;
+    }
+    else {
+      is_fixed_length = 0;
+    }
+  }
+  else {
+    is_fixed_length = 0;
+  }
+  
+  return is_fixed_length;
 }
 
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception) {

@@ -226,6 +226,8 @@ enum {
   SPVM_OP_C_ID_NEW_STRING_LEN,
   SPVM_OP_C_ID_IS_READ_ONLY,
   SPVM_OP_C_ID_MAKE_READ_ONLY,
+  SPVM_OP_C_ID_IS_FIXED_LENGTH,
+  SPVM_OP_C_ID_MAKE_FIXED_LENGTH,
   SPVM_OP_C_ID_COPY,
   SPVM_OP_C_ID_TYPE_CAST,
   SPVM_OP_C_ID_CONDITION_EVALUATION,
@@ -477,6 +479,8 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
 SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_special_assign, SPVM_OP* op_dist, SPVM_OP* op_src);
 
 SPVM_OP* SPVM_OP_build_make_read_only(SPVM_COMPILER* compiler, SPVM_OP* op_make_read_only, SPVM_OP* op_operand);
+
+SPVM_OP* SPVM_OP_build_make_fixed_length(SPVM_COMPILER* compiler, SPVM_OP* op_make_read_only, SPVM_OP* op_operand);
 
 SPVM_OP* SPVM_OP_build_can(SPVM_COMPILER* compiler, SPVM_OP* op_has_interface, SPVM_OP* op_var, SPVM_OP* op_name);
 

@@ -16,7 +16,7 @@ my $api = SPVM::api();
 
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
-# Character access, make_read_only, is_read_only
+# Character access, make_read_only, is_read_only, make_fixed_length, is_fixed_length
 {
   ok(SPVM::TestCase::Operator::String->string_access);
 }
