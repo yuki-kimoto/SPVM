@@ -3082,7 +3082,7 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   SPVM_VALUE* stack = env->new_memory_block(env, NULL, sizeof(SPVM_VALUE) * SPVM_API_C_STACK_LENGTH);
   
   stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival = 1;
-  void* native_mortal_stack = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_OBJECT*) * stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival);
+  void* native_mortal_stack = SPVM_API_new_memory_block(env, stack, sizeof(void*) * stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival);
   if (native_mortal_stack == NULL) {
     return NULL;
   }
