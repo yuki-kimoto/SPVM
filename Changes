@@ -1,8 +1,12 @@
 0.990098 2025-10-06
+  [Internal Changes with Memory Size Degraration]
+    * Add data member variable to SPVM_OBJECT.
   [Internal Changes]
     * SPVM_API_length returns object->length.
   [Internal Changes with Incompatible Change Posibility]
     * string and array data is saved to a different memory from the object itself.
+  [Break Binary Compatiblity]
+    * Sorry. SPVM modules are needed to be recompiled.
     
 0.990097 2025-10-06
   [Internal Changes with Memory Size Degraration]

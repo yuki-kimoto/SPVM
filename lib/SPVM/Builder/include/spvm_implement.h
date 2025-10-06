@@ -94,9 +94,7 @@ enum {
   SPVM_IMPLEMENT_C_EXCEPTION_COMPARISON_CMP,
 };
 
-#define GET_DATA_ADDRESS(env, stack, object) ((intptr_t)object + (intptr_t)env->object_data_offset)
-
-#define GET_DYNAMIC_DATA_ADDRESS(env, stack, object) ((intptr_t)*(void**)GET_DATA_ADDRESS(env, stack, object))
+#define GET_DATA_ADDRESS(env, stack, object) ((intptr_t)*(void**)((intptr_t)object + (intptr_t)env->object_data_offset))
 
 static inline void* SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id) {
   
@@ -891,7 +889,7 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VAL
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else { 
-      *out = ((int8_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index];
+      *out = ((int8_t*)GET_DATA_ADDRESS(env, stack, array))[index];
     }
   }
 }
@@ -910,7 +908,7 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_SHORT(SPVM_ENV* env, SPVM_VA
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else { 
-      *out = ((int16_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index];
+      *out = ((int16_t*)GET_DATA_ADDRESS(env, stack, array))[index];
     }
   }
 }
@@ -929,7 +927,7 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_INT(SPVM_ENV* env, SPVM_VALU
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else { 
-      *out = ((int32_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index];
+      *out = ((int32_t*)GET_DATA_ADDRESS(env, stack, array))[index];
     }
   }
 }
@@ -948,7 +946,7 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_LONG(SPVM_ENV* env, SPVM_VAL
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else { 
-      *out = ((int64_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index];
+      *out = ((int64_t*)GET_DATA_ADDRESS(env, stack, array))[index];
     }
   }
 }
@@ -967,7 +965,7 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_FLOAT(SPVM_ENV* env, SPVM_VA
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else { 
-      *out = ((float*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index];
+      *out = ((float*)GET_DATA_ADDRESS(env, stack, array))[index];
     }
   }
 }
@@ -986,7 +984,7 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPVM_V
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else { 
-      *out = ((double*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index];
+      *out = ((double*)GET_DATA_ADDRESS(env, stack, array))[index];
     }
   }
 }
@@ -1005,7 +1003,7 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_V
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else { 
-      env->assign_object(env, stack, out, ((void**)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index]);
+      env->assign_object(env, stack, out, ((void**)GET_DATA_ADDRESS(env, stack, array))[index]);
     }
   }
 }
@@ -1023,7 +1021,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VAL
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      ((int8_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index] = in;
+      ((int8_t*)GET_DATA_ADDRESS(env, stack, array))[index] = in;
     }
   }
 }
@@ -1041,7 +1039,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_SHORT(SPVM_ENV* env, SPVM_VA
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      ((int16_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index] = in;
+      ((int16_t*)GET_DATA_ADDRESS(env, stack, array))[index] = in;
     }
   }
 }
@@ -1059,7 +1057,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_INT(SPVM_ENV* env, SPVM_VALU
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      ((int32_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index] = in;
+      ((int32_t*)GET_DATA_ADDRESS(env, stack, array))[index] = in;
     }
   }
 }
@@ -1077,7 +1075,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_LONG(SPVM_ENV* env, SPVM_VAL
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      ((int64_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index] = in;
+      ((int64_t*)GET_DATA_ADDRESS(env, stack, array))[index] = in;
     }
   }
 }
@@ -1095,7 +1093,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_FLOAT(SPVM_ENV* env, SPVM_VA
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      ((float*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index] = in;
+      ((float*)GET_DATA_ADDRESS(env, stack, array))[index] = in;
     }
   }
 }
@@ -1113,7 +1111,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPVM_V
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      ((double*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index] = in;
+      ((double*)GET_DATA_ADDRESS(env, stack, array))[index] = in;
     }
   }
 }
@@ -1131,7 +1129,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_V
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      void** element_address = &((void**)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index];
+      void** element_address = &((void**)GET_DATA_ADDRESS(env, stack, array))[index];
       env->assign_object(env, stack, element_address, in);
     }
   }
@@ -1150,7 +1148,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(SPVM_ENV* 
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      void** element_address = &((void**)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index];
+      void** element_address = &((void**)GET_DATA_ADDRESS(env, stack, array))[index];
       void* object = in;
       int32_t elem_isa = env->elem_isa(env, stack, array, object);
       if (elem_isa) {
@@ -1193,7 +1191,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_UNDEF(SPVM_ENV* env, SPVM_VA
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      void* object_address = &((void**)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[index];
+      void* object_address = &((void**)GET_DATA_ADDRESS(env, stack, array))[index];
       env->assign_object(env, stack, object_address, NULL);
     }
   }
@@ -1810,7 +1808,7 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_BYTE(SPVM_ENV* env, SPVM_VALU
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        *(out + field_index) = ((int8_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
+        *(out + field_index) = ((int8_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
       }
     }
   }
@@ -1831,7 +1829,7 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_SHORT(SPVM_ENV* env, SPVM_VAL
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        *(out + field_index) = ((int16_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
+        *(out + field_index) = ((int16_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
       }
     }
   }
@@ -1852,7 +1850,7 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_INT(SPVM_ENV* env, SPVM_VALUE
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        *(out + field_index) = ((int32_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
+        *(out + field_index) = ((int32_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
       }
     }
   }
@@ -1873,7 +1871,7 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_LONG(SPVM_ENV* env, SPVM_VALU
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        *(out + field_index) = ((int64_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
+        *(out + field_index) = ((int64_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
       }
     }
   }
@@ -1894,7 +1892,7 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FLOAT(SPVM_ENV* env, SPVM_VAL
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        *(out + field_index) = ((float*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
+        *(out + field_index) = ((float*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
       }
     }
   }
@@ -1915,7 +1913,7 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_DOUBLE(SPVM_ENV* env, SPVM_VA
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        *(out + field_index) = ((double*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
+        *(out + field_index) = ((double*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
       }
     }
   }
@@ -1936,7 +1934,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_BYTE(SPVM_ENV* env, SPVM_VALU
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        ((int8_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = *(in + field_index);
+        ((int8_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = *(in + field_index);
       }
     }
   }
@@ -1957,7 +1955,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_SHORT(SPVM_ENV* env, SPVM_VAL
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        ((int16_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = *(in + field_index);
+        ((int16_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = *(in + field_index);
       }
     }
   }
@@ -1978,7 +1976,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_INT(SPVM_ENV* env, SPVM_VALUE
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        ((int32_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = *(in + field_index);
+        ((int32_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = *(in + field_index);
       }
     }
   }
@@ -1999,7 +1997,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_LONG(SPVM_ENV* env, SPVM_VALU
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        ((int64_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = *(in + field_index);
+        ((int64_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = *(in + field_index);
       }
     }
   }
@@ -2020,7 +2018,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FLOAT(SPVM_ENV* env, SPVM_VAL
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        ((float*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = *(in + field_index);
+        ((float*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = *(in + field_index);
       }
     }
   }
@@ -2041,7 +2039,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_DOUBLE(SPVM_ENV* env, SPVM_VA
     else {
       int32_t field_index;
       for (field_index = 0; field_index < fields_length; field_index++) {
-        ((double*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = *(in + field_index);
+        ((double*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = *(in + field_index);
       }
     }
   }
@@ -2060,7 +2058,7 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_BYTE(SPVM_ENV* env, SPV
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      *out = ((int8_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
+      *out = ((int8_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
     }
   }
 }
@@ -2078,7 +2076,7 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_SHORT(SPVM_ENV* env, SP
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      *out = ((int16_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
+      *out = ((int16_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
     }
   }
 }
@@ -2096,7 +2094,7 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_INT(SPVM_ENV* env, SPVM
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      *out = ((int32_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
+      *out = ((int32_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
     }
   }
 }
@@ -2114,7 +2112,7 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_LONG(SPVM_ENV* env, SPV
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      *out = ((int64_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
+      *out = ((int64_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
     }
   }
 }
@@ -2132,7 +2130,7 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_FLOAT(SPVM_ENV* env, SP
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      *out = ((float*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
+      *out = ((float*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
     }
   }
 }
@@ -2150,7 +2148,7 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_DOUBLE(SPVM_ENV* env, S
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      *out = ((double*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
+      *out = ((double*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index];
     }
   }
 }
@@ -2168,7 +2166,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_BYTE(SPVM_ENV* env, SPV
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      ((int8_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = in;
+      ((int8_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = in;
     }
   }
 }
@@ -2186,7 +2184,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_SHORT(SPVM_ENV* env, SP
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      ((int16_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = in;
+      ((int16_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = in;
     }
   }
 }
@@ -2204,7 +2202,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_INT(SPVM_ENV* env, SPVM
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      ((int32_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = in;
+      ((int32_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = in;
     }
   }
 }
@@ -2222,7 +2220,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_LONG(SPVM_ENV* env, SPV
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      ((int64_t*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = in;
+      ((int64_t*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = in;
     }
   }
 }
@@ -2240,7 +2238,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_FLOAT(SPVM_ENV* env, SP
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      ((float*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = in;
+      ((float*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = in;
     }
   }
 }
@@ -2258,7 +2256,7 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_DOUBLE(SPVM_ENV* env, S
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
-      ((double*)GET_DYNAMIC_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = in;
+      ((double*)GET_DATA_ADDRESS(env, stack, array))[fields_length * index + field_index] = in;
     }
   }
 }
