@@ -4626,9 +4626,48 @@ int32_t SPVM_API_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object)
 
 int32_t SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length) {
   
+  int32_t capacity = object->capacity;
+  
+  int32_t status;
+  
+  if (!object) {
+    status = -1;
+    return status;
+  }
+  
+  void* basic_type = object->basic_type;
+  int32_t type_dimension = object->type_dimension;
+  
+  if (!SPVM_API_is_dynamic_data_type(env, stack, basic_type, type_dimension, 0)) {
+    status = -2;
+    return status;
+  }
+  
+  if (length > capacity) {
+    status = SPVM_API_set_capacity(env, stack, object, length);
+    
+    if (!status) {
+      return status;
+    }
+  }
+  else if (length < object->length) {
+    if (SPVM_API_is_object_array(env, stack, object)) {
+      for (int32_t i = length; i < object->length; i++) {
+        SPVM_API_set_elem_object(env, stack, object, i, NULL);
+      }
+    }
+    else {
+      int32_t elem_size = SPVM_API_get_elem_size(env, stack, object);
+      char* data = (char*)env->get_chars(env, stack, object);
+      memset(data + (elem_size * length), 0, elem_size * (object->length - length));
+    }
+  }
+  
   object->length = length;
   
-  return 0;
+  status = 0;
+  
+  return status;
 }
 
 int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t capacity) {
@@ -4885,7 +4924,7 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, int
     return;
   }
   
-  SPVM_API_set_length(env, stack, string, new_length);
+  string->length = new_length;
   
   char* chars = (char*)SPVM_API_get_chars(env, stack, string);
   
@@ -5154,10 +5193,7 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
     object->basic_type = basic_type;
     object->type_dimension = type_dimension;
     object->flag = flag;
-    
-    // The length of string can be shorten.
-    SPVM_API_set_length(env, stack, object, length);
-    
+    object->length = length;
     object->capacity = length;
   }
   
