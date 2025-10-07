@@ -4666,10 +4666,7 @@ int32_t SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     else {
       int32_t elem_size = SPVM_API_get_elem_size(env, stack, object);
       char* data = (char*)env->get_chars(env, stack, object);
-      int32_t memset_length = object->length - length;
-      if (memset_length > 0) {
-        memset(data + (elem_size * length), 0, elem_size * (object->length - length));
-      }
+      memset(data + (elem_size * length), 0, elem_size * (object->length - length));
     }
   }
   
@@ -4711,9 +4708,7 @@ int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
     return SPVM_API_die(env, stack, "set_capacity failed: cannot allocate memory.");
   }
   char* data = (char*)env->get_chars(env, stack, object);
-  if (object->length > 0) {
-    memcpy(new_data, data, elem_size * object->length);
-  }
+  memcpy(new_data, data, elem_size * object->length);
   SPVM_API_free_memory_block(env, stack, data);
   object->data = (void*)new_data;;
   
