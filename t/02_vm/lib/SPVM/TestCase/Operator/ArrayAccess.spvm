@@ -3,6 +3,12 @@ class TestCase::Operator::ArrayAccess {
   use Fn;
   use Array;
   use Point;
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
   
   static method array_store_undef : int () {
     my $minimals = new TestCase::Minimal[3];
@@ -355,6 +361,221 @@ class TestCase::Operator::ArrayAccess {
       }
       
       eval { $array->[1] = "1"; }
+      unless ($@) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method mulnum_array : int () {
+    
+    {
+      my $array = new TestCase::Point_3b[1];
+      
+      $array->[-1]{x} = 1;
+      
+      unless ($array->[0]{x} == 1) {
+        return 0;
+      }
+      
+      unless ($array->[-1]{x} == 1) {
+        return 0;
+      }
+      
+      eval { $array->[-2]{x}; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[-2]{x} = 1; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1]{x}; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1]{x} = 1; }
+      unless ($@) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $array = new TestCase::Point_3s[1];
+      
+      $array->[-1]{x} = 1;
+      
+      unless ($array->[0]{x} == 1) {
+        return 0;
+      }
+      
+      unless ($array->[-1]{x} == 1) {
+        return 0;
+      }
+      
+      eval { $array->[-2]{x}; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[-2]{x} = 1; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1]{x}; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1]{x} = 1; }
+      unless ($@) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $array = new TestCase::Point_3i[1];
+      
+      $array->[-1]{x} = 1;
+      
+      unless ($array->[0]{x} == 1) {
+        return 0;
+      }
+      
+      unless ($array->[-1]{x} == 1) {
+        return 0;
+      }
+      
+      eval { $array->[-2]{x}; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[-2]{x} = 1; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1]{x}; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1]{x} = 1; }
+      unless ($@) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $array = new TestCase::Point_3l[1];
+      
+      $array->[-1]{x} = 1;
+      
+      unless ($array->[0]{x} == 1) {
+        return 0;
+      }
+      
+      unless ($array->[-1]{x} == 1) {
+        return 0;
+      }
+      
+      eval { $array->[-2]{x}; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[-2]{x} = 1; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1]{x}; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1]{x} = 1; }
+      unless ($@) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $array = new TestCase::Point_3f[1];
+      
+      $array->[-1]{x} = 1;
+      
+      unless ($array->[0]{x} == 1) {
+        return 0;
+      }
+      
+      unless ($array->[-1]{x} == 1) {
+        return 0;
+      }
+      
+      eval { $array->[-2]{x}; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[-2]{x} = 1; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1]{x}; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1]{x} = 1; }
+      unless ($@) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $array = new TestCase::Point_3d[1];
+      
+      $array->[-1]{x} = 1;
+      
+      unless ($array->[0]{x} == 1) {
+        return 0;
+      }
+      
+      unless ($array->[-1]{x} == 1) {
+        return 0;
+      }
+      
+      eval { $array->[-2]{x}; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[-2]{x} = 1; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1]{x}; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1]{x} = 1; }
       unless ($@) {
         return 0;
       }

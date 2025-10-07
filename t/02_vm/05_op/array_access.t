@@ -34,7 +34,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 ok(SPVM::TestCase::Operator::ArrayAccess->set_cannot_assign);
 
 ok(SPVM::TestCase::Operator::ArrayAccess->array);
-
+ok(SPVM::TestCase::Operator::ArrayAccess->mulnum_array);
 
 # All object is freed
 $api->destroy_runtime_permanent_vars;
