@@ -4634,9 +4634,13 @@ int32_t SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   
   void* basic_type = object->basic_type;
   int32_t type_dimension = object->type_dimension;
-  
   if (!SPVM_API_is_dynamic_data_type(env, stack, basic_type, type_dimension, 0)) {
     return SPVM_API_die(env, stack, "set_length failed: the type of the object must be string type or an array type.");
+  }
+  
+  int32_t flag = object->flag;
+  if (flag & SPVM_OBJECT_C_FLAG_IS_FIXED_LENGTH) {
+    return SPVM_API_die(env, stack, "set_length failed: the object must not be a fixed length object.");
   }
   
   if (!(length >= 0)) {
@@ -4681,6 +4685,11 @@ int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
   
   if (!SPVM_API_is_dynamic_data_type(env, stack, basic_type, type_dimension, 0)) {
     return SPVM_API_die(env, stack, "set_capacity failed: the type of the object must be string type or an array type.");
+  }
+  
+  int32_t flag = object->flag;
+  if (flag & SPVM_OBJECT_C_FLAG_IS_FIXED_LENGTH) {
+    return SPVM_API_die(env, stack, "set_length failed: the object must not be a fixed length object.");
   }
   
   if (capacity < object->length) {
