@@ -957,7 +957,6 @@ use SPVM 'TestCase::$class_name';
 
 use SPVM '$class_name';
 use SPVM::$class_name;
-use SPVM 'Fn';
 
 my \$api = SPVM::api();
 
@@ -966,10 +965,7 @@ my \$start_memory_blocks_count = \$api->get_memory_blocks_count;
 ok(SPVM::TestCase::$class_name->test);
 
 # Version check
-{
-  my \$version_string = SPVM::Fn->get_version_string("$class_name");
-  is(\$SPVM::${class_name}::VERSION, \$version_string);
-}
+is(\$SPVM::${class_name}::VERSION, \$api->get_version_string("$class_name"));
 
 \$api->destroy_runtime_permanent_vars;
 
