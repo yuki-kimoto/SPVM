@@ -4445,6 +4445,9 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       opcode.operand1 = typed_var_index_in2;
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      
+                      check_exception = 1;
+                      
                       break;
                     }
                     case SPVM_OP_C_ID_SET_CAPACITY: {
@@ -4460,6 +4463,9 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       opcode.operand1 = typed_var_index_in2;
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      
+                      check_exception = 1;
+                      
                       break;
                     }
                     case SPVM_OP_C_ID_MAKE_READ_ONLY: {
