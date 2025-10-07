@@ -1981,3 +1981,18 @@ int32_t SPVM_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_type_id, 
   return has_interface;
 }
 
+int32_t SPVM_TYPE_is_mutable_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  
+  if (flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE) {
+    return 1;
+  }
+  else {
+    if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+}
+

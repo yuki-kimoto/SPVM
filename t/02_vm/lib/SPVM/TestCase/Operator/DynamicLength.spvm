@@ -1,5 +1,7 @@
 class TestCase::Operator::DynamicLength {
   
+  use Array;
+  
   static method set_length : int () {
     
     # string
@@ -59,6 +61,69 @@ class TestCase::Operator::DynamicLength {
           return 0;
         }
         
+      }
+    }
+    
+    # array
+    {
+      # numeric array
+      {
+        {
+          my $array = [1, 2, 3];
+          
+          set_length($array, 2);
+          
+          unless (@$array == 2) {
+            return 0;
+          }
+          
+          unless (Array->equals($array, [1, 2])) {
+            return 0;
+          }
+          
+          set_length($array, 3);
+          
+          unless (@$array == 3) {
+            return 0;
+          }
+          
+          unless (Array->equals($array, [1, 2, 0])) {
+            return 0;
+          }
+        }
+        
+        {
+          my $array = [1, 2, 3];
+          
+          set_length($array, 0);
+          
+          unless (@$array == 0) {
+            return 0;
+          }
+          
+          unless (Array->equals($array, new int[0])) {
+            return 0;
+          }
+        }
+        
+        {
+          my $array = [1, 2, 3];
+          
+          set_length($array, 4);
+          
+          unless (@$array == 4) {
+            return 0;
+          }
+          
+          unless (Array->equals($array, [1, 2, 3, 0])) {
+            return 0;
+          }
+          
+          unless (capacity $array == 4) {
+            return 0;
+          }
+          
+        }
       }
     }
     
