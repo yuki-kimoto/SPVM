@@ -4650,8 +4650,8 @@ int32_t SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     return SPVM_API_die(env, stack, "set_length failed: the length must be a non-negative number.");
   }
   
-  if (length > object->capacity) {
-    error_id = SPVM_API_set_capacity(env, stack, object, length);
+  if (length + 1 > object->capacity) {
+    error_id = SPVM_API_set_capacity(env, stack, object, length + 1);
     if (error_id) {
       return error_id;
     }
@@ -4701,7 +4701,7 @@ int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
     return SPVM_API_die(env, stack, "set_capacity failed: the object must not be a read-only object.");
   }
   
-  if (capacity < object->length) {
+  if (capacity < object->length + 1) {
     return SPVM_API_die(env, stack, "set_capacity failed: too small capacity.");
   }
   
@@ -5239,7 +5239,7 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
     object->type_dimension = type_dimension;
     object->flag = flag;
     object->length = length;
-    object->capacity = length;
+    object->capacity = length + 1;
   }
   
   return object;

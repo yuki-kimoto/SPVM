@@ -9,6 +9,10 @@ class TestCase::Operator::DynamicLength {
       {
         my $string = (mutable string)copy "abc";
         
+        unless (capacity $string == 3 + 1) {
+          return 0;
+        }
+        
         set_length($string, 2);
         
         unless (length $string == 2) {
@@ -57,7 +61,7 @@ class TestCase::Operator::DynamicLength {
           return 0;
         }
         
-        unless (capacity $string == 4) {
+        unless (capacity $string == 4 + 1) {
           return 0;
         }
         
@@ -133,7 +137,7 @@ class TestCase::Operator::DynamicLength {
             return 0;
           }
           
-          unless (capacity $array == 4) {
+          unless (capacity $array == 4 + 1) {
             return 0;
           }
           
@@ -193,7 +197,7 @@ class TestCase::Operator::DynamicLength {
             return 0;
           }
           
-          unless (capacity $array == 4) {
+          unless (capacity $array == 4 + 1) {
             return 0;
           }
           
@@ -259,9 +263,13 @@ class TestCase::Operator::DynamicLength {
       {
         my $string = (mutable string)copy "abc";
         
-        set_capacity($string, 4);
-        
         unless (capacity $string == 4) {
+          return 0;
+        }
+        
+        set_capacity($string, 5);
+        
+        unless (capacity $string == 5) {
           return 0;
         }
         
@@ -277,9 +285,9 @@ class TestCase::Operator::DynamicLength {
       {
         my $string = (mutable string)copy "abc";
         
-        set_capacity($string, 3);
+        set_capacity($string, 4);
         
-        unless (capacity $string == 3) {
+        unless (capacity $string == 4) {
           return 0;
         }
         
@@ -385,7 +393,7 @@ class TestCase::Operator::DynamicLength {
       {
         my $string = (mutable string)copy "abc";
         
-        eval { set_capacity($string, 2); }
+        eval { set_capacity($string, 3); }
         
         unless ($@) {
           return 0;
