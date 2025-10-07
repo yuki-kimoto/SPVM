@@ -1714,8 +1714,12 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   }
   
   SPVM_OP* op_anon_method_field_var_decl_start = NULL;
+  
+  SPVM_OP* op_block_outer = SPVM_OP_new_op_block(compiler, op_method->file, op_method->line);
+  SPVM_OP* op_list_statement_outer = SPVM_OP_new_op_list(compiler, op_method->file, op_method->line);
+  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_list_statement_outer);
+  
   if (op_block) {
-    
     SPVM_OP* op_list_statement = op_block->first;
     
     op_anon_method_field_var_decl_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_list_statement->file, op_list_statement->last->line + 1);
@@ -1768,9 +1772,10 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       }
     }
     
+    SPVM_OP_insert_child(compiler, op_list_statement_outer, op_list_statement_outer->last, op_block);
   }
   
-  method->op_block = op_block;
+  method->op_block = op_block_outer;
   
   method->op_method = op_method;
   
