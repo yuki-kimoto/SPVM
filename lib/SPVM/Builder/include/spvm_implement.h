@@ -879,7 +879,10 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VAL
     env->set_exception(env, stack, env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ARRAY_UNDEFINED]));
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
-  else { 
+  else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) { 
       env->set_exception(env, stack, env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]));
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -899,6 +902,9 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_SHORT(SPVM_ENV* env, SPVM_VA
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else { 
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) { 
       env->set_exception(env, stack, env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]));
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -918,6 +924,9 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_INT(SPVM_ENV* env, SPVM_VALU
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else { 
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) { 
       env->set_exception(env, stack, env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]));
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -937,6 +946,9 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_LONG(SPVM_ENV* env, SPVM_VAL
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else { 
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) { 
       env->set_exception(env, stack, env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]));
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -956,6 +968,9 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_FLOAT(SPVM_ENV* env, SPVM_VA
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else { 
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) { 
       env->set_exception(env, stack, env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]));
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -975,6 +990,9 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPVM_V
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else { 
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) { 
       env->set_exception(env, stack, env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]));
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -994,6 +1012,9 @@ static inline void SPVM_IMPLEMENT_GET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_V
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else { 
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) { 
       env->set_exception(env, stack, env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]));
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -1011,6 +1032,9 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_BYTE(SPVM_ENV* env, SPVM_VAL
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1029,6 +1053,9 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_SHORT(SPVM_ENV* env, SPVM_VA
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1047,6 +1074,9 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_INT(SPVM_ENV* env, SPVM_VALU
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1065,6 +1095,9 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_LONG(SPVM_ENV* env, SPVM_VAL
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1083,6 +1116,9 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_FLOAT(SPVM_ENV* env, SPVM_VA
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1101,6 +1137,9 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_DOUBLE(SPVM_ENV* env, SPVM_V
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1119,6 +1158,9 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT(SPVM_ENV* env, SPVM_V
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1138,6 +1180,9 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(SPVM_ENV* 
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1181,6 +1226,9 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_UNDEF(SPVM_ENV* env, SPVM_VA
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1829,6 +1877,9 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_BYTE(SPVM_ENV* env, SPVM_VALU
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1850,6 +1901,9 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_SHORT(SPVM_ENV* env, SPVM_VAL
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1871,6 +1925,9 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_INT(SPVM_ENV* env, SPVM_VALUE
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1892,6 +1949,9 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_LONG(SPVM_ENV* env, SPVM_VALU
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1913,6 +1973,9 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FLOAT(SPVM_ENV* env, SPVM_VAL
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1934,6 +1997,9 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_DOUBLE(SPVM_ENV* env, SPVM_VA
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1955,6 +2021,9 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_BYTE(SPVM_ENV* env, SPVM_VALU
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1976,6 +2045,9 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_SHORT(SPVM_ENV* env, SPVM_VAL
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -1997,6 +2069,9 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_INT(SPVM_ENV* env, SPVM_VALUE
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2018,6 +2093,9 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_LONG(SPVM_ENV* env, SPVM_VALU
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2039,6 +2117,9 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FLOAT(SPVM_ENV* env, SPVM_VAL
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2060,6 +2141,9 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_DOUBLE(SPVM_ENV* env, SPVM_VA
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2081,6 +2165,9 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_BYTE(SPVM_ENV* env, SPV
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2099,6 +2186,9 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_SHORT(SPVM_ENV* env, SP
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2117,6 +2207,9 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_INT(SPVM_ENV* env, SPVM
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2135,6 +2228,9 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_LONG(SPVM_ENV* env, SPV
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2153,6 +2249,9 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_FLOAT(SPVM_ENV* env, SP
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2171,6 +2270,9 @@ static inline void SPVM_IMPLEMENT_GET_MULNUM_ARRAY_FIELD_DOUBLE(SPVM_ENV* env, S
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2189,6 +2291,9 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_BYTE(SPVM_ENV* env, SPV
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2207,6 +2312,9 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_SHORT(SPVM_ENV* env, SP
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2225,6 +2333,9 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_INT(SPVM_ENV* env, SPVM
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2243,6 +2354,9 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_LONG(SPVM_ENV* env, SPV
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2261,6 +2375,9 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_FLOAT(SPVM_ENV* env, SP
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);
@@ -2279,6 +2396,9 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_ARRAY_FIELD_DOUBLE(SPVM_ENV* env, S
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
+    if (__builtin_expect(index < 0, 0)) {
+      index += GET_LENGTH(env, stack, array);
+    }
     if (__builtin_expect(index < 0 || index >= GET_LENGTH(env, stack, array), 0)) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE]);
       env->set_exception(env, stack, exception);

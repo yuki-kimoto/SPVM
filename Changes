@@ -4,7 +4,11 @@
       static method foo : void ($var : int) {
         my $var = 2;
       }
+  [New Features with Changes]
+    * Support minus index in array access.
       
+      $array->[-1]
+    
 0.990099 2025-10-06
   [Design Changes]
     * string and array becomes dynamic string and array. The capacity and length can be shorten and extended.
