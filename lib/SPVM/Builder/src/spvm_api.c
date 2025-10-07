@@ -6151,7 +6151,7 @@ int32_t SPVM_API_get_call_stack_frame_size(SPVM_RUNTIME_METHOD* method) {
   return call_stack_frame_size;
 }
 
-int32_t SPVM_API_set_call_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info, char* call_stack_frame) {
+void SPVM_API_set_call_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info, char* call_stack_frame) {
   
   SPVM_RUNTIME_METHOD* method = call_stack_frame_info->method;
   
