@@ -240,4 +240,137 @@ class TestCase::Operator::DynamicLength {
     return 1;
   }
   
+  static method set_capacity : int () {
+    
+    # string
+    {
+      {
+        my $string = (mutable string)copy "abc";
+        
+        set_capacity($string, 4);
+        
+        unless (capacity $string == 4) {
+          return 0;
+        }
+        
+        unless (length $string == 3) {
+          return 0;
+        }
+        
+        unless ($string eq "abc") {
+          return 0;
+        }
+      }
+      
+      {
+        my $string = (mutable string)copy "abc";
+        
+        set_capacity($string, 3);
+        
+        unless (capacity $string == 3) {
+          return 0;
+        }
+        
+        unless ($string eq "abc") {
+          return 0;
+        }
+      }
+    }
+    
+    # array
+    {
+      # numeric array
+      {
+        {
+          my $array = [1, 2, 3];
+          
+          set_capacity($array, 4);
+          
+          unless (@$array == 3) {
+            return 0;
+          }
+          
+          unless (Array->equals($array, [1, 2, 3])) {
+            return 0;
+          }
+          
+          unless (capacity $array == 4) {
+            return 0;
+          }
+          
+        }
+      }
+      
+      # object array
+      {
+        {
+          my $array = ["1", "2", "3"];
+          
+          set_capacity($array, 4);
+          
+          unless (@$array == 3) {
+            return 0;
+          }
+          
+          unless (Array->equals($array, ["1", "2", "3"])) {
+            return 0;
+          }
+          
+          unless (capacity $array == 4) {
+            return 0;
+          }
+          
+        }
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $string = (mutable string)undef;
+        
+        eval { set_capacity($string, 3); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $string = (mutable string)copy "abc";
+        
+        make_fixed_length $string;
+        
+        eval { set_capacity($string, 3); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $string = (mutable string)copy "abc";
+        
+        eval { set_capacity($string, -1); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $string = (mutable string)copy "abc";
+        
+        eval { set_capacity($string, 2); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
 }

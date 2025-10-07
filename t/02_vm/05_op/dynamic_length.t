@@ -16,6 +16,8 @@ my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 ok(SPVM::TestCase::Operator::DynamicLength->set_length);
+ok(SPVM::TestCase::Operator::DynamicLength->set_capacity);
+
 
 # All object is freed
 $api->set_exception(undef);
