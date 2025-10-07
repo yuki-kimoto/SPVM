@@ -4714,8 +4714,6 @@ int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
   
   object->capacity = capacity;
   
-  error_id = 0;
-  
   return error_id;
 }
 
