@@ -2793,6 +2793,12 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             SPVM_TYPE* object_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* length_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
             
+            int32_t is_mutable = object_operand_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
+            if (!is_mutable) {
+              SPVM_COMPILER_error(compiler, "The first operand type of set_length operator must be a non-mutable type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
             int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
             int32_t is_string_type = SPVM_TYPE_is_string_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
             if (!(is_array_type || is_string_type)) {
@@ -2829,6 +2835,12 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           case SPVM_OP_C_ID_SET_CAPACITY: {
             SPVM_TYPE* object_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* capacity_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+            
+            int32_t is_mutable = object_operand_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
+            if (!is_mutable) {
+              SPVM_COMPILER_error(compiler, "The first operand type of set_length operator must be a non-mutable type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
             
             int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
             int32_t is_string_type = SPVM_TYPE_is_string_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
