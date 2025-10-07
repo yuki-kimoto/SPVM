@@ -5451,7 +5451,7 @@ int32_t SPVM_OPCODE_BUILDER_get_typed_var_index(SPVM_COMPILER* compiler, SPVM_OP
         op_var = SPVM_OPCODE_BUILDER_get_op_var(compiler, op->first);
       }
       else {
-        spvm_warn("Unexpcted op:%s", SPVM_OP_get_name(compiler, op->id));
+        spvm_warn("Unexpcted op:%s", op->name);
         assert(0);
       }
       
@@ -5489,7 +5489,7 @@ SPVM_OP* SPVM_OPCODE_BUILDER_get_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
     op_var = SPVM_OPCODE_BUILDER_get_op_var(compiler, op->first);
   }
   else {
-    spvm_warn("Unexpcted op:%s", SPVM_OP_get_name(compiler, op->id));
+    spvm_warn("Unexpcted op:%s", op->name);
     assert(0);
   }
   
