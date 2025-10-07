@@ -273,6 +273,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   }
 }
 
+ok(SPVM::TestCase::Operator::MethodCall->args_scope);
+
 # All object is freed
 $api->destroy_runtime_permanent_vars;
 my $end_memory_blocks_count = $api->get_memory_blocks_count;

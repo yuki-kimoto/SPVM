@@ -2335,4 +2335,25 @@ class TestCase::Operator::MethodCall {
     return 1;
   }
   
+  static method args_scope : int ($var : int = 1) {
+    
+    my $var = 2;
+    
+    unless ($var == 2) {
+      return 0;
+    }
+    
+    my $self = Int->new(3);
+    
+    my $cb = [$self : Int] method : int () {
+      return $self->value;
+    };
+    
+    unless ($cb->() == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
 }

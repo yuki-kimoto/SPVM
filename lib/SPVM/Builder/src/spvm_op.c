@@ -1714,19 +1714,11 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   }
   
   SPVM_OP* op_anon_method_field_var_decl_start = NULL;
-  
-  SPVM_OP* op_block_outer = SPVM_OP_new_op_block(compiler, op_method->file, op_method->line);
-  SPVM_OP* op_list_statement_outer = SPVM_OP_new_op_list(compiler, op_method->file, op_method->line);
-  SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_list_statement_outer);
-  
+  SPVM_OP* op_block_outer = NULL;
   if (op_block) {
-    SPVM_OP* op_list_statement = op_block->first;
-    
-    op_anon_method_field_var_decl_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_list_statement->file, op_list_statement->last->line + 1);
-    
-    SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_anon_method_field_var_decl_start);
-    
-    method->op_anon_method_field_var_decl_start = op_anon_method_field_var_decl_start;
+    op_block_outer = SPVM_OP_new_op_block(compiler, op_method->file, op_method->line);
+    SPVM_OP* op_list_statement_outer = SPVM_OP_new_op_list(compiler, op_method->file, op_method->line);
+    SPVM_OP_insert_child(compiler, op_block_outer, op_block_outer->last, op_list_statement_outer);
     
     // Add variable declarations before the first of the statements
     for (int32_t i = method->args_length - 1; i >= 0; i--) {
@@ -1738,17 +1730,25 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       op_var->uv.var->is_declaration = 1;
       op_var->uv.var->var_decl = arg_var_decl;
       
-      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
+      SPVM_OP_insert_child(compiler, op_list_statement_outer, op_list_statement_outer->first, op_var);
     }
     
     // Add condition_flag variable to first of block
     {
-      SPVM_OP* op_var = SPVM_OP_new_op_var_condition_flag(compiler, op_list_statement->file, op_list_statement->last->line + 1);
-      SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
-      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op_list_statement->file, op_list_statement->line);
+      SPVM_OP* op_var = SPVM_OP_new_op_var_condition_flag(compiler, op_list_statement_outer->file, op_list_statement_outer->last->line + 1);
+      SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement_outer->file, op_list_statement_outer->last->line + 1);
+      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op_list_statement_outer->file, op_list_statement_outer->line);
       op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
-      SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_var);
+      SPVM_OP_insert_child(compiler, op_list_statement_outer, op_list_statement_outer->first, op_var);
     }
+    
+    SPVM_OP* op_list_statement = op_block->first;
+    
+    op_anon_method_field_var_decl_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_list_statement->file, op_list_statement->last->line + 1);
+    
+    SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_anon_method_field_var_decl_start);
+    
+    method->op_anon_method_field_var_decl_start = op_anon_method_field_var_decl_start;
     
     // Add return statement after the last of the statements
     {
