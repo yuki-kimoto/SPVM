@@ -1090,6 +1090,32 @@ Examples:
   my $message = "あいう";
   my $length = length $message;
 
+=head2 capacity Operator
+
+The C<capacity> operator gets the capacity of a string or an array.
+
+  capacity OPERAND
+
+This operator returns the capacity of I<OPERAND>.
+
+The return type is int type.
+
+Exceptions:
+
+I<OPERAND> must be defined. Otherwise, an exception is thrown.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be string type or an array type. Otherwise, a compilation error occurs.
+
+Examples:
+  
+  # Examples of capacity operator
+  
+  # The capacity is 5
+  my $message = "Hello";
+  my $capacity = capacity $message;
+  
 =head2 String Concatenation Operator
 
 The string concatenation operator C<.> concats two strings.
@@ -3702,6 +3728,84 @@ Examples:
   my $object_child = MyClass::Child->new;
   
   copy_fields $object_child, $object, MyClass;
+
+=head2 set_length Operator
+
+The C<set_length> operator sets the length of a string or an array.
+  
+  set_length(OBJECT_OPERAND, LENGTH_OPERAND);
+
+The type of I<OBJECT_OPERAND> must be a string or an array.
+
+The type of I<LENGTH_OPERAND> is an integer value with C<int>.
+
+If the length is extended, L</"set_capacity Operator"> is called if needed.
+
+If the length is extended, the extended elements are set to its default value.
+
+If the length is shorten, unused elements is destroyed.
+
+Compilation Errors:
+
+I<OBJECT_OPERAND> type must be an array type or string type. Otherwise a compilation error occurs.
+
+I<OBJECT_OPERAND> type must be an integer type. Otherwise a compilation error occurs.
+
+I<LENGTH_OPERAND> type must be an integer type. Otherwise a compilation error occurs.
+
+Exceptions:
+
+I<OBJECT_OPERAND> must be defined. Otherwise an exception is thrown.
+
+the type of I<OBJECT_OPERAND> must be string type or an array type. Otherwise an exception is thrown.
+
+I<OBJECT_OPERAND> must not be a fixed length object. If so, an exception is thrown.
+
+If I<LENGTH_OPERAND> is smaller capacity than its length, an exception is thrown.
+
+Examples:
+
+  # Examples of set_length operator
+  my $string = (mutable string)copy "abc";
+  
+  set_length($string, 4);
+
+=head2 set_capacity Operator
+
+The C<set_capacity> operator sets the capacity of a string or an array.
+  
+  set_capacity(OBJECT_OPERAND, LENGTH_OPERAND);
+
+The type of I<OBJECT_OPERAND> must be a string or an array.
+
+The type of I<LENGTH_OPERAND> is an integer value with C<int>.
+
+The new capacity is allocated and old elements are copied on it.
+
+Compilation Errors:
+
+I<OBJECT_OPERAND> type must be an array type or string type. Otherwise a compilation error occurs.
+
+I<OBJECT_OPERAND> type must be an integer type. Otherwise a compilation error occurs.
+
+I<LENGTH_OPERAND> type must be an integer type. Otherwise a compilation error occurs.
+
+Exceptions:
+
+I<OBJECT_OPERAND> must be defined. Otherwise an exception is thrown.
+
+the type of I<OBJECT_OPERAND> must be string type or an array type. Otherwise an exception is thrown.
+
+I<OBJECT_OPERAND> must not be a fixed capacity object. If so, an exception is thrown.
+
+If this operator cannot allocate memory, an exception is thrown.
+
+Examples:
+
+  # Examples of set_capacity operator
+  my $string = (mutable string)copy "abc";
+  
+  set_capacity($string, 4);
 
 =head1 Scope Operations
 

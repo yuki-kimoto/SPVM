@@ -1,4 +1,6 @@
 0.990099 2025-10-06
+  [Design Changes]
+    * string and array becomes dynamic string and array. The capacity and length can be shorten and extended.
   [Internal Changes]
     * Add SPVM_OBJECT_C_FLAG_IS_FIXED_LENGTH object flag.
   [New Features]

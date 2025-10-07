@@ -4699,8 +4699,7 @@ int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
   int32_t elem_size = SPVM_API_get_elem_size(env, stack, object);
   char* new_data = SPVM_API_new_memory_block(env, stack, elem_size * capacity);
   if (!new_data) {
-    error_id = -5;
-    return error_id;
+    return SPVM_API_die(env, stack, "set_capacity failed: cannot allocate memory.");
   }
   char* data = (char*)env->get_chars(env, stack, object);
   memcpy(new_data, data, elem_size * object->length);
