@@ -4403,7 +4403,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
                 break;
               }
               default: {
-                fprintf(stderr, "[Unexpected Error]The %s operator.", SPVM_OP_get_op_name(compiler, op_cur->id));
+                fprintf(stderr, "[Unexpected Error]The %s operator.", SPVM_OP_get_name(compiler, op_cur->id));
                 assert(0);
               }
             }
@@ -5497,7 +5497,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     default: {
-      fprintf(stderr, "%s\n", SPVM_OP_get_op_name(compiler, op->id));
+      fprintf(stderr, "%s\n", SPVM_OP_get_name(compiler, op->id));
       assert(0);
     }
   }

@@ -2697,7 +2697,7 @@ SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM
 
 SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_operand) {
   
-  const char* op_name = SPVM_OP_get_op_name(compiler, op_unary->id);
+  const char* op_name = SPVM_OP_get_name(compiler, op_unary->id);
   char op_name_lc[16] = {0};
   snprintf(op_name_lc, 16, "%s", op_name);
   for (int32_t i = 0; i < 16; i++) {
@@ -4369,7 +4369,7 @@ SPVM_OP* SPVM_OP_sibling(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return op->moresib ? op->sibparent : NULL;
 }
 
-const char* SPVM_OP_get_op_name(SPVM_COMPILER* compiler, int32_t op_id) {
+const char* SPVM_OP_get_name(SPVM_COMPILER* compiler, int32_t op_id) {
   const char* op_name = (SPVM_OP_C_ID_NAMES())[op_id];
   
   return op_name;
