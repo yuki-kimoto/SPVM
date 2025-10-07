@@ -3761,8 +3761,6 @@ the type of I<OBJECT_OPERAND> must be string type or an array type. Otherwise an
 
 I<OBJECT_OPERAND> must not be a fixed length object. If so, an exception is thrown.
 
-If I<LENGTH_OPERAND> is smaller capacity than its length, an exception is thrown.
-
 Examples:
 
   # Examples of set_length operator
@@ -3774,11 +3772,11 @@ Examples:
 
 The C<set_capacity> operator sets the capacity of a string or an array.
   
-  set_capacity(OBJECT_OPERAND, LENGTH_OPERAND);
+  set_capacity(OBJECT_OPERAND, CAPACITY_OPERAND);
 
 The type of I<OBJECT_OPERAND> must be a string or an array.
 
-The type of I<LENGTH_OPERAND> is an integer value with C<int>.
+The type of I<CAPACITY_OPERAND> is an integer value with C<int>.
 
 The new capacity is allocated and old elements are copied on it.
 
@@ -3788,17 +3786,19 @@ I<OBJECT_OPERAND> type must be an array type or string type. Otherwise a compila
 
 I<OBJECT_OPERAND> type must be an integer type. Otherwise a compilation error occurs.
 
-I<LENGTH_OPERAND> type must be an integer type. Otherwise a compilation error occurs.
+I<CAPACITY_OPERAND> type must be an integer type. Otherwise a compilation error occurs.
 
 Exceptions:
 
 I<OBJECT_OPERAND> must be defined. Otherwise an exception is thrown.
 
-the type of I<OBJECT_OPERAND> must be string type or an array type. Otherwise an exception is thrown.
+The type of I<OBJECT_OPERAND> must be string type or an array type. Otherwise an exception is thrown.
 
 I<OBJECT_OPERAND> must not be a fixed capacity object. If so, an exception is thrown.
 
 If this operator cannot allocate memory, an exception is thrown.
+
+If I<CAPACITY_OPERAND> is smaller capacity than its length plus 1, an exception is thrown.
 
 Examples:
 
