@@ -307,6 +307,7 @@ enum {
 };
 
 struct spvm_op {
+  const char* name;
   SPVM_OP* first;
   SPVM_OP* last;
   SPVM_OP* sibparent;
