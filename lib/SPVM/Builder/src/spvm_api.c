@@ -4629,25 +4629,25 @@ int32_t SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   int32_t error_id = 0;
   
   if (!object) {
-    return SPVM_API_die(env, stack, "set_length failed: the object must be defined.");
+    return SPVM_API_die(env, stack, "set_length failed: the object must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   void* basic_type = object->basic_type;
   int32_t type_dimension = object->type_dimension;
   if (!SPVM_API_is_dynamic_data_type(env, stack, basic_type, type_dimension, 0)) {
-    return SPVM_API_die(env, stack, "set_length failed: the type of the object must be string type or an array type.");
+    return SPVM_API_die(env, stack, "set_length failed: the type of the object must be string type or an array type.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t flag = object->flag;
   if (flag & SPVM_OBJECT_C_FLAG_IS_FIXED_LENGTH) {
-    return SPVM_API_die(env, stack, "set_length failed: the object must not be a fixed length object.");
+    return SPVM_API_die(env, stack, "set_length failed: the object must not be a fixed length object.", __func__, FILE_NAME, __LINE__);
   }
   if (flag & SPVM_OBJECT_C_FLAG_IS_READ_ONLY) {
-    return SPVM_API_die(env, stack, "set_capacity failed: the object must not be a read-only object.");
+    return SPVM_API_die(env, stack, "set_capacity failed: the object must not be a read-only object.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return SPVM_API_die(env, stack, "set_length failed: the length must be a non-negative number.");
+    return SPVM_API_die(env, stack, "set_length failed: the length must be a non-negative number.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length + 1 > object->capacity) {
@@ -4680,32 +4680,32 @@ int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
   int32_t error_id = 0;
   
   if (!object) {
-    return SPVM_API_die(env, stack, "set_capacity failed: the object must be defined.");
+    return SPVM_API_die(env, stack, "set_capacity failed: the object must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   void* basic_type = object->basic_type;
   int32_t type_dimension = object->type_dimension;
   
   if (!SPVM_API_is_dynamic_data_type(env, stack, basic_type, type_dimension, 0)) {
-    return SPVM_API_die(env, stack, "set_capacity failed: the type of the object must be string type or an array type.");
+    return SPVM_API_die(env, stack, "set_capacity failed: the type of the object must be string type or an array type.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t flag = object->flag;
   if (flag & SPVM_OBJECT_C_FLAG_IS_FIXED_LENGTH) {
-    return SPVM_API_die(env, stack, "set_capacity failed: the object must not be a fixed length object.");
+    return SPVM_API_die(env, stack, "set_capacity failed: the object must not be a fixed length object.", __func__, FILE_NAME, __LINE__);
   }
   if (flag & SPVM_OBJECT_C_FLAG_IS_READ_ONLY) {
-    return SPVM_API_die(env, stack, "set_capacity failed: the object must not be a read-only object.");
+    return SPVM_API_die(env, stack, "set_capacity failed: the object must not be a read-only object.", __func__, FILE_NAME, __LINE__);
   }
   
   if (capacity < object->length + 1) {
-    return SPVM_API_die(env, stack, "set_capacity failed: too small capacity.");
+    return SPVM_API_die(env, stack, "set_capacity failed: too small capacity.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t elem_size = SPVM_API_get_elem_size(env, stack, object);
   char* new_data = SPVM_API_new_memory_block(env, stack, elem_size * capacity);
   if (!new_data) {
-    return SPVM_API_die(env, stack, "set_capacity failed: cannot allocate memory.");
+    return SPVM_API_die(env, stack, "set_capacity failed: cannot allocate memory.", __func__, FILE_NAME, __LINE__);
   }
   char* data = (char*)env->get_chars(env, stack, object);
   memcpy(new_data, data, elem_size * object->length);
