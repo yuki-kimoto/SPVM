@@ -234,7 +234,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   ok(SPVM::Builder::Util::file_contains($basic_test_file, 'use lib "$FindBin::Bin/lib";'));
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "use SPVM 'TestCase::Foo';"));
   ok(SPVM::Builder::Util::file_contains($basic_test_file, "ok(SPVM::TestCase::Foo->test);"));
-  ok(SPVM::Builder::Util::file_contains($basic_test_file, 'SPVM::Fn->destroy_runtime_permanent_vars;'));
+  ok(SPVM::Builder::Util::file_contains($basic_test_file, '$api->destroy_runtime_permanent_vars;'));
 
   chdir($save_cur_dir) or die;
 }
