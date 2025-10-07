@@ -4626,8 +4626,6 @@ int32_t SPVM_API_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object)
 
 int32_t SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length) {
   
-  int32_t capacity = object->capacity;
-  
   int32_t status;
   
   if (!object) {
@@ -4635,15 +4633,20 @@ int32_t SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     return status;
   }
   
-  void* basic_type = object->basic_type;
-  int32_t type_dimension = object->type_dimension;
-  
-  if (!SPVM_API_is_dynamic_data_type(env, stack, basic_type, type_dimension, 0)) {
+  if (!(length >= 0)) {
     status = -2;
     return status;
   }
   
-  if (length > capacity) {
+  void* basic_type = object->basic_type;
+  int32_t type_dimension = object->type_dimension;
+  
+  if (!SPVM_API_is_dynamic_data_type(env, stack, basic_type, type_dimension, 0)) {
+    status = -3;
+    return status;
+  }
+  
+  if (length > object->capacity) {
     status = SPVM_API_set_capacity(env, stack, object, length);
     
     if (!status) {
@@ -4672,9 +4675,43 @@ int32_t SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
 
 int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t capacity) {
   
+  int32_t status;
+  
+  if (!object) {
+    status = -1;
+    return status;
+  }
+  
+  if (!(capacity >= 0)) {
+    status = -2;
+    return status;
+  }
+  
+  void* basic_type = object->basic_type;
+  int32_t type_dimension = object->type_dimension;
+  
+  if (!SPVM_API_is_dynamic_data_type(env, stack, basic_type, type_dimension, 0)) {
+    status = -3;
+    return status;
+  }
+  
+  if (capacity < object->length) {
+    status = -4;
+    return status;
+  }
+  
+  int32_t elem_size = SPVM_API_get_elem_size(env, stack, object);
+  char* new_data = SPVM_API_new_memory_block(env, stack, elem_size * capacity);
+  char* data = (char*)env->get_chars(env, stack, object);
+  memcpy(new_data, data, elem_size * object->length);
+  SPVM_API_free_memory_block(env, stack, data);
+  object->data = (void*)data;
+  
   object->capacity = capacity;
   
-  return 0;
+  status = 0;
+  
+  return status;
 }
 
 int8_t* SPVM_API_get_elems_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
