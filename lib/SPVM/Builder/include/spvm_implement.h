@@ -578,8 +578,8 @@ static inline void SPVM_IMPLEMENT_STRING_COMPARISON(SPVM_ENV* env, SPVM_VALUE* s
     cmp = -1;
   }
   else {
-    int32_t length1 = *(int32_t*)((intptr_t)object1 + (intptr_t)env->object_length_offset);
-    int32_t length2 = *(int32_t*)((intptr_t)object2 + (intptr_t)env->object_length_offset);
+    int32_t length1 = GET_LENGTH(env, stack, object1);
+    int32_t length2 = GET_LENGTH(env, stack, object2);
     
     const char* bytes1 = env->get_chars(env, stack, object1);
     const char* bytes2 = env->get_chars(env, stack, object2);
@@ -1208,7 +1208,7 @@ static inline void SPVM_IMPLEMENT_STRING_LENGTH(SPVM_ENV* env, SPVM_VALUE* stack
     *out = 0;
   }
   else {
-    *out = *(int32_t*)((intptr_t)string + (intptr_t)env->object_length_offset);
+    *out = GET_LENGTH(env, stack, string);
   }
 }
 
