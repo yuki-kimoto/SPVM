@@ -86,6 +86,7 @@ enum {
 
 #define GET_DATA_ADDRESS(env, stack, object) ((intptr_t)*(void**)((intptr_t)object + (intptr_t)env->object_data_offset))
 #define GET_LENGTH(env, stack, object) (*(int32_t*)((intptr_t)object + (intptr_t)env->object_length_offset))
+#define GET_CAPACITY(env, stack, object) (*(int32_t*)((intptr_t)object + (intptr_t)env->object_capacity_offset))
 
 static inline void* SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id) {
   
@@ -1212,14 +1213,14 @@ static inline void SPVM_IMPLEMENT_STRING_LENGTH(SPVM_ENV* env, SPVM_VALUE* stack
   }
 }
 
-static inline void SPVM_IMPLEMENT_CAPACITY(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* array, int32_t* error_id) {
-  if (array == NULL) {
+static inline void SPVM_IMPLEMENT_CAPACITY(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t* error_id) {
+  if (object == NULL) {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ARRAY_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *out = *(int32_t*)((intptr_t)array + (intptr_t)env->object_capacity_offset);
+    *out = GET_CAPACITY(env, stack, object);
   }
 }
 
