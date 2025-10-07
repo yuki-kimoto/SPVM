@@ -4626,34 +4626,31 @@ int32_t SPVM_API_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object)
 
 int32_t SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length) {
   
-  int32_t status;
+  int32_t error_id = 0;
   
   if (!object) {
-    status = -1;
-    return status;
-  }
-  
-  if (!(length >= 0)) {
-    status = -2;
-    return status;
+    return SPVM_API_die(env, stack, "set_length failed: the object must be defined.");
   }
   
   void* basic_type = object->basic_type;
   int32_t type_dimension = object->type_dimension;
   
   if (!SPVM_API_is_dynamic_data_type(env, stack, basic_type, type_dimension, 0)) {
-    status = -3;
-    return status;
+    return SPVM_API_die(env, stack, "set_length failed: the type of the object must be string type or an array type.");
+  }
+  
+  if (!(length >= 0)) {
+    return SPVM_API_die(env, stack, "set_length failed: the length must be a non-negative number.");
   }
   
   if (length > object->capacity) {
-    status = SPVM_API_set_capacity(env, stack, object, length);
-    
-    if (!status) {
-      return status;
+    error_id = SPVM_API_set_capacity(env, stack, object, length);
+    if (error_id) {
+      return error_id;
     }
   }
-  else if (length < object->length) {
+  
+  if (length < object->length) {
     if (SPVM_API_is_object_array(env, stack, object)) {
       for (int32_t i = length; i < object->length; i++) {
         SPVM_API_set_elem_object(env, stack, object, i, NULL);
@@ -4668,40 +4665,34 @@ int32_t SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   
   object->length = length;
   
-  status = 0;
-  
-  return status;
+  return error_id;
 }
 
 int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t capacity) {
   
-  int32_t status;
+  int32_t error_id = 0;
   
   if (!object) {
-    status = -1;
-    return status;
-  }
-  
-  if (!(capacity >= 0)) {
-    status = -2;
-    return status;
+    return SPVM_API_die(env, stack, "set_capacity failed: the object must be defined.");
   }
   
   void* basic_type = object->basic_type;
   int32_t type_dimension = object->type_dimension;
   
   if (!SPVM_API_is_dynamic_data_type(env, stack, basic_type, type_dimension, 0)) {
-    status = -3;
-    return status;
+    return SPVM_API_die(env, stack, "set_capacity failed: the type of the object must be string type or an array type.");
   }
   
   if (capacity < object->length) {
-    status = -4;
-    return status;
+    return SPVM_API_die(env, stack, "set_capacity failed: too small capacity.");
   }
   
   int32_t elem_size = SPVM_API_get_elem_size(env, stack, object);
   char* new_data = SPVM_API_new_memory_block(env, stack, elem_size * capacity);
+  if (!new_data) {
+    error_id = -5;
+    return error_id;
+  }
   char* data = (char*)env->get_chars(env, stack, object);
   memcpy(new_data, data, elem_size * object->length);
   SPVM_API_free_memory_block(env, stack, data);
@@ -4709,9 +4700,9 @@ int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
   
   object->capacity = capacity;
   
-  status = 0;
+  error_id = 0;
   
-  return status;
+  return error_id;
 }
 
 int8_t* SPVM_API_get_elems_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {

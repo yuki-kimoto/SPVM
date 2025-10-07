@@ -46,16 +46,6 @@ enum {
 
 
 
-
-
-
-
-
-
-
-
-
-
 static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "An assignment failed. %s type cannot be assigned to %s type.",
   "A read-only string cannnot be cast to mutable string type.",
@@ -1239,12 +1229,7 @@ static inline void SPVM_IMPLEMENT_SET_LENGTH(SPVM_ENV* env, SPVM_VALUE* stack, v
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    int32_t status = env->set_length(env, stack, object, length);
-    if (!(status == 0)) {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, "set_length failed.");
-      env->set_exception(env, stack, exception);
-      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
+    *error_id = env->set_length(env, stack, object, length);
   }
 }
 
@@ -1255,12 +1240,7 @@ static inline void SPVM_IMPLEMENT_SET_CAPACITY(SPVM_ENV* env, SPVM_VALUE* stack,
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    int32_t status = env->set_capacity(env, stack, object, capacity);
-    if (!(status == 0)) {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, "set_capacity failed.");
-      env->set_exception(env, stack, exception);
-      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
+    *error_id = env->set_capacity(env, stack, object, capacity);
   }
 }
 

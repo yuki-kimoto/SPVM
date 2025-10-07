@@ -2720,7 +2720,7 @@ C<int32_t (*set_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t 
 
 Set the length of the object I<object>. The type of I<object> must be string type or an array type.
 
-If succeeded, returns 0, otherwise a non-zero value.
+If succeeded, returns 0, otherwise sets an exception and returns a basic type of one of error classes.
 
 If the length is extended, L</"set_capacity"> is called if needed.
 
@@ -2740,7 +2740,7 @@ Set the capacity of the object I<object>. The type of I<object> must be string t
 
 The new capacity is allocated and old elements are copied on it.
 
-If succeeded, returns 0, otherwise a non-zero value.
+If succeeded, returns 0, otherwise sets an exception and returns a basic type of one of error classes.
 
 =head1 Native API IDs
 
