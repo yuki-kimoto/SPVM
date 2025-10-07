@@ -293,6 +293,7 @@ sub get_exception { my $ret; eval { $ret =  &_xs_get_exception(@_) }; if ($@) { 
 sub set_exception { my $ret; eval { $ret =  &_xs_set_exception(@_) }; if ($@) { confess($@) } $ret}
 sub get_memory_blocks_count { my $ret; eval { $ret =  &_xs_get_memory_blocks_count(@_) }; if ($@) { confess($@) } $ret}
 sub call_method { my $ret; eval { $ret =  &_xs_call_method(@_) }; if ($@) { confess($@) } $ret}
+sub destroy_runtime_permanent_vars { my $ret; eval { $ret =  &_xs_destroy_runtime_permanent_vars(@_) }; if ($@) { confess($@) } $ret}
 
 1;
 
@@ -1195,6 +1196,14 @@ Calling class methods can be made easier using L<SPVM class loading|SPVM/"Loadin
 Instance method calls can be made easier using L<SPVM::BlessedObject::Class>.
 
   my $value = $int_object->value;
+
+=head2 destroy_runtime_permanent_vars
+
+  $api->destroy_runtime_permanent_vars;
+  
+Sets all runtime permanent variables to undef.
+
+Currently thie method calls C<destroy_cache_class_vars> native API and sets an exception to undef.
 
 =head1 Argument Conversion
 

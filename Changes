@@ -14,6 +14,7 @@
     * Add set_capacity native API.
     * Add object_capacity_offset native API.
     * Add get_object_capacity_offset runtime native API.
+    * Add destroy_runtime_permanent_vars exchange API.
     
 0.990098 2025-10-06
   [Internal Changes with Memory Size Degraration]

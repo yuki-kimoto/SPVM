@@ -3768,6 +3768,31 @@ _xs_get_memory_blocks_count(...)
   XSRETURN(1);
 }
 
+SV*
+_xs_destroy_runtime_permanent_vars(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Env
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  env->destroy_cache_class_vars(env, stack);
+  
+  env->set_exception(env, stack, NULL);
+  
+  XSRETURN(0);
+}
+
 MODULE = SPVM::BlessedObject		PACKAGE = SPVM::BlessedObject
 
 SV*
