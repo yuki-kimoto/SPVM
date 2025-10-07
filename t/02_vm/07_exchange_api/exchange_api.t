@@ -29,6 +29,8 @@ use SPVM 'Long';
 use SPVM 'Float';
 use SPVM 'Double';
 use SPVM 'Bool';
+use SPVM 'Fn';
+use SPVM 'SPVM';
 
 # use the same module twice
 use SPVM 'Point';
@@ -2349,6 +2351,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       is($length, 3);
     }
   }
+}
+
+# get_version_string
+{
+  is($api->get_version_string("SPVM"), SPVM::Fn->get_version_string("SPVM"));
 }
 
 # Extra

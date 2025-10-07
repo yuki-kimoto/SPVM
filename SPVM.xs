@@ -3793,6 +3793,45 @@ _xs_destroy_runtime_permanent_vars(...)
   XSRETURN(0);
 }
 
+SV*
+_xs_get_version_string(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Env
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Stack
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  SV* sv_basic_type_name = ST(1);
+  
+  if (!SvOK(sv_basic_type_name)) {
+    croak("The basic type name $basic_type_name must be defined.");
+  }
+  
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
+  if (!basic_type) {
+    croak("The class specified by the basic type name $basic_type_name must be loaded.");
+  }
+  
+  const char* version_string = env->get_version_string(env, stack, basic_type);
+  
+  SV* sv_version_string = sv_2mortal(newSVpv(version_string, 0));
+  
+  XPUSHs(sv_version_string);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::BlessedObject		PACKAGE = SPVM::BlessedObject
 
 SV*
