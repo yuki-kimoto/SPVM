@@ -800,11 +800,11 @@ void_return_operator
   | delete
   | SET_LENGTH '(' operator ',' operator ')'
     {
-      $$ = SPVM_OP_build_binary_op(compiler, $1, $2, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $1, $3, $5);
     }
   | SET_CAPACITY '(' operator ',' operator ')'
     {
-      $$ = SPVM_OP_build_binary_op(compiler, $1, $2, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $1, $3, $5);
     }
 
 for_statement

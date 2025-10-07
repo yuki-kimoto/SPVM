@@ -679,6 +679,7 @@ t/02_vm/05_op/delete.t
 t/02_vm/05_op/destroy.t
 t/02_vm/05_op/division.t
 t/02_vm/05_op/dump.t
+t/02_vm/05_op/dynamic_length.t
 t/02_vm/05_op/exists.t
 t/02_vm/05_op/field_access.t
 t/02_vm/05_op/generic_type.t
@@ -957,6 +958,7 @@ t/02_vm/lib/SPVM/TestCase/Operator/Delete.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Divide.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Dump.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/DumpTest1.spvm
+t/02_vm/lib/SPVM/TestCase/Operator/DynamicLength.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Exists.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/FieldAccess.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/FILE.spvm

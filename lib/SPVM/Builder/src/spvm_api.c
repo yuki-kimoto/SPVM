@@ -4705,7 +4705,7 @@ int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
   char* data = (char*)env->get_chars(env, stack, object);
   memcpy(new_data, data, elem_size * object->length);
   SPVM_API_free_memory_block(env, stack, data);
-  object->data = (void*)data;
+  object->data = (void*)new_data;;
   
   object->capacity = capacity;
   

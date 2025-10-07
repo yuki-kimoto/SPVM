@@ -7,7 +7,7 @@ use utf8;
 
 use Test::More;
 
-use SPVM 'TestCase::Operator::String';
+use SPVM 'TestCase::Operator::DynamicLength';
 
 
 
@@ -15,7 +15,7 @@ use SPVM 'TestCase::Operator::String';
 my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
-ok(SPVM::TestCase::Operator::String->string_length);
+ok(SPVM::TestCase::Operator::DynamicLength->set_length);
 
 # All object is freed
 $api->set_exception(undef);
