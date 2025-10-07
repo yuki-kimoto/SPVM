@@ -271,6 +271,41 @@ class TestCase::Operator::ArrayAccess {
       
     }
     
+    {
+      my $array = new string[1];
+      
+      $array->[-1] = "1";
+      
+      unless ($array->[0] eq "1") {
+        return 0;
+      }
+      
+      unless ($array->[-1] eq "1") {
+        return 0;
+      }
+      
+      $array->[-1] = undef;
+      
+      unless ($array->[0] == undef) {
+        return 0;
+      }
+      
+      unless ($array->[-1] == undef) {
+        return 0;
+      }
+      
+      eval { $array->[-2] = undef; }
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { $array->[1] = undef; }
+      unless ($@) {
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
   
