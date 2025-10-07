@@ -2255,6 +2255,12 @@ The type of the array I<ARRAY> is an array type.
 
 The type of the index I<INDEX> is an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
 
+If I<INDEX> is a minus value, it is set to I<INDEX> plus the length of the array.
+
+Exceptions:
+
+If I<INDEX> is less than 0 or more than or equal to the length of the array, an exception is thrown.
+
 Compilation Errors:
 
 I<ARRAY> must be an array type, string type, a class type, or an interface type. Otherwise, a compilation error occurs.
