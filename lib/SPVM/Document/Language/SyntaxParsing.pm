@@ -19,11 +19,11 @@ Syntax parsing is performed according to the grammer of the SPVM language.
 The grammer of the SPVM language is described using L<GNU Bison|https://en.wikipedia.org/wiki/GNU_Bison> syntax.
 
   %token <opval> CLASS HAS GET SET METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
-  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
+  %token <opval> ATTRIBUTE MAKE_READ_ONLY MAKE_FIXED_LENGTH INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
-  %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
+  %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER SET_LENGTH SET_CAPACITY
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
   %type <opval> grammar
   %type <opval> field_name method_name class_name
@@ -64,7 +64,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY ADDRESS IS_OPTIONS
+  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY IS_FIXED_LENGTH COPY ADDRESS IS_OPTIONS CAPACITY
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
   %nonassoc <opval> ')'
@@ -334,10 +334,13 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | weaken_field
     | unweaken_field
     | MAKE_READ_ONLY operator
+    | MAKE_FIXED_LENGTH operator
     | ENABLE_OPTIONS operator
     | DISABLE_OPTIONS operator
     | copy_fields
     | delete
+    | SET_LENGTH '(' operator ',' operator ')'
+    | SET_CAPACITY '(' operator ',' operator ')'
 
   for_statement
     : FOR '(' opt_operator ';' opt_operator ';' opt_operator ')' block
@@ -459,9 +462,11 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | NEW_STRING_LEN operator
     | COPY operator
     | IS_READ_ONLY operator
+    | IS_FIXED_LENGTH operator
     | array_length
     | ADDRESS operator
     | IS_OPTIONS operator
+    | CAPACITY operator
 
   array_length
     : '@' operator
@@ -663,6 +668,9 @@ These are tokens for L<grammer/"Grammer">.
     <td>BYTE</td><td>byte</td>
   </tr>
   <tr>
+    <td>CAPACITY</td><td>capacity</td>
+  </tr>
+  <tr>
     <td>CASE</td><td>case</td>
   </tr>
   <tr>
@@ -804,6 +812,9 @@ These are tokens for L<grammer/"Grammer">.
     <td>IS_OPTIONS</td><td>is_options</td>
   </tr>
   <tr>
+    <td>IS_FIXED_LENGTH</td><td>is_fixed_length</td>
+  </tr>
+  <tr>
     <td>IS_READ_ONLY</td><td>is_read_only</td>
   </tr>
   <tr>
@@ -826,6 +837,9 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>LONG</td><td>long</td>
+  </tr>
+  <tr>
+    <td>MAKE_FIXED_LENGTH</td><td>make_fixed_length</td>
   </tr>
   <tr>
     <td>MAKE_READ_ONLY</td><td>make_read_only</td>
@@ -922,6 +936,12 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>SET</td><td>set</td>
+  </tr>
+  <tr>
+    <td>SET_CAPACITY</td><td>set_capacity</td>
+  </tr>
+  <tr>
+    <td>SET_LENGTH</td><td>set_length</td>
   </tr>
   <tr>
     <td>SHIFT</td><td>&lt;&lt;<br>&gt;&gt;<br>&gt;&gt;&gt;</td>
