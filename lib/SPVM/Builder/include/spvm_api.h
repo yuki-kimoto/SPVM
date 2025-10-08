@@ -470,5 +470,7 @@ int32_t SPVM_API_is_numeric_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASI
 
 int8_t SPVM_API_numeric_object_to_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id);
 int16_t SPVM_API_numeric_object_to_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id);
+int32_t SPVM_API_numeric_object_to_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id);
+int64_t SPVM_API_numeric_object_to_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id);
 
 #endif
