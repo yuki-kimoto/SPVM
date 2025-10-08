@@ -126,7 +126,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   ok(SPVM::TestCase::Operator::TypeCast->any_object_to_int);
   ok(SPVM::TestCase::Operator::TypeCast->any_object_to_long);
   ok(SPVM::TestCase::Operator::TypeCast->any_object_to_float);
-  ok(SPVM::TestCase::Operator::TypeCast->any_object_to_double);
+  ok(SPVM::TestCase::Operator::TypeCast->any_object_to_double); 
 }
 
 # Convert to string

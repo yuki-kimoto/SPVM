@@ -2131,34 +2131,34 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(env, stack, &object_vars[opcode->operand0], value);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_OBJECT_TO_BYTE: {
         void* object = object_vars[opcode->operand1];
-        SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_OBJECT_TO_BYTE(env, stack, &byte_vars[opcode->operand0], object, &error_id);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_OBJECT_TO_BYTE(env, stack, &byte_vars[opcode->operand0], object, &error_id);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_OBJECT_TO_SHORT: {
         void* object = object_vars[opcode->operand1];
-        SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_OBJECT_TO_SHORT(env, stack, &short_vars[opcode->operand0], object, &error_id);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_OBJECT_TO_SHORT(env, stack, &short_vars[opcode->operand0], object, &error_id);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_OBJECT_TO_INT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_OBJECT_TO_INT: {
         void* object = object_vars[opcode->operand1];
-        SPVM_IMPLEMENT_TYPE_CONVERSION_INT_OBJECT_TO_INT(env, stack, &int_vars[opcode->operand0], object, &error_id);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_OBJECT_TO_INT(env, stack, &int_vars[opcode->operand0], object, &error_id);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_OBJECT_TO_LONG: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_OBJECT_TO_LONG: {
         void* object = object_vars[opcode->operand1];
-        SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_OBJECT_TO_LONG(env, stack, &long_vars[opcode->operand0], object, &error_id);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_OBJECT_TO_LONG(env, stack, &long_vars[opcode->operand0], object, &error_id);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_OBJECT_TO_FLOAT: {
         void* object = object_vars[opcode->operand1];
-        SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_OBJECT_TO_FLOAT(env, stack, &float_vars[opcode->operand0], object, &error_id);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_OBJECT_TO_FLOAT(env, stack, &float_vars[opcode->operand0], object, &error_id);
         break;
       }
-      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE: {
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_OBJECT_TO_DOUBLE: {
         void* object = object_vars[opcode->operand1];
-        SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(env, stack, &double_vars[opcode->operand0], object, &error_id);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_OBJECT_TO_DOUBLE(env, stack, &double_vars[opcode->operand0], object, &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_BYTE: {
