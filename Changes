@@ -8,6 +8,8 @@
     * Support minus index in array access.
       
       $array->[-1]
+  [Internal Changes]
+    * Rename TYPE_CONVERSION_XXX_OBJECT_TO_XXX to TYPE_CONVERSION_NUMERIC_OBJECT_TO_XXX.
     
 0.990099 2025-10-06
   [Design Changes]
