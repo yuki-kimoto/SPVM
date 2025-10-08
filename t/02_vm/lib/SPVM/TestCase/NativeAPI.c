@@ -269,6 +269,12 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->set_length != &env_array[249]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->capacity != &env_array[250]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_capacity != &env_array[251]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->numeric_object_to_byte != &env_array[252]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->numeric_object_to_short != &env_array[253]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->numeric_object_to_int != &env_array[254]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->numeric_object_to_long != &env_array[255]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->numeric_object_to_float != &env_array[256]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->numeric_object_to_double != &env_array[257]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

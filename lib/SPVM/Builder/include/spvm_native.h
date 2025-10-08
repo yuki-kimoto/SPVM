@@ -349,6 +349,12 @@ struct spvm_env {
   int32_t (*set_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);
   int32_t (*capacity)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*set_capacity)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t capacity);
+  int8_t (*numeric_object_to_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
+  int16_t (*numeric_object_to_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
+  int32_t (*numeric_object_to_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
+  int64_t (*numeric_object_to_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
+  float (*numeric_object_to_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
+  double (*numeric_object_to_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
 };
 
 struct spvm_env_api {

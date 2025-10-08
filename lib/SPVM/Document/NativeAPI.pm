@@ -2742,6 +2742,54 @@ The new capacity is allocated and old elements are copied on it.
 
 If succeeded, returns 0, otherwise sets an exception and returns a basic type of one of error classes.
 
+=head2 numeric_object_to_byte
+
+C<int8_t (*numeric_object_to_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+
+Converts a numeric object to byte value.
+
+If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+
+=head2 numeric_object_to_short
+
+C<int16_t (*numeric_object_to_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+
+Converts a numeric object to short value.
+
+If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+
+=head2 numeric_object_to_int
+
+C<int32_t (*numeric_object_to_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+
+Converts a numeric object to int value.
+
+If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+
+=head2 numeric_object_to_long
+
+C<int64_t (*numeric_object_to_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+
+Converts a numeric object to long value.
+
+If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+
+=head2 numeric_object_to_float
+
+C<float (*numeric_object_to_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+
+Converts a numeric object to float value.
+
+If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+
+=head2 numeric_object_to_double
+
+C<double (*numeric_object_to_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+
+Converts a numeric object to double value.
+
+If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -2998,6 +3046,12 @@ Native APIs have its IDs.
   249 set_length
   250 capacity
   251 set_capacity
+  252 numeric_object_to_byte
+  253 numeric_object_to_short
+  254 numeric_object_to_int
+  255 numeric_object_to_long
+  256 numeric_object_to_float
+  257 numeric_object_to_double
 
 =head1 Constant Values
 

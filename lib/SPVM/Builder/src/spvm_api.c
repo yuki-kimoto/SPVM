@@ -351,6 +351,12 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_set_length,
     SPVM_API_capacity,
     SPVM_API_set_capacity,
+    SPVM_API_numeric_object_to_byte,
+    SPVM_API_numeric_object_to_short,
+    SPVM_API_numeric_object_to_int,
+    SPVM_API_numeric_object_to_long,
+    SPVM_API_numeric_object_to_float,
+    SPVM_API_numeric_object_to_double,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -6476,6 +6482,8 @@ int32_t SPVM_API_is_numeric_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASI
 
 int8_t SPVM_API_numeric_object_to_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
   
+  *error_id = 0;
+  
   if (object == NULL) {
     *error_id = SPVM_API_die(env, stack, "Type conversion failed. The object must be defined.", __func__, FILE_NAME, __LINE__);
     return 0;
@@ -6529,6 +6537,8 @@ int8_t SPVM_API_numeric_object_to_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 }
 
 int16_t SPVM_API_numeric_object_to_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
+  
+  *error_id = 0;
   
   if (object == NULL) {
     *error_id = SPVM_API_die(env, stack, "Type conversion failed. The object must be defined.", __func__, FILE_NAME, __LINE__);
@@ -6584,6 +6594,8 @@ int16_t SPVM_API_numeric_object_to_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
 
 int32_t SPVM_API_numeric_object_to_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
   
+  *error_id = 0;
+  
   if (object == NULL) {
     *error_id = SPVM_API_die(env, stack, "Type conversion failed. The object must be defined.", __func__, FILE_NAME, __LINE__);
     return 0;
@@ -6637,6 +6649,8 @@ int32_t SPVM_API_numeric_object_to_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 }
 
 int64_t SPVM_API_numeric_object_to_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
+  
+  *error_id = 0;
   
   if (object == NULL) {
     *error_id = SPVM_API_die(env, stack, "Type conversion failed. The object must be defined.", __func__, FILE_NAME, __LINE__);
@@ -6692,6 +6706,8 @@ int64_t SPVM_API_numeric_object_to_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
 
 float SPVM_API_numeric_object_to_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
   
+  *error_id = 0;
+  
   if (object == NULL) {
     *error_id = SPVM_API_die(env, stack, "Type conversion failed. The object must be defined.", __func__, FILE_NAME, __LINE__);
     return 0;
@@ -6745,6 +6761,8 @@ float SPVM_API_numeric_object_to_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 }
 
 double SPVM_API_numeric_object_to_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
+  
+  *error_id = 0;
   
   if (object == NULL) {
     *error_id = SPVM_API_die(env, stack, "Type conversion failed. The object must be defined.", __func__, FILE_NAME, __LINE__);
