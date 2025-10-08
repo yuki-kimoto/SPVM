@@ -6690,3 +6690,57 @@ int64_t SPVM_API_numeric_object_to_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   return out;
 }
 
+float SPVM_API_numeric_object_to_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
+  
+  if (object == NULL) {
+    *error_id = SPVM_API_die(env, stack, "Type conversion failed. The object must be defined.", __func__, FILE_NAME, __LINE__);
+    return 0;
+  }
+  
+  int32_t is_numeric_object_type = SPVM_API_is_numeric_object_type(env->runtime, object->basic_type, object->type_dimension, 0);
+  
+  if (!is_numeric_object_type) {
+    *error_id = SPVM_API_die(env, stack, "Type conversion failed. The type of the object must be a numeric object type.", __func__, FILE_NAME, __LINE__);
+    return 0;
+  }
+  
+  float out;
+  switch (object->basic_type->id) {
+    case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS : {
+      int8_t** fields = (int8_t**)object->data;
+      out = (float)*(int8_t*)&fields[0];
+      break;
+    }
+    case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS : {
+      int16_t** fields = (int16_t**)object->data;
+      out = (float)*(int16_t*)&fields[0];
+      break;
+    }
+    case SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS : {
+      int32_t** fields = (int32_t**)object->data;
+      out = (float)*(int32_t*)&fields[0];
+      break;
+    }
+    case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS : {
+      int64_t** fields = (int64_t**)object->data;
+      out = (float)*(int64_t*)&fields[0];
+      break;
+    }
+    case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS : {
+      float** fields = (float**)object->data;
+      out = (float)*(float*)&fields[0];
+      break;
+    }
+    case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS : {
+      double** fields = (double**)object->data;
+      out = (float)*(double*)&fields[0];
+      break;
+    }
+    default : {
+      assert(0);
+    }
+  }
+  
+  return out;
+}
+
