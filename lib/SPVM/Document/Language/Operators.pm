@@ -3060,7 +3060,7 @@ The unboxing conversion is the type coversion from an object of a L<numeric obje
   </tr>
   <tr>
     <td>
-      byte
+      byte, short, int, long, float, double
     </td>
     <td>
       <a href="https://metacpan.org/pod/SPVM::Byte">Byte</a>
@@ -3068,7 +3068,7 @@ The unboxing conversion is the type coversion from an object of a L<numeric obje
   </tr>
   <tr>
     <td>
-      short
+      byte, short, int, long, float, double
     </td>
     <td>
       <a href="https://metacpan.org/pod/SPVM::Short">Short</a>
@@ -3076,7 +3076,7 @@ The unboxing conversion is the type coversion from an object of a L<numeric obje
   </tr>
   <tr>
     <td>
-      int
+      byte, short, int, long, float, double
     </td>
     <td>
       <a href="https://metacpan.org/pod/SPVM::Int">Int</a>
@@ -3084,7 +3084,7 @@ The unboxing conversion is the type coversion from an object of a L<numeric obje
   </tr>
   <tr>
     <td>
-      long
+      byte, short, int, long, float, double
     </td>
     <td>
       <a href="https://metacpan.org/pod/SPVM::Long">Long</a>
@@ -3092,7 +3092,7 @@ The unboxing conversion is the type coversion from an object of a L<numeric obje
   </tr>
   <tr>
     <td>
-      float
+      byte, short, int, long, float, double
     </td>
     <td>
       <a href="https://metacpan.org/pod/SPVM::Float">Float</a>
@@ -3100,7 +3100,7 @@ The unboxing conversion is the type coversion from an object of a L<numeric obje
   </tr>
   <tr>
     <td>
-      double
+      byte, short, int, long, float, double
     </td>
     <td>
       <a href="https://metacpan.org/pod/SPVM::Double">Double</a>
@@ -3110,7 +3110,9 @@ The unboxing conversion is the type coversion from an object of a L<numeric obje
 
 =end html
 
-An unboxing conversion returns the value of the C<value> field of the numeric object.
+If the destination numeric type is bigger than the source numeric type, L<Numeric Widening Conversion|https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion> is performed.
+
+If the destination numeric type is smaller than the source numeric type, L<Numeric Narrowing Conversion|https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion> is performed.
 
 An unboxing conversion could be performed on the object of any object type C<object>.
 
