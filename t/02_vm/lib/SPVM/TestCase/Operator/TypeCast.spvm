@@ -5,6 +5,7 @@ class TestCase::Operator::TypeCast {
   use Fn;
   use Array;
   use Complex_2d;
+  use Point;
 
   static method undef_to_object : int () {
     
@@ -1110,6 +1111,15 @@ class TestCase::Operator::TypeCast {
       my $value = (double)$byte_obj;
       
       unless ($value == Fn->INT8_MIN) {
+        return 0;
+      }
+    }
+    
+    {
+      my $byte_obj = (object)Byte->new(Fn->INT8_MIN);
+      eval { my $value = (Point)$byte_obj; }
+      
+      unless ($@) {
         return 0;
       }
     }
