@@ -1059,20 +1059,24 @@ class TestCase::Operator::TypeCast {
   }
 
   static method any_object_to_byte : int () {
-    my $byte_obj = (object)Byte->new(Fn->INT8_MIN);
-    my $byte = (byte)$byte_obj;
     
-    unless ($byte == Fn->INT8_MIN) {
-      return 0;
+    {
+      my $byte_obj = (object)Byte->new(Fn->INT8_MIN);
+      my $value = (byte)$byte_obj;
+      
+      unless ($value == Fn->INT8_MIN) {
+        return 0;
+      }
     }
+    
     return 1;
   }
 
   static method any_object_to_short : int () {
     my $short_obj = (object)Short->new(Fn->INT16_MIN);
-    my $short = (short)$short_obj;
+    my $value = (short)$short_obj;
     
-    unless ($short == Fn->INT16_MIN) {
+    unless ($value == Fn->INT16_MIN) {
       return 0;
     }
     return 1;
@@ -1080,9 +1084,9 @@ class TestCase::Operator::TypeCast {
 
   static method any_object_to_int : int () {
     my $int_obj = (object)Int->new(Fn->INT32_MIN);
-    my $int = (int)$int_obj;
+    my $value = (int)$int_obj;
     
-    unless ($int == Fn->INT32_MIN) {
+    unless ($value == Fn->INT32_MIN) {
       return 0;
     }
     return 1;
@@ -1090,9 +1094,9 @@ class TestCase::Operator::TypeCast {
 
   static method any_object_to_long : int () {
     my $long_obj = (object)Long->new(Fn->INT64_MIN);
-    my $long = (long)$long_obj;
+    my $value = (long)$long_obj;
     
-    unless ($long == Fn->INT64_MIN) {
+    unless ($value == Fn->INT64_MIN) {
       return 0;
     }
     return 1;
@@ -1100,18 +1104,18 @@ class TestCase::Operator::TypeCast {
 
   static method any_object_to_float : int () {
     my $float_obj = (object)Float->new(Fn->FLT_MIN);
-    my $float = (float)$float_obj;
+    my $value = (float)$float_obj;
     
-    unless ($float == Fn->FLT_MIN) {
+    unless ($value == Fn->FLT_MIN) {
       return 0;
     }
     return 1;
   }
   static method any_object_to_double : int () {
     my $double_obj = (object)Double->new(Fn->DBL_MIN);
-    my $double = (double)$double_obj;
+    my $value = (double)$double_obj;
     
-    unless ($double == Fn->DBL_MIN) {
+    unless ($value == Fn->DBL_MIN) {
       return 0;
     }
     return 1;
