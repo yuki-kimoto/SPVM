@@ -1069,6 +1069,51 @@ class TestCase::Operator::TypeCast {
       }
     }
     
+    {
+      my $byte_obj = (object)Byte->new(Fn->INT8_MIN);
+      my $value = (short)$byte_obj;
+      
+      unless ($value == Fn->INT8_MIN) {
+        return 0;
+      }
+    }
+    
+    {
+      my $byte_obj = (object)Byte->new(Fn->INT8_MIN);
+      my $value = (int)$byte_obj;
+      
+      unless ($value == Fn->INT8_MIN) {
+        return 0;
+      }
+    }
+    
+    {
+      my $byte_obj = (object)Byte->new(Fn->INT8_MIN);
+      my $value = (long)$byte_obj;
+      
+      unless ($value == Fn->INT8_MIN) {
+        return 0;
+      }
+    }
+    
+    {
+      my $byte_obj = (object)Byte->new(Fn->INT8_MIN);
+      my $value = (float)$byte_obj;
+      
+      unless ($value == Fn->INT8_MIN) {
+        return 0;
+      }
+    }
+    
+    {
+      my $byte_obj = (object)Byte->new(Fn->INT8_MIN);
+      my $value = (double)$byte_obj;
+      
+      unless ($value == Fn->INT8_MIN) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 
