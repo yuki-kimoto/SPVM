@@ -4,6 +4,8 @@
       static method foo : void ($var : int) {
         my $var = 2;
       }
+    * Allow type cast from any object to any numeric type.
+    
   [New Features with Changes]
     * Support minus index in array access.
       

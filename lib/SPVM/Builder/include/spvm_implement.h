@@ -2906,117 +2906,33 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(SPVM_E
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_NUMERIC_OBJECT_TO_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* object, int32_t* error_id) {
-  if (object == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF]);
-    env->set_exception(env, stack, exception);
-    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-  }
-  else {
-    if (env->is_type_by_name(env, stack, object, "Byte", 0)) {
-      int8_t** fields = (int8_t**)(GET_DATA_ADDRESS(env, stack, object));
-      *out = *(int8_t*)&fields[0];
-    }
-    else {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
-      env->set_exception(env, stack, exception);
-      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
-  }
+  
+  *out = env->numeric_object_to_byte(env, stack, object, error_id);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_NUMERIC_OBJECT_TO_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* object, int32_t* error_id) {
-  if (object == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF]);
-    env->set_exception(env, stack, exception);
-    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-  }
-  else {
-    if (env->is_type_by_name(env, stack, object, "Short", 0)) {
-      int16_t** fields = (int16_t**)(GET_DATA_ADDRESS(env, stack, object));
-      *out = *(int16_t*)&fields[0];
-    }
-    else {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
-      env->set_exception(env, stack, exception);
-      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
-  }
+  
+  *out = env->numeric_object_to_short(env, stack, object, error_id);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_NUMERIC_OBJECT_TO_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t* error_id) {
-  if (object == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF]);
-    env->set_exception(env, stack, exception);
-    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-  }
-  else {
-    if (env->is_type_by_name(env, stack, object, "Int", 0)) {
-      int32_t** fields = (int32_t**)(GET_DATA_ADDRESS(env, stack, object));
-      *out = *(int32_t*)&fields[0];
-    }
-    else {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
-      env->set_exception(env, stack, exception);
-      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
-  }
+  
+  *out = env->numeric_object_to_int(env, stack, object, error_id);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_NUMERIC_OBJECT_TO_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* object, int32_t* error_id) {
-  if (object == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF]);
-    env->set_exception(env, stack, exception);
-    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-  }
-  else {
-    if (env->is_type_by_name(env, stack, object, "Long", 0)) {
-      int64_t** fields = (int64_t**)(GET_DATA_ADDRESS(env, stack, object));
-      *out = *(int64_t*)&fields[0];
-    }
-    else {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
-      env->set_exception(env, stack, exception);
-      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
-  }
+  
+  *out = env->numeric_object_to_long(env, stack, object, error_id);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_NUMERIC_OBJECT_TO_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* object, int32_t* error_id) {
-  if (object == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF]);
-    env->set_exception(env, stack, exception);
-    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-  }
-  else {
-    if (env->is_type_by_name(env, stack, object, "Float", 0)) {
-      int64_t** fields = (int64_t**)(GET_DATA_ADDRESS(env, stack, object));
-      *out = *(float*)&fields[0];
-    }
-    else {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
-      env->set_exception(env, stack, exception);
-      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
-  }
+  
+  *out = env->numeric_object_to_float(env, stack, object, error_id);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_NUMERIC_OBJECT_TO_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* object, int32_t* error_id) {
-  if (object == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_UNBOXING_CONVERSION_FROM_UNDEF]);
-    env->set_exception(env, stack, exception);
-    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-  }
-  else {
-    if (env->is_type_by_name(env, stack, object, "Double", 0)) {
-      double** fields = (double**)(GET_DATA_ADDRESS(env, stack, object));
-      *out = *(double*)&fields[0];
-    }
-    else {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_UNBOXING_CONVERSION_NON_CORRESPONDING_NUMERIC_OBJECT_TYPE]);
-      env->set_exception(env, stack, exception);
-      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
-  }
+  
+  *out = env->numeric_object_to_double(env, stack, object, error_id);
 }
 
 #define SPVM_IMPLEMENT_SET_STACK_BYTE(stack, stack_index, in) (*(int8_t*)&stack[stack_index] = in)
