@@ -1145,6 +1145,72 @@ class TestCase::Operator::TypeCast {
     unless ($value == Fn->INT16_MIN) {
       return 0;
     }
+    
+    {
+      {
+        my $byte_obj = (object)Short->new(-1);
+        my $value = (byte)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Short->new(-1);
+        my $value = (short)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Short->new(-1);
+        my $value = (int)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Short->new(-1);
+        my $value = (long)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Short->new(-1);
+        my $value = (float)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Short->new(-1);
+        my $value = (double)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Short->new(-1);
+        eval { my $value = (Point)$byte_obj; }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
 
@@ -1155,6 +1221,72 @@ class TestCase::Operator::TypeCast {
     unless ($value == Fn->INT32_MIN) {
       return 0;
     }
+    
+    {
+      {
+        my $byte_obj = (object)Int->new(-1);
+        my $value = (byte)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Int->new(-1);
+        my $value = (short)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Int->new(-1);
+        my $value = (int)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Int->new(-1);
+        my $value = (long)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Int->new(-1);
+        my $value = (float)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Int->new(-1);
+        my $value = (double)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Int->new(-1);
+        eval { my $value = (Point)$byte_obj; }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
 
@@ -1165,6 +1297,72 @@ class TestCase::Operator::TypeCast {
     unless ($value == Fn->INT64_MIN) {
       return 0;
     }
+    
+    {
+      {
+        my $byte_obj = (object)Long->new(-1);
+        my $value = (byte)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Long->new(-1);
+        my $value = (short)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Long->new(-1);
+        my $value = (int)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Long->new(-1);
+        my $value = (long)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Long->new(-1);
+        my $value = (float)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Long->new(-1);
+        my $value = (double)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Long->new(-1);
+        eval { my $value = (Point)$byte_obj; }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
 
@@ -1175,6 +1373,72 @@ class TestCase::Operator::TypeCast {
     unless ($value == Fn->FLT_MIN) {
       return 0;
     }
+    
+    {
+      {
+        my $byte_obj = (object)Float->new(-1);
+        my $value = (byte)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Float->new(-1);
+        my $value = (short)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Float->new(-1);
+        my $value = (int)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Float->new(-1);
+        my $value = (long)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Float->new(-1);
+        my $value = (float)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Float->new(-1);
+        my $value = (double)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Float->new(-1);
+        eval { my $value = (Point)$byte_obj; }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   static method any_object_to_double : int () {
@@ -1184,6 +1448,72 @@ class TestCase::Operator::TypeCast {
     unless ($value == Fn->DBL_MIN) {
       return 0;
     }
+    
+    {
+      {
+        my $byte_obj = (object)Double->new(-1);
+        my $value = (byte)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Double->new(-1);
+        my $value = (short)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Double->new(-1);
+        my $value = (int)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Double->new(-1);
+        my $value = (long)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Double->new(-1);
+        my $value = (float)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Double->new(-1);
+        my $value = (double)$byte_obj;
+        
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $byte_obj = (object)Double->new(-1);
+        eval { my $value = (Point)$byte_obj; }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
 
