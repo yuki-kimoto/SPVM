@@ -10,14 +10,19 @@ class FloatList {
   use Fn;
   use Array;
   
-  # Enumerations
-  enum {
-    DEFAULT_CAPACITY = 4,
-  }
-  
   # Fields
-  has capacity : ro int;
-  has length : ro int;
+  has capacity : virtual ro int
+    get {
+      return capacity $self->{array};
+    }
+  ;
+  
+  has length : virtual ro int
+    get {
+      return @{$self->{array}};
+    }
+  ;
+  
   has array : float[];
   
   # Class methods
@@ -46,17 +51,26 @@ class FloatList {
       die "The length \$length must be greater than or equal to 0.";
     }
     
-    if ($capacity < 0) {
-      $capacity = &DEFAULT_CAPACITY;
+    $self->{array} = new float[0];
+    
+    if ($capacity >= 0) {
+      set_capacity($self->{array}, $capacity);
     }
     
-    if ($length > $capacity) {
-      $capacity = $length;
+    set_length($self->{array}, $length);
+    
+    return $self;
+  }
+  
+  static method new_ref : FloatList ($array : float[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
     }
     
-    $self->{capacity} = $capacity;
-    $self->{length} = $length;
-    $self->{array} = new float[$capacity];
+    my $self = new FloatList;
+    
+    $self->{array} = $array;
     
     return $self;
   }
@@ -83,7 +97,7 @@ class FloatList {
   }
   
   method insert : void ($index : int, $element : float) {
-    my $length = $self->{length};
+    my $length = @{$self->{array}};
     
     unless ($index >= 0) {
       die "The index \$index must be greater than or equal to 0.";
@@ -96,15 +110,15 @@ class FloatList {
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
+    set_length($self->{array}, $new_length);
     my $elements = $self->{array};
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
       Array->memmove_float($elements, $dist_index, $elements, $index, $move_length);
     }
-    $elements->[$index] = $element;
+    $elements->[$index] = (float)$element;
     
-    $self->{length} = $new_length;
   }
   
   method pop : float () {
@@ -116,26 +130,23 @@ class FloatList {
     
     my $element = $self->{array}[$length - 1];
     
-    $self->{array}[$length - 1] = 0;
-    
-    $self->{length}--;
+    set_length($self->{array}, @{$self->{array}} - 1);
     
     return $element;
   }
   
   method push : void ($element : float) {
-    my $length = $self->{length};
+    my $length = @{$self->{array}};
     
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    $self->{array}[$length] = $element;
-    
-    $self->{length} = $new_length;
+    set_length($self->{array}, $new_length);
+    $self->{array}[$length] = (float)$element;
   }
   
   method remove : float ($index : int) {
-    my $length = $self->{length};
+    my $length = @{$self->{array}};
     
     unless ($index >= 0) {
       die "The index \$index must be greater than or equal to 0.";
@@ -153,7 +164,7 @@ class FloatList {
     my $move_length = $length - $index - 1;
     Array->memmove_float($elements, $dist_index, $elements, $src_index, $move_length);
     
-    $self->{length}--;
+    set_length($self->{array}, @{$self->{array}} - 1);
     
     return $remove_value;
   }
@@ -170,7 +181,7 @@ class FloatList {
     unless ($remove_length >= 0) {
       die "The removal length \$remove_length must be greater than or equal to 0.";
     }
-    unless ($offset + $remove_length <= $self->{length}) {
+    unless ($offset + $remove_length <= @{$self->{array}}) {
       die "\$offset + \$removing length must be less than or equal to the length of \$list.";
     }
     
@@ -181,17 +192,17 @@ class FloatList {
     
     my $removed_elements = Array->copy_float($self->{array}, $offset, $remove_length);
     
-    my $new_length = $self->{length} - $remove_length + $replace_length;
+    my $new_length = @{$self->{array}} - $remove_length + $replace_length;
     $self->_maybe_extend($new_length);
     
-    my $move_length = $self->{length} - $offset - $remove_length;
+    my $move_length = @{$self->{array}} - $offset - $remove_length;
     Array->memmove_float($self->{array}, $offset + $replace_length, $self->{array}, $offset + $remove_length, $move_length);
+    
+    set_length($self->{array}, $new_length);
     
     if ($replace) {
       Array->memcpy_float($self->{array}, $offset, $replace, 0, $replace_length);
     }
-    
-    $self->{length} = $new_length;
     
     return $removed_elements;
   }
@@ -201,14 +212,10 @@ class FloatList {
       die "The new capacity \$new_capacity must be greater than or equal to 0.";
     }
     
-    my $capacity = $self->{capacity};
+    my $capacity = capacity $self->{array};
     
     if ($new_capacity > $capacity) {
-      my $length = $self->{length};
-      my $new_array = new float[$new_capacity];
-      Array->memcpy_float($new_array, 0, $self->{array}, 0, $length);
-      $self->{array} = $new_array;
-      $self->{capacity} = $new_capacity;
+      set_capacity($self->{array}, $new_capacity);
     }
   }
   
@@ -217,17 +224,7 @@ class FloatList {
       die "The new length \$new_length must be greater than or equal to 0.";
     }
     
-    my $length = $self->{length};
-    
-    if ($new_length > $length) {
-      $self->_maybe_extend($new_length);
-      Array->memset_float($self->{array}, 0, $length, $new_length - $length);
-    }
-    elsif ($new_length < $length) {
-      Array->memset_float($self->{array}, 0, $new_length, $length - $new_length);
-    }
-    
-    $self->{length} = $new_length;
+    set_length($self->{array}, $new_length);
   }
   
   method set : void ($index : int, $element : float) {
@@ -245,11 +242,11 @@ class FloatList {
       die "The index \$index must be less than the length of \$list.";
     }
     
-    $self->{array}[$index] = $element;
+    $self->{array}[$index] = (float)$element;
   }
   
   method shift : float () {
-    my $length = $self->{length};
+    my $length = @{$self->{array}};
     
     unless ($length > 0) {
       die "The length of the list \$list must be greater than 0.";
@@ -263,7 +260,7 @@ class FloatList {
     
     $elements->[$length - 1] = 0;
     
-    $self->{length}--;
+    set_length($self->{array}, @{$self->{array}} - 1);
     
     return $element;
   }
@@ -285,7 +282,7 @@ class FloatList {
   }
   
   method unshift : void ($element : float) {
-    my $length = $self->{length};
+    my $length = @{$self->{array}};
     
     my $new_length = $length + 1;
     
@@ -293,14 +290,13 @@ class FloatList {
     
     my $elements = $self->{array};
     
+    set_length($self->{array}, $new_length);
     Array->memmove_float($elements, 1, $elements, 0, $length);
-    
-    $elements->[0] = $element;
-    $self->{length} = $new_length;
+    $elements->[0] = (float)$element;
   }
   
   private method _maybe_extend : void ($min_capacity : int) {
-    my $capacity = $self->{capacity};
+    my $capacity = capacity $self->{array};
     
     unless ($min_capacity > $capacity) {
       return;
@@ -311,14 +307,8 @@ class FloatList {
     }
     
     my $new_capacity = $capacity * 2;
-    my $new_array = new float[$new_capacity];
     
-    my $length = $self->{length};
-    my $elements = $self->{array};
-    Array->memcpy_float($new_array, 0, $elements, 0, $length);
-    
-    $self->{array} = $new_array;
-    $self->{capacity} = $new_capacity;
+    set_capacity($self->{array}, $new_capacity);
   }
   
   method clone : FloatList () {

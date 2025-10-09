@@ -122,7 +122,7 @@ $length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head2 new_ref
 
-C<static method new_ref : L<DoubleList|SPVM::DoubleList> ($array : long[]);>
+C<static method new_ref : L<DoubleList|SPVM::DoubleList> ($array : double[]);>
 
 Creates a new L<DoubleList|SPVM::DoubleList> object, and set L</"array"> field to the array $array, and return the new object.
 
