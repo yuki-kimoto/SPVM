@@ -1,4 +1,7 @@
 0.990101 2025-10-09
+  [New Features]
+    * Add IntList#new_ref method.
+    
   [Changes with Incompatible Change Posibility]
     * IntList class use array length and array capacity instead of fields.
     

@@ -62,6 +62,19 @@ class IntList {
     return $self;
   }
   
+  static method new_ref : IntList ($array : int[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    my $self = new IntList;
+    
+    $self->{array} = $array;
+    
+    return $self;
+  }
+  
   # Instance methods
   method get : int ($index : int) {
     my $length = $self->length;
