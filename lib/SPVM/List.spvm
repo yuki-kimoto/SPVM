@@ -257,7 +257,7 @@ class List {
       die "The new capacity \$new_capacity must be greater than or equal to 0.";
     }
     
-    my $capacity = capacity $self->{array};
+    my $capacity = $self->capacity;
     
     if ($new_capacity > $capacity) {
       set_capacity($self->{array}, $new_capacity);
@@ -346,7 +346,7 @@ class List {
   }
   
   protected method _maybe_extend : void ($min_capacity : int, $just : int = 0) {
-    my $capacity = capacity $self->{array};
+    my $capacity = $self->capacity;
     
     unless ($min_capacity > $capacity) {
       return;
