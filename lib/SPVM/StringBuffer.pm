@@ -167,9 +167,13 @@ Creates a new string with the length of the buffer and copies all characters in 
 
 C<method get_string_unsafe : string ();>
 
-Gets the internally string. 
+Same as L</"get_string">, but this method is deprecated.
 
-This buffer is unsafe because it continues to point to the old string if the internal string is extended.
+=head2 get_string
+
+C<method get_string : string ();>
+
+Returns the internal L</"string">. 
 
 =head2 set_length
 

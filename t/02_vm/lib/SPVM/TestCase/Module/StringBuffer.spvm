@@ -256,6 +256,23 @@ class TestCase::Module::StringBuffer {
     return 1;
   }
   
+  static method get_string : int () {
+    
+    {
+      my $buffer = StringBuffer->new;
+      $buffer->push("abc");
+      
+      my $value = (mutable string)$buffer->get_string;
+      $value->[0] = 'd';
+      
+      unless ($buffer->to_string eq "dbc") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method replace : int () {
     {
       my $target = StringBuffer->new;

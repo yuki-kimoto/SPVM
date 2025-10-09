@@ -18,6 +18,7 @@
     * Add List#get_array method.
     * Add StringList#get_array method.
     * Add QList#get_array method.
+    * Add StringBuffer#get_array method.
     
   [Changes with Incompatible Change Posibility]
     * ByteList class use array length and array capacity instead of fields.

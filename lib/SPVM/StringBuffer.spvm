@@ -183,6 +183,10 @@ class StringBuffer {
     return $self->{string};
   }
   
+  method get_string : string () {
+    return $self->{string};
+  }
+  
   private method _maybe_extend : void ($min_capacity : int) {
     my $capacity = capacity $self->{string};
     
