@@ -10,11 +10,6 @@ class IntList {
   use Fn;
   use Array;
   
-  # Enumerations
-  private enum {
-    DEFAULT_CAPACITY = 4,
-  }
-  
   # Fields
   has capacity : virtual ro int
     get {
@@ -56,12 +51,8 @@ class IntList {
       die "The length \$length must be greater than or equal to 0.";
     }
     
-    if ($capacity < 0) {
-      $capacity = &DEFAULT_CAPACITY;
-    }
-    
     if ($length > $capacity) {
-      $capacity = $length;
+      $capacity = $length + 1;
     }
     
     $self->{array} = new int[0];
