@@ -25,6 +25,8 @@
     * FloatList class use array length and array capacity instead of fields.
     * DoubleList class use array length and array capacity instead of fields.
     * List class use array length and array capacity instead of fields.
+    * StringList class use array length and array capacity instead of fields.
+    * StringBuffer class use string length and string capacity instead of fields.
   
   [Deprecation]
     * Deprecate ByteList#get_array_unsafe method.

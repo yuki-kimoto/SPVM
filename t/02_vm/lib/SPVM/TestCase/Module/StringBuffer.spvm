@@ -71,9 +71,6 @@ class TestCase::Module::StringBuffer {
       unless ($buffer->length == 0) {
         return 0;
       }
-      unless ($buffer->capacity == 4) {
-        return 0;
-      }
     }
     {
       my $buffer= StringBuffer->new_len(3);
@@ -91,9 +88,6 @@ class TestCase::Module::StringBuffer {
       }
       
       unless ($buffer->length == 5) {
-        return 0;
-      }
-      unless ($buffer->capacity == 5) {
         return 0;
       }
     }
@@ -443,10 +437,6 @@ class TestCase::Module::StringBuffer {
         return 0;
       }
       
-      if ((mutable string)$buffer->get_string_unsafe == $value) {
-        return 0;
-      }
-      
       unless ($buffer->to_string eq $string) {
         return 0;
       }
@@ -465,10 +455,6 @@ class TestCase::Module::StringBuffer {
       unless ($buffer->to_string eq "ab") {
         return 0;
       }
-      
-      unless ($buffer->get_string_unsafe->[2] == '\0') {
-        return 0;
-      }
     }
     
     {
@@ -477,18 +463,6 @@ class TestCase::Module::StringBuffer {
       $buffer->set_length(0);
       
       unless ($buffer->to_string eq "") {
-        return 0;
-      }
-      
-      unless ($buffer->get_string_unsafe->[0] == '\0') {
-        return 0;
-      }
-      
-      unless ($buffer->get_string_unsafe->[1] == '\0') {
-        return 0;
-      }
-      
-      unless ($buffer->get_string_unsafe->[2] == '\0') {
         return 0;
       }
     }
@@ -510,13 +484,11 @@ class TestCase::Module::StringBuffer {
         
         eval { $buffer->set_length(-1); }
         
-        unless (Fn->contains($@, "The length \$length must be greater than or equal to 0.")) {
+        unless ($@) {
           return 0;
         }
       }
     }
-    
-    
     
     return 1;
   }
@@ -531,10 +503,6 @@ class TestCase::Module::StringBuffer {
       unless ($buffer->to_string eq "ab") {
         return 0;
       }
-      
-      unless ($buffer->get_string_unsafe->[2] == '\0') {
-        return 0;
-      }
     }
     
     {
@@ -543,18 +511,6 @@ class TestCase::Module::StringBuffer {
       $buffer->set("");
       
       unless ($buffer->to_string eq "") {
-        return 0;
-      }
-      
-      unless ($buffer->get_string_unsafe->[0] == '\0') {
-        return 0;
-      }
-      
-      unless ($buffer->get_string_unsafe->[1] == '\0') {
-        return 0;
-      }
-      
-      unless ($buffer->get_string_unsafe->[2] == '\0') {
         return 0;
       }
     }

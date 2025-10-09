@@ -27,10 +27,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   
   ok(SPVM::TestCase::Module::StringBuffer->push_char);
   
-  ok(SPVM::TestCase::Module::StringBuffer->replace);
-  
-  ok(SPVM::TestCase::Module::StringBuffer->splice);
-  
   ok(SPVM::TestCase::Module::StringBuffer->reserve);
   
   ok(SPVM::TestCase::Module::StringBuffer->to_string);
@@ -58,6 +54,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   ok(SPVM::TestCase::Module::StringBuffer->contains);
   
   ok(SPVM::TestCase::Module::StringBuffer->extra);
+  
+  ok(SPVM::TestCase::Module::StringBuffer->splice);
+  
+  ok(SPVM::TestCase::Module::StringBuffer->replace);
+  
 }
 
 # All object is freed

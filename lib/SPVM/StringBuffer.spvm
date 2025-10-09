@@ -10,15 +10,18 @@ class StringBuffer {
   interface Comparable;
   interface EqualityCheckable;
   
-  # Enumerations
-  private enum {
-    DEFAULT_CAPACITY = 4,
-  }
-  
   # Fields
-  has capacity : ro int;
+  has capacity : virtual ro int
+    get {
+      return capacity $self->{string};
+    }
+  ;
   
-  has length : ro int;
+  has length : virtual ro int
+    get {
+      return length $self->{string};
+    }
+  ;
   
   has string : mutable string;
   
@@ -43,22 +46,19 @@ class StringBuffer {
   
   static method new_len : StringBuffer ($length : int, $capacity : int = -1) {
     
+    my $self = new StringBuffer;
+    
     unless ($length >= 0) {
       die "The length \$length must be greater than or equal to 0.";
     }
     
-    if ($capacity < 0) {
-      $capacity = &DEFAULT_CAPACITY;
+    $self->{string} = new_string_len 0;
+    
+    if ($capacity >= 0) {
+      set_capacity($self->{string}, $capacity);
     }
     
-    if ($length > $capacity) {
-      $capacity = $length;
-    }
-    
-    my $self = new StringBuffer;
-    $self->{string} = (mutable string)new_string_len($capacity);
-    $self->{capacity} = $capacity;
-    $self->{length} = $length;
+    set_length($self->{string}, $length);
     
     return $self;
   }
@@ -83,22 +83,24 @@ class StringBuffer {
       die "The offset \$offset + the length \$length must be less than or equal to the length of the string $string.";
     }
     
-    my $buffer_length = $self->{length};
+    my $buffer_length = $self->length;
     my $new_length = $buffer_length + $length;
     $self->_maybe_extend($new_length);
     
-    Fn->memcpy($self->{string}, $buffer_length, $string, $offset, $length);
+    $self->set_length($self->length + $length);
     
-    $self->{length} += $length;
+    Fn->memcpy($self->{string}, $buffer_length, $string, $offset, $length);
   }
   
   method push_char : void ($char : int) {
-    my $length = $self->{length};
+    my $length = $self->length;
     
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
-    $self->{string}[$self->{length}++] = (byte)$char;
+    $self->set_length($self->length + 1);
+    
+    $self->{string}[$self->length - 1] = (byte)$char;
   }
   
   method replace : void ($offset : int, $remove_length : int, $replace : string = undef) {
@@ -114,7 +116,7 @@ class StringBuffer {
     unless ($remove_length >= 0) {
       die "The removal length \$remove_length must be greater than or equal to 0.";
     }
-    unless ($offset + $remove_length <= $self->{length}) {
+    unless ($offset + $remove_length <= $self->length) {
       die "\$offset + \$removing length must be less than or equal to the length of \$string buffer.";
     }
     
@@ -125,17 +127,24 @@ class StringBuffer {
     
     my $removed_chars = Fn->substr($self->{string}, $offset, $remove_length);
     
-    my $new_length = $self->{length} - $remove_length + $replace_length;
+    my $new_length = $self->length - $remove_length + $replace_length;
     $self->_maybe_extend($new_length);
     
-    my $move_length = $self->{length} - $offset - $remove_length;
+    my $length = $self->length;
+    
+    if ($new_length > $length) {
+      set_length($self->{string}, $new_length);
+    }
+    
+    my $move_length = $length - $offset - $remove_length;
+    
     Fn->memmove($self->{string}, $offset + $replace_length, $self->{string}, $offset + $remove_length, $move_length);
     
     if ($replace) {
       Fn->memcpy($self->{string}, $offset, $replace, 0, $replace_length);
     }
     
-    $self->{length} = $new_length;
+    set_length($self->{string}, $new_length);
     
     return $removed_chars;
   }
@@ -145,19 +154,15 @@ class StringBuffer {
       die "The new capacity \$new_capacity must be greater than or equal to 0.";
     }
     
-    my $capacity = $self->{capacity};
+    my $capacity = capacity $self->{string};
     
     if ($new_capacity > $capacity) {
-      my $length = $self->{length};
-      my $new_buffer = (mutable string)new_string_len $new_capacity;
-      Fn->memcpy($new_buffer, 0, $self->{string}, 0, $length);
-      $self->{string} = $new_buffer;
-      $self->{capacity} = $new_capacity;
+      set_capacity($self->{string}, $new_capacity);
     }
   }
   
   method to_string : string () {
-    my $new_string = Fn->substr($self->{string}, 0, $self->{length});
+    my $new_string = Fn->substr($self->{string}, 0, $self->length);
     return $new_string;
   }
   
@@ -166,7 +171,7 @@ class StringBuffer {
   }
   
   private method _maybe_extend : void ($min_capacity : int) {
-    my $capacity = $self->{capacity};
+    my $capacity = capacity $self->{string};
     
     unless ($min_capacity > $capacity) {
       return;
@@ -177,31 +182,13 @@ class StringBuffer {
     }
     
     my $new_capacity = $capacity * 2;
-    my $new_buffer = (mutable string)new_string_len $new_capacity;
     
-    my $length = $self->{length};
-    my $buffer = $self->{string};
-    
-    Fn->memcpy($new_buffer, 0, $buffer, 0, $length);
-    
-    $self->{string} = $new_buffer;
-    $self->{capacity} = $new_capacity;
+    set_capacity($self->{string}, $new_capacity);
   }
   
   method set_length : void ($length : int) {
     
-    unless ($length >= 0) {
-      die "The length \$length must be greater than or equal to 0.";
-    }
-    
-    $self->_maybe_extend($length);
-    
-    $self->{length} = $length;
-    
-    if ($length < $self->{capacity}) {
-      Fn->memset_char($self->{string}, '\0', $length, $self->{capacity} - $length);
-    }
-    
+    set_length($self->{string}, $length);
   }
   
   method set : void ($string : string) {
@@ -226,7 +213,7 @@ class StringBuffer {
     my $a_string = (string)undef;
     
     if ($a) {
-      $a_length = $a->{length};
+      $a_length = $a->length;
       $a_string = $a->{string};
     }
     
@@ -234,7 +221,7 @@ class StringBuffer {
     my $b_string = (string)undef;
     
     if ($b) {
-      $b_length = $b->{length};
+      $b_length = $b->length;
       $b_string = $b->{string};
     }
     
@@ -314,7 +301,7 @@ class StringBuffer {
   
   method compare_string : int ($string : string) {
     
-    my $a_length = $self->{length};
+    my $a_length = $self->length;
     my $a_string = $self->{string};
     
     my $b_length = -1;
@@ -343,7 +330,7 @@ class StringBuffer {
     
     my $string = $self->{string};
     
-    my $string_length = $self->{length};
+    my $string_length = $self->length;
     
     unless ($offset + $length <= $string_length) {
       $length = $string_length - $offset;
@@ -362,7 +349,7 @@ class StringBuffer {
     
     my $string = $self->{string};
     
-    my $string_length = $self->{length};
+    my $string_length = $self->length;
     
     unless ($begin >= 0 && $begin <= $string_length) {
       die "The begin \$begin must be between 0 and the length of string field.";
