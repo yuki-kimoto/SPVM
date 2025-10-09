@@ -847,7 +847,7 @@ class TestCase::Module::StringList {
         return 0;
       }
       
-      unless (@$array == 5) {
+      unless (@$array == 3) {
         return 0;
       }
       

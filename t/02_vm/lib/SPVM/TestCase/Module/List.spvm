@@ -68,10 +68,6 @@ class TestCase::Module::List {
       unless ($list->length == 5) {
         return 0;
       }
-      
-      unless ($list->capacity == 5) {
-        return 0;
-      }
     }
     
     # new with Int[]
@@ -138,6 +134,38 @@ class TestCase::Module::List {
       unless (Fn->contains($@, "The length \$length must be greater than or equal to 0")) {
         return 0;
       }
+    }
+    
+    return 1;
+  }
+  
+  static method new_ref : int () {
+    # new with array
+    { 
+      my $array = [(string)3, 5, 7];
+      my $list = List->new_ref($array);
+      
+      unless ($list->get(0)->(string) eq "3") {
+        return 0;
+      }
+      
+      unless ($list->get(1)->(string) eq "5") {
+        return 0;
+      }
+      
+      unless ($list->get(2)->(string) eq "7") {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get_array_unsafe == $array) {
+        return 0;
+      }
+      
     }
     
     return 1;
@@ -542,6 +570,7 @@ class TestCase::Module::List {
         return 0;
       }
     }
+    
     {
       my $list = List->new([(object)1, 2, 3]);
       my $array = $list->to_array;
@@ -1090,7 +1119,7 @@ class TestCase::Module::List {
         return 0;
       }
       
-      unless (@$array == 5) {
+      unless (@$array == 3) {
         return 0;
       }
       

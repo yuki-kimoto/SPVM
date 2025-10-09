@@ -82,13 +82,13 @@ The elements in the range that is greater than or equal to L</"length"> field an
 
 =head2 capacity
 
-C<has capacity : ro int;>
+C<has capacity : virtual ro int;>
 
 The capacity. This is the length of the internally reserved elements to extend the length of the list.
 
 =head2 length
 
-C<has length : ro int;>
+C<has length : virtual ro int;>
 
 The length of the list.
 
@@ -130,6 +130,16 @@ Examples:
 
   # Create a Int list with length
   my $list = List->new_len(new Int[0], 3);
+
+=head2 new_ref
+
+C<static method new_ref : L<List|SPVM::List> ($array : object[]);>
+
+Creates a new L<List|SPVM::List> object, and set L</"array"> field to the array $array, and return the new object.
+
+Exceptions:
+
+The array $array must be defined. Otherwise an exception is thrown.
 
 =head1 Instance Methods
 

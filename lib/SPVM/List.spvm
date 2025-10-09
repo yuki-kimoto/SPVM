@@ -10,15 +10,18 @@ class List {
   use Fn;
   use Array;
   
-  # Enumerations
-  private enum {
-    DEFAULT_CAPACITY = 4,
-  }
-  
   # Fields
-  has capacity : ro int;
+  has capacity : virtual ro int
+    get {
+      return capacity $self->{array};
+    }
+  ;
   
-  has length : ro int;
+  has length : virtual ro int
+    get {
+      return @{$self->{array}};
+    }
+  ;
   
   has array : object[];
   
@@ -58,6 +61,19 @@ class List {
     return $self;
   }
   
+  static method new_ref : List ($array : object[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    my $self = new List;
+    
+    $self->{array} = $array;
+    
+    return $self;
+  }
+  
   protected method init_len : void ($proto_array : object[], $length : int, $capacity : int = -1) {
     
     unless ($proto_array) {
@@ -68,17 +84,13 @@ class List {
       die "The length \$length must be greater than or equal to 0.";
     }
     
-    if ($capacity < 0) {
-      $capacity = &DEFAULT_CAPACITY;
+    $self->{array} = Array->new_proto($proto_array, 0);
+    
+    if ($capacity >= 0) {
+      set_capacity($self->{array}, $capacity);
     }
     
-    if ($length > $capacity) {
-      $capacity = $length;
-    }
-    
-    $self->{capacity} = $capacity;
-    $self->{length} = $length;
-    $self->{array} = Array->new_proto($proto_array, $capacity);
+    set_length($self->{array}, $length);
   }
   
   # Instance methods
@@ -97,15 +109,13 @@ class List {
       die "The index \$index must be less than the length of \$list.";
     }
     
-    my $capacity = $self->{capacity};
-    
     my $element = $self->{array}[$index];
     
     return $element;
   }
   
   method insert : void ($index : int, $element : object) {
-    my $length = $self->{length};
+    my $length = @{$self->{array}};
     
     unless ($index >= 0) {
       die "The index \$index must be greater than or equal to 0.";
@@ -140,16 +150,14 @@ class List {
     
     $self->set($index, undef);
     
-    --$self->{length};
+    set_length($self->{array}, @{$self->{array}} - 1);
     
     return $ret;
   }
   
   method push : void ($element : object) {
     
-    my $length = $self->{length};
-    
-    my $capacity = $self->{capacity};
+    my $length = @{$self->{array}};
     
     my $new_length = $length + 1;
     
@@ -157,8 +165,7 @@ class List {
     
     my $index = $length;
     
-    $self->{length} = $new_length;
-    
+    set_length($self->{array}, $new_length);
     $self->set($index, $element);
   }
   
@@ -168,7 +175,7 @@ class List {
       die "The index \$index must be greater than or equal to 0.";
     }
     
-    my $length = $self->{length};
+    my $length = @{$self->{array}};
     
     unless ($index < $length) {
       die "The index \$index must be less than the length of \$list.";
@@ -194,7 +201,7 @@ class List {
     unless ($remove_length >= 0) {
       die "The removal length \$remove_length must be greater than or equal to 0.";
     }
-    unless ($offset + $remove_length <= $self->{length}) {
+    unless ($offset + $remove_length <= @{$self->{array}}) {
       die "The offset \$offset + the removal length \$remove_length must be less than or equal to the length of this list.";
     }
     
@@ -205,7 +212,7 @@ class List {
     
     my $removed_elements = Array->copy_object_address($self->{array}, $offset, $remove_length);
     
-    my $new_length = $self->{length} - $remove_length + $replace_length;
+    my $new_length = @{$self->{array}} - $remove_length + $replace_length;
     $self->_maybe_extend($new_length);
     
     my $diff_length = $replace_length - $remove_length;
@@ -214,9 +221,9 @@ class List {
       # Do nothing
     }
     elsif ($diff_length > 0) {
-      my $move_length = $self->{length} - $offset - $remove_length;
+      my $move_length = @{$self->{array}} - $offset - $remove_length;
       
-      $self->{length} += $diff_length;
+      set_length($self->{array}, @{$self->{array}} + $diff_length);
       
       for (my $i = $move_length - 1; $i >= 0; $i--) {
         my $element = $self->get($offset + $remove_length + $i);
@@ -224,7 +231,7 @@ class List {
       }
     }
     elsif ($diff_length < 0) {
-      my $move_length = $self->{length} - $offset - $remove_length;
+      my $move_length = @{$self->{array}} - $offset - $remove_length;
       
       for (my $i = 0; $i < $move_length; $i++) {
         my $element = $self->get($offset + $remove_length + $i);
@@ -233,7 +240,7 @@ class List {
       }
     }
     
-    $self->{length} = $new_length;
+    set_length($self->{array}, $new_length);
     
     if ($replace) {
       for (my $i = 0; $i < $replace_length; $i++) {
@@ -246,8 +253,15 @@ class List {
   }
   
   method reserve : void ($new_capacity : int) {
-    my $just = 1;
-    $self->_maybe_extend($new_capacity, $just);
+    unless ($new_capacity >= 0) {
+      die "The new capacity \$new_capacity must be greater than or equal to 0.";
+    }
+    
+    my $capacity = capacity $self->{array};
+    
+    if ($new_capacity > $capacity) {
+      set_capacity($self->{array}, $new_capacity);
+    }
   }
   
   method resize : void ($new_length : int) {
@@ -255,8 +269,7 @@ class List {
       die "The new length \$new_length must be greater than or equal to 0.";
     }
     
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
+    my $length = @{$self->{array}};
     
     if ($new_length > $length) {
       $self->_maybe_extend($new_length);
@@ -266,7 +279,7 @@ class List {
         $self->set($index, undef);
       }
     }
-    $self->{length} = $new_length;
+    set_length($self->{array}, $new_length);
   }
   
   method set : void ($index : int, $element : object) {
@@ -284,13 +297,11 @@ class List {
       die "The index \$index must be less than the length of \$list.";
     }
     
-    my $capacity = $self->{capacity};
-    
     $self->{array}[$index] = $element;
   }
   
   method shift : element () {
-    my $length = $self->{length};
+    my $length = @{$self->{array}};
     
     unless ($length > 0) {
       die "The length of the list \$list must be greater than 0.";
@@ -304,17 +315,15 @@ class List {
     
     $elements->[$length - 1] = undef;
     
-    $self->{length}--;
+    set_length($self->{array}, @{$self->{array}} - 1);
     
     return $element;
   }
   
   method to_array : object[] () {
-    my $length = $self->{length};
+    my $length = @{$self->{array}};
     
     my $new_array = Array->new_proto($self->{array}, $length);
-    
-    my $capacity = $self->{capacity};
     
     my $array = $self->{array};
     
@@ -324,59 +333,32 @@ class List {
   }
   
   method unshift : void ($element : object) {
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
+    my $length = @{$self->{array}};
     
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
     
     my $elements = $self->{array};
     
+    set_length($self->{array}, $new_length);
     Array->memmove_object_address($elements, 1, $elements, 0, $length);
-    
     $elements->[0] = $element;
-    $self->{length} = $new_length;
   }
   
-  protected method _maybe_extend : void ($new_capacity_at_least : int, $just : int = 0) {
-    my $capacity = $self->{capacity};
+  protected method _maybe_extend : void ($min_capacity : int, $just : int = 0) {
+    my $capacity = capacity $self->{array};
     
-    unless ($new_capacity_at_least > $capacity) {
+    unless ($min_capacity > $capacity) {
       return;
     }
     
-    my $new_capacity = 0;
-    
-    if ($just) {
-      $new_capacity = $new_capacity_at_least;
-    }
-    else {
-      my $base_capacity = 0;
-      if ($capacity < $new_capacity_at_least) {
-        $base_capacity = $new_capacity_at_least;
-      }
-      else {
-        $base_capacity = $capacity;
-      }
-      
-      $new_capacity = $base_capacity * 2;
+    if ($capacity < $min_capacity) {
+      $capacity = $min_capacity;
     }
     
-    my $new_array = Array->new_proto($self->{array}, $new_capacity);
+    my $new_capacity = $capacity * 2;
     
-    my $length = $self->{length};
-    my $array = $self->{array};
-    
-    unless ($capacity == @$array) {
-      die "[Unexpected Error]The capacity field must be equal to the length of the array field.";
-    }
-    
-    Array->memcpy_object_address($new_array, 0, $array, 0, $capacity);
-    
-    Array->memcpy_object_address($new_array, $capacity, $array, 0, 0);
-    
-    $self->{array} = $new_array;
-    $self->{capacity} = $new_capacity;
+    set_capacity($self->{array}, $new_capacity);
   }
   
   method clone : List () {
