@@ -184,6 +184,38 @@ class TestCase::Module::DoubleList {
     return 1;
   }
   
+  static method new_ref : int () {
+    # new with array
+    { 
+      my $array = [(double)3, 5, Fn->DOUBLE_MAX()];
+      my $list = DoubleList->new_ref($array);
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(1) == 5) {
+        return 0;
+      }
+      
+      unless ($list->get(2) == Fn->DOUBLE_MAX()) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get_array_unsafe == $array) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
   # Instance methods
   static method get : int () {
     {

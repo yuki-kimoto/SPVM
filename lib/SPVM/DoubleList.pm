@@ -73,13 +73,13 @@ The elements in the range that is greater than or equal to L</"length"> field an
 
 =head2 capacity
 
- C<has capacity : ro int;>
+ C<has capacity : virtual ro int;>
 
 The capacity. This is the length of the internally reserved elements to extend the length of the list.
 
 =head2 length
 
-C<has length : ro int;>
+C<has length : virtual ro int;>
 
 The length of the list.
 
@@ -110,7 +110,7 @@ Examples:
 
 C<static method new_len : L<DoubleList|SPVM::DoubleList> ($length : int, $capacity : int = -1);>
 
-Creates a new C<DoubleList> object with $length and $capacity.
+Creates a new L<DoubleList|SPVM::DoubleList> object with $length and $capacity.
 
 If $capacity is less than 0, the capacity is set to the default value.
 
@@ -119,6 +119,16 @@ If $length is greater than $capacity, $capacity is set to $length.
 Exceptions:
 
 $length must be greater than or equal to 0. Otherwise an exception is thrown.
+
+=head2 new_ref
+
+C<static method new_ref : L<DoubleList|SPVM::DoubleList> ($array : long[]);>
+
+Creates a new L<DoubleList|SPVM::DoubleList> object, and set L</"array"> field to the array $array, and return the new object.
+
+Exceptions:
+
+The array $array must be defined. Otherwise an exception is thrown.
 
 =head1 Instance Methods
 
