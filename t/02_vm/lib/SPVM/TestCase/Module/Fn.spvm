@@ -14,7 +14,7 @@ class TestCase::Module::Fn {
   
   static method BYTE_MAX : int () {
     
-    unless (Fn->BYTE_MAX isa int) {
+    unless (Fn->BYTE_MAX is_compile_type byte) {
       return 0;
     }
     unless (Fn->BYTE_MAX == Fn->INT8_MAX) {
@@ -24,7 +24,7 @@ class TestCase::Module::Fn {
   }
   
   static method BYTE_MIN : int () {
-    unless (Fn->BYTE_MIN isa int) {
+    unless (Fn->BYTE_MIN is_compile_type byte) {
       return 0;
     }
     unless (Fn->BYTE_MIN == Fn->INT8_MIN) {
@@ -168,7 +168,7 @@ class TestCase::Module::Fn {
   }
   
   static method INT8_MIN : int () {
-    unless (Fn->INT8_MIN  isa int) {
+    unless (Fn->INT8_MIN is_compile_type byte) {
       return 0;
     }
     unless (Fn->INT8_MIN == -128) {
@@ -179,7 +179,7 @@ class TestCase::Module::Fn {
   }
   
   static method INT8_MAX : int () {
-    unless (Fn->INT8_MAX  isa int) {
+    unless (Fn->INT8_MAX is_compile_type byte) {
       return 0;
     }
     
@@ -296,7 +296,7 @@ class TestCase::Module::Fn {
   }
   
   static method UINT8_MAX : int () {
-    unless (Fn->UINT8_MAX isa int) {
+    unless (Fn->UINT8_MAX is_compile_type byte) {
       return 0;
     }
     
@@ -308,7 +308,7 @@ class TestCase::Module::Fn {
   }
   
   static method UBYTE_MAX : int () {
-    unless (Fn->UBYTE_MAX isa int) {
+    unless (Fn->UBYTE_MAX is_compile_type byte) {
       return 0;
     }
     unless (Fn->UBYTE_MAX == Fn->UINT8_MAX) {

@@ -41,13 +41,13 @@ The Fn class of L<SPVM> has methods for numbers, strings, general utilities.
 
 =head2 BYTE_MAX
 
-C<static method BYTE_MAX : int ();>
+C<static method BYTE_MAX : byte ();>
 
 The same as L</"INT8_MAX">.
 
 =head2 BYTE_MIN
 
-C<static method BYTE_MIN : int ();>
+C<static method BYTE_MIN : byte ();>
 
 The same as L</"INT8_MIN">.
 
@@ -137,13 +137,13 @@ Returns -9223372036854775808. The minimal value of the signed 64bit integer.
 
 =head2 INT8_MAX
 
-C<static method INT8_MAX : int ();>
+C<static method INT8_MAX : byte ();>
 
 Returns 127. The maximum value of the signed 8bit integer.
 
 =head2 INT8_MIN
 
-C<static method INT8_MIN : int ();>
+C<static method INT8_MIN : byte ();>
 
 Returns -128. The minimal value of the signed 8bit integer.
 
@@ -191,7 +191,7 @@ The same as L</"INT16_MIN">.
 
 =head2 UBYTE_MAX
 
-C<static method UBYTE_MAX : int ();>
+C<static method UBYTE_MAX : byte ();>
 
 The same as L</"UINT8_MAX">.
 
@@ -215,7 +215,7 @@ Returns -1. This represents C<0xFFFFFFFFFFFFFFFF> in the unsigned 64bit integer 
 
 =head2 UINT8_MAX
 
-C<static method UINT8_MAX : int ();>
+C<static method UINT8_MAX : byte ();>
 
 Returns -1. This represents C<0xFF> in the unsigned 8bit integer in 2's complement.
 

@@ -1,3 +1,12 @@
+0.990102 2025-10-10
+  [Incompatible Changes]
+    * BYTE_MAX returns byte type instead of int.
+    * BYTE_MAX returns byte type instead of int.
+    * UBYTE_MAX returns byte type instead of int.
+    * INT8_MAX returns byte type instead of int.
+    * INT8_MAX returns byte type instead of int.
+    * UINT8_MAX returns byte type instead of int.
+    
 0.990101 2025-10-09
   [New Features]
     * Add ByteList#new_ref method.
