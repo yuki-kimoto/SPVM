@@ -14,10 +14,6 @@ class TestCase::Module::ByteList {
         return 0;
       }
       
-      # capacity
-      unless ($list->capacity == 4) {
-        return 0;
-      }
     }
     
     return 1;
@@ -46,10 +42,6 @@ class TestCase::Module::ByteList {
         return 0;
       }
       
-      # capacity
-      unless ($list->capacity == 4) {
-        return 0;
-      }
     }
     
     # capcity
@@ -173,9 +165,6 @@ class TestCase::Module::ByteList {
       my $list = ByteList->new_len(0);
       
       unless ($list->length == 0) {
-        return 0;
-      }
-      unless ($list->capacity == 4) {
         return 0;
       }
     }

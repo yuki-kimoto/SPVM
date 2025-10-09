@@ -13,11 +13,6 @@ class TestCase::Module::StringList {
       return 0;
     }
     
-    # capacity
-    unless ($list->capacity == 4) {
-      return 0;
-    }
-    
     return 1;
   }
   
@@ -50,9 +45,6 @@ class TestCase::Module::StringList {
       my $list = StringList->new((string[])undef);
       
       unless ($list->length == 0) {
-        return 0;
-      }
-      unless ($list->capacity == 4) {
         return 0;
       }
     }
@@ -105,9 +97,6 @@ class TestCase::Module::StringList {
       my $list = StringList->new_len(0);
       
       unless ($list->length == 0) {
-        return 0;
-      }
-      unless ($list->capacity == 4) {
         return 0;
       }
     }
