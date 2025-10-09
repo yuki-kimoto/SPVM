@@ -17,6 +17,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   ok(SPVM::TestCase::Module::ByteList->fields);
   ok(SPVM::TestCase::Module::ByteList->new);
   ok(SPVM::TestCase::Module::ByteList->new_len);
+  ok(SPVM::TestCase::Module::ByteList->new_ref);
   ok(SPVM::TestCase::Module::ByteList->get);
   ok(SPVM::TestCase::Module::ByteList->insert);
   ok(SPVM::TestCase::Module::ByteList->pop);
