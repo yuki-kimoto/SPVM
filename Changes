@@ -40,6 +40,7 @@
     * Deprecate List#get_array_unsafe method.
     * Deprecate StringList#get_array_unsafe method.
     * Deprecate QList#get_array_unsafe method.
+    * Deprecate StringBuffer#get_array_unsafe method.
     
 0.990100 2025-10-09
   [Changes]
