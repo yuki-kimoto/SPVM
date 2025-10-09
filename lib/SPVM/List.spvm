@@ -115,7 +115,7 @@ class List {
   }
   
   method insert : void ($index : int, $element : object) {
-    my $length = @{$self->{array}};
+    my $length = $self->length;
     
     unless ($index >= 0) {
       die "The index \$index must be greater than or equal to 0.";
@@ -150,14 +150,14 @@ class List {
     
     $self->set($index, undef);
     
-    set_length($self->{array}, @{$self->{array}} - 1);
+    set_length($self->{array}, $self->length - 1);
     
     return $ret;
   }
   
   method push : void ($element : object) {
     
-    my $length = @{$self->{array}};
+    my $length = $self->length;
     
     my $new_length = $length + 1;
     
@@ -175,7 +175,7 @@ class List {
       die "The index \$index must be greater than or equal to 0.";
     }
     
-    my $length = @{$self->{array}};
+    my $length = $self->length;
     
     unless ($index < $length) {
       die "The index \$index must be less than the length of \$list.";
@@ -201,7 +201,7 @@ class List {
     unless ($remove_length >= 0) {
       die "The removal length \$remove_length must be greater than or equal to 0.";
     }
-    unless ($offset + $remove_length <= @{$self->{array}}) {
+    unless ($offset + $remove_length <= $self->length) {
       die "The offset \$offset + the removal length \$remove_length must be less than or equal to the length of this list.";
     }
     
@@ -212,7 +212,7 @@ class List {
     
     my $removed_elements = Array->copy_object_address($self->{array}, $offset, $remove_length);
     
-    my $new_length = @{$self->{array}} - $remove_length + $replace_length;
+    my $new_length = $self->length - $remove_length + $replace_length;
     $self->_maybe_extend($new_length);
     
     my $diff_length = $replace_length - $remove_length;
@@ -221,9 +221,9 @@ class List {
       # Do nothing
     }
     elsif ($diff_length > 0) {
-      my $move_length = @{$self->{array}} - $offset - $remove_length;
+      my $move_length = $self->length - $offset - $remove_length;
       
-      set_length($self->{array}, @{$self->{array}} + $diff_length);
+      set_length($self->{array}, $self->length + $diff_length);
       
       for (my $i = $move_length - 1; $i >= 0; $i--) {
         my $element = $self->get($offset + $remove_length + $i);
@@ -231,7 +231,7 @@ class List {
       }
     }
     elsif ($diff_length < 0) {
-      my $move_length = @{$self->{array}} - $offset - $remove_length;
+      my $move_length = $self->length - $offset - $remove_length;
       
       for (my $i = 0; $i < $move_length; $i++) {
         my $element = $self->get($offset + $remove_length + $i);
@@ -269,7 +269,7 @@ class List {
       die "The new length \$new_length must be greater than or equal to 0.";
     }
     
-    my $length = @{$self->{array}};
+    my $length = $self->length;
     
     if ($new_length > $length) {
       $self->_maybe_extend($new_length);
@@ -301,7 +301,7 @@ class List {
   }
   
   method shift : element () {
-    my $length = @{$self->{array}};
+    my $length = $self->length;
     
     unless ($length > 0) {
       die "The length of the list \$list must be greater than 0.";
@@ -315,13 +315,13 @@ class List {
     
     $elements->[$length - 1] = undef;
     
-    set_length($self->{array}, @{$self->{array}} - 1);
+    set_length($self->{array}, $self->length - 1);
     
     return $element;
   }
   
   method to_array : object[] () {
-    my $length = @{$self->{array}};
+    my $length = $self->length;
     
     my $new_array = Array->new_proto($self->{array}, $length);
     
@@ -333,7 +333,7 @@ class List {
   }
   
   method unshift : void ($element : object) {
-    my $length = @{$self->{array}};
+    my $length = $self->length;
     
     my $new_length = $length + 1;
     $self->_maybe_extend($new_length);
