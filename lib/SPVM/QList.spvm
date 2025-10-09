@@ -7,10 +7,12 @@ class QList extends List {
   use Fn;
   use Array;
   
-  # Enumerations
-  private enum {
-    DEFAULT_CAPACITY = 4,
-  }
+  # Fields
+  has capacity : ro int;
+  
+  has length : ro int;
+  
+  has array : object[];
   
   # Undocumented Fields
   has offset : int;
@@ -220,14 +222,6 @@ class QList extends List {
     die "Cannot get the internal array in QList object.";
   }
   
-  # Fields
-  has capacity : ro int;
-  
-  has length : ro int;
-  
-  has array : object[];
-  
-  # Class methods
   protected method init_len : void ($proto_array : object[], $length : int, $capacity : int = -1) {
     
     unless ($proto_array) {
