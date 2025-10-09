@@ -122,9 +122,9 @@ $length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head2 new_ref
 
-C<static method new_ref : IntList ($array : byte[]);>
+C<static method new_ref : L<ByteList|SPVM::> ($array : byte[]);>
 
-Creates a new C<IntList> object, and set L</"array"> field to the array $array, and return the new object.
+Creates a new L<ByteList|SPVM::> object, and set L</"array"> field to the array $array, and return the new object.
 
 Exceptions:
 

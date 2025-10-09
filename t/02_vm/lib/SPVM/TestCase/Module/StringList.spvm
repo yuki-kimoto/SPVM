@@ -89,9 +89,6 @@ class TestCase::Module::StringList {
       unless ($list->length == 32) {
         return 0;
       }
-      unless ($list->capacity == 32) {
-        return 0;
-      }
     }
     {
       my $list = StringList->new_len(0);

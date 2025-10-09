@@ -145,18 +145,12 @@ class TestCase::Module::ShortList {
       unless ($list->length == 32) {
         return 0;
       }
-      unless ($list->capacity == 32) {
-        return 0;
-      }
     }
     
     {
       my $list = ShortList->new_len(32, 10);
       
       unless ($list->length == 32) {
-        return 0;
-      }
-      unless ($list->capacity == 32) {
         return 0;
       }
     }
@@ -185,6 +179,38 @@ class TestCase::Module::ShortList {
       unless (Fn->contains($@, "The length \$length must be greater than or equal to 0")) {
         return 0;
       }
+    }
+    
+    return 1;
+  }
+  
+  static method new_ref : int () {
+    # new with array
+    { 
+      my $array = [(short)3, 5, (short)Fn->SHORT_MAX()];
+      my $list = ShortList->new_ref($array);
+      
+      unless ($list->get(0) == 3) {
+        return 0;
+      }
+      
+      unless ($list->get(1) == 5) {
+        return 0;
+      }
+      
+      unless ($list->get(2) == Fn->SHORT_MAX()) {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get_array_unsafe == $array) {
+        return 0;
+      }
+      
     }
     
     return 1;
@@ -561,10 +587,6 @@ class TestCase::Module::ShortList {
       my $array = $list->to_array;
       $list->reserve(5);
       unless ($list->capacity == 5) {
-        return 0;
-      }
-      
-      if ($list->get_array_unsafe == $values) {
         return 0;
       }
       

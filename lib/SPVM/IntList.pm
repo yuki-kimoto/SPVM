@@ -110,7 +110,7 @@ Examples:
 
 C<static method new_len : L<IntList|SPVM::IntList> ($length : int, $capacity : int = -1);>
 
-Creates a new C<IntList> object with $length and $capacity.
+Creates a new L<IntList|SPVM::IntList> object with $length and $capacity.
 
 If $capacity is less than 0, the capacity is set to the default value.
 
@@ -122,9 +122,9 @@ $length must be greater than or equal to 0.
 
 =head2 new_ref
 
-C<static method new_ref : IntList ($array : int[]);>
+C<static method new_ref : L<IntList|SPVM::IntList> ($array : int[]);>
 
-Creates a new C<IntList> object, and set L</"array"> field to the array $array, and return the new object.
+Creates a new L<IntList|SPVM::IntList> object, and set L</"array"> field to the array $array, and return the new object.
 
 Exceptions:
 

@@ -120,6 +120,16 @@ Exceptions:
 
 $length must be greater than or equal to 0. Otherwise an exception is thrown.
 
+=head2 new_ref
+
+C<static method new_ref : L<ShortList|SPVM::ShortList> ($array : short[]);>
+
+Creates a new L<ShortList|SPVM::ShortList> object, and set L</"array"> field to the array $array, and return the new object.
+
+Exceptions:
+
+The array $array must be defined. Otherwise an exception is thrown.
+
 =head1 Instance Methods
 
 =head2 get

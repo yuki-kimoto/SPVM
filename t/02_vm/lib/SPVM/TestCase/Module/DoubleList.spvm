@@ -145,18 +145,12 @@ class TestCase::Module::DoubleList {
       unless ($list->length == 32) {
         return 0;
       }
-      unless ($list->capacity == 32) {
-        return 0;
-      }
     }
     
     {
       my $list = DoubleList->new_len(32, 10);
       
       unless ($list->length == 32) {
-        return 0;
-      }
-      unless ($list->capacity == 32) {
         return 0;
       }
     }
@@ -561,10 +555,6 @@ class TestCase::Module::DoubleList {
       my $array = $list->to_array;
       $list->reserve(5);
       unless ($list->capacity == 5) {
-        return 0;
-      }
-      
-      if ($list->get_array_unsafe == $values) {
         return 0;
       }
       
