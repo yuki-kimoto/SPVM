@@ -1,3 +1,7 @@
+0.990101 2025-10-09
+  [Changes with Incompatible Change Posibility]
+    * IntList class use array length and array capacity instead of fields.
+    
 0.990100 2025-10-09
   [Changes]
     * Allow same named local variable declartions as arguments.

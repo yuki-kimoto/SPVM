@@ -73,13 +73,13 @@ The elements in the range that is greater than or equal to L</"length"> field an
 
 =head2 capacity
 
-C<has capacity : ro int;>
+C<has capacity : virtual ro int;>
 
 The capacity. This is the length of the internally reserved elements to extend the length of the list.
 
 =head2 length
 
-C<has length : ro int;>
+C<has length : virtual ro int;>
 
 The length of the list.
 
