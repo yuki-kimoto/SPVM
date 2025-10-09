@@ -303,30 +303,6 @@ class QList extends List {
     $self->set($index, $element);
   }
   
-  method remove : element ($index : int) {
-    
-    unless ($index >= 0) {
-      die "The index \$index must be greater than or equal to 0.";
-    }
-    
-    my $length = $self->{length};
-    
-    unless ($index < $length) {
-      die "The index \$index must be less than the length of \$list.";
-    }
-    
-    my $remove_value = $self->get($index);
-    
-    my $remove_length = 1;
-    $self->replace($index, $remove_length, undef);
-    
-    return $remove_value;
-  }
-  
-  method replace : void ($offset : int, $remove_length : int, $replace : object[] = undef) {
-    $self->splice($offset, $remove_length, $replace);
-  }
-  
   method splice : object[] ($offset : int, $remove_length : int, $replace : object[] = undef) {
     unless ($offset >= 0) {
       die "The offset \$offset must be greater than or equal to 0.";
@@ -408,31 +384,6 @@ class QList extends List {
       }
     }
     $self->{length} = $new_length;
-  }
-  
-  method push_ : void ($elements : object[]) {
-    
-    unless ($elements) {
-      die "The elements \$elements must be defined.";
-    }
-    
-    for my $element (@$elements) {
-      $self->push($element);
-    }
-    
-  }
-  
-  method unshift_ : void ($elements : object[]) {
-    
-    unless ($elements) {
-      die "The elements \$elements must be defined.";
-    }
-    
-    for (my $i = @$elements - 1; $i >= 0; $i--) {
-      my $element = $elements->[$i];
-      $self->unshift($element);
-    }
-    
   }
   
 }
