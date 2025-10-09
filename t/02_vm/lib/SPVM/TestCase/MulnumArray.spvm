@@ -19,7 +19,7 @@ class TestCase::MulnumArray {
   static method mulnum_array_max_fields_byte : int () {
     my $mat = new TestCase::Matrix4_16b[3];
     
-    $mat->[0]{x11} = (byte)Fn->INT8_MIN;
+    $mat->[0]{x11} = Fn->INT8_MIN;
     $mat->[0]{x21} = 21;
     $mat->[0]{x31} = 31;
     $mat->[0]{x41} = 41;
@@ -134,7 +134,7 @@ class TestCase::MulnumArray {
   static method mulnum_array_max_fields_short : int () {
     my $mat = new TestCase::Matrix4_16s[3];
     
-    $mat->[0]{x11} = (short)Fn->INT16_MIN;
+    $mat->[0]{x11} = Fn->INT16_MIN;
     $mat->[0]{x21} = 21;
     $mat->[0]{x31} = 31;
     $mat->[0]{x41} = 41;
@@ -713,7 +713,7 @@ class TestCase::MulnumArray {
   
   static method array_byte : int () {
     my $nums1 = new TestCase::Point_3b[10];
-    $nums1->[9]{x} = (byte)Fn->INT8_MIN;
+    $nums1->[9]{x} = Fn->INT8_MIN;
     $nums1->[9]{y} = (byte)(Fn->INT8_MIN + 1);
     $nums1->[9]{z} = (byte)(Fn->INT8_MIN + 2);
     
@@ -734,7 +734,7 @@ class TestCase::MulnumArray {
   static method array_short : int () {
     
     my $nums1 = new TestCase::Point_3s[10];
-    $nums1->[9]{x} = (short)Fn->INT16_MIN;
+    $nums1->[9]{x} = Fn->INT16_MIN;
     $nums1->[9]{y} = (short)(Fn->INT16_MIN + 1);
     $nums1->[9]{z} = (short)(Fn->INT16_MIN + 2);
     
@@ -834,7 +834,7 @@ class TestCase::MulnumArray {
   
   static method array_field_byte : int () {
     my $nums = new TestCase::Point_3b[10];
-    $nums->[9]{x} = (byte)Fn->INT8_MIN;
+    $nums->[9]{x} = Fn->INT8_MIN;
     $nums->[9]{y} = (byte)(Fn->INT8_MIN + 1);
     $nums->[9]{z} = (byte)(Fn->INT8_MIN + 2);
     
@@ -852,7 +852,7 @@ class TestCase::MulnumArray {
   static method array_field_short : int () {
     
     my $nums = new TestCase::Point_3s[10];
-    $nums->[9]{x} = (short)Fn->INT16_MIN;
+    $nums->[9]{x} = Fn->INT16_MIN;
     $nums->[9]{y} = (short)(Fn->INT16_MIN + 1);
     $nums->[9]{z} = (short)(Fn->INT16_MIN + 2);
     
@@ -937,7 +937,7 @@ class TestCase::MulnumArray {
 
   static method move_byte : int () {
     my $nums1 = new TestCase::Point_3b[10];
-    $nums1->[9]{x} = (byte)Fn->INT8_MIN;
+    $nums1->[9]{x} = Fn->INT8_MIN;
     $nums1->[9]{y} = (byte)(Fn->INT8_MIN + 1);
     $nums1->[9]{z} = (byte)(Fn->INT8_MIN + 2);
     
@@ -957,7 +957,7 @@ class TestCase::MulnumArray {
   static method move_short : int () {
     
     my $nums1 = new TestCase::Point_3s[10];
-    $nums1->[9]{x} = (short)Fn->INT16_MIN;
+    $nums1->[9]{x} = Fn->INT16_MIN;
     $nums1->[9]{y} = (short)(Fn->INT16_MIN + 1);
     $nums1->[9]{z} = (short)(Fn->INT16_MIN + 2);
     

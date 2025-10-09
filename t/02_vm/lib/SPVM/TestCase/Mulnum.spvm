@@ -13,7 +13,7 @@ class TestCase::Mulnum {
     my $mat2 : TestCase::Matrix4_16b;
     my $mat3 : TestCase::Matrix4_16b;
     
-    $mat1->{x11} = (byte)Fn->INT8_MIN;
+    $mat1->{x11} = Fn->INT8_MIN;
     $mat1->{x21} = 21;
     $mat1->{x31} = 31;
     $mat1->{x41} = 41;
@@ -130,7 +130,7 @@ class TestCase::Mulnum {
     my $mat2 : TestCase::Matrix4_16s;
     my $mat3 : TestCase::Matrix4_16s;
     
-    $mat1->{x11} = (short)Fn->INT16_MIN;
+    $mat1->{x11} = Fn->INT16_MIN;
     $mat1->{x21} = 21;
     $mat1->{x31} = 31;
     $mat1->{x41} = 41;

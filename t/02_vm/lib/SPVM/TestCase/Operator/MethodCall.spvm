@@ -220,7 +220,7 @@ class TestCase::Operator::MethodCall {
   
   static method return_mulnum_byte_method : TestCase::Point_3b () {
     my $value : TestCase::Point_3b;
-    $value->{x} = (byte)Fn->INT8_MIN;
+    $value->{x} = Fn->INT8_MIN;
     $value->{y} = 1;
     $value->{z} = 2;
     
@@ -243,7 +243,7 @@ class TestCase::Operator::MethodCall {
   
   static method return_mulnum_short_method : TestCase::Point_3s () {
     my $value : TestCase::Point_3s;
-    $value->{x} = (short)Fn->INT16_MIN;
+    $value->{x} = Fn->INT16_MIN;
     $value->{y} = 1;
     $value->{z} = 2;
     
@@ -1669,7 +1669,7 @@ class TestCase::Operator::MethodCall {
 
   static method test_arg_byte : int () {
     
-    my $value = (byte)Fn->BYTE_MIN;
+    my $value = Fn->BYTE_MIN;
     
     my $result = &arg_byte($value);
     
@@ -1681,7 +1681,7 @@ class TestCase::Operator::MethodCall {
   }
   static method test_arg_short : int () {
     
-    my $value = (short)Fn->SHORT_MIN;
+    my $value = Fn->SHORT_MIN;
     
     my $result = &arg_short($value);
     
@@ -1781,7 +1781,7 @@ class TestCase::Operator::MethodCall {
   
   static method test_arg_ref : int () {
     
-    my $value = (byte)Fn->BYTE_MIN;
+    my $value = Fn->BYTE_MIN;
     
     my $result = &arg_ref(\$value);
     
@@ -1795,7 +1795,7 @@ class TestCase::Operator::MethodCall {
   static method test_arg_mulnum_byte : int () {
     
     my $value : TestCase::Point_3b;
-    $value->{x} = (byte)Fn->BYTE_MIN;
+    $value->{x} = Fn->BYTE_MIN;
     $value->{y} = 2;
     
     my $result = &arg_mulnum_byte($value);
@@ -1813,7 +1813,7 @@ class TestCase::Operator::MethodCall {
   static method test_arg_mulnum_short : int () {
     
     my $value : TestCase::Point_3s;
-    $value->{x} = (short)Fn->SHORT_MIN;
+    $value->{x} = Fn->SHORT_MIN;
     $value->{y} = 2;
     
     my $result = &arg_mulnum_short($value);
@@ -1923,7 +1923,7 @@ class TestCase::Operator::MethodCall {
   static method test_arg_mulnum_ref : int () {
     
     my $value : TestCase::Point_3b;
-    $value->{x} = (byte)Fn->BYTE_MIN;
+    $value->{x} = Fn->BYTE_MIN;
     $value->{y} = 2;
     
     my $result = &arg_mulnum_ref(\$value);

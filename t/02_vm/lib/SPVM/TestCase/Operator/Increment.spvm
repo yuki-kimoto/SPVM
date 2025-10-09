@@ -69,8 +69,8 @@ class TestCase::Operator::Increment {
     my $values_point_float = new TestCase::Point_3f[1];
     my $values_point_double = new TestCase::Point_3d[1];
     
-    $values_point_byte->[0]{x} = (byte)Fn->INT8_MAX();
-    $values_point_short->[0]{x} = (short)Fn->INT16_MAX();
+    $values_point_byte->[0]{x} = Fn->INT8_MAX();
+    $values_point_short->[0]{x} = Fn->INT16_MAX();
     $values_point_int->[0]{x} = Fn->INT32_MAX();
     $values_point_long->[0]{x} = Fn->INT64_MAX();
     $values_point_float->[0]{x} = Fn->FLT_MAX();
@@ -111,8 +111,8 @@ class TestCase::Operator::Increment {
   }
 
   static method post_dec_class_var_access : int () {
-    $BYTE_VALUE = (byte)Fn->INT8_MAX();
-    $SHORT_VALUE = (short)Fn->INT16_MAX();
+    $BYTE_VALUE = Fn->INT8_MAX();
+    $SHORT_VALUE = Fn->INT16_MAX();
     $INT_VALUE = Fn->INT32_MAX();
     $LONG_VALUE = Fn->INT64_MAX();
     $FLOAT_VALUE = Fn->FLT_MAX();
@@ -153,8 +153,8 @@ class TestCase::Operator::Increment {
   }
 
   static method post_dec_deref : int () {
-    my $value_byte = (byte)Fn->INT8_MAX();
-    my $value_short = (short)Fn->INT16_MAX();
+    my $value_byte = Fn->INT8_MAX();
+    my $value_short = Fn->INT16_MAX();
     my $value_int = Fn->INT32_MAX();
     my $value_long = Fn->INT64_MAX();
     my $value_float = Fn->FLT_MAX();
@@ -204,8 +204,8 @@ class TestCase::Operator::Increment {
   static method post_dec_field_access : int () {
     my $simple = TestCase::Simple->new;
     
-    $simple->{byte_value} = (byte)Fn->INT8_MAX();
-    $simple->{short_value} = (short)Fn->INT16_MAX();
+    $simple->{byte_value} = Fn->INT8_MAX();
+    $simple->{short_value} = Fn->INT16_MAX();
     $simple->{int_value} = Fn->INT32_MAX();
     $simple->{long_value} = Fn->INT64_MAX();
     $simple->{float_value} = Fn->FLT_MAX();
@@ -253,8 +253,8 @@ class TestCase::Operator::Increment {
     my $values_float = new float[1];
     my $values_double = new double[1];
     
-    $values_byte->[0] = (byte)Fn->INT8_MAX();
-    $values_short->[0] = (short)Fn->INT16_MAX();
+    $values_byte->[0] = Fn->INT8_MAX();
+    $values_short->[0] = Fn->INT16_MAX();
     $values_int->[0] = Fn->INT32_MAX();
     $values_long->[0] = Fn->INT64_MAX();
     $values_float->[0] = Fn->FLT_MAX();
@@ -303,8 +303,8 @@ class TestCase::Operator::Increment {
     my $values_float = new float[1];
     my $values_double = new double[1];
     
-    $values_byte->[0] = (byte)Fn->INT8_MAX();
-    $values_short->[0] = (short)Fn->INT16_MAX();
+    $values_byte->[0] = Fn->INT8_MAX();
+    $values_short->[0] = Fn->INT16_MAX();
     $values_int->[0] = Fn->INT32_MAX();
     $values_long->[0] = Fn->INT64_MAX();
     $values_float->[0] = Fn->FLT_MAX();
@@ -345,8 +345,8 @@ class TestCase::Operator::Increment {
   }
 
   static method post_dec_var : int () {
-    my $value_byte = (byte)Fn->INT8_MAX();
-    my $value_short = (short)Fn->INT16_MAX();
+    my $value_byte = Fn->INT8_MAX();
+    my $value_short = Fn->INT16_MAX();
     my $value_int = Fn->INT32_MAX();
     my $value_long = Fn->INT64_MAX();
     my $value_float = Fn->FLT_MAX();
@@ -439,8 +439,8 @@ class TestCase::Operator::Increment {
     my $values_point_float = new TestCase::Point_3f[1];
     my $values_point_double = new TestCase::Point_3d[1];
     
-    $values_point_byte->[0]{x} = (byte)Fn->INT8_MIN();
-    $values_point_short->[0]{x} = (short)Fn->INT16_MIN();
+    $values_point_byte->[0]{x} = Fn->INT8_MIN();
+    $values_point_short->[0]{x} = Fn->INT16_MIN();
     $values_point_int->[0]{x} = Fn->INT32_MIN();
     $values_point_long->[0]{x} = Fn->INT64_MIN();
     $values_point_float->[0]{x} = Fn->FLT_MIN();
@@ -481,8 +481,8 @@ class TestCase::Operator::Increment {
   }
 
   static method post_inc_class_var_access : int () {
-    $BYTE_VALUE = (byte)Fn->INT8_MIN();
-    $SHORT_VALUE = (short)Fn->INT16_MIN();
+    $BYTE_VALUE = Fn->INT8_MIN();
+    $SHORT_VALUE = Fn->INT16_MIN();
     $INT_VALUE = Fn->INT32_MIN();
     $LONG_VALUE = Fn->INT64_MIN();
     $FLOAT_VALUE = Fn->FLT_MIN();
@@ -523,8 +523,8 @@ class TestCase::Operator::Increment {
   }
 
   static method post_inc_deref : int () {
-    my $value_byte = (byte)Fn->INT8_MIN();
-    my $value_short = (short)Fn->INT16_MIN();
+    my $value_byte = Fn->INT8_MIN();
+    my $value_short = Fn->INT16_MIN();
     my $value_int = Fn->INT32_MIN();
     my $value_long = Fn->INT64_MIN();
     my $value_float = Fn->FLT_MIN();
@@ -574,8 +574,8 @@ class TestCase::Operator::Increment {
   static method post_inc_field_access : int () {
     my $simple = TestCase::Simple->new;
     
-    $simple->{byte_value} = (byte)Fn->INT8_MIN();
-    $simple->{short_value} = (short)Fn->INT16_MIN();
+    $simple->{byte_value} = Fn->INT8_MIN();
+    $simple->{short_value} = Fn->INT16_MIN();
     $simple->{int_value} = Fn->INT32_MIN();
     $simple->{long_value} = Fn->INT64_MIN();
     $simple->{float_value} = Fn->FLT_MIN();
@@ -623,8 +623,8 @@ class TestCase::Operator::Increment {
     my $values_float = new float[1];
     my $values_double = new double[1];
     
-    $values_byte->[0] = (byte)Fn->INT8_MIN();
-    $values_short->[0] = (short)Fn->INT16_MIN();
+    $values_byte->[0] = Fn->INT8_MIN();
+    $values_short->[0] = Fn->INT16_MIN();
     $values_int->[0] = Fn->INT32_MIN();
     $values_long->[0] = Fn->INT64_MIN();
     $values_float->[0] = Fn->FLT_MIN();
@@ -673,8 +673,8 @@ class TestCase::Operator::Increment {
     my $values_float = new float[1];
     my $values_double = new double[1];
     
-    $values_byte->[0] = (byte)Fn->INT8_MIN();
-    $values_short->[0] = (short)Fn->INT16_MIN();
+    $values_byte->[0] = Fn->INT8_MIN();
+    $values_short->[0] = Fn->INT16_MIN();
     $values_int->[0] = Fn->INT32_MIN();
     $values_long->[0] = Fn->INT64_MIN();
     $values_float->[0] = Fn->FLT_MIN();
@@ -715,8 +715,8 @@ class TestCase::Operator::Increment {
   }
 
   static method post_inc_var : int () {
-    my $value_byte = (byte)Fn->INT8_MIN();
-    my $value_short = (short)Fn->INT16_MIN();
+    my $value_byte = Fn->INT8_MIN();
+    my $value_short = Fn->INT16_MIN();
     my $value_int = Fn->INT32_MIN();
     my $value_long = Fn->INT64_MIN();
     my $value_float = Fn->FLT_MIN();
@@ -809,8 +809,8 @@ class TestCase::Operator::Increment {
     my $values_point_float = new TestCase::Point_3f[1];
     my $values_point_double = new TestCase::Point_3d[1];
     
-    $values_point_byte->[0]{x} = (byte)Fn->INT8_MAX();
-    $values_point_short->[0]{x} = (short)Fn->INT16_MAX();
+    $values_point_byte->[0]{x} = Fn->INT8_MAX();
+    $values_point_short->[0]{x} = Fn->INT16_MAX();
     $values_point_int->[0]{x} = Fn->INT32_MAX();
     $values_point_long->[0]{x} = Fn->INT64_MAX();
     $values_point_float->[0]{x} = Fn->FLT_MAX();
@@ -851,8 +851,8 @@ class TestCase::Operator::Increment {
   }
 
   static method pre_dec_class_var_access : int () {
-    $BYTE_VALUE = (byte)Fn->INT8_MAX();
-    $SHORT_VALUE = (short)Fn->INT16_MAX();
+    $BYTE_VALUE = Fn->INT8_MAX();
+    $SHORT_VALUE = Fn->INT16_MAX();
     $INT_VALUE = Fn->INT32_MAX();
     $LONG_VALUE = Fn->INT64_MAX();
     $FLOAT_VALUE = Fn->FLT_MAX();
@@ -893,8 +893,8 @@ class TestCase::Operator::Increment {
   }
 
   static method pre_dec_deref : int () {
-    my $value_byte = (byte)Fn->INT8_MAX();
-    my $value_short = (short)Fn->INT16_MAX();
+    my $value_byte = Fn->INT8_MAX();
+    my $value_short = Fn->INT16_MAX();
     my $value_int = Fn->INT32_MAX();
     my $value_long = Fn->INT64_MAX();
     my $value_float = Fn->FLT_MAX();
@@ -944,8 +944,8 @@ class TestCase::Operator::Increment {
   static method pre_dec_field_access : int () {
     my $simple = TestCase::Simple->new;
     
-    $simple->{byte_value} = (byte)Fn->INT8_MAX();
-    $simple->{short_value} = (short)Fn->INT16_MAX();
+    $simple->{byte_value} = Fn->INT8_MAX();
+    $simple->{short_value} = Fn->INT16_MAX();
     $simple->{int_value} = Fn->INT32_MAX();
     $simple->{long_value} = Fn->INT64_MAX();
     $simple->{float_value} = Fn->FLT_MAX();
@@ -993,8 +993,8 @@ class TestCase::Operator::Increment {
     my $values_float = new float[1];
     my $values_double = new double[1];
     
-    $values_byte->[0] = (byte)Fn->INT8_MAX();
-    $values_short->[0] = (short)Fn->INT16_MAX();
+    $values_byte->[0] = Fn->INT8_MAX();
+    $values_short->[0] = Fn->INT16_MAX();
     $values_int->[0] = Fn->INT32_MAX();
     $values_long->[0] = Fn->INT64_MAX();
     $values_float->[0] = Fn->FLT_MAX();
@@ -1043,8 +1043,8 @@ class TestCase::Operator::Increment {
     my $values_float = new float[1];
     my $values_double = new double[1];
     
-    $values_byte->[0] = (byte)Fn->INT8_MAX();
-    $values_short->[0] = (short)Fn->INT16_MAX();
+    $values_byte->[0] = Fn->INT8_MAX();
+    $values_short->[0] = Fn->INT16_MAX();
     $values_int->[0] = Fn->INT32_MAX();
     $values_long->[0] = Fn->INT64_MAX();
     $values_float->[0] = Fn->FLT_MAX();
@@ -1085,8 +1085,8 @@ class TestCase::Operator::Increment {
   }
 
   static method pre_dec_var : int () {
-    my $value_byte = (byte)Fn->INT8_MAX();
-    my $value_short = (short)Fn->INT16_MAX();
+    my $value_byte = Fn->INT8_MAX();
+    my $value_short = Fn->INT16_MAX();
     my $value_int = Fn->INT32_MAX();
     my $value_long = Fn->INT64_MAX();
     my $value_float = Fn->FLT_MAX();
@@ -1180,8 +1180,8 @@ class TestCase::Operator::Increment {
     my $values_point_float = new TestCase::Point_3f[1];
     my $values_point_double = new TestCase::Point_3d[1];
     
-    $values_point_byte->[0]{x} = (byte)Fn->INT8_MIN();
-    $values_point_short->[0]{x} = (short)Fn->INT16_MIN();
+    $values_point_byte->[0]{x} = Fn->INT8_MIN();
+    $values_point_short->[0]{x} = Fn->INT16_MIN();
     $values_point_int->[0]{x} = Fn->INT32_MIN();
     $values_point_long->[0]{x} = Fn->INT64_MIN();
     $values_point_float->[0]{x} = Fn->FLT_MIN();
@@ -1222,8 +1222,8 @@ class TestCase::Operator::Increment {
   }
 
   static method pre_inc_class_var_access : int () {
-    $BYTE_VALUE = (byte)Fn->INT8_MIN();
-    $SHORT_VALUE = (short)Fn->INT16_MIN();
+    $BYTE_VALUE = Fn->INT8_MIN();
+    $SHORT_VALUE = Fn->INT16_MIN();
     $INT_VALUE = Fn->INT32_MIN();
     $LONG_VALUE = Fn->INT64_MIN();
     $FLOAT_VALUE = Fn->FLT_MIN();
@@ -1264,8 +1264,8 @@ class TestCase::Operator::Increment {
   }
 
   static method pre_inc_deref : int () {
-    my $value_byte = (byte)Fn->INT8_MIN();
-    my $value_short = (short)Fn->INT16_MIN();
+    my $value_byte = Fn->INT8_MIN();
+    my $value_short = Fn->INT16_MIN();
     my $value_int = Fn->INT32_MIN();
     my $value_long = Fn->INT64_MIN();
     my $value_float = Fn->FLT_MIN();
@@ -1315,8 +1315,8 @@ class TestCase::Operator::Increment {
   static method pre_inc_field_access : int () {
     my $simple = TestCase::Simple->new;
     
-    $simple->{byte_value} = (byte)Fn->INT8_MIN();
-    $simple->{short_value} = (short)Fn->INT16_MIN();
+    $simple->{byte_value} = Fn->INT8_MIN();
+    $simple->{short_value} = Fn->INT16_MIN();
     $simple->{int_value} = Fn->INT32_MIN();
     $simple->{long_value} = Fn->INT64_MIN();
     $simple->{float_value} = Fn->FLT_MIN();
@@ -1364,8 +1364,8 @@ class TestCase::Operator::Increment {
     my $values_float = new float[1];
     my $values_double = new double[1];
     
-    $values_byte->[0] = (byte)Fn->INT8_MIN();
-    $values_short->[0] = (short)Fn->INT16_MIN();
+    $values_byte->[0] = Fn->INT8_MIN();
+    $values_short->[0] = Fn->INT16_MIN();
     $values_int->[0] = Fn->INT32_MIN();
     $values_long->[0] = Fn->INT64_MIN();
     $values_float->[0] = Fn->FLT_MIN();
@@ -1414,8 +1414,8 @@ class TestCase::Operator::Increment {
     my $values_float = new float[1];
     my $values_double = new double[1];
     
-    $values_byte->[0] = (byte)Fn->INT8_MIN();
-    $values_short->[0] = (short)Fn->INT16_MIN();
+    $values_byte->[0] = Fn->INT8_MIN();
+    $values_short->[0] = Fn->INT16_MIN();
     $values_int->[0] = Fn->INT32_MIN();
     $values_long->[0] = Fn->INT64_MIN();
     $values_float->[0] = Fn->FLT_MIN();
@@ -1456,8 +1456,8 @@ class TestCase::Operator::Increment {
   }
 
   static method pre_inc_var : int () {
-    my $value_byte = (byte)Fn->INT8_MIN();
-    my $value_short = (short)Fn->INT16_MIN();
+    my $value_byte = Fn->INT8_MIN();
+    my $value_short = Fn->INT16_MIN();
     my $value_int = Fn->INT32_MIN();
     my $value_long = Fn->INT64_MIN();
     my $value_float = Fn->FLT_MIN();

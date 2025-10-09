@@ -23,7 +23,7 @@ class TestCase::Module::ByteList {
   static method new : int () {
     # new with array
     {
-      my $list = ByteList->new([(byte)3, 5, (byte)Fn->BYTE_MAX]);
+      my $list = ByteList->new([(byte)3, 5, Fn->BYTE_MAX]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -46,7 +46,7 @@ class TestCase::Module::ByteList {
     
     # capcity
     {
-      my $list = ByteList->new([(byte)3, 5, (byte)Fn->BYTE_MAX], 10);
+      my $list = ByteList->new([(byte)3, 5, Fn->BYTE_MAX], 10);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -187,7 +187,7 @@ class TestCase::Module::ByteList {
   static method new_ref : int () {
     # new with array
     { 
-      my $array = [(byte)3, 5, (byte)Fn->BYTE_MAX()];
+      my $array = [(byte)3, 5, Fn->BYTE_MAX()];
       my $list = ByteList->new_ref($array);
       
       unless ($list->get(0) == 3) {
@@ -219,7 +219,7 @@ class TestCase::Module::ByteList {
   # Instance methods
   static method get : int () {
     {
-      my $list = ByteList->new([(byte)3, 5, (byte)Fn->BYTE_MAX]);
+      my $list = ByteList->new([(byte)3, 5, Fn->BYTE_MAX]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -784,7 +784,7 @@ class TestCase::Module::ByteList {
   
   static method to_array : int () {
     {
-      my $list = ByteList->new([(byte)3, 5, (byte)Fn->BYTE_MAX]);
+      my $list = ByteList->new([(byte)3, 5, Fn->BYTE_MAX]);
       
       my $array = $list->to_array;
       
@@ -937,7 +937,7 @@ class TestCase::Module::ByteList {
     {
       my $list = ByteList->new_len(0);
       
-      $list->push_([(byte)3, 5, (byte)Fn->BYTE_MAX]);
+      $list->push_([(byte)3, 5, Fn->BYTE_MAX]);
       
       my $length = $list->length;
       unless ($length == 3) {
@@ -956,7 +956,7 @@ class TestCase::Module::ByteList {
     {
       my $list = ByteList->new_len(0);
       
-      $list->unshift_([(byte)3, 5, (byte)Fn->BYTE_MAX]);
+      $list->unshift_([(byte)3, 5, Fn->BYTE_MAX]);
       
       my $length = $list->length;
       unless ($length == 3) {

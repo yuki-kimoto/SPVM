@@ -23,7 +23,7 @@ class TestCase::Module::ShortList {
   static method new : int () {
     # new with array
     {
-      my $list = ShortList->new([(short)3, 5, (short)Fn->SHORT_MAX]);
+      my $list = ShortList->new([(short)3, 5, Fn->SHORT_MAX]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -46,7 +46,7 @@ class TestCase::Module::ShortList {
     
     # capcity
     {
-      my $list = ShortList->new([(short)3, 5, (short)Fn->SHORT_MAX], 10);
+      my $list = ShortList->new([(short)3, 5, Fn->SHORT_MAX], 10);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -187,7 +187,7 @@ class TestCase::Module::ShortList {
   static method new_ref : int () {
     # new with array
     { 
-      my $array = [(short)3, 5, (short)Fn->SHORT_MAX()];
+      my $array = [(short)3, 5, Fn->SHORT_MAX()];
       my $list = ShortList->new_ref($array);
       
       unless ($list->get(0) == 3) {
@@ -219,7 +219,7 @@ class TestCase::Module::ShortList {
   # Instance methods
   static method get : int () {
     {
-      my $list = ShortList->new([(short)3, 5, (short)Fn->SHORT_MAX]);
+      my $list = ShortList->new([(short)3, 5, Fn->SHORT_MAX]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -784,7 +784,7 @@ class TestCase::Module::ShortList {
   
   static method to_array : int () {
     {
-      my $list = ShortList->new([(short)3, 5, (short)Fn->SHORT_MAX]);
+      my $list = ShortList->new([(short)3, 5, Fn->SHORT_MAX]);
       
       my $array = $list->to_array;
       
@@ -937,7 +937,7 @@ class TestCase::Module::ShortList {
     {
       my $list = ShortList->new_len(0);
       
-      $list->push_([(short)3, 5, (short)Fn->SHORT_MAX]);
+      $list->push_([(short)3, 5, Fn->SHORT_MAX]);
       
       my $length = $list->length;
       unless ($length == 3) {
@@ -956,7 +956,7 @@ class TestCase::Module::ShortList {
     {
       my $list = ShortList->new_len(0);
       
-      $list->unshift_([(short)3, 5, (short)Fn->SHORT_MAX]);
+      $list->unshift_([(short)3, 5, Fn->SHORT_MAX]);
       
       my $length = $list->length;
       unless ($length == 3) {

@@ -232,7 +232,7 @@ class TestCase::Operator::ArrayInit {
   }
   
   static method array_init_byte : int () {
-    my $nums = [(byte)1, (byte)2, (byte)Fn->INT8_MAX()];
+    my $nums = [(byte)1, (byte)2, Fn->INT8_MAX()];
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {

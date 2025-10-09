@@ -9,7 +9,7 @@ class TestCase::Module::Array {
   static method copy_byte : int () {
     # Copy array
     {
-      my $array = [(byte)1, 2, (byte)Fn->BYTE_MIN];
+      my $array = [(byte)1, 2, Fn->BYTE_MIN];
       my $array_out = Array->copy_byte($array);
       
       unless ($array_out isa byte[]) {
@@ -33,17 +33,17 @@ class TestCase::Module::Array {
     }
     
     {
-      my $array = [(byte)5, -7, 9, (byte)Fn->BYTE_MIN, 127, 15, 19];
+      my $array = [(byte)5, -7, 9, Fn->BYTE_MIN, 127, 15, 19];
       my $range = Array->copy_byte($array, 0, 7);
-      unless (Array->equals_byte($range, [(byte)5, -7, 9, (byte)Fn->BYTE_MIN, 127, 15, 19])) {
+      unless (Array->equals_byte($range, [(byte)5, -7, 9, Fn->BYTE_MIN, 127, 15, 19])) {
         return 0;
       }
     }
     
     {
-      my $array = [(byte)5, -7, 9, (byte)Fn->BYTE_MIN, 127, 15, 19];
+      my $array = [(byte)5, -7, 9, Fn->BYTE_MIN, 127, 15, 19];
       my $range = Array->copy_byte($array, 1, 3);
-      unless (Array->equals_byte($range, [(byte)-7, 9, (byte)Fn->BYTE_MIN])) {
+      unless (Array->equals_byte($range, [(byte)-7, 9, Fn->BYTE_MIN])) {
         return 0;
       }
     }
@@ -654,7 +654,7 @@ class TestCase::Module::Array {
   static method copy_short : int () {
     # Copy array
     {
-      my $array = [(short)1, 2, (short)Fn->SHORT_MIN];
+      my $array = [(short)1, 2, Fn->SHORT_MIN];
       my $array_out = Array->copy_short($array);
 
       unless ($array_out->[0] == 1) {
@@ -675,17 +675,17 @@ class TestCase::Module::Array {
     }
     
     {
-      my $array = [(short)5, -7, 9, (short)Fn->SHORT_MIN, 127, 15, 19];
+      my $array = [(short)5, -7, 9, Fn->SHORT_MIN, 127, 15, 19];
       my $range = Array->copy_short($array, 0, 7);
-      unless (Array->equals_short($range, [(short)5, -7, 9, (short)Fn->SHORT_MIN, 127, 15, 19])) {
+      unless (Array->equals_short($range, [(short)5, -7, 9, Fn->SHORT_MIN, 127, 15, 19])) {
         return 0;
       }
     }
     
     {
-      my $array = [(short)5, -7, 9, (short)Fn->SHORT_MIN, 127, 15, 19];
+      my $array = [(short)5, -7, 9, Fn->SHORT_MIN, 127, 15, 19];
       my $range = Array->copy_short($array, 1, 3);
-      unless (Array->equals_short($range, [(short)-7, 9, (short)Fn->SHORT_MIN])) {
+      unless (Array->equals_short($range, [(short)-7, 9, Fn->SHORT_MIN])) {
         return 0;
       }
     }
@@ -931,7 +931,7 @@ class TestCase::Module::Array {
   static method dump_unsigned_byte : int () {
     # Dump array
     {
-      my $array = [(byte)1, 2, -1, (byte)Fn->UBYTE_MAX];
+      my $array = [(byte)1, 2, -1, Fn->UBYTE_MAX];
       
       my $dump = Array->dump_unsigned_byte($array);
       
@@ -1003,7 +1003,7 @@ class TestCase::Module::Array {
   static method dump_unsigned_short : int () {
     # Dump array
     {
-      my $array = [(short)1, 2, -1, (short)Fn->USHORT_MAX];
+      my $array = [(short)1, 2, -1, Fn->USHORT_MAX];
       
       my $dump = Array->dump_unsigned_short($array);
       
@@ -1025,8 +1025,8 @@ class TestCase::Module::Array {
   }
 
   static method equals_byte : int () {
-    my $array1 = [(byte)0, 1, (byte)Fn->BYTE_MIN];
-    my $array2 = [(byte)0, 1, (byte)Fn->BYTE_MIN];
+    my $array1 = [(byte)0, 1, Fn->BYTE_MIN];
+    my $array2 = [(byte)0, 1, Fn->BYTE_MIN];
     my $array3 = [(byte)0, 1];
     my $array4 = [(byte)0, 1, 2];
     {
@@ -1439,8 +1439,8 @@ class TestCase::Module::Array {
   }
 
   static method equals_short : int () {
-    my $array1 = [(short)0, 1, (short)Fn->SHORT_MIN];
-    my $array2 = [(short)0, 1, (short)Fn->SHORT_MIN];
+    my $array1 = [(short)0, 1, Fn->SHORT_MIN];
+    my $array2 = [(short)0, 1, Fn->SHORT_MIN];
     my $array3 = [(short)0, 1];
     my $array4 = [(short)0, 1, 2];
 
@@ -5324,7 +5324,7 @@ class TestCase::Module::Array {
   static method to_object_array_byte : int () {
     
     {
-      my $array = [(byte)1, 2, (byte)Fn->BYTE_MIN];
+      my $array = [(byte)1, 2, Fn->BYTE_MIN];
       my $array_out = Array->to_object_array_byte($array);
       
       unless ($array_out isa Byte[]) {
@@ -5368,7 +5368,7 @@ class TestCase::Module::Array {
   static method to_object_array_short : int () {
     
     {
-      my $array = [(short)1, 2, (short)Fn->SHORT_MIN];
+      my $array = [(short)1, 2, Fn->SHORT_MIN];
       my $array_out = Array->to_object_array_short($array);
       
       unless ($array_out isa Short[]) {
@@ -5588,7 +5588,7 @@ class TestCase::Module::Array {
   static method to_array_byte : int () {
     
     {
-      my $array = [(Byte)(byte)1, (Byte)(byte)2, (Byte)(byte)Fn->BYTE_MIN];
+      my $array = [(Byte)(byte)1, (Byte)(byte)2, (Byte)Fn->BYTE_MIN];
       my $array_out = Array->to_array_byte($array);
       
       unless ($array_out isa byte[]) {
@@ -5632,7 +5632,7 @@ class TestCase::Module::Array {
   static method to_array_short : int () {
     
     {
-      my $array = [(Short)(short)1, (Short)(short)2, (Short)(short)Fn->SHORT_MIN];
+      my $array = [(Short)(short)1, (Short)(short)2, (Short)Fn->SHORT_MIN];
       my $array_out = Array->to_array_short($array);
       
       unless ($array_out isa short[]) {

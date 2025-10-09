@@ -10,7 +10,7 @@ class TestCase::Operator::Ref {
   use Array;
 
   static method numeric_ref_deref_byte : int () {
-    my $num1 = (byte)Fn->INT8_MIN;
+    my $num1 = Fn->INT8_MIN;
     
     my $num1_ref = \$num1;
     
@@ -26,7 +26,7 @@ class TestCase::Operator::Ref {
   }
 
   static method numeric_ref_deref_short : int () {
-    my $num1 = (short)Fn->INT16_MIN;
+    my $num1 = Fn->INT16_MIN;
     
     my $num1_ref = \$num1;
     
@@ -108,7 +108,7 @@ class TestCase::Operator::Ref {
   static method mulnum_ref_deref_byte : int () {
     my $point1 : TestCase::Point_3b;
     
-    $point1->{x} = (byte)Fn->INT8_MIN;
+    $point1->{x} = Fn->INT8_MIN;
     $point1->{y} = 1;
     $point1->{z} = 2;
     
@@ -125,7 +125,7 @@ class TestCase::Operator::Ref {
   static method mulnum_ref_deref_get_field_byte : int () {
     my $point : TestCase::Point_3b;
     
-    $point->{x} = (byte)Fn->INT8_MIN;
+    $point->{x} = Fn->INT8_MIN;
     $point->{y} = 1;
     $point->{z} = 2;
     
@@ -146,7 +146,7 @@ class TestCase::Operator::Ref {
 
     my $point_ref = \$point;
     
-    $point->{x} = (byte)Fn->INT8_MIN;
+    $point->{x} = Fn->INT8_MIN;
     $point->{y} = 1;
     $point->{z} = 2;
     
@@ -160,7 +160,7 @@ class TestCase::Operator::Ref {
     my $point_out : TestCase::Point_3b;
     
     my $point1 : TestCase::Point_3b;
-    $point1->{x} = (byte)Fn->INT8_MIN;
+    $point1->{x} = Fn->INT8_MIN;
     $point1->{y} = 1;
     $point1->{z} = 2;
 
@@ -186,7 +186,7 @@ class TestCase::Operator::Ref {
   static method mulnum_ref_deref_short : int () {
     my $point1 : TestCase::Point_3s;
     
-    $point1->{x} = (short)Fn->INT16_MIN;
+    $point1->{x} = Fn->INT16_MIN;
     $point1->{y} = 1;
     $point1->{z} = 2;
     
@@ -203,7 +203,7 @@ class TestCase::Operator::Ref {
   static method mulnum_ref_deref_get_field_short : int () {
     my $point : TestCase::Point_3s;
     
-    $point->{x} = (short)Fn->INT16_MIN;
+    $point->{x} = Fn->INT16_MIN;
     $point->{y} = 1;
     $point->{z} = 2;
     
@@ -224,7 +224,7 @@ class TestCase::Operator::Ref {
 
     my $point_ref = \$point;
     
-    $point->{x} = (short)Fn->INT16_MIN;
+    $point->{x} = Fn->INT16_MIN;
     $point->{y} = 1;
     $point->{z} = 2;
     
@@ -238,7 +238,7 @@ class TestCase::Operator::Ref {
     my $point_out : TestCase::Point_3s;
     
     my $point1 : TestCase::Point_3s;
-    $point1->{x} = (short)Fn->INT16_MIN;
+    $point1->{x} = Fn->INT16_MIN;
     $point1->{y} = 1;
     $point1->{z} = 2;
 

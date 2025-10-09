@@ -240,7 +240,7 @@ class TestCase::Module::Hash {
     {
       my $hash = Hash->new;
       
-      $hash->set_byte(foo => (byte)Fn->INT8_MAX);
+      $hash->set_byte(foo => Fn->INT8_MAX);
       
       unless ($hash->get("foo") isa Byte) {
         return 0;
@@ -289,7 +289,7 @@ class TestCase::Module::Hash {
     {
       my $hash = Hash->new;
       
-      $hash->set_short(foo => (short)Fn->SHORT_MAX);
+      $hash->set_short(foo => Fn->SHORT_MAX);
       
       unless ($hash->get("foo") isa Short) {
         return 0;
@@ -304,7 +304,7 @@ class TestCase::Module::Hash {
     {
       my $hash = Hash->new;
       
-      $hash->set_byte(foo => (byte)Fn->INT8_MAX);
+      $hash->set_byte(foo => Fn->INT8_MAX);
       
       unless ($hash->get("foo") isa Byte) {
         return 0;
@@ -368,7 +368,7 @@ class TestCase::Module::Hash {
     {
       my $hash = Hash->new;
       
-      $hash->set_short(foo => (short)Fn->SHORT_MAX);
+      $hash->set_short(foo => Fn->SHORT_MAX);
       
       unless ($hash->get("foo") isa Short) {
         return 0;
@@ -383,7 +383,7 @@ class TestCase::Module::Hash {
     {
       my $hash = Hash->new;
       
-      $hash->set_byte(foo => (byte)Fn->INT8_MAX);
+      $hash->set_byte(foo => Fn->INT8_MAX);
       
       unless ($hash->get("foo") isa Byte) {
         return 0;

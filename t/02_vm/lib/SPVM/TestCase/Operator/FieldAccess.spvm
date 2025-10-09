@@ -90,8 +90,8 @@ class TestCase::Operator::FieldAccess {
   static method object_field : int () {
     my $test_case =TestCase->new;
     
-    $test_case->{x_byte} = (byte)Fn->INT8_MAX;
-    $test_case->{x_short} = (short)Fn->INT16_MAX;
+    $test_case->{x_byte} = Fn->INT8_MAX;
+    $test_case->{x_short} = Fn->INT16_MAX;
     $test_case->{x_int} = Fn->INT32_MAX;
     $test_case->{x_long} = Fn->INT64_MAX;
     $test_case->{x_float} = TestCase->FLOAT_PRECICE();
@@ -128,8 +128,8 @@ class TestCase::Operator::FieldAccess {
   static method object_field_again : int () {
     my $test_case =TestCase->new;
     
-    $test_case->{x_byte} = (byte)Fn->INT8_MAX;
-    $test_case->{x_short} = (short)Fn->INT16_MAX;
+    $test_case->{x_byte} = Fn->INT8_MAX;
+    $test_case->{x_short} = Fn->INT16_MAX;
     $test_case->{x_int} = Fn->INT32_MAX;
     $test_case->{x_long} = Fn->INT64_MAX;
     $test_case->{x_float} = &FLOAT_PRECICE();
@@ -138,8 +138,8 @@ class TestCase::Operator::FieldAccess {
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
 
-    $test_case->{x_byte} = (byte)Fn->INT8_MAX;
-    $test_case->{x_short} = (short)Fn->INT16_MAX;
+    $test_case->{x_byte} = Fn->INT8_MAX;
+    $test_case->{x_short} = Fn->INT16_MAX;
     $test_case->{x_int} = Fn->INT32_MAX;
     $test_case->{x_long} = Fn->INT64_MAX;
     $test_case->{x_float} = &FLOAT_PRECICE();

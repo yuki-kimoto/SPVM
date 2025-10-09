@@ -299,7 +299,7 @@ class TestCase::Module::Packer {
     
     # c
     {
-      my $objects = [(object)(byte)Fn->BYTE_MIN];
+      my $objects = [(object)Fn->BYTE_MIN];
       
       my $template = "c";
       
@@ -327,7 +327,7 @@ class TestCase::Module::Packer {
     
     # C
     {
-      my $objects = [(object)(byte)Fn->BYTE_MIN];
+      my $objects = [(object)Fn->BYTE_MIN];
       
       my $template = "C";
       
@@ -355,7 +355,7 @@ class TestCase::Module::Packer {
     
     # s
     {
-      my $objects = [(object)(short)Fn->SHORT_MIN];
+      my $objects = [(object)Fn->SHORT_MIN];
       
       my $template = "s";
       
@@ -383,7 +383,7 @@ class TestCase::Module::Packer {
     
     # S
     {
-      my $objects = [(object)(short)Fn->SHORT_MIN];
+      my $objects = [(object)Fn->SHORT_MIN];
       
       my $template = "S";
       
@@ -653,7 +653,7 @@ class TestCase::Module::Packer {
     
     # c1
     {
-      my $objects = [(object)[(byte)Fn->BYTE_MIN]];
+      my $objects = [(object)[Fn->BYTE_MIN]];
       
       my $template = "c1";
       
@@ -681,7 +681,7 @@ class TestCase::Module::Packer {
     
     # s1
     {
-      my $objects = [(object)[(short)Fn->SHORT_MIN]];
+      my $objects = [(object)[Fn->SHORT_MIN]];
       
       my $template = "s1";
       
@@ -1443,7 +1443,7 @@ class TestCase::Module::Packer {
     {
       my $packer = Packer->new;
       
-      my $objects = [(object)(byte)Fn->BYTE_MIN];
+      my $objects = [(object)Fn->BYTE_MIN];
       
       my $template = "c";
       
@@ -1461,7 +1461,7 @@ class TestCase::Module::Packer {
     {
       my $packer = Packer->new;
       
-      my $objects = [(object)(byte)Fn->BYTE_MIN];
+      my $objects = [(object)Fn->BYTE_MIN];
       
       my $template = "c";
       
@@ -1477,7 +1477,7 @@ class TestCase::Module::Packer {
     {
       my $packer = Packer->new;
       
-      my $objects = [(object)(byte)Fn->BYTE_MIN];
+      my $objects = [(object)Fn->BYTE_MIN];
       
       my $template = "c";
       
@@ -1493,7 +1493,7 @@ class TestCase::Module::Packer {
     {
       my $packer = Packer->new;
       
-      my $objects = [(object)(byte)Fn->BYTE_MIN];
+      my $objects = [(object)Fn->BYTE_MIN];
       
       my $template = "c";
       

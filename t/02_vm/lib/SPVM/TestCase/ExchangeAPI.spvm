@@ -130,7 +130,7 @@ class TestCase::ExchangeAPI {
     my $point : TestCase::Point_3b;
     $point->{x} = 1;
     $point->{y} = 2;
-    $point->{z} = (byte)Fn->INT8_MIN;
+    $point->{z} = Fn->INT8_MIN;
     
     return $point;
   }
@@ -139,7 +139,7 @@ class TestCase::ExchangeAPI {
     my $point : TestCase::Point_3s;
     $point->{x} = 1;
     $point->{y} = 2;
-    $point->{z} = (short)Fn->INT16_MIN;
+    $point->{z} = Fn->INT16_MIN;
     
     return $point;
   }
@@ -182,12 +182,12 @@ class TestCase::ExchangeAPI {
 
   static method return_byte : byte () {
     
-    return (byte)Fn->INT8_MIN;
+    return Fn->INT8_MIN;
   }
   
   static method return_short : short () {
     
-    return (short)Fn->INT16_MIN;
+    return Fn->INT16_MIN;
   }
 
   static method return_int : int () {
@@ -548,7 +548,7 @@ class TestCase::ExchangeAPI {
   
   static method argument_perl_array_ref_to_spvm_byte_array : int ($values : byte[], $undef : byte[]) {
     
-    unless (Array->equals_byte($values, [(byte)1, (byte)Fn->INT8_MAX, (byte)Fn->INT8_MIN])) {
+    unless (Array->equals_byte($values, [(byte)1, Fn->INT8_MAX, Fn->INT8_MIN])) {
       return 0;
     }
     
@@ -561,7 +561,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_perl_array_ref_to_spvm_short_array : int ($values : short[], $undef : short[]) {
     
-    unless (Array->equals_short($values, [(short)1, (short)Fn->INT16_MAX, (short)Fn->INT16_MIN])) {
+    unless (Array->equals_short($values, [(short)1, Fn->INT16_MAX, Fn->INT16_MIN])) {
       return 0;
     }
     
@@ -626,7 +626,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_byte_array : int ($values : byte[], $undef : byte[]) {
     
-    unless (Array->equals_byte($values, [(byte)1, (byte)Fn->INT8_MAX, (byte)Fn->INT8_MIN])) {
+    unless (Array->equals_byte($values, [(byte)1, Fn->INT8_MAX, Fn->INT8_MIN])) {
       return 0;
     }
     
@@ -639,7 +639,7 @@ class TestCase::ExchangeAPI {
 
   static method argument_spvm_array_to_spvm_short_array : int ($values : short[], $undef : short[]) {
     
-    unless (Array->equals_short($values, [(short)1, (short)Fn->INT16_MAX, (short)Fn->INT16_MIN])) {
+    unless (Array->equals_short($values, [(short)1, Fn->INT16_MAX, Fn->INT16_MIN])) {
       return 0;
     }
     
@@ -746,7 +746,7 @@ class TestCase::ExchangeAPI {
     
     if ((int)$values->[0] == (int)(short)97) {
       if ((int)$values->[1] == (int)(short)98) {
-        if ((int)$values->[2] == (int)(short)Fn->INT16_MAX) {
+        if ((int)$values->[2] == (int)Fn->INT16_MAX) {
            if (@$values == 3) {
              return 1;
            }

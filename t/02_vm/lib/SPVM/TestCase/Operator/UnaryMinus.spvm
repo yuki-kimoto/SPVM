@@ -3,7 +3,7 @@ class TestCase::Operator::UnaryMinus {
   use Array;
 
   static method unary_minus_byte : int () {
-    my $value = -(byte)Fn->INT8_MAX();
+    my $value = -Fn->INT8_MAX();
     
     unless ($value isa int) {
       return 0;
@@ -17,7 +17,7 @@ class TestCase::Operator::UnaryMinus {
   }
 
   static method unary_minus_short : int () {
-    my $value = -(short)Fn->INT16_MAX();
+    my $value = -Fn->INT16_MAX();
     
     unless ($value isa int) {
       return 0;

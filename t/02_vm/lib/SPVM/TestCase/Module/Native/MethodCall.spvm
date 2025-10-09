@@ -19,7 +19,7 @@ class TestCase::Module::Native::MethodCall {
       my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_byte");
       
       {
-        my $ret = $class_method_call->call([(object)(byte)Fn->BYTE_MIN, (byte)1]);
+        my $ret = $class_method_call->call([(object)Fn->BYTE_MIN, (byte)1]);
         
         unless ($ret is_type Byte) {
           return 0;
@@ -283,7 +283,7 @@ class TestCase::Module::Native::MethodCall {
       my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_byte");
       
       {
-        my $ret = $class_method_call->call([(object)(byte)Fn->BYTE_MIN, (byte)1]);
+        my $ret = $class_method_call->call([(object)Fn->BYTE_MIN, (byte)1]);
         
         unless ($ret is_type Byte) {
           return 0;
@@ -299,7 +299,7 @@ class TestCase::Module::Native::MethodCall {
       my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_short");
       
       {
-        my $ret = $class_method_call->call([(object)(short)Fn->SHORT_MIN, (short)1]);
+        my $ret = $class_method_call->call([(object)Fn->SHORT_MIN, (short)1]);
         
         unless ($ret is_type Short) {
           return 0;
@@ -379,7 +379,7 @@ class TestCase::Module::Native::MethodCall {
       my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_byte");
       
       {
-        my $ret = (byte[])$class_method_call->call([(object)[(byte)Fn->BYTE_MIN, 2, 3], [(byte)1, 4, 5]]);
+        my $ret = (byte[])$class_method_call->call([(object)[Fn->BYTE_MIN, 2, 3], [(byte)1, 4, 5]]);
         
         unless ($ret is_type byte[]) {
           return 0;
@@ -404,7 +404,7 @@ class TestCase::Module::Native::MethodCall {
       my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_short");
       
       {
-        my $ret = (short[])$class_method_call->call([(object)[(short)Fn->SHORT_MIN, 2, 3], [(short)1, 4, 5]]);
+        my $ret = (short[])$class_method_call->call([(object)[Fn->SHORT_MIN, 2, 3], [(short)1, 4, 5]]);
         
         unless ($ret is_type short[]) {
           return 0;
@@ -530,7 +530,7 @@ class TestCase::Module::Native::MethodCall {
       
       {
         my $out = new byte[1];
-        (byte[])$class_method_call->call([(object)(byte)Fn->BYTE_MIN, (byte)1, $out]);
+        (byte[])$class_method_call->call([(object)Fn->BYTE_MIN, (byte)1, $out]);
         
         unless ($out->[0] == Fn->BYTE_MIN + 1) {
           return 0;
@@ -543,7 +543,7 @@ class TestCase::Module::Native::MethodCall {
       
       {
         my $out = new short[1];
-        (short[])$class_method_call->call([(object)(short)Fn->SHORT_MIN, (short)1, $out]);
+        (short[])$class_method_call->call([(object)Fn->SHORT_MIN, (short)1, $out]);
         
         unless ($out->[0] == Fn->SHORT_MIN + 1) {
           return 0;
@@ -608,7 +608,7 @@ class TestCase::Module::Native::MethodCall {
       
       {
         my $out = new byte[3];
-        $class_method_call->call([(object)[(byte)Fn->BYTE_MIN, 2, 3], [(byte)1, 4, 5], $out]);
+        $class_method_call->call([(object)[Fn->BYTE_MIN, 2, 3], [(byte)1, 4, 5], $out]);
         
         unless ($out->[0] == Fn->BYTE_MIN + 1) {
           return 0;
@@ -630,7 +630,7 @@ class TestCase::Module::Native::MethodCall {
       
       {
         my $out = new short[3];
-        $class_method_call->call([(object)[(short)Fn->SHORT_MIN, 2, 3], [(short)1, 4, 5], $out]);
+        $class_method_call->call([(object)[Fn->SHORT_MIN, 2, 3], [(short)1, 4, 5], $out]);
         
         unless ($out->[0] == Fn->SHORT_MIN + 1) {
           return 0;
@@ -783,7 +783,7 @@ class TestCase::Module::Native::MethodCall {
         my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_byte");
         
         {
-          eval { $class_method_call->call([(object)(byte)Fn->BYTE_MIN]); }
+          eval { $class_method_call->call([(object)Fn->BYTE_MIN]); }
           
           unless (Fn->contains($@, "TestCase::Module::Native::MethodCall#add_byte method")) {
             return 0;
@@ -795,7 +795,7 @@ class TestCase::Module::Native::MethodCall {
         my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_byte");
         
         {
-          eval { $class_method_call->call([(object)(byte)Fn->BYTE_MIN, 1, 2]); }
+          eval { $class_method_call->call([(object)Fn->BYTE_MIN, 1, 2]); }
           
           unless (Fn->contains($@, "TestCase::Module::Native::MethodCall#add_byte method")) {
             return 0;
@@ -1011,7 +1011,7 @@ class TestCase::Module::Native::MethodCall {
   static method call_class_method : int () {
     
     {
-      my $ret = Native::MethodCall->call_class_method("TestCase::Module::Native::MethodCall", "add_byte", [(object)(byte)Fn->BYTE_MIN, (byte)1]);
+      my $ret = Native::MethodCall->call_class_method("TestCase::Module::Native::MethodCall", "add_byte", [(object)Fn->BYTE_MIN, (byte)1]);
       
       unless ($ret is_type Byte) {
         return 0;

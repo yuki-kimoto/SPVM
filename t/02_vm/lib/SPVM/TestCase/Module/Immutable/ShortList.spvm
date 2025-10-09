@@ -23,7 +23,7 @@ class TestCase::Module::Immutable::ShortList {
   static method new : int () {
     # new with array
     {
-      my $list = Immutable::ShortList->new([(short)3, 5, (short)Fn->SHORT_MAX]);
+      my $list = Immutable::ShortList->new([(short)3, 5, Fn->SHORT_MAX]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -113,7 +113,7 @@ class TestCase::Module::Immutable::ShortList {
   # Instance methods
   static method get : int () {
     {
-      my $list = Immutable::ShortList->new([(short)3, 5, (short)Fn->SHORT_MAX]);
+      my $list = Immutable::ShortList->new([(short)3, 5, Fn->SHORT_MAX]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -158,7 +158,7 @@ class TestCase::Module::Immutable::ShortList {
   
   static method to_array : int () {
     {
-      my $list = Immutable::ShortList->new([(short)3, 5, (short)Fn->SHORT_MAX]);
+      my $list = Immutable::ShortList->new([(short)3, 5, Fn->SHORT_MAX]);
       
       my $array = $list->to_array;
       
