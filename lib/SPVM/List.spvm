@@ -403,4 +403,8 @@ class List {
     return $self->{array};
   }
   
+  method get_array : object[] () {
+    return $self->{array};
+  }
+  
 }

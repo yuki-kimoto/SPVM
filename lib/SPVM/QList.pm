@@ -122,6 +122,12 @@ Same as L<List#clone|SPVM::List/"clone"> method.
 
 C<method get_array_unsafe : object[] ();>
 
+Same as L</"get_array">, but this method is deprecated.
+
+=head2 get_array
+
+C<method get_array : object[] ();>
+
 Always throw an exception.
 
 Exceptions:

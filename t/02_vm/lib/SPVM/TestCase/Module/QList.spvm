@@ -111,6 +111,15 @@ class TestCase::Module::QList {
       }
     }
     
+    {
+      my $list = QList->new_len(new Int[0], 3);
+      
+      eval { $list->get_array; }
+      unless ($@) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   

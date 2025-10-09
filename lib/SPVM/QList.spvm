@@ -222,6 +222,11 @@ class QList extends List {
     die "Cannot get the internal array in QList object.";
   }
   
+  method get_array : object[] () {
+    
+    die "Cannot get the internal array in QList object.";
+  }
+  
   protected method init_len : void ($proto_array : object[], $length : int, $capacity : int = -1) {
     
     unless ($proto_array) {

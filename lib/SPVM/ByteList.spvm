@@ -281,6 +281,10 @@ class ByteList {
     return $self->{array};
   }
   
+  method get_array : byte[] () {
+    return $self->{array};
+  }
+  
   method unshift : void ($element : int) {
     my $length = @{$self->{array}};
     

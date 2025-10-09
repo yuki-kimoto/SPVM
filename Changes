@@ -7,6 +7,15 @@
     * Add FloatList#new_ref method.
     * Add DoubleList#new_ref method.
     * Add List#new_ref method.
+    * Add ByteList#get_array method.
+    * Add ShortList#get_array method.
+    * Add IntList#get_array method.
+    * Add LongList#get_array method.
+    * Add FloatList#get_array method.
+    * Add DoubleList#get_array method.
+    * Add List#get_array method.
+    * Add StringList#get_array method.
+    * Add QList#get_array method.
     
   [Changes with Incompatible Change Posibility]
     * ByteList class use array length and array capacity instead of fields.
@@ -15,6 +24,17 @@
     * FloatList class use array length and array capacity instead of fields.
     * DoubleList class use array length and array capacity instead of fields.
     * List class use array length and array capacity instead of fields.
+  
+  [Deprecation]
+    * Deprecate ByteList#get_array_unsafe method.
+    * Deprecate ShortList#get_array_unsafe method.
+    * Deprecate IntList#get_array_unsafe method.
+    * Deprecate LongList#get_array_unsafe method.
+    * Deprecate FloatList#get_array_unsafe method.
+    * Deprecate DoubleList#get_array_unsafe method.
+    * Deprecate List#get_array_unsafe method.
+    * Deprecate StringList#get_array_unsafe method.
+    * Deprecate QList#get_array_unsafe method.
     
 0.990100 2025-10-09
   [Changes]

@@ -856,4 +856,32 @@ class TestCase::Module::StringList {
     return 1;
   }
   
+  static method get_array : int () {
+    
+    {
+      my $list = StringList->new_len(3, 5);
+      
+      $list->[0] = "1";
+      
+      $list->[2] = "3";
+      
+      my $array = $list->get_array;
+      
+      unless ($array->[0] eq "1") {
+        return 0;
+      }
+      
+      unless ($array->[2] eq "3") {
+        return 0;
+      }
+      
+      unless (@$array == 3) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
 }

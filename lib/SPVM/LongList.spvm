@@ -281,6 +281,10 @@ class LongList {
     return $self->{array};
   }
   
+  method get_array : long[] () {
+    return $self->{array};
+  }
+  
   method unshift : void ($element : long) {
     my $length = @{$self->{array}};
     

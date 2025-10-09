@@ -268,9 +268,13 @@ Creates a new array with the length of the list and copies all elements of the l
 
 C<method get_array_unsafe : long[] ();>
 
-Gets the internally array.
+Same as L</"get_array">, but this method is deprecated.
 
-This array is unsafe because it continues to point to the old array if the internal array is extended.
+=head2 get_array
+
+C<method get_array : long[] ();>
+
+Returns the internal L</"array">.
 
 =head2 unshift
 

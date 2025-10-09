@@ -313,9 +313,13 @@ Exceptions thrown by L</"unshift"> method could be thrown.
 
 C<method get_array_unsafe : object[] ();>
 
-Gets the internally array.
+Same as L</"get_array">, but this method is deprecated.
 
-This array is unsafe because it continues to point to the old array if the internal array is extended.
+=head2 get_array
+
+C<method get_array : object[] ();>
+
+Returns the internal L</"array">.
 
 =head1 Copyright & License
 

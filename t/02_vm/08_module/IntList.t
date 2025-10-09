@@ -31,6 +31,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   ok(SPVM::TestCase::Module::IntList->shift);
   ok(SPVM::TestCase::Module::IntList->to_array);
   ok(SPVM::TestCase::Module::IntList->get_array_unsafe);
+  ok(SPVM::TestCase::Module::IntList->get_array);
   ok(SPVM::TestCase::Module::IntList->unshift);
   ok(SPVM::TestCase::Module::IntList->clone);
   ok(SPVM::TestCase::Module::IntList->push_);
