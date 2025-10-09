@@ -33,6 +33,19 @@ class StringList extends List {
     return $self;
   }
   
+  static method new_ref : StringList ($array : string[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    my $self = new StringList;
+    
+    $self->{array} = $array;
+    
+    return $self;
+  }
+  
   # Instance methods
   method get : string ($index : int) {
     return (string)$self->SUPER::get($index);

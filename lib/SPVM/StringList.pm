@@ -110,6 +110,16 @@ Exceptions:
 
 $length must be greater than or equal to 0. Otherwise an exception is thrown.
 
+=head2 new_ref
+
+C<static method new_ref : L<StringList|SPVM::StringList> ($array : string[]);>
+
+Creates a new L<StringList|SPVM::StringList> object, and set L</"array"> field to the array $array, and return the new object.
+
+Exceptions:
+
+The array $array must be defined. Otherwise an exception is thrown.
+
 =head1 Instance Methods
 
 =head2 get

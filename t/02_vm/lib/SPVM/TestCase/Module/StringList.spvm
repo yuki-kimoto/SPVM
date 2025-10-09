@@ -108,6 +108,38 @@ class TestCase::Module::StringList {
     return 1;
   }
   
+  static method new_ref : int () {
+    # new with array
+    { 
+      my $array = [(string)3, 5, 7];
+      my $list = StringList->new_ref($array);
+      
+      unless ($list->get(0) eq "3") {
+        return 0;
+      }
+      
+      unless ($list->get(1) eq "5") {
+        return 0;
+      }
+      
+      unless ($list->get(2) eq "7") {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      unless ($list->get_array == $array) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
   # Instance methods
   static method get : int () {
     {
