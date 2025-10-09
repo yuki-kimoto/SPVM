@@ -103,6 +103,34 @@ class TestCase::Module::StringBuffer {
     return 1;
   }
   
+  static method new_ref : int () {
+    
+    {
+      my $string = (mutable string)copy "abc";
+      my $buffer = StringBuffer->new_ref($string);
+      
+      unless ($buffer isa StringBuffer) {
+        return 0;
+      }
+      
+      $buffer->push("d");
+      
+      unless ($buffer->length == 4) {
+        return 0;
+      }
+      
+      unless ($buffer->to_string eq "abcd") {
+        return 0;
+      }
+      
+      unless ($buffer->get_string_unsafe == $string) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method push  : int () {
     {
       my $buffer = StringBuffer->new;

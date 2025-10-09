@@ -49,13 +49,13 @@ The charactors in the range that is greater than or equal to L</"length"> field 
 
 =head2 capacity
 
-C<has capacity : ro int;>
+C<has capacity : virtual ro int;>
 
 The capacity. This is the length of the internally reserved characters to extend the length of the string buffer.
 
 =head2 length
 
-C<has length : ro int;>
+C<has length : virtual ro int;>
 
 The length of the string buffer.
 
@@ -90,6 +90,16 @@ If $length is greater than $capacity, $capacity is set to $length.
 Exceptions:
 
 $length must be greater than or equal to 0. Otherwise an exception is thrown.
+
+=head2 new_ref
+
+C<static method new_ref : L<StringBuffer|SPVM::StringBuffer> ($string : mutable string);>
+
+Creates a new L<StringBuffer|SPVM::StringBuffer> object, and set L</"string"> field to the string $string, and return the new object.
+
+Exceptions:
+
+The array $array must be defined. Otherwise an exception is thrown.
 
 =head1 Instance Methods
 

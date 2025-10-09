@@ -8,6 +8,7 @@
     * Add DoubleList#new_ref method.
     * Add List#new_ref method.
     * Add StringList#new_ref method.
+    * Add StringBuffer#new_ref method.
     * Add ByteList#get_array method.
     * Add ShortList#get_array method.
     * Add IntList#get_array method.

@@ -22,6 +22,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   
   ok(SPVM::TestCase::Module::StringBuffer->new_len);
   
+  ok(SPVM::TestCase::Module::StringBuffer->new_ref);
+  
   # Instance methods
   ok(SPVM::TestCase::Module::StringBuffer->push);
   

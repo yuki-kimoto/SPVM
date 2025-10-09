@@ -63,6 +63,19 @@ class StringBuffer {
     return $self;
   }
   
+  static method new_ref : StringBuffer ($string : mutable string) {
+    
+    unless ($string) {
+      die "The string \$string must be defined.";
+    }
+    
+    my $self = new StringBuffer;
+    
+    $self->{string} = $string;
+    
+    return $self;
+  }
+  
   # Instance methods
   method push : void ($string : string, $offset : int = 0, $length : int = -1) {
     
