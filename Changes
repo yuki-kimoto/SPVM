@@ -1,11 +1,17 @@
 0.990102 2025-10-10
   [Incompatible Changes]
-    * BYTE_MAX returns byte type instead of int.
-    * BYTE_MAX returns byte type instead of int.
-    * UBYTE_MAX returns byte type instead of int.
-    * INT8_MAX returns byte type instead of int.
-    * INT8_MAX returns byte type instead of int.
-    * UINT8_MAX returns byte type instead of int.
+    * Fn#BYTE_MAX method returns byte type instead of int.
+    * Fn#BYTE_MAX method returns byte type instead of int.
+    * Fn#UBYTE_MAX method returns byte type instead of int.
+    * Fn#INT8_MAX method returns byte type instead of int.
+    * Fn#INT8_MAX method returns byte type instead of int.
+    * Fn#UINT8_MAX method returns byte type instead of int.
+    * Fn#SHORT_MAX method returns short type instead of int.
+    * Fn#SHORT_MAX method returns short type instead of int.
+    * Fn#USHORT_MAX method returns short type instead of int.
+    * Fn#INT16_MAX method returns short type instead of int.
+    * Fn#INT16_MAX method returns short type instead of int.
+    * Fn#UINT16_MAX method returns short type instead of int.
     
 0.990101 2025-10-09
   [New Features]

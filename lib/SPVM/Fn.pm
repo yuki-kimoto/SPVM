@@ -101,13 +101,13 @@ Returns the value of C<FLT_MIN> macro defined in C<float.h> header of the C lang
 
 =head2 INT16_MAX
 
-C<static method INT16_MAX : int ();>
+C<static method INT16_MAX : short ();>
 
 Returns 32767. The maximum value of the signed 16bit integer.
 
 =head2 INT16_MIN
 
-C<static method INT16_MIN : int ();>
+C<static method INT16_MIN : short ();>
 
 Returns -32768. The minimal value of the signed 16bit integer. 
 
@@ -179,13 +179,13 @@ Returns 2147483647.
 
 =head2 SHORT_MAX
 
-C<static method SHORT_MAX : int ();>
+C<static method SHORT_MAX : short ();>
 
 The same as L</"INT16_MAX">.
 
 =head2 SHORT_MIN
   
-C<static method SHORT_MIN : int ();>
+C<static method SHORT_MIN : short ();>
 
 The same as L</"INT16_MIN">.
 
@@ -197,7 +197,7 @@ The same as L</"UINT8_MAX">.
 
 =head2 UINT16_MAX
 
-C<static method UINT16_MAX : int ();>
+C<static method UINT16_MAX : short ();>
 
 Returns -1. This represents C<0xFFFF> in the unsigned 16bit integer in 2's complement.
 
@@ -233,7 +233,7 @@ The same as L</"UINT64_MAX">.
 
 =head2 USHORT_MAX
 
-C<static method USHORT_MAX : int ();>
+C<static method USHORT_MAX : short ();>
 
 The same as L</"UINT16_MAX">.
 

@@ -102,7 +102,7 @@ class TestCase::Module::Fn {
   }
   
   static method INT16_MAX : int () {
-    unless (Fn->INT16_MAX  isa int) {
+    unless (Fn->INT16_MAX is_compile_type short) {
       return 0;
     }
     unless (Fn->INT16_MAX == 32767) {
@@ -113,7 +113,7 @@ class TestCase::Module::Fn {
   }
   
   static method INT16_MIN : int () {
-    unless (Fn->INT16_MIN  isa int) {
+    unless (Fn->INT16_MIN is_compile_type short) {
       return 0;
     }
     unless (Fn->INT16_MIN == -32768) {
@@ -240,7 +240,7 @@ class TestCase::Module::Fn {
   }
   
   static method SHORT_MAX : int () {
-    unless (Fn->SHORT_MAX isa int) {
+    unless (Fn->SHORT_MAX is_compile_type short) {
       return 0;
     }
     unless (Fn->SHORT_MAX == Fn->INT16_MAX) {
@@ -250,7 +250,7 @@ class TestCase::Module::Fn {
   }
   
   static method SHORT_MIN : int () {
-    unless (Fn->SHORT_MIN isa int) {
+    unless (Fn->SHORT_MIN is_compile_type short) {
       return 0;
     }
     unless (Fn->SHORT_MIN == Fn->INT16_MIN) {
@@ -260,7 +260,7 @@ class TestCase::Module::Fn {
   }
   
   static method UINT16_MAX : int () {
-    unless (Fn->UINT16_MAX isa int) {
+    unless (Fn->UINT16_MAX is_compile_type short) {
       return 0;
     }
     
@@ -338,7 +338,7 @@ class TestCase::Module::Fn {
   }
   
   static method USHORT_MAX : int () {
-    unless (Fn->USHORT_MAX isa int) {
+    unless (Fn->USHORT_MAX is_compile_type short) {
       return 0;
     }
     unless (Fn->USHORT_MAX == Fn->UINT16_MAX) {

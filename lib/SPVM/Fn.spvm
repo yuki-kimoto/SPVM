@@ -38,8 +38,8 @@ class Fn {
   native static method FLOAT_MIN : float();
   native static method FLT_MAX : float ();
   native static method FLT_MIN : float();
-  static method INT16_MAX : int () { return 32767; }
-  static method INT16_MIN : int () { return -32768; }
+  static method INT16_MAX : short () { return 32767; }
+  static method INT16_MIN : short () { return -32768; }
   static method INT32_MAX : int () { return 2147483647; }
   static method INT32_MIN : int () { return -2147483648; }
   static method INT64_MAX : long () { return 9223372036854775807L; }
@@ -51,16 +51,16 @@ class Fn {
   static method LONG_MAX : long () { return 9223372036854775807L; }
   static method LONG_MIN : long () { return -9223372036854775808L; }
   static method RAND_MAX : int () { return 2147483647; }
-  static method SHORT_MAX : int () { return 32767; }
-  static method SHORT_MIN : int () { return -32768; }
+  static method SHORT_MAX : short () { return (short)32767; }
+  static method SHORT_MIN : short () { return (short)-32768; }
   static method UBYTE_MAX : byte () { return (byte)0xFF; }
-  static method UINT16_MAX : int () { return (short)0xFFFF; }
+  static method UINT16_MAX : short () { return (short)0xFFFF; }
   static method UINT32_MAX : int () { return 0xFFFFFFFF; }
   static method UINT64_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
   static method UINT8_MAX : byte () { return (byte)0xFF; }
   static method UINT_MAX : int () { return 0xFFFFFFFF; }
   static method ULONG_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
-  static method USHORT_MAX : int () { return (short)0xFFFF; }
+  static method USHORT_MAX : short () { return (short)0xFFFF; }
   
   static method abs : int ($value : int) {
     
