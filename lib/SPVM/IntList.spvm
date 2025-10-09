@@ -51,12 +51,12 @@ class IntList {
       die "The length \$length must be greater than or equal to 0.";
     }
     
-    if ($length > $capacity) {
-      $capacity = $length + 1;
+    $self->{array} = new int[0];
+    
+    if ($capacity >= 0) {
+      set_capacity($self->{array}, $capacity);
     }
     
-    $self->{array} = new int[0];
-    set_capacity($self->{array}, $capacity);
     set_length($self->{array}, $length);
     
     return $self;
