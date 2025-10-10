@@ -347,102 +347,47 @@ class Hash {
   method get_byte : int ($key : string) {
     my $object = $self->get($key);
     
-    unless ($object is_type Byte) {
-      die "The type of the value for the key '$key' must Byte type.";
-    }
-    
-    return (int)(byte)$object;
+    return (int)$object;
   }
   
   method get_short : int ($key : string) {
+    
     my $object = $self->get($key);
     
-    my $value = 0;
-    
-    if ($object is_type Byte) {
-      $value = (int)(byte)$object;
-    }
-    elsif ($object is_type Short) {
-      $value = (int)(short)$object;
-    }
-    else {
-      die "The type of the value for the key '$key' must Short type or Byte type.";
-    }
-    
-    return $value;
+    return (int)$object;
   }
   
   method get_int : int ($key : string) {
+    
     my $object = $self->get($key);
     
-    my $value = 0;
-    
-    if ($object is_type Byte) {
-      $value = (int)(byte)$object;
-    }
-    elsif ($object is_type Short) {
-      $value = (int)(short)$object;
-    }
-    elsif ($object is_type Int) {
-      $value = (int)$object;
-    }
-    else {
-      die "The type of the value for the key '$key' must Int type, Short type or Byte type.";
-    }
-    
-    return $value;
+    return (int)$object;
   }
   
   method get_long : long ($key : string) {
+    
     my $object = $self->get($key);
     
-    my $value = 0L;
-    
-    if ($object is_type Byte) {
-      $value = (long)(byte)$object;
-    }
-    elsif ($object is_type Short) {
-      $value = (long)(short)$object;
-    }
-    elsif ($object is_type Int) {
-      $value = (long)(int)$object;
-    }
-    elsif ($object is_type Long) {
-      $value = (long)$object;
-    }
-    else {
-      die "The type of the value for the key '$key' must Long type, Int type, Short type or Byte type.";
-    }
-    
-    return $value;
+    return (long)$object;
   }
   
   method get_float : float ($key : string) {
-    my $object = $self->get($key);
     
-    unless ($object is_type Float) {
-      die "The type of the value for the key '$key' must Float type.";
-    }
+    my $object = $self->get($key);
     
     return (float)$object;
   }
   
   method get_double : double ($key : string) {
-    my $object = $self->get($key);
     
-    unless ($object is_type Double) {
-      die "The type of the value for the key '$key' must Double type.";
-    }
+    my $object = $self->get($key);
     
     return (double)$object;
   }
   
   method get_string : string ($key : string) {
-    my $object = $self->get($key);
     
-    unless (!$object || $object is_type string) {
-      die "The type of the value for the key '$key' must be string type.";
-    }
+    my $object = $self->get($key);
     
     return (string)$object;
   }

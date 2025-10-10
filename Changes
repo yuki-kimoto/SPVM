@@ -12,6 +12,8 @@
     * Fn#INT16_MAX method returns short type instead of int.
     * Fn#INT16_MAX method returns short type instead of int.
     * Fn#UINT16_MAX method returns short type instead of int.
+  [Internal Change with Incompatible Change Posibility]
+    * Simplify Hash#get_byte, get_short, get_int, get_long, get_float, get_double, get_string logic.
     
 0.990101 2025-10-09
   [New Features]
