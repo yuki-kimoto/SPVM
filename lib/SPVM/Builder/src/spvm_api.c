@@ -6765,14 +6765,18 @@ double SPVM_API_numeric_object_to_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   *error_id = 0;
   
   if (object == NULL) {
-    *error_id = SPVM_API_die(env, stack, "Type conversion failed. The object must be defined.", __func__, FILE_NAME, __LINE__);
+    void* obj_exception = env->new_string_nolen_no_mortal(env, stack, "Type conversion failed. The object must be defined.");
+    env->set_exception(env, stack, obj_exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     return 0;
   }
   
   int32_t is_numeric_object_type = SPVM_API_is_numeric_object_type(env->runtime, object->basic_type, object->type_dimension, 0);
   
   if (!is_numeric_object_type) {
-    *error_id = SPVM_API_die(env, stack, "Type conversion failed. The type of the object must be a numeric object type.", __func__, FILE_NAME, __LINE__);
+    void* obj_exception = env->new_string_nolen_no_mortal(env, stack, "Type conversion failed. The type of the object must be a numeric object type.");
+    env->set_exception(env, stack, obj_exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     return 0;
   }
   
