@@ -16,6 +16,14 @@
     * Simplify Hash#get_byte, get_short, get_int, get_long, get_float, get_double, get_string logic.
   [Exception Message Changes]
     * The exception message in object to numeric conversion is simplified.
+  [Changes]
+    * get_field_byte native API can access any numeric type field.
+    * get_field_short native API can access any numeric type field.
+    * get_field_int native API can access any numeric type field.
+    * get_field_long native API can access any numeric type field.
+    * get_field_float native API can access any numeric type field.
+    * get_field_double native API can access any numeric type field.
+    
 0.990101 2025-10-09
   [New Features]
     * Add ByteList#new_ref method.

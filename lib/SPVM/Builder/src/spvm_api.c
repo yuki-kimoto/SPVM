@@ -2116,6 +2116,26 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
         value = SPVM_API_get_field_byte(env, stack, object, field);
         break;
       }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+        value = SPVM_API_get_field_short(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+        value = SPVM_API_get_field_int(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+        value = SPVM_API_get_field_long(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+        value = SPVM_API_get_field_float(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+        value = SPVM_API_get_field_double(env, stack, object, field);
+        break;
+      }
       default : {
         is_invalid_type = 1;
       }
@@ -2175,6 +2195,22 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
         value = SPVM_API_get_field_short(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+        value = SPVM_API_get_field_int(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+        value = SPVM_API_get_field_long(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+        value = SPVM_API_get_field_float(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+        value = SPVM_API_get_field_double(env, stack, object, field);
         break;
       }
       default : {
@@ -2240,6 +2276,18 @@ int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
         value = SPVM_API_get_field_int(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+        value = SPVM_API_get_field_long(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+        value = SPVM_API_get_field_float(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+        value = SPVM_API_get_field_double(env, stack, object, field);
         break;
       }
       default : {
@@ -2309,6 +2357,14 @@ int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
         value = SPVM_API_get_field_long(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+        value = SPVM_API_get_field_float(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+        value = SPVM_API_get_field_double(env, stack, object, field);
         break;
       }
       default : {
@@ -2382,6 +2438,10 @@ float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
       }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
         value = SPVM_API_get_field_float(env, stack, object, field);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+        value = SPVM_API_get_field_double(env, stack, object, field);
         break;
       }
       default : {

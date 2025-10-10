@@ -332,7 +332,7 @@ C<int8_t (*get_class_var_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCla
 
 Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value.
 
-The type of the filed must be C<byte> type.
+The type of the field must be C<byte> type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -358,7 +358,7 @@ C<int16_t (*get_class_var_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeC
 
 Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value casting to C<short> type.
 
-The type of the filed must be C<short> type or smaller numeric type.
+The type of the field must be C<short> type or smaller numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -384,7 +384,7 @@ C<int32_t (*get_class_var_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCla
 
 Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value casting to C<int> type.
 
-The type of the filed must be C<int> type or smaller numeric type.
+The type of the field must be C<int> type or smaller numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -409,7 +409,7 @@ C<int64_t (*get_class_var_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCl
 
 Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value casting to C<long> type.
 
-The type of the filed must be C<long> type or smaller numeric type.
+The type of the field must be C<long> type or smaller numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -434,7 +434,7 @@ C<float (*get_class_var_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCla
 
 Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value casting to C<float> type.
 
-The type of the filed must be C<float> type or smaller numeric type.
+The type of the field must be C<float> type or smaller numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -459,7 +459,7 @@ C<double (*get_class_var_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeC
 
 Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value casting to C<double> type.
 
-The type of the filed must be C<double> type or smaller numeric type.
+The type of the field must be C<double> type or smaller numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -484,7 +484,7 @@ C<void* (*get_class_var_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCl
 
 Gets the value of the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name>, and returns the value.
 
-The type of the filed must be an object type.
+The type of the field must be an object type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -516,7 +516,7 @@ C<void (*set_class_var_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to the field type.
 
-The type of the filed must be C<byte> type or larger numeric type.
+The type of the field must be C<byte> type or larger numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -542,7 +542,7 @@ C<void (*set_class_var_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClas
 
 Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to the field type.
 
-The type of the filed must be C<short> type or larger numeric type.
+The type of the field must be C<short> type or larger numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -568,7 +568,7 @@ C<void (*set_class_var_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/
 
 Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to the field type.
 
-The type of the filed must be C<int> type or larger numeric type.
+The type of the field must be C<int> type or larger numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -594,7 +594,7 @@ C<void (*set_class_var_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to the field type.
 
-The type of the filed must be C<long> type or larger numeric type.
+The type of the field must be C<long> type or larger numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -620,7 +620,7 @@ C<void (*set_class_var_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClas
 
 Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value> casting to the field type.
 
-The type of the filed must be C<float> type or larger numeric type.
+The type of the field must be C<float> type or larger numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -646,7 +646,7 @@ C<void (*set_class_var_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCla
 
 Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value>.
 
-The type of the filed must be C<double> type.
+The type of the field must be C<double> type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -673,7 +673,7 @@ Searches a class variable I<class_var> given the basic type name I<basic_type_na
 
 Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value>.
 
-The type of the filed must be an object type.
+The type of the field must be an object type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -839,7 +839,7 @@ C<int8_t (*get_field_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Retruns the value of the field specified by the invocant I<object> and the field name I<field_name>.
 
-The type of the filed must be C<byte> type.
+The type of the field must be a numeric type. The value is casted to byte type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -865,7 +865,7 @@ C<int16_t (*get_field_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<short> type.
 
-The type of the filed must be C<short> type or smaller numeric type.
+The type of the field must be a numeric type. The value is casted to short type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -891,7 +891,7 @@ C<int32_t (*get_field_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<int> type.
 
-The type of the filed must be C<int> type or smaller numeric type.
+The type of the field must be a numeric type. The value is casted to int type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -917,7 +917,7 @@ C<int64_t (*get_field_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/
 
 Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<long> type.
 
-The type of the filed must be C<long> type or smaller numeric type.
+The type of the field must be a numeric type. The value is casted to long type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -943,7 +943,7 @@ C<float (*get_field_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<float> type.
 
-The type of the filed must be C<float> type or smaller numeric type.
+The type of the field must be a numeric type. The value is casted to float type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -969,7 +969,7 @@ C<double (*get_field_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<double> type.
 
-The type of the filed must be C<double> type or smaller numeric type.
+The type of the field must be a numeric type. The value is casted to double type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -995,7 +995,7 @@ C<void* (*get_field_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/
 
 Gets the value of the field specified by the invocant I<object> and the field name I<field_name>.
 
-The type of the filed must be an object type.
+The type of the field must be an object type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -1027,7 +1027,7 @@ C<void (*set_field_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Ru
 
 Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to the field type.
 
-The type of the filed must be C<byte> type or larger numeric type.
+The type of the field must be C<byte> type or larger numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -1053,7 +1053,7 @@ C<void (*set_field_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"R
 
 Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to the field type.
 
-The type of the filed must be C<short> type or larger numeric type.
+The type of the field must be C<short> type or larger numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -1079,7 +1079,7 @@ C<void (*set_field_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Run
 
 Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to the field type.
 
-The type of the filed must be C<int> type or larger numeric type.
+The type of the field must be C<int> type or larger numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -1105,7 +1105,7 @@ C<void (*set_field_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Ru
 
 Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to the field type.
 
-The type of the filed must be C<long> type or larger numeric type.
+The type of the field must be C<long> type or larger numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -1131,7 +1131,7 @@ C<void (*set_field_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"R
 
 Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value> casting to the field type.
 
-The type of the filed must be C<float> type or larger numeric type.
+The type of the field must be C<float> type or larger numeric type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -1157,7 +1157,7 @@ C<void (*set_field_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value>.
 
-The type of the filed must be C<double> type.
+The type of the field must be C<double> type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -1183,7 +1183,7 @@ C<void (*set_field_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Sets the field specified by the invocant I<object> and the field name I<field_name> to the value I<value>.
 
-The type of the filed must be an object type.
+The type of the field must be an object type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
