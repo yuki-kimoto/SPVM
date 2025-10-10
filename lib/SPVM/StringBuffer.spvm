@@ -226,74 +226,11 @@ class StringBuffer {
   
   method cmp : int ($a : StringBuffer, $b : StringBuffer) {
     
-    my $a_length = -1;
-    my $a_string = (string)undef;
+    my $a_string = $a ? $a->{string} : undef;
     
-    if ($a) {
-      $a_length = $a->length;
-      $a_string = $a->{string};
-    }
+    my $b_string = $b ? $b->{string} : undef;
     
-    my $b_length = -1;
-    my $b_string = (string)undef;
-    
-    if ($b) {
-      $b_length = $b->length;
-      $b_string = $b->{string};
-    }
-    
-    my $cmp = &cmp_common($a_string, $a_length, $b_string, $b_length);
-    
-    return $cmp;
-  }
-  
-  private static method cmp_common : int ($a_string : string, $a_length : int, $b_string : string, $b_length : int) {
-    
-    my $cmp = 0;
-    
-    if ($a_string == undef && $b_string == undef) {
-      $cmp = 0;
-    }
-    elsif ($a_string != undef && $b_string == undef) {
-      $cmp = 1;
-    }
-    elsif ($a_string == undef && $b_string != undef) {
-      $cmp = -1;
-    }
-    else {
-      my $short_length = -1;
-      
-      if ($a_length < $b_length) {
-        $short_length = $a_length;
-      }
-      else {
-        $short_length = $b_length;
-      }
-      
-      my $memcmp_ret = Fn->memcmp($a_string, 0, $b_string, 0, $short_length);
-      
-      if ($memcmp_ret) {
-        if ($memcmp_ret < 0) {
-          $cmp = -1;
-        }
-        else {
-          $cmp = 1;
-        }
-      }
-      elsif ($a_length == $b_length) {
-        $cmp = 0;
-      }
-      else {
-        if ($a_length < $b_length) {
-          $cmp = -1;
-        }
-        else {
-          $cmp = 1;
-        }
-      }
-    }
-    
-    return $cmp;
+    return $a_string cmp $b_string ;
   }
   
   method eq : int ($a : StringBuffer, $b : StringBuffer) {
@@ -318,20 +255,7 @@ class StringBuffer {
   
   method compare_string : int ($string : string) {
     
-    my $a_length = $self->length;
-    my $a_string = $self->{string};
-    
-    my $b_length = -1;
-    my $b_string = (string)undef;
-    
-    if ($string) {
-      $b_length = length $string;
-      $b_string = $string;
-    }
-    
-    my $cmp = &cmp_common($a_string, $a_length, $b_string, $b_length);
-    
-    return $cmp;
+    return $self->{string} cmp $string;
   }
   
   method equals_string : int ($string : string) {
