@@ -345,36 +345,17 @@ class StringBuffer {
   
   method substr : string ($offset : int, $length : int = -1, $replacement : string = undef) {
     
-    my $substr = Fn->substr($self->{string}, $offset, $length, $replacement);
-    
-    return $substr;
+    return Fn->substr($self->{string}, $offset, $length, $replacement);
   }
   
   method index : int ($substring : string, $begin : int = 0, $end : int = -1) {
     
-    my $string = $self->{string};
-    
-    my $string_length = $self->length;
-    
-    unless ($begin >= 0 && $begin <= $string_length) {
-      die "The begin \$begin must be between 0 and the length of string field.";
-    }
-    
-    if ($end < 0) {
-      $end = $string_length;
-    }
-    
-    unless ($end <= $string_length) {
-      die "The end \$end must be less than or equal to the length of string field.";
-    }
-    
-    my $ret = Fn->index($string, $substring, $begin, $end);
-    
-    return $ret;
+    return Fn->index($self->{string}, $substring, $begin, $end);
   }
   
   method contains : int ($substring : string, $begin : int = 0, $end : int = -1) {
-    return $self->index($substring, $begin, $end) >= 0;
+    
+    return Fn->contains($self->{string}, $substring, $begin, $end);
   }
   
 }
