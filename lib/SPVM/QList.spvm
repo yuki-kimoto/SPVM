@@ -23,6 +23,8 @@ class QList extends List {
     
     $self->init($array, $capacity);
     
+    make_fixed_length $self->{array};
+    
     return $self;
   }
   
@@ -30,6 +32,8 @@ class QList extends List {
     my $self = new QList;
     
     $self->init_len($proto_array, $length, $capacity);
+    
+    make_fixed_length $self->{array};
     
     return $self;
   }
