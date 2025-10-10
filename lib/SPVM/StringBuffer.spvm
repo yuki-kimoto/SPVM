@@ -345,19 +345,7 @@ class StringBuffer {
   
   method substr : string ($offset : int, $length : int = -1, $replacement : string = undef) {
     
-    my $string = $self->{string};
-    
-    my $string_length = $self->length;
-    
-    unless ($offset + $length <= $string_length) {
-      $length = $string_length - $offset;
-    }
-    
-    my $substr = Fn->substr($string, $offset, $length);
-    
-    if ($replacement) {
-      $self->replace($offset, $length, $replacement);
-    }
+    my $substr = Fn->substr($self->{string}, $offset, $length, $replacement);
     
     return $substr;
   }
