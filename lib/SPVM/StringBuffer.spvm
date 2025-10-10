@@ -175,7 +175,9 @@ class StringBuffer {
   }
   
   method to_string : string () {
-    my $new_string = Fn->substr($self->{string}, 0, $self->length);
+    
+    my $new_string = copy $self->{string};
+    
     return $new_string;
   }
   
