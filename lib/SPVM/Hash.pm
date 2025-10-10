@@ -22,11 +22,22 @@ The Hash class of L<SPVM> has methods to manipulate hashes(associative arrays).
   $book->set_double(price => 3000.0);
   $book->set(point => Point->new(1, 2));
   
-  my $id = $book->get_int("id");
-  my $name = $book->get_string("name");
-  my $price = $book->get_double("price");
-  my $point = (Point)$book->get("point");
-
+  my $id = $book->get("id")->(int);
+  my $name = $book->get("name")->(string);
+  my $price = $book->get("price")->(double);
+  my $point = $book->get("point")->(Point);
+  
+  # Use hash access syntax
+  $book->{"id"} = 4;
+  $book->{"name"} = "Perl";
+  $book->{"price"} = 3000.0;
+  $book->{"point"} = Point->new(1, 2);
+  
+  my $id = $book->{"id"}->(int);
+  my $name = $book->{"name"}->(string);
+  my $price = $book->{"price"}->(double);
+  my $point = $book->{"point"}->(Point);
+  
 =head1 Details
 
 The hash function is C<siphash-1-3>.
