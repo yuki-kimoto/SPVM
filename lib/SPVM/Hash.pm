@@ -8,7 +8,7 @@ SPVM::Hash - Hash (Associative Array)
 
 =head1 Description
 
-The Hash class of L<SPVM> has methods to manipulate hashes(associative arrays).
+Hash class in L<SPVM> represents hashes(associative arrays).
 
 =head1 Usage
   
