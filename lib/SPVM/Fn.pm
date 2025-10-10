@@ -806,7 +806,7 @@ Replacement:
 
 If $replacement is given, $string_or_ref is set to a string that is the replacement string $replacement of $string from $offset to $length.
 
-If $string_or_ref is a string array of 1-length, $string_or_ref->[0] is set to the replaced string.
+Deprecated: If $string_or_ref is a string array of 1-length, $string_or_ref->[0] is set to the replaced string.
 
 Exceptions:
 
