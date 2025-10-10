@@ -116,52 +116,6 @@ class StringBuffer {
     $self->{string}[$self->length - 1] = (byte)$char;
   }
   
-  method replace : void ($offset : int, $remove_length : int, $replace : string = undef) {
-    $self->splice($offset, $remove_length, $replace);
-  }
-  
-  method splice : string ($offset : int, $remove_length : int, $replace : string = undef) {
-    
-    unless ($offset >= 0) {
-      die "The offset \$offset must be greater than or equal to 0.";
-    }
-    
-    unless ($remove_length >= 0) {
-      die "The removal length \$remove_length must be greater than or equal to 0.";
-    }
-    unless ($offset + $remove_length <= $self->length) {
-      die "\$offset + \$removing length must be less than or equal to the length of \$string buffer.";
-    }
-    
-    my $replace_length = 0;
-    if ($replace) {
-      $replace_length = length $replace;
-    }
-    
-    my $removed_chars = Fn->substr($self->{string}, $offset, $remove_length);
-    
-    my $new_length = $self->length - $remove_length + $replace_length;
-    $self->_maybe_extend($new_length);
-    
-    my $length = $self->length;
-    
-    if ($new_length > $length) {
-      set_length($self->{string}, $new_length);
-    }
-    
-    my $move_length = $length - $offset - $remove_length;
-    
-    Fn->memmove($self->{string}, $offset + $replace_length, $self->{string}, $offset + $remove_length, $move_length);
-    
-    if ($replace) {
-      Fn->memcpy($self->{string}, $offset, $replace, 0, $replace_length);
-    }
-    
-    set_length($self->{string}, $new_length);
-    
-    return $removed_chars;
-  }
-  
   method reserve : void ($new_capacity : int) {
     unless ($new_capacity >= 0) {
       die "The new capacity \$new_capacity must be greater than or equal to 0.";
@@ -282,6 +236,18 @@ class StringBuffer {
   method contains : int ($substring : string, $begin : int = 0, $end : int = -1) {
     
     return Fn->contains($self->{string}, $substring, $begin, $end);
+  }
+  
+  # Deprecated
+  method replace : void ($offset : int, $remove_length : int, $replace : string = undef) {
+    
+    $self->substr($offset, $remove_length, $replace);
+  }
+  
+  # Deprecated
+  method splice : string ($offset : int, $remove_length : int, $replace : string = undef) {
+    
+    return $self->substr($offset, $remove_length, $replace);
   }
   
 }

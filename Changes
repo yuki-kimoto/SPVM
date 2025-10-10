@@ -14,6 +14,7 @@
     * Fn#UINT16_MAX method returns short type instead of int.
   [Internal Change with Incompatible Change Posibility]
     * Simplify Hash#get_byte, get_short, get_int, get_long, get_float, get_double, get_string logic.
+    * Simplify the logic of StringBuffer methods.
   [Exception Message Changes]
     * The exception message in object to numeric conversion is simplified.
   [Changes]
@@ -31,6 +32,10 @@
     * set_field_double native API can receive any numeric value.
   [Changes]
     * Fn#substr replace argument string directory if $replacement argument exists.
+    
+  [Deprecation]
+    * Deprecate StringBuffer#replace method.
+    * Deprecate StringBuffer#splice method.
     
 0.990101 2025-10-09
   [New Features]

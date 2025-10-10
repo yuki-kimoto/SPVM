@@ -123,28 +123,6 @@ C<method push_char : void ($char : int);>
 
 Adds Ascii $char after the end of the string in the string buffer.
 
-=head2 replace
-
-C<method replace : void ($offset : int, $length : int, $replace : string);>
-
-Same as L</"splice"> method, but the return vlaue is not returned.
-
-Exceptions:
-
-Exceptions thrown by L</"splice> method could be thrown.
-
-=head2 splice
-
-C<method splice : string ($offset : int, $remove_length : int, $replace : string = undef);>
-
-Replace the characters of the range specified by $offset and $length in the buffer with $replace string, and returns removed charcters.
-
-Exceptions:
-
-$offset must be greater than or equal to 0. Otherwise an exception is thrown.
-
-$offset + $length must be less than or equal to the length of the string buffer. Otherwise an exception is thrown.
-
 =head2 reserve
 
 C<method reserve : void ($new_capacity : int);>
@@ -282,6 +260,22 @@ The alias for the following code using L</"index"> method.
 Exceptions:
 
 Exceptions thrown by L</"index"> method could be thrown.
+
+=head2 replace
+
+C<method replace : void ($offset : int, $length : int, $replace : string);>
+
+This method is deprecated. Use L</"substr"> method.
+
+Same as L</"substr"> method, but the return vlaue is not returned.
+
+=head2 splice
+
+C<method splice : string ($offset : int, $remove_length : int, $replace : string = undef);>
+
+This method is deprecated. Use L</"substr"> method.
+
+Same as L</"substr"> method, but the return vlaue is not returned.
 
 =head1 Copyright & License
 
