@@ -814,7 +814,7 @@ class Fn {
     return $parts;
   }
   
-  static method substr : string ($string_or_ref : object of string|string[], $offset : int, $length : int = -1, $replacement : string = undef) {
+  static method substr : string ($string_or_ref : string|string[], $offset : int, $length : int = -1, $replacement : string = undef) {
     
     unless ($string_or_ref) {
       die "\$string_or_ref must be defined.";
@@ -853,10 +853,17 @@ class Fn {
     Fn->memcpy($substring, 0, $string, $offset, $length);
     
     if ($replacement) {
+      my $replacement_length = length $replacement;
+      my $replaced_string = Fn->substr($string, 0, $offset) . $replacement . Fn->substr($string, $offset + $length);
+      
       if ($string_or_ref isa string[]) {
-        my $replacement_length = length $replacement;
-        my $replaced_string = Fn->substr($string, 0, $offset) . $replacement . Fn->substr($string, $offset + $length);
         $string_or_ref->(string[])->[0] = $replaced_string;
+      }
+      elsif ($string_or_ref isa string) {
+        my $string = (mutable string)$string_or_ref;
+        
+        set_length($string, length $replaced_string);
+        Fn->memcpy($string, 0, $replaced_string, 0, length $replaced_string);
       }
     }
     

@@ -29,6 +29,8 @@
     * set_field_long native API can receive any numeric value.
     * set_field_float native API can receive any numeric value.
     * set_field_double native API can receive any numeric value.
+  [Changes]
+    * Fn#substr replace argument string directory if $replacement argument exists.
     
 0.990101 2025-10-09
   [New Features]
