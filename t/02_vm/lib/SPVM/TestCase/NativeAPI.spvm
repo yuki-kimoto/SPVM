@@ -184,7 +184,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method get_class_var_byte_by_name_test_exception : byte ();
@@ -211,7 +211,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method get_class_var_short_by_name_test_exception : short ();
@@ -239,7 +239,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method get_class_var_int_by_name_test_exception : int ();
@@ -268,7 +268,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method get_class_var_long_by_name_test_exception : long ();
@@ -298,7 +298,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method get_class_var_float_by_name_test_exception : float ();
@@ -329,7 +329,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method get_class_var_double_by_name_test_exception : double ();
@@ -358,7 +358,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method get_class_var_object_by_name_test_exception : object ();
@@ -402,7 +402,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method set_class_var_byte_by_name_test_exception : byte ();
@@ -442,7 +442,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method set_class_var_short_by_name_test_exception : short ();
@@ -478,7 +478,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method set_class_var_int_by_name_test_exception : int ();
@@ -510,7 +510,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method set_class_var_long_by_name_test_exception : long ();
@@ -537,7 +537,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method set_class_var_float_by_name_test_exception : float ();
@@ -560,7 +560,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method set_class_var_double_by_name_test_exception : double ();
@@ -585,7 +585,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method set_class_var_object_by_name_test_exception : object ();
@@ -749,6 +749,10 @@ class TestCase::NativeAPI {
     
     TestCase::NativeAPI->native_set_field_short_by_name($simple);
     
+    unless ($simple->{byte_value} == (byte)Fn->INT16_MIN) {
+      return 0;
+    }
+    
     unless ($simple->{short_value} == Fn->INT16_MIN) {
       return 0;
     }
@@ -781,7 +785,7 @@ class TestCase::NativeAPI {
     unless ($@) {
       return 0;
     }
-    $@ = undef;
+    
     
     return 1;
   }
@@ -791,6 +795,14 @@ class TestCase::NativeAPI {
     my $simple = TestCase::Simple->new;
     
     TestCase::NativeAPI->native_set_field_int_by_name($simple);
+    
+    unless ($simple->{byte_value} == (short)Fn->INT32_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{short_value} == (short)Fn->INT32_MIN) {
+      return 0;
+    }
     
     unless ($simple->{int_value} == Fn->INT32_MIN) {
       return 0;
@@ -820,7 +832,7 @@ class TestCase::NativeAPI {
     unless ($@) {
       return 0;
     }
-    $@ = undef;
+    
     
     return 1;
   }
@@ -830,6 +842,18 @@ class TestCase::NativeAPI {
     my $simple = TestCase::Simple->new;
     
     TestCase::NativeAPI->native_set_field_long_by_name($simple);
+    
+    unless ($simple->{byte_value} == (byte)Fn->INT64_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{short_value} == (short)Fn->INT64_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{int_value} == (int)Fn->INT64_MIN) {
+      return 0;
+    }
     
     unless ($simple->{long_value} == Fn->INT64_MIN) {
       return 0;
@@ -855,7 +879,7 @@ class TestCase::NativeAPI {
     unless ($@) {
       return 0;
     }
-    $@ = undef;
+    
     
     return 1;
   }
@@ -865,6 +889,22 @@ class TestCase::NativeAPI {
     my $simple = TestCase::Simple->new;
     
     TestCase::NativeAPI->native_set_field_float_by_name($simple);
+    
+    unless ($simple->{byte_value} == (byte)Fn->FLT_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{short_value} == (short)Fn->FLT_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{int_value} == (int)Fn->FLT_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{long_value} == (long)Fn->FLT_MIN) {
+      return 0;
+    }
     
     unless ($simple->{float_value} == Fn->FLT_MIN) {
       return 0;
@@ -887,7 +927,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -897,6 +937,26 @@ class TestCase::NativeAPI {
     my $simple = TestCase::Simple->new;
     
     TestCase::NativeAPI->native_set_field_double_by_name($simple);
+    
+    unless ($simple->{byte_value} == (byte)Fn->DBL_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{short_value} == (short)Fn->DBL_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{int_value} == (int)Fn->DBL_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{long_value} == (long)Fn->DBL_MIN) {
+      return 0;
+    }
+    
+    unless ($simple->{float_value} == (float)Fn->DBL_MIN) {
+      return 0;
+    }
     
     unless ($simple->{double_value} == Fn->DBL_MIN) {
       return 0;
@@ -941,7 +1001,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
@@ -965,7 +1025,7 @@ class TestCase::NativeAPI {
     unless ($@) {
       return 0;
     }
-    $@ = undef;
+    
     
     return 1;
   }
@@ -990,7 +1050,7 @@ class TestCase::NativeAPI {
     unless ($@) {
       return 0;
     }
-    $@ = undef;
+    
     
     return 1;
   }
@@ -1016,7 +1076,7 @@ class TestCase::NativeAPI {
     unless ($@) {
       return 0;
     }
-    $@ = undef;
+    
     
     return 1;
   }
@@ -1043,7 +1103,7 @@ class TestCase::NativeAPI {
     unless ($@) {
       return 0;
     }
-    $@ = undef;
+    
     
     return 1;
   }
@@ -1071,7 +1131,7 @@ class TestCase::NativeAPI {
     unless ($@) {
       return 0;
     }
-    $@ = undef;
+    
     
     return 1;
   }
@@ -1100,7 +1160,7 @@ class TestCase::NativeAPI {
     unless ($@) {
       return 0;
     }
-    $@ = undef;
+    
     
     return 1;
   }
@@ -1443,7 +1503,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method native_new_object_by_name_exception : TestCase::Minimal ();
@@ -1472,7 +1532,7 @@ class TestCase::NativeAPI {
       return 0;
     }
     
-    $@ = undef;
+    
     return 1;
   }
   native static method native_new_pointer_object_by_name_exception : TestCase::Pointer ();

@@ -1557,6 +1557,9 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_short_by_name(SPVM_ENV* env,
   int32_t error_id = 0;
   void* object = stack[0].oval;
   
+  env->set_field_short_by_name(env, stack, object, "byte_value", INT16_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
   env->set_field_short_by_name(env, stack, object, "short_value", INT16_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -1591,6 +1594,12 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_int_by_name(SPVM_ENV* env, S
   int32_t error_id = 0;
   void* object = stack[0].oval;
   
+  env->set_field_int_by_name(env, stack, object, "byte_value", INT32_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_int_by_name(env, stack, object, "short_value", INT32_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
   env->set_field_int_by_name(env, stack, object, "int_value", INT32_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -1622,6 +1631,15 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_long_by_name(SPVM_ENV* env, 
   int32_t error_id = 0;
   void* object = stack[0].oval;
   
+  env->set_field_long_by_name(env, stack, object, "byte_value", INT64_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_long_by_name(env, stack, object, "short_value", INT64_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_long_by_name(env, stack, object, "int_value", INT64_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
   env->set_field_long_by_name(env, stack, object, "long_value", INT64_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -1650,6 +1668,18 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_float_by_name(SPVM_ENV* env,
   int32_t error_id = 0;
   void* object = stack[0].oval;
   
+  env->set_field_float_by_name(env, stack, object, "byte_value", FLT_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_float_by_name(env, stack, object, "short_value", FLT_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_float_by_name(env, stack, object, "int_value", FLT_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_float_by_name(env, stack, object, "long_value", FLT_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
   env->set_field_float_by_name(env, stack, object, "float_value", FLT_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -1674,6 +1704,21 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_double_by_name(SPVM_ENV* env
 
   int32_t error_id = 0;
   void* object = stack[0].oval;
+  
+  env->set_field_double_by_name(env, stack, object, "byte_value", DBL_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_double_by_name(env, stack, object, "short_value", DBL_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_double_by_name(env, stack, object, "int_value", DBL_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_double_by_name(env, stack, object, "long_value", DBL_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_double_by_name(env, stack, object, "double_value", DBL_MIN, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
   
   env->set_field_double_by_name(env, stack, object, "double_value", DBL_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }

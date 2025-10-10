@@ -775,7 +775,9 @@ Returns the value of the field I<field> of the object I<object> interpreting its
 
 C<void (*set_field_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, int8_t value);>
 
-Sets I<value> to the field I<field> of the object I<object> interpreting its type is byte type.
+Sets I<value> to the field I<field> of the object I<object>.
+
+I<value> must be a numeric type. It is casted to byte type.
 
 And the field existence flag is set to 1.
 
@@ -783,7 +785,9 @@ And the field existence flag is set to 1.
 
 C<void (*set_field_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, int16_t value);>
 
-Sets I<value> to the field I<field> of the object I<object> interpreting its type is short type.
+Sets I<value> to the field I<field> of the object I<object>.
+
+I<value> must be a numeric type. It is casted to short type.
 
 And the field existence flag is set to 1.
 
@@ -791,7 +795,9 @@ And the field existence flag is set to 1.
 
 C<void (*set_field_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, int32_t value);>
 
-Sets I<value> to the field I<field> of the object I<object> interpreting its type is int type.
+Sets I<value> to the field I<field> of the object I<object>.
+
+I<value> must be a numeric type. It is casted to int type.
 
 And the field existence flag is set to 1.
 
@@ -799,7 +805,9 @@ And the field existence flag is set to 1.
 
 C<void (*set_field_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, int64_t value);>
 
-Sets I<value> to the field I<field> of the object I<object> interpreting its type is long type.
+Sets I<value> to the field I<field> of the object I<object>.
+
+I<value> must be a numeric type. It is casted to long type.
 
 And the field existence flag is set to 1.
 
@@ -807,7 +815,9 @@ And the field existence flag is set to 1.
 
 C<void (*set_field_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, float value);>
 
-Sets I<value> to the field I<field> of the object I<object> interpreting its type is float type.
+Sets I<value> to the field I<field> of the object I<object>.
+
+I<value> must be a numeric type. It is casted to float type.
 
 And the field existence flag is set to 1.
 
@@ -815,7 +825,9 @@ And the field existence flag is set to 1.
 
 C<void (*set_field_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, double value);>
 
-Sets I<value> to the field I<field> of the object I<object> interpreting its type is double type.
+Sets I<value> to the field I<field> of the object I<object>.
+
+I<value> must be a numeric type. It is casted to double type.
 
 And the field existence flag is set to 1.
 

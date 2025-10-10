@@ -2792,6 +2792,10 @@ void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   
   if (is_numeric_type) {
     switch (field->basic_type->id) {
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+        SPVM_API_set_field_byte(env, stack, object, field, value);
+        break;
+      }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
         SPVM_API_set_field_short(env, stack, object, field, value);
         break;
@@ -2862,6 +2866,14 @@ void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJEC
   
   if (is_numeric_type) {
     switch (field->basic_type->id) {
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+        SPVM_API_set_field_byte(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+        SPVM_API_set_field_short(env, stack, object, field, value);
+        break;
+      }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
         SPVM_API_set_field_int(env, stack, object, field, value);
         break;
@@ -2928,6 +2940,18 @@ void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   
   if (is_numeric_type) {
     switch (field->basic_type->id) {
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+        SPVM_API_set_field_byte(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+        SPVM_API_set_field_short(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+        SPVM_API_set_field_int(env, stack, object, field, value);
+        break;
+      }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
         SPVM_API_set_field_long(env, stack, object, field, value);
         break;
@@ -2990,6 +3014,22 @@ void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
   
   if (is_numeric_type) {
     switch (field->basic_type->id) {
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+        SPVM_API_set_field_byte(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+        SPVM_API_set_field_short(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+        SPVM_API_set_field_int(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+        SPVM_API_set_field_long(env, stack, object, field, value);
+        break;
+      }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
         SPVM_API_set_field_float(env, stack, object, field, value);
         break;
@@ -3048,6 +3088,26 @@ void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   
   if (is_numeric_type) {
     switch (field->basic_type->id) {
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+        SPVM_API_set_field_byte(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+        SPVM_API_set_field_short(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+        SPVM_API_set_field_int(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+        SPVM_API_set_field_long(env, stack, object, field, value);
+        break;
+      }
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+        SPVM_API_set_field_float(env, stack, object, field, value);
+        break;
+      }
       case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
         SPVM_API_set_field_double(env, stack, object, field, value);
         break;
