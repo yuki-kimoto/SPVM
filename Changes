@@ -1,3 +1,52 @@
+0.990103 2025-10-13
+  [Incompabible Changes]
+    * Sorry, the following methods in Hash class are removed in favor of hash access syntax.
+      set_byte
+      set_short
+      set_int
+      set_long
+      set_float
+      set_double
+      set_string
+      get_byte
+      get_short
+      get_int
+      get_long
+      get_float
+      get_double
+      get_string
+      get_or_default_byte
+      get_or_default_short
+      get_or_default_int
+      get_or_default_long
+      get_or_default_float
+      get_or_default_double
+      get_or_default_string
+      delete_or_default_byte
+      delete_or_default_short
+      delete_or_default_int
+      delete_or_default_long
+      delete_or_default_float
+      delete_or_default_double
+      delete_or_default_string
+      delete_or_default
+      
+      # Use hash access syntax
+      $book->{"id"} = 4;
+      $book->{"name"} = "Perl";
+      $book->{"price"} = 3000.0;
+      $book->{"point"} = Point->new(1, 2);
+      
+      my $id = $book->{"id"}->(int);
+      my $name = $book->{"name"}->(string);
+      my $price = $book->{"price"}->(double);
+      my $point = $book->{"point"}->(Point);
+      
+    * Sorry, the following methods in StringBuffer class are removed in favor of StringBuffer#substr method
+      
+      replace
+      splice
+    
 0.990102 2025-10-10
   [Incompatible Changes]
     * Fn#BYTE_MAX method returns byte type instead of int.

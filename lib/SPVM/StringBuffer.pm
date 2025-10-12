@@ -261,22 +261,6 @@ Exceptions:
 
 Exceptions thrown by L</"index"> method could be thrown.
 
-=head2 replace
-
-C<method replace : void ($offset : int, $length : int, $replace : string);>
-
-This method is deprecated. Use L</"substr"> method.
-
-Same as L</"substr"> method, but the return vlaue is not returned.
-
-=head2 splice
-
-C<method splice : string ($offset : int, $remove_length : int, $replace : string = undef);>
-
-This method is deprecated. Use L</"substr"> method.
-
-Same as L</"substr"> method, but the return vlaue is not returned.
-
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

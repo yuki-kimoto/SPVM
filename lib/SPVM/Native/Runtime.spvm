@@ -103,7 +103,7 @@ class Native::Runtime : pointer {
       }
       
       if ($options_h->exists("is_anon")) {
-        my $is_anon = $options_h->get_int("is_anon");
+        my $is_anon = $options_h->{"is_anon"}->(int);
         
         my $basic_type_name = $basic_type->get_name;
         my $basic_type_is_anon = $basic_type->is_anon;

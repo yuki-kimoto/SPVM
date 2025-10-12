@@ -94,9 +94,11 @@ class TestCase::Simple : public {
   static method new_options : TestCase::Simple ($options : object[] = undef) {
     my $options_h = Hash->new($options);
     
-    my $x = $options_h->delete_or_default_int("x", 0);
+    my $x = $options_h->get_or_default("x", 0)->(int);
+    $options_h->delete("x");
     
-    my $y = $options_h->delete_or_default_int("y", 0);
+    my $y = $options_h->get_or_default("y", 0)->(int);
+    $options_h->delete("y");
     
     my $self = new TestCase::Simple;
     

@@ -1359,8 +1359,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
     {
       # SPVM::Hash
       my $opt = SPVM::Hash->new($api->new_object_array("object[]", []));
-      $opt->set_int(count => 5);
-      my $count = $opt->get_int("count");
+      $opt->set(count => SPVM::Int->new(5));
+      my $count = $opt->get("count")->value;
       
       is($count, 5);
     }
@@ -1376,8 +1376,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
     # Pass hash
     {
       my $hash = SPVM::Hash->new($api->new_object_array("object[]", []));
-      $hash->set_int(x => 1);
-      $hash->set_double(y => 2.5);
+      $hash->set(x => SPVM::Int->new(1));
+      $hash->set(y => SPVM::Double->new(2.5));
       is($hash->get("x")->value, 1);
       is($hash->get("y")->value, 2.5);
     }

@@ -238,16 +238,4 @@ class StringBuffer {
     return Fn->contains($self->{string}, $substring, $begin, $end);
   }
   
-  # Deprecated
-  method replace : void ($offset : int, $remove_length : int, $replace : string = undef) {
-    
-    $self->substr($offset, $remove_length, $replace);
-  }
-  
-  # Deprecated
-  method splice : string ($offset : int, $remove_length : int, $replace : string = undef) {
-    
-    return $self->substr($offset, $remove_length, $replace);
-  }
-  
 }

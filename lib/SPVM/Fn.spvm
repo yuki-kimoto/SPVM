@@ -1277,7 +1277,7 @@ class Fn {
     
     my $available_option_names_h = Hash->new;
     for my $available_option_name (@$available_option_names) {
-     $available_option_names_h->set_int($available_option_name, 1);
+     $available_option_names_h->{$available_option_name} =  1;
     }
     
     for (my $i = 0; $i < @$options; $i += 2) {

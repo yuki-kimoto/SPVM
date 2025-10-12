@@ -97,11 +97,11 @@ class TestCase::Module::Hash {
       }
       
       {
-        my $foo = $hash->get_string("foo");
+        my $foo = $hash->{"foo"}->(string);
         unless ($foo && $foo eq "4px") {
           return 0;
         }
-        my $bar = $hash->get_int("bar");
+        my $bar = $hash->{"bar"}->(int);
         unless ($bar && $bar == 3) {
           return 0;
         }
@@ -186,482 +186,6 @@ class TestCase::Module::Hash {
     
     return 1;
   }
-
-  static method get_byte : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_byte(foo => Fn->INT8_MAX);
-      unless ($hash->get("foo") isa Byte) {
-        return 0;
-      }
-      my $value = $hash->get_byte("foo");
-      
-      unless ($value == Fn->INT8_MAX) {
-        return 0;
-      }
-    }
-    
-    # Excetpions
-    {
-      my $hash = Hash->new;
-      
-      $hash->set(foo => Point->new);
-      
-      eval { $hash->get_byte("foo"); }
-      
-      unless ($@) {
-        return 0;
-      }
-    }
-    
-    
-    
-    return 1;
-  }
-  
-  static method get_short : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_short(foo => Fn->INT16_MAX);
-      unless ($hash->get("foo") isa Short) {
-        return 0;
-      }
-      my $value = $hash->get_short("foo");
-      
-      unless ($value == Fn->INT16_MAX) {
-        return 0;
-      }
-    }
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_byte(foo => Fn->INT8_MAX);
-      
-      unless ($hash->get("foo") isa Byte) {
-        return 0;
-      }
-      my $value = $hash->get_short("foo");
-      
-      unless ($value == Fn->INT8_MAX) {
-        return 0;
-      }
-    }
-    
-    # Excetpions
-    {
-      my $hash = Hash->new;
-      
-      $hash->set(foo => Point->new);
-      
-      eval { $hash->get_short("foo"); }
-      
-      unless ($@) {
-        return 0;
-      }
-    }
-    
-    
-    
-    return 1;
-  }
-  
-  static method get_int : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_int(foo => Fn->INT32_MAX);
-      unless ($hash->get("foo") isa Int) {
-        return 0;
-      }
-      my $value = $hash->get_int("foo");
-      
-      unless ($value == Fn->INT32_MAX) {
-        return 0;
-      }
-    }
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_short(foo => Fn->SHORT_MAX);
-      
-      unless ($hash->get("foo") isa Short) {
-        return 0;
-      }
-      my $value = $hash->get_int("foo");
-      
-      unless ($value == Fn->SHORT_MAX) {
-        return 0;
-      }
-    }
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_byte(foo => Fn->INT8_MAX);
-      
-      unless ($hash->get("foo") isa Byte) {
-        return 0;
-      }
-      my $value = $hash->get_int("foo");
-      
-      unless ($value == Fn->INT8_MAX) {
-        return 0;
-      }
-    }
-    
-    # Excetpions
-    {
-      my $hash = Hash->new;
-      
-      $hash->set(foo => Point->new);
-      
-      eval { $hash->get_int("foo"); }
-      
-      unless ($@) {
-        return 0;
-      }
-    }
-    
-    
-    
-    return 1;
-  }
-  
-  static method get_long : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_long(foo => Fn->INT64_MAX);
-      unless ($hash->get("foo") isa Long) {
-        return 0;
-      }
-      my $value = $hash->get_long("foo");
-
-      unless ($value == Fn->INT64_MAX) {
-        return 0;
-      }
-    }
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_int(foo => (int)Fn->INT_MAX);
-      
-      unless ($hash->get("foo") isa Int) {
-        return 0;
-      }
-      my $value = $hash->get_long("foo");
-      
-      unless ($value == Fn->INT_MAX) {
-        return 0;
-      }
-    }
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_short(foo => Fn->SHORT_MAX);
-      
-      unless ($hash->get("foo") isa Short) {
-        return 0;
-      }
-      my $value = $hash->get_long("foo");
-      
-      unless ($value == Fn->SHORT_MAX) {
-        return 0;
-      }
-    }
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_byte(foo => Fn->INT8_MAX);
-      
-      unless ($hash->get("foo") isa Byte) {
-        return 0;
-      }
-      my $value = $hash->get_long("foo");
-      
-      unless ($value == Fn->INT8_MAX) {
-        return 0;
-      }
-    }
-    
-    # Excetpions
-    {
-      my $hash = Hash->new;
-      
-      $hash->set(foo => Point->new);
-      
-      eval { $hash->get_long("foo"); }
-      
-      unless ($@) {
-        return 0;
-      }
-    }
-    
-    
-    
-    return 1;
-  }
-  
-  static method get_float : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_float(foo => Fn->FLT_MIN);
-      unless ($hash->get("foo") isa Float) {
-        return 0;
-      }
-      my $value = $hash->get_float("foo");
-
-      unless ($value == Fn->FLT_MIN) {
-        return 0;
-      }
-    }
-    
-    # Excetpions
-    {
-      my $hash = Hash->new;
-      
-      $hash->set(foo => Point->new);
-      
-      eval { $hash->get_float("foo"); }
-      
-      unless ($@) {
-        return 0;
-      }
-    }
-    
-    
-    
-    return 1;
-  }
-  
-  static method get_double : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_double(foo => Fn->DBL_MIN);
-      unless ($hash->get("foo") isa Double) {
-        return 0;
-      }
-      my $value = $hash->get_double("foo");
-
-      unless ($value == Fn->DBL_MIN) {
-        return 0;
-      }
-    }
-    
-    # Excetpions
-    {
-      my $hash = Hash->new;
-      
-      $hash->set(foo => Point->new);
-      
-      eval { $hash->get_double("foo"); }
-      
-      unless ($@) {
-        return 0;
-      }
-    }
-    
-    
-    
-    return 1;
-  }
-
-  static method get_string : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      my $str = "bar";
-      $hash->set_string(foo => $str);
-      unless ($hash->get_string("foo") isa string) {
-        return 0;
-      }
-      my $value = $hash->get_string("foo");
-      
-      unless ($value == $str) {
-        return 0;
-      }
-      
-    }
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_string(foo => undef);
-      
-      my $value = $hash->get_string("foo");
-      
-      if ($value) {
-        return 0;
-      }
-    }
-      
-    # Excetpions
-    {
-      my $hash = Hash->new;
-      
-      $hash->set(foo => Point->new);
-      
-      eval { $hash->get_string("foo"); }
-      
-      unless ($@) {
-        return 0;
-      }
-    }
-    
-    
-    
-    return 1;
-  }
-  
-  static method set_byte : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_byte(foo => Fn->INT8_MAX);
-      unless ($hash->get("foo") isa Byte) {
-        return 0;
-      }
-      my $value = $hash->get_byte("foo");
-
-      unless ($value == Fn->INT8_MAX) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-  
-  static method set_short : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_short(foo => Fn->INT16_MAX);
-      unless ($hash->get("foo") isa Short) {
-        return 0;
-      }
-      my $value = $hash->get_short("foo");
-
-      unless ($value == Fn->INT16_MAX) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-  
-  static method set_int : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_int(foo => Fn->INT32_MAX);
-      unless ($hash->get("foo") isa Int) {
-        return 0;
-      }
-      my $value = $hash->get_int("foo");
-
-      unless ($value == Fn->INT32_MAX) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-  
-  static method set_long : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_long(foo => Fn->INT64_MAX);
-      unless ($hash->get("foo") isa Long) {
-        return 0;
-      }
-      my $value = $hash->get_long("foo");
-
-      unless ($value == Fn->INT64_MAX) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-  
-  static method set_float : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_float(foo => Fn->FLT_MIN);
-      unless ($hash->get("foo") isa Float) {
-        return 0;
-      }
-      my $value = $hash->get_float("foo");
-
-      unless ($value == Fn->FLT_MIN) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-  
-  static method set_double : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      $hash->set_double(foo => Fn->DBL_MIN);
-      unless ($hash->get("foo") isa Double) {
-        return 0;
-      }
-      my $value = $hash->get_double("foo");
-
-      unless ($value == Fn->DBL_MIN) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  static method set_string : int () {
-    
-    {
-      my $hash = Hash->new;
-      
-      my $str = "bar";
-      $hash->set_string(foo => $str);
-      unless ($hash->get_string("foo") isa string) {
-        return 0;
-      }
-      my $value = $hash->get_string("foo");
-
-      unless ($value == $str) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
   
   static method murmur_hash : int () {
     my $seed = 123456789;
@@ -713,7 +237,7 @@ class TestCase::Module::Hash {
   
   static method get : int () {
     my $hash = Hash->new;
-    $hash->set_int("a" => 1);
+    $hash->set("a" => 1);
     $hash->set("b" => undef);
     $hash->set("c" => "str");
     
@@ -743,7 +267,7 @@ class TestCase::Module::Hash {
     # Generics
     {
       my $hash = (Hash of Int)Hash->new;
-      $hash->set_int("a" => 1);
+      $hash->set("a" => 1);
       
       unless ($hash->get("a")->value == 1) {
         return 0;
@@ -815,7 +339,7 @@ class TestCase::Module::Hash {
     # Generics
     {
       my $hash = (Hash of Int)Hash->new;
-      $hash->set_int("a" => 1);
+      $hash->set("a" => 1);
       
       unless ($hash->delete("a")->value == 1) {
         return 0;
@@ -893,14 +417,14 @@ class TestCase::Module::Hash {
     my $hash = Hash->new;
     for (my $i = 0; $i < 14; ++$i) {
       my $key = "key" . $i;
-      $hash->set_int($key => $i);
+      $hash->set($key => $i);
     }
 
     unless (@{$hash->_entries} == $initial_capacity * 2) {
       return 0;
     }
 
-    unless ($hash->get_int("key12") == 12) {
+    unless ($hash->{"key12"}->(int) == 12) {
       return 0;
     }
 
@@ -915,9 +439,9 @@ class TestCase::Module::Hash {
     my $key2 = (mutable string)new_string_len(1);
     $key2->[0] = 'c';
     
-    $hash->set_int($key0 => 1);
-    $hash->set_int($key1 => 2);
-    $hash->set_int($key2 => 3);
+    $hash->set($key0 => 1);
+    $hash->set($key1 => 2);
+    $hash->set($key2 => 3);
     
     my $keys = $hash->keys;
     
@@ -967,9 +491,9 @@ class TestCase::Module::Hash {
     my $key1 = "b";
     my $key2 = "c";
 
-    $hash->set_int($key0 => 1);
-    $hash->set_int($key1 => 2);
-    $hash->set_int($key2 => 3);
+    $hash->set($key0 => 1);
+    $hash->set($key1 => 2);
+    $hash->set($key2 => 3);
 
     my $values = $hash->values;
 
@@ -1056,13 +580,13 @@ class TestCase::Module::Hash {
         return 0;
       }
       
-      unless ($new_hash->get_int("key0") == 0) {
+      unless ($new_hash->{"key0"}->(int) == 0) {
         return 0;
       }
-      unless ($new_hash->get_int("key1") == 1) {
+      unless ($new_hash->{"key1"}->(int) == 1) {
         return 0;
       }
-      unless ($new_hash->get_int("key2") == 2) {
+      unless ($new_hash->{"key2"}->(int) == 2) {
         return 0;
       }
     }
@@ -1151,13 +675,13 @@ class TestCase::Module::Hash {
         return 0;
       }
       
-      unless ($new_hash->get_int("key0") == 0) {
+      unless ($new_hash->{"key0"}->(int) == 0) {
         return 0;
       }
-      unless ($new_hash->get_int("key1") == 1) {
+      unless ($new_hash->{"key1"}->(int) == 1) {
         return 0;
       }
-      unless ($new_hash->get_int("key2") == 2) {
+      unless ($new_hash->{"key2"}->(int) == 2) {
         return 0;
       }
     }
@@ -1181,119 +705,8 @@ class TestCase::Module::Hash {
     my $hash = Hash->new;
     
     {
-      $hash->set_byte(foo => Fn->INT8_MAX);
-      my $value = $hash->get_or_default_byte("foo", Fn->INT8_MIN);
-      
-      unless ($value == Fn->INT8_MAX) {
-        return 0;
-      }
-      
-      $hash->delete("foo");
-      
-      unless ($hash->get_or_default_byte("foo", Fn->INT8_MIN) == Fn->INT8_MIN) {
-        return 0;
-      }
-    }
-    
-    {
-      $hash->set_short(foo => Fn->INT16_MAX);
-      my $value = $hash->get_or_default_short("foo", Fn->INT16_MIN);
-      unless ($value == Fn->INT16_MAX) {
-        return 0;
-      }
-      
-      $hash->delete("foo");
-      
-      unless ($hash->get_or_default_short("foo", Fn->INT16_MIN) == Fn->INT16_MIN) {
-        return 0;
-      }
-    }
-
-    {
-      $hash->set_int(foo => Fn->INT32_MAX);
-      my $value = $hash->get_or_default_int("foo", Fn->INT32_MIN);
-
-      unless ($value == Fn->INT32_MAX) {
-        return 0;
-      }
-      
-      $hash->delete("foo");
-      
-      unless ($hash->get_or_default_int("foo", Fn->INT32_MIN) == Fn->INT32_MIN) {
-        return 0;
-      }
-    }
-
-    {
-      $hash->set_long(foo => Fn->INT64_MAX);
-      my $value = $hash->get_or_default_long("foo", Fn->INT64_MIN);
-
-      unless ($value == Fn->INT64_MAX) {
-        return 0;
-      }
-      
-      $hash->delete("foo");
-      
-      unless ($hash->get_or_default_long("foo", Fn->INT64_MIN) == Fn->INT64_MIN) {
-        return 0;
-      }
-    }
-
-    {
-      $hash->set_float(foo => Fn->FLT_MIN);
-      my $value = $hash->get_or_default_float("foo", Fn->FLT_MIN);
-
-      unless ($value == Fn->FLT_MIN) {
-        return 0;
-      }
-      
-      $hash->delete("foo");
-      
-      unless ($hash->get_or_default_float("foo", Fn->FLT_MIN) == Fn->FLT_MIN) {
-        return 0;
-      }
-    }
-
-    {
-      $hash->set_double(foo => Fn->DBL_MIN);
-      my $value = $hash->get_or_default_double("foo", Fn->DBL_MIN);
-
-      unless ($value == Fn->DBL_MIN) {
-        return 0;
-      }
-      
-      $hash->delete("foo");
-      
-      unless ($hash->get_or_default_double("foo", Fn->DBL_MIN) == Fn->DBL_MIN) {
-        return 0;
-      }
-    }
-
-    {
       my $str = "bar";
-      $hash->set_string(foo => $str);
-
-      my $default = "abc";
-
-      my $value = $hash->get_or_default_string("foo", $default);
-
-      unless ($value == $str) {
-        return 0;
-      }
-      
-      $hash->delete("foo");
-      
-      unless ($hash->get_or_default_string("foo", $default) == $default) {
-        return 0;
-      }
-      unless ($hash->get_or_default_string("foo", $default) eq $default) {
-        return 0;
-      }
-    }
-
-    {
-      my $str = "bar";
-      $hash->set_string(foo => $str);
+      $hash->set(foo => $str);
       
       my $default = "abc";
       
@@ -1313,132 +726,9 @@ class TestCase::Module::Hash {
     # Generics
     {
       my $hash = (Hash of Int)Hash->new;
-      $hash->set_int("a" => 1);
+      $hash->set("a" => 1);
       
       unless ($hash->get_or_default("a", 2)->value == 1) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-  
-  static method delete_or_default : int () {
-
-    my $hash = Hash->new;
-
-    {
-      $hash->set_byte(foo => Fn->INT8_MAX);
-      my $value = $hash->delete_or_default_byte("foo", Fn->INT8_MIN);
-
-      unless ($value == Fn->INT8_MAX) {
-        return 0;
-      }
-      unless ($hash->delete_or_default_byte("foo", Fn->INT8_MIN) == Fn->INT8_MIN) {
-        return 0;
-      }
-    }
-
-    {
-      $hash->set_short(foo => Fn->INT16_MAX);
-      my $value = $hash->delete_or_default_short("foo", Fn->INT16_MIN);
-      unless ($value == Fn->INT16_MAX) {
-        return 0;
-      }
-      unless ($hash->delete_or_default_short("foo", Fn->INT16_MIN) == Fn->INT16_MIN) {
-        return 0;
-      }
-    }
-
-    {
-      $hash->set_int(foo => Fn->INT32_MAX);
-      my $value = $hash->delete_or_default_int("foo", Fn->INT32_MIN);
-
-      unless ($value == Fn->INT32_MAX) {
-        return 0;
-      }
-      unless ($hash->delete_or_default_int("foo", Fn->INT32_MIN) == Fn->INT32_MIN) {
-        return 0;
-      }
-    }
-
-    {
-      $hash->set_long(foo => Fn->INT64_MAX);
-      my $value = $hash->delete_or_default_long("foo", Fn->INT64_MIN);
-
-      unless ($value == Fn->INT64_MAX) {
-        return 0;
-      }
-      unless ($hash->delete_or_default_long("foo", Fn->INT64_MIN) == Fn->INT64_MIN) {
-        return 0;
-      }
-    }
-
-    {
-      $hash->set_float(foo => Fn->FLT_MIN);
-      my $value = $hash->delete_or_default_float("foo", Fn->FLT_MIN);
-
-      unless ($value == Fn->FLT_MIN) {
-        return 0;
-      }
-      unless ($hash->delete_or_default_float("foo", Fn->FLT_MIN) == Fn->FLT_MIN) {
-        return 0;
-      }
-    }
-
-    {
-      $hash->set_double(foo => Fn->DBL_MIN);
-      my $value = $hash->delete_or_default_double("foo", Fn->DBL_MIN);
-
-      unless ($value == Fn->DBL_MIN) {
-        return 0;
-      }
-      unless ($hash->delete_or_default_double("foo", Fn->DBL_MIN) == Fn->DBL_MIN) {
-        return 0;
-      }
-    }
-
-    {
-      my $str = "bar";
-      $hash->set_string(foo => $str);
-
-      my $default = "abc";
-
-      my $value = $hash->delete_or_default_string("foo", $default);
-
-      unless ($value == $str) {
-        return 0;
-      }
-      unless ($hash->delete_or_default_string("foo", $default) == $default) {
-        return 0;
-      }
-      unless ($hash->delete_or_default_string("foo", $default) eq $default) {
-        return 0;
-      }
-    }
-
-    {
-      my $str = "bar";
-      $hash->set_string(foo => $str);
-      
-      my $default = "abc";
-      
-      my $value = $hash->delete_or_default("foo", $default);
-      
-      unless ($value == $str) {
-        return 0;
-      }
-      unless ($hash->delete_or_default("foo", $default) == $default) {
-        return 0;
-      }
-    }
-    
-    # Generics
-    {
-      my $hash = (Hash of Int)Hash->new;
-      $hash->set_int("a" => 1);
-      
-      unless ($hash->delete_or_default("a", 2)->value == 1) {
         return 0;
       }
     }
@@ -1617,7 +907,7 @@ class TestCase::Module::Hash {
         200 => "b",
       ]);
       
-      unless ($hash->get_string("100") eq "a") {
+      unless ($hash->{"100"}->(string) eq "a") {
         return 0;
       }
     }
@@ -1654,11 +944,11 @@ class TestCase::Module::Hash {
         return 0;
       }
       
-      unless ($hash->get_int("a") == 1) {
+      unless ($hash->{"a"}->(int) == 1) {
         return 0;
       }
       
-      unless ($hash->get_int("b") == 1) {
+      unless ($hash->{"b"}->(int) == 1) {
         return 0;
       }
       
@@ -1678,15 +968,15 @@ class TestCase::Module::Hash {
         return 0;
       }
       
-      unless ($hash->get_int("a") == 2) {
+      unless ($hash->{"a"}->(int) == 2) {
         return 0;
       }
       
-      unless ($hash->get_int("b") == 3) {
+      unless ($hash->{"b"}->(int) == 3) {
         return 0;
       }
       
-      unless ($hash->get_int("c") == 4) {
+      unless ($hash->{"c"}->(int) == 4) {
         return 0;
       }
       
@@ -1706,15 +996,15 @@ class TestCase::Module::Hash {
         return 0;
       }
       
-      unless ($hash->get_int("a") == 2) {
+      unless ($hash->{"a"}->(int) == 2) {
         return 0;
       }
       
-      unless ($hash->get_int("b") == 3) {
+      unless ($hash->{"b"}->(int) == 3) {
         return 0;
       }
       
-      unless ($hash->get_int("c") == 4) {
+      unless ($hash->{"c"}->(int) == 4) {
         return 0;
       }
       
