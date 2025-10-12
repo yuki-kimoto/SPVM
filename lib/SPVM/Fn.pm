@@ -794,9 +794,9 @@ $limit cannnot be 0. Otherwise an exception is thrown.
 
 =head2 substr
 
-C<static method substr : string ($string_or_ref : string|string[], $offset : int, $length : int = -1, $replacement : string = undef);>
+C<static method substr : string ($string : string, $offset : int, $length : int = -1, $replacement : string = undef);>
 
-Cuts a substring of $length from $offset of a string $string (If $string_or_ref is a string, $string is $string_or_ref. If $string_or_ref is a string array, $string is $string_or_ref->[0]), and returns it.
+Cuts a substring of $length from $offset of a string $string, and returns it.
 
 If $length is ommited or $offset plus $length is less than or equal to the length of $string, $length is set to the length of $string minus $offset.
 
@@ -804,15 +804,13 @@ If the length is less than 0, the length to the end of the string is calculated 
 
 Replacement:
 
-If $replacement is given, $string_or_ref is set to a string that is the replacement string $replacement of $string from $offset to $length.
-
-Deprecated: If $string_or_ref is a string array of 1-length, $string_or_ref->[0] is set to the replaced string.
+If $replacement is given, $string is set to a string that is the replacement string $replacement of $string from $offset to $length.
 
 Exceptions:
 
-$string_or_ref must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-$string_or_ref must be a string or a string array of 1-length. Otherwise an exception is thrown.
+$string must be a string. Otherwise an exception is thrown.
 
 $offset must be greater than or equal to 0. Otherwise an exception is thrown.
 

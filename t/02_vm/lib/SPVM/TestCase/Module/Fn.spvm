@@ -3440,19 +3440,6 @@ class TestCase::Module::Fn {
     }
     
     {
-      my $string = "abcde";
-      my $substring = Fn->substr(my $ref = [$string], 1, 2, "XYZ");
-      
-      unless ($substring eq "bc") {
-        return 0;
-      }
-      
-      unless ($ref->[0] eq "aXYZde") {
-        return 0;
-      }
-    }
-    
-    {
       my $string = (mutable string) copy "abcde";
       my $substring = Fn->substr($string, 1, 2, "XYZ");
       

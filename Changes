@@ -46,6 +46,7 @@
       
       replace
       splice
+    * Sorry, Fn#substr method's $string argument only receives string type instead of string|string[] type.
     
 0.990102 2025-10-10
   [Incompatible Changes]
