@@ -578,6 +578,8 @@ SPVM_OP* SPVM_OP_new_op_any_object_type(SPVM_COMPILER* compiler, const char* fil
 
 SPVM_OP* SPVM_OP_new_op_element_type(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
+SPVM_OP* SPVM_OP_new_op_element_array_type(SPVM_COMPILER* compiler, const char* file, int32_t line);
+
 SPVM_OP* SPVM_OP_new_op_void_type(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
 SPVM_OP* SPVM_OP_new_op_unresolved_type(SPVM_COMPILER* compiler, const char* name, int32_t type_dimension, int32_t type_flag, const char* file, int32_t line);

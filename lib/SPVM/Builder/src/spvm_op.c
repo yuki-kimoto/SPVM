@@ -4043,6 +4043,14 @@ SPVM_OP* SPVM_OP_new_op_element_type(SPVM_COMPILER* compiler, const char* file, 
   return op_type;
 }
 
+SPVM_OP* SPVM_OP_new_op_element_array_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_OP* op_type = SPVM_OP_new_op_any_object_array_type(compiler, file, line);
+  
+  op_type->uv.type->is_element_array_type = 1;
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_new_op_unresolved_type(SPVM_COMPILER* compiler, const char* name, int32_t type_dimension, int32_t type_flag, const char* file, int32_t line) {
   SPVM_TYPE* type = SPVM_TYPE_new_unresolved_type(compiler, name, type_dimension, type_flag);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type->unresolved_basic_type_name, type->basic_type, type->dimension, type->flag, file, line);  

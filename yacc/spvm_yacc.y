@@ -215,6 +215,10 @@ return_type
     {
       $$ = SPVM_OP_new_op_element_type(compiler, $1->file, $1->line);
     }
+  | ELEMENT '[' ']'
+    {
+      $$ = SPVM_OP_new_op_element_array_type(compiler, $1->file, $1->line);
+    }
 
 opt_classes
   : /* Empty */
