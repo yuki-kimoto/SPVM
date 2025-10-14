@@ -4039,14 +4039,14 @@ SPVM_OP* SPVM_OP_new_op_any_object_type(SPVM_COMPILER* compiler, const char* fil
 
 SPVM_OP* SPVM_OP_new_op_element_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, file, line);  
-  op_type->uv.type->is_element_type = 1;
+  op_type->uv.type->is_generic_type = 1;
   return op_type;
 }
 
 SPVM_OP* SPVM_OP_new_op_element_array_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   SPVM_OP* op_type = SPVM_OP_new_op_any_object_array_type(compiler, file, line);
   
-  op_type->uv.type->is_element_type = 1;
+  op_type->uv.type->is_generic_type = 1;
   
   return op_type;
 }

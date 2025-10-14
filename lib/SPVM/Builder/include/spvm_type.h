@@ -15,7 +15,7 @@ struct spvm_type {
   int32_t dimension;
   int32_t flag;
   int8_t resolved_in_ast;
-  int8_t is_element_type;
+  int8_t is_generic_type;
   int8_t is_union_type;
 };
 
