@@ -1,6 +1,17 @@
 0.990104 2025-10-15
   [New Features]
     * Add element[] type for generics.
+  [Changes]
+    * Change the return types of the following methods from object[] to element[].
+      List#to_array
+      List#splice
+      List#get_array_unsafe
+      List#get_array
+      QList#to_array
+      QList#splice
+      QList#get_array_unsafe
+      QList#get_array
+      
   [Document Changes]
     * Improve the document for generics.
     

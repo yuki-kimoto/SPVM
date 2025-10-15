@@ -114,7 +114,7 @@ class QList extends List {
     return $element;
   }
   
-  method to_array : object[] () {
+  method to_array : element[] () {
     my $length = $self->{length};
     
     my $new_array = Array->new_proto($self->{array}, $length);
@@ -221,12 +221,12 @@ class QList extends List {
     return $clone;
   }
   
-  method get_array_unsafe : object[] () {
+  method get_array_unsafe : element[] () {
     
     die "Cannot get the internal array in QList object.";
   }
   
-  method get_array : object[] () {
+  method get_array : element[] () {
     
     die "Cannot get the internal array in QList object.";
   }
@@ -312,7 +312,7 @@ class QList extends List {
     $self->set($index, $element);
   }
   
-  method splice : object[] ($offset : int, $remove_length : int, $replace : object[] = undef) {
+  method splice : element[] ($offset : int, $remove_length : int, $replace : object[] = undef) {
     unless ($offset >= 0) {
       die "The offset \$offset must be greater than or equal to 0.";
     }

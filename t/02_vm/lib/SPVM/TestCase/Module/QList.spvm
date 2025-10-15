@@ -482,14 +482,18 @@ class TestCase::Module::QList {
   static method splice : int () {
   
     {
-      my $list = QList->new([(string)1, 2, 3, 4]);
+      my $list = (List of string)QList->new([(string)1, 2, 3, 4]);
       my $removed = $list->splice(1, 2, [(string)20, 30]);
       
-      unless (Array->equals_string($list->to_array->(string[]), [(string)1, 20, 30, 4])) {
+      unless ($removed is_compile_type string[]) {
         return 0;
       }
       
-      unless (Array->equals_string((string[])$removed, [(string)2, 3])) {
+      unless (Array->equals_string($list->to_array, [(string)1, 20, 30, 4])) {
+        return 0;
+      }
+      
+      unless (Array->equals_string($removed, [(string)2, 3])) {
         return 0;
       }
     }
@@ -736,7 +740,7 @@ class TestCase::Module::QList {
     }
     
     {
-      my $list = QList->new([Int->new(1), Int->new(2)]);
+      my $list = (List of Int)QList->new([Int->new(1), Int->new(2)]);
       my $objects = (Int[])$list->to_array;
       
       unless ($objects isa Int[]) {
@@ -747,7 +751,15 @@ class TestCase::Module::QList {
         return 0;
       }
       
-      eval { (Long[])$list->to_array; };
+      {
+        my $array = $list->to_array;
+        
+        unless ($array is_compile_type Int[]) {
+          return 0;
+        }
+      }
+      
+      eval { (Long[])(object[])$list->to_array; };
       unless ($@) {
         return 0;
       }

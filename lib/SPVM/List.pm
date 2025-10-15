@@ -209,7 +209,7 @@ Exceptions thrown by L</"splice"> method could be thrown.
 
 =head2 splice
 
-C<method splice : object[] ($offset : int, $remove_length : int, $replace : object[] = undef);>
+C<method splice : element[] ($offset : int, $remove_length : int, $replace : object[] = undef);>
 
 Replaces the elements of the range specified by $offset and $length with $replace array, and returns removed elements creating a new array.
 
@@ -265,7 +265,7 @@ The length of $list must be greater than 0. Otherwise an exception is thrown.
 
 =head2 to_array
 
-C<method to_array : object[] ();>
+C<method to_array : element[] ();>
 
 Creates a new array and copies all elements of the list into the new array, and returns it.
 
@@ -311,13 +311,13 @@ Exceptions thrown by L</"unshift"> method could be thrown.
 
 =head2 get_array_unsafe
 
-C<method get_array_unsafe : object[] ();>
+C<method get_array_unsafe : element[] ();>
 
 Same as L</"get_array">, but this method is deprecated.
 
 =head2 get_array
 
-C<method get_array : object[] ();>
+C<method get_array : element[] ();>
 
 Returns the internal L</"array">.
 

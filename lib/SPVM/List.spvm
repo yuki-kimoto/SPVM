@@ -193,7 +193,7 @@ class List {
     $self->splice($offset, $remove_length, $replace);
   }
   
-  method splice : object[] ($offset : int, $remove_length : int, $replace : object[] = undef) {
+  method splice : element[] ($offset : int, $remove_length : int, $replace : object[] = undef) {
     unless ($offset >= 0) {
       die "The offset \$offset must be greater than or equal to 0.";
     }
@@ -320,7 +320,7 @@ class List {
     return $element;
   }
   
-  method to_array : object[] () {
+  method to_array : element[] () {
     my $length = $self->length;
     
     my $new_array = Array->new_proto($self->{array}, $length);
@@ -399,11 +399,11 @@ class List {
     
   }
   
-  method get_array_unsafe : object[] () {
+  method get_array_unsafe : element[] () {
     return $self->{array};
   }
   
-  method get_array : object[] () {
+  method get_array : element[] () {
     return $self->{array};
   }
   

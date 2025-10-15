@@ -102,7 +102,7 @@ Same as L<List#shift|SPVM::List/"shift"> method.
 
 =head2 to_array
 
-C<method to_array : object[] ();>
+C<method to_array : element[] ();>
 
 Same as L<List#to_array|SPVM::List/"to_array"> method.
 
@@ -120,13 +120,13 @@ Same as L<List#clone|SPVM::List/"clone"> method.
 
 =head2 get_array_unsafe
 
-C<method get_array_unsafe : object[] ();>
+C<method get_array_unsafe : element[] ();>
 
 Same as L</"get_array">, but this method is deprecated.
 
 =head2 get_array
 
-C<method get_array : object[] ();>
+C<method get_array : element[] ();>
 
 Always throw an exception.
 

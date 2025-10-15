@@ -543,14 +543,18 @@ class TestCase::Module::List {
   static method splice : int () {
   
     {
-      my $list = List->new([(string)1, 2, 3, 4]);
+      my $list = (List of string)List->new([(string)1, 2, 3, 4]);
       my $removed = $list->splice(1, 2, [(string)20, 30]);
       
-      unless (Array->equals_string($list->to_array->(string[]), [(string)1, 20, 30, 4])) {
+      unless ($removed is_compile_type string[]) {
         return 0;
       }
       
-      unless (Array->equals_string((string[])$removed, [(string)2, 3])) {
+      unless (Array->equals_string($list->to_array, [(string)1, 20, 30, 4])) {
+        return 0;
+      }
+      
+      unless (Array->equals_string($removed, [(string)2, 3])) {
         return 0;
       }
     }
@@ -810,7 +814,7 @@ class TestCase::Module::List {
     }
     
     {
-      my $list = List->new([Int->new(1), Int->new(2)]);
+      my $list = (List of Int)List->new([Int->new(1), Int->new(2)]);
       my $objects = (Int[])$list->to_array;
       
       unless ($objects isa Int[]) {
@@ -821,13 +825,19 @@ class TestCase::Module::List {
         return 0;
       }
       
-      eval { (Long[])$list->to_array; };
+      {
+        my $array = $list->to_array;
+        
+        unless ($array is_compile_type Int[]) {
+          return 0;
+        }
+      }
+      
+      eval { (Long[])(object[])$list->to_array; };
       unless ($@) {
         return 0;
       }
     }
-    
-    
     
     return 1;
   }
@@ -1123,6 +1133,14 @@ class TestCase::Module::List {
         return 0;
       }
       
+      {
+        my $array = $list->get_array_unsafe;
+        
+        unless ($array is_compile_type string[]) {
+          return 0;
+        }
+      }
+      
     }
     
     return 1;
@@ -1149,6 +1167,14 @@ class TestCase::Module::List {
       
       unless (@$array == 3) {
         return 0;
+      }
+      
+      {
+        my $array = $list->get_array;
+        
+        unless ($array is_compile_type string[]) {
+          return 0;
+        }
       }
       
     }
