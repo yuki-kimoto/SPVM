@@ -33,8 +33,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   
   ok(SPVM::TestCase::Module::StringBuffer->to_string);
   
-  ok(SPVM::TestCase::Module::StringBuffer->get_string_unsafe);
-  
   ok(SPVM::TestCase::Module::StringBuffer->get_string);
   
   ok(SPVM::TestCase::Module::StringBuffer->set_length);
