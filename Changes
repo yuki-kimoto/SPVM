@@ -1,6 +1,8 @@
 0.990104 2025-10-15
   [New Features]
     * Add element[] type for generics.
+  [Document Changes]
+    * Improve the document for generics.
     
 0.990103 2025-10-13
   [Incompabible Changes]

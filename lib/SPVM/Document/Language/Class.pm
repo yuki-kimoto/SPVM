@@ -1978,7 +1978,54 @@ The use of variable length arguments cannot have a default value. If so, a compi
 
 =head2 Generics
 
-SPVM has generics features. See L<Generic Type|SPVM::Document::Language::Types/"Generic Type"> and L<element Type|SPVM::Document::Language::Types/"element Type"> for details.
+Generics are supported.
+
+The type parameter is C<element>.
+
+C<element> and C<element[]> are allowed as a type parameter based type.
+
+  element
+  element[]
+
+A type parameter based type must be the return type of an instance method.
+
+The return type is casted to the element type of a L<generic type|SPVM::Document::Language::Types/"Generic Type">.
+
+Examples:
+
+  class MyList {
+    
+    has array : object[];
+    
+    static method new : MyList ($objects : object[]) {
+      
+      my $self = new MyList;
+      
+      $self->{array} = $objects;
+      
+      return $self;
+    }
+    
+    method get : element ($index : int) {
+      
+      return $self->{array}->[$index];
+      
+    }
+    
+    method get_array : element[] () {
+      
+      return $self->{array};
+    }
+  }
+  
+  # MyList of string is a generic type
+  my $list = (MyList of string)MyList->new(["a", "b"]);
+  
+  # $elem is casted to string type
+  my $elem = $list->get(0);
+  
+  # $array is casted to string[] type
+  my $array = $list->get_array;
 
 =head1 Local Variable
 
