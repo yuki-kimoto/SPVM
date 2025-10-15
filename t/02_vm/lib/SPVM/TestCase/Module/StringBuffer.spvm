@@ -123,7 +123,7 @@ class TestCase::Module::StringBuffer {
         return 0;
       }
       
-      unless ($buffer->get_string_unsafe == $string) {
+      unless ($buffer->get_string == $string) {
         return 0;
       }
     }
@@ -239,23 +239,6 @@ class TestCase::Module::StringBuffer {
     return 1;
   }
   
-  static method get_string_unsafe : int () {
-    
-    {
-      my $buffer = StringBuffer->new;
-      $buffer->push("abc");
-      
-      my $value = (mutable string)$buffer->get_string_unsafe;
-      $value->[0] = 'd';
-      
-      unless ($buffer->to_string eq "dbc") {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-  
   static method get_string : int () {
     
     {
@@ -287,7 +270,7 @@ class TestCase::Module::StringBuffer {
     }
     {
       my $buffer = StringBuffer->new("abc");
-      my $value = (mutable string)$buffer->get_string_unsafe;
+      my $value = (mutable string)$buffer->get_string;
       my $string = $buffer->to_string;
       $buffer->reserve(5);
       unless ($buffer->capacity == 5) {
@@ -393,7 +376,7 @@ class TestCase::Module::StringBuffer {
       my $buffer = StringBuffer->new;
       $buffer->push("abc");
       
-      my $value = (mutable string)$buffer->get_string_unsafe;
+      my $value = (mutable string)$buffer->get_string;
       
       my $length = $buffer->length;
       

@@ -399,10 +399,6 @@ class List {
     
   }
   
-  method get_array_unsafe : element[] () {
-    return $self->{array};
-  }
-  
   method get_array : element[] () {
     return $self->{array};
   }

@@ -162,10 +162,6 @@ class TestCase::Module::List {
         return 0;
       }
       
-      unless ($list->get_array_unsafe == $array) {
-        return 0;
-      }
-      
     }
     
     return 1;
@@ -1105,42 +1101,6 @@ class TestCase::Module::List {
       unless ($list->get(0)->(string) eq "3" && $list->get(1)->(string) eq "5" && $list->get(2)->(string) eq "7") {
         return 0;
       }
-    }
-    
-    return 1;
-  }
-  
-  static method get_array_unsafe : int () {
-    
-    {
-      my $list = (List of string)List->new_len(new string[0], 3, 5);
-      
-      $list->[0] = "1";
-      
-      $list->[2] = "3";
-      
-      my $array = (string[])$list->get_array_unsafe;
-      
-      unless ($array->[0] eq "1") {
-        return 0;
-      }
-      
-      unless ($array->[2] eq "3") {
-        return 0;
-      }
-      
-      unless (@$array == 3) {
-        return 0;
-      }
-      
-      {
-        my $array = $list->get_array_unsafe;
-        
-        unless ($array is_compile_type string[]) {
-          return 0;
-        }
-      }
-      
     }
     
     return 1;

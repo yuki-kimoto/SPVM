@@ -309,12 +309,6 @@ The elements $elements must be defined.
 
 Exceptions thrown by L</"unshift"> method could be thrown.
 
-=head2 get_array_unsafe
-
-C<method get_array_unsafe : element[] ();>
-
-Same as L</"get_array">, but this method is deprecated.
-
 =head2 get_array
 
 C<method get_array : element[] ();>

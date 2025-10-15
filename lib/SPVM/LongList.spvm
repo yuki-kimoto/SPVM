@@ -277,10 +277,6 @@ class LongList {
     return $new_array;
   }
   
-  method get_array_unsafe : long[] () {
-    return $self->{array};
-  }
-  
   method get_array : long[] () {
     return $self->{array};
   }

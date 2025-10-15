@@ -135,10 +135,6 @@ class StringBuffer {
     return $new_string;
   }
   
-  method get_string_unsafe : string () {
-    return $self->{string};
-  }
-  
   method get_string : string () {
     return $self->{string};
   }

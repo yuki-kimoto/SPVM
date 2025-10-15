@@ -277,10 +277,6 @@ class ShortList {
     return $new_array;
   }
   
-  method get_array_unsafe : short[] () {
-    return $self->{array};
-  }
-  
   method get_array : short[] () {
     return $self->{array};
   }

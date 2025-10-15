@@ -277,10 +277,6 @@ class IntList {
     return $new_array;
   }
   
-  method get_array_unsafe : int[] () {
-    return $self->{array};
-  }
-  
   method get_array : int[] () {
     return $self->{array};
   }

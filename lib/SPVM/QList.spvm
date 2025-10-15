@@ -221,11 +221,6 @@ class QList extends List {
     return $clone;
   }
   
-  method get_array_unsafe : element[] () {
-    
-    die "Cannot get the internal array in QList object.";
-  }
-  
   method get_array : element[] () {
     
     die "Cannot get the internal array in QList object.";

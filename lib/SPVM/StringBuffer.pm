@@ -141,12 +141,6 @@ C<method to_string : string ();>
 
 Creates a new string with the length of the buffer and copies all characters in the buffer into the new string, and returns it.
 
-=head2 get_string_unsafe
-
-C<method get_string_unsafe : string ();>
-
-Same as L</"get_string">, but this method is deprecated.
-
 =head2 get_string
 
 C<method get_string : string ();>

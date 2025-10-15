@@ -277,10 +277,6 @@ class ByteList {
     return $new_array;
   }
   
-  method get_array_unsafe : byte[] () {
-    return $self->{array};
-  }
-  
   method get_array : byte[] () {
     return $self->{array};
   }

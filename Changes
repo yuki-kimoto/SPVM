@@ -14,7 +14,20 @@
       
   [Document Changes]
     * Improve the document for generics.
-    
+  [Incompatible Changes]
+    * Remove get_array_unsafe or get_string_unsafe methods in the following classes.
+
+      ByteList
+      DoubleList
+      FloatList
+      IntList
+      List
+      LongList
+      QList
+      ShortList
+      StringBuffer
+      StringList
+          
 0.990103 2025-10-13
   [Incompabible Changes]
     * Sorry, the following methods in Hash class are removed in favor of hash access syntax.

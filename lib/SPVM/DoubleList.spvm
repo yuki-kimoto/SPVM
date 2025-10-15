@@ -277,10 +277,6 @@ class DoubleList {
     return $new_array;
   }
   
-  method get_array_unsafe : double[] () {
-    return $self->{array};
-  }
-  
   method get_array : double[] () {
     return $self->{array};
   }

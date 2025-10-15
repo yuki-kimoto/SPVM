@@ -105,15 +105,6 @@ class TestCase::Module::QList {
     {
       my $list = QList->new_len(new Int[0], 3);
       
-      eval { $list->get_array_unsafe; }
-      unless ($@) {
-        return 0;
-      }
-    }
-    
-    {
-      my $list = QList->new_len(new Int[0], 3);
-      
       eval { $list->get_array; }
       unless ($@) {
         return 0;

@@ -264,12 +264,6 @@ C<method to_array : short[] ();>
 
 Creates a new array with the length of the list and copies all elements of the list into the new array, and returns it.
 
-=head2 get_array_unsafe
-
-C<method get_array_unsafe : short[] ();>
-
-Same as L</"get_array">, but this method is deprecated.
-
 =head2 get_array
 
 C<method get_array : short[] ();>
