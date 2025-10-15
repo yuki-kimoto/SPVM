@@ -85,19 +85,22 @@ class TestCase::GenericType {
     
     # element[]
     {
-      my $array = ["a", "b"];
-      
-      my $list = (TestCase::List of string)TestCase::List->new($array);
-      
-      my $ret_array = $list->get_array;
-      
-      unless ($ret_array is_compile_type string[]) {
-        return 0;
+      {
+        my $array = ["a", "b"];
+        
+        my $list = (TestCase::List of string)TestCase::List->new($array);
+        
+        my $ret_array = $list->get_array;
+        
+        unless ($ret_array is_compile_type string[]) {
+          return 0;
+        }
+        
+        unless ($ret_array == $array) {
+          return 0;
+        }
       }
       
-      unless ($ret_array == $array) {
-        return 0;
-      }
       
     }
     
