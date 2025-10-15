@@ -130,6 +130,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : type
     | VOID
     | ELEMENT
+    | ELEMENT '[' ']'
 
   opt_classes
     : /* Empty */
