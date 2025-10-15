@@ -1,3 +1,7 @@
+0.990104 2025-10-15
+  [New Features]
+    * Add element[] type for generics.
+    
 0.990103 2025-10-13
   [Incompabible Changes]
     * Sorry, the following methods in Hash class are removed in favor of hash access syntax.

@@ -3846,17 +3846,22 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   return;
                 }
                 
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                
+                SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_call_method->file, op_call_method->line);
+                
+                SPVM_OP* op_dist_type = NULL;
                 if (call_method->method->return_type->dimension == 0) {
-                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                  
-                  SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_call_method->file, op_call_method->line);
-                  SPVM_OP* op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, element_type, op_call_method->file, op_call_method->line);
-                  SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_cur);
-                  SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
+                  op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, element_type, op_call_method->file, op_call_method->line);
                 }
                 else if (call_method->method->return_type->dimension == 1) {
+                  op_dist_type = SPVM_OP_new_op_type(compiler, element_type->basic_type->name, element_type->basic_type, element_type->dimension + 1, element_type->flag, op_call_method->file, op_call_method->line);
+                }
+                else {
                   assert(0);
                 }
+                SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_cur);
+                SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
               }
             }
             

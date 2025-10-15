@@ -17,4 +17,8 @@ class TestCase::List {
     
   }
   
+  method get_array : element[] () {
+    
+    return $self->{array};
+  }
 }

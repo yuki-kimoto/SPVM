@@ -875,6 +875,38 @@ Examples:
   # $elem is casted to string type implicitly becuase get method returns element type.
   my $elem = $list->get(0);
 
+=head2 element[] Type
+
+The C<element[]> type is the type that represents a method defined by a L<method definition|SPVM::Document::Language::Class/"Method Definition"> return an element type of a L<generic type|/"Generic Type">.
+
+  element[]
+
+Examples:
+
+  class MyList {
+    
+    has array : object[];
+    
+    static method new : MyList ($objects : object[]) {
+      
+      my $self = new MyList;
+      
+      $self->{array} = $objects;
+      
+      return $self;
+    }
+    
+    method get_array : element[] () {
+      
+      return $self->{array};
+    }
+  }
+  
+  my $list = (MyList of string)MyList->new(["a", "b"]);
+  
+  # $array is casted to string[] type implicitly becuase get_array method returns element[] type.
+  my $array = $list->get_array;
+  
 =head1 Assignment Requirement
 
 The assignment requirement is the requirement whether one type is able to be assigned to another type.
