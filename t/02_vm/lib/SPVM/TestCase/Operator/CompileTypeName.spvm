@@ -74,6 +74,36 @@ class TestCase::Operator::CompileTypeName {
       }
     }
     
+    # Extra
+    {
+      {
+        use TestCase::List;
+        
+        my $array = [TestCase::List->new(["a", "b"]), TestCase::List->new(["c", "d"])];
+        
+        my $list = (TestCase::List of TestCase::List of string)TestCase::List->new($array);
+        
+        my $ret_array = $list->get_array;
+        
+        unless ($ret_array is_compile_type TestCase::List[]) {
+          return 0;
+        }
+        
+        unless ($ret_array == $array) {
+          return 0;
+        }
+        
+        my $elem = $ret_array->[0];
+        
+        unless ($elem is_compile_type TestCase::List) {
+          return 0;
+        }
+        
+        my $elem_elem = $elem->[0];
+        
+        compile_type_name $elem_elem;
+      }
+    }
     return 1;
   }
 }
