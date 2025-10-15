@@ -3834,19 +3834,19 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             }
             
             if (call_method->method->return_type->is_generic_type) {
-              if (call_method->method->return_type->dimension == 0) {
-                if (call_method->method->is_class_method) {
-                  SPVM_COMPILER_error(compiler, "The return type of a class method cannot be element type.\n  at %s line %d", op_call_method->file, op_call_method->line);
+              SPVM_TYPE* element_type = call_method->type->of;
+              if (element_type) {
+                if (!SPVM_TYPE_is_object_type(compiler, element_type->basic_type->id, element_type->dimension, element_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "Invalid generics: the element type of the invocant of %s#%s method call must be an object type.\n  at %s line %d", call_method->method->current_basic_type->name, call_method->method->name, op_call_method->file, op_call_method->line);
                   return;
                 }
                 
-                SPVM_TYPE* element_type = call_method->type->of;
-                if (element_type) {
-                  if (!SPVM_TYPE_is_object_type(compiler, element_type->basic_type->id, element_type->dimension, element_type->flag)) {
-                    SPVM_COMPILER_error(compiler, "The element type of the invocant of %s#%s method call must be an object type for an element type cast.\n  at %s line %d", call_method->method->current_basic_type->name, call_method->method->name, op_call_method->file, op_call_method->line);
-                    return;
-                  }
-                  
+                if (call_method->method->is_class_method) {
+                  SPVM_COMPILER_error(compiler, "Invalid generics: a class method cannot return a generic type.\n  at %s line %d", op_call_method->file, op_call_method->line);
+                  return;
+                }
+                
+                if (call_method->method->return_type->dimension == 0) {
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
                   SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_call_method->file, op_call_method->line);
@@ -3854,9 +3854,9 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_cur);
                   SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
                 }
-              }
-              else if (call_method->method->return_type->dimension == 1) {
-                assert(0);
+                else if (call_method->method->return_type->dimension == 1) {
+                  assert(0);
+                }
               }
             }
             
