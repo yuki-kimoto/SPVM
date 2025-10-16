@@ -490,6 +490,8 @@ SPVM_OP* SPVM_OP_build_can(SPVM_COMPILER* compiler, SPVM_OP* op_has_interface, S
 
 SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_child);
 
+SPVM_OP* SPVM_OP_build_union_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_left, SPVM_OP* op_type_right);
+
 SPVM_OP* SPVM_OP_build_alias(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_basic_type, SPVM_OP* op_name_alias);
 
 SPVM_OP* SPVM_OP_build_basic_type_id(SPVM_COMPILER* compiler, SPVM_OP* op_basic_type_id, SPVM_OP* op_type);

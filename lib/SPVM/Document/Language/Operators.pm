@@ -3326,6 +3326,8 @@ If the compilation type of I<OPERAND> is equal to the type with type modifier I<
 
 If I<TYPE> is a generic type and I<TYPE> matches patially the compilation type of I<OPERAND> from the top, returns 1.
 
+I<TYPE> must not contain union types.
+
 Otherwise returns 0.
 
 The return type is int type.

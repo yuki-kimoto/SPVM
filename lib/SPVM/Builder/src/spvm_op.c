@@ -2604,7 +2604,7 @@ SPVM_OP* SPVM_OP_build_type_cast(SPVM_COMPILER* compiler, SPVM_OP* op_type_cast,
 SPVM_OP* SPVM_OP_build_generic_type(SPVM_COMPILER* compiler, SPVM_OP* op_container_type, SPVM_OP* op_element_type) {
   
   op_container_type->uv.type->of = op_element_type->uv.type;
-  op_container_type->uv.type->of->has_union_type = op_element_type->uv.type->has_union_type;
+  op_container_type->uv.type->has_union_type = op_element_type->uv.type->has_union_type;
   
   return op_container_type;
 }
@@ -2741,7 +2741,13 @@ SPVM_OP* SPVM_OP_build_accessor(SPVM_COMPILER* compiler, SPVM_OP* op_accessor, S
 
 SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_operand, SPVM_OP* op_type) {
   
-  if (!(op_is->id == SPVM_OP_C_ID_IS_COMPILE_TYPE)) {
+  if (op_is->id == SPVM_OP_C_ID_IS_COMPILE_TYPE) {
+    if (op_type->uv.type->has_union_type) {
+      SPVM_COMPILER_error(compiler, "The right type must not contain union types.\n  at %s line %d", op_type->file, op_type->line);
+      return op_is;
+    }
+  }
+  else {
     if (op_type->uv.type->of) {
       SPVM_COMPILER_error(compiler, "The right type must not be a generic type.\n  at %s line %d", op_type->file, op_type->line);
       return op_is;
@@ -3614,6 +3620,31 @@ SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_origin
 }
 
 SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
+  
+  if (op_type->uv.type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE) {
+    SPVM_COMPILER_error(compiler, "Duplicated mutable type modifier.\n  at %s line %d", op_type->file, op_type->line);
+  }
+  
+  // Type
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag | SPVM_NATIVE_C_TYPE_FLAG_MUTABLE);
+  type->unresolved_basic_type_name = op_type->uv.type->unresolved_basic_type_name;
+  
+  // Type OP
+  SPVM_OP* op_mutable_type = SPVM_OP_new_op_type(compiler, type->unresolved_basic_type_name, type->basic_type, type->dimension, type->flag, op_type->file, op_type->line);
+  
+  return op_mutable_type;
+}
+
+SPVM_OP* SPVM_OP_build_union_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_left, SPVM_OP* op_type_right) {
+  
+  SPVM_OP* op_union_type = SPVM_OP_new_op_any_object_type(compiler, op_type_left->file, op_type_left->line);
+  op_union_type->uv.type->is_union_type = 1;
+  op_union_type->uv.type->has_union_type = 1;
+  
+  return op_union_type;
+}
+
+SPVM_OP* SPVM_OP_build_union(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
   if (op_type->uv.type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE) {
     SPVM_COMPILER_error(compiler, "Duplicated mutable type modifier.\n  at %s line %d", op_type->file, op_type->line);

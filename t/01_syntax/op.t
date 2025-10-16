@@ -547,6 +547,11 @@ use Test::More;
   }
   
   {
+    my $source = 'class MyClass { static method main : void () { my $value = "a"; $value is_compile_type Int of string|string[]; } }';
+    compile_not_ok($source, q|The right type must not contain union types.|);
+  }
+  
+  {
     my $source = 'class MyClass { static method main : void () { my $value = "a"; $value is_type string|string[]; } }';
     compile_not_ok($source, q|Unexpected token|);
   }
