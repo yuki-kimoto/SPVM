@@ -109,6 +109,7 @@ union_type
     {
       SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
       op_type->uv.type->is_union_type = 1;
+      op_type->uv.type->has_union_type = 1;
       $$ = op_type;
     }
 

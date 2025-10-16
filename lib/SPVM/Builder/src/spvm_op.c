@@ -2604,6 +2604,7 @@ SPVM_OP* SPVM_OP_build_type_cast(SPVM_COMPILER* compiler, SPVM_OP* op_type_cast,
 SPVM_OP* SPVM_OP_build_generic_type(SPVM_COMPILER* compiler, SPVM_OP* op_container_type, SPVM_OP* op_element_type) {
   
   op_container_type->uv.type->of = op_element_type->uv.type;
+  op_container_type->uv.type->of->has_union_type = op_element_type->uv.type->has_union_type;
   
   return op_container_type;
 }
