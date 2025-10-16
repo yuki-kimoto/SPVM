@@ -1081,7 +1081,6 @@ void SPVM_CHECK_check_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
     SPVM_COMPILER_error(compiler, "The multi dimensional array of any object is not allowed.\n  at %s line %d", op_type->file, op_type->line);
   }
   
-
 }
 
 void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
@@ -1615,9 +1614,20 @@ void SPVM_CHECK_check_ast_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* bas
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
-              
-              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, op_type->uv.type->basic_type->name, strlen(op_type->uv.type->basic_type->name));
             }
+            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, op_type->uv.type->basic_type->name, strlen(op_type->uv.type->basic_type->name));
+            
+            SPVM_TYPE* of = op_type->uv.type;
+            while (1) {
+              of = of->of;
+              
+              if (!of) {
+                break;
+              }
+              
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, of->basic_type->name, strlen(of->basic_type->name));
+            }
+            
             break;
           }
         }
@@ -1854,23 +1864,12 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
             
-            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, operand_type->basic_type->name, strlen(operand_type->basic_type->name));
+            const char* compile_type_name = SPVM_TYPE_new_generic_type_name(compiler, operand_type);
             
-            const char* type_name = SPVM_TYPE_new_generic_type_name(compiler, operand_type);
-            
-            SPVM_TYPE* of = operand_type;
-            while (1) {
-              of = of->of;
-              
-              if (!of) {
-                break;
-              }
-              
-              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, of->basic_type->name, strlen(of->basic_type->name));
-            }
+            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, compile_type_name, strlen(compile_type_name));
             
             SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-            SPVM_OP* op_constant_string = SPVM_OP_new_op_constant_string(compiler, type_name, strlen(type_name), op_cur->file, op_cur->line);
+            SPVM_OP* op_constant_string = SPVM_OP_new_op_constant_string(compiler, compile_type_name, strlen(compile_type_name), op_cur->file, op_cur->line);
             SPVM_OP_replace_op(compiler, op_stab, op_constant_string);
             op_cur = op_constant_string;
             
