@@ -4,6 +4,8 @@
   [Changes]
     * compile_type_name operator returns a generic type.
     * is_compile_type operator matches if the right type matches partially the type of the operand from the top.
+  [Compilation Error Changes]
+    * Duplicated mutable type modifier causes a compilation error.
     
 0.990104 2025-10-15
   [New Features]

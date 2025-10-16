@@ -3614,6 +3614,10 @@ SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_origin
 
 SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
+  if (op_type->uv.type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE) {
+    SPVM_COMPILER_error(compiler, "Duplicated mutable type modifier.\n  at %s line %d", op_type->file, op_type->line);
+  }
+  
   // Type
   SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag | SPVM_NATIVE_C_TYPE_FLAG_MUTABLE);
   type->unresolved_basic_type_name = op_type->uv.type->unresolved_basic_type_name;

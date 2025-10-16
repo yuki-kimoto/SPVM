@@ -563,6 +563,14 @@ use Test::More;
   
 }
 
+# mutable type
+{
+  {
+    my $source = 'class MyClass { static method main : void () { my $value = (mutable mutable string)undef; } }';
+    compile_not_ok($source, qr|Duplicated mutable type modifier.|);
+  }
+}
+
 # use
 {
   {
