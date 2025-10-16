@@ -3612,16 +3612,16 @@ SPVM_OP* SPVM_OP_build_ref_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_origin
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem) {
+SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
   // Type
-  SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_type_elem->uv.type->basic_type->id, op_type_elem->uv.type->dimension, op_type_elem->uv.type->flag | SPVM_NATIVE_C_TYPE_FLAG_MUTABLE);
-  type->unresolved_basic_type_name = op_type_elem->uv.type->unresolved_basic_type_name;
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag | SPVM_NATIVE_C_TYPE_FLAG_MUTABLE);
+  type->unresolved_basic_type_name = op_type->uv.type->unresolved_basic_type_name;
   
   // Type OP
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type->unresolved_basic_type_name, type->basic_type, type->dimension, type->flag, op_type_elem->file, op_type_elem->line);
+  SPVM_OP* op_mutable_type = SPVM_OP_new_op_type(compiler, type->unresolved_basic_type_name, type->basic_type, type->dimension, type->flag, op_type->file, op_type->line);
   
-  return op_type;
+  return op_mutable_type;
 }
 
 SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem, SPVM_OP* op_length, int32_t is_varargs) {
