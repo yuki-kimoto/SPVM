@@ -1396,7 +1396,7 @@ type_check
     {
       $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
     }
-  | operator IS_COMPILE_TYPE compile_type
+  | operator IS_COMPILE_TYPE type
     {
       $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
     }

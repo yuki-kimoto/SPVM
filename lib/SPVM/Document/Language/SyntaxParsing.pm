@@ -543,7 +543,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | operator ISA_ERROR runtime_type
     | operator IS_TYPE runtime_type
     | operator IS_ERROR runtime_type
-    | operator IS_COMPILE_TYPE compile_type
+    | operator IS_COMPILE_TYPE type
 
   type_cast
     : '(' type ')' operator %prec CONVERT

@@ -532,8 +532,8 @@ use Test::More;
 # isa, is_type, is_compile_type
 {
   {
-    my $source = 'class MyClass { static method main : void () { my $value = "a"; $value is_compile_type List of string; } }';
-    compile_not_ok($source, q|Unexpected token|);
+    my $source = 'class MyClass { static method main : void () { use List; my $value = "a"; $value is_compile_type List of string; } }';
+    compile_ok($source);
   }
   
   {

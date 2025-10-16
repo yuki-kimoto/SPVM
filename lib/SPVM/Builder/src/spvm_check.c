@@ -2705,8 +2705,13 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             SPVM_TYPE* type = op_type->uv.type;
             
+            // Partial match is ok
+            const char* operand_compile_type_name = SPVM_TYPE_new_generic_type_name(compiler, operand_type);
+            const char* compile_type_name = SPVM_TYPE_new_generic_type_name(compiler, type);
+            int32_t match = strncmp(operand_compile_type_name, compile_type_name, strlen(compile_type_name)) == 0;
+            
             // If left type is same as right type, this return true. Otherwise, return false
-            if (operand_type->basic_type->id == type->basic_type->id && operand_type->dimension == type->dimension && operand_type->flag == type->flag) {
+            if (match) {
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
               SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
@@ -3847,6 +3852,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               op_cur = op_constant;
             }
             
+            // Generics
             if (call_method->method->return_type->is_generic_type) {
               SPVM_TYPE* element_type = call_method->type->of;
               if (element_type) {
@@ -3870,6 +3876,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 }
                 else if (call_method->method->return_type->dimension == 1) {
                   op_dist_type = SPVM_OP_new_op_type(compiler, element_type->basic_type->name, element_type->basic_type, element_type->dimension + 1, element_type->flag, op_call_method->file, op_call_method->line);
+                  op_dist_type->uv.type->of = element_type->of;
                 }
                 else {
                   assert(0);

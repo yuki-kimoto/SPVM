@@ -86,6 +86,34 @@ class TestCase::Operator::IsCompileType {
       
     }
     
+    {
+      my $obj = (Hash of List of string)undef;
+      unless ($obj is_compile_type Hash of List of string) {
+        return 0;
+      }
+    }
+    
+    {
+      my $obj = (Hash of List of string)undef;
+      unless ($obj is_compile_type Hash of List) {
+        return 0;
+      }
+    }
+    
+    {
+      my $obj = (Hash of List of string)undef;
+      unless ($obj is_compile_type Hash) {
+        return 0;
+      }
+    }
+    
+    {
+      my $obj = (Hash of List of string)undef;
+      if ($obj is_compile_type Hash of List of string of int) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 }

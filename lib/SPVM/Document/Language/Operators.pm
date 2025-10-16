@@ -3320,9 +3320,13 @@ Examples:
 
 The C<is_compile_type> operator checks whether the compilation type of an operand is equal to a type.
 
-  OPERAND is_compile_type QUALIFIED_TYPE
+  OPERAND is_compile_type TYPE
 
-If the compilation type of I<OPERAND> is equal to the type with type modifier I<QUALIFIED_TYPE>, returns 1, otherwise returns 0.
+If the compilation type of I<OPERAND> is equal to the type with type modifier I<TYPE>, returns 1.
+
+If I<TYPE> is a generic type and I<TYPE> matches patially the compilation type of I<OPERAND> from the top, returns 1.
+
+Otherwise returns 0.
 
 The return type is int type.
 
@@ -3362,7 +3366,28 @@ Examples:
       # Pass
     }
   }
-
+  
+  {
+    my $object = (Hash of List of string)undef;
+    if ($object is_compile_type Hash of List of string) {
+      # Pass
+    }
+  }
+  
+  {
+    my $object = (Hash of List of string)undef;
+    if ($object is_compile_type Hash of List) {
+      # Pass
+    }
+  }
+  
+  {
+    my $object = (Hash of List of string)undef;
+    if ($object is_compile_type Hash) {
+      # Pass
+    }
+  }
+  
 =head2 isa_error Operator
 
 The C<isa_error> operator checks whether the type specified by a basic type ID can be assigned to a class type. This operator is normally used for error classes to check L</"eval_error_id Operator">.

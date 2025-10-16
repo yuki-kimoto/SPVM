@@ -2740,20 +2740,22 @@ SPVM_OP* SPVM_OP_build_accessor(SPVM_COMPILER* compiler, SPVM_OP* op_accessor, S
 
 SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_operand, SPVM_OP* op_type) {
   
-  if (op_type->uv.type->of) {
-    SPVM_COMPILER_error(compiler, "The right type must not be a generic type.\n  at %s line %d", op_type->file, op_type->line);
-    return op_is;
-  }
-  
-  if (op_type->uv.type->is_union_type) {
-    SPVM_COMPILER_error(compiler, "The right type must not be a union type.\n  at %s line %d", op_type->file, op_type->line);
-    return op_is;
-  }
-  
-  if (op_type->uv.type->flag) {
-    if (!(op_is->id == SPVM_OP_C_ID_IS_COMPILE_TYPE)) {
-      SPVM_COMPILER_error(compiler, "The right type must not be reference types, mutable types, object... types.\n  at %s line %d", op_type->file, op_type->line);
+  if (!(op_is->id == SPVM_OP_C_ID_IS_COMPILE_TYPE)) {
+    if (op_type->uv.type->of) {
+      SPVM_COMPILER_error(compiler, "The right type must not be a generic type.\n  at %s line %d", op_type->file, op_type->line);
       return op_is;
+    }
+    
+    if (op_type->uv.type->is_union_type) {
+      SPVM_COMPILER_error(compiler, "The right type must not be a union type.\n  at %s line %d", op_type->file, op_type->line);
+      return op_is;
+    }
+    
+    if (op_type->uv.type->flag) {
+      if (!(op_is->id == SPVM_OP_C_ID_IS_COMPILE_TYPE)) {
+        SPVM_COMPILER_error(compiler, "The right type must not be reference types, mutable types, object... types.\n  at %s line %d", op_type->file, op_type->line);
+        return op_is;
+      }
     }
   }
   
