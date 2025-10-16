@@ -91,6 +91,15 @@ class TestCase::Operator::CompileTypeName {
       }
     }
     
+    {
+      my $obj = (string|Int)undef;
+      my $compile_type_name = compile_type_name $obj;
+      
+      unless ($compile_type_name eq "object") {
+        return 0;
+      }
+    }
+    
     # Extra
     {
       {
