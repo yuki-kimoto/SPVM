@@ -27,7 +27,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
   %type <opval> grammar
   %type <opval> field_name method_name class_name
-  %type <opval> basic_type  opt_basic_type array_type array_type_with_length type runtime_type compile_type ref_type return_type
+  %type <opval> basic_type  opt_basic_type array_type array_type_with_length type runtime_type ref_type return_type
   %type <opval> union_type generic_type
   %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
   %type <opval> opt_definitions definitions definition
@@ -87,15 +87,12 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : basic_type
     | array_type
 
-  compile_type
+  type
     : runtime_type
     | ref_type
-    | MUTABLE compile_type
-
-  type
-    : compile_type
     | union_type
     | generic_type
+    | MUTABLE type
 
   union_type
     : type BIT_OR type
