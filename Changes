@@ -1,3 +1,8 @@
+0.990105 2025-10-16
+  [Bug Fix]
+    * Fix a bug that compile_type_name operator causes segfault in some cases.
+  [Changes]
+    * compile_type_name operator returns a generic type.
 0.990104 2025-10-15
   [New Features]
     * Add element[] type for generics.

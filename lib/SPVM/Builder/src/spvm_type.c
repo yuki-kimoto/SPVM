@@ -563,6 +563,61 @@ const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_
   return SPVM_TYPE_new_type_name_with_eternal_flag(compiler, basic_type_id, dimension, flag, is_permanent);
 }
 
+const char* SPVM_TYPE_new_generic_type_name(SPVM_COMPILER* compiler, SPVM_TYPE* type) {
+  
+  int32_t generic_type_name_length = 0;
+  
+  const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
+  int32_t type_name_length = strlen(type_name);
+  
+  generic_type_name_length += type_name_length;
+  
+  SPVM_TYPE* of = type;
+  while (1) {
+    of = of->of;
+    
+    if (!of) {
+      break;
+    }
+    
+    const char* of_type_name = SPVM_TYPE_new_type_name(compiler, of->basic_type->id, of->dimension, of->flag);
+    int32_t of_type_name_length = strlen(of_type_name);
+    
+    // " of OF_TYPE_NAME"
+    generic_type_name_length += 4;
+    
+    generic_type_name_length += of_type_name_length;
+  }
+  
+  char* generic_type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, generic_type_name_length + 1);
+  
+  int32_t generic_type_name_index = 0;
+  memcpy(generic_type_name + generic_type_name_index, type_name, strlen(type_name));
+  generic_type_name_index += strlen(type_name);
+  
+  of = type;
+  while (1) {
+    of = of->of;
+    
+    if (!of) {
+      break;
+    }
+    
+    const char* of_type_name = SPVM_TYPE_new_type_name(compiler, of->basic_type->id, of->dimension, of->flag);
+    int32_t of_type_name_length = strlen(of_type_name);
+    
+    memcpy(generic_type_name + generic_type_name_index, " of ", strlen(" of "));
+    
+    generic_type_name_index += 4;
+    
+    memcpy(generic_type_name + generic_type_name_index, of_type_name, of_type_name_length);
+    
+    generic_type_name_index += of_type_name_length;
+  }
+  
+  return generic_type_name;
+}
+
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   SPVM_TYPE* type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, sizeof(SPVM_TYPE));

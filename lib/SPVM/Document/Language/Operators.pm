@@ -3459,14 +3459,22 @@ The return type is string type.
 
 Examples:
   
-  # "Point"
+  # Point
   my $point = Point->new;
-  my $type_name = type_name $point;
+  my $compile_type_name = type_name $point;
   
-  # "object"
+  # object
   my $point = (object)Point->new;
-  my $type_name = type_name $point;
-
+  my $compile_type_name = type_name $point;
+  
+  # mutable string
+  my $string = (mutable string)copy "abc";
+  my $compile_type_name = compile_type_name $string;
+  
+  # Hash of List of string
+  my $object = (Hash of List of string)undef;
+  my $compile_type_name = compile_type_name $object;
+  
 =head2 basic_type_id Operator
 
 The C<basic_type_id> operator gets the basic type ID of a type.

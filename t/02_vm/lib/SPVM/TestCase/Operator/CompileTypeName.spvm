@@ -74,6 +74,23 @@ class TestCase::Operator::CompileTypeName {
       }
     }
     
+    {
+      my $obj = (mutable string)copy "abc";
+      my $compile_type_name = compile_type_name $obj;
+      unless ($compile_type_name eq "mutable string") {
+        return 0;
+      }
+    }
+    
+    {
+      my $obj = (Hash of List of string)undef;
+      my $compile_type_name = compile_type_name $obj;
+      unless ($compile_type_name eq "Hash of List of string") {
+        warn $compile_type_name;
+        return 0;
+      }
+    }
+    
     # Extra
     {
       {

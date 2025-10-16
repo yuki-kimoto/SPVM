@@ -1853,8 +1853,22 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             SPVM_OP* op_operand = op_cur->first;
             
             SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
-            const char* type_name = SPVM_TYPE_new_type_name(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+            
             SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, operand_type->basic_type->name, strlen(operand_type->basic_type->name));
+            
+            const char* type_name = SPVM_TYPE_new_generic_type_name(compiler, operand_type);
+            
+            SPVM_TYPE* of = operand_type;
+            while (1) {
+              of = of->of;
+              
+              if (!of) {
+                break;
+              }
+              
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, of->basic_type->name, strlen(of->basic_type->name));
+            }
+            
             SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
             SPVM_OP* op_constant_string = SPVM_OP_new_op_constant_string(compiler, type_name, strlen(type_name), op_cur->file, op_cur->line);
             SPVM_OP_replace_op(compiler, op_stab, op_constant_string);

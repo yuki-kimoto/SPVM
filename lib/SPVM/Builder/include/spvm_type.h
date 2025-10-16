@@ -23,6 +23,8 @@ SPVM_TYPE* SPVM_TYPE_new_uninitialized(SPVM_COMPILER* compiler);
 
 const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
+const char* SPVM_TYPE_new_generic_type_name(SPVM_COMPILER* compiler, SPVM_TYPE* type);
+
 SPVM_TYPE* SPVM_TYPE_new_void_type(SPVM_COMPILER* compiler);
 
 SPVM_TYPE* SPVM_TYPE_new_undef_type(SPVM_COMPILER* compiler);
