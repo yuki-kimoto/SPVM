@@ -3116,6 +3116,8 @@ If the destination numeric type is smaller than the source numeric type, L<Numer
 
 An unboxing conversion could be performed on the object of any object type C<object>.
 
+If the sorce type is C<undef> type, 0 is returned.
+
 Exceptions:
 
 If the type of the object is not its corresponding numeric type, an exception is thrown.
