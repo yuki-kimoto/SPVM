@@ -160,6 +160,17 @@ class TestCase::GenericType {
       }
     }
     
+    {
+      my $values = (List of Int)List->new;
+      
+      my $ret = 1 ? $values : undef;
+      
+      unless ($ret is_compile_type List of Int) {
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
 }
