@@ -2901,32 +2901,32 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(SPVM_E
   env->assign_object(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_NUMERIC_OBJECT_TO_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* object, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* object, int32_t* error_id) {
   
   *out = env->numeric_object_to_byte(env, stack, object, error_id);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_NUMERIC_OBJECT_TO_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* object, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* object, int32_t* error_id) {
   
   *out = env->numeric_object_to_short(env, stack, object, error_id);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_NUMERIC_OBJECT_TO_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t* error_id) {
   
   *out = env->numeric_object_to_int(env, stack, object, error_id);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_NUMERIC_OBJECT_TO_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* object, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* object, int32_t* error_id) {
   
   *out = env->numeric_object_to_long(env, stack, object, error_id);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_NUMERIC_OBJECT_TO_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* object, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* object, int32_t* error_id) {
   
   *out = env->numeric_object_to_float(env, stack, object, error_id);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_NUMERIC_OBJECT_TO_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* object, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* object, int32_t* error_id) {
   
   *out = env->numeric_object_to_double(env, stack, object, error_id);
 }
