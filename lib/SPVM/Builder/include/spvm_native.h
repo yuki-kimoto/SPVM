@@ -355,6 +355,9 @@ struct spvm_env {
   int64_t (*numeric_object_to_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
   float (*numeric_object_to_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
   double (*numeric_object_to_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
+  void* (*numeric_object_to_string_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
+  void* (*numeric_object_to_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
+
 };
 
 struct spvm_env_api {

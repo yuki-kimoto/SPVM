@@ -357,6 +357,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_numeric_object_to_long,
     SPVM_API_numeric_object_to_float,
     SPVM_API_numeric_object_to_double,
+    SPVM_API_numeric_object_to_string_no_mortal,
+    SPVM_API_numeric_object_to_string,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -6930,5 +6932,76 @@ double SPVM_API_numeric_object_to_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   }
   
   return out;
+}
+
+void* SPVM_API_numeric_object_to_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
+  
+  *error_id = 0;
+  
+  if (object == NULL) {
+    return NULL;
+  }
+  
+  int32_t is_numeric_object_type = SPVM_API_is_numeric_object_type(env->runtime, object->basic_type, object->type_dimension, 0);
+  
+  if (!is_numeric_object_type) {
+    void* obj_exception = env->new_string_nolen_no_mortal(env, stack, "Type conversion failed. The type of the object must be a numeric object type.");
+    env->set_exception(env, stack, obj_exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+    return 0;
+  }
+  
+  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  
+  void* out;
+  switch (object->basic_type->id) {
+    case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS : {
+      int8_t** fields = (int8_t**)object->data;
+      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId8, *(int8_t*)&fields[0]);
+      break;
+    }
+    case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS : {
+      int16_t** fields = (int16_t**)object->data;
+      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId16, *(int16_t*)&fields[0]);
+      break;
+    }
+    case SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS : {
+      int32_t** fields = (int32_t**)object->data;
+      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId32, *(int32_t*)&fields[0]);
+      break;
+    }
+    case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS : {
+      int64_t** fields = (int64_t**)object->data;
+      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId64, *(int64_t*)&fields[0]);
+      break;
+    }
+    case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS : {
+      float** fields = (float**)object->data;
+      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%g", *(float*)&fields[0]);
+      break;
+    }
+    case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS : {
+      double** fields = (double**)object->data;
+      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%g", *(double*)&fields[0]);
+      break;
+    }
+    default : {
+      assert(0);
+    }
+  }
+  
+  int32_t string_length = strlen(tmp_buffer);
+  void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
+  
+  return out;
+}
+
+void* SPVM_API_numeric_object_to_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
+  
+  SPVM_OBJECT* new_object = SPVM_API_numeric_object_to_string_no_mortal(env, stack, object, error_id);
+  
+  SPVM_API_push_mortal(env, stack, new_object);
+  
+  return new_object;
 }
 

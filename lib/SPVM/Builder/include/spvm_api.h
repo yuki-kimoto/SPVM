@@ -474,5 +474,7 @@ int32_t SPVM_API_numeric_object_to_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 int64_t SPVM_API_numeric_object_to_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id);
 float SPVM_API_numeric_object_to_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id);
 double SPVM_API_numeric_object_to_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id);
+void* SPVM_API_numeric_object_to_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id);
+void* SPVM_API_numeric_object_to_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id);
 
 #endif

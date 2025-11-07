@@ -1,6 +1,9 @@
 0.990106 2025-11-07
   [Changes]
     * Any object to numeric converion returns 0 if the object is undef.
+  [New Features]
+    * Add numeric_object_to_string_no_mortal native API.
+    * Add numeric_object_to_string native API.
     
 0.990105 2025-10-16
   [Bug Fix]

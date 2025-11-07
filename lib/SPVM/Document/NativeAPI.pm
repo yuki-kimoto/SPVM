@@ -2802,6 +2802,20 @@ Converts a numeric object to double value.
 
 If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
 
+=head2 numeric_object_to_string_no_mortal
+
+C<void* (*numeric_object_to_string_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+
+Converts a numeric object to string.
+
+If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+
+=head2 numeric_object_to_string
+
+C<void* (*numeric_object_to_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+
+Same as L</"numeric_object_to_string_no_mortal">, but I<object> is pushed to the mortal stack.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3064,6 +3078,8 @@ Native APIs have its IDs.
   255 numeric_object_to_long
   256 numeric_object_to_float
   257 numeric_object_to_double
+  258 numeric_object_to_string_no_mortal
+  259 numeric_object_to_string
 
 =head1 Constant Values
 
