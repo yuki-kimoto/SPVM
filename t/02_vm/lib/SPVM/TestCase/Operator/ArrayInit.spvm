@@ -350,4 +350,23 @@ class TestCase::Operator::ArrayInit {
     return 0;
   }
   
+  static method issue_806_array_init_with_varlen_args : int () {
+    
+    my $ret = &_varlen_args("abc", {x => 1, y => 2});
+    
+    unless ($ret == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  private static method _varlen_args : int ($args : object...) {
+    
+    my $options = Fn->to_hash($args->[1]);
+    
+    return $options->{"x"}->(int) + $options->{"y"}->(int);
+  }
+  
+  
 }
