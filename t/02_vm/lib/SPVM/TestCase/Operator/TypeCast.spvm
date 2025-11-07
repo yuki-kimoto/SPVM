@@ -1080,6 +1080,14 @@ class TestCase::Operator::TypeCast {
     }
     
     {
+      my $object = (Byte)undef;
+      my $value = (byte)$object;
+      
+      unless ($value == 0) {
+        return 0;
+      }
+    }
+    {
       {
         my $object = (object)Byte->new(-1);
         my $value = (byte)$object;
@@ -1153,6 +1161,15 @@ class TestCase::Operator::TypeCast {
     
     unless ($value == Fn->INT16_MIN) {
       return 0;
+    }
+    
+    {
+      my $object = (Short)undef;
+      my $value = (short)$object;
+      
+      unless ($value == 0) {
+        return 0;
+      }
     }
     
     {
@@ -1241,6 +1258,15 @@ class TestCase::Operator::TypeCast {
     }
     
     {
+      my $object = (Int)undef;
+      my $value = (int)$object;
+      
+      unless ($value == 0) {
+        return 0;
+      }
+    }
+    
+    {
       my $object = (object)undef;
       my $value = (int)$object;
       
@@ -1323,6 +1349,15 @@ class TestCase::Operator::TypeCast {
     
     unless ($value == Fn->INT64_MIN) {
       return 0;
+    }
+    
+    {
+      my $object = (Long)undef;
+      my $value = (long)$object;
+      
+      unless ($value == 0) {
+        return 0;
+      }
     }
     
     {
@@ -1411,6 +1446,15 @@ class TestCase::Operator::TypeCast {
     }
     
     {
+      my $object = (Float)undef;
+      my $value = (float)$object;
+      
+      unless ($value == 0) {
+        return 0;
+      }
+    }
+    
+    {
       my $object = (object)undef;
       my $value = (float)$object;
       
@@ -1492,6 +1536,15 @@ class TestCase::Operator::TypeCast {
     
     unless ($value == Fn->DBL_MIN) {
       return 0;
+    }
+    
+    {
+      my $object = (Double)undef;
+      my $value = (double)$object;
+      
+      unless ($value == 0) {
+        return 0;
+      }
     }
     
     {
