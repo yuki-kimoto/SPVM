@@ -2729,7 +2729,49 @@ class TestCase::Operator::TypeCast {
       my $string2 = (mutable string)$string;
     }
     
-    $@ = undef;
+    # Any object to string
+    {
+      {
+        my $object = (object)undef;
+        
+        my $ret = (string)$object;
+        
+        if ($ret) {
+          return 0;
+        }
+      }
+      
+      {
+        my $object = (object)"a";
+        
+        eval { my $ret = (mutable string)$object; }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $object = (object)"abc";
+        
+        my $ret = (string)$object;
+        
+        unless ($ret == $object) {
+          return 0;
+        }
+      }
+      
+      {
+        my $object = (object)"abc";
+        
+        eval { my $ret = (Point)$object; }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
     
     return 1;
   }

@@ -1420,10 +1420,22 @@ I<ReferenceX> is a L<reference type|/"Reference Types">.
   <tr><td>Yes</td><td>mutable string</td><td>string</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#is_read_only-Operator">is_read_only Operator</a></td></tr>
   <tr><td>Yes</td><td>string</td><td>string</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>string</td><td>NumericX</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-to-String-Conversion">Numeric-to-String Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>string</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>string</td><td>Any Object <code>object</code></td><td>Yes</td><td>See below *1</td></tr>
   <tr><td>Yes</td><td>string</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>string</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
+
+*1
+
+If the object is undef, it is returned.
+
+If the cast type is C<mutable string>, and the object is read-only, throws an exception.
+
+If the object is a numeric object, the value is converted to a numeric value using L<SPVM::Document::Language::Operators#/"Numeric-to-String Conversion">.
+
+If the object is string type, it is returned.
+
+If the object is other type, an exception is thrown.
 
 =end html
 
