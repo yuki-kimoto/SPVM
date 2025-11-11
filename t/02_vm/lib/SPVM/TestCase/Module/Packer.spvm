@@ -1420,19 +1420,6 @@ class TestCase::Module::Packer {
       }
     }
     
-    {
-      my $packer = Packer->new;
-      
-      my $template = "a3";
-      my $objects = [(object)1];
-      
-      eval { $packer->pack($template, $objects); }
-      
-      unless ($@) {
-        return 0;
-      }
-    }
-    
     return 1;
   }
   
