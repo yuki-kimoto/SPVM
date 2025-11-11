@@ -3262,6 +3262,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             if (cast_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_ANY_OBJECT_TO_STRING);
+                              opcode.operand2 = cast_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
                               check_exception = 1;
                             }
                             else {
