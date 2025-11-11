@@ -108,6 +108,15 @@ class TestCase::Module::Hash {
       }
     }
     
+    # Key is numeric object
+    {
+      my $hash = Hash->new({1 => "4px"});
+      
+      unless ($hash->{"1"}->(string) eq "4px") {
+        return 0;
+      }
+    }
+    
     # Exception
     {
       # odd number array
@@ -117,15 +126,6 @@ class TestCase::Module::Hash {
           return 0;
         }
       }
-      
-      # Key must be string
-      {
-        eval { Hash->new({1 => "4px"}); };
-        unless ($@) {
-          return 0;
-        }
-      }
-      
     }
     
     # Hash access
