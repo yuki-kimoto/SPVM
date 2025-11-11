@@ -2752,6 +2752,69 @@ class TestCase::Operator::TypeCast {
       }
       
       {
+        {
+          my $object = (object)(byte)-128;
+          
+          my $ret = (string)$object;
+          
+          unless ($ret eq "-128") {
+            return 0;
+          }
+        }
+        
+        {
+          my $object = (object)(short)-32768;
+          
+          my $ret = (string)$object;
+          
+          unless ($ret eq "-32768") {
+            return 0;
+          }
+        }
+        
+        {
+          my $object = (object)-2147483648;
+          
+          my $ret = (string)$object;
+          
+          unless ($ret eq "-2147483648") {
+            return 0;
+          }
+        }
+        
+        {
+          my $object = (object)-9223372036854775808L;
+          
+          my $ret = (string)$object;
+          
+          unless ($ret eq "-9223372036854775808") {
+            return 0;
+          }
+        }
+        
+        {
+          my $object = (object)1.5f;
+          
+          my $ret = (string)$object;
+          
+          unless ($ret eq "1.5") {
+            return 0;
+          }
+        }
+        
+        {
+          my $object = (object)1.5;
+          
+          my $ret = (string)$object;
+          
+          unless ($ret eq "1.5") {
+            return 0;
+          }
+        }
+        
+      }
+      
+      {
         my $object = (object)"abc";
         
         my $ret = (string)$object;

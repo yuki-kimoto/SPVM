@@ -3260,19 +3260,9 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING);
                           }
                           else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
-                            if (cast_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_ANY_OBJECT_TO_STRING);
-                              opcode.operand2 = cast_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
-                              check_exception = 1;
-                            }
-                            else {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECK);
-                              opcode.operand2 = op_cast_type->uv.type->basic_type->id;
-                              int32_t operand3 = op_cast_type->uv.type->dimension;
-                              assert(operand3 < 0xFFFF);
-                              opcode.operand3 = operand3;
-                              check_exception = 1;
-                            }
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_ANY_OBJECT_TO_STRING);
+                            opcode.operand2 = cast_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
+                            check_exception = 1;
                           }
                           else if (SPVM_TYPE_is_byte_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_STRING);

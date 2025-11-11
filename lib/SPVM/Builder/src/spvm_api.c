@@ -6963,7 +6963,6 @@ void* SPVM_API_numeric_object_to_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* sta
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
-  void* out;
   switch (object->basic_type->id) {
     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS : {
       int8_t** fields = (int8_t**)object->data;
@@ -7003,7 +7002,7 @@ void* SPVM_API_numeric_object_to_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* sta
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   
-  return out;
+  return string;
 }
 
 void* SPVM_API_numeric_object_to_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {

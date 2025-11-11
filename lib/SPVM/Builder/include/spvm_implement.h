@@ -491,7 +491,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(SPVM_ENV*
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else if (env->is_numeric_object(env, stack, object)) {
-    env->assign_object(env, stack, out, env->numeric_object_to_string(env, stack, object, error_id));
+    env->assign_object(env, stack, out, env->numeric_object_to_string_no_mortal(env, stack, object, error_id));
   }
   else if (!env->is_string(env, stack, object)) {
     int32_t scope_id = env->enter_scope(env, stack);
