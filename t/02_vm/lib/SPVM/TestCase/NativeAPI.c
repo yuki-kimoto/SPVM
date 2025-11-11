@@ -277,6 +277,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->numeric_object_to_double != &env_array[257]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->numeric_object_to_string_no_mortal != &env_array[258]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->numeric_object_to_string != &env_array[259]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_numeric_object != &env_array[260]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

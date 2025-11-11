@@ -359,6 +359,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_numeric_object_to_double,
     SPVM_API_numeric_object_to_string_no_mortal,
     SPVM_API_numeric_object_to_string,
+    SPVM_API_is_numeric_object,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -3345,10 +3346,19 @@ int32_t SPVM_API_is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
   else {
     is_numeric_array = 0;
   }
-
+  
   return is_numeric_array;
 }
 
+int32_t SPVM_API_is_numeric_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  int32_t is_numeric_object = 0;
+  if (object) {
+    is_numeric_object = SPVM_API_is_numeric_object_type(env->runtime, object->basic_type, object->type_dimension, 0);
+  }
+  
+  return is_numeric_object;
+}
 
 int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   

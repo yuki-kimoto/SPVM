@@ -4,6 +4,7 @@
   [New Features]
     * Add numeric_object_to_string_no_mortal native API.
     * Add numeric_object_to_string native API.
+    * Add is_numeric_object native API.
     
 0.990105 2025-10-16
   [Bug Fix]

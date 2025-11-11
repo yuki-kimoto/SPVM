@@ -2816,6 +2816,12 @@ C<void* (*numeric_object_to_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* obje
 
 Same as L</"numeric_object_to_string_no_mortal">, but I<object> is pushed to the mortal stack.
 
+=head2 is_numeric_object
+
+C<int32_t (*is_numeric_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+
+If I<object> is defined and a numeric object, returns 1, otherwise returns 0.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3080,6 +3086,7 @@ Native APIs have its IDs.
   257 numeric_object_to_double
   258 numeric_object_to_string_no_mortal
   259 numeric_object_to_string
+  260 is_numeric_object
 
 =head1 Constant Values
 

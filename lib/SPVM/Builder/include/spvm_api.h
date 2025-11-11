@@ -350,6 +350,7 @@ int32_t SPVM_API_is_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object)
 int32_t SPVM_API_is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 int32_t SPVM_API_is_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 int32_t SPVM_API_is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
+int32_t SPVM_API_is_numeric_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 int32_t SPVM_API_is_any_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
