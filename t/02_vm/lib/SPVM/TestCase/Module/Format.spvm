@@ -55,7 +55,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     
     return 1;
@@ -97,7 +97,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     return 1;
   }
@@ -147,7 +147,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     
     return 1;
@@ -163,7 +163,7 @@ class TestCase::Module::Format {
         warn("got error: $@");
         return 0;
       }
-      $@ = undef;
+      
     }
     {
       # Invalid conversion (unknown specifier)
@@ -173,7 +173,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     {
       # Invalid conversion (no type)
@@ -183,7 +183,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     {
       # Missing argument
@@ -193,7 +193,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     {
       my $string = "abc\n";
@@ -281,7 +281,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     return 1;
   }
@@ -329,7 +329,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     return 1;
   }
@@ -367,7 +367,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     
     return 1;
@@ -391,7 +391,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     {
       eval {
@@ -400,7 +400,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     return 1;
   }
@@ -418,7 +418,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     {
       eval {
@@ -427,7 +427,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     return 1;
   }
@@ -465,7 +465,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     
     return 1;
@@ -490,7 +490,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     
     # ""
@@ -528,7 +528,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     return 1;
   }
@@ -566,7 +566,7 @@ class TestCase::Module::Format {
       unless ($@) {
         return 0;
       }
-      $@ = undef;
+      
     }
     
     return 1;
