@@ -479,7 +479,7 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING(SPVM_ENV* e
   }
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, int32_t is_mutable, int32_t* error_id) {
   
   void* string = in;
   if (env->is_string(env, stack, string) && env->is_read_only(env, stack, string)) {

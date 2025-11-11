@@ -337,7 +337,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_ANY_OBJECT_TO_STRING: {
-        SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], opcode->operand2, &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_REF: {
