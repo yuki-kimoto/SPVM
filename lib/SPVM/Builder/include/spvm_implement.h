@@ -469,7 +469,7 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(SPVM_ENV* env, SPV
 static inline void SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, int32_t* error_id) {
   
   void* string = in;
-  if (env->is_string(env, stack, string) && env->is_read_only(env, stack, string)) {
+  if (string && env->is_read_only(env, stack, string)) {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
