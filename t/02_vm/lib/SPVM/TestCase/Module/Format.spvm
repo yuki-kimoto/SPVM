@@ -483,14 +483,9 @@ class TestCase::Module::Format {
     unless (Format->sprintf("%05s", [(object)"str"]) eq "00str") { return 0; }
     unless (Format->sprintf("%-5s", [(object)"str"]) eq "str  ") { return 0; }
     unless (Format->sprintf("%+s", [(object)"str"]) eq "str") { return 0; }
-    {
-      eval {
-        Format->sprintf("%s", [(object)1]);
-      };
-      unless ($@) {
-        return 0;
-      }
-      
+    
+    unless (Format->sprintf("%s", [(object)1]) eq "1") {
+      return 0;
     }
     
     # ""
