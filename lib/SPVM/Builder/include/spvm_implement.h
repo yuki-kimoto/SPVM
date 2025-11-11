@@ -481,14 +481,35 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING(SPVM_ENV* e
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, int32_t is_mutable, int32_t* error_id) {
   
-  void* string = in;
-  if (env->is_string(env, stack, string) && env->is_read_only(env, stack, string)) {
+  void* object = in;
+  if (!object) {
+    env->assign_object(env, stack, out, object);
+  }
+  else if (is_mutable && env->is_read_only(env, stack, object)) {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
+  else if (!env->is_string(env, stack, object)) {
+    int32_t scope_id = env->enter_scope(env, stack);
+    
+    void* obj_src_type_name = env->get_type_name(env, stack, object);
+    const char* src_type_name = env->get_chars(env, stack, obj_src_type_name);
+    const char* dist_basic_type_name = "string";
+    void* obj_dist_type_name = env->get_compile_type_name(env, stack, dist_basic_type_name, 0, 0);
+    const char* dist_type_name = env->get_chars(env, stack, obj_dist_type_name);
+    char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], src_type_name, dist_type_name);
+    
+    int32_t string_length = strlen(tmp_buffer);
+    void* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+    
+    env->leave_scope(env, stack, scope_id);
+  }
   else {
-    env->assign_object(env, stack, out, string);
+    env->assign_object(env, stack, out, object);
   }
 }
 
