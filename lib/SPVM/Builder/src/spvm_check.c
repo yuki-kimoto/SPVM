@@ -1479,6 +1479,8 @@ SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* 
   op_array_init->sibparent = op_list_args;
   assert(op_array_init->moresib == 0);
   
+  op_list_args->last = op_array_init;
+  
   return op_array_init_previous;
 }
 
