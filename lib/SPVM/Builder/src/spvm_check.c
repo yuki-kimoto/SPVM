@@ -1399,6 +1399,9 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
 SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
+  
+  call_method->varargs_checked = 1;
+  
   const char* method_name = call_method->op_name->uv.name;
   
   SPVM_OP* op_list_args = op_call_method->first;
@@ -1474,8 +1477,6 @@ SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* 
     op_array_init->sibparent = op_list_args;
     assert(op_array_init->moresib == 0);
   }
-  
-  call_method->varargs_checked = 1;
   
   if (op_array_init) {
     return op_array_init_previous;
