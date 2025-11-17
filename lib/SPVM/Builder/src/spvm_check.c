@@ -1424,7 +1424,7 @@ SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* 
   SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, op_call_method->file, op_call_method->line);
   SPVM_OP* op_array_init_previous = NULL;
   
-  SPVM_OP* op_list_varargs = SPVM_OP_new_op_list(compiler, op_call_method->file, op_call_method->line);
+  SPVM_OP* op_list_array_init = SPVM_OP_new_op_list(compiler, op_call_method->file, op_call_method->line);
   
   int32_t arg_index = 0;
   SPVM_OP* op_operand = op_list_args->first;
@@ -1447,7 +1447,7 @@ SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* 
       char place[255];
       sprintf(place, "the variable length arguments of %s#%s method", op_call_method->uv.call_method->method->current_basic_type->name, method_name);
       
-      op_operand = SPVM_CHECK_check_assign(compiler, any_object_type, op_operand, place, op_list_varargs->file, op_list_varargs->line);
+      op_operand = SPVM_CHECK_check_assign(compiler, any_object_type, op_operand, place, op_list_array_init->file, op_list_array_init->line);
       if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
         return NULL;
       }
@@ -1457,12 +1457,12 @@ SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* 
       operand_type = SPVM_CHECK_get_type(compiler, op_operand);
       
       if (!SPVM_TYPE_is_any_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-        SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_list_varargs->file, op_list_varargs->line);
-        SPVM_OP* op_dist_type = SPVM_OP_new_op_any_object_type(compiler, op_list_varargs->file, op_list_varargs->line);
+        SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_list_array_init->file, op_list_array_init->line);
+        SPVM_OP* op_dist_type = SPVM_OP_new_op_any_object_type(compiler, op_list_array_init->file, op_list_array_init->line);
         op_operand = SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_operand);
       }
       
-      SPVM_OP_insert_child(compiler, op_list_varargs, op_list_varargs->last, op_operand);
+      SPVM_OP_insert_child(compiler, op_list_array_init, op_list_array_init->last, op_operand);
       
       op_operand = op_stab;
     }
@@ -1471,7 +1471,7 @@ SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* 
   }
   
   int32_t is_key_values = 0;
-  op_array_init = SPVM_OP_build_array_init(compiler, op_array_init, op_list_varargs, is_key_values);
+  op_array_init = SPVM_OP_build_array_init(compiler, op_array_init, op_list_array_init, is_key_values);
   
   op_array_init_previous->sibparent = op_array_init;
   op_array_init_previous->moresib = 1;
