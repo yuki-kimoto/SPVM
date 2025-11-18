@@ -1006,7 +1006,7 @@ void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       // AST traversals
       if (method->op_block) {
-        SPVM_CHECK_check_ast_op_types(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_types(compiler, basic_type, method);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           return;
         }
@@ -1549,7 +1549,7 @@ void SPVM_CHECK_check_call_method_args(SPVM_COMPILER* compiler, SPVM_OP* op_call
             
 }
 
-void SPVM_CHECK_check_ast_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   // Run OPs
   SPVM_OP* op_root = method->op_block;
