@@ -1022,7 +1022,7 @@ void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler) {
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
         // AST traversal - Check if a block needs "leave scope" operation
-        SPVM_CHECK_check_ast_if_block_need_leave_scope(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_fix_leave_scope(compiler, basic_type, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
         // AST traversal - Check call stack ids of variable declarations
@@ -4495,7 +4495,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
   }
 }
 
-void SPVM_CHECK_check_ast_if_block_need_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_fix_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   // Block stack
   SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
