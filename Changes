@@ -1,3 +1,9 @@
+0.990107 2025-11-18
+  [Bug Fix]
+    * Fix bugs of variable length argument with options.
+    
+      my $r = $app->get("/a/b/:foo/#bar/*baz/d<title>d/c", {foo => "1", bar => "2", baz => "3"}, "a/b");
+    
 0.990106 2025-11-11
   [Changes]
     * Any object to numeric converion returns 0 if the object is undef.

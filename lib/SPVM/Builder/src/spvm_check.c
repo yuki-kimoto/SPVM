@@ -1678,6 +1678,11 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
   SPVM_OP* op_cur = op_root;
   int32_t finish = 0;
   while (op_cur) {
+    
+    if (op_cur->syntax_checked) {
+      goto EDN_OF_CHECK;
+    }
+    
     // [START]Preorder traversal position
     switch (op_cur->id) {
       case SPVM_OP_C_ID_BLOCK: {
@@ -4251,6 +4256,10 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           }
           break;
         }
+        
+        op_cur->syntax_checked = 1;
+        
+        EDN_OF_CHECK:
         
         // [END]Postorder traversal position
         
