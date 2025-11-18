@@ -1679,1001 +1679,1041 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
   int32_t finish = 0;
   while (op_cur) {
     
-    if (op_cur->syntax_checked) {
-      goto EDN_OF_CHECK;
+    if (!op_cur->syntax_checked) {
+      // [START]Preorder traversal position
+      switch (op_cur->id) {
+        case SPVM_OP_C_ID_BLOCK: {
+          SPVM_BLOCK* block = op_cur->uv.block;
+          // Start scope
+          if (!block->no_scope) {
+            int32_t block_var_decl_base = var_decl_stack->length;
+            SPVM_LIST_push(var_decl_scope_base_stack, (void*)(intptr_t)block_var_decl_base);
+          }
+          
+          if (block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
+            loop_block_stack_length++;
+          }
+          else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
+            eval_block_stack_length++;
+          }
+          
+          break;
+        }
+        case SPVM_OP_C_ID_SWITCH: {
+          SPVM_LIST_push(op_switch_stack, op_cur);
+          break;
+        }
+        case SPVM_OP_C_ID_COPY_FIELDS: {
+          
+          SPVM_OP* op_copy_fields = op_cur;
+          
+          SPVM_OP* op_dist = op_cur->first;
+          
+          SPVM_OP* op_src = SPVM_OP_sibling(compiler, op_dist);
+          
+          SPVM_OP* op_type_for_fields = op_cur->last;
+          
+          SPVM_TYPE* type_for_fields = op_type_for_fields->uv.type;
+          
+          if (!SPVM_TYPE_is_class_type(compiler, type_for_fields->basic_type->id, type_for_fields->dimension, type_for_fields->flag))
+          {
+            SPVM_COMPILER_error(compiler, "The operand type of copy_fields operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+            return;
+          }
+          
+          SPVM_BASIC_TYPE* basic_type_for_fields = type_for_fields->basic_type;
+          
+          SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
+          SPVM_LIST* dist_fields = basic_type_for_fields->fields;
+          
+          SPVM_OP* op_name_var_dist = SPVM_OP_new_op_name_tmp_var(compiler, op_cur->file, op_cur->line);
+          SPVM_OP* op_var_dist = SPVM_OP_new_op_var(compiler, op_name_var_dist);
+          SPVM_OP* op_var_dist_decl = SPVM_OP_new_op_var_decl(compiler, op_cur->file, op_cur->line);
+          SPVM_OP_build_var_decl(compiler, op_var_dist_decl, op_var_dist, NULL, NULL);
+          SPVM_OP* op_assign_var_dist = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+          SPVM_OP_cut_op(compiler, op_dist);
+          SPVM_OP_build_assign(compiler, op_assign_var_dist, op_var_dist, op_dist);
+          
+          SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_var_dist);
+          
+          SPVM_OP* op_name_var_src = SPVM_OP_new_op_name_tmp_var(compiler, op_cur->file, op_cur->line);
+          SPVM_OP* op_var_src = SPVM_OP_new_op_var(compiler, op_name_var_src);
+          SPVM_OP* op_var_src_decl = SPVM_OP_new_op_var_decl(compiler, op_cur->file, op_cur->line);
+          SPVM_OP_build_var_decl(compiler, op_var_src_decl, op_var_src, NULL, NULL);
+          SPVM_OP* op_assign_var_src = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+          SPVM_OP_cut_op(compiler, op_src);
+          SPVM_OP_build_assign(compiler, op_assign_var_src, op_var_src, op_src);
+          
+          SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_var_src);
+          
+          for (int32_t i = 0; i < dist_fields->length; i++) {
+            
+            SPVM_FIELD* field = SPVM_LIST_get(dist_fields, i);
+            
+            SPVM_OP* op_name_field_access_exists_dist = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
+            SPVM_OP* op_field_access_exists_dist = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+            SPVM_OP* op_var_dist_field_access_exists = SPVM_OP_clone_op_var(compiler, op_var_dist);
+            SPVM_OP_build_field_access(compiler, op_field_access_exists_dist, op_var_dist_field_access_exists, op_name_field_access_exists_dist);
+            SPVM_OP* op_name_field_access_exists_src = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
+            SPVM_OP* op_field_access_exists_src = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+            SPVM_OP* op_var_src_field_access_exists = SPVM_OP_clone_op_var(compiler, op_var_src);
+            SPVM_OP_build_field_access(compiler, op_field_access_exists_src, op_var_src_field_access_exists, op_name_field_access_exists_src);
+            op_field_access_exists_src->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS;
+            
+            SPVM_OP* op_name_field_access_dist = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
+            SPVM_OP* op_field_access_dist = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+            SPVM_OP* op_var_dist_field_access = SPVM_OP_clone_op_var(compiler, op_var_dist);
+            SPVM_OP_build_field_access(compiler, op_field_access_dist, op_var_dist_field_access, op_name_field_access_dist);
+            SPVM_OP* op_name_field_access_src = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
+            SPVM_OP* op_field_access_src = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
+            SPVM_OP* op_var_src_field_access = SPVM_OP_clone_op_var(compiler, op_var_src);
+            SPVM_OP_build_field_access(compiler, op_field_access_src, op_var_src_field_access, op_name_field_access_src);
+            
+            SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+            SPVM_OP_build_assign(compiler, op_assign, op_field_access_dist, op_field_access_src);
+            
+            SPVM_FIELD_ACCESS* field_access_dist = op_field_access_dist->uv.field_access;
+            SPVM_FIELD_ACCESS* field_access_src = op_field_access_src->uv.field_access;
+            
+            SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_cur->file, op_cur->line);
+            int32_t no_scope = 1;
+            SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_cur->file, op_cur->line);
+            SPVM_OP_build_if_statement(compiler, op_if, op_field_access_exists_src, op_assign, op_do_nothing, no_scope);
+            
+            SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_if);
+          }
+          
+          // Dummy
+          SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
+          SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_constant);
+          
+          SPVM_OP* op_stub = SPVM_OP_cut_op(compiler, op_cur);
+          
+          SPVM_OP_replace_op(compiler, op_stub, op_sequence);
+          
+          op_cur = op_sequence;
+          
+          break;
+        }
+      }
+      // [END]Preorder traversal position
     }
-    
-    // [START]Preorder traversal position
-    switch (op_cur->id) {
-      case SPVM_OP_C_ID_BLOCK: {
-        SPVM_BLOCK* block = op_cur->uv.block;
-        // Start scope
-        if (!block->no_scope) {
-          int32_t block_var_decl_base = var_decl_stack->length;
-          SPVM_LIST_push(var_decl_scope_base_stack, (void*)(intptr_t)block_var_decl_base);
-        }
-        
-        if (block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
-          loop_block_stack_length++;
-        }
-        else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
-          eval_block_stack_length++;
-        }
-        
-        break;
-      }
-      case SPVM_OP_C_ID_SWITCH: {
-        SPVM_LIST_push(op_switch_stack, op_cur);
-        break;
-      }
-      case SPVM_OP_C_ID_COPY_FIELDS: {
-        
-        SPVM_OP* op_copy_fields = op_cur;
-        
-        SPVM_OP* op_dist = op_cur->first;
-        
-        SPVM_OP* op_src = SPVM_OP_sibling(compiler, op_dist);
-        
-        SPVM_OP* op_type_for_fields = op_cur->last;
-        
-        SPVM_TYPE* type_for_fields = op_type_for_fields->uv.type;
-        
-        if (!SPVM_TYPE_is_class_type(compiler, type_for_fields->basic_type->id, type_for_fields->dimension, type_for_fields->flag))
-        {
-          SPVM_COMPILER_error(compiler, "The operand type of copy_fields operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
-          return;
-        }
-        
-        SPVM_BASIC_TYPE* basic_type_for_fields = type_for_fields->basic_type;
-        
-        SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
-        SPVM_LIST* dist_fields = basic_type_for_fields->fields;
-        
-        SPVM_OP* op_name_var_dist = SPVM_OP_new_op_name_tmp_var(compiler, op_cur->file, op_cur->line);
-        SPVM_OP* op_var_dist = SPVM_OP_new_op_var(compiler, op_name_var_dist);
-        SPVM_OP* op_var_dist_decl = SPVM_OP_new_op_var_decl(compiler, op_cur->file, op_cur->line);
-        SPVM_OP_build_var_decl(compiler, op_var_dist_decl, op_var_dist, NULL, NULL);
-        SPVM_OP* op_assign_var_dist = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-        SPVM_OP_cut_op(compiler, op_dist);
-        SPVM_OP_build_assign(compiler, op_assign_var_dist, op_var_dist, op_dist);
-        
-        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_var_dist);
-        
-        SPVM_OP* op_name_var_src = SPVM_OP_new_op_name_tmp_var(compiler, op_cur->file, op_cur->line);
-        SPVM_OP* op_var_src = SPVM_OP_new_op_var(compiler, op_name_var_src);
-        SPVM_OP* op_var_src_decl = SPVM_OP_new_op_var_decl(compiler, op_cur->file, op_cur->line);
-        SPVM_OP_build_var_decl(compiler, op_var_src_decl, op_var_src, NULL, NULL);
-        SPVM_OP* op_assign_var_src = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-        SPVM_OP_cut_op(compiler, op_src);
-        SPVM_OP_build_assign(compiler, op_assign_var_src, op_var_src, op_src);
-        
-        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_var_src);
-        
-        for (int32_t i = 0; i < dist_fields->length; i++) {
-          
-          SPVM_FIELD* field = SPVM_LIST_get(dist_fields, i);
-          
-          SPVM_OP* op_name_field_access_exists_dist = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
-          SPVM_OP* op_field_access_exists_dist = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
-          SPVM_OP* op_var_dist_field_access_exists = SPVM_OP_clone_op_var(compiler, op_var_dist);
-          SPVM_OP_build_field_access(compiler, op_field_access_exists_dist, op_var_dist_field_access_exists, op_name_field_access_exists_dist);
-          SPVM_OP* op_name_field_access_exists_src = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
-          SPVM_OP* op_field_access_exists_src = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
-          SPVM_OP* op_var_src_field_access_exists = SPVM_OP_clone_op_var(compiler, op_var_src);
-          SPVM_OP_build_field_access(compiler, op_field_access_exists_src, op_var_src_field_access_exists, op_name_field_access_exists_src);
-          op_field_access_exists_src->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS;
-          
-          SPVM_OP* op_name_field_access_dist = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
-          SPVM_OP* op_field_access_dist = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
-          SPVM_OP* op_var_dist_field_access = SPVM_OP_clone_op_var(compiler, op_var_dist);
-          SPVM_OP_build_field_access(compiler, op_field_access_dist, op_var_dist_field_access, op_name_field_access_dist);
-          SPVM_OP* op_name_field_access_src = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
-          SPVM_OP* op_field_access_src = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
-          SPVM_OP* op_var_src_field_access = SPVM_OP_clone_op_var(compiler, op_var_src);
-          SPVM_OP_build_field_access(compiler, op_field_access_src, op_var_src_field_access, op_name_field_access_src);
-          
-          SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
-          SPVM_OP_build_assign(compiler, op_assign, op_field_access_dist, op_field_access_src);
-          
-          SPVM_FIELD_ACCESS* field_access_dist = op_field_access_dist->uv.field_access;
-          SPVM_FIELD_ACCESS* field_access_src = op_field_access_src->uv.field_access;
-          
-          SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_cur->file, op_cur->line);
-          int32_t no_scope = 1;
-          SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_cur->file, op_cur->line);
-          SPVM_OP_build_if_statement(compiler, op_if, op_field_access_exists_src, op_assign, op_do_nothing, no_scope);
-          
-          SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_if);
-        }
-        
-        // Dummy
-        SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
-        SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_constant);
-        
-        SPVM_OP* op_stub = SPVM_OP_cut_op(compiler, op_cur);
-        
-        SPVM_OP_replace_op(compiler, op_stub, op_sequence);
-        
-        op_cur = op_sequence;
-        
-        break;
-      }
-    }
-    // [END]Preorder traversal position
     
     if (op_cur->first) {
       op_cur = op_cur->first;
     }
     else {
       while (1) {
-        // [START]Postorder traversal position
-        switch (op_cur->id) {
-          case SPVM_OP_C_ID_NEXT: {
-            if (loop_block_stack_length == 0) {
-              SPVM_COMPILER_error(compiler, "The next statement must be in a loop block.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
+        if (!op_cur->syntax_checked) {
+          // [START]Postorder traversal position
+          switch (op_cur->id) {
+            case SPVM_OP_C_ID_NEXT: {
+              if (loop_block_stack_length == 0) {
+                SPVM_COMPILER_error(compiler, "The next statement must be in a loop block.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
             }
-            break;
-          }
-          case SPVM_OP_C_ID_LAST: {
-            if (loop_block_stack_length == 0) {
-              SPVM_COMPILER_error(compiler, "The last statement must be in a loop block.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
+            case SPVM_OP_C_ID_LAST: {
+              if (loop_block_stack_length == 0) {
+                SPVM_COMPILER_error(compiler, "The last statement must be in a loop block.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
             }
-            break;
-          }
-          case SPVM_OP_C_ID_BREAK: {
-            if (op_switch_stack->length == 0) {
-              SPVM_COMPILER_error(compiler, "The break statement must be in a switch block.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
+            case SPVM_OP_C_ID_BREAK: {
+              if (op_switch_stack->length == 0) {
+                SPVM_COMPILER_error(compiler, "The break statement must be in a switch block.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
             }
-            break;
-          }
-          case SPVM_OP_C_ID_OUTMOST_CLASS_NAME: {
-            SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-            
-            const char* current_class_name = NULL;
-            if (method->current_basic_type->is_generated_by_anon_method) {
-              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method->outmost_basic_type_name, strlen(method->outmost_basic_type_name));
-              current_class_name = method->outmost_basic_type_name;
+            case SPVM_OP_C_ID_OUTMOST_CLASS_NAME: {
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+              
+              const char* current_class_name = NULL;
+              if (method->current_basic_type->is_generated_by_anon_method) {
+                SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method->outmost_basic_type_name, strlen(method->outmost_basic_type_name));
+                current_class_name = method->outmost_basic_type_name;
+              }
+              else {
+                current_class_name = basic_type->name;
+              }
+              
+              SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, current_class_name, strlen(current_class_name), op_cur->file, op_cur->line);
+              SPVM_OP_replace_op(compiler, op_stab, op_constant);
+              op_cur = op_constant;
+              
+              break;
             }
-            else {
-              current_class_name = basic_type->name;
+            case SPVM_OP_C_ID_TYPE_NAME: {
+              
+              SPVM_OP* op_operand = op_cur->first;
+              
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
+              
+              // Must be object type
+              if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of type_name operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
             }
-            
-            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, current_class_name, strlen(current_class_name), op_cur->file, op_cur->line);
-            SPVM_OP_replace_op(compiler, op_stab, op_constant);
-            op_cur = op_constant;
-            
-            break;
-          }
-          case SPVM_OP_C_ID_TYPE_NAME: {
-            
-            SPVM_OP* op_operand = op_cur->first;
-            
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
-            
-            // Must be object type
-            if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of type_name operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
+            case SPVM_OP_C_ID_COMPILE_TYPE_NAME: {
+              
+              SPVM_OP* op_operand = op_cur->first;
+              
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
+              
+              const char* compile_type_name = SPVM_TYPE_new_generic_type_name(compiler, operand_type);
+              
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, compile_type_name, strlen(compile_type_name));
+              
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+              SPVM_OP* op_constant_string = SPVM_OP_new_op_constant_string(compiler, compile_type_name, strlen(compile_type_name), op_cur->file, op_cur->line);
+              SPVM_OP_replace_op(compiler, op_stab, op_constant_string);
+              op_cur = op_constant_string;
+              
+              break;
             }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_COMPILE_TYPE_NAME: {
-            
-            SPVM_OP* op_operand = op_cur->first;
-            
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
-            
-            const char* compile_type_name = SPVM_TYPE_new_generic_type_name(compiler, operand_type);
-            
-            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, compile_type_name, strlen(compile_type_name));
-            
-            SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-            SPVM_OP* op_constant_string = SPVM_OP_new_op_constant_string(compiler, compile_type_name, strlen(compile_type_name), op_cur->file, op_cur->line);
-            SPVM_OP_replace_op(compiler, op_stab, op_constant_string);
-            op_cur = op_constant_string;
-            
-            break;
-          }
-          case SPVM_OP_C_ID_DUMP: {
-            
-            SPVM_OP* op_operand = op_cur->first;
-            
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
-            
-            // Must be object type
-            if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of dump operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
+            case SPVM_OP_C_ID_DUMP: {
+              
+              SPVM_OP* op_operand = op_cur->first;
+              
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
+              
+              // Must be object type
+              if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of dump operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
             }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_NEW_STRING_LEN: {
-            
-            SPVM_OP* op_operand = op_cur->first;
-            
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
-            
-            assert(operand_type);
-            
-            if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of new_string_len operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_operand);
-            
-            break;
-          }
-          
-          case SPVM_OP_C_ID_BASIC_TYPE_ID: {
-            
-            // Nothing to do
-            
-            break;
-          }
-          case SPVM_OP_C_ID_SWITCH: {
-            
-            SPVM_OP* op_switch_condition = op_cur->first;
-            
-            // Perform numeric widening conversion
-            
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_switch_condition->first);
-            if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The condition of switch statement must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
+            case SPVM_OP_C_ID_NEW_STRING_LEN: {
+              
+              SPVM_OP* op_operand = op_cur->first;
+              
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
+              
+              assert(operand_type);
+              
+              if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of new_string_len operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_operand);
+              
+              break;
             }
             
-            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_switch_condition->first->first);
-            
-            SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
-            SPVM_LIST* cases = switch_info->case_infos;
-            int32_t cases_length = cases->length;
-            
-            // sort by asc order
-            for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
-              for (int32_t j = i + 1; j < switch_info->case_infos->length; j++) {
-                SPVM_CASE_INFO* case_i = SPVM_LIST_get(switch_info->case_infos, i);
-                SPVM_CASE_INFO* case_j = SPVM_LIST_get(switch_info->case_infos, j);
-                int32_t match_i = case_i->case_value;
-                int32_t match_j = case_j->case_value;
-                
-                if (match_i > match_j) {
-                  SPVM_LIST_set(switch_info->case_infos, i, case_j);
-                  SPVM_LIST_set(switch_info->case_infos, j, case_i);
+            case SPVM_OP_C_ID_BASIC_TYPE_ID: {
+              
+              // Nothing to do
+              
+              break;
+            }
+            case SPVM_OP_C_ID_SWITCH: {
+              
+              SPVM_OP* op_switch_condition = op_cur->first;
+              
+              // Perform numeric widening conversion
+              
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_switch_condition->first);
+              if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The condition of switch statement must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_switch_condition->first->first);
+              
+              SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
+              SPVM_LIST* cases = switch_info->case_infos;
+              int32_t cases_length = cases->length;
+              
+              // sort by asc order
+              for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
+                for (int32_t j = i + 1; j < switch_info->case_infos->length; j++) {
+                  SPVM_CASE_INFO* case_i = SPVM_LIST_get(switch_info->case_infos, i);
+                  SPVM_CASE_INFO* case_j = SPVM_LIST_get(switch_info->case_infos, j);
+                  int32_t match_i = case_i->case_value;
+                  int32_t match_j = case_j->case_value;
+                  
+                  if (match_i > match_j) {
+                    SPVM_LIST_set(switch_info->case_infos, i, case_j);
+                    SPVM_LIST_set(switch_info->case_infos, j, case_i);
+                  }
                 }
               }
-            }
-            
-            // Check duplication
-            for (int32_t i = 0; i < switch_info->case_infos->length - 1; i++) {
-              SPVM_CASE_INFO* case_info = SPVM_LIST_get(switch_info->case_infos, i);
-              SPVM_CASE_INFO* case_info_next = SPVM_LIST_get(switch_info->case_infos, i + 1);
-              if (case_info->case_value == case_info_next->case_value) {
-                SPVM_COMPILER_error(compiler, "The value of case statement cannnot be duplicated.\n  at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
-              }
-            }
-            
-            SPVM_LIST_pop(op_switch_stack);
-            
-            // Decide switch type
-            switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
-            
-            if (!switch_info->op_default) {
-              SPVM_OP* op_switch_block = op_cur->last;
               
-              SPVM_OP* op_default = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DEFAULT, op_cur->file, op_cur->line);
-              SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_cur->file, op_cur->line);
-              SPVM_OP_build_default_statement(compiler, op_default, op_block);
+              // Check duplication
+              for (int32_t i = 0; i < switch_info->case_infos->length - 1; i++) {
+                SPVM_CASE_INFO* case_info = SPVM_LIST_get(switch_info->case_infos, i);
+                SPVM_CASE_INFO* case_info_next = SPVM_LIST_get(switch_info->case_infos, i + 1);
+                if (case_info->case_value == case_info_next->case_value) {
+                  SPVM_COMPILER_error(compiler, "The value of case statement cannnot be duplicated.\n  at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
+                }
+              }
               
-              SPVM_OP_insert_child(compiler, op_switch_block, op_switch_block->last, op_default);
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_CASE: {
-            if (op_switch_stack->length > 0) {
-              SPVM_OP* op_switch = SPVM_LIST_get(op_switch_stack, op_switch_stack->length - 1);
-              SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
-              SPVM_LIST_push(switch_info->case_infos, op_cur->uv.case_info);
-            }
-            
-            SPVM_CASE_INFO* case_info = op_cur->uv.case_info;
-            SPVM_OP* op_constant = op_cur->first;
-            SPVM_CONSTANT* constant = op_constant->uv.constant;
-            
-            SPVM_TYPE* case_value_type = SPVM_CHECK_get_type(compiler, op_constant);
-            if (!(
-              op_constant->id == SPVM_OP_C_ID_CONSTANT &&
-              (
-                SPVM_TYPE_is_byte_type(compiler, case_value_type->basic_type->id, case_value_type->dimension, case_value_type->flag) ||
-                SPVM_TYPE_is_int_type(compiler, case_value_type->basic_type->id, case_value_type->dimension, case_value_type->flag)
-              )
-            ))
-            {
-              SPVM_COMPILER_error(compiler, "The operand type of case statement must be an integer literal of int type, a character litaral, or an enumeration value.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Upgrade byte to int
-            if (constant->type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
-              constant->type = SPVM_TYPE_new_int_type(compiler);
-              constant->value.ival = (int32_t)constant->value.bval;
-            }
-            
-            case_info->case_value = constant->value.ival;
-            
-            // Remove case value operation because this is a constant value for a case statemenet.
-            SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur->first);
-            SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_cur->first->file, op_cur->first->line);
-            SPVM_OP_replace_op(compiler, op_stab, op_do_nothing);
-            
-            break;
-          }
-          case SPVM_OP_C_ID_DEFAULT: {
-            if (op_switch_stack->length > 0) {
-              SPVM_OP* op_switch = SPVM_LIST_get(op_switch_stack, op_switch_stack->length - 1);
-              SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
+              SPVM_LIST_pop(op_switch_stack);
               
-              switch_info->op_default = op_cur;
-            }
-            break;
-          }
-          case SPVM_OP_C_ID_CONDITION_EVALUATION: {
-            SPVM_OP* op_operand = op_cur->first;
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            int32_t is_valid_type;
+              // Decide switch type
+              switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
               
-            // undef type
-            if (SPVM_TYPE_is_undef_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+              if (!switch_info->op_default) {
+                SPVM_OP* op_switch_block = op_cur->last;
+                
+                SPVM_OP* op_default = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DEFAULT, op_cur->file, op_cur->line);
+                SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_cur->file, op_cur->line);
+                SPVM_OP_build_default_statement(compiler, op_default, op_block);
+                
+                SPVM_OP_insert_child(compiler, op_switch_block, op_switch_block->last, op_default);
+              }
               
-              is_valid_type = 1;
+              break;
+            }
+            case SPVM_OP_C_ID_CASE: {
+              if (op_switch_stack->length > 0) {
+                SPVM_OP* op_switch = SPVM_LIST_get(op_switch_stack, op_switch_stack->length - 1);
+                SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
+                SPVM_LIST_push(switch_info->case_infos, op_cur->uv.case_info);
+              }
               
-              SPVM_OP* op_constant_zero = SPVM_OP_new_op_constant_int(compiler, 0, op_operand->file, op_operand->line);
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand);
-              SPVM_OP_replace_op(compiler, op_stab, op_constant_zero);
-            }
-            // Numeric type
-            else if (SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag))
-            {
-              // Convert byte or short type to int type
-              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_operand);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-              is_valid_type = 1;
-            }
-            // Object type
-            else if (SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              is_valid_type = 1;
-            }
-            // Reference type
-            else if (SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              is_valid_type = 1;
-            }
-            else {
-              is_valid_type = 0;
-            }
-            
-            if (!is_valid_type) {
-              SPVM_COMPILER_error(compiler, "The operand type of bool type conversion must be a numeric type or an object type or a reference type or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_NUMERIC_COMPARISON_EQ: {
-            SPVM_OP* op_left_operand = op_cur->first;
-            
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            int32_t left_operand_type_is_valid
-              = SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
-              || SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
-              || SPVM_TYPE_is_ref_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
-              || SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag);
-            
-            if (!left_operand_type_is_valid) {
-              SPVM_COMPILER_error(compiler, "The left operand type of == operator must be a numeric type, an object type, a reference type, or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            int32_t right_operand_type_is_valid
-              = SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-              || SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-              || SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-              || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag);
-            
-            if (!right_operand_type_is_valid) {
-              SPVM_COMPILER_error(compiler, "The right operand type of == operator must be a numeric type, an object type, a reference type, or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "If the left operand type of == operator is a numeric type, the right operand type must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            
-            if (SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              if (!(SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-                || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
-              {
-                SPVM_COMPILER_error(compiler, "If the left operand type of == operator is an object type, the right operand type must be an object type or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            
-            if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              if (!(SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-                || SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-                || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
-              {
-                SPVM_COMPILER_error(compiler, "If the left operand type of == operator is the undef type, the right operand type must be an object type, a reference type, or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            
-            if (SPVM_TYPE_is_ref_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              if (!(SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-                || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
-              {
-                SPVM_COMPILER_error(compiler, "If the left operand type of == operator is a reference type, the right operand type must be a reference type or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            
-            if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
-              && SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag))
-            {
-              // Constant 1
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              SPVM_OP* op_constant_one = SPVM_OP_new_op_constant_int(compiler, 1, op_left_operand->file, op_left_operand->line);
-              SPVM_OP_replace_op(compiler, op_stab, op_constant_one);
-              op_cur = op_constant_one;
-            }
-            else if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              assert(SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag));
-               
-              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-              
-              assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_NUMERIC_COMPARISON_NE: {
-            SPVM_OP* op_left_operand = op_cur->first;
-            
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            int32_t left_operand_type_is_valid
-              = SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
-              || SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
-              || SPVM_TYPE_is_ref_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
-              || SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag);
-            
-            if (!left_operand_type_is_valid) {
-              SPVM_COMPILER_error(compiler, "The left operand type of != operator must be a numeric type, an object type, a reference type, or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            int32_t right_operand_type_is_valid
-              = SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-              || SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-              || SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-              || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag);
-            
-            if (!right_operand_type_is_valid) {
-              SPVM_COMPILER_error(compiler, "The right operand type of != operator must be a numeric type, an object type, a reference type, or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "If the left operand type of != operator is a numeric type, the right operand type must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            
-            if (SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              if (!(SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-                || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
-              {
-                SPVM_COMPILER_error(compiler, "If the left operand type of != operator is an object type, the right operand type must be an object type or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            
-            if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              if (!(SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-                || SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-                || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
-              {
-                SPVM_COMPILER_error(compiler, "If the left operand type of != operator is the undef type, the right operand type must be an object type, a reference type, or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            
-            if (SPVM_TYPE_is_ref_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              if (!(SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
-                || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
-              {
-                SPVM_COMPILER_error(compiler, "If the left operand type of != operator is a reference type, the right operand type must be a reference type or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            
-            if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
-              && SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag))
-            {
-              // Constant 0
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              SPVM_OP* op_constant_zero = SPVM_OP_new_op_constant_int(compiler, 0, op_left_operand->file, op_left_operand->line);
-              SPVM_OP_replace_op(compiler, op_stab, op_constant_zero);
-              op_cur = op_constant_zero;
-            }
-            else if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              
-              assert(SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag));
-               
-              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-              
-              assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_NUMERIC_COMPARISON_GT: {
-
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-
-            // Left operand must be a numeric type
-            if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of > operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Right operand must be a numeric type
-            if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of > operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Apply binary numeric conversion
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_NUMERIC_COMPARISON_GE: {
-
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-
-            // Left operand must be a numeric type
-            if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of >= operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Right operand must be a numeric type
-            if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of >= operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Apply binary numeric conversion
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_NUMERIC_COMPARISON_LT: {
-
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be a numeric type
-            if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of < operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Right operand must be a numeric type
-            if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of < operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Apply binary numeric conversion
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-
-            break;
-          }
-          case SPVM_OP_C_ID_NUMERIC_COMPARISON_LE: {
-
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-
-            // Left operand must be a numeric type
-            if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of <= operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Right operand must be a numeric type
-            if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of <= operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Apply binary numeric conversion
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_NUMERIC_COMPARISON_CMP: {
-
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-
-            // Left operand must be a numeric type
-            if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of <=> operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Right operand must be a numeric type
-            if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of <=> operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Apply binary numeric conversion
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_STRING_COMPARISON_EQ: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of eq operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Right operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of eq operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_STRING_COMPARISON_NE: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of ne operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Right operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of ne operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_STRING_COMPARISON_GT: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of gt operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Right operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of gt operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_STRING_COMPARISON_GE: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of ge operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Right operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of ge operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_STRING_COMPARISON_LT: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of lt operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Right operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of lt operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_STRING_COMPARISON_LE: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of le operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Right operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of le operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_STRING_COMPARISON_CMP: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of cmp operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Right operand must be string type
-            if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of cmp operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_STRING_CONCAT: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left type is numeric type
-            if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->first);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-            }
-            // Left type is not string type or byte array type
-            else if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of . operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Right operand is numeric type
-            if (SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->last);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-            }
-            // Right operand is not string type or byte array type
-            else if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of . operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_CONSTANT : {
-            SPVM_OP* op_constant = op_cur;
-            
-            SPVM_TYPE* constant_type = SPVM_CHECK_get_type(compiler, op_constant);
-            
-            if (SPVM_TYPE_is_string_type(compiler, constant_type->basic_type->id, constant_type->dimension, constant_type->flag)) {
+              SPVM_CASE_INFO* case_info = op_cur->uv.case_info;
+              SPVM_OP* op_constant = op_cur->first;
               SPVM_CONSTANT* constant = op_constant->uv.constant;
               
-              const char* constant_string_value = constant->value.oval;
-              int32_t constant_string_length = constant->string_length;
+              SPVM_TYPE* case_value_type = SPVM_CHECK_get_type(compiler, op_constant);
+              if (!(
+                op_constant->id == SPVM_OP_C_ID_CONSTANT &&
+                (
+                  SPVM_TYPE_is_byte_type(compiler, case_value_type->basic_type->id, case_value_type->dimension, case_value_type->flag) ||
+                  SPVM_TYPE_is_int_type(compiler, case_value_type->basic_type->id, case_value_type->dimension, case_value_type->flag)
+                )
+              ))
+              {
+                SPVM_COMPILER_error(compiler, "The operand type of case statement must be an integer literal of int type, a character litaral, or an enumeration value.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
               
-              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, constant_string_value, constant_string_length);
+              // Upgrade byte to int
+              if (constant->type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
+                constant->type = SPVM_TYPE_new_int_type(compiler);
+                constant->value.ival = (int32_t)constant->value.bval;
+              }
+              
+              case_info->case_value = constant->value.ival;
+              
+              // Remove case value operation because this is a constant value for a case statemenet.
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur->first);
+              SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_cur->first->file, op_cur->first->line);
+              SPVM_OP_replace_op(compiler, op_stab, op_do_nothing);
+              
+              break;
             }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_NEW: {
-            SPVM_OP* op_new = op_cur;
-            
-            assert(op_new->first);
-            assert(op_new->first->id == SPVM_OP_C_ID_TYPE || op_new->first->id == SPVM_OP_C_ID_VAR);
-            
-            SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_new);
-            
-            SPVM_BASIC_TYPE* new_basic_type = type->basic_type;
-            
-            // Array type
-            if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              
-              SPVM_OP* op_length = op_new->last;
-              
-              SPVM_TYPE* length_type = SPVM_CHECK_get_type(compiler, op_length);
-              
-              assert(length_type);
-              if (!SPVM_TYPE_is_integer_type_within_int(compiler, length_type->basic_type->id, length_type->dimension, length_type->flag)) {
-                const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-                SPVM_COMPILER_error(compiler, "The array length specified by new operator must be an integer type within int.\n  at %s line %d", op_new->file, op_new->line);
-                return;
+            case SPVM_OP_C_ID_DEFAULT: {
+              if (op_switch_stack->length > 0) {
+                SPVM_OP* op_switch = SPVM_LIST_get(op_switch_stack, op_switch_stack->length - 1);
+                SPVM_SWITCH_INFO* switch_info = op_switch->uv.switch_info;
+                
+                switch_info->op_default = op_cur;
               }
-              else if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {
-                SPVM_COMPILER_error(compiler, "The creation of a multi dimensional array of any object is not allowed.\n  at %s line %d", op_new->file, op_new->line);
-                return;
-              }
-              
-              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_length);
+              break;
             }
-            // Numeric type
-            else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of new operator cannnot be a numeric type.\n  at %s line %d", op_new->file, op_new->line);
-              return;
-            }
-            // Object type
-            else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, type->basic_type->name, strlen(type->basic_type->name));
+            case SPVM_OP_C_ID_CONDITION_EVALUATION: {
+              SPVM_OP* op_operand = op_cur->first;
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
               
-              if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-                SPVM_COMPILER_error(compiler, "The operand type of new operator cannnot be an interface type.\n  at %s line %d", op_new->file, op_new->line);
+              int32_t is_valid_type;
+                
+              // undef type
+              if (SPVM_TYPE_is_undef_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                
+                is_valid_type = 1;
+                
+                SPVM_OP* op_constant_zero = SPVM_OP_new_op_constant_int(compiler, 0, op_operand->file, op_operand->line);
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand);
+                SPVM_OP_replace_op(compiler, op_stab, op_constant_zero);
+              }
+              // Numeric type
+              else if (SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag))
+              {
+                // Convert byte or short type to int type
+                SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_operand);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
+                is_valid_type = 1;
+              }
+              // Object type
+              else if (SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                is_valid_type = 1;
+              }
+              // Reference type
+              else if (SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                is_valid_type = 1;
+              }
+              else {
+                is_valid_type = 0;
+              }
+              
+              if (!is_valid_type) {
+                SPVM_COMPILER_error(compiler, "The operand type of bool type conversion must be a numeric type or an object type or a reference type or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
-              else if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-                SPVM_COMPILER_error(compiler, "The operand type of new operator cannnot be a multi-numeric type.\n  at %s line %d", op_new->file, op_new->line);
+              
+              break;
+            }
+            case SPVM_OP_C_ID_NUMERIC_COMPARISON_EQ: {
+              SPVM_OP* op_left_operand = op_cur->first;
+              
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              int32_t left_operand_type_is_valid
+                = SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+                || SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+                || SPVM_TYPE_is_ref_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+                || SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag);
+              
+              if (!left_operand_type_is_valid) {
+                SPVM_COMPILER_error(compiler, "The left operand type of == operator must be a numeric type, an object type, a reference type, or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
-
-              SPVM_BASIC_TYPE* current_basic_type = method->current_basic_type;
-              if (!SPVM_CHECK_can_access(compiler, current_basic_type, new_basic_type, new_basic_type->access_control_type, 0)) {
-                if (!SPVM_OP_is_allowed(compiler, current_basic_type, new_basic_type, 0)) {
-                  SPVM_COMPILER_error(compiler, "The object of the %s %s class cannnot be created from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_basic_type->access_control_type), new_basic_type->name, current_basic_type->name, op_new->file, op_new->line);
+              
+              int32_t right_operand_type_is_valid
+                = SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                || SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                || SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag);
+              
+              if (!right_operand_type_is_valid) {
+                SPVM_COMPILER_error(compiler, "The right operand type of == operator must be a numeric type, an object type, a reference type, or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "If the left operand type of == operator is a numeric type, the right operand type must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
-            }
-            else {
-              assert(0);
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_BIT_XOR: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Can receive only integer type
-            if (!SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) || !SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left and right operand type of ^ operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_ISA: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_OP* op_type = op_cur->last;
-            
-            SPVM_TYPE* type = op_type->uv.type;
-            
-            if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)
-              || SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)
-              || SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))
-            {
-              int32_t need_data_conversion = 0;
-              int32_t allow_narrowing_conversion = 0;
               
-              char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
-              int32_t satisfy_assignment_requirement_without_data_conversion = SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion(
-                compiler,
-                type->basic_type->id, type->dimension, type->flag,
-                operand_type->basic_type->id, operand_type->dimension, operand_type->flag,
-                error_reason
-              );
-              
-              if (satisfy_assignment_requirement_without_data_conversion) {
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
-                SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
-                op_cur = op_constant_true;
-              }
-              else {
-                if (strlen(error_reason)) {
-                  SPVM_COMPILER_error(compiler, error_reason);
+              if (SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                if (!(SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                  || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
+                {
+                  SPVM_COMPILER_error(compiler, "If the left operand type of == operator is an object type, the right operand type must be an object type or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
                 }
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
-                SPVM_OP_replace_op(compiler, op_stab, op_constant_false);
-                op_cur = op_constant_false;
               }
+              
+              if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                if (!(SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                  || SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                  || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
+                {
+                  SPVM_COMPILER_error(compiler, "If the left operand type of == operator is the undef type, the right operand type must be an object type, a reference type, or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              
+              if (SPVM_TYPE_is_ref_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                if (!(SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                  || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
+                {
+                  SPVM_COMPILER_error(compiler, "If the left operand type of == operator is a reference type, the right operand type must be a reference type or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              
+              if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+                && SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag))
+              {
+                // Constant 1
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                SPVM_OP* op_constant_one = SPVM_OP_new_op_constant_int(compiler, 1, op_left_operand->file, op_left_operand->line);
+                SPVM_OP_replace_op(compiler, op_stab, op_constant_one);
+                op_cur = op_constant_one;
+              }
+              else if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                assert(SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag));
+                 
+                SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+                
+                assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
+              }
+              
+              break;
             }
-            else if (SPVM_TYPE_is_any_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right type of isa operator must not be any object type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The left operand type of isa operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+            case SPVM_OP_C_ID_NUMERIC_COMPARISON_NE: {
+              SPVM_OP* op_left_operand = op_cur->first;
+              
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              int32_t left_operand_type_is_valid
+                = SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+                || SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+                || SPVM_TYPE_is_ref_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+                || SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag);
+              
+              if (!left_operand_type_is_valid) {
+                SPVM_COMPILER_error(compiler, "The left operand type of != operator must be a numeric type, an object type, a reference type, or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
+              
+              int32_t right_operand_type_is_valid
+                = SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                || SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                || SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag);
+              
+              if (!right_operand_type_is_valid) {
+                SPVM_COMPILER_error(compiler, "The right operand type of != operator must be a numeric type, an object type, a reference type, or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "If the left operand type of != operator is a numeric type, the right operand type must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              
+              if (SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                if (!(SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                  || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
+                {
+                  SPVM_COMPILER_error(compiler, "If the left operand type of != operator is an object type, the right operand type must be an object type or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              
+              if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                if (!(SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                  || SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                  || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
+                {
+                  SPVM_COMPILER_error(compiler, "If the left operand type of != operator is the undef type, the right operand type must be an object type, a reference type, or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              
+              if (SPVM_TYPE_is_ref_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                if (!(SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                  || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
+                {
+                  SPVM_COMPILER_error(compiler, "If the left operand type of != operator is a reference type, the right operand type must be a reference type or undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              
+              if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+                && SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag))
+              {
+                // Constant 0
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                SPVM_OP* op_constant_zero = SPVM_OP_new_op_constant_int(compiler, 0, op_left_operand->file, op_left_operand->line);
+                SPVM_OP_replace_op(compiler, op_stab, op_constant_zero);
+                op_cur = op_constant_zero;
+              }
+              else if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                
+                assert(SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag));
+                 
+                SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+                
+                assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
+              }
+              
+              break;
             }
-            else {
-              assert(0);
+            case SPVM_OP_C_ID_NUMERIC_COMPARISON_GT: {
+
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+
+              // Left operand must be a numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of > operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be a numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of > operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Apply binary numeric conversion
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
             }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_IS_TYPE: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_OP* op_type = op_cur->last;
-            
-            SPVM_TYPE* type = op_type->uv.type;
-            
-            if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)
-              || SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)
-              || SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))
-            {
-              if (operand_type->basic_type->id == type->basic_type->id && operand_type->dimension == type->dimension) {
+            case SPVM_OP_C_ID_NUMERIC_COMPARISON_GE: {
+
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+
+              // Left operand must be a numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of >= operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be a numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of >= operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Apply binary numeric conversion
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_NUMERIC_COMPARISON_LT: {
+
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be a numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of < operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be a numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of < operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Apply binary numeric conversion
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+
+              break;
+            }
+            case SPVM_OP_C_ID_NUMERIC_COMPARISON_LE: {
+
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+
+              // Left operand must be a numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of <= operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be a numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of <= operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Apply binary numeric conversion
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_NUMERIC_COMPARISON_CMP: {
+
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+
+              // Left operand must be a numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of <=> operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be a numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of <=> operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Apply binary numeric conversion
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_COMPARISON_EQ: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of eq operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of eq operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_COMPARISON_NE: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of ne operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of ne operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_COMPARISON_GT: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of gt operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of gt operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_COMPARISON_GE: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of ge operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of ge operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_COMPARISON_LT: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of lt operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of lt operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_COMPARISON_LE: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of le operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of le operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_COMPARISON_CMP: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of cmp operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of cmp operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_CONCAT: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left type is numeric type
+              if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->first);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
+              }
+              // Left type is not string type or byte array type
+              else if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of . operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand is numeric type
+              if (SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->last);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
+              }
+              // Right operand is not string type or byte array type
+              else if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of . operator must be string type or byte[] type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_CONSTANT : {
+              SPVM_OP* op_constant = op_cur;
+              
+              SPVM_TYPE* constant_type = SPVM_CHECK_get_type(compiler, op_constant);
+              
+              if (SPVM_TYPE_is_string_type(compiler, constant_type->basic_type->id, constant_type->dimension, constant_type->flag)) {
+                SPVM_CONSTANT* constant = op_constant->uv.constant;
+                
+                const char* constant_string_value = constant->value.oval;
+                int32_t constant_string_length = constant->string_length;
+                
+                SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, constant_string_value, constant_string_length);
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_NEW: {
+              SPVM_OP* op_new = op_cur;
+              
+              assert(op_new->first);
+              assert(op_new->first->id == SPVM_OP_C_ID_TYPE || op_new->first->id == SPVM_OP_C_ID_VAR);
+              
+              SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_new);
+              
+              SPVM_BASIC_TYPE* new_basic_type = type->basic_type;
+              
+              // Array type
+              if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                
+                SPVM_OP* op_length = op_new->last;
+                
+                SPVM_TYPE* length_type = SPVM_CHECK_get_type(compiler, op_length);
+                
+                assert(length_type);
+                if (!SPVM_TYPE_is_integer_type_within_int(compiler, length_type->basic_type->id, length_type->dimension, length_type->flag)) {
+                  const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
+                  SPVM_COMPILER_error(compiler, "The array length specified by new operator must be an integer type within int.\n  at %s line %d", op_new->file, op_new->line);
+                  return;
+                }
+                else if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {
+                  SPVM_COMPILER_error(compiler, "The creation of a multi dimensional array of any object is not allowed.\n  at %s line %d", op_new->file, op_new->line);
+                  return;
+                }
+                
+                SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_length);
+              }
+              // Numeric type
+              else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of new operator cannnot be a numeric type.\n  at %s line %d", op_new->file, op_new->line);
+                return;
+              }
+              // Object type
+              else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, type->basic_type->name, strlen(type->basic_type->name));
+                
+                if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+                  SPVM_COMPILER_error(compiler, "The operand type of new operator cannnot be an interface type.\n  at %s line %d", op_new->file, op_new->line);
+                  return;
+                }
+                else if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+                  SPVM_COMPILER_error(compiler, "The operand type of new operator cannnot be a multi-numeric type.\n  at %s line %d", op_new->file, op_new->line);
+                  return;
+                }
+
+                SPVM_BASIC_TYPE* current_basic_type = method->current_basic_type;
+                if (!SPVM_CHECK_can_access(compiler, current_basic_type, new_basic_type, new_basic_type->access_control_type, 0)) {
+                  if (!SPVM_OP_is_allowed(compiler, current_basic_type, new_basic_type, 0)) {
+                    SPVM_COMPILER_error(compiler, "The object of the %s %s class cannnot be created from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_basic_type->access_control_type), new_basic_type->name, current_basic_type->name, op_new->file, op_new->line);
+                    return;
+                  }
+                }
+              }
+              else {
+                assert(0);
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_BIT_XOR: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Can receive only integer type
+              if (!SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) || !SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left and right operand type of ^ operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_ISA: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_OP* op_type = op_cur->last;
+              
+              SPVM_TYPE* type = op_type->uv.type;
+              
+              if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)
+                || SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)
+                || SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))
+              {
+                int32_t need_data_conversion = 0;
+                int32_t allow_narrowing_conversion = 0;
+                
+                char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
+                int32_t satisfy_assignment_requirement_without_data_conversion = SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion(
+                  compiler,
+                  type->basic_type->id, type->dimension, type->flag,
+                  operand_type->basic_type->id, operand_type->dimension, operand_type->flag,
+                  error_reason
+                );
+                
+                if (satisfy_assignment_requirement_without_data_conversion) {
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
+                  SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
+                  op_cur = op_constant_true;
+                }
+                else {
+                  if (strlen(error_reason)) {
+                    SPVM_COMPILER_error(compiler, error_reason);
+                  }
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
+                  SPVM_OP_replace_op(compiler, op_stab, op_constant_false);
+                  op_cur = op_constant_false;
+                }
+              }
+              else if (SPVM_TYPE_is_any_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right type of isa operator must not be any object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The left operand type of isa operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else {
+                assert(0);
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_IS_TYPE: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_OP* op_type = op_cur->last;
+              
+              SPVM_TYPE* type = op_type->uv.type;
+              
+              if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)
+                || SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)
+                || SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))
+              {
+                if (operand_type->basic_type->id == type->basic_type->id && operand_type->dimension == type->dimension) {
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
+                  SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
+                  op_cur = op_constant_true;
+                }
+                else {
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
+                  SPVM_OP_replace_op(compiler, op_stab, op_constant_false);
+                  op_cur = op_constant_false;
+                }
+              }
+              else if (SPVM_TYPE_is_any_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right type of is_type operator must not be any object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The left operand type of is_type operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else {
+                assert(0);
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_IS_COMPILE_TYPE: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_OP* op_type = op_cur->last;
+              
+              SPVM_TYPE* type = op_type->uv.type;
+              
+              // Partial match is ok
+              const char* operand_compile_type_name = SPVM_TYPE_new_generic_type_name(compiler, operand_type);
+              const char* compile_type_name = SPVM_TYPE_new_generic_type_name(compiler, type);
+              int32_t match = strncmp(operand_compile_type_name, compile_type_name, strlen(compile_type_name)) == 0;
+              
+              // If left type is same as right type, this return true. Otherwise, return false
+              if (match) {
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
                 SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
@@ -2685,229 +2725,216 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_OP_replace_op(compiler, op_stab, op_constant_false);
                 op_cur = op_constant_false;
               }
+              
+              break;
             }
-            else if (SPVM_TYPE_is_any_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right type of is_type operator must not be any object type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The left operand type of is_type operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+            case SPVM_OP_C_ID_ISA_ERROR: {
+              
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of isa_error operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
-            }
-            else {
-              assert(0);
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_IS_COMPILE_TYPE: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_OP* op_type = op_cur->last;
-            
-            SPVM_TYPE* type = op_type->uv.type;
-            
-            // Partial match is ok
-            const char* operand_compile_type_name = SPVM_TYPE_new_generic_type_name(compiler, operand_type);
-            const char* compile_type_name = SPVM_TYPE_new_generic_type_name(compiler, type);
-            int32_t match = strncmp(operand_compile_type_name, compile_type_name, strlen(compile_type_name)) == 0;
-            
-            // If left type is same as right type, this return true. Otherwise, return false
-            if (match) {
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
-              SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
-              op_cur = op_constant_true;
-            }
-            else {
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
-              SPVM_OP_replace_op(compiler, op_stab, op_constant_false);
-              op_cur = op_constant_false;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_ISA_ERROR: {
-            
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of isa_error operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right type of isa_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_IS_ERROR: {
-            
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of is_error operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right type of is_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_ARRAY_LENGTH: {
-            SPVM_OP* op_first = op_cur->first;
-            
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
-            
-            SPVM_BASIC_TYPE* countable_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, "Countable", strlen("Countable"));
-            assert(countable_basic_type);
-            char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
-            int32_t has_countable_interface = SPVM_TYPE_has_interface(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag, countable_basic_type->id);
-            
-            // First value must be an array
-            if (!(is_array_type || has_countable_interface)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of @ operator must be an array type or has Coutable interface.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (has_countable_interface) {
-              SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
-              SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "length", op_cur->file, op_cur->line);
-              SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
-              SPVM_OP_cut_op(compiler, op_first);
+              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
               
-              SPVM_OP_build_call_method(compiler, op_call_method, op_first, op_name_method, op_operators);
+              if (!SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right type of isa_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
               
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+              break;
+            }
+            case SPVM_OP_C_ID_IS_ERROR: {
               
-              SPVM_OP_replace_op(compiler, op_stab, op_call_method);
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
               
-              op_cur = op_operators->last;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_STRING_LENGTH: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            // First must be string type
-            if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of length operator must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_SET_LENGTH: {
-            SPVM_TYPE* object_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* length_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
-            int32_t is_string_type = SPVM_TYPE_is_string_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
-            if (!(is_array_type || is_string_type)) {
-              SPVM_COMPILER_error(compiler, "The first operand type of set_length operator must be an array type or string type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            int32_t is_mutable_type = SPVM_TYPE_is_mutable_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
-            if (!is_mutable_type) {
-              SPVM_COMPILER_error(compiler, "The first operand type of set_length operator must be a non-mutable type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (!SPVM_TYPE_is_integer_type(compiler, length_operand_type->basic_type->id, length_operand_type->dimension, length_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The second operand type of set_length operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_CAPACITY: {
-            SPVM_OP* op_first = op_cur->first;
-            
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
-            int32_t is_string_type = SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
-            if (!(is_array_type || is_string_type)) {
-              SPVM_COMPILER_error(compiler, "The operand type of capacity operator must be an array type or string type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_SET_CAPACITY: {
-            SPVM_TYPE* object_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* capacity_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
-            int32_t is_string_type = SPVM_TYPE_is_string_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
-            if (!(is_array_type || is_string_type)) {
-              SPVM_COMPILER_error(compiler, "The first operand type of set_capacity operator must be an array type or string type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            int32_t is_mutable_type = SPVM_TYPE_is_mutable_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
-            if (!is_mutable_type) {
-              SPVM_COMPILER_error(compiler, "The first operand type of set_length operator must be a non-mutable type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (!SPVM_TYPE_is_integer_type(compiler, capacity_operand_type->basic_type->id, capacity_operand_type->dimension, capacity_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The second operand type of set_capacity operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_ASSIGN: {
-            
-            SPVM_OP* op_dist = op_cur->last;
-            SPVM_OP* op_src = op_cur->first;
-            
-            // Replace with setter
-            if (op_dist->id == SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS) {
+              if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of is_error operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
               
-              SPVM_OP* op_invocant = op_dist->first;
-              SPVM_OP* op_index = op_dist->last;
+              if (!SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right type of is_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
               
-              SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_invocant);
+              break;
+            }
+            case SPVM_OP_C_ID_ARRAY_LENGTH: {
+              SPVM_OP* op_first = op_cur->first;
               
-              // Replace array access with setter or getter
-              if (SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag) ||
-                  SPVM_TYPE_is_interface_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag))
-              {
-                // Setter: $array->[$index] = $operator to $array->set($index, $operator);
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+              
+              SPVM_BASIC_TYPE* countable_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, "Countable", strlen("Countable"));
+              assert(countable_basic_type);
+              char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
+              int32_t has_countable_interface = SPVM_TYPE_has_interface(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag, countable_basic_type->id);
+              
+              // First value must be an array
+              if (!(is_array_type || has_countable_interface)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of @ operator must be an array type or has Coutable interface.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (has_countable_interface) {
+                SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
+                SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "length", op_cur->file, op_cur->line);
+                SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
+                SPVM_OP_cut_op(compiler, op_first);
+                
+                SPVM_OP_build_call_method(compiler, op_call_method, op_first, op_name_method, op_operators);
+                
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                
+                SPVM_OP_replace_op(compiler, op_stab, op_call_method);
+                
+                op_cur = op_operators->last;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_LENGTH: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              // First must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of length operator must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_SET_LENGTH: {
+              SPVM_TYPE* object_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* length_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
+              int32_t is_string_type = SPVM_TYPE_is_string_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
+              if (!(is_array_type || is_string_type)) {
+                SPVM_COMPILER_error(compiler, "The first operand type of set_length operator must be an array type or string type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              int32_t is_mutable_type = SPVM_TYPE_is_mutable_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
+              if (!is_mutable_type) {
+                SPVM_COMPILER_error(compiler, "The first operand type of set_length operator must be a non-mutable type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (!SPVM_TYPE_is_integer_type(compiler, length_operand_type->basic_type->id, length_operand_type->dimension, length_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The second operand type of set_length operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_CAPACITY: {
+              SPVM_OP* op_first = op_cur->first;
+              
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+              int32_t is_string_type = SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+              if (!(is_array_type || is_string_type)) {
+                SPVM_COMPILER_error(compiler, "The operand type of capacity operator must be an array type or string type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_SET_CAPACITY: {
+              SPVM_TYPE* object_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* capacity_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              int32_t is_array_type = SPVM_TYPE_is_array_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
+              int32_t is_string_type = SPVM_TYPE_is_string_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
+              if (!(is_array_type || is_string_type)) {
+                SPVM_COMPILER_error(compiler, "The first operand type of set_capacity operator must be an array type or string type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              int32_t is_mutable_type = SPVM_TYPE_is_mutable_type(compiler, object_operand_type->basic_type->id, object_operand_type->dimension, object_operand_type->flag);
+              if (!is_mutable_type) {
+                SPVM_COMPILER_error(compiler, "The first operand type of set_length operator must be a non-mutable type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (!SPVM_TYPE_is_integer_type(compiler, capacity_operand_type->basic_type->id, capacity_operand_type->dimension, capacity_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The second operand type of set_capacity operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_ASSIGN: {
+              
+              SPVM_OP* op_dist = op_cur->last;
+              SPVM_OP* op_src = op_cur->first;
+              
+              // Replace with setter
+              if (op_dist->id == SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS) {
+                
+                SPVM_OP* op_invocant = op_dist->first;
+                SPVM_OP* op_index = op_dist->last;
+                
+                SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_invocant);
+                
+                // Replace array access with setter or getter
+                if (SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag) ||
+                    SPVM_TYPE_is_interface_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag))
+                {
+                  // Setter: $array->[$index] = $operator to $array->set($index, $operator);
+                  SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
+                  SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "set", op_cur->file, op_cur->line);
+                  SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
+                  SPVM_OP_cut_op(compiler, op_invocant);
+                  SPVM_OP_cut_op(compiler, op_index);
+                  SPVM_OP_cut_op(compiler, op_src);
+                  SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_index);
+                  SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_src);
+                  
+                  SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
+                  
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_call_method);
+                  
+                  op_cur = op_operators->last;
+                  
+                  break;
+                }
+              }
+              else if (op_dist->id == SPVM_OP_C_ID_HASH_VALUE_ACCESS) {
+                
+                SPVM_OP* op_invocant = op_dist->first;
+                SPVM_OP* op_key = op_dist->last;
+                
+                SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_invocant);
+                
+                // Setter: $hash->{$key} = $operator to $hash->set($key, $operator);
                 SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
                 SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "set", op_cur->file, op_cur->line);
                 SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
                 SPVM_OP_cut_op(compiler, op_invocant);
-                SPVM_OP_cut_op(compiler, op_index);
+                SPVM_OP_cut_op(compiler, op_key);
                 SPVM_OP_cut_op(compiler, op_src);
-                SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_index);
+                SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_key);
                 SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_src);
                 
                 SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
@@ -2917,603 +2944,609 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                 
                 op_cur = op_operators->last;
-                
                 break;
               }
-            }
-            else if (op_dist->id == SPVM_OP_C_ID_HASH_VALUE_ACCESS) {
               
-              SPVM_OP* op_invocant = op_dist->first;
-              SPVM_OP* op_key = op_dist->last;
+              SPVM_TYPE* dist_type = SPVM_CHECK_get_type(compiler, op_dist);
               
-              SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_invocant);
+              // Type inference
+              if (op_dist->id == SPVM_OP_C_ID_VAR) {
+                SPVM_VAR_DECL* var_decl = op_dist->uv.var->var_decl;
+                if (var_decl->type == NULL) {
+                  var_decl->type = SPVM_CHECK_get_type(compiler, op_src);
+                }
+                assert(var_decl->type);
+                if (SPVM_TYPE_is_undef_type(compiler, var_decl->type->basic_type->id, var_decl->type->dimension, var_decl->type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The type of %s local variable cannnot be undef type.\n  at %s line %d", op_dist->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
+                  return;
+                }
+                op_dist->uv.var->is_initialized = 1;
+              }
               
-              // Setter: $hash->{$key} = $operator to $hash->set($key, $operator);
-              SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
-              SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "set", op_cur->file, op_cur->line);
-              SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
-              SPVM_OP_cut_op(compiler, op_invocant);
-              SPVM_OP_cut_op(compiler, op_key);
-              SPVM_OP_cut_op(compiler, op_src);
-              SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_key);
-              SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_src);
+              // Check if source can be assigned to dist
+              // If needed, numeric conversion op is added
+              dist_type = SPVM_CHECK_get_type(compiler, op_dist);
               
-              SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
+              SPVM_CHECK_check_assign(compiler, dist_type, op_src, "assignment operator", op_cur->file, op_cur->line);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
               
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+              if (op_dist->id == SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS && op_dist->flag & SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS_STRING) {
+                SPVM_OP* op_array = op_dist->first;
+                SPVM_TYPE* array_type = SPVM_CHECK_get_type(compiler, op_array);
+                int32_t is_mutable = array_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
+                
+                if(!is_mutable) {
+                  SPVM_COMPILER_error(compiler, "Characters cannot be set to non-mutable strings.\n  at %s line %d", op_dist->file, op_dist->line);
+                  return;
+                }
+              }
               
-              SPVM_OP_replace_op(compiler, op_stab, op_call_method);
-              
-              op_cur = op_operators->last;
               break;
             }
-            
-            SPVM_TYPE* dist_type = SPVM_CHECK_get_type(compiler, op_dist);
-            
-            // Type inference
-            if (op_dist->id == SPVM_OP_C_ID_VAR) {
-              SPVM_VAR_DECL* var_decl = op_dist->uv.var->var_decl;
-              if (var_decl->type == NULL) {
-                var_decl->type = SPVM_CHECK_get_type(compiler, op_src);
-              }
-              assert(var_decl->type);
-              if (SPVM_TYPE_is_undef_type(compiler, var_decl->type->basic_type->id, var_decl->type->dimension, var_decl->type->flag)) {
-                SPVM_COMPILER_error(compiler, "The type of %s local variable cannnot be undef type.\n  at %s line %d", op_dist->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
-                return;
-              }
-              op_dist->uv.var->is_initialized = 1;
-            }
-            
-            // Check if source can be assigned to dist
-            // If needed, numeric conversion op is added
-            dist_type = SPVM_CHECK_get_type(compiler, op_dist);
-            
-            SPVM_CHECK_check_assign(compiler, dist_type, op_src, "assignment operator", op_cur->file, op_cur->line);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            if (op_dist->id == SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS && op_dist->flag & SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS_STRING) {
-              SPVM_OP* op_array = op_dist->first;
-              SPVM_TYPE* array_type = SPVM_CHECK_get_type(compiler, op_array);
-              int32_t is_mutable = array_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
+            case SPVM_OP_C_ID_RETURN: {
               
-              if(!is_mutable) {
-                SPVM_COMPILER_error(compiler, "Characters cannot be set to non-mutable strings.\n  at %s line %d", op_dist->file, op_dist->line);
+              SPVM_OP* op_operand = op_cur->first;
+              
+              if (SPVM_TYPE_is_void_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
+                if (op_operand) {
+                  SPVM_COMPILER_error(compiler, "If the return type is void, the method cannnot return the value.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else {
+                if (op_operand) {
+                  SPVM_CHECK_check_assign(compiler, method->return_type, op_operand, "return statement", op_cur->file, op_cur->line);
+                  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                    return;
+                  }
+                }
+                else {
+                  SPVM_COMPILER_error(compiler, "If the return type is non-void, the method must return a value.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_PLUS: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (!SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of unary + operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_RETURN: {
-            
-            SPVM_OP* op_operand = op_cur->first;
-            
-            if (SPVM_TYPE_is_void_type(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag)) {
-              if (op_operand) {
-                SPVM_COMPILER_error(compiler, "If the return type is void, the method cannnot return the value.\n  at %s line %d", op_cur->file, op_cur->line);
+              
+              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
+              
+              break;
             }
-            else {
-              if (op_operand) {
-                SPVM_CHECK_check_assign(compiler, method->return_type, op_operand, "return statement", op_cur->file, op_cur->line);
+            case SPVM_OP_C_ID_MINUS: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (!SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of unary - operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_COPY: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              int32_t is_copyable_type
+                =  SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)
+                || SPVM_TYPE_is_numeric_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)
+                || SPVM_TYPE_is_mulnum_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+              
+              if (!is_copyable_type) {
+                SPVM_COMPILER_error(compiler, "The operand type of copy operator must be string type, a numeric type, or a multi-numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_ADDRESS: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              int32_t is_object_or_ref_type
+                =  SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)
+                || SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+              
+              if (!is_object_or_ref_type) {
+                SPVM_COMPILER_error(compiler, "The operand type of address operator must be an object type or a reference type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_BIT_NOT: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (!SPVM_TYPE_is_integer_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of ~ operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_SEQUENCE: {
+              
+              if (op_cur->original_id == SPVM_OP_C_ID_DEFINED_OR) {
+                
+                SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
+                
+                if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The left operand type of defined-or operator // must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else if (op_cur->original_id == SPVM_OP_C_ID_TERNARY_OP) {
+                
+                // Type cast to the left operand type
+                SPVM_OP* op_tmp = (SPVM_OP*)op_cur->uv.any;
+                
+                SPVM_OP* op_left_operand = op_tmp->first;
+                SPVM_OP* op_right_operand = op_tmp->last;
+                SPVM_TYPE* type_left_operand = SPVM_CHECK_get_type(compiler, op_left_operand);
+                SPVM_TYPE* type_right_operand = SPVM_CHECK_get_type(compiler, op_right_operand);
+                
+                int32_t check_same_type;
+                if (SPVM_TYPE_is_object_type(compiler, type_left_operand->basic_type->id, type_left_operand->dimension, type_left_operand->flag)) {
+                  if (SPVM_TYPE_is_undef_type(compiler, type_right_operand->basic_type->id, type_right_operand->dimension, type_right_operand->flag)) {
+                    check_same_type = 0;
+                  }
+                  else {
+                    check_same_type = 1;
+                  }
+                }
+                else {
+                  check_same_type = 1;
+                }
+                if (check_same_type) {
+                  if (!SPVM_TYPE_equals(compiler, type_left_operand->basic_type->id, type_left_operand->dimension, type_left_operand->flag, type_right_operand->basic_type->id, type_right_operand->dimension, type_right_operand->flag)) {
+                    SPVM_COMPILER_error(compiler, "The types of the left and right operands of ternary operator must be the same type.\n  at %s line %d", op_cur->file, op_cur->line);
+                    return;
+                  }
+                }
+                
+                // Replace any object type with the type of left operand and remove type cast operators.
+                SPVM_OP* op_ret = op_cur->last;
+                SPVM_VAR_DECL* var_decl_ret = op_ret->uv.var->var_decl;
+                var_decl_ret->type = type_left_operand;
+                
+                SPVM_OP* op_block_true = SPVM_OP_sibling(compiler, SPVM_OP_sibling(compiler, op_cur->first)->first);
+                SPVM_OP* op_block_false = SPVM_OP_sibling(compiler, op_block_true);
+                
+                SPVM_OP* op_block_true_assign = SPVM_OP_sibling(compiler, op_block_true->first->first);
+                SPVM_OP* op_block_false_assign = SPVM_OP_sibling(compiler, op_block_false->first->first);
+                
+                if (op_block_true_assign->first->id == SPVM_OP_C_ID_TYPE_CAST) {
+                  SPVM_OP* op_block_true_type_cast = op_block_true_assign->first;
+                  
+                  SPVM_OP* op_block_true_var = op_block_true_type_cast->first;
+                  SPVM_OP_cut_op(compiler, op_block_true_type_cast->first);
+                  
+                  SPVM_OP_replace_op(compiler, op_block_true_type_cast, op_block_true_var);
+                }
+                
+                if (op_block_false_assign->first->id == SPVM_OP_C_ID_TYPE_CAST) {
+                  SPVM_OP* op_block_false_type_cast = op_block_false_assign->first;
+                  
+                  SPVM_OP* op_block_false_var = op_block_false_type_cast->first;
+                  SPVM_OP_cut_op(compiler, op_block_false_type_cast->first);
+                  
+                  SPVM_OP_replace_op(compiler, op_block_false_type_cast, op_block_false_var);
+                }
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_ADD: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                if (op_cur->original_id == SPVM_OP_C_ID_PRE_INC || op_cur->original_id == SPVM_OP_C_ID_POST_INC) {
+                  SPVM_COMPILER_error(compiler, "The operand type of increment operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                }
+                else {
+                  SPVM_COMPILER_error(compiler, "The left operand type of + operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                }
+                
+                return;
+              }
+              
+              if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of + operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+                                              
+              break;
+            }
+            case SPVM_OP_C_ID_SUBTRACT: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                if (op_cur->original_id == SPVM_OP_C_ID_PRE_DEC || op_cur->original_id == SPVM_OP_C_ID_POST_DEC) {
+                  SPVM_COMPILER_error(compiler, "The operand type of decrement operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                }
+                else {
+                  SPVM_COMPILER_error(compiler, "The left operand type of - operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                }
+                return;
+              }
+              
+              if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of - operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_MULTIPLY: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of * operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of * operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_DIVIDE: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of / operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of / operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+
+              break;
+            }
+            case SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              if (!SPVM_TYPE_is_int_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of div_uint operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (!SPVM_TYPE_is_int_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of div_uint operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              if (!SPVM_TYPE_is_long_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of div_ulong operator must be long type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (!SPVM_TYPE_is_long_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of div_ulong operator must be long type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_MODULO: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              if (!SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of %% operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (!SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of %% operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+                                              
+              break;
+            }
+            case SPVM_OP_C_ID_MODULO_UNSIGNED_INT: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              if (!SPVM_TYPE_is_int_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of mod_uint operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (!SPVM_TYPE_is_int_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of mod_uint operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_MODULO_UNSIGNED_LONG: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be a numeric type
+              if (!SPVM_TYPE_is_long_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of mod_ulong operator must be long type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be a numeric type
+              if (!SPVM_TYPE_is_long_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of mod_ulong operator must be long type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_BIT_AND: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be integer type
+              if (!SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of & operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be integer type
+              if (!SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of & operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_BIT_OR: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be integer type
+              if (!SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of | operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be integer type
+              if (!SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of | operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_LEFT_SHIFT: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be a numeric type
+              if (SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
               }
               else {
-                SPVM_COMPILER_error(compiler, "If the return type is non-void, the method must return a value.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The left operand type of << operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_PLUS: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of unary + operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_MINUS: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of unary - operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_COPY: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            int32_t is_copyable_type
-              =  SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)
-              || SPVM_TYPE_is_numeric_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)
-              || SPVM_TYPE_is_mulnum_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
-            
-            if (!is_copyable_type) {
-              SPVM_COMPILER_error(compiler, "The operand type of copy operator must be string type, a numeric type, or a multi-numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_ADDRESS: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            int32_t is_object_or_ref_type
-              =  SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)
-              || SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
-            
-            if (!is_object_or_ref_type) {
-              SPVM_COMPILER_error(compiler, "The operand type of address operator must be an object type or a reference type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_BIT_NOT: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_integer_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of ~ operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_SEQUENCE: {
-            
-            if (op_cur->original_id == SPVM_OP_C_ID_DEFINED_OR) {
               
-              SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
-              
-              if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_COMPILER_error(compiler, "The left operand type of defined-or operator // must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            else if (op_cur->original_id == SPVM_OP_C_ID_TERNARY_OP) {
-              
-              // Type cast to the left operand type
-              SPVM_OP* op_tmp = (SPVM_OP*)op_cur->uv.any;
-              
-              SPVM_OP* op_left_operand = op_tmp->first;
-              SPVM_OP* op_right_operand = op_tmp->last;
-              SPVM_TYPE* type_left_operand = SPVM_CHECK_get_type(compiler, op_left_operand);
-              SPVM_TYPE* type_right_operand = SPVM_CHECK_get_type(compiler, op_right_operand);
-              
-              int32_t check_same_type;
-              if (SPVM_TYPE_is_object_type(compiler, type_left_operand->basic_type->id, type_left_operand->dimension, type_left_operand->flag)) {
-                if (SPVM_TYPE_is_undef_type(compiler, type_right_operand->basic_type->id, type_right_operand->dimension, type_right_operand->flag)) {
-                  check_same_type = 0;
+              // Right operand must be int type
+              if (SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
                 }
-                else {
-                  check_same_type = 1;
+                
+                if (right_operand_type->dimension == 0 && right_operand_type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
+                  SPVM_COMPILER_error(compiler, "The right operand type of << operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
                 }
               }
               else {
-                check_same_type = 1;
+                SPVM_COMPILER_error(compiler, "The right operand type of << operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
               }
-              if (check_same_type) {
-                if (!SPVM_TYPE_equals(compiler, type_left_operand->basic_type->id, type_left_operand->dimension, type_left_operand->flag, type_right_operand->basic_type->id, type_right_operand->dimension, type_right_operand->flag)) {
-                  SPVM_COMPILER_error(compiler, "The types of the left and right operands of ternary operator must be the same type.\n  at %s line %d", op_cur->file, op_cur->line);
+              
+              break;
+            }
+            case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be a numeric type
+              if (SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
+              }
+              else {
+                SPVM_COMPILER_error(compiler, "The left operand type of >> operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be int type
+              if (SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
+                
+                if (right_operand_type->dimension == 0 && right_operand_type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
+                  SPVM_COMPILER_error(compiler, "The right operand type of >> operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else {
+                SPVM_COMPILER_error(compiler, "The right operand type of >> operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT: {
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Left operand must be a numeric type
+              if (SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
+              }
+              else {
+                SPVM_COMPILER_error(compiler, "The left operand type of >>> operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be int type
+              if (SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
+                
+                if (right_operand_type->dimension == 0 && right_operand_type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
+                  SPVM_COMPILER_error(compiler, "The right operand type of >>> operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else {
+                SPVM_COMPILER_error(compiler, "The right operand type of >>> operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_DIE: {
+              SPVM_TYPE* error_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              // Type
+              if (op_cur->last->id == SPVM_OP_C_ID_TYPE) {
+                if (!SPVM_TYPE_is_class_type(compiler, error_type->basic_type->id, error_type->dimension, error_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The error class of die statement must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              // Basic type ID
+              else {
+                if (!SPVM_TYPE_is_integer_type_within_int(compiler, error_type->basic_type->id, error_type->dimension, error_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The error ID must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+                
+                SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_WARN: {
+              if (op_cur->first) {
+                SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+                
+                if (SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                  SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->first);
+                  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                    return;
+                  }
+                }
+                else if (SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                  
+                  SPVM_OP* op_operand = op_cur->first;
+                  
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand);
+                  
+                  SPVM_OP* op_address = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADDRESS, op_cur->first->file, op_cur->first->line);
+                  
+                  op_address = SPVM_OP_build_unary_op(compiler, op_address, op_operand);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_address);
+                  
+                  op_cur->first = op_address;
+                }
+                
+                operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+                
+                if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The operand type of warn operator must be a numeric type, an object type, or a reference type.\n  at %s line %d", op_cur->file, op_cur->line);
                   return;
                 }
               }
               
-              // Replace any object type with the type of left operand and remove type cast operators.
-              SPVM_OP* op_ret = op_cur->last;
-              SPVM_VAR_DECL* var_decl_ret = op_ret->uv.var->var_decl;
-              var_decl_ret->type = type_left_operand;
-              
-              SPVM_OP* op_block_true = SPVM_OP_sibling(compiler, SPVM_OP_sibling(compiler, op_cur->first)->first);
-              SPVM_OP* op_block_false = SPVM_OP_sibling(compiler, op_block_true);
-              
-              SPVM_OP* op_block_true_assign = SPVM_OP_sibling(compiler, op_block_true->first->first);
-              SPVM_OP* op_block_false_assign = SPVM_OP_sibling(compiler, op_block_false->first->first);
-              
-              if (op_block_true_assign->first->id == SPVM_OP_C_ID_TYPE_CAST) {
-                SPVM_OP* op_block_true_type_cast = op_block_true_assign->first;
-                
-                SPVM_OP* op_block_true_var = op_block_true_type_cast->first;
-                SPVM_OP_cut_op(compiler, op_block_true_type_cast->first);
-                
-                SPVM_OP_replace_op(compiler, op_block_true_type_cast, op_block_true_var);
-              }
-              
-              if (op_block_false_assign->first->id == SPVM_OP_C_ID_TYPE_CAST) {
-                SPVM_OP* op_block_false_type_cast = op_block_false_assign->first;
-                
-                SPVM_OP* op_block_false_var = op_block_false_type_cast->first;
-                SPVM_OP_cut_op(compiler, op_block_false_type_cast->first);
-                
-                SPVM_OP_replace_op(compiler, op_block_false_type_cast, op_block_false_var);
-              }
+              break;
             }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_ADD: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              if (op_cur->original_id == SPVM_OP_C_ID_PRE_INC || op_cur->original_id == SPVM_OP_C_ID_POST_INC) {
-                SPVM_COMPILER_error(compiler, "The operand type of increment operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              }
-              else {
-                SPVM_COMPILER_error(compiler, "The left operand type of + operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              }
-              
-              return;
-            }
-            
-            if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of + operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-                                            
-            break;
-          }
-          case SPVM_OP_C_ID_SUBTRACT: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              if (op_cur->original_id == SPVM_OP_C_ID_PRE_DEC || op_cur->original_id == SPVM_OP_C_ID_POST_DEC) {
-                SPVM_COMPILER_error(compiler, "The operand type of decrement operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              }
-              else {
-                SPVM_COMPILER_error(compiler, "The left operand type of - operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              }
-              return;
-            }
-            
-            if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of - operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_MULTIPLY: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of * operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of * operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_DIVIDE: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            if (!SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of / operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of / operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-
-            break;
-          }
-          case SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            if (!SPVM_TYPE_is_int_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of div_uint operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (!SPVM_TYPE_is_int_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of div_uint operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            if (!SPVM_TYPE_is_long_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of div_ulong operator must be long type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (!SPVM_TYPE_is_long_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of div_ulong operator must be long type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_MODULO: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            if (!SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of %% operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (!SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of %% operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-                                            
-            break;
-          }
-          case SPVM_OP_C_ID_MODULO_UNSIGNED_INT: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            if (!SPVM_TYPE_is_int_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of mod_uint operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (!SPVM_TYPE_is_int_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of mod_uint operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_MODULO_UNSIGNED_LONG: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be a numeric type
-            if (!SPVM_TYPE_is_long_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of mod_ulong operator must be long type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Right operand must be a numeric type
-            if (!SPVM_TYPE_is_long_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of mod_ulong operator must be long type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_BIT_AND: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be integer type
-            if (!SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of & operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Right operand must be integer type
-            if (!SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of & operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_BIT_OR: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be integer type
-            if (!SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand type of | operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-
-            // Right operand must be integer type
-            if (!SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand type of | operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_LEFT_SHIFT: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be a numeric type
-            if (SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-            }
-            else {
-              SPVM_COMPILER_error(compiler, "The left operand type of << operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Right operand must be int type
-            if (SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-              
-              if (right_operand_type->dimension == 0 && right_operand_type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
-                SPVM_COMPILER_error(compiler, "The right operand type of << operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            else {
-              SPVM_COMPILER_error(compiler, "The right operand type of << operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_RIGHT_ARITHMETIC_SHIFT: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be a numeric type
-            if (SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-            }
-            else {
-              SPVM_COMPILER_error(compiler, "The left operand type of >> operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Right operand must be int type
-            if (SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-              
-              if (right_operand_type->dimension == 0 && right_operand_type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
-                SPVM_COMPILER_error(compiler, "The right operand type of >> operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            else {
-              SPVM_COMPILER_error(compiler, "The right operand type of >> operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT: {
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be a numeric type
-            if (SPVM_TYPE_is_integer_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-            }
-            else {
-              SPVM_COMPILER_error(compiler, "The left operand type of >>> operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Right operand must be int type
-            if (SPVM_TYPE_is_integer_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-              
-              if (right_operand_type->dimension == 0 && right_operand_type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
-                SPVM_COMPILER_error(compiler, "The right operand type of >>> operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            else {
-              SPVM_COMPILER_error(compiler, "The right operand type of >>> operator must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_DIE: {
-            SPVM_TYPE* error_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Type
-            if (op_cur->last->id == SPVM_OP_C_ID_TYPE) {
-              if (!SPVM_TYPE_is_class_type(compiler, error_type->basic_type->id, error_type->dimension, error_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The error class of die statement must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            // Basic type ID
-            else {
-              if (!SPVM_TYPE_is_integer_type_within_int(compiler, error_type->basic_type->id, error_type->dimension, error_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The error ID must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_WARN: {
-            if (op_cur->first) {
+            case SPVM_OP_C_ID_PRINT: {
               SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
               
               if (SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
@@ -3522,442 +3555,623 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   return;
                 }
               }
-              else if (SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                
-                SPVM_OP* op_operand = op_cur->first;
-                
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_operand);
-                
-                SPVM_OP* op_address = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADDRESS, op_cur->first->file, op_cur->first->line);
-                
-                op_address = SPVM_OP_build_unary_op(compiler, op_address, op_operand);
-                
-                SPVM_OP_replace_op(compiler, op_stab, op_address);
-                
-                op_cur->first = op_address;
+              
+              operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of print operator must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
+            }
+            case SPVM_OP_C_ID_SAY: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->first);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
               }
               
               operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
               
+              if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of say operator must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
+            }
+            case SPVM_OP_C_ID_MAKE_READ_ONLY: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of make_read_only operator must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
+            }
+            case SPVM_OP_C_ID_MAKE_FIXED_LENGTH: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (!(SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag) || SPVM_TYPE_is_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag))) {
+                SPVM_COMPILER_error(compiler, "The operand type of make_fixed_length operator must be string or an array type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
+            }
+            case SPVM_OP_C_ID_ENABLE_OPTIONS: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
               if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand type of warn operator must be a numeric type, an object type, or a reference type.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand type of enable_options operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
+              break;
             }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_PRINT: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->first);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+            case SPVM_OP_C_ID_DISABLE_OPTIONS: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of disable_options operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
+              break;
             }
-            
-            operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of print operator must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            break;
-          }
-          case SPVM_OP_C_ID_SAY: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->first);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+            case SPVM_OP_C_ID_IS_READ_ONLY: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of is_read_only operator must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
+              break;
             }
-            
-            operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of say operator must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
+            case SPVM_OP_C_ID_IS_FIXED_LENGTH: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (!(SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag) || SPVM_TYPE_is_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag))) {
+                SPVM_COMPILER_error(compiler, "The operand type of is_fixed_length operator must be string or an array type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
             }
-            break;
-          }
-          case SPVM_OP_C_ID_MAKE_READ_ONLY: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of make_read_only operator must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
+            case SPVM_OP_C_ID_IS_OPTIONS: {
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand type of is_options operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
             }
-            break;
-          }
-          case SPVM_OP_C_ID_MAKE_FIXED_LENGTH: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!(SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag) || SPVM_TYPE_is_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag))) {
-              SPVM_COMPILER_error(compiler, "The operand type of make_fixed_length operator must be string or an array type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            break;
-          }
-          case SPVM_OP_C_ID_ENABLE_OPTIONS: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of enable_options operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            break;
-          }
-          case SPVM_OP_C_ID_DISABLE_OPTIONS: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of disable_options operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            break;
-          }
-          case SPVM_OP_C_ID_IS_READ_ONLY: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of is_read_only operator must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            break;
-          }
-          case SPVM_OP_C_ID_IS_FIXED_LENGTH: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!(SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag) || SPVM_TYPE_is_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag))) {
-              SPVM_COMPILER_error(compiler, "The operand type of is_fixed_length operator must be string or an array type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            break;
-          }
-          case SPVM_OP_C_ID_IS_OPTIONS: {
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The operand type of is_options operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            break;
-          }
-          case SPVM_OP_C_ID_BLOCK: {
-            SPVM_BLOCK* block = op_cur->uv.block;
-            // End of scope
-            if (!block->no_scope) {
-              // Pop block var_decl variable base
-              assert(var_decl_scope_base_stack->length > 0);
-              int32_t block_var_decl_base = (intptr_t)SPVM_LIST_pop(var_decl_scope_base_stack);
+            case SPVM_OP_C_ID_BLOCK: {
+              SPVM_BLOCK* block = op_cur->uv.block;
+              // End of scope
+              if (!block->no_scope) {
+                // Pop block var_decl variable base
+                assert(var_decl_scope_base_stack->length > 0);
+                int32_t block_var_decl_base = (intptr_t)SPVM_LIST_pop(var_decl_scope_base_stack);
+                  
+                int32_t var_decl_stack_pop_count = var_decl_stack->length - block_var_decl_base;
                 
-              int32_t var_decl_stack_pop_count = var_decl_stack->length - block_var_decl_base;
-              
-              for (int32_t i = 0; i < var_decl_stack_pop_count; i++) {
-                SPVM_LIST_pop(var_decl_stack);
+                for (int32_t i = 0; i < var_decl_stack_pop_count; i++) {
+                  SPVM_LIST_pop(var_decl_stack);
+                }
               }
-            }
-            
-            // Pop loop block var_decl variable base
-            if (block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
-              loop_block_stack_length--;
-            }
-            // Pop try block var_decl variable base
-            else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
-              eval_block_stack_length--;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_REFERENCE: {
-            
-            SPVM_OP* op_var = op_cur->first;
-            SPVM_TYPE* var_type = SPVM_CHECK_get_type(compiler, op_var);
-            if (!(SPVM_TYPE_is_numeric_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_mulnum_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
-              SPVM_COMPILER_error(compiler, "The operand type of refernece operator must be a numeric type or a multi-numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_DEREFERENCE: {
-            SPVM_OP* op_var = op_cur->first;
-            SPVM_TYPE* var_type = SPVM_CHECK_get_type(compiler, op_var);
-            
-            if (!(SPVM_TYPE_is_numeric_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
-              SPVM_COMPILER_error(compiler, "The operand type of dereference operaotr must be a numeric reference type or a multi-numeric reference type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
-          // Local variable or class variable
-          case SPVM_OP_C_ID_VAR: {
-            
-            if (op_cur->uv.var->is_declaration) {
               
-              SPVM_VAR_DECL* var_decl = op_cur->uv.var->var_decl;
+              // Pop loop block var_decl variable base
+              if (block->id == SPVM_BLOCK_C_ID_LOOP_INNER) {
+                loop_block_stack_length--;
+              }
+              // Pop try block var_decl variable base
+              else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
+                eval_block_stack_length--;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_REFERENCE: {
+              
+              SPVM_OP* op_var = op_cur->first;
+              SPVM_TYPE* var_type = SPVM_CHECK_get_type(compiler, op_var);
+              if (!(SPVM_TYPE_is_numeric_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_mulnum_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
+                SPVM_COMPILER_error(compiler, "The operand type of refernece operator must be a numeric type or a multi-numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_DEREFERENCE: {
+              SPVM_OP* op_var = op_cur->first;
+              SPVM_TYPE* var_type = SPVM_CHECK_get_type(compiler, op_var);
+              
+              if (!(SPVM_TYPE_is_numeric_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
+                SPVM_COMPILER_error(compiler, "The operand type of dereference operaotr must be a numeric reference type or a multi-numeric reference type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            // Local variable or class variable
+            case SPVM_OP_C_ID_VAR: {
+              
+              if (op_cur->uv.var->is_declaration) {
+                
+                SPVM_VAR_DECL* var_decl = op_cur->uv.var->var_decl;
+                
+                // Local temporary variable
+                if (strstr(op_cur->uv.var->name, "$_.")) {
+                  var_decl_local_tmp_var_cur = op_cur->uv.var->var_decl;
+                }
+                
+                // Redeclaration error if same name variable is declare in same block
+                int32_t found = 0;
+                int32_t block_var_decl_base = (intptr_t)SPVM_LIST_get(var_decl_scope_base_stack, var_decl_scope_base_stack->length - 1);
+                for (int32_t i = block_var_decl_base; i < var_decl_stack->length; i++) {
+                  SPVM_VAR_DECL* bef_var_decl = SPVM_LIST_get(var_decl_stack, i);
+                  
+                  if (strcmp(var_decl->var->name, bef_var_decl->var->name) == 0) {
+                    // Temporaly variable is not duplicated
+                    if (strncmp(var_decl->var->name, "$.", 2) != 0) {
+                      found = 1;
+                    }
+                    break;
+                  }
+                }
+                
+                if (found) {
+                  SPVM_COMPILER_error(compiler, "Redeclaration of %s variable.\n  at %s line %d", var_decl->var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
+                  return;
+                }
+                else {
+                  var_decl->index = method->var_decls->length;
+                  SPVM_LIST_push(method->var_decls, var_decl);
+                  SPVM_LIST_push(var_decl_stack, var_decl);
+                }
+                
+                // Type cannnot be detected
+                if (!op_cur->is_dist && var_decl->type == NULL) {
+                  SPVM_COMPILER_error(compiler, "The type of %s variable is not detected.\n  at %s line %d", op_cur->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
+                  return;
+                }
+              }
               
               // Local temporary variable
-              if (strstr(op_cur->uv.var->name, "$_.")) {
-                var_decl_local_tmp_var_cur = op_cur->uv.var->var_decl;
+              if (var_decl_local_tmp_var_cur && strcmp(op_cur->uv.var->name, "$_") == 0) {
+                op_cur->uv.var->name = var_decl_local_tmp_var_cur->name;
               }
               
-              // Redeclaration error if same name variable is declare in same block
-              int32_t found = 0;
-              int32_t block_var_decl_base = (intptr_t)SPVM_LIST_get(var_decl_scope_base_stack, var_decl_scope_base_stack->length - 1);
-              for (int32_t i = block_var_decl_base; i < var_decl_stack->length; i++) {
-                SPVM_VAR_DECL* bef_var_decl = SPVM_LIST_get(var_decl_stack, i);
-                
-                if (strcmp(var_decl->var->name, bef_var_decl->var->name) == 0) {
-                  // Temporaly variable is not duplicated
-                  if (strncmp(var_decl->var->name, "$.", 2) != 0) {
-                    found = 1;
-                  }
+              SPVM_VAR* var = op_cur->uv.var;
+              
+              // Search same name variable
+              SPVM_VAR_DECL* found_var_decl = NULL;
+              for (int32_t i = var_decl_stack->length - 1; i >= 0; i--) {
+                SPVM_VAR_DECL* var_decl = SPVM_LIST_get(var_decl_stack, i);
+                assert(var_decl);
+                if (strcmp(var->name, var_decl->var->name) == 0) {
+                  found_var_decl = var_decl;
                   break;
                 }
               }
               
-              if (found) {
-                SPVM_COMPILER_error(compiler, "Redeclaration of %s variable.\n  at %s line %d", var_decl->var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
-                return;
+              if (found_var_decl) {
+                // Add var_decl var information to var
+                var->var_decl = found_var_decl;
               }
               else {
-                var_decl->index = method->var_decls->length;
-                SPVM_LIST_push(method->var_decls, var_decl);
-                SPVM_LIST_push(var_decl_stack, var_decl);
+                // Search a class variable
+                SPVM_OP* op_name_basic_type_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->name, op_cur->file, op_cur->line);
+                SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_basic_type_var);
+                
+                op_class_var_access->is_dist = op_cur->is_dist;
+                
+                SPVM_CHECK_check_class_var_access(compiler, op_class_var_access, method);
+                if (op_class_var_access->uv.class_var_access->class_var) {
+                  
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  
+                  // Check field name
+                  SPVM_CHECK_check_class_var_access(compiler, op_class_var_access, method);
+                  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                    return;
+                  }
+                  
+                  SPVM_CLASS_VAR_ACCESS* class_var_access = op_class_var_access->uv.class_var_access;
+                  SPVM_CLASS_VAR* class_var = class_var_access->class_var;
+                  SPVM_BASIC_TYPE* class_var_access_basic_type = class_var->current_basic_type;
+                  
+                  if (!SPVM_CHECK_can_access(compiler, method->current_basic_type, class_var_access_basic_type, class_var_access->class_var->access_control_type, 0)) {
+                    if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, class_var_access_basic_type, 0)) {
+                      SPVM_COMPILER_error(compiler, "The %s $%s::%s class variable cannnot be accessed from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var_access_basic_type->name, class_var->name + 1, method->current_basic_type->name, op_class_var_access->file, op_class_var_access->line);
+                      return;
+                    }
+                  }
+                  
+                  var->class_var = class_var;
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_class_var_access);
+                  
+                  op_cur = op_class_var_access;
+                }
+                else {
+                  SPVM_COMPILER_error(compiler, "%s is not found.\n  at %s line %d", var->name, op_cur->file, op_cur->line);
+                  return;
+                }
               }
               
-              // Type cannnot be detected
-              if (!op_cur->is_dist && var_decl->type == NULL) {
-                SPVM_COMPILER_error(compiler, "The type of %s variable is not detected.\n  at %s line %d", op_cur->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
+              break;
+            }
+            case SPVM_OP_C_ID_CALL_METHOD: {
+              
+              SPVM_OP* op_call_method = op_cur;
+              
+              assert(op_call_method->first->id == SPVM_OP_C_ID_LIST);
+              
+              SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
+              
+              // Check method call's call
+              SPVM_CHECK_check_call_method_call(compiler, op_call_method, method);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
-            }
-            
-            // Local temporary variable
-            if (var_decl_local_tmp_var_cur && strcmp(op_cur->uv.var->name, "$_") == 0) {
-              op_cur->uv.var->name = var_decl_local_tmp_var_cur->name;
-            }
-            
-            SPVM_VAR* var = op_cur->uv.var;
-            
-            // Search same name variable
-            SPVM_VAR_DECL* found_var_decl = NULL;
-            for (int32_t i = var_decl_stack->length - 1; i >= 0; i--) {
-              SPVM_VAR_DECL* var_decl = SPVM_LIST_get(var_decl_stack, i);
-              assert(var_decl);
-              if (strcmp(var->name, var_decl->var->name) == 0) {
-                found_var_decl = var_decl;
-                break;
-              }
-            }
-            
-            if (found_var_decl) {
-              // Add var_decl var information to var
-              var->var_decl = found_var_decl;
-            }
-            else {
-              // Search a class variable
-              SPVM_OP* op_name_basic_type_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->name, op_cur->file, op_cur->line);
-              SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_basic_type_var);
               
-              op_class_var_access->is_dist = op_cur->is_dist;
-              
-              SPVM_CHECK_check_class_var_access(compiler, op_class_var_access, method);
-              if (op_class_var_access->uv.class_var_access->class_var) {
-                
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                
-                // Check field name
-                SPVM_CHECK_check_class_var_access(compiler, op_class_var_access, method);
+              // Check method call's variable length arguments
+              if (!call_method->varargs_checked) {
+                SPVM_OP* op_previous_args = SPVM_CHECK_check_call_method_varargs(compiler, op_call_method, method);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
                 
-                SPVM_CLASS_VAR_ACCESS* class_var_access = op_class_var_access->uv.class_var_access;
-                SPVM_CLASS_VAR* class_var = class_var_access->class_var;
-                SPVM_BASIC_TYPE* class_var_access_basic_type = class_var->current_basic_type;
-                
-                if (!SPVM_CHECK_can_access(compiler, method->current_basic_type, class_var_access_basic_type, class_var_access->class_var->access_control_type, 0)) {
-                  if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, class_var_access_basic_type, 0)) {
-                    SPVM_COMPILER_error(compiler, "The %s $%s::%s class variable cannnot be accessed from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var_access_basic_type->name, class_var->name + 1, method->current_basic_type->name, op_class_var_access->file, op_class_var_access->line);
-                    return;
-                  }
+                if (op_previous_args) {
+                  op_cur = op_previous_args;
+                  break;
                 }
-                
-                var->class_var = class_var;
-                
-                SPVM_OP_replace_op(compiler, op_stab, op_class_var_access);
-                
-                op_cur = op_class_var_access;
               }
-              else {
-                SPVM_COMPILER_error(compiler, "%s is not found.\n  at %s line %d", var->name, op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_CALL_METHOD: {
-            
-            SPVM_OP* op_call_method = op_cur;
-            
-            assert(op_call_method->first->id == SPVM_OP_C_ID_LIST);
-            
-            SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
-            
-            // Check method call's call
-            SPVM_CHECK_check_call_method_call(compiler, op_call_method, method);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            // Check method call's variable length arguments
-            if (!call_method->varargs_checked) {
-              SPVM_OP* op_previous_args = SPVM_CHECK_check_call_method_varargs(compiler, op_call_method, method);
+              
+              // Check method call's arguments
+              SPVM_CHECK_check_call_method_args(compiler, op_call_method, method);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
               
-              if (op_previous_args) {
-                op_cur = op_previous_args;
-                break;
-              }
-            }
-            
-            // Check method call's arguments
-            SPVM_CHECK_check_call_method_args(compiler, op_call_method, method);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            // A method call to get a enumeration value is replaced to a constant value
-            if (call_method->method->is_enum) {
-              // Replace method to constant
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              
-              int32_t enum_value = call_method->method->enum_value;
-              SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, enum_value, op_cur->file, op_cur->line);
-              
-              SPVM_OP_replace_op(compiler, op_stab, op_constant);
-              
-              op_cur = op_constant;
-            }
-            
-            // Generics
-            if (call_method->method->return_type->is_generic_type) {
-              SPVM_TYPE* element_type = call_method->type->of;
-              if (element_type) {
-                if (!SPVM_TYPE_is_object_type(compiler, element_type->basic_type->id, element_type->dimension, element_type->flag)) {
-                  SPVM_COMPILER_error(compiler, "Invalid generics: the element type of the invocant of %s#%s method call must be an object type.\n  at %s line %d", call_method->method->current_basic_type->name, call_method->method->name, op_call_method->file, op_call_method->line);
-                  return;
-                }
-                
-                if (call_method->method->is_class_method) {
-                  SPVM_COMPILER_error(compiler, "Invalid generics: a class method cannot return a generic type.\n  at %s line %d", op_call_method->file, op_call_method->line);
-                  return;
-                }
-                
+              // A method call to get a enumeration value is replaced to a constant value
+              if (call_method->method->is_enum) {
+                // Replace method to constant
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 
-                SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_call_method->file, op_call_method->line);
+                int32_t enum_value = call_method->method->enum_value;
+                SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, enum_value, op_cur->file, op_cur->line);
                 
-                SPVM_OP* op_dist_type = NULL;
-                if (call_method->method->return_type->dimension == 0) {
-                  op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, element_type, op_call_method->file, op_call_method->line);
-                }
-                else if (call_method->method->return_type->dimension == 1) {
-                  op_dist_type = SPVM_OP_new_op_type(compiler, element_type->basic_type->name, element_type->basic_type, element_type->dimension + 1, element_type->flag, op_call_method->file, op_call_method->line);
-                  op_dist_type->uv.type->of = element_type->of;
-                }
-                else {
-                  assert(0);
-                }
-                SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_cur);
-                SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
+                SPVM_OP_replace_op(compiler, op_stab, op_constant);
+                
+                op_cur = op_constant;
               }
+              
+              // Generics
+              if (call_method->method->return_type->is_generic_type) {
+                SPVM_TYPE* element_type = call_method->type->of;
+                if (element_type) {
+                  if (!SPVM_TYPE_is_object_type(compiler, element_type->basic_type->id, element_type->dimension, element_type->flag)) {
+                    SPVM_COMPILER_error(compiler, "Invalid generics: the element type of the invocant of %s#%s method call must be an object type.\n  at %s line %d", call_method->method->current_basic_type->name, call_method->method->name, op_call_method->file, op_call_method->line);
+                    return;
+                  }
+                  
+                  if (call_method->method->is_class_method) {
+                    SPVM_COMPILER_error(compiler, "Invalid generics: a class method cannot return a generic type.\n  at %s line %d", op_call_method->file, op_call_method->line);
+                    return;
+                  }
+                  
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  
+                  SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_call_method->file, op_call_method->line);
+                  
+                  SPVM_OP* op_dist_type = NULL;
+                  if (call_method->method->return_type->dimension == 0) {
+                    op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, element_type, op_call_method->file, op_call_method->line);
+                  }
+                  else if (call_method->method->return_type->dimension == 1) {
+                    op_dist_type = SPVM_OP_new_op_type(compiler, element_type->basic_type->name, element_type->basic_type, element_type->dimension + 1, element_type->flag, op_call_method->file, op_call_method->line);
+                    op_dist_type->uv.type->of = element_type->of;
+                  }
+                  else {
+                    assert(0);
+                  }
+                  SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_cur);
+                  SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
+                }
+              }
+              
+              if (call_method->method->is_class_method) {
+                SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, call_method->method->current_basic_type->name, strlen(call_method->method->current_basic_type->name));
+              }
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, call_method->method->name, strlen(call_method->method->name));
+              
+              break;
             }
-            
-            if (call_method->method->is_class_method) {
-              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, call_method->method->current_basic_type->name, strlen(call_method->method->current_basic_type->name));
-            }
-            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, call_method->method->name, strlen(call_method->method->name));
-            
-            break;
-          }
-          case SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS: {
-            SPVM_OP* op_invocant = op_cur->first;
-            SPVM_OP* op_index = op_cur->last;
-            
-            SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            int32_t allow_array_element_access = 0;
-            if (SPVM_TYPE_is_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              allow_array_element_access = 1;
-            }
-            else if (SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              allow_array_element_access = 1;
-            }
-            else if (SPVM_TYPE_is_class_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              allow_array_element_access = 1;
-            }
-            else if (SPVM_TYPE_is_interface_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              allow_array_element_access = 1;
-            }
-            
-            // Left operand must be an array or string
-            if (!allow_array_element_access) {
-              SPVM_COMPILER_error(compiler, "The invocant of the element access must be an array type, string type, a class type, or an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Right operand must be integer
-            if (SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+            case SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS: {
+              SPVM_OP* op_invocant = op_cur->first;
+              SPVM_OP* op_index = op_cur->last;
+              
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+              
+              int32_t allow_array_element_access = 0;
+              if (SPVM_TYPE_is_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                allow_array_element_access = 1;
+              }
+              else if (SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                allow_array_element_access = 1;
+              }
+              else if (SPVM_TYPE_is_class_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                allow_array_element_access = 1;
+              }
+              else if (SPVM_TYPE_is_interface_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                allow_array_element_access = 1;
+              }
+              
+              // Left operand must be an array or string
+              if (!allow_array_element_access) {
+                SPVM_COMPILER_error(compiler, "The invocant of the element access must be an array type, string type, a class type, or an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
-              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-              
-              if (right_operand_type->dimension == 0 && right_operand_type->basic_type->id != SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
+              // Right operand must be integer
+              if (SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->last);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
+                
+                SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+                
+                if (right_operand_type->dimension == 0 && right_operand_type->basic_type->id != SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
+                  SPVM_COMPILER_error(compiler, "The index of the element access must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else {
                 SPVM_COMPILER_error(compiler, "The index of the element access must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
+              
+              // String access
+              if (SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS_STRING;
+              }
+              // Replace array access with setter or getter
+              else if (SPVM_TYPE_is_class_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) ||
+                  SPVM_TYPE_is_interface_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag))
+              {
+                // Setter: $array->[$index] = $operator to $array->set($index, $operator);
+                if (!op_cur->is_dist) {
+                  SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
+                  SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "get", op_cur->file, op_cur->line);
+                  SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
+                  SPVM_OP_cut_op(compiler, op_invocant);
+                  SPVM_OP_cut_op(compiler, op_index);
+                  SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_index);
+                  
+                  SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
+                  
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_call_method);
+                  
+                  op_cur = op_operators->last;
+                }
+              }
+              
+              break;
             }
-            else {
-              SPVM_COMPILER_error(compiler, "The index of the element access must be int type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
+            case SPVM_OP_C_ID_FIELD_ACCESS: {
+              SPVM_OP* op_invocant = op_cur->first;
+              SPVM_OP* op_name = op_cur->uv.field_access->op_name;
+              
+              if (op_invocant->id == SPVM_OP_C_ID_ASSIGN) {
+                op_invocant = op_invocant->first;
+              }
+              
+              // Invoker type check
+              SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_invocant);
+              int32_t is_valid_invocant_type;
+              if (invocant_type) {
+                if (SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  is_valid_invocant_type = 1;
+                }
+                else if (SPVM_TYPE_is_mulnum_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  is_valid_invocant_type = 1;
+                }
+                else if (SPVM_TYPE_is_mulnum_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  is_valid_invocant_type = 1;
+                }
+                else {
+                  is_valid_invocant_type = 0;
+                }
+              }
+              else {
+                is_valid_invocant_type = 0;
+              }
+              if (!is_valid_invocant_type) {
+                SPVM_COMPILER_error(compiler, "The invocant of the field access must be a class type, or a multi-numeric type, or a multi-numeric reference type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Check field name
+              SPVM_CHECK_check_field_access(compiler, op_cur);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              SPVM_FIELD* field = op_cur->uv.field_access->field;
+              
+              if (!field) {
+                const char* invocant_type_name = SPVM_TYPE_new_type_name(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
+                SPVM_COMPILER_error(compiler, "%s#%s field is not found.\n  at %s line %d", invocant_type_name, op_name->uv.name, op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // weaken operator
+              if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN) {
+                if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "Invalid use of weaken operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+                
+                if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The %s#%s field operated by weaken operator must be an object type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              // unweaken operator
+              else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN) {
+                if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "Invalid use of unweaken operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+                
+                if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The %s#%s field operated by unweaken operator must be an object type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              // isweak operator
+              else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK) {
+                if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "Invalid use of isweak operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+                
+                if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The %s#%s field operated by isweak operator must be an object type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS) {
+                if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "Invalid use of exists operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+                
+                if (!(SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)
+                  || SPVM_TYPE_is_numeric_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag))) {
+                  SPVM_COMPILER_error(compiler, "The %s#%s field operated by exists operator must be an object type or a numeric type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_DELETE) {
+                if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "Invalid use of delete operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+                
+                if (!(SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)
+                  || SPVM_TYPE_is_numeric_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag))) {
+                  SPVM_COMPILER_error(compiler, "The %s#%s field operated by delete operator must be an object type or a numeric type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              
+              SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
+              
+              SPVM_FIELD* found_field_in_current_basic_type = SPVM_HASH_get(method->current_basic_type->original_field_symtable, field_access->field->name, strlen(field_access->field->name));
+              
+              int32_t is_parent_field = !found_field_in_current_basic_type && !method->current_basic_type->is_generated_by_anon_method;
+              
+              if (!SPVM_CHECK_can_access(compiler, method->current_basic_type,  field_access->field->current_basic_type, field_access->field->access_control_type, is_parent_field)) {
+                if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, field->current_basic_type, is_parent_field)) {
+                  
+                  SPVM_FIELD* found_original_field = SPVM_CHECK_search_original_field(compiler, field->current_basic_type, field->name);
+                  
+                  SPVM_COMPILER_error(compiler, "The %s %s#%s field cannnot be accessed from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), found_original_field->current_basic_type->name, found_original_field->name, method->current_basic_type->name, op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              
+              // If invocant is element access and element access object is mulnum_t, this op is multi-numeric array field access
+              if (op_invocant->id == SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS) {
+                SPVM_OP* op_element_access = op_invocant;
+                
+                SPVM_TYPE* array_element_type = SPVM_CHECK_get_type(compiler, op_element_access);
+                
+                int32_t is_basic_type_mulnum_t = SPVM_BASIC_TYPE_is_mulnum_type(compiler, array_element_type->basic_type->id);
+                if (is_basic_type_mulnum_t && array_element_type->dimension == 0) {
+                  SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                  
+                  SPVM_OP* op_array_field_access = SPVM_OP_new_op_array_field_access(compiler, op_cur->file, op_cur->line);
+                  op_array_field_access->is_dist = op_cur->is_dist;
+
+                  SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
+                  array_field_access->field = field;
+                  
+                  SPVM_OP* op_array = op_element_access->first;
+                  SPVM_OP* op_index = op_element_access->last;
+                  SPVM_OP_cut_op(compiler, op_element_access->first);
+                  SPVM_OP_cut_op(compiler, op_element_access->last);
+                  
+                  SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_array);
+                  SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_index);
+                  
+                  SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
+                  
+                  op_cur = op_array_field_access;
+                }
+              }
+              
+              
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field_access->field->current_basic_type->name, strlen(field_access->field->current_basic_type->name));
+              
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field_access->field->name, strlen(field_access->field->name));
+              
+              break;
             }
-            
-            // String access
-            if (SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS_STRING;
-            }
-            // Replace array access with setter or getter
-            else if (SPVM_TYPE_is_class_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) ||
-                SPVM_TYPE_is_interface_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag))
-            {
-              // Setter: $array->[$index] = $operator to $array->set($index, $operator);
+            case SPVM_OP_C_ID_HASH_VALUE_ACCESS: {
+              SPVM_OP* op_invocant = op_cur->first;
+              SPVM_OP* op_key = op_cur->last;
+              
+              // Invokant type check
+              SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_invocant);
+              int32_t is_valid_invocant_type;
+              if (invocant_type) {
+                if (SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  is_valid_invocant_type = 1;
+                }
+                else if (SPVM_TYPE_is_interface_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                  is_valid_invocant_type = 1;
+                }
+                else {
+                  is_valid_invocant_type = 0;
+                }
+              }
+              else {
+                is_valid_invocant_type = 0;
+              }
+              if (!is_valid_invocant_type) {
+                SPVM_COMPILER_error(compiler, "The invocant of the hash value access must be a class type or an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              SPVM_TYPE* key_type = SPVM_CHECK_get_type(compiler, op_key);
+              if (!SPVM_TYPE_is_string_type(compiler, key_type->basic_type->id, key_type->dimension, key_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The key of the hash value access must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Replace hash access with setter or getter
+              // Getter: $hash->{$key} to $hash->get($key);
               if (!op_cur->is_dist) {
                 SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
                 SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "get", op_cur->file, op_cur->line);
                 SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
                 SPVM_OP_cut_op(compiler, op_invocant);
-                SPVM_OP_cut_op(compiler, op_index);
-                SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_index);
+                SPVM_OP_cut_op(compiler, op_key);
+                SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_key);
                 
                 SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
                 
@@ -3967,304 +4181,87 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 
                 op_cur = op_operators->last;
               }
+              
+              break;
             }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_FIELD_ACCESS: {
-            SPVM_OP* op_invocant = op_cur->first;
-            SPVM_OP* op_name = op_cur->uv.field_access->op_name;
-            
-            if (op_invocant->id == SPVM_OP_C_ID_ASSIGN) {
-              op_invocant = op_invocant->first;
-            }
-            
-            // Invoker type check
-            SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_invocant);
-            int32_t is_valid_invocant_type;
-            if (invocant_type) {
-              if (SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
-                is_valid_invocant_type = 1;
-              }
-              else if (SPVM_TYPE_is_mulnum_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
-                is_valid_invocant_type = 1;
-              }
-              else if (SPVM_TYPE_is_mulnum_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
-                is_valid_invocant_type = 1;
-              }
-              else {
-                is_valid_invocant_type = 0;
-              }
-            }
-            else {
-              is_valid_invocant_type = 0;
-            }
-            if (!is_valid_invocant_type) {
-              SPVM_COMPILER_error(compiler, "The invocant of the field access must be a class type, or a multi-numeric type, or a multi-numeric reference type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Check field name
-            SPVM_CHECK_check_field_access(compiler, op_cur);
-            if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-              return;
-            }
-            
-            SPVM_FIELD* field = op_cur->uv.field_access->field;
-            
-            if (!field) {
-              const char* invocant_type_name = SPVM_TYPE_new_type_name(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
-              SPVM_COMPILER_error(compiler, "%s#%s field is not found.\n  at %s line %d", invocant_type_name, op_name->uv.name, op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // weaken operator
-            if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN) {
-              if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Invalid use of weaken operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+            case SPVM_OP_C_ID_CAN: {
+              SPVM_OP* op_var = op_cur->first;
+              SPVM_OP* op_name_method = op_cur->last;
+              
+              SPVM_TYPE* var_type = SPVM_CHECK_get_type(compiler, op_var);
+              
+              if (!(SPVM_TYPE_is_class_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_interface_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
+                SPVM_COMPILER_error(compiler, "The invocant of can operator must be a class type or an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
-              if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                SPVM_COMPILER_error(compiler, "The %s#%s field operated by weaken operator must be an object type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            // unweaken operator
-            else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN) {
-              if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Invalid use of unweaken operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
+              const char* var_basic_type_name = var_type->basic_type->name;
+              SPVM_BASIC_TYPE* var_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, var_basic_type_name, strlen(var_basic_type_name));
+              
+              const char* method_name = op_name_method->uv.name;
+              SPVM_METHOD* found_method = SPVM_HASH_get(
+                var_basic_type->method_symtable,
+                method_name,
+                strlen(method_name)
+              );
+              
+              if (!found_method) {
+                SPVM_COMPILER_error(compiler, "%s#%s method, the operand type of can operator, must be defined.\n  at %s line %d", var_basic_type_name, method_name, op_name_method->file, op_name_method->line);
                 return;
               }
               
-              if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                SPVM_COMPILER_error(compiler, "The %s#%s field operated by unweaken operator must be an object type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            // isweak operator
-            else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK) {
-              if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Invalid use of isweak operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
-              }
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method_name, strlen(method_name));
               
-              if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                SPVM_COMPILER_error(compiler, "The %s#%s field operated by isweak operator must be an object type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
-              }
+              break;
             }
-            else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS) {
-              if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Invalid use of exists operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
-              }
+            case SPVM_OP_C_ID_TYPE_CAST: {
               
-              if (!(SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)
-                || SPVM_TYPE_is_numeric_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag))) {
-                SPVM_COMPILER_error(compiler, "The %s#%s field operated by exists operator must be an object type or a numeric type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_DELETE) {
-              if (!SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Invalid use of delete operator: the incovant of the field access %s#%s must be a class type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
-              }
+              SPVM_OP* op_src = op_cur->first;
+              SPVM_OP* op_cast = op_cur->last;
               
-              if (!(SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)
-                || SPVM_TYPE_is_numeric_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag))) {
-                SPVM_COMPILER_error(compiler, "The %s#%s field operated by delete operator must be an object type or a numeric type.\n  at %s line %d", field->current_basic_type->name, field->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            
-            SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
-            
-            SPVM_FIELD* found_field_in_current_basic_type = SPVM_HASH_get(method->current_basic_type->original_field_symtable, field_access->field->name, strlen(field_access->field->name));
-            
-            int32_t is_parent_field = !found_field_in_current_basic_type && !method->current_basic_type->is_generated_by_anon_method;
-            
-            if (!SPVM_CHECK_can_access(compiler, method->current_basic_type,  field_access->field->current_basic_type, field_access->field->access_control_type, is_parent_field)) {
-              if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, field->current_basic_type, is_parent_field)) {
+              SPVM_TYPE* src_type = SPVM_CHECK_get_type(compiler, op_src);
+              assert(src_type);
+              
+              SPVM_TYPE* cast_type = SPVM_CHECK_get_type(compiler, op_cast);
+              
+              assert(cast_type);
+              
+              char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
+              int32_t castability = SPVM_TYPE_satisfy_cast_requirement(
+                compiler,
+                cast_type->basic_type->id, cast_type->dimension, cast_type->flag,
+                src_type->basic_type->id, src_type->dimension, src_type->flag,
+                error_reason
+              );
+              
+              if (!castability) {
+                if (strlen(error_reason)) {
+                  SPVM_COMPILER_error(compiler, error_reason);
+                }
                 
-                SPVM_FIELD* found_original_field = SPVM_CHECK_search_original_field(compiler, field->current_basic_type, field->name);
-                
-                SPVM_COMPILER_error(compiler, "The %s %s#%s field cannnot be accessed from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), found_original_field->current_basic_type->name, found_original_field->name, method->current_basic_type->name, op_cur->file, op_cur->line);
+                const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag);
+                const char* cast_type_name = SPVM_TYPE_new_type_name(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag);
+                SPVM_COMPILER_error(compiler, "The type cast from %s to %s is not allowed.\n  at %s line %d", src_type_name, cast_type_name, op_src->file, op_src->line);
                 return;
               }
-            }
-            
-            // If invocant is element access and element access object is mulnum_t, this op is multi-numeric array field access
-            if (op_invocant->id == SPVM_OP_C_ID_ARRAY_ELEMENT_ACCESS) {
-              SPVM_OP* op_element_access = op_invocant;
               
-              SPVM_TYPE* array_element_type = SPVM_CHECK_get_type(compiler, op_element_access);
-              
-              int32_t is_basic_type_mulnum_t = SPVM_BASIC_TYPE_is_mulnum_type(compiler, array_element_type->basic_type->id);
-              if (is_basic_type_mulnum_t && array_element_type->dimension == 0) {
+              // Remove type cast op if not needed
+              if (SPVM_TYPE_equals(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag, src_type->basic_type->id, src_type->dimension, src_type->flag) && !cast_type->of) {
+                SPVM_OP_cut_op(compiler, op_src);
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                
-                SPVM_OP* op_array_field_access = SPVM_OP_new_op_array_field_access(compiler, op_cur->file, op_cur->line);
-                op_array_field_access->is_dist = op_cur->is_dist;
-
-                SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
-                array_field_access->field = field;
-                
-                SPVM_OP* op_array = op_element_access->first;
-                SPVM_OP* op_index = op_element_access->last;
-                SPVM_OP_cut_op(compiler, op_element_access->first);
-                SPVM_OP_cut_op(compiler, op_element_access->last);
-                
-                SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_array);
-                SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_index);
-                
-                SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
-                
-                op_cur = op_array_field_access;
+                SPVM_OP_replace_op(compiler, op_stab, op_src);
+                op_cur = op_src;
               }
             }
-            
-            
-            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field_access->field->current_basic_type->name, strlen(field_access->field->current_basic_type->name));
-            
-            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field_access->field->name, strlen(field_access->field->name));
-            
             break;
           }
-          case SPVM_OP_C_ID_HASH_VALUE_ACCESS: {
-            SPVM_OP* op_invocant = op_cur->first;
-            SPVM_OP* op_key = op_cur->last;
-            
-            // Invokant type check
-            SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_invocant);
-            int32_t is_valid_invocant_type;
-            if (invocant_type) {
-              if (SPVM_TYPE_is_class_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
-                is_valid_invocant_type = 1;
-              }
-              else if (SPVM_TYPE_is_interface_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
-                is_valid_invocant_type = 1;
-              }
-              else {
-                is_valid_invocant_type = 0;
-              }
-            }
-            else {
-              is_valid_invocant_type = 0;
-            }
-            if (!is_valid_invocant_type) {
-              SPVM_COMPILER_error(compiler, "The invocant of the hash value access must be a class type or an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            SPVM_TYPE* key_type = SPVM_CHECK_get_type(compiler, op_key);
-            if (!SPVM_TYPE_is_string_type(compiler, key_type->basic_type->id, key_type->dimension, key_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The key of the hash value access must be string type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            // Replace hash access with setter or getter
-            // Getter: $hash->{$key} to $hash->get($key);
-            if (!op_cur->is_dist) {
-              SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
-              SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "get", op_cur->file, op_cur->line);
-              SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_cur->file, op_cur->line);
-              SPVM_OP_cut_op(compiler, op_invocant);
-              SPVM_OP_cut_op(compiler, op_key);
-              SPVM_OP_insert_child(compiler, op_operators, op_operators->last, op_key);
-              
-              SPVM_OP_build_call_method(compiler, op_call_method, op_invocant, op_name_method, op_operators);
-              
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              
-              SPVM_OP_replace_op(compiler, op_stab, op_call_method);
-              
-              op_cur = op_operators->last;
-            }
-            
-            break;
-          }
-          case SPVM_OP_C_ID_CAN: {
-            SPVM_OP* op_var = op_cur->first;
-            SPVM_OP* op_name_method = op_cur->last;
-            
-            SPVM_TYPE* var_type = SPVM_CHECK_get_type(compiler, op_var);
-            
-            if (!(SPVM_TYPE_is_class_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_interface_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
-              SPVM_COMPILER_error(compiler, "The invocant of can operator must be a class type or an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            const char* var_basic_type_name = var_type->basic_type->name;
-            SPVM_BASIC_TYPE* var_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, var_basic_type_name, strlen(var_basic_type_name));
-            
-            const char* method_name = op_name_method->uv.name;
-            SPVM_METHOD* found_method = SPVM_HASH_get(
-              var_basic_type->method_symtable,
-              method_name,
-              strlen(method_name)
-            );
-            
-            if (!found_method) {
-              SPVM_COMPILER_error(compiler, "%s#%s method, the operand type of can operator, must be defined.\n  at %s line %d", var_basic_type_name, method_name, op_name_method->file, op_name_method->line);
-              return;
-            }
-            
-            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method_name, strlen(method_name));
-            
-            break;
-          }
-          case SPVM_OP_C_ID_TYPE_CAST: {
-            
-            SPVM_OP* op_src = op_cur->first;
-            SPVM_OP* op_cast = op_cur->last;
-            
-            SPVM_TYPE* src_type = SPVM_CHECK_get_type(compiler, op_src);
-            assert(src_type);
-            
-            SPVM_TYPE* cast_type = SPVM_CHECK_get_type(compiler, op_cast);
-            
-            assert(cast_type);
-            
-            char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
-            int32_t castability = SPVM_TYPE_satisfy_cast_requirement(
-              compiler,
-              cast_type->basic_type->id, cast_type->dimension, cast_type->flag,
-              src_type->basic_type->id, src_type->dimension, src_type->flag,
-              error_reason
-            );
-            
-            if (!castability) {
-              if (strlen(error_reason)) {
-                SPVM_COMPILER_error(compiler, error_reason);
-              }
-              
-              const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag);
-              const char* cast_type_name = SPVM_TYPE_new_type_name(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag);
-              SPVM_COMPILER_error(compiler, "The type cast from %s to %s is not allowed.\n  at %s line %d", src_type_name, cast_type_name, op_src->file, op_src->line);
-              return;
-            }
-            
-            // Remove type cast op if not needed
-            if (SPVM_TYPE_equals(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag, src_type->basic_type->id, src_type->dimension, src_type->flag) && !cast_type->of) {
-              SPVM_OP_cut_op(compiler, op_src);
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              SPVM_OP_replace_op(compiler, op_stab, op_src);
-              op_cur = op_src;
-            }
-          }
-          break;
+          
+          op_cur->syntax_checked = 1;
         }
-        
-        op_cur->syntax_checked = 1;
-        
-        EDN_OF_CHECK:
         
         // [END]Postorder traversal position
         
         if (op_cur == op_root) {
-
           // Finish
           finish = 1;
           
