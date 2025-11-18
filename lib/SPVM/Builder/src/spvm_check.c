@@ -1018,7 +1018,7 @@ void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler) {
         }
         
         // AST traversal - assign an unassigned operator to a variable
-        SPVM_CHECK_check_ast_assign_unassigned_op_to_var(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_assign_form(compiler, basic_type, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
         // AST traversal - Check if a block needs "leave scope" operation
@@ -4285,7 +4285,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
   }
 }
 
-void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_assign_form(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   if (!method->op_block) {
     return;
