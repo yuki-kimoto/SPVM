@@ -3551,11 +3551,11 @@ SPVM_OP* SPVM_OP_build_basic_type_id(SPVM_COMPILER* compiler, SPVM_OP* op_basic_
   return op_basic_type_id;
 }
 
-SPVM_OP* SPVM_OP_build_print(SPVM_COMPILER* compiler, SPVM_OP* op_print, SPVM_OP* op_operand, int32_t stderr) {
+SPVM_OP* SPVM_OP_build_print(SPVM_COMPILER* compiler, SPVM_OP* op_print, SPVM_OP* op_operand, int32_t is_stderr) {
   
   SPVM_OP_insert_child(compiler, op_print, op_print->last, op_operand);
   
-  if (stderr) {
+  if (is_stderr) {
     op_print->flag |= SPVM_OP_C_FLAG_PRINT_STDERR;
   }
   
