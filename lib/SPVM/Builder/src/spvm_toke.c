@@ -2157,6 +2157,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DELETE);
                   keyword_token = DELETE;
                 }
+                else if (strcmp(symbol_name, "diag") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_WARN);
+                  keyword_token = WARN;
+                }
                 else if (strcmp(symbol_name, "die") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DIE);
                   keyword_token = DIE;

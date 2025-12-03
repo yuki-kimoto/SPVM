@@ -1414,6 +1414,10 @@ Examples:
   my $point = Point->new;
   warn $point;
 
+=head2 diag Operator
+
+Same as L</"warn"> operator.
+
 =head2 address Operator
 
 The C<address> operator gets the address of an object or a reference as a hex string.

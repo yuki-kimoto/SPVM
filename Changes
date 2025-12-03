@@ -8,6 +8,7 @@
     * Add say STDERR syntax
     
       say STDERR "Hello";
+    * Add diag operator.
       
 0.990107 2025-11-18
   [Bug Fix]

@@ -189,6 +189,15 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       is($output, "Hello\x{0A}");
     }
     
+    # test_diag
+    {
+      my $func_call = 'SPVM::TestCase::Operator::Warn->test_diag';
+      write_script_file($script_file, $func_call);
+      system("$^X -Mblib $script_file 2> $output_file");
+      my $output = slurp_binmode($output_file);
+      like($output, qr|Hello\n  TestCase::Operator::Warn->test_diag at .*TestCase/Operator/Warn.spvm line|);
+    }
+
   }
 }
 

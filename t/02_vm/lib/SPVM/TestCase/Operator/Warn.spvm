@@ -102,4 +102,10 @@ class TestCase::Operator::Warn { use Fn;
     return 1;
   }
   
+  static method test_diag : int () {
+    diag "Hello";
+    
+    return 1;
+  }
+  
 }
