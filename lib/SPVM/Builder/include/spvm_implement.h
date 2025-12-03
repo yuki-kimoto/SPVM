@@ -1636,8 +1636,8 @@ static inline void SPVM_IMPLEMENT_IS_ERROR(SPVM_ENV* env, SPVM_VALUE* stack, int
 
 #define SPVM_IMPLEMENT_CAN(env, stack, out, object, method_name) (out = (env->get_instance_method(env, stack, object, method_name) != NULL))
 
-static inline void SPVM_IMPLEMENT_PRINT(SPVM_ENV* env, SPVM_VALUE* stack, void* string, int32_t stderr) {
-  if (stderr) {
+static inline void SPVM_IMPLEMENT_PRINT(SPVM_ENV* env, SPVM_VALUE* stack, void* string, int32_t is_stderr) {
+  if (is_stderr) {
     env->print_stderr(env, stack, string);
   }
   else {
@@ -1645,8 +1645,8 @@ static inline void SPVM_IMPLEMENT_PRINT(SPVM_ENV* env, SPVM_VALUE* stack, void* 
   }
 }
 
-static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, void* string, int32_t stderr) {
-  if (stderr) {
+static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, void* string, int32_t is_stderr) {
+  if (is_stderr) {
     env->say_stderr(env, stack, string);
   }
   else {
