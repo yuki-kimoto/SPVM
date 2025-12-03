@@ -360,6 +360,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_numeric_object_to_string_no_mortal,
     SPVM_API_numeric_object_to_string,
     SPVM_API_is_numeric_object,
+    SPVM_API_say_stderr,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -3800,6 +3801,15 @@ void SPVM_API_say(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
   SPVM_API_fprint(env, stack, runtime->spvm_stdout, string);
   
   fputc('\n', runtime->spvm_stdout);
+}
+
+void SPVM_API_say_stderr(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  SPVM_API_fprint(env, stack, runtime->spvm_stderr, string);
+  
+  fputc('\n', runtime->spvm_stderr);
 }
 
 void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const char* basic_type_name, const char* method_name, const char* file, int32_t line) {

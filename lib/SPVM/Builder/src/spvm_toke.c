@@ -2611,6 +2611,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 break;
               }
+              case 'S' : {
+                if (strcmp(symbol_name, "STDERR") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_STDERR);
+                  keyword_token = STDERR;
+                }
+                break;
+              }
               case '_': {
                 if (strcmp(symbol_name, "__END__") == 0) {
                   compiler->ch_ptr = compiler->current_class_content + compiler->current_class_content_length;

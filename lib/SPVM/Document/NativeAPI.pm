@@ -2822,6 +2822,12 @@ C<int32_t (*is_numeric_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 If I<object> is defined and a numeric object, returns 1, otherwise returns 0.
 
+=head2 say_stderr
+
+C<void (*say_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);>
+
+Same as L</"say">, but prints the output to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3087,6 +3093,7 @@ Native APIs have its IDs.
   258 numeric_object_to_string_no_mortal
   259 numeric_object_to_string
   260 is_numeric_object
+  261 say_stderr
 
 =head1 Constant Values
 

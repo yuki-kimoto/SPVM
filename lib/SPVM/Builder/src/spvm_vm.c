@@ -1419,12 +1419,12 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_PRINT: {
         void* string = object_vars[opcode->operand0];
-        SPVM_IMPLEMENT_PRINT(env, stack, string);
+        SPVM_IMPLEMENT_PRINT(env, stack, string, opcode->operand1);
         break;
       }
       case SPVM_OPCODE_C_ID_SAY: {
         void* string = object_vars[opcode->operand0];
-        SPVM_IMPLEMENT_SAY(env, stack, string);
+        SPVM_IMPLEMENT_SAY(env, stack, string, opcode->operand1);
         break;
       }
       case SPVM_OPCODE_C_ID_WARN: {

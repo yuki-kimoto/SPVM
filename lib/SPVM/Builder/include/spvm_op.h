@@ -268,6 +268,7 @@ enum {
   SPVM_OP_C_ID_SET_LENGTH,
   SPVM_OP_C_ID_CAPACITY,
   SPVM_OP_C_ID_SET_CAPACITY,
+  SPVM_OP_C_ID_STDERR,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -296,6 +297,11 @@ enum {
   SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK = 4,
   SPVM_OP_C_FLAG_FIELD_ACCESS_EXISTS = 8,
   SPVM_OP_C_FLAG_FIELD_ACCESS_DELETE = 16,
+};
+
+enum {
+  // PRINT flag
+  SPVM_OP_C_FLAG_PRINT_STDERR = 1,
 };
 
 enum {
@@ -373,7 +379,7 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* op_operand);
 
-SPVM_OP* SPVM_OP_build_print(SPVM_COMPILER* compiler, SPVM_OP* op_print, SPVM_OP* op_operand);
+SPVM_OP* SPVM_OP_build_print(SPVM_COMPILER* compiler, SPVM_OP* op_print, SPVM_OP* op_operand, int32_t stderr);
 
 SPVM_OP* SPVM_OP_build_eval(SPVM_COMPILER* compiler, SPVM_OP* op_eval, SPVM_OP* op_block);
 

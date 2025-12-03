@@ -1341,12 +1341,15 @@ Examples:
 The C<print> operator prints a string to standard output.
 
   print OPERAND
+  print STDERR OPERAND
 
 This operator outputs the string I<OPERAND> to L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams">.
 
 If I<OPERAND> is not defined, this operator outputs nothing.
 
 The return type is the void type.
+
+If C<STDERR> is specified, prints the output to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
 Compilation Errors:
 
@@ -1357,12 +1360,15 @@ I<OPERAND> must be string type. Otherwise, a compilation error occurs.
 The C<say> operator prints a string to standard output with a newline.
 
   say OPERAND
+  say STDERR OPERAND
 
 This operator outputs the string I<OPERAND> to L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams"> with a newline C<\n>.
 
 If I<OPERAND> is not defined, this operator outputs a newline C<\n>.
 
 The return type is the void type.
+
+If C<STDERR> is specified, prints the output to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
 Compilation Errors:
 

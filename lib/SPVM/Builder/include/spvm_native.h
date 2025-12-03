@@ -358,7 +358,7 @@ struct spvm_env {
   void* (*numeric_object_to_string_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
   void* (*numeric_object_to_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
   int32_t (*is_numeric_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
+  void (*say_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
 };
 
 struct spvm_env_api {

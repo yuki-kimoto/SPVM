@@ -27,7 +27,7 @@
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
 %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER SET_LENGTH SET_CAPACITY
-%token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
+%token <opval> RETURN WEAKEN DIE WARN PRINT SAY STDERR OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
 
 %type <opval> grammar
 %type <opval> field_name method_name class_name
@@ -771,11 +771,19 @@ void_return_operator
   : warn
   | PRINT operator
     {
-      $$ = SPVM_OP_build_print(compiler, $1, $2);
+      $$ = SPVM_OP_build_print(compiler, $1, $2, 0);
+    }
+  | PRINT STDERR operator
+    {
+      $$ = SPVM_OP_build_print(compiler, $1, $3, 1);
     }
   | SAY operator
     {
-      $$ = SPVM_OP_build_print(compiler, $1, $2);
+      $$ = SPVM_OP_build_print(compiler, $1, $2, 0);
+    }
+  | SAY STDERR operator
+    {
+      $$ = SPVM_OP_build_print(compiler, $1, $3, 1);
     }
   | weaken_field
   | unweaken_field

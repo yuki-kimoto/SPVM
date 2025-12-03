@@ -88,4 +88,18 @@ class TestCase::Operator::Warn { use Fn;
     return 1;
   }
   
+  static method print_STDERR : int () {
+    
+    print STDERR "Hello";
+    
+    return 1;
+  }
+  
+  static method say_STDERR : int () {
+    
+    say STDERR "Hello";
+    
+    return 1;
+  }
+  
 }

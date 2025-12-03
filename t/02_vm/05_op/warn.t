@@ -172,6 +172,23 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
     SPVM::TestCase::Operator::Warn->warn_object_address;
     
     SPVM::TestCase::Operator::Warn->warn_ref;
+    
+    {
+      my $func_call = 'SPVM::TestCase::Operator::Warn->print_STDERR';
+      write_script_file($script_file, $func_call);
+      system("$^X -Mblib $script_file 2> $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, 'Hello');
+    }
+    
+    {
+      my $func_call = 'SPVM::TestCase::Operator::Warn->say_STDERR';
+      write_script_file($script_file, $func_call);
+      system("$^X -Mblib $script_file 2> $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, "Hello\x{0A}");
+    }
+    
   }
 }
 

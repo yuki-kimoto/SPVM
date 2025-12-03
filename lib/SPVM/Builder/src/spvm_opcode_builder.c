@@ -4405,6 +4405,10 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                       opcode.operand0 = typed_var_index_in;
                       
+                      if (op_assign_src->flag & SPVM_OP_C_FLAG_PRINT_STDERR) {
+                        opcode.operand1 = 1;
+                      }
+                      
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
                       break;
@@ -4418,6 +4422,10 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                       opcode.operand0 = typed_var_index_in;
+                      
+                      if (op_assign_src->flag & SPVM_OP_C_FLAG_PRINT_STDERR) {
+                        opcode.operand1 = 1;
+                      }
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
