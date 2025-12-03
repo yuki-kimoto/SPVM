@@ -24,7 +24,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
   %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER SET_LENGTH SET_CAPACITY
-  %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
+  %token <opval> RETURN WEAKEN DIE WARN DIAG PRINT SAY STDERR OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
   %type <opval> grammar
   %type <opval> field_name method_name class_name
   %type <opval> basic_type  opt_basic_type array_type array_type_with_length type runtime_type ref_type return_type
@@ -328,7 +328,9 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   void_return_operator
     : warn
     | PRINT operator
+    | PRINT STDERR operator
     | SAY operator
+    | SAY STDERR operator
     | weaken_field
     | unweaken_field
     | MAKE_READ_ONLY operator
@@ -711,6 +713,9 @@ These are tokens for L<grammer/"Grammer">.
     <td>DEREFERENCE</td><td>$</td>
   </tr>
   <tr>
+    <td>DIAG</td><td>diag</td>
+  </tr>
+  <tr>
     <td>DIE</td><td>die</td>
   </tr>
   <tr>
@@ -952,6 +957,9 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>SRING_CMP</td><td>cmp</td>
+  </tr>
+  <tr>
+    <td>STDERR</td><td>STDERR</td>
   </tr>
   <tr>
     <td>STREQ</td><td>eq</td>
