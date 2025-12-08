@@ -15,6 +15,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 # Field access
 {
   ok(SPVM::TestCase::Operator::Exists->exists);
+  ok(SPVM::TestCase::Operator::Exists->inheritance);
 }
 
 # All objects are freed

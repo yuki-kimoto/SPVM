@@ -471,6 +471,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
             SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_original_field(compiler, field->current_basic_type->parent, field->name);
             if (found_field_in_super_class) {
               field->exists_field = found_field_in_super_class->exists_field;
+              field->exists_bit = found_field_in_super_class->exists_bit;
             }
           }
           

@@ -1,5 +1,9 @@
 class TestCase::Operator::Exists {
   
+  use TestCase::Minimal;
+  use TestCase::Simple;
+  use TestCase::SimpleChild;
+  
   has field_byte : byte;
   has field_short : short;
   has field_int : int;
@@ -121,6 +125,25 @@ class TestCase::Operator::Exists {
         }
       }
       
+    }
+    
+    return 1;
+  }
+  
+  static method inheritance : int () {
+    
+    my $simple_child = TestCase::SimpleChild->new;
+    
+    $simple_child->{simple_only} = 1;
+    
+    unless (exists $simple_child->{simple_only}) {
+      return 0;
+    }
+    
+    my $simple = (TestCase::Simple)$simple_child;
+    
+    unless (exists $simple->{simple_only}) {
+      return 0;
     }
     
     return 1;

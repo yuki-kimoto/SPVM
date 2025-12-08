@@ -1,6 +1,8 @@
 class TestCase::SimpleChild extends TestCase::Simple {
   
   allow TestCase::Operator::CopyFields;
+  allow TestCase::Operator::Exists;
+  
   
   has parent_child_duplicate : int;
   

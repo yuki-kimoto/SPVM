@@ -3,6 +3,8 @@ class TestCase::Simple : public {
   
   allow TestCase::Operator::CopyFields;
   
+  allow TestCase::Operator::Exists;
+  
   use TestCase::Minimal;
   use Hash;
   use Point;
@@ -29,6 +31,8 @@ class TestCase::Simple : public {
   has minimal : rw public TestCase::Minimal;
   
   has parent_child_duplicate : int;
+  
+  has simple_only : int;
   
   our $FOO : public rw int;
   our $VAR_PRIVATE : private int;
