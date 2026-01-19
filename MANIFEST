@@ -782,6 +782,7 @@ t/02_vm/99_extra/issue_606.t
 t/02_vm/99_extra/issue_645.t
 t/02_vm/99_extra/issue_649.t
 t/02_vm/99_extra/issue_715.t
+t/02_vm/99_extra/issue_816.t
 t/02_vm/99_extra/issues.t
 t/02_vm/99_extra/version.t
 t/02_vm/lib/SPVM/4foo.spvm
@@ -831,6 +832,7 @@ t/02_vm/lib/SPVM/TestCase/Issues/Issue567.spvm
 t/02_vm/lib/SPVM/TestCase/Issues/Issue645.spvm
 t/02_vm/lib/SPVM/TestCase/Issues/Issue649.spvm
 t/02_vm/lib/SPVM/TestCase/Issues/Issue715.spvm
+t/02_vm/lib/SPVM/TestCase/Issues/Issue816.spvm
 t/02_vm/lib/SPVM/TestCase/LineDirective.spvm
 t/02_vm/lib/SPVM/TestCase/LINEN.spvm
 t/02_vm/lib/SPVM/TestCase/LINER.spvm

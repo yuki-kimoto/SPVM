@@ -1,0 +1,18 @@
+class TestCase::Issues::Issue816 {
+  
+  use List;
+  
+  # https://github.com/yuki-kimoto/SPVM/issues/816
+  static method test : void () {
+    
+    my $objects = (List of string)List->new(["foo"]);
+    
+    my $object = 1 ? $objects->[-1] : (object)undef;
+    
+    unless ($object eq "foo") {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
