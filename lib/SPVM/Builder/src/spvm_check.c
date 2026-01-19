@@ -2297,7 +2297,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                 
-                op_cur = op_call_method->last;
+                op_cur = op_call_method;
+                continue;
               }
               
               break;
@@ -2418,9 +2419,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   
                   SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                   
-                  op_cur = op_call_method->last;
-                  
-                  break;
+                  op_cur = op_call_method;
+                  continue;
                 }
               }
               else if (op_dist->id == SPVM_OP_C_ID_HASH_VALUE_ACCESS) {
@@ -2446,8 +2446,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                 
-                op_cur = op_call_method->last;
-                break;
+                op_cur = op_call_method;
+                continue;
               }
               
               SPVM_TYPE* dist_type = SPVM_CHECK_get_type(compiler, op_dist);
@@ -3467,7 +3467,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   
                   SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                   
-                  op_cur = op_call_method->last;
+                  op_cur = op_call_method;
+                  continue;
                 }
               }
               
@@ -3682,7 +3683,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                 
-                op_cur = op_call_method->last;
+                op_cur = op_call_method;
+                continue;
               }
               
               break;
