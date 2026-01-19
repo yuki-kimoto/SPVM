@@ -3452,7 +3452,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               else if (SPVM_TYPE_is_class_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) ||
                   SPVM_TYPE_is_interface_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag))
               {
-                // Setter: $array->[$index] = $operator to $array->set($index, $operator);
+                // Getter: $array->[$index] = $operator to $array->get($index);
                 if (!op_cur->is_dist) {
                   SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_cur->file, op_cur->line);
                   SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "get", op_cur->file, op_cur->line);
