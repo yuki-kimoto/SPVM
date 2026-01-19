@@ -2687,65 +2687,103 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               break;
             }
-            case SPVM_OP_C_ID_SEQUENCE: {
-              if (op_cur->original_id == SPVM_OP_C_ID_TERNARY_OP) {
-                
-                // Type cast to the left operand type
-                SPVM_OP* op_tmp = (SPVM_OP*)op_cur->uv.any;
-                
-                SPVM_OP* op_left_operand = op_tmp->first;
-                SPVM_OP* op_right_operand = op_tmp->last;
-                SPVM_TYPE* type_left_operand = SPVM_CHECK_get_type(compiler, op_left_operand);
-                SPVM_TYPE* type_right_operand = SPVM_CHECK_get_type(compiler, op_right_operand);
-                
-                int32_t check_same_type;
-                if (SPVM_TYPE_is_object_type(compiler, type_left_operand->basic_type->id, type_left_operand->dimension, type_left_operand->flag)) {
-                  if (SPVM_TYPE_is_undef_type(compiler, type_right_operand->basic_type->id, type_right_operand->dimension, type_right_operand->flag)) {
-                    check_same_type = 0;
-                  }
-                  else {
-                    check_same_type = 1;
-                  }
+            case SPVM_OP_C_ID_TERNARY_OP: {
+              
+              SPVM_OP* op_condition_operand = op_cur->first;
+              SPVM_OP* op_left_operand = SPVM_OP_sibling(compiler, op_cur->first);
+              SPVM_OP* op_right_operand = op_cur->last;
+              SPVM_TYPE* condition_operand_type = SPVM_CHECK_get_type(compiler, op_condition_operand);
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_left_operand);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_right_operand);
+              
+              int32_t check_same_type;
+              if (SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                if (SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                  check_same_type = 0;
                 }
                 else {
                   check_same_type = 1;
                 }
-                if (check_same_type) {
-                  if (!SPVM_TYPE_equals(compiler, type_left_operand->basic_type->id, type_left_operand->dimension, type_left_operand->flag, type_right_operand->basic_type->id, type_right_operand->dimension, type_right_operand->flag)) {
-                    SPVM_COMPILER_error(compiler, "The types of the left and right operands of ternary operator must be the same type.\n  at %s line %d", op_cur->file, op_cur->line);
-                    return;
-                  }
-                }
-                
-                // Replace any object type with the type of left operand and remove type cast operators.
-                SPVM_OP* op_ret = op_cur->last;
-                SPVM_VAR_DECL* var_decl_ret = op_ret->uv.var->var_decl;
-                var_decl_ret->type = type_left_operand;
-                
-                SPVM_OP* op_block_true = SPVM_OP_sibling(compiler, SPVM_OP_sibling(compiler, op_cur->first)->first);
-                SPVM_OP* op_block_false = SPVM_OP_sibling(compiler, op_block_true);
-                
-                SPVM_OP* op_block_true_assign = SPVM_OP_sibling(compiler, op_block_true->first->first);
-                SPVM_OP* op_block_false_assign = SPVM_OP_sibling(compiler, op_block_false->first->first);
-                
-                if (op_block_true_assign->first->id == SPVM_OP_C_ID_TYPE_CAST) {
-                  SPVM_OP* op_block_true_type_cast = op_block_true_assign->first;
-                  
-                  SPVM_OP* op_block_true_var = op_block_true_type_cast->first;
-                  SPVM_OP_cut_op(compiler, op_block_true_type_cast->first);
-                  
-                  SPVM_OP_replace_op(compiler, op_block_true_type_cast, op_block_true_var);
-                }
-                
-                if (op_block_false_assign->first->id == SPVM_OP_C_ID_TYPE_CAST) {
-                  SPVM_OP* op_block_false_type_cast = op_block_false_assign->first;
-                  
-                  SPVM_OP* op_block_false_var = op_block_false_type_cast->first;
-                  SPVM_OP_cut_op(compiler, op_block_false_type_cast->first);
-                  
-                  SPVM_OP_replace_op(compiler, op_block_false_type_cast, op_block_false_var);
+              }
+              else {
+                check_same_type = 1;
+              }
+              
+              if (check_same_type) {
+                if (!SPVM_TYPE_equals(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The types of the left and right operands of ternary operator must be the same type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
                 }
               }
+              
+              /*
+                [Before]
+                TERNARY
+                  condition
+                  left_operand
+                  right_operand
+              */
+              
+              /*
+                [After]
+                SEQUENCE                  op_sequence
+                  VAR                     op_var
+                    VAR_DECL              op_var_decl
+                  IF                      op_if
+                    CONDITION
+                      VAR                 op_condition
+                    ASSIGN                op_assign_left
+                      OP                  op_left_operand
+                      VAR                 op_var_left
+                        VAR_DECL          op_var_decl_left
+                    ASSIGN                op_assign_right
+                      OP                  op_right_operand
+                      VAR                 op_var_right
+                        VAR_DECL          op_var_decl_right
+                  VAR                     op_var_ret
+              */
+              
+              SPVM_OP* op_ternary = op_cur;
+              
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_ternary);
+              SPVM_OP_cut_op(compiler, op_condition_operand);
+              SPVM_OP_cut_op(compiler, op_left_operand);
+              SPVM_OP_cut_op(compiler, op_right_operand);
+              
+              SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_ternary->file, op_ternary->line);
+              op_sequence->original_id = SPVM_OP_C_ID_TERNARY_OP;
+              
+              SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, op_ternary->file, op_ternary->line);
+              SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+              SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_ternary->file, op_ternary->line);
+              SPVM_OP* op_left_operand_type = SPVM_OP_new_op_type(compiler, left_operand_type->basic_type->name, left_operand_type->basic_type, left_operand_type->dimension, left_operand_type->flag, op_ternary->file, op_ternary->line);
+              op_left_operand_type->uv.type->of = left_operand_type->of;
+              SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_left_operand_type, NULL);
+              
+              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var);
+              
+              SPVM_OP* op_var_left = SPVM_OP_clone_op_var(compiler, op_var);
+              SPVM_OP* op_assign_left = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_ternary->file, op_ternary->line);
+              SPVM_OP_build_assign(compiler, op_assign_left, op_var_left, op_left_operand);
+              
+              SPVM_OP* op_var_right = SPVM_OP_clone_op_var(compiler, op_var);
+              SPVM_OP* op_assign_right = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_ternary->file, op_ternary->line);
+              SPVM_OP_build_assign(compiler, op_assign_right, op_var_right, op_right_operand);
+              
+              SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_ternary->file, op_ternary->line);
+              
+              int32_t no_scope = 1;
+              SPVM_OP_build_if_statement(compiler, op_if, op_condition_operand, op_assign_left, op_assign_right, no_scope);
+              
+              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_if);
+              
+              SPVM_OP* op_var_ret = SPVM_OP_clone_op_var(compiler, op_var);
+              
+              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
+              
+              SPVM_OP_replace_op(compiler, op_stab, op_sequence);
+              op_cur = op_sequence;
+              continue;
               
               break;
             }

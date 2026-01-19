@@ -15,11 +15,11 @@ class TestCase::GenericType {
       my $elem = $list->get(0);
       
       unless ($elem is_compile_type string) {
-        return 0;
+        diag; return 0;
       }
       
       unless ($elem eq "a") {
-        return 0;
+        diag; return 0;
       }
       
     }
@@ -30,17 +30,17 @@ class TestCase::GenericType {
       my $hash = $list->get(0);
       
       unless ($hash is_compile_type TestCase::List) {
-        return 0;
+        diag; return 0;
       }
       
       my $value = $hash->get(0);
       
       unless ($value is_compile_type string) {
-        return 0;
+        diag; return 0;
       }
       
       unless ($value eq "a") {
-        return 0;
+        diag; return 0;
       }
       
     }
@@ -55,11 +55,11 @@ class TestCase::GenericType {
       my $elem = $list->get(0);
       
       unless ($elem is_compile_type string) {
-        return 0;
+        diag; return 0;
       }
       
       unless ($elem eq "a") {
-        return 0;
+        diag; return 0;
       }
       
     }
@@ -74,11 +74,11 @@ class TestCase::GenericType {
       my $elem = $list->get(0);
       
       unless ($elem is_compile_type string) {
-        return 0;
+        diag; return 0;
       }
       
       unless ($elem eq "a") {
-        return 0;
+        diag; return 0;
       }
       
     }
@@ -93,11 +93,11 @@ class TestCase::GenericType {
         my $ret_array = $list->get_array;
         
         unless ($ret_array is_compile_type string[]) {
-          return 0;
+          diag; return 0;
         }
         
         unless ($ret_array == $array) {
-          return 0;
+          diag; return 0;
         }
       }
       
@@ -112,11 +112,11 @@ class TestCase::GenericType {
       my $elem = $list->get(0);
       
       unless ($elem is_compile_type string) {
-        return 0;
+        diag; return 0;
       }
       
       unless ($elem eq "a") {
-        return 0;
+        diag; return 0;
       }
     }
     
@@ -128,11 +128,11 @@ class TestCase::GenericType {
       my $elem = $list->get(0);
       
       unless ($elem is_compile_type string) {
-        return 0;
+        diag; return 0;
       }
       
       unless ($elem eq "a") {
-        return 0;
+        diag; return 0;
       }
     }
     
@@ -140,7 +140,7 @@ class TestCase::GenericType {
       my $self = new TestCase::GenericType;
       
       unless ($self->{string_or_strings} is_compile_type object) {
-        return 0;
+        diag; return 0;
       }
     }
     
@@ -148,7 +148,7 @@ class TestCase::GenericType {
       my $var = (string|string[])undef;
       
       unless ($var is_compile_type object) {
-        return 0;
+        diag; return 0;
       }
     }
     
@@ -156,7 +156,7 @@ class TestCase::GenericType {
       my $var : string|string[] = undef;
       
       unless ($var is_compile_type object) {
-        return 0;
+        diag; return 0;
       }
     }
     
@@ -166,6 +166,7 @@ class TestCase::GenericType {
       my $ret = 1 ? $values : undef;
       
       unless ($ret is_compile_type List of Int) {
+        diag compile_type_name $ret;
         return 0;
       }
       

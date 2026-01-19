@@ -3352,70 +3352,11 @@ SPVM_OP* SPVM_OP_build_defined_or(SPVM_COMPILER* compiler, SPVM_OP* op_defined_o
 
 SPVM_OP* SPVM_OP_build_ternary_op(SPVM_COMPILER* compiler, SPVM_OP* op_ternary, SPVM_OP* op_condition, SPVM_OP* op_left_operand, SPVM_OP* op_right_operand) {
   
-  /*
-    [Before]
-    TERNARY
-      condition
-      left_operand
-      right_operand
-  */
+  SPVM_OP_insert_child(compiler, op_ternary, op_ternary->last, op_condition);
+  SPVM_OP_insert_child(compiler, op_ternary, op_ternary->last, op_left_operand);
+  SPVM_OP_insert_child(compiler, op_ternary, op_ternary->last, op_right_operand);
   
-  /*
-    [After]
-    SEQUENCE                  op_sequence
-      VAR                     op_var
-        VAR_DECL              op_var_decl
-      IF                      op_if
-        CONDITION
-          VAR                 op_condition
-        ASSIGN                op_assign_left
-          OP                  op_left_operand
-          VAR                 op_var_left
-            VAR_DECL          op_var_decl_left
-        ASSIGN                op_assign_right
-          OP                  op_right_operand
-          VAR                 op_var_right
-            VAR_DECL          op_var_decl_right
-      VAR                     op_var_ret
-  */
-  
-  SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_ternary->file, op_ternary->line);
-  op_sequence->original_id = SPVM_OP_C_ID_TERNARY_OP;
-  
-  SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, op_ternary->file, op_ternary->line);
-  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_ternary->file, op_ternary->line);
-  SPVM_OP* op_type_var = SPVM_OP_new_op_any_object_type(compiler, op_ternary->file, op_ternary->line);
-  SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type_var, NULL);
-  
-  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var);
-  
-  SPVM_OP* op_var_left = SPVM_OP_clone_op_var(compiler, op_var);
-  SPVM_OP* op_assign_left = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_ternary->file, op_ternary->line);
-  SPVM_OP_build_assign(compiler, op_assign_left, op_var_left, op_left_operand);
-  
-  SPVM_OP* op_var_right = SPVM_OP_clone_op_var(compiler, op_var);
-  SPVM_OP* op_assign_right = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_ternary->file, op_ternary->line);
-  SPVM_OP_build_assign(compiler, op_assign_right, op_var_right, op_right_operand);
-  
-  SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_ternary->file, op_ternary->line);
-  
-  int32_t no_scope = 1;
-  SPVM_OP_build_if_statement(compiler, op_if, op_condition, op_assign_left, op_assign_right, no_scope);
-  
-  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_if);
-  
-  SPVM_OP* op_var_ret = SPVM_OP_clone_op_var(compiler, op_var);
-  
-  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
-  
-  // This is bad usage.
-  op_ternary->first = op_left_operand;
-  op_ternary->last = op_right_operand;
-  
-  op_sequence->uv.any = op_ternary;
-  
-  return op_sequence;
+  return op_ternary;
 }
 
 SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_dist, SPVM_OP* op_src) {

@@ -339,7 +339,6 @@ struct spvm_op {
     SPVM_SWITCH_INFO* switch_info;
     SPVM_CASE_INFO* case_info;
     SPVM_VERSION_FROM* version_from;
-    void* any;
   } uv;
   int32_t id;
   int32_t original_id;
