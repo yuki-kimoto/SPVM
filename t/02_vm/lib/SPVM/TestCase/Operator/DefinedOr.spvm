@@ -89,6 +89,17 @@ class TestCase::Operator::DefinedOr {
       
     }
     
+    {
+      my $value = (List of Int)undef;
+      my $ret = $value // undef;
+      
+      unless ($ret is_compile_type List of Int) {
+        diag compile_type_name $ret;
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
   

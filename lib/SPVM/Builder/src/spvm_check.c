@@ -2600,7 +2600,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 return;
               }
               
-              if (!SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+              if (!(SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag) || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag))) {
                 SPVM_COMPILER_error(compiler, "The right operand type of defined-or operator // must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
@@ -2655,6 +2655,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
               SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_defined_or->file, op_defined_or->line);
               SPVM_OP* op_left_operand_type = SPVM_OP_new_op_type(compiler, left_operand_type->basic_type->name, left_operand_type->basic_type, left_operand_type->dimension, left_operand_type->flag, op_defined_or->file, op_defined_or->line);
+              op_left_operand_type->uv.type->of = left_operand_type->of;
               SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_left_operand_type, NULL);
               SPVM_OP* op_assign_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_defined_or->file, op_defined_or->line);
               SPVM_OP_build_assign(compiler, op_assign_var, op_var, op_left_operand);
