@@ -2297,7 +2297,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                 
-                op_cur = op_operators->last;
+                op_cur = op_call_method->last;
               }
               
               break;
@@ -2418,7 +2418,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   
                   SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                   
-                  op_cur = op_operators->last;
+                  op_cur = op_call_method->last;
                   
                   break;
                 }
@@ -2446,7 +2446,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                 
-                op_cur = op_operators->last;
+                op_cur = op_call_method->last;
                 break;
               }
               
@@ -3467,7 +3467,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   
                   SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                   
-                  op_cur = op_operators->last;
+                  op_cur = op_call_method->last;
                 }
               }
               
@@ -3682,7 +3682,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                 
-                op_cur = op_operators->last;
+                op_cur = op_call_method->last;
               }
               
               break;
