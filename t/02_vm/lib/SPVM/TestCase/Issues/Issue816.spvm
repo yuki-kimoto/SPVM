@@ -7,7 +7,7 @@ class TestCase::Issues::Issue816 {
     
     my $objects = (List of string)List->new(["foo"]);
     
-    my $object = 1 ? $objects->[-1] : (object)undef;
+    my $object = 1 ? $objects->[-1] : (string)undef;
     
     unless ($object eq "foo") {
       return 0;
