@@ -1,3 +1,7 @@
+0.990110 2026-01-19
+  [Internal Changes]
+    * Refactor defined-or-operator AST logic.
+    
 0.990109 2025-12-08
   [Bug Fix]
     * Fix a bug of exists operator.

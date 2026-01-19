@@ -1309,6 +1309,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
       while (1) {
         if (!op_cur->syntax_checked) {
           // [START]Postorder traversal position
+          
           switch (op_cur->id) {
             case SPVM_OP_C_ID_NEXT: {
               if (loop_block_stack_length == 0) {
@@ -2587,18 +2588,99 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               break;
             }
-            case SPVM_OP_C_ID_SEQUENCE: {
+            case SPVM_OP_C_ID_DEFINED_OR: {
+              SPVM_OP* op_left_operand = op_cur->first;
               
-              if (op_cur->original_id == SPVM_OP_C_ID_DEFINED_OR) {
-                
-                SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
-                
-                if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                  SPVM_COMPILER_error(compiler, "The left operand type of defined-or operator // must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-                  return;
-                }
+              SPVM_OP* op_right_operand = op_cur->last;
+              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_left_operand);
+              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_right_operand);
+              
+              if (!SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand type of defined-or operator // must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
               }
-              else if (op_cur->original_id == SPVM_OP_C_ID_TERNARY_OP) {
+              
+              if (!SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand type of defined-or operator // must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              if (!SPVM_TYPE_equals(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The types of the left and right operands of defined-or operator // must be the same type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              /*
+                [Before]
+                DEFINED_OR
+                  left_operand
+                  right_operand
+              */
+              
+              /*
+                [After]
+                SEQUENCE                op_sequence
+                  ASSIGN                op_assign_var
+                    OP_LEFT             op_left_operand
+                    VAR                 op_var
+                      VAR_DECL          op_var_decl
+                  IF                    op_if
+                    CONDITION
+                      VAR               op_var_condition
+                    DO_NOTHING
+                    ASSIGN              op_assign_right
+                      OP_RIGHT          op_right_operand
+                      VAR               op_var_right
+                  VAR                   op_var_ret
+              */
+              
+              SPVM_OP* op_defined_or = op_cur;
+              
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_defined_or);
+              SPVM_OP_cut_op(compiler, op_left_operand);
+              SPVM_OP_cut_op(compiler, op_right_operand);
+              
+              SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_defined_or->file, op_defined_or->line);
+              op_sequence->original_id = SPVM_OP_C_ID_DEFINED_OR;
+              
+              SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, op_defined_or->file, op_defined_or->line);
+              SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+              SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_defined_or->file, op_defined_or->line);
+              SPVM_OP* op_left_operand_type = SPVM_OP_new_op_type(compiler, left_operand_type->basic_type->name, left_operand_type->basic_type, left_operand_type->dimension, left_operand_type->flag, op_defined_or->file, op_defined_or->line);
+              SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_left_operand_type, NULL);
+              SPVM_OP* op_assign_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_defined_or->file, op_defined_or->line);
+              SPVM_OP_build_assign(compiler, op_assign_var, op_var, op_left_operand);
+              
+              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_var);
+              
+              SPVM_OP* op_var_condition = SPVM_OP_clone_op_var(compiler, op_var);
+              
+              SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_defined_or->file, op_defined_or->line);
+              
+              SPVM_OP* op_var_right = SPVM_OP_clone_op_var(compiler, op_var);
+              SPVM_OP* op_assign_right = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_defined_or->file, op_defined_or->line);
+              SPVM_OP_build_assign(compiler, op_assign_right, op_var_right, op_right_operand);
+              
+              SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_defined_or->file, op_defined_or->line);
+              
+              int32_t no_scope = 1;
+              SPVM_OP_build_if_statement(compiler, op_if, op_var_condition, op_do_nothing, op_assign_right, no_scope);
+              
+              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_if);
+              
+              SPVM_OP* op_var_ret = SPVM_OP_clone_op_var(compiler, op_var);
+              
+              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
+              
+              SPVM_OP_replace_op(compiler, op_stab, op_sequence);
+              
+              op_cur = op_sequence;
+              continue;
+              
+              break;
+            }
+            case SPVM_OP_C_ID_SEQUENCE: {
+              if (op_cur->original_id == SPVM_OP_C_ID_TERNARY_OP) {
                 
                 // Type cast to the left operand type
                 SPVM_OP* op_tmp = (SPVM_OP*)op_cur->uv.any;
