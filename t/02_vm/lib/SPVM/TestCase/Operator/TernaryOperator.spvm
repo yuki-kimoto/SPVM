@@ -135,6 +135,14 @@ class TestCase::Operator::TernaryOperator {
       }
       
     }
+    
+    {
+      my $name = (byte)1 ? "abc" : undef;
+      
+      unless ($name eq "abc") {
+        return 0;
+      }
+    }
     return 1;
   }
   

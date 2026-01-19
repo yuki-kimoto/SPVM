@@ -1059,6 +1059,7 @@ void SPVM_CHECK_check_ast_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_
   SPVM_OP* op_cur = op_root;
   int32_t finish = 0;
   while (op_cur) {
+    
     // [START]Preorder traversal position
     if (op_cur->id == SPVM_OP_C_ID_IF_REQUIRE) {
       SPVM_USE* use = op_cur->first->uv.use;
@@ -1181,6 +1182,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
   SPVM_OP* op_cur = op_root;
   int32_t finish = 0;
   while (op_cur) {
+    
+    AST_START:
     
     if (!op_cur->syntax_checked) {
       // [START]Preorder traversal position
@@ -2299,7 +2302,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                 
                 op_cur = op_call_method;
-                continue;
+                goto AST_START;
               }
               
               break;
@@ -2421,7 +2424,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                   
                   op_cur = op_call_method;
-                  continue;
+                  goto AST_START;
                 }
               }
               else if (op_dist->id == SPVM_OP_C_ID_HASH_VALUE_ACCESS) {
@@ -2448,7 +2451,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                 
                 op_cur = op_call_method;
-                continue;
+                goto AST_START;
               }
               
               SPVM_TYPE* dist_type = SPVM_CHECK_get_type(compiler, op_dist);
@@ -2684,7 +2687,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
               
               op_cur = op_sequence;
-              continue;
+              goto AST_START;
               
               break;
             }
@@ -2784,7 +2787,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
               op_cur = op_sequence;
-              continue;
+              goto AST_START;
               
               break;
             }
@@ -3597,7 +3600,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                   
                   op_cur = op_call_method;
-                  continue;
+                  goto AST_START;
                 }
               }
               
@@ -3813,7 +3816,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_OP_replace_op(compiler, op_stab, op_call_method);
                 
                 op_cur = op_call_method;
-                continue;
+                goto AST_START;
               }
               
               break;
