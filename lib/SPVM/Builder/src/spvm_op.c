@@ -3211,77 +3211,9 @@ SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_
 
 SPVM_OP* SPVM_OP_build_logical_or(SPVM_COMPILER* compiler, SPVM_OP* op_logical_or, SPVM_OP* op_left_operand, SPVM_OP* op_right_operand) {
   
-  /*
-    [Before]
-    LOGICAL_OR
-      left_operand
-      right_operand
-  */
+  op_logical_or = SPVM_OP_build_binary_op(compiler, op_logical_or, op_left_operand, op_right_operand);
   
-  /*
-    [After]
-    SEQUENCE                    op_sequence
-      VAR                       op_var
-        VAR_DECL                op_var_decl
-      IF                        op_if_left
-        CONDITION
-          left_operand
-        ASSIGN                  op_assign_true_left
-          VAR_CONDITION_FLAG    op_var_condition_flag_true_left
-          VAR                   op_var_true_left
-        IF                      op_if_right
-          CONDITION
-            right_operand
-          ASSIGN                op_assign_true_right
-            VAR_CONDITION_FLAG  op_var_condition_flag_true_right
-            VAR                 op_var_true_right
-          ASSIGN                op_assign_false_right
-            VAR_CONDITION_FLAG  op_var_condition_flag_false_right
-            VAR                 op_var_false_right
-      VAR                       op_var_ret
-  */
-  
-  SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_logical_or->file, op_logical_or->line);
-  
-  SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, op_logical_or->file, op_logical_or->line);
-  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-  SPVM_OP* op_type_var = SPVM_OP_new_op_int_type(compiler, op_logical_or->file, op_logical_or->line);
-  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_logical_or->file, op_logical_or->line);
-  SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type_var, NULL);
-  
-  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var);
-  
-  SPVM_OP* op_var_true_left = SPVM_OP_clone_op_var(compiler, op_var);
-  SPVM_OP* op_var_condition_flag_true_left = SPVM_OP_new_op_var_condition_flag(compiler, op_logical_or->file, op_logical_or->line);
-  SPVM_OP* op_assign_true_left = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_logical_or->file, op_logical_or->line);
-  SPVM_OP_build_assign(compiler, op_assign_true_left, op_var_true_left, op_var_condition_flag_true_left);
-  
-  SPVM_OP* op_var_true_rigth = SPVM_OP_clone_op_var(compiler, op_var);
-  SPVM_OP* op_var_condition_flag_true_right = SPVM_OP_new_op_var_condition_flag(compiler, op_logical_or->file, op_logical_or->line);
-  SPVM_OP* op_assign_true_rigth = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_logical_or->file, op_logical_or->line);
-  SPVM_OP_build_assign(compiler, op_assign_true_rigth, op_var_true_rigth, op_var_condition_flag_true_right);
-  
-  SPVM_OP* op_var_false_right = SPVM_OP_clone_op_var(compiler, op_var);
-  SPVM_OP* op_var_condition_flag_false_right = SPVM_OP_new_op_var_condition_flag(compiler, op_logical_or->file, op_logical_or->line);
-  SPVM_OP* op_assign_false_right = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_logical_or->file, op_logical_or->line);
-  SPVM_OP_build_assign(compiler, op_assign_false_right, op_var_false_right, op_var_condition_flag_false_right);
-  
-  SPVM_OP* op_if_left = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_logical_or->file, op_logical_or->line);
-  
-  SPVM_OP* op_if_right = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_if_left->file, op_if_left->line);
-  
-  int32_t no_scope = 1;
-  SPVM_OP_build_if_statement(compiler, op_if_right, op_right_operand, op_assign_true_rigth, op_assign_false_right, no_scope);
-  
-  SPVM_OP_build_if_statement(compiler, op_if_left, op_left_operand, op_assign_true_left, op_if_right, no_scope);
-  
-  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_if_left);
-  
-  SPVM_OP* op_var_ret = SPVM_OP_clone_op_var(compiler, op_var);
-  
-  SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
-  
-  return op_sequence;
+  return op_logical_or;
 }
 
 SPVM_OP* SPVM_OP_build_logical_not(SPVM_COMPILER* compiler, SPVM_OP* op_logical_not, SPVM_OP* op_operand) {
