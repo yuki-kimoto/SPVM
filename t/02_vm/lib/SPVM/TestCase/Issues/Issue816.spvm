@@ -3,7 +3,7 @@ class TestCase::Issues::Issue816 {
   use List;
   
   # https://github.com/yuki-kimoto/SPVM/issues/816
-  static method test : void () {
+  static method test : int () {
     
     my $objects = (List of string)List->new(["foo"]);
     
