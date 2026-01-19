@@ -1,7 +1,14 @@
+0.990111 2026-01-20
+  [Internal Changes]
+    * Refactor logical not operator AST logic.
 0.990110 2026-01-19
   [Internal Changes]
     * Refactor defined-or-operator AST logic.
+  [Bug Fix]
+    * Fixed a thernary operator compilation bug.
     
+      https://github.com/yuki-kimoto/SPVM/issues/816
+      
 0.990109 2025-12-08
   [Bug Fix]
     * Fix a bug of exists operator.

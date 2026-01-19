@@ -3092,6 +3092,76 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               break;
             }
+            case SPVM_OP_C_ID_LOGICAL_NOT: {
+              
+              SPVM_OP* op_logical_not = op_cur;
+              SPVM_OP* op_operand = op_cur->first;
+              
+              /*
+                [Before]
+                LOGICAL_NOT
+                  first
+              */
+              
+              /*
+                [After]
+                SEQUENCE          op_sequence
+                  VAR             op_var
+                    VAR_DECL      op_var_decl
+                  IF              op_if
+                    CONDITION
+                      first
+                    ASSIGN        op_assign_false
+                      CONSTANT 0  op_constant_false
+                      VAR         op_var_false
+                    ASSIGN        op_assign_true
+                      CONSTANT 1  op_constant_true
+                      VAR         op_var_true
+                  VAR             op_var_ret
+              */
+              
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_logical_not);
+              SPVM_OP_cut_op(compiler, op_operand);
+              
+              SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_logical_not->file, op_logical_not->line);
+              
+              SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, op_logical_not->file, op_logical_not->line);
+              SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+              SPVM_OP* op_type_var = SPVM_OP_new_op_int_type(compiler, op_logical_not->file, op_logical_not->line);
+              SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_logical_not->file, op_logical_not->line);
+              SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type_var, NULL);
+              
+              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var);
+              
+              SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_logical_not->file, op_logical_not->line);
+              
+              SPVM_OP* op_var_false = SPVM_OP_clone_op_var(compiler, op_var);
+              SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_logical_not->file, op_logical_not->line);
+              SPVM_OP* op_assign_false = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_logical_not->file, op_logical_not->line);
+              SPVM_OP_build_assign(compiler, op_assign_false, op_var_false, op_constant_false);
+              
+              SPVM_OP* op_var_true = SPVM_OP_clone_op_var(compiler, op_var);
+              SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_logical_not->file, op_logical_not->line);
+              SPVM_OP* op_assign_true = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_logical_not->file, op_logical_not->line);
+              SPVM_OP_build_assign(compiler, op_assign_true, op_var_true, op_constant_true);
+              
+              int32_t no_scope = 1;
+              SPVM_OP_build_if_statement(compiler, op_if, op_operand, op_assign_false, op_assign_true, no_scope);
+              
+              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_if);
+              
+              SPVM_OP* op_var_ret = SPVM_OP_clone_op_var(compiler, op_var);
+              
+              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_ret);
+              
+              SPVM_OP_replace_op(compiler, op_stab, op_sequence);
+              op_cur = op_sequence;
+              retry_ast = 1;
+              break;
+              
+              break;
+            }
+            
             case SPVM_OP_C_ID_RIGHT_LOGICAL_SHIFT: {
               SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
               SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
