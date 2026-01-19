@@ -1093,45 +1093,6 @@ void SPVM_CHECK_check_ast_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_
       while (1) {
         // [START]Postorder traversal position
         switch (op_cur->id) {
-          case SPVM_OP_C_ID_TYPE: {
-            SPVM_OP* op_type = op_cur;
-            if (op_type->uv.type->resolved_in_ast) {
-              const char* unresolved_basic_type_name_maybe_alias = op_type->uv.type->unresolved_basic_type_name;
-              
-              SPVM_HASH* alias_symtable = NULL;
-              if (basic_type->is_generated_by_anon_method && basic_type->outmost) {
-                alias_symtable = basic_type->outmost->alias_symtable;
-              }
-              else {
-                alias_symtable = basic_type->alias_symtable;
-              }
-              
-              const char* unresolved_basic_type_name = SPVM_HASH_get(alias_symtable, unresolved_basic_type_name_maybe_alias, strlen(unresolved_basic_type_name_maybe_alias));
-              if (unresolved_basic_type_name) {
-                op_type->uv.type->unresolved_basic_type_name = unresolved_basic_type_name;
-                op_type->uv.type->basic_type = SPVM_LIST_get(compiler->basic_types, 0);
-              }
-              
-              SPVM_CHECK_check_op_type(compiler, op_type);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                return;
-              }
-            }
-            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, op_type->uv.type->basic_type->name, strlen(op_type->uv.type->basic_type->name));
-            
-            SPVM_TYPE* of = op_type->uv.type;
-            while (1) {
-              of = of->of;
-              
-              if (!of) {
-                break;
-              }
-              
-              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, of->basic_type->name, strlen(of->basic_type->name));
-            }
-            
-            break;
-          }
         }
         
         if (op_cur == op_root) {
@@ -1312,6 +1273,45 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           // [START]Postorder traversal position
           
           switch (op_cur->id) {
+            case SPVM_OP_C_ID_TYPE: {
+              SPVM_OP* op_type = op_cur;
+              if (op_type->uv.type->resolved_in_ast) {
+                const char* unresolved_basic_type_name_maybe_alias = op_type->uv.type->unresolved_basic_type_name;
+                
+                SPVM_HASH* alias_symtable = NULL;
+                if (basic_type->is_generated_by_anon_method && basic_type->outmost) {
+                  alias_symtable = basic_type->outmost->alias_symtable;
+                }
+                else {
+                  alias_symtable = basic_type->alias_symtable;
+                }
+                
+                const char* unresolved_basic_type_name = SPVM_HASH_get(alias_symtable, unresolved_basic_type_name_maybe_alias, strlen(unresolved_basic_type_name_maybe_alias));
+                if (unresolved_basic_type_name) {
+                  op_type->uv.type->unresolved_basic_type_name = unresolved_basic_type_name;
+                  op_type->uv.type->basic_type = SPVM_LIST_get(compiler->basic_types, 0);
+                }
+                
+                SPVM_CHECK_check_op_type(compiler, op_type);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
+              }
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, op_type->uv.type->basic_type->name, strlen(op_type->uv.type->basic_type->name));
+              
+              SPVM_TYPE* of = op_type->uv.type;
+              while (1) {
+                of = of->of;
+                
+                if (!of) {
+                  break;
+                }
+                
+                SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, of->basic_type->name, strlen(of->basic_type->name));
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_NEXT: {
               if (loop_block_stack_length == 0) {
                 SPVM_COMPILER_error(compiler, "The next statement must be in a loop block.\n  at %s line %d", op_cur->file, op_cur->line);
