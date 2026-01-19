@@ -79,6 +79,16 @@ class TestCase::Operator::DefinedOr {
       
     }
     
+    {
+      my $ret : object;
+      $ret //= Int->new(2);
+      
+      unless ((int)$ret == 2) {
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
   

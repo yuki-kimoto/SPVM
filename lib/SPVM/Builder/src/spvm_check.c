@@ -2605,8 +2605,16 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 return;
               }
               
-              if (!SPVM_TYPE_equals(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The types of the left and right operands of defined-or operator // must be the same type.\n  at %s line %d", op_cur->file, op_cur->line);
+              char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
+              int32_t satisfy_assignment_requirement_without_data_conversion = SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion(
+                compiler,
+                left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag,
+                right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag,
+                error_reason
+              );
+
+              if (!satisfy_assignment_requirement_without_data_conversion) {
+                SPVM_COMPILER_error(compiler, "The right type of defined-or operator // must be assigned to the left type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
