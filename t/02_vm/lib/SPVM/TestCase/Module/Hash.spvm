@@ -930,6 +930,18 @@ class TestCase::Module::Hash {
       
     }
     
+    # With ternary operator
+    # https://github.com/yuki-kimoto/SPVM/issues/821
+    {
+      my $hash = Hash->new({expiration => 1});
+      
+      my $expiration = $hash->exists("expiration") ? $hash->{"expiration"}->(int) : 0;
+      
+      unless ($expiration == 1) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
