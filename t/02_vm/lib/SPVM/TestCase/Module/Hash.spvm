@@ -935,9 +935,9 @@ class TestCase::Module::Hash {
     {
       my $hash = Hash->new({expiration => 1});
       
-      my $expiration = $hash->exists("expiration") ? $hash->{"expiration"}->(int) : 0;
+      my $expiration = $hash->exists("expiration") ? $hash->{"expiration"} : (object)undef;
       
-      unless ($expiration == 1) {
+      unless ($expiration->(int) == 1) {
         return 0;
       }
     }
