@@ -4819,6 +4819,67 @@ void SPVM_CHECK_check_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* bas
   basic_type->fields_size = offset;
 }
 
+/*
+  This function calculates the Levenshtein distance between two strings.
+  It returns the edit distance as an integer.
+*/
+static int32_t get_edit_distance(const char* s1, const char* s2) {
+  int32_t s1_len = strlen(s1);
+  int32_t s2_len = strlen(s2);
+
+  // Allocate memory for the distance matrix
+  int32_t* matrix = (int32_t*)malloc((s1_len + 1) * (s2_len + 1) * sizeof(int32_t));
+
+  for (int32_t i = 0; i <= s1_len; i++) {
+    matrix[i * (s2_len + 1)] = i;
+  }
+  for (int32_t j = 0; j <= s2_len; j++) {
+    matrix[j] = j;
+  }
+
+  for (int32_t i = 1; i <= s1_len; i++) {
+    for (int32_t j = 1; j <= s2_len; j++) {
+      int32_t cost = (s1[i - 1] == s2[j - 1]) ? 0 : 1;
+      
+      int32_t deletion = matrix[(i - 1) * (s2_len + 1) + j] + 1;
+      int32_t insertion = matrix[i * (s2_len + 1) + (j - 1)] + 1;
+      int32_t substitution = matrix[(i - 1) * (s2_len + 1) + (j - 1)] + cost;
+
+      int32_t min = deletion;
+      if (insertion < min) min = insertion;
+      if (substitution < min) min = substitution;
+
+      matrix[i * (s2_len + 1) + j] = min;
+    }
+  }
+
+  int32_t result = matrix[s1_len * (s2_len + 1) + s2_len];
+  free(matrix);
+
+  return result;
+}
+
+static void update_closest_method_name(const char* method_name_user, const char* method_name, const char** closest_method_name_ptr) {
+  
+  if (!method_name_user || !method_name || !closest_method_name_ptr) {
+    return;
+  }
+
+  // Calculate the distance of the current best candidate.
+  // If no candidate has been found yet (*closest_method_name_ptr == NULL), use a large initial value.
+  int32_t current_min_dist = (*closest_method_name_ptr == NULL) 
+    ? 0x7FFFFFFF 
+    : get_edit_distance(method_name_user, *closest_method_name_ptr);
+    
+  // Calculate the distance for the arbitrary method name.
+  int32_t new_dist = get_edit_distance(method_name_user, method_name);
+  
+  // If the arbitrary method name is closer, update the reference.
+  if (new_dist < current_min_dist) {
+    *closest_method_name_ptr = method_name;
+  }
+}
+
 void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
@@ -4865,7 +4926,21 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       }
     }
     else {
-      SPVM_COMPILER_error(compiler, "%s#%s method is not found.\n  at %s line %d", found_basic_type->name, method_name, op_call_method->file, op_call_method->line);
+      
+      SPVM_LIST* methods = found_basic_type->methods;
+      const char* closest_method_name = NULL;
+      for (int32_t i = 0; i < methods->length; i++) {
+        SPVM_METHOD* method = SPVM_LIST_get(methods, i);
+        update_closest_method_name(method_name, method->name, &closest_method_name);
+      }
+      
+      // 
+      if (closest_method_name) {
+        SPVM_COMPILER_error(compiler, "%s#%s method is not found. Did you mean %s#%s?\n  at %s line %d", found_basic_type->name, method_name, found_basic_type->name, closest_method_name, op_call_method->file, op_call_method->line);
+      }
+      else {
+        SPVM_COMPILER_error(compiler, "%s#%s method is not found.\n  at %s line %d", found_basic_type->name, method_name, op_call_method->file, op_call_method->line);
+      }
       return;
     }
   }
