@@ -914,7 +914,7 @@ use Test::More;
   }
 }
 
-# Method Call
+# Method call
 {
   {
     my $source = [
@@ -940,6 +940,7 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { &foo(1); } static method foo : void () { } }';
     compile_not_ok($source, q|Too many arguments are passed to MyClass#foo method|);
   }
+  
 }
 
 # Class Variable Access
@@ -1302,7 +1303,7 @@ use Test::More;
   }
 }
 
-# Resolve method call
+# Method call - resolve
 {
   {
     my $source = 'class MyClass { static method main : void () { MyClass->not_defined; } }';
@@ -1367,6 +1368,17 @@ use Test::More;
     ];
     compile_not_ok($source, q|port method is not found in MySockaddrIn class or its super classes|);
   }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $self = new MyClass; $self->MyClass::foo; } method foo : void () { } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $self = new MyClass; $self->MyClass::foo; } static method foo : void () { } }';
+    compile_not_ok($source, q|MyClass#foo method called as a static instance method call is found, but it must be an instance method.|);
+  }
+  
 }
 
 # Multi-Numeric Type

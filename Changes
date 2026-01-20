@@ -10,7 +10,7 @@
   [New Features]
     * Add get_basic_type_name_by_id method to Fn class.
   [Compilation Error Message Improvement]
-    * Improve the compilation error message when a class in a static instance method call is not found.
+    * Improve the compilation error message when a method call is not found.
     
 0.990110 2026-01-19
   [Internal Changes]

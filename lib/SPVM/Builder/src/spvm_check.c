@@ -4867,7 +4867,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       return;
     }
   }
-  // Instance method call
+  // Static instance method call or instance method call
   else {
     SPVM_OP* op_list_args = op_call_method->first;
     SPVM_OP* op_invocant = SPVM_OP_sibling(compiler, op_list_args->first);
@@ -4923,7 +4923,12 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       if (found_method) {
         basic_type = found_method->current_basic_type;
         if (found_method->is_class_method) {
-          SPVM_COMPILER_error(compiler, "%s#%s method is found, but this is not an instance method.\n  at %s line %d", basic_type->name, abs_method_name, op_call_method->file, op_call_method->line);
+          char* abs_method_name_class_name = (char*)abs_method_name;
+          assert(abs_method_name_class_name[basic_type_name_length] == ':');
+          abs_method_name_class_name[basic_type_name_length] = '\0';
+          
+          SPVM_COMPILER_error(compiler, "%s#%s method called as a static instance method call is found, but it must be an instance method.\n  at %s line %d", abs_method_name_class_name, &abs_method_name[basic_type_name_length + 2], op_call_method->file, op_call_method->line);
+          abs_method_name_class_name[basic_type_name_length] = ':';
           return;
         }
         call_method->method = found_method;
@@ -4934,7 +4939,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       }
       
     }
-    // Instance method
+    // Instance method call
     else {
       SPVM_METHOD* found_method = SPVM_CHECK_search_method(compiler, basic_type, method_name);
       
