@@ -1379,6 +1379,11 @@ use Test::More;
     compile_not_ok($source, q|MyClass::foo method called as a static instance method call is found, but it must be an instance method.|);
   }
   
+  {
+    my $source = 'class MyClass { static method main : void () { MyClass->foo; } method foo : void () { } }';
+    compile_not_ok($source, q|MyClass::foo method called as a class method call is found, but it must be a class method.|);
+  }
+  
 }
 
 # Multi-Numeric Type
