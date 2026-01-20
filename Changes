@@ -1,3 +1,8 @@
+0.990112 2026-01-20
+  [Compilation Error Message Improvement]
+    * Improve the compilation error message when a method call is not found.
+    * Add a feature to suggest the closest method name when a method name is not found in a method call. The compiler now outputs an error message like "Did you mean Foo#baz?". This search includes methods in parent classes.
+    
 0.990111 2026-01-20
   [Internal Changes]
     * Refactor logical not operator AST logic.
@@ -9,10 +14,6 @@
     * Fix a bug where field access in anon methods was incorrectly handled when a field named "self" existed, by ensuring that the local variable for the "self" field is declared after all other field variables.
   [New Features]
     * Add get_basic_type_name_by_id method to Fn class.
-  [Compilation Error Message Improvement]
-    * Improve the compilation error message when a method call is not found.
-    * Add a feature to suggest the closest method name when a method name is not found in a method call. The compiler now outputs an error message like "Did you mean Foo#baz?". This search includes methods in parent classes.
-    
 0.990110 2026-01-19
   [Internal Changes]
     * Refactor defined-or-operator AST logic.
