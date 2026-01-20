@@ -187,6 +187,7 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
   int32_t* need_data_conversion, int32_t allow_narrowing_conversion, int32_t interface_match,
+  int32_t allow_mulnum_zero_init,
   char* error_reason
 );
 

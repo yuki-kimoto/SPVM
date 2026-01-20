@@ -990,6 +990,7 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
   int32_t* need_data_conversion, int32_t allow_narrowing_conversion, int32_t interface_match,
+  int32_t allow_mulnum_zero_init,
   char* error_reason)
 {
   
@@ -1054,6 +1055,9 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
       else {
         can_assign = 0;
       }
+    }
+    else if (allow_mulnum_zero_init) {
+      can_assign = 1;
     }
     // Source type is other type
     else {
@@ -1425,12 +1429,13 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion(
   int32_t need_data_conversion = 0;
   int32_t allow_narrowing_conversion = 0;
   int32_t interface_match = 0;
-  
+  int32_t allow_mulnum_zero_init = 0;
   int32_t satisfy_assignment_requirement = SPVM_TYPE_satisfy_assignment_requirement(
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
     &need_data_conversion, allow_narrowing_conversion, interface_match,
+    allow_mulnum_zero_init,
     error_reason
   );
   
@@ -1451,12 +1456,13 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion_with_in
   int32_t need_data_conversion = 0;
   int32_t allow_narrowing_conversion = 0;
   int32_t interface_match = 1;
-  
+  int32_t allow_mulnum_zero_init = 0;
   int32_t satisfy_assignment_requirement = SPVM_TYPE_satisfy_assignment_requirement(
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
     &need_data_conversion, allow_narrowing_conversion, interface_match,
+    allow_mulnum_zero_init,
     error_reason
   );
   
