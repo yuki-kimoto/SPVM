@@ -3930,7 +3930,12 @@ int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type_
     for (int32_t i = 0; i < allows->length; i++) {
       SPVM_ALLOW* allow = SPVM_LIST_get(allows, i);
       const char* allow_basic_type_name = allow->basic_type_name;
+      
       if (strcmp(current_basic_type_name, allow_basic_type_name) == 0) {
+        is_allowed = 1;
+        break;
+      }
+      else if (strstr(current_basic_type_name, "::anon_method::") && strncmp(current_basic_type_name, allow_basic_type_name, strlen(allow_basic_type_name)) == 0) {
         is_allowed = 1;
         break;
       }

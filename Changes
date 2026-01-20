@@ -5,6 +5,8 @@
     * Refactor logical and operator AST logic.
   [Bug Fix]
     * Fix a bug that using reference types in field definitions caused an assertion failure instead of a compilation error.
+    * Fix a bug that private methods of classes allowed by the allow statement could not be called within anonymous methods.
+    
 0.990110 2026-01-19
   [Internal Changes]
     * Refactor defined-or-operator AST logic.
