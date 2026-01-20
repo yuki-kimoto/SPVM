@@ -327,11 +327,14 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
     for (int32_t field_index = 0; field_index < basic_type->original_fields->length; field_index++) {
       SPVM_FIELD* field = SPVM_LIST_get(basic_type->original_fields, field_index);
       SPVM_TYPE* field_type = field->type;
-
+      
       // valut_t cannnot become field
-      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
-      if (is_mulnum_t) {
+      if (SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
         SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the field.\n  at %s line %d", field->op_field->file, field->op_field->line);
+        return;
+      }
+      else if (SPVM_TYPE_is_ref_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+        SPVM_COMPILER_error(compiler, "The reference type cannnot used in the definition of the field.\n  at %s line %d", field->op_field->file, field->op_field->line);
         return;
       }
     }
