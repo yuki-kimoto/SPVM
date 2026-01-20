@@ -6,6 +6,7 @@
   [Bug Fix]
     * Fix a bug that using reference types in field definitions caused an assertion failure instead of a compilation error.
     * Fix a bug that private methods of classes allowed by the allow statement could not be called within anonymous methods.
+    * Fix a bug where field access in anon methods was incorrectly handled when a field named "self" existed, by ensuring that the local variable for the "self" field is declared after all other field variables.
   [New Features]
     * Add get_basic_type_name_by_id method to Fn class.
   

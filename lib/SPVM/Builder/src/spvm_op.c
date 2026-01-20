@@ -1804,13 +1804,26 @@ void SPVM_OP_attach_anon_method_fields(SPVM_COMPILER* compiler, SPVM_OP* op_meth
     if (op_block) {
       SPVM_OP* op_list_statement = op_block->first;
       
+      // 2. Process "self" field last to avoid overriding the invocant $self too early
+      op_anon_method_field = op_anon_method_fields->first;
+      while ((op_anon_method_field = SPVM_OP_sibling(compiler, op_anon_method_field))) {
+        SPVM_FIELD* field = op_anon_method_field->uv.field;
+        if (field->is_decl_var_in_anon_method) {
+          if (strcmp(field->name, "self") == 0) {
+            SPVM_OP* op_assign_var_decl = SPVM_OP_build_anon_method_var_decl(compiler, op_anon_method_field_var_decl_start, field);
+            SPVM_OP_insert_child(compiler, op_list_statement, op_anon_method_field_var_decl_start, op_assign_var_decl);
+          }
+        }
+      }
+      // 1. Process fields other than "self" first
       SPVM_OP* op_anon_method_field = op_anon_method_fields->first;
       while ((op_anon_method_field = SPVM_OP_sibling(compiler, op_anon_method_field))) {
         SPVM_FIELD* field = op_anon_method_field->uv.field;
-          
         if (field->is_decl_var_in_anon_method) {
-          SPVM_OP* op_assign_var_decl = SPVM_OP_build_anon_method_var_decl(compiler, op_anon_method_field_var_decl_start, field);
-          SPVM_OP_insert_child(compiler, op_list_statement, op_anon_method_field_var_decl_start, op_assign_var_decl);
+          if (!(strcmp(field->name, "self") == 0)) {
+            SPVM_OP* op_assign_var_decl = SPVM_OP_build_anon_method_var_decl(compiler, op_anon_method_field_var_decl_start, field);
+            SPVM_OP_insert_child(compiler, op_list_statement, op_anon_method_field_var_decl_start, op_assign_var_decl);
+          }
         }
       }
     }

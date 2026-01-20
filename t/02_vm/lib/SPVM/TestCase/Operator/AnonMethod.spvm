@@ -122,6 +122,38 @@ class TestCase::Operator::AnonMethod {
       }
     }
     
+    {
+      my $self = Int->new(1);
+      my $foo = 2;
+      my $object = [$self : Int, $foo : int] method : int () {
+        
+        my $total = $self->(int) + $foo;
+        
+        return $total;
+      };
+      
+      my $total = $object->();
+      unless ($total == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $self = Int->new(1);
+      my $foo = 2;
+      my $object = [$foo : int, $self : Int] method : int () {
+        
+        my $total = $self->(int) + $foo;
+        
+        return $total;
+      };
+      
+      my $total = $object->();
+      unless ($total == 3) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 
