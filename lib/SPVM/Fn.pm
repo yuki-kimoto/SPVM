@@ -1843,6 +1843,16 @@ Exceptions:
 
 If the type of the options \$options must be Hash or object[], an exception is thrown.
 
+=head2 get_basic_type_name_by_id
+
+C<static method get_basic_type_name_by_id : string ($basic_type_id : int);>
+
+Gets the basic type name of the basic type ID $basic_type_id.
+
+Exceptions:
+
+If the basic type specified by $basic_type_id is not found, an exception is thrown.
+
 =head1 See Also
 
 =over 2

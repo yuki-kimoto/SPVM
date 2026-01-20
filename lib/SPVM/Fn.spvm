@@ -2094,4 +2094,6 @@ class Fn {
     return $options_h;
   }
   
+  native static method get_basic_type_name_by_id : string ($basic_type_id : int);
+  
 }

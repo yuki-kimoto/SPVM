@@ -1108,3 +1108,25 @@ int32_t SPVM__Fn__destroy_cache_class_vars(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__get_basic_type_name_by_id(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t basic_type_id = stack[0].ival;
+  
+  // Get the basic type by ID
+  void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
+  
+  // Throw an exception if the basic type is not found
+  if (!basic_type) {
+    return env->die(env, stack, "The basic type ID %d is not found.", basic_type_id, __func__, FILE_NAME, __LINE__);
+  }
+  
+  // Get the basic type name
+  const char* basic_type_name = env->api->basic_type->get_name(env->runtime, basic_type);
+  
+  // Create a new SPVM string object
+  void* obj_basic_type_name = env->new_string(env, stack, basic_type_name, strlen(basic_type_name));
+  
+  stack[0].oval = obj_basic_type_name;
+  
+  return 0;
+}

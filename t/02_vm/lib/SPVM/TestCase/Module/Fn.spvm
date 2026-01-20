@@ -8686,4 +8686,33 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method get_basic_type_name_by_id : int () {
+    
+    # Check the basic type name of the Int class
+    {
+      my $type_name = "Int";
+      my $basic_type_id = Fn->get_basic_type_id($type_name);
+      
+      # Identity check: name -> id -> name
+      my $ret_basic_type_name = Fn->get_basic_type_name_by_id($basic_type_id);
+      unless ($ret_basic_type_name eq $type_name) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      # Invalid ID (too small)
+      {
+        my $invalid_basic_type_id = -1;
+        eval { Fn->get_basic_type_name_by_id($invalid_basic_type_id); };
+        unless ($@) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
 }
