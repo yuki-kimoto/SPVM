@@ -4820,41 +4820,58 @@ void SPVM_CHECK_check_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* bas
 }
 
 /*
-  This function calculates the Levenshtein distance between two strings.
-  It returns the edit distance as an integer.
+  This function calculates an edit distance similar to the one used in GCC/LLVM.
+  It considers insertions, deletions, substitutions, and transpositions (Damerau-Levenshtein).
+  To be efficient, it uses a single-dimensional array for the matrix.
 */
 static int32_t get_edit_distance(const char* s1, const char* s2) {
-  int32_t s1_len = strlen(s1);
-  int32_t s2_len = strlen(s2);
+  int32_t s1_len = (int32_t)strlen(s1);
+  int32_t s2_len = (int32_t)strlen(s2);
 
-  // Allocate memory for the distance matrix
-  int32_t* matrix = (int32_t*)malloc((s1_len + 1) * (s2_len + 1) * sizeof(int32_t));
+  // Ensure s1 is the shorter string to save memory
+  if (s1_len > s2_len) {
+    const char* temp_s = s1; s1 = s2; s2 = temp_s;
+    int32_t temp_len = s1_len; s1_len = s2_len; s2_len = temp_len;
+  }
 
-  for (int32_t i = 0; i <= s1_len; i++) {
-    matrix[i * (s2_len + 1)] = i;
-  }
-  for (int32_t j = 0; j <= s2_len; j++) {
-    matrix[j] = j;
-  }
+  // If one string is empty, the distance is the length of the other string
+  if (s1_len == 0) return s2_len;
+
+  // Distances for the current and previous rows
+  int32_t* v0 = (int32_t*)malloc((s2_len + 1) * sizeof(int32_t));
+  int32_t* v1 = (int32_t*)malloc((s2_len + 1) * sizeof(int32_t));
+  // For transposition tracking
+  int32_t* v_prev = (int32_t*)malloc((s2_len + 1) * sizeof(int32_t));
+
+  for (int32_t j = 0; j <= s2_len; j++) v1[j] = j;
 
   for (int32_t i = 1; i <= s1_len; i++) {
+    // Copy v1 to v0, and v0 to v_prev
+    memcpy(v_prev, v0, (s2_len + 1) * sizeof(int32_t));
+    memcpy(v0, v1, (s2_len + 1) * sizeof(int32_t));
+    v1[0] = i;
+
     for (int32_t j = 1; j <= s2_len; j++) {
       int32_t cost = (s1[i - 1] == s2[j - 1]) ? 0 : 1;
       
-      int32_t deletion = matrix[(i - 1) * (s2_len + 1) + j] + 1;
-      int32_t insertion = matrix[i * (s2_len + 1) + (j - 1)] + 1;
-      int32_t substitution = matrix[(i - 1) * (s2_len + 1) + (j - 1)] + cost;
-
-      int32_t min = deletion;
-      if (insertion < min) min = insertion;
-      if (substitution < min) min = substitution;
-
-      matrix[i * (s2_len + 1) + j] = min;
+      // Minimum of deletion, insertion, and substitution
+      int32_t m = v0[j] + 1; // deletion
+      if (v1[j - 1] + 1 < m) m = v1[j - 1] + 1; // insertion
+      if (v0[j - 1] + cost < m) m = v0[j - 1] + cost; // substitution
+      
+      // Transposition check (GCC/LLVM style)
+      if (i > 1 && j > 1 && s1[i - 1] == s2[j - 2] && s1[i - 2] == s2[j - 1]) {
+        if (v_prev[j - 2] + 1 < m) m = v_prev[j - 2] + 1;
+      }
+      
+      v1[j] = m;
     }
   }
 
-  int32_t result = matrix[s1_len * (s2_len + 1) + s2_len];
-  free(matrix);
+  int32_t result = v1[s2_len];
+  free(v0);
+  free(v1);
+  free(v_prev);
 
   return result;
 }
@@ -4926,7 +4943,6 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       }
     }
     else {
-      
       SPVM_LIST* methods = found_basic_type->methods;
       const char* closest_method_name = NULL;
       for (int32_t i = 0; i < methods->length; i++) {
@@ -4964,6 +4980,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
     // Static instance method call
     char* last_colon_pos = strrchr(method_name, ':');
     if (last_colon_pos) {
+      SPVM_BASIC_TYPE* found_basic_type = NULL;
       const char* abs_method_name = method_name;
       call_method->is_instance_method_static = 1;
       method_name = last_colon_pos + 1;
@@ -4979,7 +4996,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
         }
       }
       else {
-        SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, abs_method_name, basic_type_name_length);
+        found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, abs_method_name, basic_type_name_length);
         if (!found_basic_type) {
           char* abs_method_name_class_name = (char*)abs_method_name;
           assert(abs_method_name_class_name[basic_type_name_length] == ':');
@@ -5012,8 +5029,25 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       else {
         char* abs_method_name_class_name = (char*)abs_method_name;
         assert(abs_method_name_class_name[basic_type_name_length] == ':');
-        abs_method_name_class_name[basic_type_name_length] = '\0';          
-        SPVM_COMPILER_error(compiler, "%s::%s method called as a static instance method call is not found.\n  at %s line %d", abs_method_name_class_name, &abs_method_name[basic_type_name_length + 2], op_call_method->file, op_call_method->line);
+        abs_method_name_class_name[basic_type_name_length] = '\0';
+        
+        const char* closest_method_name = NULL;
+        if (found_basic_type) {
+          SPVM_LIST* methods = found_basic_type->methods;
+          for (int32_t i = 0; i < methods->length; i++) {
+            SPVM_METHOD* method = SPVM_LIST_get(methods, i);
+            update_closest_method_name(&abs_method_name[basic_type_name_length + 2], method->name, &closest_method_name);
+          }
+        }
+        
+        // 
+        if (closest_method_name) {
+          SPVM_COMPILER_error(compiler, "%s::%s method called as a static instance method call is not found. Did you mean %s::%s?\n  at %s line %d", abs_method_name_class_name, &abs_method_name[basic_type_name_length + 2], abs_method_name_class_name, closest_method_name, op_call_method->file, op_call_method->line);
+        }
+        else {
+          SPVM_COMPILER_error(compiler, "%s::%s method called as a static instance method call is not found.\n  at %s line %d", abs_method_name_class_name, &abs_method_name[basic_type_name_length + 2], op_call_method->file, op_call_method->line);
+        }
+        
         abs_method_name_class_name[basic_type_name_length] = ':';
         return;
       }

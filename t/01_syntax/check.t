@@ -1330,6 +1330,10 @@ use Test::More;
     compile_not_ok($source, q|Point::not_found method called as a static instance method call is not found.|);
   }
   {
+    my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; $point->Point::clo; } }';
+    compile_not_ok($source, q|Point::clo method called as a static instance method call is not found. Did you mean Point::clone?|);
+  }
+  {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->new; } }';
     compile_not_ok($source, q|Int#new method called as an instance method call is found, but it must be an instance method.|);
   }
