@@ -5066,7 +5066,31 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
         call_method->method = found_method;
       }
       else {
-        SPVM_COMPILER_error(compiler, "%s method is not found in %s class or its super classes .\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
+        // Look for the closest method name in the class and its parent classes
+        const char* closest_method_name = NULL;
+        SPVM_BASIC_TYPE* current_basic_type = basic_type;
+        while (current_basic_type) {
+          SPVM_LIST* methods = current_basic_type->methods;
+          
+          if (methods) {
+            for (int32_t i = 0; i < methods->length; i++) {
+              SPVM_METHOD* method = SPVM_LIST_get(methods, i);
+              // Compare the user's input with the method name and update the closest one
+              update_closest_method_name(method_name, method->name, &closest_method_name);
+            }
+          }
+          
+          // Move to the parent class
+          current_basic_type = current_basic_type->parent;
+        }
+                
+        if (closest_method_name) {
+          SPVM_COMPILER_error(compiler, "%s method is not found in %s class or its super classes. Did you mean %s?\n  at %s line %d", method_name, basic_type->name, closest_method_name, op_call_method->file, op_call_method->line);
+        }
+        else {
+          SPVM_COMPILER_error(compiler, "%s method is not found in %s class or its super classes.\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
+        }
+        
         return;
       }
     }

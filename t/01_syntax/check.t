@@ -1364,6 +1364,12 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
     compile_not_ok($source, q|not_defined method is not found in Int class or its super classes|);
   }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->vale; } }';
+    compile_not_ok($source, q|vale method is not found in Int class or its super classes. Did you mean value?|);
+  }
+  
   {
     my $source = [
       'class MyClass { use MySockaddrIn; static method main : void () { my $result_address = new MySockaddrIn; $result_address->port;} }',
@@ -1371,6 +1377,15 @@ use Test::More;
       'class MySockaddr : public;',
     ];
     compile_not_ok($source, q|port method is not found in MySockaddrIn class or its super classes|);
+  }
+  
+  {
+    my $source = [
+      'class MyClass { use MySockaddrIn; static method main : void () { my $result_address = new MySockaddrIn; $result_address->por;} }',
+      'class MySockaddrIn extends MySockaddr : public { method port : void () {} }',
+      'class MySockaddr : public;',
+    ];
+    compile_not_ok($source, q|por method is not found in MySockaddrIn class or its super classes. Did you mean port?|);
   }
   
   {
