@@ -4904,7 +4904,11 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       else {
         SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, abs_method_name, basic_type_name_length);
         if (!found_basic_type) {
-          SPVM_COMPILER_error(compiler, "The class included in the method call %s is not found.\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
+          char* abs_method_name_class_name = (char*)abs_method_name;
+          assert(abs_method_name_class_name[basic_type_name_length] == ':');
+          abs_method_name_class_name[basic_type_name_length] = '\0';
+          SPVM_COMPILER_error(compiler, "%s class used in the static instance method call is not found.\n  at %s line %d", abs_method_name_class_name, op_call_method->file, op_call_method->line);
+          abs_method_name_class_name[basic_type_name_length] = ':';
           return;
         }
         if (found_basic_type) {

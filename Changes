@@ -9,7 +9,9 @@
     * Fix a bug where field access in anon methods was incorrectly handled when a field named "self" existed, by ensuring that the local variable for the "self" field is declared after all other field variables.
   [New Features]
     * Add get_basic_type_name_by_id method to Fn class.
-  
+  [Compilation Error Message Improvement]
+    * Improve the compilation error message when a class in a static instance method call is not found.
+    
 0.990110 2026-01-19
   [Internal Changes]
     * Refactor defined-or-operator AST logic.
