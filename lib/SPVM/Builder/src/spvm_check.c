@@ -4857,7 +4857,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
     
     if (found_method) {
       if (!found_method->is_class_method) {
-        SPVM_COMPILER_error(compiler, "%s::%s method called as a class method call is found, but it must be a class method.\n  at %s line %d", found_basic_type->name, method_name, op_call_method->file, op_call_method->line);
+        SPVM_COMPILER_error(compiler, "%s#%s method called as a class method call is found, but it must be a class method.\n  at %s line %d", found_basic_type->name, method_name, op_call_method->file, op_call_method->line);
         return;
       }
       else {
@@ -4951,7 +4951,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       if (found_method) {
         if (found_method->is_class_method) {
           basic_type = found_method->current_basic_type;
-          SPVM_COMPILER_error(compiler, "%s#%s method is found, but this method must be an instance method.\n  at %s line %d", basic_type->name, method_name, op_call_method->file, op_call_method->line);
+          SPVM_COMPILER_error(compiler, "%s#%s method called as an instance method call is found, but it must be an instance method.\n  at %s line %d", basic_type->name, method_name, op_call_method->file, op_call_method->line);
           return;
         }
         call_method->method = found_method;

@@ -1331,14 +1331,14 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->new; } }';
-    compile_not_ok($source, q|Int#new method is found, but this method must be an instance method|);
+    compile_not_ok($source, q|Int#new method called as an instance method call is found, but it must be an instance method.|);
   }
   {
     my $source = [
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->foo; } }',
       'class MyClass2 extends MyClass : public { static method foo : void () {} }',
     ];
-    compile_not_ok($source, q|MyClass2#foo method is found, but this method must be an instance method|);
+    compile_not_ok($source, q|MyClass2#foo method called as an instance method call is found, but it must be an instance method.|);
   }
   {
     my $source = 'class MyClass { use Stringable; use Point3D; static method main : void () { my $point3d = Point3D->new; $point3d->Stringable::to_string; } }';
@@ -1381,7 +1381,7 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { MyClass->foo; } method foo : void () { } }';
-    compile_not_ok($source, q|MyClass::foo method called as a class method call is found, but it must be a class method.|);
+    compile_not_ok($source, q|MyClass#foo method called as a class method call is found, but it must be a class method.|);
   }
   
 }
