@@ -540,6 +540,17 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { my $var = "string"; $var->[0] = \'a\'; } }';
     compile_not_ok($source, q|Characters cannot be set to non-mutable strings|);
   }
+  
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void () { my $value : Complex_2d = undef; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void () { my $value : Complex_2d = 0; } }';
+    compile_not_ok($source, q|int type cannot be assigned to Complex_2d type in assignment operator.|);
+  }
+  
 }
 
 # return
@@ -1248,6 +1259,11 @@ use Test::More;
   {
     my $source = 'class MyClass { static method main : void () { my $nums = [(float)1.2, 0.3]; } }';
     compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void () { my $value = (Complex_2d)0; } }';
+    compile_not_ok($source, q|The type cast from int to Complex_2d is not allowed.|);
   }
 }
 
