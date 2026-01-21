@@ -209,6 +209,7 @@ int32_t SPVM_TYPE_satisfy_cast_requirement(
   SPVM_COMPILER* compiler,
   int32_t cast_type_basic_type_id, int32_t cast_type_dimension, int32_t cast_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
+  int32_t allow_mulnum_zero_init,
   char* error_reason
 );
 

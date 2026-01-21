@@ -4069,10 +4069,12 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               assert(cast_type);
               
               char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
+              int32_t allow_mulnum_zero_init = 0;
               int32_t castability = SPVM_TYPE_satisfy_cast_requirement(
                 compiler,
                 cast_type->basic_type->id, cast_type->dimension, cast_type->flag,
                 src_type->basic_type->id, src_type->dimension, src_type->flag,
+                allow_mulnum_zero_init,
                 error_reason
               );
               
