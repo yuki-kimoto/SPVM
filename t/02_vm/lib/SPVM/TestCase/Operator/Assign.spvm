@@ -5,6 +5,12 @@ class TestCase::Operator::Assign {
   use Complex_2d;
   use Fn;
   use Array;
+  use TestCase::Point_3b;
+  use TestCase::Point_3d;
+  use TestCase::Point_3f;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3s;
   
   static method assign_ref : int () {
     my $num = 1;
@@ -664,4 +670,129 @@ class TestCase::Operator::Assign {
     return 1;
   }
   
+  static method to_mulnum : int () {
+    
+    {
+      {
+        my $mulnum : TestCase::Point_3b;
+        $mulnum->{x} = 1;
+        $mulnum->{y} = 2;
+        $mulnum->{z} = 3;
+        $mulnum = undef;
+        
+        unless ($mulnum->{x} == 0) {
+          diag $mulnum->{x};
+          return 0;
+        }
+        
+        unless ($mulnum->{y} == 0) {
+          diag;
+          return 0;
+        }
+        
+        unless ($mulnum->{z} == 0) {
+          diag;
+          return 0;
+        }
+        
+      }
+      {
+        my $mulnum : TestCase::Point_3s;
+        $mulnum->{x} = 1;
+        $mulnum->{y} = 2;
+        $mulnum->{z} = 3;
+        $mulnum = undef;
+        
+        unless ($mulnum->{x} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{y} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{z} == 0) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum : TestCase::Point_3i;
+        $mulnum->{x} = 1;
+        $mulnum->{y} = 2;
+        $mulnum->{z} = 3;
+        $mulnum = undef;
+        
+        unless ($mulnum->{x} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{y} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{z} == 0) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum : TestCase::Point_3l;
+        $mulnum->{x} = 1;
+        $mulnum->{y} = 2;
+        $mulnum->{z} = 3;
+        $mulnum = undef;
+        
+        unless ($mulnum->{x} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{y} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{z} == 0) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum : TestCase::Point_3f;
+        $mulnum->{x} = 1;
+        $mulnum->{y} = 2;
+        $mulnum->{z} = 3;
+        $mulnum = undef;
+        
+        unless ($mulnum->{x} == 0.0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{y} == 0.0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{z} == 0.0) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum : TestCase::Point_3d;
+        $mulnum->{x} = 1;
+        $mulnum->{y} = 2;
+        $mulnum->{z} = 3;
+        $mulnum = undef;
+        
+        unless ($mulnum->{x} == 0.0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{y} == 0.0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{z} == 0.0) {
+          return 0;
+        }
+      }
+    }    
+    
+    return 1;
+  }
 }

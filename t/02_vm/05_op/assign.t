@@ -100,6 +100,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   ok(SPVM::TestCase::Operator::Assign->assign_undef_to_numeric_object);
   ok(SPVM::TestCase::Operator::Assign->assign_undef_to_ref);
   ok(SPVM::TestCase::Operator::Assign->assign_cannot_assign);
+  ok(SPVM::TestCase::Operator::Assign->to_mulnum);
 
 }
 
