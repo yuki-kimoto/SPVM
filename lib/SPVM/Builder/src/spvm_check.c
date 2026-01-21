@@ -793,7 +793,8 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
             }
           }
           else if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)
-           || SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag))
+           || SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag
+           || SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)))
           {
             if (op_arg_default->id != SPVM_OP_C_ID_UNDEF) {
               SPVM_COMPILER_error(compiler, "The default value of the optional argument %s must be undef.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
@@ -801,8 +802,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
             }
           }
           else {
-            SPVM_COMPILER_error(compiler, "The optional argument %s is not allowed. The type must be a numeric type, an object type, or a reference type.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
-            return;
+            assert(0);
           }
         }
         else {

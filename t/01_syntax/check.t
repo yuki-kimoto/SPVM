@@ -1444,10 +1444,17 @@ use Test::More;
     my $source = 'class MyClass {  static method main : void ($arg1 : byte = 1000) { } }';
     compile_not_ok($source, q|The default value of the optional argument $arg1 must be able to be assigned to the argument|);
   }
+  
   {
     my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : Complex_2d = 0) { } }';
-    compile_not_ok($source, q|The optional argument $arg1 is not allowed. The type must be a numeric type, an object type, or a reference type.|);
+    compile_not_ok($source, q|The default value of the optional argument $arg1 must be undef.|);
   }
+  
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : Complex_2d = undef) { } }';
+    compile_ok($source);
+  }
+  
   {
     my $source = 'class MyClass { static method main : void ($arg1 : int* = 0) { } }';
     compile_not_ok($source, q|The default value of the optional argument $arg1 must be undef.|);
