@@ -2661,12 +2661,92 @@ class TestCase::Operator::TypeCast {
     
     {
       {
-        my $mulnum_src : TestCase::Point_3d;
+        my $mulnum_src : TestCase::Point_3b;
         $mulnum_src->{x} = 1;
         $mulnum_src->{y} = 2;
         $mulnum_src->{z} = 3;
         
-        my $mulnum_dist = (TestCase::Point_3d)$mulnum_src;
+        my $mulnum_dist = (TestCase::Point_3b)$mulnum_src;
+        
+        unless ($mulnum_dist->{x} == 1) {
+          return 0;
+        }
+        
+        unless ($mulnum_dist->{y} == 2) {
+          return 0;
+        }
+        
+        unless ($mulnum_dist->{z} == 3) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum_src : TestCase::Point_3s;
+        $mulnum_src->{x} = 1;
+        $mulnum_src->{y} = 2;
+        $mulnum_src->{z} = 3;
+        
+        my $mulnum_dist = (TestCase::Point_3s)$mulnum_src;
+        
+        unless ($mulnum_dist->{x} == 1) {
+          return 0;
+        }
+        
+        unless ($mulnum_dist->{y} == 2) {
+          return 0;
+        }
+        
+        unless ($mulnum_dist->{z} == 3) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum_src : TestCase::Point_3i;
+        $mulnum_src->{x} = 1;
+        $mulnum_src->{y} = 2;
+        $mulnum_src->{z} = 3;
+        
+        my $mulnum_dist = (TestCase::Point_3i)$mulnum_src;
+        
+        unless ($mulnum_dist->{x} == 1) {
+          return 0;
+        }
+        
+        unless ($mulnum_dist->{y} == 2) {
+          return 0;
+        }
+        
+        unless ($mulnum_dist->{z} == 3) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum_src : TestCase::Point_3l;
+        $mulnum_src->{x} = 1;
+        $mulnum_src->{y} = 2;
+        $mulnum_src->{z} = 3;
+        
+        my $mulnum_dist = (TestCase::Point_3l)$mulnum_src;
+        
+        unless ($mulnum_dist->{x} == 1) {
+          return 0;
+        }
+        
+        unless ($mulnum_dist->{y} == 2) {
+          return 0;
+        }
+        
+        unless ($mulnum_dist->{z} == 3) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum_src : TestCase::Point_3f;
+        $mulnum_src->{x} = 1;
+        $mulnum_src->{y} = 2;
+        $mulnum_src->{z} = 3;
+        
+        my $mulnum_dist = (TestCase::Point_3f)$mulnum_src;
         
         unless ($mulnum_dist->{x} == 1) {
           return 0;
