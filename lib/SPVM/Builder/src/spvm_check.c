@@ -573,6 +573,9 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
               int32_t allow_narrowing_conversion = SPVM_CHECK_check_allow_narrowing_conversion(compiler, arg_type, op_arg_default);
               int32_t interface_match = 0;
               int32_t allow_mulnum_zero_init = 0;
+              if (op_arg_default->uv.constant->type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT && op_arg_default->uv.constant->value.ival == 0) {
+                allow_mulnum_zero_init = 1;
+              }
               char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
               int32_t satisfy_assignment_requirement = SPVM_TYPE_satisfy_assignment_requirement(
                 compiler,
@@ -4070,6 +4073,9 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
               int32_t allow_mulnum_zero_init = 0;
+              if (op_src->id == SPVM_OP_C_ID_CONSTANT && op_src->uv.constant->value.ival == 0) {
+                allow_mulnum_zero_init = 1;
+              }
               int32_t castability = SPVM_TYPE_satisfy_cast_requirement(
                 compiler,
                 cast_type->basic_type->id, cast_type->dimension, cast_type->flag,
@@ -5609,6 +5615,9 @@ SPVM_OP* SPVM_CHECK_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, 
   int32_t allow_narrowing_conversion = SPVM_CHECK_check_allow_narrowing_conversion(compiler, dist_type, op_src);
   int32_t interface_match = 0;
   int32_t allow_mulnum_zero_init = 0;
+  if (op_src->id == SPVM_OP_C_ID_CONSTANT && op_src->uv.constant->value.ival == 0) {
+    allow_mulnum_zero_init = 1;
+  }
   char error_reason[SPVM_COMPILER_C_ERROR_REASON_SIZE] = {0};
   int32_t satisfy_assignment_requirement = SPVM_TYPE_satisfy_assignment_requirement(
     compiler,
