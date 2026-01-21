@@ -1514,6 +1514,10 @@ int32_t SPVM_TYPE_satisfy_cast_requirement(
     if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag) && dist_type_flag == src_type_flag) {
       can_cast = 1;
     }
+    // Source type is undef type
+    else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_cast = 1;
+    }
     // Source type is other type
     else {
       can_cast = 0;
