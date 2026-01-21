@@ -530,11 +530,12 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     
     int32_t arg_stack_index = arg->stack_index;
     if (arg_stack_index >= args_width) {
-      if (arg->is_optional) {
+      int32_t arg_type_width = SPVM_API_get_type_width(runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
+      // Optional argument without multi-numeric type
+      if (arg->is_optional && arg_type_width == 1) {
         stack[arg_stack_index] = arg->default_value;
       }
       else {
-        int32_t arg_type_width = SPVM_API_get_type_width(runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
         memset(&stack[arg_stack_index], 0, sizeof(SPVM_VALUE) * arg_type_width);
       }
     }
