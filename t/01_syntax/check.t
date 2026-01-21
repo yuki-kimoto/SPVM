@@ -1262,6 +1262,11 @@ use Test::More;
   }
   
   {
+    my $source = 'class MyClass { use Complex_2d; static method main : void () { my $value = (Complex_2d)undef; } }';
+    compile_ok($source);
+  }
+  
+  {
     my $source = 'class MyClass { use Complex_2d; static method main : void () { my $value = (Complex_2d)0; } }';
     compile_not_ok($source, q|The type cast from int to Complex_2d is not allowed.|);
   }
