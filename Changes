@@ -1,3 +1,19 @@
+0.990113 2026-01-21
+  
+  [New Features]
+    * Added support for the assignment of undef to multi-numeric types for 0-initialization.
+
+      my $val : Point_3i = undef;
+
+    * Added support for type cast from undef to multi-numeric types.
+
+      $val = (Point_3i)undef;
+
+    * Allowed multi-numeric types to be used as optional arguments with undef as a default value.
+
+      method task ($point : Point_3i = undef) { ... }
+
+
 0.990112 2026-01-20
   [Compilation Error Message Improvement]
     * Improve the compilation error message when a method call is not found.
