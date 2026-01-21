@@ -985,6 +985,7 @@ I<NumericX> is a L<numeric type|"Numeric Types">.
 <table>
   <tr><th>Assignment Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th></tr>
   <tr><td>Yes</td><td>Multi-NumericX</td><td>Multi-NumericX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Multi-NumericX</td><td>undef</td><td>undef is converted to the initial value of a multi-numeric type where all fields are set to 0</td></tr>
   <tr><td>No</td><td>Multi-NumericX</td><td>Other</td><td>No</td></tr>
 </table>
 
@@ -1386,6 +1387,7 @@ I<NumericX> is a L<numeric type|"Numeric Types">.
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th><th>Data Check</th></tr>
   <tr><td>Yes</td><td>Multi-NumericX</td><td>Multi-NumericX</td><td>No</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Multi-NumericX</td><td>undef</td><td>No</td><td>undef is converted to the initial value of a multi-numeric type where all fields are set to 0</td></tr>
   <tr><td>No</td><td>Multi-NumericX</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
 
