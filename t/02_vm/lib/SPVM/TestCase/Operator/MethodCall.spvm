@@ -1091,9 +1091,20 @@ class TestCase::Operator::MethodCall {
           return 0;
         }
       }
+      
       {
         my $value = &optional_args_string;
         unless ($value == undef) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value = &optional_args_mulnum;
+        unless ($value->{re} == 0) {
+          return 0;
+        }
+        unless ($value->{im} == 0) {
           return 0;
         }
       }
@@ -1342,6 +1353,10 @@ class TestCase::Operator::MethodCall {
     return $arg;
   }
   static method optional_args_string : string ($arg : string = undef) {
+    return $arg;
+  }
+  
+  static method optional_args_mulnum : Complex_2d ($arg : Complex_2d = undef) {
     return $arg;
   }
   
