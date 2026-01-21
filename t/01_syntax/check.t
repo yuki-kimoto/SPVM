@@ -540,6 +540,16 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { my $var = "string"; $var->[0] = \'a\'; } }';
     compile_not_ok($source, q|Characters cannot be set to non-mutable strings|);
   }
+  
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void () { my $var : Complex_2d = 0; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void () { my $var : Complex_2d = 0.0; } }';
+    compile_not_ok($source, q|If the right operand is a constant, it must be the integer constant 0 when the left operand is a multi-numeric type.|);
+  }
 }
 
 # return
@@ -1445,10 +1455,6 @@ use Test::More;
     compile_not_ok($source, q|The default value of the optional argument $arg1 must be able to be assigned to the argument|);
   }
   {
-    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : Complex_2d = 0) { } }';
-    compile_not_ok($source, q|The optional argument $arg1 is not allowed. The type must be a numeric type, an object type, or a reference type.|);
-  }
-  {
     my $source = 'class MyClass { static method main : void ($arg1 : int* = 0) { } }';
     compile_not_ok($source, q|The default value of the optional argument $arg1 must be undef.|);
   }
@@ -1497,6 +1503,16 @@ use Test::More;
   {
     my $source = 'class MyClass {  static method main : void ($arg1 : Int = Int->new(1)) { } }';
     compile_not_ok($source, q|The default value of the optional argument $arg1 must be undef.|);
+  }
+  
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : Complex_2d = 0) { } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : Complex_2d = 0.0) { } }';
+    compile_not_ok($source, q|The default value of the optional argument $arg1 must be able to be assigned to the argument.|);
   }
 }
 

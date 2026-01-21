@@ -171,10 +171,6 @@ use Test::More;
         compile_ok($source);
       }
       {
-        my $source = 'class MyClass { use Complex_2d; static method foo : void ($args0 : Complex_2d = 0) { } }';
-        compile_not_ok($source);
-      }
-      {
         my $source = 'class MyClass { static method foo : void ($args0 : int = 0, $args1 : int) { } }';
         compile_not_ok($source);
       }

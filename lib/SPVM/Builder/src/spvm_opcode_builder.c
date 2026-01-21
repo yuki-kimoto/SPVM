@@ -2841,6 +2841,61 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                        
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       }
+                      else if (SPVM_TYPE_is_mulnum_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                        
+                        assert(constant->value.ival == 0);
+                        
+                        SPVM_FIELD* first_field = SPVM_LIST_get(type_dist->basic_type->fields, 0);
+                        assert(first_field);
+                        
+                        SPVM_TYPE* field_type = first_field->type;
+                        assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
+                        
+                        SPVM_OPCODE opcode = {0};
+                        
+                        int32_t typed_var_index_out;
+                        switch (field_type->basic_type->id) {
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_BYTE_ZERO);
+                            typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_SHORT_ZERO);
+                            typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_INT_ZERO);
+                            typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_LONG_ZERO);
+                            typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_FLOAT_ZERO);
+                            typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
+                            break;
+                          }
+                          case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_DOUBLE_ZERO);
+                            typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
+                            break;
+                          }
+                          default: {
+                            assert(0);
+                          }
+                        }
+
+                        int32_t fields_length = type_dist->basic_type->fields->length;
+                        opcode.operand0 = typed_var_index_out;
+                        opcode.operand2 = fields_length;
+                        
+                        SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      }
                       else if (SPVM_TYPE_is_string_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)
                         || SPVM_TYPE_is_object_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
                         SPVM_OPCODE opcode = {0};
@@ -4670,12 +4725,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       }
                       else if (SPVM_TYPE_is_mulnum_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
                         
-                        int32_t zero_init = 0;
-                        if (op_var_src->id == SPVM_OP_C_ID_CONSTANT) {
-                          assert(op_var_src->uv.constant->value.ival == 0);
-                          zero_init = 1;
-                        }
-
                         SPVM_FIELD* first_field = SPVM_LIST_get(type_dist->basic_type->fields, 0);
                         assert(first_field);
                         
@@ -4688,67 +4737,37 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         int32_t typed_var_index_in;
                         switch (field_type->basic_type->id) {
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                            if (zero_init) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_BYTE_ZERO);
-                            }
-                            else {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_BYTE);
-                            }
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_BYTE);
                             typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                             typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                            if (zero_init) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_SHORT_ZERO);
-                            }
-                            else {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_SHORT);
-                            }
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_SHORT);
                             typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                             typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                            if (zero_init) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_INT_ZERO);
-                            }
-                            else {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_INT);
-                            }
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_INT);
                             typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                             typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                            if (zero_init) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_LONG_ZERO);
-                            }
-                            else {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_LONG);
-                            }
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_LONG);
                             typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                             typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                            if (zero_init) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_FLOAT_ZERO);
-                            }
-                            else {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_FLOAT);
-                            }
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_FLOAT);
                             typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                             typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src);
                             break;
                           }
                           case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                            if (zero_init) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_DOUBLE_ZERO);
-                            }
-                            else {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_DOUBLE);
-                            }
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_DOUBLE);
                             typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                             typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src);
                             break;

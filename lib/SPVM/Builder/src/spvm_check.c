@@ -562,7 +562,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
         if (op_arg_default) {
           found_optional_arg = 1;
           arg_var_decl->is_optional_arg = 1;
-          if (SPVM_TYPE_is_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
+          if (SPVM_TYPE_is_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag) || SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
             if (op_arg_default->id != SPVM_OP_C_ID_CONSTANT) {
               SPVM_COMPILER_error(compiler, "The default value of the optional argument %s must be a constant value.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
               return;
@@ -806,8 +806,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
             }
           }
           else {
-            SPVM_COMPILER_error(compiler, "The optional argument %s is not allowed. The type must be a numeric type, an object type, or a reference type.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
-            return;
+            assert(0);
           }
         }
         else {
@@ -2415,6 +2414,21 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               }
               
               SPVM_TYPE* dist_type = SPVM_CHECK_get_type(compiler, op_dist);
+              
+              if (dist_type) {
+                if (SPVM_TYPE_is_mulnum_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                  if (op_src->id == SPVM_OP_C_ID_CONSTANT) {
+                    int32_t is_constant_int_zero
+                      = op_src->uv.constant->type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT
+                      && op_src->uv.constant->value.ival == 0;
+                    
+                    if (!is_constant_int_zero) {
+                      SPVM_COMPILER_error(compiler, "If the right operand is a constant, it must be the integer constant 0 when the left operand is a multi-numeric type.\n  at %s line %d", op_dist->file, op_dist->line);
+                      return;
+                    }
+                  }
+                }
+              }
               
               // Type inference
               if (op_dist->id == SPVM_OP_C_ID_VAR) {
