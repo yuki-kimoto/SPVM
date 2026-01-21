@@ -2762,6 +2762,123 @@ class TestCase::Operator::TypeCast {
       }
     }
     
+    {
+      {
+        my $mulnum : TestCase::Point_3b;
+        $mulnum->{x} = 1;
+        $mulnum->{y} = 2;
+        $mulnum->{z} = 3;
+        $mulnum = (TestCase::Point_3b)undef;
+        
+        unless ($mulnum->{x} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{y} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{z} == 0) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum : TestCase::Point_3s;
+        $mulnum->{x} = 1;
+        $mulnum->{y} = 2;
+        $mulnum->{z} = 3;
+        $mulnum = (TestCase::Point_3s)undef;
+        
+        unless ($mulnum->{x} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{y} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{z} == 0) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum : TestCase::Point_3i;
+        $mulnum->{x} = 1;
+        $mulnum->{y} = 2;
+        $mulnum->{z} = 3;
+        $mulnum = (TestCase::Point_3i)undef;
+        
+        unless ($mulnum->{x} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{y} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{z} == 0) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum : TestCase::Point_3l;
+        $mulnum->{x} = 1;
+        $mulnum->{y} = 2;
+        $mulnum->{z} = 3;
+        $mulnum = (TestCase::Point_3l)undef;
+        
+        unless ($mulnum->{x} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{y} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{z} == 0) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum : TestCase::Point_3f;
+        $mulnum->{x} = 1;
+        $mulnum->{y} = 2;
+        $mulnum->{z} = 3;
+        $mulnum = (TestCase::Point_3f)undef;
+        
+        unless ($mulnum->{x} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{y} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{z} == 0) {
+          return 0;
+        }
+      }
+      {
+        my $mulnum : TestCase::Point_3d;
+        $mulnum->{x} = 1;
+        $mulnum->{y} = 2;
+        $mulnum->{z} = 3;
+        $mulnum = (TestCase::Point_3d)undef;
+        
+        unless ($mulnum->{x} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{y} == 0) {
+          return 0;
+        }
+        
+        unless ($mulnum->{z} == 0) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
 
