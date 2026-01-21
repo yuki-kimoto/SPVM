@@ -793,8 +793,54 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   
                   // Initialized not initialized variable
                   if (!op_cur->uv.var->is_initialized && !op_cur->uv.var->var_decl->is_arg) {
+                    // Numeric type
+                    if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                      SPVM_OPCODE opcode = {0};
+                      
+                      
+                      int32_t typed_var_index_out;
+                      switch (type->basic_type->id) {
+                        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_BYTE_ZERO);
+                          typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
+                          break;
+                        }
+                        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_SHORT_ZERO);
+                          typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
+                          break;
+                        }
+                        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_INT_ZERO);
+                          typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
+                          break;
+                        }
+                        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_LONG_ZERO);
+                          typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
+                          break;
+                        }
+                        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_FLOAT_ZERO);
+                          typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
+                          break;
+                        }
+                        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_DOUBLE_ZERO);
+                          typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
+                          break;
+                        }
+                        default: {
+                          assert(0);
+                        }
+                      }
+
+                      opcode.operand0 = typed_var_index_out;
+                      
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                    }
                     // Multi numeric type
-                    if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                    else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                       SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->fields, 0);
                       assert(first_field);
                       
@@ -871,52 +917,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                    }
-                    // Numeric type
-                    else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                      SPVM_OPCODE opcode = {0};
-                      
-                      
-                      int32_t typed_var_index_out;
-                      switch (type->basic_type->id) {
-                        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_BYTE_ZERO);
-                          typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
-                          break;
-                        }
-                        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_SHORT_ZERO);
-                          typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
-                          break;
-                        }
-                        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_INT_ZERO);
-                          typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
-                          break;
-                        }
-                        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_LONG_ZERO);
-                          typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
-                          break;
-                        }
-                        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_FLOAT_ZERO);
-                          typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
-                          break;
-                        }
-                        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_DOUBLE_ZERO);
-                          typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur);
-                          break;
-                        }
-                        default: {
-                          assert(0);
-                        }
-                      }
-
-                      opcode.operand0 = typed_var_index_out;
-                      
-                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                     }
                     else {
                       // TODO ref type which is not sub arg is invalid
@@ -4697,6 +4697,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       }
                       else if (SPVM_TYPE_is_mulnum_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                        
                         SPVM_FIELD* first_field = SPVM_LIST_get(type_dist->basic_type->fields, 0);
                         assert(first_field);
                         
