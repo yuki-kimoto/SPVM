@@ -3122,8 +3122,33 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         }
                         // To mulnum
                         else if (SPVM_TYPE_is_mulnum_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
-                          // Not yet implemented
-                          assert(0);
+                          
+                          assert(op_src_term->uv.constant->type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT && op_src_term->uv.constant->value.ival == 0);
+
+                          SPVM_FIELD* first_field = SPVM_LIST_get(cast_type->basic_type->fields, 0);
+                          SPVM_TYPE* field_type = first_field->type;
+                          
+                          if (SPVM_TYPE_is_byte_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_BYTE_ZERO);
+                          }
+                          else if (SPVM_TYPE_is_short_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_SHORT_ZERO);
+                          }
+                          else if (SPVM_TYPE_is_int_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_INT_ZERO);
+                          }
+                          else if (SPVM_TYPE_is_long_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_LONG_ZERO);
+                          }
+                          else if (SPVM_TYPE_is_float_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_FLOAT_ZERO);
+                          }
+                          else if (SPVM_TYPE_is_double_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_MULNUM_DOUBLE_ZERO);
+                          }
+                          else {
+                            assert(0);
+                          }
                         }
                         // To Byte object
                         else if (SPVM_TYPE_is_byte_object_type(compiler, cast_type->basic_type->id, cast_type->dimension, cast_type->flag)) {
