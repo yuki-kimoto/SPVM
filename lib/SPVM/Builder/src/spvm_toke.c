@@ -2593,6 +2593,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_WARN);
                   keyword_token = WARN;
                 }
+                else if (strcmp(symbol_name, "warn_level") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_WARN_LEVEL);
+                  keyword_token = WARN_LEVEL;
+                }
                 else if (strcmp(symbol_name, "while") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_WHILE);
                   keyword_token = WHILE;

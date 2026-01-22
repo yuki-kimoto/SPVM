@@ -218,6 +218,7 @@ enum {
   SPVM_OP_C_ID_NEW,
   SPVM_OP_C_ID_ARRAY_INIT,
   SPVM_OP_C_ID_WARN,
+  SPVM_OP_C_ID_WARN_LEVEL,
   SPVM_OP_C_ID_PRINT,
   SPVM_OP_C_ID_SAY,
   SPVM_OP_C_ID_DUMP,
@@ -377,6 +378,8 @@ SPVM_OP* SPVM_OP_build_return(SPVM_COMPILER* compiler, SPVM_OP* op_return, SPVM_
 SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_operand, SPVM_OP* op_type);
 
 SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* op_operand);
+
+SPVM_OP* SPVM_OP_build_warn_level(SPVM_COMPILER* compiler, SPVM_OP* op_warn_level, SPVM_OP* op_operand, SPVM_OP* op_level);
 
 SPVM_OP* SPVM_OP_build_print(SPVM_COMPILER* compiler, SPVM_OP* op_print, SPVM_OP* op_operand, int32_t is_stderr);
 

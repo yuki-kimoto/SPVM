@@ -27,7 +27,7 @@
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
 %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER SET_LENGTH SET_CAPACITY
-%token <opval> RETURN WEAKEN DIE WARN DIAG PRINT SAY STDERR OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
+%token <opval> RETURN WEAKEN DIE WARN WARN_LEVEL DIAG PRINT SAY STDERR OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
 
 %type <opval> grammar
 %type <opval> field_name method_name class_name
@@ -45,7 +45,7 @@
 %type <opval> die exists delete
 %type <opval> var_decl var
 %type <opval> operator opt_operators operators opt_operator
-%type <opval> void_return_operator warn 
+%type <opval> void_return_operator warn warn_level
 %type <opval> unary_operator array_length
 %type <opval> inc dec
 %type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation logical_operator defined_or ternary_operator
@@ -769,6 +769,7 @@ die
 
 void_return_operator
   : warn
+  | warn_level
   | PRINT operator
     {
       $$ = SPVM_OP_build_print(compiler, $1, $2, 0);
@@ -1614,6 +1615,12 @@ warn
       $$ = SPVM_OP_build_warn(compiler, $1, NULL);
     }
 
+warn_level
+  : WARN_LEVEL operator ',' operator
+    {
+      $$ = SPVM_OP_build_warn_level(compiler, $1, $2, $4);
+    }
+    
 copy_fields
   : COPY_FIELDS operator ',' operator ',' type
     {

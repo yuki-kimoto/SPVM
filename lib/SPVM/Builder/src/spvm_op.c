@@ -218,6 +218,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "NEW",
     "ARRAY_INIT",
     "WARN",
+    "WARN_LEVEL",
     "PRINT",
     "SAY",
     "DUMP",
@@ -3262,6 +3263,14 @@ SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* 
   SPVM_OP_insert_child(compiler, op_warn, op_warn->last, op_operand);
   
   return op_warn;
+}
+
+SPVM_OP* SPVM_OP_build_warn_level(SPVM_COMPILER* compiler, SPVM_OP* op_warn_level, SPVM_OP* op_operand, SPVM_OP* op_level) {
+  
+  SPVM_OP_insert_child(compiler, op_warn_level, op_warn_level->last, op_operand);
+  SPVM_OP_insert_child(compiler, op_warn_level, op_warn_level->last, op_level);
+  
+  return op_warn_level;
 }
 
 SPVM_OP* SPVM_OP_build_basic_type_id(SPVM_COMPILER* compiler, SPVM_OP* op_basic_type_id, SPVM_OP* op_type) {
