@@ -1,4 +1,8 @@
 0.990113 2026-01-21
+  [Changes]
+    *Set the "file" member of the basic type to a virtual file name such as "string.spvm" even for built-in types.
+  
+0.990113 2026-01-21
   
   [New Features]
     * Added support for the assignment of undef to multi-numeric types for 0-initialization.
