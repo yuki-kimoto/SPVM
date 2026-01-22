@@ -428,11 +428,16 @@ SPVM_BASIC_TYPE* SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, const cha
      basic_type->id = compiler->basic_types->length;
      SPVM_STRING* basic_type_name_string = SPVM_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
      basic_type->name = basic_type_name_string->value;
+     char* basic_type_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, strlen(basic_type_name) + 5 + 1);
+     memcpy(basic_type_file, basic_type_name, strlen(basic_type_name));
+     memcpy(basic_type_file + strlen(basic_type_name), ".spvm", 5);
+     SPVM_STRING* basic_type_file_string = SPVM_STRING_new(compiler, basic_type_file, strlen(basic_type_file));
+     basic_type->file = basic_type_file_string->value;
      SPVM_LIST_push(compiler->basic_types, basic_type);
      SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
   }
   
-   return basic_type;
+  return basic_type;
 }
 
 void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
