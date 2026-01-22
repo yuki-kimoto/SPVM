@@ -416,6 +416,51 @@ class TestCase::Interface {
       }
     }
     
+    {
+      # Create string array
+      my $strings = ["abc", "def"];
+      
+      {
+        # Check if string[] can be cast to Stringable[]
+        # In SPVM, if T satisfies Interface, then T[] satisfies Interface[]
+        my $stringables = (Stringable[])$strings;
+        
+        # Verify the cast using unless
+        unless ($stringables) {
+          return 0;
+        }
+        
+        # Check elements via the interface array
+        unless ($stringables->[0]->to_string == $strings->[0]) {
+          return 0;
+        }
+        
+        unless ($stringables->[1]->to_string == $strings->[1]) {
+          return 0;
+        }
+      }
+      
+      {
+        # Check if string[] can be assigned to Stringable[]
+        # In SPVM, if T satisfies Interface, then T[] satisfies Interface[]
+        my $stringables : Stringable[] = $strings;
+        
+        # Verify the cast using unless
+        unless ($stringables) {
+          return 0;
+        }
+        
+        # Check elements via the interface array
+        unless ($stringables->[0]->to_string == $strings->[0]) {
+          return 0;
+        }
+        
+        unless ($stringables->[1]->to_string == $strings->[1]) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   
