@@ -391,6 +391,18 @@ The C<string> type can be qualified with L<mutable type qualifier|/"mutable Type
 
   mutable string
 
+C<string> type has C<to_string> method and satisfies C<Stringable> interface.
+
+The definition of C<to_string> method is as follows:
+
+  method to_string : string ();
+
+This method returns itself.
+
+Because C<string> type satisfies C<Stringable> interface, it can be cast or assigned to C<Stringable> interface.
+
+Moreover, the array covariance is supported for C<string> type. For example, C<string[]> can be cast or assigned to C<Stringable[]>, and C<string[][]> can be cast or assigned to C<Stringable[][]>.
+
 =head3 Class Types
 
 A class type is the type for a L<class|SPVM::Document::Language::Class/"Class">.
