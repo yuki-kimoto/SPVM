@@ -73,7 +73,7 @@ void SPVM_CHECK_build_string_class(SPVM_COMPILER* compiler) {
     compiler->current_outmost_class_name = "string";
     compiler->current_class_rel_file = "string.spvm";
     compiler->current_class_dir = NULL;
-    compiler->current_file = "string.spvm";
+    compiler->current_file = NULL;
     
     // Define the to_string method: method to_string : string { return $self; }
     // File and line for error reporting

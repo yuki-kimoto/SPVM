@@ -54,7 +54,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       // Check sub information
       assert(method->op_name);
       assert(method->return_type);
-      assert(method->current_basic_type->file);
       
       // Copy arguments to variables
       int32_t stack_index = 0;
