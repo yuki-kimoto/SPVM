@@ -3745,9 +3745,57 @@ SPVM_OP* SPVM_OP_new_op_double_type(SPVM_COMPILER* compiler, const char* file, i
   return op_type;
 }
 
+void SPVM_OP_build_string_class(SPVM_COMPILER* compiler) {
+  
+  SPVM_BASIC_TYPE* basic_type_string = SPVM_HASH_get(compiler->basic_type_symtable, "string", strlen("string"));
+  if (basic_type_string->methods->length == 0) {
+    
+    // Define the to_string method: method to_string : string { return $self; }
+    // File and line for error reporting
+    const char* file = "string.spvm"; // Virtual file name
+    int32_t line = 1;
+
+    // 1. Create the method OP
+    SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, file, line);
+    SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "to_string", file, line);
+
+    // 2. Set the return type to "string"
+    SPVM_OP* op_return_type = SPVM_OP_new_op_string_type(compiler, file, line);
+
+    // 3. Create arguments list (Empty, but the invocant $self is handled by build_method)
+    SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, file, line);
+
+    // 4. Create the block: { return $self; }
+    SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, file, line);
+    SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, file, line);
+    SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, file, line);
+
+    // Create $self
+    SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", file, line);
+    SPVM_OP* op_var_self = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
+
+    // Build return statement: return $self;
+    SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var_self);
+    SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
+    SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
+
+    // 5. Build the method
+    // The fifth argument is "attributes", NULL for now.
+    SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block);
+
+    // 6. Register the method to string's basic_type
+    SPVM_METHOD* method = op_method->uv.method;
+    SPVM_LIST_push(basic_type_string->methods, method);
+    SPVM_HASH_set(basic_type_string->method_symtable, method->name, strlen(method->name), method);
+  }
+  
+}
+
 SPVM_OP* SPVM_OP_new_op_string_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   SPVM_TYPE* type = SPVM_TYPE_new_string_type(compiler);
-  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type->unresolved_basic_type_name, type->basic_type, type->dimension, type->flag, file, line);  
+  
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type->unresolved_basic_type_name, type->basic_type, type->dimension, type->flag, file, line);
+  
   return op_type;
 }
 

@@ -508,6 +508,8 @@ SPVM_OP* SPVM_OP_build_extends(SPVM_COMPILER* compiler, SPVM_OP* op_extends, SPV
 
 SPVM_OP* SPVM_OP_build_copy_fields(SPVM_COMPILER* compiler, SPVM_OP* op_copy_fields, SPVM_OP* op_dist, SPVM_OP* op_src, SPVM_OP* op_type);
 
+void SPVM_OP_build_string_class(SPVM_COMPILER* compiler);
+
 SPVM_OP* SPVM_OP_new_op_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand, const char* file, int32_t line);
 
 SPVM_OP* SPVM_OP_new_op_var_decl(SPVM_COMPILER* compiler, const char* file, int32_t line);
