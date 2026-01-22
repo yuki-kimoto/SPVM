@@ -37,6 +37,7 @@
 #include "spvm_attribute.h"
 #include "spvm_dumper.h"
 #include "spvm_allow.h"
+#include "spvm_toke.h"
 
 void SPVM_CHECK_check(SPVM_COMPILER* compiler) {
   
@@ -67,6 +68,13 @@ void SPVM_CHECK_build_string_class(SPVM_COMPILER* compiler) {
   SPVM_BASIC_TYPE* basic_type_string = SPVM_HASH_get(compiler->basic_type_symtable, "string", strlen("string"));
   
   if (!basic_type_string->methods->length) {
+    SPVM_TOKE_init_compiler_current_info(compiler);
+    
+    compiler->current_outmost_class_name = "string";
+    compiler->current_class_rel_file = "string.spvm";
+    compiler->current_class_dir = NULL;
+    compiler->current_file = "string.spvm";
+    
     // Define the to_string method: method to_string : string { return $self; }
     // File and line for error reporting
     const char* file = "string.spvm"; // Virtual file name
@@ -118,8 +126,6 @@ void SPVM_CHECK_build_string_class(SPVM_COMPILER* compiler) {
     SPVM_OP* op_type_string_class = SPVM_OP_build_basic_type(compiler, op_name_string_class);
 
     // Finalize the class build (this updates basic_type->methods and symbol tables)
-    compiler->current_outmost_class_name = "string";
-    compiler->current_file = "string.spvm";
     SPVM_OP_build_class(compiler, op_class, op_type_string_class, op_class_block, NULL, NULL);
   }
 }
