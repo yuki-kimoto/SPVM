@@ -245,14 +245,14 @@ int32_t SPVM_BASIC_TYPE_has_interface_common(SPVM_COMPILER* compiler, int32_t sr
   
   SPVM_BASIC_TYPE* dist_basic_type = SPVM_LIST_get(compiler->basic_types, dist_basic_type_id);
   
-  if (!(src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+  if (!(src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE || src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING)) {
     if (error_reason) {
       snprintf(error_reason, SPVM_COMPILER_C_ERROR_REASON_SIZE, "The source type %s of the operand must be a class type or an interface type.\n  at %s line %d", src_basic_type->name, src_basic_type->op_class->file, src_basic_type->op_class->line);
     }
     return 0;
   }
   
-  if (!(dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+  if (!(dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE || src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING)) {
     if (error_reason) {
       snprintf(error_reason, SPVM_COMPILER_C_ERROR_REASON_SIZE, "The destination type %s must be an interface type.\n  at %s line %d", dist_basic_type->name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
     }

@@ -385,4 +385,38 @@ class TestCase::Interface {
     return $cb->();
   }
   
+  static method string_type_has_stringable_interface : int () {
+    
+    {
+      my $str = "Hello";
+      
+      # Call to_string directly on string type
+      # This should return the same string instance ($self)
+      my $ret_str = $str->to_string;
+      
+      # Check if string type has to_string method using unless
+      unless ($str == $ret_str) {
+        return 0;
+      }
+      
+      # Check if string type can be assigned to Stringable interface using unless
+      # This works because string now has to_string method (Duck typing)
+      {
+        my $stringable = (Stringable)$str;
+        unless ($stringable->to_string == $str) {
+          return 0;
+        }
+      }
+      
+      {
+        my $stringable : Stringable = $str;
+        unless ($stringable->to_string == $str) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
 }

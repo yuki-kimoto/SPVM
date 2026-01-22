@@ -1198,6 +1198,10 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
       else if (SPVM_TYPE_is_class_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         can_assign = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id, error_reason);
       }
+      // Source type is string type
+      else if (SPVM_TYPE_is_string_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+        can_assign = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id, error_reason);
+      }
       // Source type is undef type
       else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         can_assign = 1;
@@ -1327,6 +1331,9 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
     }
     // Source type is class array type
     else if (SPVM_TYPE_is_class_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_assign = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id, error_reason);
+    }
+    else if (SPVM_TYPE_is_string_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_assign = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id, error_reason);
     }
     // Source type is undef type
@@ -1633,6 +1640,10 @@ int32_t SPVM_TYPE_satisfy_cast_requirement(
     else if (SPVM_TYPE_is_interface_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_cast = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id, error_reason);
     }
+    // Source type is string type
+    else if (SPVM_TYPE_is_string_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_cast = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id, error_reason);
+    }
     // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_cast = 1;
@@ -1801,6 +1812,10 @@ int32_t SPVM_TYPE_satisfy_cast_requirement(
     else if (SPVM_TYPE_is_interface_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_cast = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id, error_reason);
     }
+    // Source type is interface array type
+    else if (SPVM_TYPE_is_string_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_cast = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id, error_reason);
+    }
     // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_cast = 1;
@@ -1875,6 +1890,10 @@ int32_t SPVM_TYPE_satisfy_cast_requirement(
             }
             // Source basic type is interface type
             else if (SPVM_BASIC_TYPE_is_interface_type(compiler, src_type_basic_type_id)) {
+              can_cast = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id, error_reason);
+            }
+            // Source basic type is interface type
+            else if (SPVM_BASIC_TYPE_is_string_type(compiler, src_type_basic_type_id)) {
               can_cast = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id, error_reason);
             }
             // Source basic type is other type

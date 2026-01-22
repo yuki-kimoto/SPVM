@@ -5791,7 +5791,6 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
           SPVM_RUNTIME_BASIC_TYPE* released_object_basic_type = SPVM_API_get_object_basic_type(env, stack, released_object);
           int32_t released_object_type_dimension = SPVM_API_get_object_type_dimension(env, stack, released_object);
           if (SPVM_API_is_dynamic_data_type(env, stack, released_object_basic_type, released_object_type_dimension, 0)) {
-            // spvm_warn("%s %d", released_object_basic_type->name, released_object_type_dimension);
             SPVM_API_free_memory_block(env, stack, released_object->data);
             released_object->data = NULL;
           }

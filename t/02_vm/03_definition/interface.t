@@ -20,6 +20,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   ok(SPVM::TestCase::Interface->can);
   ok(SPVM::TestCase::InterfaceNoRequiredMethodTest->basic);
   ok(SPVM::TestCase::Interface->void_and_any_object_return_type);
+  ok(SPVM::TestCase::Interface->string_type_has_stringable_interface);
 }
 
 # All object is freed

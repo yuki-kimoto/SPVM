@@ -5037,7 +5037,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
     SPVM_OP* op_invocant = SPVM_OP_sibling(compiler, op_list_args->first);
     
     SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_invocant);
-    if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+    if (!(SPVM_TYPE_is_string_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
       SPVM_COMPILER_error(compiler, "The invocant of %s method must be a class type or an interface type.\n  at %s line %d", method_name, op_call_method->file, op_call_method->line);
       return;
     }
