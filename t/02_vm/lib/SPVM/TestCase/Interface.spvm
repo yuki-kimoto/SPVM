@@ -461,6 +461,45 @@ class TestCase::Interface {
       }
     }
     
+    {
+      # Create multidimensional string array (string[][])
+      my $strings_2dim = [["abc", "def"], ["ghi"]];
+      
+      {
+        # Check if string[][] can be cast to Stringable[][]
+        my $stringables_2dim = (Stringable[][])$strings_2dim;
+        
+        # Verify the cast using unless
+        unless ($stringables_2dim) {
+          return 0;
+        }
+        
+        # Check elements via the multidimensional interface array
+        unless ($stringables_2dim->[0]->[0]->to_string == $strings_2dim->[0]->[0]) {
+          return 0;
+        }
+        
+        unless ($stringables_2dim->[1]->[0]->to_string == $strings_2dim->[1]->[0]) {
+          return 0;
+        }
+      }
+      
+      {
+        # Check if string[][] can be assigned to Stringable[][]
+        my $stringables_2dim : Stringable[][] = $strings_2dim;
+        
+        # Verify the assignment using unless
+        unless ($stringables_2dim) {
+          return 0;
+        }
+        
+        # Check elements via the multidimensional interface array
+        unless ($stringables_2dim->[0]->[1]->to_string == $strings_2dim->[0]->[1]) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   

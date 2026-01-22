@@ -1385,6 +1385,10 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
             else if (SPVM_BASIC_TYPE_is_class_type(compiler, src_type_basic_type_id)) {
               can_assign = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id, error_reason);
             }
+            // Source basic type is string type
+            else if (SPVM_BASIC_TYPE_is_string_type(compiler, src_type_basic_type_id)) {
+              can_assign = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id, error_reason);
+            }
             // Source basic type is other type
             else {
               can_assign = 0;
