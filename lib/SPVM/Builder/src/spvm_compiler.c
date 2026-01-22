@@ -503,45 +503,6 @@ void SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
-  // Add Bool class file
-  {
-    const char* class_name = "Bool";
-    const char* rel_file = "Bool.spvm";
-    const char* content = "class Bool {\n  version_from SPVM;\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro byte;\n}";
-    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
-  }
-  
-  // Add Error class file
-  {
-    const char* class_name = "Error";
-    const char* rel_file = "Error.spvm";
-    const char* content = "class Error {\n  version_from SPVM;\n}";
-    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
-  }
-  
-  // Add Error::System class file
-  {
-    const char* class_name = "Error::System";
-    const char* rel_file = "Error/System.spvm";
-    const char* content = "class Error::System extends Error {\n  version_from SPVM;\n}";
-    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
-  }
-  
-  // Add Error::NotSupported class file
-  {
-    const char* class_name = "Error::NotSupported";
-    const char* rel_file = "Error/NotSupported.spvm";
-    const char* content = "class Error::NotSupported extends Error {\n  version_from SPVM;\n}";
-    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
-  }
-  
-  // Add Stringable class file
-  {
-    const char* class_name = "Stringable";
-    const char* rel_file = "Stringable.spvm";
-    const char* content = "class Stringable : interface_t {\n  version_from SPVM;\n  required method to_string : string ();\n}";
-    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
-  }
   
   // Add Byte class file
   {
@@ -591,6 +552,38 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
+  // Add Bool class file
+  {
+    const char* class_name = "Bool";
+    const char* rel_file = "Bool.spvm";
+    const char* content = "class Bool {\n  version_from SPVM;\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro byte;\n}";
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
+  }
+  
+  // Add Error class file
+  {
+    const char* class_name = "Error";
+    const char* rel_file = "Error.spvm";
+    const char* content = "class Error {\n  version_from SPVM;\n}";
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
+  }
+  
+  // Add Error::System class file
+  {
+    const char* class_name = "Error::System";
+    const char* rel_file = "Error/System.spvm";
+    const char* content = "class Error::System extends Error {\n  version_from SPVM;\n}";
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
+  }
+  
+  // Add Error::NotSupported class file
+  {
+    const char* class_name = "Error::NotSupported";
+    const char* rel_file = "Error/NotSupported.spvm";
+    const char* content = "class Error::NotSupported extends Error {\n  version_from SPVM;\n}";
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
+  }
+  
   // Add CommandInfo class file
   {
     const char* class_name = "CommandInfo";
@@ -629,6 +622,14 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Error::MethodCallNotPermitted";
     const char* rel_file = "Error/MethodCallNotPermitted.spvm";
     const char* content = "class Error::MethodCallNotPermitted extends Error {\n  version_from SPVM;\n}";
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
+  }
+  
+  // Add Stringable class file
+  {
+    const char* class_name = "Stringable";
+    const char* rel_file = "Stringable.spvm";
+    const char* content = "class Stringable : interface_t {\n  version_from SPVM;\n  required method to_string : string ();\n}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
