@@ -328,6 +328,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_STRING_new(compiler, type->basic_type->class_dir, strlen(type->basic_type->class_dir));
   }
   SPVM_STRING_new(compiler, type->basic_type->class_rel_file, strlen(type->basic_type->class_rel_file));
+  
   SPVM_STRING_new(compiler, type->basic_type->file, strlen(type->basic_type->file));
   
   // Assert
@@ -342,7 +343,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
   
   if (!(basic_type->is_anon || basic_type->is_generated_by_anon_method)) {
-    assert(!islower(basic_type_name[0]));
     
     // If class name is different from the class name corresponding to the class file, compile error occur.
     if (strcmp(basic_type_name, compiler->current_outmost_class_name) != 0) {
@@ -1157,7 +1157,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", op_class->file, op_class->line);
     }
   }
-
+  
   return op_class;
 }
 

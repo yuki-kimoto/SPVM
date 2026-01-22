@@ -39,6 +39,9 @@
 #include "spvm_allow.h"
 
 void SPVM_CHECK_check(SPVM_COMPILER* compiler) {
+  
+  SPVM_CHECK_build_string_class(compiler);
+  
   // Check type ops
   SPVM_CHECK_check_op_types(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
@@ -63,44 +66,62 @@ void SPVM_CHECK_build_string_class(SPVM_COMPILER* compiler) {
   
   SPVM_BASIC_TYPE* basic_type_string = SPVM_HASH_get(compiler->basic_type_symtable, "string", strlen("string"));
   
-  // Define the to_string method: method to_string : string { return $self; }
-  // File and line for error reporting
-  const char* file = "string.spvm"; // Virtual file name
-  int32_t line = 1;
+  if (!basic_type_string->methods->length) {
+    // Define the to_string method: method to_string : string { return $self; }
+    // File and line for error reporting
+    const char* file = "string.spvm"; // Virtual file name
+    int32_t line = 1;
 
-  // 1. Create the method OP
-  SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, file, line);
-  SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "to_string", file, line);
+    // 1. Create the method OP
+    SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, file, line);
+    SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "to_string", file, line);
 
-  // 2. Set the return type to "string"
-  SPVM_OP* op_return_type = SPVM_OP_new_op_string_type(compiler, file, line);
+    // 2. Set the return type to "string"
+    SPVM_OP* op_return_type = SPVM_OP_new_op_string_type(compiler, file, line);
 
-  // 3. Create arguments list (Empty, but the invocant $self is handled by build_method)
-  SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, file, line);
+    // 3. Create arguments list (Empty, but the invocant $self is handled by build_method)
+    SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, file, line);
 
-  // 4. Create the block: { return $self; }
-  SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, file, line);
-  SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, file, line);
-  SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, file, line);
+    // 4. Create the block: { return $self; }
+    SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, file, line);
+    SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, file, line);
+    SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, file, line);
 
-  // Create $self
-  SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", file, line);
-  SPVM_OP* op_var_self = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
+    // Create $self
+    SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", file, line);
+    SPVM_OP* op_var_self = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
 
-  // Build return statement: return $self;
-  SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var_self);
-  SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
-  SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
+    // Build return statement: return $self;
+    SPVM_OP_insert_child(compiler, op_return, op_return->last, op_var_self);
+    SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
+    SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
 
-  // 5. Build the method
-  // The fifth argument is "attributes", NULL for now.
-  SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block);
+    // 5. Build the method
+    // The fifth argument is "attributes", NULL for now.
+    op_method = SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block);
+    
+    // 6. Register the method to string's basic_type
+    SPVM_METHOD* method = op_method->uv.method;
+    
+    // 5. Re-construct the string class structure to register the method
+    // This mimics the logic in SPVM_OP_build_anon_method
+    SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, file, line);
+    SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, file, line);
+    SPVM_OP* op_list_definitions = SPVM_OP_new_op_list(compiler, file, line);
 
-  // 6. Register the method to string's basic_type
-  SPVM_METHOD* method = op_method->uv.method;
-  SPVM_LIST_push(basic_type_string->methods, method);
-  SPVM_HASH_set(basic_type_string->method_symtable, method->name, strlen(method->name), method);
+    // Add the to_string method to the class definition list
+    SPVM_OP_insert_child(compiler, op_list_definitions, op_list_definitions->last, op_method);
+    SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_definitions);
 
+    // Link back to the string basic type
+    SPVM_OP* op_name_string_class = SPVM_OP_new_op_name(compiler, "string", file, line);
+    SPVM_OP* op_type_string_class = SPVM_OP_build_basic_type(compiler, op_name_string_class);
+
+    // Finalize the class build (this updates basic_type->methods and symbol tables)
+    compiler->current_outmost_class_name = "string";
+    compiler->current_file = "string.spvm";
+    SPVM_OP_build_class(compiler, op_class, op_type_string_class, op_class_block, NULL, NULL);
+  }
 }
 
 void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {

@@ -9,12 +9,14 @@ class TestCase::LineDirective {
     my $line = __LINE__;
     
     unless ($line == 1) {
+      diag $line;
       return 0;
     }
     
     eval { die; }
     
     unless (Fn->contains($@, "/Foo/Bar.spvm")) {
+      diag $@;
       return 0;
     }
     
@@ -24,6 +26,7 @@ class TestCase::LineDirective {
     my $line2 = __LINE__;
     
     unless ($line2 == 73) {
+      diag $line;
       return 0;
     }
     
@@ -32,10 +35,9 @@ class TestCase::LineDirective {
     my $file3 = __FILE__;
     
     unless ($line3 == 75) {
+      diag $line;
       return 0;
     }
-    
-    $@ = undef;
     
     return 1;
   }
