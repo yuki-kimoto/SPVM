@@ -12,6 +12,8 @@ void SPVM_CHECK_check_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type);
 
 void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler);
 
+void SPVM_CHECK_build_string_class(SPVM_COMPILER* compiler);
+
 void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method);
 
 SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method);
