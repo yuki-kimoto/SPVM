@@ -2709,9 +2709,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   }
 }
 
-int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
-
-  // Start parsing a source code
+void SPVM_TOKE_init_compiler_current_info(SPVM_COMPILER* compiler) {
+  
   compiler->current_file = NULL;
   compiler->current_class_content = NULL;
   compiler->current_tmp_vars_length = 0;
@@ -2719,6 +2718,12 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
   compiler->token_begin_ch_ptr = NULL;
   compiler->line_begin_ch_ptr = NULL;
   compiler->current_anon_op_types = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 128);
+}
+
+int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
+  
+  
+  SPVM_TOKE_init_compiler_current_info(compiler);
   
   // If there are more module, load it
   SPVM_LIST* op_use_stack = compiler->op_use_stack;
