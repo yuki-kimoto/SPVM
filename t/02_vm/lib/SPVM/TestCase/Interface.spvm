@@ -183,7 +183,6 @@ class TestCase::Interface {
         return 0;
       }
     }
-    $@ = undef;
     
     return 1;
   }
@@ -495,6 +494,42 @@ class TestCase::Interface {
         
         # Check elements via the multidimensional interface array
         unless ($stringables_2dim->[0]->[1]->to_string == $strings_2dim->[0]->[1]) {
+          return 0;
+        }
+      }
+    }
+    
+    {
+      # string isa Stringable
+      {
+        my $str = "Hello";
+        unless ($str isa Stringable) {
+          return 0;
+        }
+      }
+      
+      # string[] isa Stringable[]
+      {
+        my $strings = ["abc", "def"];
+        unless ($strings isa Stringable[]) {
+          return 0;
+        }
+        
+        # Negative check: string[] is NOT Stringable
+        if ($strings isa Stringable) {
+          return 0;
+        }
+      }
+      
+      # string[][] isa Stringable[][]
+      {
+        my $strings_2dim = [["abc"], ["def"]];
+        unless ($strings_2dim isa Stringable[][]) {
+          return 0;
+        }
+        
+        # Negative check: string[][] is NOT Stringable[]
+        if ($strings_2dim isa Stringable[]) {
           return 0;
         }
       }
