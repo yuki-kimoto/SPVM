@@ -1,4 +1,4 @@
-0.990113 2026-01-21
+0.990113 2026-01-22
   [Changes]
     * Set the "file" member of the basic type to a virtual file name such as "string.spvm" even for built-in types.
     * Add to_string method to string type and make string type satisfy Stringable interface.
