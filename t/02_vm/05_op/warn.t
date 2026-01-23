@@ -65,8 +65,8 @@ sub slurp_binmode {
 my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
+# warn
 {
-  # warn
   {
     # test_warn
     {
@@ -197,7 +197,19 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       my $output = slurp_binmode($output_file);
       like($output, qr|Hello\n  TestCase::Operator::Warn->test_diag at .*TestCase/Operator/Warn.spvm line|);
     }
+    
+  }
+}
 
+# warn_level
+{
+  # warn_level - 0
+  {
+    my $func_call = 'SPVM::TestCase::Operator::Warn->test_warn_level_zero';
+    write_script_file($script_file, $func_call);
+    system("$^X -Mblib $script_file 2> $output_file");
+    my $output = slurp_binmode($output_file);
+    like($output, qr|Hello\n  TestCase::Operator::Warn->test_warn_level_zero at .*TestCase/Operator/Warn.spvm line|);
   }
 }
 
