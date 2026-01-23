@@ -273,7 +273,7 @@ Returns the absolute name of the method I<method>.
   30 set_is_precompile_fallback
   31 is_not_permitted
   32 set_is_not_permitted
-  32 get_args_signature
+  33 get_args_signature
   34 get_abs_name
   
 =head1 See Also

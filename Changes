@@ -16,7 +16,10 @@
     call_instance_method_no_mortal_less_check_args
 
     These internal API changes allow the runtime to propagate caller information (method name, file name, and line number) through the call stack efficiently.
-
+  
+  [Document Fix]
+    * Corrected the Native Method API ID for get_args_signature in SPVM::Document::NativeAPI::Method. It was previously duplicated as 32 and has been fixed to 33).
+    
 0.990115 2026-01-23
   [New Features]
     * Added the -Mblib option to the spvm command to support the Perl blib directory, which is useful for testing native modules.
