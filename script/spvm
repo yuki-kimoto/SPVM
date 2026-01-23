@@ -17,8 +17,8 @@ SPVM::Builder::Util::getopt
   
   # spvm only
   'e=s' => \my $source,
-  '-M=s' => \my @use_class_names,
-  '-c' => \my $syntax_ok,
+  'M=s' => \my @use_class_names,
+  'c' => \my $syntax_ok,
 ;
 
 if ($help) {
