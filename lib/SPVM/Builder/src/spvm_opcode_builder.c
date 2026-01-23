@@ -1158,24 +1158,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_term_args = op_assign_src->first;
                       SPVM_OP* op_term_arg = op_term_args->first;
 
-                      // Call method
-                      SPVM_OPCODE opcode = {0};
-                      
-                      int32_t opcode_id = -1;
-                      if (call_method->is_class_method) {
-                        opcode_id = SPVM_OPCODE_C_ID_CALL_CLASS_METHOD;
-                      }
-                      else {
-                        if (call_method->is_instance_method_static) {
-                          opcode_id = SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC;
-                        }
-                        else {
-                          opcode_id = SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD;
-                        }
-                      }
-                      
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, opcode_id);
-                      
                       SPVM_LIST* args = method_call_method->var_decls;
                       int32_t args_type_width = 0;
                       
@@ -1325,12 +1307,34 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       int32_t typed_var_index_out;
                       
+                      // Call method
+                      {
+                        SPVM_OPCODE opcode = {0};
+                        
+                        int32_t opcode_id = -1;
+                        if (call_method->is_class_method) {
+                          opcode_id = SPVM_OPCODE_C_ID_CALL_CLASS_METHOD;
+                        }
+                        else {
+                          if (call_method->is_instance_method_static) {
+                            opcode_id = SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC;
+                          }
+                          else {
+                            opcode_id = SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD;
+                          }
+                        }
+                        
+                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, opcode_id);
+                        
+                        opcode.operand0 = call_method->method->current_basic_type->id;
+                        opcode.operand1 = call_method->method->index;
+                        opcode.operand2 = args_type_width;
+                        
+                        SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      }
+                      
                       // Return
                       SPVM_TYPE* call_method_return_type = call_method->method->return_type;
-                      
-                      opcode.operand0 = call_method->method->current_basic_type->id;
-                      opcode.operand1 = call_method->method->index;
-                      opcode.operand2 = args_type_width;
                       
                       SPVM_OPCODE opcode_get_stack = {0};
                       {
@@ -1422,8 +1426,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           assert(0);
                         }
                       }
-                      
-                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
                       SPVM_OPCODE_BUILDER_push_opcode_on_exception(compiler, opcode_list, eval_block_stack->length, catch_on_exception_opcode_index_stack, return_on_exception_opcode_index_stack, method->op_method, op_cur->line);
                       
