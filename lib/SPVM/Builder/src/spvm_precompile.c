@@ -5211,7 +5211,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, decl_method, args_width, method_name, NULL, 0);\n"); // TODO: abs_name, file, line
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, decl_method, args_width, current_method_abs_name, current_file, ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, line);
+        SPVM_STRING_BUFFER_add(string_buffer, "  );\n");
         
         break;
       }
@@ -5243,7 +5245,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer,
-                                              "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, decl_method, args_width, method_name, NULL, 0);\n"); // TODO: abs_name, file, line
+                                              "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, decl_method, args_width, current_method_abs_name, current_file, ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, line);
+        SPVM_STRING_BUFFER_add(string_buffer, "  );\n");
         
         break;
       }
@@ -5269,7 +5273,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method->args_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width, args_signature, method_name, NULL, 0);\n"); // TODO: abs_name, file, line
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width, args_signature, current_method_abs_name, current_file, ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, line);
+        SPVM_STRING_BUFFER_add(string_buffer, "  );\n");
         
         break;
       }
