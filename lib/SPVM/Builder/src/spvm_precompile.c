@@ -143,6 +143,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_STRING_BUFFER_add(string_buffer,"  void* current_method = env->api->basic_type->get_method_by_name(env->runtime, current_basic_type, current_method_name);\n");
   
+  // Get current_method_abs_name using Native API
+  SPVM_STRING_BUFFER_add(string_buffer, "  const char* current_method_abs_name = env->api->method->get_abs_name(env->runtime, current_method);\n");
+  
+  // Get current_file using Native API (from current_basic_type)
+  SPVM_STRING_BUFFER_add(string_buffer, "  const char* current_file = env->api->basic_type->get_file(env->runtime, current_basic_type);\n");
+  
   // object variable declarations
   int32_t object_vars_width = current_method->object_vars_width;
   if (object_vars_width > 0) {
