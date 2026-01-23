@@ -1277,9 +1277,11 @@ Examples:
 
 =head2 call_method_no_mortal
 
-C<int32_t (*call_method_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t args_width);>
+C<int32_t (call_method_no_mortal)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t args_width, const char* func_name, const char* file, int32_t line);>
 
 Calls the method I<method> given the L<width of the argument|SPVM::Document::NativeClass/"Arguments Width"> I<args_width>.
+
+The func_name, file, and line arguments are used to store the caller information of this method call. These are used by the C<caller> operator.
 
 If the method throws an exception, returns a basic type ID of an error class. Otherwise, returns 0.
 
@@ -1289,7 +1291,7 @@ This native API should not be used unless special purposes are intended. Normall
 
 =head2 call_method
 
-C<int32_t (*call_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t args_width);>
+C<int32_t (*call_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t args_width, const char* func_name, const char* file, int32_t line);>
 
 Calls L</"call_method_no_mortal"> native API and if the type of the its return value is an object type, it is push to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
@@ -2638,15 +2640,15 @@ Calls L</"call_method_no_mortal"> native API and if the type of the its return v
 
 =head2 call_method_no_mortal_no_check_args
 
-C<int32_t (*call_method_no_mortal_no_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width);>
+C<int32_t (*call_method_no_mortal_no_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width, const char* func_name, const char* file_name, int32_t line);>
 
 Same as L</"call_method_no_mortal">, but does not perform any type checking of arguments.
 
 =head2 call_instance_method_no_mortal_less_check_args
 
-C<int32_t (*call_instance_method_no_mortal_less_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* decl_args_signature);>
+C<int32_t (*call_instance_method_no_mortal_less_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* decl_args_signature, const char* func_name, const char* file_name, int32_t line);>
 
-Same as L</"call_instance_method_no_mortal">, but does not perform less type checking of arguments with a hint I<decl_args_signature>.
+Same as L</"call_instance_method_no_mortal">, but performs less type checking of arguments using the hint decl_args_signature.
 
 =head2 enable_options
 
