@@ -221,6 +221,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
     is($output, "");
   }
   
+  # warn_level 1
+  {
+    eval { SPVM::TestCase::Operator::Warn->test_warn_level_positive };
+    like($@, qr/Hello/);
+  }
 }
 
 # All object is freed

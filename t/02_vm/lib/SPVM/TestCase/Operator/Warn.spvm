@@ -122,4 +122,11 @@ class TestCase::Operator::Warn { use Fn;
     return 1;
   }
   
+  static method test_warn_level_positive : int () {
+    
+    warn_level "Hello", 1;
+    
+    return 1;
+  }
+  
 }
