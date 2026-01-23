@@ -15,12 +15,12 @@ SPVM::Builder::Util::getopt
   'I|include-dir=s' => \my @include_dirs,
   'B|build-dir=s'   => \my $build_dir,
   'w'               => \my $warning,
-  'M=s' => \my @use_class_names,
   'Mblib' => \my $blib,
   
   # spvm only
   'e=s' => \my $source,
   'c' => \my $syntax_ok,
+  'M=s' => \my @use_class_names,
 ;
 
 if ($help) {
@@ -255,22 +255,6 @@ Implementation:
 
 Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
 
-=head2 -M
-
-  -M CLASS_NAME
-
-Loads the SPVM class I<CLASS_NAME>.
-
-This is useful for pre-loading classes or ensuring that a class is compiled.
-
-This option can be specified multiple times.
-
-  spvm -MFoo -MBar myapp.spvm
-
-Implementation:
-
-Calls L</"build_class"> method for I<CLASS_NAME>.
-
 =head2 -Mblib
 
   -Mblib
@@ -290,11 +274,28 @@ Executes a source code I<SOURCE> in C<main> method.
 Examples:
 
   spvm -e 'say "Hello World!";';
+
 =head2 -c
 
   -c
 
 Checks syntax only.
+
+=head2 -M
+
+  -M CLASS_NAME
+
+Loads the SPVM class I<CLASS_NAME>.
+
+This is useful for pre-loading classes or ensuring that a class is compiled.
+
+This option can be specified multiple times.
+
+  spvm -MFoo -MBar myapp.spvm
+
+Implementation:
+
+Calls L</"build_class"> method for I<CLASS_NAME>.
 
 
 =head1 lib Directive
