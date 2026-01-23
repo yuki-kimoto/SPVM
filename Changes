@@ -1,7 +1,8 @@
 0.990115 2026-01-23
   [New Features]
     * Added the -Mblib option to the spvm command to support the Perl blib directory, which is useful for testing native modules.
-
+    * Add the warn_level operator. This operator throws an exception with the die operator if the level is greater than 0, prints a warning message with the warn operator if the level is 0, and does nothing if the level is less than 0.
+    
 0.990114 2026-01-22
   [Changes]
     * Set the "file" member of the basic type to a virtual file name such as "string.spvm" even for built-in types.
