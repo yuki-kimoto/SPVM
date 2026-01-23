@@ -517,6 +517,7 @@ struct spvm_api_method {
   int32_t (*is_not_permitted)(void* runtime, void* method);
   void (*set_is_not_permitted)(void* runtime, void* method, int32_t is_not_permitted);
   const char* (*get_args_signature)(void* runtime, void* method);
+  const char* (*get_abs_name)(void* runtime, void* method);
 };
 
 struct spvm_api_runtime {

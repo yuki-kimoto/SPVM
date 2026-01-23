@@ -1,5 +1,8 @@
 0.990116 2026-01-23
-
+  
+  [New Features]
+    * Added a new Native Method API get_abs_name to retrieve the absolute name of a method.
+  
   [Backward Incompatible Changes]
   
     In SPVM naitve API, added new arguments (func_name, file, and line) to the following function pointers to support the caller operator:

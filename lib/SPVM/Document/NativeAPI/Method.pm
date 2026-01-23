@@ -232,6 +232,12 @@ C<const char* (*get_args_signature)(L<void* runtime|SPVM::Document::NativeAPI::R
 
 Returns the arguments signature of the method I<method>.
 
+=head2 get_abs_name
+
+C<const char* (*get_abs_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
+
+Returns the absolute name of the method I<method>.
+
 =head1 Native API IDs
 
   0 get_name
@@ -268,7 +274,8 @@ Returns the arguments signature of the method I<method>.
   31 is_not_permitted
   32 set_is_not_permitted
   32 get_args_signature
-
+  34 get_abs_name
+  
 =head1 See Also
 
 =over 2

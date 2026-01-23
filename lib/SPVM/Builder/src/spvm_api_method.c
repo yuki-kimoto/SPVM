@@ -51,6 +51,7 @@ SPVM_API_METHOD* SPVM_API_METHOD_new_api() {
     SPVM_API_METHOD_is_not_permitted,
     SPVM_API_METHOD_set_is_not_permitted,
     SPVM_API_METHOD_get_args_signature,
+    SPVM_API_METHOD_get_abs_name,
   };
   
   SPVM_API_METHOD* native_apis = calloc(1, sizeof(native_apis_init));
@@ -257,4 +258,9 @@ void SPVM_API_METHOD_set_is_not_permitted(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ME
 const char* SPVM_API_METHOD_get_args_signature(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
   return method->args_signature;
+}
+
+const char* SPVM_API_METHOD_get_abs_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+  
+  return method->abs_name;
 }
