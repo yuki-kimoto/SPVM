@@ -115,7 +115,7 @@ The spvm command executes SPVM programs.
   Options:
     -h, --help                     Shows this message
     -v, --version                  Shows the version
-    -I, --include-dir DIRECTORY    Adds a include directory
+    -I DIRECTORY    Adds a include directory
     -B, --build-dir DIRECTORY      Build diretory
     -e SOURCE                      Executes a program source code in main method.
     -c                             Check syntx only
@@ -213,25 +213,19 @@ Outputs the version of the C<spvm> command to standard output. This version is t
 
 Same as L</"--version">.
 
-=head2 --include-dir
+=head2 -I
 
-  --include-dir DIRECTORY
+  -I DIRECTORY
 
 Prepends I<DIRECTORY> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
 
 This option can be specified multiple times.
 
-  --include-dir dir1 --include-dir dir2
+  -I dir1 -I dir2
 
 In this case, class search directories becomes the following.
 
   [dir1, dir2, default_dirs]
-
-=head2 -I
-
-  -I DIRECTORY
-
-Same as L</"--include-dir">.
 
 =head2 --build-dir
 
@@ -274,7 +268,7 @@ Executes a source code I<SOURCE> in C<main> method.
 Examples:
 
   spvm -e 'say "Hello World!";';
-
+  
 =head2 -c
 
   -c
@@ -304,7 +298,7 @@ If the source code specified by I<SCRIPT_NAME>, or C<-e> option contains lib dir
   
   #lib "$FindBin::Bin/lib"
   
-This directories specified by lib directive is placed after the directories specified by L</"--include-dir"> option.
+This directories specified by lib directive is placed after the directories specified by L</"-I"> option.
 
 =head1 Copyright & License
 

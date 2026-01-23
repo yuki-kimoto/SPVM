@@ -5,6 +5,8 @@
   [Document Improvement]
     * Added the missing documentation for the -w, and -M options in the spvm command's Usage and POD.
     * Linked the documentation of the options shared between the spvmcc command and the spvm command to the spvm command's documentation.
+  [Incompatible Changes]
+      * Removed the --include-dir option from the spvm command because this option is used as native include directories in the spvmcc command. This is an incompatible change. Use the -I option instead.
     
 0.990114 2026-01-22
   [Changes]
