@@ -203,7 +203,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 # warn_level
 {
-  # warn_level - 0
+  # warn_level 0
   {
     my $func_call = 'SPVM::TestCase::Operator::Warn->test_warn_level_zero';
     write_script_file($script_file, $func_call);
@@ -211,6 +211,16 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
     my $output = slurp_binmode($output_file);
     like($output, qr|Hello\n  TestCase::Operator::Warn->test_warn_level_zero at .*TestCase/Operator/Warn.spvm line|);
   }
+  
+  # warn_level -1
+  {
+    my $func_call = 'SPVM::TestCase::Operator::Warn->test_warn_level_negative';
+    write_script_file($script_file, $func_call);
+    system("$^X -Mblib $script_file 2> $output_file");
+    my $output = slurp_binmode($output_file);
+    is($output, "");
+  }
+  
 }
 
 # All object is freed
