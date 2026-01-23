@@ -680,6 +680,7 @@ void SPVM_COMPILER_assert_check_basic_type_ids(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_assert_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_SPVM_CLASS);
   SPVM_COMPILER_assert_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_METHOD_CALL_NOT_PERMITTED_CLASS);
   SPVM_COMPILER_assert_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_STRINGABLE_CLASS);
+  SPVM_COMPILER_assert_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_COUNTABLE_CLASS);
 }
 
 void SPVM_COMPILER_assert_check_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_type_id) {
