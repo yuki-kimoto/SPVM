@@ -2692,7 +2692,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method_no_mortal(SPVM_ENV* env, S
   {
     int32_t args_width = 1;
     stack[0].ival = 5;
-    int32_t error_id = env->call_method_no_mortal(env, stack, method, args_width);
+    int32_t error_id = env->call_method_no_mortal(env, stack, method, args_width, __func__, __FILE__, __LINE__);
     if (error_id) {
       return 1;
     }
@@ -2722,7 +2722,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
     int32_t args_width = 2;
     stack[0].ival = 1;
     stack[1].ival = 2;
-    error_id = env->call_method(env, stack, method, args_width);
+    error_id = env->call_method(env, stack, method, args_width, __func__, __FILE__, __LINE__);
     if (error_id) { return error_id; }
     obj_point = stack[0].oval;
   }
@@ -3159,7 +3159,7 @@ int32_t SPVM__TestCase__NativeAPI__get_instance_method_static_native(SPVM_ENV* e
   int32_t ret;
   {
     int32_t args_width = 1;
-    env->call_method(env, stack, method, args_width);
+    env->call_method(env, stack, method, args_width, __func__, __FILE__, __LINE__);
     if (error_id) { return error_id; }
     ret = stack[0].ival;
   }
