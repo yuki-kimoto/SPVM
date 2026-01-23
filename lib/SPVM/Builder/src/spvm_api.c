@@ -395,34 +395,34 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   env = NULL;
 }
 
-int32_t SPVM_API_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
+int32_t SPVM_API_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, const char* func_name, const char* file, int32_t line) {
   
   int32_t mortal = 0;
   int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_FULL_CHECK;
-  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, check_args_level);
+  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, check_args_level, func_name, file, line);
   
   return error_id;
 }
 
-int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
+int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, const char* func_name, const char* file, int32_t line) {
   
   int32_t mortal = 1;
   int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_FULL_CHECK;
-  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, check_args_level);
+  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, check_args_level, func_name, file, line);
   
   return error_id;
 }
 
-int32_t SPVM_API_call_method_no_mortal_no_check_args(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
+int32_t SPVM_API_call_method_no_mortal_no_check_args(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, const char* func_name, const char* file, int32_t line) {
   
   int32_t mortal = 0;
   int32_t less_check_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_NO_CHECK;
-  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, less_check_level);
+  int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, less_check_level, func_name, file, line);
   
   return error_id;
 }
 
-int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal, int32_t check_args_level, const char* decl_args_signature) {
+int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal, int32_t check_args_level, const char* decl_args_signature, const char* func_name, const char* file, int32_t line) {
   
   int32_t error_id = 0;
   
@@ -439,7 +439,7 @@ int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, c
         }
       }
       
-      error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, check_args_level);
+      error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal, check_args_level, func_name, file, line);
     }
     else {
       int32_t scope_id = SPVM_API_enter_scope(env, stack);
@@ -465,34 +465,34 @@ int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, c
   return error_id;
 }
 
-int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
+int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* func_name, const char* file, int32_t line) {
   
   int32_t mortal = 0;
   int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_FULL_CHECK;
-  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, check_args_level, NULL);
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, check_args_level, NULL, func_name, file, line);
   
   return error_id;
 }
 
-int32_t SPVM_API_call_instance_method_no_mortal_less_check_args(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* decl_args_signature) {
+int32_t SPVM_API_call_instance_method_no_mortal_less_check_args(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* decl_args_signature, const char* func_name, const char* file, int32_t line) {
   
   int32_t mortal = 0;
   int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_AUTO_CHECK;
-  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, check_args_level, decl_args_signature);
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, check_args_level, decl_args_signature, func_name, file, line);
   
   return error_id;
 }
 
-int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width) {
+int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* func_name, const char* file, int32_t line) {
   
   int32_t mortal = 1;
   int32_t check_args_level = SPVM_API_C_CALL_METHOD_CHECK_ARGS_LEVEL_FULL_CHECK;
-  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, check_args_level, NULL);
+  int32_t error_id = SPVM_API_call_instance_method_common(env, stack, method_name, args_width, mortal, check_args_level, NULL, func_name, file, line);
   
   return error_id;
 }
 
-int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal, int32_t check_args_level) {
+int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal, int32_t check_args_level, const char* func_name, const char* file, int32_t line) {
   
   int32_t error_id = 0;
   
@@ -719,7 +719,7 @@ void SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const 
     return;
   }
   
-  *error_id = SPVM_API_call_method(env, stack, method, args_width);
+  *error_id = SPVM_API_call_method(env, stack, method, args_width, func_name, file, line);
   
   if (*error_id) {
     const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
@@ -762,7 +762,7 @@ void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* sta
     return;
   };
   
-  *error_id = SPVM_API_call_method(env, stack, method, args_width);
+  *error_id = SPVM_API_call_method(env, stack, method, args_width, func_name, file, line);
   
   if (*error_id) {
     const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
@@ -772,7 +772,7 @@ void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* sta
 
 void SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
   
-  *error_id = SPVM_API_call_instance_method(env, stack, method_name, args_width);
+  *error_id = SPVM_API_call_instance_method(env, stack, method_name, args_width, func_name, file, line);
   
   if (*error_id) {
     const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
@@ -870,7 +870,7 @@ int32_t SPVM_API_call_init_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
     if (basic_type->init_method) {
       SPVM_RUNTIME_METHOD* init_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, basic_type, basic_type->init_method->index);      
       int32_t args_width = 0;
-      error_id = SPVM_API_call_method(env, stack, init_method, args_width);
+      error_id = SPVM_API_call_method(env, stack, init_method, args_width, init_method->name, NULL, 0); // TODO init_method->abs_name, init_method->file, init_method->line
       if (error_id) { break; }
     }
   }
@@ -5733,7 +5733,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             
             stack[0].oval = released_object;
             int32_t args_width = 1;
-            int32_t error_id = SPVM_API_call_method(env, stack, destroy_method, args_width);
+            int32_t error_id = SPVM_API_call_method(env, stack, destroy_method, args_width, destroy_method->name, NULL, 0); // TODO abs_name, file, line
             
             // An exception thrown in a destructor is converted to a warning message
             if (error_id) {

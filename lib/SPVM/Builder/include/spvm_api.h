@@ -172,15 +172,15 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method_static(SPVM_ENV* env, SPVM_VAL
 SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* method_name);
 
 // Call Method
-int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal, int32_t check_args_level);
 int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width);
-int32_t SPVM_API_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width);
-int32_t SPVM_API_call_method_no_mortal_no_check_args(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width);
-int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width);
-int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal, int32_t less_check_args, const char* decl_basic_type_name);
-int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);
-int32_t SPVM_API_call_instance_method_no_mortal_less_check_args(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* decl_basic_type_name);
-int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);
+int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal, int32_t check_args_level, const char* func_name, const char* file, int32_t line);
+int32_t SPVM_API_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, const char* func_name, const char* file, int32_t line);
+int32_t SPVM_API_call_method_no_mortal_no_check_args(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, const char* func_name, const char* file, int32_t line);
+int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, const char* func_name, const char* file, int32_t line);
+int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t mortal, int32_t less_check_args, const char* decl_basic_type_name, const char* func_name, const char* file, int32_t line);
+int32_t SPVM_API_call_instance_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* func_name, const char* file, int32_t line);
+int32_t SPVM_API_call_instance_method_no_mortal_less_check_args(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* decl_basic_type_name, const char* func_name, const char* file, int32_t line);
+int32_t SPVM_API_call_instance_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* func_name, const char* file, int32_t line);
 
 // Call Method by name
 void SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);

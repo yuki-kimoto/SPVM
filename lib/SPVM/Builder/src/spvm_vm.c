@@ -2381,12 +2381,13 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
         int32_t args_width = opcode->operand2;
+        int32_t line = opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = runtime->basic_types[invocant_decl_basic_type_id];
         
         SPVM_RUNTIME_METHOD* method = &invocant_decl_basic_type->methods[decl_method_index];
         
-        SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, method, args_width);
+        SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, method, args_width, env->api->method->get_name(env->runtime, method), NULL, line); // TODO: abs_name, file
         
         break;
       }
@@ -2394,18 +2395,20 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
         int32_t args_width = opcode->operand2;
+        int32_t line = opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = runtime->basic_types[invocant_decl_basic_type_id];
         
         SPVM_RUNTIME_METHOD* method = &invocant_decl_basic_type->methods[decl_method_index];
         
-        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, method, args_width);
+        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, method, args_width, env->api->method->get_name(env->runtime, method), NULL, line); // TODO: abs_name, file
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
         int32_t args_width = opcode->operand2;
+        int32_t line = opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = runtime->basic_types[invocant_decl_basic_type_id];
         
@@ -2413,7 +2416,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         const char* method_name = decl_method->name;
         
-        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width, decl_method->args_signature);
+        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width, decl_method->args_signature, method_name, NULL, line); // TODO: abs_name, file
         
         break;
       }
