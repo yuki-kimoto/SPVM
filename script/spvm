@@ -47,10 +47,6 @@ if (defined $script_name && defined $source) {
   die "[spvm command]Specifying both SCRIPT_NAME and -e option is not allowed.";
 }
 
-if (defined $script_name && defined $source) {
-  die "[spvm command]Specifying both SCRIPT_NAME and -e option is not allowed.";
-}
-
 if (defined $source) {
   $0 = "-e";
 }
