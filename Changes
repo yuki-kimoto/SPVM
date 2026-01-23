@@ -4,18 +4,17 @@
     * Added a new Native Method API get_abs_name to retrieve the absolute name of a method.
   
   [Backward Incompatible Changes]
-  
-    In SPVM naitve API, added new arguments (func_name, file, and line) to the following function pointers to support the caller operator:
+    * In SPVM naitve API, added new arguments (func_name, file, and line) to the following function pointers to support the caller operator:
 
-    call_method
+      call_method
 
-    call_method_no_mortal
+      call_method_no_mortal
 
-    call_method_no_mortal_no_check_args
+      call_method_no_mortal_no_check_args
 
-    call_instance_method_no_mortal_less_check_args
+      call_instance_method_no_mortal_less_check_args
 
-    These internal API changes allow the runtime to propagate caller information (method name, file name, and line number) through the call stack efficiently.
+      These internal API changes allow the runtime to propagate caller information (method name, file name, and line number) through the call stack efficiently.
   
   [Document Fix]
     * Corrected the Native Method API ID for get_args_signature in SPVM::Document::NativeAPI::Method. It was previously duplicated as 32 and has been fixed to 33).
