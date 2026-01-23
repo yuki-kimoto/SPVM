@@ -870,7 +870,7 @@ int32_t SPVM_API_call_init_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
     if (basic_type->init_method) {
       SPVM_RUNTIME_METHOD* init_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, basic_type, basic_type->init_method->index);      
       int32_t args_width = 0;
-      error_id = SPVM_API_call_method(env, stack, init_method, args_width, init_method->name, NULL, 0); // TODO init_method->abs_name, init_method->file, init_method->line
+      error_id = SPVM_API_call_method(env, stack, init_method, args_width, __func__, FILE_NAME, __LINE__);
       if (error_id) { break; }
     }
   }
@@ -5733,7 +5733,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             
             stack[0].oval = released_object;
             int32_t args_width = 1;
-            int32_t error_id = SPVM_API_call_method(env, stack, destroy_method, args_width, destroy_method->name, NULL, 0); // TODO abs_name, file, line
+            int32_t error_id = SPVM_API_call_method(env, stack, destroy_method, args_width, __func__, FILE_NAME, __LINE__);
             
             // An exception thrown in a destructor is converted to a warning message
             if (error_id) {
