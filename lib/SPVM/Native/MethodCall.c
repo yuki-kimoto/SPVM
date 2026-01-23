@@ -630,7 +630,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id_exception_thrown = env->get_basic_type_id_by_name(env, stack, "Native::MethodCall::Error::ExceptionThrown", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  int32_t self_error_id = self_env->call_method(self_env, self_stack, method, stack_length, env->api->method->get_name(env->runtime, method), NULL, 0); // TODO: abs_name, file, line
+  int32_t self_error_id = self_env->call_method(self_env, self_stack, method, stack_length, __func__, FILE_NAME, __LINE__);
   if (obj_error_id_ref) {
     int32_t* error_id_ref = env->get_elems_int(env, stack, obj_error_id_ref);
     *error_id_ref = self_error_id;
