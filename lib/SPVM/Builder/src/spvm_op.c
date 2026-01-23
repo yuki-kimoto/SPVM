@@ -3267,10 +3267,82 @@ SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* 
 
 SPVM_OP* SPVM_OP_build_warn_level(SPVM_COMPILER* compiler, SPVM_OP* op_warn_level, SPVM_OP* op_operand, SPVM_OP* op_level) {
   
-  SPVM_OP_insert_child(compiler, op_warn_level, op_warn_level->last, op_operand);
-  SPVM_OP_insert_child(compiler, op_warn_level, op_warn_level->last, op_level);
+  /*
+    Before
+
+    warn_level $string, $level;
+
+    After
+
+    my $tmp_level = $level;
+    my $tmp_string = $string;
+    if ($tmp_level >= 0) {
+      if ($tmp_level > 0) {
+        die $tmp_string;
+      }
+      else {
+        warn $tmp_string;
+      }
+    }
+  */
   
-  return op_warn_level;
+  int32_t no_scope = 1;
+  
+  SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_warn_level->file, op_warn_level->line);
+
+  // my $tmp_level = $level;
+  SPVM_OP* op_var_tmp_level_name = SPVM_OP_new_op_name_tmp_var(compiler, op_warn_level->file, op_warn_level->line);
+  SPVM_OP* op_var_tmp_level = SPVM_OP_new_op_var(compiler, op_var_tmp_level_name);
+  SPVM_OP* op_var_decl_tmp_level = SPVM_OP_new_op_var_decl_arg(compiler, op_warn_level->file, op_warn_level->line);
+  op_var_tmp_level = SPVM_OP_build_var_decl(compiler, op_var_decl_tmp_level, op_var_tmp_level, NULL, NULL);
+  SPVM_OP* op_assign_tmp_level = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_warn_level->file, op_warn_level->line);
+  SPVM_OP_build_assign(compiler, op_assign_tmp_level, op_var_tmp_level, op_level);
+  SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign_tmp_level);
+
+  // my $tmp_string = $string;
+  SPVM_OP* op_var_tmp_string_name = SPVM_OP_new_op_name_tmp_var(compiler, op_warn_level->file, op_warn_level->line);
+  SPVM_OP* op_var_tmp_string = SPVM_OP_new_op_var(compiler, op_var_tmp_string_name);
+  SPVM_OP* op_var_decl_tmp_string = SPVM_OP_new_op_var_decl_arg(compiler, op_warn_level->file, op_warn_level->line);
+  op_var_tmp_string = SPVM_OP_build_var_decl(compiler, op_var_decl_tmp_string, op_var_tmp_string, NULL, NULL);
+  SPVM_OP* op_assign_tmp_string = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_warn_level->file, op_warn_level->line);
+  SPVM_OP_build_assign(compiler, op_assign_tmp_string, op_var_tmp_string, op_operand);
+  SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign_tmp_string);
+
+  // $tmp_level >= 0
+  SPVM_OP* op_if_outer = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_warn_level->file, op_warn_level->line);
+  SPVM_OP* op_ge = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NUMERIC_COMPARISON_GE, op_warn_level->file, op_warn_level->line);
+  SPVM_OP* op_var_tmp_level_ge = SPVM_OP_clone_op_var(compiler, op_var_tmp_level);
+  SPVM_OP* op_constant_zero_outer = SPVM_OP_new_op_constant_int(compiler, 0, op_warn_level->file, op_warn_level->line);
+  op_ge = SPVM_OP_build_binary_op(compiler, op_ge, op_var_tmp_level_ge, op_constant_zero_outer);
+
+  // $tmp_level > 0
+  SPVM_OP* op_if_inner = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_warn_level->file, op_warn_level->line);
+  SPVM_OP* op_gt = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NUMERIC_COMPARISON_GT, op_warn_level->file, op_warn_level->line);
+  SPVM_OP* op_var_tmp_level_gt = SPVM_OP_clone_op_var(compiler, op_var_tmp_level);
+  SPVM_OP* op_constant_zero_inner = SPVM_OP_new_op_constant_int(compiler, 0, op_warn_level->file, op_warn_level->line);
+  op_gt = SPVM_OP_build_binary_op(compiler, op_gt, op_var_tmp_level_gt, op_constant_zero_inner);
+
+  // die $tmp_string;
+  SPVM_OP* op_die = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DIE, op_warn_level->file, op_warn_level->line);
+  SPVM_OP* op_var_tmp_string_die = SPVM_OP_clone_op_var(compiler, op_var_tmp_string);
+  op_die = SPVM_OP_build_die(compiler, op_die, op_var_tmp_string_die, NULL);
+
+  // warn $tmp_string;
+  SPVM_OP* op_warn = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_WARN, op_warn_level->file, op_warn_level->line);
+  SPVM_OP* op_var_tmp_string_warn = SPVM_OP_clone_op_var(compiler, op_var_tmp_string);
+  op_warn = SPVM_OP_build_warn(compiler, op_warn, op_var_tmp_string_warn);
+  
+  // Build inner IF with ELSE
+  op_if_inner = SPVM_OP_build_if_statement(compiler, op_if_inner, op_gt, op_die, op_warn, no_scope);
+  
+  SPVM_OP* op_block_false = SPVM_OP_new_op_block(compiler, op_warn_level->file, op_warn_level->line);
+  
+  // Build outer IF
+  op_if_outer = SPVM_OP_build_if_statement(compiler, op_if_outer, op_ge, op_if_inner, op_block_false, no_scope);
+  
+  SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_if_outer);
+
+  return op_statements;
 }
 
 SPVM_OP* SPVM_OP_build_basic_type_id(SPVM_COMPILER* compiler, SPVM_OP* op_basic_type_id, SPVM_OP* op_type) {
