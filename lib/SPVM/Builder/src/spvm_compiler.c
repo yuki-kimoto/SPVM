@@ -686,7 +686,7 @@ void SPVM_COMPILER_assert_check_basic_type_id(SPVM_COMPILER* compiler, int32_t b
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
   const char* basic_type_name_expected = SPVM_BASIC_TYPE_get_basic_type_name(compiler, basic_type_id);
   
-  if (strcmp(basic_type->name, basic_type_name_expected) != 0) {
+  if (!(basic_type_name_expected && strcmp(basic_type->name, basic_type_name_expected) == 0)) {
     fprintf(stderr, "[Unexpected Error]Basic Type ID:%d, Basic Type Name:%s, Expected Basic Type Name: %s\n", basic_type_id, basic_type->name, basic_type_name_expected);
     assert(0);
   }
