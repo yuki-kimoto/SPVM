@@ -158,7 +158,7 @@ The spvmcc command generates an executable file from SPVM classes.
     -v, --version                   Shows the version
     -o, --output FILE               The output file name
     -I DIR                          Adds a include directory
-    -B, --build-dir DIR             Build diretory
+    -B, --build-dir DIR             Build directory
     -q, --quiet                     Stops the output of messages
     -f, --force                     Forces the compile and link
     --no-config                     No configration file is ok
@@ -521,7 +521,7 @@ This option can be repeated.
 
 =head2 --define-native
 
-  --define-native VALUE
+  --define-native CLASS_NAME@VALUE
 
 A compiler flag, but C<-D> is prefiex.
 
