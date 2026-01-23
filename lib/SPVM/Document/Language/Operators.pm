@@ -1414,6 +1414,47 @@ Examples:
   my $point = Point->new;
   warn $point;
 
+=head2 warn_level Operator
+
+The C<warn_level> operator warns or dies or does nothing according to a level.
+
+warn_level OPERAND, LEVEL
+
+This operator expects two operands. I<OPERAND> is a message, and I<LEVEL> is an integer value that determines the behavior.
+
+This operator behaves differently depending on the value of I<LEVEL>:
+
+=over 2
+
+=item * If I<LEVEL> is a negative value (less than 0), this operator does nothing.
+
+=item * If I<LEVEL> is 0, this operator calls L</"warn Operator"> with I<OPERAND>.
+
+=item * If I<LEVEL> is a positive value (greater than 0), this operator calls L<die statement|SPVM::Document::Language::Statements/"die Statement"> with I<OPERAND>.
+
+=back
+
+If I<OPERAND> is not defined, it is treated the same way as in L</"warn Operator"> or L<die statement|SPVM::Document::Language::Statements/"die Statement">.
+
+The return type is the void type.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be a numeric type, an object type, or a reference type. Otherwise, a compilation error occurs.
+
+The type of I<LEVEL> must be an integer type. Otherwise, a compilation error occurs.
+
+Examples:
+
+  # Ignore
+  warn_level "This is ignored.", -1;
+
+  # Same as warn "This is a warning.";
+  warn_level "This is a warning.", 0;
+
+  # Same as die "This is a fatal error.";
+  warn_level "This is a fatal error.", 1;
+
 =head2 diag Operator
 
 Same as L</"warn"> operator.
