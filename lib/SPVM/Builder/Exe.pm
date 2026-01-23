@@ -818,7 +818,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, "main");
   
   int32_t args_width = 0;
-  error_id = env->call_method(env, stack, method, args_width);
+  error_id = env->call_method(env, stack, method, args_width, __func__, __FILE__, __LINE__);
   if (error_id) {
     error_id = env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
     goto END_OF_FUNC;
