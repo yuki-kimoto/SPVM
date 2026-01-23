@@ -6,6 +6,7 @@ use warnings;
 use SPVM::Builder::Util;
 use SPVM::Global;
 use FindBin;
+use blib ();
 
 SPVM::Builder::Util::getopt
   # spvmcc and spvm shared
@@ -19,6 +20,7 @@ SPVM::Builder::Util::getopt
   'e=s' => \my $source,
   'M=s' => \my @use_class_names,
   'c' => \my $syntax_ok,
+  'Mblib' => \my $blib,
 ;
 
 if ($help) {
@@ -67,6 +69,10 @@ elsif (defined $script_name) {
 FindBin::again();
 
 my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
+
+if ($blib) {
+  blib->import;
+}
 
 unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_by_lib_directive;
 
@@ -117,6 +123,7 @@ The spvm command executes SPVM programs.
     -B, --build-dir DIRECTORY      Build diretory
     -e SOURCE                      Executes a program source code in main method.
     -c                             Check syntx only
+    -Mblib                         Uses Perl's blib directory.
 
 =head1 Details
 
@@ -265,6 +272,16 @@ Enables warning flag.
 Implementation:
 
 Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
+
+=head2 -Mblib
+
+  -Mblib
+
+Uses Perl's L<blib> module.
+
+This is useful for testing a native module before it is installed.
+
+When this option is specified, C<blib/lib> and C<blib/arch> are prepended to C<@INC> and the library search paths.
 
 =head1 lib Directive
 
