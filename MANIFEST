@@ -643,6 +643,7 @@ t/02_vm/03_definition/init_statement.t
 t/02_vm/03_definition/interface.t
 t/02_vm/03_definition/mulnum.t
 t/02_vm/03_definition/mulnum_array.t
+t/02_vm/04_statement/die.t
 t/02_vm/04_statement/for.t
 t/02_vm/04_statement/if.t
 t/02_vm/04_statement/require.t
@@ -676,7 +677,6 @@ t/02_vm/05_op/decrement.t
 t/02_vm/05_op/defined_or.t
 t/02_vm/05_op/delete.t
 t/02_vm/05_op/destroy.t
-t/02_vm/05_op/die.t
 t/02_vm/05_op/division.t
 t/02_vm/05_op/dump.t
 t/02_vm/05_op/dynamic_length.t
