@@ -2387,7 +2387,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         SPVM_RUNTIME_METHOD* method = &invocant_decl_basic_type->methods[decl_method_index];
         
-        SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, method, args_width, env->api->method->get_name(env->runtime, method), NULL, line); // TODO: abs_name, file
+        SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, method, args_width, current_method->abs_name, current_method->current_basic_type->file, line);
         
         break;
       }
@@ -2401,7 +2401,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         SPVM_RUNTIME_METHOD* method = &invocant_decl_basic_type->methods[decl_method_index];
         
-        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, method, args_width, env->api->method->get_name(env->runtime, method), NULL, line); // TODO: abs_name, file
+        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, method, args_width, current_method->abs_name, current_method->current_basic_type->file, line);
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {
@@ -2416,7 +2416,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         const char* method_name = decl_method->name;
         
-        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width, decl_method->args_signature, method_name, NULL, line); // TODO: abs_name, file
+        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, error_id, method_name, args_width, decl_method->args_signature, current_method->abs_name, current_method->current_basic_type->file, line);
         
         break;
       }
