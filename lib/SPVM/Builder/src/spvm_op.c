@@ -2685,6 +2685,8 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
   
+  call_method->line = op_call_method->line;
+  
   const char* method_name = op_name_method->uv.name;
   
   // Class method call
