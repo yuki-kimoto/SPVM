@@ -12,6 +12,7 @@ struct spvm_call_method {
   SPVM_TYPE* type;
   const char* basic_type_name;
   int32_t args_length;
+  int32_t line;
   int8_t is_class_method;
   int8_t call_super;
   int8_t is_instance_method_static;
