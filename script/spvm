@@ -12,7 +12,7 @@ SPVM::Builder::Util::getopt
   # spvmcc and spvm shared
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
-  'I|include-dir=s' => \my @include_dirs,
+  'I=s' => \my @include_dirs,
   'B|build-dir=s'   => \my $build_dir,
   'w'               => \my $warning,
   'Mblib' => \my $blib,
