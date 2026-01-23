@@ -944,6 +944,9 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         SPVM_STRING* method_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, method->name, strlen(method->name));
         runtime_method->name = runtime_basic_type->constant_strings[method_name_string->index].value;
         
+        SPVM_STRING* method_abs_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, method->abs_name, strlen(method->abs_name));
+        runtime_method->abs_name = runtime_basic_type->constant_strings[method_abs_name_string->index].value;
+        
         SPVM_STRING* method_args_signature_string = SPVM_HASH_get(basic_type->constant_string_symtable, method->args_signature, strlen(method->args_signature));
         runtime_method->args_signature = runtime_basic_type->constant_strings[method_args_signature_string->index].value;
         
