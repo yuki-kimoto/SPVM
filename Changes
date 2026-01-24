@@ -1,14 +1,16 @@
-0.990116 2026-01-24
-  
+0.990117 2026-01-24
   [Changes]
     * The runtime now pushes caller information (current method, caller name, file, and line) onto the caller stack within the runtime stack before each method call and pops it after the call. (Note: These changes are not yet tested.)
+  [New Features]
+    * Added stack_index_call_depth, stack_index_caller_info_stack, and stack_index_caller_info_stack_record_size native APIs to store stack indices.
+    * Added get_call_depth, get_caller_info_stack, and get_caller_info_stack_record_size native APIs to provide safe and dynamic access to caller information.
+
+0.990116 2026-01-24
   
   [New Features]
     * Added a new Native Method API get_abs_name to retrieve the absolute name of a method.
     * Added the CallerInfo class to represent caller information, including the method name, the file name, and the line number.
     * The CallerInfo class is now loaded by default.
-    * Added stack_index_call_depth, stack_index_caller_info_stack, and stack_index_caller_info_stack_record_size native APIs to store stack indices.
-    * Added get_call_depth, get_caller_info_stack, and get_caller_info_stack_record_size native APIs to provide safe and dynamic access to caller information.
   
   [Backward Incompatible Changes]
     * In SPVM naitve API, added new arguments (func_name, file, and line) to the following function pointers to support the caller operator:
