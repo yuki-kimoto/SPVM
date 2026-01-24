@@ -3242,7 +3242,23 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   }
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval = call_stack_memory_blocks;
   
-  stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival = 3;
+  // Initialize the record size of the caller information stack (e.g., name, file, line)
+  int32_t caller_info_stack_record_size = 3;
+  stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival = caller_info_stack_record_size;
+
+  // Initialize the initial capacity of the caller information stack
+  int32_t caller_info_stack_capacity = 1;
+  stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = caller_info_stack_capacity;
+
+  // Allocate the caller information stack with the initial capacity
+  // The size is (sizeof(void*) * record_size * capacity)
+  void** caller_info_stack = (void**)SPVM_API_new_memory_block(env, stack, sizeof(void*) * caller_info_stack_record_size * caller_info_stack_capacity);
+  
+  if (caller_info_stack == NULL) {
+    return NULL;
+  }
+  
+  stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].oval = caller_info_stack;
   
   return stack;
 }
@@ -3267,6 +3283,13 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (mortal_stack != NULL) {
     SPVM_API_free_memory_block(env, stack, mortal_stack);
     mortal_stack = NULL;
+  }
+  
+  // Free caller information stack
+  void** caller_info_stack = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].oval;
+  if (caller_info_stack != NULL) {
+    SPVM_API_free_memory_block(env, stack, caller_info_stack);
+    caller_info_stack = NULL;
   }
   
   void** call_stack_memory_blocks = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval;
