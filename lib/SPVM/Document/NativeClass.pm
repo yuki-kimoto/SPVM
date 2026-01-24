@@ -554,21 +554,69 @@ A runtime environement is given to the first argument of a native function.
 
 =head2 Runtime Stack
 
-A runtime stack is created for a native thread. An SPVM runtime creates a runtime stack for the main thread.
+A runtime stack represents the execution context of an SPVM program. It is created for each native thread or coroutine. The SPVM runtime automatically creates a primary runtime stack for the main thread.
 
-A runtime stack is used to get values of arguments and return a value, and it also stored its own data such as L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
+While it is named a "stack," it serves as a thread-local storage area that persists across function calls within the same execution unit. It is used to pass arguments to functions, receive return values, and store internal state specific to that thread, such as the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> and caller information.
 
-This is the pointer to the values of L<SPVM_VALUE|/"SPVM_VALUE Type"> type, normally named C<stack>.
+Technically, a runtime stack is a pointer to an array of L<SPVM_VALUE|/"SPVM_VALUE Type"> elements, and by convention, it is named C<stack>.
 
-  SPVM_VALUE* stack;
+SPVM_VALUE* stack;
 
-A runtime stack is given to the second argument of a native function. 
+A runtime stack is passed as the second argument to all native functions:
 
-  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) { // ... }
+
+You can manually manage runtime stacks for new threads or coroutines using the L<new_stack|SPVM::Document::NativeAPI/"new_stack"> and L<free_stack|SPVM::Document::NativeAPI/"free_stack"> native APIs.
+
+=head3 Caller Stack
+
+The B<caller stack> is a special region within the L<runtime stack|/"Runtime Stack"> used to store the history of method calls. It allows the runtime to trace back the execution path when an exception occurs or when debugging.
+
+Each record in the caller stack consists of 4 elements (the record size is 4).
+
+=over 2
+
+=item * 0: current_method (The method currently being executed)
+
+=item * 1: caller_name (The name of the caller method, such as C<Foo#bar> or C<SPVM__FOO__bar>)
+
+=item * 2: caller_file (The file name of the caller)
+
+=item * 3: caller_line (The line number of the caller)
+
+=back
+
+Example:
+
+  // Get the current depth of the caller stack
+  int32_t call_depth = env->get_call_depth(env, stack);
+  
+  // Get the raw pointer to the caller information stack
+  void** caller_info_stack = env->get_caller_info_stack(env, stack);
+  
+  // Get the size of each record (Normally 4)
+  int32_t record_size = env->get_caller_info_stack_record_size(env, stack);
+  
+  // Traverse the caller stack to build a backtrace
+  for (int32_t i = 0; i < call_depth; i++) {
+    void** record = &caller_info_stack[i * record_size];
     
+    // Get the current method information from the pointer
+    void* current_method = record[0];
+    const char* current_method_name = env->api->method->get_name(env->runtime, current_method);
+    
+    // Get the current class (basic type) name from the method
+    void* current_basic_type = env->api->method->get_current_basic_type(env->runtime, current_method));
+    const char* current_class_name = env->api->basic_type->get_name(env->runtime, current_basic_type);
+    
+    // Get caller information from the record
+    // caller_name could be "Foo#bar" or "SPVM__FOO__bar"
+    const char* caller_name = (const char*)record[1];
+    const char* caller_file = (const char*)record[2];
+    int32_t caller_line = (int32_t)(intptr_t)record[3];
+    
+    // Process the information (e.g., printing a trace)
   }
-
-A runtime stack can be created and freed using L<new_stack|SPVM::Document::NativeAPI/"new_stack"> native API and L<free_stack|SPVM::Document::NativeAPI/"free_stack"> native API.
 
 =head2 Arguments Width
 
