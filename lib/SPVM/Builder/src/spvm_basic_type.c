@@ -48,6 +48,7 @@ const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void) {
     "Error::MethodCallNotPermitted",
     "Stringable",
     "Countable",
+    "CallerInfo",
   };
   
   return id_names;

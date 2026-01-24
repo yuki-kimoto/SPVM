@@ -233,6 +233,7 @@ lib/SPVM/Callback/Map.pm
 lib/SPVM/Callback/Map.spvm
 lib/SPVM/Callback/MapExpand.pm
 lib/SPVM/Callback/MapExpand.spvm
+lib/SPVM/CallerInfo.pm
 lib/SPVM/Cloneable.pm
 lib/SPVM/Cloneable.spvm
 lib/SPVM/Cloner.pm
@@ -728,6 +729,7 @@ t/02_vm/08_module/Array.t
 t/02_vm/08_module/Bool.t
 t/02_vm/08_module/Byte.t
 t/02_vm/08_module/ByteList.t
+t/02_vm/08_module/CallerInfo.t
 t/02_vm/08_module/Cloner.t
 t/02_vm/08_module/CommandInfo.t
 t/02_vm/08_module/Comparator.t

@@ -1,0 +1,48 @@
+class TestCase::Module::CallerInfo {
+  use CallerInfo;
+
+  static method basic : int () {
+    
+    # new and accessors
+    {
+      my $caller_info = CallerInfo->new;
+      
+      # name
+      my $name = "Foo#bar";
+      $caller_info->set_name($name);
+      unless ($caller_info->name eq $name) {
+        return 0;
+      }
+      
+      # file
+      my $file = "Foo.spvm";
+      $caller_info->set_file($file);
+      unless ($caller_info->file eq $file) {
+        return 0;
+      }
+      
+      # line
+      my $line = 123;
+      $caller_info->set_line($line);
+      unless ($caller_info->line == $line) {
+        return 0;
+      }
+    }
+    
+    # Check default values (0 or undef)
+    {
+      my $caller_info = CallerInfo->new;
+      if ($caller_info->name != undef) {
+        return 0;
+      }
+      if ($caller_info->file != undef) {
+        return 0;
+      }
+      unless ($caller_info->line == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

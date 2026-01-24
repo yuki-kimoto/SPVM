@@ -500,6 +500,7 @@ void SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_use(compiler, "Error::MethodCallNotPermitted", "Error::MethodCallNotPermitted", 0);
   SPVM_COMPILER_use(compiler, "Stringable", "Stringable", 0);
   SPVM_COMPILER_use(compiler, "Countable", "Countable", 0);
+  SPVM_COMPILER_use(compiler, "CallerInfo", "CallerInfo", 0);
 }
 
 void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
@@ -641,6 +642,23 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
+  {
+    const char* class_name = "CallerInfo";
+    const char* rel_file = "CallerInfo.spvm";
+    const char* content = 
+      "class CallerInfo {\n"
+      "  version_from SPVM;\n"
+      "  has name : rw string;\n"
+      "  has file : rw string;\n"
+      "  has line : rw int;\n"
+      "  static method new : CallerInfo () {\n"
+      "    return new CallerInfo;\n"
+      "  }\n"
+      "}";
+      
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
+  }
+  
 }
 
 void SPVM_COMPILER_set_class_file_with_members(SPVM_COMPILER* compiler, const char* class_name, const char* rel_file, const char* content) {
@@ -681,6 +699,7 @@ void SPVM_COMPILER_assert_check_basic_type_ids(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_assert_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_METHOD_CALL_NOT_PERMITTED_CLASS);
   SPVM_COMPILER_assert_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_STRINGABLE_CLASS);
   SPVM_COMPILER_assert_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_COUNTABLE_CLASS);
+  SPVM_COMPILER_assert_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_CALLER_INFO_CLASS);
 }
 
 void SPVM_COMPILER_assert_check_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_type_id) {
