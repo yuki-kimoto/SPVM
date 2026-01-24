@@ -362,6 +362,9 @@ struct spvm_env {
   void* stack_index_call_depth;
   void* stack_index_caller_info_stack;
   void* stack_index_caller_info_stack_record_size;
+  int32_t (*get_call_depth)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void** (*get_caller_info_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
+  int32_t (*get_caller_info_stack_record_size)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 struct spvm_env_api {

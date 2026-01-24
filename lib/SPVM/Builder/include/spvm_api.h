@@ -485,4 +485,10 @@ void* SPVM_API_numeric_object_to_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
 int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, void* current_method, const char* caller_name, const char* caller_file, int32_t caller_line);
 void SPVM_API_pop_caller_info(SPVM_ENV* env, SPVM_VALUE* stack);
 
+int32_t SPVM_API_get_call_depth(SPVM_ENV* env, SPVM_VALUE* stack);
+
+void** SPVM_API_get_caller_info_stack(SPVM_ENV* env, SPVM_VALUE* stack);
+
+int32_t SPVM_API_get_caller_info_stack_record_size(SPVM_ENV* env, SPVM_VALUE* stack);
+
 #endif

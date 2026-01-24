@@ -282,6 +282,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->stack_index_call_depth != &env_array[262]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->stack_index_caller_info_stack != &env_array[263]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->stack_index_caller_info_stack_record_size != &env_array[264]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_call_depth != &env_array[265]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_caller_info_stack != &env_array[266]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_caller_info_stack_record_size != &env_array[267]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

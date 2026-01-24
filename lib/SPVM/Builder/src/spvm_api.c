@@ -364,6 +364,9 @@ SPVM_ENV* SPVM_API_new_env(void) {
     (void*)SPVM_API_C_STACK_INDEX_CALL_DEPTH,
     (void*)SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK,
     (void*)SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE,
+    SPVM_API_get_call_depth,
+    SPVM_API_get_caller_info_stack,
+    SPVM_API_get_caller_info_stack_record_size,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -7113,4 +7116,22 @@ void SPVM_API_pop_caller_info(SPVM_ENV* env, SPVM_VALUE* stack) {
   for (int32_t i = 0; i < record_size; i++) {
     caller_info_stack[offset + i] = NULL;
   }
+}
+
+int32_t SPVM_API_get_call_depth(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t index = (int32_t)(intptr_t)env->stack_index_call_depth;
+  int32_t call_depth = *(int32_t*)&stack[index];
+  return call_depth;
+}
+
+void** SPVM_API_get_caller_info_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t index = (int32_t)(intptr_t)env->stack_index_caller_info_stack;
+  void** caller_info_stack = (void**)stack[index].oval;
+  return caller_info_stack;
+}
+
+int32_t SPVM_API_get_caller_info_stack_record_size(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t index = (int32_t)(intptr_t)env->stack_index_caller_info_stack_record_size;
+  int32_t record_size = stack[index].ival;
+  return record_size;
 }
