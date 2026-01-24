@@ -483,4 +483,7 @@ double SPVM_API_numeric_object_to_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
 void* SPVM_API_numeric_object_to_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id);
 void* SPVM_API_numeric_object_to_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id);
 
+int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* file, int32_t line);
+void SPVM_API_pop_caller_info(SPVM_ENV* env, SPVM_VALUE* stack);
+
 #endif
