@@ -361,6 +361,9 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_numeric_object_to_string,
     SPVM_API_is_numeric_object,
     SPVM_API_say_stderr,
+    (void*)SPVM_API_C_STACK_INDEX_CALL_DEPTH,
+    (void*)SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK,
+    (void*)SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));

@@ -279,6 +279,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->numeric_object_to_string != &env_array[259]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_numeric_object != &env_array[260]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->say_stderr != &env_array[261]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->stack_index_call_depth != &env_array[262]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->stack_index_caller_info_stack != &env_array[263]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->stack_index_caller_info_stack_record_size != &env_array[264]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
