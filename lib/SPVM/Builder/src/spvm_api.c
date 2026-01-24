@@ -7066,6 +7066,14 @@ void* SPVM_API_numeric_object_to_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
 
 int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, void* current_method, const char* caller_name, const char* caller_file, int32_t caller_line) {
   
+  // Touch pointers to ensure they are valid and prevent optimization using volatile
+  if (caller_name) {
+    volatile char c = *caller_name;
+  }
+  if (caller_file) {
+    volatile char c = *caller_file;
+  }
+  
   void*** current_caller_info_stack_ptr = (void***)&stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK];
   int32_t* current_call_depth_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH];
   int32_t* current_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY];
