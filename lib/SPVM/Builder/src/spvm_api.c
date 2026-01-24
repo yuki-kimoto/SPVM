@@ -3242,7 +3242,7 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval = call_stack_memory_blocks;
   
   // Initialize the record size of the caller information stack (e.g., name, file, line)
-  int32_t caller_info_stack_record_size = 3;
+  int32_t caller_info_stack_record_size = 4;
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival = caller_info_stack_record_size;
 
   // Initialize the initial capacity of the caller information stack
@@ -7050,7 +7050,7 @@ void* SPVM_API_numeric_object_to_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   return new_object;
 }
 
-int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* file, int32_t line) {
+int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, void* current_method, const char* caller_name, const char* caller_file, int32_t caller_line) {
   
   void*** current_caller_info_stack_ptr = (void***)&stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK];
   int32_t* current_call_depth_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH];
@@ -7078,11 +7078,12 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
     *current_caller_info_stack_ptr = new_caller_info_stack;
   }
   
-  // Push the record (name, file, line)
+  // Push the record (current_method, caller_name, caller_file, caller_line)
   int32_t offset = current_records_length * record_size;
-  (*current_caller_info_stack_ptr)[offset + 0] = (void*)name;
-  (*current_caller_info_stack_ptr)[offset + 1] = (void*)file;
-  (*current_caller_info_stack_ptr)[offset + 2] = (void*)(intptr_t)line;
+  (*current_caller_info_stack_ptr)[offset + 0] = current_method;
+  (*current_caller_info_stack_ptr)[offset + 1] = (void*)caller_name;
+  (*current_caller_info_stack_ptr)[offset + 2] = (void*)caller_file;
+  (*current_caller_info_stack_ptr)[offset + 3] = (void*)(intptr_t)caller_line;
   
   return 0;
 }
@@ -7094,15 +7095,11 @@ void SPVM_API_pop_caller_info(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
   
   // The current number of records (before popping) is call_depth + 1.
-  // We clear the record at this position.
   int32_t current_records_length = *current_call_depth_ptr + 1;
   
   // Clear the last record to be safe
   int32_t offset = current_records_length * record_size;
-  caller_info_stack[offset + 0] = NULL;
-  caller_info_stack[offset + 1] = NULL;
-  caller_info_stack[offset + 2] = NULL;
-  
-  // Note: The actual "pop" effect is achieved by the caller 
-  // decrementing SPVM_API_C_STACK_INDEX_CALL_DEPTH.
+  for (int32_t i = 0; i < record_size; i++) {
+    caller_info_stack[offset + i] = NULL;
+  }
 }
