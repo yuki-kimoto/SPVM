@@ -2879,6 +2879,8 @@ C<void** (*get_caller_info_stack)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Returns the value of C<caller_info_stack> stack variable on the runtime stack I<stack>.
 
+Note that string elements in the record (like C<caller_name> and C<caller_file>) may be C<NULL> or may not be null-terminated, so perform a C<NULL> check and use C<strncpy> for safe copying.
+
 Examples:
 
   void** caller_info_stack = env->get_caller_info_stack(env, stack);
