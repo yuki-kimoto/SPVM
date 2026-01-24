@@ -3241,6 +3241,8 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   }
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval = call_stack_memory_blocks;
   
+  stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival = 3;
+  
   return stack;
 }
 
