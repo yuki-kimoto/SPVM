@@ -859,6 +859,7 @@ t/02_vm/lib/SPVM/TestCase/Module/Array.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Bool.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Byte.spvm
 t/02_vm/lib/SPVM/TestCase/Module/ByteList.spvm
+t/02_vm/lib/SPVM/TestCase/Module/CallerInfo.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Cloner.spvm
 t/02_vm/lib/SPVM/TestCase/Module/CommandInfo.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Comparator.spvm
