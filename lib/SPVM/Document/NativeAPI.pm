@@ -2830,6 +2830,69 @@ C<void (*say_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);>
 
 Same as L</"say">, but prints the output to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
+=head2 stack_index_call_depth
+
+C<void* stack_index_call_depth;>
+
+The index of the C<call_depth> stack variable on the runtime stack. This value is cast to C<void*>.
+
+Examples:
+
+  int32_t call_depth_index = (int32_t)(intptr_t)env->stack_index_call_depth;
+  int32_t call_depth = stack[call_depth_index].ival;
+
+=head2 stack_index_caller_info_stack
+
+C<void* stack_index_caller_info_stack;>
+
+The index of the C<caller_info_stack> stack variable on the runtime stack. This value is cast to C<void*>.
+
+Examples:
+
+  int32_t caller_info_stack_index = (int32_t)(intptr_t)env->stack_index_caller_info_stack;
+  void** caller_info_stack = (void**)stack[caller_info_stack_index].oval;
+
+=head2 stack_index_caller_info_stack_record_size
+
+C<void* stack_index_caller_info_stack_record_size;>
+
+The index of the C<caller_info_stack_record_size> stack variable on the runtime stack. This value is cast to C<void*>.
+
+Examples:
+
+  int32_t record_size_index = (int32_t)(intptr_t)env->stack_index_caller_info_stack_record_size;
+  int32_t record_size = stack[record_size_index].ival;
+
+=head2 get_call_depth
+
+C<int32_t (*get_call_depth)(SPVM_ENV* env, SPVM_VALUE* stack);>
+
+Returns the value of C<call_depth> stack variable on the runtime stack I<stack>.
+
+Examples:
+
+  int32_t call_depth = env->get_call_depth(env, stack);
+
+=head2 get_caller_info_stack
+
+C<void** (*get_caller_info_stack)(SPVM_ENV* env, SPVM_VALUE* stack);>
+
+Returns the value of C<caller_info_stack> stack variable on the runtime stack I<stack>.
+
+Examples:
+
+  void** caller_info_stack = env->get_caller_info_stack(env, stack);
+
+=head2 get_caller_info_stack_record_size
+
+C<int32_t (*get_caller_info_stack_record_size)(SPVM_ENV* env, SPVM_VALUE* stack);>
+
+Returns the value of C<caller_info_stack_record_size> stack variable on the runtime stack I<stack>.
+
+Examples:
+
+  int32_t record_size = env->get_caller_info_stack_record_size(env, stack);
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3096,7 +3159,13 @@ Native APIs have its IDs.
   259 numeric_object_to_string
   260 is_numeric_object
   261 say_stderr
-
+  262 stack_index_call_depth
+  263 stack_index_caller_info_stack
+  264 stack_index_caller_info_stack_record_size
+  265 get_call_depth
+  266 get_caller_info_stack
+  267 get_caller_info_stack_record_size
+  
 =head1 Constant Values
 
 =head2 Basic Type IDs
