@@ -500,6 +500,10 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   
   stack[SPVM_API_C_STACK_INDEX_ARGS_WIDTH].ival = args_width;
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival++;
+
+  /* Push caller information onto the caller stack */
+  // Note: Assuming SPVM_API_push_caller_info exists or similar logic
+  SPVM_API_push_caller_info(env, stack, method, func_name, file, line);
   
   SPVM_RUNTIME_BASIC_TYPE* current_basic_type = method->current_basic_type;
   
@@ -630,6 +634,10 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   }
   
   END_OF_FUNC:
+  
+  /* Pop caller information from the caller stack */
+  // This must be called even if an error occurs (before returning error_id)
+  SPVM_API_pop_caller_info(env, stack);
   
   if (method->return_type_is_void) {
     stack[0].oval = NULL;
