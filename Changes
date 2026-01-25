@@ -1,3 +1,7 @@
+0.990118 2026-01-26
+  [Incompatibe Changes]
+    * Renamed the name field to method_abs_name in the CallerInfo class to more accurately describe that it stores the absolute name of a method.
+
 0.990117 2026-01-24
   [Changes]
     * The runtime now pushes caller information (current method, caller name, file, and line) onto the caller stack within the runtime stack before each method call and pops it after the call. (Note: These changes are not yet tested.)
