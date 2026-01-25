@@ -1130,3 +1130,51 @@ int32_t SPVM__Fn__get_basic_type_name_by_id(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__get_current_method_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  /* Get the currently executing method */
+  void* current_method = env->get_current_method(env, stack);
+  
+  /* If get_current_method returns NULL, re-throw the existing exception with current location info */
+  if (!current_method) {
+    return env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, FILE_NAME, __LINE__);
+  }
+  
+  /* Get the method name */
+  const char* method_name = env->api->method->get_name(env->runtime, current_method);
+  
+  /* Create a new SPVM string object using new_string_nolen */
+  void* obj_method_name = env->new_string_nolen(env, stack, method_name);
+  
+  stack[0].oval = obj_method_name;
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__get_current_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  /* Get the currently executing method */
+  void* current_method = env->get_current_method(env, stack);
+  
+  /* If get_current_method returns NULL, re-throw the existing exception with current location info */
+  if (!current_method) {
+    return env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, FILE_NAME, __LINE__);
+  }
+  
+  /* Get the basic type that owns this method using get_current_basic_type.
+     This must not be NULL if the current_method is valid.
+  */
+  void* basic_type = env->api->method->get_current_basic_type(env->runtime, current_method);
+  assert(basic_type != NULL);
+  
+  /* Get the basic type name */
+  const char* basic_type_name = env->api->basic_type->get_name(env->runtime, basic_type);
+  
+  /* Create a new SPVM string object using new_string_nolen */
+  void* obj_basic_type_name = env->new_string_nolen(env, stack, basic_type_name);
+  
+  stack[0].oval = obj_basic_type_name;
+  
+  return 0;
+}

@@ -1853,6 +1853,30 @@ Exceptions:
 
 If the basic type specified by $basic_type_id is not found, an exception is thrown.
 
+=head2 get_current_method_name
+
+C<static method get_current_method_name : string ();>
+
+Returns the name of the method currently being executed.
+
+This method calls the L<get_current_method|SPVM::Document::NativeAPI/"get_current_method"> native API.
+
+Exceptions:
+
+If the caller stack is empty, an exception is thrown.
+
+=head2 get_current_basic_type_name
+
+C<static method get_current_basic_type_name : string ();>
+
+Returns the name of the basic type (class) that owns the method currently being executed.
+
+This method calls the L<get_current_method|SPVM::Document::NativeAPI/"get_current_method"> native API.
+
+Exceptions:
+
+If the caller stack is empty, an exception is thrown.
+
 =head1 See Also
 
 =over 2
