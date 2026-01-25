@@ -8,19 +8,19 @@ SPVM::CallerInfo - Information about a Caller
 
 =head1 Description
 
-L<CallerInfo|SPVM::CallerInfo> class in L<SPVM> represents information about a caller, such as the method name, the file name, and the line number.
+L<CallerInfo|SPVM::CallerInfo> class in L<SPVM> represents information about a caller, such as the method absolute name, the file name, and the line number.
 
 =head1 Usage
 
   my $caller = CallerInfo->new;
   
   # Setters
-  $caller->set_name("Foo#bar");
+  $caller->set_method_abs_name("Foo#bar");
   $caller->set_file("Foo.spvm");
   $caller->set_line(10);
   
   # Getters
-  my $name = $caller->name;
+  my $method_abs_name = $caller->method_abs_name;
   my $file = $caller->file;
   my $line = $caller->line;
 
@@ -30,11 +30,13 @@ This class is automatically loaded.
 
 =head1 Fields
 
-=head2 name
+=head2 method_abs_name
 
-C<has name : rw string;>
+C<has method_abs_name : rw string;>
 
-The name of the caller. This is usually a method absolute name or a function name.
+The absolute name of the method of the caller. 
+
+Note that for native methods, this field may contain a C-level function name such as C<SPVM__Foo__bar>.
 
 =head2 file
 
