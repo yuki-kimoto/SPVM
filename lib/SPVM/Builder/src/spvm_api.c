@@ -7064,11 +7064,11 @@ void* SPVM_API_numeric_object_to_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   return new_object;
 }
 
-int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, void* current_method, const char* caller_name, const char* caller_file, int32_t caller_line) {
+int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, void* current_method, const char* caller_method_abs_name, const char* caller_file, int32_t caller_line) {
   
   // Touch pointers to ensure they are valid and prevent optimization using volatile
-  if (caller_name) {
-    volatile char c = *caller_name;
+  if (caller_method_abs_name) {
+    volatile char c = *caller_method_abs_name;
   }
   if (caller_file) {
     volatile char c = *caller_file;
@@ -7100,10 +7100,10 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, void* curren
     *current_caller_info_stack_ptr = new_caller_info_stack;
   }
   
-  // Push the record (current_method, caller_name, caller_file, caller_line)
+  // Push the record (current_method, caller_method_abs_name, caller_file, caller_line)
   int32_t offset = current_records_length * record_size;
   (*current_caller_info_stack_ptr)[offset + 0] = current_method;
-  (*current_caller_info_stack_ptr)[offset + 1] = (void*)caller_name;
+  (*current_caller_info_stack_ptr)[offset + 1] = (void*)caller_method_abs_name;
   (*current_caller_info_stack_ptr)[offset + 2] = (void*)caller_file;
   (*current_caller_info_stack_ptr)[offset + 3] = (void*)(intptr_t)caller_line;
   
