@@ -648,7 +648,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* content = 
       "class CallerInfo {\n"
       "  version_from SPVM;\n"
-      "  has name : rw string;\n"
+      "  has method_abs_name : rw string;\n"
       "  has file : rw string;\n"
       "  has line : rw int;\n"
       "  static method new : CallerInfo () {\n"

@@ -7,10 +7,10 @@ class TestCase::Module::CallerInfo {
     {
       my $caller_info = CallerInfo->new;
       
-      # name
-      my $name = "Foo#bar";
-      $caller_info->set_name($name);
-      unless ($caller_info->name eq $name) {
+      # method_abs_name
+      my $method_abs_name = "Foo#bar";
+      $caller_info->set_method_abs_name($method_abs_name);
+      unless ($caller_info->method_abs_name eq $method_abs_name) {
         return 0;
       }
       
@@ -32,7 +32,7 @@ class TestCase::Module::CallerInfo {
     # Check default values (0 or undef)
     {
       my $caller_info = CallerInfo->new;
-      if ($caller_info->name != undef) {
+      if ($caller_info->method_abs_name != undef) {
         return 0;
       }
       if ($caller_info->file != undef) {
