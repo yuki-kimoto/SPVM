@@ -509,7 +509,20 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Byte";
     const char* rel_file = "Byte.spvm";
-    const char* content = "class Byte {\n  interface Stringable;\n  version_from SPVM;\n  has value : ro byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n  method to_string : string () {\n    return (string)$self->{value};\n  }\n}";
+    const char* content = 
+      "class Byte {\n"
+      "  interface Stringable;\n"
+      "  version_from SPVM;\n"
+      "  has value : ro byte;\n"
+      "  static method new : Byte ($value : int) {\n"
+      "    my $self = new Byte;\n"
+      "    $self->{value} = (byte)$value;\n"
+      "    return $self;\n"
+      "  }\n"
+      "  method to_string : string () {\n"
+      "    return (string)$self->{value};\n"
+      "  }\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -517,7 +530,20 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Short";
     const char* rel_file = "Short.spvm";
-    const char* content = "class Short {\n  interface Stringable;\n  version_from SPVM;\n  has value : ro short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }  method to_string : string () {\n    return (string)$self->{value};\n  }\n}";
+    const char* content = 
+      "class Short {\n"
+      "  interface Stringable;\n"
+      "  version_from SPVM;\n"
+      "  has value : ro short;\n"
+      "  static method new : Short ($value : int) {\n"
+      "    my $self = new Short;\n"
+      "    $self->{value} = (short)$value;\n"
+      "    return $self;\n"
+      "  }\n"
+      "  method to_string : string () {\n"
+      "    return (string)$self->{value};\n"
+      "  }\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -525,7 +551,20 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Int";
     const char* rel_file = "Int.spvm";
-    const char* content = "class Int {\n  interface Stringable;\n  version_from SPVM;\n  has value : ro int;\n  static method new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }  method to_string : string () {\n    return (string)$self->{value};\n  }\n}";
+    const char* content = 
+      "class Int {\n"
+      "  interface Stringable;\n"
+      "  version_from SPVM;\n"
+      "  has value : ro int;\n"
+      "  static method new : Int ($value : int) {\n"
+      "    my $self = new Int;\n"
+      "    $self->{value} = $value;\n"
+      "    return $self;\n"
+      "  }\n"
+      "  method to_string : string () {\n"
+      "    return (string)$self->{value};\n"
+      "  }\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -533,7 +572,20 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Long";
     const char* rel_file = "Long.spvm";
-    const char* content = "class Long {\n  interface Stringable;\n  version_from SPVM;\n  has value : ro long;\n  static method new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }  method to_string : string () {\n    return (string)$self->{value};\n  }\n}";
+    const char* content = 
+      "class Long {\n"
+      "  interface Stringable;\n"
+      "  version_from SPVM;\n"
+      "  has value : ro long;\n"
+      "  static method new : Long ($value : long) {\n"
+      "    my $self = new Long;\n"
+      "    $self->{value} = $value;\n"
+      "    return $self;\n"
+      "  }\n"
+      "  method to_string : string () {\n"
+      "    return (string)$self->{value};\n"
+      "  }\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -541,7 +593,20 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Float";
     const char* rel_file = "Float.spvm";
-    const char* content = "class Float {\n  interface Stringable;\n  version_from SPVM;\n  has value : ro float;\n  static method new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }  method to_string : string () {\n    return (string)$self->{value};\n  }\n}";
+    const char* content = 
+      "class Float {\n"
+      "  interface Stringable;\n"
+      "  version_from SPVM;\n"
+      "  has value : ro float;\n"
+      "  static method new : Float ($value : float) {\n"
+      "    my $self = new Float;\n"
+      "    $self->{value} = $value;\n"
+      "    return $self;\n"
+      "  }\n"
+      "  method to_string : string () {\n"
+      "    return (string)$self->{value};\n"
+      "  }\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -549,7 +614,20 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Double";
     const char* rel_file = "Double.spvm";
-    const char* content = "class Double {\n  interface Stringable;\n  version_from SPVM;\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }  method to_string : string () {\n    return (string)$self->{value};\n  }\n}";
+    const char* content = 
+      "class Double {\n"
+      "  interface Stringable;\n"
+      "  version_from SPVM;\n"
+      "  has value : ro double;\n"
+      "  static method new : Double ($value : double) {\n"
+      "    my $self = new Double;\n"
+      "    $self->{value} = $value;\n"
+      "    return $self;\n"
+      "  }\n"
+      "  method to_string : string () {\n"
+      "    return (string)$self->{value};\n"
+      "  }\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -557,7 +635,20 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Bool";
     const char* rel_file = "Bool.spvm";
-    const char* content = "class Bool {\n  version_from SPVM;\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro byte;\n}";
+    const char* content = 
+      "class Bool {\n"
+      "  version_from SPVM;\n"
+      "  INIT {\n"
+      "    $TRUE = new Bool;\n"
+      "    $TRUE->{value} = 1;\n"
+      "    $FALSE = new Bool;\n"
+      "    $FALSE->{value} = 0;\n"
+      "  }\n"
+      "  \n"
+      "  our $TRUE : ro Bool;\n"
+      "  our $FALSE : ro Bool;\n"
+      "  has value : ro byte;\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -565,7 +656,10 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Error";
     const char* rel_file = "Error.spvm";
-    const char* content = "class Error {\n  version_from SPVM;\n}";
+    const char* content = 
+      "class Error {\n"
+      "  version_from SPVM;\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -573,7 +667,10 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Error::System";
     const char* rel_file = "Error/System.spvm";
-    const char* content = "class Error::System extends Error {\n  version_from SPVM;\n}";
+    const char* content = 
+      "class Error::System extends Error {\n"
+      "  version_from SPVM;\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -581,7 +678,10 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Error::NotSupported";
     const char* rel_file = "Error/NotSupported.spvm";
-    const char* content = "class Error::NotSupported extends Error {\n  version_from SPVM;\n}";
+    const char* content = 
+      "class Error::NotSupported extends Error {\n"
+      "  version_from SPVM;\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -589,7 +689,14 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "CommandInfo";
     const char* rel_file = "CommandInfo.spvm";
-    const char* content = "class CommandInfo {\n  version_from SPVM;\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASETIME : ro long;\n  our $WARNING : ro byte;\n  }";
+    const char* content = 
+      "class CommandInfo {\n"
+      "  version_from SPVM;\n"
+      "  our $PROGRAM_NAME : ro string;\n"
+      "  our $ARGV : ro string[];\n"
+      "  our $BASETIME : ro long;\n"
+      "  our $WARNING : ro byte;\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -597,7 +704,14 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Address";
     const char* rel_file = "Address.spvm";
-    const char* content = "class Address : pointer {\n  version_from SPVM;\n  static method new : Address () {\n    my $self = new Address;\n    return $self;\n  }\n}";
+    const char* content = 
+      "class Address : pointer {\n"
+      "  version_from SPVM;\n"
+      "  static method new : Address () {\n"
+      "    my $self = new Address;\n"
+      "    return $self;\n"
+      "  }\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -605,7 +719,10 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Error::Compile";
     const char* rel_file = "Error/Compile.spvm";
-    const char* content = "class Error::Compile extends Error {\n  version_from SPVM;\n}";
+    const char* content = 
+      "class Error::Compile extends Error {\n"
+      "  version_from SPVM;\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -614,7 +731,11 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "SPVM";
     const char* rel_file = "SPVM.spvm";
     char content[512] = {0};
-    snprintf(content, 512, "class SPVM {\n  version \"%s\";\n}", SPVM_NATIVE_VERSION_STRING);
+    snprintf(content, 512, 
+      "class SPVM {\n"
+      "  version \"%s\";\n"
+      "}", 
+      SPVM_NATIVE_VERSION_STRING);
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -622,7 +743,10 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Error::MethodCallNotPermitted";
     const char* rel_file = "Error/MethodCallNotPermitted.spvm";
-    const char* content = "class Error::MethodCallNotPermitted extends Error {\n  version_from SPVM;\n}";
+    const char* content = 
+      "class Error::MethodCallNotPermitted extends Error {\n"
+      "  version_from SPVM;\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -630,7 +754,11 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Stringable";
     const char* rel_file = "Stringable.spvm";
-    const char* content = "class Stringable : interface_t {\n  version_from SPVM;\n  required method to_string : string ();\n}";
+    const char* content = 
+      "class Stringable : interface_t {\n"
+      "  version_from SPVM;\n"
+      "  required method to_string : string ();\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
@@ -638,10 +766,15 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Countable";
     const char* rel_file = "Countable.spvm";
-    const char* content = "class Countable : interface_t {\n  version_from SPVM;\n  required method length : int ();\n}";
+    const char* content = 
+      "class Countable : interface_t {\n"
+      "  version_from SPVM;\n"
+      "  required method length : int ();\n"
+      "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
+  // Add CallerInfo class file
   {
     const char* class_name = "CallerInfo";
     const char* rel_file = "CallerInfo.spvm";
@@ -655,10 +788,8 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "    return new CallerInfo;\n"
       "  }\n"
       "}";
-      
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
-  
 }
 
 void SPVM_COMPILER_set_class_file_with_members(SPVM_COMPILER* compiler, const char* class_name, const char* rel_file, const char* content) {
