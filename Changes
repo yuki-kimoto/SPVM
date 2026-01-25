@@ -1,4 +1,7 @@
 0.990118 2026-01-26
+  [New Features]
+    * Added the get_current_method function to the Native API to retrieve the currently executing method from the caller stack.
+    
   [Incompatibe Changes]
     * Renamed the name field to method_abs_name in the CallerInfo class to more accurately describe that it stores the absolute name of a method.
     * Updated the record layout in SPVM_API_push_caller_info in spvm_api.c.

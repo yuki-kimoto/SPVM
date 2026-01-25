@@ -2895,6 +2895,25 @@ Examples:
 
   int32_t record_size = env->get_caller_info_stack_record_size(env, stack);
 
+=head2 get_current_method
+
+C<void* (*get_current_method)(SPVM_ENV* env, SPVM_VALUE* stack);>
+
+Returns the method currently being executed on the runtime stack I<stack>.
+
+If the caller stack is empty, an exception is set and C<NULL> is returned.
+
+Examples:
+
+  // Get the currently executing method
+  void* current_method = env->get_current_method(env, stack);
+  
+  // Check for exception
+  if (current_method == NULL) {
+    void* exception = env->get_exception(env, stack);
+    // Handle error...
+  }
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3167,6 +3186,7 @@ Native APIs have its IDs.
   265 get_call_depth
   266 get_caller_info_stack
   267 get_caller_info_stack_record_size
+  268 get_current_method
   
 =head1 Constant Values
 

@@ -367,6 +367,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_call_depth,
     SPVM_API_get_caller_info_stack,
     SPVM_API_get_caller_info_stack_record_size,
+    SPVM_API_get_current_method,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -7142,4 +7143,30 @@ int32_t SPVM_API_get_caller_info_stack_record_size(SPVM_ENV* env, SPVM_VALUE* st
   int32_t index = (int32_t)(intptr_t)env->stack_index_caller_info_stack_record_size;
   int32_t record_size = stack[index].ival;
   return record_size;
+}
+
+SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  /* Get the current call depth */
+  int32_t call_depth = env->get_call_depth(env, stack);
+  
+  /* The call depth must be 0 or greater because this function must be called 
+    within a method execution. If it's negative, it's a critical logic error.
+  */
+  assert(call_depth >= 0);
+  
+  /* Get the raw pointer to the caller information stack and the record size */
+  void** caller_info_stack = env->get_caller_info_stack(env, stack);
+  int32_t record_size = env->get_caller_info_stack_record_size(env, stack);
+  
+  /* The current method is stored at the last index (index 3) 
+     of the top record (index call_depth). 
+  */
+  int32_t offset = call_depth * record_size;
+  SPVM_RUNTIME_METHOD* current_method = (SPVM_RUNTIME_METHOD*)caller_info_stack[offset + 3];
+  
+  /* current_method must not be NULL during method execution. */
+  assert(current_method != NULL);
+  
+  return current_method;
 }
