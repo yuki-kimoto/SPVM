@@ -7100,12 +7100,12 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, void* curren
     *current_caller_info_stack_ptr = new_caller_info_stack;
   }
   
-  // Push the record (current_method, caller_method_abs_name, caller_file, caller_line)
+  // Push the record (caller_method_abs_name, caller_file, caller_line, current_method)
   int32_t offset = current_records_length * record_size;
-  (*current_caller_info_stack_ptr)[offset + 0] = current_method;
-  (*current_caller_info_stack_ptr)[offset + 1] = (void*)caller_method_abs_name;
-  (*current_caller_info_stack_ptr)[offset + 2] = (void*)caller_file;
-  (*current_caller_info_stack_ptr)[offset + 3] = (void*)(intptr_t)caller_line;
+  (*current_caller_info_stack_ptr)[offset + 0] = (void*)caller_method_abs_name;
+  (*current_caller_info_stack_ptr)[offset + 1] = (void*)caller_file;
+  (*current_caller_info_stack_ptr)[offset + 2] = (void*)(intptr_t)caller_line;
+  (*current_caller_info_stack_ptr)[offset + 3] = current_method;
   
   return 0;
 }

@@ -1,7 +1,12 @@
 0.990118 2026-01-26
   [Incompatibe Changes]
     * Renamed the name field to method_abs_name in the CallerInfo class to more accurately describe that it stores the absolute name of a method.
-
+    * Updated the record layout in SPVM_API_push_caller_info in spvm_api.c.
+      The order of elements in each record was changed as follows:
+        Old: (current_method, caller_method_abs_name, caller_file, caller_line)
+        New: (caller_method_abs_name, caller_file, caller_line, current_method)
+      This ensures the current_method is stored at the last index (index 3) of the record.
+  
 0.990117 2026-01-24
   [Changes]
     * The runtime now pushes caller information (current method, caller name, file, and line) onto the caller stack within the runtime stack before each method call and pops it after the call. (Note: These changes are not yet tested.)

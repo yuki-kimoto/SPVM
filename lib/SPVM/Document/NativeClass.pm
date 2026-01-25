@@ -576,13 +576,13 @@ Each record in the caller stack consists of 4 elements (the record size is 4).
 
 =over 2
 
-=item * 0: current_method (The method currently being executed)
+=item * 0: caller_method_abs_name (The absolute name of the caller method, such as C<Foo#bar> or C<SPVM__Foo__bar>)
 
-=item * 1: caller_name (The name of the caller method, such as C<Foo#bar> or C<SPVM__FOO__bar>)
+=item * 1: caller_file (The file name of the caller)
 
-=item * 2: caller_file (The file name of the caller)
+=item * 2: caller_line (The line number of the caller)
 
-=item * 3: caller_line (The line number of the caller)
+=item * 3: current_method (The method currently being executed)
 
 =back
 
@@ -601,19 +601,15 @@ Example:
   for (int32_t i = 0; i < call_depth; i++) {
     void** record = &caller_info_stack[i * record_size];
     
-    // Get the current method information from the pointer
-    void* current_method = record[0];
-    const char* current_method_name = env->api->method->get_name(env->runtime, current_method);
-    
-    // Get the current class (basic type) name from the method
-    void* current_basic_type = env->api->method->get_current_basic_type(env->runtime, current_method));
-    const char* current_class_name = env->api->basic_type->get_name(env->runtime, current_basic_type);
-    
     // Get caller information from the record
-    // caller_name could be "Foo#bar" or "SPVM__FOO__bar"
-    const char* caller_name = (const char*)record[1];
-    const char* caller_file = (const char*)record[2];
-    int32_t caller_line = (int32_t)(intptr_t)record[3];
+    // caller_method_abs_name could be "Foo#bar" or "SPVM__Foo__bar"
+    const char* caller_method_abs_name = (const char*)record[0];
+    const char* caller_file = (const char*)record[1];
+    int32_t caller_line = (int32_t)(intptr_t)record[2];
+    
+    // Get the current method information from the pointer
+    void* current_method = record[3];
+    const char* current_method_abs_name = env->api->method->get_abs_name(env->runtime, current_method);
     
     // Process the information (e.g., printing a trace)
   }
