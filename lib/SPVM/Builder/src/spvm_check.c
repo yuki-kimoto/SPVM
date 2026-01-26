@@ -4343,6 +4343,7 @@ void SPVM_CHECK_check_ast_assign_form(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* 
               case SPVM_OP_C_ID_IS_COMPILE_TYPE:
               case SPVM_OP_C_ID_CONDITION_EVALUATION:
               case SPVM_OP_C_ID_SEQUENCE:
+              case SPVM_OP_C_ID_CALLER:
               {
                 convert_to_assign = 1;
                 break;
