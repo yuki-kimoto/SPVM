@@ -7079,11 +7079,12 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
   
   // Extend caller info stack if the current call depth reaches the capacity
-  if (*current_call_depth_ptr >= *current_capacity_ptr) {
+  // Use __builtin_expect to hint that stack extension is unlikely (unlikely branch)
+  if (__builtin_expect(*current_call_depth_ptr >= *current_capacity_ptr, 0)) {
     int32_t new_capacity = *current_capacity_ptr * 2;
     void** new_caller_info_stack = (void**)SPVM_API_new_memory_block(env, stack, sizeof(void*) * record_size * new_capacity);
     
-    if (new_caller_info_stack == NULL) {
+    if (__builtin_expect(new_caller_info_stack == NULL, 0)) {
       return -1; // Error
     }
     
