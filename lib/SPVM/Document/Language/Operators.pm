@@ -3903,6 +3903,48 @@ Examples:
   
   set_capacity($string, 4);
 
+=head2 caller Operator
+
+The C<caller> operator gets the information of the caller of the current method.
+
+  caller LEVEL
+  caller
+
+This operator returns a L<CallerInfo|SPVM::CallerInfo> object that contains the information of the caller at the level specified by I<LEVEL>.
+
+If I<LEVEL> is omitted, it is treated as 0.
+
+If the level is 0, it returns the information of the caller of the current method.
+
+The return type is L<CallerInfo|SPVM::CallerInfo> class.
+
+Exceptions:
+
+If I<LEVEL> is less than 0, an exception is thrown.
+
+If I<LEVEL> exceeds the call depth of methods, an exception is thrown.
+
+Compilation Errors:
+
+The type of I<LEVEL> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
+
+Examples:
+
+  # Examples of the caller operator
+  use CallerInfo;
+  
+  # Get the caller information of the current method
+  my $caller_info = caller;
+  
+  # Get the absolute method name of the caller
+  my $method_abs_name = $caller_info->method_abs_name;
+  
+  # Get the file name of the caller
+  my $file = $caller_info->file;
+  
+  # Get the line number of the caller
+  my $line = $caller_info->line;
+
 =head1 Scope Operations
 
 See the doc of L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about scope operations.
