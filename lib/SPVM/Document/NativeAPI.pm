@@ -2914,6 +2914,28 @@ Examples:
     // Handle error...
   }
 
+=head2 caller
+
+C<void* (*caller)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+
+Returns a C<CallerInfo> object that contains information about the caller at the specified I<level> on the runtime stack I<stack>.
+
+I<level> specifies how many stack frames to go back. 0 represents the current information provided by I<func_name>, I<file>, and I<line>. 1 represents the immediate caller.
+
+If succeeded, I<error_id> is set to 0 and returns the C<CallerInfo> object.
+
+If the I<level> is out of range or an error occurs during object creation, returns C<NULL> and sets I<error_id> to a non-zero value.
+
+Examples:
+
+  int32_t error_id = 0;
+  void* obj_caller_info = env->caller(env, stack, 1, &error_id, __func__, FILE_NAME, __LINE__);
+  
+  if (error_id) {
+    // Handle error...
+    return NULL;
+  }
+  
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3187,6 +3209,7 @@ Native APIs have its IDs.
   266 get_caller_info_stack
   267 get_caller_info_stack_record_size
   268 get_current_method
+  268 caller
   
 =head1 Constant Values
 
