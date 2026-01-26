@@ -2367,17 +2367,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           the level operand, and the error_id address.
         */
         
-        // Level (operand 1)
-        SPVM_STRING_BUFFER_add(string_buffer, "  level = ");
-        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
         // Call the implementation
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALLER(env, stack, ");
         
         // Output: CallerInfo object (operand 0)
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", level, &error_id);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ", &error_id);\n");
         
         break;
       }
