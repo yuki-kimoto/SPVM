@@ -7078,11 +7078,8 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
   int32_t* current_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY];
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
   
-  // The current number of records is call_depth
-  int32_t current_records_length = *current_call_depth_ptr;
-  
-  // Extend caller info stack
-  if (current_records_length >= *current_capacity_ptr) {
+  // Extend caller info stack if the current call depth reaches the capacity
+  if (*current_call_depth_ptr >= *current_capacity_ptr) {
     int32_t new_capacity = *current_capacity_ptr * 2;
     void** new_caller_info_stack = (void**)SPVM_API_new_memory_block(env, stack, sizeof(void*) * record_size * new_capacity);
     
@@ -7099,9 +7096,8 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
     *current_caller_info_stack_ptr = new_caller_info_stack;
   }
   
-  // Push the record (caller_method_abs_name, caller_file, caller_line, current_method)
-  // spvm_warn("%d, %s", current_records_length, current_method->abs_name);
-  int32_t offset = current_records_length * record_size;
+  // Push the record at the index indicated by the current call depth
+  int32_t offset = *current_call_depth_ptr * record_size;
   (*current_caller_info_stack_ptr)[offset + 0] = (void*)caller_method_abs_name;
   (*current_caller_info_stack_ptr)[offset + 1] = (void*)caller_file;
   (*current_caller_info_stack_ptr)[offset + 2] = (void*)(intptr_t)caller_line;
