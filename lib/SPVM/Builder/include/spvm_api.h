@@ -490,7 +490,7 @@ void** SPVM_API_get_caller_info_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 
 int32_t SPVM_API_get_caller_info_stack_record_size(SPVM_ENV* env, SPVM_VALUE* stack);
 
-SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* error_id);
+SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
 
 void* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
 

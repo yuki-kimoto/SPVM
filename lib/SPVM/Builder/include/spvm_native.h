@@ -365,7 +365,7 @@ struct spvm_env {
   int32_t (*get_call_depth)(SPVM_ENV* env, SPVM_VALUE* stack);
   void** (*get_caller_info_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*get_caller_info_stack_record_size)(SPVM_ENV* env, SPVM_VALUE* stack);
-  void* (*get_current_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* error_id);
+  void* (*get_current_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
   void* (*caller_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
   void* (*caller)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
 };

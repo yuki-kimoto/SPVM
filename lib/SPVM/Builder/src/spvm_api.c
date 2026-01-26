@@ -7124,7 +7124,7 @@ int32_t SPVM_API_get_caller_info_stack_record_size(SPVM_ENV* env, SPVM_VALUE* st
   return record_size;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* error_id) {
+SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id) {
   
   /* Initialize error_id to 0 */
   *error_id = 0;
@@ -7132,11 +7132,16 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stac
   /* Get the current call depth */
   int32_t call_depth = env->get_call_depth(env, stack);
   
-  /* The call depth must be 0 or greater.
-     If it's negative, throw an exception and return NULL.
-  */
-  if (call_depth < 0) {
-    *error_id = env->die(env, stack, "The call depth must be 0 or greater.", __func__, FILE_NAME, __LINE__);
+  /* Check if level is negative */
+  if (level < 0) {
+    return NULL;
+  }
+
+  /* Calculate the target call depth */
+  int32_t target_call_depth = call_depth - level;
+
+  /* Check if the depth is out of range (Level 0 is the current method) */
+  if (target_call_depth < 0) {
     return NULL;
   }
   
@@ -7144,27 +7149,17 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stac
   void** caller_info_stack = env->get_caller_info_stack(env, stack);
   int32_t record_size = env->get_caller_info_stack_record_size(env, stack);
   
-  /* The current method is stored at the last index (index 3) 
-     of the top record (index call_depth). 
-  */
+  /* The method information is stored at index 3 of each record */
+  int32_t offset = target_call_depth * record_size;
   
-  /* The current method is stored at the last index (index 3) 
-   of the current record (index call_depth - 1). 
-  */
-  int32_t offset = (call_depth - 1) * record_size;
+  SPVM_RUNTIME_METHOD* method = (SPVM_RUNTIME_METHOD*)caller_info_stack[offset + 3];
   
-  /* Boundary check: Ensure we don't access a negative offset */
-  if (offset < 0) {
-    *error_id = env->die(env, stack, "Handling the case where call_depth is 0 (no method is running).", __func__, FILE_NAME, __LINE__);
-    return NULL; 
+  /* method must not be NULL during method execution if target_call_depth is valid. */
+  if (target_call_depth <= call_depth) {
+    assert(method != NULL);
   }
   
-  SPVM_RUNTIME_METHOD* current_method = (SPVM_RUNTIME_METHOD*)caller_info_stack[offset + 3];
-  
-  /* current_method must not be NULL during method execution. */
-  assert(current_method != NULL);
-  
-  return current_method;
+  return method;
 }
 
 void* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id) {
