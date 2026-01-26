@@ -8729,4 +8729,19 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method get_current_basic_type_name : int () {
+
+    # Check the current basic type name in this scope
+    {
+      my $basic_type_name = Fn->get_current_basic_type_name;
+
+      # The basic type name should be "TestCase::Module::Fn"
+      unless ($basic_type_name eq "TestCase::Module::Fn") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }
