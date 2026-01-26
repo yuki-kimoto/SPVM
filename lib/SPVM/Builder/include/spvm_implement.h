@@ -1274,6 +1274,15 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_UNDEF(SPVM_ENV* env, SPVM_VA
   }
 }
 
+static inline void SPVM_IMPLEMENT_CALLER(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t level, int32_t* error_id) {
+  
+  *out = env->caller(env, stack, level, error_id);
+  if (*error_id) {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)));
+    env->set_exception(env, stack, exception);
+  }
+}
+
 static inline void SPVM_IMPLEMENT_ARRAY_LENGTH(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* array, int32_t* error_id) {
   if (array == NULL) {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ARRAY_UNDEFINED]);

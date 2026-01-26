@@ -919,6 +919,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_ARRAY_LENGTH(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], &error_id);
         break;
       }
+      case SPVM_OPCODE_C_ID_CALLER: {
+        SPVM_IMPLEMENT_CALLER(env, stack, &object_vars[opcode->operand0], int_vars[opcode->operand1], &error_id);
+        break;
+      }
       case SPVM_OPCODE_C_ID_STRING_LENGTH: {
         SPVM_IMPLEMENT_STRING_LENGTH(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1]);
         break;
