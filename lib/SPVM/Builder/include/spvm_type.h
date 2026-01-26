@@ -223,4 +223,6 @@ int32_t SPVM_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_type_id, 
 
 int32_t SPVM_TYPE_is_mutable_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
+SPVM_TYPE* SPVM_TYPE_new_caller_info_type(SPVM_COMPILER* compiler);
+
 #endif

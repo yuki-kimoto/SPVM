@@ -182,9 +182,10 @@ extern int SPVM_yydebug;
     ADDRESS = 392,
     IS_OPTIONS = 393,
     CAPACITY = 394,
-    INC = 395,
-    DEC = 396,
-    ARROW = 397
+    CALLER = 395,
+    INC = 396,
+    DEC = 397,
+    ARROW = 398
   };
 #endif
 

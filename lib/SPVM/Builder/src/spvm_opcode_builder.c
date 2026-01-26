@@ -1444,6 +1444,30 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
+                    
+                    case SPVM_OP_C_ID_CALLER: {
+                      SPVM_OPCODE opcode = {0};
+                      
+                      // Set the opcode ID for caller
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALLER);
+                      
+                      // Get the variable index for the output (the assignment destination)
+                      int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
+                      
+                      // Get the variable index for the input (the level operand)
+                      // caller $level -> $level is the first child of the current OP
+                      int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
+                      
+                      // operand0 is the destination variable index
+                      // operand1 is the level variable index
+                      opcode.operand0 = typed_var_index_out;
+                      opcode.operand1 = typed_var_index_in;
+                      
+                      // Push the built opcode to the list
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      
+                      break;
+                    }
                     case SPVM_OP_C_ID_STRING_LENGTH : {
                       
                       // String length logic is same as ARRAY_LENGTH opcode

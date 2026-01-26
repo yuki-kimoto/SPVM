@@ -52,10 +52,10 @@
 %type <opval> assign
 %type <opval> new array_init
 %type <opval> type_check type_cast can
-%type <opval> call_method
+%type <opval> call_method caller
 %type <opval> array_element_access field_access hash_value_access
 %type <opval> weaken_field unweaken_field isweak_field
-%type <opval> sequential copy_fields
+%type <opval> sequential copy_fields 
 
 %left <opval> ',' FATCAMMA
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -69,7 +69,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
-%right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY IS_FIXED_LENGTH COPY ADDRESS IS_OPTIONS CAPACITY
+%right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY IS_FIXED_LENGTH COPY ADDRESS IS_OPTIONS CAPACITY CALLER
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 %nonassoc <opval> ')'
@@ -1056,6 +1056,7 @@ operator
   | call_method
   | sequential
   | exists
+  | caller
 
 sequential
   : '(' operators ')'
@@ -1641,6 +1642,16 @@ delete
       SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, compiler->current_file, compiler->current_line);
       SPVM_OP_build_field_access(compiler, op_field_access, $2, $5);
       $$ = SPVM_OP_build_delete(compiler, $1, op_field_access);
+    }
+
+caller
+  : CALLER
+    {
+      $$ = SPVM_OP_build_caller(compiler, $1, NULL);
+    }
+  | CALLER operator
+    {
+      $$ = SPVM_OP_build_caller(compiler, $1, $2);
     }
 
 %%

@@ -2118,6 +2118,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CAN);
                   keyword_token = CAN;
                 }
+                else if (strcmp(symbol_name, "caller") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CAN);
+                  keyword_token = CALLER;
+                }
                 else if (strcmp(symbol_name, "capacity") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CAPACITY);
                   keyword_token = CAPACITY;

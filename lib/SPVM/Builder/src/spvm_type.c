@@ -2082,3 +2082,14 @@ int32_t SPVM_TYPE_is_mutable_type(SPVM_COMPILER* compiler, int32_t basic_type_id
   }
 }
 
+SPVM_TYPE* SPVM_TYPE_new_caller_info_type(SPVM_COMPILER* compiler) {
+  
+  // Directly get the basic type using the native ID
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_CALLER_INFO_CLASS);
+  
+  int32_t type_dimension = 0;
+  int32_t type_flag = 0;
+  SPVM_TYPE* type = SPVM_TYPE_new(compiler, basic_type->id, type_dimension, type_flag);
+  
+  return type;
+}

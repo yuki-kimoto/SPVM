@@ -270,6 +270,7 @@ enum {
   SPVM_OP_C_ID_CAPACITY,
   SPVM_OP_C_ID_SET_CAPACITY,
   SPVM_OP_C_ID_STDERR,
+  SPVM_OP_C_ID_CALLER,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -650,5 +651,9 @@ SPVM_OP* SPVM_OP_build_enable_options(SPVM_COMPILER* compiler, SPVM_OP* op_enabl
 SPVM_OP* SPVM_OP_build_disable_options(SPVM_COMPILER* compiler, SPVM_OP* op_disable_options, SPVM_OP* op_operand);
 
 SPVM_OP* SPVM_OP_build_anon_class_from_statements(SPVM_COMPILER* compiler, SPVM_OP* op_statements);
+
+SPVM_OP* SPVM_OP_build_caller(SPVM_COMPILER* compiler, SPVM_OP* op_caller, SPVM_OP* op_level);
+
+SPVM_OP* SPVM_OP_new_op_caller_info_type(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
 #endif

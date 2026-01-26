@@ -270,6 +270,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "CAPACITY",
     "SET_CAPACITY",
     "STDERR",
+    "CALLER",
   };
   
   return id_names;
@@ -4270,4 +4271,26 @@ SPVM_OP* SPVM_OP_build_anon_class_from_statements(SPVM_COMPILER* compiler, SPVM_
   op_class = SPVM_OP_build_class(compiler, op_class, NULL, op_class_block, NULL, NULL);
   
   return op_class;
+}
+
+SPVM_OP* SPVM_OP_build_caller(SPVM_COMPILER* compiler, SPVM_OP* op_caller, SPVM_OP* op_level) {
+  
+  // If level is omitted, use constant 0
+  if (!op_level) {
+    op_level = SPVM_OP_new_op_constant_int(compiler, 0, op_caller->file, op_caller->line);
+  }
+  
+  SPVM_OP_build_unary_op(compiler, op_caller, op_level);
+  
+  return op_caller;
+}
+
+SPVM_OP* SPVM_OP_new_op_caller_info_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  // Create the CallerInfo type
+  SPVM_TYPE* type = SPVM_TYPE_new_caller_info_type(compiler);
+  
+  // Wrap the type into an OP node
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type->unresolved_basic_type_name, type->basic_type, type->dimension, type->flag, file, line);  
+  
+  return op_type;
 }

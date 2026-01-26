@@ -3715,6 +3715,27 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               break;
             }
+            case SPVM_OP_C_ID_CALLER: {
+              // Get the level operand
+              SPVM_OP* op_level = op_cur->first;
+              
+              // Get the type of the operand
+              SPVM_TYPE* level_type = SPVM_CHECK_get_type(compiler, op_level);
+              
+              // First, check if the type is an integer type within int (int, short, or byte)
+              if (!SPVM_TYPE_is_integer_type_within_int(compiler, level_type->basic_type->id, level_type->dimension, level_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand of caller operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Then, perform integer promotional conversion (e.g., byte/short to int)
+              SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_level);
+              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                return;
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_CALL_METHOD: {
               
               SPVM_OP* op_call_method = op_cur;
@@ -6094,6 +6115,10 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
           type = SPVM_TYPE_new(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag & ~SPVM_NATIVE_C_TYPE_FLAG_REF);
         }
       }
+      break;
+    }
+    case SPVM_OP_C_ID_CALLER: {
+      type = SPVM_TYPE_new_caller_info_type(compiler);
       break;
     }
     default: {
