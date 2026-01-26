@@ -27,7 +27,7 @@ class TestCase::Operator::Caller {
     # Exceptions: Level exceeds the call depth
     {
       eval {
-        caller 100;
+        caller 1;
       }
       unless ($@) {
         diag;
