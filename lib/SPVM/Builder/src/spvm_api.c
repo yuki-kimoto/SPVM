@@ -7178,44 +7178,38 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stac
   return current_method;
 }
 
-void* SPVM_API_caller(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+void* SPVM_API_caller(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id) {
   
   *error_id = 0;
   
-  const char* caller_func_name = NULL;
-  const char* caller_file = NULL;
-  int32_t caller_line = 0;
+  /* Level 1 or more: Retrieve from the caller info stack */
+  int32_t call_depth = env->get_call_depth(env, stack);
   
-  if (level == 0) {
-    /* Level 0: Use information provided by arguments */
-    caller_func_name = func_name;
-    caller_file = file;
-    caller_line = line;
+  /* Check if level is negative */
+  if (level < 0) {
+    *error_id = env->die(env, stack, "The level must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return NULL;
   }
-  else {
-    /* Level 1 or more: Retrieve from the caller info stack */
-    int32_t call_depth = env->get_call_depth(env, stack);
-    
-    /* Calculate the target call depth */
-    int32_t target_call_depth = call_depth - level;
-    
-    if (target_call_depth < 0) {
-      /* Set error_id via die and return NULL */
-      *error_id = env->die(env, stack, "The caller stack is empty or the depth is out of range.", __func__, FILE_NAME, __LINE__);
-      return NULL;
-    }
-    
-    void** caller_info_stack = env->get_caller_info_stack(env, stack);
-    int32_t record_size = env->get_caller_info_stack_record_size(env, stack);
-    
-    /* Calculate the target index in the caller info stack */
-    int32_t target_index = target_call_depth * record_size;
-    
-    /* Extract information directly from the record. */
-    caller_func_name = (const char*)caller_info_stack[target_index + 0];
-    caller_file = (const char*)caller_info_stack[target_index + 1];
-    caller_line = (int32_t)(intptr_t)caller_info_stack[target_index + 2];
+  
+  /* Calculate the target call depth */
+  int32_t target_call_depth = call_depth - level;
+  
+  /* Check if the depth is out of range */
+  if (target_call_depth < 0) {
+    *error_id = env->die(env, stack, "The level exceeds the call depth.", __func__, FILE_NAME, __LINE__);
+    return NULL;
   }
+  
+  void** caller_info_stack = env->get_caller_info_stack(env, stack);
+  int32_t record_size = env->get_caller_info_stack_record_size(env, stack);
+  
+  /* Calculate the target index in the caller info stack */
+  int32_t target_index = target_call_depth * record_size;
+  
+  /* Extract information directly from the record. */
+  const char* caller_func_name = (const char*)caller_info_stack[target_index + 0];
+  const char* caller_file = (const char*)caller_info_stack[target_index + 1];
+  int32_t caller_line = (int32_t)(intptr_t)caller_info_stack[target_index + 2];
   
   /* Create CallerInfo object (Unified creation) */
   void* obj_caller_info = env->new_object_by_name(env, stack, "CallerInfo", error_id, __func__, FILE_NAME, __LINE__);
