@@ -7146,15 +7146,21 @@ int32_t SPVM_API_get_caller_info_stack_record_size(SPVM_ENV* env, SPVM_VALUE* st
   return record_size;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stack) {
+SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* error_id) {
+  
+  /* Initialize error_id to 0 */
+  *error_id = 0;
   
   /* Get the current call depth */
   int32_t call_depth = env->get_call_depth(env, stack);
   
-  /* The call depth must be 0 or greater because this function must be called 
-    within a method execution. If it's negative, it's a critical logic error.
+  /* The call depth must be 0 or greater.
+     If it's negative, throw an exception and return NULL.
   */
-  assert(call_depth >= 0);
+  if (call_depth < 0) {
+    *error_id = env->die(env, stack, "The call depth must be 0 or greater.", __func__, FILE_NAME, __LINE__);
+    return NULL;
+  }
   
   /* Get the raw pointer to the caller information stack and the record size */
   void** caller_info_stack = env->get_caller_info_stack(env, stack);

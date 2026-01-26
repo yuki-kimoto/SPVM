@@ -2897,21 +2897,24 @@ Examples:
 
 =head2 get_current_method
 
-C<void* (*get_current_method)(SPVM_ENV* env, SPVM_VALUE* stack);>
+C<void* (*get_current_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* error_id);>
 
 Returns the method currently being executed on the runtime stack I<stack>.
 
-If the caller stack is empty, an exception is set and C<NULL> is returned.
+I<error_id> is set to 0 at the beginning of this function.
+
+If the call depth is negative, an exception is thrown by L</"die">, I<error_id> is set to a non-zero value, and C<NULL> is returned.
 
 Examples:
 
+  int32_t error_id = 0;
+  
   // Get the currently executing method
-  void* current_method = env->get_current_method(env, stack);
+  void* current_method = env->get_current_method(env, stack, &error_id);
   
   // Check for exception
-  if (current_method == NULL) {
-    void* exception = env->get_exception(env, stack);
-    // Handle error...
+  if (error_id) {
+    return error_id;
   }
 
 =head2 caller
