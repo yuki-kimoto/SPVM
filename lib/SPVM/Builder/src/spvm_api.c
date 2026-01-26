@@ -7218,7 +7218,7 @@ void* SPVM_API_caller(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* 
   /* Set fields to the new object (Only if not NULL) */
   if (caller_func_name) {
     void* obj_func_name = env->new_string_nolen(env, stack, caller_func_name);
-    env->set_field_string_by_name(env, stack, obj_caller_info, "func_name", obj_func_name, error_id, __func__, FILE_NAME, __LINE__);
+    env->set_field_string_by_name(env, stack, obj_caller_info, "method_abs_name", obj_func_name, error_id, __func__, FILE_NAME, __LINE__);
     if (*error_id) { return NULL; }
   }
   
