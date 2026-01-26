@@ -368,6 +368,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_caller_info_stack,
     SPVM_API_get_caller_info_stack_record_size,
     SPVM_API_get_current_method,
+    SPVM_API_caller_no_mortal,
     SPVM_API_caller,
   };
   
@@ -7178,11 +7179,11 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stac
   return current_method;
 }
 
-void* SPVM_API_caller(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id) {
+void* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id) {
   
   *error_id = 0;
   
-  /* Level 1 or more: Retrieve from the caller info stack */
+  /* Get the current call depth */
   int32_t call_depth = env->get_call_depth(env, stack);
   
   /* Check if level is negative */
@@ -7191,7 +7192,7 @@ void* SPVM_API_caller(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* 
     return NULL;
   }
   
-  /* Calculate the target call depth */
+  /* Calculate the target call depth. */
   int32_t target_call_depth = call_depth - level;
   
   /* Check if the depth is out of range */
@@ -7211,25 +7212,44 @@ void* SPVM_API_caller(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* 
   const char* caller_file = (const char*)caller_info_stack[target_index + 1];
   int32_t caller_line = (int32_t)(intptr_t)caller_info_stack[target_index + 2];
   
-  /* Create CallerInfo object (Unified creation) */
-  void* obj_caller_info = env->new_object_by_name(env, stack, "CallerInfo", error_id, __func__, FILE_NAME, __LINE__);
+  /* Create CallerInfo object without mortal (Unified creation) */
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_CALLER_INFO_CLASS);
+  void* obj_caller_info = env->new_object_no_mortal(env, stack, basic_type);
+  if (!obj_caller_info) {
+    *error_id = env->die(env, stack, "Failed to create a new CallerInfo object.", __func__, FILE_NAME, __LINE__);
+    return NULL;
+  }
   if (*error_id) { return NULL; }
   
-  /* Set fields to the new object (Only if not NULL) */
+  /* Set fields to the new object (Strings are created as non-mortal for now, 
+     as they are owned by the obj_caller_info fields) */
   if (caller_func_name) {
-    void* obj_func_name = env->new_string_nolen(env, stack, caller_func_name);
+    void* obj_func_name = env->new_string_nolen_no_mortal(env, stack, caller_func_name);
     env->set_field_string_by_name(env, stack, obj_caller_info, "method_abs_name", obj_func_name, error_id, __func__, FILE_NAME, __LINE__);
     if (*error_id) { return NULL; }
   }
   
   if (caller_file) {
-    void* obj_file = env->new_string_nolen(env, stack, caller_file);
+    void* obj_file = env->new_string_nolen_no_mortal(env, stack, caller_file);
     env->set_field_string_by_name(env, stack, obj_caller_info, "file", obj_file, error_id, __func__, FILE_NAME, __LINE__);
     if (*error_id) { return NULL; }
   }
   
   env->set_field_int_by_name(env, stack, obj_caller_info, "line", caller_line, error_id, __func__, FILE_NAME, __LINE__);
   if (*error_id) { return NULL; }
+  
+  return obj_caller_info;
+}
+
+void* SPVM_API_caller(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id) {
+  
+  void* obj_caller_info = SPVM_API_caller_no_mortal(env, stack, level, error_id);
+  
+  if (*error_id) { return NULL; }
+  
+  if (obj_caller_info) {
+    env->push_mortal(env, stack, obj_caller_info);
+  }
   
   return obj_caller_info;
 }

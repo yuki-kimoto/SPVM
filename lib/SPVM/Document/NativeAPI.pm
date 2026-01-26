@@ -2919,11 +2919,17 @@ Examples:
 
 =head2 caller
 
-C<void* (*caller)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+C<void* (*caller)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);>
 
-Returns a C<CallerInfo> object that contains information about the caller at the specified I<level> on the runtime stack I<stack>.
+Returns a C<CallerInfo> object that contains information about the caller at the specified I<level> on the runtime stack I<stack>. 
 
-I<level> specifies how many stack frames to go back. 0 represents the current information provided by I<func_name>, I<file>, and I<line>. 1 represents the immediate caller.
+This object is automatically pushed to the mortal stack.
+
+I<level> specifies how many stack frames to go back. 
+
+* 0 represents the information of the caller of the current method.
+
+* 1 represents the information of the caller of the caller.
 
 If succeeded, I<error_id> is set to 0 and returns the C<CallerInfo> object.
 
@@ -2932,12 +2938,18 @@ If the I<level> is out of range or an error occurs during object creation, retur
 Examples:
 
   int32_t error_id = 0;
-  void* obj_caller_info = env->caller(env, stack, 1, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_caller_info = env->caller(env, stack, 0, &error_id);
   
   if (error_id) {
     // Handle error...
     return NULL;
   }
+
+=head2 caller_no_mortal
+
+C<void* (*caller_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);>
+
+This is the same as L</"caller">, but the returned object is not pushed to the mortal stack.
   
 =head1 Native API IDs
 
@@ -3212,7 +3224,8 @@ Native APIs have its IDs.
   266 get_caller_info_stack
   267 get_caller_info_stack_record_size
   268 get_current_method
-  268 caller
+  269 caller_no_mortal
+  270 caller
   
 =head1 Constant Values
 
