@@ -1133,11 +1133,13 @@ int32_t SPVM__Fn__get_basic_type_name_by_id(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__get_current_method_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
+  int32_t error_id = 0;
+  
   /* Get the currently executing method */
-  void* current_method = env->get_current_method(env, stack);
+  void* current_method = env->get_current_method(env, stack, &error_id);
   
   /* If get_current_method returns NULL, re-throw the existing exception with current location info */
-  if (!current_method) {
+  if (error_id) {
     return env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, FILE_NAME, __LINE__);
   }
   
@@ -1154,11 +1156,13 @@ int32_t SPVM__Fn__get_current_method_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__get_current_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
+  int32_t error_id = 0;
+  
   /* Get the currently executing method */
-  void* current_method = env->get_current_method(env, stack);
+  void* current_method = env->get_current_method(env, stack, &error_id);
   
   /* If get_current_method returns NULL, re-throw the existing exception with current location info */
-  if (!current_method) {
+  if (error_id) {
     return env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, FILE_NAME, __LINE__);
   }
   
