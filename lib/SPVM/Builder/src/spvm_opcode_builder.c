@@ -1466,6 +1466,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       // Push the built opcode to the list
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
+                      check_exception = 1;
+                      
                       break;
                     }
                     case SPVM_OP_C_ID_STRING_LENGTH : {
