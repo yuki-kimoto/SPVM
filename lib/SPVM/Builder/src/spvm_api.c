@@ -7081,8 +7081,8 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, void* curren
   int32_t* current_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY];
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
   
-  // The current number of records is call_depth + 1
-  int32_t current_records_length = *current_call_depth_ptr + 1;
+  // The current number of records is call_depth
+  int32_t current_records_length = *current_call_depth_ptr;
   
   // Extend caller info stack
   if (current_records_length >= *current_capacity_ptr) {
@@ -7118,8 +7118,8 @@ void SPVM_API_pop_caller_info(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t* current_call_depth_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH];
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
   
-  // The current number of records (before popping) is call_depth + 1.
-  int32_t current_records_length = *current_call_depth_ptr + 1;
+  // The current number of records (before popping) is call_depth.
+  int32_t current_records_length = *current_call_depth_ptr;
   
   // Clear the last record to be safe
   int32_t offset = current_records_length * record_size;
