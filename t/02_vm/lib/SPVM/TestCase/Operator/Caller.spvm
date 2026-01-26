@@ -48,10 +48,8 @@ class TestCase::Operator::Caller {
     
     # Level 0: The caller is wrap_test_level_1
     my $info0 = caller 0;
-    my $_ = caller 1;
     unless ($info0->method_abs_name eq "TestCase::Operator::Caller#wrap_test_level_1") {
       diag $info0->method_abs_name;
-      diag $_->method_abs_name;
       return 0;
     }
     unless ($info0->line == $expected_line_0) {
@@ -62,6 +60,13 @@ class TestCase::Operator::Caller {
       diag $info0->file;
       return 0;
     }
+    unless (Fn->get_current_method_name eq "test_level_0_and_1") {
+      return 0;
+    }
+    unless (Fn->get_current_basic_type_name eq "TestCase::Operator::Caller") {
+      return 0;
+    }
+    
     
     # Level 1: The caller of wrap_test_level_1 is basic
     my $info1 = caller 1;
