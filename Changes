@@ -1,9 +1,9 @@
 0.990118 2026-01-26
   [New Features]
-    * Added the get_current_method function to the Native API to retrieve the currently executing method from the caller stack.
-    * Added the Fn#get_current_method_name method to the Fn class to get the name of the currently executing method.
-    * Added the Fn#get_current_basic_type_name method to the Fn class to get the basic type name of the currently executing method.
-    * Add the caller and caller_no_mortal native APIs to retrieve caller information at a specific level.
+    * Added get_current_method Native API to retrieve the currently executing method from the caller stack.
+    * Added Fn#get_current_method_name method to the Fn class to get the name of the currently executing method.
+    * Added Fn#get_current_basic_type_name method to the Fn class to get the basic type name of the currently executing method.
+    * Add caller and caller_no_mortal native APIs to retrieve caller information at a specific level.
     * Add caller operator to retrieve caller information at a specific level.
   [Incompatibe Changes]
     * Renamed the name field to method_abs_name in the CallerInfo class to more accurately describe that it stores the absolute name of a method.
