@@ -1945,7 +1945,7 @@ _xs_call_method(...)
   
   // Call method
   int32_t call_method_args_width = stack_index;
-  int32_t error_id = env->call_method_no_mortal(env, stack, method, call_method_args_width, env->api->method->get_name(env->runtime, method), NULL, 0); // TODO: abs_name, file, line
+  int32_t error_id = env->call_method_no_mortal(env, stack, method, call_method_args_width, __func__, FILE_NAME, __LINE__);
   
   if (error_id) {
     if (SvOK(sv_error_ret)) {
