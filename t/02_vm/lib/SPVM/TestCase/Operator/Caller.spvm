@@ -1,0 +1,83 @@
+class TestCase::Operator::Caller {
+  use CallerInfo;
+  use Fn;
+  
+  static method basic : int () {
+    
+    # Test level 0 and level 1 with line number, file name, and method absolute name validation
+    {
+      # Get the line number where wrap_test_level_1 is called
+      my $line_in_basic = __LINE__ + 1;
+      unless (TestCase::Operator::Caller->wrap_test_level_1($line_in_basic)) {
+        return 0;
+      }
+    }
+    
+    # Exceptions: Level is negative
+    {
+      eval {
+        caller -1;
+      }
+      unless ($@) {
+        diag;
+        return 0;
+      }
+    }
+    
+    # Exceptions: Level exceeds the call depth
+    {
+      eval {
+        caller 100;
+      }
+      unless ($@) {
+        diag;
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method wrap_test_level_1 : int ($line_in_basic : int) {
+    # Get the line number where test_level_0_and_1 is called
+    my $line_in_wrap = __LINE__ + 1;
+    return TestCase::Operator::Caller->test_level_0_and_1($line_in_basic, $line_in_wrap);
+  }
+  
+  static method test_level_0_and_1 : int ($expected_line_1 : int, $expected_line_0 : int) {
+    
+    # Level 0: The caller is wrap_test_level_1
+    my $info0 = caller 0;
+    my $_ = caller 1;
+    unless ($info0->method_abs_name eq "TestCase::Operator::Caller#wrap_test_level_1") {
+      diag $info0->method_abs_name;
+      diag $_->method_abs_name;
+      return 0;
+    }
+    unless ($info0->line == $expected_line_0) {
+      diag $info0->line;
+      return 0;
+    }
+    unless (Fn->contains($info0->file, "TestCase/Operator/Caller.spvm")) {
+      diag $info0->file;
+      return 0;
+    }
+    
+    # Level 1: The caller of wrap_test_level_1 is basic
+    my $info1 = caller 1;
+    unless ($info1->method_abs_name eq "TestCase::Operator::Caller#basic") {
+      diag $info1->method_abs_name;
+      return 0;
+    }
+    unless ($info1->line == $expected_line_1) {
+      diag $info1->line;
+      return 0;
+    }
+    unless (Fn->contains($info1->file, "TestCase/Operator/Caller.spvm")) {
+      diag $info1->file;
+      return 0;
+    }
+    
+    return 1;
+  }
+}
