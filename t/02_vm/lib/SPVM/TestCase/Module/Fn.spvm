@@ -8715,4 +8715,18 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method get_current_method_name : int () {
+    
+    # Check the current method name in this scope
+    {
+      my $method_name = Fn->get_current_method_name;
+      
+      unless ($method_name eq "get_current_method_name") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }

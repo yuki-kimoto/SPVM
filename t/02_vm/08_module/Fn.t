@@ -268,6 +268,7 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->range);
     ok(SPVM::TestCase::Module::Fn->to_hash);
     ok(SPVM::TestCase::Module::Fn->get_basic_type_name_by_id);
+    ok(SPVM::TestCase::Module::Fn->get_current_method_name);
     
   }
   
