@@ -8715,13 +8715,14 @@ class TestCase::Module::Fn {
     return 1;
   }
   
-  static method get_current_method_name : int () {
+  static method get_current_method_name_for_test : int () {
     
     # Check the current method name in this scope
     {
       my $method_name = Fn->get_current_method_name;
       
-      unless ($method_name eq "get_current_method_name") {
+      unless ($method_name eq "get_current_method_name_for_test") {
+        diag $method_name;
         return 0;
       }
     }
@@ -8737,6 +8738,7 @@ class TestCase::Module::Fn {
 
       # The basic type name should be "TestCase::Module::Fn"
       unless ($basic_type_name eq "TestCase::Module::Fn") {
+        diag $basic_type_name;
         return 0;
       }
     }

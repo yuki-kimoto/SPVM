@@ -7067,7 +7067,7 @@ void* SPVM_API_numeric_object_to_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   return new_object;
 }
 
-int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, void* current_method, const char* caller_method_abs_name, const char* caller_file, int32_t caller_line) {
+int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* current_method, const char* caller_method_abs_name, const char* caller_file, int32_t caller_line) {
   
   // Touch pointers to ensure they are valid and prevent optimization using volatile
   if (caller_method_abs_name) {
@@ -7104,6 +7104,7 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, void* curren
   }
   
   // Push the record (caller_method_abs_name, caller_file, caller_line, current_method)
+  // spvm_warn("%d, %s", current_records_length, current_method->abs_name);
   int32_t offset = current_records_length * record_size;
   (*current_caller_info_stack_ptr)[offset + 0] = (void*)caller_method_abs_name;
   (*current_caller_info_stack_ptr)[offset + 1] = (void*)caller_file;
@@ -7170,7 +7171,18 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stac
   /* The current method is stored at the last index (index 3) 
      of the top record (index call_depth). 
   */
-  int32_t offset = call_depth * record_size;
+  
+  /* The current method is stored at the last index (index 3) 
+   of the current record (index call_depth - 1). 
+  */
+  int32_t offset = (call_depth - 1) * record_size;
+  
+  /* Boundary check: Ensure we don't access a negative offset */
+  if (offset < 0) {
+    *error_id = env->die(env, stack, "Handling the case where call_depth is 0 (no method is running).", __func__, FILE_NAME, __LINE__);
+    return NULL; 
+  }
+  
   SPVM_RUNTIME_METHOD* current_method = (SPVM_RUNTIME_METHOD*)caller_info_stack[offset + 3];
   
   /* current_method must not be NULL during method execution. */
