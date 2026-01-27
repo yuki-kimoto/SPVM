@@ -2997,6 +2997,35 @@ B<Examples:>
   void* obj_exception = env->new_string_nolen(env, stack, "Custom error message");
   return env->die_with_string(env, stack, obj_exception, func_name, file, line);
 
+=head2 build_exception_message_no_mortal
+
+C<void* (*build_exception_message_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level);>
+
+This is the same as L</"build_exception_message">, but the returned object is not pushed to the mortal stack.
+
+=head2 build_exception_message
+
+C<void* (*build_exception_message)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level);>
+
+Reconstructs the full exception message, including a stack trace, using the metadata stored in the runtime stack.
+
+This function creates a new string object by combining the original exception message (stored in the exception slot of the stack) with caller information retrieved from the metadata slots.
+
+The I<level> argument specifies the range of the stack trace relative to the current call depth.
+
+* Positive values or zero: The trace starts from the exception origin down to the depth calculated as C<current_call_depth + level>.
+
+* This is useful for C<eval> blocks or L<Fn#build_exception_message|SPVM::Fn/"build_exception_message"> to limit the trace depth.
+
+The metadata used for reconstruction includes the function name, file name, line number, and the caller information stack.
+
+Returns the newly created string object. This object is not pushed to the mortal stack.
+
+B<Examples:>
+
+  void* obj_full_message = env->build_exception_message(env, stack, 0);
+  env->set_exception(env, stack, obj_full_message);
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3274,6 +3303,8 @@ Native APIs have its IDs.
   270 caller
   271 die_v2
   272 die_with_string
+  273 build_exception_message_no_mortal
+  274 build_exception_message
   
 =head1 Constant Values
 
