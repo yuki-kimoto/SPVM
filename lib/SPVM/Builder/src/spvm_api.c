@@ -7285,12 +7285,25 @@ static int32_t SPVM_API_build_caller_stack_line(char* buffer, const char* func_n
 
 void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
   
+  const char* too_long_func_name = "(Method name too long)";
+  const char* too_long_file = "(File name too long)";
+  const int32_t max_func_name_len = 511;
+  const int32_t max_file_len = 1023;
+  
   void* obj_exception = SPVM_API_get_exception(env, stack);
   const char* exception_bytes = SPVM_API_get_chars(env, stack, obj_exception);
   int32_t exception_length = SPVM_API_length(env, stack, obj_exception);
 
   const char* exception_func_name = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval;
+  if (SPVM_API_strnlen(exception_func_name, max_func_name_len + 1) > max_func_name_len) {
+    exception_func_name = too_long_func_name;
+  }
+  
   const char* exception_file = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].oval;
+  if (SPVM_API_strnlen(exception_file, max_file_len + 1) > max_file_len) {
+    exception_file = too_long_file;
+  }
+
   int32_t exception_line = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival;
   int32_t exception_call_depth = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH].ival;
 
@@ -7318,7 +7331,15 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
     int32_t offset = d * record_size;
     const char* func_name = (const char*)caller_info_stack[offset + 0];
+    if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
+      func_name = too_long_func_name;
+    }
+    
     const char* file = (const char*)caller_info_stack[offset + 1];
+    if (SPVM_API_strnlen(file, max_file_len + 1) > max_file_len) {
+      file = too_long_file;
+    }
+    
     int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2];
     
     total_length += SPVM_API_build_caller_stack_line(NULL, func_name, file, line);
@@ -7339,7 +7360,15 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
     int32_t offset = d * record_size;
     const char* func_name = (const char*)caller_info_stack[offset + 0];
+    if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
+      func_name = too_long_func_name;
+    }
+    
     const char* file = (const char*)caller_info_stack[offset + 1];
+    if (SPVM_API_strnlen(file, max_file_len + 1) > max_file_len) {
+      file = too_long_file;
+    }
+    
     int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2];
     
     current_offset += SPVM_API_build_caller_stack_line(new_exception_bytes + current_offset, func_name, file, line);
