@@ -7285,6 +7285,8 @@ static int32_t SPVM_API_build_caller_stack_line(char* buffer, const char* func_n
 
 void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
   
+  const char* unknown_func_name = "(Method name unknown)";
+  const char* unknown_file = "(File name unknown)";
   const char* too_long_func_name = "(Method name too long)";
   const char* too_long_file = "(File name too long)";
   const int32_t max_func_name_len = 511;
@@ -7295,12 +7297,18 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   int32_t exception_length = SPVM_API_length(env, stack, obj_exception);
 
   const char* exception_func_name = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval;
-  if (SPVM_API_strnlen(exception_func_name, max_func_name_len + 1) > max_func_name_len) {
+  if (!exception_func_name) {
+    exception_func_name = unknown_func_name;
+  }
+  else if (SPVM_API_strnlen(exception_func_name, max_func_name_len + 1) > max_func_name_len) {
     exception_func_name = too_long_func_name;
   }
   
   const char* exception_file = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].oval;
-  if (SPVM_API_strnlen(exception_file, max_file_len + 1) > max_file_len) {
+  if (!exception_file) {
+    exception_file = unknown_file;
+  }
+  else if (SPVM_API_strnlen(exception_file, max_file_len + 1) > max_file_len) {
     exception_file = too_long_file;
   }
 
@@ -7331,12 +7339,18 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   for (int32_t depth = exception_call_depth - 1; depth >= target_call_depth; depth--) {
     int32_t offset = depth * record_size;
     const char* func_name = (const char*)caller_info_stack[offset + 0];
-    if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
+    if (!func_name) {
+      func_name = unknown_func_name;
+    }
+    else if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
       func_name = too_long_func_name;
     }
     
     const char* file = (const char*)caller_info_stack[offset + 1];
-    if (SPVM_API_strnlen(file, max_file_len + 1) > max_file_len) {
+    if (!file) {
+      file = unknown_file;
+    }
+    else if (SPVM_API_strnlen(file, max_file_len + 1) > max_file_len) {
       file = too_long_file;
     }
     
@@ -7360,12 +7374,18 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   for (int32_t depth = exception_call_depth - 1; depth >= target_call_depth; depth--) {
     int32_t offset = depth * record_size;
     const char* func_name = (const char*)caller_info_stack[offset + 0];
-    if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
+    if (!func_name) {
+      func_name = unknown_func_name;
+    }
+    else if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
       func_name = too_long_func_name;
     }
     
     const char* file = (const char*)caller_info_stack[offset + 1];
-    if (SPVM_API_strnlen(file, max_file_len + 1) > max_file_len) {
+    if (!file) {
+      file = unknown_file;
+    }
+    else if (SPVM_API_strnlen(file, max_file_len + 1) > max_file_len) {
       file = too_long_file;
     }
     
