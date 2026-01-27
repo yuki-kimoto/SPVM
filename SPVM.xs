@@ -1954,11 +1954,25 @@ _xs_call_method(...)
       (void)hv_store(hv_error_ret, "id", strlen("id"), SvREFCNT_inc(sv_error_id), 0);
     }
     
-    void* exception = env->get_exception(env, stack);
-    int32_t length = env->length(env, stack, exception);
-    const char* exception_chars = env->get_chars(env, stack, exception);
-    SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_chars, length));
-    croak("%s\n    %s at %s line %d\n", SvPV_nolen(sv_exception), __func__, FILE_NAME, __LINE__);
+    /* Reconstruct the exception message including the SPVM stack trace */
+    /* level = 0 starts from the caller of this XS function in the SPVM world */
+    void* obj_exception_with_stack_trace = env->build_exception_message(env, stack, 0);
+    
+    const char* exception_chars_with_stack_trace = env->get_chars(env, stack, obj_exception_with_stack_trace);
+    int32_t exception_with_stack_trace_length = env->length(env, stack, obj_exception_with_stack_trace);
+    
+    /* Convert the SPVM string to a Perl SV */
+    SV* sv_exception = sv_2mortal(newSVpvn(exception_chars_with_stack_trace, exception_with_stack_trace_length));
+    
+    /* Rethrow the exception to the Perl world using croak. 
+       The SPVM stack trace is followed by the Perl XS location information.
+    */
+    croak("%s\n    (C function %s at %s line %d)\n", 
+          SvPV_nolen(sv_exception), 
+          __func__, 
+          FILE_NAME, 
+          __LINE__
+    );
   }
   
   // Return value conversion
