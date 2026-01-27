@@ -288,10 +288,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->get_current_method != &env_array[268]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->caller_no_mortal != &env_array[269]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->caller != &env_array[270]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->die_v2 != &env_array[271]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->die_with_string != &env_array[272]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->build_exception_message_no_mortal != &env_array[273]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->build_exception_message != &env_array[274]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->die_with_string != &env_array[271]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->build_exception_message_no_mortal != &env_array[272]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->build_exception_message != &env_array[273]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

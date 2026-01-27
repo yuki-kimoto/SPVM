@@ -2041,15 +2041,25 @@ If the version string is not defined, returns -1.
 
 =head2 die
 
-C<int32_t (*die)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* message, ...);>
+C<int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...);>
 
-Creates a string from a C<sprintf> formatted message I<message> given its parameters corresponding to its format specifiers, a function name, a file name, and a line number for an exception call stack.
+Sets an exception with a formatted message and its metadata, then returns the basic type ID of the L<Error|SPVM::Error> class.
 
-And sets the created string to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">, and return the basic type ID of L<Error|SPVM::Error> class. 
+The formatted message is created from the format string I<message> and the arguments corresponding to its format specifiers.
 
-Examples:
+This function also expects three additional arguments at the end of the variadic arguments (C<...>): a function name (C<const char*>), a file name (C<const char*>), and a line number (C<int32_t>). 
 
+These metadata arguments are extracted from the remaining variadic arguments that are not consumed by the format specifiers in I<message>.
+
+The metadata is stored in specific indices of the runtime stack I<stack> to be used for reconstructing the stack trace.
+
+B<Examples:>
+
+  // "The value must be 3" is created, and metadata is captured from the last 3 arguments.
   return env->die(env, stack, "The value must be %d.", 3, __func__, FILE_NAME, __LINE__);
+
+  // Even without format specifiers, metadata must be provided.
+  return env->die(env, stack, "An error occurred.", __func__, FILE_NAME, __LINE__);
 
 =head2 get_exception
 
@@ -2958,39 +2968,13 @@ C<void* (*caller_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int
 
 This is the same as L</"caller">, but the returned object is not pushed to the mortal stack.
 
-=head2 die_v2
-
-C<int32_t (*die_v2)(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...);>
-
-Sets an exception with a formatted message and its metadata, then returns a basic type ID of an error class.
-
-The formatted message is created from the format string I<exception_format> and the following variadic arguments C<...>.
-
-The required memory for the message is calculated automatically using C<vsnprintf>, and a string object is created with the exact length.
-
-The metadata (I<func_name>, I<file>, and I<line>) is stored in the specific indices of the runtime stack I<stack> after the exception object is set.
-
-* I<exception_format> is a format string.
-
-* I<func_name> is the function name where the error occurred (usually the absolute name of the method).
-
-* I<file> is the file name.
-
-* I<line> is the line number.
-
-This function always returns L<SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS|SPVM::Document::NativeAPI/"Basic Type IDs of Error Classes">.
-
-B<Examples:>
-
-  return env->die_v2(env, stack, "The file \"%s\" not found.", func_name, file, line, path);
-
 =head2 die_with_string
 
 C<int32_t (*die_with_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_exception, const char* func_name, const char* file, int32_t line);>
 
 Sets an exception with an existing string object and its metadata, then returns a basic type ID of an error class.
 
-This is the same as L</"die_v2">, but it takes a string object I<obj_exception> instead of a format string.
+This is the same as L</"die">, but it takes a string object I<obj_exception> instead of a format string.
 
 B<Examples:>
 
@@ -3301,10 +3285,9 @@ Native APIs have its IDs.
   268 get_current_method
   269 caller_no_mortal
   270 caller
-  271 die_v2
-  272 die_with_string
-  273 build_exception_message_no_mortal
-  274 build_exception_message
+  271 die_with_string
+  272 build_exception_message_no_mortal
+  273 build_exception_message
   
 =head1 Constant Values
 

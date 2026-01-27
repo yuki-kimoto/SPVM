@@ -370,7 +370,6 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_current_method,
     SPVM_API_caller_no_mortal,
     SPVM_API_caller,
-    SPVM_API_die_v2,
     SPVM_API_die_with_string,
     SPVM_API_build_exception_message_no_mortal,
     SPVM_API_build_exception_message
@@ -7165,28 +7164,6 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   }
 
   /* 6. Delegate to die_with_string for common exception setting logic */
-  return SPVM_API_die_with_string(env, stack, obj_exception, func_name, file, line);
-}
-
-int32_t SPVM_API_die_v2(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...) {
-  
-  va_list args;
-  
-  /* Calculate the required length */
-  va_start(args, line);
-  int32_t length = vsnprintf(NULL, 0, exception_format, args);
-  va_end(args);
-
-  /* Create the exception exception_format */
-  void* obj_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, length);
-  char* exception = (char*)SPVM_API_get_chars(env, stack, obj_exception);
-
-  /* Write the formatted string */
-  va_start(args, line);
-  vsnprintf(exception, length + 1, exception_format, args);
-  va_end(args);
-
-  /* Call the common logic */
   return SPVM_API_die_with_string(env, stack, obj_exception, func_name, file, line);
 }
 

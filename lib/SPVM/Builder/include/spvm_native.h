@@ -368,7 +368,6 @@ struct spvm_env {
   void* (*get_current_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
   void* (*caller_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
   void* (*caller)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
-  int32_t (*die_v2)(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...);
   int32_t (*die_with_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_exception, const char* func_name, const char* file, int32_t line);
   void* (*build_exception_message_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level);
   void* (*build_exception_message)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level);
