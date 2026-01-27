@@ -7328,8 +7328,8 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   total_length += SPVM_API_build_caller_stack_line(NULL, exception_func_name, exception_file, exception_line);
 
   // Callers
-  for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
-    int32_t offset = d * record_size;
+  for (int32_t depth = exception_call_depth - 1; depth >= target_call_depth; depth--) {
+    int32_t offset = depth * record_size;
     const char* func_name = (const char*)caller_info_stack[offset + 0];
     if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
       func_name = too_long_func_name;
@@ -7357,8 +7357,8 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   current_offset += SPVM_API_build_caller_stack_line(new_exception_bytes + current_offset, exception_func_name, exception_file, exception_line);
 
   // Write Callers
-  for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
-    int32_t offset = d * record_size;
+  for (int32_t depth = exception_call_depth - 1; depth >= target_call_depth; depth--) {
+    int32_t offset = depth * record_size;
     const char* func_name = (const char*)caller_info_stack[offset + 0];
     if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
       func_name = too_long_func_name;
