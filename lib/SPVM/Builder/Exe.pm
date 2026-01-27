@@ -827,8 +827,18 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   END_OF_FUNC:
   
   if (error_id) {
-    env->print_stderr(env, stack, env->get_exception(env, stack));
+    /* Enter a new scope to handle the exception message object safely */
+    int32_t scope_id = env->enter_scope(env, stack);
+    
+    /* Reconstruct the exception message including the SPVM stack trace */
+    void* obj_exception_with_stack_trace = env->build_exception_message(env, stack, 0);
+    
+    /* Print the full exception message to stderr */
+    env->print_stderr(env, stack, obj_exception_with_stack_trace);
     fprintf(spvm_stderr, "\\n");
+    
+    /* Leave the scope to free the exception message object */
+    env->leave_scope(env, stack, scope_id);
   }
   
   env->destroy_class_vars(env, stack);
