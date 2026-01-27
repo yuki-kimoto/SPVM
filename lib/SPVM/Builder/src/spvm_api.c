@@ -3197,37 +3197,6 @@ void SPVM_API_set_field_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   SPVM_API_set_field_object_by_name(env, stack, object, field_name, value, error_id, func_name, file, line);
 }
 
-int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...) {
-  
-  va_list args;
-  
-  char tmp_buffer[SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE] = {0};
-  char* message_with_line = tmp_buffer;
-  int32_t message_length = strlen(message);
-  if (message_length > 255) {
-    message_length = 255;
-  }
-  memcpy(message_with_line, message, message_length);
-  const char* place = "\n    %s at %s line %d";
-  memcpy(message_with_line + message_length, place, strlen(place));
-  message_with_line[message_length + strlen(place)] = '\0';
-  
-  assert(message_length + strlen(place) <= SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE);
-  
-  void* exception = SPVM_API_new_string_no_mortal(env, stack, NULL, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE);
-  char* exception_chars = (char*)SPVM_API_get_chars(env, stack, exception);
-  
-  va_start(args, message);
-  vsnprintf(exception_chars, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, message_with_line, args);
-  va_end(args);
-  
-  SPVM_API_shorten(env, stack, exception, strlen(exception_chars));
-  
-  SPVM_API_set_exception(env, stack, exception);
-  
-  return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-}
-
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -7236,4 +7205,35 @@ void* SPVM_API_caller(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* 
   }
   
   return obj_caller_info;
+}
+
+int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...) {
+  
+  va_list args;
+  
+  char tmp_buffer[SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE] = {0};
+  char* message_with_line = tmp_buffer;
+  int32_t message_length = strlen(message);
+  if (message_length > 255) {
+    message_length = 255;
+  }
+  memcpy(message_with_line, message, message_length);
+  const char* place = "\n    %s at %s line %d";
+  memcpy(message_with_line + message_length, place, strlen(place));
+  message_with_line[message_length + strlen(place)] = '\0';
+  
+  assert(message_length + strlen(place) <= SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE);
+  
+  void* exception = SPVM_API_new_string_no_mortal(env, stack, NULL, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE);
+  char* exception_chars = (char*)SPVM_API_get_chars(env, stack, exception);
+  
+  va_start(args, message);
+  vsnprintf(exception_chars, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, message_with_line, args);
+  va_end(args);
+  
+  SPVM_API_shorten(env, stack, exception, strlen(exception_chars));
+  
+  SPVM_API_set_exception(env, stack, exception);
+  
+  return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
 }
