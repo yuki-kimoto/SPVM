@@ -7270,6 +7270,21 @@ static int32_t SPVM_API_strnlen(const char *s, int32_t maxlen) {
   return len;
 }
 
+/* Helper to format a single line of the stack trace */
+static int32_t SPVM_API_format_stack_trace_line(char* buffer, const char* name, const char* file, int32_t line, int32_t max_func_len, int32_t max_file_len, const char* unknown_str) {
+  const char* final_name = name ? name : unknown_str;
+  const char* final_file = file ? file : unknown_str;
+  
+  if (buffer) {
+    return sprintf(buffer, "\n  %s at %s line %" PRId32, final_name, final_file, line);
+  }
+  else {
+    char tmp_line[64];
+    snprintf(tmp_line, sizeof(tmp_line), "%" PRId32, line);
+    return (int32_t)(strlen("\n  ") + strlen(final_name) + strlen(" at ") + strlen(final_file) + strlen(" line ") + strlen(tmp_line));
+  }
+}
+
 void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
   
   void* obj_exception = SPVM_API_get_exception(env, stack);
@@ -7284,77 +7299,45 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   void** caller_info_stack = (void**)stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].oval;
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
 
-  /* Constraints for safety */
   const int32_t max_func_len = 511;
   const int32_t max_file_len = 1023;
   const char* const unknown_str = "unknown";
 
-  /* [Corrected] Calculate the target depth based on level with clamping */
+  /* Calculate the target depth */
   int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
   int64_t target_call_depth_64 = (int64_t)current_call_depth + level;
   int32_t target_call_depth;
-  if (target_call_depth_64 < 0) {
-    target_call_depth = 0;
-  }
-  else if (target_call_depth_64 > exception_call_depth) {
-    target_call_depth = exception_call_depth;
-  }
-  else {
-    target_call_depth = (int32_t)target_call_depth_64;
-  }
+  if (target_call_depth_64 < 0) { target_call_depth = 0; }
+  else if (target_call_depth_64 > exception_call_depth) { target_call_depth = exception_call_depth; }
+  else { target_call_depth = (int32_t)target_call_depth_64; }
 
   /* 1. Calculate total length */
   int32_t total_length = exception_length;
   
-  /* Handle the origin (where die occurred) */
-  {
-    int32_t f_len = func_name_orig ? (int32_t)SPVM_API_strnlen(func_name_orig, max_func_len) : (int32_t)strlen(unknown_str);
-    int32_t file_len = file_orig ? (int32_t)SPVM_API_strnlen(file_orig, max_file_len) : (int32_t)strlen(unknown_str);
-    char tmp_line[64];
-    snprintf(tmp_line, sizeof(tmp_line), "%" PRId32, line_orig);
-    total_length += (int32_t)(strlen("\n  ") + f_len + strlen(" at ") + file_len + strlen(" line ") + strlen(tmp_line));
-  }
+  // Origin
+  total_length += SPVM_API_format_stack_trace_line(NULL, func_name_orig, file_orig, line_orig, max_func_len, max_file_len, unknown_str);
 
-  /* Calculate length for the caller info stack records */
+  // Callers
   for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
     int32_t offset = d * record_size;
-    const char* m_name = (const char*)caller_info_stack[offset + 0];
-    const char* m_file = (const char*)caller_info_stack[offset + 1];
-    int32_t m_line = (int32_t)(intptr_t)caller_info_stack[offset + 2];
-
-    int32_t m_name_len = m_name ? (int32_t)SPVM_API_strnlen(m_name, max_func_len) : (int32_t)strlen(unknown_str);
-    int32_t m_file_len = m_file ? (int32_t)SPVM_API_strnlen(m_file, max_file_len) : (int32_t)strlen(unknown_str);
-    
-    char tmp_line[64];
-    snprintf(tmp_line, sizeof(tmp_line), "%" PRId32, m_line);
-    total_length += (int32_t)(strlen("\n  ") + m_name_len + strlen(" at ") + m_file_len + strlen(" line ") + strlen(tmp_line));
+    total_length += SPVM_API_format_stack_trace_line(NULL, (const char*)caller_info_stack[offset + 0], (const char*)caller_info_stack[offset + 1], (int32_t)(intptr_t)caller_info_stack[offset + 2], max_func_len, max_file_len, unknown_str);
   }
 
-  /* 2. Allocate the final string object */
+  /* 2. Allocate */
   void* obj_new_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
   char* new_exception_bytes = (char*)SPVM_API_get_chars(env, stack, obj_new_exception);
   
-  /* 3. Fill the buffer */
+  /* 3. Fill */
   memcpy(new_exception_bytes, exception_bytes, exception_length);
   int32_t current_offset = exception_length;
 
-  /* Write the origin */
-  current_offset += sprintf(new_exception_bytes + current_offset, "\n  %s at %s line %" PRId32, 
-                            func_name_orig ? func_name_orig : unknown_str, 
-                            file_orig ? file_orig : unknown_str, 
-                            line_orig);
+  // Write Origin
+  current_offset += SPVM_API_format_stack_trace_line(new_exception_bytes + current_offset, func_name_orig, file_orig, line_orig, max_func_len, max_file_len, unknown_str);
 
-  /* Write the caller info stack records */
+  // Write Callers
   for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
     int32_t offset = d * record_size;
-    const char* m_name = (const char*)caller_info_stack[offset + 0];
-    const char* m_file = (const char*)caller_info_stack[offset + 1];
-    int32_t m_line = (int32_t)(intptr_t)caller_info_stack[offset + 2];
-
-    current_offset += sprintf(new_exception_bytes + current_offset, "\n  %s at %s line %" PRId32, 
-                              m_name ? m_name : unknown_str, 
-                              m_file ? m_file : unknown_str, 
-                              m_line);
+    current_offset += SPVM_API_format_stack_trace_line(new_exception_bytes + current_offset, (const char*)caller_info_stack[offset + 0], (const char*)caller_info_stack[offset + 1], (int32_t)(intptr_t)caller_info_stack[offset + 2], max_func_len, max_file_len, unknown_str);
   }
 
   return obj_new_exception;
