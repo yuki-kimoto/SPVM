@@ -7271,7 +7271,7 @@ static int32_t SPVM_API_strnlen(const char *s, int32_t maxlen) {
 }
 
 /* Helper to format a single line of the stack trace */
-static int32_t SPVM_API_format_stack_trace_line(char* buffer, const char* func_name, const char* file, int32_t line) {
+static int32_t SPVM_API_build_caller_stack_line(char* buffer, const char* func_name, const char* file, int32_t line) {
   
   if (buffer) {
     return sprintf(buffer, "\n  %s at %s line %" PRId32, func_name, file, line);
@@ -7312,12 +7312,12 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   int32_t total_length = exception_length;
   
   // Origin
-  total_length += SPVM_API_format_stack_trace_line(NULL, func_name_orig, file_orig, line_orig);
+  total_length += SPVM_API_build_caller_stack_line(NULL, func_name_orig, file_orig, line_orig);
 
   // Callers
   for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
     int32_t offset = d * record_size;
-    total_length += SPVM_API_format_stack_trace_line(NULL, (const char*)caller_info_stack[offset + 0], (const char*)caller_info_stack[offset + 1], (int32_t)(intptr_t)caller_info_stack[offset + 2]);
+    total_length += SPVM_API_build_caller_stack_line(NULL, (const char*)caller_info_stack[offset + 0], (const char*)caller_info_stack[offset + 1], (int32_t)(intptr_t)caller_info_stack[offset + 2]);
   }
 
   /* 2. Allocate */
@@ -7329,12 +7329,12 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   int32_t current_offset = exception_length;
 
   // Write Origin
-  current_offset += SPVM_API_format_stack_trace_line(new_exception_bytes + current_offset, func_name_orig, file_orig, line_orig);
+  current_offset += SPVM_API_build_caller_stack_line(new_exception_bytes + current_offset, func_name_orig, file_orig, line_orig);
 
   // Write Callers
   for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
     int32_t offset = d * record_size;
-    current_offset += SPVM_API_format_stack_trace_line(new_exception_bytes + current_offset, (const char*)caller_info_stack[offset + 0], (const char*)caller_info_stack[offset + 1], (int32_t)(intptr_t)caller_info_stack[offset + 2]);
+    current_offset += SPVM_API_build_caller_stack_line(new_exception_bytes + current_offset, (const char*)caller_info_stack[offset + 0], (const char*)caller_info_stack[offset + 1], (int32_t)(intptr_t)caller_info_stack[offset + 2]);
   }
 
   return obj_new_exception;
