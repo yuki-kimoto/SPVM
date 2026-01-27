@@ -7297,17 +7297,16 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   void** caller_info_stack = (void**)stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].oval;
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
 
-  const int32_t max_func_len = 511;
-  const int32_t max_file_len = 1023;
-  const char* const unknown_str = "unknown";
-
-  /* Calculate the target depth */
+  /* Calculate the target depth with clamping */
   int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
-  int64_t target_call_depth_64 = (int64_t)current_call_depth + level;
-  int32_t target_call_depth;
-  if (target_call_depth_64 < 0) { target_call_depth = 0; }
-  else if (target_call_depth_64 > exception_call_depth) { target_call_depth = exception_call_depth; }
-  else { target_call_depth = (int32_t)target_call_depth_64; }
+  int32_t target_call_depth = current_call_depth + level;
+  
+  if (target_call_depth < 0) {
+    target_call_depth = 0;
+  }
+  else if (target_call_depth > exception_call_depth) {
+    target_call_depth = exception_call_depth;
+  }
 
   /* 1. Calculate total length */
   int32_t total_length = exception_length;
