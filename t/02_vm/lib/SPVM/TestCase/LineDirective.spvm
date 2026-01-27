@@ -15,8 +15,9 @@ class TestCase::LineDirective {
     
     eval { die; }
     
-    unless (Fn->contains($@, "/Foo/Bar.spvm")) {
-      diag $@;
+    my $error = Fn->build_exception_message;
+    unless (Fn->contains($error, "/Foo/Bar.spvm")) {
+      diag $error;
       return 0;
     }
     

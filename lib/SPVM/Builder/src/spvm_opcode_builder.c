@@ -1437,7 +1437,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         }
                       }
                       
-                      SPVM_OPCODE_BUILDER_push_opcode_on_exception(compiler, opcode_list, eval_block_stack->length, catch_on_exception_opcode_index_stack, return_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+                      int32_t no_die = 1;
+                      SPVM_OPCODE_BUILDER_push_opcode_on_exception(compiler, opcode_list, eval_block_stack->length, catch_on_exception_opcode_index_stack, return_on_exception_opcode_index_stack, method->op_method, op_cur->line, no_die);
                       
                       if (!SPVM_TYPE_is_void_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode_get_stack);
@@ -5465,7 +5466,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
             }
             
             if (check_exception) {
-              SPVM_OPCODE_BUILDER_push_opcode_on_exception(compiler, opcode_list, eval_block_stack->length, catch_on_exception_opcode_index_stack, return_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+              int32_t no_die = 0;
+              SPVM_OPCODE_BUILDER_push_opcode_on_exception(compiler, opcode_list, eval_block_stack->length, catch_on_exception_opcode_index_stack, return_on_exception_opcode_index_stack, method->op_method, op_cur->line, no_die);
             }
             
             // [END]Postorder traversal position
@@ -5539,7 +5541,8 @@ void SPVM_OPCODE_BUILDER_push_opcode_on_exception(
   SPVM_LIST* catch_on_exception_opcode_index_stack,
   SPVM_LIST* return_on_exception_opcode_index_stack,
   SPVM_OP* op_method,
-  int32_t line
+  int32_t line,
+  int32_t no_die
 )
 {
   SPVM_METHOD* method = op_method->uv.method;
@@ -5550,6 +5553,8 @@ void SPVM_OPCODE_BUILDER_push_opcode_on_exception(
     
     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CATCH_ON_EXCEPTION);
     
+    opcode.operand1 = no_die;
+    
     opcode.operand2 = line;
     
     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
@@ -5557,12 +5562,17 @@ void SPVM_OPCODE_BUILDER_push_opcode_on_exception(
     int32_t opcode_index = opcode_list->length - 1;
     
     SPVM_LIST_push(catch_on_exception_opcode_index_stack, (void*)(intptr_t)opcode_index);
+    
   }
   else {
     SPVM_OPCODE opcode = {0};
     
     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_ON_EXCEPTION);
+    
+    opcode.operand1 = no_die;
+    
     opcode.operand2 = line;
+    
     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
     
     int32_t opcode_index = opcode_list->length - 1;

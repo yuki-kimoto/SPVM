@@ -697,15 +697,19 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_CATCH_ON_EXCEPTION: {
+        int32_t no_die = opcode->operand1;
         int32_t line = opcode->operand2;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error_id, 0)) {\n"
                                               "    eval_error_id = error_id;\n"
-                                              "    error_id = 0;\n"
-                                              "    env->die_with_string(env, stack, env->get_exception(env, stack), current_method_abs_name, current_file, ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, line);
-        SPVM_STRING_BUFFER_add(string_buffer,  ");\n"
-                                              "    goto L");
+                                              "    error_id = 0;\n");
+        if (!no_die) {
+          SPVM_STRING_BUFFER_add(string_buffer, "    env->die_with_string(env, stack, env->get_exception(env, stack), current_method_abs_name, current_file, ");
+          SPVM_STRING_BUFFER_add_int(string_buffer, line);
+          SPVM_STRING_BUFFER_add(string_buffer,  ");\n");
+        }
+        
+        SPVM_STRING_BUFFER_add(string_buffer,  "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -713,13 +717,17 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_RETURN_ON_EXCEPTION: {
+        int32_t no_die = opcode->operand1;
         int32_t line = opcode->operand2;
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error_id, 0)) {\n"
-                                              "    env->die_with_string(env, stack, env->get_exception(env, stack), current_method_abs_name, current_file, ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, line);
-        SPVM_STRING_BUFFER_add(string_buffer,  ");\n"
-                                              "    goto L");
+        SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error_id, 0)) {\n");
+        if (!no_die) {
+          SPVM_STRING_BUFFER_add(string_buffer, "    env->die_with_string(env, stack, env->get_exception(env, stack), current_method_abs_name, current_file, ");
+          SPVM_STRING_BUFFER_add_int(string_buffer, line);
+          SPVM_STRING_BUFFER_add(string_buffer,  ");\n");
+        }
+        
+        SPVM_STRING_BUFFER_add(string_buffer,  "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
                                               "  }\n");

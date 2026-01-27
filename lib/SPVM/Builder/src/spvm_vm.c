@@ -136,10 +136,13 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_CATCH_ON_EXCEPTION: {
         if (__builtin_expect(error_id, 0)) {
+          int32_t no_die = opcode->operand1;
           int32_t line = opcode->operand2;
           eval_error_id = error_id;
           error_id = 0;
-          SPVM_API_die_with_string(env, stack, SPVM_API_get_exception(env, stack), current_method->abs_name, current_method->current_basic_type->file, line);
+          if (!no_die) {
+            SPVM_API_die_with_string(env, stack, SPVM_API_get_exception(env, stack), current_method->abs_name, current_method->current_basic_type->file, line);
+          }
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -147,8 +150,11 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_RETURN_ON_EXCEPTION: {
         if (__builtin_expect(error_id, 0)) {
+          int32_t no_die = opcode->operand1;
           int32_t line = opcode->operand2;
-          SPVM_API_die_with_string(env, stack, SPVM_API_get_exception(env, stack), current_method->abs_name, current_method->current_basic_type->file, line);
+          if (!no_die) {
+            SPVM_API_die_with_string(env, stack, SPVM_API_get_exception(env, stack), current_method->abs_name, current_method->current_basic_type->file, line);
+          }
           opcode_rel_index = opcode->operand0; 
           continue;
         }
