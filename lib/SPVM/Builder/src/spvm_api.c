@@ -7317,7 +7317,11 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   // Callers
   for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
     int32_t offset = d * record_size;
-    total_length += SPVM_API_build_caller_stack_line(NULL, (const char*)caller_info_stack[offset + 0], (const char*)caller_info_stack[offset + 1], (int32_t)(intptr_t)caller_info_stack[offset + 2]);
+    const char* func_name = (const char*)caller_info_stack[offset + 0];
+    const char* file = (const char*)caller_info_stack[offset + 1];
+    int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2];
+    
+    total_length += SPVM_API_build_caller_stack_line(NULL, func_name, file, line);
   }
 
   /* 2. Allocate */
@@ -7334,7 +7338,11 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   // Write Callers
   for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
     int32_t offset = d * record_size;
-    current_offset += SPVM_API_build_caller_stack_line(new_exception_bytes + current_offset, (const char*)caller_info_stack[offset + 0], (const char*)caller_info_stack[offset + 1], (int32_t)(intptr_t)caller_info_stack[offset + 2]);
+    const char* func_name = (const char*)caller_info_stack[offset + 0];
+    const char* file = (const char*)caller_info_stack[offset + 1];
+    int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2];
+    
+    current_offset += SPVM_API_build_caller_stack_line(new_exception_bytes + current_offset, func_name, file, line);
   }
 
   return obj_new_exception;
