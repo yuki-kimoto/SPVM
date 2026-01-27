@@ -702,9 +702,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error_id, 0)) {\n"
                                               "    eval_error_id = error_id;\n"
                                               "    error_id = 0;\n"
-                                              "    env->set_exception(env, stack, env->new_stack_trace_no_mortal(env, stack, env->get_exception(env, stack), current_method, line = ");
+                                              "    env->die_with_string(env, stack, env->get_exception(env, stack), current_method_abs_name, current_file, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
-        SPVM_STRING_BUFFER_add(string_buffer,  "));\n"
+        SPVM_STRING_BUFFER_add(string_buffer,  ");\n"
                                               "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer,  opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -716,9 +716,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t line = opcode->operand2;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (__builtin_expect(error_id, 0)) {\n"
-                                              "    env->set_exception(env, stack, env->new_stack_trace_no_mortal(env, stack, env->get_exception(env, stack), current_method, line = ");
+                                              "    env->die_with_string(env, stack, env->get_exception(env, stack), current_method_abs_name, current_file, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
-        SPVM_STRING_BUFFER_add(string_buffer,  "));\n"
+        SPVM_STRING_BUFFER_add(string_buffer,  ");\n"
                                               "    goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
