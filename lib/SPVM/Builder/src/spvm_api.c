@@ -7237,6 +7237,12 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   
   SPVM_API_set_exception(env, stack, exception);
   
+  /* Set dummy exception metadata to the stack indices for compatibility */
+  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval = NULL;
+  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].oval = NULL;
+  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival = 0;
+  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH].ival = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
+  
   return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
 }
 
