@@ -14,6 +14,10 @@ use File::Basename 'basename';
 
 my $file = basename $0;
 
+# Start objects count
+my $api = SPVM::api();
+my $start_memory_blocks_count = $api->get_memory_blocks_count;
+
 # Exception
 {
   eval { SPVM::TestCase::Exception->exception_zero_divide_int() }; my $line = __LINE__;
@@ -109,5 +113,10 @@ ok($@);
 }
 
 ok(SPVM::TestCase::Exception->eval_block);
+
+# All object is freed
+$api->destroy_runtime_permanent_vars;
+my $end_memory_blocks_count = $api->get_memory_blocks_count;
+is($end_memory_blocks_count, $start_memory_blocks_count);
 
 done_testing;

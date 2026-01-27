@@ -1954,6 +1954,8 @@ _xs_call_method(...)
       (void)hv_store(hv_error_ret, "id", strlen("id"), SvREFCNT_inc(sv_error_id), 0);
     }
     
+    int32_t scope_id = env->enter_scope(env, stack);
+    
     /* Reconstruct the exception message including the SPVM stack trace */
     /* level = 0 starts from the caller of this XS function in the SPVM world */
     void* obj_exception_with_stack_trace = env->build_exception_message(env, stack, 0);
@@ -1963,6 +1965,8 @@ _xs_call_method(...)
     
     /* Convert the SPVM string to a Perl SV */
     SV* sv_exception = sv_2mortal(newSVpvn(exception_chars_with_stack_trace, exception_with_stack_trace_length));
+    
+    env->leave_scope(env, stack, scope_id);
     
     /* Rethrow the exception to the Perl world using croak. 
        The SPVM stack trace is followed by the Perl XS location information.
