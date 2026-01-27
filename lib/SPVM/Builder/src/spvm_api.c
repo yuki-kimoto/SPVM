@@ -371,6 +371,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_caller_no_mortal,
     SPVM_API_caller,
     SPVM_API_die_v2,
+    SPVM_API_die_with_string,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -7239,28 +7240,34 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
 }
 
-int32_t SPVM_API_die_v2(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, const char* func_name, const char* file, int32_t line, ...) {
+int32_t SPVM_API_die_v2(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...) {
   
   va_list args;
   
-  /* Calculate the required length for the exception message */
+  /* Calculate the required length */
   va_start(args, line);
-  int32_t length = vsnprintf(NULL, 0, message, args);
+  int32_t length = vsnprintf(NULL, 0, exception_format, args);
   va_end(args);
 
-  /* Create the exception message with the exact length */
+  /* Create the exception exception_format */
   void* obj_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, length);
   char* exception = (char*)SPVM_API_get_chars(env, stack, obj_exception);
 
-  /* Write the formatted string to the allocated memory */
+  /* Write the formatted string */
   va_start(args, line);
-  vsnprintf(exception, length + 1, message, args);
+  vsnprintf(exception, length + 1, exception_format, args);
   va_end(args);
 
+  /* Call the common logic */
+  return SPVM_API_die_with_string(env, stack, obj_exception, func_name, file, line);
+}
+
+int32_t SPVM_API_die_with_string(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_exception, const char* func_name, const char* file, int32_t line) {
+  
   /* Set the exception object */
   SPVM_API_set_exception(env, stack, obj_exception);
 
-  /* Set exception metadata to the stack indices after setting the exception object */
+  /* Set exception metadata to the stack indices */
   stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval = (void*)func_name;
   stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].oval = (void*)file;
   stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival = line;
@@ -7268,3 +7275,4 @@ int32_t SPVM_API_die_v2(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, c
 
   return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
 }
+
