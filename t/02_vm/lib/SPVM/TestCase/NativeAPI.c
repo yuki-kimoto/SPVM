@@ -4695,7 +4695,8 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
       return 0;
     }
     
-    const char* exception = env->get_chars(env, stack, env->get_exception(env, stack));
+    void* obj_exception = env->build_exception_message(env, stack, 0);
+    const char* exception = env->get_chars(env, stack, obj_exception);
     
     if (!strstr(exception, "abc")) {
       stack[0].ival = 0;
@@ -4731,7 +4732,8 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
       return 0;
     }
     
-    const char* exception = env->get_chars(env, stack, env->get_exception(env, stack));
+    void* obj_exception = env->build_exception_message(env, stack, 0);
+    const char* exception = env->get_chars(env, stack, obj_exception);
     
     if (!strstr(exception, "abcd")) {
       stack[0].ival = 0;
