@@ -1877,6 +1877,30 @@ Exceptions:
 
 If the caller stack is empty, an exception is thrown.
 
+=head2 build_exception_message
+
+C<static method build_exception_message : string ($level : int = 0);>
+
+Reconstructs the full exception message, including a stack trace, using the metadata stored in the runtime stack.
+
+The I<level> argument specifies the starting depth of the stack trace relative to the current call. For example, 0 starts from the caller of this method.
+
+This method calls the L<build_exception_message|SPVM::Document::NativeAPI/"build_exception_message"> native API.
+
+Returns the newly created string object.
+
+B<Examples:>
+
+  eval {
+    MyModule->do_something;
+  };
+  
+  if ($@) {
+    # Reconstruct the message with a stack trace
+    my $full_message = Fn->build_exception_message;
+    warn $full_message;
+  }
+
 =head1 See Also
 
 =over 2

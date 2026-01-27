@@ -1184,3 +1184,24 @@ int32_t SPVM__Fn__get_current_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   return 0;
 }
+
+int32_t SPVM__Fn__build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  /* Get the level argument from stack[0] */
+  int32_t level = stack[0].ival;
+  
+  /* Adjustment for the current call:
+     Since SPVM__Fn__build_exception_message itself is a method call, 
+     we need to increment the level by 1 to skip this method and start 
+     the stack trace from the actual caller's perspective.
+  */
+  int32_t adjusted_level = level + 1;
+  
+  /* Call the Native API with the adjusted level */
+  void* obj_message = env->build_exception_message(env, stack, adjusted_level);
+  
+  /* Set the result to stack[0] */
+  stack[0].oval = obj_message;
+  
+  return 0;
+}
