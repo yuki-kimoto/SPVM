@@ -7271,17 +7271,15 @@ static int32_t SPVM_API_strnlen(const char *s, int32_t maxlen) {
 }
 
 /* Helper to format a single line of the stack trace */
-static int32_t SPVM_API_format_stack_trace_line(char* buffer, const char* name, const char* file, int32_t line, int32_t max_func_len, int32_t max_file_len, const char* unknown_str) {
-  const char* final_name = name ? name : unknown_str;
-  const char* final_file = file ? file : unknown_str;
+static int32_t SPVM_API_format_stack_trace_line(char* buffer, const char* func_name, const char* file, int32_t line) {
   
   if (buffer) {
-    return sprintf(buffer, "\n  %s at %s line %" PRId32, final_name, final_file, line);
+    return sprintf(buffer, "\n  %s at %s line %" PRId32, func_name, file, line);
   }
   else {
     char tmp_line[64];
     snprintf(tmp_line, sizeof(tmp_line), "%" PRId32, line);
-    return (int32_t)(strlen("\n  ") + strlen(final_name) + strlen(" at ") + strlen(final_file) + strlen(" line ") + strlen(tmp_line));
+    return (int32_t)(strlen("\n  ") + strlen(func_name) + strlen(" at ") + strlen(file) + strlen(" line ") + strlen(tmp_line));
   }
 }
 
@@ -7315,12 +7313,12 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   int32_t total_length = exception_length;
   
   // Origin
-  total_length += SPVM_API_format_stack_trace_line(NULL, func_name_orig, file_orig, line_orig, max_func_len, max_file_len, unknown_str);
+  total_length += SPVM_API_format_stack_trace_line(NULL, func_name_orig, file_orig, line_orig);
 
   // Callers
   for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
     int32_t offset = d * record_size;
-    total_length += SPVM_API_format_stack_trace_line(NULL, (const char*)caller_info_stack[offset + 0], (const char*)caller_info_stack[offset + 1], (int32_t)(intptr_t)caller_info_stack[offset + 2], max_func_len, max_file_len, unknown_str);
+    total_length += SPVM_API_format_stack_trace_line(NULL, (const char*)caller_info_stack[offset + 0], (const char*)caller_info_stack[offset + 1], (int32_t)(intptr_t)caller_info_stack[offset + 2]);
   }
 
   /* 2. Allocate */
@@ -7332,12 +7330,12 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   int32_t current_offset = exception_length;
 
   // Write Origin
-  current_offset += SPVM_API_format_stack_trace_line(new_exception_bytes + current_offset, func_name_orig, file_orig, line_orig, max_func_len, max_file_len, unknown_str);
+  current_offset += SPVM_API_format_stack_trace_line(new_exception_bytes + current_offset, func_name_orig, file_orig, line_orig);
 
   // Write Callers
   for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
     int32_t offset = d * record_size;
-    current_offset += SPVM_API_format_stack_trace_line(new_exception_bytes + current_offset, (const char*)caller_info_stack[offset + 0], (const char*)caller_info_stack[offset + 1], (int32_t)(intptr_t)caller_info_stack[offset + 2], max_func_len, max_file_len, unknown_str);
+    current_offset += SPVM_API_format_stack_trace_line(new_exception_bytes + current_offset, (const char*)caller_info_stack[offset + 0], (const char*)caller_info_stack[offset + 1], (int32_t)(intptr_t)caller_info_stack[offset + 2]);
   }
 
   return obj_new_exception;
