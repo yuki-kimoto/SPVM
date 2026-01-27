@@ -7136,37 +7136,36 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   
   va_list args;
   
-  char tmp_buffer[SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE] = {0};
-  char* message_with_line = tmp_buffer;
-  int32_t message_length = strlen(message);
-  if (message_length > 255) {
-    message_length = 255;
-  }
-  memcpy(message_with_line, message, message_length);
-  const char* place = "\n    %s at %s line %d";
-  memcpy(message_with_line + message_length, place, strlen(place));
-  message_with_line[message_length + strlen(place)] = '\0';
-  
-  assert(message_length + strlen(place) <= SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE);
-  
-  void* exception = SPVM_API_new_string_no_mortal(env, stack, NULL, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE);
-  char* exception_chars = (char*)SPVM_API_get_chars(env, stack, exception);
-  
+  /* 1. Calculate the required length for the message */
   va_start(args, message);
-  vsnprintf(exception_chars, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, message_with_line, args);
+  int32_t length = vsnprintf(NULL, 0, message, args);
   va_end(args);
+
+  /* 2. Create the exception string object */
+  void* obj_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, length);
+  char* exception_chars = (char*)SPVM_API_get_chars(env, stack, obj_exception);
+
+  /* 3. Write the formatted message */
+  va_start(args, message);
+  vsnprintf(exception_chars, length + 1, message, args);
   
-  SPVM_API_shorten(env, stack, exception, strlen(exception_chars));
+  /* 4. Extract the remaining metadata (func_name, file, line) */
+  const char* func_name = va_arg(args, const char*);
+  const char* file      = va_arg(args, const char*);
+  int32_t line          = va_arg(args, int32_t);
   
-  SPVM_API_set_exception(env, stack, exception);
-  
-  /* Set dummy exception metadata to the stack indices for compatibility */
-  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval = NULL;
-  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].oval = NULL;
-  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival = 0;
-  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH].ival = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
-  
-  return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  va_end(args);
+
+  /* 5. Touch pointers to ensure they are valid and prevent optimization using volatile */
+  if (func_name) {
+    volatile char c = *func_name;
+  }
+  if (file) {
+    volatile char c = *file;
+  }
+
+  /* 6. Delegate to die_with_string for common exception setting logic */
+  return SPVM_API_die_with_string(env, stack, obj_exception, func_name, file, line);
 }
 
 int32_t SPVM_API_die_v2(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...) {
