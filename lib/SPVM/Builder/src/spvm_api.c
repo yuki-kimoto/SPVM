@@ -370,6 +370,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_current_method,
     SPVM_API_caller_no_mortal,
     SPVM_API_caller,
+    SPVM_API_die_v2,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));

@@ -1,3 +1,7 @@
+0.990119 2026-01-27
+  [New Features]
+    * Add die_v2 to SPVM_ENV to support optimized exception handling with metadata, which will eventually replace die as an alias after all native modules are migrated.
+    
 0.990118 2026-01-26
   [New Features]
     * Added get_current_method Native API to retrieve the currently executing method from the caller stack.

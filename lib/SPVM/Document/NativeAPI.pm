@@ -2957,7 +2957,33 @@ Examples:
 C<void* (*caller_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);>
 
 This is the same as L</"caller">, but the returned object is not pushed to the mortal stack.
-  
+
+=head2 die_v2
+
+C<int32_t (*die_v2)(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, const char* func_name, const char* file, int32_t line, ...);>
+
+Sets an exception with a formatted message and its metadata, then returns a basic type ID of an error class.
+
+The formatted message is created from I<message> and the following variadic arguments C<...>.
+
+The required memory for the exception message is calculated automatically using C<vsnprintf>, and a string object is created with the exact length.
+
+The metadata (I<func_name>, I<file>, and I<line>) is stored in the specific indices of the runtime stack I<stack> after the exception object is set.
+
+* I<message> is a format string.
+
+* I<func_name> is the function name where the error occurred (usually the absolute name of the method).
+
+* I<file> is the file name.
+
+* I<line> is the line number.
+
+This function always returns L<SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS|SPVM::Document::NativeAPI/"Basic Type IDs of Error Classes">.
+
+B<Examples:>
+
+  return env->die_v2(env, stack, "The file \"%s\" not found.", func_name, file, line, path);
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3233,6 +3259,7 @@ Native APIs have its IDs.
   268 get_current_method
   269 caller_no_mortal
   270 caller
+  271 die_v2
   
 =head1 Constant Values
 

@@ -368,6 +368,7 @@ struct spvm_env {
   void* (*get_current_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
   void* (*caller_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
   void* (*caller)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
+  int32_t (*die_v2)(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, const char* func_name, const char* file, int32_t line, ...);
 };
 
 struct spvm_env_api {
