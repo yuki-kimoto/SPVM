@@ -7289,9 +7289,9 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   const char* exception_bytes = SPVM_API_get_chars(env, stack, obj_exception);
   int32_t exception_length = SPVM_API_length(env, stack, obj_exception);
 
-  const char* func_name_orig = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval;
-  const char* file_orig = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].oval;
-  int32_t line_orig = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival;
+  const char* exception_func_name = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval;
+  const char* exception_file = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].oval;
+  int32_t exception_line = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival;
   int32_t exception_call_depth = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH].ival;
 
   void** caller_info_stack = (void**)stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].oval;
@@ -7312,7 +7312,7 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   int32_t total_length = exception_length;
   
   // Origin
-  total_length += SPVM_API_build_caller_stack_line(NULL, func_name_orig, file_orig, line_orig);
+  total_length += SPVM_API_build_caller_stack_line(NULL, exception_func_name, exception_file, exception_line);
 
   // Callers
   for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
@@ -7333,7 +7333,7 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   int32_t current_offset = exception_length;
 
   // Write Origin
-  current_offset += SPVM_API_build_caller_stack_line(new_exception_bytes + current_offset, func_name_orig, file_orig, line_orig);
+  current_offset += SPVM_API_build_caller_stack_line(new_exception_bytes + current_offset, exception_func_name, exception_file, exception_line);
 
   // Write Callers
   for (int32_t d = exception_call_depth - 1; d >= target_call_depth; d--) {
