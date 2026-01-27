@@ -8,6 +8,8 @@
     * To get the exception message with a full stack trace, use the Fn#build_exception_message method.
     * Exception messages are now constructed using the internal caller information stack instead of being concatenated during the exception propagation process.
     * This change significantly improves performance by removing the overhead of string concatenation when an exception is caught by an "eval" block.
+    * Binary compatibility is broken due to changes in the exception handling logic within the VM and Precompile.
+    * This includes updates to opcode definitions and their operands. All SPVM modules and executables must be recompiled.
     
 0.990118 2026-01-26
   [New Features]
