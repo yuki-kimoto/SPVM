@@ -15,7 +15,7 @@ int32_t SPVM__Native__API__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_api_env = stack[0].oval;
   
   if (!obj_api_env) {
-    return env->die(env, stack, "The runtime environemnt $env must be defined.", __func__, __FILE__, __LINE__);
+    return env->die_v2(env, stack, "The runtime environemnt $env must be defined.", __func__, __FILE__, __LINE__);
   }
   
   SPVM_ENV* api_env = env->get_pointer(env, stack, obj_api_env);
@@ -26,7 +26,7 @@ int32_t SPVM__Native__API__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_api_stack = stack[1].oval;
   
   if (!obj_api_stack) {
-    return env->die(env, stack, "The runtime stack $stack must be defined.", __func__, __FILE__, __LINE__);
+    return env->die_v2(env, stack, "The runtime stack $stack must be defined.", __func__, __FILE__, __LINE__);
   }
   
   SPVM_VALUE* api_stack = env->get_pointer(env, stack, obj_api_stack);
@@ -37,7 +37,7 @@ int32_t SPVM__Native__API__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t is_binary_compatible_stack = env->is_binary_compatible_stack(api_env, api_stack);
   
   if (!is_binary_compatible_stack) {
-    return env->die(env, stack, "The runtime stack $stack is not compatible with the runtime environemnt $env.", __func__, __FILE__, __LINE__);
+    return env->die_v2(env, stack, "The runtime stack $stack is not compatible with the runtime environemnt $env.", __func__, __FILE__, __LINE__);
   }
   
   stack[0].oval = obj_self;

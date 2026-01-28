@@ -773,26 +773,26 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
       error_id = env->set_command_info_program_name(env, stack, obj_program_name);
       
       if (error_id) {
-        env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+        env->die_v2(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
         goto END_OF_FUNC;
       }
       
       error_id = env->set_command_info_argv(env, stack, obj_argv);
       
       if (error_id) {
-        env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+        env->die_v2(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
         goto END_OF_FUNC;
       }
       
       error_id = env->set_command_info_basetime(env, stack, base_time);
       if (error_id) {
-        env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+        env->die_v2(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
         goto END_OF_FUNC;
       }
       
       error_id = env->set_command_info_warning(env, stack, $warning);
       if (error_id) {
-        env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+        env->die_v2(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
         goto END_OF_FUNC;
       }
     }
@@ -805,7 +805,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   error_id = env->check_bootstrap_method(env, stack, class_name);
   
   if (error_id) {
-    env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+    env->die_v2(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
     goto END_OF_FUNC;
   }
   
@@ -820,7 +820,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   int32_t args_width = 0;
   error_id = env->call_method(env, stack, method, args_width, __func__, __FILE__, __LINE__);
   if (error_id) {
-    error_id = env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
+    error_id = env->die_v2(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, __FILE__, __LINE__);
     goto END_OF_FUNC;
   }
   

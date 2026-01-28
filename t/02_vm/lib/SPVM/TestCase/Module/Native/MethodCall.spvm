@@ -786,6 +786,7 @@ class TestCase::Module::Native::MethodCall {
           eval { $class_method_call->call([(object)Fn->BYTE_MIN]); }
           
           unless (Fn->contains($@, "TestCase::Module::Native::MethodCall#add_byte method")) {
+            diag;
             return 0;
           }
         }
@@ -798,13 +799,12 @@ class TestCase::Module::Native::MethodCall {
           eval { $class_method_call->call([(object)Fn->BYTE_MIN, 1, 2]); }
           
           unless (Fn->contains($@, "TestCase::Module::Native::MethodCall#add_byte method")) {
+            diag $@;
             return 0;
           }
         }
       }
     }
-    
-    $@ = undef;
     
     return 1;
   }

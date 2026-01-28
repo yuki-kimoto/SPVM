@@ -238,7 +238,7 @@ int32_t SPVM__Native__BasicType__get_class_var_by_index(SPVM_ENV* env, SPVM_VALU
   
   void* class_var = env->api->basic_type->get_class_var_by_index(runtime, self, class_var_index);
   if (!class_var) {
-    return env->die(env, stack, "The class variable is not found.", __func__, FILE_NAME, __LINE__);
+    return env->die_v2(env, stack, "The class variable is not found.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_address_class_var = env->new_pointer_object_by_name(env, stack, "Address", class_var, &error_id, __func__, FILE_NAME, __LINE__);
@@ -268,7 +268,7 @@ int32_t SPVM__Native__BasicType__get_class_var_by_name(SPVM_ENV* env, SPVM_VALUE
   void* obj_class_var_name = stack[1].oval;
   
   if (!obj_class_var_name) {
-    return env->die(env, stack, "The class variable name must be specified.", __func__, FILE_NAME, __LINE__);
+    return env->die_v2(env, stack, "The class variable name must be specified.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* class_var_name = env->get_chars(env, stack, obj_class_var_name);
@@ -280,7 +280,7 @@ int32_t SPVM__Native__BasicType__get_class_var_by_name(SPVM_ENV* env, SPVM_VALUE
   
   void* class_var = env->api->basic_type->get_class_var_by_name(runtime, self, class_var_name);
   if (!class_var) {
-    return env->die(env, stack, "The class variable is not found.", __func__, FILE_NAME, __LINE__);
+    return env->die_v2(env, stack, "The class variable is not found.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_address_class_var = env->new_pointer_object_by_name(env, stack, "Address", class_var, &error_id, __func__, FILE_NAME, __LINE__);
@@ -336,7 +336,7 @@ int32_t SPVM__Native__BasicType__get_field_by_index(SPVM_ENV* env, SPVM_VALUE* s
   
   void* field = env->api->basic_type->get_field_by_index(runtime, self, field_index);
   if (!field) {
-    return env->die(env, stack, "The class variable is not found.", __func__, FILE_NAME, __LINE__);
+    return env->die_v2(env, stack, "The class variable is not found.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_address_field = env->new_pointer_object_by_name(env, stack, "Address", field, &error_id, __func__, FILE_NAME, __LINE__);
@@ -366,7 +366,7 @@ int32_t SPVM__Native__BasicType__get_field_by_name(SPVM_ENV* env, SPVM_VALUE* st
   void* obj_field_name = stack[1].oval;
   
   if (!obj_field_name) {
-    return env->die(env, stack, "The field name must be specified.", __func__, FILE_NAME, __LINE__);
+    return env->die_v2(env, stack, "The field name must be specified.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* field_name = env->get_chars(env, stack, obj_field_name);
@@ -378,7 +378,7 @@ int32_t SPVM__Native__BasicType__get_field_by_name(SPVM_ENV* env, SPVM_VALUE* st
   
   void* field = env->api->basic_type->get_field_by_name(runtime, self, field_name);
   if (!field) {
-    return env->die(env, stack, "The field is not found.", __func__, FILE_NAME, __LINE__);
+    return env->die_v2(env, stack, "The field is not found.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_address_field = env->new_pointer_object_by_name(env, stack, "Address", field, &error_id, __func__, FILE_NAME, __LINE__);
@@ -434,7 +434,7 @@ int32_t SPVM__Native__BasicType__get_method_by_index(SPVM_ENV* env, SPVM_VALUE* 
   
   void* method = env->api->basic_type->get_method_by_index(runtime, self, method_index);
   if (!method) {
-    return env->die(env, stack, "The method is not found.", __func__, FILE_NAME, __LINE__);
+    return env->die_v2(env, stack, "The method is not found.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_address_method = env->new_pointer_object_by_name(env, stack, "Address", method, &error_id, __func__, FILE_NAME, __LINE__);
@@ -464,7 +464,7 @@ int32_t SPVM__Native__BasicType__get_method_by_name(SPVM_ENV* env, SPVM_VALUE* s
   void* obj_method_name = stack[1].oval;
   
   if (!obj_method_name) {
-    return env->die(env, stack, "The method name must be specified.", __func__, FILE_NAME, __LINE__);
+    return env->die_v2(env, stack, "The method name must be specified.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* method_name = env->get_chars(env, stack, obj_method_name);
@@ -476,7 +476,7 @@ int32_t SPVM__Native__BasicType__get_method_by_name(SPVM_ENV* env, SPVM_VALUE* s
   
   void* method = env->api->basic_type->get_method_by_name(runtime, self, method_name);
   if (!method) {
-    return env->die(env, stack, "The method is not found.", __func__, FILE_NAME, __LINE__);
+    return env->die_v2(env, stack, "The method is not found.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_address_method = env->new_pointer_object_by_name(env, stack, "Address", method, &error_id, __func__, FILE_NAME, __LINE__);
@@ -532,7 +532,7 @@ int32_t SPVM__Native__BasicType__get_anon_basic_type_by_index(SPVM_ENV* env, SPV
   
   void* anon_basic_type = env->api->basic_type->get_anon_basic_type_by_index(runtime, self, anon_basic_type_index);
   if (!anon_basic_type) {
-    return env->die(env, stack, "The basic type is not found.", __func__, FILE_NAME, __LINE__);
+    return env->die_v2(env, stack, "The basic type is not found.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_address_anon_basic_type = env->new_pointer_object_by_name(env, stack, "Address", anon_basic_type, &error_id, __func__, FILE_NAME, __LINE__);

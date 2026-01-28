@@ -2056,10 +2056,10 @@ The metadata is stored in specific indices of the runtime stack I<stack> to be u
 B<Examples:>
 
   // "The value must be 3" is created, and metadata is captured from the last 3 arguments.
-  return env->die(env, stack, "The value must be %d.", 3, __func__, FILE_NAME, __LINE__);
+  return env->die_v2(env, stack, "The value must be %d.", 3, __func__, FILE_NAME, __LINE__);
 
   // Even without format specifiers, metadata must be provided.
-  return env->die(env, stack, "An error occurred.", __func__, FILE_NAME, __LINE__);
+  return env->die_v2(env, stack, "An error occurred.", __func__, FILE_NAME, __LINE__);
 
 =head2 get_exception
 

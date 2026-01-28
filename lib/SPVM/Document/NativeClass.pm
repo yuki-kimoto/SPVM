@@ -408,7 +408,7 @@ A message can be set to L<exception variable|SPVM::Document::Language::Exception
 
 L<die|SPVM::Document::NativeAPI/"die"> native API can be used to throw an exception easily.
 
-  return env->die("The value must be %d.", 3, __func__, FILE_NAME, __LINE__);
+  return env->die_v2("The value must be %d.", 3, __func__, FILE_NAME, __LINE__);
 
 =head2 Pointer Class
 

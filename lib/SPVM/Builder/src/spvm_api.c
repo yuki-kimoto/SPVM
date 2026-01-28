@@ -7066,7 +7066,7 @@ void* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level,
   
   /* Check if level is negative */
   if (level < 0) {
-    *error_id = env->die(env, stack, "The level must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    *error_id = env->die_v2(env, stack, "The level must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
     return NULL;
   }
   
@@ -7075,7 +7075,7 @@ void* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level,
   
   /* Check if the depth is out of range */
   if (target_call_depth < 0) {
-    *error_id = env->die(env, stack, "The level exceeds the call depth.", __func__, FILE_NAME, __LINE__);
+    *error_id = env->die_v2(env, stack, "The level exceeds the call depth.", __func__, FILE_NAME, __LINE__);
     return NULL;
   }
   
@@ -7094,7 +7094,7 @@ void* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level,
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_CALLER_INFO_CLASS);
   void* obj_caller_info = env->new_object_no_mortal(env, stack, basic_type);
   if (!obj_caller_info) {
-    *error_id = env->die(env, stack, "Failed to create a new CallerInfo object.", __func__, FILE_NAME, __LINE__);
+    *error_id = env->die_v2(env, stack, "Failed to create a new CallerInfo object.", __func__, FILE_NAME, __LINE__);
     return NULL;
   }
   if (*error_id) { return NULL; }
