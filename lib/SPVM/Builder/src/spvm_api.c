@@ -7157,10 +7157,14 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
 
   /* 5. Touch pointers to ensure they are valid and prevent optimization using volatile */
   if (func_name) {
+    spvm_warn("[BEFORE FUNC_NAME]");
     volatile char c = *func_name;
+    spvm_warn("[AFTER FUNC_NAME]");
   }
   if (file) {
+    spvm_warn("[BEFORE FILE]");
     volatile char c = *file;
+    spvm_warn("[AFTER FILE]");
   }
 
   /* 6. Delegate to die_with_string for common exception setting logic */
