@@ -521,7 +521,9 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   
   int32_t max_call_depth = 1000;
   if (__builtin_expect(stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival > max_call_depth, 0)) {
+    spvm_warn("");
     error_id = SPVM_API_die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d.", max_call_depth, __func__, FILE_NAME, __LINE__);
+    spvm_warn("");
     goto END_OF_FUNC;
   }
   else if (__builtin_expect(method->is_not_permitted && !stack[SPVM_API_C_STACK_INDEX_ALL_METHOD_CALL_PERMITTED].ival, 0)) {
