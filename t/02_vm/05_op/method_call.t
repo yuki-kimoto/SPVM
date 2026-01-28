@@ -27,91 +27,91 @@ my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 {
-  ok(SPVM::TestCase::Operator::MethodCall->call_keyword_name_method);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->call_keyword_name_method);
 }
 
 # Import method
 {
-  ok(SPVM::TestCase::Operator::MethodCall->test_import_method);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_import_method);
 }
 
 # Retrun value automatical numeric convertion
 {
-  ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_automatical_numeric_convertion);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_automatical_numeric_convertion);
 }
 # Anon method
 {
-  ok(SPVM::TestCase::Operator::MethodCall->cb_obj_capture);
-  ok(SPVM::TestCase::Operator::MethodCall->cb_obj_call_cb_obj);
-  ok(SPVM::TestCase::Operator::MethodCall->cb_obj_call_cb_obj_from_callback);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->cb_obj_capture);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->cb_obj_call_cb_obj);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->cb_obj_call_cb_obj_from_callback);
 }
 
 # Argument multi-numeric type
 {
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_byte);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_short);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_int);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_long);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_float);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_double);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_object);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_ref);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_byte);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_short);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_int);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_long);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_float);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_double);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_object);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_ref);
 }
 
 # Argument multi-numeric type
 {
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_byte);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_short);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_int);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_long);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_float);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_double);
-  ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_ref);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_byte);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_short);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_int);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_long);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_float);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_double);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->test_arg_mulnum_ref);
 }
 
 # Return value
 {
-  ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_byte);
-  ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_short);
-  ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_int);
-  ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_long);
-  ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_float);
-  ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_double);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_byte);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_short);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_int);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_long);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_float);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->return_mulnum_double);
 }
 
 {
-  ok(SPVM::TestCase::Operator::MethodCall->push_arg_undef);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->push_arg_undef);
 }
 
 # Call method
 {
-  ok(SPVM::TestCase::Operator::MethodCall->call_method_last_camma);
-  ok(SPVM::TestCase::Operator::MethodCall->call_method_undef(undef));
+  warn; ok(SPVM::TestCase::Operator::MethodCall->call_method_last_camma);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->call_method_undef(undef));
 }
 
 # Call void method
 {
-  ok(SPVM::TestCase::Operator::MethodCall->call_void);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->call_void);
 }
 
 # Default return value
 {
-  ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_byte);
-  ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_short);
-  ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_int);
-  ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_long);
-  ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_float);
-  ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_double);
-  ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_object);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_byte);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_short);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_int);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_long);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_float);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_double);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->default_return_mulnum_object);
 }
 
 {
-  ok(SPVM::TestCase::Operator::MethodCall->call_method_nest);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->call_method_nest);
 }
 
 # Argument convetion
 {
-  ok(SPVM::TestCase::Operator::MethodCall->call_method_args_convertion);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->call_method_args_convertion);
 }
 
 
@@ -119,10 +119,10 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 {
   # call_method
   {
-    ok(SPVM::TestCase::Operator::MethodCall->call_method_args_byte(0, $BYTE_MAX, $BYTE_MIN));
-    ok(SPVM::TestCase::Operator::MethodCall->call_method_args_short(0, $SHORT_MAX, $SHORT_MIN));
-    ok(SPVM::TestCase::Operator::MethodCall->call_method_args_int(0, $INT_MAX, $INT_MIN));
-    ok(SPVM::TestCase::Operator::MethodCall->call_method_args_long(0, $LONG_MAX, $LONG_MIN));
+    warn; ok(SPVM::TestCase::Operator::MethodCall->call_method_args_byte(0, $BYTE_MAX, $BYTE_MIN));
+    warn; ok(SPVM::TestCase::Operator::MethodCall->call_method_args_short(0, $SHORT_MAX, $SHORT_MIN));
+    warn; ok(SPVM::TestCase::Operator::MethodCall->call_method_args_int(0, $INT_MAX, $INT_MIN));
+    warn; ok(SPVM::TestCase::Operator::MethodCall->call_method_args_long(0, $LONG_MAX, $LONG_MIN));
   }
 }
 
@@ -219,7 +219,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   # Check precompile class file
   {
     my $precompile_class_file = "$build_dir/work/lib/SPVM/TestCase/Operator/MethodCall.precompile.$Config{dlext}";
-    ok(-f $precompile_class_file);
+    warn; ok(-f $precompile_class_file);
   }
   
   # Call precompile method
@@ -231,49 +231,49 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 # Deep recursion
 {
-  # ok(SPVM::TestCase::Operator::MethodCall->deep_recursion);
+  # warn; ok(SPVM::TestCase::Operator::MethodCall->deep_recursion);
   1;
 }
 
 # Optional arguments
 {
-  ok(SPVM::TestCase::Operator::MethodCall->optional_args);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->optional_args);
 }
 
 # args_width
 {
-  ok(SPVM::TestCase::Operator::MethodCall->args_width);
+  warn; ok(SPVM::TestCase::Operator::MethodCall->args_width);
 }
 
 # Interface Methods
 {
   {
-    ok(SPVM::TestCase::Operator::MethodCall->call_interface_method_exception);
+    warn; ok(SPVM::TestCase::Operator::MethodCall->call_interface_method_exception);
   }
 }
 
 # Interface Methods
 {
   {
-    ok(SPVM::TestCase::Operator::MethodCall->call_recursive);
+    warn; ok(SPVM::TestCase::Operator::MethodCall->call_recursive);
   }
 }
 
 # Inheritance
 {
   {
-    ok(SPVM::TestCase::Operator::MethodCall->inheritance);
+    warn; ok(SPVM::TestCase::Operator::MethodCall->inheritance);
   }
 }
 
 # Variable length arguments - varargs
 {
   {
-    ok(SPVM::TestCase::Operator::MethodCall->varargs);
+    warn; ok(SPVM::TestCase::Operator::MethodCall->varargs);
   }
 }
 
-ok(SPVM::TestCase::Operator::MethodCall->args_scope);
+warn; ok(SPVM::TestCase::Operator::MethodCall->args_scope);
 
 # All object is freed
 $api->destroy_runtime_permanent_vars;
