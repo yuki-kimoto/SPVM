@@ -7148,23 +7148,15 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   /* 3. Write the formatted message */
   va_start(args, message);
   vsnprintf(exception_chars, length + 1, message, args);
-  
-  /* 4. Extract the remaining metadata (func_name, file, line) */
-  const char* func_name = va_arg(args, const char*);
-  const char* file      = va_arg(args, const char*);
-  int32_t line          = va_arg(args, int32_t);
-  
   va_end(args);
+  
+  /* 4. Use constant strings for metadata instead of extracting from va_arg */
+  /* This prevents SEGV on architectures like macOS (ARM64) where va_arg is unstable for this usage. */
+  const char* func_name = "(Unknown Method in old die)";
+  const char* file      = "(Unknown File in old die)";
+  int32_t line          = 0;
 
-  /* 5. Touch pointers to ensure they are valid and prevent optimization using volatile */
-  if (func_name) {
-    volatile char c = *func_name;
-  }
-  if (file) {
-    volatile char c = *file;
-  }
-
-  /* 6. Delegate to die_with_string for common exception setting logic */
+  /* 5. Delegate to die_with_string for common exception setting logic */
   return SPVM_API_die_with_string(env, stack, obj_exception, func_name, file, line);
 }
 
