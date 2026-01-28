@@ -11,7 +11,9 @@
     * Binary compatibility is broken due to changes in the exception handling logic within the VM and Precompile.
     * This includes updates to opcode definitions and their operands. All SPVM modules and executables must be recompiled.
     * die native API no longer sets the function name, file name, and line number in the exception message to prevent memory errors on specific architectures.
-    
+  [Feature Incompatibe Change]
+    * die native API is planned to be replaced by the definition and implementation of die_v2 native API in the near future.
+  
 0.990118 2026-01-26
   [New Features]
     * Added get_current_method Native API to retrieve the currently executing method from the caller stack.
