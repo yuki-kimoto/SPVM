@@ -3010,6 +3010,25 @@ B<Examples:>
   void* obj_full_message = env->build_exception_message(env, stack, 0);
   env->set_exception(env, stack, obj_full_message);
 
+=head2 die_v2
+
+C<int32_t (*die_v2)(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...);>
+
+Sets an exception message using a format string and its metadata, then returns a basic type ID of an error class.
+
+I<exception_format> is a format string in the style of C<printf>.
+
+I<func_name>, I<file>, and I<line> are metadata that indicate where the exception occurred.
+
+The subsequent arguments are values to be formatted according to I<exception_format>.
+
+B<Examples:>
+
+  return env->die_v2(env, stack, "Error: %s", func_name, file, line, "Something went wrong");
+
+  int32_t id = 10;
+  return env->die_v2(env, stack, "Invalid ID %d", func_name, file, line, id);
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3288,6 +3307,7 @@ Native APIs have its IDs.
   271 die_with_string
   272 build_exception_message_no_mortal
   273 build_exception_message
+  274 die_v2
   
 =head1 Constant Values
 

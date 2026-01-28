@@ -372,7 +372,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_caller,
     SPVM_API_die_with_string,
     SPVM_API_build_exception_message_no_mortal,
-    SPVM_API_build_exception_message
+    SPVM_API_build_exception_message,
+    SPVM_API_die_v2,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -7164,6 +7165,36 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   }
 
   /* 6. Delegate to die_with_string for common exception setting logic */
+  return SPVM_API_die_with_string(env, stack, obj_exception, func_name, file, line);
+}
+
+int32_t SPVM_API_die_v2(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...) {
+  
+  /* 0. Touch pointers to ensure they are valid and prevent optimization using volatile */
+  if (func_name) {
+    volatile char c = *func_name;
+  }
+  if (file) {
+    volatile char c = *file;
+  }
+
+  va_list args;
+  
+  /* 1. Calculate the required length for the exception message */
+  va_start(args, line);
+  int32_t length = vsnprintf(NULL, 0, exception_format, args);
+  va_end(args);
+
+  /* 2. Create the exception string object */
+  void* obj_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, length);
+  char* exception_chars = (char*)SPVM_API_get_chars(env, stack, obj_exception);
+
+  /* 3. Write the formatted message into the string object */
+  va_start(args, line);
+  vsnprintf(exception_chars, length + 1, exception_format, args);
+  va_end(args);
+
+  /* 4. Delegate to die_with_string for common exception setting logic */
   return SPVM_API_die_with_string(env, stack, obj_exception, func_name, file, line);
 }
 
