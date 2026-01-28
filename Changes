@@ -1,4 +1,4 @@
-0.990119 2026-01-27
+0.990119 2026-01-28
   [New Features]
     * Add die_v2 native API to support optimized exception handling with metadata, which will eventually replace die as an alias after all native modules are migrated.
     * Add build_exception_message and build_exception_message_no_mortal to the SPVM_ENV structure and the Native API to reconstruct full exception messages with stack traces from metadata.
