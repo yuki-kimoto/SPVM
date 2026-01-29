@@ -268,6 +268,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       SPVM_LIST* mortal_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
+      SPVM_OPCODE_LIST* exception_catch_info_opcodes_list = SPVM_OPCODE_LIST_new(compiler);
+      
       // Run OPs
       SPVM_OP* op_base = method->op_block;
       SPVM_OP* op_cur = op_base;
