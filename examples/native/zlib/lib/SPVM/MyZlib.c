@@ -21,7 +21,7 @@ int32_t SPVM__MyZlib__test(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   zp = gzopen(out_file, "w9");
   if(zp == NULL){
-    return env->die_v2(env, stack, "gzopen failed.", "MyZlib.c", __func__, FILE_NAME, __LINE__);
+    return env->die_v2(env, stack, "gzopen failed.", __func__, FILE_NAME, __LINE__);
   }
   
   for(cnt = 0; cnt < 100; cnt++){
