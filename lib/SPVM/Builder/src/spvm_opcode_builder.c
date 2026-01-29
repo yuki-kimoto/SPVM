@@ -5580,6 +5580,8 @@ void SPVM_OPCODE_BUILDER_push_opcode_on_exception(
     // Operand 2: end of eval block opcode_index. This will be set later if needed. -1 means no eval block.
     opcode.operand2 = -1;
     
+    opcode.operand3 = no_die;
+    
     SPVM_OPCODE_LIST_push_opcode(compiler, exception_catch_info_opcodes_list, &opcode);
     
     int32_t exception_catch_info_opcode_index = exception_catch_info_opcodes_list->length - 1;
