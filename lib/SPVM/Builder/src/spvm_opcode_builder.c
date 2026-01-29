@@ -5561,33 +5561,33 @@ void SPVM_OPCODE_BUILDER_push_opcode_on_exception(
 )
 {
   SPVM_METHOD* method = op_method->uv.method;
-  int32_t method_opcodes_base_address_id = 0;
+  
+  // Add EXCEPTION_CATCH_INFO opcode at the beginning
+  {
+    SPVM_OPCODE opcode = {0};
+    
+    // The opcode index of the preceding opcode that may throw an exception
+    int32_t preceding_opcode_index = opcode_list->length - 1;
+    
+    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EXCEPTION_CATCH_INFO);
+    
+    // Operand 0: The index of the preceding opcode
+    opcode.operand0 = preceding_opcode_index;
+    
+    // Operand 1: Line number
+    opcode.operand1 = line;
+    
+    // Operand 2: end of eval block opcode_index. This will be set later if needed. -1 means no eval block.
+    opcode.operand2 = -1;
+    
+    SPVM_OPCODE_LIST_push_opcode(compiler, exception_catch_info_opcodes_list, &opcode);
+    
+    int32_t exception_catch_info_opcode_index = exception_catch_info_opcodes_list->length - 1;
+    
+    SPVM_LIST_push(exception_catch_info_opcode_index_stack, (void*)(intptr_t)exception_catch_info_opcode_index);
+  }
   
   if (in_eval_block) {
-    // Add EXCEPTION_CATCH_INFO opcode at the beginning
-    {
-      SPVM_OPCODE opcode = {0};
-      
-      // The opcode index of the preceding opcode that may throw an exception
-      int32_t preceding_opcode_index = opcode_list->length - 1;
-      
-      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EXCEPTION_CATCH_INFO);
-      
-      // Operand 0: The index of the preceding opcode
-      opcode.operand0 = preceding_opcode_index;
-      
-      // Operand 1: Line number
-      opcode.operand1 = line;
-      
-      // Operand 2: end of eval block opcode_index. This will be set later.
-      
-      SPVM_OPCODE_LIST_push_opcode(compiler, exception_catch_info_opcodes_list, &opcode);
-      
-      int32_t exception_catch_info_opcode_index = exception_catch_info_opcodes_list->length - 1;
-      
-      SPVM_LIST_push(exception_catch_info_opcode_index_stack, (void*)(intptr_t)exception_catch_info_opcode_index);
-    }
-    
     SPVM_OPCODE opcode = {0};
     
     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CATCH_ON_EXCEPTION);
