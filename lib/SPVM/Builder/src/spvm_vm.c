@@ -2445,6 +2445,14 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     opcode_rel_index++;
   }
   
+  CATCH: {
+    
+  }
+  
+  DIE: {
+    
+  }
+  
   RETURN: {
     
     if (__builtin_expect(error_id == 0, 1)) {
