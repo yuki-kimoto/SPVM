@@ -2538,40 +2538,40 @@ int32_t SPVM__TestCase__NativeAPI__add_int_array(SPVM_ENV* env, SPVM_VALUE* stac
 
 int32_t SPVM__TestCase__NativeAPI__call_void_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  return env->die_v2(env, stack, "Exception %s", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__, "ppp.");
+  return env->die(env, stack, "Exception %s", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__, "ppp.");
 }
 
 int32_t SPVM__TestCase__NativeAPI__call_byte_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  return env->die_v2(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__call_short_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  return env->die_v2(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__call_int_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  return env->die_v2(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__call_long_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  return env->die_v2(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 float SPVM__TestCase__NativeAPI__call_float_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  return (float)env->die_v2(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return (float)env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__call_double_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {  
-  return env->die_v2(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__call_object_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {  
-  return env->die_v2(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -4474,7 +4474,7 @@ int32_t SPVM__TestCase__NativeAPI__save_stdout_windows_binary_mode(SPVM_ENV* env
 #if defined(_WIN32)
   int32_t stdout_mode_current = setmode(fileno(stdout), _O_BINARY);
   if (!(stdout_mode_current == _O_BINARY)) {
-    return env->die_v2(env, stack, "stdout mode must be _O_BINARY.", NULL, NULL, 0);
+    return env->die(env, stack, "stdout mode must be _O_BINARY.", NULL, NULL, 0);
   }
   
   env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$STDOUT_WINDOWS_BINARY_MODE", stdout_mode_current, &error_id, __func__, FILE_NAME, __LINE__);
@@ -4492,7 +4492,7 @@ int32_t SPVM__TestCase__NativeAPI__save_stderr_windows_binary_mode(SPVM_ENV* env
 #if defined(_WIN32)
   int32_t stderr_mode_current = setmode(fileno(stderr), _O_BINARY);
   if (!(stderr_mode_current == _O_BINARY)) {
-    return env->die_v2(env, stack, "stderr mode must be _O_BINARY.", NULL, NULL, 0);
+    return env->die(env, stack, "stderr mode must be _O_BINARY.", NULL, NULL, 0);
   }
   
   env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$STDERR_WINDOWS_BINARY_MODE", stderr_mode_current, &error_id, __func__, FILE_NAME, __LINE__);
@@ -4510,7 +4510,7 @@ int32_t SPVM__TestCase__NativeAPI__save_stdin_windows_binary_mode(SPVM_ENV* env,
 #if defined(_WIN32)
   int32_t stdin_mode_current = setmode(fileno(stdin), _O_BINARY);
   if (!(stdin_mode_current == _O_BINARY)) {
-    return env->die_v2(env, stack, "stdin mode must be _O_BINARY.", NULL, NULL, 0);
+    return env->die(env, stack, "stdin mode must be _O_BINARY.", NULL, NULL, 0);
   }
   
   env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$STDIN_WINDOWS_BINARY_MODE", stdin_mode_current, &error_id, __func__, FILE_NAME, __LINE__);
@@ -4528,7 +4528,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stdout(SPVM_ENV* env, SPVM_VALUE* sta
   void* obj_path = stack[0].oval;
   
   if (!obj_path) {
-    return env->die_v2(env, stack, "The path $path must be defined.", NULL, NULL, 0);
+    return env->die(env, stack, "The path $path must be defined.", NULL, NULL, 0);
   }
   
   const char* path = env->get_chars(env, stack, obj_path);
@@ -4536,7 +4536,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stdout(SPVM_ENV* env, SPVM_VALUE* sta
   FILE* fp = freopen(path, "w", stdout);
   
   if (!fp) {
-    return env->die_v2(env, stack, "freopen failed.", NULL, NULL, 0);
+    return env->die(env, stack, "freopen failed.", NULL, NULL, 0);
   }
   
 #if defined(_WIN32)
@@ -4555,7 +4555,7 @@ int32_t SPVM__TestCase__NativeAPI__close_stdout(SPVM_ENV* env, SPVM_VALUE* stack
   int32_t status = fclose(stdout);
   
   if (!(status == 0)) {
-    return env->die_v2(env, stack, "fclose failed.", NULL, NULL, 0);
+    return env->die(env, stack, "fclose failed.", NULL, NULL, 0);
   }
   
   return 0;
@@ -4568,7 +4568,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stderr(SPVM_ENV* env, SPVM_VALUE* sta
   void* obj_path = stack[0].oval;
   
   if (!obj_path) {
-    return env->die_v2(env, stack, "The path $path must be defined.", NULL, NULL, 0);
+    return env->die(env, stack, "The path $path must be defined.", NULL, NULL, 0);
   }
   
   const char* path = env->get_chars(env, stack, obj_path);
@@ -4576,7 +4576,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stderr(SPVM_ENV* env, SPVM_VALUE* sta
   FILE* fp = freopen(path, "w", stderr);
   
   if (!fp) {
-    return env->die_v2(env, stack, "freopen failed.", NULL, NULL, 0);
+    return env->die(env, stack, "freopen failed.", NULL, NULL, 0);
   }
   
 #if defined(_WIN32)
@@ -4594,7 +4594,7 @@ int32_t SPVM__TestCase__NativeAPI__close_stderr(SPVM_ENV* env, SPVM_VALUE* stack
   int32_t status = fclose(stderr);
   
   if (!(status == 0)) {
-    return env->die_v2(env, stack, "fclose failed.", NULL, NULL, 0);
+    return env->die(env, stack, "fclose failed.", NULL, NULL, 0);
   }
   
   return 0;
@@ -4690,7 +4690,7 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   {
     // ˆø”‚Ì‡˜‚ðC³: format, func, file, line, ...args
-    int32_t error_id = env->die_v2(env, stack, "Error %s.", __func__, __FILE__, __LINE__, "abc"); int32_t line = __LINE__;
+    int32_t error_id = env->die(env, stack, "Error %s.", __func__, __FILE__, __LINE__, "abc"); int32_t line = __LINE__;
     
     if (!(error_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS)) {
       stack[0].ival = 0;
@@ -4728,7 +4728,7 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
     char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
     sprintf(tmp_buffer, "%s", "abcd");
     // ˆø”‚Ì‡˜‚ðC³: tmp_buffer ‚ðÅŒã‚ÉˆÚ“®
-    int32_t error_id = env->die_v2(env, stack, "Error %s.", __func__, __FILE__, __LINE__, tmp_buffer); int32_t line = __LINE__;
+    int32_t error_id = env->die(env, stack, "Error %s.", __func__, __FILE__, __LINE__, tmp_buffer); int32_t line = __LINE__;
     
     if (!(error_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS)) {
       stack[0].ival = 0;
@@ -4773,7 +4773,7 @@ int32_t SPVM__TestCase__NativeAPI__print_exception_to_stderr(SPVM_ENV* env, SPVM
   
   {
     // ˆø”‚Ì‡˜‚ðC³: format, func, file, line, ...args
-    int32_t error_id = env->die_v2(env, stack, "[Test Output]Error %s.", __func__, __FILE__, __LINE__, "abc");
+    int32_t error_id = env->die(env, stack, "[Test Output]Error %s.", __func__, __FILE__, __LINE__, "abc");
     
     env->print_exception_to_stderr(env, stack);
   }

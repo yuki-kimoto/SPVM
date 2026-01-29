@@ -21,7 +21,7 @@ int32_t SPVM__MyOpenCVResize__resize(SPVM_ENV* env, SPVM_VALUE* stack) {
   image = imread( in_file, 1 );
   
   if (!image.data) {
-    return env->die_v2(env, stack, "The imread function(opencv2/opencv.hpp) failed.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The imread function(opencv2/opencv.hpp) failed.", __func__, FILE_NAME, __LINE__);
   }
   
   resize(image, image, cv::Size(), 0.5, 0.5);

@@ -16,14 +16,14 @@ static void* get_field_native_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, v
   if (*error_id) { return NULL; }
   
   if (!obj_runtime) {
-    *error_id = env->die_v2(env, stack, "The %s cannot be got.", func_name, file_name, line, field_name);
+    *error_id = env->die(env, stack, "The %s cannot be got.", func_name, file_name, line, field_name);
     return NULL;
   }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
   if (!runtime) {
-    *error_id = env->die_v2(env, stack, "The pointer to the native %s cannot be got.", func_name, file_name, line, field_name);
+    *error_id = env->die(env, stack, "The pointer to the native %s cannot be got.", func_name, file_name, line, field_name);
     return NULL;
   }
   
@@ -197,7 +197,7 @@ int32_t SPVM__Native__Method__get_arg_by_index(SPVM_ENV* env, SPVM_VALUE* stack)
   
   void* arg = env->api->method->get_arg_by_index(runtime, self, arg_index);
   if (!arg) {
-    return env->die_v2(env, stack, "The argument is not found.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The argument is not found.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_address_arg = env->new_pointer_object_by_name(env, stack, "Address", arg, &error_id, __func__, FILE_NAME, __LINE__);

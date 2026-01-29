@@ -113,7 +113,7 @@ int32_t SPVM__Native__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
       obj_error_messages_string = env->concat(env, stack, obj_error_messages_string, obj_lf);
     }
     
-    env->die_v2(env, stack, env->get_chars(env, stack, obj_error_messages_string), __func__, FILE_NAME, __LINE__);
+    env->die(env, stack, env->get_chars(env, stack, obj_error_messages_string), __func__, FILE_NAME, __LINE__);
     
     return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS;
   }
@@ -239,7 +239,7 @@ int32_t SPVM__Native__Compiler__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack)
   void* obj_class_name = stack[1].oval;
   
   if (!obj_class_name) {
-    return env->die_v2(env, stack, "The class name $class_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The class name $class_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   const char* class_name = env->get_chars(env, stack, obj_class_name);
   
@@ -304,7 +304,7 @@ int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* st
       obj_error_messages_string = env->concat(env, stack, obj_error_messages_string, obj_lf);
     }
     
-    env->die_v2(env, stack, env->get_chars(env, stack, obj_error_messages_string), __func__, FILE_NAME, __LINE__);
+    env->die(env, stack, env->get_chars(env, stack, obj_error_messages_string), __func__, FILE_NAME, __LINE__);
     
     return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS;
   }
@@ -362,7 +362,7 @@ int32_t SPVM__Native__Compiler__get_include_dir(SPVM_ENV* env, SPVM_VALUE* stack
   int32_t include_dirs_length = env->api->compiler->get_include_dirs_length(self);
   
   if (!(index >= 0 && index < include_dirs_length)) {
-    return env->die_v2(env, stack, "The index $index is out of range.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The index $index is out of range.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* include_dir = env->api->compiler->get_include_dir(self, index);

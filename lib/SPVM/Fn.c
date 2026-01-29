@@ -138,7 +138,7 @@ int32_t SPVM__Fn__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t* seed_ref = stack[0].iref;
   
   if (!seed_ref) {
-    return env->die_v2(env, stack, "The reference of the seed $seed_ref must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The reference of the seed $seed_ref must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t random_value = SPVM__Fn__static__rand_r((uint32_t *) seed_ref);
@@ -204,22 +204,22 @@ int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t* offset_ref = stack[1].iref;
   
   if (!obj_string) {
-    return env->die_v2(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!offset_ref) {
-    return env->die_v2(env, stack, "The reference of the offset $offset_ref must be must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The reference of the offset $offset_ref must be must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(*offset_ref >= 0)) {
-    return env->die_v2(env, stack, "The offset $$offset_ref must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset $$offset_ref must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* string = env->get_chars(env, stack, obj_string);
   int32_t string_len = env->length(env, stack, obj_string);
   
   if (!(*offset_ref < string_len)) {
-    return env->die_v2(env, stack, "The value of the offset $offset must be less than the length of the string $string.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The value of the offset $offset must be less than the length of the string $string.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t dst;
@@ -233,7 +233,7 @@ int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
     *offset_ref += utf8_char_len;
   }
   else if (utf8_char_len == SPVM_UTF8PROC_ERROR_INVALIDUTF8) {
-    env->die_v2(env, stack, "An invalid UTF-8 is gotten.", __func__, FILE_NAME, __LINE__);
+    env->die(env, stack, "An invalid UTF-8 is gotten.", __func__, FILE_NAME, __LINE__);
     
     int32_t error_id_unicode_invalid_utf8 = env->get_basic_type_id_by_name(env, stack, "Error::Unicode::InvalidUTF8", &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
@@ -360,27 +360,27 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die_v2(env, stack, "The destination $dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destination $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, obj_dest) || env->is_numeric_array(env, stack, obj_dest) || env->is_mulnum_array(env, stack, obj_dest))) {
-    return env->die_v2(env, stack, "The type of the dest $dest must be string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the dest $dest must be string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die_v2(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, obj_source) || env->is_numeric_array(env, stack, obj_source) || env->is_mulnum_array(env, stack, obj_source))) {
-    return env->die_v2(env, stack, "The type of the source $source must be string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the source $source must be string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
   }
   
   if (env->is_read_only(env, stack, obj_dest)) {
-    return env->die_v2(env, stack, "The destination $dest cannnot be be a read-only string.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destination $dest cannnot be be a read-only string.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die_v2(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -393,7 +393,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t dest_byte_length = dest_elem_size * dest_length;
   
   if (!(dest_offset + length <= dest_byte_length)) {
-    return env->die_v2(env, stack, "The offset $dest_offset + the length $length must be less than or equal to the length of the dest $obj_dest.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset $dest_offset + the length $length must be less than or equal to the length of the dest $obj_dest.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* source = env->get_chars(env, stack, obj_source);
@@ -402,7 +402,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_byte_length = source_elem_size * source_length;
   
   if (!(source_offset + length <= source_byte_length)) {
-    return env->die_v2(env, stack, "The offset $source_offset + the length $length must be less than or equal to the length of the source $source.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset $source_offset + the length $length must be less than or equal to the length of the source $source.", __func__, FILE_NAME, __LINE__);
   }
   
   memcpy((char*)(dest + dest_offset), (char*)(source + source_offset), length);
@@ -419,27 +419,27 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (!obj_dest) {
-    return env->die_v2(env, stack, "The destination $dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destination $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, obj_dest) || env->is_numeric_array(env, stack, obj_dest) || env->is_mulnum_array(env, stack, obj_dest))) {
-    return env->die_v2(env, stack, "The type of the dest $dest must be string type, a numeric array type, or a multi numeric array type.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the dest $dest must be string type, a numeric array type, or a multi numeric array type.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die_v2(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
 
   if (!(env->is_string(env, stack, obj_source) || env->is_numeric_array(env, stack, obj_source) || env->is_mulnum_array(env, stack, obj_source))) {
-    return env->die_v2(env, stack, "The type of the source $source must be string type, a numeric array type, or a multi numeric array type.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the source $source must be string type, a numeric array type, or a multi numeric array type.", __func__, FILE_NAME, __LINE__);
   }
 
   if (env->is_read_only(env, stack, obj_dest)) {
-    return env->die_v2(env, stack, "The destination $dest must not be a read-only string.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destination $dest must not be a read-only string.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die_v2(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -452,7 +452,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t dest_byte_length = dest_elem_size * dest_length;
   
   if (!(dest_offset + length <= dest_byte_length)) {
-    return env->die_v2(env, stack, "The offset $dest_offset + the length $length must be less than or equal to the length of the dest $obj_dest.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset $dest_offset + the length $length must be less than or equal to the length of the dest $obj_dest.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* source = env->get_chars(env, stack, obj_source);
@@ -461,7 +461,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t source_byte_length = source_elem_size * source_length;
   
   if (!(source_offset + length <= source_byte_length)) {
-    return env->die_v2(env, stack, "The offset $source_offset + the length $length must be less than or equal to the length of the source $obj_source.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset $source_offset + the length $length must be less than or equal to the length of the source $obj_source.", __func__, FILE_NAME, __LINE__);
   }
   
   memmove((char*)(dest + dest_offset), (char*)(source + source_offset), length);
@@ -491,11 +491,11 @@ int32_t SPVM__Fn__shorten(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[1].ival;
   
   if (!string) {
-    return env->die_v2(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die_v2(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   env->shorten(env, stack, string, length);
@@ -508,7 +508,7 @@ int32_t SPVM__Fn__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_string = stack[0].oval;
   
   if (!obj_string) {
-    return env->die_v2(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* string = env->get_chars(env, stack, obj_string);
@@ -517,10 +517,10 @@ int32_t SPVM__Fn__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   errno = 0;
   double num = strtod(string, &end);
   if (*end != '\0') {
-    return env->die_v2(env, stack, "The string $string must be the string that can be parsed as a double number.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string $string must be the string that can be parsed as a double number.", __func__, FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE) {
-    return env->die_v2(env, stack, "The string $string must be a double number in correct range.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string $string must be a double number in correct range.", __func__, FILE_NAME, __LINE__);
   }
   
   stack[0].dval = num;
@@ -533,7 +533,7 @@ int32_t SPVM__Fn__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_string = stack[0].oval;
   
   if (!obj_string) {
-    return env->die_v2(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* string = env->get_chars(env, stack, obj_string);
@@ -542,10 +542,10 @@ int32_t SPVM__Fn__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   errno = 0;
   float num = strtof(string, &end);
   if (*end != '\0') {
-    return env->die_v2(env, stack, "The string $string must be the string that can be parsed as a float number.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string $string must be the string that can be parsed as a float number.", __func__, FILE_NAME, __LINE__);
   }
   else if (errno == ERANGE) {
-    return env->die_v2(env, stack, "The string $string must be a float number in correct range.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string $string must be a float number in correct range.", __func__, FILE_NAME, __LINE__);
   }
   
   stack[0].fval = num;
@@ -559,11 +559,11 @@ int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t digit = stack[1].ival;
   
   if (!obj_string) {
-    return env->die_v2(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(digit == 2 || digit == 8 || digit == 10 || digit == 16)) {
-    return env->die_v2(env, stack, "The digit $digit must be one of 2, 8, 10, or 16.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The digit $digit must be one of 2, 8, 10, or 16.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* string = env->get_chars(env, stack, obj_string);
@@ -572,10 +572,10 @@ int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   errno = 0;
   int64_t num = strtol(string, &end, digit);
   if (*end != '\0') {
-    return env->die_v2(env, stack, "The string $string must be the string that can be parsed as a %d-digit 32-bit integer", __func__, FILE_NAME, __LINE__, digit);
+    return env->die(env, stack, "The string $string must be the string that can be parsed as a %d-digit 32-bit integer", __func__, FILE_NAME, __LINE__, digit);
   }
   else if (errno == ERANGE || num < INT32_MIN || num > INT32_MAX) {
-    return env->die_v2(env, stack, "The string $string must be a 32-bit integer in correct range.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string $string must be a 32-bit integer in correct range.", __func__, FILE_NAME, __LINE__);
   }
   
   stack[0].ival = (int32_t)num;
@@ -589,11 +589,11 @@ int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t digit = stack[1].ival;
   
   if (!obj_string) {
-    return env->die_v2(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(digit == 2 || digit == 8 || digit == 10 || digit == 16)) {
-    return env->die_v2(env, stack, "The digit $digit must be one of 2, 8, 10, or 16.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The digit $digit must be one of 2, 8, 10, or 16.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* string = env->get_chars(env, stack, obj_string);
@@ -602,10 +602,10 @@ int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   errno = 0;
   int64_t num = strtoll(string, &end, digit);
   if (*end != '\0') {
-    return env->die_v2(env, stack, "The string $string must be the string that can be parsed as a %d-digit 64-bit integer", __func__, FILE_NAME, __LINE__, digit);
+    return env->die(env, stack, "The string $string must be the string that can be parsed as a %d-digit 64-bit integer", __func__, FILE_NAME, __LINE__, digit);
   }
   else if (errno == ERANGE) {
-    return env->die_v2(env, stack, "The string $string must be a 64-bit integer in correct range.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The string $string must be a 64-bit integer in correct range.", __func__, FILE_NAME, __LINE__);
   }
   
   stack[0].lval = (int64_t)num;
@@ -637,14 +637,14 @@ int32_t SPVM__Fn__get_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
-    return env->die_v2(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
   if (!basic_type) {
-    return env->die_v2(env, stack, "The class specified by the basic type name $basic_type_name must be loaded.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The class specified by the basic type name $basic_type_name must be loaded.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* version_string = env->get_version_string(env, stack, basic_type);
@@ -672,14 +672,14 @@ int32_t SPVM__Fn__get_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
-    return env->die_v2(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
   if (!basic_type) {
-    return env->die_v2(env, stack, "The class specified by the basic type name $basic_type_name must be loaded.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The class specified by the basic type name $basic_type_name must be loaded.", __func__, FILE_NAME, __LINE__);
   }
   
   double version_number = env->get_version_number(env, stack, basic_type);
@@ -714,14 +714,14 @@ int32_t SPVM__Fn__get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
-    return env->die_v2(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
   
   int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
   if (!(basic_type_id >= 0)) {
-    return env->die_v2(env, stack, "The basic type \"%s\" is not found.", __func__, FILE_NAME, __LINE__, basic_type_name);
+    return env->die(env, stack, "The basic type \"%s\" is not found.", __func__, FILE_NAME, __LINE__, basic_type_name);
   }
   
   stack[0].ival = basic_type_id;
@@ -734,7 +734,7 @@ int32_t SPVM__Fn__get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
-    return env->die_v2(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
@@ -742,7 +742,7 @@ int32_t SPVM__Fn__get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t type_dimension = stack[1].ival;
   
   if (!(type_dimension >= 0 && type_dimension <= 255)) {
-    return env->die_v2(env, stack, "The type dimension $type_dimension must be grether than or equal to 0 and less than or equal to 255.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type dimension $type_dimension must be grether than or equal to 0 and less than or equal to 255.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t type_flag = stack[2].ival;
@@ -759,13 +759,13 @@ int32_t SPVM__Fn__array_length(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_array = stack[0].oval;
   
   if (!obj_array) {
-    return env->die_v2(env, stack, "The array $array must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The array $array must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t is_array = env->is_array(env, stack, obj_array);
   
   if (!is_array) {
-    return env->die_v2(env, stack, "The type of the array $array must be an array type.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the array $array must be an array type.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t length = env->length(env, stack, obj_array);
@@ -780,13 +780,13 @@ int32_t SPVM__Fn__get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_array = stack[0].oval;
   
   if (!obj_array) {
-    return env->die_v2(env, stack, "The array $array must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The array $array must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t is_array = env->is_array(env, stack, obj_array);
   
   if (!is_array) {
-    return env->die_v2(env, stack, "The type of the array $array must be an array type.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the array $array must be an array type.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t elem_size = env->get_elem_size(env, stack, obj_array);
@@ -825,23 +825,23 @@ int32_t SPVM__Fn__memcmp(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_data1) {
-    return env->die_v2(env, stack, "The data1 $data1 must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The data1 $data1 must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, obj_data1) || env->is_numeric_array(env, stack, obj_data1) || env->is_mulnum_array(env, stack, obj_data1))) {
-    return env->die_v2(env, stack, "The type of the data1 $data1 must be string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the data1 $data1 must be string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_data2) {
-    return env->die_v2(env, stack, "The data2 $data2 must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The data2 $data2 must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, obj_data2) || env->is_numeric_array(env, stack, obj_data2) || env->is_mulnum_array(env, stack, obj_data2))) {
-    return env->die_v2(env, stack, "The type of the data2 $data2 must be string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the data2 $data2 must be string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die_v2(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   char* data1 = (char*)env->get_chars(env, stack, obj_data1);
@@ -850,7 +850,7 @@ int32_t SPVM__Fn__memcmp(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t data1_byte_length = data1_elem_size * data1_length;
   
   if (!(data1_offset + length <= data1_byte_length)) {
-    return env->die_v2(env, stack, "The offset $data1_offset + the length $length must be less than or equal to the length of the data1 $obj_data1.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset $data1_offset + the length $length must be less than or equal to the length of the data1 $obj_data1.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* data2 = env->get_chars(env, stack, obj_data2);
@@ -859,7 +859,7 @@ int32_t SPVM__Fn__memcmp(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t data2_byte_length = data2_elem_size * data2_length;
   
   if (!(data2_offset + length <= data2_byte_length)) {
-    return env->die_v2(env, stack, "The offset $data2_offset + the length $length must be less than or equal to the length of the data2 $data2.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The offset $data2_offset + the length $length must be less than or equal to the length of the data2 $data2.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t cmp = memcmp((char*)(data1 + data1_offset), (char*)(data2 + data2_offset), length);
@@ -895,7 +895,7 @@ int32_t SPVM__Fn__no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* object = stack[0].oval;
   
   if (!object) {
-    return env->die_v2(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t no_free = env->no_free(env, stack, object);
@@ -910,7 +910,7 @@ int32_t SPVM__Fn__set_no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* object = stack[0].oval;
   
   if (!object) {
-    return env->die_v2(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t no_free = stack[1].ival;
@@ -927,7 +927,7 @@ int32_t SPVM__Fn__get_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_object = stack[0].oval;
   
   if (!obj_object) {
-    return env->die_v2(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   void* pointer = env->get_pointer(env, stack, obj_object);
@@ -949,13 +949,13 @@ int32_t SPVM__Fn__set_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_object = stack[0].oval;
   
   if (!obj_object) {
-    return env->die_v2(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_address = stack[1].oval;
   
   if (!obj_address) {
-    return env->die_v2(env, stack, "The address $address must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The address $address must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   void* pointer = env->get_pointer(env, stack, obj_address);
@@ -972,7 +972,7 @@ int32_t SPVM__Fn__has_null_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_object = stack[0].oval;
   
   if (!obj_object) {
-    return env->die_v2(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   void* pointer = env->get_pointer(env, stack, obj_object);
@@ -991,13 +991,13 @@ int32_t SPVM__Fn__eq_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_object1 = stack[0].oval;
   
   if (!obj_object1) {
-    return env->die_v2(env, stack, "The object $object1 must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The object $object1 must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_object2 = stack[1].oval;
   
   if (!obj_object2) {
-    return env->die_v2(env, stack, "The object $object2 must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The object $object2 must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   void* pointer1 = env->get_pointer(env, stack, obj_object1);
@@ -1018,7 +1018,7 @@ int32_t SPVM__Fn__pointer_to_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_object = stack[0].oval;
   
   if (!obj_object) {
-    return env->die_v2(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   void* pointer = env->get_pointer(env, stack, obj_object);
@@ -1079,14 +1079,14 @@ int32_t SPVM__Fn__get_basic_type_name_in_version_from(SPVM_ENV* env, SPVM_VALUE*
   void* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
-    return env->die_v2(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
   if (!basic_type) {
-    return env->die_v2(env, stack, "The class specified by the basic type name $basic_type_name must be loaded.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The class specified by the basic type name $basic_type_name must be loaded.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name_in_version_from = env->get_basic_type_name_in_version_from(env, stack, basic_type);
@@ -1117,7 +1117,7 @@ int32_t SPVM__Fn__get_basic_type_name_by_id(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Throw an exception if the basic type is not found
   if (!basic_type) {
-    return env->die_v2(env, stack, "The basic type ID %d is not found.", __func__, FILE_NAME, __LINE__, basic_type_id);
+    return env->die(env, stack, "The basic type ID %d is not found.", __func__, FILE_NAME, __LINE__, basic_type_id);
   }
   
   // Get the basic type name
@@ -1141,7 +1141,7 @@ int32_t SPVM__Fn__get_current_method_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   /* If get_current_method returns NULL, re-throw the existing exception with current location info */
   if (error_id) {
-    return env->die_v2(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, FILE_NAME, __LINE__);
   }
   
   /* Get the method name */
@@ -1165,7 +1165,7 @@ int32_t SPVM__Fn__get_current_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   /* If get_current_method returns NULL, re-throw the existing exception with current location info */
   if (error_id) {
-    return env->die_v2(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, FILE_NAME, __LINE__);
   }
   
   /* Get the basic type that owns this method using get_current_basic_type.
