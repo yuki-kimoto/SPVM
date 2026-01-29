@@ -259,7 +259,7 @@ struct spvm_env {
   double (*get_spvm_version_number)(SPVM_ENV* env, SPVM_VALUE* stack);
   const char* (*get_version_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
   double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
-  int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...);
+  int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...);
   void* (*get_exception)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*set_exception)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception);
   void* (*new_stack_trace_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);

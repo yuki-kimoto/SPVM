@@ -1,3 +1,7 @@
+0.990120 2026-01-29
+  [Incompatible Change]
+    * Update the signature of the die method in the SPVM_ENV structure to include metadata (func_name, file, line) before variadic arguments, and replace its implementation with the SPVM_API_die_v2 function.
+
 0.990119 2026-01-28
   [New Features]
     * Add die_v2 native API to support optimized exception handling with metadata, which will eventually replace die as an alias after all native modules are migrated.

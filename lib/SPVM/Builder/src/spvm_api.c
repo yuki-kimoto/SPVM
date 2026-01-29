@@ -261,7 +261,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_spvm_version_number,
     SPVM_API_get_version_string,
     SPVM_API_get_version_number,
-    SPVM_API_die,
+    SPVM_API_die_v2,
     SPVM_API_get_exception,
     SPVM_API_set_exception,
     SPVM_API_new_stack_trace_no_mortal,
