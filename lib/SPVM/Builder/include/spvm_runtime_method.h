@@ -13,6 +13,7 @@ struct spvm_runtime_method {
   const char* name;
   const char* abs_name;
   SPVM_OPCODE* opcodes;
+  SPVM_OPCODE* exception_catch_info_opcodes;
   SPVM_RUNTIME_BASIC_TYPE* current_basic_type;
   SPVM_RUNTIME_BASIC_TYPE* return_basic_type;
   SPVM_RUNTIME_ARG* args;
@@ -34,6 +35,7 @@ struct spvm_runtime_method {
   int32_t call_stack_frame_size;
   int32_t return_type_dimension;
   int32_t return_type_flag;
+  int32_t exception_catch_info_opcodes_length;
   int8_t is_class_method;
   int8_t is_enum;
   int8_t is_precompile;

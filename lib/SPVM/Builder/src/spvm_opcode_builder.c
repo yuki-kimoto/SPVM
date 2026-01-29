@@ -5531,11 +5531,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
         
         assert(mortal_stack_tops_index == 0);
         
-        // Add EXCEPTION_CATCH_INFO opcodes at the end of the method opcodes
-        for (int32_t i = 0; i < exception_catch_info_opcodes_list->length; i++) {
-          SPVM_OPCODE* exception_catch_info_opcode = exception_catch_info_opcodes_list->values + i;
-          SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, exception_catch_info_opcode);
-        }
+        method->exception_catch_info_opcodes_list = exception_catch_info_opcodes_list;
       }
     }
   }

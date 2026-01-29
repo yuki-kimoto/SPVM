@@ -1069,6 +1069,10 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         memcpy(runtime_method->opcodes, method->opcode_list->values, sizeof(SPVM_OPCODE) * method->opcode_list->length);
         runtime_method->opcodes_length = method->opcode_list->length;
         
+        runtime_method->exception_catch_info_opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_OPCODE) * method->exception_catch_info_opcodes_list->length + 1);
+        memcpy(runtime_method->exception_catch_info_opcodes, method->exception_catch_info_opcodes_list->values, sizeof(SPVM_OPCODE) * method->exception_catch_info_opcodes_list->length + 1);
+        runtime_method->exception_catch_info_opcodes_length = method->exception_catch_info_opcodes_list->length;
+        
         runtime_method->index = method->index;
         runtime_method->current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, method->current_basic_type->id);
         runtime_method->is_class_method = method->is_class_method;

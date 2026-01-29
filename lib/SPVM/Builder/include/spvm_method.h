@@ -24,6 +24,7 @@ struct spvm_method {
   int32_t required_args_length;
   int32_t index;
   SPVM_OPCODE_LIST* opcode_list;
+  SPVM_OPCODE_LIST* exception_catch_info_opcodes_list;
   int32_t byte_vars_width;
   int32_t short_vars_width;
   int32_t int_vars_width;
