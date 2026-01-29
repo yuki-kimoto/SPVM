@@ -2448,7 +2448,51 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   }
   
   CATCH: {
+    // Prepare for binary search to find the appropriate exception handler
+    int32_t low = 0;
+    int32_t high = current_method->exception_catch_info_opcodes_length - 1;
+    int32_t found_index = -1;
     
+    // Search for the handler where opcode_index is greater than or equal to exception_opcode_index
+    // Note: This logic assumes exception_catch_info_opcodes are sorted by exception_opcode_index.
+    while (low <= high) {
+      int32_t mid = low + (high - low) / 2;
+      SPVM_OPCODE* catch_info = &current_method->exception_catch_info_opcodes[mid];
+      
+      // operand0: exception_opcode_index
+      int32_t exception_opcode_index = catch_info->operand0;
+
+      if (opcode_index >= exception_opcode_index) {
+        // Potential handler found, but we need the most inner (nested) one
+        found_index = mid;
+        low = mid + 1;
+      }
+      else {
+        high = mid - 1;
+      }
+    }
+    
+    if (found_index != -1) {
+      SPVM_OPCODE* catch_info = &current_method->exception_catch_info_opcodes[found_index];
+      
+      // Save the line number (operand1) to the external variable
+      int32_t exception_line = catch_info->operand1;
+      
+      // Save the eval block end opcode index (operand2) to the external variable
+      int32_t found_eval_block_end_opcode_index = catch_info->operand2;
+      
+      int32_t no_die = catch_info->operand3;
+      
+      if (!no_die) {
+        env->die(env, stack, env->get_exception(env, stack), current_method->abs_name, current_method->current_basic_type->file, exception_line);
+      }
+      
+      if (found_eval_block_end_opcode_index > -1) {
+        opcode_index = found_eval_block_end_opcode_index;
+        goto RETRY_OPCODE;
+      }
+      
+    }
   }
   
   RETURN: {
