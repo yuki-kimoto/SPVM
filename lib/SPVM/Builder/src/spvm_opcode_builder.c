@@ -268,6 +268,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       
       SPVM_LIST* mortal_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
+      SPVM_LIST* exception_catch_info_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      
       SPVM_OPCODE_LIST* exception_catch_info_opcodes_list = SPVM_OPCODE_LIST_new(compiler);
       
       // Run OPs
@@ -5507,6 +5509,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
       SPVM_LIST_free(eval_block_stack);
       SPVM_LIST_free(catch_on_exception_opcode_index_stack);
       SPVM_LIST_free(return_on_exception_opcode_index_stack);
+      SPVM_LIST_free(exception_catch_info_opcode_index_stack);
       
       END_OF_FUNCTION: {
         
@@ -5550,6 +5553,7 @@ void SPVM_OPCODE_BUILDER_push_opcode_on_exception(
   int32_t method_opcodes_base_address_id = 0;
   
   if (in_eval_block) {
+    
     SPVM_OPCODE opcode = {0};
     
     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CATCH_ON_EXCEPTION);
