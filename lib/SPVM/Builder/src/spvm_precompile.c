@@ -5213,8 +5213,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
-        int32_t args_width = opcode->operand2;
-        int32_t line = opcode->operand3;
+        int32_t line = opcode->operand2;
+        int32_t args_width = opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
         SPVM_RUNTIME_METHOD* decl_method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, invocant_decl_basic_type, decl_method_index);
@@ -5246,8 +5246,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
-        int32_t args_width = opcode->operand2;
-        int32_t line = opcode->operand3;
+        int32_t line = opcode->operand2;
+        int32_t args_width = opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
         SPVM_RUNTIME_METHOD* decl_method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, invocant_decl_basic_type, decl_method_index);
@@ -5270,8 +5270,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer,
-                                              "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, decl_method, args_width, current_method_abs_name, current_file, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, decl_method, args_width, current_method_abs_name, current_file, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, "  );\n");
         
@@ -5280,8 +5279,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
-        int32_t args_width = opcode->operand2;
-        int32_t line = opcode->operand3;
+        int32_t line = opcode->operand2;
+        int32_t args_width = opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
         SPVM_RUNTIME_METHOD* decl_method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, invocant_decl_basic_type, decl_method_index);
@@ -5293,8 +5292,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  args_width = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, args_width);
-        SPVM_STRING_BUFFER_add(string_buffer,
-                                              ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+
         SPVM_STRING_BUFFER_add(string_buffer, "  args_signature = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method->args_signature);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");

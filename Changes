@@ -1,4 +1,8 @@
 0.990120 2026-01-29
+  [Changes]
+    * The line number of the method call is now stored in operand2 of the opcode, which removes the limit on the line number.
+  
+0.990120 2026-01-29
   [Incompatible Change]
     * Change the definition of die native API to set the caller stack correctly.
       [Before]

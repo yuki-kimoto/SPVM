@@ -1326,19 +1326,18 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, opcode_id);
                         
+                        // Operand 0: Basic type ID
                         opcode.operand0 = call_method->method->current_basic_type->id;
+                        // Operand 1: Method index
                         opcode.operand1 = call_method->method->index;
-                        opcode.operand2 = args_type_width;
                         
-                        // Set the line number to operand3. 
-                        // If it exceeds the maximum value of uint16_t, fallback to 0.
-                        int32_t line = call_method->line;
-                        if (line <= 0xFFFF) {
-                          opcode.operand3 = (uint16_t)line;
-                        }
-                        else {
-                          opcode.operand3 = 0;
-                        }
+                        // Operand 2: Line number (int32_t)
+                        opcode.operand2 = call_method->line;
+                        
+                        // Operand 3: Arguments width (uint16_t)
+                        // Check if args_type_width does not exceed the maximum value of uint16_t
+                        assert(args_type_width <= 0xFFFF);
+                        opcode.operand3 = (uint16_t)args_type_width;
                         
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       }
