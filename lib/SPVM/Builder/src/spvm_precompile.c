@@ -5333,13 +5333,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   }
   
   SPVM_STRING_BUFFER_add(string_buffer,
-    "  CATCH: {\n"
+    "  EXCEPTION: {\n"
     "  }\n"
   );
-  SPVM_STRING_BUFFER_add(string_buffer,
-    "  DIE: {\n"
-    "  }\n"
-  );
+  
   SPVM_STRING_BUFFER_add(string_buffer, "  RETURN:\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  if (error_id == 0) {\n");
   SPVM_RUNTIME_BASIC_TYPE* current_method_return_basic_type = current_method->return_basic_type;

@@ -2447,7 +2447,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     opcode_index++;
   }
   
-  CATCH: {
+  EXCEPTION: {
     // Prepare for binary search to find the appropriate exception handler
     int32_t low = 0;
     int32_t high = current_method->exception_catch_info_opcodes_length - 1;
