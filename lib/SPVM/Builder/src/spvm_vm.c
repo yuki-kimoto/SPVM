@@ -2472,26 +2472,25 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
     }
     
-    if (found_index != -1) {
-      SPVM_OPCODE* catch_info = &current_method->exception_catch_info_opcodes[found_index];
-      
-      // Save the line number (operand1) to the external variable
-      int32_t exception_line = catch_info->operand1;
-      
-      // Save the eval block end opcode index (operand2) to the external variable
-      int32_t found_eval_block_end_opcode_index = catch_info->operand2;
-      
-      int32_t no_die = catch_info->operand3;
-      
-      if (!no_die) {
-        env->die(env, stack, env->get_exception(env, stack), current_method->abs_name, current_method->current_basic_type->file, exception_line);
-      }
-      
-      if (found_eval_block_end_opcode_index > -1) {
-        opcode_index = found_eval_block_end_opcode_index;
-        goto RETRY_OPCODE;
-      }
-      
+    assert(found_index != -1);
+    
+    SPVM_OPCODE* catch_info = &current_method->exception_catch_info_opcodes[found_index];
+    
+    // Save the line number (operand1) to the external variable
+    int32_t exception_line = catch_info->operand1;
+    
+    // Save the eval block end opcode index (operand2) to the external variable
+    int32_t found_eval_block_end_opcode_index = catch_info->operand2;
+    
+    int32_t no_die = catch_info->operand3;
+    
+    if (!no_die) {
+      env->die(env, stack, env->get_exception(env, stack), current_method->abs_name, current_method->current_basic_type->file, exception_line);
+    }
+    
+    if (found_eval_block_end_opcode_index > -1) {
+      opcode_index = found_eval_block_end_opcode_index;
+      goto RETRY_OPCODE;
     }
   }
   
