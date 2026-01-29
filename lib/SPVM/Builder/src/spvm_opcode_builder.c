@@ -5530,6 +5530,12 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
         method->mortal_stack_tops_length = mortal_stack_tops_max;
         
         assert(mortal_stack_tops_index == 0);
+        
+        // Add EXCEPTION_CATCH_INFO opcodes at the end of the method opcodes
+        for (int32_t i = 0; i < exception_catch_info_opcodes_list->length; i++) {
+          SPVM_OPCODE* exception_catch_info_opcode = exception_catch_info_opcodes_list->values + i;
+          SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, exception_catch_info_opcode);
+        }
       }
     }
   }
@@ -5562,7 +5568,6 @@ void SPVM_OPCODE_BUILDER_push_opcode_on_exception(
   int32_t method_opcodes_base_address_id = 0;
   
   if (in_eval_block) {
-    
     // Add EXCEPTION_CATCH_INFO opcode at the beginning
     {
       SPVM_OPCODE opcode = {0};
@@ -5570,8 +5575,7 @@ void SPVM_OPCODE_BUILDER_push_opcode_on_exception(
       // The opcode index of the preceding opcode that may throw an exception
       int32_t preceding_opcode_index = opcode_list->length - 1;
       
-      SPVM_OPCODE opcode_info = {0};
-      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode_info, SPVM_OPCODE_C_ID_EXCEPTION_CATCH_INFO);
+      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EXCEPTION_CATCH_INFO);
       
       // Operand 0: The index of the preceding opcode
       opcode.operand0 = preceding_opcode_index;
