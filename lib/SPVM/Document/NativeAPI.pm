@@ -2041,25 +2041,22 @@ If the version string is not defined, returns -1.
 
 =head2 die
 
-C<int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...);>
+C<int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...);>
 
-Sets an exception with a formatted message and its metadata, then returns the basic type ID of the L<Error|SPVM::Error> class.
+Sets an exception message using a format string and its metadata, then returns a basic type ID of an error class.
 
-The formatted message is created from the format string I<message> and the arguments corresponding to its format specifiers.
+I<exception_format> is a format string in the style of C<printf>.
 
-This function also expects three additional arguments at the end of the variadic arguments (C<...>): a function name (C<const char*>), a file name (C<const char*>), and a line number (C<int32_t>). 
+I<func_name>, I<file>, and I<line> are metadata that indicate where the exception occurred.
 
-These metadata arguments are extracted from the remaining variadic arguments that are not consumed by the format specifiers in I<message>.
-
-The metadata is stored in specific indices of the runtime stack I<stack> to be used for reconstructing the stack trace.
+The subsequent arguments are values to be formatted according to I<exception_format>.
 
 B<Examples:>
 
-  // "The value must be 3" is created, and metadata is captured from the last 3 arguments.
-  return env->die(env, stack, "The value must be %d.", 3, __func__, FILE_NAME, __LINE__);
+  return env->die(env, stack, "Error: %s", func_name, file, line, "Something went wrong");
 
-  // Even without format specifiers, metadata must be provided.
-  return env->die(env, stack, "An error occurred.", __func__, FILE_NAME, __LINE__);
+  int32_t id = 10;
+  return env->die(env, stack, "Invalid ID %d", func_name, file, line, id);
 
 =head2 get_exception
 
@@ -3014,20 +3011,7 @@ B<Examples:>
 
 C<int32_t (*die_v2)(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...);>
 
-Sets an exception message using a format string and its metadata, then returns a basic type ID of an error class.
-
-I<exception_format> is a format string in the style of C<printf>.
-
-I<func_name>, I<file>, and I<line> are metadata that indicate where the exception occurred.
-
-The subsequent arguments are values to be formatted according to I<exception_format>.
-
-B<Examples:>
-
-  return env->die(env, stack, "Error: %s", func_name, file, line, "Something went wrong");
-
-  int32_t id = 10;
-  return env->die(env, stack, "Invalid ID %d", func_name, file, line, id);
+Same as L</"die">.
 
 =head1 Native API IDs
 
