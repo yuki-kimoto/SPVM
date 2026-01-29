@@ -499,7 +499,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
-                                                "      goto END_OF_METHOD;\n"
+                                                "      goto RETURN;\n"
                                                 "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
@@ -528,7 +528,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, class_var_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
-                                                "      goto END_OF_METHOD;\n"
+                                                "      goto RETURN;\n"
                                                 "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
@@ -558,7 +558,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
-                                                "      goto END_OF_METHOD;\n"
+                                                "      goto RETURN;\n"
                                                 "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           
@@ -576,7 +576,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
-                                                "      goto END_OF_METHOD;\n"
+                                                "      goto RETURN;\n"
                                                 "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           
@@ -594,7 +594,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
-                                                "      goto END_OF_METHOD;\n"
+                                                "      goto RETURN;\n"
                                                 "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           
@@ -612,7 +612,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
-                                                "      goto END_OF_METHOD;\n"
+                                                "      goto RETURN;\n"
                                                 "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
           
@@ -643,7 +643,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add(string_buffer, method_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
           SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
-                                                "      goto END_OF_METHOD;\n"
+                                                "      goto RETURN;\n"
                                                 "    }\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         }
@@ -5333,7 +5333,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   }
   
   // No exception
-  SPVM_STRING_BUFFER_add(string_buffer, "  END_OF_METHOD:\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  RETURN:\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  if (error_id == 0) {\n");
   SPVM_RUNTIME_BASIC_TYPE* current_method_return_basic_type = current_method->return_basic_type;
   int32_t current_method_return_type_dimension = current_method->return_type_dimension;

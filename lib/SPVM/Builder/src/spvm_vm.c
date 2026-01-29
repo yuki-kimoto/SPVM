@@ -94,7 +94,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "A creation of a stack frame failed.");
     SPVM_API_set_exception(env, stack, exception);
     error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    goto END_OF_FUNC;
+    goto RETURN;
   }
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -114,7 +114,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     switch (opcode_id) {
 
       case SPVM_OPCODE_C_ID_END_METHOD: {
-        goto END_OF_FUNC;
+        goto RETURN;
       }
       case SPVM_OPCODE_C_ID_GOTO: {
         opcode_rel_index = opcode->operand0;
@@ -2445,7 +2445,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     opcode_rel_index++;
   }
   
-  END_OF_FUNC: {
+  RETURN: {
     
     if (__builtin_expect(error_id == 0, 1)) {
       SPVM_RUNTIME_BASIC_TYPE* current_method_return_basic_type = current_method->return_basic_type;
