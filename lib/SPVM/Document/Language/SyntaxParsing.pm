@@ -20,11 +20,11 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
 
   %token <opval> CLASS HAS GET SET METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
   %token <opval> ATTRIBUTE MAKE_READ_ONLY MAKE_FIXED_LENGTH INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
-  %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
+  %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL BREAK_POINT
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
   %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER SET_LENGTH SET_CAPACITY
-  %token <opval> RETURN WEAKEN DIE WARN DIAG PRINT SAY STDERR OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
+  %token <opval> RETURN WEAKEN DIE WARN WARN_LEVEL DIAG PRINT SAY STDERR OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
   %type <opval> grammar
   %type <opval> field_name method_name class_name
   %type <opval> basic_type  opt_basic_type array_type array_type_with_length type runtime_type ref_type return_type
@@ -41,17 +41,17 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> die exists delete
   %type <opval> var_decl var
   %type <opval> operator opt_operators operators opt_operator
-  %type <opval> void_return_operator warn
+  %type <opval> void_return_operator warn warn_level
   %type <opval> unary_operator array_length
   %type <opval> inc dec
   %type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation logical_operator defined_or ternary_operator
   %type <opval> assign
   %type <opval> new array_init
   %type <opval> type_check type_cast can
-  %type <opval> call_method
+  %type <opval> call_method caller
   %type <opval> array_element_access field_access hash_value_access
   %type <opval> weaken_field unweaken_field isweak_field
-  %type <opval> sequential copy_fields
+  %type <opval> sequential copy_fields break_point
   %left <opval> ',' FATCAMMA
   %right <opval> ASSIGN SPECIAL_ASSIGN
   %right <oval> '?' ':'
@@ -64,7 +64,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY IS_FIXED_LENGTH COPY ADDRESS IS_OPTIONS CAPACITY
+  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY IS_FIXED_LENGTH COPY ADDRESS IS_OPTIONS CAPACITY CALLER
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
   %nonassoc <opval> ')'
@@ -327,6 +327,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
 
   void_return_operator
     : warn
+    | warn_level
     | PRINT operator
     | PRINT STDERR operator
     | SAY operator
@@ -341,6 +342,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | delete
     | SET_LENGTH '(' operator ',' operator ')'
     | SET_CAPACITY '(' operator ',' operator ')'
+    | break_point
 
   for_statement
     : FOR '(' opt_operator ';' opt_operator ';' opt_operator ')' block
@@ -439,6 +441,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | call_method
     | sequential
     | exists
+    | caller
 
   sequential
     : '(' operators ')'
@@ -606,6 +609,9 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : WARN operator
     | WARN
 
+  warn_level
+    : WARN_LEVEL operator ',' operator
+
   copy_fields
     : COPY_FIELDS operator ',' operator ',' type
 
@@ -614,6 +620,13 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
 
   delete
     : DELETE var ARROW '{' field_name '}'
+
+  caller
+    : CALLER
+    | CALLER operator
+
+  break_point
+    : BREAK_POINT
 
 =head2 Grammer Token
 
@@ -653,6 +666,9 @@ These are tokens for L<grammer/"Grammer">.
     <td>BASIC_TYPE_ID</td><td>basic_type_id</td>
   </tr>
   <tr>
+    <td>BREAK_POINT</td><td>break_point</td>
+  </tr>
+  <tr>
     <td>BIT_NOT</td><td>~</td>
   </tr>
   <tr>
@@ -669,6 +685,9 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>CAPACITY</td><td>capacity</td>
+  </tr>
+  <tr>
+    <td>CALLER</td><td>caller</td>
   </tr>
   <tr>
     <td>CASE</td><td>case</td>
@@ -1014,6 +1033,9 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>WARN</td><td>warn</td>
+  </tr>
+  <tr>
+    <td>WARN_LEVEL</td><td>warn_level</td>
   </tr>
   <tr>
     <td>WEAKEN</td><td>weaken</td>
