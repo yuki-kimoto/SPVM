@@ -10,11 +10,7 @@ sub new {
   
   my $self = {};
   
-  my %options = @_;
-  
-  my $build_dir = $options{build_dir};
-  
-  my $builder = SPVM::Builder->new(build_dir => $build_dir);
+  my $builder = SPVM::Builder->new(%options);
   
   $self->{builder} = $builder;
   
@@ -72,6 +68,10 @@ Options:
 =item * C<build_dir>
 
 A build directory.
+
+=item * C<optimize>
+
+The optimization level for the compiler.
 
 =back
 
