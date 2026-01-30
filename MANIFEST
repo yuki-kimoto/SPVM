@@ -669,6 +669,7 @@ t/02_vm/05_op/basic_type_id.t
 t/02_vm/05_op/bit_operator.t
 t/02_vm/05_op/break_point.spvm
 t/02_vm/05_op/break_point.t
+t/02_vm/05_op/break_point_continue.spvm
 t/02_vm/05_op/caller.t
 t/02_vm/05_op/class_var_access.t
 t/02_vm/05_op/comparison_operator.t
