@@ -13,7 +13,7 @@ my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 # If you want to test the break_point manually, run the following command:
-# make && perl -Mblib blib/script/spvm -Mblib t/02_vm/05_op/break_point.spvm
+# make && perl -Mblib blib/script/spvm t/02_vm/05_op/break_point.spvm
 
 # All object is freed
 $api->destroy_runtime_permanent_vars;
