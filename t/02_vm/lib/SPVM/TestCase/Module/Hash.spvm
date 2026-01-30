@@ -942,6 +942,16 @@ class TestCase::Module::Hash {
       }
     }
     
+    # Hash access with defined-or operator
+    {
+      my $hash = Hash->new;
+      $hash->{"foo"} //= Int->new(1);
+      
+      unless ($hash->{"foo"}->(int) == 1) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
