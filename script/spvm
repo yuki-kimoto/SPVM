@@ -12,7 +12,7 @@ SPVM::Builder::Util::getopt
   # spvmcc and spvm shared
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
-  'I=s' => \my @include_dirs,
+  'I=s' => \my @spvm_include_dirs,
   'B|build-dir=s'   => \my $build_dir,
   'w'               => \my $warning,
   'Mblib' => \my $blib,
@@ -64,7 +64,7 @@ elsif (defined $script_name) {
 
 FindBin::again();
 
-@INC = @{SPVM::Builder::Util::resolve_inc(\@INC, $source, $blib, \@include_dirs)};
+@INC = @{SPVM::Builder::Util::resolve_inc(\@INC, $source, $blib, \@spvm_include_dirs)};
 
 if ($warning) {
   $^W = 1;
