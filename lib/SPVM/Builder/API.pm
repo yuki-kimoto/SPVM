@@ -10,6 +10,8 @@ sub new {
   
   my $self = {};
   
+  my %options = @_;
+  
   my $builder = SPVM::Builder->new(%options);
   
   $self->{builder} = $builder;
