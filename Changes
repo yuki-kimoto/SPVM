@@ -1,5 +1,6 @@
 0.990121 2026-01-30
-
+  [New Features]
+    * Added the break_point operator to set a break point for debugging.
   [Incompatible Changes]
     * Update the arguments of warn native API to use a full function name instead of a basic type name and a method name.
     * This change breaks binary compatibility; all native and precompiled modules which use warn operantor or warn native API must be recompiled.
