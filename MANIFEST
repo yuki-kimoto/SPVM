@@ -667,6 +667,8 @@ t/02_vm/05_op/array_middle_size.t
 t/02_vm/05_op/assign.t
 t/02_vm/05_op/basic_type_id.t
 t/02_vm/05_op/bit_operator.t
+t/02_vm/05_op/break_point.spvm
+t/02_vm/05_op/break_point.t
 t/02_vm/05_op/caller.t
 t/02_vm/05_op/class_var_access.t
 t/02_vm/05_op/comparison_operator.t
@@ -950,6 +952,7 @@ t/02_vm/lib/SPVM/TestCase/Operator/ArrayMiddleSize.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Assign.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/BasicTypeId.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/BitOperator.spvm
+t/02_vm/lib/SPVM/TestCase/Operator/BreakPoint.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Caller.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/ClassVar.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/ComparisonOperator.spvm
@@ -1100,6 +1103,7 @@ t/04_spvmcc/myapp.pl
 t/04_spvmcc/script/anon_method.spvm
 t/04_spvmcc/script/basic.spvm
 t/04_spvmcc/script/external.spvm
+t/04_spvmcc/script/inc-order.spvm
 t/04_spvmcc/script/load-spvm-archive.config
 t/04_spvmcc/script/load-spvm-archive.linux-64bit.config
 t/04_spvmcc/script/load-spvm-archive.spvm

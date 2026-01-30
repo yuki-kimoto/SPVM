@@ -1,0 +1,26 @@
+class {
+  static method main : void () {
+    
+    &break_point;
+    
+    &break_point_precompile;
+    
+  }
+  
+  static method break_point : void () {
+    
+    say "break_point";
+    
+    break_point;
+    
+  }
+  
+  precompile static method break_point_precompile : void () {
+    
+    say "break_point_precompile";
+    
+    break_point;
+    
+  }
+  
+}
