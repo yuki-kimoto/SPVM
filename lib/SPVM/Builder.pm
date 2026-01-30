@@ -27,6 +27,17 @@ sub build_dir {
   }
 }
 
+sub optimize {
+  my $self = shift;
+  if (@_) {
+    $self->{optimize} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{optimize};
+  }
+}
+
 sub work_dir {
   my $self = shift;
   if (@_) {
@@ -184,6 +195,10 @@ sub build {
   $config->is_jit($is_jit);
   
   $config->output_dir($output_dir);
+  
+  if (defined $self->optimize) {
+    $config->optimize($self->optimize);
+  }
   
   my $cc_options = {builder => $self};
   
