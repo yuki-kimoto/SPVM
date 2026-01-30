@@ -39,6 +39,12 @@ my $dev_null = File::Spec->devnull;
   #   -Iinclude_a -Iinclude_b (command line includes)
   my $spvm_cmd = qq|$^X -Mblib blib/script/spvm -Mblib -I $include_a -I $include_b t/04_spvmcc/script/inc-order.spvm|;
   my $output = `$spvm_cmd 2>&1`;
+
+  # Normalize backslashes to forward slashes for Windows compatibility
+  if ($^O eq 'MSWin32') {
+    $output =~ s|\\|/|g;
+  }
+  
   like($output, qr|lib_directive_b/SPVM.+lib_directive_a/SPVM.+blib/arch/SPVM.+blib/lib/SPVM.+include_a/SPVM.+include_b/SPVM|);
 }
 
@@ -47,6 +53,11 @@ my $dev_null = File::Spec->devnull;
   {
     my $spvm_cmd = qq|$^X -Mblib blib/script/spvm -Mblib -e "use NotFoundClass;"|;
     my $output = `$spvm_cmd 2>&1`;
+    
+    # Normalize backslashes to forward slashes for Windows compatibility
+    if ($^O eq 'MSWin32') {
+      $output =~ s|\\|/|g;
+    }
     
     # Extract the part inside the parentheses (the search paths)
     if ($output =~ /\((.+?)\)/) {
