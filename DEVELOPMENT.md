@@ -53,16 +53,16 @@ make install
 yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
 
 # Debug run
-yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --optimize="-O0 -g" && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
 
 # Debug run - Print memory count
-yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_MEMORY && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --optimize="-O0 -g" --define=SPVM_DEBUG_MEMORY && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
 
 # Debug run - Print AST, package information, operaion codes
-yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --optimize="-O0 -g" --define=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
 
 # Debug run - Print yacc result
-yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --DEFINE=SPVM_DEBUG_YACC --DEFINE=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --define=SPVM_DEBUG_YACC --define=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
 ```
 
 ### SPVM solo test command using spvmcc command
@@ -91,7 +91,7 @@ rm solo/.spvm_build/work/myapp
 
 ```
 # Compilation for debug
-perl Makefile.PL --OPTIMIZE="-O0 -g" && make
+perl Makefile.PL --optimize="-O0 -g" && make
 
 # Compiliation time stack trace
 gdb perl core

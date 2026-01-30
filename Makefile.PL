@@ -55,10 +55,10 @@ my @defines;
 my $optimize;
 
 GetOptions(
-  "DEFINE=s" => \@defines,
-  "OPTIMIZE=s" => \$optimize,
-  "CCFLAGS=s" => \my @ccflags,
-  "LDDLFLAGS=s" => \my @lddlflags,
+  "define=s" => \@defines,
+  "optimize=s" => \$optimize,
+  "ccflags=s" => \my @ccflags,
+  "lddlflags=s" => \my @lddlflags,
   'meta' => \my $meta,
   'no-build-spvm-modules' => \my $no_build_spvm_modules,
   'no-precompile-tests' => \my $no_precompile_tests,
@@ -75,19 +75,19 @@ my $std = $default_config->std;
 # Macro
 @defines = map { "-D$_" } @defines;
 
-# OPTIMIZE
+# optimize
 unless ($optimize) {
   $optimize = $default_config->optimize;
 }
 
-# CCFLAGS
+# ccflags
 my $ccflags = $Config{ccflags};
 
 $ccflags .= " -std=$std";
 
 $ccflags .= " " . join(' ', @{$default_config->thread_ccflags}, @ccflags);
 
-# LDDLFLAGS
+# lddlflags
 my $lddlflags = $Config{lddlflags};
 
 $lddlflags .= " " . join(' ', @{$default_config->thread_ldflags}, @lddlflags);
