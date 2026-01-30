@@ -23,7 +23,7 @@
 
 %token <opval> CLASS HAS GET SET METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
 %token <opval> ATTRIBUTE MAKE_READ_ONLY MAKE_FIXED_LENGTH INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
-%token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
+%token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL BREAK_POINT
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
 %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER SET_LENGTH SET_CAPACITY
@@ -55,7 +55,7 @@
 %type <opval> call_method caller
 %type <opval> array_element_access field_access hash_value_access
 %type <opval> weaken_field unweaken_field isweak_field
-%type <opval> sequential copy_fields 
+%type <opval> sequential copy_fields break_point
 
 %left <opval> ',' FATCAMMA
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -814,6 +814,7 @@ void_return_operator
     {
       $$ = SPVM_OP_build_binary_op(compiler, $1, $3, $5);
     }
+  | break_point
 
 for_statement
   : FOR '(' opt_operator ';' opt_operator ';' opt_operator ')' block
@@ -1654,4 +1655,9 @@ caller
       $$ = SPVM_OP_build_caller(compiler, $1, $2);
     }
 
+break_point
+  : BREAK_POINT
+    {
+      $$ = SPVM_OP_build_caller(compiler, $1, NULL);
+    }
 %%
