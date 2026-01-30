@@ -3121,7 +3121,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "    void* spvm_stderr = env->spvm_stderr(env, stack);\n");
         
         // Output debug message
-        SPVM_STRING_BUFFER_add(string_buffer, "    fprintf((FILE*)spvm_stderr, \"[Breakpoint]%s at %s line %d\\n\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    fprintf((FILE*)spvm_stderr, \"[Break Point]%s at %s line %d\\n\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, method_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, file);
