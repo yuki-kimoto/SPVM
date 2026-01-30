@@ -1,16 +1,17 @@
 0.990122 2026-01-30
   [New Features]
     * Added the break_point operator to set a break point for debugging.
-0.990121 2026-01-30
   [Incompatible Changes]
-    * Update the arguments of warn native API to use a full function name instead of a basic type name and a method name.
-    * This change breaks binary compatibility; all native and precompiled modules which use warn operantor or warn native API must be recompiled.
-    * Update the output format of the warn operator to use # as the separator between the class name and the method name.
     * The order of search paths in spvm and spvmcc command has been changed to match Perl's @INC behavior. Now, paths are added in the following priority:
       1. #lib directives in the source code (highest priority)
       2. -Mblib option
       3. -I options
       4. Default @INC paths (lowest priority)
+0.990121 2026-01-30
+  [Incompatible Changes]
+    * Update the arguments of warn native API to use a full function name instead of a basic type name and a method name.
+    * This change breaks binary compatibility; all native and precompiled modules which use warn operantor or warn native API must be recompiled.
+    * Update the output format of the warn operator to use # as the separator between the class name and the method name.
       
 0.990120 2026-01-29
   [Incompatible Change]
