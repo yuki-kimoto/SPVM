@@ -4344,6 +4344,7 @@ void SPVM_CHECK_check_ast_assign_form(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* 
               case SPVM_OP_C_ID_CONDITION_EVALUATION:
               case SPVM_OP_C_ID_SEQUENCE:
               case SPVM_OP_C_ID_CALLER:
+              case SPVM_OP_C_ID_BREAK_POINT:
               {
                 convert_to_assign = 1;
                 break;
@@ -5841,6 +5842,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_ENABLE_OPTIONS:
     case SPVM_OP_C_ID_DISABLE_OPTIONS:
     case SPVM_OP_C_ID_DELETE:
+    case SPVM_OP_C_ID_BREAK_POINT:
     {
       // Dummy int variable
       type = SPVM_TYPE_new_int_type(compiler);
