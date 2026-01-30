@@ -3945,6 +3945,25 @@ Examples:
   # Get the line number of the caller
   my $line = $caller_info->line;
 
+=head2 break_point Operator
+
+The C<break_point> operator sets a break point for debugging.
+
+  break_point;
+
+This operator pauses the program execution as a break point and waits for a user input from the standard input.
+
+If the user input is a newline character C<"\n"> or an EOF(End of File), the program execution resumes.
+
+Otherwise, the program waits for a user input again.
+
+The return type is C<void> type.
+
+Examples:
+
+  # Set a break point for debugging
+  break_point;
+
 =head1 Scope Operations
 
 See the doc of L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about scope operations.
