@@ -615,6 +615,42 @@ EOS
   return $method_addresses;
 }
 
+sub resolve_inc {
+  my ($current_inc, $source, $blib, $include_dirs) = @_;
+  
+  my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
+  
+  # Get blib include directories if $blib is true
+  my @blib_include_dirs;
+  if ($blib) {
+    # Temporarily isolate @INC to get paths from the blib module
+    local @INC;
+    require blib;
+    blib->import;
+    @blib_include_dirs = @INC;
+  }
+  
+  # Final include directories
+  my @inc = @$current_inc;
+  
+  # To match Perl's @INC priority (last-in, first-priority),
+  # we add paths in reverse order of priority using unshift.
+  
+  # 3rd priority: include directories from arguments (like -I)
+  unshift @inc, @$include_dirs;
+  
+  # 2nd priority: include directories from blib (like -Mblib)
+  unshift @inc, @blib_include_dirs;
+  
+  # 1st priority: include directories from #lib directives in the source (like use lib)
+  unshift @inc, @$include_dirs_by_lib_directive;
+  
+  # Normalize paths by removing the trailing /SPVM or \SPVM
+  @inc = map { my $dir = $_; $dir =~ s/[\\\/]SPVM$//; $dir; } @inc;
+  
+  return \@inc;
+}
+
 sub parse_lib_directive {
   my ($source, $bin) = @_;
   
@@ -625,7 +661,7 @@ sub parse_lib_directive {
     
     $include_dir =~ s/\$FindBin::Bin/$bin/g;
     
-    push @$include_dirs, $include_dir;
+    unshift @$include_dirs, $include_dir;
   }
   
   return $include_dirs;

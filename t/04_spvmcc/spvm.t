@@ -23,6 +23,54 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 my $dev_null = File::Spec->devnull;
 
+# -Mblib, -I, lib directive order
+{
+  my $lib_directive_a = 'lib_directive_a';
+  my $lib_directive_b = 'lib_directive_b';
+  my $include_a = 'include_a';
+  my $include_b = 'include_b';
+  
+  # Prepare a source with multiple #lib directives
+  my $source = qq|#lib "$lib_directive_a"\n#lib "$lib_directive_b"\nuse NotFoundClass;|;
+  
+  # Run spvm with:
+  #   -Mblib (via $^X)
+  #   -Mblib (via spvm script)
+  #   -Iinclude_a -Iinclude_b (command line includes)
+  my $spvm_cmd = qq|$^X -Mblib blib/script/spvm -Mblib -I $include_a -I $include_b t/04_spvmcc/script/inc-order.spvm|;
+  my $output = `$spvm_cmd 2>&1`;
+  like($output, qr|lib_directive_b/SPVM.+lib_directive_a/SPVM.+blib/arch/SPVM.+blib/lib/SPVM.+include_a/SPVM.+include_b/SPVM|);
+}
+
+# -Mblib option
+{
+  {
+    my $spvm_cmd = qq|$^X -Mblib blib/script/spvm -Mblib -e "use NotFoundClass;"|;
+    my $output = `$spvm_cmd 2>&1`;
+    
+    # Extract the part inside the parentheses (the search paths)
+    if ($output =~ /\((.+?)\)/) {
+        my $path_string = $1;
+        my @paths = split(/ /, $path_string);
+        
+        # Target paths to check
+        my $blib_arch_spvm = 'blib/arch/SPVM';
+        my $blib_lib_spvm  = 'blib/lib/SPVM';
+        
+        # Count occurrences
+        my $arch_count = grep { $_ =~ /\Q$blib_arch_spvm\E$/ } @paths;
+        my $lib_count  = grep { $_ =~ /\Q$blib_lib_spvm\E$/ } @paths;
+        
+        # Verify that each path appears at least twice
+        cmp_ok($arch_count, '>=', 2, "The path '$blib_arch_spvm' should appear at least twice (Actual: $arch_count)");
+        cmp_ok($lib_count, '>=', 2, "The path '$blib_lib_spvm' should appear at least twice (Actual: $lib_count)");
+    }
+    else {
+        fail("Could not find the search path list in the output.");
+    }
+  }
+}
+
 # -c option
 {
   {

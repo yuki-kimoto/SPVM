@@ -1,0 +1,6 @@
+#!/usr/bin/env spvm
+
+#lib "lib_directive_a"
+#lib "lib_directive_b"
+
+use NotFoundClass;

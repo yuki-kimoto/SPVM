@@ -64,13 +64,7 @@ elsif (defined $script_name) {
 
 FindBin::again();
 
-my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
-
-if ($blib) {
-  blib->import;
-}
-
-unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs, @$include_dirs_by_lib_directive;
+@INC = @{SPVM::Builder::Util::resolve_inc(\@INC, $source, $blib, \@include_dirs)};
 
 if ($warning) {
   $^W = 1;

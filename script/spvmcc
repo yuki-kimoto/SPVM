@@ -68,13 +68,7 @@ FindBin::again();
 
 eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
 
-my $inc_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
-
-if ($blib) {
-  blib->import;
-}
-
-unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @inc, @$inc_by_lib_directive;
+@INC = @{SPVM::Builder::Util::resolve_inc(\@INC, $source, $blib, \@include_dirs)};
 
 if ($warning) {
   $^W = 1;
