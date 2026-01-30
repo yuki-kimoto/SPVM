@@ -1449,6 +1449,32 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         break;
       }
+      case SPVM_OPCODE_C_ID_BREAK_POINT: {
+        // Get the line number from operand0
+        int32_t line = opcode->operand0;
+        
+        // Get the method absolute name and the file name
+        const char* method_abs_name = current_method->abs_name;
+        const char* file = current_basic_type->file;
+        
+        // Get the SPVM's stderr from the environment
+        FILE* spvm_stderr = env->spvm_stderr(env, stack);
+        
+        // Print the breakpoint information to SPVM's stderr
+        fprintf(spvm_stderr, "[Breakpoint]%s at %s line %d\n", method_abs_name, file, line);
+        fprintf(spvm_stderr, "Press Enter to continue...");
+        
+        // Get the SPVM's stdin from the environment
+        FILE* spvm_stdin = env->spvm_stdin(env, stack);
+        
+        // Wait for the Enter key (newline) from SPVM's stdin.
+        int32_t c;
+        while ((c = fgetc(spvm_stdin)) != '\n' && c != EOF) {
+          // Just discard characters
+        }
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_ID: {
         SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_ID(eval_error_id);
         break;

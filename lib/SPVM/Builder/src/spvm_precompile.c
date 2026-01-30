@@ -3109,6 +3109,36 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_WARN(env, stack, string, method_abs_name, file, line);\n");
         break;
       }
+      case SPVM_OPCODE_C_ID_BREAK_POINT: {
+        int32_t line = opcode->operand0;
+        const char* method_abs_name = current_method->abs_name;
+        const char* file = current_basic_type->file;
+
+        // Print the breakpoint information
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        
+        // Prepare stderr
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* spvm_stderr = env->spvm_stderr(env, stack);\n");
+        
+        // Output debug message
+        SPVM_STRING_BUFFER_add(string_buffer, "    fprintf((FILE*)spvm_stderr, \"[Breakpoint]%s at %s line %d\\n\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, method_abs_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, file);
+        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, line);
+        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "    fprintf((FILE*)spvm_stderr, \"Press Enter to continue...\");\n");
+        
+        // Prepare stdin and wait for Enter
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* spvm_stdin = env->spvm_stdin(env, stack);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t c;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    while ((c = fgetc((FILE*)spvm_stdin)) != '\\n' && c != EOF);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_ID: {
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_ID(eval_error_id);\n");
         break;
