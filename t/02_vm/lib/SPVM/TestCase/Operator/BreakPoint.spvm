@@ -1,0 +1,10 @@
+class TestCase::Operator::BreakPoint {
+  
+  static method syntax : int () {
+    
+    break_point;
+    
+    return 1;
+  }
+  
+}
