@@ -1,3 +1,9 @@
+0.990120 2026-01-30
+
+  [Incompatible Changes]
+    * Update the arguments of warn native API to use a full function name instead of a basic type name and a method name.
+    * Update the output format of the warn operator to use # as the separator between the class name and the method name.
+
 0.990119 2026-01-28
   [New Features]
     * Add die_v2 native API to support optimized exception handling with metadata, which will eventually replace die as an alias after all native modules are migrated.

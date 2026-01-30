@@ -320,6 +320,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  char* args_signature;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* field_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* method_name;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* method_abs_name;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* constant_string;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t constant_string_length;\n");
   
@@ -3093,12 +3094,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, current_basic_type->name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  method_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, current_method->name);
+        SPVM_STRING_BUFFER_add(string_buffer, "  method_abs_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, current_method->abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  file = \"");
@@ -3109,7 +3106,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_WARN(env, stack, string, basic_type_name, method_name, file, line);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_WARN(env, stack, string, method_abs_name, file, line);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_ID: {
