@@ -315,7 +315,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
 
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Foo')"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Foo', \$options)"));
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
@@ -354,7 +354,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
 
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo-Bar-Baz/Makefile.PL";
   ok(-f $makefile_pl_file);
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Foo::Bar::Baz')"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Foo::Bar::Baz', \$options)"));
 
   my $native_config_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.config";
   ok(-f $native_config_file);
@@ -389,7 +389,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
 
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Foo')"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Foo', \$options)"));
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(-f $native_config_file);
@@ -418,7 +418,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
 
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Foo')"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Foo', \$options)"));
 
   my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
   ok(!-f $native_config_file);
@@ -598,6 +598,31 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   
   chdir($save_cur_dir) or die;
 }
+
+# perl Makefile.PL --optimize="-O0 -g" && make && make test
+{
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  chdir('SPVM-Foo')
+    or die "Can't chdir";
+  
+  local $ENV{PERL5LIB} = $perl5lib;
+  my $make = $Config{make};
+  my $ret = system(qq|$^X Makefile.PL --optimize="-O0 -g" && $make && $make test|);
+  ok($ret == 0);
+  
+  my $mymeta_json = 'MYMETA.json';
+  ok(-f $mymeta_json);
+  ok(SPVM::Builder::Util::file_contains($mymeta_json, "0.001"));
+  
+  chdir($save_cur_dir) or die;
+}
+
 
 # --native c --precompile and perl Makefile.PL && make && make test
 {
