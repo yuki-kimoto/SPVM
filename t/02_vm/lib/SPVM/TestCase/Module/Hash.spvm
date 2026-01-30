@@ -14,6 +14,8 @@ class TestCase::Module::Hash {
 
   our $HASH_OF_INT : cache Hash of Int;
 
+  our $HASH_OF_INT_ARRAY : cache Hash of Int[];
+
   static method new : int () {
     # Without arguments
     {
@@ -956,12 +958,24 @@ class TestCase::Module::Hash {
     
     # Hash access with defined-or operator for class variable
     {
-      $HASH_OF_INT = Hash->new;
+      {
+        $HASH_OF_INT = Hash->new;
+        
+        $HASH_OF_INT->{"foo"} //= Int->new(1);
+        
+        unless ($HASH_OF_INT->{"foo"}->(int) == 1) {
+          return 0;
+        }
+      }
       
-      $HASH_OF_INT->{"foo"} //= Int->new(1);
-      
-      unless ($HASH_OF_INT->{"foo"}->(int) == 1) {
-        return 0;
+      {
+        $HASH_OF_INT_ARRAY = Hash->new;
+        
+        $HASH_OF_INT_ARRAY->{"foo"} //= new Int[1];
+        
+        unless ($HASH_OF_INT_ARRAY->{"foo"}[0]->(int) == 0) {
+          return 0;
+        }
       }
     }
     
