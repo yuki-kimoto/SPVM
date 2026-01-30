@@ -74,7 +74,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|Hello\n  TestCase::Operator::Warn->test_warn at .*TestCase/Operator/Warn.spvm line 4|);
+      like($output, qr|Hello\n  TestCase::Operator::Warn#test_warn at .*TestCase/Operator/Warn.spvm line 4|);
     }
 
     # test_warn_newline
@@ -84,7 +84,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
       like($output, qr/\x0A/);
-      like($output, qr|^  TestCase::Operator::Warn->test_warn_newline at .*TestCase/Operator/Warn.spvm line \d+|m);
+      like($output, qr|^  TestCase::Operator::Warn#test_warn_newline at .*TestCase/Operator/Warn.spvm line \d+|m);
     }
     
     # test_warn_long_lines
@@ -94,7 +94,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
       like($output, qr|AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A|);
-      like($output, qr|^  TestCase::Operator::Warn->test_warn_long_lines at .*TestCase/Operator/Warn.spvm line \d+|m);
+      like($output, qr|^  TestCase::Operator::Warn#test_warn_long_lines at .*TestCase/Operator/Warn.spvm line \d+|m);
     }
 
     # test_warn_empty
@@ -103,7 +103,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|\n  TestCase::Operator::Warn->test_warn_empty at .*TestCase/Operator/Warn.spvm line 21|);
+      like($output, qr|\n  TestCase::Operator::Warn#test_warn_empty at .*TestCase/Operator/Warn.spvm line 21|);
     }
 
     # test_test_warn_undef
@@ -112,7 +112,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|undef\n  TestCase::Operator::Warn->test_warn_undef at .*TestCase/Operator/Warn.spvm line 27|);
+      like($output, qr|undef\n  TestCase::Operator::Warn#test_warn_undef at .*TestCase/Operator/Warn.spvm line 27|);
     }
 
     # test_test_warn_no_operand
@@ -121,7 +121,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|Warning\n  TestCase::Operator::Warn->test_warn_no_operand at .*TestCase/Operator/Warn.spvm line 33|);
+      like($output, qr|Warning\n  TestCase::Operator::Warn#test_warn_no_operand at .*TestCase/Operator/Warn.spvm line 33|);
     }
     
     # test_warn_object_type
@@ -130,7 +130,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|^Int\(0x[0-9a-fA-F]+\)\n  TestCase::Operator::Warn->test_warn_object_type at .*TestCase/Operator/Warn.spvm line 39|);
+      like($output, qr|^Int\(0x[0-9a-fA-F]+\)\n  TestCase::Operator::Warn#test_warn_object_type at .*TestCase/Operator/Warn.spvm line 39|);
     }
     
     # test_Fn_print_stderr
@@ -195,7 +195,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|Hello\n  TestCase::Operator::Warn->test_diag at .*TestCase/Operator/Warn.spvm line|);
+      like($output, qr|Hello\n  TestCase::Operator::Warn#test_diag at .*TestCase/Operator/Warn.spvm line|);
     }
     
   }
@@ -209,7 +209,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
     write_script_file($script_file, $func_call);
     system("$^X -Mblib $script_file 2> $output_file");
     my $output = slurp_binmode($output_file);
-    like($output, qr|Hello\n  TestCase::Operator::Warn->test_warn_level_zero at .*TestCase/Operator/Warn.spvm line|);
+    like($output, qr|Hello\n  TestCase::Operator::Warn#test_warn_level_zero at .*TestCase/Operator/Warn.spvm line|);
   }
   
   # warn_level -1

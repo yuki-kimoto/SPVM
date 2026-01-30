@@ -1,3 +1,10 @@
+0.990121 2026-01-30
+
+  [Incompatible Changes]
+    * Update the arguments of warn native API to use a full function name instead of a basic type name and a method name.
+    * This change breaks binary compatibility; all native and precompiled modules which use warn operantor or warn native API must be recompiled.
+    * Update the output format of the warn operator to use # as the separator between the class name and the method name.
+
 0.990120 2026-01-29
   [Incompatible Change]
     * Change the definition of die native API to set the caller stack correctly.
