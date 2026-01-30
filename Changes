@@ -1,3 +1,10 @@
+0.990123 2026-01-30
+  [New Features]
+    * Support the optimize option in create_make_rule_native and create_make_rule_precompile in SPVM::Builder::Util::API.
+    
+  [Internal Changes]
+    * Change the command-line option names in Makefile.PL to lowercase (e.g., --optimize, --define).
+    
 0.990122 2026-01-30
   [New Features]
     * Added the break_point operator to set a break point for debugging.
