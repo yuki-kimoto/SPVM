@@ -735,7 +735,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         // Default branch
-        int32_t default_opcode_rel_index = opcode->operand1;
+        int32_t default_opcode_index = opcode->operand1;
         
         // Cases length
         int32_t case_infos_length = opcode->operand2;
@@ -747,16 +747,16 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_OPCODE* opcode_case_info = &(opcodes[opcode_index + 1 + case_index]);
 
           int32_t match = opcode_case_info->operand1;
-          int32_t opcode_rel_index = opcode_case_info->operand2;
+          int32_t opcode_index = opcode_case_info->operand2;
           
           SPVM_STRING_BUFFER_add(string_buffer, "    case ");
           SPVM_STRING_BUFFER_add_int(string_buffer, match);
           SPVM_STRING_BUFFER_add(string_buffer, ": goto L");
-          SPVM_STRING_BUFFER_add_int(string_buffer, opcode_rel_index);
+          SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
         SPVM_STRING_BUFFER_add(string_buffer, "    default: goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, default_opcode_rel_index);
+        SPVM_STRING_BUFFER_add_int(string_buffer, default_opcode_index);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n"
         
                                               "  }\n");
