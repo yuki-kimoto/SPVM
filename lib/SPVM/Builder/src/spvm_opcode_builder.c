@@ -4545,6 +4545,18 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       break;
                     }
+                    case SPVM_OP_C_ID_BREAK_POINT: {
+                      
+                      SPVM_OPCODE opcode = {0};
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_BREAK_POINT);
+                      
+                      opcode.operand0 = op_assign->line;
+                      
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      
+                      break;
+                    }
                     case SPVM_OP_C_ID_PRINT: {
                       
                       SPVM_OPCODE opcode = {0};

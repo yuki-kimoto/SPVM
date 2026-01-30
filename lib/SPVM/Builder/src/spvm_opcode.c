@@ -516,6 +516,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "SET_LENGTH",
     "SET_CAPACITY",
     "CALLER,",
+    "BREAK_POINT",
   };
   
   return id_names;
