@@ -8892,4 +8892,52 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method extra_build_caller_stack : int () {
+    
+    # Call a level 1 method to create some stack depth
+    return &extra_build_caller_stack_level1;
+  }
+  
+  static method extra_build_caller_stack_level1 : int () {
+    
+    my $depth = Fn->get_call_depth;
+    
+    # 1. Build a caller stack string using a for loop
+    my $method_abs_name_with_caller_infos = StringList->new;
+    for (my $i = 0; $i <= $depth; $i++) {
+      my $abs_name = Fn->get_current_method_abs_name($i);
+      my $caller_info = caller($i);
+      my $caller_line = $caller_info->line;
+      my $caller_method_abs_name = $caller_info->method_abs_name;
+      my $caller_file = $caller_info->file;
+      
+      my $method_abs_name_with_caller_info = "$abs_name(called from $caller_method_abs_name at $caller_file line $caller_line";
+      
+      $method_abs_name_with_caller_infos->push($method_abs_name_with_caller_info);
+    }
+    
+    # 2. Check each level using Fn->contains
+    # Check level 0
+    {
+      my $info_at_level0 = $method_abs_name_with_caller_infos->get(0);
+      diag "[Test Output][extra_build_caller_stack:level0]$info_at_level0";
+      unless (Fn->contains($info_at_level0, "TestCase::Module::Fn#extra_build_caller_stack_level1")) {
+        diag "Level 0 does not contain expected method name: " . $info_at_level0;
+        return 0;
+      }
+    }
+    
+    # Check level 1
+    {
+      my $info_at_level1 = $method_abs_name_with_caller_infos->get(1);
+      diag "[Test Output][extra_build_caller_stack:level1]$info_at_level1";
+      unless (Fn->contains($info_at_level1, "TestCase::Module::Fn#extra_build_caller_stack")) {
+        diag "Level 1 does not contain expected method name: " . $info_at_level1;
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }
