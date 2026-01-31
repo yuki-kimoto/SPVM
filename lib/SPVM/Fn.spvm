@@ -2102,4 +2102,6 @@ class Fn {
   
   native static method build_exception_message : string ($level : int = 0);
   
+  native static method get_call_depth : int ();
+  
 }

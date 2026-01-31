@@ -1205,3 +1205,26 @@ int32_t SPVM__Fn__build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__get_call_depth(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  /* Get the raw call depth from the runtime via Native API.
+     This includes the current call to SPVM__Fn__get_call_depth itself.
+  */
+  int32_t raw_depth = env->get_call_depth(env, stack);
+  
+  /* Adjustment:
+     Subtract 1 to skip the current 'get_call_depth' method itself,
+     providing the depth from the caller's perspective.
+  */
+  int32_t adjusted_depth = raw_depth - 1;
+  
+  /* Safety check to ensure depth is not negative */
+  if (adjusted_depth < 0) {
+    adjusted_depth = 0;
+  }
+  
+  stack[0].ival = adjusted_depth;
+  
+  return 0;
+}

@@ -1901,6 +1901,14 @@ B<Examples:>
     warn $full_message;
   }
 
+=head2 get_call_depth
+
+C<static method get_call_depth : int ();>
+
+Returns the current call stack depth.
+
+The base depth is -1. When the first method is called, the depth becomes 0.
+
 =head1 See Also
 
 =over 2
