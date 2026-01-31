@@ -407,6 +407,8 @@ ok(SPVM::TestCase::NativeAPI->field_exists);
 
 ok(SPVM::TestCase::NativeAPI->extra);
 
+ok(SPVM::TestCase::NativeAPI->method_begin_and_end_cb);
+
 # Clear exception
 $api->destroy_runtime_permanent_vars;
 

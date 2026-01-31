@@ -1805,4 +1805,6 @@ class TestCase::NativeAPI {
   
   native static method field_exists : int ();
   
+  native static method method_begin_and_end_cb : int ();
+  
 }

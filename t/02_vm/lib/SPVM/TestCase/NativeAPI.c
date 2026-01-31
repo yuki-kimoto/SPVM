@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <stdint.h>
 
 #include <spvm_native.h>
 
@@ -5228,3 +5229,90 @@ int32_t SPVM__TestCase__NativeAPI__field_exists(SPVM_ENV* env, SPVM_VALUE* stack
   return 0;
 }
 
+// static variables to store detected method information
+static int32_t method_begin_call_count = 0;
+static int32_t method_end_call_count = 0;
+static void* last_begin_method = NULL;
+static void* last_end_method = NULL;
+
+// callback for method begin
+static void test_method_begin_cb(SPVM_ENV* env, SPVM_VALUE* stack) {
+  method_begin_call_count++;
+  int32_t error_id = 0;
+  // level 0 means the current method
+  last_begin_method = env->get_current_method(env, stack, 0, &error_id);
+}
+
+// callback for method end
+static void test_method_end_cb(SPVM_ENV* env, SPVM_VALUE* stack) {
+  method_end_call_count++;
+  int32_t error_id = 0;
+  // level 0 means the current method
+  last_end_method = env->get_current_method(env, stack, 0, &error_id);
+}
+
+int32_t SPVM__TestCase__NativeAPI__method_begin_and_end_cb(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t error_id = 0;
+
+  // 1. Setup
+  method_begin_call_count = 0;
+  method_end_call_count = 0;
+  last_begin_method = NULL;
+  last_end_method = NULL;
+  
+  env->set_method_begin_cb(env, test_method_begin_cb);
+  env->set_method_end_cb(env, test_method_end_cb);
+
+  // 2. Execution: Call Fn#INT_MAX using call_class_method_by_name
+  env->call_class_method_by_name(env, stack, "Fn", "INT_MAX", 0, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+
+  // 3. Verification
+  // Check if each callback was called exactly once
+  if (method_begin_call_count != 1) {
+    stack[0].ival = 0;
+    goto CLEANUP;
+  }
+  if (method_end_call_count != 1) {
+    stack[0].ival = 0;
+    goto CLEANUP;
+  }
+
+  // Check if get_current_method successfully returned the method pointer
+  if (last_begin_method == NULL) {
+    stack[0].ival = 0;
+    goto CLEANUP;
+  }
+  if (last_end_method == NULL) {
+    stack[0].ival = 0;
+    goto CLEANUP;
+  }
+
+  // Verify that the captured method pointers are consistent
+  if (last_begin_method != last_end_method) {
+    stack[0].ival = 0;
+    goto CLEANUP;
+  }
+
+  // Verify the method absolute name
+  const char* method_abs_name = env->api->method->get_abs_name(env->runtime, last_begin_method);
+  if (strcmp(method_abs_name, "Fn#INT_MAX") != 0) {
+    stack[0].ival = 0;
+    goto CLEANUP;
+  }
+
+  // Verify the return value of Fn#INT_MAX is preserved and correct
+  if (stack[0].ival != INT32_MAX) {
+    stack[0].ival = 0;
+    goto CLEANUP;
+  }
+
+  stack[0].ival = 1;
+
+CLEANUP:
+  // 4. Cleanup
+  env->set_method_begin_cb(env, NULL);
+  env->set_method_end_cb(env, NULL);
+  
+  return 0;
+}
