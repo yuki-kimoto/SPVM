@@ -505,4 +505,14 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
 
 void* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level);
 
+typedef void SPVM_API_method_cb_t(SPVM_ENV* env, SPVM_VALUE* stack);
+
+void SPVM_API_set_method_begin_cb(SPVM_ENV* env, SPVM_API_method_cb_t* cb);
+
+SPVM_API_method_cb_t* SPVM_API_get_method_begin_cb(SPVM_ENV* env);
+
+void SPVM_API_set_method_end_cb(SPVM_ENV* env, SPVM_API_method_cb_t* cb);
+
+SPVM_API_method_cb_t* SPVM_API_get_method_end_cb(SPVM_ENV* env);
+
 #endif

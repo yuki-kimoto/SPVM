@@ -374,6 +374,12 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_build_exception_message_no_mortal,
     SPVM_API_build_exception_message,
     SPVM_API_die,
+    NULL, // method_begin_cb
+    SPVM_API_get_method_begin_cb,
+    SPVM_API_set_method_begin_cb,
+    NULL, // method_end_cb
+    SPVM_API_get_method_end_cb,
+    SPVM_API_set_method_end_cb,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -540,6 +546,11 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     }
   }
   
+  /* Call method begin callback */
+  if (__builtin_expect(env->method_begin_cb != NULL, 0)) {
+    env->method_begin_cb(env, stack);
+  }
+  
   // Set default values for optional arguments
   int32_t args_length = method->args_length;
   for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
@@ -650,6 +661,11 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   
   if (method->return_type_is_void) {
     stack[0].oval = NULL;
+  }
+  
+  /* Call method end callback */
+  if (__builtin_expect(env->method_end_cb != NULL, 0)) {
+    env->method_end_cb(env, stack);
   }
   
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival--;
@@ -7396,4 +7412,20 @@ void* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t
   void* obj_message = SPVM_API_build_exception_message_no_mortal(env, stack, level);
   SPVM_API_push_mortal(env, stack, obj_message);
   return obj_message;
+}
+
+void SPVM_API_set_method_begin_cb(SPVM_ENV* env, SPVM_API_method_cb_t* cb) {
+  env->method_begin_cb = cb;
+}
+
+SPVM_API_method_cb_t* SPVM_API_get_method_begin_cb(SPVM_ENV* env) {
+  return (SPVM_API_method_cb_t*)env->method_begin_cb;
+}
+
+void SPVM_API_set_method_end_cb(SPVM_ENV* env, SPVM_API_method_cb_t* cb) {
+  env->method_end_cb = cb;
+}
+
+SPVM_API_method_cb_t* SPVM_API_get_method_end_cb(SPVM_ENV* env) {
+  return (SPVM_API_method_cb_t*)env->method_end_cb;
 }

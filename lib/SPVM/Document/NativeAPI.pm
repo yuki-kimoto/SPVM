@@ -3013,6 +3013,42 @@ C<int32_t (*die_v2)(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_form
 
 Same as L</"die">.
 
+=head2 method_begin_cb
+
+C<void (*method_begin_cb)(SPVM_ENV* env, SPVM_VALUE* stack);>
+
+A function pointer field for a callback that is executed at the beginning of a method.
+
+=head2 get_method_begin_cb
+
+C<void* (*get_method_begin_cb)(SPVM_ENV* env);>
+
+Returns the C<method_begin_cb> field.
+
+=head2 set_method_begin_cb
+
+C<void (*set_method_begin_cb)(SPVM_ENV* env, void (*cb)(SPVM_ENV* env, SPVM_VALUE* stack));>
+
+Sets the C<method_begin_cb> field to the given callback function I<cb>.
+
+=head2 method_end_cb
+
+C<void (*method_end_cb)(SPVM_ENV* env, SPVM_VALUE* stack);>
+
+A function pointer field for a callback that is executed at the end of a method.
+
+=head2 get_method_end_cb
+
+C<void* (*get_method_end_cb)(SPVM_ENV* env);>
+
+Returns the C<method_end_cb> field.
+
+=head2 set_method_end_cb
+
+C<void (*set_method_end_cb)(SPVM_ENV* env, void (*cb)(SPVM_ENV* env, SPVM_VALUE* stack));>
+
+Sets the C<method_end_cb> field to the given callback function I<cb>.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3292,6 +3328,12 @@ Native APIs have its IDs.
   272 build_exception_message_no_mortal
   273 build_exception_message
   274 die_v2
+  275 method_begin_cb
+  276 get_method_begin_cb
+  277 set_method_begin_cb
+  278 method_end_cb
+  279 get_method_end_cb
+  280 set_method_end_cb
   
 =head1 Constant Values
 
