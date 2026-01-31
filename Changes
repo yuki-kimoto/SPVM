@@ -4,6 +4,7 @@
     * Added Fn#get_call_depth method to get the current call stack depth.
     * Add the optional $level argument to the Fn#get_current_method_name method.
     * Add the optional $level argument to the Fn#get_current_basic_type_name method.
+    * Add the Fn#get_current_method_abs_name method to get the absolute name of the method that is the basic type name and the method name joined with #.
     
 0.990123 2026-01-31
   [New Features]

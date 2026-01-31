@@ -270,6 +270,7 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->get_basic_type_name_by_id);
     ok(SPVM::TestCase::Module::Fn->get_current_method_name_for_test);
     ok(SPVM::TestCase::Module::Fn->get_current_basic_type_name_for_test);
+    ok(SPVM::TestCase::Module::Fn->get_current_method_abs_name_for_test);
     ok(SPVM::TestCase::Module::Fn->get_call_depth);
   }
   

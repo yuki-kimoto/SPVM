@@ -1877,6 +1877,20 @@ Exceptions:
 
 If the caller stack is empty, an exception is thrown.
 
+=head2 get_current_method_abs_name
+
+C<static method get_current_method_abs_name : string ($level : int = 0);>
+
+Returns the absolute name of the method at the specified caller stack level C<$level>.
+
+The absolute name is the basic type name and the method name joined with C<#>.
+
+The level 0 represents the currently executing method. The level 1 represents its caller, and so on.
+
+Exceptions:
+
+If the specified C<$level> is out of range of the caller stack, an exception is thrown.
+
 =head2 build_exception_message
 
 C<static method build_exception_message : string ($level : int = 0);>

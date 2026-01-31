@@ -8812,6 +8812,55 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method get_current_method_abs_name_for_test : int () {
+    
+    # 1. Check the current method absolute name
+    {
+      my $abs_name = Fn->get_current_method_abs_name;
+      
+      unless ($abs_name eq "TestCase::Module::Fn#get_current_method_abs_name_for_test") {
+        diag $abs_name;
+        return 0;
+      }
+    }
+    
+    # 2. Check the caller method absolute name (level)
+    {
+      my $success = &get_current_method_abs_name_for_test_level1;
+      unless ($success) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method get_current_method_abs_name_for_test_level1 : int () {
+    
+    # Call the test method to check current method absolute name (level 0)
+    {
+      my $abs_name = Fn->get_current_method_abs_name(0);
+      
+      unless ($abs_name eq "TestCase::Module::Fn#get_current_method_abs_name_for_test_level1") {
+        diag $abs_name;
+        return 0;
+      }
+    }
+    
+    # Call the test method to check caller method absolute name (level 1)
+    {
+      my $abs_name = Fn->get_current_method_abs_name(1);
+      
+      # Since the caller is get_current_method_abs_name_for_test
+      unless ($abs_name eq "TestCase::Module::Fn#get_current_method_abs_name_for_test") {
+        diag $abs_name;
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method get_call_depth : int () {
     
     {
