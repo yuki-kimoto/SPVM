@@ -1855,15 +1855,15 @@ If the basic type specified by $basic_type_id is not found, an exception is thro
 
 =head2 get_current_method_name
 
-C<static method get_current_method_name : string ();>
+C<static method get_current_method_name : string ($level : int = 0);>
 
-Returns the name of the method currently being executed.
+Returns the name of the method at the specified caller stack level C<$level>.
 
-This method calls the L<get_current_method|SPVM::Document::NativeAPI/"get_current_method"> native API.
+The level 0 represents the currently executing method. The level 1 represents its caller, and so on.
 
 Exceptions:
 
-If the caller stack is empty, an exception is thrown.
+If the specified C<$level> is out of range of the caller stack, an exception is thrown.
 
 =head2 get_current_basic_type_name
 

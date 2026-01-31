@@ -1133,13 +1133,22 @@ int32_t SPVM__Fn__get_basic_type_name_by_id(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__get_current_method_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
+  /* Get the level argument from stack[0] */
+  int32_t level = stack[0].ival;
+  
+  /* Adjustment:
+     level 0 should be the currently executing method (the caller of this function).
+     Since SPVM__Fn__get_current_method_name is level 0 in the physical stack,
+     we add 1 to skip it.
+  */
+  int32_t adjusted_level = level + 1;
+  
   int32_t error_id = 0;
   
-  /* Get the currently executing method */
-  int32_t level = 1;
-  void* current_method = env->get_current_method(env, stack, level, &error_id);
+  /* Get the method at the adjusted level */
+  void* current_method = env->get_current_method(env, stack, adjusted_level, &error_id);
   
-  /* If get_current_method returns NULL, re-throw the existing exception with current location info */
+  /* If get_current_method fails (e.g. out of range), re-throw the exception */
   if (error_id) {
     return env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, FILE_NAME, __LINE__);
   }
@@ -1147,7 +1156,7 @@ int32_t SPVM__Fn__get_current_method_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   /* Get the method name */
   const char* method_name = env->api->method->get_name(env->runtime, current_method);
   
-  /* Create a new SPVM string object using new_string_nolen */
+  /* Create a new SPVM string object */
   void* obj_method_name = env->new_string_nolen(env, stack, method_name);
   
   stack[0].oval = obj_method_name;

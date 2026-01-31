@@ -2,6 +2,7 @@
   [New Features]
     * Added the set_method_begin_cb, get_method_begin_cb, set_method_end_cb, and get_method_end_cb native APIs to support method hooks for profilers.
     * Added Fn#get_call_depth method to get the current call stack depth.
+    * Add the optional $level argument to the Fn#get_current_method_name method.
     
 0.990123 2026-01-31
   [New Features]

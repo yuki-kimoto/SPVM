@@ -8717,9 +8717,42 @@ class TestCase::Module::Fn {
   
   static method get_current_method_name_for_test : int () {
     
-    # Check the current method name in this scope
+    # 1. Check the current method name
     {
       my $method_name = Fn->get_current_method_name;
+      
+      unless ($method_name eq "get_current_method_name_for_test") {
+        diag $method_name;
+        return 0;
+      }
+    }
+    
+    # 2. Check the caller method name (level)
+    {
+      my $success = &get_current_method_name_for_test_level1;
+      unless ($success) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method get_current_method_name_for_test_level1 : int () {
+    
+    # Call the test method to create a stack level 0
+    {
+      my $method_name = Fn->get_current_method_name(0);
+      
+      unless ($method_name eq "get_current_method_name_for_test_level1") {
+        diag $method_name;
+        return 0;
+      }
+    }
+    
+    # Call the test method to create a stack level 1
+    {
+      my $method_name = Fn->get_current_method_name(1);
       
       unless ($method_name eq "get_current_method_name_for_test") {
         diag $method_name;

@@ -2096,7 +2096,7 @@ class Fn {
   
   native static method get_basic_type_name_by_id : string ($basic_type_id : int);
   
-  native static method get_current_method_name : string ();
+  native static method get_current_method_name : string ($level : int = 0);
   
   native static method get_current_basic_type_name : string ();
   
