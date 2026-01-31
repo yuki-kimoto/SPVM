@@ -1853,13 +1853,13 @@ Exceptions:
 
 If the basic type specified by $basic_type_id is not found, an exception is thrown.
 
-=head2 get_current_method_name
+=head2 get_current_basic_type_name
 
-C<static method get_current_method_name : string ($level : int = 0);>
+C<static method get_current_basic_type_name : string ($level : int = 0);>
 
-Returns the name of the method at the specified caller stack level C<$level>.
+Returns the basic type name at the specified caller stack level C<$level>.
 
-The level 0 represents the currently executing method. The level 1 represents its caller, and so on.
+The level 0 represents the currently executing method's basic type. The level 1 represents its caller's basic type, and so on.
 
 Exceptions:
 

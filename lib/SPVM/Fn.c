@@ -1166,22 +1166,27 @@ int32_t SPVM__Fn__get_current_method_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__get_current_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
+  /* Get the level argument from stack[0] */
+  int32_t level = stack[0].ival;
+  
+  /* Adjustment:
+     level 0 should be the basic type of the currently executing method.
+     Add 1 to skip this native method frame.
+  */
+  int32_t adjusted_level = level + 1;
+  
   int32_t error_id = 0;
   
-  /* Get the currently executing method */
-  int32_t level = 1;
-  void* current_method = env->get_current_method(env, stack, level, &error_id);
+  /* Get the method at the adjusted level */
+  void* current_method = env->get_current_method(env, stack, adjusted_level, &error_id);
   
-  /* If get_current_method returns NULL, re-throw the existing exception with current location info */
+  /* If get_current_method fails (e.g. out of range), re-throw the exception */
   if (error_id) {
     return env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, FILE_NAME, __LINE__);
   }
   
-  /* Get the basic type that owns this method using get_current_basic_type.
-     This must not be NULL if the current_method is valid.
-  */
+  /* Get the basic type of the method */
   void* basic_type = env->api->method->get_current_basic_type(env->runtime, current_method);
-  assert(basic_type != NULL);
   
   /* Get the basic type name */
   const char* basic_type_name = env->api->basic_type->get_name(env->runtime, basic_type);

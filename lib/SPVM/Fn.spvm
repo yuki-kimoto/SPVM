@@ -2098,7 +2098,7 @@ class Fn {
   
   native static method get_current_method_name : string ($level : int = 0);
   
-  native static method get_current_basic_type_name : string ();
+  native static method get_current_basic_type_name : string ($level : int = 0);
   
   native static method build_exception_message : string ($level : int = 0);
   

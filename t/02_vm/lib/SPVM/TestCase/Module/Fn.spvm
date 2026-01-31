@@ -8763,13 +8763,46 @@ class TestCase::Module::Fn {
     return 1;
   }
   
-  static method get_current_basic_type_name : int () {
-
-    # Check the current basic type name in this scope
+  static method get_current_basic_type_name_for_test : int () {
+    
+    # 1. Check the current basic type name
     {
       my $basic_type_name = Fn->get_current_basic_type_name;
-
-      # The basic type name should be "TestCase::Module::Fn"
+      
+      unless ($basic_type_name eq "TestCase::Module::Fn") {
+        diag $basic_type_name;
+        return 0;
+      }
+    }
+    
+    # 2. Check the caller basic type name (level)
+    {
+      my $success = &get_current_basic_type_name_for_test_level1;
+      unless ($success) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method get_current_basic_type_name_for_test_level1 : int () {
+    
+    # Call the test method to check current basic type name (level 0)
+    {
+      my $basic_type_name = Fn->get_current_basic_type_name(0);
+      
+      unless ($basic_type_name eq "TestCase::Module::Fn") {
+        diag $basic_type_name;
+        return 0;
+      }
+    }
+    
+    # Call the test method to check caller basic type name (level 1)
+    {
+      my $basic_type_name = Fn->get_current_basic_type_name(1);
+      
+      # Since the caller is get_current_basic_type_name_for_test in the same class
       unless ($basic_type_name eq "TestCase::Module::Fn") {
         diag $basic_type_name;
         return 0;
