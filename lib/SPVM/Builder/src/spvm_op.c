@@ -1045,13 +1045,16 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_class->file, op_class->line);
     SPVM_OP_insert_child(compiler, op_merged_block, op_merged_block->last, op_list_statements);
     
-    for (int32_t i = 0; i < type->basic_type->op_ends->length; i++) {
+    // Process END blocks in reverse order (LIFO) to match Perl's behavior
+    for (int32_t i = type->basic_type->op_ends->length - 1; i >= 0; i--) {
       SPVM_OP* op_end = SPVM_LIST_get(type->basic_type->op_ends, i);
       
       SPVM_OP* op_block = op_end->first;
       
+      // Detach the block from the original END OP
       SPVM_OP_cut_op(compiler, op_end->first);
       
+      // Insert the block into the merged statement list
       SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_block);
     }
     
