@@ -1201,6 +1201,10 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       runtime_basic_type->init_method = &runtime_basic_type->methods[basic_type->init_method->index];
     }
     
+    if (basic_type->end_method) {
+      runtime_basic_type->end_method = &runtime_basic_type->methods[basic_type->end_method->index];
+    }
+    
     runtime_basic_type->current_runtime = runtime;
   }
   

@@ -20,6 +20,7 @@ struct spvm_runtime_basic_type {
   SPVM_RUNTIME_FIELD* fields;
   SPVM_RUNTIME_METHOD* methods;
   SPVM_RUNTIME_METHOD* init_method;
+  SPVM_RUNTIME_METHOD* end_method;
   SPVM_RUNTIME_METHOD* destroy_method;
   SPVM_RUNTIME_BASIC_TYPE** anon_basic_types;
   SPVM_RUNTIME* current_runtime;
