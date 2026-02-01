@@ -380,6 +380,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     NULL, // method_end_cb
     SPVM_API_get_method_end_cb,
     SPVM_API_set_method_end_cb,
+    SPVM_API_call_end_methods,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -909,6 +910,39 @@ int32_t SPVM_API_call_init_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   return error_id;
+}
+
+int32_t SPVM_API_call_end_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  // Call the consolidated end_method of each basic type.
+  // The execution order between classes is not guaranteed.
+  int32_t basic_types_length = runtime->basic_types_length;
+  for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
+    
+    if (basic_type->end_method) {
+      int32_t args_width = 0;
+      
+      // Execute the consolidated END method for this package
+      int32_t error_id = SPVM_API_call_method(env, stack, basic_type->end_method, args_width, __func__, FILE_NAME, __LINE__);
+      
+      // An exception thrown in an END block is converted to a warning message
+      if (error_id) {
+        void* exception = SPVM_API_get_exception(env, stack);
+        
+        if (exception) {
+          const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
+          
+          fprintf(runtime->spvm_stderr, "[An exception thrown in END block is converted to a warning message]\n%s\n", exception_chars);
+        }
+      }
+    }
+  }
+  
+  return 0;
 }
 
 int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_program_name) {

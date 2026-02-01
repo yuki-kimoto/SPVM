@@ -299,6 +299,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->method_end_cb != &env_array[278]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_method_end_cb != &env_array[279]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_method_end_cb != &env_array[280]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->call_end_methods != &env_array[281]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

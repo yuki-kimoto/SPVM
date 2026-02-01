@@ -378,6 +378,7 @@ struct spvm_env {
   void (*method_end_cb)(SPVM_ENV* env, SPVM_VALUE* stack);
   void* (*get_method_end_cb)(SPVM_ENV* env);
   void (*set_method_end_cb)(SPVM_ENV* env, void (*cb)(SPVM_ENV* env, SPVM_VALUE* stack));
+  int32_t (*call_end_methods)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 struct spvm_env_api {

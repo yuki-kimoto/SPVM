@@ -77,10 +77,12 @@ Frees the L<runtime environment|SPVM::Document::NativeClass/"Runtime Environment
 This native API should not be used unless special purposes are intended.
 
 =head2 call_init_methods
-  
+
 C<int32_t (*call_init_methods)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Calls C<INIT> blocks of all classes.
+Calls the consolidated C<INIT> method for each class.
+
+All C<INIT> blocks in a class are merged into a single C<INIT> method at compile time. This native API calls these methods for all classes that have them.
 
 If an exception is thrown, returns a non-zero value. Otherwise, returns 0.
 
@@ -93,6 +95,20 @@ C<int32_t (*set_command_info_program_name)(L<SPVM_ENV* env|SPVM::Document::Nativ
 Sets the program name I<obj_program_name> to L<CommandInfo#PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME"> class variable.
 
 If an exception is thrown, returns a non-zero value. Otherwise, returns 0.
+
+This native API should not be used unless special purposes are intended.
+
+=head2 call_end_methods
+
+C<int32_t (*call_end_methods)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+
+Calls the consolidated C<END> method for each class.
+
+All C<END> blocks in a class are merged into a single C<END> method in reverse order (LIFO) at compile time. This native API calls these methods for all classes that have them.
+
+If an exception is thrown in an C<END> method, it is converted to a warning message and printed to C<stderr>, and the execution continues for the remaining classes.
+
+This method always returns 0 because all exceptions are caught internally.
 
 This native API should not be used unless special purposes are intended.
 
@@ -3334,7 +3350,8 @@ Native APIs have its IDs.
   278 method_end_cb
   279 get_method_end_cb
   280 set_method_end_cb
-  
+  281 call_end_methods,
+
 =head1 Constant Values
 
 =head2 Basic Type IDs
