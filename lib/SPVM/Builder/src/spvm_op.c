@@ -944,7 +944,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           anon_method_field->is_anon_method_field = 1;
         }
       }
-      // INIT statement
+      // INIT block
       else if (op_decl->id == SPVM_OP_C_ID_INIT) {
         SPVM_OP* op_init = op_decl;
         
@@ -1012,7 +1012,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     }
   }
   
-  // INIT statements
+  // INIT blocks
   if (SPVM_TYPE_is_user_defined_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
     
     SPVM_OP* op_merged_block = SPVM_OP_new_op_block(compiler, op_class->file, op_class->line);
@@ -1031,7 +1031,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_block);
     }
     
-    SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, NULL, op_merged_block);
+    SPVM_OP* op_method = SPVM_OP_build_init_method(compiler, NULL, op_merged_block);
     
     SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
   }
@@ -1961,7 +1961,7 @@ SPVM_OP* SPVM_OP_build_anon_method_field(SPVM_COMPILER* compiler, SPVM_OP* op_fi
   return op_field_definition;
 }
 
-SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_init_method(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block) {
     
   SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_block->file, op_block->line);
   SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, "INIT", strlen("INIT"));
@@ -1978,7 +1978,7 @@ SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPV
   return op_method;
 }
 
-SPVM_OP* SPVM_OP_build_init_statement(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block) {
     
   SPVM_OP_insert_child(compiler, op_init, op_init->first, op_block);
   
@@ -1987,7 +1987,7 @@ SPVM_OP* SPVM_OP_build_init_statement(SPVM_COMPILER* compiler, SPVM_OP* op_init,
   return op_init;
 }
 
-SPVM_OP* SPVM_OP_build_end_statement(SPVM_COMPILER* compiler, SPVM_OP* op_end, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_end_block(SPVM_COMPILER* compiler, SPVM_OP* op_end, SPVM_OP* op_block) {
     
   SPVM_OP_insert_child(compiler, op_end, op_end->first, op_block);
   

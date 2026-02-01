@@ -660,9 +660,9 @@ static const char *const yytname[] =
   "generic_type", "basic_type", "ref_type", "array_type",
   "array_type_with_length", "return_type", "opt_classes", "classes",
   "class", "opt_basic_type", "opt_extends", "class_block",
-  "opt_definitions", "definitions", "definition", "init_statement",
-  "end_statement", "version_decl", "version_from", "use_without_alias",
-  "use", "require", "class_alias", "allow", "interface", "enumeration",
+  "opt_definitions", "definitions", "definition", "init_block",
+  "end_block", "version_decl", "version_from", "use_without_alias", "use",
+  "require", "class_alias", "allow", "interface", "enumeration",
   "enumeration_block", "opt_enumeration_items", "enumeration_items",
   "enumeration_item", "our", "has", "opt_getter", "getter", "opt_setter",
   "setter", "method", "anon_method", "opt_args", "args", "arg",
@@ -3548,7 +3548,7 @@ yyreduce:
   case 64:
 #line 348 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     { 
-      (yyval.opval) = SPVM_OP_build_init_statement(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
+      (yyval.opval) = SPVM_OP_build_init_block(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
 #line 3554 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -3556,7 +3556,7 @@ yyreduce:
   case 65:
 #line 354 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     { 
-      (yyval.opval) = SPVM_OP_build_end_statement(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
+      (yyval.opval) = SPVM_OP_build_end_block(compiler, (yyvsp[-1].opval), (yyvsp[0].opval));
     }
 #line 3562 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;

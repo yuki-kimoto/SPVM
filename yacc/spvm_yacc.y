@@ -41,7 +41,7 @@
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement foreach_statement
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
-%type <opval> block eval_block init_statement end_statement switch_block if_require_statement
+%type <opval> block eval_block init_block end_block switch_block if_require_statement
 %type <opval> die exists delete
 %type <opval> var_decl var
 %type <opval> operator opt_operators operators opt_operator
@@ -336,23 +336,23 @@ definition
   | class_alias
   | allow
   | interface
-  | init_statement
-  | end_statement
+  | init_block
+  | end_block
   | enumeration
   | our
   | has ';'
   | method
 
-init_statement
+init_block
   : INIT block
     { 
-      $$ = SPVM_OP_build_init_statement(compiler, $1, $2);
+      $$ = SPVM_OP_build_init_block(compiler, $1, $2);
     }
 
-end_statement
+end_block
   : END block
     { 
-      $$ = SPVM_OP_build_end_statement(compiler, $1, $2);
+      $$ = SPVM_OP_build_end_block(compiler, $1, $2);
     }
 
 version_decl

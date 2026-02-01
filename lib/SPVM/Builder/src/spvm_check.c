@@ -574,8 +574,8 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     const char* basic_type_name = basic_type->name;
     
-    // Edit INIT method
-    // The INIT mehtods that is the parent basic type and used basic types in the order.
+    // Edit INIT blocks
+    // The INIT blocks that is the parent basic type and used basic types in the order.
     SPVM_METHOD* init_method = basic_type->init_method;
     if (init_method) {
       SPVM_OP* op_block = init_method->op_block;

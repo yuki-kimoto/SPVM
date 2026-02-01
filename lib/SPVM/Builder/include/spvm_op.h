@@ -436,11 +436,11 @@ void SPVM_OP_attach_anon_method_fields(SPVM_COMPILER* compiler, SPVM_OP* op_meth
 
 SPVM_OP* SPVM_OP_build_anon_method_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_anon_method_field_var_decl_start, SPVM_FIELD* field);
 
+SPVM_OP* SPVM_OP_build_init_method(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block);
+
 SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block);
 
-SPVM_OP* SPVM_OP_build_init_statement(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block);
-
-SPVM_OP* SPVM_OP_build_end_statement(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block);
+SPVM_OP* SPVM_OP_build_end_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block);
 
 SPVM_OP* SPVM_OP_build_CONSTVALUE(SPVM_COMPILER* compiler, SPVM_OP* op_const);
 
