@@ -2620,6 +2620,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 break;
               }
+              case 'E' : {
+                if (strcmp(symbol_name, "END") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_END);
+                  keyword_token = END;
+                }
+                break;
+              }
               case 'I' : {
                 if (strcmp(symbol_name, "INIT") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_INIT);

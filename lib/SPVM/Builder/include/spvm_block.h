@@ -17,6 +17,7 @@ enum {
   SPVM_BLOCK_C_ID_METHOD,
   SPVM_BLOCK_C_ID_EVAL,
   SPVM_BLOCK_C_ID_INIT_BLOCK,
+  SPVM_BLOCK_C_ID_END_BLOCK,
 };
 
 struct spvm_block {

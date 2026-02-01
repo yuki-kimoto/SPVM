@@ -272,6 +272,7 @@ enum {
   SPVM_OP_C_ID_STDERR,
   SPVM_OP_C_ID_CALLER,
   SPVM_OP_C_ID_BREAK_POINT,
+  SPVM_OP_C_ID_END,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -438,6 +439,8 @@ SPVM_OP* SPVM_OP_build_anon_method_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op
 SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block);
 
 SPVM_OP* SPVM_OP_build_init_statement(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block);
+
+SPVM_OP* SPVM_OP_build_end_statement(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block);
 
 SPVM_OP* SPVM_OP_build_CONSTVALUE(SPVM_COMPILER* compiler, SPVM_OP* op_const);
 

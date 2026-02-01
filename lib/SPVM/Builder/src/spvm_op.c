@@ -272,6 +272,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "STDERR",
     "CALLER",
     "BREAK_POINT",
+    "END",
   };
   
   return id_names;
@@ -1984,6 +1985,15 @@ SPVM_OP* SPVM_OP_build_init_statement(SPVM_COMPILER* compiler, SPVM_OP* op_init,
   op_block->uv.block->id = SPVM_BLOCK_C_ID_INIT_BLOCK;
   
   return op_init;
+}
+
+SPVM_OP* SPVM_OP_build_end_statement(SPVM_COMPILER* compiler, SPVM_OP* op_end, SPVM_OP* op_block) {
+    
+  SPVM_OP_insert_child(compiler, op_end, op_end->first, op_block);
+  
+  op_block->uv.block->id = SPVM_BLOCK_C_ID_END_BLOCK;
+  
+  return op_end;
 }
 
 SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {

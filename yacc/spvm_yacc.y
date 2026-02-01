@@ -26,7 +26,7 @@
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL BREAK_POINT
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
-%token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER SET_LENGTH SET_CAPACITY
+%token <opval> RW RO WO INIT END NEW OF BASIC_TYPE_ID EXTENDS SUPER SET_LENGTH SET_CAPACITY
 %token <opval> RETURN WEAKEN DIE WARN WARN_LEVEL DIAG PRINT SAY STDERR OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
 
 %type <opval> grammar
@@ -41,7 +41,7 @@
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement foreach_statement
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
-%type <opval> block eval_block init_statement switch_block if_require_statement
+%type <opval> block eval_block init_statement end_statement switch_block if_require_statement
 %type <opval> die exists delete
 %type <opval> var_decl var
 %type <opval> operator opt_operators operators opt_operator
@@ -337,6 +337,7 @@ definition
   | allow
   | interface
   | init_statement
+  | end_statement
   | enumeration
   | our
   | has ';'
@@ -346,6 +347,12 @@ init_statement
   : INIT block
     { 
       $$ = SPVM_OP_build_init_statement(compiler, $1, $2);
+    }
+
+end_statement
+  : END block
+    { 
+      $$ = SPVM_OP_build_end_statement(compiler, $1, $2);
     }
 
 version_decl
