@@ -1036,6 +1036,30 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
   }
   
+  // END blocks
+  if (SPVM_TYPE_is_user_defined_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+    
+    SPVM_OP* op_merged_block = SPVM_OP_new_op_block(compiler, op_class->file, op_class->line);
+    op_merged_block->uv.block->id = SPVM_BLOCK_C_ID_END_BLOCK;
+    
+    SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_class->file, op_class->line);
+    SPVM_OP_insert_child(compiler, op_merged_block, op_merged_block->last, op_list_statements);
+    
+    for (int32_t i = 0; i < type->basic_type->op_ends->length; i++) {
+      SPVM_OP* op_end = SPVM_LIST_get(type->basic_type->op_ends, i);
+      
+      SPVM_OP* op_block = op_end->first;
+      
+      SPVM_OP_cut_op(compiler, op_end->first);
+      
+      SPVM_OP_insert_child(compiler, op_list_statements, op_list_statements->last, op_block);
+    }
+    
+    SPVM_OP* op_method = SPVM_OP_build_end_method(compiler, NULL, op_merged_block);
+    
+    SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
+  }
+  
   // Method declarations
   for (int32_t i = 0; i < type->basic_type->methods->length; i++) {
     SPVM_METHOD* method = SPVM_LIST_get(type->basic_type->methods, i);
@@ -1985,6 +2009,23 @@ SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPV
   op_block->uv.block->id = SPVM_BLOCK_C_ID_INIT_BLOCK;
   
   return op_init;
+}
+
+SPVM_OP* SPVM_OP_build_end_method(SPVM_COMPILER* compiler, SPVM_OP* op_end, SPVM_OP* op_block) {
+    
+  SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_block->file, op_block->line);
+  SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, "END", strlen("END"));
+  const char* method_name = method_name_string->value;
+  SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "END", op_block->file, op_block->line);
+  SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, op_block->file, op_block->line);
+  
+  SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
+  SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_block->file, op_block->line);
+  SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
+  
+  SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, op_block);
+  
+  return op_method;
 }
 
 SPVM_OP* SPVM_OP_build_end_block(SPVM_COMPILER* compiler, SPVM_OP* op_end, SPVM_OP* op_block) {

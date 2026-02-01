@@ -45,12 +45,15 @@ struct spvm_basic_type {
   SPVM_METHOD* required_method;
   SPVM_METHOD* destroy_method;
   SPVM_METHOD* init_method;
+  SPVM_METHOD* end_method;
   SPVM_LIST* op_inits;
+  SPVM_LIST* op_ends;
   const char* parent_name;
   SPVM_BASIC_TYPE* parent;
   SPVM_BASIC_TYPE* outmost;
   int32_t fields_size;
   int8_t has_init_block;
+  int8_t has_end_block;
   int8_t is_anon;
   int8_t is_generated_by_anon_method;
   int8_t is_precompile;

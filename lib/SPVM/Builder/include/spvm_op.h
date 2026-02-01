@@ -440,6 +440,8 @@ SPVM_OP* SPVM_OP_build_init_method(SPVM_COMPILER* compiler, SPVM_OP* op_init, SP
 
 SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block);
 
+SPVM_OP* SPVM_OP_build_end_method(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block);
+
 SPVM_OP* SPVM_OP_build_end_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block);
 
 SPVM_OP* SPVM_OP_build_CONSTVALUE(SPVM_COMPILER* compiler, SPVM_OP* op_const);
