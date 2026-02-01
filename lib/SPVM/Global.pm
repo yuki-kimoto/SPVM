@@ -18,6 +18,8 @@ END {
       my $env = delete $API->{env};
       my $stack = delete $API->{stack};
       
+      $env->call_end_methods($stack);
+      
       $env->destroy_class_vars($stack);
     }
     

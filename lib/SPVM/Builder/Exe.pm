@@ -841,6 +841,8 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     env->leave_scope(env, stack, scope_id);
   }
   
+  env->call_end_methods(env, stack);
+  
   env->destroy_class_vars(env, stack);
   
   env->free_stack(env, stack);

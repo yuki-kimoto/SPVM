@@ -5343,6 +5343,22 @@ call_init_methods(...)
 }
 
 SV*
+call_end_methods(...)
+    PPCODE:
+{
+    SV* sv_env = ST(0);
+    SV* sv_stack = ST(1);
+    
+    SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
+    SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
+    
+    // Call the consolidated END methods for all classes
+    env->call_end_methods(env, stack);
+    
+    XSRETURN(0);
+}
+
+SV*
 destroy_class_vars(...)
   PPCODE:
 {
