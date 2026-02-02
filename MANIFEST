@@ -640,7 +640,7 @@ t/02_vm/03_definition/alias.t
 t/02_vm/03_definition/allow.t
 t/02_vm/03_definition/enum.t
 t/02_vm/03_definition/inheritance.t
-t/02_vm/03_definition/init_statement.t
+t/02_vm/03_definition/init_block.t
 t/02_vm/03_definition/interface.t
 t/02_vm/03_definition/mulnum.t
 t/02_vm/03_definition/mulnum_array.t
@@ -803,8 +803,8 @@ t/02_vm/lib/SPVM/TestCase/Alias.spvm
 t/02_vm/lib/SPVM/TestCase/Allow.spvm
 t/02_vm/lib/SPVM/TestCase/Allow/PrivateData.spvm
 t/02_vm/lib/SPVM/TestCase/Comment/LF.spvm
-t/02_vm/lib/SPVM/TestCase/Definition/InitStatement.spvm
-t/02_vm/lib/SPVM/TestCase/Definition/InitStatement/Data.spvm
+t/02_vm/lib/SPVM/TestCase/Definition/InitBlock.spvm
+t/02_vm/lib/SPVM/TestCase/Definition/InitBlock/Data.spvm
 t/02_vm/lib/SPVM/TestCase/Destroy.spvm
 t/02_vm/lib/SPVM/TestCase/Destroy/Data/Basic.spvm
 t/02_vm/lib/SPVM/TestCase/Destroy/Data/ExceptionNotOverride.spvm

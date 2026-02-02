@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Definition::InitStatement';
+use SPVM 'TestCase::Definition::InitBlock';
 
 
 
@@ -15,7 +15,7 @@ my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 {
-  ok(SPVM::TestCase::Definition::InitStatement->test);
+  ok(SPVM::TestCase::Definition::InitBlock->test);
 }
 
 # All object is freed

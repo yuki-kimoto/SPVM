@@ -1,5 +1,5 @@
-class TestCase::Definition::InitStatement {
-  use TestCase::Definition::InitStatement::Data;
+class TestCase::Definition::InitBlock {
+  use TestCase::Definition::InitBlock::Data;
   
   our $FOO : int;
   
@@ -36,7 +36,7 @@ class TestCase::Definition::InitStatement {
       return 0;
     }
     
-    unless ($TestCase::Definition::InitStatement::Data::FOO == 1) {
+    unless ($TestCase::Definition::InitBlock::Data::FOO == 1) {
       return 0;
     }
     

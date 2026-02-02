@@ -1,4 +1,4 @@
-class TestCase::Definition::InitStatement::Data {
+class TestCase::Definition::InitBlock::Data {
   use TestCase::Empty;
   
   our $FOO : public int;
