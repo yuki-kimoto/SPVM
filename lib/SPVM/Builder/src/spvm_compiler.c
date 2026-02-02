@@ -1206,6 +1206,13 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       runtime_basic_type->end_method = &runtime_basic_type->methods[basic_type->end_method->index];
     }
     
+    if (basic_type->monitor_var_type) {
+      runtime_basic_type->has_monitor_var = 1;
+      runtime_basic_type->monitor_var_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type->monitor_var_type->basic_type->id);
+      runtime_basic_type->monitor_var_type_dimension = basic_type->monitor_var_type->dimension;
+      runtime_basic_type->monitor_var_type_flag = basic_type->monitor_var_type->flag;
+    }
+    
     runtime_basic_type->current_runtime = runtime;
   }
   
