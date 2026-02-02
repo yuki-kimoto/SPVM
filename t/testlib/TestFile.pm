@@ -46,4 +46,32 @@ sub slurp_binmode {
   return $output;
 }
 
+sub generate_class_method_call_script {
+  my ($script_file, $class_name, $method_name) = @_;
+  
+  # Prepend "SPVM::" to the class name to create a valid Perl-side SPVM class name
+  my $spvm_class_name = "SPVM::$class_name";
+  
+  my $content = <<"EOS";
+use lib "t/testlib";
+use TestAuto;
+
+use strict;
+use warnings;
+
+use SPVM '$class_name';
+
+use TestFile;
+
+# Call the SPVM method using the full Perl-side name
+$spvm_class_name->$method_name;
+EOS
+
+  open my $script_fh, '>', $script_file
+    or die "Can't open file $script_file: $!";
+  
+  print $script_fh $content;
+  close $script_fh;
+}
+
 1;
