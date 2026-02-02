@@ -763,6 +763,49 @@ use Test::More;
   }
 }
 
+# $^MONITOR special variable
+{
+  # OK: $^MONITOR is declared and assigned a value
+  {
+    my $source = q|
+      class Tmp {
+        static method main : void () {
+          my $^MONITOR = 1;
+        }
+      }
+    |;
+    compile_ok($source);
+  }
+  
+  # Error: $^MONITOR is used more than once in a file
+  {
+    my $source = q|
+      class Tmp {
+        static method main : void () {
+          my $^MONITOR = 1;
+          my $^MONITOR = 2;
+        }
+      }
+    |;
+    compile_not_ok($source, qr/The monitor variable '\$\^MONITOR' can only be used once per file/);
+  }
+  
+  # Error: $^MONITOR is used more than once in a file (including anon method)
+  {
+    my $source = q|
+      class Tmp {
+        static method main : void () {
+          my $^MONITOR = 1;
+          my $cb = [method : void () {
+            my $^MONITOR = 2;
+          }];
+        }
+      }
+    |;
+    compile_not_ok($source, qr/The monitor variable '\$\^MONITOR' can only be used once per file/);
+  }
+}
+  
 # Extra
 {
   {
