@@ -1,0 +1,13 @@
+class TestCase::Definition::EndBlock {
+  
+  # The first END block in the source
+  END {
+    print "END 1\n";
+  }
+  
+  # The second END block in the source
+  END {
+    print "END 2\n";
+  }
+  
+}
