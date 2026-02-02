@@ -301,6 +301,10 @@ use Test::More;
     compile_not_ok($source, qr/'INIT' cannnot be used as a method name/);
   }
   {
+    my $source = 'class MyClass { method END : void () { } }';
+    compile_not_ok($source, qr/'END' cannnot be used as a method name/);
+  }
+  {
     my $source = 'class MyClass { ro method foo : void () { } }';
     compile_not_ok($source, qr/Invalid method attribute 'ro'/);
   }
