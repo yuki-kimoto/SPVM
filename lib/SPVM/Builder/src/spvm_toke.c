@@ -2737,12 +2737,11 @@ void SPVM_TOKE_init_compiler_current_info(SPVM_COMPILER* compiler) {
   compiler->token_begin_ch_ptr = NULL;
   compiler->line_begin_ch_ptr = NULL;
   compiler->current_anon_op_types = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 128);
+  compiler->current_line = 1;
 }
 
 int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
   
-  
-  SPVM_TOKE_init_compiler_current_info(compiler);
   
   // If there are more module, load it
   SPVM_LIST* op_use_stack = compiler->op_use_stack;
@@ -2999,6 +2998,8 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
             content_offset += utf8_char_len;
           }
           
+          SPVM_TOKE_init_compiler_current_info(compiler);
+          
           // Set information to compiler
           compiler->current_class_content = content;
           compiler->current_class_content_length = content_length;
@@ -3011,7 +3012,6 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
           compiler->token_begin_ch_ptr = compiler->current_class_content;
           compiler->ch_ptr = compiler->token_begin_ch_ptr;
           compiler->line_begin_ch_ptr = compiler->token_begin_ch_ptr;
-          compiler->current_line = 1;
         }
         else {
           // If module is not found and the module is used in require syntax, compilation errors don't occur.
