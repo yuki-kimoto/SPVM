@@ -1,3 +1,7 @@
+0.990126 2026-02-02
+  [New Features]
+    * Add get_monitor_var_type to the BasicType native API.
+    
 0.990125 2026-02-02
   [New Features]
     * Add call_end_methods native API to call consolidated END methods for all classes.

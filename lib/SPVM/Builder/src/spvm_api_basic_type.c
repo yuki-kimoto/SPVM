@@ -2,6 +2,7 @@
 // MIT License
 
 #include <stdlib.h>
+#include <assert.h>
 
 #include "spvm_native.h"
 
@@ -51,6 +52,7 @@ SPVM_API_BASIC_TYPE* SPVM_API_BASIC_TYPE_new_api() {
     SPVM_API_BASIC_TYPE_get_current_runtime,
     SPVM_API_BASIC_TYPE_get_basic_type_in_version_from,
     SPVM_API_BASIC_TYPE_get_fields_size,
+    SPVM_API_BASIC_TYPE_get_monitor_var_type,
   };
   
   SPVM_API_BASIC_TYPE* native_apis = calloc(1, sizeof(native_apis_init));
@@ -296,4 +298,20 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_BASIC_TYPE_get_basic_type_in_version_from(SPVM
 int32_t SPVM_API_BASIC_TYPE_get_fields_size(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
   return basic_type->fields_size;
+}
+
+int32_t SPVM_API_BASIC_TYPE_get_monitor_var_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t* ret_basic_type_id, int32_t* ret_dimension, int32_t* ret_flag) {
+  assert(ret_basic_type_id);
+  assert(ret_dimension);
+  assert(ret_flag);
+
+  if (basic_type->has_monitor_var) {
+    *ret_basic_type_id = basic_type->monitor_var_basic_type->id;
+    *ret_dimension = basic_type->monitor_var_type_dimension;
+    *ret_flag = basic_type->monitor_var_type_flag;
+    
+    return 0;
+  }
+  
+  return 1;
 }

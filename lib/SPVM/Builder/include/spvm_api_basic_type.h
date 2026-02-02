@@ -73,4 +73,6 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_BASIC_TYPE_get_basic_type_in_version_from(SPVM
 
 int32_t SPVM_API_BASIC_TYPE_get_fields_size(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
 
+int32_t SPVM_API_BASIC_TYPE_get_monitor_var_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t* ret_basic_type_id, int32_t* ret_dimension, int32_t* ret_flag);
+
 #endif

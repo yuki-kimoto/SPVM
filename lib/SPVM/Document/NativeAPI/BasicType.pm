@@ -197,6 +197,34 @@ int32_t (*get_fields_size)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, 
 
 Retunrs the total byte size of the fields.
 
+=head2 get_current_runtime
+
+C<void* (*get_current_runtime)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+
+Returns the runtime that owns the basic type I<basic_type>.
+
+=head2 get_basic_type_in_version_from
+
+C<void* (*get_basic_type_in_version_from)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+
+void* (*get_basic_type_in_version_from)(void* runtime, void* basic_type)
+
+Returns the basic type L<basic type|SPVM::Document::NativeAPI::BasicType> object specified by C<version_from> statement.
+
+=head2 get_fields_size
+
+int32_t (*get_fields_size)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);
+
+Retunrs the total byte size of the fields.
+
+=head2 get_monitor_var_type
+
+C<int32_t (*get_monitor_var_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t* ret_basic_type_id, int32_t* ret_dimension, int32_t* ret_flag);>
+
+If the basic type I<basic_type> has the C<$^MONITOR> special variable, its basic type ID is set to I<ret_basic_type_id>, its dimension is set to I<ret_dimension>, its type flag is set to I<ret_flag>, and returns 0. Otherwise returns 1.
+
+I<ret_basic_type_id>, I<ret_dimension>, and I<ret_flag> must not be NULL, or the program asserts.
+
 =head1 Native API IDs
 
   0 get_name
@@ -225,7 +253,8 @@ Retunrs the total byte size of the fields.
   23 get_current_runtime
   24 get_basic_type_in_version_from
   25 get_fields_size
-
+  26 get_monitor_var_type
+  
 =head1 See Aloso
 
 =over 2
