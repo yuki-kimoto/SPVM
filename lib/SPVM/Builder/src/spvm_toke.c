@@ -2942,69 +2942,56 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
         class_file = SPVM_COMPILER_get_class_file(compiler, basic_type_name);
         
         if (class_file) {
+          
           if (!class_file->content) {
             SPVM_COMPILER_error(compiler, "The content of the class file in the '%s' module must be defined.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
             return 0;
           }
           
-          compiler->current_class_content = (char*)class_file->content;
+          char* content = (char*)class_file->content;
           
           if (!(class_file->content_length >= 0)) {
             SPVM_COMPILER_error(compiler, "The content length of the class file in the '%s' must be greater than 0.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
             return 0;
           }
           
-          compiler->current_class_content_length = class_file->content_length;
+          int32_t content_length = class_file->content_length;
+          const char* rel_file = class_file->rel_file;
           
-          compiler->current_class_dir = class_file->dir;
-          
-          if (!class_file->rel_file) {
+          if (!rel_file) {
             SPVM_COMPILER_error(compiler, "The relative file path of the class file in the '%s' must be defined.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
             return 0;
           }
           
-          compiler->current_class_rel_file = class_file->rel_file;
-          
-          compiler->current_outmost_class_name = class_file->class_name;
-          
-          // If we get current class file path, set it. Otherwise, set module relative file path
-          if (class_file->file) {
-            compiler->current_file = class_file->file;
-          }
-          else {
-            compiler->current_file = class_file->rel_file;
-          }
-          
-          int32_t content_length = class_file->content_length;
-          
-          for (int32_t i = 0; i < content_length; i++) {
-            char ch = compiler->current_class_content[i];
+          const char* file = class_file->file;
+          if (!file) {
+            file = rel_file;
           }
           
           // Check characters in source code.
           int32_t content_offset = 0;
-          while (content_offset < class_file->content_length) {
+          while (content_offset < content_length) {
             int32_t dst;
             
             // UTF-8
-            const char* current_ch = compiler->current_class_content + content_offset;
-            int32_t utf8_char_len = (int32_t)SPVM_UTF8_iterate((const uint8_t*)(compiler->current_class_content + content_offset), class_file->content_length, &dst);
+            const char* current_ch_ptr = content + content_offset;
+            int32_t utf8_char_len = (int32_t)SPVM_UTF8_iterate((const uint8_t*)current_ch_ptr, content_length, &dst);
             
             if (!(utf8_char_len > 0)) {
-              SPVM_COMPILER_error(compiler, "The charactor encoding of SPVM source codes must be UTF-8. The source code of the '%s' class in the '%s' file contains non-UTF8 characters.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "The charactor encoding of SPVM source codes must be UTF-8. The source code of the '%s' class in the '%s' file contains non-UTF8 characters.\n  at %s line %d", basic_type_name, file, op_use->file, op_use->line);
               return 0;
             }
             
             // ASCII
             if (utf8_char_len == 1) {
-              if (!(SPVM_TOKE_isprint_ascii(compiler, *current_ch) || SPVM_TOKE_isspace_ascii(compiler, *current_ch))) {
-                SPVM_COMPILER_error(compiler, "If a character in an SPVM source code is ASCII, it must be ASCII printable or space. The source code of the '%s' class in the '%s' file contains it.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
+              if (!(SPVM_TOKE_isprint_ascii(compiler, *current_ch_ptr) || SPVM_TOKE_isspace_ascii(compiler, *current_ch_ptr))) {
+                SPVM_COMPILER_error(compiler, "If a character in an SPVM source code is ASCII, it must be ASCII printable or space. The source code of the '%s' class in the '%s' file contains it.\n  at %s line %d", basic_type_name, file, op_use->file, op_use->line);
                 return 0;
               }
               
               // Check new lines
-              if (*current_ch == '\r') {
-                SPVM_COMPILER_error(compiler, "The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF. The source code of the '%s' class in the '%s' file contains it.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
+              if (*current_ch_ptr == '\r') {
+                SPVM_COMPILER_error(compiler, "The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF. The source code of the '%s' class in the '%s' file contains it.\n  at %s line %d", basic_type_name, file, op_use->file, op_use->line);
                 return 0;
               }
             }
@@ -3012,6 +2999,14 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
             content_offset += utf8_char_len;
           }
           
+          // Set information to compiler
+          compiler->current_class_content = content;
+          compiler->current_class_content_length = content_length;
+          compiler->current_class_dir = class_file->dir;
+          compiler->current_class_rel_file = rel_file;
+          compiler->current_outmost_class_name = class_file->class_name;
+          compiler->current_file = file;
+
           // Set initial information for tokenization
           compiler->token_begin_ch_ptr = compiler->current_class_content;
           compiler->ch_ptr = compiler->token_begin_ch_ptr;

@@ -51,6 +51,8 @@ struct spvm_compiler {
   // Current temporary variables length
   int32_t current_tmp_vars_length;
   
+  int32_t current_monitor_vars_length;
+  
   // Allocator
   SPVM_ALLOCATOR* global_allocator;
   
