@@ -8,7 +8,10 @@ use File::Path 'mkpath';
 use Test::More;
 
 use TestFile;
+use File::Spec;
 use SPVM (); # Load SPVM API
+
+my $devnull = File::Spec->devnull;
 
 my $test_dir = $ENV{SPVM_TEST_DIR};
 my $test_tmp_dir = "$test_dir/test_files/.tmp";
@@ -40,12 +43,12 @@ my $class_name = 'TestCase::Definition::EndBlock';
   }
   
   # Test STDERR: Check if die is converted to a warning
-  # Capture only STDERR by redirecting STDOUT to /dev/null and then STDERR to STDOUT
+  # Capture only STDERR by redirecting STDOUT to $devnull and then STDERR to STDOUT
   {
     # Redirection order: 
     # 1. Redirect STDERR to STDOUT (2>&1)
-    # 2. Redirect original STDOUT to /dev/null (1>/dev/null)
-    my $stderr = `$^X -Mblib $script_file 2>&1 1>/dev/null`;
+    # 2. Redirect original STDOUT to $devnull (1>$devnull)
+    my $stderr = `$^X -Mblib $script_file 2>&1 1>$devnull`;
     like($stderr, qr/Die in END block/, "die in END block is converted to a warning on STDERR.");
   }
   
