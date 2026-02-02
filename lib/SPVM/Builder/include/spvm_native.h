@@ -442,6 +442,7 @@ struct spvm_api_basic_type {
   void* (*get_basic_type_in_version_from)(void* runtime, void* basic_type);
   int32_t (*get_fields_size)(void* runtime, void* basic_type);
   int32_t (*get_monitor_var_type)(void* runtime, void* basic_type, int32_t* ret_basic_type_id, int32_t* ret_dimension, int32_t* ret_flag);
+  int32_t (*has_monitor_var)(void* runtime, void* basic_type);
 };
 
 struct spvm_api_class_file {

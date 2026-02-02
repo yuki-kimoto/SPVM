@@ -315,3 +315,8 @@ int32_t SPVM_API_BASIC_TYPE_get_monitor_var_type(SPVM_RUNTIME* runtime, SPVM_RUN
   
   return 1;
 }
+
+int32_t SPVM_API_BASIC_TYPE_has_monitor_var(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
+  
+  return (int32_t)basic_type->has_monitor_var;
+}

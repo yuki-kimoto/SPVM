@@ -225,6 +225,12 @@ If the basic type I<basic_type> has the C<$^MONITOR> special variable, its basic
 
 I<ret_basic_type_id>, I<ret_dimension>, and I<ret_flag> must not be NULL, or the program asserts.
 
+=head2 has_monitor_var
+
+C<int32_t (*has_monitor_var)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+
+If the basic type I<basic_type> has the C<$^MONITOR> special variable, returns 1. Otherwise returns 0.
+
 =head1 Native API IDs
 
   0 get_name
@@ -254,6 +260,7 @@ I<ret_basic_type_id>, I<ret_dimension>, and I<ret_flag> must not be NULL, or the
   24 get_basic_type_in_version_from
   25 get_fields_size
   26 get_monitor_var_type
+  27 has_monitor_var
   
 =head1 See Aloso
 

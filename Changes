@@ -1,6 +1,7 @@
 0.990126 2026-02-02
   [New Features]
     * Add get_monitor_var_type to the BasicType native API.
+    * Add has_monitor_var basic type native API to check for the presence of the $^MONITOR special variable.
     
 0.990125 2026-02-02
   [New Features]
