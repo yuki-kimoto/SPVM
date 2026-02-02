@@ -24,6 +24,7 @@ struct spvm_runtime_basic_type {
   SPVM_RUNTIME_METHOD* destroy_method;
   SPVM_RUNTIME_BASIC_TYPE** anon_basic_types;
   SPVM_RUNTIME* current_runtime;
+  SPVM_RUNTIME_BASIC_TYPE* monitor_var_basic_type;
   int32_t id;
   int32_t category;
   int32_t string_pool_length;
@@ -33,10 +34,13 @@ struct spvm_runtime_basic_type {
   int32_t fields_size;
   int32_t methods_length;
   int32_t anon_basic_types_length;
+  int32_t monitor_var_type_dimension;
+  int32_t monitor_var_type_flag;
   int8_t is_anon;
   int8_t is_pointer;
   int8_t initialized;
   int8_t is_object_type;
+  int8_t has_monitor_var;
 };
 
 #endif
