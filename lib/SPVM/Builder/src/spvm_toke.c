@@ -2733,6 +2733,7 @@ void SPVM_TOKE_init_compiler_current_info(SPVM_COMPILER* compiler) {
   compiler->current_file = NULL;
   compiler->current_class_content = NULL;
   compiler->current_tmp_vars_length = 0;
+  compiler->current_monitor_vars_length = 0;
   compiler->ch_ptr = NULL;
   compiler->token_begin_ch_ptr = NULL;
   compiler->line_begin_ch_ptr = NULL;
