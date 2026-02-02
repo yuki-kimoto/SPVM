@@ -2,6 +2,8 @@
   [New Features]
     * Add call_end_methods native API to call consolidated END methods for all classes.
     * Add the END block feature. It allows defining blocks that are executed when the program exits, similar to Perl's END blocks.
+  [Incompatibe Changes]
+    * The method name "END" is now prohibited because it is reserved for the END block feature.
     
 0.990124 2026-01-31
   [New Features]
