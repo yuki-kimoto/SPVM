@@ -52,6 +52,12 @@ sub generate_class_method_call_script {
   # Prepend "SPVM::" to the class name to create a valid Perl-side SPVM class name
   my $spvm_class_name = "SPVM::$class_name";
   
+  # Generate method call string only if $method_name is defined
+  my $method_call = "";
+  if (defined $method_name) {
+    $method_call = "$spvm_class_name->$method_name;";
+  }
+  
   my $content = <<"EOS";
 use lib "t/testlib";
 use TestAuto;
@@ -63,8 +69,8 @@ use SPVM '$class_name';
 
 use TestFile;
 
-# Call the SPVM method using the full Perl-side name
-$spvm_class_name->$method_name;
+# Call the SPVM method if a method name is provided
+$method_call
 EOS
 
   open my $script_fh, '>', $script_file
