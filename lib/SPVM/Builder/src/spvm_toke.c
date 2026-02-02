@@ -1438,6 +1438,26 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op_exception_var;
           return EXCEPTION_VAR;
         }
+        // A monitor variable
+        else if (*(compiler->ch_ptr + 1) == '^' && strncmp(compiler->ch_ptr + 2, "MONITOR", 7) == 0) {
+          // Check if the monitor variable is used more than once in a file
+          compiler->current_monitor_vars_length++;
+          if (compiler->current_monitor_vars_length > 1) {
+            SPVM_COMPILER_error(compiler, "The monitor variable '$^MONITOR' can only be used once per file.\n  at %s line %d", compiler->current_file, compiler->current_line);
+          }
+          
+          // The name is "$^MONITOR"
+          const char* var_name = "$^MONITOR";
+          int32_t var_name_length = (int32_t)strlen(var_name);
+          
+          // Create a name OP for a local variable
+          SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->current_file, compiler->current_line);
+          yylvalp->opval = op_name;
+          
+          compiler->ch_ptr += var_name_length;
+          
+          return VAR_NAME;
+        }
         // A exception variable with {}
         else if (*(compiler->ch_ptr + 1) == '{' && *(compiler->ch_ptr + 2) == '@' && *(compiler->ch_ptr + 3) == '}') {
           compiler->ch_ptr += 4;
