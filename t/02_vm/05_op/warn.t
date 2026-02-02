@@ -15,7 +15,6 @@ my $test_dir = $ENV{SPVM_TEST_DIR};
 my $test_tmp_dir = "$test_dir/test_files/.tmp";
 
 my $script_file = "$test_tmp_dir/warn-script.pl";
-my $output_file = "$test_tmp_dir/warn-output.txt";
 
 mkpath $test_tmp_dir;
 
@@ -32,8 +31,7 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'test_warn';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       like($output, qr|Hello\n  TestCase::Operator::Warn#test_warn at .*TestCase/Operator/Warn.spvm line 4|);
     }
 
@@ -41,8 +39,7 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'test_warn_newline';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       like($output, qr/\x0A/);
       like($output, qr|^  TestCase::Operator::Warn#test_warn_newline at .*TestCase/Operator/Warn.spvm line \d+|m);
     }
@@ -51,8 +48,7 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'test_warn_long_lines';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       like($output, qr|AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A|);
       like($output, qr|^  TestCase::Operator::Warn#test_warn_long_lines at .*TestCase/Operator/Warn.spvm line \d+|m);
     }
@@ -61,8 +57,7 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'test_warn_empty';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       like($output, qr|\n  TestCase::Operator::Warn#test_warn_empty at .*TestCase/Operator/Warn.spvm line 21|);
     }
 
@@ -70,8 +65,7 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'test_warn_undef';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       like($output, qr|undef\n  TestCase::Operator::Warn#test_warn_undef at .*TestCase/Operator/Warn.spvm line 27|);
     }
 
@@ -79,8 +73,7 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'test_warn_no_operand';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       like($output, qr|Warning\n  TestCase::Operator::Warn#test_warn_no_operand at .*TestCase/Operator/Warn.spvm line 33|);
     }
     
@@ -88,8 +81,7 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'test_warn_object_type';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       like($output, qr|^Int\(0x[0-9a-fA-F]+\)\n  TestCase::Operator::Warn#test_warn_object_type at .*TestCase/Operator/Warn.spvm line 39|);
     }
     
@@ -97,8 +89,7 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'test_Fn_print_stderr';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       is($output, 'Hello');
     }
     
@@ -106,8 +97,7 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'test_Fn_print_stderr_undef';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       is($output, '');
     }
     
@@ -115,8 +105,7 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'test_Fn_say_stderr';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       is($output, "Hello\x{0A}");
     }
     
@@ -124,8 +113,7 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'test_Fn_say_stderr_undef';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       is($output, "\x{0A}");
     }
     
@@ -136,16 +124,14 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'print_STDERR';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       is($output, 'Hello');
     }
     
     {
       my $method_name = 'say_STDERR';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       is($output, "Hello\x{0A}");
     }
     
@@ -153,8 +139,7 @@ my $class_name = 'TestCase::Operator::Warn';
     {
       my $method_name = 'test_diag';
       TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = TestFile::slurp_binmode($output_file);
+      my $output = `$^X -Mblib $script_file 2>&1`;
       like($output, qr|Hello\n  TestCase::Operator::Warn#test_diag at .*TestCase/Operator/Warn.spvm line|);
     }
     
@@ -167,8 +152,7 @@ my $class_name = 'TestCase::Operator::Warn';
   {
     my $method_name = 'test_warn_level_zero';
     TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-    system("$^X -Mblib $script_file 2> $output_file");
-    my $output = TestFile::slurp_binmode($output_file);
+    my $output = `$^X -Mblib $script_file 2>&1`;
     like($output, qr|Hello\n  TestCase::Operator::Warn#test_warn_level_zero at .*TestCase/Operator/Warn.spvm line|);
   }
   
@@ -176,8 +160,7 @@ my $class_name = 'TestCase::Operator::Warn';
   {
     my $method_name = 'test_warn_level_negative';
     TestFile::generate_class_method_call_script($script_file, $class_name, $method_name);
-    system("$^X -Mblib $script_file 2> $output_file");
-    my $output = TestFile::slurp_binmode($output_file);
+    my $output = `$^X -Mblib $script_file 2>&1`;
     is($output, "");
   }
   
