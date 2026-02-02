@@ -51,6 +51,7 @@ struct spvm_basic_type {
   const char* parent_name;
   SPVM_BASIC_TYPE* parent;
   SPVM_BASIC_TYPE* outmost;
+  SPVM_TYPE* monitor_var_type;
   int32_t fields_size;
   int8_t is_anon;
   int8_t is_generated_by_anon_method;
