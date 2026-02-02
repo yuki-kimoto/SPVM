@@ -1159,6 +1159,10 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           basic_type->init_method = method;
         }
         
+        if (method->is_end_method) {
+          basic_type->end_method = method;
+        }
+        
         assert(method->op_method->file);
         
         // Method absolute name
@@ -1609,6 +1613,10 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     method->is_init_method = 1;
   }
   
+  if (op_block && op_block->uv.block->id == SPVM_BLOCK_C_ID_END_BLOCK) {
+    method->is_end_method = 1;
+  }
+  
   // Block is method block
   if (op_block) {
     op_block->uv.block->id = SPVM_BLOCK_C_ID_METHOD;
@@ -1616,6 +1624,10 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   
   if (!method->is_init_method && strcmp(method_name, "INIT") == 0) {
     SPVM_COMPILER_error(compiler, "'INIT' cannnot be used as a method name.\n  at %s line %d", op_name_method->file, op_name_method->line);
+  }
+  
+  if (!method->is_end_method && strcmp(method_name, "END") == 0) {
+    SPVM_COMPILER_error(compiler, "'END' cannnot be used as a method name.\n  at %s line %d", op_name_method->file, op_name_method->line);
   }
   
   // Method attributes

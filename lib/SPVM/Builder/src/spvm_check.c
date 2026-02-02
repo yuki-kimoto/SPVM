@@ -992,6 +992,9 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
         if (method->is_init_method) {
           can_precompile = 0;
         }
+        else if (method->is_end_method) {
+          can_precompile = 0;
+        }
         else if (method->is_enum) {
           can_precompile = 0;
         }

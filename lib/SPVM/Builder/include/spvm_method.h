@@ -37,6 +37,7 @@ struct spvm_method {
   int32_t tmp_vars_length;
   int8_t is_class_method;
   int8_t is_init_method;
+  int8_t is_end_method;
   int8_t is_destroy_method;
   int8_t is_enum;
   int8_t is_precompile;

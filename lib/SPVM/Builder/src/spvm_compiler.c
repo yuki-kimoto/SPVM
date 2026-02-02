@@ -1073,6 +1073,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_method->current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, method->current_basic_type->id);
         runtime_method->is_class_method = method->is_class_method;
         runtime_method->is_init_method = method->is_init_method;
+        runtime_method->is_end_method = method->is_end_method;
         runtime_method->byte_vars_width = method->byte_vars_width;
         runtime_method->short_vars_width  = method->short_vars_width;
         runtime_method->int_vars_width = method->int_vars_width;

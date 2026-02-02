@@ -923,6 +923,8 @@ int32_t SPVM_API_call_end_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
     
+    // spvm_warn("%s, %p", basic_type->name, basic_type->end_method);
+    
     if (basic_type->end_method) {
       int32_t args_width = 0;
       
