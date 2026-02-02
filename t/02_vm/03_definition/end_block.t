@@ -11,8 +11,6 @@ use TestFile;
 use File::Spec;
 use SPVM (); # Load SPVM API
 
-my $devnull = File::Spec->devnull;
-
 my $test_dir = $ENV{SPVM_TEST_DIR};
 my $test_tmp_dir = "$test_dir/test_files/.tmp";
 
@@ -42,14 +40,12 @@ my $class_name = 'TestCase::Definition::EndBlock';
     like($output, qr/END 2\nEND 1\n/, "END blocks are executed in reverse order of definition");
   }
   
-  # Test STDERR: Check if die is converted to a warning
-  # Capture only STDERR by redirecting STDOUT to $devnull and then STDERR to STDOUT
+  # 2. Test STDERR: Check if die is converted to a warning
+  # Capture both STDOUT and STDERR by redirecting STDERR to STDOUT
   {
-    # Redirection order: 
-    # 1. Redirect STDERR to STDOUT (2>&1)
-    # 2. Redirect original STDOUT to $devnull (1>$devnull)
-    my $stderr = `$^X -Mblib $script_file 2>&1 1>$devnull`;
-    like($stderr, qr/Die in END block/, "die in END block is converted to a warning on STDERR.");
+    # 2>&1 works on both Linux and Windows to merge streams
+    my $output_merged = `$^X -Mblib $script_file 2>&1`;
+    like($output_merged, qr/Die in END block/, "die in END block is converted to a warning on STDERR.");
   }
   
 }
