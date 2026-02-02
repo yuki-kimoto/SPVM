@@ -71,6 +71,20 @@ sub to_cmd {
   }
 }
 
+# END block
+{
+  my $spvm_script = "t/04_spvmcc/script/end-block.spvm";
+  my $exe_file = "$exe_dir/end-block";
+  
+  # Compile with --no-config
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -q --no-config -B $build_dir -I $test_dir/lib/SPVM -o $exe_file $spvm_script);
+  system($spvmcc_cmd) == 0 or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+  
+  # Execute and check
+  my $output = `$exe_file`;
+  is($output, "END 1\n", "END block execution");
+}
+
 {
   # lib directive
   {

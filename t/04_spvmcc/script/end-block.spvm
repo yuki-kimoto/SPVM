@@ -1,0 +1,10 @@
+class {
+  
+  static method main : void () {
+  
+  }
+  
+  END {
+    print "END 1\n";
+  }
+}
