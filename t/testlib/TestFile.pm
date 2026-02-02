@@ -33,4 +33,17 @@ sub copy_test_files_tmp {
   }
 }
 
+sub slurp_binmode {
+  my ($output_file) = @_;
+  
+  open my $fh, '<', $output_file
+    or die "Can't open file $output_file:$!";
+  
+  binmode $fh;
+  
+  my $output = do { local $/; <$fh> };
+  
+  return $output;
+}
+
 1;
