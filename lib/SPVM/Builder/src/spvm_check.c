@@ -3651,6 +3651,10 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   SPVM_COMPILER_error(compiler, "The type of %s variable is not detected.\n  at %s line %d", op_cur->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
                   return;
                 }
+                // If the variable is $^MONITOR, set its type to the current basic type
+                if (strcmp(var_decl->var->name, "$^MONITOR") == 0) {
+                  basic_type->monitor_var_type = var_decl->type;
+                }
               }
               
               // Local temporary variable
