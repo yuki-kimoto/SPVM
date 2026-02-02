@@ -1,7 +1,8 @@
 0.990125 2026-02-02
   [New Features]
     * Add call_end_methods native API to call consolidated END methods for all classes.
-
+    * Add the END block feature. It allows defining blocks that are executed when the program exits, similar to Perl's END blocks.
+    
 0.990124 2026-01-31
   [New Features]
     * Added the set_method_begin_cb, get_method_begin_cb, set_method_end_cb, and get_method_end_cb native APIs to support method hooks for profilers.
