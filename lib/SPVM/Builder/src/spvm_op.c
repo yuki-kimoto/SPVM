@@ -950,6 +950,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         SPVM_LIST_push(type->basic_type->op_inits, op_init);
       }
+      // END block
+      else if (op_decl->id == SPVM_OP_C_ID_END) {
+        SPVM_OP* op_end = op_decl;
+        
+        SPVM_LIST_push(type->basic_type->op_ends, op_end);
+      }
       else {
         assert(0);
       }

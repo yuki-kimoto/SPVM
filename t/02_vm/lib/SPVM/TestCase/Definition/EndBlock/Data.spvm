@@ -1,0 +1,10 @@
+class TestCase::Definition::EndBlock::Data {
+  use TestCase::Empty;
+  
+  our $FOO : public int;
+  
+  # This block is merged into the END method.
+  END {
+    $FOO = 1;
+  }
+}

@@ -1,0 +1,54 @@
+class TestCase::Definition::EndBlock {
+  use TestCase::Definition::EndBlock::Data;
+  
+  our $FOO : int;
+  
+  our $BAR : int;
+  
+  our $BAZ : int;
+  
+  # The first END block in the source
+  END {
+    $FOO = 1;
+    
+    # Check if BAZ is already set to 1 by the second END block (LIFO check)
+    if ($BAZ == 1) {
+      $BAZ = 2;
+    }
+  }
+  
+  # The second END block in the source
+  END {
+    $BAR = 1;
+    $BAZ = 1;
+  }
+  
+  static method test : int () {
+    
+    # Call END methods manually for testing
+    TestCase::Definition::EndBlock::Data->END;
+    TestCase::Definition::EndBlock->END;
+    
+    # Check if the END block in Data class was executed
+    unless ($TestCase::Definition::EndBlock::Data::FOO == 1) {
+      return 0;
+    }
+    
+    # Check if FOO was set to 1
+    unless ($FOO == 1) {
+      return 0;
+    }
+    
+    # Check if BAR was set to 1
+    unless ($BAR == 1) {
+      return 0;
+    }
+    
+    # Check if BAZ is 2 (LIFO: second block (BAZ=1) runs first, then first block (BAZ=1->2) runs)
+    unless ($BAZ == 2) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
