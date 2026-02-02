@@ -1,4 +1,4 @@
-class TestCase::Definition::EndBlock {
+class TestCase::Definition::EndBlock::Manual {
   use TestCase::Definition::EndBlock::Data;
   
   our $FOO : int;
@@ -27,7 +27,7 @@ class TestCase::Definition::EndBlock {
     
     # Call END methods manually for testing
     TestCase::Definition::EndBlock::Data->END;
-    TestCase::Definition::EndBlock->END;
+    TestCase::Definition::EndBlock::Manual->END;
     
     # Check if the END block in Data class was executed
     unless ($TestCase::Definition::EndBlock::Data::FOO == 1) {
@@ -44,7 +44,7 @@ class TestCase::Definition::EndBlock {
       return 0;
     }
     
-    # Check if BAZ is 2 (LIFO: second block (BAZ=1) runs first, then first block (BAZ=1->2) runs)
+    # Check if BAZ is 2 (LIFO check)
     unless ($BAZ == 2) {
       return 0;
     }

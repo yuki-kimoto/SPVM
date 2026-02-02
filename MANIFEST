@@ -804,8 +804,8 @@ t/02_vm/lib/SPVM/TestCase/Alias.spvm
 t/02_vm/lib/SPVM/TestCase/Allow.spvm
 t/02_vm/lib/SPVM/TestCase/Allow/PrivateData.spvm
 t/02_vm/lib/SPVM/TestCase/Comment/LF.spvm
-t/02_vm/lib/SPVM/TestCase/Definition/EndBlock.spvm
 t/02_vm/lib/SPVM/TestCase/Definition/EndBlock/Data.spvm
+t/02_vm/lib/SPVM/TestCase/Definition/EndBlock/Manual.spvm
 t/02_vm/lib/SPVM/TestCase/Definition/InitBlock.spvm
 t/02_vm/lib/SPVM/TestCase/Definition/InitBlock/Data.spvm
 t/02_vm/lib/SPVM/TestCase/Destroy.spvm
