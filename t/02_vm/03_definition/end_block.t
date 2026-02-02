@@ -3,24 +3,46 @@ use TestAuto;
 
 use strict;
 use warnings;
+use File::Path 'mkpath';
 
 use Test::More;
 
-use SPVM 'TestCase::Definition::EndBlock::Manual';
+use TestFile;
+use SPVM (); # Load SPVM API
 
+my $test_dir = $ENV{SPVM_TEST_DIR};
+my $test_tmp_dir = "$test_dir/test_files/.tmp";
 
+my $script_file = "$test_tmp_dir/end-block-script.pl";
+
+mkpath $test_tmp_dir;
 
 # Start objects count
 my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
+my $class_name = 'TestCase::Definition::EndBlock';
+
+# END block
 {
-  ok(SPVM::TestCase::Definition::EndBlock::Manual->test);
+  # Test the execution order of END blocks
+  # SPVM END blocks are executed in reverse order of definition.
+  {
+    # Actually, just calling a non-existent method will still run END blocks if the class is loaded.
+    # But for safety, let's assume we call a class method or just the class itself.
+    TestFile::generate_class_method_call_script($script_file, $class_name);
+    
+    # Capture output. END blocks print to STDOUT in your SPVM code.
+    my $output = `$^X -Mblib $script_file`;
+    
+    # Check the execution order: "END 2" should come before "END 1"
+    like($output, qr/END 2\nEND 1\n/, "END blocks are executed in reverse order of definition");
+  }
 }
 
 # All object is freed
 $api->destroy_runtime_permanent_vars;
 my $end_memory_blocks_count = $api->get_memory_blocks_count;
-is($end_memory_blocks_count, $start_memory_blocks_count);
+is($end_memory_blocks_count, $start_memory_blocks_count, "Memory leak check");
 
 done_testing;
