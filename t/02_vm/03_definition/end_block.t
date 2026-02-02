@@ -38,6 +38,17 @@ my $class_name = 'TestCase::Definition::EndBlock';
     # Check the execution order: "END 2" should come before "END 1"
     like($output, qr/END 2\nEND 1\n/, "END blocks are executed in reverse order of definition");
   }
+  
+  # Test STDERR: Check if die is converted to a warning
+  # Capture only STDERR by redirecting STDOUT to /dev/null and then STDERR to STDOUT
+  {
+    # Redirection order: 
+    # 1. Redirect STDERR to STDOUT (2>&1)
+    # 2. Redirect original STDOUT to /dev/null (1>/dev/null)
+    my $stderr = `$^X -Mblib $script_file 2>&1 1>/dev/null`;
+    like($stderr, qr/Die in END block/, "die in END block is converted to a warning on STDERR.");
+  }
+  
 }
 
 # All object is freed

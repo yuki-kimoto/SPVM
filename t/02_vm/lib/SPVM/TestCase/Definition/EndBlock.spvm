@@ -1,5 +1,12 @@
 class TestCase::Definition::EndBlock {
   
+  # This END block is defined first, so it will be executed LAST.
+  # We use this to test that die is converted to a warning without 
+  # affecting the sequence of "END 2" and "END 1".
+  END {
+    die "Die in END block";
+  }
+  
   # The first END block in the source
   END {
     print "END 1\n";
