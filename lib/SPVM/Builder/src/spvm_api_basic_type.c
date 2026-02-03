@@ -53,6 +53,7 @@ SPVM_API_BASIC_TYPE* SPVM_API_BASIC_TYPE_new_api() {
     SPVM_API_BASIC_TYPE_get_basic_type_in_version_from,
     SPVM_API_BASIC_TYPE_get_fields_size,
     SPVM_API_BASIC_TYPE_get_monitor_var_type,
+    SPVM_API_BASIC_TYPE_has_monitor_var,
   };
   
   SPVM_API_BASIC_TYPE* native_apis = calloc(1, sizeof(native_apis_init));
