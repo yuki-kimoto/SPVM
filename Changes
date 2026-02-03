@@ -1,4 +1,4 @@
-0.990124 2026-02-04
+0.990127 2026-02-04
   [Bug Fix]
     * Fix stack trace depth calculation and loop range in build_exception_message.
     
