@@ -605,3 +605,61 @@ int32_t SPVM__Native__BasicType__get_basic_type_in_version_from(SPVM_ENV* env, S
   return 0;
 }
 
+int32_t SPVM__Native__BasicType__has_monitor_var(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* self = env->get_pointer(env, stack, obj_self);
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  int32_t has_monitor_var = env->api->basic_type->has_monitor_var(runtime, self);
+  
+  stack[0].ival = has_monitor_var;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__BasicType__get_monitor_var_type(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  // int* basic_type_id_ref, int* type_dimension_ref, int* type_flag_ref
+  int32_t* basic_type_id_ref = stack[1].iref;
+  int32_t* type_dimension_ref = stack[2].iref;
+  int32_t* type_flag_ref = stack[3].iref;
+  
+  // Check if each reference is NULL
+  if (!basic_type_id_ref) {
+    return env->die(env, stack, "The basic type ID $basic_type_id_ref must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  if (!type_dimension_ref) {
+    return env->die(env, stack, "The type dimension $type_dimension_ref must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  if (!type_flag_ref) {
+    return env->die(env, stack, "The type flag $type_flag_ref must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* self = env->get_pointer(env, stack, obj_self);
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  int32_t status = env->api->basic_type->get_monitor_var_type(runtime, self, basic_type_id_ref, type_dimension_ref, type_flag_ref);
+  
+  if (status != 0) {
+    const char* basic_type_name = env->api->basic_type->get_name(runtime, self);
+    return env->die(env, stack, "The monitor variable \"$^MONITOR\" is not found in the basic type \"%s\".", __func__, FILE_NAME, __LINE__, basic_type_name);
+  }
+  
+  return 0;
+}

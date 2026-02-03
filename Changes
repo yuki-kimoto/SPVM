@@ -3,6 +3,8 @@
     * Add get_monitor_var_type to the BasicType native API to get the type of the $^MONITOR special variable..
     * Add has_monitor_var basic type native API to check for the presence of the $^MONITOR special variable.
     * Add the $^MONITOR special variable to provide the monitoring type information.
+    * Add Native::BasicType#has_monitor_var method.
+    * Add Native::BasicType#get_monitor_var_type method.
     
 0.990125 2026-02-02
   [New Features]

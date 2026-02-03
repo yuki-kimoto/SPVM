@@ -128,4 +128,8 @@ class Native::BasicType : pointer {
   
   native method get_basic_type_in_version_from : Native::BasicType ();
   
+  native method has_monitor_var : int ();
+  
+  native method get_monitor_var_type : void ($basic_type_id_ref : int*, $type_dimension_ref : int*, $type_flag_ref : int*);
+  
 }
