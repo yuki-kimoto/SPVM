@@ -176,4 +176,79 @@ class TestCase::Module::Native::BasicType {
     return 1;
   }
   
+  static method monitor_var : void () {
+    
+    my $^MONITOR = new Int[3];
+  }
+  
+  static method has_monitor_var : int () {
+    
+    my $current_runtime = Native->get_current_runtime;
+    
+    # has_monitor_var: True case
+    {
+      my $basic_type = $current_runtime->get_basic_type_by_name("TestCase::Module::Native::BasicType");
+      unless ($basic_type->has_monitor_var) {
+        diag $basic_type->has_monitor_var;
+        return 0;
+      }
+    }
+    
+    # has_monitor_var: False case
+    {
+      my $basic_type = $current_runtime->get_basic_type_by_name("Int");
+      if ($basic_type->has_monitor_var) {
+        diag $basic_type->has_monitor_var;
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method get_monitor_var_type : int () {
+    
+    my $current_runtime = Native->get_current_runtime;
+    
+    # get_monitor_var_type: Success case
+    {
+      my $basic_type = $current_runtime->get_basic_type_by_name("TestCase::Module::Native::BasicType");
+      my $basic_type_id = -1;
+      my $type_dimension = -1;
+      my $type_flag = -1;
+      
+      $basic_type->get_monitor_var_type(\$basic_type_id, \$type_dimension, \$type_flag);
+      
+      # Check if the type information is correct (int is a basic type)
+      my $int_basic_type = $current_runtime->get_basic_type_by_name("Int");
+      unless ($basic_type_id == $int_basic_type->get_id) {
+        return 0;
+      }
+      unless ($type_dimension == 1) {
+        return 0;
+      }
+      unless ($type_flag == 0) {
+        return 0;
+      }
+    }
+    
+    # get_monitor_var_type: Exception case (No monitor variable)
+    {
+      my $basic_type = $current_runtime->get_basic_type_by_name("Int"); # Int doesn't have it
+      my $basic_type_id = 0;
+      my $type_dimension = 0;
+      my $type_flag = 0;
+      
+      eval {
+        $basic_type->get_monitor_var_type(\$basic_type_id, \$type_dimension, \$type_flag);
+      };
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }
