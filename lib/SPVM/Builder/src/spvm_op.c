@@ -1408,6 +1408,11 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
     SPVM_COMPILER_error(compiler, "The class varaible name '%s' cannnot contain \"::\".\n  at %s line %d", class_var->name, op_name->file, op_name->line);
   }
   
+  // A class variable name cannot start with '^' (The first character is '$')
+  if (name[1] == '^') {
+    SPVM_COMPILER_error(compiler, "The class variable name '%s' cannot start with '^'.\n  at %s line %d", class_var->name, op_name->file, op_name->line);
+  }
+  
   class_var->op_name = op_name;
   class_var->type = op_type->uv.type;
   class_var->op_class_var = op_class_var;

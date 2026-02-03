@@ -248,6 +248,12 @@ use Test::More;
     my $source = 'class MyClass { our $MyClass::FOO : int; }';
     compile_not_ok($source, qr/The class varaible name '\$MyClass::FOO' cannnot contain "::"/);
   }
+  
+  # Error: A class variable name cannot start with '^'
+  {
+    my $source = 'class MyClass { our $^MONITOR : int; }';
+    compile_not_ok($source, qr/The class variable name '\$\^MONITOR' cannot start with '\^'/);
+  }
 }
 
 # Class Variable Definition
