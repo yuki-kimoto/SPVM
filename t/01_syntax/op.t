@@ -24,9 +24,9 @@ use MyTest qw(compile_not_ok_file compile_not_ok);
 
 use Test::More;
 
-# Compilation Errors in spvm_op.c 
+# Compilation errors in spvm_op.c 
 
-# Array Initialization
+# Array initialization
 {
   {
     my $source = 'class MyClass { static method main : void () { {"foo" => 1, "bar"}; } }';
@@ -49,12 +49,12 @@ use Test::More;
   }
 }
 
-# Basic Type Name
+# Basic type name
 {
   compile_not_ok_file('CompileError::Class::ClassNameDifferntFromClassFileName', qr/The class name 'ClassNameDifferntFromClassFileNameXXXXXXX' must be 'CompileError::Class::ClassNameDifferntFromClassFileName'/);
 }
 
-# Class Descripter
+# Class descripter
 {
   {
     my $source = 'class MyClass : native;';
@@ -70,7 +70,7 @@ use Test::More;
   }
 }
 
-# Class Alias
+# Class alias
 {
   {
     my $source = 'class MyClass { use Point as point; }';
@@ -82,7 +82,7 @@ use Test::More;
   }
 }
 
-# Multi-Numeric Type Definition
+# Multi-numeric type definition
 {
   {
     my $source = 'class MyClass : mulnum_t { interface Stringable; }';
@@ -90,7 +90,7 @@ use Test::More;
   }
 }
 
-# Class Definition
+# Class definition
 {
   {
     my $source = 'class MyClass { INIT { } }';
@@ -103,7 +103,7 @@ use Test::More;
   }
 }
 
-# Interface Definition
+# Interface definition
 {
   {
     my $source = 'class MyClass : interface_t {}';
@@ -177,7 +177,7 @@ use Test::More;
   
 }
 
-# Multi-Numerci Type Definition
+# Multi-numeric type definition
 {
   {
     my $source = 'class MyClass_1i : mulnum_t { INIT { } has x : int; }';
@@ -190,7 +190,7 @@ use Test::More;
   }
 }
 
-# Pointer Class
+# Pointer class
 {
   {
     my $source = 'class MyClass : pointer { has foo : int; }';
@@ -242,7 +242,7 @@ use Test::More;
   }
 }
 
-# Class Variable Name
+# Class variable name
 {
   {
     my $source = 'class MyClass { our $MyClass::FOO : int; }';
@@ -256,7 +256,7 @@ use Test::More;
   }
 }
 
-# Class Variable Definition
+# Class variable definition
 {
   {
     my $source = 'class MyClass { our $FOO : native int; }';
@@ -272,7 +272,7 @@ use Test::More;
   }
 }
 
-# Field Name
+# Field name
 {
   {
     my $source = 'class MyClass { has MyClass::foo : int; }';
@@ -280,7 +280,7 @@ use Test::More;
   }
 }
 
-# Field Defintion
+# Field definition
 {
   {
     my $source = 'class MyClass { has foo : native int; }';
@@ -353,7 +353,7 @@ use Test::More;
   }
 }
 
-# Local Variable
+# Local variable
 {
   {
     my $source = 'class MyClass { static method main : void () { my $MyClass::foo; }; }';
@@ -381,7 +381,7 @@ use Test::More;
   }
 }
 
-# Version Declaration
+# Version declaration
 {
   {
     my $source = 'class MyClass { version "1.001"; }';
@@ -586,7 +586,7 @@ use Test::More;
   }
 }
 
-# use
+# use statement
 {
   {
     my $source = 'class MyClass { static method main : void () { use Point; my $point = Point->new; } }';
