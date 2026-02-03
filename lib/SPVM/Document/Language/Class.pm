@@ -2159,9 +2159,33 @@ Examples:
   
   my $point = (my $_ = Point->new(1, 2), $_->clear, $_);
 
+=head2 Monitor Variable
+
+A monitor variable is a special local variable that is used for debugging or reflection.
+
+The name of a monitor variable is C<$^MONITOR>.
+
+Only one monitor variable can be declared in a class file.
+
+A monitor variable must be declared as a local variable.
+
+Example:
+
+  my $var = new int[3];
+  
+  # $^MONITOR is declared as a local variable and assigned a value
+  my $^MONITOR = $var;
+
+A monitor variable is used by L<Native::BasicType#has_monitor_var|SPVM::Native::BasicType/"has_monitor_var"> and L<Native::BasicType#get_monitor_var_type|SPVM::Native::BasicType/"get_monitor_var_type"> in the native API.
+
+Compilation Errors:
+
+If more than one monitor variable is declared in a class file, a compilation error occurs.
+
 =head1 Symbol Name Resolution
 
 This section describes resolutions of symbol names, such as variable names, class names, field names, method names in the current L<method implementation|/"Method Implementation">.
+
 
 =head2 Variable Name Resolution
 
