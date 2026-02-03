@@ -1,3 +1,7 @@
+0.990124 2026-02-04
+  [Bug Fix]
+    * Fix stack trace depth calculation and loop range in build_exception_message.
+    
 0.990126 2026-02-03
   [New Features]
     * Add get_monitor_var_type to the BasicType native API to get the type of the $^MONITOR special variable..

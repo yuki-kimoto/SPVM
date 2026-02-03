@@ -384,5 +384,52 @@ class TestCase::Exception {
     
     return 1;
   }
+  
+  static method native : int () {
+    
+    # Test that a native exception is thrown when undef is passed to to_int
+    eval {
+      # Level 1 call
+      TestCase::Exception->call_native_to_int_undef;
+    };
+    
+    # Check if an exception occurred
+    unless ($@) {
+      return 0;
+    }
+    
+    # Verify the full exception message and the correct order of the call stack
+    my $error = Fn->build_exception_message;
+    
+    # 1. Check the exception message itself
+    unless (Fn->index($error, "The string \$string must be defined.", 0) == 0) {
+      return 0;
+    }
+    
+    # 2. Get the positions of each method in the stack trace
+    my $pos_to_int = Fn->index($error, "Fn#to_int", 0);
+    my $pos_call_native = Fn->index($error, "TestCase::Exception#call_native_to_int_undef", 0);
+    my $pos_native = Fn->index($error, "TestCase::Exception#native", 0);
+    
+    # 3. Verify that all methods exist
+    if ($pos_to_int == -1 || $pos_call_native == -1 || $pos_native == -1) {
+      diag "Some methods are missing in the stack trace.";
+      return 0;
+    }
+    
+    # 4. Verify the order (Deepest to Shallowest)
+    # The order should be: Fn#to_int < call_native_to_int_undef < native
+    unless ($pos_to_int < $pos_call_native && $pos_call_native < $pos_native) {
+      diag "The order of the stack trace is incorrect:";
+      diag $error;
+      return 0;
+    }
+    
+    return 1;
+  }
 
+  static method call_native_to_int_undef : int () {
+    return Fn->to_int(undef);
+  }
+  
 }

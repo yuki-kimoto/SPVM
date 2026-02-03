@@ -114,6 +114,8 @@ ok($@);
 
 ok(SPVM::TestCase::Exception->eval_block);
 
+ok(SPVM::TestCase::Exception->native);
+
 # All object is freed
 $api->destroy_runtime_permanent_vars;
 my $end_memory_blocks_count = $api->get_memory_blocks_count;

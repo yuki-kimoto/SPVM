@@ -754,11 +754,6 @@ void SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const 
   }
   
   *error_id = SPVM_API_call_method(env, stack, method, args_width, func_name, file, line);
-  
-  if (*error_id) {
-    const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
-    SPVM_API_die(env, stack, "%s", func_name, file, line, message);
-  }
 }
 
 void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
@@ -797,21 +792,11 @@ void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   };
   
   *error_id = SPVM_API_call_method(env, stack, method, args_width, func_name, file, line);
-  
-  if (*error_id) {
-    const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
-    SPVM_API_die(env, stack, "%s", func_name, file, line, message);
-  }
 }
 
 void SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
   
   *error_id = SPVM_API_call_instance_method(env, stack, method_name, args_width, func_name, file, line);
-  
-  if (*error_id) {
-    const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
-    SPVM_API_die(env, stack, "%s", func_name, file, line, message);
-  }
 }
 
 SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
@@ -922,8 +907,6 @@ int32_t SPVM_API_call_end_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t basic_types_length = runtime->basic_types_length;
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
-    
-    // spvm_warn("%s, %p", basic_type->name, basic_type->end_method);
     
     if (basic_type->end_method) {
       int32_t args_width = 0;
@@ -7367,7 +7350,7 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
 
   /* Calculate the target depth with clamping */
   int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
-  int32_t target_call_depth = current_call_depth + level;
+  int32_t target_call_depth = current_call_depth - level;
   
   if (target_call_depth < 0) {
     target_call_depth = 0;
@@ -7375,7 +7358,7 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   else if (target_call_depth > exception_call_depth) {
     target_call_depth = exception_call_depth;
   }
-
+  
   /* 1. Calculate total length */
   int32_t total_length = exception_length;
   
@@ -7383,7 +7366,7 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   total_length += SPVM_API_build_caller_stack_line(NULL, exception_func_name, exception_file, exception_line);
 
   // Callers
-  for (int32_t depth = exception_call_depth - 1; depth >= target_call_depth; depth--) {
+  for (int32_t depth = exception_call_depth; depth >= target_call_depth; depth--) {
     int32_t offset = depth * record_size;
     const char* func_name = (const char*)caller_info_stack[offset + 0];
     if (!func_name) {
@@ -7418,7 +7401,7 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   current_offset += SPVM_API_build_caller_stack_line(new_exception_bytes + current_offset, exception_func_name, exception_file, exception_line);
 
   // Write Callers
-  for (int32_t depth = exception_call_depth - 1; depth >= target_call_depth; depth--) {
+  for (int32_t depth = exception_call_depth; depth >= target_call_depth; depth--) {
     int32_t offset = depth * record_size;
     const char* func_name = (const char*)caller_info_stack[offset + 0];
     if (!func_name) {
