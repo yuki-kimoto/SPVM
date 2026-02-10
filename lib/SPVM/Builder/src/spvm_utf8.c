@@ -2,6 +2,7 @@
 // MIT License
 
 #include "spvm_utf8.h"
+#include <assert.h>
 
 #define utf_cont(ch)  (((ch) & 0xc0) == 0x80)
 #define SPVM_UTF8PROC_ERROR_INVALIDUTF8 -3
@@ -94,4 +95,32 @@ int32_t SPVM_UTF8_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_
   else {
     return 0;
   }
+}
+
+// Check if the given string is a valid UTF-8 sequence.
+int32_t SPVM_UTF8_is_utf8(const char* str, size_t len) {
+  assert(str);
+
+  int32_t is_utf8 = 1;
+
+  if (len > 0) {
+    const uint8_t* p = (const uint8_t*)str;
+    const uint8_t* end = p + len;
+
+    while (p < end) {
+      int32_t code_point;
+      
+      // Pass the remaining size. 
+      // Even if len is limited to INT32_MAX, iterate should handle its length type.
+      int32_t bytes = SPVM_UTF8_iterate(p, (size_t)(end - p), &code_point);
+      
+      if (bytes <= 0) {
+        is_utf8 = 0;
+        break;
+      }
+      p += bytes;
+    }
+  }
+  
+  return is_utf8;
 }

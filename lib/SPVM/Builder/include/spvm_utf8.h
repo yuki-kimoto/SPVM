@@ -14,4 +14,6 @@ int32_t SPVM_UTF8_is_unicode_scalar_value(int32_t code_point);
 
 int32_t SPVM_UTF8_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_t* dst);
 
+int32_t SPVM_UTF8_is_utf8(const char* str, size_t len);
+
 #endif
