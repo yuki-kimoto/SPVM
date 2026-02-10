@@ -1,3 +1,7 @@
+0.990128 2026-02-011
+  [New Features]
+    * Add is_utf8 native API to check if a string is a valid UTF-8 sequence.
+  
 0.990127 2026-02-04
   [Bug Fix]
     * Fix stack trace depth calculation and loop range in build_exception_message.
