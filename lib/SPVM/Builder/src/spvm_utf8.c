@@ -6,7 +6,7 @@
 #define utf_cont(ch)  (((ch) & 0xc0) == 0x80)
 #define SPVM_UTF8PROC_ERROR_INVALIDUTF8 -3
 
-int32_t SPVM_UTF8_iterate(const uint8_t *str, int32_t strlen, int32_t *dst) {
+int32_t SPVM_UTF8_iterate(const uint8_t *str, size_t strlen, int32_t *dst) {
   uint32_t uc;
   const uint8_t *end;
   
