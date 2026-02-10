@@ -2118,4 +2118,5 @@ class Fn {
   
   native static method get_call_depth : int ();
   
+  native static method is_utf8 : int ($string : string);
 }

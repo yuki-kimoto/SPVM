@@ -1903,7 +1903,7 @@ This method calls the L<build_exception_message|SPVM::Document::NativeAPI/"build
 
 Returns the newly created string object.
 
-B<Examples:>
+Examples:
 
   eval {
     MyModule->do_something;
@@ -1922,6 +1922,22 @@ C<static method get_call_depth : int ();>
 Returns the current call stack depth.
 
 The base depth is -1. When the first method is called, the depth becomes 0.
+
+=head2 is_utf8
+
+C<static method is_utf8 : int ($string : string);>
+
+Checks if the given string I<$string> is a valid UTF-8 sequence.
+
+If the string is a valid UTF-8 sequence, returns 1, otherwise returns 0.
+
+Notes:
+
+This method calls the L<is_utf8|SPVM::Document::NativeAPI/"is_utf8"> native API.
+
+Exceptions:
+
+The string I<$string> must be defined. Otherwise an exception is thrown.
 
 =head1 See Also
 

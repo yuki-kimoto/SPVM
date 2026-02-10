@@ -273,7 +273,7 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->get_current_method_abs_name_for_test);
     ok(SPVM::TestCase::Module::Fn->get_call_depth);
     ok(SPVM::TestCase::Module::Fn->extra_build_caller_stack);
-    
+    ok(SPVM::TestCase::Module::Fn->is_utf8);
   }
   
   # Extra

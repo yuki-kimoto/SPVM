@@ -8940,4 +8940,88 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method is_utf8 : int () {
+    
+    # 1. Valid UTF-8 sequences
+    {
+      # ASCII
+      unless (Fn->is_utf8("abc")) { return 0; }
+      
+      # Multibyte (Japanese - Hiragana)
+      unless (Fn->is_utf8("あいうえお")) { return 0; }
+      
+      # 4-byte UTF-8 (Emoji: 🍺)
+      unless (Fn->is_utf8("🍺")) { return 0; }
+      
+      # Empty string
+      unless (Fn->is_utf8("")) { return 0; }
+      
+      # Boundary: Just before surrogates (U+D7FF)
+      my $valid_before_surrogates = (string)[(byte)0xED, (byte)0x9F, (byte)0xBF];
+      unless (Fn->is_utf8($valid_before_surrogates)) { return 0; }
+
+      # Boundary: Just after surrogates (U+E000)
+      my $valid_after_surrogates = (string)[(byte)0xEE, (byte)0x80, (byte)0x80];
+      unless (Fn->is_utf8($valid_after_surrogates)) { return 0; }
+      
+      # Boundary: Maximum Unicode (U+10FFFF)
+      my $max_unicode = (string)[(byte)0xF4, (byte)0x8F, (byte)0xBF, (byte)0xBF];
+      unless (Fn->is_utf8($max_unicode)) { return 0; }
+    }
+    
+    # 2. Invalid UTF-8 sequences (Basic)
+    {
+      # 0xFF is an invalid UTF-8 byte
+      my $invalid_byte = (string)[(byte)0xFF];
+      if (Fn->is_utf8($invalid_byte)) { return 0; }
+      
+      # Incomplete sequence (2-byte prefix but missing second byte)
+      my $incomplete = (string)[(byte)0xC2];
+      if (Fn->is_utf8($incomplete)) { return 0; }
+    }
+    
+    # 3. Surrogate pairs (Invalid in UTF-8)
+    {
+      # U+D800 (Leading surrogate)
+      my $surrogate_lead = (string)[(byte)0xED, (byte)0xA0, (byte)0x80];
+      if (Fn->is_utf8($surrogate_lead)) { return 0; }
+
+      # U+DFFF (Trailing surrogate)
+      my $surrogate_trail = (string)[(byte)0xED, (byte)0xBF, (byte)0xBF];
+      if (Fn->is_utf8($surrogate_trail)) { return 0; }
+    }
+    
+    # 4. Overlong encoding (Invalid for security reasons)
+    {
+      # Overlong ASCII '/' (U+002F) - Standard is 0x2F
+      my $overlong_2bytes = (string)[(byte)0xC0, (byte)0xAF];
+      if (Fn->is_utf8($overlong_2bytes)) { return 0; }
+
+      # Overlong (3 bytes)
+      my $overlong_3bytes = (string)[(byte)0xE0, (byte)0x81, (byte)0x81];
+      if (Fn->is_utf8($overlong_3bytes)) { return 0; }
+    }
+
+    # 5. Out of Unicode range (Beyond U+10FFFF)
+    {
+      # U+110000
+      my $too_large = (string)[(byte)0xF4, (byte)0x90, (byte)0x80, (byte)0x80];
+      if (Fn->is_utf8($too_large)) { return 0; }
+    }
+    
+    # 6. Exceptions
+    {
+      # NULL check
+      my $null_string = (string)undef;
+      eval {
+        Fn->is_utf8($null_string);
+      };
+      unless (Fn->contains($@, "The string obj_string must be defined.")) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }

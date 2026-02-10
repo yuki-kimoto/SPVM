@@ -1242,3 +1242,25 @@ int32_t SPVM__Fn__get_call_depth(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__is_utf8(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  // Get the string object from stack[0]
+  void* obj_string = stack[0].oval;
+  
+  int32_t error_id = 0;
+  
+  // Call the Native API env->is_utf8
+  // This function internally handles the NULL check and throws an exception if obj_string is NULL.
+  int32_t is_utf8 = env->is_utf8(env, stack, obj_string, &error_id);
+  
+  // If an exception occurred in env->is_utf8, return the error_id
+  if (error_id) {
+    return error_id;
+  }
+  
+  // Set the result (1 or 0) to stack[0]
+  stack[0].ival = is_utf8;
+  
+  return 0;
+}
