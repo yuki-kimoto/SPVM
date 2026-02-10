@@ -516,4 +516,6 @@ void SPVM_API_set_method_end_cb(SPVM_ENV* env, SPVM_API_method_cb_t* cb);
 
 SPVM_API_method_cb_t* SPVM_API_get_method_end_cb(SPVM_ENV* env);
 
+int32_t SPVM_API_is_utf8(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_string, int32_t* error_id);
+
 #endif

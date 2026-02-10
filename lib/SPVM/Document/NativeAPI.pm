@@ -3065,6 +3065,20 @@ C<void (*set_method_end_cb)(SPVM_ENV* env, void (*cb)(SPVM_ENV* env, SPVM_VALUE*
 
 Sets the C<method_end_cb> field to the given callback function I<cb>.
 
+=head2 is_utf8
+
+C<int32_t (*is_utf8)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_string, int32_t* error_id);>
+
+Checks if the given string I<obj_string> is a valid UTF-8 sequence.
+
+If the string is a valid UTF-8 sequence, returns 1, otherwise returns 0.
+
+Exceptions:
+
+Initially I<error_id> is set to 0.
+
+If the I<obj_string> is NULL, I<error_id> is set to a non-zero value.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3351,7 +3365,8 @@ Native APIs have its IDs.
   279 get_method_end_cb
   280 set_method_end_cb
   281 call_end_methods,
-
+  282 SPVM_API_is_utf8
+  
 =head1 Constant Values
 
 =head2 Basic Type IDs

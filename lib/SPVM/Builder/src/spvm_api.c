@@ -381,6 +381,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_method_end_cb,
     SPVM_API_set_method_end_cb,
     SPVM_API_call_end_methods,
+    SPVM_API_is_utf8,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -7447,4 +7448,24 @@ void SPVM_API_set_method_end_cb(SPVM_ENV* env, SPVM_API_method_cb_t* cb) {
 
 SPVM_API_method_cb_t* SPVM_API_get_method_end_cb(SPVM_ENV* env) {
   return (SPVM_API_method_cb_t*)env->method_end_cb;
+}
+
+int32_t SPVM_API_is_utf8(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_string, int32_t* error_id) {
+  
+  *error_id = 0;
+  
+  // A string obj_string must not be NULL
+  if (!obj_string) {
+    *error_id = env->die(env, stack, "The string obj_string must be defined.", __func__, FILE_NAME, __LINE__);
+    return 0;
+  }
+
+  // Get the string pointer and its length
+  const char* str = env->get_chars(env, stack, obj_string);
+  int32_t int_len = env->length(env, stack, obj_string);
+  
+  // Call the UTF-8 validation function directly
+  int32_t is_utf8 = SPVM_UTF8_is_utf8(str, (size_t)int_len);
+
+  return is_utf8;
 }
