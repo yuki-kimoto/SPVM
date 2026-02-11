@@ -9,7 +9,9 @@
     * Add clone, make_read_only, and is_read_only methods to numeric classes (Byte, Short, Int, Long, Float, Double).
   [Incompatible Changes]
     * Numeric objects (Byte, Short, Int, Long, Float, Double) are now mutable by default. This is a significant change from previous versions where these objects were immutable. Any code assuming the immutability of these objects should be reviewed.
-
+  [Changes]
+    * Add Cloneable interface to the default loaded classes.
+    
 0.990128 2026-02-11
   [New Features]
     * Add is_utf8 native API to check if a string is a valid UTF-8 sequence.
