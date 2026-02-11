@@ -374,12 +374,6 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_build_exception_message_no_mortal,
     SPVM_API_build_exception_message,
     SPVM_API_die,
-    NULL, // method_begin_cb
-    SPVM_API_get_method_begin_cb,
-    SPVM_API_set_method_begin_cb,
-    NULL, // method_end_cb
-    SPVM_API_get_method_end_cb,
-    SPVM_API_set_method_end_cb,
     SPVM_API_call_end_methods,
     SPVM_API_is_utf8,
   };
@@ -7434,22 +7428,6 @@ void* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t
   void* obj_message = SPVM_API_build_exception_message_no_mortal(env, stack, level);
   SPVM_API_push_mortal(env, stack, obj_message);
   return obj_message;
-}
-
-void SPVM_API_set_method_begin_cb(SPVM_ENV* env, SPVM_API_method_cb_t* cb) {
-  env->method_begin_cb = cb;
-}
-
-SPVM_API_method_cb_t* SPVM_API_get_method_begin_cb(SPVM_ENV* env) {
-  return (SPVM_API_method_cb_t*)env->method_begin_cb;
-}
-
-void SPVM_API_set_method_end_cb(SPVM_ENV* env, SPVM_API_method_cb_t* cb) {
-  env->method_end_cb = cb;
-}
-
-SPVM_API_method_cb_t* SPVM_API_get_method_end_cb(SPVM_ENV* env) {
-  return (SPVM_API_method_cb_t*)env->method_end_cb;
 }
 
 int32_t SPVM_API_is_utf8(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_string, int32_t* error_id) {

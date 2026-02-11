@@ -293,14 +293,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->build_exception_message_no_mortal != &env_array[272]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->build_exception_message != &env_array[273]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->die_v2 != &env_array[274]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->method_begin_cb != &env_array[275]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_method_begin_cb != &env_array[276]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_method_begin_cb != &env_array[277]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->method_end_cb != &env_array[278]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_method_end_cb != &env_array[279]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_method_end_cb != &env_array[280]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->call_end_methods != &env_array[281]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->is_utf8 != &env_array[282]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->call_end_methods != &env_array[275]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_utf8 != &env_array[276]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
