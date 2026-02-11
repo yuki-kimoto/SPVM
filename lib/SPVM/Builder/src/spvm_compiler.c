@@ -513,7 +513,13 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "class Byte {\n"
       "  interface Stringable;\n"
       "  version_from SPVM;\n"
-      "  has value : rw byte;\n"
+      "  has value : rw byte\n"
+      "  set {\n"
+      "    if ($self->{is_read_only}) {\n"
+      "      die \"The object is read-only and its value cannot be changed.\";\n"
+      "    }\n"
+      "    $self->{value} = (byte)$_;\n"
+      "  };\n"
       "  has is_read_only : ro byte;\n"
       "  static method new : Byte ($value : int) {\n"
       "    my $self = new Byte;\n"
@@ -529,7 +535,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
-  
+
   // Add Short class file
   {
     const char* class_name = "Short";
@@ -538,7 +544,13 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "class Short {\n"
       "  interface Stringable;\n"
       "  version_from SPVM;\n"
-      "  has value : rw short;\n"
+      "  has value : rw short\n"
+      "  set {\n"
+      "    if ($self->{is_read_only}) {\n"
+      "      die \"The object is read-only and its value cannot be changed.\";\n"
+      "    }\n"
+      "    $self->{value} = (short)$_;\n"
+      "  };\n"
       "  has is_read_only : ro byte;\n"
       "  static method new : Short ($value : int) {\n"
       "    my $self = new Short;\n"
@@ -554,8 +566,8 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
-  
-  // Add Int class file (Updated for consistency)
+
+  // Add Int class file
   {
     const char* class_name = "Int";
     const char* rel_file = "Int.spvm";
@@ -563,7 +575,13 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "class Int {\n"
       "  interface Stringable;\n"
       "  version_from SPVM;\n"
-      "  has value : rw int;\n"
+      "  has value : rw int\n"
+      "  set {\n"
+      "    if ($self->{is_read_only}) {\n"
+      "      die \"The object is read-only and its value cannot be changed.\";\n"
+      "    }\n"
+      "    $self->{value} = $_;\n"
+      "  };\n"
       "  has is_read_only : ro byte;\n"
       "  static method new : Int ($value : int) {\n"
       "    my $self = new Int;\n"
@@ -579,7 +597,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
-  
+
   // Add Long class file
   {
     const char* class_name = "Long";
@@ -588,7 +606,13 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "class Long {\n"
       "  interface Stringable;\n"
       "  version_from SPVM;\n"
-      "  has value : rw long;\n"
+      "  has value : rw long\n"
+      "  set {\n"
+      "    if ($self->{is_read_only}) {\n"
+      "      die \"The object is read-only and its value cannot be changed.\";\n"
+      "    }\n"
+      "    $self->{value} = $_;\n"
+      "  };\n"
       "  has is_read_only : ro byte;\n"
       "  static method new : Long ($value : long) {\n"
       "    my $self = new Long;\n"
@@ -604,7 +628,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
-  
+
   // Add Float class file
   {
     const char* class_name = "Float";
@@ -613,7 +637,13 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "class Float {\n"
       "  interface Stringable;\n"
       "  version_from SPVM;\n"
-      "  has value : rw float;\n"
+      "  has value : rw float\n"
+      "  set {\n"
+      "    if ($self->{is_read_only}) {\n"
+      "      die \"The object is read-only and its value cannot be changed.\";\n"
+      "    }\n"
+      "    $self->{value} = $_;\n"
+      "  };\n"
       "  has is_read_only : ro byte;\n"
       "  static method new : Float ($value : float) {\n"
       "    my $self = new Float;\n"
@@ -629,7 +659,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
-  
+
   // Add Double class file
   {
     const char* class_name = "Double";
@@ -638,7 +668,13 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "class Double {\n"
       "  interface Stringable;\n"
       "  version_from SPVM;\n"
-      "  has value : rw double;\n"
+      "  has value : rw double\n"
+      "  set {\n"
+      "    if ($self->{is_read_only}) {\n"
+      "      die \"The object is read-only and its value cannot be changed.\";\n"
+      "    }\n"
+      "    $self->{value} = $_;\n"
+      "  };\n"
       "  has is_read_only : ro byte;\n"
       "  static method new : Double ($value : double) {\n"
       "    my $self = new Double;\n"
