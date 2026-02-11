@@ -501,6 +501,7 @@ void SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_use(compiler, "Stringable", "Stringable", 0);
   SPVM_COMPILER_use(compiler, "Countable", "Countable", 0);
   SPVM_COMPILER_use(compiler, "CallerInfo", "CallerInfo", 0);
+  SPVM_COMPILER_use(compiler, "Cloneable", "Cloneable", 0);
 }
 
 void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
@@ -874,6 +875,19 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
+  
+  // Add Cloneable class file
+  {
+    const char* class_name = "Cloneable";
+    const char* rel_file = "Cloneable.spvm";
+    const char* content = 
+      "class Cloneable : interface_t {\n"
+      "  version_from SPVM;\n"
+      "  required method clone : object ();\n"
+      "}";
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
+  }
+  
 }
 
 void SPVM_COMPILER_set_class_file_with_members(SPVM_COMPILER* compiler, const char* class_name, const char* rel_file, const char* content) {

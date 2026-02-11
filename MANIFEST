@@ -235,7 +235,6 @@ lib/SPVM/Callback/MapExpand.pm
 lib/SPVM/Callback/MapExpand.spvm
 lib/SPVM/CallerInfo.pm
 lib/SPVM/Cloneable.pm
-lib/SPVM/Cloneable.spvm
 lib/SPVM/Cloner.pm
 lib/SPVM/Cloner.spvm
 lib/SPVM/CommandInfo.pm
@@ -741,7 +740,7 @@ t/02_vm/08_module/CommandInfo.t
 t/02_vm/08_module/Comparator.t
 t/02_vm/08_module/Complex_2d.t
 t/02_vm/08_module/Complex_2f.t
-t/02_vm/08_module/default_loaded_modules.t
+t/02_vm/08_module/default_loaded_classes.t
 t/02_vm/08_module/Double.t
 t/02_vm/08_module/DoubleList.t
 t/02_vm/08_module/EqualityChecker.t
@@ -805,6 +804,7 @@ t/02_vm/lib/SPVM/TestCase/Alias.spvm
 t/02_vm/lib/SPVM/TestCase/Allow.spvm
 t/02_vm/lib/SPVM/TestCase/Allow/PrivateData.spvm
 t/02_vm/lib/SPVM/TestCase/Comment/LF.spvm
+t/02_vm/lib/SPVM/TestCase/DefaultLoadedClasses.spvm
 t/02_vm/lib/SPVM/TestCase/Definition/EndBlock.spvm
 t/02_vm/lib/SPVM/TestCase/Definition/EndBlock/Data.spvm
 t/02_vm/lib/SPVM/TestCase/Definition/EndBlock/Manual.spvm

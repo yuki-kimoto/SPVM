@@ -1,8 +1,0 @@
-# Copyright (c) 2023 Yuki Kimoto
-# MIT License
-
-class Cloneable : interface_t {
-  version_from SPVM;
-
-  required method clone : object ();
-}

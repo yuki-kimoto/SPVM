@@ -1,0 +1,30 @@
+class TestCase::DefaultLoadedClasses {
+
+  static method basic : int () {
+    
+    my $object : object = new int[0];
+    
+    $object isa Byte;
+    $object isa Short;
+    $object isa Int;
+    $object isa Long;
+    $object isa Float;
+    $object isa Double;
+    $object isa Bool;
+    $object isa Error;
+    $object isa Error::System;
+    $object isa Error::NotSupported;
+    $object isa CommandInfo;
+    $object isa Address;
+    $object isa Error::Compile;
+    $object isa SPVM;
+    $object isa Error::MethodCallNotPermitted;
+    $object isa Stringable;
+    $object isa Countable;
+    $object isa CallerInfo;
+    $object isa Cloneable;
+    
+    return 1;
+  }
+
+}

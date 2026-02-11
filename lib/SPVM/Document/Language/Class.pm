@@ -375,6 +375,8 @@ The following classes are loaded by default.
 
 =item * L<CallerInfo|SPVM::CallerInfo>
 
+=item * L<Cloneable|SPVM::Cloneable>
+
 =back
 
 =head2 alias Statement

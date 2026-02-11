@@ -3468,6 +3468,15 @@ Native APIs have its IDs.
   <tr>
     <td>26</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_STRINGABLE_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Stringable">Stringable</a> class</td>
   </tr>
+  <tr>
+    <td>27</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_COUNTABLE_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Countable">Countable</a> class</td>
+  </tr>
+  <tr>
+    <td>28</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_CALLER_INFO_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::CallerInfo">CallerInfo</a> class</td>
+  </tr>
+  <tr>
+    <td>29</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_CLONEABLE_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Cloneable">Cloneable</a> class</td>
+  </tr>
 </table>
 
 =end html

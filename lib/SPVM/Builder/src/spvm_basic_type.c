@@ -49,6 +49,7 @@ const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void) {
     "Stringable",
     "Countable",
     "CallerInfo",
+    "Cloneable",
   };
   
   return id_names;
