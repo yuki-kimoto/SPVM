@@ -722,7 +722,7 @@ use Test::More;
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Cloneable; static method main : void () { my $source : Int[]; my $dist = (Cloneable[])$source; } }';
+      my $source = 'class MyClass { use Cloneable; static method main : void () { my $source : Error[]; my $dist = (Cloneable[])$source; } }';
       compile_not_ok($source);
     }
   }

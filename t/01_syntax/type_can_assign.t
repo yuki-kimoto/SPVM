@@ -760,8 +760,8 @@ use Test::More;
       compile_ok($source);
     }
     {
-      my $source = 'class MyClass { use Cloneable; static method main : void () { my $source : Int[]; my $dist : Cloneable[] = $source; } }';
-      compile_not_ok($source, , q|Int class must define clone method because its interface method is defined as a required method in Cloneable interface.|);
+      my $source = 'class MyClass { use Cloneable; static method main : void () { my $source : Error[]; my $dist : Cloneable[] = $source; } }';
+      compile_not_ok($source, , q|Error class must define clone method because its interface method is defined as a required method in Cloneable interface.|);
     }
   }
   
