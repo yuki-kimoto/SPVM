@@ -1,7 +1,18 @@
-0.990128 2026-02-011
+0.990128 2026-02-11
   [New Features]
     * Add is_utf8 native API to check if a string is a valid UTF-8 sequence.
     * Add Fn#is_utf8 method to check if a string is a valid UTF-8 sequence.
+
+  [New Features]
+    * Add is_utf8 native API to check if a string is a valid UTF-8 sequence.
+    * Add Fn#is_utf8 method to check if a string is a valid UTF-8 sequence.
+
+  [Backward Incompatible Changes]
+    * Move method begin/end callback APIs from SPVM_ENV to SPVM_RUNTIME to clarify API responsibilities. #845
+    * Remove method_begin_cb, get_method_begin_cb, set_method_begin_cb, method_end_cb, get_method_end_cb, and set_method_end_cb from SPVM_ENV. Use the direct fields method_begin_cb and method_end_cb in the Native Runtime API instead. #845
+    * Remove the redundant die_v2 native API.
+    * Update Native API IDs: Due to the removal of the above APIs, the IDs of subsequent APIs (call_end_methods, is_utf8) and Runtime APIs have been changed. Any native extensions relying on these specific IDs must be recompiled. #845
+    
 0.990127 2026-02-04
   [Bug Fix]
     * Fix stack trace depth calculation and loop range in build_exception_message.
