@@ -5266,8 +5266,9 @@ int32_t SPVM__TestCase__NativeAPI__method_begin_and_end_cb(SPVM_ENV* env, SPVM_V
   last_begin_method = NULL;
   last_end_method = NULL;
   
-  env->set_method_begin_cb(env, test_method_begin_cb);
-  env->set_method_end_cb(env, test_method_end_cb);
+  // Directly set callbacks to the runtime fields
+  env->api->runtime->method_begin_cb = test_method_begin_cb;
+  env->api->runtime->method_end_cb = test_method_end_cb;
 
   // 2. Execution: Call Fn#INT_MAX using call_class_method_by_name
   env->call_class_method_by_name(env, stack, "Fn", "INT_MAX", 0, &error_id, __func__, FILE_NAME, __LINE__);
@@ -5312,13 +5313,14 @@ int32_t SPVM__TestCase__NativeAPI__method_begin_and_end_cb(SPVM_ENV* env, SPVM_V
     stack[0].ival = 0;
     goto CLEANUP;
   }
-
+  
   stack[0].ival = 1;
 
 CLEANUP:
   // 4. Cleanup
-  env->set_method_begin_cb(env, NULL);
-  env->set_method_end_cb(env, NULL);
+  // Directly clear the runtime fields
+  env->api->runtime->method_begin_cb = NULL;
+  env->api->runtime->method_end_cb = NULL;
   
   return 0;
 }

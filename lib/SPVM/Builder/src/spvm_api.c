@@ -549,8 +549,9 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   }
   
   /* Call method begin callback */
-  if (__builtin_expect(env->method_begin_cb != NULL, 0)) {
-    env->method_begin_cb(env, stack);
+  if (__builtin_expect(env->api->runtime->method_begin_cb != NULL, 0)) {
+    SPVM_RUNTIME_method_cb_t* method_begin_cb = (SPVM_RUNTIME_method_cb_t*)env->api->runtime->method_begin_cb;
+    method_begin_cb(env, stack);
   }
   
   // Set default values for optional arguments
@@ -666,8 +667,9 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   }
   
   /* Call method end callback */
-  if (__builtin_expect(env->method_end_cb != NULL, 0)) {
-    env->method_end_cb(env, stack);
+  if (__builtin_expect(env->api->runtime->method_end_cb != NULL, 0)) {
+    SPVM_RUNTIME_method_cb_t* method_end_cb = (SPVM_RUNTIME_method_cb_t*)env->api->runtime->method_end_cb;
+    method_end_cb(env, stack);
   }
   
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival--;
