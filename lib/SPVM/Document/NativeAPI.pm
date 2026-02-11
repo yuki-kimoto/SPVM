@@ -3322,8 +3322,8 @@ Native APIs have its IDs.
   272 build_exception_message_no_mortal
   273 build_exception_message
   274 die_v2
-  275 call_end_methods,
-  276 SPVM_API_is_utf8
+  275 call_end_methods
+  276 is_utf8
   
 =head1 Constant Values
 
