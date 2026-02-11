@@ -373,7 +373,6 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_die_with_string,
     SPVM_API_build_exception_message_no_mortal,
     SPVM_API_build_exception_message,
-    SPVM_API_die,
     SPVM_API_call_end_methods,
     SPVM_API_is_utf8,
   };

@@ -3023,12 +3023,6 @@ B<Examples:>
   void* obj_full_message = env->build_exception_message(env, stack, 0);
   env->set_exception(env, stack, obj_full_message);
 
-=head2 die_v2
-
-C<int32_t (*die_v2)(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...);>
-
-Same as L</"die">.
-
 =head2 is_utf8
 
 C<int32_t (*is_utf8)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_string, int32_t* error_id);>
@@ -3321,9 +3315,8 @@ Native APIs have its IDs.
   271 die_with_string
   272 build_exception_message_no_mortal
   273 build_exception_message
-  274 die_v2
-  275 call_end_methods
-  276 is_utf8
+  274 call_end_methods
+  275 is_utf8
   
 =head1 Constant Values
 
