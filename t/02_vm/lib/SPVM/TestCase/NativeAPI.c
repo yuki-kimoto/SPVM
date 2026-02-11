@@ -581,6 +581,10 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_ids(SPVM_ENV* env, S
   if ((void*)&env->api->runtime->get_spvm_stderr != &env_array[12]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_env != &env_array[13]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_object_capacity_offset != &env_array[14]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_begin_cb != &env_array[15]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->set_method_begin_cb != &env_array[16]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_end_cb != &env_array[17]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->set_method_end_cb != &env_array[18]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

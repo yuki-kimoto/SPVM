@@ -6,6 +6,7 @@
 
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
+#include "spvm_runtime.h"
 
 SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api();
 
@@ -54,5 +55,13 @@ FILE* SPVM_API_RUNTIME_get_spvm_stdout(SPVM_RUNTIME* runtime);
 FILE* SPVM_API_RUNTIME_get_spvm_stderr(SPVM_RUNTIME* runtime);
 
 SPVM_ENV* SPVM_API_RUNTIME_get_env(SPVM_RUNTIME* runtime);
+
+SPVM_RUNTIME_method_cb_t* SPVM_API_RUNTIME_get_method_begin_cb(SPVM_RUNTIME* runtime);
+
+void SPVM_API_RUNTIME_set_method_begin_cb(SPVM_RUNTIME* runtime, SPVM_RUNTIME_method_cb_t* cb);
+
+SPVM_RUNTIME_method_cb_t* SPVM_API_RUNTIME_get_method_end_cb(SPVM_RUNTIME* runtime);
+
+void SPVM_API_RUNTIME_set_method_end_cb(SPVM_RUNTIME* runtime, SPVM_RUNTIME_method_cb_t* cb);
 
 #endif

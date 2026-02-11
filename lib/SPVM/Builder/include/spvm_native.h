@@ -559,6 +559,10 @@ struct spvm_api_runtime {
   FILE* (*get_spvm_stderr)(void* runtime);
   SPVM_ENV* (*get_env)(void* runtime);
   int32_t (*get_object_capacity_offset)(void* runtime);
+  void* (*get_method_begin_cb)(void* runtime);
+  void (*set_method_begin_cb)(void* runtime, void* cb);
+  void* (*get_method_end_cb)(void* runtime);
+  void (*set_method_end_cb)(void* runtime, void* cb);
 };
 
 struct spvm_api_internal {

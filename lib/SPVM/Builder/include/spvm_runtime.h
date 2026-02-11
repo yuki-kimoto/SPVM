@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+typedef void SPVM_RUNTIME_method_cb_t(SPVM_ENV* env, SPVM_VALUE* stack);
+
 struct spvm_runtime {
   SPVM_COMPILER* compiler;
   
@@ -36,6 +38,11 @@ struct spvm_runtime {
   FILE* spvm_stdout;
   
   FILE* spvm_stderr;
+  
+  SPVM_RUNTIME_method_cb_t* method_begin_cb;
+  
+  SPVM_RUNTIME_method_cb_t* method_end_cb;
+  
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

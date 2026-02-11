@@ -110,6 +110,48 @@ C<int32_t (*get_object_capacity_offset)(L<void* runtime|SPVM::Document::NativeAP
 
 Returns the offset of C<capacity> membar variable in L<SPVM_OBJECT|SPVM::Document::NativeAPI/"SPVM_OBJECT"> struct.
 
+=head2 get_method_begin_cb
+
+C<void* (*get_method_begin_cb)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+
+Returns the C<method_begin_cb> field.
+
+=head2 set_method_begin_cb
+
+C<void (*set_method_begin_cb)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, void* cb);>
+
+Sets the C<method_begin_cb> field to the given callback function I<cb>.
+
+The callback function I<cb> must be a function pointer with the following signature:
+
+C<void cb(L<SPVM_ENV* env|SPVM::Document::NativeAPI>, L<SPVM_VALUE* stack|SPVM::Document::NativeAPI::Value>);>
+
+=over 2
+
+=item * I<env> : The runtime environment.
+
+=item * I<stack> : The runtime stack. This can be used to access arguments in the "begin" callback, and to access the return value in the "end" callback.
+
+=back
+
+=head2 get_method_end_cb
+
+C<void* (*get_method_end_cb)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+
+Returns the C<method_end_cb> field.
+
+=head2 set_method_end_cb
+
+C<void (*set_method_end_cb)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, void* cb);>
+
+Sets the C<method_end_cb> field to the given callback function I<cb>.
+
+The callback function I<cb> must be a function pointer with the following signature:
+
+C<void cb(L<SPVM_ENV* env|SPVM::Document::NativeAPI>, L<SPVM_VALUE* stack|SPVM::Document::NativeAPI::Value>);>
+
+The arguments are the same as L</"set_method_begin_cb">.
+
 =head1 Native API IDs
 
   0 get_object_data_offset
@@ -127,7 +169,11 @@ Returns the offset of C<capacity> membar variable in L<SPVM_OBJECT|SPVM::Documen
   12 get_spvm_stderr
   13 get_env
   14 get_object_capacity_offset
-
+  15 get_method_begin_cb
+  16 set_method_begin_cb
+  17 get_method_end_cb
+  18 set_method_end_cb
+  
 =head1 See Also
 
 =over 2
