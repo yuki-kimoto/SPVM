@@ -112,10 +112,8 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_get_spvm_stderr,
     SPVM_API_RUNTIME_get_env,
     SPVM_API_RUNTIME_get_object_capacity_offset,
-    SPVM_API_RUNTIME_get_method_begin_cb,
-    SPVM_API_RUNTIME_set_method_begin_cb,
-    SPVM_API_RUNTIME_get_method_end_cb,
-    SPVM_API_RUNTIME_set_method_end_cb,
+    NULL, // method_begin_cb
+    NULL, // method_end_cb
   };
   SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -283,20 +281,4 @@ FILE* SPVM_API_RUNTIME_get_spvm_stderr(SPVM_RUNTIME* runtime) {
 SPVM_ENV* SPVM_API_RUNTIME_get_env(SPVM_RUNTIME* runtime) {
   
   return runtime->env;
-}
-
-SPVM_RUNTIME_method_cb_t* SPVM_API_RUNTIME_get_method_begin_cb(SPVM_RUNTIME* runtime) {
-  return runtime->method_begin_cb;
-}
-
-void SPVM_API_RUNTIME_set_method_begin_cb(SPVM_RUNTIME* runtime, SPVM_RUNTIME_method_cb_t* cb) {
-  runtime->method_begin_cb = cb;
-}
-
-SPVM_RUNTIME_method_cb_t* SPVM_API_RUNTIME_get_method_end_cb(SPVM_RUNTIME* runtime) {
-  return runtime->method_end_cb;
-}
-
-void SPVM_API_RUNTIME_set_method_end_cb(SPVM_RUNTIME* runtime, SPVM_RUNTIME_method_cb_t* cb) {
-  runtime->method_end_cb = cb;
 }

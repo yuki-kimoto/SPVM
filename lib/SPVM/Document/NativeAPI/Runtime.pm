@@ -110,19 +110,13 @@ C<int32_t (*get_object_capacity_offset)(L<void* runtime|SPVM::Document::NativeAP
 
 Returns the offset of C<capacity> membar variable in L<SPVM_OBJECT|SPVM::Document::NativeAPI/"SPVM_OBJECT"> struct.
 
-=head2 get_method_begin_cb
+=head2 method_begin_cb
 
-C<void* (*get_method_begin_cb)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+C<void* method_begin_cb;>
 
-Returns the C<method_begin_cb> field.
+The callback function called at the beginning of a method.
 
-=head2 set_method_begin_cb
-
-C<void (*set_method_begin_cb)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, void* cb);>
-
-Sets the C<method_begin_cb> field to the given callback function I<cb>.
-
-The callback function I<cb> must be a function pointer with the following signature:
+The callback function must be a function pointer with the following signature:
 
 C<void cb(L<SPVM_ENV* env|SPVM::Document::NativeAPI>, L<SPVM_VALUE* stack|SPVM::Document::NativeAPI::Value>);>
 
@@ -130,27 +124,21 @@ C<void cb(L<SPVM_ENV* env|SPVM::Document::NativeAPI>, L<SPVM_VALUE* stack|SPVM::
 
 =item * I<env> : The runtime environment.
 
-=item * I<stack> : The runtime stack. This can be used to access arguments in the "begin" callback, and to access the return value in the "end" callback.
+=item * I<stack> : The runtime stack. This can be used to access arguments.
 
 =back
 
-=head2 get_method_end_cb
+=head2 method_end_cb
 
-C<void* (*get_method_end_cb)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+C<void* method_end_cb;>
 
-Returns the C<method_end_cb> field.
+The callback function called at the end of a method.
 
-=head2 set_method_end_cb
-
-C<void (*set_method_end_cb)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, void* cb);>
-
-Sets the C<method_end_cb> field to the given callback function I<cb>.
-
-The callback function I<cb> must be a function pointer with the following signature:
+The callback function must be a function pointer with the following signature:
 
 C<void cb(L<SPVM_ENV* env|SPVM::Document::NativeAPI>, L<SPVM_VALUE* stack|SPVM::Document::NativeAPI::Value>);>
 
-The arguments are the same as L</"set_method_begin_cb">.
+The arguments are the same as L</"method_begin_cb">. This can be used to access the return value.
 
 =head1 Native API IDs
 
@@ -169,10 +157,8 @@ The arguments are the same as L</"set_method_begin_cb">.
   12 get_spvm_stderr
   13 get_env
   14 get_object_capacity_offset
-  15 get_method_begin_cb
-  16 set_method_begin_cb
-  17 get_method_end_cb
-  18 set_method_end_cb
+  15 method_begin_cb
+  16 method_end_cb
   
 =head1 See Also
 

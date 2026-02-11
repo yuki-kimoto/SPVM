@@ -38,11 +38,6 @@ struct spvm_runtime {
   FILE* spvm_stdout;
   
   FILE* spvm_stderr;
-  
-  SPVM_RUNTIME_method_cb_t* method_begin_cb;
-  
-  SPVM_RUNTIME_method_cb_t* method_end_cb;
-  
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
