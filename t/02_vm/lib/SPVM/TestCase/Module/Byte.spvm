@@ -3,25 +3,52 @@ class TestCase::Module::Byte {
   
   static method basic : int () {
     
+    # Initialization and value check
     {
       my $numeric_object = Byte->new(Fn->INT8_MIN());
       my $value = $numeric_object->value;
+      unless ($value == Fn->INT8_MIN()) { return 0; }
+    }
+    
+    # Mutable test
+    {
+      my $numeric_object = Byte->new(1);
+      $numeric_object->set_value(10);
+      unless ($numeric_object->value == 10) { return 0; }
+    }
+
+    # Clone test
+    {
+      my $numeric_object = Byte->new(5);
+      my $cloned_object = $numeric_object->clone;
       
-      unless ($value == Fn->INT8_MIN()) {
+      # Check if the value is cloned
+      unless ($cloned_object->value == 5) { return 0; }
+      # Check independence
+      $cloned_object->set_value(20);
+      if ($numeric_object->value == 20) { return 0; }
+      # Check interface
+      unless ($cloned_object isa Cloneable) { return 0; }
+    }
+
+    # Read-only test
+    {
+      my $numeric_object = Byte->new(1);
+      $numeric_object->make_read_only;
+      unless ($numeric_object->is_read_only) { return 0; }
+      
+      # Should die when setting a value to a read-only object
+      eval { $numeric_object->set_value(10); };
+      unless (Fn->contains($@, "The object is read-only and its value cannot be changed.")) {
         return 0;
       }
     }
     
+    # Stringable test
     {
       my $numeric_object = Byte->new(1);
-      
-      unless ($numeric_object isa Stringable) {
-        return 0;
-      }
-      
-      unless ($numeric_object->to_string eq "1") {
-        return 0;
-      }
+      unless ($numeric_object isa Stringable) { return 0; }
+      unless ($numeric_object->to_string eq "1") { return 0; }
     }
     
     return 1;

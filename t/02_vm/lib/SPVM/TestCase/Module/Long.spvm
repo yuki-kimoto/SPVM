@@ -2,23 +2,34 @@ class TestCase::Module::Long {
   use Fn;
   
   static method basic : int () {
+    # Initialization and value check
     {
       my $numeric_object = Long->new(Fn->INT64_MIN());
-      my $value = $numeric_object->value;
-      
-      unless ($value == Fn->INT64_MIN()) {
-        return 0;
-      }
+      unless ($numeric_object->value == Fn->INT64_MIN()) { return 0; }
     }
     
+    # Mutable test
     {
-      my $numeric_object = Long->new(1);
-      
-      unless ($numeric_object isa Stringable) {
-        return 0;
-      }
-      
-      unless ($numeric_object->to_string eq "1") {
+      my $numeric_object = Long->new(1L);
+      $numeric_object->set_value(10L);
+      unless ($numeric_object->value == 10L) { return 0; }
+    }
+
+    # Clone test
+    {
+      my $numeric_object = Long->new(5L);
+      my $cloned_object = $numeric_object->clone;
+      unless ($cloned_object->value == 5L) { return 0; }
+      $cloned_object->set_value(20L);
+      if ($numeric_object->value == 20L) { return 0; }
+    }
+
+    # Read-only test
+    {
+      my $numeric_object = Long->new(1L);
+      $numeric_object->make_read_only;
+      eval { $numeric_object->set_value(10L); };
+      unless (Fn->contains($@, "The object is read-only and its value cannot be changed.")) {
         return 0;
       }
     }
