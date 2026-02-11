@@ -5,6 +5,7 @@ package SPVM::Int;
 =head1 Name
 
 SPVM::Int - An int value as An Object
+
 =head1 Description
 
 Int class in L<SPVM> represents an int value as an object.
@@ -13,10 +14,9 @@ Int class in L<SPVM> represents an int value as an object.
   
   my $int_object = Int->new(5);
   my $int_value = $int_object->value;
+  $int_object->set_value(10);
 
 =head1 Details
-
-This class is immutable.
 
 This class is automatically loaded.
 
@@ -25,6 +25,7 @@ This class is automatically loaded.
 =over 2
 
 =item * L<Stringable|SPVM::Stringable>
+=item * L<Cloneable|SPVM::Cloneable>
 
 =back
 
@@ -32,9 +33,15 @@ This class is automatically loaded.
 
 =head2 value
 
-C<has value : ro int;>
+C<has value : rw int;>
 
-The value.
+The value. If the L</"is_read_only"> field is 1, a compilation error or a runtime error occurs when setting the value.
+
+=head2 is_read_only
+
+C<has is_read_only : ro byte;>
+
+If this value is 1, the L</"value"> field is read-only.
 
 =head1 Class Methods
 
@@ -42,9 +49,21 @@ The value.
 
 C<static method new : L<Int|SPVM::Int> ($value : int);>
 
-Creates a new L<Int|SPVM::Int> object with a C<int> $value.
+Creates a new L<Int|SPVM::Int> object with an C<int> $value.
 
 =head1 Instance Methods
+
+=head2 make_read_only
+
+C<method make_read_only : void ();>
+
+Sets L</"is_read_only"> field to 1.
+
+=head2 clone
+
+C<method clone : L<Int|SPVM::Int> ();>
+
+Creates a new L<Int|SPVM::Int> object that clones this object. The value of L</"is_read_only"> field in the new object is 0.
 
 =head2 to_string
 

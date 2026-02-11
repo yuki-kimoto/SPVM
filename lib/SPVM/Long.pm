@@ -14,10 +14,9 @@ Long class in L<SPVM> represents a long value as an object.
   
   my $long_object = Long->new(5);
   my $long_value = $long_object->value;
+  $long_object->set_value(10L);
 
 =head1 Details
-
-This class is immutable.
 
 This class is automatically loaded.
 
@@ -26,6 +25,7 @@ This class is automatically loaded.
 =over 2
 
 =item * L<Stringable|SPVM::Stringable>
+=item * L<Cloneable|SPVM::Cloneable>
 
 =back
 
@@ -33,9 +33,15 @@ This class is automatically loaded.
 
 =head2 value
 
-C<has value : ro long;>
+C<has value : rw long;>
 
-The value.
+The value. If the L</"is_read_only"> field is 1, a compilation error or a runtime error occurs when setting the value.
+
+=head2 is_read_only
+
+C<has is_read_only : ro byte;>
+
+If this value is 1, the L</"value"> field is read-only.
 
 =head1 Class Methods
 
@@ -46,6 +52,18 @@ C<static method new : L<Long|SPVM::Long> ($value : long);>
 Creates a new L<Long|SPVM::Long> object with a C<long> $value.
 
 =head1 Instance Methods
+
+=head2 make_read_only
+
+C<method make_read_only : void ();>
+
+Sets L</"is_read_only"> field to 1.
+
+=head2 clone
+
+C<method clone : L<Long|SPVM::Long> ();>
+
+Creates a new L<Long|SPVM::Long> object that clones this object. The value of L</"is_read_only"> field in the new object is 0.
 
 =head2 to_string
 
