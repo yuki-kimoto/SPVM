@@ -3037,6 +3037,59 @@ Initially I<error_id> is set to 0.
 
 If the I<obj_string> is NULL, I<error_id> is set to a non-zero value.
 
+=head2 set_byte_object_value
+
+C<void (*set_byte_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* byte_object, int8_t value);>
+
+Sets the C<byte> value of the L<Byte|SPVM::Byte> object I<byte_object>.
+
+B<Note:> This method sets the value even if the object is marked as read-only.
+
+=head2 set_short_object_value
+
+C<void (*set_short_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* short_object, int16_t value);>
+
+Sets the C<short> value of the L<Short|SPVM::Short> object I<short_object>.
+
+B<Note:> This method sets the value even if the object is marked as read-only.
+
+=head2 set_int_object_value
+
+C<void (*set_int_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* int_object, int32_t value);>
+
+Sets the C<int> value of the L<Int|SPVM::Int> object I<int_object>.
+
+B<Note:> This method sets the value even if the object is marked as read-only.
+
+=head2 set_long_object_value
+
+C<void (*set_long_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* long_object, int64_t value);>
+
+Sets the C<long> value of the L<Long|SPVM::Long> object I<long_object>.
+
+B<Note:> This method sets the value even if the object is marked as read-only.
+
+=head2 set_float_object_value
+
+C<void (*set_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* float_object, float value);>
+
+Sets the C<float> value of the L<Float|SPVM::Float> object I<float_object>.
+
+B<Note:> This method sets the value even if the object is marked as read-only.
+
+=head2 set_double_object_value
+
+C<void (*set_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* double_object, double value);>
+
+Sets the C<double> value of the L<Double|SPVM::Double> object I<double_object>.
+
+B<Note:> This method sets the value even if the object is marked as read-only.
+
+B<Examples:>
+
+  void* obj_int = env->new_object_by_name(env, stack, "Int", &error_id);
+  env->set_int_object_value(env, stack, obj_int, 10);
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3317,7 +3370,13 @@ Native APIs have its IDs.
   273 build_exception_message
   274 call_end_methods
   275 is_utf8
-  
+  276 set_byte_object_value
+  277 set_short_object_value
+  278 set_int_object_value
+  279 set_long_object_value
+  280 set_float_object_value
+  281 set_double_object_value
+ 
 =head1 Constant Values
 
 =head2 Basic Type IDs

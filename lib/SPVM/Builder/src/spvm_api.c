@@ -375,6 +375,12 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_build_exception_message,
     SPVM_API_call_end_methods,
     SPVM_API_is_utf8,
+    SPVM_API_set_byte_object_value,
+    SPVM_API_set_short_object_value,
+    SPVM_API_set_int_object_value,
+    SPVM_API_set_long_object_value,
+    SPVM_API_set_float_object_value,
+    SPVM_API_set_double_object_value,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -5961,6 +5967,42 @@ double SPVM_API_get_double_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   double value = *(double*)(GET_DATA_ADDRESS(env, stack, double_object));
   
   return value;
+}
+
+void SPVM_API_set_byte_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* byte_object, int8_t value) {
+  
+  // Set the byte value to the data address of the Byte object
+  *(int8_t*)(GET_DATA_ADDRESS(env, stack, byte_object)) = value;
+}
+
+void SPVM_API_set_short_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* short_object, int16_t value) {
+  
+  // Set the short value to the data address of the Short object
+  *(int16_t*)(GET_DATA_ADDRESS(env, stack, short_object)) = value;
+}
+
+void SPVM_API_set_int_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* int_object, int32_t value) {
+  
+  // Set the int value to the data address of the Int object
+  *(int32_t*)(GET_DATA_ADDRESS(env, stack, int_object)) = value;
+}
+
+void SPVM_API_set_long_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* long_object, int64_t value) {
+  
+  // Set the long value to the data address of the Long object
+  *(int64_t*)(GET_DATA_ADDRESS(env, stack, long_object)) = value;
+}
+
+void SPVM_API_set_float_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* float_object, float value) {
+  
+  // Set the float value to the data address of the Float object
+  *(float*)(GET_DATA_ADDRESS(env, stack, float_object)) = value;
+}
+
+void SPVM_API_set_double_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* double_object, double value) {
+  
+  // Set the double value to the data address of the Double object
+  *(double*)(GET_DATA_ADDRESS(env, stack, double_object)) = value;
 }
 
 char* SPVM_API_get_stack_tmp_buffer(SPVM_ENV* env, SPVM_VALUE* stack) {

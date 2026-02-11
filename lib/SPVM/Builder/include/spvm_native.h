@@ -373,6 +373,12 @@ struct spvm_env {
   void* (*build_exception_message)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level);
   int32_t (*call_end_methods)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*is_utf8)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_string, int32_t* error_id);
+  void (*set_byte_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* byte_object, int8_t value);
+  void (*set_short_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* short_object, int16_t value);
+  void (*set_int_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* int_object, int32_t value);
+  void (*set_long_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* long_object, int64_t value);
+  void (*set_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* float_object, float value);
+  void (*set_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* double_object, double value);
 };
 
 struct spvm_env_api {
