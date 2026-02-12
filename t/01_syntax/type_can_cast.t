@@ -273,7 +273,7 @@ use Test::More;
   # Source type is ohter type
   {
     {
-      my $source = 'class MyClass { static method main : void () { my $source : Point; my $dist = (string)$source; } }';
+      my $source = 'class MyClass { use Point; static method main : void () { my $source : Point; my $dist = (string)$source; } }';
       compile_not_ok($source, q|type cast|);
     }
   }
