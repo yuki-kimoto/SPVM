@@ -548,7 +548,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "    return $clone;\n"
       "  }\n"
       "  method to_string : string () {\n"
-      "    return (string)$self->value;\n"
+      "    return (string)$self;\n"
       "  }\n"
       "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
@@ -596,7 +596,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "    return $clone;\n"
       "  }\n"
       "  method to_string : string () {\n"
-      "    return (string)$self->value;\n"
+      "    return (string)$self;\n"
       "  }\n"
       "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
@@ -612,12 +612,12 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "  interface Cloneable;\n"
       "  version_from SPVM;\n"
       "  has value : rw int\n"
-      "  set {\n"
-      "    if ($self->{is_read_only}) {\n"
-      "      die \"The object is read-only and its value cannot be changed.\";\n"
-      "    }\n"
-      "    $self->{value} = $_;\n"
-      "  };\n"
+      "    set {\n"
+      "      if ($self->{is_read_only}) {\n"
+      "        die \"The object is read-only and its value cannot be changed.\";\n"
+      "      }\n"
+      "      $self->{value} = $_;\n"
+      "    };\n"
       "  has is_read_only : ro byte;\n"
       "  has unsigned : rw byte;\n"
       "  static method new : Int ($value : int) {\n"
@@ -640,7 +640,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "    return $clone;\n"
       "  }\n"
       "  method to_string : string () {\n"
-      "    return (string)$self->{value};\n"
+      "    return (string)$self;\n"
       "  }\n"
       "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
@@ -656,12 +656,12 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "  interface Cloneable;\n"
       "  version_from SPVM;\n"
       "  has value : rw long\n"
-      "  set {\n"
-      "    if ($self->{is_read_only}) {\n"
-      "      die \"The object is read-only and its value cannot be changed.\";\n"
-      "    }\n"
-      "    $self->{value} = $_;\n"
-      "  };\n"
+      "    set {\n"
+      "      if ($self->{is_read_only}) {\n"
+      "        die \"The object is read-only and its value cannot be changed.\";\n"
+      "      }\n"
+      "      $self->{value} = $_;\n"
+      "    };\n"
       "  has is_read_only : ro byte;\n"
       "  has unsigned : rw byte;\n"
       "  static method new : Long ($value : long) {\n"
@@ -684,7 +684,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "    return $clone;\n"
       "  }\n"
       "  method to_string : string () {\n"
-      "    return (string)$self->{value};\n"
+      "    return (string)$self;\n;\n"
       "  }\n"
       "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
