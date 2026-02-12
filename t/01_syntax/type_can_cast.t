@@ -236,10 +236,44 @@ use Test::More;
     }
   }
   
+  # Source type is numeric object
+  {
+    # Byte object to string
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : Byte; my $dist = (string)$source; } }';
+      compile_ok($source);
+    }
+    # Short object to string
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : Short; my $dist = (string)$source; } }';
+      compile_ok($source);
+    }
+    # Int object to string
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : Int; my $dist = (string)$source; } }';
+      compile_ok($source);
+    }
+    # Long object to string
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : Long; my $dist = (string)$source; } }';
+      compile_ok($source);
+    }
+    # Float object to string
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : Float; my $dist = (string)$source; } }';
+      compile_ok($source);
+    }
+    # Double object to string
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : Double; my $dist = (string)$source; } }';
+      compile_ok($source);
+    }
+  }
+  
   # Source type is ohter type
   {
     {
-      my $source = 'class MyClass { static method main : void () { my $source : Byte; my $dist = (string)$source; } }';
+      my $source = 'class MyClass { static method main : void () { my $source : Point; my $dist = (string)$source; } }';
       compile_not_ok($source, q|type cast|);
     }
   }
