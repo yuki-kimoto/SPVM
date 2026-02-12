@@ -6971,33 +6971,61 @@ void* SPVM_API_numeric_object_to_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* sta
   int32_t is_numeric_object_type = SPVM_API_is_numeric_object_type(env->runtime, object->basic_type, object->type_dimension, 0);
   
   if (!is_numeric_object_type) {
-    void* obj_exception = env->new_string_nolen_no_mortal(env, stack, "Type conversion failed. The type of the object must be a numeric object type.");
-    env->set_exception(env, stack, obj_exception);
+    void* obj_exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Type conversion failed. The type of the object must be a numeric object type.");
+    SPVM_API_set_exception(env, stack, obj_exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     return 0;
   }
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = SPVM_API_get_stack_tmp_buffer(env, stack);
   
   switch (object->basic_type->id) {
     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, __FILE__, __LINE__);
+      if (*error_id) { return 0; }
+      
       int8_t** fields = (int8_t**)object->data;
-      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId8, *(int8_t*)&fields[0]);
+      if (is_unsigned) {
+        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRIu8, *(uint8_t*)&fields[0]);
+      } else {
+        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId8, *(int8_t*)&fields[0]);
+      }
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, __FILE__, __LINE__);
+      if (*error_id) { return 0; }
+
       int16_t** fields = (int16_t**)object->data;
-      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId16, *(int16_t*)&fields[0]);
+      if (is_unsigned) {
+        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRIu16, *(uint16_t*)&fields[0]);
+      } else {
+        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId16, *(int16_t*)&fields[0]);
+      }
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, __FILE__, __LINE__);
+      if (*error_id) { return 0; }
+
       int32_t** fields = (int32_t**)object->data;
-      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId32, *(int32_t*)&fields[0]);
+      if (is_unsigned) {
+        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRIu32, *(uint32_t*)&fields[0]);
+      } else {
+        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId32, *(int32_t*)&fields[0]);
+      }
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, __FILE__, __LINE__);
+      if (*error_id) { return 0; }
+
       int64_t** fields = (int64_t**)object->data;
-      snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId64, *(int64_t*)&fields[0]);
+      if (is_unsigned) {
+        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRIu64, *(uint64_t*)&fields[0]);
+      } else {
+        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId64, *(int64_t*)&fields[0]);
+      }
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS : {
@@ -7016,7 +7044,7 @@ void* SPVM_API_numeric_object_to_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* sta
   }
   
   int32_t string_length = strlen(tmp_buffer);
-  void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
+  void* string = SPVM_API_new_string_no_mortal(env, stack, tmp_buffer, string_length);
   
   return string;
 }
