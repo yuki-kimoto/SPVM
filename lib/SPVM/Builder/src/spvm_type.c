@@ -1563,6 +1563,10 @@ int32_t SPVM_TYPE_satisfy_cast_requirement(
     else if (SPVM_TYPE_is_byte_array_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_cast = 1;
     }
+    // Source type is numerci object type
+    else if (SPVM_TYPE_is_numeric_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+      can_cast = 1;
+    }
     // Source type is any object type
     else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_cast = 1;
