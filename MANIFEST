@@ -719,6 +719,7 @@ t/02_vm/05_op/type_initial_value.t
 t/02_vm/05_op/type_name.t
 t/02_vm/05_op/unary_minus.t
 t/02_vm/05_op/unary_plus.t
+t/02_vm/05_op/unsinged.t
 t/02_vm/05_op/warn.t
 t/02_vm/05_op/weaken.t
 t/02_vm/06_native_api/compile_native_api.pl
@@ -1006,6 +1007,7 @@ t/02_vm/lib/SPVM/TestCase/Operator/TypeDefaultValue.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/TypeName.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/UnaryMinus.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/UnaryPlus.spvm
+t/02_vm/lib/SPVM/TestCase/Operator/Unsigned.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Warn.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Weaken.spvm
 t/02_vm/lib/SPVM/TestCase/Point_3b.spvm
