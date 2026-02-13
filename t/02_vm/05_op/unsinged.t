@@ -19,6 +19,9 @@ ok(SPVM::TestCase::Operator::Unsigned->byte_object_unsigned);
 ok(SPVM::TestCase::Operator::Unsigned->short_object_signed);
 ok(SPVM::TestCase::Operator::Unsigned->short_object_unsigned);
 
+ok(SPVM::TestCase::Operator::Unsigned->int_object_signed);
+ok(SPVM::TestCase::Operator::Unsigned->int_object_unsigned);
+
 # All object is freed
 $api->destroy_runtime_permanent_vars;
 my $end_memory_blocks_count = $api->get_memory_blocks_count;
