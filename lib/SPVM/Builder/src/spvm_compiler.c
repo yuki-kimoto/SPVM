@@ -730,6 +730,9 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "  method to_string : string () {\n"
       "    return (string)$self->{value};\n"
       "  }\n"
+      "  method update_from_object : void ($object : object) {\n"
+      "    $self->{value} = (float)$object;\n"
+      "  }\n"
       "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
@@ -773,6 +776,9 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
       "  }\n"
       "  method to_string : string () {\n"
       "    return (string)$self->{value};\n"
+      "  }\n"
+      "  method update_from_object : void ($object : object) {\n"
+      "    $self->{value} = (double)$object;\n"
       "  }\n"
       "}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
