@@ -6701,8 +6701,11 @@ int16_t SPVM_API_numeric_object_to_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   int16_t out;
   switch (object->basic_type->id) {
     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int8_t** fields = (int8_t**)object->data;
-      out = (int16_t)*(int8_t*)&fields[0];
+      int8_t val = *(int8_t*)&fields[0];
+      out = is_unsigned ? (int16_t)(uint8_t)val : (int16_t)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS : {
@@ -6756,13 +6759,19 @@ int32_t SPVM_API_numeric_object_to_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t out;
   switch (object->basic_type->id) {
     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int8_t** fields = (int8_t**)object->data;
-      out = (int32_t)*(int8_t*)&fields[0];
+      int8_t val = *(int8_t*)&fields[0];
+      out = is_unsigned ? (int32_t)(uint8_t)val : (int32_t)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int16_t** fields = (int16_t**)object->data;
-      out = (int32_t)*(int16_t*)&fields[0];
+      int16_t val = *(int16_t*)&fields[0];
+      out = is_unsigned ? (int32_t)(uint16_t)val : (int32_t)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS : {
@@ -6811,18 +6820,27 @@ int64_t SPVM_API_numeric_object_to_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   int64_t out;
   switch (object->basic_type->id) {
     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int8_t** fields = (int8_t**)object->data;
-      out = (int64_t)*(int8_t*)&fields[0];
+      int8_t val = *(int8_t*)&fields[0];
+      out = is_unsigned ? (int64_t)(uint8_t)val : (int64_t)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int16_t** fields = (int16_t**)object->data;
-      out = (int64_t)*(int16_t*)&fields[0];
+      int16_t val = *(int16_t*)&fields[0];
+      out = is_unsigned ? (int64_t)(uint16_t)val : (int64_t)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int32_t** fields = (int32_t**)object->data;
-      out = (int64_t)*(int32_t*)&fields[0];
+      int32_t val = *(int32_t*)&fields[0];
+      out = is_unsigned ? (int64_t)(uint32_t)val : (int64_t)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS : {
@@ -6866,23 +6884,35 @@ float SPVM_API_numeric_object_to_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   float out;
   switch (object->basic_type->id) {
     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int8_t** fields = (int8_t**)object->data;
-      out = (float)*(int8_t*)&fields[0];
+      int8_t val = *(int8_t*)&fields[0];
+      out = is_unsigned ? (float)(uint8_t)val : (float)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int16_t** fields = (int16_t**)object->data;
-      out = (float)*(int16_t*)&fields[0];
+      int16_t val = *(int16_t*)&fields[0];
+      out = is_unsigned ? (float)(uint16_t)val : (float)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int32_t** fields = (int32_t**)object->data;
-      out = (float)*(int32_t*)&fields[0];
+      int32_t val = *(int32_t*)&fields[0];
+      out = is_unsigned ? (float)(uint32_t)val : (float)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int64_t** fields = (int64_t**)object->data;
-      out = (float)*(int64_t*)&fields[0];
+      int64_t val = *(int64_t*)&fields[0];
+      out = is_unsigned ? (float)(uint64_t)val : (float)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS : {
@@ -6914,8 +6944,8 @@ double SPVM_API_numeric_object_to_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   int32_t is_numeric_object_type = SPVM_API_is_numeric_object_type(env->runtime, object->basic_type, object->type_dimension, 0);
   
   if (!is_numeric_object_type) {
-    void* obj_exception = env->new_string_nolen_no_mortal(env, stack, "Type conversion failed. The type of the object must be a numeric object type.");
-    env->set_exception(env, stack, obj_exception);
+    void* obj_exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Type conversion failed. The type of the object must be a numeric object type.");
+    SPVM_API_set_exception(env, stack, obj_exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     return 0;
   }
@@ -6923,23 +6953,35 @@ double SPVM_API_numeric_object_to_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   double out;
   switch (object->basic_type->id) {
     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int8_t** fields = (int8_t**)object->data;
-      out = (double)*(int8_t*)&fields[0];
+      int8_t val = *(int8_t*)&fields[0];
+      out = is_unsigned ? (double)(uint8_t)val : (double)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int16_t** fields = (int16_t**)object->data;
-      out = (double)*(int16_t*)&fields[0];
+      int16_t val = *(int16_t*)&fields[0];
+      out = is_unsigned ? (double)(uint16_t)val : (double)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int32_t** fields = (int32_t**)object->data;
-      out = (double)*(int32_t*)&fields[0];
+      int32_t val = *(int32_t*)&fields[0];
+      out = is_unsigned ? (double)(uint32_t)val : (double)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS : {
+      int8_t is_unsigned = SPVM_API_get_field_byte_by_name(env, stack, object, "unsigned", error_id, __func__, FILE_NAME, __LINE__);
+      if (*error_id) { return 0; }
       int64_t** fields = (int64_t**)object->data;
-      out = (double)*(int64_t*)&fields[0];
+      int64_t val = *(int64_t*)&fields[0];
+      out = is_unsigned ? (double)(uint64_t)val : (double)val;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS : {
