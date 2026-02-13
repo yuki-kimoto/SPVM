@@ -2121,4 +2121,44 @@ class Fn {
   
   native static method is_utf8 : int ($string : string);
   
+  static method to_byte_object_unsigned : Byte ($string : string) {
+    
+    my $unsigned = 1;
+    my $value = Fn->to_int($string, $unsigned);
+    
+    my $obj = Byte->new_unsigned($value);
+    
+    return $obj;
+  }
+  
+  static method to_short_object_unsigned : Short ($string : string) {
+    
+    my $unsigned = 1;
+    my $value = Fn->to_int($string, $unsigned);
+    
+    my $obj = Short->new_unsigned($value);
+    
+    return $obj;
+  }
+  
+  static method to_int_object_unsigned : Int ($string : string) {
+    
+    my $unsigned = 1;
+    my $value = Fn->to_int($string, $unsigned);
+    
+    my $obj = Int->new_unsigned($value);
+    
+    return $obj;
+  }
+  
+  static method to_long_object_unsigned : Long ($string : string) {
+    
+    my $unsigned = 1;
+    my $value = Fn->to_long($string, $unsigned);
+    
+    my $obj = Long->new_unsigned($value);
+    
+    return $obj;
+  }
+  
 }

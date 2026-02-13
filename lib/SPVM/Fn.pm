@@ -1951,6 +1951,82 @@ Exceptions:
 
 The string I<$string> must be defined. Otherwise an exception is thrown.
 
+=head2 to_byte_object_unsigned
+
+C<static method to_byte_object_unsigned : Byte ($string : string);>
+
+Converts $string to a L<Byte|SPVM::Byte> object that is treated as an unsigned 8-bit integer.
+
+The conversion is performed using L</"to_int"> with the C<$unsigned> argument set to 1.
+
+The L<new_unsigned|SPVM::Byte/"new_unsigned"> method of the L<Byte|SPVM::Byte> class is used to create the object.
+
+Exceptions:
+
+Exceptions thrown by L</"to_int"> are thrown.
+
+Examples:
+
+  my $string = "255";
+  my $obj = Fn->to_byte_object_unsigned($string);
+
+=head2 to_short_object_unsigned
+
+C<static method to_short_object_unsigned : Short ($string : string);>
+
+Converts $string to a L<Short|SPVM::Short> object that is treated as an unsigned 16-bit integer.
+
+The conversion is performed using L</"to_int"> with the C<$unsigned> argument set to 1.
+
+The L<new_unsigned|SPVM::Short/"new_unsigned"> method of the L<Short|SPVM::Short> class is used to create the object.
+
+Exceptions:
+
+Exceptions thrown by L</"to_int"> are thrown.
+
+Examples:
+
+  my $string = "65535";
+  my $obj = Fn->to_short_object_unsigned($string);
+
+=head2 to_int_object_unsigned
+
+C<static method to_int_object_unsigned : Int ($string : string);>
+
+Converts $string to an L<Int|SPVM::Int> object that is treated as an unsigned 32-bit integer.
+
+The conversion is performed using L</"to_int"> with the C<$unsigned> argument set to 1.
+
+The L<new_unsigned|SPVM::Int/"new_unsigned"> method of the L<Int|SPVM::Int> class is used to create the object.
+
+Exceptions:
+
+Exceptions thrown by L</"to_int"> are thrown.
+
+Examples:
+
+  my $string = "4294967295";
+  my $obj = Fn->to_int_object_unsigned($string);
+
+=head2 to_long_object_unsigned
+
+C<static method to_long_object_unsigned : Long ($string : string);>
+
+Converts $string to a L<Long|SPVM::Long> object that is treated as an unsigned 64-bit integer.
+
+The conversion is performed using L</"to_long"> with the C<$unsigned> argument set to 1.
+
+The L<new_unsigned|SPVM::Long/"new_unsigned"> method of the L<Long|SPVM::Long> class is used to create the object.
+
+Exceptions:
+
+Exceptions thrown by L</"to_long"> are thrown.
+
+Examples:
+
+  my $string = "18446744073709551615";
+  my $obj = Fn->to_long_object_unsigned($string);
+
 =head1 See Also
 
 =over 2
