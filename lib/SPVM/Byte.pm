@@ -16,6 +16,9 @@ Byte class in L<SPVM> represents a byte value as an object.
   my $byte_value = $byte_object->value;
   $byte_object->set_value(10);
 
+  # New unsigned object
+  my $unsigned_byte = Byte->new_unsigned(255);
+
 =head1 Details
 
 This class is automatically loaded.
@@ -35,7 +38,11 @@ This class is automatically loaded.
 
 C<has value : rw byte;>
 
-The value. If the L</"is_read_only"> field is 1, a compilation error or a runtime error occurs when setting the value.
+The value. 
+
+If the L</"unsigned"> field is 1, the value is treated as an unsigned 8-bit integer (0 to 255).
+
+If the L</"is_read_only"> field is 1, a compilation error or a runtime error occurs when setting the value.
 
 =head2 is_read_only
 
@@ -43,13 +50,25 @@ C<has is_read_only : ro byte;>
 
 If this value is 1, the L</"value"> field is read-only.
 
+=head2 unsigned
+
+C<has unsigned : rw byte;>
+
+If this value is 1, the value is treated as an unsigned 8-bit integer.
+
 =head1 Class Methods
 
 =head2 new
 
 C<static method new : L<Byte|SPVM::Byte> ($value : int);>
 
-Creates a new L<Byte|SPVM::Byte> object with a C<byte> $value.
+Creates a new L<Byte|SPVM::Byte> object with a C<byte> $value. The L</"unsigned"> field is initialized to 0.
+
+=head2 new_unsigned
+
+C<static method new_unsigned : L<Byte|SPVM::Byte> ($value : int);>
+
+Creates a new L<Byte|SPVM::Byte> object with a C<byte> $value. The L</"unsigned"> field is initialized to 1.
 
 =head1 Instance Methods
 
@@ -63,13 +82,19 @@ Sets L</"is_read_only"> field to 1.
 
 C<method clone : L<Byte|SPVM::Byte> ();>
 
-Creates a new L<Byte|SPVM::Byte> object that clones this object. The value of L</"is_read_only"> field in the new object is 0.
+Creates a new L<Byte|SPVM::Byte> object that clones this object. 
+
+The L</"unsigned"> field is copied to the new object.
+
+The value of L</"is_read_only"> field in the new object is 0.
 
 =head2 to_string
 
 C<method to_string : string ();>
 
 Casts the value to string type and returns it.
+
+If L</"unsigned"> field is 1, the value is converted to a string as an unsigned 8-bit integer.
 
 =head1 Copyright & License
 
