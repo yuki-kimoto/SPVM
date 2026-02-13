@@ -41,17 +41,18 @@ use Test::More;
   }
   # Source type is numeric object type
   {
-    {
-      my $source = 'class MyClass { static method main : void () { my $source : Byte; my $dist = (byte)$source; } }';
-      compile_ok($source);
-    }
-    {
-      my $source = 'class MyClass { static method main : void () { my $source : Byte; my $dist = (short)$source; } }';
-      compile_not_ok($source, qr|type cast|);
-    }
-    {
-      my $source = 'class MyClass { static method main : void () { my $source : Double; my $dist = (double)$source; } }';
-      compile_ok($source);
+    # Numeric object classes
+    my @obj_classes = qw(Byte Short Int Long Float Double);
+    
+    # Primitive types
+    my @types = qw(byte short int long float double);
+    
+    for my $obj_class (@obj_classes) {
+      for my $type (@types) {
+        # Test explicit cast from numeric object to primitive type
+        my $source = "class MyClass { static method main : void () { my \$source : $obj_class; my \$dist = ($type)\$source; } }";
+        compile_ok($source);
+      }
     }
   }
   

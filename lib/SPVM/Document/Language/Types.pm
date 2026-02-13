@@ -1356,12 +1356,12 @@ To Smaller:
 
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th><th>Data Check</th></tr>
-  <tr><td>Yes</td><td>byte</td><td>Byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>short</td><td>Short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>int</td><td>Int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>long</td><td>Long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>float</td><td>Float</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>double</td><td>Double</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>byte</td><td>Numeric Object</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>Numeric Object</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>int</td><td>Numeric Object</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>long</td><td>Numeric Object</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>float</td><td>Numeric Object</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>double</td><td>Numeric Object</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
 </table>
 
 =end html
