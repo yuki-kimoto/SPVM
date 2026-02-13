@@ -2,6 +2,8 @@
   [Changes]
     * Allow casting numeric object types to string type.
     * Allow explicit casts from all numeric object types to all numeric primitive types by relaxing cast requirements.
+  [New Features]
+    * Add $unsigned optional argument to to_int, to_int_with_base, to_long, and to_long_with_base in Fn class.
     
 0.990129 2026-02-11
   [New Features]
