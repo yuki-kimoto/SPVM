@@ -894,16 +894,17 @@ class Fn {
   
   native static method to_float : float ($string : string);
   
-  static method to_int : int ($string : string) {
-    return &to_int_with_base($string, 10);
+  static method to_int : int ($string : string, $unsigned : int = 0) {
+    return &to_int_with_base($string, 10, $unsigned);
   }
   
-  native static method to_int_with_base : int ($string : string, $digit : int);
+  native static method to_int_with_base : int ($string : string, $digit : int, $unsigned : int = 0);
   
-  static method to_long : long ($string : string) {
-    return &to_long_with_base($string, 10);
+  static method to_long : long ($string : string, $unsigned : int = 0) {
+    return &to_long_with_base($string, 10, $unsigned);
   }
-  native static method to_long_with_base : long ($string : string, $digit : int);
+  
+  native static method to_long_with_base : long ($string : string, $digit : int, $unsigned : int = 0);
   
   static method to_lower : int ($code_point : int) {
     
@@ -2119,4 +2120,5 @@ class Fn {
   native static method get_call_depth : int ();
   
   native static method is_utf8 : int ($string : string);
+  
 }

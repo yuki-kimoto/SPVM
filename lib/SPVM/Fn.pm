@@ -868,42 +868,21 @@ Examples:
 
 =head2 to_int
 
-C<static method to_int : int ($string : string, $digit : int);>
+C<static method to_int : int ($string : string, $unsigned : int = 0);>
 
 The alias for the following code using L</"to_int_with_base">.
 
-  my $ret = Fn->to_int_with_base($string, 10);
+  my $ret = Fn->to_int_with_base($string, 10, $unsigned);
 
 =head2 to_int_with_base
 
-Converts $string to the C<int> value with $digit using C<strtol> in the C language.
+C<static method to_int_with_base : int ($string : string, $digit : int, $unsigned : int = 0);>
 
-Exceptions:
+Converts $string to the C<int> value with $digit.
 
-$string must be defined. Otherwise an exception is thrown.
+If $unsigned is a true value, the conversion is performed using C<strtoull> in the C language, and the range is checked as a 32-bit unsigned integer.
 
-$string must be the string that can be parsed as an int number. Otherwise an exception is thrown.
-
-$string must be an int number in $correct range. Otherwise an exception is thrown.
-
-Examples:
-
-  my $string = "-2147483648";
-  my $num = Fn->to_int_with_base($string, 10);
-
-=head2 to_long
-
-C<static method to_long : long ($string : string);>
-
-The alias for the following code using L</"to_long_with_base">.
-
-  my $ret = Fn->to_long_with_base($string, 10);
-
-=head2 to_long_with_base
-
-C<static method to_long_with_base : long ($string : string, $digit : int);>
-
-Converts $string to the C<long> value with $digit using C<strtoll> in the C language.
+If $unsigned is a false value, the conversion is performed using C<strtol> in the C language, and the range is checked as a 32-bit signed integer.
 
 Exceptions:
 
@@ -911,14 +890,47 @@ $string must be defined. Otherwise an exception is thrown.
 
 $digit must be one of 2, 8, 10, or 16. Otherwise an exception is thrown.
 
-$string must be the string that can be parsed as a long number. Otherwise an exception is thrown.
+$string must be the string that can be parsed as a 32-bit integer. Otherwise an exception is thrown.
 
-$string must be a long number in $correct range. Otherwise an exception is thrown.
+$string must be an integer in the correct range. Otherwise an exception is thrown.
 
 Examples:
 
-  my $string = "-9223372036854775808";
-  my $num = Fn->to_long_with_base($string, 10);
+  my $string = "4294967295";
+  my $num = Fn->to_int_with_base($string, 10, 1);
+
+=head2 to_long
+
+C<static method to_long : long ($string : string, $unsigned : int = 0);>
+
+The alias for the following code using L</"to_long_with_base">.
+
+  my $ret = Fn->to_long_with_base($string, 10, $unsigned);
+
+=head2 to_long_with_base
+
+C<static method to_long_with_base : long ($string : string, $digit : int, $unsigned : int = 0);>
+
+Converts $string to the C<long> value with $digit.
+
+If $unsigned is a true value, the conversion is performed using C<strtoull> in the C language, and the range is checked as a 64-bit unsigned integer.
+
+If $unsigned is a false value, the conversion is performed using C<strtoll> in the C language, and the range is checked as a 64-bit signed integer.
+
+Exceptions:
+
+$string must be defined. Otherwise an exception is thrown.
+
+$digit must be one of 2, 8, 10, or 16. Otherwise an exception is thrown.
+
+$string must be the string that can be parsed as a 64-bit integer. Otherwise an exception is thrown.
+
+$string must be a 64-bit integer in the correct range. Otherwise an exception is thrown.
+
+Examples:
+
+  my $string = "18446744073709551615";
+  my $num = Fn->to_long_with_base($string, 10, 1);
 
 =head2 to_lower
 

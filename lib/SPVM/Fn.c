@@ -557,6 +557,7 @@ int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   int32_t digit = stack[1].ival;
+  int32_t unsigned_flag = stack[2].ival;
   
   if (!obj_string) {
     return env->die(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
@@ -570,15 +571,27 @@ int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   char *end;
   errno = 0;
-  int64_t num = strtol(string, &end, digit);
-  if (*end != '\0') {
-    return env->die(env, stack, "The string $string must be the string that can be parsed as a %d-digit 32-bit integer", __func__, FILE_NAME, __LINE__, digit);
-  }
-  else if (errno == ERANGE || num < INT32_MIN || num > INT32_MAX) {
-    return env->die(env, stack, "The string $string must be a 32-bit integer in correct range.", __func__, FILE_NAME, __LINE__);
-  }
   
-  stack[0].ival = (int32_t)num;
+  if (unsigned_flag) {
+    uint64_t num = strtoull(string, &end, digit);
+    if (*end != '\0') {
+      return env->die(env, stack, "The string $string must be the string that can be parsed as a %d-digit 32-bit unsigned integer", __func__, FILE_NAME, __LINE__, digit);
+    }
+    else if (errno == ERANGE || num > UINT32_MAX) {
+      return env->die(env, stack, "The string $string must be a 32-bit unsigned integer in correct range.", __func__, FILE_NAME, __LINE__);
+    }
+    stack[0].ival = (int32_t)num;
+  }
+  else {
+    int64_t num = strtoll(string, &end, digit);
+    if (*end != '\0') {
+      return env->die(env, stack, "The string $string must be the string that can be parsed as a %d-digit 32-bit integer", __func__, FILE_NAME, __LINE__, digit);
+    }
+    else if (errno == ERANGE || num < INT32_MIN || num > INT32_MAX) {
+      return env->die(env, stack, "The string $string must be a 32-bit integer in correct range.", __func__, FILE_NAME, __LINE__);
+    }
+    stack[0].ival = (int32_t)num;
+  }
   
   return 0;
 }
@@ -587,6 +600,7 @@ int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   int32_t digit = stack[1].ival;
+  int32_t unsigned_flag = stack[2].ival;
   
   if (!obj_string) {
     return env->die(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
@@ -600,18 +614,31 @@ int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   char *end;
   errno = 0;
-  int64_t num = strtoll(string, &end, digit);
-  if (*end != '\0') {
-    return env->die(env, stack, "The string $string must be the string that can be parsed as a %d-digit 64-bit integer", __func__, FILE_NAME, __LINE__, digit);
-  }
-  else if (errno == ERANGE) {
-    return env->die(env, stack, "The string $string must be a 64-bit integer in correct range.", __func__, FILE_NAME, __LINE__);
-  }
   
-  stack[0].lval = (int64_t)num;
+  if (unsigned_flag) {
+    unsigned long long num = strtoull(string, &end, digit);
+    if (*end != '\0') {
+      return env->die(env, stack, "The string $string must be the string that can be parsed as a %d-digit 64-bit unsigned integer", __func__, FILE_NAME, __LINE__, digit);
+    }
+    else if (errno == ERANGE) {
+      return env->die(env, stack, "The string $string must be a 64-bit unsigned integer in correct range.", __func__, FILE_NAME, __LINE__);
+    }
+    stack[0].lval = (int64_t)num;
+  }
+  else {
+    int64_t num = strtoll(string, &end, digit);
+    if (*end != '\0') {
+      return env->die(env, stack, "The string $string must be the string that can be parsed as a %d-digit 64-bit integer", __func__, FILE_NAME, __LINE__, digit);
+    }
+    else if (errno == ERANGE) {
+      return env->die(env, stack, "The string $string must be a 64-bit integer in correct range.", __func__, FILE_NAME, __LINE__);
+    }
+    stack[0].lval = (int64_t)num;
+  }
   
   return 0;
 }
+
 
 int32_t SPVM__Fn__object_to_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* object = stack[0].oval;
