@@ -1,7 +1,8 @@
 0.990130 2026-02-13
   [Changes]
     * Allow casting numeric object types to string type.
-  
+    * Allow explicit casts from all numeric object types to all numeric primitive types by relaxing cast requirements.
+    
 0.990129 2026-02-11
   [New Features]
     * Add set_byte_object_value native API to set the value of a Byte object.
