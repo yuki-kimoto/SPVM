@@ -4,6 +4,8 @@
     * Allow explicit casts from all numeric object types to all numeric primitive types by relaxing cast requirements.
   [New Features]
     * Add $unsigned optional argument to to_int, to_int_with_base, to_long, and to_long_with_base in Fn class.
+    * Add Fn#to_byte_object_unsigned, Fn#to_short_object_unsigned, Fn#to_int_object_unsigned, and Fn#to_long_object_unsigned methods.
+    * Add new_unsigned class method and unsigned field to Byte, Short, Int, and Long classes.
     
 0.990129 2026-02-11
   [New Features]
