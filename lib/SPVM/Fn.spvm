@@ -2161,4 +2161,6 @@ class Fn {
     return $obj;
   }
   
+  native static method getrandom : string ($size : int);
+
 }

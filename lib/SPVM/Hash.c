@@ -8,16 +8,6 @@
 
 static const char* FILE_NAME = "Hash.c";
 
-#if defined(_WIN32)
-#  include <windows.h>
-#  include <bcrypt.h>
-#elif defined(__linux__) || defined(__android__)
-#  include <sys/random.h>
-#  include <unistd.h>
-#elif defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
-#  include <stdlib.h>
-#endif
-
 // The follwoing algorithm is copied from https://github.com/python/cpython/blob/main/Python/pyhash.c
 #define Py_ssize_t int64_t
 #  define _le64toh(x) (((uint64_t)(x) << 56) | \
@@ -105,46 +95,3 @@ int32_t SPVM__Hash___siphash13(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-/* Get OS-specific secure random bytes (Direct Native Method) */
-int32_t SPVM__Hash__getrandom(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  // Get the requested size
-  int32_t size = stack[0].ival;
-  
-  if (size < 0) {
-    return env->die(env, stack, "Size must be non-negative.", __func__, FILE_NAME, __LINE__);
-  }
-  
-  // Create a new string object for the random bytes
-  void* obj_buffer = env->new_string(env, stack, NULL, size);
-  unsigned char* buffer = (unsigned char*)env->get_chars(env, stack, obj_buffer);
-  
-  int32_t success = 0;
-
-#if defined(_WIN32)
-  /* Windows: BCryptGenRandom */
-  // Implementation note: BCRYPT_USE_SYSTEM_PREFERRED_RNG is used for best practices.
-  if (BCryptGenRandom(NULL, buffer, (ULONG)size, BCRYPT_USE_SYSTEM_PREFERRED_RNG) == 0) {
-    success = 1;
-  }
-#elif defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
-  /* macOS, iOS, BSD: arc4random_buf (Always successful) */
-  arc4random_buf(buffer, size);
-  success = 1;
-#elif defined(__linux__) || defined(__android__)
-  /* Linux, Android: getrandom */
-  // Implementation note: Consider handling interrupted system calls (EINTR) if size is very large.
-  if (getrandom(buffer, (size_t)size, 0) == (ssize_t)size) {
-    success = 1;
-  }
-#endif
-
-  if (!success) {
-    return env->die(env, stack, "Failed to get secure random bytes from the OS.", __func__, FILE_NAME, __LINE__);
-  }
-  
-  // Set the result to the stack
-  stack[0].oval = obj_buffer;
-  
-  return 0;
-}

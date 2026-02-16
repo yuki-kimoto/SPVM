@@ -2027,6 +2027,40 @@ Examples:
   my $string = "18446744073709551615";
   my $obj = Fn->to_long_object_unsigned($string);
 
+=head2 getrandom
+
+C<static method getrandom : string ($size : int);>
+
+Gets OS-specific secure random bytes with the given size I<$size>.
+
+The following APIs are used depending on the operating system:
+
+=over 2
+
+=item * Windows: L<BCryptGenRandom|https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptgenrandom>
+
+=item * macOS, iOS, BSD: L<arc4random_buf|https://man.freebsd.org/cgi/man.cgi?query=arc4random_buf>
+
+=item * Linux, Android: L<getrandom|https://man7.org/linux/man-pages/man2/getrandom.2.html>
+
+=back
+
+Returns a newly created string object filled with the random bytes.
+
+Exceptions:
+
+The size I<$size> must be non-negative. Otherwise an exception is thrown.
+
+If the random bytes could not be retrieved from the OS, an exception is thrown.
+
+Examples:
+
+  # Get a 32-byte secure random key
+  my $key = Fn->getrandom(32);
+
+  # Get a 16-byte nonce for AES-GCM
+  my $nonce = Fn->getrandom(12);
+
 =head1 See Also
 
 =over 2
