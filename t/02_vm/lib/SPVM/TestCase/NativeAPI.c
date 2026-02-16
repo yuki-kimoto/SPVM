@@ -262,11 +262,11 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->exists_field_by_name != &env_array[241]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->delete_field != &env_array[242]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->delete_field_by_name != &env_array[243]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->object_data_offset != &env_array[244]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->object_length_offset != &env_array[245]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->removed244 != &env_array[244]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->removed245 != &env_array[245]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->make_fixed_length != &env_array[246]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_fixed_length != &env_array[247]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->object_capacity_offset != &env_array[248]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->removed248 != &env_array[248]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_length != &env_array[249]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->capacity != &env_array[250]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_capacity != &env_array[251]) { stack[0].ival = 0; return 0; }
@@ -280,9 +280,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->numeric_object_to_string != &env_array[259]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_numeric_object != &env_array[260]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->say_stderr != &env_array[261]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->stack_index_call_depth != &env_array[262]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->stack_index_caller_info_stack != &env_array[263]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->stack_index_caller_info_stack_record_size != &env_array[264]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->removed262 != &env_array[262]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->removed263 != &env_array[263]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->removed264 != &env_array[264]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_call_depth != &env_array[265]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_caller_info_stack != &env_array[266]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_caller_info_stack_record_size != &env_array[267]) { stack[0].ival = 0; return 0; }
