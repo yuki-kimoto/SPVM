@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include <assert.h>
 
+static const char* FILE_NAME = "Hash.c";
+
 #if defined(_WIN32)
 #  include <windows.h>
 #  include <bcrypt.h>
@@ -103,42 +105,46 @@ int32_t SPVM__Hash___siphash13(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-/* Get OS-specific secure random bytes */
-int32_t SPVM__Hash___getrandom(unsigned char *buffer, size_t size) {
+/* Get OS-specific secure random bytes (Direct Native Method) */
+int32_t SPVM__Hash__getrandom(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  // Get the requested size
+  int32_t size = stack[0].ival;
+  
+  if (size < 0) {
+    return env->die(env, stack, "Size must be non-negative.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  // Create a new string object for the random bytes
+  void* obj_buffer = env->new_string(env, stack, NULL, size);
+  unsigned char* buffer = (unsigned char*)env->get_chars(env, stack, obj_buffer);
+  
+  int32_t success = 0;
+
 #if defined(_WIN32)
   /* Windows: BCryptGenRandom */
+  // Implementation note: BCRYPT_USE_SYSTEM_PREFERRED_RNG is used for best practices.
   if (BCryptGenRandom(NULL, buffer, (ULONG)size, BCRYPT_USE_SYSTEM_PREFERRED_RNG) == 0) {
-    return 1;
+    success = 1;
   }
 #elif defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
-  /* macOS, iOS, BSD: arc4random_buf */
+  /* macOS, iOS, BSD: arc4random_buf (Always successful) */
   arc4random_buf(buffer, size);
-  return 1;
+  success = 1;
 #elif defined(__linux__) || defined(__android__)
   /* Linux, Android: getrandom */
-  if (getrandom(buffer, size, 0) == (ssize_t)size) {
-    return 1;
+  // Implementation note: Consider handling interrupted system calls (EINTR) if size is very large.
+  if (getrandom(buffer, (size_t)size, 0) == (ssize_t)size) {
+    success = 1;
   }
 #endif
-  return 0;
-}
 
-int32_t SPVM__Hash__create_seed(SPVM_ENV* env, SPVM_VALUE* stack) {
+  if (!success) {
+    return env->die(env, stack, "Failed to get secure random bytes from the OS.", __func__, FILE_NAME, __LINE__);
+  }
   
-  // SipHash seed size is 16 bytes (128 bits)
-  int32_t seed_length = 16;
-  
-  // Create a new string object for the seed
-  void* obj_seed = env->new_string(env, stack, NULL, seed_length);
-  unsigned char* seed = (unsigned char*)env->get_chars(env, stack, obj_seed);
-  
-  // Get secure random bytes from the OS
-  int32_t success = SPVM__Hash___getrandom(seed, (size_t)seed_length);
-  
-  // Assert that getting OS secure random was successful
-  assert(success);
-  
-  stack[0].oval = obj_seed;
+  // Set the result to the stack
+  stack[0].oval = obj_buffer;
   
   return 0;
 }

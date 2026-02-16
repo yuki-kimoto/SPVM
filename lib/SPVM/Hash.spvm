@@ -36,7 +36,7 @@ class Hash {
     
     my $seed_int32 = Fn->object_to_int($self);
     
-    $self->{seed} = $self->create_seed;
+    $self->{seed} = &getrandom(16);
     
     my $length : int;
     if ($key_values) {
@@ -333,7 +333,7 @@ class Hash {
   }
   
   # Private or Internal Instance Methods
-  native private method create_seed : string ();
+  native private static method getrandom : string ($size : int);
   
   method _entries : Hash::Entry [] () {
     return $self->{entries};
