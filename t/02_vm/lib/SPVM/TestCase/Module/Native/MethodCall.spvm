@@ -179,7 +179,7 @@ class TestCase::Module::Native::MethodCall {
         return 0;
       }
       
-      $@ = undef;
+      
       
       TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(0);
     }
@@ -216,7 +216,7 @@ class TestCase::Module::Native::MethodCall {
         return 0;
       }
       
-      $@ = undef;
+      
       
       TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(0);
     }
@@ -271,7 +271,7 @@ class TestCase::Module::Native::MethodCall {
         return 0;
       }
       
-      $@ = undef;
+      
     }
     
     return 1;
@@ -1112,7 +1112,7 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
-    $@ = undef;
+    
     
     return 1;
   }
