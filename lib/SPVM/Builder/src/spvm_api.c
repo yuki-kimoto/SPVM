@@ -7145,19 +7145,19 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
 }
 
 int32_t SPVM_API_get_call_depth(SPVM_ENV* env, SPVM_VALUE* stack) {
-  int32_t index = (int32_t)(intptr_t)env->stack_index_call_depth;
+  int32_t index = (int32_t)(intptr_t)env->api->runtime->stack_index_call_depth;
   int32_t call_depth = *(int32_t*)&stack[index];
   return call_depth;
 }
 
 void** SPVM_API_get_caller_info_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
-  int32_t index = (int32_t)(intptr_t)env->stack_index_caller_info_stack;
+  int32_t index = (int32_t)(intptr_t)env->api->runtime->stack_index_caller_info_stack;
   void** caller_info_stack = (void**)stack[index].oval;
   return caller_info_stack;
 }
 
 int32_t SPVM_API_get_caller_info_stack_record_size(SPVM_ENV* env, SPVM_VALUE* stack) {
-  int32_t index = (int32_t)(intptr_t)env->stack_index_caller_info_stack_record_size;
+  int32_t index = (int32_t)(intptr_t)env->api->runtime->stack_index_caller_info_stack_record_size;
   int32_t record_size = stack[index].ival;
   return record_size;
 }

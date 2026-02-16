@@ -2725,18 +2725,6 @@ C<void (*delete_field_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, c
 
 Same as L</"delete_field">, but you can specify a field name.
 
-=head2 object_data_offset
-
-C<void* object_data_offset;>.
-
-Returns the offset of C<data> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
-
-=head2 object_length_offset
-
-C<void* object_length_offset;>
-
-Returns the offset of C<length> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
-
 =head2 make_fixed_length
 
 C<void (*make_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
@@ -2744,12 +2732,6 @@ C<void (*make_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 =head2 is_fixed_length
 
 C<int32_t (*is_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
-
-=head2 object_capacity_offset
-
-C<void* object_capacity_offset;>
-
-Returns the offset of C<capacity> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
 
 =head2 set_length
 
@@ -2852,39 +2834,6 @@ If I<object> is defined and a numeric object, returns 1, otherwise returns 0.
 C<void (*say_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);>
 
 Same as L</"say">, but prints the output to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
-
-=head2 stack_index_call_depth
-
-C<void* stack_index_call_depth;>
-
-The index of the C<call_depth> stack variable on the runtime stack. This value is cast to C<void*>.
-
-Examples:
-
-  int32_t call_depth_index = (int32_t)(intptr_t)env->stack_index_call_depth;
-  int32_t call_depth = stack[call_depth_index].ival;
-
-=head2 stack_index_caller_info_stack
-
-C<void* stack_index_caller_info_stack;>
-
-The index of the C<caller_info_stack> stack variable on the runtime stack. This value is cast to C<void*>.
-
-Examples:
-
-  int32_t caller_info_stack_index = (int32_t)(intptr_t)env->stack_index_caller_info_stack;
-  void** caller_info_stack = (void**)stack[caller_info_stack_index].oval;
-
-=head2 stack_index_caller_info_stack_record_size
-
-C<void* stack_index_caller_info_stack_record_size;>
-
-The index of the C<caller_info_stack_record_size> stack variable on the runtime stack. This value is cast to C<void*>.
-
-Examples:
-
-  int32_t record_size_index = (int32_t)(intptr_t)env->stack_index_caller_info_stack_record_size;
-  int32_t record_size = stack[record_size_index].ival;
 
 =head2 get_call_depth
 
@@ -3096,216 +3045,216 @@ Native APIs have its IDs.
 
   0 runtime
   1 api
-  2 new_env,
-  3 free_env,
-  4 call_init_methods,
-  5 set_command_info_program_name,
-  6 set_command_info_argv,
-  7 set_command_info_basetime,
-  8 destroy_class_vars,
-  9 args_width,
-  10 get_object_basic_type,
-  11 get_object_basic_type_id,
-  12 get_object_basic_type_name,
-  13 get_object_type_dimension,
-  14 get_basic_type,
-  15 get_basic_type_by_name,
-  16 get_basic_type_by_id,
-  17 get_basic_type_id,
-  18 get_basic_type_id_by_name,
-  19 get_class_var,
-  20 get_class_var_byte,
-  21 get_class_var_short,
-  22 get_class_var_int,
-  23 get_class_var_long,
-  24 get_class_var_float,
-  25 get_class_var_double,
-  26 get_class_var_object,
-  27 get_class_var_string,
-  28 set_class_var_byte,
-  29 set_class_var_short,
-  30 set_class_var_int,
-  31 set_class_var_long,
-  32 set_class_var_float,
-  33 set_class_var_double,
-  34 set_class_var_object,
-  35 set_class_var_string,
-  36 get_class_var_object_ref,
-  37 get_class_var_byte_by_name,
-  38 get_class_var_short_by_name,
-  39 get_class_var_int_by_name,
-  40 get_class_var_long_by_name,
-  41 get_class_var_float_by_name,
-  42 get_class_var_double_by_name,
-  43 get_class_var_object_by_name,
-  44 get_class_var_string_by_name,
-  45 set_class_var_byte_by_name,
-  46 set_class_var_short_by_name,
-  47 set_class_var_int_by_name,
-  48 set_class_var_long_by_name,
-  49 set_class_var_float_by_name,
-  50 set_class_var_double_by_name,
-  51 set_class_var_object_by_name,
-  52 set_class_var_string_by_name,
-  53 get_field,
-  54 get_field_static,
-  55 get_field_byte,
-  56 get_field_short,
-  57 get_field_int,
-  58 get_field_long,
-  59 get_field_float,
-  60 get_field_double,
-  61 get_field_object,
-  62 get_field_string,
-  63 set_field_byte,
-  64 set_field_short,
-  65 set_field_int,
-  66 set_field_long,
-  67 set_field_float,
-  68 set_field_double,
-  69 set_field_object,
-  70 set_field_string,
-  71 get_field_byte_by_name,
-  72 get_field_short_by_name,
-  73 get_field_int_by_name,
-  74 get_field_long_by_name,
-  75 get_field_float_by_name,
-  76 get_field_double_by_name,
-  77 get_field_object_by_name,
-  78 get_field_string_by_name,
-  79 set_field_byte_by_name,
-  80 set_field_short_by_name,
-  81 set_field_int_by_name,
-  82 set_field_long_by_name,
-  83 set_field_float_by_name,
-  84 set_field_double_by_name,
-  85 set_field_object_by_name,
-  86 set_field_string_by_name,
-  87 get_field_string_chars_by_name,
-  88 get_method,
-  89 get_class_method,
-  90 get_instance_method_static,
-  91 get_instance_method,
-  92 call_method_no_mortal,
-  93 call_method,
-  94 call_class_method_by_name,
-  95 call_instance_method_static_by_name,
-  96 call_instance_method_by_name,
-  97 new_object_no_mortal,
-  98 new_object,
-  99 new_object_by_name,
-  100 new_pointer_object_no_mortal,
-  101 new_pointer_object,
-  102 new_pointer_object_by_name,
-  103 get_pointer,
-  104 set_pointer,
-  105 new_string_nolen_no_mortal,
-  106 new_string_nolen,
-  107 new_string_no_mortal,
-  108 new_string,
-  109 new_byte_array_no_mortal,
-  110 new_byte_array,
-  111 new_short_array_no_mortal,
-  112 new_short_array,
-  113 new_int_array_no_mortal,
-  114 new_int_array,
-  115 new_long_array_no_mortal,
-  116 new_long_array,
-  117 new_float_array_no_mortal,
-  118 new_float_array,
-  119 new_double_array_no_mortal,
-  120 new_double_array,
-  121 new_object_array_no_mortal,
-  122 new_object_array,
-  123 new_object_array_by_name,
-  124 new_string_array,
-  125 new_muldim_array_no_mortal,
-  126 new_muldim_array,
-  127 new_muldim_array_by_name,
-  128 new_mulnum_array_no_mortal,
-  129 new_mulnum_array,
-  130 new_mulnum_array_by_name,
-  131 new_array_proto_no_mortal,
-  132 new_array_proto,
-  133 length,
-  134 get_elems_byte,
-  135 get_elems_short,
-  136 get_elems_int,
-  137 get_elems_long,
-  138 get_elems_float,
-  139 get_elems_double,
-  140 get_elem_object,
-  141 get_elem_string,
-  142 set_elem_object,
-  143 set_elem_string,
-  144 get_chars,
-  145 get_bool_object_value,
-  146 concat_no_mortal,
-  147 concat,
-  148 shorten,
-  149 make_read_only,
-  150 is_read_only,
-  151 print,
-  152 print_stderr,
-  153 dump_no_mortal,
-  154 dump,
-  155 dumpc,
-  156 copy_no_mortal,
-  157 copy,
-  158 get_spvm_version_string,
-  159 get_spvm_version_number,
-  160 get_version_string,
-  161 get_version_number,
-  162 die,
-  163 get_exception,
-  164 set_exception,
-  165 new_stack_trace_no_mortal,
-  166 new_stack_trace,
-  167 is_string,
-  168 is_class,
-  169 is_pointer_class,
-  170 is_array,
-  171 is_object_array,
-  172 is_numeric_array,
-  173 is_mulnum_array,
-  174 isa,
-  175 isa_by_name,
-  176 is_type,
-  177 is_type_by_name,
-  178 elem_isa,
-  179 get_elem_size,
-  180 get_type_name_no_mortal,
-  181 get_type_name,
-  182 get_compile_type_name_no_mortal,
-  183 get_compile_type_name,
-  184 enter_scope,
-  185 leave_scope,
-  186 push_mortal,
-  187 weaken,
-  188 isweak,
-  189 unweaken,
-  190 strerror_string,
-  191 strerror_string_nolen,
-  192 strerror,
-  193 strerror_nolen,
-  194 is_binary_compatible_object,
-  195 is_binary_compatible_stack,
-  196 new_stack,
-  197 free_stack,
-  198 get_field_object_defined_and_has_pointer_by_name,
-  199 get_field_object_ref,
-  200 get_field_object_ref_by_name,
+  2 new_env
+  3 free_env
+  4 call_init_methods
+  5 set_command_info_program_name
+  6 set_command_info_argv
+  7 set_command_info_basetime
+  8 destroy_class_vars
+  9 args_width
+  10 get_object_basic_type
+  11 get_object_basic_type_id
+  12 get_object_basic_type_name
+  13 get_object_type_dimension
+  14 get_basic_type
+  15 get_basic_type_by_name
+  16 get_basic_type_by_id
+  17 get_basic_type_id
+  18 get_basic_type_id_by_name
+  19 get_class_var
+  20 get_class_var_byte
+  21 get_class_var_short
+  22 get_class_var_int
+  23 get_class_var_long
+  24 get_class_var_float
+  25 get_class_var_double
+  26 get_class_var_object
+  27 get_class_var_string
+  28 set_class_var_byte
+  29 set_class_var_short
+  30 set_class_var_int
+  31 set_class_var_long
+  32 set_class_var_float
+  33 set_class_var_double
+  34 set_class_var_object
+  35 set_class_var_string
+  36 get_class_var_object_ref
+  37 get_class_var_byte_by_name
+  38 get_class_var_short_by_name
+  39 get_class_var_int_by_name
+  40 get_class_var_long_by_name
+  41 get_class_var_float_by_name
+  42 get_class_var_double_by_name
+  43 get_class_var_object_by_name
+  44 get_class_var_string_by_name
+  45 set_class_var_byte_by_name
+  46 set_class_var_short_by_name
+  47 set_class_var_int_by_name
+  48 set_class_var_long_by_name
+  49 set_class_var_float_by_name
+  50 set_class_var_double_by_name
+  51 set_class_var_object_by_name
+  52 set_class_var_string_by_name
+  53 get_field
+  54 get_field_static
+  55 get_field_byte
+  56 get_field_short
+  57 get_field_int
+  58 get_field_long
+  59 get_field_float
+  60 get_field_double
+  61 get_field_object
+  62 get_field_string
+  63 set_field_byte
+  64 set_field_short
+  65 set_field_int
+  66 set_field_long
+  67 set_field_float
+  68 set_field_double
+  69 set_field_object
+  70 set_field_string
+  71 get_field_byte_by_name
+  72 get_field_short_by_name
+  73 get_field_int_by_name
+  74 get_field_long_by_name
+  75 get_field_float_by_name
+  76 get_field_double_by_name
+  77 get_field_object_by_name
+  78 get_field_string_by_name
+  79 set_field_byte_by_name
+  80 set_field_short_by_name
+  81 set_field_int_by_name
+  82 set_field_long_by_name
+  83 set_field_float_by_name
+  84 set_field_double_by_name
+  85 set_field_object_by_name
+  86 set_field_string_by_name
+  87 get_field_string_chars_by_name
+  88 get_method
+  89 get_class_method
+  90 get_instance_method_static
+  91 get_instance_method
+  92 call_method_no_mortal
+  93 call_method
+  94 call_class_method_by_name
+  95 call_instance_method_static_by_name
+  96 call_instance_method_by_name
+  97 new_object_no_mortal
+  98 new_object
+  99 new_object_by_name
+  100 new_pointer_object_no_mortal
+  101 new_pointer_object
+  102 new_pointer_object_by_name
+  103 get_pointer
+  104 set_pointer
+  105 new_string_nolen_no_mortal
+  106 new_string_nolen
+  107 new_string_no_mortal
+  108 new_string
+  109 new_byte_array_no_mortal
+  110 new_byte_array
+  111 new_short_array_no_mortal
+  112 new_short_array
+  113 new_int_array_no_mortal
+  114 new_int_array
+  115 new_long_array_no_mortal
+  116 new_long_array
+  117 new_float_array_no_mortal
+  118 new_float_array
+  119 new_double_array_no_mortal
+  120 new_double_array
+  121 new_object_array_no_mortal
+  122 new_object_array
+  123 new_object_array_by_name
+  124 new_string_array
+  125 new_muldim_array_no_mortal
+  126 new_muldim_array
+  127 new_muldim_array_by_name
+  128 new_mulnum_array_no_mortal
+  129 new_mulnum_array
+  130 new_mulnum_array_by_name
+  131 new_array_proto_no_mortal
+  132 new_array_proto
+  133 length
+  134 get_elems_byte
+  135 get_elems_short
+  136 get_elems_int
+  137 get_elems_long
+  138 get_elems_float
+  139 get_elems_double
+  140 get_elem_object
+  141 get_elem_string
+  142 set_elem_object
+  143 set_elem_string
+  144 get_chars
+  145 get_bool_object_value
+  146 concat_no_mortal
+  147 concat
+  148 shorten
+  149 make_read_only
+  150 is_read_only
+  151 print
+  152 print_stderr
+  153 dump_no_mortal
+  154 dump
+  155 dumpc
+  156 copy_no_mortal
+  157 copy
+  158 get_spvm_version_string
+  159 get_spvm_version_number
+  160 get_version_string
+  161 get_version_number
+  162 die
+  163 get_exception
+  164 set_exception
+  165 new_stack_trace_no_mortal
+  166 new_stack_trace
+  167 is_string
+  168 is_class
+  169 is_pointer_class
+  170 is_array
+  171 is_object_array
+  172 is_numeric_array
+  173 is_mulnum_array
+  174 isa
+  175 isa_by_name
+  176 is_type
+  177 is_type_by_name
+  178 elem_isa
+  179 get_elem_size
+  180 get_type_name_no_mortal
+  181 get_type_name
+  182 get_compile_type_name_no_mortal
+  183 get_compile_type_name
+  184 enter_scope
+  185 leave_scope
+  186 push_mortal
+  187 weaken
+  188 isweak
+  189 unweaken
+  190 strerror_string
+  191 strerror_string_nolen
+  192 strerror
+  193 strerror_nolen
+  194 is_binary_compatible_object
+  195 is_binary_compatible_stack
+  196 new_stack
+  197 free_stack
+  198 get_field_object_defined_and_has_pointer_by_name
+  199 get_field_object_ref
+  200 get_field_object_ref_by_name
   201 check_bootstrap_method
-  202 assign_object,
-  203 new_string_array_no_mortal,
-  204 new_memory_block,
-  205 free_memory_block,
-  206 get_memory_blocks_count,
-  207 say,
-  208 warn,
-  209 spvm_stdin,
-  210 spvm_stdout,
-  211 spvm_stderr,
+  202 assign_object
+  203 new_string_array_no_mortal
+  204 new_memory_block
+  205 free_memory_block
+  206 get_memory_blocks_count
+  207 say
+  208 warn
+  209 spvm_stdin
+  210 spvm_stdout
+  211 spvm_stderr
   212 new_array_proto_element_no_mortal
   213 new_array_proto_element
   214 get_byte_object_value
@@ -3338,11 +3287,11 @@ Native APIs have its IDs.
   241 exists_field_by_name
   242 delete_field
   243 delete_field_by_name
-  244 object_data_offset
-  245 object_length_offset
+  244 removed244
+  245 removed245
   246 make_fixed_length
   247 is_fixed_length
-  248 object_capacity_offset
+  248 removed248
   249 set_length
   250 capacity
   251 set_capacity
@@ -3356,9 +3305,9 @@ Native APIs have its IDs.
   259 numeric_object_to_string
   260 is_numeric_object
   261 say_stderr
-  262 stack_index_call_depth
-  263 stack_index_caller_info_stack
-  264 stack_index_caller_info_stack_record_size
+  262 removed262
+  263 removed263
+  264 removed264
   265 get_call_depth
   266 get_caller_info_stack
   267 get_caller_info_stack_record_size

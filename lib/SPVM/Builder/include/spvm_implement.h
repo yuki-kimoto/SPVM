@@ -80,9 +80,9 @@ enum {
   SPVM_IMPLEMENT_C_EXCEPTION_COMPARISON_CMP,
 };
 
-#define GET_DATA_ADDRESS(env, stack, object) ((intptr_t)*(void**)((intptr_t)object + (intptr_t)env->object_data_offset))
-#define GET_LENGTH(env, stack, object) (*(int32_t*)((intptr_t)object + (intptr_t)env->object_length_offset))
-#define GET_CAPACITY(env, stack, object) (*(int32_t*)((intptr_t)object + (intptr_t)env->object_capacity_offset))
+#define GET_DATA_ADDRESS(env, stack, object) ((intptr_t)*(void**)((intptr_t)object + (intptr_t)env->api->runtime->object_data_offset))
+#define GET_LENGTH(env, stack, object) (*(int32_t*)((intptr_t)object + (intptr_t)env->api->runtime->object_length_offset))
+#define GET_CAPACITY(env, stack, object) (*(int32_t*)((intptr_t)object + (intptr_t)env->api->runtime->object_capacity_offset))
 
 static inline void* SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id) {
   
