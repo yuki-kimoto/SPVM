@@ -343,9 +343,9 @@ class Hash {
   }
   
   private method _index_by_key : int ($key : string, $entries_length : int) {
-    my $default_seed = $self->{seed};
+    my $seed = $self->{seed};
     
-    my $hash = Hash->_siphash13($key, $default_seed);
+    my $hash = Hash->_siphash13($key, $seed);
     my $index_by_key = (int)($hash mod_ulong (long)$entries_length);
     
     return $index_by_key;
