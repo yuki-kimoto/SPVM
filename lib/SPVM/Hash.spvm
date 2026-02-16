@@ -333,8 +333,6 @@ class Hash {
   }
   
   # Private or Internal Instance Methods
-  native private method build_seed : void ($seed_int32 : int, $seed : mutable string);
-  
   native private method create_seed : string ();
   
   method _entries : Hash::Entry [] () {

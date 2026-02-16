@@ -99,24 +99,6 @@ siphash13(uint64_t k0, uint64_t k1, const void *src, Py_ssize_t src_sz) {
     return t;
 }
 
-int32_t SPVM__Hash__build_seed(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  void* obj_self = stack[0].oval;
-  
-  int32_t seed_int32 = stack[1].ival;
-  
-  void* obj_seed = stack[2].oval;
-  
-  assert(obj_seed);
-  
-  char* seed = (char*)env->get_chars(env, stack, obj_seed);
-  int32_t seed_length = env->length(env, stack, obj_seed);
-  
-  lcg_urandom((unsigned int)seed_int32, (unsigned char*)seed, seed_length);
-  
-  return 0;
-}
-
 int32_t SPVM__Hash___siphash13(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
