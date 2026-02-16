@@ -263,6 +263,18 @@ sub thread_ldflags {
   }
 }
 
+sub bcrypt_ldflags {
+  my $self = shift;
+  
+  if (@_) {
+    $self->{bcrypt_ldflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{bcrypt_ldflags};
+  }
+}
+
 sub static_lib_ldflag {
   my $self = shift;
   if (@_) {
@@ -539,6 +551,15 @@ sub new {
     }
     else {
       $self->thread_ldflags(['-pthread']);
+    }
+  }
+  
+  unless (defined $self->{bcrypt_ldflags}) {
+    if ($^O eq 'MSWin32') {
+      $self->bcrypt_ldflags(['-lbcrypt']);
+    }
+    else {
+      $self->bcrypt_ldflags([]);
     }
   }
   
@@ -1299,6 +1320,15 @@ Gets and sets C<thread_ldflags> field, an array reference containing arguments o
 
 This field is automatically set and users nomally do not change it.
 
+=head2 bcrypt_ldflags
+
+  my $bcrypt_ldflags = $config->bcrypt_ldflags;
+  $config->bcrypt_ldflags($bcrypt_ldflags);
+
+Gets and sets C<bcrypt_ldflags> field, an array reference containing arguments of the linker L</"ld"> for bcrypt.
+
+This field is automatically set and users normally do not change it.
+
 =head2 static_lib_ldflag
 
   my static_lib_ldflag = $config->static_lib_ldflag;
@@ -1606,6 +1636,16 @@ Windows:
 Other OSs:
 
   ["-pthread"]
+
+=item * L</"bcrypt_ldflags">
+
+Windows:
+
+  ["-lbcrypt"]
+
+Other OSs:
+
+  []
 
 =item * L</"static_lib_ldflag">
 

@@ -103,6 +103,8 @@ sub create_ldflags {
   
   push @merged_ldflags, grep { length $_ } @{$config->thread_ldflags};
   
+  push @merged_ldflags, grep { length $_ } @{$config->bcrypt_ldflags};
+  
   my $lib_dirs = $config->lib_dirs;
   
   push @merged_ldflags, map { "-L$_" } grep { length $_ } @$lib_dirs;
