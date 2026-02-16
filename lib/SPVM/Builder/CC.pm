@@ -710,6 +710,12 @@ sub link {
   
   my $ld = $config->ld;
   
+  my $perllibs = '-lm';
+  if ($^O eq 'MSWin32') {
+    # On Windows, bcrypt is linked for the BCryptGenRandom function.
+    $perllibs .= ' -lbcrypt';
+  }
+  
   my $cbuilder_config = {
     ld => $ld,
     lddlflags => '',
@@ -717,11 +723,11 @@ sub link {
     libpth => '',
     libperl => '',
     
-    # "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
+    # "perllibs" should be empty string, but ExtUtils::CBuilder outputs "INPUT()" into 
     # Linker Script File(.lds) when "perllibs" is empty string.
     # This is syntax error in Linker Script File(.lds)
     # For the reason, libm is linked which seems to have no effect.
-    perllibs => '-lm',
+    perllibs => $perllibs,
   };
   
   my $quiet = $self->detect_quiet($config);
