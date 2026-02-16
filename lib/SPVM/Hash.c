@@ -3,7 +3,19 @@
 
 #include "spvm_native.h"
 
+#include <stdint.h>
 #include <assert.h>
+
+#if defined(_WIN32)
+#  include <windows.h>
+#  include <bcrypt.h>
+#  pragma comment(lib, "bcrypt.lib")
+#elif defined(__linux__) || defined(__android__)
+#  include <sys/random.h>
+#  include <unistd.h>
+#elif defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
+#  include <stdlib.h>
+#endif
 
 // https://github.com/gcc-mirror/gcc/blob/master/libstdc++-v3/libsupc++/hash_bytes.cc#L72-L112
 int32_t SPVM__Hash___murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -166,5 +178,25 @@ int32_t SPVM__Hash___siphash13(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].lval = hash;
 
+  return 0;
+}
+
+/* Get OS-specific secure random bytes */
+static int32_t get_os_secure_random(unsigned char *buffer, size_t size) {
+#if defined(_WIN32)
+  /* Windows: BCryptGenRandom */
+  if (BCryptGenRandom(NULL, buffer, (ULONG)size, BCRYPT_USE_SYSTEM_PREFERRED_RNG) == 0) {
+    return 1;
+  }
+#elif defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
+  /* macOS, iOS, BSD: arc4random_buf */
+  arc4random_buf(buffer, size);
+  return 1;
+#elif defined(__linux__) || defined(__android__)
+  /* Linux, Android: getrandom */
+  if (getrandom(buffer, size, 0) == (ssize_t)size) {
+    return 1;
+  }
+#endif
   return 0;
 }
