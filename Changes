@@ -1,7 +1,7 @@
-0.990131 2026-02-13
-
+0.990131 2026-02-16
   [New Features]
     * Add object_data_offset, object_length_offset, object_capacity_offset, stack_index_call_depth, stack_index_caller_info_stack and stack_index_caller_info_stack_record_size to the runtime native API.
+    * Add getrandom method to Fn class to get OS-specific secure random bytes.
     
 0.990130 2026-02-13
   [Changes]
