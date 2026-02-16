@@ -140,7 +140,58 @@ C<void cb(L<SPVM_ENV* env|SPVM::Document::NativeAPI>, L<SPVM_VALUE* stack|SPVM::
 
 The arguments are the same as L</"method_begin_cb">. This can be used to access the return value.
 
-=head1 Native API IDs
+=head2 object_data_offset
+
+C<void* object_data_offset;>.
+
+Returns the offset of C<data> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
+
+=head2 object_length_offset
+
+C<void* object_length_offset;>
+
+Returns the offset of C<length> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
+
+=head2 object_capacity_offset
+
+C<void* object_capacity_offset;>
+
+Returns the offset of C<capacity> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
+
+=head2 stack_index_call_depth
+
+C<void* stack_index_call_depth;>
+
+The index of the C<call_depth> stack variable on the runtime stack. This value is cast to C<void*>.
+
+Examples:
+
+  int32_t call_depth_index = (int32_t)(intptr_t)env->api->runtime->stack_index_call_depth;
+  int32_t call_depth = stack[call_depth_index].ival;
+
+=head2 stack_index_caller_info_stack
+
+C<void* stack_index_caller_info_stack;>
+
+The index of the C<caller_info_stack> stack variable on the runtime stack. This value is cast to C<void*>.
+
+Examples:
+
+  int32_t caller_info_stack_index = (int32_t)(intptr_t)env->api->runtime->stack_index_caller_info_stack;
+  void** caller_info_stack = (void**)stack[caller_info_stack_index].oval;
+
+=head2 stack_index_caller_info_stack_record_size
+
+C<void* stack_index_caller_info_stack_record_size;>
+
+The index of the C<caller_info_stack_record_size> stack variable on the runtime stack. This value is cast to C<void*>.
+
+Examples:
+
+  int32_t record_size_index = (int32_t)(intptr_t)env->api->runtime->stack_index_caller_info_stack_record_size;
+  int32_t record_size = stack[record_size_index].ival;
+
+=head1 Native Runtime API IDs
 
   0 get_object_data_offset
   1 get_object_ref_count_offset
@@ -159,6 +210,12 @@ The arguments are the same as L</"method_begin_cb">. This can be used to access 
   14 get_object_capacity_offset
   15 method_begin_cb
   16 method_end_cb
+  17 object_data_offset
+  18 object_length_offset
+  19 object_capacity_offset
+  20 stack_index_call_depth
+  21 stack_index_caller_info_stack
+  22 stack_index_caller_info_stack_record_size
   
 =head1 See Also
 

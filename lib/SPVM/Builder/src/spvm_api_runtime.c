@@ -114,6 +114,12 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_get_object_capacity_offset,
     NULL, // method_begin_cb
     NULL, // method_end_cb
+    (void*)offsetof(SPVM_OBJECT, data), // object_data_offset
+    (void*)offsetof(SPVM_OBJECT, length), // object_length_offset
+    (void*)offsetof(SPVM_OBJECT, capacity), // object_capacity_offset
+    (void*)SPVM_API_C_STACK_INDEX_CALL_DEPTH, // stack_index_call_depth
+    (void*)SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK, // stack_index_caller_info_stack
+    (void*)SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE, // stack_index_caller_info_stack_record_size
   };
   SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));

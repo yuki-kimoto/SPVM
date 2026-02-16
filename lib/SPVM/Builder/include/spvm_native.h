@@ -560,6 +560,12 @@ struct spvm_api_runtime {
   int32_t (*get_object_capacity_offset)(void* runtime);
   void* method_begin_cb;
   void* method_end_cb;
+  void* object_data_offset;
+  void* object_length_offset;
+  void* object_capacity_offset;
+  void* stack_index_call_depth;
+  void* stack_index_caller_info_stack;
+  void* stack_index_caller_info_stack_record_size;
 };
 
 struct spvm_api_internal {
