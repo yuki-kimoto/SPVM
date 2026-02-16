@@ -15,7 +15,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 # SPVM::Hash
 {
   ok(SPVM::TestCase::Module::Hash->rehash);
-  ok(SPVM::TestCase::Module::Hash->murmur_hash);
   ok(SPVM::TestCase::Module::Hash->set);
   ok(SPVM::TestCase::Module::Hash->set_do_not_refer_caller_key);
   ok(SPVM::TestCase::Module::Hash->get);

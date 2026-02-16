@@ -71,8 +71,6 @@ class Hash {
   
   private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
   
-  native static method _murmur_hash : long ($string : string, $seed : int);
-  
   static method new_from_keys : Hash ($keys : string[], $value : object) {
     
     my $hash = Hash->new;
