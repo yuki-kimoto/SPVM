@@ -532,11 +532,6 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     error_id = SPVM_API_die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d.", __func__, FILE_NAME, __LINE__, max_call_depth);
     goto END_OF_FUNC;
   }
-  else if (__builtin_expect(method->is_not_permitted && !stack[SPVM_API_C_STACK_INDEX_ALL_METHOD_CALL_PERMITTED].ival, 0)) {
-    SPVM_API_die(env, stack, "The call to %s#%s method is not permmited.", __func__, FILE_NAME, __LINE__, current_basic_type->name, method->name);
-    error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_METHOD_CALL_NOT_PERMITTED_CLASS;
-    goto END_OF_FUNC;
-  }
   
   if (__builtin_expect(method->is_init_method, 0)) {
     if (current_basic_type->initialized) {

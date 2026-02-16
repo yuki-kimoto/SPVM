@@ -210,22 +210,6 @@ C<void (*set_is_precompile_fallback)(void* runtime, void* method, int32_t is_pre
 
 Sets the C<is_precompile_fallback> field to I<is_precompile_fallback>. 
 
-=head2 is_not_permitted
-
-C<int32_t (*is_not_permitted)(void* runtime, void* method);>
-
-Gets the C<is_not_permitted> field.
-
-If this field is a true value, the method throw an exception with C<eval_error_id> set to the basic type ID of L<
-
-=head2 set_is_not_permitted
-
-C<void (*set_is_not_permitted)(void* runtime, void* method, int32_t is_not_permitted);>
-
-Sets the C<is_not_permitted> field to I<is_not_permitted>. 
-
-This native API is intended for use by browser applications that want to implement a security sandbox.
-
 =head2 get_args_signature
 
 C<const char* (*get_args_signature)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
@@ -271,8 +255,8 @@ Returns the absolute name of the method I<method>.
   28 set_precompile_address
   29 is_precompile_fallback
   30 set_is_precompile_fallback
-  31 is_not_permitted
-  32 set_is_not_permitted
+  31 removed31
+  32 removed32
   33 get_args_signature
   34 get_abs_name
   

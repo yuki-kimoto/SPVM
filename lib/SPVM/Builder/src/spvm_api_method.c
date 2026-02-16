@@ -48,8 +48,8 @@ SPVM_API_METHOD* SPVM_API_METHOD_new_api() {
     SPVM_API_METHOD_set_precompile_address,
     SPVM_API_METHOD_is_precompile_fallback,
     SPVM_API_METHOD_set_is_precompile_fallback,
-    SPVM_API_METHOD_is_not_permitted,
-    SPVM_API_METHOD_set_is_not_permitted,
+    NULL, // removed31
+    NULL, // removed32
     SPVM_API_METHOD_get_args_signature,
     SPVM_API_METHOD_get_abs_name,
   };
@@ -243,16 +243,6 @@ int32_t SPVM_API_METHOD_is_precompile_fallback(SPVM_RUNTIME* runtime, SPVM_RUNTI
 void SPVM_API_METHOD_set_is_precompile_fallback(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t is_precompile_fallback) {
   
   method->is_precompile_fallback = is_precompile_fallback;
-}
-
-int32_t SPVM_API_METHOD_is_not_permitted(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->is_not_permitted;
-}
-
-void SPVM_API_METHOD_set_is_not_permitted(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t is_not_permitted) {
-  
-  method->is_not_permitted = is_not_permitted;
 }
 
 const char* SPVM_API_METHOD_get_args_signature(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {

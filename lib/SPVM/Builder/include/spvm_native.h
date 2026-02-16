@@ -536,8 +536,8 @@ struct spvm_api_method {
   void (*set_precompile_address)(void* runtime, void* method, void* address);
   int32_t (*is_precompile_fallback)(void* runtime, void* method);
   void (*set_is_precompile_fallback)(void* runtime, void* method, int32_t is_precompile_fallback);
-  int32_t (*is_not_permitted)(void* runtime, void* method);
-  void (*set_is_not_permitted)(void* runtime, void* method, int32_t is_not_permitted);
+  void* removed31;
+  void* removed32;
   const char* (*get_args_signature)(void* runtime, void* method);
   const char* (*get_abs_name)(void* runtime, void* method);
 };
