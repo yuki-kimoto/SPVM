@@ -651,10 +651,12 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t method_return_is_object_type = env->api->type->is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
   
   if (method_return_is_object_type) {
-    int32_t is_binary_compatible_object = env->is_binary_compatible_object(env, stack, self_stack[0].oval);
-    
-    if (!is_binary_compatible_object) {
-      return env->die(env, stack, "The return object is not binary compatible.", __func__, FILE_NAME, __LINE__);
+    if (self_stack[0].oval) {
+      int32_t is_binary_compatible_object = env->is_binary_compatible_object(env, stack, self_stack[0].oval);
+      
+      if (!is_binary_compatible_object) {
+        return env->die(env, stack, "The return object is not binary compatible.", __func__, FILE_NAME, __LINE__);
+      }
     }
   }
   else {

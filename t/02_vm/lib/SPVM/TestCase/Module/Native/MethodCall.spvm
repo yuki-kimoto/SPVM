@@ -1079,6 +1079,16 @@ class TestCase::Module::Native::MethodCall {
       TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
     }
     
+    # https://github.com/yuki-kimoto/SPVM/issues/846
+    {
+      my $ret = Native::MethodCall->call_class_method("TestCase::Module::Native::MethodCall", "return_null");
+      
+      if ($ret) {
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
   
@@ -1115,5 +1125,9 @@ class TestCase::Module::Native::MethodCall {
     
     
     return 1;
+  }
+  
+  static method return_null : object () {
+    
   }
 }
