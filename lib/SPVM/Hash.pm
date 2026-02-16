@@ -44,7 +44,19 @@ Hash class in L<SPVM> represents hashes(associative arrays).
   
 =head1 Details
 
-The hash function is C<siphash-1-3>.
+=head2 Hash Algorithm
+
+The hash function used in C<SPVM::Hash> is B<SipHash-1-3>.
+
+SipHash-1-3 is a fast and cryptographically strong hash function designed for short inputs, such as hash table keys. It is widely adopted by modern programming languages (e.g., Python, Ruby, Rust) to provide high performance while ensuring security.
+
+=head2 Security
+
+By using SipHash-1-3 with a seed generated from OS-specific secure random bytes (CSPRNG), this class is resistant to B<Hash DOS attacks> (hash collision attacks). Each C<Hash> instance has its own unique seed, making it practically impossible for an attacker to predict collisions and degrade performance.
+
+=head2 Performance
+
+While being secure, SipHash-1-3 is highly optimized for 64-bit CPUs and offers excellent performance for common hash table operations compared to older, less secure algorithms.
 
 =head1 Interfaces
 
