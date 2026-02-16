@@ -19,7 +19,7 @@ class Hash {
   # Private Fields
   has entries : Hash::Entry[];
   
-  has seed : mutable string;
+  has seed : string;
   
   # Private Enumerations
   private enum {
@@ -36,8 +36,7 @@ class Hash {
     
     my $seed_int32 = Fn->object_to_int($self);
     
-    $self->{seed} = (mutable string)new_string_len 16;
-    $self->build_seed($seed_int32, $self->{seed});
+    $self->{seed} = $self->create_seed;
     
     my $length : int;
     if ($key_values) {
@@ -335,6 +334,8 @@ class Hash {
   
   # Private or Internal Instance Methods
   native private method build_seed : void ($seed_int32 : int, $seed : mutable string);
+  
+  native private method create_seed : string ();
   
   method _entries : Hash::Entry [] () {
     return $self->{entries};

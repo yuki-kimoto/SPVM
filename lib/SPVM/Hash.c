@@ -9,7 +9,6 @@
 #if defined(_WIN32)
 #  include <windows.h>
 #  include <bcrypt.h>
-#  pragma comment(lib, "bcrypt.lib")
 #elif defined(__linux__) || defined(__android__)
 #  include <sys/random.h>
 #  include <unistd.h>
@@ -152,5 +151,25 @@ static int32_t get_os_secure_random(unsigned char *buffer, size_t size) {
     return 1;
   }
 #endif
+  return 0;
+}
+
+int32_t SPVM__Hash__create_seed(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  // SipHash seed size is 16 bytes (128 bits)
+  int32_t seed_length = 16;
+  
+  // Create a new string object for the seed
+  void* obj_seed = env->new_string(env, stack, NULL, seed_length);
+  unsigned char* seed = (unsigned char*)env->get_chars(env, stack, obj_seed);
+  
+  // Get secure random bytes from the OS
+  int32_t success = get_os_secure_random(seed, (size_t)seed_length);
+  
+  // Assert that getting OS secure random was successful
+  assert(success);
+  
+  stack[0].oval = obj_seed;
+  
   return 0;
 }
