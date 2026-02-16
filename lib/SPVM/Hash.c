@@ -35,20 +35,7 @@
 #define SINGLE_ROUND(v0,v1,v2,v3)   \
     HALF_ROUND(v0,v1,v2,v3,13,16);  \
     HALF_ROUND(v2,v1,v0,v3,17,21);
-static void
-lcg_urandom(unsigned int x0, unsigned char *buffer, size_t size)
-{
-    size_t index;
-    unsigned int x;
 
-    x = x0;
-    for (index=0; index < size; index++) {
-        x *= 214013;
-        x += 2531011;
-        /* modulo 2 ^ (8 * sizeof(int)) */
-        buffer[index] = (x >> 16) & 0xff;
-    }
-}
 static uint64_t
 siphash13(uint64_t k0, uint64_t k1, const void *src, Py_ssize_t src_sz) {
     uint64_t b = (uint64_t)src_sz << 56;
