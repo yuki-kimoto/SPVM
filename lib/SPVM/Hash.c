@@ -104,7 +104,7 @@ int32_t SPVM__Hash___siphash13(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 /* Get OS-specific secure random bytes */
-static int32_t get_os_secure_random(unsigned char *buffer, size_t size) {
+int32_t SPVM__Hash___getrandom(unsigned char *buffer, size_t size) {
 #if defined(_WIN32)
   /* Windows: BCryptGenRandom */
   if (BCryptGenRandom(NULL, buffer, (ULONG)size, BCRYPT_USE_SYSTEM_PREFERRED_RNG) == 0) {
@@ -133,7 +133,7 @@ int32_t SPVM__Hash__create_seed(SPVM_ENV* env, SPVM_VALUE* stack) {
   unsigned char* seed = (unsigned char*)env->get_chars(env, stack, obj_seed);
   
   // Get secure random bytes from the OS
-  int32_t success = get_os_secure_random(seed, (size_t)seed_length);
+  int32_t success = SPVM__Hash___getrandom(seed, (size_t)seed_length);
   
   // Assert that getting OS secure random was successful
   assert(success);
