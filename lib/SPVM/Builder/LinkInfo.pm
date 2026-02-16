@@ -103,7 +103,11 @@ sub create_ldflags {
   
   push @merged_ldflags, grep { length $_ } @{$config->thread_ldflags};
   
-  push @merged_ldflags, grep { length $_ } @{$config->bcrypt_ldflags};
+  # bcrypt_ldflags
+  # Add bcrypt_ldflags only when the output type is 'exe'
+  if ($output_type eq 'exe') {
+    push @merged_ldflags, grep { length $_ } @{$config->bcrypt_ldflags};
+  }
   
   my $lib_dirs = $config->lib_dirs;
   
