@@ -23,7 +23,7 @@ if ($help) {
 }
 
 my %seen;    # To avoid infinite recursion
-my %results; # $results{$mod_name} = $is_native
+my %results; # $results{$module_name} = $is_native
 my $json = JSON::PP->new->utf8;
 my $http = HTTP::Tiny->new(timeout => 10);
 
@@ -36,11 +36,11 @@ get_dependencies_recursive($target, 0, $native_class_only, $target, \%results, \
 print STDERR "--- Done ---\n" if $verbose;
 
 # Output verified unique module names
-for my $mod (sort keys %results) {
+for my $module_name (sort keys %results) {
   if ($native_class_only) {
-    print "$mod\n" if $results{$mod};
+    print "$module_name\n" if $results{$module_name};
   } else {
-    print "$mod\n";
+    print "$module_name\n";
   }
 }
 
@@ -64,15 +64,15 @@ sub get_dependencies_recursive {
     return;
   }
 
-  my $mod_data = eval { $json->decode($res->{content}) };
-  return if $@ || !$mod_data;
+  my $module_data = eval { $json->decode($res->{content}) };
+  return if $@ || !$module_data;
 
-  my $dist = $mod_data->{distribution};
+  my $dist = $module_data->{distribution};
   fetch_from_release($name, $dist, $level, $native_class_only, $target, $results_ref, $seen_ref, $http, $json, $verbose);
 }
 
 sub fetch_from_release {
-  my ($mod_name, $dist, $level, $native_class_only, $target, $results_ref, $seen_ref, $http, $json, $verbose) = @_;
+  my ($module_name, $dist, $level, $native_class_only, $target, $results_ref, $seen_ref, $http, $json, $verbose) = @_;
   my $indent = "  " x $level;
 
   # Get release info
@@ -105,13 +105,13 @@ sub fetch_from_release {
   }
   
   # Store the confirmed module in results (exclude the target itself)
-  if ($mod_name ne $target) {
-    $results_ref->{$mod_name} = $is_native;
+  if ($module_name ne $target) {
+    $results_ref->{$module_name} = $is_native;
   }
 
   if ($verbose) {
     my $marker = ($native_class_only && $is_native) ? " [Native]" : "";
-    print STDERR "${indent}- $mod_name (Dist: $dist)$marker\n";
+    print STDERR "${indent}- $module_name (Dist: $dist)$marker\n";
   }
 
   # Traverse dependencies
