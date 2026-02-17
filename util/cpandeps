@@ -9,7 +9,13 @@ use Module::CoreList;
 
 # Get options
 my $verbose = 0;
-GetOptions("v|verbose" => \$verbose);
+my $run_cpanm = 0;
+my $cpanm_opts = ''; # Default is empty
+GetOptions(
+    "v|verbose"    => \$verbose,
+    "cpanm"        => \$run_cpanm,
+    "cpanm-opts=s" => \$cpanm_opts,
+);
 
 my %visited;
 my $json = JSON::PP->new->utf8;
@@ -23,18 +29,15 @@ sub get_dependencies_recursive {
   return if $visited{$name}++;
 
   # Skip if the module is part of Perl core in the current version
-  # Module::CoreList::is_core(module, version, perl_version) 
   return if Module::CoreList::is_core($name, undef, $]);
 
   my $indent = "  " x $level;
 
   # Access via HTTP to avoid SSL issues
-  # Find distribution name from module endpoint
   my $url = "http://fastapi.metacpan.org/v1/module/$name";
   my $res = $http->get($url);
 
   unless ($res->{success}) {
-    # Try as release name if module not found
     fetch_from_release($name, $name, $level);
     return;
   }
@@ -57,57 +60,56 @@ sub fetch_from_release {
   my $rel_data = eval { $json->decode($res->{content}) };
   return if $@ || !$rel_data;
 
-  # Show info to STDERR only if verbose
   if ($verbose) {
     print STDERR "${indent}- $mod_name (Dist: $dist)\n";
   }
 
   my $deps = $rel_data->{dependency} || [];
   foreach my $dep (@$deps) {
-    # Follow runtime requires only
     if ($dep->{phase} eq 'runtime' && $dep->{relationship} eq 'requires') {
       my $next_mod = $dep->{module};
-      
-      # Skip perl and visited modules
       next if !$next_mod || $next_mod eq 'perl';
-      
-      # Recurse
       get_dependencies_recursive($next_mod, $level + 1);
     }
   }
 }
 
-my $target = shift or die "Usage: $0 [-v] Module::Name\n";
+my $target = shift or die "Usage: $0 [-v] [--cpanm] [--cpanm-opts '--reinstall'] Module::Name\n";
 
-# Show header to STDERR if verbose
 print STDERR "--- Analyzing dependencies for $target ---\n" if $verbose;
-
 get_dependencies_recursive($target);
-
-# Show footer to STDERR if verbose
 print STDERR "--- Done ---\n" if $verbose;
 
-# Output unique module names to STDOUT
+# Collect final list
+my @final_deps;
 foreach my $mod (sort keys %visited) {
   next if $mod eq $target;
-  # Extra check to ensure core modules aren't in the final list
   next if Module::CoreList::is_core($mod, undef, $]);
-  print "$mod\n";
+  push @final_deps, $mod;
+}
+
+if ($run_cpanm) {
+  my @opts = split(' ', $cpanm_opts);
+  if (@final_deps) {
+    my @cmd = ('cpanm', @opts, @final_deps, $target);
+    print STDERR "Executing: @cmd\n" if $verbose;
+    system(@cmd) == 0 or die "cpanm failed: $!";
+  } else {
+    system('cpanm', @opts, $target) == 0 or die "cpanm failed: $!";
+  }
+} else {
+  foreach my $mod (@final_deps) {
+    print "$mod\n";
+  }
 }
 
 =head1 NAME
 
-cpandeps - A tool to list non-core CPAN dependencies recursively.
+cpandeps - A tool to list or install non-core CPAN dependencies recursively.
 
 =head1 SYNOPSIS
 
-  cpandeps [-v] Module::Name
-
-=head1 DESCRIPTION
-
-This script fetches dependency information from MetaCPAN API (v1).
-It only follows 'runtime requires' and automatically skips modules 
-that are already part of the Perl core in the current environment.
+  cpandeps [-v] [--cpanm] [--cpanm-opts '--reinstall'] Module::Name
 
 =head1 OPTIONS
 
@@ -115,7 +117,15 @@ that are already part of the Perl core in the current environment.
 
 =item B<-v, --verbose>
 
-Show recursive dependency tree to STDERR during execution.
+Show recursive dependency tree to STDERR.
+
+=item B<--cpanm>
+
+Execute cpanm to install the modules.
+
+=item B<--cpanm-opts>
+
+Specify cpanm options (e.g., '--reinstall --notest').
 
 =back
 
