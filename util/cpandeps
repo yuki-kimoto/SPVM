@@ -23,16 +23,33 @@ if ($help) {
 }
 
 my %seen;    # To avoid infinite recursion
-my %results; # $results{$mod_name} = $is_native (final output list)
+my %results; # $results{$mod_name} = $is_native
 my $json = JSON::PP->new->utf8;
 my $http = HTTP::Tiny->new(timeout => 10);
 
+# Main process
+my $target = shift or die "Usage: $0 [OPTIONS] Module::Name\n";
+
+print STDERR "--- Analyzing dependencies for $target ---\n" if $verbose;
+# Pass all context as arguments to avoid closures
+get_dependencies_recursive($target, 0, $native_class_only, $target, \%results, \%seen, $http, $json, $verbose);
+print STDERR "--- Done ---\n" if $verbose;
+
+# Output verified unique module names
+for my $mod (sort keys %results) {
+  if ($native_class_only) {
+    print "$mod\n" if $results{$mod};
+  } else {
+    print "$mod\n";
+  }
+}
+
 sub get_dependencies_recursive {
-  my ($name, $level, $native_class_only) = @_;
+  my ($name, $level, $native_class_only, $target, $results_ref, $seen_ref, $http, $json, $verbose) = @_;
   $level //= 0;
 
   # Avoid redundant network access
-  return if $seen{$name}++;
+  return if $seen_ref->{$name}++;
 
   # Skip core modules
   return if Module::CoreList::is_core($name, undef, $]);
@@ -43,7 +60,7 @@ sub get_dependencies_recursive {
 
   unless ($res->{success}) {
     # If module endpoint fails, try it as a distribution name
-    fetch_from_release($name, $name, $level, $native_class_only);
+    fetch_from_release($name, $name, $level, $native_class_only, $target, $results_ref, $seen_ref, $http, $json, $verbose);
     return;
   }
 
@@ -51,11 +68,11 @@ sub get_dependencies_recursive {
   return if $@ || !$mod_data;
 
   my $dist = $mod_data->{distribution};
-  fetch_from_release($name, $dist, $level, $native_class_only);
+  fetch_from_release($name, $dist, $level, $native_class_only, $target, $results_ref, $seen_ref, $http, $json, $verbose);
 }
 
 sub fetch_from_release {
-  my ($mod_name, $dist, $level, $native_class_only) = @_;
+  my ($mod_name, $dist, $level, $native_class_only, $target, $results_ref, $seen_ref, $http, $json, $verbose) = @_;
   my $indent = "  " x $level;
 
   # Get release info
@@ -87,8 +104,10 @@ sub fetch_from_release {
     }
   }
   
-  # Store the confirmed module in results
-  $results{$mod_name} = $is_native;
+  # Store the confirmed module in results (exclude the target itself)
+  if ($mod_name ne $target) {
+    $results_ref->{$mod_name} = $is_native;
+  }
 
   if ($verbose) {
     my $marker = ($native_class_only && $is_native) ? " [Native]" : "";
@@ -101,26 +120,9 @@ sub fetch_from_release {
     if ($dep->{phase} eq 'runtime' && $dep->{relationship} eq 'requires') {
       my $next_mod = $dep->{module};
       next if !$next_mod || $next_mod eq 'perl';
-      get_dependencies_recursive($next_mod, $level + 1, $native_class_only);
+      # Recursively pass all arguments
+      get_dependencies_recursive($next_mod, $level + 1, $native_class_only, $target, $results_ref, $seen_ref, $http, $json, $verbose);
     }
-  }
-}
-
-my $target = shift or die "Usage: $0 [OPTIONS] Module::Name\n";
-
-print STDERR "--- Analyzing dependencies for $target ---\n" if $verbose;
-get_dependencies_recursive($target, 0, $native_class_only);
-print STDERR "--- Done ---\n" if $verbose;
-
-# Output verified unique module names
-for my $mod (sort keys %results) {
-  # Exclude the target module itself from the dependency list
-  next if $mod eq $target;
-  
-  if ($native_class_only) {
-    print "$mod\n" if $results{$mod};
-  } else {
-    print "$mod\n";
   }
 }
 
