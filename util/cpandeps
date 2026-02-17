@@ -118,10 +118,11 @@ sub fetch_from_release {
   my $deps = $rel_data->{dependency} || [];
   for my $dep (@$deps) {
     if ($dep->{phase} eq 'runtime' && $dep->{relationship} eq 'requires') {
-      my $next_mod = $dep->{module};
-      next if !$next_mod || $next_mod eq 'perl';
+      # Use clearer name: module_name from MetaCPAN API remains 'module'
+      my $next_module_name = $dep->{module};
+      next if !$next_module_name || $next_module_name eq 'perl';
       # Recursively pass all arguments
-      get_dependencies_recursive($next_mod, $level + 1, $native_class_only, $target, $results_ref, $seen_ref, $http, $json, $verbose);
+      get_dependencies_recursive($next_module_name, $level + 1, $native_class_only, $target, $results_ref, $seen_ref, $http, $json, $verbose);
     }
   }
 }
