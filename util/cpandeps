@@ -74,7 +74,7 @@ sub fetch_from_release {
     # Get the author ID from release data
     my $author = $rel_data->{author}; 
     
-    foreach my $file ('Makefile.PL', 'Build.PL') {
+    for my $file ('Makefile.PL', 'Build.PL') {
       # Use the correct path: /source/AUTHOR/DIST-VERSION/FILE
       my $src_url = "http://fastapi.metacpan.org/v1/source/$author/$dist-$version/$file";
       my $src_res = $http->get($src_url);
@@ -97,7 +97,7 @@ sub fetch_from_release {
 
   # Traverse dependencies
   my $deps = $rel_data->{dependency} || [];
-  foreach my $dep (@$deps) {
+  for my $dep (@$deps) {
     if ($dep->{phase} eq 'runtime' && $dep->{relationship} eq 'requires') {
       my $next_mod = $dep->{module};
       next if !$next_mod || $next_mod eq 'perl';
@@ -113,7 +113,7 @@ get_dependencies_recursive($target, 0, $native_class_only);
 print STDERR "--- Done ---\n" if $verbose;
 
 # Output verified unique module names
-foreach my $mod (sort keys %results) {
+for my $mod (sort keys %results) {
   # Exclude the target module itself from the dependency list
   next if $mod eq $target;
   
