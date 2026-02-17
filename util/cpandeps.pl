@@ -94,3 +94,29 @@ foreach my $mod (sort keys %visited) {
     next if Module::CoreList::is_core($mod, undef, $]);
     print "$mod\n";
 }
+
+=head1 NAME
+
+cpandeps.pl - A tool to list non-core CPAN dependencies recursively.
+
+=head1 SYNOPSIS
+
+    perl util/cpandeps.pl [-v] Module::Name
+
+=head1 DESCRIPTION
+
+This script fetches dependency information from MetaCPAN API (v1).
+It only follows 'runtime requires' and automatically skips modules 
+that are already part of the Perl core in the current environment.
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-v, --verbose>
+
+Show recursive dependency tree to STDERR during execution.
+
+=back
+
+=cut
