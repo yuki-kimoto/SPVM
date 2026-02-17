@@ -1,3 +1,9 @@
+0.990133 2026-02-18
+
+  [Incompatible Changes]
+    * Rename load_spvm_archive to use_spvm_archive in SPVM::Builder::Config::Exe.
+    * Rename --load-spvm-archive option to --spvm-archive in spvmcc. 
+
 0.990132 2026-02-17
   
   [New Features]
