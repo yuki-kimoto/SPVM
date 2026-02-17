@@ -525,10 +525,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_method_ids(SPVM_ENV* env, SP
   if ((void*)&env->api->method->set_precompile_address != &env_array[28]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->method->is_precompile_fallback != &env_array[29]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->method->set_is_precompile_fallback != &env_array[30]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->method->removed31 != &env_array[31]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->method->removed32 != &env_array[32]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->method->get_args_signature != &env_array[33]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->method->get_abs_name != &env_array[34]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_args_signature != &env_array[31]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_abs_name != &env_array[32]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

@@ -222,7 +222,7 @@ C<const char* (*get_abs_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime
 
 Returns the absolute name of the method I<method>.
 
-=head1 Native API IDs
+=head1 Native Method API IDs
 
   0 get_name
   1 get_index
@@ -255,10 +255,8 @@ Returns the absolute name of the method I<method>.
   28 set_precompile_address
   29 is_precompile_fallback
   30 set_is_precompile_fallback
-  31 removed31
-  32 removed32
-  33 get_args_signature
-  34 get_abs_name
+  31 get_args_signature
+  32 get_abs_name
   
 =head1 See Also
 
