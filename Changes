@@ -1,5 +1,21 @@
 0.990132 2026-02-17
   
+  [New Features]
+    - Add util/cpandeps to analyze dependencies.
+    - Add a procedure to reinstall modules affected by ABI breakdown.
+      1. Get modules containing native or precompile classes:
+         
+         util/cpandeps -v --native-class-only SPVM::Your::Module
+      
+      2. Reinstall them:
+         
+         util/cpandeps --native-class-only SPVM::Your::Module | grep -vx "SPVM" | xargs cpanm --reinstall
+      
+      3. For a quick fix without downloading the script:
+         
+         curl -sL https://raw.githubusercontent.com/yuki-kimoto/SPVM/master/util/cpandeps | perl - --native-class-only SPVM::Your::Module | grep -vx "SPVM" | xargs cpanm --reinstall
+      
+      
   [Break Binary Compatiblity]
     * Renumbered native internal API IDs to remove unused slots, breaking binary compatibility.
     * Renumbered native method API IDs to remove unused slots, breaking binary compatibility.
