@@ -50,14 +50,13 @@ Performs a leaveing scope operation for local variables given object variables I
 
 The value referenced by I<mortal_stack_top_ptr> is updated.
 
-=head1 Native API IDs
+=head1 Native Internal API IDs
 
   0 get_ref_count
   1 inc_ref_count
   2 dec_ref_count
-  3 removed3
-  4 get_stack_tmp_buffer
-  5 leave_scope_local
+  3 get_stack_tmp_buffer
+  4 leave_scope_local
 
 =head1 See Also
 

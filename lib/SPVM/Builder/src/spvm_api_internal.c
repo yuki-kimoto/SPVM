@@ -15,7 +15,6 @@ SPVM_API_INTERNAL* SPVM_API_INTERNAL_new_api() {
     SPVM_API_get_ref_count,
     SPVM_API_inc_ref_count,
     SPVM_API_dec_ref_count,
-    SPVM_API_leave_scope_local_removed3,
     SPVM_API_get_stack_tmp_buffer,
     SPVM_API_leave_scope_local,
   };
