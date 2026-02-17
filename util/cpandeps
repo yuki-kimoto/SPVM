@@ -104,14 +104,22 @@ sub fetch_from_release {
   if ($module_name ne $target) {
     if ($native_class_only) {
       $results_ref->{$module_name} = 1 if $is_native;
-    } else {
+    }
+    else {
       $results_ref->{$module_name} = 1;
     }
-  }
-
-  if ($verbose) {
-    my $marker = ($native_class_only && $is_native) ? " [Native]" : "";
-    print STDERR "${indent}- $module_name (Dist: $dist)$marker\n";
+    
+    if ($verbose) {
+      print STDERR "${indent}- $module_name (Dist: $dist)";
+      unless ($results_ref->{$module_name}) {
+        print STDERR " -- SKIP";
+        if ($native_class_only) {
+          print STDERR ": does not contain native or precompile classes";
+        }
+      }
+      print STDERR "\n";
+    }
+    
   }
 
   # Traverse dependencies
