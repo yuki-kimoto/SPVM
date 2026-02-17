@@ -341,11 +341,8 @@ struct spvm_env {
   int32_t (*exists_field_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
   void (*delete_field)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
   void (*delete_field_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
-  void* removed244;
-  void* removed245;
   void (*make_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*is_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  void* removed248;
   int32_t (*set_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);
   int32_t (*capacity)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*set_capacity)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t capacity);
@@ -359,9 +356,6 @@ struct spvm_env {
   void* (*numeric_object_to_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);
   int32_t (*is_numeric_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*say_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
-  void* removed262;
-  void* removed263;
-  void* removed264;
   int32_t (*get_call_depth)(SPVM_ENV* env, SPVM_VALUE* stack);
   void** (*get_caller_info_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*get_caller_info_stack_record_size)(SPVM_ENV* env, SPVM_VALUE* stack);

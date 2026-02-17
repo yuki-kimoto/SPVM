@@ -55,27 +55,16 @@ SPVM_ENV* SPVM_NATIVE_new_env(void) {
 SPVM_ENV* SPVM_API_new_env(void) {
 
   SPVM_API_ALLOCATOR* api_allocator = SPVM_API_ALLOCATOR_new_api();
-  
   SPVM_API_STRING_BUFFER* api_string_buffer = SPVM_API_STRING_BUFFER_new_api();
-  
   SPVM_API_COMPILER* api_compiler = SPVM_API_COMPILER_new_api();
-  
   SPVM_API_RUNTIME* api_runtime = SPVM_API_RUNTIME_new_api();
-  
   SPVM_API_CLASS_FILE* api_class_file = SPVM_API_CLASS_FILE_new_api();
-  
   SPVM_API_BASIC_TYPE* api_basic_type = SPVM_API_BASIC_TYPE_new_api();
-  
   SPVM_API_CLASS_VAR* api_class_var = SPVM_API_CLASS_VAR_new_api();
-  
   SPVM_API_FIELD* api_field = SPVM_API_FIELD_new_api();
-  
   SPVM_API_TYPE* api_type = SPVM_API_TYPE_new_api();
-  
   SPVM_API_METHOD* api_method = SPVM_API_METHOD_new_api();
-  
   SPVM_API_ARG* api_arg = SPVM_API_ARG_new_api();
-  
   SPVM_API_INTERNAL* api_internal = SPVM_API_INTERNAL_new_api();
   SPVM_API_MUTEX* api_mutex = SPVM_API_MUTEX_new_api();
   
@@ -96,6 +85,15 @@ SPVM_ENV* SPVM_API_new_env(void) {
   };
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   // Native APIs
   void* env_init[]  = {
@@ -343,11 +341,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_exists_field_by_name,
     SPVM_API_delete_field,
     SPVM_API_delete_field_by_name,
-    (void*)offsetof(SPVM_OBJECT, data),
-    (void*)offsetof(SPVM_OBJECT, length),
     SPVM_API_make_fixed_length,
     SPVM_API_is_fixed_length,
-    (void*)offsetof(SPVM_OBJECT, capacity),
     SPVM_API_set_length,
     SPVM_API_capacity,
     SPVM_API_set_capacity,
@@ -361,9 +356,6 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_numeric_object_to_string,
     SPVM_API_is_numeric_object,
     SPVM_API_say_stderr,
-    (void*)SPVM_API_C_STACK_INDEX_CALL_DEPTH,
-    (void*)SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK,
-    (void*)SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE,
     SPVM_API_get_call_depth,
     SPVM_API_get_caller_info_stack,
     SPVM_API_get_caller_info_stack_record_size,
