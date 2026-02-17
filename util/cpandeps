@@ -9,32 +9,41 @@ use Module::CoreList;
 
 # Get options
 my $verbose = 0;
+my $native_class_only = 0;
+my $help = 0;
 GetOptions(
-    "v|verbose" => \$verbose,
+  "v|verbose"         => \$verbose,
+  "native-class-only" => \$native_class_only,
+  "h|help"            => \$help,
 );
 
-my %visited;
+if ($help) {
+  require Pod::Usage;
+  Pod::Usage::pod2usage(0);
+}
+
+my %seen;    # To avoid infinite recursion
+my %results; # $results{$mod_name} = $is_native (final output list)
 my $json = JSON::PP->new->utf8;
 my $http = HTTP::Tiny->new(timeout => 10);
 
 sub get_dependencies_recursive {
-  my ($name, $level) = @_;
+  my ($name, $level, $native_class_only) = @_;
   $level //= 0;
 
-  # Skip if already visited
-  return if $visited{$name}++;
+  # Avoid redundant network access
+  return if $seen{$name}++;
 
-  # Skip if the module is part of Perl core in the current version
+  # Skip core modules
   return if Module::CoreList::is_core($name, undef, $]);
 
-  my $indent = "  " x $level;
-
-  # Access via HTTP to avoid SSL issues
+  # Get module info from MetaCPAN
   my $url = "http://fastapi.metacpan.org/v1/module/$name";
   my $res = $http->get($url);
 
   unless ($res->{success}) {
-    fetch_from_release($name, $name, $level);
+    # If module endpoint fails, try it as a distribution name
+    fetch_from_release($name, $name, $level, $native_class_only);
     return;
   }
 
@@ -42,13 +51,14 @@ sub get_dependencies_recursive {
   return if $@ || !$mod_data;
 
   my $dist = $mod_data->{distribution};
-  fetch_from_release($name, $dist, $level);
+  fetch_from_release($name, $dist, $level, $native_class_only);
 }
 
 sub fetch_from_release {
-  my ($mod_name, $dist, $level) = @_;
+  my ($mod_name, $dist, $level, $native_class_only) = @_;
   my $indent = "  " x $level;
 
+  # Get release info
   my $url = "http://fastapi.metacpan.org/v1/release/$dist";
   my $res = $http->get($url);
   return unless $res->{success};
@@ -56,32 +66,65 @@ sub fetch_from_release {
   my $rel_data = eval { $json->decode($res->{content}) };
   return if $@ || !$rel_data;
 
+  my $version = $rel_data->{version};
+  
+  # Scan Makefile.PL/Build.PL if requested
+  my $is_native = 0;
+  if ($native_class_only) {
+    # Get the author ID from release data
+    my $author = $rel_data->{author}; 
+    
+    foreach my $file ('Makefile.PL', 'Build.PL') {
+      # Use the correct path: /source/AUTHOR/DIST-VERSION/FILE
+      my $src_url = "http://fastapi.metacpan.org/v1/source/$author/$dist-$version/$file";
+      my $src_res = $http->get($src_url);
+      
+      # Check if SPVM::Builder is used for native build rules
+      if ($src_res->{success} && $src_res->{content} =~ /SPVM::Builder::Util::API::create_make_rule/) {
+        $is_native = 1;
+        last;
+      }
+    }
+  }
+  
+  # Store the confirmed module in results
+  $results{$mod_name} = $is_native;
+
   if ($verbose) {
-    print STDERR "${indent}- $mod_name (Dist: $dist)\n";
+    my $marker = ($native_class_only && $is_native) ? " [Native]" : "";
+    print STDERR "${indent}- $mod_name (Dist: $dist)$marker\n";
   }
 
+  # Traverse dependencies
   my $deps = $rel_data->{dependency} || [];
   foreach my $dep (@$deps) {
     if ($dep->{phase} eq 'runtime' && $dep->{relationship} eq 'requires') {
       my $next_mod = $dep->{module};
       next if !$next_mod || $next_mod eq 'perl';
-      get_dependencies_recursive($next_mod, $level + 1);
+      get_dependencies_recursive($next_mod, $level + 1, $native_class_only);
     }
   }
 }
 
-my $target = shift or die "Usage: $0 [-v] Module::Name\n";
+my $target = shift or die "Usage: $0 [OPTIONS] Module::Name\n";
 
 print STDERR "--- Analyzing dependencies for $target ---\n" if $verbose;
-get_dependencies_recursive($target);
+get_dependencies_recursive($target, 0, $native_class_only);
 print STDERR "--- Done ---\n" if $verbose;
 
-# Output unique module names
-foreach my $mod (sort keys %visited) {
+# Output verified unique module names
+foreach my $mod (sort keys %results) {
+  # Exclude the target module itself from the dependency list
   next if $mod eq $target;
-  next if Module::CoreList::is_core($mod, undef, $]);
-  print "$mod\n";
+  
+  if ($native_class_only) {
+    print "$mod\n" if $results{$mod};
+  } else {
+    print "$mod\n";
+  }
 }
+
+__END__
 
 =head1 NAME
 
@@ -93,11 +136,15 @@ cpandeps - A tool to list non-core CPAN dependencies recursively.
 
     cpandeps SPVM::JSON
 
-    # Use with cpanm for reinstallation
+    # Only show modules with native or precompile classes
+    cpandeps --native-class-only SPVM::JSON
+
+    # Use with xargs for reinstallation
     cpandeps SPVM::JSON | xargs cpanm --reinstall
 
   Options:
-    -h, --help                      Shows this message
-    -v, --verbose                   Shows recursive dependency tree to STDERR
+    -h, --help                Shows this message
+    -v, --verbose             Shows recursive dependency tree to STDERR
+    --native-class-only       Outputs only modules containing native/precompile rules
 
 =cut
