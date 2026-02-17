@@ -110,7 +110,8 @@ sub fetch_from_release {
     }
     
     if ($verbose) {
-      print STDERR "${indent}- $module_name (Dist: $dist)";
+      print STDERR "${indent}- $module_name";
+      print STDERR " (Dist: $dist)" if ($dist =~ s/-/::/gr) ne $module_name;
       unless ($results_ref->{$module_name}) {
         print STDERR " -- SKIP";
         if ($native_class_only) {
