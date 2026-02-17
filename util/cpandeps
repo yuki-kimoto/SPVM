@@ -97,11 +97,11 @@ foreach my $mod (sort keys %visited) {
 
 =head1 NAME
 
-cpandeps.pl - A tool to list non-core CPAN dependencies recursively.
+cpandeps - A tool to list non-core CPAN dependencies recursively.
 
 =head1 SYNOPSIS
 
-    perl util/cpandeps.pl [-v] Module::Name
+  cpandeps [-v] Module::Name
 
 =head1 DESCRIPTION
 
