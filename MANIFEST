@@ -1113,9 +1113,6 @@ t/04_spvmcc/script/basic.spvm
 t/04_spvmcc/script/end-block.spvm
 t/04_spvmcc/script/external.spvm
 t/04_spvmcc/script/inc-order.spvm
-t/04_spvmcc/script/load-spvm-archive.config
-t/04_spvmcc/script/load-spvm-archive.linux-64bit.config
-t/04_spvmcc/script/load-spvm-archive.spvm
 t/04_spvmcc/script/myapp.config
 t/04_spvmcc/script/myapp.debug.config
 t/04_spvmcc/script/myapp.spvm
@@ -1129,6 +1126,9 @@ t/04_spvmcc/script/precompile.spvm
 t/04_spvmcc/script/program_name.spvm
 t/04_spvmcc/script/runtime-extends.spvm
 t/04_spvmcc/script/runtime-parent.spvm
+t/04_spvmcc/script/spvm-archive.config
+t/04_spvmcc/script/spvm-archive.linux-64bit.config
+t/04_spvmcc/script/spvm-archive.spvm
 t/04_spvmcc/script/use-class.spvm
 t/04_spvmcc/SPVM-Builder-Exe.t
 t/04_spvmcc/spvm.t
@@ -1154,5 +1154,6 @@ t/utils/sort_method_name_native.pl
 t/utils/sort_method_name_pod.pl
 t/utils/sort_method_name_spvm.pl
 t/utils/sort_opcode_vm.pl
+util/cpandeps
 yacc/bison.sh
 yacc/spvm_yacc.y

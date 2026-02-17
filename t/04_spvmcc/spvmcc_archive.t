@@ -75,22 +75,22 @@ sub to_cmd {
     ok($tar_files_h->{'SPVM/TestCase/Precompile.spvm'});
   }
   
-  # load_spvm_archive
+  # use_spvm_archive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/load-spvm-archive t/04_spvmcc/script/load-spvm-archive.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/spvm-archive t/04_spvmcc/script/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = &to_cmd("$exe_dir/load-spvm-archive");
+    my $execute_cmd = &to_cmd("$exe_dir/spvm-archive");
     my $output = `$execute_cmd`;
     chomp $output;
-    my $output_expect = "load-spvm-archive 74,skip_class:1,api3:60";
+    my $output_expect = "spvm-archive 74,skip_class:1,api3:60";
     is($output, $output_expect);
   }
   
-  # load_spvm_archive and --build-spvm-archive
+  # use_spvm_archive and --build-spvm-archive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz --build-spvm-archive --mode linux-64bit t/04_spvmcc/script/load-spvm-archive.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz --build-spvm-archive --mode linux-64bit t/04_spvmcc/script/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -101,7 +101,7 @@ sub to_cmd {
     
     my $spvmcc_json = $tar->get_content("spvmcc.json");
     my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
-    is($spvmcc_info->{app_name}, "load-spvm-archive");
+    is($spvmcc_info->{app_name}, "spvm-archive");
     is($spvmcc_info->{mode}, "linux-64bit");
     is($spvmcc_info->{version}, "1.005");
     my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};

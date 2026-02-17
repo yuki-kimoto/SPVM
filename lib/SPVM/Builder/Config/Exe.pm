@@ -480,7 +480,7 @@ sub add_external_object_file {
   push @{$self->{external_object_files}}, @external_object_files;
 }
 
-sub load_spvm_archive {
+sub use_spvm_archive {
   my ($self, $spvm_archive, $options) = @_;
   
   $options //= {};
@@ -740,7 +740,7 @@ Gets and sets C<external_object_files> field, an array reference containing addi
 
 An SPVM archive.
 
-See L</"load_spvm_archive"> and L</"get_spvm_archive">.
+See L</"use_spvm_archive"> and L</"get_spvm_archive">.
 
 =head2 spvm_archive_skip_classes
 
@@ -749,7 +749,7 @@ See L</"load_spvm_archive"> and L</"get_spvm_archive">.
 
 Gets and sets C<spvm_archive_skip_classes> field, an array reference containg the names of classes in an SPVM archive you do not want to load.
 
-See also L</"load_spvm_archive">.
+See also L</"use_spvm_archive">.
 
 =head1 Methods
 
@@ -919,10 +919,10 @@ Adds @include_dirs_precompile to the end of L</"include_dirs_precompile"> field.
 
 Adds @external_object_files to the end of L</"external_object_files"> field.
 
-=head2 load_spvm_archive
+=head2 use_spvm_archive
 
-  $config->load_spvm_archive($spvm_archive);
-  $config->load_spvm_archive($spvm_archive, $options);
+  $config->use_spvm_archive($spvm_archive);
+  $config->use_spvm_archive($spvm_archive, $options);
 
 Loads an SPVM archive.
 
@@ -942,9 +942,9 @@ Examples:
 
   my $config_dir = File::Basename::dirname __FILE__;
   
-  $config->load_spvm_archive("$config_dir/myapp.spvm-archive.tar.gz);
+  $config->use_spvm_archive("$config_dir/myapp.spvm-archive.tar.gz);
   
-  $config->load_spvm_archive("$config_dir/myapp.spvm-archive.tar.gz, {skip => ['SomeClass1', 'SomeClass2]});
+  $config->use_spvm_archive("$config_dir/myapp.spvm-archive.tar.gz, {skip => ['SomeClass1', 'SomeClass2]});
 
 =head2 get_spvm_archive
 

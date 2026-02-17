@@ -45,7 +45,7 @@ SPVM::Builder::Util::getopt
   'include-dir-precompile=s' => \my @include_dirs_precompile,
   'object-file=s' => \my @external_object_files,
   'build-spvm-archive' => \my $build_spvm_archive,
-  'load-spvm-archive=s' => \my $spvm_archive, # This is not working well yet, and undocumented.
+  'spvm-archive=s' => \my $spvm_archive,
 ;
 
 if ($help) {
