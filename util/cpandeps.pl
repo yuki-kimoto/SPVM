@@ -5,6 +5,7 @@ use utf8;
 use HTTP::Tiny;
 use JSON::PP;
 use Getopt::Long;
+use Module::CoreList;
 
 # Get options
 my $verbose = 0;
@@ -20,6 +21,10 @@ sub get_dependencies_recursive {
 
     # Skip if already visited
     return if $visited{$name}++;
+
+    # Skip if the module is part of Perl core in the current version
+    # Module::CoreList::is_core(module, version, perl_version) 
+    return if Module::CoreList::is_core($name, undef, $]);
 
     my $indent = "  " x $level;
 
@@ -83,9 +88,9 @@ get_dependencies_recursive($target);
 print STDERR "--- Done ---\n" if $verbose;
 
 # Output unique module names to STDOUT
-# Exclude the initial target itself from the list if desired, 
-# but usually, it's safer to include all found dependencies.
 foreach my $mod (sort keys %visited) {
-    next if $mod eq $target; # Optional: skip the target itself
+    next if $mod eq $target;
+    # Extra check to ensure core modules aren't in the final list
+    next if Module::CoreList::is_core($mod, undef, $]);
     print "$mod\n";
 }
