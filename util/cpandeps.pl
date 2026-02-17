@@ -81,3 +81,11 @@ get_dependencies_recursive($target);
 
 # Show footer to STDERR if verbose
 print STDERR "--- Done ---\n" if $verbose;
+
+# Output unique module names to STDOUT
+# Exclude the initial target itself from the list if desired, 
+# but usually, it's safer to include all found dependencies.
+foreach my $mod (sort keys %visited) {
+    next if $mod eq $target; # Optional: skip the target itself
+    print "$mod\n";
+}
