@@ -4,6 +4,11 @@ use warnings;
 use utf8;
 use HTTP::Tiny;
 use JSON::PP;
+use Getopt::Long;
+
+# Get options
+my $verbose = 0;
+GetOptions("v|verbose" => \$verbose);
 
 my %visited;
 my $json = JSON::PP->new->utf8;
@@ -47,8 +52,10 @@ sub fetch_from_release {
     my $rel_data = eval { $json->decode($res->{content}) };
     return if $@ || !$rel_data;
 
-    # Show info
-    print "${indent}- $mod_name (Dist: $dist)\n";
+    # Show info to STDERR only if verbose
+    if ($verbose) {
+        print STDERR "${indent}- $mod_name (Dist: $dist)\n";
+    }
 
     my $deps = $rel_data->{dependency} || [];
     foreach my $dep (@$deps) {
@@ -65,7 +72,12 @@ sub fetch_from_release {
     }
 }
 
-my $target = shift or die "Usage: $0 Module::Name\n";
-print "--- Analyzing dependencies for $target ---\n";
+my $target = shift or die "Usage: $0 [-v] Module::Name\n";
+
+# Show header to STDERR if verbose
+print STDERR "--- Analyzing dependencies for $target ---\n" if $verbose;
+
 get_dependencies_recursive($target);
-print "--- Done ---\n";
+
+# Show footer to STDERR if verbose
+print STDERR "--- Done ---\n" if $verbose;
