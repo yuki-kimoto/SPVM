@@ -125,7 +125,7 @@ Execute cpanm to install the modules.
 
 =item B<--cpanm-opts>
 
-Specify cpanm options (e.g., '--reinstall --notest').
+Specify cpanm options (e.g., '--reinstall').
 
 =back
 
