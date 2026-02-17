@@ -9,12 +9,8 @@ use Module::CoreList;
 
 # Get options
 my $verbose = 0;
-my $run_cpanm = 0;
-my $cpanm_opts = ''; # Default is empty
 GetOptions(
-    "v|verbose"    => \$verbose,
-    "cpanm"        => \$run_cpanm,
-    "cpanm-opts=s" => \$cpanm_opts,
+    "v|verbose" => \$verbose,
 );
 
 my %visited;
@@ -74,38 +70,22 @@ sub fetch_from_release {
   }
 }
 
-my $target = shift or die "Usage: $0 [-v] [--cpanm] [--cpanm-opts '--reinstall'] Module::Name\n";
+my $target = shift or die "Usage: $0 [-v] Module::Name\n";
 
 print STDERR "--- Analyzing dependencies for $target ---\n" if $verbose;
 get_dependencies_recursive($target);
 print STDERR "--- Done ---\n" if $verbose;
 
-# Collect final list
-my @final_deps;
+# Output unique module names
 foreach my $mod (sort keys %visited) {
   next if $mod eq $target;
   next if Module::CoreList::is_core($mod, undef, $]);
-  push @final_deps, $mod;
-}
-
-if ($run_cpanm) {
-  my @opts = split(' ', $cpanm_opts);
-  if (@final_deps) {
-    my @cmd = ('cpanm', @opts, @final_deps, $target);
-    print STDERR "Executing: @cmd\n" if $verbose;
-    system(@cmd) == 0 or die "cpanm failed: $!";
-  } else {
-    system('cpanm', @opts, $target) == 0 or die "cpanm failed: $!";
-  }
-} else {
-  foreach my $mod (@final_deps) {
-    print "$mod\n";
-  }
+  print "$mod\n";
 }
 
 =head1 NAME
 
-cpandeps - A tool to list or install non-core CPAN dependencies recursively.
+cpandeps - A tool to list non-core CPAN dependencies recursively.
 
 =head1 Usage
 
@@ -113,36 +93,11 @@ cpandeps - A tool to list or install non-core CPAN dependencies recursively.
 
     cpandeps SPVM::JSON
 
-    cpandeps --cpanm SPVM::JSON
-
-    cpandeps --cpanm --cpanm-opts "--reinstall" SPVM::JSON
+    # Use with cpanm for reinstallation
+    cpandeps SPVM::JSON | xargs cpanm --reinstall
 
   Options:
     -h, --help                      Shows this message
     -v, --verbose                   Shows recursive dependency tree to STDERR
-    --cpanm                         Executes cpanm to install the modules
-    --cpanm-opts OPTS               Specifies cpanm options (e.g., "--reinstall")
-
-=cut
-
-=cut
-
-=head1 OPTIONS
-
-=over 4
-
-=item B<-v, --verbose>
-
-Show recursive dependency tree to STDERR.
-
-=item B<--cpanm>
-
-Execute cpanm to install the modules.
-
-=item B<--cpanm-opts>
-
-Specify cpanm options (e.g., '--reinstall').
-
-=back
 
 =cut
