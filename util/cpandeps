@@ -6,6 +6,7 @@ use HTTP::Tiny;
 use JSON::PP;
 use Getopt::Long;
 use Module::CoreList;
+use Pod::Usage;
 
 # Get options
 my $verbose = 0;
@@ -18,7 +19,6 @@ GetOptions(
 );
 
 if ($help) {
-  require Pod::Usage;
   Pod::Usage::pod2usage(0);
 }
 
