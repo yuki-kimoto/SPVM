@@ -23,7 +23,7 @@ if ($help) {
 }
 
 my %seen;    # To avoid infinite recursion
-my %results; # $results{$module_name} = $is_native
+my %results; # $results{$module_name} = 1
 my $json = JSON::PP->new->utf8;
 my $http = HTTP::Tiny->new(timeout => 10);
 
@@ -37,11 +37,7 @@ print STDERR "--- Done ---\n" if $verbose;
 
 # Output verified unique module names
 for my $module_name (sort keys %results) {
-  if ($native_class_only) {
-    print "$module_name\n" if $results{$module_name};
-  } else {
-    print "$module_name\n";
-  }
+  print "$module_name\n";
 }
 
 sub get_dependencies_recursive {
@@ -104,9 +100,13 @@ sub fetch_from_release {
     }
   }
   
-  # Store the confirmed module in results (exclude the target itself)
+  # Store the confirmed module in results (filter here instead of output loop)
   if ($module_name ne $target) {
-    $results_ref->{$module_name} = $is_native;
+    if ($native_class_only) {
+      $results_ref->{$module_name} = 1 if $is_native;
+    } else {
+      $results_ref->{$module_name} = 1;
+    }
   }
 
   if ($verbose) {
