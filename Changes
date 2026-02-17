@@ -1,5 +1,10 @@
 0.990132 2026-02-17
   
+  [Break Binary Compatiblity]
+    * Renumbered native internal API IDs to remove unused slots, breaking binary compatibility.
+    * Renumbered native method API IDs to remove unused slots, breaking binary compatibility.
+    * Renumbered native API IDs to remove unused slots, breaking binary compatibility.
+
   [Incompatible Changes]
     * Remove the is_not_permitted and set_is_not_permitted native APIs and related implementation from the SPVM core to eliminate insecure software-based access control.
 
