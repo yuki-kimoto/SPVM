@@ -13,18 +13,18 @@ sub get_dependencies_recursive {
     my ($name, $level) = @_;
     $level //= 0;
 
-    # すでに見たモジュールはスキップ（無限ループ防止）
+    # Skip if already visited
     return if $visited{$name}++;
 
     my $indent = "  " x $level;
 
-    # HTTPでアクセス（SSL依存を排除）
-    # moduleエンドポイントで配布物(dist)名を特定する
+    # Access via HTTP to avoid SSL issues
+    # Find distribution name from module endpoint
     my $url = "http://fastapi.metacpan.org/v1/module/$name";
     my $res = $http->get($url);
 
     unless ($res->{success}) {
-        # モジュール名で見つからない場合はリリース名として試行
+        # Try as release name if module not found
         fetch_from_release($name, $name, $level);
         return;
     }
@@ -47,19 +47,19 @@ sub fetch_from_release {
     my $rel_data = eval { $json->decode($res->{content}) };
     return if $@ || !$rel_data;
 
-    # 自身の情報を表示
+    # Show info
     print "${indent}- $mod_name (Dist: $dist)\n";
 
     my $deps = $rel_data->{dependency} || [];
     foreach my $dep (@$deps) {
-        # runtime かつ requires だけを追う
+        # Follow runtime requires only
         if ($dep->{phase} eq 'runtime' && $dep->{relationship} eq 'requires') {
             my $next_mod = $dep->{module};
             
-            # perl自身や、すでに見たものは飛ばす
+            # Skip perl and visited modules
             next if !$next_mod || $next_mod eq 'perl';
             
-            # 再帰呼び出し
+            # Recurse
             get_dependencies_recursive($next_mod, $level + 1);
         }
     }
