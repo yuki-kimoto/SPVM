@@ -294,7 +294,7 @@ sub new {
   # SPVM archive
   my $spvm_archive = $config->get_spvm_archive;
   if (defined $spvm_archive) {
-    my $spvm_archive_json_archive;
+    my $spvm_archive_json;
     my $src_dir; # For directory case
 
     # 1. Prepare temp directory for both cases
@@ -310,7 +310,7 @@ sub new {
       unless (-f $json_file) {
         Carp::confess("SPVM archive directory '$spvm_archive' must contain spvm-archive.json");
       }
-      $spvm_archive_json_archive = SPVM::Builder::Util::slurp_binary($json_file);
+      $spvm_archive_json = SPVM::Builder::Util::slurp_binary($json_file);
     }
     elsif (-f $spvm_archive) {
       # Case: tar.gz
@@ -322,8 +322,8 @@ sub new {
       my $tar = Archive::Tar->new;
       $tar->read($spvm_archive) or die $tar->error;
       
-      $spvm_archive_json_archive = $tar->get_content('spvm-archive.json');
-      unless ($spvm_archive_json_archive) {
+      $spvm_archive_json = $tar->get_content('spvm-archive.json');
+      unless ($spvm_archive_json) {
         Carp::confess("SPVM archive '$spvm_archive' must contain spvm-archive.json");
       }
     }
@@ -332,9 +332,9 @@ sub new {
     }
 
     # 2. Decode JSON (Common)
-    my $spvmcc_info_tmp = JSON::PP->new->decode($spvm_archive_json_archive);
+    my $spvmcc_info = JSON::PP->new->decode($spvm_archive_json);
     $self->{spvmcc_info} = {
-      classes_h => { map { $_->{name} => $_ } @{$spvmcc_info_tmp->{classes}} },
+      classes_h => { map { $_->{name} => $_ } @{$spvmcc_info->{classes}} },
       skip_classes_h => { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} },
     };
 
@@ -360,12 +360,6 @@ sub new {
                                  $self->{spvmcc_info}{classes_h}, 
                                  $self->{spvmcc_info}{skip_classes_h});
     }
-    
-    # Setup final info
-    my $spvmcc_info = JSON::PP->new->decode($spvm_archive_json_archive);
-    $spvmcc_info->{classes_h} = { map { $_->{name} => $_ } @{$spvmcc_info->{classes}} };
-    $spvmcc_info->{skip_classes_h} = { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} };
-    $self->{spvmcc_info} = $spvmcc_info;
     
     $compiler->add_include_dir("$spvm_archive_dir/SPVM");
   }
