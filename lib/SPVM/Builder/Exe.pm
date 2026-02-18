@@ -295,7 +295,7 @@ sub new {
   my $spvm_archive = $config->get_spvm_archive;
   if (defined $spvm_archive) {
     my $spvm_archive_json;
-    my $extract_tmp_dir; 
+    my $spvm_archive_dir; 
 
     # 1. Normalize input to a directory
     if (-f $spvm_archive) {
@@ -305,23 +305,23 @@ sub new {
       }
       
       # Extract all files to a temporary directory to handle it as a normal directory
-      my $extract_tmp_dir_obj = File::Temp->newdir;
-      $extract_tmp_dir = $extract_tmp_dir_obj->dirname;
+      my $spvm_archive_dir_obj = File::Temp->newdir;
+      $spvm_archive_dir = $spvm_archive_dir_obj->dirname;
       
       my $tar = Archive::Tar->new;
       $tar->read($spvm_archive) or die $tar->error;
-      $tar->extract_all($extract_tmp_dir) or die "Could not extract $spvm_archive to $extract_tmp_dir";
+      $tar->extract_all($spvm_archive_dir) or die "Could not extract $spvm_archive to $spvm_archive_dir";
     }
     elsif (-d $spvm_archive) {
       # Case: Directory
-      $extract_tmp_dir = $spvm_archive;
+      $spvm_archive_dir = $spvm_archive;
     }
     else {
       Carp::confess("SPVM archive '$spvm_archive' not found");
     }
 
     # 2. Read and decode JSON (Common)
-    my $json_file = "$extract_tmp_dir/spvm-archive.json";
+    my $json_file = "$spvm_archive_dir/spvm-archive.json";
     unless (-f $json_file) {
       Carp::confess("SPVM archive '$spvm_archive' must contain spvm-archive.json");
     }
@@ -343,7 +343,7 @@ sub new {
     File::Copy::copy($json_file, "$spvmcc_stage_dir/spvm-archive.json");
     
     # Copy classes and other resources using filtered logic
-    $self->copy_to_archive_dir($extract_tmp_dir, $spvmcc_stage_dir, 
+    $self->copy_to_archive_dir($spvm_archive_dir, $spvmcc_stage_dir, 
                                $self->{spvm_archive_info}{classes_h}, 
                                $self->{spvm_archive_info}{skip_classes_h});
     
