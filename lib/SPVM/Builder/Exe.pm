@@ -291,53 +291,67 @@ sub new {
   
   my $compiler = SPVM::Builder::Native::Compiler->new;
   
-  # Extract SPVM archive
+  # SPVM archive
   my $spvm_archive = $config->get_spvm_archive;
   if (defined $spvm_archive) {
-    my $spvm_archive_tmp_dir = File::Temp->newdir;
-    $self->{spvm_archive_tmp_dir} = $spvm_archive_tmp_dir;
-    
-    my $tar = Archive::Tar->new;
-    $tar->read($spvm_archive)
-      or die $tar->error;
-    
-    my $spvm_archive_skip_classes = $config->spvm_archive_skip_classes // [];
-    my $spvm_archive_skip_classes_h = {map { $_ => 1} @$spvm_archive_skip_classes};
-    
-    my @tar_files = $tar->list_files;
-    
+    my $spvm_archive_dir;
     my $spvmcc_json_archive;
-    for my $tar_file (@tar_files) {
-      if ($tar_file eq 'spvmcc.json') {
-        $spvmcc_json_archive = $tar->get_content($tar_file);
-        last;
+    
+    if (-d $spvm_archive) {
+      # 1. Directory case
+      $spvm_archive_dir = $spvm_archive;
+      my $json_file = "$spvm_archive_dir/spvmcc.json";
+      unless (-f $json_file) {
+        Carp::confess("SPVM archive directory '$spvm_archive' must contain spvmcc.json");
+      }
+      $spvmcc_json_archive = SPVM::Builder::Util::slurp_binary($json_file);
+    }
+    elsif (-f $spvm_archive) {
+      # 2. Archive file case
+      unless ($spvm_archive =~ /\.tar\.gz$/) {
+        Carp::confess("SPVM archive file '$spvm_archive' must have '.tar.gz' extension");
+      }
+      
+      my $tar = Archive::Tar->new;
+      $tar->read($spvm_archive) or die $tar->error;
+      
+      # Must get spvmcc.json first to know what to extract
+      $spvmcc_json_archive = $tar->get_content('spvmcc.json');
+      unless ($spvmcc_json_archive) {
+        Carp::confess("SPVM archive '$spvm_archive' must contain spvmcc.json");
+      }
+      
+      my $spvm_archive_tmp_dir = File::Temp->newdir;
+      $self->{spvm_archive_tmp_dir} = $spvm_archive_tmp_dir;
+      $spvm_archive_dir = $spvm_archive_tmp_dir->dirname;
+      
+      # Pre-set info for exists_in_spvm_archive to work
+      my $spvmcc_info_archive_tmp = JSON::PP->new->decode($spvmcc_json_archive);
+      $self->{spvmcc_info_archive} = {
+        classes_h => { map { $_->{name} => $_ } @{$spvmcc_info_archive_tmp->{classes}} },
+        skip_classes_h => { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} },
+      };
+
+      # Extract files
+      $tar->extract_file('spvmcc.json', "$spvm_archive_dir/spvmcc.json");
+      for my $tar_file ($tar->list_files) {
+        my $class_name = &extract_class_name_from_tar_file($tar_file);
+        if ($class_name && $self->exists_in_spvm_archive($class_name)) {
+          $tar->extract_file($tar_file, "$spvm_archive_dir/$tar_file");
+        }
       }
     }
-    
-    unless ($spvmcc_json_archive) {
-      Carp::confess "SVPM archive '$spvm_archive' must contain spvmcc.json";
+    else {
+      Carp::confess("SPVM archive '$spvm_archive' does not exist");
     }
-    
+
+    # Setup final info
     my $spvmcc_info_archive = JSON::PP->new->decode($spvmcc_json_archive);
-    
-    my $spvm_archive_classes_h = {map { $_->{name} => $_ } @{$spvmcc_info_archive->{classes}}};
-    
-    $spvmcc_info_archive->{classes_h} = $spvm_archive_classes_h;
-    
-    $spvmcc_info_archive->{skip_classes_h} = $spvm_archive_skip_classes_h;
-    
+    $spvmcc_info_archive->{classes_h} = { map { $_->{name} => $_ } @{$spvmcc_info_archive->{classes}} };
+    $spvmcc_info_archive->{skip_classes_h} = { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} };
     $self->{spvmcc_info_archive} = $spvmcc_info_archive;
     
-    $tar->extract_file('spvmcc.json', "$spvm_archive_tmp_dir/spvmcc.json");
-    for my $tar_file (@tar_files) {
-      my $class_name_by_tar_file = &extract_class_name_from_tar_file($tar_file);
-      
-      if ($self->exists_in_spvm_archive($class_name_by_tar_file)) {
-        $tar->extract_file($tar_file, "$spvm_archive_tmp_dir/$tar_file");
-      }
-    }
-    
-    $compiler->add_include_dir("$spvm_archive_tmp_dir/SPVM");
+    $compiler->add_include_dir("$spvm_archive_dir/SPVM");
   }
   
   for my $include_dir (@{$builder->include_dirs}) {
