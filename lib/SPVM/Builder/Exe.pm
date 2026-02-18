@@ -328,9 +328,15 @@ sub new {
     $spvm_archive_json = SPVM::Builder::Util::slurp_binary($json_file);
     
     my $spvm_archive_info_data = JSON::PP->new->decode($spvm_archive_json);
+    my $skip_classes_config = $config->spvm_archive_skip_classes // [];
+    my %skip_classes_h = map { $_ => 1 } @$skip_classes_config;
     $self->{spvm_archive_info} = {
-      classes_h => { map { $_->{name} => $_ } @{$spvm_archive_info_data->{classes}} },
-      skip_classes_h => { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} },
+      # Filter classes immediately using skip_classes_h
+      classes_h => { 
+        map { $_->{name} => $_ } 
+        grep { !$skip_classes_h{$_->{name}} } 
+        @{$spvm_archive_info_data->{classes}} 
+      },
     };
 
     # 3. Prepare the final temporary directory for the compiler
@@ -343,9 +349,7 @@ sub new {
     File::Copy::copy($json_file, "$spvmcc_stage_dir/spvm-archive.json");
     
     # Copy classes and other resources using filtered logic
-    $self->copy_to_archive_dir($spvm_archive_dir, $spvmcc_stage_dir, 
-                               $self->{spvm_archive_info}{classes_h}, 
-                               $self->{spvm_archive_info}{skip_classes_h});
+    $self->copy_to_archive_dir($spvm_archive_dir, $spvmcc_stage_dir, $self->{spvm_archive_info}{classes_h});
     
     # 5. Setup paths (Common)
     $compiler->add_include_dir("$spvmcc_stage_dir/SPVM");
@@ -459,7 +463,7 @@ sub build_exe_file {
     if (defined $spvm_archive) {
       my $spvmcc_stage_dir = $self->{spvmcc_stage_dir};
       $spvm_archive_info = $self->{spvm_archive_info};
-      $self->copy_to_archive_dir($spvmcc_stage_dir, $spvm_archive_out, $spvm_archive_info->{classes_h}, $spvm_archive_info->{skip_classes_h});
+      $self->copy_to_archive_dir($spvmcc_stage_dir, $spvm_archive_out, $spvm_archive_info->{classes_h});
     }
     
     # Write spvm-archive.json
@@ -1570,12 +1574,8 @@ sub exists_in_spvm_archive_info {
     
     my $classes_h = $spvm_archive_info->{classes_h};
     
-    my $skip_classes_h = $spvm_archive_info->{skip_classes_h};
-    
     if ($classes_h->{$class_name}) {
-      unless ($skip_classes_h->{$class_name}) {
-        $exists_in_spvm_archive_info = 1;
-      }
+      $exists_in_spvm_archive_info = 1;
     }
   }
   
@@ -1583,9 +1583,7 @@ sub exists_in_spvm_archive_info {
 }
 
 sub copy_to_archive_dir {
-  my ($self, $src_dir, $dest_dir, $classes_h, $skip_classes_h) = @_;
-  
-  $skip_classes_h //= {};
+  my ($self, $src_dir, $dest_dir, $classes_h) = @_;
   
   # Find and copy files
   File::Find::find(
@@ -1606,7 +1604,7 @@ sub copy_to_archive_dir {
         # 1. Check for SPVM class files and object files (with class name filtering)
         if ($rel_path =~ m|^(object/)?SPVM/| && ($rel_path =~ /\.spvm$/ || $rel_path =~ /\.o$/)) {
           my $class_name = &extract_class_name_from_tar_file($rel_path);
-          if ($classes_h->{$class_name} && !$skip_classes_h->{$class_name}) {
+          if ($classes_h->{$class_name}) {
             $should_copy = 1;
           }
         }
@@ -1651,9 +1649,7 @@ sub merge_spvmcc_info {
   
   if ($spvm_archive_info1) {
     for my $class_name (keys %{$spvm_archive_info1->{classes_h}}) {
-      unless ($spvm_archive_info1->{skip_classes_h}{$class_name}) {
-        $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info1->{classes_h}{$class_name};
-      }
+      $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info1->{classes_h}{$class_name};
     }
   }
   
