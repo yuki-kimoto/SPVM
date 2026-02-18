@@ -362,6 +362,8 @@ sub new {
     }
     
     $compiler->add_include_dir("$spvm_archive_dir/SPVM");
+    
+    $config_exe->add_lib_dir("$spvm_archive_dir/lib");
   }
   
   for my $include_dir (@{$builder->include_dirs}) {
@@ -482,6 +484,12 @@ sub build_exe_file {
     open my $fh, '>', $json_file or die "Cannot open '$json_file': $!";
     print $fh $merged_spvm_archive_json;
     close $fh;
+    
+    my $lib_dir = "$spvm_archive_out/lib";
+    unless (-d $lib_dir) {
+      mkdir "$spvm_archive_out/lib"
+       or Carp::confess "Could not create the lib directory in the SPVM archive: $!";
+   }
   }
   
   # Write local archive info
