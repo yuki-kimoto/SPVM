@@ -340,20 +340,20 @@ sub new {
     };
 
     # 3. Prepare the final temporary directory for the compiler
-    my $spvmcc_stage_dir_obj = File::Temp->newdir;
-    $self->{spvmcc_stage_dir_obj} = $spvmcc_stage_dir_obj;
-    my $spvmcc_stage_dir = $spvmcc_stage_dir_obj->dirname;
-    $self->{spvmcc_stage_dir} = $spvmcc_stage_dir;
+    my $spvm_archive_extract_dir_obj = File::Temp->newdir;
+    $self->{spvm_archive_extract_dir_obj} = $spvm_archive_extract_dir_obj;
+    my $spvm_archive_extract_dir = $spvm_archive_extract_dir_obj->dirname;
+    $self->{spvm_archive_extract_dir} = $spvm_archive_extract_dir;
 
     # 4. Copy and filter files (Common Logic)
-    File::Copy::copy($json_file, "$spvmcc_stage_dir/spvm-archive.json");
+    File::Copy::copy($json_file, "$spvm_archive_extract_dir/spvm-archive.json");
     
     # Copy classes and other resources using filtered logic
-    $self->copy_to_archive_dir($spvm_archive_dir, $spvmcc_stage_dir, $self->{spvm_archive_info}{classes_h});
+    $self->copy_to_archive_dir($spvm_archive_dir, $spvm_archive_extract_dir, $self->{spvm_archive_info}{classes_h});
     
     # 5. Setup paths (Common)
-    $compiler->add_include_dir("$spvmcc_stage_dir/SPVM");
-    $config_exe->add_lib_dir("$spvmcc_stage_dir/lib");
+    $compiler->add_include_dir("$spvm_archive_extract_dir/SPVM");
+    $config_exe->add_lib_dir("$spvm_archive_extract_dir/lib");
   }
   
   for my $include_dir (@{$builder->include_dirs}) {
@@ -412,8 +412,8 @@ sub build_exe_file {
   # Add object files from loaded archive
   my $spvm_archive = $self->config->get_spvm_archive;
   if (defined $spvm_archive) {
-    my $spvmcc_stage_dir = $self->{spvmcc_stage_dir};
-    my $object_files_in_spvm_archive = SPVM::Builder::Exe->find_object_files("$spvmcc_stage_dir");
+    my $spvm_archive_extract_dir = $self->{spvm_archive_extract_dir};
+    my $object_files_in_spvm_archive = SPVM::Builder::Exe->find_object_files("$spvm_archive_extract_dir");
     for my $object_file_in_spvm_archive (@$object_files_in_spvm_archive) {
       push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $object_file_in_spvm_archive);
     }
@@ -461,9 +461,9 @@ sub build_exe_file {
     # Copy from existing archive
     my $spvm_archive_info;
     if (defined $spvm_archive) {
-      my $spvmcc_stage_dir = $self->{spvmcc_stage_dir};
+      my $spvm_archive_extract_dir = $self->{spvm_archive_extract_dir};
       $spvm_archive_info = $self->{spvm_archive_info};
-      $self->copy_to_archive_dir($spvmcc_stage_dir, $spvm_archive_out, $spvm_archive_info->{classes_h});
+      $self->copy_to_archive_dir($spvm_archive_extract_dir, $spvm_archive_out, $spvm_archive_info->{classes_h});
     }
     
     # Write spvm-archive.json
