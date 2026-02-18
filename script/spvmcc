@@ -649,6 +649,8 @@ This option can be repeated.
 
 Generate an SPVM archive as a directory into the path of C<-o> option.
 
+If the directory already exists, it is not newly created. The C<spvm-archive.json> file and the classes described in it are overwritten.
+
 =head1 Copyright & License
 
 Copyright 2023 Yuki Kimoto. All Rights Reserved.
