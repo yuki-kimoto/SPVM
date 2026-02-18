@@ -123,7 +123,6 @@ my $build_exe = SPVM::Builder::Exe->new(
   include_dirs_precompile => \@include_dirs_precompile,
   external_object_files => \@external_object_files,
   build_spvm_archive => $build_spvm_archive,
-  build_spvm_archive_dir => $build_spvm_archive_dir,
 );
 
 $build_exe->build_exe_file;
