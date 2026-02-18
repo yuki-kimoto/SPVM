@@ -295,74 +295,60 @@ sub new {
   my $spvm_archive = $config->get_spvm_archive;
   if (defined $spvm_archive) {
     my $spvm_archive_json;
-    my $src_dir; # For directory case
+    my $extract_tmp_dir_at_first; 
 
-    # 1. Prepare temp directory for both cases
-    my $spvm_archive_tmp_dir_obj = File::Temp->newdir;
-    $self->{spvm_archive_tmp_dir_obj} = $spvm_archive_tmp_dir_obj;
-    my $spvm_archive_dir = $spvm_archive_tmp_dir_obj->dirname;
-    $self->{spvm_archive_tmp_dir} = $spvm_archive_dir;
-    
-    if (-d $spvm_archive) {
-      # Case: Directory
-      $src_dir = $spvm_archive;
-      my $json_file = "$src_dir/spvm-archive.json";
-      unless (-f $json_file) {
-        Carp::confess("SPVM archive directory '$spvm_archive' must contain spvm-archive.json");
-      }
-      $spvm_archive_json = SPVM::Builder::Util::slurp_binary($json_file);
-    }
-    elsif (-f $spvm_archive) {
+    # 1. Normalize input to a directory
+    if (-f $spvm_archive) {
       # Case: tar.gz
-      # Add extension check for files
       unless ($spvm_archive =~ /\.tar\.gz$/) {
         Carp::confess("SPVM archive file '$spvm_archive' must have '.tar.gz' extension");
       }
       
+      # Extract all files to a temporary directory to handle it as a normal directory
+      my $extract_tmp_dir_obj = File::Temp->newdir;
+      $extract_tmp_dir_at_first = $extract_tmp_dir_obj->dirname;
+      
       my $tar = Archive::Tar->new;
       $tar->read($spvm_archive) or die $tar->error;
-      
-      $spvm_archive_json = $tar->get_content('spvm-archive.json');
-      unless ($spvm_archive_json) {
-        Carp::confess("SPVM archive '$spvm_archive' must contain spvm-archive.json");
-      }
+      $tar->extract_all($extract_tmp_dir_at_first) or die "Could not extract $spvm_archive to $extract_tmp_dir_at_first";
+    }
+    elsif (-d $spvm_archive) {
+      # Case: Directory
+      $extract_tmp_dir_at_first = $spvm_archive;
     }
     else {
       Carp::confess("SPVM archive '$spvm_archive' not found");
     }
 
-    # 2. Decode JSON (Common)
-    my $spvm_archive_info = JSON::PP->new->decode($spvm_archive_json);
+    # 2. Read and decode JSON (Common)
+    my $json_file = "$extract_tmp_dir_at_first/spvm-archive.json";
+    unless (-f $json_file) {
+      Carp::confess("SPVM archive '$spvm_archive' must contain spvm-archive.json");
+    }
+    $spvm_archive_json = SPVM::Builder::Util::slurp_binary($json_file);
+    
+    my $spvm_archive_info_data = JSON::PP->new->decode($spvm_archive_json);
     $self->{spvm_archive_info} = {
-      classes_h => { map { $_->{name} => $_ } @{$spvm_archive_info->{classes}} },
+      classes_h => { map { $_->{name} => $_ } @{$spvm_archive_info_data->{classes}} },
       skip_classes_h => { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} },
     };
 
-    # 3. Populate temp directory from source (Common Logic)
-    if (-f $spvm_archive) {
-      # Populate from tar
-      my $tar = Archive::Tar->new;
-      $tar->read($spvm_archive) or die $tar->error;
-      $tar->extract_file('spvm-archive.json', "$spvm_archive_dir/spvm-archive.json");
-      for my $tar_file ($tar->list_files) {
-        my $class_name = &extract_class_name_from_tar_file($tar_file);
-        if ($class_name && $self->exists_in_spvm_archive_info($class_name)) {
-          $tar->extract_file($tar_file, "$spvm_archive_dir/$tar_file");
-        }
-      }
-    }
-    elsif (-d $spvm_archive) {
-      # Populate from directory (Copy filtered files)
-      File::Copy::copy("$src_dir/spvm-archive.json", "$spvm_archive_dir/spvm-archive.json");
-      
-      # We use the same copy logic as build_exe_file
-      $self->copy_to_archive_dir($src_dir, $spvm_archive_dir, 
-                                 $self->{spvm_archive_info}{classes_h}, 
-                                 $self->{spvm_archive_info}{skip_classes_h});
-    }
+    # 3. Prepare the final temporary directory for the compiler
+    my $spvm_archive_tmp_dir_obj = File::Temp->newdir;
+    $self->{spvm_archive_tmp_dir_obj} = $spvm_archive_tmp_dir_obj;
+    my $spvm_archive_dir = $spvm_archive_tmp_dir_obj->dirname;
+    $self->{spvm_archive_tmp_dir} = $spvm_archive_dir;
+
+    # 4. Copy and filter files (Common Logic)
+    File::Copy::copy($json_file, "$spvm_archive_dir/spvm-archive.json");
     
+    # Copy classes and other resources using filtered logic
+    $self->copy_to_archive_dir($extract_tmp_dir_at_first, $spvm_archive_dir, 
+                               $self->{spvm_archive_info}{classes_h}, 
+                               $self->{spvm_archive_info}{skip_classes_h});
+    
+    # 5. Setup paths (Common)
     $compiler->add_include_dir("$spvm_archive_dir/SPVM");
-    
     $config_exe->add_lib_dir("$spvm_archive_dir/lib");
   }
   
