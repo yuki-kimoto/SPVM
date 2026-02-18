@@ -353,6 +353,7 @@ sub new {
     
     # 5. Setup paths (Common)
     $compiler->add_include_dir("$spvm_archive_extract_dir/SPVM");
+    $config_exe->add_include_dir_global("$spvm_archive_extract_dir/include");
     $config_exe->add_lib_dir("$spvm_archive_extract_dir/lib");
   }
   
