@@ -1595,15 +1595,24 @@ sub copy_to_archive_dir {
         my $rel_path = $src_path;
         $rel_path =~ s/^\Q$src_dir\E\/?//;
         
-        # File type check
-        return unless $rel_path =~ /\.spvm$/ || $rel_path =~ /\.o$/;
+        # Skip directories
         return unless -f $src_path;
-        return unless $rel_path =~ m|^(object/)?SPVM/|;
-        
-        # Class check
-        my $class_name = &extract_class_name_from_tar_file($rel_path);
-        return if $skip_classes_h->{$class_name};
-        return unless $classes_h->{$class_name};
+
+        my $should_copy = 0;
+
+        # 1. Check for SPVM class files and object files (with class name filtering)
+        if ($rel_path =~ m|^(object/)?SPVM/| && ($rel_path =~ /\.spvm$/ || $rel_path =~ /\.o$/)) {
+          my $class_name = &extract_class_name_from_tar_file($rel_path);
+          if ($classes_h->{$class_name} && !$skip_classes_h->{$class_name}) {
+            $should_copy = 1;
+          }
+        }
+        # 2. Check for library files in the lib directory (Archive both .a and .lib)
+        elsif ($rel_path =~ m|^lib/| && $rel_path =~ /\.(a|lib)$/) {
+          $should_copy = 1;
+        }
+
+        return unless $should_copy;
         
         # Create destination directory
         my $dest_path = "$dest_dir/$rel_path";
@@ -1622,7 +1631,6 @@ sub copy_to_archive_dir {
     $src_dir
   );
 }
-
 
 sub merge_spvmcc_info {
   my ($self, $spvm_archive_info1, $spvm_archive_info2) = @_;
