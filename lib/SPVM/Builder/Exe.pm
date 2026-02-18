@@ -1595,6 +1595,9 @@ sub copy_to_archive_dir {
         my $rel_path = $src_path;
         $rel_path =~ s/^\Q$src_dir\E\/?//;
         
+        # Normalize Windows path separators to slashes for regex matching
+        $rel_path =~ tr|\\|/|;
+
         # Skip directories
         return unless -f $src_path;
 
