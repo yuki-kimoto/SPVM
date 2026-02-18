@@ -1612,31 +1612,47 @@ sub extract_archive_files {
 
         my $should_copy = 0;
 
-        # 3. Check for SPVM class files and object files using the normalized relative path
-        if ($rel_path =~ m|^(object/)?SPVM/| && ($rel_path =~ /\.spvm$/ || $rel_path =~ /\.o$/)) {
+        # 3. Check for files based on specific rules for directories and extensions
+
+        # 3-1. SPVM source files (.spvm) from SPVM directory
+        if ($rel_path =~ m|^SPVM/| && $rel_path =~ /\.spvm$/) {
           my $class_name = &extract_class_name_from_tar_file($rel_path);
           if ($classes_h->{$class_name}) {
             $should_copy = 1;
           }
         }
-        # 4. Check for library files in the lib directory
+        # 3-2. Object files (.o) from object directory or SPVM directory
+        elsif (($rel_path =~ m|^object/| || $rel_path =~ m|^SPVM/|) && $rel_path =~ /\.o$/) {
+          my $class_name = &extract_class_name_from_tar_file($rel_path);
+          if ($classes_h->{$class_name}) {
+            $should_copy = 1;
+          }
+        }
+        # 3-3. Library files (.a, .lib) from lib directory
         elsif ($rel_path =~ m|^lib/| && $rel_path =~ /\.(a|lib)$/) {
           $should_copy = 1;
+        }
+        # 3-4. Header files from include directory (excluding hidden files)
+        elsif ($rel_path =~ m|^include/|) {
+          my $basename = File::Basename::basename($rel_path);
+          unless ($basename =~ /^\./) {
+            $should_copy = 1;
+          }
         }
 
         return unless $should_copy;
         
-        # 5. Build the destination path by joining the base and the relative part
+        # 4. Build the destination path by joining the base and the relative part
         # We use File::Spec for cross-platform safety
         my $dest_path = File::Spec->catfile($dest_dir, split('/', $rel_path));
         
-        # 6. Ensure the destination directory exists (File::Basename is safe with catfile result)
+        # 5. Ensure the destination directory exists (File::Basename is safe with catfile result)
         my $dest_parent = File::Basename::dirname($dest_path);
         unless (-d $dest_parent) {
           File::Path::mkpath($dest_parent) or Carp::confess "Cannot create directory '$dest_parent': $!";
         }
         
-        # 7. Copy and preserve mtime
+        # 6. Copy and preserve mtime
         File::Copy::copy($src_path, $dest_path) or Carp::confess "Copy failed from '$src_path' to '$dest_path': $!";
         my $mtime = (stat $src_path)[9];
         utime $mtime, $mtime, $dest_path;
