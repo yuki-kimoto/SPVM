@@ -1631,46 +1631,46 @@ sub copy_to_archive_dir {
 
 
 sub merge_spvmcc_info {
-  my ($self, $spvmcc_info, $spvm_archive_info) = @_;
+  my ($self, $spvmcc_info1, $spvmcc_info2) = @_;
   
-  my $merged_spvm_archive_info = {};
-  $merged_spvm_archive_info->{app_name} = $spvm_archive_info->{app_name};
-  if (defined $spvm_archive_info->{mode}) {
-    $merged_spvm_archive_info->{mode} = $spvm_archive_info->{mode};
+  my $merged_spvmcc_info = {};
+  $merged_spvmcc_info->{app_name} = $spvmcc_info2->{app_name};
+  if (defined $spvmcc_info2->{mode}) {
+    $merged_spvmcc_info->{mode} = $spvmcc_info2->{mode};
   }
-  if (defined $spvm_archive_info->{version}) {
-    $merged_spvm_archive_info->{version} = $spvm_archive_info->{version};
+  if (defined $spvmcc_info2->{version}) {
+    $merged_spvmcc_info->{version} = $spvmcc_info2->{version};
   }
   
-  $merged_spvm_archive_info->{classes_h} = {};
+  $merged_spvmcc_info->{classes_h} = {};
   
-  if ($spvmcc_info) {
-    for my $class_name (keys %{$spvmcc_info->{classes_h}}) {
-      unless ($spvmcc_info->{skip_classes_h}{$class_name}) {
-        $merged_spvm_archive_info->{classes_h}{$class_name} = $spvmcc_info->{classes_h}{$class_name};
+  if ($spvmcc_info1) {
+    for my $class_name (keys %{$spvmcc_info1->{classes_h}}) {
+      unless ($spvmcc_info1->{skip_classes_h}{$class_name}) {
+        $merged_spvmcc_info->{classes_h}{$class_name} = $spvmcc_info1->{classes_h}{$class_name};
       }
     }
   }
   
-  for my $class_name (keys %{$spvm_archive_info->{classes_h}}) {
-    $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info->{classes_h}{$class_name};
+  for my $class_name (keys %{$spvmcc_info2->{classes_h}}) {
+    $merged_spvmcc_info->{classes_h}{$class_name} = $spvmcc_info2->{classes_h}{$class_name};
   }
   
-  my $merged_spvm_archive_info_classes_h = delete $merged_spvm_archive_info->{classes_h};
+  my $merged_spvmcc_info_classes_h = delete $merged_spvmcc_info->{classes_h};
   
   my $classes = [];
-  for my $class_name (keys %$merged_spvm_archive_info_classes_h) {
+  for my $class_name (keys %$merged_spvmcc_info_classes_h) {
     next if $class_name =~ /^eval::anon_class::\d+$/a;
-    my $class = $merged_spvm_archive_info_classes_h->{$class_name};
+    my $class = $merged_spvmcc_info_classes_h->{$class_name};
     $class->{name} = $class_name;
     push @$classes, $class;
   }
   
   $classes = [sort { $a->{name} cmp $b->{name} } @$classes];
   
-  $merged_spvm_archive_info->{classes} = $classes;
+  $merged_spvmcc_info->{classes} = $classes;
   
-  return $merged_spvm_archive_info;
+  return $merged_spvmcc_info;
 }
 
 1;
