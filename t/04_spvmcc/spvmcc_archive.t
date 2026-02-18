@@ -81,33 +81,74 @@ sub to_cmd {
   
   # Add files to SPVM archive
   {
-    # Add static link libraries to SPVM archive
-    {
-      # Prepare library files in SPVM archive
-      my $lib_dir_in_spvm_archive = "$archive_dir/lib";
-      File::Path::mkpath $lib_dir_in_spvm_archive;
-      my @libs = ("$lib_dir_in_spvm_archive/foo.a", "$lib_dir_in_spvm_archive/foo.lib");
-      for my $lib (@libs) {
-        open my $fh, '>', $lib or die "Can't create $lib: $!";
-        binmode $fh;
-        print $fh "dummy library content";
-        close $fh;
-      }
-    }
+    use Config;
+    my $lib_dir_in_spvm_archive = "$archive_dir/lib";
+    my $include_dir_in_spvm_archive = "$archive_dir/include";
+    my $tmp_build_dir = "t/04_spvmcc/.spvm_build/.tmp";
     
-    # Add header files to SPVM archive
+    File::Path::mkpath $lib_dir_in_spvm_archive;
+    File::Path::mkpath $include_dir_in_spvm_archive;
+    File::Path::mkpath $tmp_build_dir;
+
+    # 1. Real Build: Create foo.h and compile foo.c to a real static library
+    my $foo_h_file = "$include_dir_in_spvm_archive/foo.h";
     {
-      # Prepare header files in SPVM archive
-      my $include_dir_in_spvm_archive = "$archive_dir/include";
-      File::Path::mkpath $include_dir_in_spvm_archive;
-      my @headers = ("$include_dir_in_spvm_archive/foo.h", "$include_dir_in_spvm_archive/bar.hpp");
-      for my $header (@headers) {
-        open my $fh, '>', $header or die "Can't create $header: $!";
-        binmode $fh;
-        print $fh "// dummy header content";
-        close $fh;
-      }
+      open my $fh, '>', $foo_h_file or die "Can't create $foo_h_file: $!";
+      print $fh "int spvmcc_archive_test_foo(void);\n";
+      close $fh;
     }
+
+    my $foo_c_file = "$tmp_build_dir/foo.c";
+    {
+      open my $fh, '>', $foo_c_file or die "Can't create $foo_c_file: $!";
+      print $fh qq(#include "foo.h"\n);
+      print $fh "int spvmcc_archive_test_foo(void) { return 1; }\n";
+      close $fh;
+    }
+
+    my $cc = $Config{cc};
+    my $ccflags = "$Config{ccflags} $Config{optimize}";
+    my $obj_ext = $Config{obj_ext};
+    my $lib_ext = $Config{lib_ext};
+    my $is_msvc = $^O eq 'MSWin32' && $cc =~ /cl/i;
+
+    # Compile foo.c -> foo.o
+    my $foo_o_file = "$tmp_build_dir/foo$obj_ext";
+    my @cc_cmd_foo = $is_msvc 
+      ? ($cc, (split /\s+/, $ccflags), '-c', "-Fo$foo_o_file", "-I$include_dir_in_spvm_archive", $foo_c_file)
+      : ($cc, (split /\s+/, $ccflags), '-c', '-o', $foo_o_file, "-I$include_dir_in_spvm_archive", $foo_c_file);
+    system(@cc_cmd_foo) == 0 or die "Failed to compile foo.c";
+
+    # Create real static library (foo.a or foo.lib)
+    my $foo_lib_file = "$lib_dir_in_spvm_archive/foo$lib_ext";
+    my @ar_cmd = $is_msvc
+      ? ('lib', '-nologo', "-out:$foo_lib_file", $foo_o_file)
+      : ($Config{ar} || 'ar', 'rc', $foo_lib_file, $foo_o_file);
+    system(@ar_cmd) == 0 or die "Failed to create static library";
+
+    # 2. Real Build: Create bar.o (Object file) in the tmp directory
+    my $bar_c_file = "$tmp_build_dir/bar.c";
+    {
+      open my $fh, '>', $bar_c_file or die "Can't create $bar_c_file: $!";
+      print $fh qq(#include "foo.h"\n);
+      print $fh "int spvmcc_archive_test_bar(void) { return spvmcc_archive_test_foo(); }\n";
+      close $fh;
+    }
+    my $bar_o_file = "$tmp_build_dir/bar$obj_ext";
+    my @cc_cmd_bar = $is_msvc
+      ? ($cc, (split /\s+/, $ccflags), '-c', "-Fo$bar_o_file", "-I$include_dir_in_spvm_archive", $bar_c_file)
+      : ($cc, (split /\s+/, $ccflags), '-c', '-o', $bar_o_file, "-I$include_dir_in_spvm_archive", $bar_c_file);
+    system(@cc_cmd_bar) == 0 or die "Failed to compile bar.c";
+
+    # 3. Dummy Files: Create other files as empty to satisfy the original test assertions
+    # Create the 'other' library extension as a dummy
+    my $other_lib_ext = ($lib_ext eq '.a') ? '.lib' : '.a';
+    my $dummy_lib = "$lib_dir_in_spvm_archive/foo$other_lib_ext";
+    open my $fh_l, '>', $dummy_lib; close $fh_l;
+
+    # Create bar.hpp as a dummy
+    my $dummy_header = "$include_dir_in_spvm_archive/bar.hpp";
+    open my $fh_h, '>', $dummy_header; close $fh_h;
   }
   
   # use_spvm_archive
