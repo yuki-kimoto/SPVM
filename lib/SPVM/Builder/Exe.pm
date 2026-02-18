@@ -1585,45 +1585,58 @@ sub exists_in_spvm_archive_info {
 sub extract_archive_files {
   my ($self, $src_dir, $dest_dir, $classes_h) = @_;
   
-  # Find and copy files
+  # Normalize the base source directory to use forward slashes for robust matching
+  my $normalized_src_dir = $src_dir;
+  $normalized_src_dir =~ tr|\\|/|;
+  $normalized_src_dir =~ s|/+$||; # Remove trailing slash for consistent substitution
+
   File::Find::find(
     {
       wanted => sub {
         my $src_path = $File::Find::name;
-        my $rel_path = $src_path;
-        $rel_path =~ s/^\Q$src_dir\E\/?//;
         
-        # Normalize Windows path separators to slashes for regex matching
-        $rel_path =~ tr|\\|/|;
+        # 1. Normalize the current found path to forward slashes for logic
+        my $normalized_src_path = $src_path;
+        $normalized_src_path =~ tr|\\|/|;
+        
+        # 2. Extract the relative path correctly by using normalized strings
+        my $rel_path = $normalized_src_path;
+        unless ($rel_path =~ s/^\Q$normalized_src_dir\E\///) {
+          # Skip if the path normalization failed to match the base directory
+          return if $rel_path eq $normalized_src_path;
+        }
 
-        # Skip directories
+        # Skip if not a file
         return unless -f $src_path;
 
         my $should_copy = 0;
 
-        # 1. Check for SPVM class files and object files (with class name filtering)
+        # 3. Check for SPVM class files and object files using the normalized relative path
         if ($rel_path =~ m|^(object/)?SPVM/| && ($rel_path =~ /\.spvm$/ || $rel_path =~ /\.o$/)) {
           my $class_name = &extract_class_name_from_tar_file($rel_path);
           if ($classes_h->{$class_name}) {
             $should_copy = 1;
           }
         }
-        # 2. Check for library files in the lib directory (Archive both .a and .lib)
+        # 4. Check for library files in the lib directory
         elsif ($rel_path =~ m|^lib/| && $rel_path =~ /\.(a|lib)$/) {
           $should_copy = 1;
         }
 
         return unless $should_copy;
         
-        # Create destination directory
-        my $dest_path = "$dest_dir/$rel_path";
+        # 5. Build the destination path by joining the base and the relative part
+        # We use File::Spec for cross-platform safety
+        my $dest_path = File::Spec->catfile($dest_dir, split('/', $rel_path));
+        
+        # 6. Ensure the destination directory exists (File::Basename is safe with catfile result)
         my $dest_parent = File::Basename::dirname($dest_path);
         unless (-d $dest_parent) {
-          File::Path::mkpath($dest_parent) or Carp::confess "Cannot create '$dest_parent': $!";
+          File::Path::mkpath($dest_parent) or Carp::confess "Cannot create directory '$dest_parent': $!";
         }
         
-        # Copy and preserve mtime
-        File::Copy::copy($src_path, $dest_path) or Carp::confess "Copy failed: $!";
+        # 7. Copy and preserve mtime
+        File::Copy::copy($src_path, $dest_path) or Carp::confess "Copy failed from '$src_path' to '$dest_path': $!";
         my $mtime = (stat $src_path)[9];
         utime $mtime, $mtime, $dest_path;
       },
