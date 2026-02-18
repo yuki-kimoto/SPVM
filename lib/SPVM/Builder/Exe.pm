@@ -295,16 +295,16 @@ sub new {
   my $spvm_archive = $config->get_spvm_archive;
   if (defined $spvm_archive) {
     my $spvm_archive_dir;
-    my $spvmcc_json_archive;
+    my $spvm_archive_json_archive;
     
     if (-d $spvm_archive) {
       # 1. Directory case
       $spvm_archive_dir = $spvm_archive;
-      my $json_file = "$spvm_archive_dir/spvmcc.json";
+      my $json_file = "$spvm_archive_dir/spvm-archive.json";
       unless (-f $json_file) {
-        Carp::confess("SPVM archive directory '$spvm_archive' must contain spvmcc.json");
+        Carp::confess("SPVM archive directory '$spvm_archive' must contain spvm-archive.json");
       }
-      $spvmcc_json_archive = SPVM::Builder::Util::slurp_binary($json_file);
+      $spvm_archive_json_archive = SPVM::Builder::Util::slurp_binary($json_file);
     }
     elsif (-f $spvm_archive) {
       # 2. Archive file case
@@ -315,10 +315,10 @@ sub new {
       my $tar = Archive::Tar->new;
       $tar->read($spvm_archive) or die $tar->error;
       
-      # Must get spvmcc.json first to know what to extract
-      $spvmcc_json_archive = $tar->get_content('spvmcc.json');
-      unless ($spvmcc_json_archive) {
-        Carp::confess("SPVM archive '$spvm_archive' must contain spvmcc.json");
+      # Must get spvm-archive.json first to know what to extract
+      $spvm_archive_json_archive = $tar->get_content('spvm-archive.json');
+      unless ($spvm_archive_json_archive) {
+        Carp::confess("SPVM archive '$spvm_archive' must contain spvm-archive.json");
       }
       
       my $spvm_archive_tmp_dir = File::Temp->newdir;
@@ -326,14 +326,14 @@ sub new {
       $spvm_archive_dir = $spvm_archive_tmp_dir->dirname;
       
       # Pre-set info for exists_in_spvm_archive to work
-      my $spvmcc_info_archive_tmp = JSON::PP->new->decode($spvmcc_json_archive);
+      my $spvmcc_info_archive_tmp = JSON::PP->new->decode($spvm_archive_json_archive);
       $self->{spvmcc_info_archive} = {
         classes_h => { map { $_->{name} => $_ } @{$spvmcc_info_archive_tmp->{classes}} },
         skip_classes_h => { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} },
       };
 
       # Extract files
-      $tar->extract_file('spvmcc.json', "$spvm_archive_dir/spvmcc.json");
+      $tar->extract_file('spvm-archive.json', "$spvm_archive_dir/spvm-archive.json");
       for my $tar_file ($tar->list_files) {
         my $class_name = &extract_class_name_from_tar_file($tar_file);
         if ($class_name && $self->exists_in_spvm_archive($class_name)) {
@@ -346,7 +346,7 @@ sub new {
     }
 
     # Setup final info
-    my $spvmcc_info_archive = JSON::PP->new->decode($spvmcc_json_archive);
+    my $spvmcc_info_archive = JSON::PP->new->decode($spvm_archive_json_archive);
     $spvmcc_info_archive->{classes_h} = { map { $_->{name} => $_ } @{$spvmcc_info_archive->{classes}} };
     $spvmcc_info_archive->{skip_classes_h} = { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} };
     $self->{spvmcc_info_archive} = $spvmcc_info_archive;
@@ -458,9 +458,9 @@ sub build_exe_file {
     }
     
     my $merged_spvmcc_info = $self->merge_spvmcc_info($spvmcc_info_archive, $spvmcc_info);
-    my $merged_spvmcc_json = JSON::PP->new->pretty->canonical(1)->encode($merged_spvmcc_info);
+    my $merged_spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($merged_spvmcc_info);
     
-    $tar->add_data('spvmcc.json', $merged_spvmcc_json)
+    $tar->add_data('spvm-archive.json', $merged_spvm_archive_json)
       or Carp::confess $tar->error;
     
     $tar->write($spvm_archive_file, COMPRESS_GZIP)
@@ -482,16 +482,16 @@ sub build_exe_file {
     
     $spvmcc_info->{classes} = $classes;
     
-    my $spvmcc_json = JSON::PP->new->pretty->canonical(1)->encode($spvmcc_info);
+    my $spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($spvmcc_info);
     
     my $build_work_dir = $self->builder->create_build_work_path;
     
-    my $spvmcc_json_file = "$build_work_dir/spvmcc.json";
+    my $spvm_archive_json_file = "$build_work_dir/spvm-archive.json";
     
-    open my $fh, '>', $spvmcc_json_file
-      or die "Cannot open the file '$spvmcc_json_file':$!";
+    open my $fh, '>', $spvm_archive_json_file
+      or die "Cannot open the file '$spvm_archive_json_file':$!";
     
-    print $fh $spvmcc_json;
+    print $fh $spvm_archive_json;
   }
   
 }

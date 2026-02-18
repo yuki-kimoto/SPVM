@@ -53,8 +53,8 @@ sub to_cmd {
     my $success = $tar->read("t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz");
     ok($success);
     
-    my $spvmcc_json = $tar->get_content("spvmcc.json");
-    my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
+    my $spvm_archive_json = $tar->get_content("spvm-archive.json");
+    my $spvmcc_info = JSON::PP->new->decode($spvm_archive_json);
     is($spvmcc_info->{app_name}, "myapp");
     ok(!$spvmcc_info->{mode});
     ok(!$spvmcc_info->{version});
@@ -99,8 +99,8 @@ sub to_cmd {
     my $success = $tar->read("t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz");
     ok($success);
     
-    my $spvmcc_json = $tar->get_content("spvmcc.json");
-    my $spvmcc_info = JSON::PP->new->decode($spvmcc_json);
+    my $spvm_archive_json = $tar->get_content("spvm-archive.json");
+    my $spvmcc_info = JSON::PP->new->decode($spvm_archive_json);
     is($spvmcc_info->{app_name}, "spvm-archive");
     is($spvmcc_info->{mode}, "linux-64bit");
     is($spvmcc_info->{version}, "1.005");
