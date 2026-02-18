@@ -346,7 +346,7 @@ sub new {
       $tar->extract_file('spvm-archive.json', "$spvm_archive_dir/spvm-archive.json");
       for my $tar_file ($tar->list_files) {
         my $class_name = &extract_class_name_from_tar_file($tar_file);
-        if ($class_name && $self->exists_in_spvm_archive($class_name)) {
+        if ($class_name && $self->exists_in_spvmcc_info($class_name)) {
           $tar->extract_file($tar_file, "$spvm_archive_dir/$tar_file");
         }
       }
@@ -579,8 +579,8 @@ sub compile_classes {
   my $object_files = [];
   for my $class_name (@$class_names) {
     
-    my $exists_in_spvm_archive = $self->exists_in_spvm_archive($class_name);
-    next if $exists_in_spvm_archive;
+    my $exists_in_spvmcc_info = $self->exists_in_spvmcc_info($class_name);
+    next if $exists_in_spvmcc_info;
     
     $spvm_archive_info->{classes_h}{$class_name} = {};
     
@@ -1567,10 +1567,10 @@ sub extract_class_name_from_tar_file {
   return $class_name;
 }
 
-sub exists_in_spvm_archive {
+sub exists_in_spvmcc_info {
   my ($self, $class_name) = @_;
   
-  my $exists_in_spvm_archive;
+  my $exists_in_spvmcc_info;
   my $spvmcc_info = $self->{spvmcc_info};
   if ($spvmcc_info) {
     
@@ -1580,14 +1580,13 @@ sub exists_in_spvm_archive {
     
     if ($classes_h->{$class_name}) {
       unless ($skip_classes_h->{$class_name}) {
-        $exists_in_spvm_archive = 1;
+        $exists_in_spvmcc_info = 1;
       }
     }
   }
   
-  return $exists_in_spvm_archive;
+  return $exists_in_spvmcc_info;
 }
-
 
 sub copy_to_archive_dir {
   my ($self, $src_dir, $dest_dir, $classes_h, $skip_classes_h) = @_;
