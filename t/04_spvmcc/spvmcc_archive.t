@@ -97,6 +97,19 @@ sub to_cmd {
     my $archive_output_dir = "t/04_spvmcc/script/.tmp/spvm-archive-myapp-extend";
     File::Path::rmtree $archive_output_dir if -e $archive_output_dir;
     
+    # 1. Prepare dummy library files in the build directory before running spvmcc
+    # The builder searches $build_dir/lib during the archive process
+    my $lib_dir_in_build = "t/04_spvmcc/script/.tmp/spvm-archive-myapp/lib";
+    File::Path::mkpath $lib_dir_in_build;
+    my @dummy_libs = ("$lib_dir_in_build/foo.a", "$lib_dir_in_build/foo.lib");
+    for my $dummy_lib (@dummy_libs) {
+      open my $fh, '>', $dummy_lib or die "Can't create $dummy_lib: $!";
+      binmode $fh;
+      print $fh "dummy library content";
+      close $fh;
+    }
+    
+    # 2. Execute spvmcc
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $archive_output_dir --build-spvm-archive --mode linux-64bit t/04_spvmcc/script/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
@@ -125,7 +138,12 @@ sub to_cmd {
     ok(-f "$archive_output_dir/SPVM/TestCase/NativeAPI2.spvm");
     ok(!-f "$archive_output_dir/SPVM/TestCase/Precompile.spvm"); # Should be skipped
     ok(-f "$archive_output_dir/SPVM/TestCase/Resource/Mylib1.spvm");
+
+    # 3. Check if library files are correctly copied from build_dir/lib to archive_dir/lib
+    ok(-f "$archive_output_dir/lib/foo.a", "Static library foo.a is copied to the archive");
+    ok(-f "$archive_output_dir/lib/foo.lib", "Static library foo.lib is copied to the archive");
   }
+  
 }
 
 done_testing;
