@@ -45,7 +45,6 @@ SPVM::Builder::Util::getopt
   'include-dir-precompile=s' => \my @include_dirs_precompile,
   'object-file=s' => \my @external_object_files,
   'build-spvm-archive' => \my $build_spvm_archive,
-  'build-spvm-archive-dir' => \my $build_spvm_archive_dir,
 ;
 
 if ($help) {
@@ -83,11 +82,6 @@ unless (defined $script_name) {
 unless (defined $output_file) {
   warn "-o, --output option is required.\n\n";
   warn SPVM::Builder::Util::extract_usage;
-  exit 255;
-}
-
-if ($build_spvm_archive && $build_spvm_archive_dir) {
-  warn "Error: --build-spvm-archive and --build-spvm-archive-dir cannot be specified at the same time.\n\n";
   exit 255;
 }
 
@@ -652,12 +646,6 @@ This option can be repeated.
 =head2 --build-spvm-archive
 
   --build-spvm-archive
-
-Generate an SPVM archive into the path of C<-o> option. The file extension of an SPVM archive is a tarball(.tar.gz).
-
-=head2 --build-spvm-archive-dir
-
-  --build-spvm-archive-dir
 
 Generate an SPVM archive as a directory into the path of C<-o> option.
 
