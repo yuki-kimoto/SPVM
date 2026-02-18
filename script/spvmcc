@@ -46,7 +46,6 @@ SPVM::Builder::Util::getopt
   'object-file=s' => \my @external_object_files,
   'build-spvm-archive' => \my $build_spvm_archive,
   'build-spvm-archive-dir' => \my $build_spvm_archive_dir,
-  'spvm-archive=s' => \my $spvm_archive,
 ;
 
 if ($help) {
@@ -129,7 +128,6 @@ my $build_exe = SPVM::Builder::Exe->new(
   include_dirs_native_class => $include_dirs_native_class,
   include_dirs_precompile => \@include_dirs_precompile,
   external_object_files => \@external_object_files,
-  spvm_archive => $spvm_archive,
   build_spvm_archive => $build_spvm_archive,
   build_spvm_archive_dir => $build_spvm_archive_dir,
 );
