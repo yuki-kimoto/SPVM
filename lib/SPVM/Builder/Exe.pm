@@ -295,7 +295,7 @@ sub new {
   my $spvm_archive = $config->get_spvm_archive;
   if (defined $spvm_archive) {
     my $spvm_archive_json;
-    my $extract_tmp_dir_at_first; 
+    my $extract_tmp_dir; 
 
     # 1. Normalize input to a directory
     if (-f $spvm_archive) {
@@ -306,22 +306,22 @@ sub new {
       
       # Extract all files to a temporary directory to handle it as a normal directory
       my $extract_tmp_dir_obj = File::Temp->newdir;
-      $extract_tmp_dir_at_first = $extract_tmp_dir_obj->dirname;
+      $extract_tmp_dir = $extract_tmp_dir_obj->dirname;
       
       my $tar = Archive::Tar->new;
       $tar->read($spvm_archive) or die $tar->error;
-      $tar->extract_all($extract_tmp_dir_at_first) or die "Could not extract $spvm_archive to $extract_tmp_dir_at_first";
+      $tar->extract_all($extract_tmp_dir) or die "Could not extract $spvm_archive to $extract_tmp_dir";
     }
     elsif (-d $spvm_archive) {
       # Case: Directory
-      $extract_tmp_dir_at_first = $spvm_archive;
+      $extract_tmp_dir = $spvm_archive;
     }
     else {
       Carp::confess("SPVM archive '$spvm_archive' not found");
     }
 
     # 2. Read and decode JSON (Common)
-    my $json_file = "$extract_tmp_dir_at_first/spvm-archive.json";
+    my $json_file = "$extract_tmp_dir/spvm-archive.json";
     unless (-f $json_file) {
       Carp::confess("SPVM archive '$spvm_archive' must contain spvm-archive.json");
     }
@@ -336,20 +336,20 @@ sub new {
     # 3. Prepare the final temporary directory for the compiler
     my $spvm_archive_tmp_dir_obj = File::Temp->newdir;
     $self->{spvm_archive_tmp_dir_obj} = $spvm_archive_tmp_dir_obj;
-    my $spvm_archive_dir = $spvm_archive_tmp_dir_obj->dirname;
-    $self->{spvm_archive_tmp_dir} = $spvm_archive_dir;
+    my $spvm_archive_tmp_dir = $spvm_archive_tmp_dir_obj->dirname;
+    $self->{spvm_archive_tmp_dir} = $spvm_archive_tmp_dir;
 
     # 4. Copy and filter files (Common Logic)
-    File::Copy::copy($json_file, "$spvm_archive_dir/spvm-archive.json");
+    File::Copy::copy($json_file, "$spvm_archive_tmp_dir/spvm-archive.json");
     
     # Copy classes and other resources using filtered logic
-    $self->copy_to_archive_dir($extract_tmp_dir_at_first, $spvm_archive_dir, 
+    $self->copy_to_archive_dir($extract_tmp_dir, $spvm_archive_tmp_dir, 
                                $self->{spvm_archive_info}{classes_h}, 
                                $self->{spvm_archive_info}{skip_classes_h});
     
     # 5. Setup paths (Common)
-    $compiler->add_include_dir("$spvm_archive_dir/SPVM");
-    $config_exe->add_lib_dir("$spvm_archive_dir/lib");
+    $compiler->add_include_dir("$spvm_archive_tmp_dir/SPVM");
+    $config_exe->add_lib_dir("$spvm_archive_tmp_dir/lib");
   }
   
   for my $include_dir (@{$builder->include_dirs}) {
