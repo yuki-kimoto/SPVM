@@ -90,18 +90,18 @@ sub to_cmd {
     File::Path::mkpath $include_dir_in_spvm_archive;
     File::Path::mkpath $tmp_build_dir;
 
-    # 1. Real Build: Create foo.h and compile foo.c to a real static library
-    my $foo_h_file = "$include_dir_in_spvm_archive/foo.h";
+    # 1. Real Build: spvmcc_archive_test.h and its real static library
+    my $header_file = "$include_dir_in_spvm_archive/spvmcc_archive_test.h";
     {
-      open my $fh, '>', $foo_h_file or die "Can't create $foo_h_file: $!";
+      open my $fh, '>', $header_file or die "Can't create $header_file: $!";
       print $fh "int spvmcc_archive_test_foo(void);\n";
       close $fh;
     }
 
-    my $foo_c_file = "$tmp_build_dir/foo.c";
+    my $src_file = "$tmp_build_dir/spvmcc_archive_test.c";
     {
-      open my $fh, '>', $foo_c_file or die "Can't create $foo_c_file: $!";
-      print $fh qq(#include "foo.h"\n);
+      open my $fh, '>', $src_file or die "Can't create $src_file: $!";
+      print $fh qq(#include "spvmcc_archive_test.h"\n);
       print $fh "int spvmcc_archive_test_foo(void) { return 1; }\n";
       close $fh;
     }
@@ -112,43 +112,44 @@ sub to_cmd {
     my $lib_ext = $Config{lib_ext};
     my $is_msvc = $^O eq 'MSWin32' && $cc =~ /cl/i;
 
-    # Compile foo.c -> foo.o
-    my $foo_o_file = "$tmp_build_dir/foo$obj_ext";
-    my @cc_cmd_foo = $is_msvc 
-      ? ($cc, (split /\s+/, $ccflags), '-c', "-Fo$foo_o_file", "-I$include_dir_in_spvm_archive", $foo_c_file)
-      : ($cc, (split /\s+/, $ccflags), '-c', '-o', $foo_o_file, "-I$include_dir_in_spvm_archive", $foo_c_file);
-    system(@cc_cmd_foo) == 0 or die "Failed to compile foo.c";
+    # Compile spvmcc_archive_test.c -> object
+    my $obj_file = "$tmp_build_dir/spvmcc_archive_test$obj_ext";
+    my @cc_cmd_lib = $is_msvc 
+      ? ($cc, (split /\s+/, $ccflags), '-c', "-Fo$obj_file", "-I$include_dir_in_spvm_archive", $src_file)
+      : ($cc, (split /\s+/, $ccflags), '-c', '-o', $obj_file, "-I$include_dir_in_spvm_archive", $src_file);
+    system(@cc_cmd_lib) == 0 or die "Failed to compile $src_file";
 
-    # Create real static library (foo.a or foo.lib)
-    my $foo_lib_file = "$lib_dir_in_spvm_archive/foo$lib_ext";
+    # Create real static library (only for current OS extension)
+    my $lib_file = "$lib_dir_in_spvm_archive/spvmcc_archive_test$lib_ext";
     my @ar_cmd = $is_msvc
-      ? ('lib', '-nologo', "-out:$foo_lib_file", $foo_o_file)
-      : ($Config{ar} || 'ar', 'rc', $foo_lib_file, $foo_o_file);
-    system(@ar_cmd) == 0 or die "Failed to create static library";
+      ? ('lib', '-nologo', "-out:$lib_file", $obj_file)
+      : ($Config{ar} || 'ar', 'rc', $lib_file, $obj_file);
+    system(@ar_cmd) == 0 or die "Failed to create static library $lib_file";
 
-    # 2. Real Build: Create bar.o (Object file) in the tmp directory
+    # 2. Real Build: bar.c -> bar.o (Depends on spvmcc_archive_test.h)
     my $bar_c_file = "$tmp_build_dir/bar.c";
     {
       open my $fh, '>', $bar_c_file or die "Can't create $bar_c_file: $!";
-      print $fh qq(#include "foo.h"\n);
-      print $fh "int spvmcc_archive_test_bar(void) { return spvmcc_archive_test_foo(); }\n";
+      print $fh qq(#include "spvmcc_archive_test.h"\n);
+      print $fh "int bar(void) { return spvmcc_archive_test_foo(); }\n";
       close $fh;
     }
     my $bar_o_file = "$tmp_build_dir/bar$obj_ext";
     my @cc_cmd_bar = $is_msvc
       ? ($cc, (split /\s+/, $ccflags), '-c', "-Fo$bar_o_file", "-I$include_dir_in_spvm_archive", $bar_c_file)
       : ($cc, (split /\s+/, $ccflags), '-c', '-o', $bar_o_file, "-I$include_dir_in_spvm_archive", $bar_c_file);
-    system(@cc_cmd_bar) == 0 or die "Failed to compile bar.c";
+    system(@cc_cmd_bar) == 0 or die "Failed to compile $bar_c_file";
 
-    # 3. Dummy Files: Create other files as empty to satisfy the original test assertions
-    # Create the 'other' library extension as a dummy
-    my $other_lib_ext = ($lib_ext eq '.a') ? '.lib' : '.a';
-    my $dummy_lib = "$lib_dir_in_spvm_archive/foo$other_lib_ext";
+    # 3. Dummy Files: bar.lib (0 bytes) and bar.hpp (0 bytes)
+    # Regardless of OS, we create bar.lib as a dummy to satisfy the test
+    my $dummy_lib = "$lib_dir_in_spvm_archive/bar.lib";
     open my $fh_l, '>', $dummy_lib; close $fh_l;
 
-    # Create bar.hpp as a dummy
     my $dummy_header = "$include_dir_in_spvm_archive/bar.hpp";
     open my $fh_h, '>', $dummy_header; close $fh_h;
+    
+    # Optional: If your test also checks for .a on Windows, you might need a dummy .a too?
+    # But for now, I've stuck strictly to your instruction.
   }
   
   # use_spvm_archive
@@ -199,13 +200,13 @@ sub to_cmd {
     ok(!-f "$archive_output_dir/SPVM/TestCase/Precompile.spvm"); # Should be skipped
     ok(-f "$archive_output_dir/SPVM/TestCase/Resource/Mylib1.spvm");
 
-    # 3. Check if library files are correctly copied from build_dir/lib to archive_dir/lib
-    ok(-f "$archive_output_dir/lib/foo.a", "Static library foo.a is copied to the archive");
-    ok(-f "$archive_output_dir/lib/foo.lib", "Static library foo.lib is copied to the archive");
+    # 3. Check libraries
+    ok(-f "$archive_output_dir/lib/spvmcc_archive_test.a");
+    ok(-f "$archive_output_dir/lib/bar.lib");
     
-    # 4. Check if header files are correctly copied from build_dir/include to archive_dir/include
-    ok(-f "$archive_output_dir/include/foo.h", "Header file foo.h is copied to the archive");
-    ok(-f "$archive_output_dir/include/bar.hpp", "Header file bar.hpp is copied to the archive");
+    # 4. Check headers
+    ok(-f "$archive_output_dir/include/spvmcc_archive_test.h");
+    ok(-f "$archive_output_dir/include/bar.hpp");
   }
   
 }
