@@ -41,8 +41,8 @@ sub to_cmd {
 
 {
   # --build-spvm-archive
+  my $archive_dir = "t/04_spvmcc/script/.tmp/spvm-archive-myapp";
   {
-    my $archive_dir = "t/04_spvmcc/script/.tmp/spvm-archive-myapp";
     File::Path::rmtree $archive_dir if -e $archive_dir; # Clean up
     File::Path::mkpath "t/04_spvmcc/script/.tmp";
     
@@ -79,7 +79,24 @@ sub to_cmd {
     ok(-f "$archive_dir/SPVM/TestCase/Precompile.spvm");
   }
   
-  # use_spvm_archive (Linking test)
+  # Add files to SPVM archive
+  {
+    # Add static link libraries to SPVM archive
+    {
+      # Prepare library files in SPVM archive
+      my $lib_dir_in_spvm_archive = "$archive_dir/lib";
+      File::Path::mkpath $lib_dir_in_spvm_archive;
+      my @libs = ("$lib_dir_in_spvm_archive/foo.a", "$lib_dir_in_spvm_archive/foo.lib");
+      for my $lib (@libs) {
+        open my $fh, '>', $lib or die "Can't create $lib: $!";
+        binmode $fh;
+        print $fh "dummy library content";
+        close $fh;
+      }
+    }
+  }
+  
+  # use_spvm_archive
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/spvm-archive t/04_spvmcc/script/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
@@ -92,22 +109,10 @@ sub to_cmd {
     is($output, $output_expect);
   }
   
-  # use_spvm_archive and --build-spvm-archive
+  # --build-spvm-archive with use_spvm_archive
   {
     my $archive_output_dir = "t/04_spvmcc/script/.tmp/spvm-archive-myapp-extend";
     File::Path::rmtree $archive_output_dir if -e $archive_output_dir;
-    
-    # 1. Prepare dummy library files in the build directory before running spvmcc
-    # The builder searches $build_dir/lib during the archive process
-    my $lib_dir_in_build = "t/04_spvmcc/script/.tmp/spvm-archive-myapp/lib";
-    File::Path::mkpath $lib_dir_in_build;
-    my @dummy_libs = ("$lib_dir_in_build/foo.a", "$lib_dir_in_build/foo.lib");
-    for my $dummy_lib (@dummy_libs) {
-      open my $fh, '>', $dummy_lib or die "Can't create $dummy_lib: $!";
-      binmode $fh;
-      print $fh "dummy library content";
-      close $fh;
-    }
     
     # 2. Execute spvmcc
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $archive_output_dir --build-spvm-archive --mode linux-64bit t/04_spvmcc/script/spvm-archive.spvm);
