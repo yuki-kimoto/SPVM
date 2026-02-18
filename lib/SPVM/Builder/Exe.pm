@@ -165,14 +165,14 @@ sub parent_runtime {
   }
 }
 
-sub spvmcc_info {
+sub spvm_archive_info {
   my $self = shift;
   if (@_) {
-    $self->{spvmcc_info} = $_[0];
+    $self->{spvm_archive_info} = $_[0];
     return $self;
   }
   else {
-    return $self->{spvmcc_info};
+    return $self->{spvm_archive_info};
   }
 }
 
@@ -256,19 +256,19 @@ sub new {
   
   $self->{config} = $config;
   
-  my $spvmcc_info = {};
+  my $spvm_archive_info = {};
   
-  $self->spvmcc_info($spvmcc_info);
+  $self->spvm_archive_info($spvm_archive_info);
   
-  $spvmcc_info->{app_name} = $app_name;
+  $spvm_archive_info->{app_name} = $app_name;
   
   my $config_exe = $self->config;
   
   if (defined $config_exe->mode) {
-    $spvmcc_info->{mode} = $config_exe->mode;
+    $spvm_archive_info->{mode} = $config_exe->mode;
   }
   
-  $spvmcc_info->{classes_h} = {};
+  $spvm_archive_info->{classes_h} = {};
   
   $self->{builder} = $builder;
   
@@ -326,9 +326,9 @@ sub new {
       $spvm_archive_dir = $spvm_archive_tmp_dir->dirname;
       
       # Pre-set info for exists_in_spvm_archive to work
-      my $spvmcc_info_archive_tmp = JSON::PP->new->decode($spvm_archive_json_archive);
-      $self->{spvmcc_info_archive} = {
-        classes_h => { map { $_->{name} => $_ } @{$spvmcc_info_archive_tmp->{classes}} },
+      my $spvm_archive_info_archive_tmp = JSON::PP->new->decode($spvm_archive_json_archive);
+      $self->{spvm_archive_info_archive} = {
+        classes_h => { map { $_->{name} => $_ } @{$spvm_archive_info_archive_tmp->{classes}} },
         skip_classes_h => { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} },
       };
 
@@ -346,10 +346,10 @@ sub new {
     }
 
     # Setup final info
-    my $spvmcc_info_archive = JSON::PP->new->decode($spvm_archive_json_archive);
-    $spvmcc_info_archive->{classes_h} = { map { $_->{name} => $_ } @{$spvmcc_info_archive->{classes}} };
-    $spvmcc_info_archive->{skip_classes_h} = { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} };
-    $self->{spvmcc_info_archive} = $spvmcc_info_archive;
+    my $spvm_archive_info_archive = JSON::PP->new->decode($spvm_archive_json_archive);
+    $spvm_archive_info_archive->{classes_h} = { map { $_->{name} => $_ } @{$spvm_archive_info_archive->{classes}} };
+    $spvm_archive_info_archive->{skip_classes_h} = { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} };
+    $self->{spvm_archive_info_archive} = $spvm_archive_info_archive;
     
     $compiler->add_include_dir("$spvm_archive_dir/SPVM");
   }
@@ -442,23 +442,23 @@ sub build_exe_file {
   if ($build_spvm_archive) {
     my $build_work_dir = $self->builder->create_build_work_path;
     
-    my $spvmcc_info = $self->spvmcc_info;
+    my $spvm_archive_info = $self->spvm_archive_info;
     
     my $tar = Archive::Tar->new;
     
-    $self->add_dir_to_tar($build_work_dir, $tar, $spvmcc_info->{classes_h});
+    $self->add_dir_to_tar($build_work_dir, $tar, $spvm_archive_info->{classes_h});
     
     my $spvm_archive = $config_exe->get_spvm_archive;
-    my $spvmcc_info_archive;
+    my $spvm_archive_info_archive;
     if (defined $spvm_archive) {
       my $spvm_archive_tmp_dir = $self->{spvm_archive_tmp_dir};
       
-      $spvmcc_info_archive = $self->{spvmcc_info_archive};
-      $self->add_dir_to_tar($spvm_archive_tmp_dir, $tar, $spvmcc_info_archive->{classes_h}, $spvmcc_info_archive->{skip_classes_h});
+      $spvm_archive_info_archive = $self->{spvm_archive_info_archive};
+      $self->add_dir_to_tar($spvm_archive_tmp_dir, $tar, $spvm_archive_info_archive->{classes_h}, $spvm_archive_info_archive->{skip_classes_h});
     }
     
-    my $merged_spvmcc_info = $self->merge_spvmcc_info($spvmcc_info_archive, $spvmcc_info);
-    my $merged_spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($merged_spvmcc_info);
+    my $merged_spvm_archive_info = $self->merge_spvm_archive_info($spvm_archive_info_archive, $spvm_archive_info);
+    my $merged_spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($merged_spvm_archive_info);
     
     $tar->add_data('spvm-archive.json', $merged_spvm_archive_json)
       or Carp::confess $tar->error;
@@ -468,9 +468,9 @@ sub build_exe_file {
   }
   
   {
-    my $spvmcc_info = $self->spvmcc_info;
+    my $spvm_archive_info = $self->spvm_archive_info;
     
-    my $classes_h = delete $spvmcc_info->{classes_h};
+    my $classes_h = delete $spvm_archive_info->{classes_h};
     
     my $classes = [];
     for my $class_name (keys %$classes_h) {
@@ -480,9 +480,9 @@ sub build_exe_file {
       push @$classes, $class;
     }
     
-    $spvmcc_info->{classes} = $classes;
+    $spvm_archive_info->{classes} = $classes;
     
-    my $spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($spvmcc_info);
+    my $spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($spvm_archive_info);
     
     my $build_work_dir = $self->builder->create_build_work_path;
     
@@ -517,7 +517,7 @@ sub generate_spvm_class_files_into_work_dir {
     if ($class_name =~ /^eval::anon_class::0$/) {
       my $version_string = $self->runtime->get_basic_type_by_name($class_name)->get_version_string($class_name);
       if (defined $version_string) {
-        $self->spvmcc_info->{version} = $version_string;
+        $self->spvm_archive_info->{version} = $version_string;
       }
     }
     
@@ -565,7 +565,7 @@ sub compile_classes {
   
   my $class_names = $self->get_user_defined_basic_type_names;
   
-  my $spvmcc_info = $self->spvmcc_info;
+  my $spvm_archive_info = $self->spvm_archive_info;
   
   my $object_files = [];
   for my $class_name (@$class_names) {
@@ -573,7 +573,7 @@ sub compile_classes {
     my $exists_in_spvm_archive = $self->exists_in_spvm_archive($class_name);
     next if $exists_in_spvm_archive;
     
-    $spvmcc_info->{classes_h}{$class_name} = {};
+    $spvm_archive_info->{classes_h}{$class_name} = {};
     
     my $precompile_object_files = $self->compile_precompile_class($class_name);
     push @$object_files, @$precompile_object_files;
@@ -1318,10 +1318,10 @@ sub compile_precompile_class {
   );
   push @$object_files, @$precompile_object_files;
   
-  my $spvmcc_info = $self->spvmcc_info;
+  my $spvm_archive_info = $self->spvm_archive_info;
   
   if (@$precompile_object_files) {
-    $spvmcc_info->{classes_h}{$class_name}{precompile} = 1;
+    $spvm_archive_info->{classes_h}{$class_name}{precompile} = 1;
   }
   
   return $object_files;
@@ -1374,9 +1374,9 @@ sub compile_native_class {
     push @$all_object_files, @$object_files;
     
     if (@$object_files) {
-      my $spvmcc_info = $self->spvmcc_info;
+      my $spvm_archive_info = $self->spvm_archive_info;
       
-      $spvmcc_info->{classes_h}{$class_name}{native} = 1;
+      $spvm_archive_info->{classes_h}{$class_name}{native} = 1;
     }
   }
   
@@ -1562,12 +1562,12 @@ sub exists_in_spvm_archive {
   my ($self, $class_name) = @_;
   
   my $exists_in_spvm_archive;
-  my $spvmcc_info_archive = $self->{spvmcc_info_archive};
-  if ($spvmcc_info_archive) {
+  my $spvm_archive_info_archive = $self->{spvm_archive_info_archive};
+  if ($spvm_archive_info_archive) {
     
-    my $classes_h = $spvmcc_info_archive->{classes_h};
+    my $classes_h = $spvm_archive_info_archive->{classes_h};
     
-    my $skip_classes_h = $spvmcc_info_archive->{skip_classes_h};
+    my $skip_classes_h = $spvm_archive_info_archive->{skip_classes_h};
     
     if ($classes_h->{$class_name}) {
       unless ($skip_classes_h->{$class_name}) {
@@ -1626,47 +1626,47 @@ sub add_dir_to_tar {
   
 }
 
-sub merge_spvmcc_info {
-  my ($self, $spvmcc_info_archive, $spvmcc_info) = @_;
+sub merge_spvm_archive_info {
+  my ($self, $spvm_archive_info_archive, $spvm_archive_info) = @_;
   
-  my $merged_spvmcc_info = {};
-  $merged_spvmcc_info->{app_name} = $spvmcc_info->{app_name};
-  if (defined $spvmcc_info->{mode}) {
-    $merged_spvmcc_info->{mode} = $spvmcc_info->{mode};
+  my $merged_spvm_archive_info = {};
+  $merged_spvm_archive_info->{app_name} = $spvm_archive_info->{app_name};
+  if (defined $spvm_archive_info->{mode}) {
+    $merged_spvm_archive_info->{mode} = $spvm_archive_info->{mode};
   }
-  if (defined $spvmcc_info->{version}) {
-    $merged_spvmcc_info->{version} = $spvmcc_info->{version};
+  if (defined $spvm_archive_info->{version}) {
+    $merged_spvm_archive_info->{version} = $spvm_archive_info->{version};
   }
   
-  $merged_spvmcc_info->{classes_h} = {};
+  $merged_spvm_archive_info->{classes_h} = {};
   
-  if ($spvmcc_info_archive) {
-    for my $class_name (keys %{$spvmcc_info_archive->{classes_h}}) {
-      unless ($spvmcc_info_archive->{skip_classes_h}{$class_name}) {
-        $merged_spvmcc_info->{classes_h}{$class_name} = $spvmcc_info_archive->{classes_h}{$class_name};
+  if ($spvm_archive_info_archive) {
+    for my $class_name (keys %{$spvm_archive_info_archive->{classes_h}}) {
+      unless ($spvm_archive_info_archive->{skip_classes_h}{$class_name}) {
+        $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info_archive->{classes_h}{$class_name};
       }
     }
   }
   
-  for my $class_name (keys %{$spvmcc_info->{classes_h}}) {
-    $merged_spvmcc_info->{classes_h}{$class_name} = $spvmcc_info->{classes_h}{$class_name};
+  for my $class_name (keys %{$spvm_archive_info->{classes_h}}) {
+    $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info->{classes_h}{$class_name};
   }
   
-  my $merged_spvmcc_info_classes_h = delete $merged_spvmcc_info->{classes_h};
+  my $merged_spvm_archive_info_classes_h = delete $merged_spvm_archive_info->{classes_h};
   
   my $classes = [];
-  for my $class_name (keys %$merged_spvmcc_info_classes_h) {
+  for my $class_name (keys %$merged_spvm_archive_info_classes_h) {
     next if $class_name =~ /^eval::anon_class::\d+$/a;
-    my $class = $merged_spvmcc_info_classes_h->{$class_name};
+    my $class = $merged_spvm_archive_info_classes_h->{$class_name};
     $class->{name} = $class_name;
     push @$classes, $class;
   }
   
   $classes = [sort { $a->{name} cmp $b->{name} } @$classes];
   
-  $merged_spvmcc_info->{classes} = $classes;
+  $merged_spvm_archive_info->{classes} = $classes;
   
-  return $merged_spvmcc_info;
+  return $merged_spvm_archive_info;
 }
 
 1;
