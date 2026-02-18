@@ -94,6 +94,20 @@ sub to_cmd {
         close $fh;
       }
     }
+    
+    # Add header files to SPVM archive
+    {
+      # Prepare header files in SPVM archive
+      my $include_dir_in_spvm_archive = "$archive_dir/include";
+      File::Path::mkpath $include_dir_in_spvm_archive;
+      my @headers = ("$include_dir_in_spvm_archive/foo.h", "$include_dir_in_spvm_archive/bar.hpp");
+      for my $header (@headers) {
+        open my $fh, '>', $header or die "Can't create $header: $!";
+        binmode $fh;
+        print $fh "// dummy header content";
+        close $fh;
+      }
+    }
   }
   
   # use_spvm_archive
