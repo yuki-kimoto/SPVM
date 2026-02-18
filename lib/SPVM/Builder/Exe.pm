@@ -314,9 +314,11 @@ sub new {
     }
     elsif (-f $spvm_archive) {
       # Case: tar.gz
+      # Add extension check for files
       unless ($spvm_archive =~ /\.tar\.gz$/) {
         Carp::confess("SPVM archive file '$spvm_archive' must have '.tar.gz' extension");
       }
+      
       my $tar = Archive::Tar->new;
       $tar->read($spvm_archive) or die $tar->error;
       
