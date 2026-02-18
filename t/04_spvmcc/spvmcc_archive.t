@@ -161,6 +161,10 @@ sub to_cmd {
     # 3. Check if library files are correctly copied from build_dir/lib to archive_dir/lib
     ok(-f "$archive_output_dir/lib/foo.a", "Static library foo.a is copied to the archive");
     ok(-f "$archive_output_dir/lib/foo.lib", "Static library foo.lib is copied to the archive");
+    
+    # 4. Check if header files are correctly copied from build_dir/include to archive_dir/include
+    ok(-f "$archive_output_dir/include/foo.h", "Header file foo.h is copied to the archive");
+    ok(-f "$archive_output_dir/include/bar.hpp", "Header file bar.hpp is copied to the archive");
   }
   
 }
