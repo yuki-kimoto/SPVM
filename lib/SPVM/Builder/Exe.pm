@@ -294,45 +294,53 @@ sub new {
   # SPVM archive
   my $spvm_archive = $config->get_spvm_archive;
   if (defined $spvm_archive) {
-    my $spvm_archive_dir;
     my $spvm_archive_json_archive;
+    my $src_dir; # For directory case
+
+    # 1. Prepare temp directory for both cases
+    my $spvm_archive_tmp_dir_obj = File::Temp->newdir;
+    $self->{spvm_archive_tmp_dir_obj} = $spvm_archive_tmp_dir_obj;
+    my $spvm_archive_dir = $spvm_archive_tmp_dir_obj->dirname;
+    $self->{spvm_archive_tmp_dir} = $spvm_archive_dir;
     
     if (-d $spvm_archive) {
-      # 1. Directory case
-      $spvm_archive_dir = $spvm_archive;
-      my $json_file = "$spvm_archive_dir/spvm-archive.json";
+      # Case: Directory
+      $src_dir = $spvm_archive;
+      my $json_file = "$src_dir/spvm-archive.json";
       unless (-f $json_file) {
         Carp::confess("SPVM archive directory '$spvm_archive' must contain spvm-archive.json");
       }
       $spvm_archive_json_archive = SPVM::Builder::Util::slurp_binary($json_file);
     }
     elsif (-f $spvm_archive) {
-      # 2. Archive file case
+      # Case: tar.gz
       unless ($spvm_archive =~ /\.tar\.gz$/) {
         Carp::confess("SPVM archive file '$spvm_archive' must have '.tar.gz' extension");
       }
-      
       my $tar = Archive::Tar->new;
       $tar->read($spvm_archive) or die $tar->error;
       
-      # Must get spvm-archive.json first to know what to extract
       $spvm_archive_json_archive = $tar->get_content('spvm-archive.json');
       unless ($spvm_archive_json_archive) {
         Carp::confess("SPVM archive '$spvm_archive' must contain spvm-archive.json");
       }
-      
-      my $spvm_archive_tmp_dir = File::Temp->newdir;
-      $self->{spvm_archive_tmp_dir} = $spvm_archive_tmp_dir;
-      $spvm_archive_dir = $spvm_archive_tmp_dir->dirname;
-      
-      # Pre-set info for exists_in_spvm_archive to work
-      my $spvm_archive_info_archive_tmp = JSON::PP->new->decode($spvm_archive_json_archive);
-      $self->{spvm_archive_info_archive} = {
-        classes_h => { map { $_->{name} => $_ } @{$spvm_archive_info_archive_tmp->{classes}} },
-        skip_classes_h => { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} },
-      };
+    }
+    else {
+      Carp::confess("SPVM archive '$spvm_archive' not found");
+    }
 
-      # Extract files
+    # 2. Decode JSON (Common)
+    my $spvm_archive_info_archive_tmp = JSON::PP->new->decode($spvm_archive_json_archive);
+    $self->{spvm_archive_info_archive} = {
+      classes_h => { map { $_->{name} => $_ } @{$spvm_archive_info_archive_tmp->{classes}} },
+      skip_classes_h => { map { $_ => 1 } @{$config->spvm_archive_skip_classes // []} },
+    };
+
+    # 3. Populate temp directory from source (Common Logic)
+    if (-f $spvm_archive) {
+      # Populate from tar
+      my $tar = Archive::Tar->new;
+      $tar->read($spvm_archive) or die $tar->error;
       $tar->extract_file('spvm-archive.json', "$spvm_archive_dir/spvm-archive.json");
       for my $tar_file ($tar->list_files) {
         my $class_name = &extract_class_name_from_tar_file($tar_file);
@@ -341,10 +349,16 @@ sub new {
         }
       }
     }
-    else {
-      Carp::confess("SPVM archive '$spvm_archive' does not exist");
+    elsif (-d $spvm_archive) {
+      # Populate from directory (Copy filtered files)
+      File::Copy::copy("$src_dir/spvm-archive.json", "$spvm_archive_dir/spvm-archive.json");
+      
+      # We use the same copy logic as build_exe_file
+      $self->copy_to_archive_dir($src_dir, $spvm_archive_dir, 
+                                 $self->{spvm_archive_info_archive}{classes_h}, 
+                                 $self->{spvm_archive_info_archive}{skip_classes_h});
     }
-
+    
     # Setup final info
     my $spvm_archive_info_archive = JSON::PP->new->decode($spvm_archive_json_archive);
     $spvm_archive_info_archive->{classes_h} = { map { $_->{name} => $_ } @{$spvm_archive_info_archive->{classes}} };
@@ -399,36 +413,37 @@ sub build_exe_file {
   my $classes_object_files = $self->compile_classes;
   push @$object_files, @$classes_object_files;
   
-  # This is needed only for SPVM archive
+  # Generate SPVM class files for archive
   $self->generate_spvm_class_files_into_work_dir;
   
+  # Add external object files
   for my $external_object_file (@{$config_exe->external_object_files}) {
     push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
   
-  # spvm_archive
+  # Add object files from loaded archive
   my $spvm_archive = $self->config->get_spvm_archive;
   if (defined $spvm_archive) {
     my $spvm_archive_tmp_dir = $self->{spvm_archive_tmp_dir};
-    
     my $object_files_in_spvm_archive = SPVM::Builder::Exe->find_object_files("$spvm_archive_tmp_dir");
-    
     for my $object_file_in_spvm_archive (@$object_files_in_spvm_archive) {
       push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $object_file_in_spvm_archive);
     }
   }
   
-  # Do not generate an executable file if --build-spvm-archive option is enabled.
+  # Output file settings
   my $output_file = $self->{output_file};
   my $output_dir_tmp = File::Temp->newdir;
   my $build_spvm_archive = $self->build_spvm_archive;
-  my $spvm_archive_file = $output_file;
+  my $spvm_archive_out = $output_file;
+  
+  # Skip executable generation if archive mode is on
   if ($build_spvm_archive) {
     my $output_file_base = basename $output_file;
     $output_file = "$output_dir_tmp/$output_file_base";
   }
   
-  # Link and generate executable file
+  # Link
   my $config_linker = $self->config->clone;
   my $cc_linker = SPVM::Builder::CC->new(
     builder => $self->builder,
@@ -436,42 +451,47 @@ sub build_exe_file {
     force => $self->force,
   );
   $config_linker->output_file($output_file);
-  
   $cc_linker->link($class_name, $object_files, {config => $config_linker});
   
+  # Archive output as directory
   if ($build_spvm_archive) {
     my $build_work_dir = $self->builder->create_build_work_path;
-    
     my $spvm_archive_info = $self->spvm_archive_info;
     
-    my $tar = Archive::Tar->new;
+    # Create directory if it does not exist
+    unless (-d $spvm_archive_out) {
+      if (-f $spvm_archive_out) {
+        Carp::confess "Cannot create directory '$spvm_archive_out': File exists";
+      }
+      File::Path::mkpath($spvm_archive_out)
+        or Carp::confess "Cannot create directory '$spvm_archive_out': $!";
+    }
     
-    $self->add_dir_to_tar($build_work_dir, $tar, $spvm_archive_info->{classes_h});
+    # Copy build files
+    $self->copy_to_archive_dir($build_work_dir, $spvm_archive_out, $spvm_archive_info->{classes_h});
     
-    my $spvm_archive = $config_exe->get_spvm_archive;
+    # Copy from existing archive
     my $spvm_archive_info_archive;
     if (defined $spvm_archive) {
       my $spvm_archive_tmp_dir = $self->{spvm_archive_tmp_dir};
-      
       $spvm_archive_info_archive = $self->{spvm_archive_info_archive};
-      $self->add_dir_to_tar($spvm_archive_tmp_dir, $tar, $spvm_archive_info_archive->{classes_h}, $spvm_archive_info_archive->{skip_classes_h});
+      $self->copy_to_archive_dir($spvm_archive_tmp_dir, $spvm_archive_out, $spvm_archive_info_archive->{classes_h}, $spvm_archive_info_archive->{skip_classes_h});
     }
     
+    # Write spvm-archive.json
     my $merged_spvm_archive_info = $self->merge_spvm_archive_info($spvm_archive_info_archive, $spvm_archive_info);
     my $merged_spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($merged_spvm_archive_info);
     
-    $tar->add_data('spvm-archive.json', $merged_spvm_archive_json)
-      or Carp::confess $tar->error;
-    
-    $tar->write($spvm_archive_file, COMPRESS_GZIP)
-      or Carp::confess $tar->error;
+    my $json_file = "$spvm_archive_out/spvm-archive.json";
+    open my $fh, '>', $json_file or die "Cannot open '$json_file': $!";
+    print $fh $merged_spvm_archive_json;
+    close $fh;
   }
   
+  # Write local archive info
   {
     my $spvm_archive_info = $self->spvm_archive_info;
-    
     my $classes_h = delete $spvm_archive_info->{classes_h};
-    
     my $classes = [];
     for my $class_name (keys %$classes_h) {
       next if $class_name =~ /^eval::anon_class::\d+$/a;
@@ -479,21 +499,14 @@ sub build_exe_file {
       $class->{name} = $class_name;
       push @$classes, $class;
     }
-    
     $spvm_archive_info->{classes} = $classes;
-    
     my $spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($spvm_archive_info);
-    
     my $build_work_dir = $self->builder->create_build_work_path;
-    
     my $spvm_archive_json_file = "$build_work_dir/spvm-archive.json";
-    
-    open my $fh, '>', $spvm_archive_json_file
-      or die "Cannot open the file '$spvm_archive_json_file':$!";
-    
+    open my $fh, '>', $spvm_archive_json_file or die "Cannot open '$spvm_archive_json_file': $!";
     print $fh $spvm_archive_json;
+    close $fh;
   }
-  
 }
 
 sub generate_spvm_class_files_into_work_dir {
@@ -1579,52 +1592,48 @@ sub exists_in_spvm_archive {
   return $exists_in_spvm_archive;
 }
 
-sub add_dir_to_tar {
-  my ($self, $dir, $tar, $classes_h, $skip_classes_h) = @_;
+
+sub copy_to_archive_dir {
+  my ($self, $src_dir, $dest_dir, $classes_h, $skip_classes_h) = @_;
   
   $skip_classes_h //= {};
   
-  my $cwd = Cwd::getcwd;
-  
-  chdir $dir
-    or Carp::confess "Cannot change directory to '$dir':$!";
-  
-  eval { 
-    find(
-      {
-        wanted => sub {
-          my $name = $File::Find::name;
-          
-          $name =~ s/^\.\///;
-          
-          return unless $name =~ /\.spvm$/ || $name =~ /\.o$/;
-          return unless -f $name;
-          
-          return unless $name =~ m|^(object/)?SPVM/|;
-          
-          my $class_name_by_path = &extract_class_name_from_tar_file($name);
-          
-          unless ($classes_h->{$class_name_by_path}) {
-            return;
-          }
-          
-          $tar->add_files($name)
-            or Carp::confess $tar->error;
-        },
-        no_chdir => 1,
+  # Find and copy files
+  File::Find::find(
+    {
+      wanted => sub {
+        my $src_path = $File::Find::name;
+        my $rel_path = $src_path;
+        $rel_path =~ s/^\Q$src_dir\E\/?//;
+        
+        # File type check
+        return unless $rel_path =~ /\.spvm$/ || $rel_path =~ /\.o$/;
+        return unless -f $src_path;
+        return unless $rel_path =~ m|^(object/)?SPVM/|;
+        
+        # Class check
+        my $class_name = &extract_class_name_from_tar_file($rel_path);
+        return if $skip_classes_h->{$class_name};
+        return unless $classes_h->{$class_name};
+        
+        # Create destination directory
+        my $dest_path = "$dest_dir/$rel_path";
+        my $dest_parent = File::Basename::dirname($dest_path);
+        unless (-d $dest_parent) {
+          File::Path::mkpath($dest_parent) or Carp::confess "Cannot create '$dest_parent': $!";
+        }
+        
+        # Copy and preserve mtime
+        File::Copy::copy($src_path, $dest_path) or Carp::confess "Copy failed: $!";
+        my $mtime = (stat $src_path)[9];
+        utime $mtime, $mtime, $dest_path;
       },
-      '.'
-    );
-  };
-  
-  chdir $cwd
-    or Carp::confess "Cannot change directory to '$cwd':$!";
-  
-  if ($@) {
-    Carp::confess $@;
-  }
-  
+      no_chdir => 1,
+    },
+    $src_dir
+  );
 }
+
 
 sub merge_spvm_archive_info {
   my ($self, $spvm_archive_info_archive, $spvm_archive_info) = @_;

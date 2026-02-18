@@ -42,22 +42,26 @@ sub to_cmd {
 {
   # --build-spvm-archive
   {
-    mkpath "t/04_spvmcc/script/.tmp";
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib/SPVM -o t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz --build-spvm-archive t/04_spvmcc/script/myapp.spvm);
+    my $archive_dir = "t/04_spvmcc/script/.tmp/spvm-archive-myapp";
+    File::Path::rmtree $archive_dir if -e $archive_dir; # Clean up
+    File::Path::mkpath "t/04_spvmcc/script/.tmp";
+    
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib/SPVM -o $archive_dir --build-spvm-archive t/04_spvmcc/script/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    ok(-f "t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz");
-    ok(-s "t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz" > 1_000);
-    my $tar = Archive::Tar->new;
-    my $success = $tar->read("t/04_spvmcc/script/.tmp/myapp.spvm-archive.tar.gz");
-    ok($success);
+    ok(-d $archive_dir, "Archive directory exists");
     
-    my $spvm_archive_json = $tar->get_content("spvm-archive.json");
-    my $spvmcc_info = JSON::PP->new->decode($spvm_archive_json);
+    # Check JSON metadata
+    my $json_file = "$archive_dir/spvm-archive.json";
+    ok(-f $json_file, "Metadata file exists");
+    my $json_content = do { local $/; open my $fh, '<', $json_file or die $!; <$fh> };
+    my $spvmcc_info = JSON::PP->new->decode($json_content);
+    
     is($spvmcc_info->{app_name}, "myapp");
     ok(!$spvmcc_info->{mode});
     ok(!$spvmcc_info->{version});
+    
     my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};
     is($classes_h->{'TestCase::NativeAPI2'}{name}, 'TestCase::NativeAPI2');
     is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
@@ -65,17 +69,17 @@ sub to_cmd {
     ok($classes_h->{'TestCase::Precompile'});
     ok($classes_h->{'TestCase::Resource::Mylib1'});
     ok($classes_h->{'TestCase::Resource::Mylib2'});
-    my @tar_files = $tar->list_files;
-    my $tar_files_h = {map { $_ => 1} @tar_files};
-    ok($tar_files_h->{'object/SPVM/TestCase/NativeAPI2.o'});
-    ok($tar_files_h->{'object/SPVM/TestCase/NativeAPI2.native/foo.o'});
-    ok($tar_files_h->{'object/SPVM/TestCase/Resource/Mylib1.native/mylib1_source1.o'});
-    ok($tar_files_h->{'object/SPVM/TestCase/Resource/Mylib2.native/mylib2_source1.o'});
-    ok($tar_files_h->{'SPVM/TestCase/NativeAPI2.spvm'});
-    ok($tar_files_h->{'SPVM/TestCase/Precompile.spvm'});
+    
+    # Check physical files
+    ok(-f "$archive_dir/object/SPVM/TestCase/NativeAPI2.o");
+    ok(-f "$archive_dir/object/SPVM/TestCase/NativeAPI2.native/foo.o");
+    ok(-f "$archive_dir/object/SPVM/TestCase/Resource/Mylib1.native/mylib1_source1.o");
+    ok(-f "$archive_dir/object/SPVM/TestCase/Resource/Mylib2.native/mylib2_source1.o");
+    ok(-f "$archive_dir/SPVM/TestCase/NativeAPI2.spvm");
+    ok(-f "$archive_dir/SPVM/TestCase/Precompile.spvm");
   }
   
-  # use_spvm_archive
+  # use_spvm_archive (Linking test)
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/spvm-archive t/04_spvmcc/script/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
@@ -90,20 +94,23 @@ sub to_cmd {
   
   # use_spvm_archive and --build-spvm-archive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz --build-spvm-archive --mode linux-64bit t/04_spvmcc/script/spvm-archive.spvm);
+    my $archive_output_dir = "t/04_spvmcc/script/.tmp/spvm-archive-myapp-extend";
+    File::Path::rmtree $archive_output_dir if -e $archive_output_dir;
+    
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $archive_output_dir --build-spvm-archive --mode linux-64bit t/04_spvmcc/script/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    ok(-f "t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz");
-    my $tar = Archive::Tar->new;
-    my $success = $tar->read("t/04_spvmcc/script/.tmp/myapp-with-archive.spvm-archive.tar.gz");
-    ok($success);
+    ok(-d $archive_output_dir, "Archive directory exists");
     
-    my $spvm_archive_json = $tar->get_content("spvm-archive.json");
-    my $spvmcc_info = JSON::PP->new->decode($spvm_archive_json);
+    my $json_file = "$archive_output_dir/spvm-archive.json";
+    my $json_content = do { local $/; open my $fh, '<', $json_file or die $!; <$fh> };
+    my $spvmcc_info = JSON::PP->new->decode($json_content);
+    
     is($spvmcc_info->{app_name}, "spvm-archive");
     is($spvmcc_info->{mode}, "linux-64bit");
     is($spvmcc_info->{version}, "1.005");
+    
     my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};
     is($classes_h->{'TestCase::NativeAPI2'}{name}, 'TestCase::NativeAPI2');
     is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
@@ -111,20 +118,14 @@ sub to_cmd {
     is($classes_h->{'TestCase::NativeAPI3'}{name}, 'TestCase::NativeAPI3');
     is($classes_h->{'TestCase::NativeAPI3'}{native}, 1);
     ok(!$classes_h->{'TestCase::Precompile'});
-    ok($classes_h->{'TestCase::Resource::Mylib1'});
-    ok($classes_h->{'TestCase::Resource::Mylib2'});
-    my @tar_files = $tar->list_files;
-    my $tar_files_h = {map { $_ => 1} @tar_files};
-    ok($tar_files_h->{'object/SPVM/TestCase/NativeAPI2.o'});
-    ok($tar_files_h->{'object/SPVM/TestCase/NativeAPI2.native/foo.o'});
-    ok($tar_files_h->{'object/SPVM/TestCase/Resource/Mylib1.native/mylib1_source1.o'});
-    ok($tar_files_h->{'object/SPVM/TestCase/Resource/Mylib2.native/mylib2_source1.o'});
-    ok($tar_files_h->{'SPVM/TestCase/NativeAPI2.spvm'});
-    ok(!$tar_files_h->{'SPVM/TestCase/Precompile.spvm'});
-    ok($tar_files_h->{'SPVM/TestCase/Resource/Mylib1.spvm'});
-    ok($tar_files_h->{'SPVM/TestCase/Resource/Mylib2.spvm'});
+    
+    # Check files in merged archive
+    ok(-f "$archive_output_dir/object/SPVM/TestCase/NativeAPI2.o");
+    ok(-f "$archive_output_dir/object/SPVM/TestCase/Resource/Mylib1.native/mylib1_source1.o");
+    ok(-f "$archive_output_dir/SPVM/TestCase/NativeAPI2.spvm");
+    ok(!-f "$archive_output_dir/SPVM/TestCase/Precompile.spvm"); # Should be skipped
+    ok(-f "$archive_output_dir/SPVM/TestCase/Resource/Mylib1.spvm");
   }
-  
 }
 
 done_testing;

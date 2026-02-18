@@ -942,9 +942,11 @@ Examples:
 
   my $config_dir = File::Basename::dirname __FILE__;
   
-  $config->use_spvm_archive("$config_dir/myapp.spvm-archive.tar.gz);
+  $config->use_spvm_archive("$config_dir/spvm-archive-myapp");
   
-  $config->use_spvm_archive("$config_dir/myapp.spvm-archive.tar.gz, {skip => ['SomeClass1', 'SomeClass2]});
+  $config->use_spvm_archive("$config_dir/spvm-archive-myapp.tar.gz");
+  
+  $config->use_spvm_archive("$config_dir/spvm-archive-myapp.tar.gz, {skip => ['SomeClass1', 'SomeClass2]});
 
 =head2 get_spvm_archive
 
