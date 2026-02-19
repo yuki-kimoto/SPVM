@@ -193,4 +193,45 @@ sub exists_in_spvm_archive_info {
   return $exists_in_spvm_archive_info;
 }
 
+sub merge_spvm_archive_info {
+  my ($class, $spvm_archive_info1, $spvm_archive_info2) = @_;
+  
+  my $merged_spvm_archive_info = {};
+  $merged_spvm_archive_info->{app_name} = $spvm_archive_info2->{app_name};
+  if (defined $spvm_archive_info2->{mode}) {
+    $merged_spvm_archive_info->{mode} = $spvm_archive_info2->{mode};
+  }
+  if (defined $spvm_archive_info2->{version}) {
+    $merged_spvm_archive_info->{version} = $spvm_archive_info2->{version};
+  }
+  
+  $merged_spvm_archive_info->{classes_h} = {};
+  
+  if ($spvm_archive_info1) {
+    for my $class_name (keys %{$spvm_archive_info1->{classes_h}}) {
+      $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info1->{classes_h}{$class_name};
+    }
+  }
+  
+  for my $class_name (keys %{$spvm_archive_info2->{classes_h}}) {
+    $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info2->{classes_h}{$class_name};
+  }
+  
+  my $merged_spvm_archive_info_classes_h = delete $merged_spvm_archive_info->{classes_h};
+  
+  my $classes = [];
+  for my $class_name (keys %$merged_spvm_archive_info_classes_h) {
+    next if $class_name =~ /^eval::anon_class::\d+$/a;
+    my $class = $merged_spvm_archive_info_classes_h->{$class_name};
+    $class->{name} = $class_name;
+    push @$classes, $class;
+  }
+  
+  $classes = [sort { $a->{name} cmp $b->{name} } @$classes];
+  
+  $merged_spvm_archive_info->{classes} = $classes;
+  
+  return $merged_spvm_archive_info;
+}
+
 1;

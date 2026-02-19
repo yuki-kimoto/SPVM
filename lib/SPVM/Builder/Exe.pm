@@ -465,7 +465,7 @@ sub build_exe_file {
     }
     
     # Write spvm-archive.json
-    my $merged_spvmcc_info = $self->merge_spvmcc_info($spvm_archive_info, $spvmcc_info);
+    my $merged_spvmcc_info = SPVM::Builder::SPVMArchiveLoader->merge_spvm_archive_info($spvm_archive_info, $spvmcc_info);
     my $merged_spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($merged_spvmcc_info);
     
     my $json_file = "$spvm_archive_out/spvm-archive.json";
@@ -478,26 +478,6 @@ sub build_exe_file {
       mkdir "$spvm_archive_out/lib"
        or Carp::confess "Could not create the lib directory in the SPVM archive: $!";
    }
-  }
-  
-  # Write local archive info
-  {
-    my $spvmcc_info = $self->spvmcc_info;
-    my $classes_h = delete $spvmcc_info->{classes_h};
-    my $classes = [];
-    for my $class_name (keys %$classes_h) {
-      next if $class_name =~ /^eval::anon_class::\d+$/a;
-      my $class = $classes_h->{$class_name};
-      $class->{name} = $class_name;
-      push @$classes, $class;
-    }
-    $spvmcc_info->{classes} = $classes;
-    my $spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($spvmcc_info);
-    my $build_work_dir = $self->builder->create_build_work_path;
-    my $spvm_archive_json_file = "$build_work_dir/spvm-archive.json";
-    open my $fh, '>', $spvm_archive_json_file or die "Cannot open '$spvm_archive_json_file': $!";
-    print $fh $spvm_archive_json;
-    close $fh;
   }
 }
 
@@ -1566,47 +1546,6 @@ sub exists_in_spvm_archive_info {
   }
   
   return $exists_in_spvm_archive_info;
-}
-
-sub merge_spvmcc_info {
-  my ($self, $spvm_archive_info1, $spvm_archive_info2) = @_;
-  
-  my $merged_spvm_archive_info = {};
-  $merged_spvm_archive_info->{app_name} = $spvm_archive_info2->{app_name};
-  if (defined $spvm_archive_info2->{mode}) {
-    $merged_spvm_archive_info->{mode} = $spvm_archive_info2->{mode};
-  }
-  if (defined $spvm_archive_info2->{version}) {
-    $merged_spvm_archive_info->{version} = $spvm_archive_info2->{version};
-  }
-  
-  $merged_spvm_archive_info->{classes_h} = {};
-  
-  if ($spvm_archive_info1) {
-    for my $class_name (keys %{$spvm_archive_info1->{classes_h}}) {
-      $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info1->{classes_h}{$class_name};
-    }
-  }
-  
-  for my $class_name (keys %{$spvm_archive_info2->{classes_h}}) {
-    $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info2->{classes_h}{$class_name};
-  }
-  
-  my $merged_spvm_archive_info_classes_h = delete $merged_spvm_archive_info->{classes_h};
-  
-  my $classes = [];
-  for my $class_name (keys %$merged_spvm_archive_info_classes_h) {
-    next if $class_name =~ /^eval::anon_class::\d+$/a;
-    my $class = $merged_spvm_archive_info_classes_h->{$class_name};
-    $class->{name} = $class_name;
-    push @$classes, $class;
-  }
-  
-  $classes = [sort { $a->{name} cmp $b->{name} } @$classes];
-  
-  $merged_spvm_archive_info->{classes} = $classes;
-  
-  return $merged_spvm_archive_info;
 }
 
 1;
