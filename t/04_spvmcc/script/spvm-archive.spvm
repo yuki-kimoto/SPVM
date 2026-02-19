@@ -7,14 +7,13 @@ class {
     
     my $ret = TestCase::NativeAPI->sum(29, 45);
     
-    my $skip_class = 1;
     if (require TestCase::Precompile) {
-      $skip_class = 0;
+      
     }
     
     my $ret_api3 = TestCase::NativeAPI3->sum(28, 32);
     
-    print "spvm-archive $ret,skip_class:$skip_class,api3:$ret_api3";
+    print "spvm-archive $ret,api3:$ret_api3";
   }
   
 }

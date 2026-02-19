@@ -288,17 +288,6 @@ sub external_object_files {
   }
 }
 
-sub spvm_archive_skip_classes {
-  my $self = shift;
-  if (@_) {
-    $self->{spvm_archive_skip_classes} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{spvm_archive_skip_classes};
-  }
-}
-
 # Class Methods
 sub new {
   my $self = shift;
@@ -481,30 +470,9 @@ sub add_external_object_file {
 }
 
 sub use_spvm_archive {
-  my ($self, $spvm_archive, $options) = @_;
-  
-  $options //= {};
-  
-  unless (ref $options eq 'HASH') {
-    Carp::confess "The options \$options must be a hash reference.";
-  }
+  my ($self, $spvm_archive) = @_;
   
   $self->{spvm_archive} = $spvm_archive;
-  
-  for my $key (keys %$options) {
-    unless ($key eq 'skip') {
-      Carp::confess "'$key' option is not available.";
-    }
-  }
-  
-  my $skip = $options->{skip};
-  
-  if (defined $skip) {
-    unless (ref $skip eq 'ARRAY') {
-      Carp::confess "The value of 'skip' option must be an array reference.";
-    }
-    $self->{spvm_archive_skip_classes} = $options->{skip};
-  }
   
   return $self;
 }
@@ -742,15 +710,6 @@ An SPVM archive.
 
 See L</"use_spvm_archive"> and L</"get_spvm_archive">.
 
-=head2 spvm_archive_skip_classes
-
-  my $spvm_archive_skip_classes = $config->spvm_archive_skip_classes;
-  $config->spvm_archive_skip_classes($spvm_archive_skip_classes);
-
-Gets and sets C<spvm_archive_skip_classes> field, an array reference containg the names of classes in an SPVM archive you do not want to load.
-
-See also L</"use_spvm_archive">.
-
 =head1 Methods
 
 =head2 new
@@ -926,17 +885,7 @@ Adds @external_object_files to the end of L</"external_object_files"> field.
 
 Loads an SPVM archive.
 
-Actually, L</"spvm_archive"> field is just set to $spvm_archive, and L</"spvm_archive_skip_classes"> field is set to the vlaue of C<skip> option, and the loading happens later.
-
-Options:
-
-=over 2
-
-=item * skip
-
-An array reference containg the names of classes you do not want to load.
-
-=back
+Actually, L</"spvm_archive"> field is just set to $spvm_archive, and the loading happens later.
 
 Examples:
 
@@ -946,8 +895,6 @@ Examples:
   
   $config->use_spvm_archive("$config_dir/spvm-archive-myapp.tar.gz");
   
-  $config->use_spvm_archive("$config_dir/spvm-archive-myapp.tar.gz, {skip => ['SomeClass1', 'SomeClass2]});
-
 =head2 get_spvm_archive
 
   my $spvm_archive = $config->get_spvm_archive;

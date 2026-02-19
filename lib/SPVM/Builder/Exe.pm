@@ -328,13 +328,9 @@ sub new {
     $spvm_archive_json = SPVM::Builder::Util::slurp_binary($json_file);
     
     my $spvm_archive_info_data = JSON::PP->new->decode($spvm_archive_json);
-    my $skip_classes_config = $config->spvm_archive_skip_classes // [];
-    my %skip_classes_h = map { $_ => 1 } @$skip_classes_config;
     $self->{spvm_archive_info} = {
-      # Filter classes immediately using skip_classes_h
       classes_h => { 
         map { $_->{name} => $_ } 
-        grep { !$skip_classes_h{$_->{name}} } 
         @{$spvm_archive_info_data->{classes}} 
       },
     };

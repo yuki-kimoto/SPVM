@@ -137,14 +137,14 @@ sub to_cmd {
     my $execute_cmd = &to_cmd("$exe_dir/spvm-archive");
     my $output = `$execute_cmd`;
     chomp $output;
-    my $output_expect = "spvm-archive 74,skip_class:1,api3:60";
+    my $output_expect = "spvm-archive 74,api3:60";
     is($output, $output_expect);
   }
   
   # use_spvm_archive with include and lib
   {
     use Config;
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/spvm-archive-static-lib t/04_spvmcc/script/spvm-archive-static-lib.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/spvm-archive-static-lib t/04_spvmcc/script/spvm-archive-static-lib.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -161,7 +161,7 @@ sub to_cmd {
     File::Path::rmtree $archive_output_dir if -e $archive_output_dir;
     
     # 2. Execute spvmcc
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -B $build_dir -I $test_dir/lib2/SPVM -o $archive_output_dir --build-spvm-archive --mode linux-64bit t/04_spvmcc/script/spvm-archive.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $archive_output_dir --build-spvm-archive --mode linux-64bit t/04_spvmcc/script/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -181,13 +181,13 @@ sub to_cmd {
     is($classes_h->{'TestCase::NativeAPI2'}{precompile}, 1);
     is($classes_h->{'TestCase::NativeAPI3'}{name}, 'TestCase::NativeAPI3');
     is($classes_h->{'TestCase::NativeAPI3'}{native}, 1);
-    ok(!$classes_h->{'TestCase::Precompile'});
+    ok($classes_h->{'TestCase::Precompile'});
     
     # Check files in merged archive
     ok(-f "$archive_output_dir/object/SPVM/TestCase/NativeAPI2.o");
     ok(-f "$archive_output_dir/object/SPVM/TestCase/Resource/Mylib1.native/mylib1_source1.o");
     ok(-f "$archive_output_dir/SPVM/TestCase/NativeAPI2.spvm");
-    ok(!-f "$archive_output_dir/SPVM/TestCase/Precompile.spvm"); # Should be skipped
+    ok(-f "$archive_output_dir/SPVM/TestCase/Precompile.spvm");
     ok(-f "$archive_output_dir/SPVM/TestCase/Resource/Mylib1.spvm");
 
     # 3. Check libraries
