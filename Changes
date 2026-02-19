@@ -4,6 +4,7 @@
     * Rename load_spvm_archive to use_spvm_archive in SPVM::Builder::Config::Exe.
     * Rename --load-spvm-archive option to --spvm-archive in spvmcc. 
     * Rename spvmcc.json to spvm-archive.json in SPVM archive.
+    * Remove spvm_archive_skip_classes method and skip option from use_spvm_archive in SPVM::Builder::Config::Exe.
     
 0.990132 2026-02-17
   
