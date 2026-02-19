@@ -133,25 +133,28 @@ sub copy_spvm_archive_files {
   );
 }
 
-sub merge_class_info {
+sub merge_info {
   my ($self, $spvm_archive_info, $spvmcc_info) = @_;
   
-  my $new_spvm_archive_info = {};
-  $new_spvm_archive_info->{classes_h} = {};
+  $spvm_archive_info //= {};
   
-  if ($spvm_archive_info) {
-    for my $class_name (keys %{$spvm_archive_info->{classes_h}}) {
-      next if $class_name =~ /^eval::anon_class::\d+$/a;
-      $new_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info->{classes_h}{$class_name};
+  $spvmcc_info //= {};
+  
+  my $spvm_archive_info_classes_h = delete $spvm_archive_info->{classes_h} // {};
+  
+  my $spvmcc_info_classes_h = delete $spvmcc_info->{classes_h} // {};
+  
+  my $new_spvm_archive_info = {%$spvm_archive_info, %$spvmcc_info};
+  
+  my $new_spvm_archive_info_classes_h = {%$spvm_archive_info_classes_h, %$spvmcc_info_classes_h};
+  
+  for my $class_name (keys %$new_spvm_archive_info_classes_h) {
+    if ($class_name =~ /^eval::anon_class::\d+$/a) {
+      delete $new_spvm_archive_info_classes_h->{$class_name};
     }
   }
   
-  if ($spvmcc_info) {
-    for my $class_name (keys %{$spvmcc_info->{classes_h}}) {
-      next if $class_name =~ /^eval::anon_class::\d+$/a;
-      $new_spvm_archive_info->{classes_h}{$class_name} = $spvmcc_info->{classes_h}{$class_name};
-    }
-  }
+  $new_spvm_archive_info->{classes_h} = $new_spvm_archive_info_classes_h;
   
   return $new_spvm_archive_info;
 }
@@ -278,15 +281,7 @@ sub store {
   }
 
   # Merge info and write spvm-archive.json
-  my $new_spvm_archive_info = $self->merge_class_info($spvm_archive_info, $spvmcc_info);
-  $new_spvm_archive_info->{app_name} = $spvmcc_info->{app_name};
-  $new_spvm_archive_info->{spvm_version} = $spvmcc_info->{spvm_version};
-  if (defined $spvmcc_info->{mode}) {
-    $new_spvm_archive_info->{mode} = $spvmcc_info->{mode};
-  }
-  if (defined $spvmcc_info->{version}) {
-    $new_spvm_archive_info->{version} = $spvmcc_info->{version};
-  }
+  my $new_spvm_archive_info = $self->merge_info($spvm_archive_info, $spvmcc_info);
   
   my $new_spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($new_spvm_archive_info);
   
