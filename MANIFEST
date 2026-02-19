@@ -1129,6 +1129,7 @@ t/04_spvmcc/script/runtime-parent.spvm
 t/04_spvmcc/script/spvm-archive.config
 t/04_spvmcc/script/spvm-archive.linux-64bit.config
 t/04_spvmcc/script/spvm-archive.spvm
+t/04_spvmcc/script/spvm-archive.test-static-lib.config
 t/04_spvmcc/script/use-class.spvm
 t/04_spvmcc/SPVM-Builder-Exe.t
 t/04_spvmcc/spvm.t

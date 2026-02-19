@@ -121,7 +121,7 @@ sub to_cmd {
     system(@cc_cmd_lib) == 0 or die "Failed to compile $src_file";
 
     # Create real static library (only for current OS extension)
-    my $lib_file = "$lib_dir_in_spvm_archive/spvmcc_archive_test$lib_ext";
+    my $lib_file = "$lib_dir_in_spvm_archive/libspvmcc_archive_test$lib_ext";
     my @ar_cmd = $is_msvc
       ? ('lib', '-nologo', "-out:$lib_file", $obj_file)
       : ($Config{ar} || 'ar', 'rc', $lib_file, $obj_file);
@@ -171,7 +171,7 @@ sub to_cmd {
   # use_spvm_archive with include and lib
   {
     use Config;
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM --object-file $tmp_dir/external_for_spvm_archive$Config{obj_ext} -o $exe_dir/spvm-archive t/04_spvmcc/script/spvm-archive.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM --object-file $external_object_dir/external_for_spvm_archive$Config{obj_ext} -o $exe_dir/spvm-archive --mode test-static-lib t/04_spvmcc/script/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -218,7 +218,7 @@ sub to_cmd {
     ok(-f "$archive_output_dir/SPVM/TestCase/Resource/Mylib1.spvm");
 
     # 3. Check libraries
-    ok(-f "$archive_output_dir/lib/spvmcc_archive_test.a");
+    ok(-f "$archive_output_dir/lib/libspvmcc_archive_test.a");
     ok(-f "$archive_output_dir/lib/bar.lib");
     
     # 4. Check headers
