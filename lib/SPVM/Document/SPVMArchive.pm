@@ -66,4 +66,72 @@ Then, build your application using the L<spvmcc|spvmcc> command:
 
   spvmcc -o myapp myapp.spvm
 
+=head1 Merging SPVM Archives
+
+You can merge an existing SPVM Archive into a new one by combining the C<use_spvm_archive> method in your C<.config> file with the C<--build-spvm-archive> option of the L<spvmcc|spvmcc> command.
+
+Examples:
+
+If your C<myapp.config> uses an existing archive:
+
+  # In myapp.config
+  $config_exe->use_spvm_archive("/path/to/existing-archive");
+
+And you run C<spvmcc> with the C<--build-spvm-archive> option:
+
+  spvmcc -o spvm-archive-merged --build-spvm-archive myapp.spvm
+
+The following merging process occurs:
+
+=over 2
+
+=item * B<Class Metadata>: The C<classes_h> registry from the existing archive and the newly compiled classes are merged. If there are duplicate class names, the ones from the new build take precedence.
+
+=item * B<Object Files>: All C<.o> files from the existing archive are copied into the new archive's C<object/> directory, alongside the new object files.
+
+=item * B<Native Assets>: Static libraries in C<lib/> and header files in C<include/> from the existing archive are collected and bundled into the new archive.
+
+=item * B<Metadata Fields>: Fields like C<spvm_version>, C<app_name>, C<mode>, and C<version> are updated based on the current build's information.
+
+=back
+
+=cut
+
+=head1 Merging SPVM Archives
+
+You can merge an existing SPVM Archive into a new one by combining the C<use_spvm_archive> method in your C<.config> file with the C<--build-spvm-archive> option of the L<spvmcc|spvmcc> command.
+
+Examples:
+
+If your C<myapp.config> uses an existing archive:
+
+  # In myapp.config
+  $config_exe->use_spvm_archive("/path/to/existing-archive");
+
+And you run C<spvmcc> with the C<--build-spvm-archive> option:
+
+  spvmcc -o spvm-archive-merged --build-spvm-archive myapp.spvm
+
+The following merging process occurs:
+
+=over 2
+
+=item Class Metadata
+
+The C<classes_h> registry and other metadata fields (C<app_name>, C<spvm_version>, C<mode>, C<version>) are merged or updated. If there are duplicate class names, the ones from the new build take precedence.
+
+=item SPVM Class Files
+
+All C<.spvm> source files required for the classes are collected from the existing archive and the current include paths, then stored in the C<SPVM/> directory of the new archive.
+
+=item Object Files
+
+All C<.o> files for SPVM native classes and precompiled classes are collected from the existing archive and copied into the new archive's C<object/> directory, alongside the newly generated object files.
+
+=item Native Assets
+
+Static libraries (C<.a>, C<.lib>) in C<lib/> and header files (C<.h>, C<.hpp>) in C<include/> from the existing archive are collected and bundled into the new archive.
+
+=back
+
 =cut
