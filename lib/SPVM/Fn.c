@@ -1345,3 +1345,32 @@ int32_t SPVM__Fn__getrandom(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__env(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  // Get the environment variable name from stack[0]
+  void* obj_name = stack[0].oval;
+  
+  // Null check for the name argument
+  if (!obj_name) {
+    return env->die(env, stack, "The name $name must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  const char* name = env->get_chars(env, stack, obj_name);
+  
+  // Get the environment variable value using the standard getenv function
+  char* value = getenv(name);
+  
+  // If the environment variable is not found, return undef
+  if (!value) {
+    stack[0].oval = NULL;
+    return 0;
+  }
+  
+  // Create a new SPVM string object from the value
+  void* obj_value = env->new_string_nolen(env, stack, value);
+  
+  stack[0].oval = obj_value;
+  
+  return 0;
+}

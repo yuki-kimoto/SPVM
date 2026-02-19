@@ -9024,4 +9024,34 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method env : int () {
+  
+    # Get an existing environment variable (e.g., PATH)
+    my $path = Fn->env("PATH");
+    unless (length $path > 0) {
+      return 0;
+    }
+    
+    # Get a non-existent environment variable (should return undef)
+    my $not_exists = Fn->env("NON_EXISTENT_ENV_VAR_XYZ_123");
+    if ($not_exists) {
+      return 0;
+    }
+    
+    # Check exception when the argument is undef
+    eval {
+      Fn->env(undef);
+    };
+    if ($@) {
+      unless ($@) {
+        return 0;
+      }
+    }
+    else {
+      return 0;
+    }
+
+    return 1;
+  }
+  
 }

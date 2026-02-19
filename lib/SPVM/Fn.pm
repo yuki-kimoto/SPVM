@@ -2061,6 +2061,28 @@ Examples:
   # Get a 16-byte nonce for AES-GCM
   my $nonce = Fn->getrandom(12);
 
+=head2 env
+
+C<native static method env : string ($name : string);>
+
+Gets the value of the environment variable specified by its name $name.
+
+The value is retrieved using the C<getenv> function of the C standard library.
+
+If the environment variable is not found, C<undef> is returned.
+
+Exceptions:
+
+The name $name must be defined. Otherwise an exception is thrown.
+
+Examples:
+
+  # Get the value of the PATH environment variable
+  my $path = Fn->env("PATH");
+  
+  # Get the value of the HOME environment variable
+  my $home = Fn->env("HOME");
+
 =head1 See Also
 
 =over 2
