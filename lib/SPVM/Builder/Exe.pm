@@ -345,7 +345,7 @@ sub new {
     File::Copy::copy($json_file, "$spvm_archive_extract_dir/spvm-archive.json");
     
     # Copy classes and other resources using filtered logic
-    $self->extract_archive_files($spvm_archive_dir, $spvm_archive_extract_dir, $self->{spvm_archive_info}{classes_h});
+    $self->copy_spvm_archive_files($spvm_archive_dir, $spvm_archive_extract_dir, $self->{spvm_archive_info}{classes_h});
     
     # 5. Setup paths (Common)
     $compiler->add_include_dir("$spvm_archive_extract_dir/SPVM");
@@ -453,14 +453,14 @@ sub build_exe_file {
     }
     
     # Copy build files
-    $self->extract_archive_files($build_work_dir, $spvm_archive_out, $spvmcc_info->{classes_h});
+    $self->copy_spvm_archive_files($build_work_dir, $spvm_archive_out, $spvmcc_info->{classes_h});
     
     # Copy from existing archive
     my $spvm_archive_info;
     if (defined $spvm_archive) {
       my $spvm_archive_extract_dir = $self->{spvm_archive_extract_dir};
       $spvm_archive_info = $self->{spvm_archive_info};
-      $self->extract_archive_files($spvm_archive_extract_dir, $spvm_archive_out, $spvm_archive_info->{classes_h});
+      $self->copy_spvm_archive_files($spvm_archive_extract_dir, $spvm_archive_out, $spvm_archive_info->{classes_h});
     }
     
     # Write spvm-archive.json
@@ -1579,7 +1579,7 @@ sub create_class_name_from_object_path {
   return $class_name;
 }
 
-sub extract_archive_files {
+sub copy_spvm_archive_files {
   my ($self, $src_dir, $dest_dir, $classes_h) = @_;
   
   # Normalize the base source directory to use forward slashes for robust matching
