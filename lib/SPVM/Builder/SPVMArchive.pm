@@ -52,9 +52,9 @@ sub create_class_name_from_object_path {
 
 # Class Methods
 sub copy_spvm_archive_files {
-  my ($self, $src_dir, $dest_dir, $info) = @_;
+  my ($self, $src_dir, $dest_dir, $spvm_archive_info) = @_;
   
-  my $classes_h = $info->{classes_h};
+  my $classes_h = $spvm_archive_info->{classes_h};
   
   # Normalize the base source directory to use forward slashes for robust matching
   my $normalized_src_dir = $src_dir;
@@ -133,27 +133,27 @@ sub copy_spvm_archive_files {
   );
 }
 
-sub merge_info {
-  my ($self, $info1, $info2) = @_;
+sub merge_class_info {
+  my ($self, $spvm_archive_info, $spvmcc_info) = @_;
   
-  my $merged_info = {};
-  $merged_info->{classes_h} = {};
+  my $new_spvm_archive_info = {};
+  $new_spvm_archive_info->{classes_h} = {};
   
-  if ($info1) {
-    for my $class_name (keys %{$info1->{classes_h}}) {
+  if ($spvm_archive_info) {
+    for my $class_name (keys %{$spvm_archive_info->{classes_h}}) {
       next if $class_name =~ /^eval::anon_class::\d+$/a;
-      $merged_info->{classes_h}{$class_name} = $info1->{classes_h}{$class_name};
+      $new_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info->{classes_h}{$class_name};
     }
   }
   
-  if ($info2) {
-    for my $class_name (keys %{$info2->{classes_h}}) {
+  if ($spvmcc_info) {
+    for my $class_name (keys %{$spvmcc_info->{classes_h}}) {
       next if $class_name =~ /^eval::anon_class::\d+$/a;
-      $merged_info->{classes_h}{$class_name} = $info2->{classes_h}{$class_name};
+      $new_spvm_archive_info->{classes_h}{$class_name} = $spvmcc_info->{classes_h}{$class_name};
     }
   }
   
-  return $merged_info;
+  return $new_spvm_archive_info;
 }
 
 # Instance Methods
@@ -190,10 +190,10 @@ sub load {
   }
   my $spvm_archive_json = SPVM::Builder::Util::slurp_binary($json_file);
   
-  my $info = JSON::PP->new->decode($spvm_archive_json);
+  my $spvm_archive_info = JSON::PP->new->decode($spvm_archive_json);
   
   # Set the field in $self
-  $self->{info} = $info;
+  $self->{info} = $spvm_archive_info;
 
   # 3. Prepare the final temporary directory for the compiler
   my $dir_obj = File::Temp->newdir(TEMPLATE => 'tmp_spvm_archive_extract_XXXXXXX');
@@ -204,7 +204,7 @@ sub load {
   # 4. Copy and filter files
   File::Copy::copy($json_file, "$dir/spvm-archive.json");
   
-  $self->copy_spvm_archive_files($spvm_archive_dir, $dir, $info);
+  $self->copy_spvm_archive_files($spvm_archive_dir, $dir, $spvm_archive_info);
   
   $self->{dir} = $dir;
 }
@@ -213,10 +213,10 @@ sub exists {
   my ($self, $class_name) = @_;
   
   my $exists;
-  my $info = $self->{info};
-  if ($info) {
+  my $spvm_archive_info = $self->{info};
+  if ($spvm_archive_info) {
     
-    my $classes_h = $info->{classes_h};
+    my $classes_h = $spvm_archive_info->{classes_h};
     
     if ($classes_h->{$class_name}) {
       $exists = 1;
@@ -256,7 +256,7 @@ sub find_object_files {
 sub store {
   my ($self, $dist_dir, $spvmcc_build_dir, $spvmcc_info) = @_;
 
-  # 1. Create the destination directory if it does not exist
+  # Create the destination directory if it does not exist
   unless (-d $dist_dir) {
     if (-f $dist_dir) {
       Carp::confess "Cannot create directory '$dist_dir': File exists";
@@ -265,36 +265,36 @@ sub store {
       or Carp::confess "Cannot create directory '$dist_dir': $!";
   }
 
-  # 2. Copy files from the current instance (the existing archive)
-  my $info = $self->info;
+  # Copy files from the current instance (the existing archive)
+  my $spvm_archive_info = $self->info;
   my $dir = $self->dir;
-  if ($dir && $info) {
-    $self->copy_spvm_archive_files($dir, $dist_dir, $info);
+  if ($dir && $spvm_archive_info) {
+    $self->copy_spvm_archive_files($dir, $dist_dir, $spvm_archive_info);
   }
 
-  # 3. Copy additional files from the spvmcc source directory
+  # Copy additional files from the spvmcc source directory
   if ($spvmcc_build_dir && $spvmcc_info) {
     $self->copy_spvm_archive_files($spvmcc_build_dir, $dist_dir, $spvmcc_info);
   }
 
-  # 4. Merge info and write spvm-archive.json
-  my $merged_info = $self->merge_info($info, $spvmcc_info);
-  $merged_info->{app_name} = $spvmcc_info->{app_name};
+  # Merge info and write spvm-archive.json
+  my $new_spvm_archive_info = $self->merge_class_info($spvm_archive_info, $spvmcc_info);
+  $new_spvm_archive_info->{app_name} = $spvmcc_info->{app_name};
   if (defined $spvmcc_info->{mode}) {
-    $merged_info->{mode} = $spvmcc_info->{mode};
+    $new_spvm_archive_info->{mode} = $spvmcc_info->{mode};
   }
   if (defined $spvmcc_info->{version}) {
-    $merged_info->{version} = $spvmcc_info->{version};
+    $new_spvm_archive_info->{version} = $spvmcc_info->{version};
   }
   
-  my $json_content = JSON::PP->new->pretty->canonical(1)->encode($merged_info);
+  my $new_spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($new_spvm_archive_info);
   
   my $json_file = "$dist_dir/spvm-archive.json";
   open my $fh, '>', $json_file or die "Cannot open '$json_file' for writing: $!";
-  print $fh $json_content;
+  print $fh $new_spvm_archive_json;
   close $fh;
 
-  # 5. Ensure lib and include directories exist
+  # Ensure lib and include directories exist
   for my $sub_dir (qw(lib include)) {
     my $full_dir = "$dist_dir/$sub_dir";
     unless (-d $full_dir) {
