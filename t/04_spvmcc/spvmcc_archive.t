@@ -111,24 +111,18 @@ sub to_cmd {
     my $ccflags = "$Config{ccflags} $Config{optimize}";
     my $obj_ext = $Config{obj_ext};
     my $lib_ext = $Config{lib_ext};
-    my $is_msvc = $^O eq 'MSWin32' && $cc =~ /cl/i;
 
     # Compile spvmcc_archive_test.c -> object
     my $obj_file = "$tmp_build_dir/spvmcc_archive_test$obj_ext";
-    my @cc_cmd_lib = $is_msvc 
-      ? ($cc, (split /\s+/, $ccflags), '-c', "-Fo$obj_file", "-I$include_dir_in_spvm_archive", $src_file)
-      : ($cc, (split /\s+/, $ccflags), '-c', '-o', $obj_file, "-I$include_dir_in_spvm_archive", $src_file);
+    my @cc_cmd_lib = ($cc, (split /\s+/, $ccflags), '-c', '-o', $obj_file, "-I$include_dir_in_spvm_archive", $src_file);
     system(@cc_cmd_lib) == 0 or die "Failed to compile $src_file";
 
-    # Create real static library (only for current OS extension)
+    # Create real static library (libspvmcc_archive_test.a)
     my $lib_file = "$lib_dir_in_spvm_archive/libspvmcc_archive_test$lib_ext";
-    my @ar_cmd = $is_msvc
-      ? ('lib', '-nologo', "-out:$lib_file", $obj_file)
-      : ($Config{ar} || 'ar', 'rc', $lib_file, $obj_file);
+    my @ar_cmd = ($Config{ar} || 'ar', 'rc', $lib_file, $obj_file);
     system(@ar_cmd) == 0 or die "Failed to create static library $lib_file";
 
     # 2. Real Build: external_for_spvm_archive.c -> external_for_spvm_archive.o (Depends on spvmcc_archive_test.h)
-    # Output to $external_object_dir instead of $tmp_build_dir
     File::Path::mkpath $external_object_dir;
     my $external_src_file = "$external_object_dir/external_for_spvm_archive.c";
     {
@@ -138,21 +132,15 @@ sub to_cmd {
       close $fh;
     }
     my $external_obj_file = "$external_object_dir/external_for_spvm_archive$obj_ext";
-    my @cc_cmd_external = $is_msvc
-      ? ($cc, (split /\s+/, $ccflags), '-c', "-Fo$external_obj_file", "-I$include_dir_in_spvm_archive", $external_src_file)
-      : ($cc, (split /\s+/, $ccflags), '-c', '-o', $external_obj_file, "-I$include_dir_in_spvm_archive", $external_src_file);
+    my @cc_cmd_external = ($cc, (split /\s+/, $ccflags), '-c', '-o', $external_obj_file, "-I$include_dir_in_spvm_archive", $external_src_file);
     system(@cc_cmd_external) == 0 or die "Failed to compile $external_src_file";
 
     # 3. Dummy Files: bar.lib (0 bytes) and bar.hpp (0 bytes)
-    # Regardless of OS, we create bar.lib as a dummy to satisfy the test
     my $dummy_lib = "$lib_dir_in_spvm_archive/bar.lib";
     open my $fh_l, '>', $dummy_lib; close $fh_l;
 
     my $dummy_header = "$include_dir_in_spvm_archive/bar.hpp";
     open my $fh_h, '>', $dummy_header; close $fh_h;
-    
-    # Optional: If your test also checks for .a on Windows, you might need a dummy .a too?
-    # But for now, I've stuck strictly to your instruction.
   }
   
   # use_spvm_archive
