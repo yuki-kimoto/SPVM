@@ -437,7 +437,7 @@ sub generate_spvm_class_files_into_work_dir {
     if ($class_name =~ /^eval::anon_class::0$/) {
       my $version_string = $self->runtime->get_basic_type_by_name($class_name)->get_version_string($class_name);
       if (defined $version_string) {
-        $self->spvmcc_info->{version} = $version_string;
+        $self->spvmcc_info->{app_version} = $version_string;
       }
     }
     

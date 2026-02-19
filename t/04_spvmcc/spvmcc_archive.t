@@ -62,7 +62,7 @@ sub to_cmd {
     is($spvmcc_info->{app_name}, "myapp");
     is($spvmcc_info->{spvm_version}, $SPVM::VERSION);
     ok(!$spvmcc_info->{mode});
-    ok(!$spvmcc_info->{version});
+    ok(!$spvmcc_info->{app_version});
     
     my $classes_h = $spvmcc_info->{classes_h};
     is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
@@ -173,7 +173,7 @@ sub to_cmd {
     
     is($spvmcc_info->{app_name}, "spvm-archive");
     is($spvmcc_info->{mode}, "linux-64bit");
-    is($spvmcc_info->{version}, "1.005");
+    is($spvmcc_info->{app_version}, "1.005");
     
     my $classes_h = $spvmcc_info->{classes_h};
     is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);

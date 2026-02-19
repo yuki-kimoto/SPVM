@@ -91,7 +91,7 @@ The following merging process occurs:
 
 =item * Class Metadata
 
-The C<classes_h> registry and other metadata fields (C<app_name>, C<spvm_version>, C<mode>, C<version>) are merged or updated. If there are duplicate class names, the ones from the new build take precedence.
+The C<classes_h> registry and other metadata fields (C<app_name>, C<app_version>, C<mode>, C<spvm_version>) are merged or updated. If there are duplicate class names, the ones from the new build take precedence.
 
 =item * SPVM Class Files
 
@@ -106,5 +106,69 @@ All C<.o> files for SPVM native classes and precompiled classes are collected fr
 Static libraries (C<.a>, C<.lib>) in C<lib/> and header files (C<.h>, C<.hpp>) in C<include/> from the existing archive are collected and bundled into the new archive.
 
 =back
+
+=cut
+
+=head2 SPVM Archive Metadata
+
+C<spvm-archive.json> is the metadata file for the SPVM Archive. 
+
+The C<native> and C<precompile> fields are represented as integers: C<1> for true and C<0> for false. If a field is omitted, its value is considered to be C<0>.
+
+Example of C<spvm-archive.json>:
+
+  {
+     "app_name" : "spvm-archive",
+     "app_version" : "1.005",
+     "spvm_version" : "0.990133",
+     "mode" : "linux-64bit",
+     "classes_h" : {
+        "Array" : {
+           "native" : 1,
+           "precompile" : 1
+        },
+        "Packer" : {
+           "precompile" : 1
+        },
+        "TestCase::NativeAPI" : {
+           "native" : 1
+        },
+        "Address" : {}
+     }
+  }
+
+=head3 app_name
+
+The name of the application from which this archive was generated.
+
+=head3 app_version
+
+The version of the application from which this archive was generated.
+
+=head3 spvm_version
+
+The version of SPVM used to create this archive.
+
+=head3 mode
+
+The mode of the application's config file (e.g., C<linux-64bit>, C<debug>, C<release>) used to generate this archive. This field may not exist.
+
+=head3 classes_h
+
+A hash map of class information. Each key is a class name, and its value is a hash map that can contain the following fields:
+
+=over 2
+
+=item * native
+
+Set to C<1> if the class has native methods.
+
+=item * precompile
+
+Set to C<1> if the class has precompiled methods.
+
+=back
+
+If these fields are missing, they are treated as C<0>. For example, C<Address : {}> represents a pure SPVM class.
 
 =cut
