@@ -161,7 +161,7 @@ sub to_cmd {
     File::Path::rmtree $archive_output_dir if -e $archive_output_dir;
     
     # 2. Execute spvmcc
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $archive_output_dir --build-spvm-archive --mode linux-64bit t/04_spvmcc/script/spvm-archive.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -B $build_dir -I $test_dir/lib2/SPVM -o $archive_output_dir --build-spvm-archive --mode linux-64bit t/04_spvmcc/script/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     

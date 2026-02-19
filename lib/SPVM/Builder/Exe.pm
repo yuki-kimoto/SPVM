@@ -305,7 +305,7 @@ sub new {
       }
       
       # Extract all files to a temporary directory to handle it as a normal directory
-      my $spvm_archive_dir_obj = File::Temp->newdir;
+      my $spvm_archive_dir_obj = File::Temp->newdir(TEMPLATE => 'tmp_spvm_archive_XXXXXXX');
       $spvm_archive_dir = $spvm_archive_dir_obj->dirname;
       
       my $tar = Archive::Tar->new;
@@ -340,7 +340,7 @@ sub new {
     };
 
     # 3. Prepare the final temporary directory for the compiler
-    my $spvm_archive_extract_dir_obj = File::Temp->newdir;
+    my $spvm_archive_extract_dir_obj = File::Temp->newdir(TEMPLATE => 'tmp_spvm_archive_extract_XXXXXXX');
     $self->{spvm_archive_extract_dir_obj} = $spvm_archive_extract_dir_obj;
     my $spvm_archive_extract_dir = $spvm_archive_extract_dir_obj->dirname;
     $self->{spvm_archive_extract_dir} = $spvm_archive_extract_dir;
@@ -422,7 +422,7 @@ sub build_exe_file {
   
   # Output file settings
   my $output_file = $self->{output_file};
-  my $output_dir_tmp = File::Temp->newdir;
+  my $output_dir_tmp = File::Temp->newdir(TEMPLATE => 'tmp_output_XXXXXXX');
   my $build_spvm_archive = $self->build_spvm_archive;
   my $spvm_archive_out = $output_file;
   
