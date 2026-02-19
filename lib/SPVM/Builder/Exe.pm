@@ -377,10 +377,8 @@ sub build_exe_file {
   }
   
   # Add object files from loaded SPVM archive
-  my $spvm_archive = $self->config->get_spvm_archive;
-  if (defined $spvm_archive) {
-    my $spvm_archive_extract_dir = $self->{spvm_archive_extract_dir};
-    my $object_files_in_spvm_archive = SPVM::Builder::Exe->find_object_files("$spvm_archive_extract_dir");
+  if (my $spvm_archive = $self->spvm_archive) {
+    my $object_files_in_spvm_archive = $spvm_archive->find_object_files;
     for my $object_file_in_spvm_archive (@$object_files_in_spvm_archive) {
       push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $object_file_in_spvm_archive);
     }
@@ -427,7 +425,7 @@ sub build_exe_file {
     
     # Copy from existing archive
     my $spvm_archive_info;
-    if (defined $spvm_archive) {
+    if (my $spvm_archive = $self->spvm_archive) {
       my $spvm_archive_extract_dir = $self->{spvm_archive_extract_dir};
       $spvm_archive_info = $self->spvm_archive->info;
       SPVM::Builder::SPVMArchive->copy_spvm_archive_files($spvm_archive_extract_dir, $spvm_archive_out, $spvm_archive_info);
@@ -1458,31 +1456,6 @@ sub create_boostrap_name_space {
   my $name_space = "SPVM_BOOTSTRAP_${app_name}______";
   
   return $name_space;
-}
-
-sub find_object_files {
-  
-  my ($class, $dir) = @_;
-  
-  my @object_files;
-  
-  find(
-    {
-      wanted => sub {
-        my $path = $File::Find::name;
-        
-        if (-f $path) {
-          if ($path =~ /\.o$/) {
-            push @object_files, $path;
-          }
-        }
-      },
-      no_chdir => 1,
-    },
-    $dir
-  );
-  
-  return \@object_files;
 }
 
 sub copy_with_timestamps {

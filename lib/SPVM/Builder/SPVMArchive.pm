@@ -3,6 +3,7 @@ package SPVM::Builder::SPVMArchive;
 use strict;
 use warnings;
 use JSON::PP;
+use File::Find 'find';
 
 # Fields
 sub info {
