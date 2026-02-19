@@ -5,14 +5,25 @@ use warnings;
 use JSON::PP;
 
 # Fields
-sub spvm_archive_info {
+sub info {
   my $self = shift;
   if (@_) {
-    $self->{spvm_archive_info} = $_[0];
+    $self->{info} = $_[0];
     return $self;
   }
   else {
-    return $self->{spvm_archive_info};
+    return $self->{info};
+  }
+}
+
+sub dir {
+  my $self = shift;
+  if (@_) {
+    $self->{dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{dir};
   }
 }
 
@@ -23,64 +34,6 @@ sub new {
   my $self = {};
   
   return bless $self, $class || ref $class;
-}
-
-sub load_spvm_archive {
-  my ($self, $spvm_archive) = @_;
-
-  my $spvm_archive_dir;
-
-  # 1. Normalize input to a directory (Extract if it is a tar.gz)
-  if (-f $spvm_archive) {
-    unless ($spvm_archive =~ /\.tar\.gz$/) {
-      Carp::confess("SPVM archive file '$spvm_archive' must have '.tar.gz' extension");
-    }
-    
-    # Use a temporary directory for extraction
-    my $spvm_archive_dir_obj = File::Temp->newdir(TEMPLATE => 'tmp_spvm_archive_XXXXXXX');
-    $spvm_archive_dir = $spvm_archive_dir_obj->dirname;
-    
-    my $tar = Archive::Tar->new;
-    $tar->read($spvm_archive) or die $tar->error;
-    $tar->extract_all($spvm_archive_dir) or die "Could not extract $spvm_archive to $spvm_archive_dir";
-  }
-  elsif (-d $spvm_archive) {
-    $spvm_archive_dir = $spvm_archive;
-  }
-  else {
-    Carp::confess("SPVM archive '$spvm_archive' not found");
-  }
-
-  # 2. Read and decode JSON metadata
-  my $json_file = "$spvm_archive_dir/spvm-archive.json";
-  unless (-f $json_file) {
-    Carp::confess("SPVM archive '$spvm_archive' must contain spvm-archive.json");
-  }
-  my $spvm_archive_json = SPVM::Builder::Util::slurp_binary($json_file);
-  
-  my $spvm_archive_info = JSON::PP->new->decode($spvm_archive_json);
-  $spvm_archive_info->{classes_h} = {
-    map { $_->{name} => $_ } 
-    @{$spvm_archive_info->{classes}}
-  };
-  
-  # Set the field in $self
-  $self->{spvm_archive_info} = $spvm_archive_info;
-
-  # 3. Prepare the final temporary directory for the compiler
-  my $spvm_archive_extract_dir_obj = File::Temp->newdir(TEMPLATE => 'tmp_spvm_archive_extract_XXXXXXX');
-  $self->{spvm_archive_extract_dir_obj} = $spvm_archive_extract_dir_obj;
-  my $spvm_archive_extract_dir = $spvm_archive_extract_dir_obj->dirname;
-  $self->{spvm_archive_extract_dir} = $spvm_archive_extract_dir;
-
-  # 4. Copy and filter files
-  File::Copy::copy($json_file, "$spvm_archive_extract_dir/spvm-archive.json");
-  
-  $self->copy_spvm_archive_files($spvm_archive_dir, $spvm_archive_extract_dir, $spvm_archive_info);
-  
-  $self->{spvm_archive_extract_dir} = $spvm_archive_extract_dir;
-  
-  return $spvm_archive_extract_dir;
 }
 
 sub create_class_name_from_object_path {
@@ -97,9 +50,9 @@ sub create_class_name_from_object_path {
 
 # Class Methods
 sub copy_spvm_archive_files {
-  my ($class, $src_dir, $dest_dir, $spvm_archive_info) = @_;
+  my ($class, $src_dir, $dest_dir, $info) = @_;
   
-  my $classes_h = $spvm_archive_info->{classes_h};
+  my $classes_h = $info->{classes_h};
   
   # Normalize the base source directory to use forward slashes for robust matching
   my $normalized_src_dir = $src_dir;
@@ -178,60 +131,115 @@ sub copy_spvm_archive_files {
   );
 }
 
-sub exists_in_spvm_archive_info {
-  my ($self, $class_name) = @_;
+sub merge_info {
+  my ($class, $info1, $info2) = @_;
   
-  my $exists_in_spvm_archive_info;
-  my $spvm_archive_info = $self->{spvm_archive_info};
-  if ($spvm_archive_info) {
-    
-    my $classes_h = $spvm_archive_info->{classes_h};
-    
-    if ($classes_h->{$class_name}) {
-      $exists_in_spvm_archive_info = 1;
+  my $merged_info = {};
+  $merged_info->{app_name} = $info2->{app_name};
+  if (defined $info2->{mode}) {
+    $merged_info->{mode} = $info2->{mode};
+  }
+  if (defined $info2->{version}) {
+    $merged_info->{version} = $info2->{version};
+  }
+  
+  $merged_info->{classes_h} = {};
+  
+  if ($info1) {
+    for my $class_name (keys %{$info1->{classes_h}}) {
+      next if $class_name =~ /^eval::anon_class::\d+$/a;
+      $merged_info->{classes_h}{$class_name} = $info1->{classes_h}{$class_name};
     }
   }
   
-  return $exists_in_spvm_archive_info;
+  if ($info2) {
+    for my $class_name (keys %{$info2->{classes_h}}) {
+      next if $class_name =~ /^eval::anon_class::\d+$/a;
+      $merged_info->{classes_h}{$class_name} = $info2->{classes_h}{$class_name};
+    }
+  }
+  
+  return $merged_info;
 }
 
+# Instance Methods
+sub load {
+  my ($self, $spvm_archive) = @_;
 
-sub merge_spvm_archive_info {
-  my ($class, $spvm_archive_info1, $spvm_archive_info2) = @_;
-  
-  my $merged_spvm_archive_info = {};
-  $merged_spvm_archive_info->{app_name} = $spvm_archive_info2->{app_name};
-  if (defined $spvm_archive_info2->{mode}) {
-    $merged_spvm_archive_info->{mode} = $spvm_archive_info2->{mode};
+  my $spvm_archive_dir;
+
+  # 1. Normalize input to a directory (Extract if it is a tar.gz)
+  if (-f $spvm_archive) {
+    unless ($spvm_archive =~ /\.tar\.gz$/) {
+      Carp::confess("SPVM archive file '$spvm_archive' must have '.tar.gz' extension");
+    }
+    
+    # Use a temporary directory for extraction
+    my $spvm_archive_dir_obj = File::Temp->newdir(TEMPLATE => 'tmp_spvm_archive_XXXXXXX');
+    $spvm_archive_dir = $spvm_archive_dir_obj->dirname;
+    
+    my $tar = Archive::Tar->new;
+    $tar->read($spvm_archive) or die $tar->error;
+    $tar->extract_all($spvm_archive_dir) or die "Could not extract $spvm_archive to $spvm_archive_dir";
   }
-  if (defined $spvm_archive_info2->{version}) {
-    $merged_spvm_archive_info->{version} = $spvm_archive_info2->{version};
+  elsif (-d $spvm_archive) {
+    $spvm_archive_dir = $spvm_archive;
   }
+  else {
+    Carp::confess("SPVM archive '$spvm_archive' not found");
+  }
+
+  # 2. Read and decode JSON metadata
+  my $json_file = "$spvm_archive_dir/spvm-archive.json";
+  unless (-f $json_file) {
+    Carp::confess("SPVM archive '$spvm_archive' must contain spvm-archive.json");
+  }
+  my $spvm_archive_json = SPVM::Builder::Util::slurp_binary($json_file);
   
-  $merged_spvm_archive_info->{classes_h} = {};
+  my $info = JSON::PP->new->decode($spvm_archive_json);
+  $info->{classes_h} = {
+    map { $_->{name} => $_ } 
+    @{$info->{classes}}
+  };
   
-  if ($spvm_archive_info1) {
-    for my $class_name (keys %{$spvm_archive_info1->{classes_h}}) {
-      next if $class_name =~ /^eval::anon_class::\d+$/a;
-      $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info1->{classes_h}{$class_name};
+  # Set the field in $self
+  $self->{info} = $info;
+
+  # 3. Prepare the final temporary directory for the compiler
+  my $dir_obj = File::Temp->newdir(TEMPLATE => 'tmp_spvm_archive_extract_XXXXXXX');
+  $self->{dir_obj} = $dir_obj;
+  my $dir = $dir_obj->dirname;
+  $self->{dir} = $dir;
+
+  # 4. Copy and filter files
+  File::Copy::copy($json_file, "$dir/spvm-archive.json");
+  
+  $self->copy_spvm_archive_files($spvm_archive_dir, $dir, $info);
+  
+  $self->{dir} = $dir;
+}
+
+sub exists_in_info {
+  my ($self, $class_name) = @_;
+  
+  my $exists_in_info;
+  my $info = $self->{info};
+  if ($info) {
+    
+    my $classes_h = $info->{classes_h};
+    
+    if ($classes_h->{$class_name}) {
+      $exists_in_info = 1;
     }
   }
   
-  if ($spvm_archive_info2) {
-    for my $class_name (keys %{$spvm_archive_info2->{classes_h}}) {
-      next if $class_name =~ /^eval::anon_class::\d+$/a;
-      $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info2->{classes_h}{$class_name};
-    }
-  }
-  
-  return $merged_spvm_archive_info;
+  return $exists_in_info;
 }
 
 sub find_object_files {
-  
   my ($self) = @_;
   
-  my $dir = $self->{spvm_archive_extract_dir};
+  my $dir = $self->{dir};
   
   my @object_files;
   

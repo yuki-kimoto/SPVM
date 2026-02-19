@@ -460,7 +460,7 @@ sub build_exe_file {
     }
     
     # Write spvm-archive.json
-    my $merged_spvmcc_info = SPVM::Builder::SPVMArchive->merge_spvm_archive_info($spvm_archive_info, $spvmcc_info);
+    my $merged_spvmcc_info = SPVM::Builder::SPVMArchive->merge_info($spvm_archive_info, $spvmcc_info);
     my $merged_spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($merged_spvmcc_info);
     
     my $json_file = "$spvm_archive_out/spvm-archive.json";
