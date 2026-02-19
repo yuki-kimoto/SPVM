@@ -37,8 +37,9 @@ sub new {
   return bless $self, $class || ref $class;
 }
 
+# Instance Methods
 sub create_class_name_from_object_path {
-  my ($class, $tar_file) = @_;
+  my ($self, $tar_file) = @_;
   
   my $class_name = $tar_file;
   $class_name =~ s|^object/||;
@@ -51,7 +52,7 @@ sub create_class_name_from_object_path {
 
 # Class Methods
 sub copy_spvm_archive_files {
-  my ($class, $src_dir, $dest_dir, $info) = @_;
+  my ($self, $src_dir, $dest_dir, $info) = @_;
   
   my $classes_h = $info->{classes_h};
   
@@ -85,14 +86,14 @@ sub copy_spvm_archive_files {
 
         # 3-1. SPVM source files (.spvm) from SPVM directory
         if ($rel_path =~ m|^SPVM/| && $rel_path =~ /\.spvm$/) {
-          my $class_name = __PACKAGE__->create_class_name_from_object_path($rel_path);
+          my $class_name = $self->create_class_name_from_object_path($rel_path);
           if ($classes_h->{$class_name}) {
             $should_copy = 1;
           }
         }
         # 3-2. Object files (.o) from object directory or SPVM directory
         elsif (($rel_path =~ m|^object/| || $rel_path =~ m|^SPVM/|) && $rel_path =~ /\.o$/) {
-          my $class_name = __PACKAGE__->create_class_name_from_object_path($rel_path);
+          my $class_name = $self->create_class_name_from_object_path($rel_path);
           if ($classes_h->{$class_name}) {
             $should_copy = 1;
           }
@@ -133,7 +134,7 @@ sub copy_spvm_archive_files {
 }
 
 sub merge_info {
-  my ($class, $info1, $info2) = @_;
+  my ($self, $info1, $info2) = @_;
   
   my $merged_info = {};
   $merged_info->{app_name} = $info2->{app_name};
