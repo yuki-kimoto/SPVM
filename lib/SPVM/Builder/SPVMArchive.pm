@@ -259,4 +259,47 @@ sub find_object_files {
   return \@object_files;
 }
 
+# Instance Methods
+sub store {
+  my ($self, $dist_dir, $extra_src_dir, $extra_info) = @_;
+
+  # 1. Create the destination directory if it does not exist
+  unless (-d $dist_dir) {
+    if (-f $dist_dir) {
+      Carp::confess "Cannot create directory '$dist_dir': File exists";
+    }
+    File::Path::mkpath($dist_dir)
+      or Carp::confess "Cannot create directory '$dist_dir': $!";
+  }
+
+  # 2. Copy files from the current instance (the existing archive)
+  my $info = $self->info;
+  my $dir = $self->dir;
+  if ($dir && $info) {
+    $self->copy_spvm_archive_files($dir, $dist_dir, $info);
+  }
+
+  # 3. Copy additional files from the extra source directory
+  if ($extra_src_dir && $extra_info) {
+    $self->copy_spvm_archive_files($extra_src_dir, $dist_dir, $extra_info);
+  }
+
+  # 4. Merge info and write spvm-archive.json
+  my $merged_info = $self->merge_info($info, $extra_info);
+  my $json_content = JSON::PP->new->pretty->canonical(1)->encode($merged_info);
+  
+  my $json_file = "$dist_dir/spvm-archive.json";
+  open my $fh, '>', $json_file or die "Cannot open '$json_file' for writing: $!";
+  print $fh $json_content;
+  close $fh;
+
+  # 5. Ensure lib and include directories exist
+  for my $sub_dir (qw(lib include)) {
+    my $full_dir = "$dist_dir/$sub_dir";
+    unless (-d $full_dir) {
+      mkdir $full_dir or Carp::confess "Could not create the $sub_dir directory in '$dist_dir': $!";
+    }
+  }
+}
+
 1;
