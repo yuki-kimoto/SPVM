@@ -408,39 +408,9 @@ sub build_exe_file {
     my $build_work_dir = $self->builder->create_build_work_path;
     my $spvmcc_info = $self->spvmcc_info;
     
-    # Create directory if it does not exist
-    unless (-d $spvm_archive_out) {
-      if (-f $spvm_archive_out) {
-        Carp::confess "Cannot create directory '$spvm_archive_out': File exists";
-      }
-      File::Path::mkpath($spvm_archive_out)
-        or Carp::confess "Cannot create directory '$spvm_archive_out': $!";
-    }
-    
-    # Copy build files
-    SPVM::Builder::SPVMArchive->copy_spvm_archive_files($build_work_dir, $spvm_archive_out, $spvmcc_info);
-    
-    # Copy from existing archive
-    my $spvm_archive_info;
-    if (my $spvm_archive = $self->spvm_archive) {
-      $spvm_archive_info = $self->spvm_archive->info;
-      SPVM::Builder::SPVMArchive->copy_spvm_archive_files($spvm_archive->dir, $spvm_archive_out, $spvm_archive_info);
-    }
-    
-    # Write spvm-archive.json
-    my $merged_spvmcc_info = SPVM::Builder::SPVMArchive->merge_info($spvm_archive_info, $spvmcc_info);
-    my $merged_spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($merged_spvmcc_info);
-    
-    my $json_file = "$spvm_archive_out/spvm-archive.json";
-    open my $fh, '>', $json_file or die "Cannot open '$json_file': $!";
-    print $fh $merged_spvm_archive_json;
-    close $fh;
-    
-    my $lib_dir = "$spvm_archive_out/lib";
-    unless (-d $lib_dir) {
-      mkdir "$spvm_archive_out/lib"
-       or Carp::confess "Could not create the lib directory in the SPVM archive: $!";
-   }
+    # Store the SPVM archive using the new method
+    my $spvm_archive = $self->spvm_archive || SPVM::Builder::SPVMArchive->new;
+    $spvm_archive->store($spvm_archive_out, $build_work_dir, $spvmcc_info);
   }
 }
 
