@@ -288,6 +288,7 @@ lib/SPVM/Document/NativeAPI/StringBuffer.pm
 lib/SPVM/Document/NativeAPI/Type.pm
 lib/SPVM/Document/NativeClass.pm
 lib/SPVM/Document/Resource.pm
+lib/SPVM/Document/SPVMArchive.pm
 lib/SPVM/Double.pm
 lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
