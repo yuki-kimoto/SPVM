@@ -21,8 +21,9 @@ my $devnull = File::Spec->devnull;
 my $test_dir = $ENV{SPVM_TEST_DIR};
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
-my $exe_dir = "$build_dir/.tmp/exe";
-my $external_object_dir = "$build_dir/.tmp/external_object";
+my $tmp_dir = "$build_dir/.tmp";
+my $exe_dir = "$tmp_dir/exe";
+my $external_object_dir = "$tmp_dir/external_object";
 
 rmtree "$build_dir/work";
 
@@ -41,10 +42,10 @@ sub to_cmd {
 
 {
   # --build-spvm-archive
-  my $archive_dir = "t/04_spvmcc/script/.tmp/spvm-archive-myapp";
+  my $archive_dir = "$tmp_dir/spvm-archive-myapp";
   {
     File::Path::rmtree $archive_dir if -e $archive_dir; # Clean up
-    File::Path::mkpath "t/04_spvmcc/script/.tmp";
+    File::Path::mkpath "$tmp_dir";
     
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib/SPVM -o $archive_dir --build-spvm-archive t/04_spvmcc/script/myapp.spvm);
     system($spvmcc_cmd) == 0
@@ -168,7 +169,7 @@ sub to_cmd {
   # use_spvm_archive with include and lib
   {
     use Config;
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM --object-file t/04_spvmcc/.spvm_build/.tmp/bar$Config{obj_ext} -o $exe_dir/spvm-archive t/04_spvmcc/script/spvm-archive.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM --object-file $tmp_dir/bar$Config{obj_ext} -o $exe_dir/spvm-archive t/04_spvmcc/script/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -181,7 +182,7 @@ sub to_cmd {
   
   # --build-spvm-archive with use_spvm_archive
   {
-    my $archive_output_dir = "t/04_spvmcc/script/.tmp/spvm-archive-myapp-extend";
+    my $archive_output_dir = "$tmp_dir/spvm-archive-myapp-extend";
     File::Path::rmtree $archive_output_dir if -e $archive_output_dir;
     
     # 2. Execute spvmcc
