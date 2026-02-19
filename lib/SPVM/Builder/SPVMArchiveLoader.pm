@@ -4,6 +4,19 @@ use strict;
 use warnings;
 use JSON::PP;
 
+# Fields
+sub spvm_archive_info {
+  my $self = shift;
+  if (@_) {
+    $self->{spvm_archive_info} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{spvm_archive_info};
+  }
+}
+
+# Class Methods
 sub new {
   my $class = shift;
   
