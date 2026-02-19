@@ -1,5 +1,8 @@
 0.990133 2026-02-18
-
+  
+  [New Features]
+    * Add the env native method to the Fn class to get the value of an environment variable.
+    
   [Incompatible Changes]
     * Rename load_spvm_archive to use_spvm_archive in SPVM::Builder::Config::Exe.
     * Rename --load-spvm-archive option to --spvm-archive in spvmcc. 
