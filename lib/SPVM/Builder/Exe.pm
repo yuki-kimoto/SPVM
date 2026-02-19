@@ -272,6 +272,8 @@ sub new {
   
   $self->spvmcc_info($spvmcc_info);
   
+  $spvmcc_info->{spvm_version} = $SPVM::VERSION;
+  
   $spvmcc_info->{app_name} = $app_name;
   
   my $config_exe = $self->config;

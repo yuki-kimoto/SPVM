@@ -60,6 +60,7 @@ sub to_cmd {
     my $spvmcc_info = JSON::PP->new->decode($json_content);
     
     is($spvmcc_info->{app_name}, "myapp");
+    is($spvmcc_info->{spvm_version}, $SPVM::VERSION);
     ok(!$spvmcc_info->{mode});
     ok(!$spvmcc_info->{version});
     

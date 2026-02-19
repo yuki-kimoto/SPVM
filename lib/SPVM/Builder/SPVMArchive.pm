@@ -280,6 +280,7 @@ sub store {
   # Merge info and write spvm-archive.json
   my $new_spvm_archive_info = $self->merge_class_info($spvm_archive_info, $spvmcc_info);
   $new_spvm_archive_info->{app_name} = $spvmcc_info->{app_name};
+  $new_spvm_archive_info->{spvm_version} = $spvmcc_info->{spvm_version};
   if (defined $spvmcc_info->{mode}) {
     $new_spvm_archive_info->{mode} = $spvmcc_info->{mode};
   }
