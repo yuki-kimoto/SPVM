@@ -127,19 +127,21 @@ sub to_cmd {
       : ($Config{ar} || 'ar', 'rc', $lib_file, $obj_file);
     system(@ar_cmd) == 0 or die "Failed to create static library $lib_file";
 
-    # 2. Real Build: bar.c -> bar.o (Depends on spvmcc_archive_test.h)
-    my $bar_c_file = "$tmp_build_dir/bar.c";
+    # 2. Real Build: external_for_spvm_archive.c -> external_for_spvm_archive.o (Depends on spvmcc_archive_test.h)
+    # Output to $external_object_dir instead of $tmp_build_dir
+    File::Path::mkpath $external_object_dir;
+    my $external_src_file = "$external_object_dir/external_for_spvm_archive.c";
     {
-      open my $fh, '>', $bar_c_file or die "Can't create $bar_c_file: $!";
+      open my $fh, '>', $external_src_file or die "Can't create $external_src_file: $!";
       print $fh qq(#include "spvmcc_archive_test.h"\n);
-      print $fh "int bar(void) { return spvmcc_archive_test_foo(); }\n";
+      print $fh "int spvmcc_archive_test_external(void) { return spvmcc_archive_test_foo(); }\n";
       close $fh;
     }
-    my $bar_o_file = "$tmp_build_dir/bar$obj_ext";
-    my @cc_cmd_bar = $is_msvc
-      ? ($cc, (split /\s+/, $ccflags), '-c', "-Fo$bar_o_file", "-I$include_dir_in_spvm_archive", $bar_c_file)
-      : ($cc, (split /\s+/, $ccflags), '-c', '-o', $bar_o_file, "-I$include_dir_in_spvm_archive", $bar_c_file);
-    system(@cc_cmd_bar) == 0 or die "Failed to compile $bar_c_file";
+    my $external_obj_file = "$external_object_dir/external_for_spvm_archive$obj_ext";
+    my @cc_cmd_external = $is_msvc
+      ? ($cc, (split /\s+/, $ccflags), '-c', "-Fo$external_obj_file", "-I$include_dir_in_spvm_archive", $external_src_file)
+      : ($cc, (split /\s+/, $ccflags), '-c', '-o', $external_obj_file, "-I$include_dir_in_spvm_archive", $external_src_file);
+    system(@cc_cmd_external) == 0 or die "Failed to compile $external_src_file";
 
     # 3. Dummy Files: bar.lib (0 bytes) and bar.hpp (0 bytes)
     # Regardless of OS, we create bar.lib as a dummy to satisfy the test
@@ -169,7 +171,7 @@ sub to_cmd {
   # use_spvm_archive with include and lib
   {
     use Config;
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM --object-file $tmp_dir/bar$Config{obj_ext} -o $exe_dir/spvm-archive t/04_spvmcc/script/spvm-archive.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM --object-file $tmp_dir/external_for_spvm_archive$Config{obj_ext} -o $exe_dir/spvm-archive t/04_spvmcc/script/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
