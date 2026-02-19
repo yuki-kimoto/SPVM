@@ -76,9 +76,7 @@ sub load_spvm_archive {
   # 4. Copy and filter files
   File::Copy::copy($json_file, "$spvm_archive_extract_dir/spvm-archive.json");
   
-  # Correctly pass class names as an array reference using the fix we discussed
-  my $class_names = [keys %{$spvm_archive_info->{classes_h} || {}}];
-  $self->copy_spvm_archive_files($spvm_archive_dir, $spvm_archive_extract_dir, $class_names);
+  $self->copy_spvm_archive_files($spvm_archive_dir, $spvm_archive_extract_dir, $spvm_archive_info);
 
   return $spvm_archive_extract_dir;
 }
@@ -97,7 +95,9 @@ sub create_class_name_from_object_path {
 
 # Class Methods
 sub copy_spvm_archive_files {
-  my ($class, $src_dir, $dest_dir, $classes_h) = @_;
+  my ($class, $src_dir, $dest_dir, $spvm_archive_info) = @_;
+  
+  my $classes_h = $spvm_archive_info->{classes_h};
   
   # Normalize the base source directory to use forward slashes for robust matching
   my $normalized_src_dir = $src_dir;

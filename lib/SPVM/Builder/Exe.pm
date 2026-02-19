@@ -341,7 +341,7 @@ sub new {
     File::Copy::copy($json_file, "$spvm_archive_extract_dir/spvm-archive.json");
     
     # Copy classes and other resources using filtered logic
-    SPVM::Builder::SPVMArchiveLoader->copy_spvm_archive_files($spvm_archive_dir, $spvm_archive_extract_dir, $self->{spvm_archive_info}{classes_h});
+    SPVM::Builder::SPVMArchiveLoader->copy_spvm_archive_files($spvm_archive_dir, $spvm_archive_extract_dir, $self->{spvm_archive_info});
     
     # 5. Setup paths (Common)
     $compiler->add_include_dir("$spvm_archive_extract_dir/SPVM");
@@ -449,14 +449,14 @@ sub build_exe_file {
     }
     
     # Copy build files
-    SPVM::Builder::SPVMArchiveLoader->copy_spvm_archive_files($build_work_dir, $spvm_archive_out, $spvmcc_info->{classes_h});
+    SPVM::Builder::SPVMArchiveLoader->copy_spvm_archive_files($build_work_dir, $spvm_archive_out, $spvmcc_info);
     
     # Copy from existing archive
     my $spvm_archive_info;
     if (defined $spvm_archive) {
       my $spvm_archive_extract_dir = $self->{spvm_archive_extract_dir};
       $spvm_archive_info = $self->{spvm_archive_info};
-      SPVM::Builder::SPVMArchiveLoader->copy_spvm_archive_files($spvm_archive_extract_dir, $spvm_archive_out, $spvm_archive_info->{classes_h});
+      SPVM::Builder::SPVMArchiveLoader->copy_spvm_archive_files($spvm_archive_extract_dir, $spvm_archive_out, $spvm_archive_info);
     }
     
     # Write spvm-archive.json
