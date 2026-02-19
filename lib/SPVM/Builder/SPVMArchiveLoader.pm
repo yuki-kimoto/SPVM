@@ -209,27 +209,17 @@ sub merge_spvm_archive_info {
   
   if ($spvm_archive_info1) {
     for my $class_name (keys %{$spvm_archive_info1->{classes_h}}) {
+      next if $class_name =~ /^eval::anon_class::\d+$/a;
       $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info1->{classes_h}{$class_name};
     }
   }
   
-  for my $class_name (keys %{$spvm_archive_info2->{classes_h}}) {
-    $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info2->{classes_h}{$class_name};
+  if ($spvm_archive_info2) {
+    for my $class_name (keys %{$spvm_archive_info2->{classes_h}}) {
+      next if $class_name =~ /^eval::anon_class::\d+$/a;
+      $merged_spvm_archive_info->{classes_h}{$class_name} = $spvm_archive_info2->{classes_h}{$class_name};
+    }
   }
-  
-  my $merged_spvm_archive_info_classes_h = delete $merged_spvm_archive_info->{classes_h};
-  
-  my $classes = [];
-  for my $class_name (keys %$merged_spvm_archive_info_classes_h) {
-    next if $class_name =~ /^eval::anon_class::\d+$/a;
-    my $class = $merged_spvm_archive_info_classes_h->{$class_name};
-    $class->{name} = $class_name;
-    push @$classes, $class;
-  }
-  
-  $classes = [sort { $a->{name} cmp $b->{name} } @$classes];
-  
-  $merged_spvm_archive_info->{classes} = $classes;
   
   return $merged_spvm_archive_info;
 }

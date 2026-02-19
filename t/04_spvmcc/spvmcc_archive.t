@@ -63,8 +63,7 @@ sub to_cmd {
     ok(!$spvmcc_info->{mode});
     ok(!$spvmcc_info->{version});
     
-    my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};
-    is($classes_h->{'TestCase::NativeAPI2'}{name}, 'TestCase::NativeAPI2');
+    my $classes_h = $spvmcc_info->{classes_h};
     is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
     is($classes_h->{'TestCase::NativeAPI2'}{precompile}, 1);
     ok($classes_h->{'TestCase::Precompile'});
@@ -175,11 +174,9 @@ sub to_cmd {
     is($spvmcc_info->{mode}, "linux-64bit");
     is($spvmcc_info->{version}, "1.005");
     
-    my $classes_h = {map { $_->{name} => $_ } @{$spvmcc_info->{classes}}};
-    is($classes_h->{'TestCase::NativeAPI2'}{name}, 'TestCase::NativeAPI2');
+    my $classes_h = $spvmcc_info->{classes_h};
     is($classes_h->{'TestCase::NativeAPI2'}{native}, 1);
     is($classes_h->{'TestCase::NativeAPI2'}{precompile}, 1);
-    is($classes_h->{'TestCase::NativeAPI3'}{name}, 'TestCase::NativeAPI3');
     is($classes_h->{'TestCase::NativeAPI3'}{native}, 1);
     ok($classes_h->{'TestCase::Precompile'});
     

@@ -1,0 +1,87 @@
+{
+   "app_name" : "myapp",
+   "classes_h" : {
+      "Address" : {},
+      "Array" : {
+         "native" : 1,
+         "precompile" : 1
+      },
+      "Bool" : {},
+      "Byte" : {},
+      "Callback" : {},
+      "Callback::Grep" : {},
+      "Callback::Grep::Byte" : {},
+      "Callback::Grep::Double" : {},
+      "Callback::Grep::Float" : {},
+      "Callback::Grep::Int" : {},
+      "Callback::Grep::Long" : {},
+      "Callback::Grep::Short" : {},
+      "Callback::Map" : {},
+      "Callback::MapExpand" : {},
+      "CallerInfo" : {},
+      "Cloneable" : {},
+      "Cloner" : {},
+      "CommandInfo" : {},
+      "Comparable" : {},
+      "Comparator" : {},
+      "Comparator::Double" : {},
+      "Comparator::Float" : {},
+      "Comparator::Int" : {},
+      "Comparator::Long" : {},
+      "Comparator::String" : {},
+      "Countable" : {},
+      "Double" : {},
+      "EqualityCheckable" : {},
+      "EqualityChecker" : {},
+      "Error" : {},
+      "Error::Compile" : {},
+      "Error::MethodCallNotPermitted" : {},
+      "Error::NotSupported" : {},
+      "Error::System" : {},
+      "Error::Unicode::InvalidUTF8" : {},
+      "Float" : {},
+      "Fn" : {
+         "native" : 1,
+         "precompile" : 1
+      },
+      "Format" : {
+         "native" : 1,
+         "precompile" : 1
+      },
+      "Hash" : {
+         "native" : 1,
+         "precompile" : 1
+      },
+      "Hash::Entry" : {},
+      "Int" : {},
+      "IntList" : {},
+      "List" : {},
+      "Long" : {},
+      "Packer" : {
+         "precompile" : 1
+      },
+      "Packer::Specifier" : {},
+      "SPVM" : {},
+      "Scope::Guard" : {},
+      "Short" : {},
+      "Sort" : {
+         "precompile" : 1
+      },
+      "StringBuffer" : {},
+      "StringList" : {},
+      "Stringable" : {},
+      "Stringer" : {},
+      "TestCase::NativeAPI" : {
+         "native" : 1
+      },
+      "TestCase::NativeAPI2" : {
+         "native" : 1,
+         "precompile" : 1
+      },
+      "TestCase::Precompile" : {
+         "precompile" : 1
+      },
+      "TestCase::Resource::Mylib1" : {},
+      "TestCase::Resource::Mylib2" : {}
+   }
+}

@@ -328,20 +328,15 @@ sub new {
     }
     $spvm_archive_json = SPVM::Builder::Util::slurp_binary($json_file);
     
-    my $spvm_archive_info_data = JSON::PP->new->decode($spvm_archive_json);
-    $self->{spvm_archive_info} = {
-      classes_h => { 
-        map { $_->{name} => $_ } 
-        @{$spvm_archive_info_data->{classes}} 
-      },
-    };
-
+    my $spvm_archive_info = JSON::PP->new->decode($spvm_archive_json);
+    $self->{spvm_archive_info} = $spvm_archive_info;
+    
     # 3. Prepare the final temporary directory for the compiler
     my $spvm_archive_extract_dir_obj = File::Temp->newdir(TEMPLATE => 'tmp_spvm_archive_extract_XXXXXXX');
     $self->{spvm_archive_extract_dir_obj} = $spvm_archive_extract_dir_obj;
     my $spvm_archive_extract_dir = $spvm_archive_extract_dir_obj->dirname;
     $self->{spvm_archive_extract_dir} = $spvm_archive_extract_dir;
-
+    
     # 4. Copy and filter files (Common Logic)
     File::Copy::copy($json_file, "$spvm_archive_extract_dir/spvm-archive.json");
     
