@@ -1,3 +1,8 @@
+0.990134 2026-02-19
+
+  [Incompatible Changes]
+    * Change the format of spvm-archive.json to use classes_h and update related logic and tests.
+    
 0.990133 2026-02-19
   
   [New Features]
