@@ -60,6 +60,8 @@ This document contains all documents for SPVM.
 
 =item * L<Native Class Configs|SPVM::Builder::Config>
 
+=item * L<SPVM Archive|SPVM::Document::SPVMArchive>
+
 =item * L<Native APIs|SPVM::Document::NativeAPI>
 
 =over 2

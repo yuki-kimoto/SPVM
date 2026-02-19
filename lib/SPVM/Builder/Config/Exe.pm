@@ -887,6 +887,10 @@ Loads an SPVM archive.
 
 Actually, L</"spvm_archive"> field is just set to $spvm_archive, and the loading happens later.
 
+SPVM Archive is a format used to bundle SPVM class files, compiled SPVM native classes, precompiled classes, third-party header files, and static libraries into a single directory or a C<.tar.gz> file.
+
+See L<SPVM::Document::Archive> for details.
+
 Examples:
 
   my $config_dir = File::Basename::dirname __FILE__;

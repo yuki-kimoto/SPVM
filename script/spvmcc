@@ -295,26 +295,6 @@ If the source code specified by I<SCRIPT_NAME> contains lib directives, The dire
 
 This directories specified by lib directive is placed after the directories specified by L</"--include-dir"> option.
 
-=head2 SPVM Archive
-
-An SPVM archive is a tarball (C<.tar.gz>) containing SPVM class files and object files generated from native classes, precompilation classes, and resource classes.
-
-C<spvmcc.json> in an SPVM archive has archive information. This contains the application name, the mode, the version and class information.
-
-The recommended file extension is C<.spvm-archive.tar.gz>.
-
-An SPVM archive does not contains external object files(C<.o>), static library files(C<.a>), dynamic library files(C<.so>, C<.dll>, etc), and SPVM anon class files.
-
-An SPVM archive can be created by C<--build-spvm-archive> option.
-
-  spvmcc --build-spvm-archive -o $exe_dir/myapp.spvm-archive.tar.gz myapp.spvm
-
-An SPVM archive can be load by L<SPVM::Builder::Config::Exe/"load_spvm_archive"> method.
-
-By loading an SPVM archive, you can load its classes, and its object files are linked.
-
-If an SPVM archive is loaded and C<--build-spvm-archive> option is specified, the current application information is merged with the SPVM archive information, and then the merged SPVM archive is output.
-
 =head1 Options
 
 =head2 --help
@@ -649,6 +629,10 @@ This option can be repeated.
 Generate an SPVM archive as a directory into the path of C<-o> option.
 
 If the directory already exists, it is not newly created. The C<spvm-archive.json> file and the classes described in it are overwritten.
+
+SPVM Archive is a format used to bundle SPVM class files, compiled SPVM native classes, precompiled classes, third-party header files, and static libraries into a single directory or a C<.tar.gz> file.
+
+See L<SPVM::Document::Archive> for details.
 
 =head1 Copyright & License
 

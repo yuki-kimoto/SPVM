@@ -28,7 +28,7 @@ The output should contain C<spvm-archive.json> and the directories C<SPVM/>, C<o
 
 =over 2
 
-=item spvm-archive.json
+=item * spvm-archive.json
 
 The metadata file of the archive. It contains the application name, SPVM version, build mode, and a registry (C<classes_h>) that lists all classes included in the archive along with their types (native or precompile).
 
@@ -172,3 +172,19 @@ Set to C<1> if the class has precompiled methods.
 If these fields are missing, they are treated as C<0>. For example, C<Address : {}> represents a pure SPVM class.
 
 =cut
+
+=head1 See Also
+
+=over 2
+
+=item * L<spvmcc>
+
+=item * L<SPVM::Document>
+
+=back
+
+=head1 Copyright & License
+
+Copyright (c) 2023 Yuki Kimoto
+
+MIT License
