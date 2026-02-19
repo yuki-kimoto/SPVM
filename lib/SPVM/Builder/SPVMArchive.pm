@@ -137,14 +137,6 @@ sub merge_info {
   my ($self, $info1, $info2) = @_;
   
   my $merged_info = {};
-  $merged_info->{app_name} = $info2->{app_name};
-  if (defined $info2->{mode}) {
-    $merged_info->{mode} = $info2->{mode};
-  }
-  if (defined $info2->{version}) {
-    $merged_info->{version} = $info2->{version};
-  }
-  
   $merged_info->{classes_h} = {};
   
   if ($info1) {
@@ -287,6 +279,14 @@ sub store {
 
   # 4. Merge info and write spvm-archive.json
   my $merged_info = $self->merge_info($info, $spvmcc_info);
+  $merged_info->{app_name} = $spvmcc_info->{app_name};
+  if (defined $spvmcc_info->{mode}) {
+    $merged_info->{mode} = $spvmcc_info->{mode};
+  }
+  if (defined $spvmcc_info->{version}) {
+    $merged_info->{version} = $spvmcc_info->{version};
+  }
+  
   my $json_content = JSON::PP->new->pretty->canonical(1)->encode($merged_info);
   
   my $json_file = "$dist_dir/spvm-archive.json";
