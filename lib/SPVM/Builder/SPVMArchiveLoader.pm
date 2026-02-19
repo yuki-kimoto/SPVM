@@ -176,4 +176,21 @@ sub copy_spvm_archive_files {
   );
 }
 
+sub exists_in_spvm_archive_info {
+  my ($self, $class_name) = @_;
+  
+  my $exists_in_spvm_archive_info;
+  my $spvm_archive_info = $self->{spvm_archive_info};
+  if ($spvm_archive_info) {
+    
+    my $classes_h = $spvm_archive_info->{classes_h};
+    
+    if ($classes_h->{$class_name}) {
+      $exists_in_spvm_archive_info = 1;
+    }
+  }
+  
+  return $exists_in_spvm_archive_info;
+}
+
 1;
