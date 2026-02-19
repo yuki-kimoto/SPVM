@@ -1129,6 +1129,8 @@ t/04_spvmcc/script/precompile.spvm
 t/04_spvmcc/script/program_name.spvm
 t/04_spvmcc/script/runtime-extends.spvm
 t/04_spvmcc/script/runtime-parent.spvm
+t/04_spvmcc/script/spvm-archive-static-lib.config
+t/04_spvmcc/script/spvm-archive-static-lib.spvm
 t/04_spvmcc/script/spvm-archive.config
 t/04_spvmcc/script/spvm-archive.linux-64bit.config
 t/04_spvmcc/script/spvm-archive.spvm
