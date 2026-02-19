@@ -306,18 +306,15 @@ sub new {
   # SPVM archive
   my $spvm_archive_path = $config->get_spvm_archive;
   if (defined $spvm_archive_path) {
-    # 1. Create and load the archive object
+    # Create and load the archive object
     my $spvm_archive = SPVM::Builder::SPVMArchive->new;
     $spvm_archive->load($spvm_archive_path);
     
-    # 2. Store the object
+    # Store the object
     $self->spvm_archive($spvm_archive);
     
-    # 4. Update the extraction directory field and its associated temporary object
+    # Setup paths using the extracted directory
     my $spvm_archive_extract_dir = $spvm_archive->dir;
-    $self->{spvm_archive_extract_dir} = $spvm_archive_extract_dir;
-    
-    # 5. Setup paths using the extracted directory
     $compiler->add_include_dir("$spvm_archive_extract_dir/SPVM");
     $config_exe->add_include_dir_native("$spvm_archive_extract_dir/include");
     $config_exe->add_lib_dir("$spvm_archive_extract_dir/lib");
@@ -426,9 +423,8 @@ sub build_exe_file {
     # Copy from existing archive
     my $spvm_archive_info;
     if (my $spvm_archive = $self->spvm_archive) {
-      my $spvm_archive_extract_dir = $self->{spvm_archive_extract_dir};
       $spvm_archive_info = $self->spvm_archive->info;
-      SPVM::Builder::SPVMArchive->copy_spvm_archive_files($spvm_archive_extract_dir, $spvm_archive_out, $spvm_archive_info);
+      SPVM::Builder::SPVMArchive->copy_spvm_archive_files($spvm_archive->dir, $spvm_archive_out, $spvm_archive_info);
     }
     
     # Write spvm-archive.json
