@@ -1,0 +1,8 @@
+# Copyright (c) 2025 [--user-name]
+# MIT License
+
+class TestCase::SPVMArchiveStaticLibCall {
+  
+  native static method spvmcc_archive_test_foo : int ();
+  
+}

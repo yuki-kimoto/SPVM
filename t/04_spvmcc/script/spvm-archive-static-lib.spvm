@@ -1,0 +1,11 @@
+class {
+  
+  use TestCase::SPVMArchiveStaticLibCall;
+  static method main : void () {
+    
+    my $ret = TestCase::SPVMArchiveStaticLibCall->spvmcc_archive_test_foo;
+    
+    print "spvm-archive-static-lib $ret";
+  }
+  
+}
