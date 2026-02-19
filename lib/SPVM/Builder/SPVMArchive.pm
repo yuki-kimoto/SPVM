@@ -262,7 +262,7 @@ sub find_object_files {
 
 # Instance Methods
 sub store {
-  my ($self, $dist_dir, $extra_src_dir, $extra_info) = @_;
+  my ($self, $dist_dir, $spvmcc_build_dir, $spvmcc_info) = @_;
 
   # 1. Create the destination directory if it does not exist
   unless (-d $dist_dir) {
@@ -280,13 +280,13 @@ sub store {
     $self->copy_spvm_archive_files($dir, $dist_dir, $info);
   }
 
-  # 3. Copy additional files from the extra source directory
-  if ($extra_src_dir && $extra_info) {
-    $self->copy_spvm_archive_files($extra_src_dir, $dist_dir, $extra_info);
+  # 3. Copy additional files from the spvmcc source directory
+  if ($spvmcc_build_dir && $spvmcc_info) {
+    $self->copy_spvm_archive_files($spvmcc_build_dir, $dist_dir, $spvmcc_info);
   }
 
   # 4. Merge info and write spvm-archive.json
-  my $merged_info = $self->merge_info($info, $extra_info);
+  my $merged_info = $self->merge_info($info, $spvmcc_info);
   my $json_content = JSON::PP->new->pretty->canonical(1)->encode($merged_info);
   
   my $json_file = "$dist_dir/spvm-archive.json";
