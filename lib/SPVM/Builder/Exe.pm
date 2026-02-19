@@ -313,9 +313,6 @@ sub new {
     # 2. Store the object
     $self->spvm_archive($spvm_archive);
     
-    # 3. Update legacy fields to maintain backward compatibility
-    $self->{spvm_archive_info} = $spvm_archive->info;
-    
     # 4. Update the extraction directory field and its associated temporary object
     my $spvm_archive_extract_dir = $spvm_archive->dir;
     $self->{spvm_archive_extract_dir} = $spvm_archive_extract_dir;
@@ -432,7 +429,7 @@ sub build_exe_file {
     my $spvm_archive_info;
     if (defined $spvm_archive) {
       my $spvm_archive_extract_dir = $self->{spvm_archive_extract_dir};
-      $spvm_archive_info = $self->{spvm_archive_info};
+      $spvm_archive_info = $self->spvm_archive->info;
       SPVM::Builder::SPVMArchive->copy_spvm_archive_files($spvm_archive_extract_dir, $spvm_archive_out, $spvm_archive_info);
     }
     
@@ -1507,8 +1504,9 @@ sub exists_in_spvm_archive_info {
   my ($self, $class_name) = @_;
   
   my $exists_in_spvm_archive_info;
-  my $spvm_archive_info = $self->{spvm_archive_info};
-  if ($spvm_archive_info) {
+  if ($self->spvm_archive) {
+    
+    my $spvm_archive_info = $self->spvm_archive->info;
     
     my $classes_h = $spvm_archive_info->{classes_h};
     
