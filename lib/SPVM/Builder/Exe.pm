@@ -1550,18 +1550,6 @@ sub copy_with_timestamps {
   return 1;
 }
 
-sub extract_class_name_from_tar_file {
-  my ($tar_file) = @_;
-  
-  my $class_name = $tar_file;
-  $class_name =~ s|^object/||;
-  $class_name =~ s/\..+$//;
-  $class_name =~ s/\//::/g;
-  $class_name =~ s/^SPVM:://;
-  
-  return $class_name;
-}
-
 sub exists_in_spvm_archive_info {
   my ($self, $class_name) = @_;
   
@@ -1577,6 +1565,18 @@ sub exists_in_spvm_archive_info {
   }
   
   return $exists_in_spvm_archive_info;
+}
+
+sub create_class_name_from_object_path {
+  my ($tar_file) = @_;
+  
+  my $class_name = $tar_file;
+  $class_name =~ s|^object/||;
+  $class_name =~ s/\..+$//;
+  $class_name =~ s/\//::/g;
+  $class_name =~ s/^SPVM:://;
+  
+  return $class_name;
 }
 
 sub extract_archive_files {
@@ -1612,14 +1612,14 @@ sub extract_archive_files {
 
         # 3-1. SPVM source files (.spvm) from SPVM directory
         if ($rel_path =~ m|^SPVM/| && $rel_path =~ /\.spvm$/) {
-          my $class_name = &extract_class_name_from_tar_file($rel_path);
+          my $class_name = &create_class_name_from_object_path($rel_path);
           if ($classes_h->{$class_name}) {
             $should_copy = 1;
           }
         }
         # 3-2. Object files (.o) from object directory or SPVM directory
         elsif (($rel_path =~ m|^object/| || $rel_path =~ m|^SPVM/|) && $rel_path =~ /\.o$/) {
-          my $class_name = &extract_class_name_from_tar_file($rel_path);
+          my $class_name = &create_class_name_from_object_path($rel_path);
           if ($classes_h->{$class_name}) {
             $should_copy = 1;
           }
