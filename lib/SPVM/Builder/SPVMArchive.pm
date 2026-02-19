@@ -1,4 +1,4 @@
-package SPVM::Builder::SPVMArchiveLoader;
+package SPVM::Builder::SPVMArchive;
 
 use strict;
 use warnings;

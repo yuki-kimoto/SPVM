@@ -20,7 +20,7 @@ use SPVM::Builder::Native::Runtime;
 use SPVM::Builder::Native::BasicType;
 use SPVM::Builder::Native::ClassFile;
 use SPVM::Builder::ScriptInfo;
-use SPVM::Builder::SPVMArchiveLoader;
+use SPVM::Builder::SPVMArchive;
 
 # Fields
 sub builder {
@@ -341,7 +341,7 @@ sub new {
     File::Copy::copy($json_file, "$spvm_archive_extract_dir/spvm-archive.json");
     
     # Copy classes and other resources using filtered logic
-    SPVM::Builder::SPVMArchiveLoader->copy_spvm_archive_files($spvm_archive_dir, $spvm_archive_extract_dir, $self->{spvm_archive_info});
+    SPVM::Builder::SPVMArchive->copy_spvm_archive_files($spvm_archive_dir, $spvm_archive_extract_dir, $self->{spvm_archive_info});
     
     # 5. Setup paths (Common)
     $compiler->add_include_dir("$spvm_archive_extract_dir/SPVM");
@@ -449,18 +449,18 @@ sub build_exe_file {
     }
     
     # Copy build files
-    SPVM::Builder::SPVMArchiveLoader->copy_spvm_archive_files($build_work_dir, $spvm_archive_out, $spvmcc_info);
+    SPVM::Builder::SPVMArchive->copy_spvm_archive_files($build_work_dir, $spvm_archive_out, $spvmcc_info);
     
     # Copy from existing archive
     my $spvm_archive_info;
     if (defined $spvm_archive) {
       my $spvm_archive_extract_dir = $self->{spvm_archive_extract_dir};
       $spvm_archive_info = $self->{spvm_archive_info};
-      SPVM::Builder::SPVMArchiveLoader->copy_spvm_archive_files($spvm_archive_extract_dir, $spvm_archive_out, $spvm_archive_info);
+      SPVM::Builder::SPVMArchive->copy_spvm_archive_files($spvm_archive_extract_dir, $spvm_archive_out, $spvm_archive_info);
     }
     
     # Write spvm-archive.json
-    my $merged_spvmcc_info = SPVM::Builder::SPVMArchiveLoader->merge_spvm_archive_info($spvm_archive_info, $spvmcc_info);
+    my $merged_spvmcc_info = SPVM::Builder::SPVMArchive->merge_spvm_archive_info($spvm_archive_info, $spvmcc_info);
     my $merged_spvm_archive_json = JSON::PP->new->pretty->canonical(1)->encode($merged_spvmcc_info);
     
     my $json_file = "$spvm_archive_out/spvm-archive.json";

@@ -152,7 +152,7 @@ lib/SPVM/Builder/Native/Stack.pm
 lib/SPVM/Builder/ObjectFileInfo.pm
 lib/SPVM/Builder/Resource.pm
 lib/SPVM/Builder/ScriptInfo.pm
-lib/SPVM/Builder/SPVMArchiveLoader.pm
+lib/SPVM/Builder/SPVMArchive.pm
 lib/SPVM/Builder/src/spvm_allocator.c
 lib/SPVM/Builder/src/spvm_allow.c
 lib/SPVM/Builder/src/spvm_api.c
