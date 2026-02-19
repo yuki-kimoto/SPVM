@@ -524,8 +524,9 @@ sub compile_classes {
   my $object_files = [];
   for my $class_name (@$class_names) {
     
-    my $exists_in_spvm_archive_info = $self->exists_in_spvm_archive_info($class_name);
-    next if $exists_in_spvm_archive_info;
+    if (my $spvm_archive = $self->spvm_archive) {
+      next if $spvm_archive->exists($class_name);
+    }
     
     $spvmcc_info->{classes_h}{$class_name} = {};
     
@@ -1498,24 +1499,6 @@ sub copy_with_timestamps {
     or Carp::confess "Failed to restore timestamp for '$dest_file': $!\n";
   
   return 1;
-}
-
-sub exists_in_spvm_archive_info {
-  my ($self, $class_name) = @_;
-  
-  my $exists_in_spvm_archive_info;
-  if ($self->spvm_archive) {
-    
-    my $spvm_archive_info = $self->spvm_archive->info;
-    
-    my $classes_h = $spvm_archive_info->{classes_h};
-    
-    if ($classes_h->{$class_name}) {
-      $exists_in_spvm_archive_info = 1;
-    }
-  }
-  
-  return $exists_in_spvm_archive_info;
 }
 
 1;

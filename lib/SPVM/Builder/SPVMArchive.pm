@@ -215,21 +215,21 @@ sub load {
   $self->{dir} = $dir;
 }
 
-sub exists_in_info {
+sub exists {
   my ($self, $class_name) = @_;
   
-  my $exists_in_info;
+  my $exists;
   my $info = $self->{info};
   if ($info) {
     
     my $classes_h = $info->{classes_h};
     
     if ($classes_h->{$class_name}) {
-      $exists_in_info = 1;
+      $exists = 1;
     }
   }
   
-  return $exists_in_info;
+  return $exists;
 }
 
 sub find_object_files {
