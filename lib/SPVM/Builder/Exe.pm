@@ -304,57 +304,23 @@ sub new {
   my $compiler = SPVM::Builder::Native::Compiler->new;
   
   # SPVM archive
-  my $spvm_archive = $config->get_spvm_archive;
-  if (defined $spvm_archive) {
-    my $spvm_archive_json;
-    my $spvm_archive_dir; 
-
-    # 1. Normalize input to a directory
-    if (-f $spvm_archive) {
-      # Case: tar.gz
-      unless ($spvm_archive =~ /\.tar\.gz$/) {
-        Carp::confess("SPVM archive file '$spvm_archive' must have '.tar.gz' extension");
-      }
-      
-      # Extract all files to a temporary directory to handle it as a normal directory
-      my $spvm_archive_dir_obj = File::Temp->newdir(TEMPLATE => 'tmp_spvm_archive_XXXXXXX');
-      $spvm_archive_dir = $spvm_archive_dir_obj->dirname;
-      
-      my $tar = Archive::Tar->new;
-      $tar->read($spvm_archive) or die $tar->error;
-      $tar->extract_all($spvm_archive_dir) or die "Could not extract $spvm_archive to $spvm_archive_dir";
-    }
-    elsif (-d $spvm_archive) {
-      # Case: Directory
-      $spvm_archive_dir = $spvm_archive;
-    }
-    else {
-      Carp::confess("SPVM archive '$spvm_archive' not found");
-    }
-
-    # 2. Read and decode JSON (Common)
-    my $json_file = "$spvm_archive_dir/spvm-archive.json";
-    unless (-f $json_file) {
-      Carp::confess("SPVM archive '$spvm_archive' must contain spvm-archive.json");
-    }
-    $spvm_archive_json = SPVM::Builder::Util::slurp_binary($json_file);
+  my $spvm_archive_path = $config->get_spvm_archive;
+  if (defined $spvm_archive_path) {
+    # 1. Create and load the archive object
+    my $spvm_archive = SPVM::Builder::SPVMArchive->new;
+    $spvm_archive->load($spvm_archive_path);
     
-    my $spvm_archive_info = JSON::PP->new->decode($spvm_archive_json);
-    $self->{spvm_archive_info} = $spvm_archive_info;
+    # 2. Store the object
+    $self->spvm_archive($spvm_archive);
     
-    # 3. Prepare the final temporary directory for the compiler
-    my $spvm_archive_extract_dir_obj = File::Temp->newdir(TEMPLATE => 'tmp_spvm_archive_extract_XXXXXXX');
-    $self->{spvm_archive_extract_dir_obj} = $spvm_archive_extract_dir_obj;
-    my $spvm_archive_extract_dir = $spvm_archive_extract_dir_obj->dirname;
+    # 3. Update legacy fields to maintain backward compatibility
+    $self->{spvm_archive_info} = $spvm_archive->info;
+    
+    # 4. Update the extraction directory field and its associated temporary object
+    my $spvm_archive_extract_dir = $spvm_archive->dir;
     $self->{spvm_archive_extract_dir} = $spvm_archive_extract_dir;
     
-    # 4. Copy and filter files (Common Logic)
-    File::Copy::copy($json_file, "$spvm_archive_extract_dir/spvm-archive.json");
-    
-    # Copy classes and other resources using filtered logic
-    SPVM::Builder::SPVMArchive->copy_spvm_archive_files($spvm_archive_dir, $spvm_archive_extract_dir, $self->{spvm_archive_info});
-    
-    # 5. Setup paths (Common)
+    # 5. Setup paths using the extracted directory
     $compiler->add_include_dir("$spvm_archive_extract_dir/SPVM");
     $config_exe->add_include_dir_native("$spvm_archive_extract_dir/include");
     $config_exe->add_lib_dir("$spvm_archive_extract_dir/lib");

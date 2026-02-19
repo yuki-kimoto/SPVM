@@ -197,10 +197,6 @@ sub load {
   my $spvm_archive_json = SPVM::Builder::Util::slurp_binary($json_file);
   
   my $info = JSON::PP->new->decode($spvm_archive_json);
-  $info->{classes_h} = {
-    map { $_->{name} => $_ } 
-    @{$info->{classes}}
-  };
   
   # Set the field in $self
   $self->{info} = $info;
