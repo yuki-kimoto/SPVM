@@ -402,7 +402,7 @@ sub build_exe_file {
     push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
   
-  # Add object files from loaded archive
+  # Add object files from loaded SPVM archive
   my $spvm_archive = $self->config->get_spvm_archive;
   if (defined $spvm_archive) {
     my $spvm_archive_extract_dir = $self->{spvm_archive_extract_dir};

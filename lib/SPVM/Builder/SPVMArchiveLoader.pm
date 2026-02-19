@@ -77,7 +77,9 @@ sub load_spvm_archive {
   File::Copy::copy($json_file, "$spvm_archive_extract_dir/spvm-archive.json");
   
   $self->copy_spvm_archive_files($spvm_archive_dir, $spvm_archive_extract_dir, $spvm_archive_info);
-
+  
+  $self->{spvm_archive_extract_dir} = $spvm_archive_extract_dir;
+  
   return $spvm_archive_extract_dir;
 }
 
@@ -193,6 +195,7 @@ sub exists_in_spvm_archive_info {
   return $exists_in_spvm_archive_info;
 }
 
+
 sub merge_spvm_archive_info {
   my ($class, $spvm_archive_info1, $spvm_archive_info2) = @_;
   
@@ -222,6 +225,33 @@ sub merge_spvm_archive_info {
   }
   
   return $merged_spvm_archive_info;
+}
+
+sub find_object_files {
+  
+  my ($self) = @_;
+  
+  my $dir = $self->{spvm_archive_extract_dir};
+  
+  my @object_files;
+  
+  find(
+    {
+      wanted => sub {
+        my $path = $File::Find::name;
+        
+        if (-f $path) {
+          if ($path =~ /\.o$/) {
+            push @object_files, $path;
+          }
+        }
+      },
+      no_chdir => 1,
+    },
+    $dir
+  );
+  
+  return \@object_files;
 }
 
 1;
