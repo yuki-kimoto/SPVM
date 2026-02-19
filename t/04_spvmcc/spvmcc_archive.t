@@ -165,6 +165,20 @@ sub to_cmd {
     is($output, $output_expect);
   }
   
+  # use_spvm_archive with include and lib
+  {
+    use Config;
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM --object-file t/04_spvmcc/.spvm_build/.tmp/bar$Config{obj_ext} -o $exe_dir/spvm-archive t/04_spvmcc/script/spvm-archive.spvm);
+    system($spvmcc_cmd) == 0
+      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    
+    my $execute_cmd = &to_cmd("$exe_dir/spvm-archive");
+    my $output = `$execute_cmd`;
+    chomp $output;
+    my $output_expect = "spvm-archive 74,skip_class:1,api3:60";
+    is($output, $output_expect);
+  }
+  
   # --build-spvm-archive with use_spvm_archive
   {
     my $archive_output_dir = "t/04_spvmcc/script/.tmp/spvm-archive-myapp-extend";
