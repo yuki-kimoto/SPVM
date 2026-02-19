@@ -177,6 +177,17 @@ sub spvmcc_info {
   }
 }
 
+sub spvm_archive {
+  my $self = shift;
+  if (@_) {
+    $self->{spvm_archive} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{spvm_archive};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
