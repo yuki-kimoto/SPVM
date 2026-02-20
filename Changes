@@ -1,7 +1,8 @@
-0.990134 2026-02-19
+0.990134 2026-02-20
 
   [Incompatible Changes]
     * Change the format of spvm-archive.json to use classes_h and update related logic and tests.
+    * Add the document for SPVM Archive(SPVM::Builder::SPVMArchive).
     
 0.990133 2026-02-19
   
