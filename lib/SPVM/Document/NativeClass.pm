@@ -34,9 +34,9 @@ A config file must end with a L<Builder::Config|SPVM::Builder::Config> object. O
 
 Examples:
 
-GNU C99:
+C99:
 
-  my $config = SPVM::Builder::Config->new_gnu99;
+  my $config = SPVM::Builder::Config->new_c99;
   
   $config;
 

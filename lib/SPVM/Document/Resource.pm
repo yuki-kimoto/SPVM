@@ -12,7 +12,7 @@ The following is an example of a resource.
 
 C<SPVM/Resource/MyResource.config>
 
-  my $config = SPVM::Builder::Config->new_gnu99;
+  my $config = SPVM::Builder::Config->new_c99;
   
   $config->is_resource(1);
   
@@ -35,7 +35,7 @@ A native class can include native header files of a resource and add the object 
 
 C<SPVM/MyClass.config>
 
-  my $config = SPVM::Builder::Config->new_gnu99;
+  my $config = SPVM::Builder::Config->new_c99;
   
   $config->use_resource("Resource::MyResource");
   
