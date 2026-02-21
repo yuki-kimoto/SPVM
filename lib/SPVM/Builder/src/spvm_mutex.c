@@ -1,6 +1,10 @@
 // Copyright (c) 2023 Yuki Kimoto
 // MIT License
 
+// Use _GNU_SOURCE to enable pthread_rwlock_t and related functions,
+// which are not part of the strict C99 standard but available as POSIX extensions.
+#define _GNU_SOURCE
+
 #include "spvm_mutex.h"
 #include "spvm_allocator.h"
 
@@ -41,10 +45,6 @@ int32_t SPVM_MUTEX_size () {
 }
 
 #else
-
-// Use _GNU_SOURCE to enable pthread_rwlock_t and related functions,
-// which are not part of the strict C99 standard but available as POSIX extensions.
-#define _GNU_SOURCE
 
 #include <unistd.h>
 #include <pthread.h>
