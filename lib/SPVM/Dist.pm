@@ -424,7 +424,7 @@ MyClass.$native_module_ext:
 
 
 
-=head1 Language Specification
+=head1 Language Standard
 
 
 
