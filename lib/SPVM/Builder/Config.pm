@@ -1024,22 +1024,22 @@ The SPVM::Builder::Config class has methods to get and set config for compiling 
   use SPVM::Builder::Config;
   
   # Create a config
-  my $config = SPVM::Builder::Config->new(file => __FILE__);
+  my $config = SPVM::Builder::Config->new;
   
   # GNU C99
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_gnu99;
   
   # C99
-  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_c99;
   
   # C++
-  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp;
   
   # C++11
-  my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp11;
   
   # C++17
-  my $config = SPVM::Builder::Config->new_cpp17(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp17;
   
   # Optimize
   $config->optimize("-O2");
@@ -1683,37 +1683,37 @@ Other OSs:
 
 =head2 new_c
   
-  my $config = SPVM::Builder::Config->new_c(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_c;
 
 Calls L</"new"> method and sets L</"ext"> field to C<c>, and returns the return value of L</"new"> method.
 
 =head2 new_gnu99
   
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_gnu99;
 
 Calls L</"new_c"> method and sets L</"std"> field to C<gnu99>, and returns the return value of L</"new_c"> method.
 
 =head2 new_gnu11
   
-  my $config = SPVM::Builder::Config->new_gnu11(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_gnu11;
 
 Calls L</"new_c"> method and sets L</"std"> field to C<gnu11>, and returns the return value of L</"new_c"> method.
 
 =head2 new_c99
   
-  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_c99;
 
 Calls L</"new_c"> method and sets L</"std"> field to C<c99>, and returns the return value of L</"new_c"> method.
 
 =head2 new_c11
   
-  my $config = SPVM::Builder::Config->new_c11(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_c11;
 
 Calls L</"new_c"> method and sets L</"std"> field to C<c11>, and returns the return value of L</"new_c"> method.
 
 =head2 new_cpp
   
-  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp;
 
 Calls L</"new"> method and sets L</"ext"> field to C<cpp> and sets L</"cc"> field to a C<C++> compiler and sets L</"ld"> field to a C<C++> linker, and returns the return value of L</"new"> method.
 
@@ -1721,19 +1721,19 @@ If C<$Config{gccversion}> contains C<clang>, L</"cc"> field and L</"ld"> field a
 
 =head2 new_cpp11
   
-  my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp11;
 
 Calls L</"new_cpp"> method and sets L</"std"> field to C<c++11>, and returns the return value of L</"new_cpp"> method.
 
 =head2 new_cpp14
   
-  my $config = SPVM::Builder::Config->new_cpp14(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp14;
 
 Calls L</"new_cpp"> method and sets L</"std"> field to C<c++14>, and returns the return value of L</"new_cpp"> method.
 
 =head2 new_cpp17
   
-  my $config = SPVM::Builder::Config->new_cpp17(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp17;
 
 Calls L</"new_cpp"> method and sets L</"std"> field to C<c++17>, and returns the return value of L</"new_cpp"> method.
 
@@ -1927,23 +1927,23 @@ If a library is found, C<-l> option of the linker L</"ld"> is created using the 
 
 GNU C99:
 
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_gnu99;
 
 C99:
 
-  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_c99;
 
 C11:
 
-  my $config = SPVM::Builder::Config->new_c11(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_c11;
 
 C++:
 
-  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp;
 
 C++11:
 
-  my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp11;
 
 Output messages to C<stderr> from the compiler and the linker:
 
