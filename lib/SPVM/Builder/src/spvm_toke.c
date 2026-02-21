@@ -3222,67 +3222,57 @@ int32_t SPVM_TOKE_is_line_terminator(SPVM_COMPILER* compiler, char* ch) {
   return is_line_terminator;
 }
 
+// Portable isascii
+static int32_t SPVM_TOKE_isascii(int32_t ch) {
+  return (ch >= 0x00 && ch <= 0x7F);
+}
+
 int32_t SPVM_TOKE_isalpha_ascii(SPVM_COMPILER* compiler, int32_t ch) {
-  
   int32_t isalpha_ascii = 0;
-  
-  if (isascii(ch) && isalpha(ch)) {
+  if (SPVM_TOKE_isascii(ch) && isalpha(ch)) {
     isalpha_ascii = 1;
   }
-  
   return isalpha_ascii;
 }
 
 int32_t SPVM_TOKE_isalnum_ascii(SPVM_COMPILER* compiler, int32_t ch) {
-  
   int32_t isalnum_ascii = 0;
-  
-  if (isascii(ch) && isalnum(ch)) {
+  if (SPVM_TOKE_isascii(ch) && isalnum(ch)) {
     isalnum_ascii = 1;
   }
-  
   return isalnum_ascii;
 }
 
 int32_t SPVM_TOKE_isspace_ascii(SPVM_COMPILER* compiler, int32_t ch) {
-  
-  int32_t isalpha_ascii = 0;
-  
-  if (isascii(ch) && isspace(ch)) {
-    isalpha_ascii = 1;
+  int32_t isspace_ascii = 0;
+  if (SPVM_TOKE_isascii(ch) && isspace(ch)) {
+    isspace_ascii = 1;
   }
-  
-  return isalpha_ascii;
+  return isspace_ascii;
 }
 
 int32_t SPVM_TOKE_isdigit_ascii(SPVM_COMPILER* compiler, int32_t ch) {
-  
   int32_t isdigit_ascii = 0;
-  
-  if (isascii(ch) && isdigit(ch)) {
+  if (SPVM_TOKE_isascii(ch) && isdigit(ch)) {
     isdigit_ascii = 1;
   }
-  
   return isdigit_ascii;
 }
 
 int32_t SPVM_TOKE_islower_ascii(SPVM_COMPILER* compiler, int32_t ch) {
-  
   int32_t islower_ascii = 0;
-  
-  if (isascii(ch) && islower(ch)) {
+  if (SPVM_TOKE_isascii(ch) && islower(ch)) {
     islower_ascii = 1;
   }
-  
   return islower_ascii;
 }
 
 int32_t SPVM_TOKE_isprint_ascii(SPVM_COMPILER* compiler, int32_t ch) {
-  
   int32_t isprint_ascii = 0;
   
-  // Avoid isprint because it depends locale dependent.
-  if (isascii(ch) && (ch >= 0x20 && ch <= 0x7F)) {
+  // Avoid isprint because it is locale dependent.
+  // This condition implicitly includes the isascii(ch) check.
+  if (ch >= 0x20 && ch <= 0x7F) {
     isprint_ascii = 1;
   }
   
