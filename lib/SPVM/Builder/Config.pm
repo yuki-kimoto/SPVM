@@ -1026,11 +1026,11 @@ The SPVM::Builder::Config class has methods to get and set config for compiling 
   # Create a config
   my $config = SPVM::Builder::Config->new;
   
-  # GNU C99
-  my $config = SPVM::Builder::Config->new_gnu99;
-  
   # C99
   my $config = SPVM::Builder::Config->new_c99;
+  
+  # GNU C99
+  my $config = SPVM::Builder::Config->new_gnu99;
   
   # C++
   my $config = SPVM::Builder::Config->new_cpp;
@@ -1522,6 +1522,8 @@ If this field is true, this config is for a L<resource|SPVM::Document::Resource>
   my $config = SPVM::Builder::Config->new(%fields);
 
 Creates a new C<SPVM::Builder::Config> object with L<fields|/"Fields">, and returns it.
+
+Default settings for the GCC or Clang compiler are performed.
 
 Field Default Values:
 
