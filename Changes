@@ -2,7 +2,8 @@
   
   [Changes]
     * Rename "Language Specification" to "Language Standard" in spvmdist template.
-
+    * Change the default C standard to C99 for the SPVM core and its native classes.
+    
 0.990134 2026-02-20
 
   [Incompatible Changes]
