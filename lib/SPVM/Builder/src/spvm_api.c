@@ -3891,7 +3891,7 @@ static int32_t isprint_ascii(int32_t ch) {
   int32_t isprint_ascii = 0;
   
   // Avoid isprint because it depends locale dependent.
-  if (isascii(ch) && (ch >= 0x20 && ch <= 0x7F)) {
+  if (ch >= 0x20 && ch <= 0x7F) {
     isprint_ascii = 1;
   }
   
