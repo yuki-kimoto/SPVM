@@ -497,7 +497,7 @@ The SPVM::Builder::Config::Exe class has methods to manipulate the config for th
 
   use SPVM::Builder::Config::Exe;
   
-  my $config_exe = SPVM::Builder::Config::Exe->new_gnu99;
+  my $config_exe = SPVM::Builder::Config::Exe->new;
 
 =head1 Details
 
