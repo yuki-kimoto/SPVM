@@ -1,6 +1,7 @@
 0.990135 2026-02-25
   [New Features]
     * Add language and dialect fields to SPVM::Builder::Config.
+    * Set language field in new_c and new_cpp methods.
     
 0.990135 2026-02-22
   
