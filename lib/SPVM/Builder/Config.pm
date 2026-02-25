@@ -637,7 +637,15 @@ sub new_c {
   
   my $self = $class->new(@_);
   
-  $self->cc($Config{cc});
+  # C compiler
+  # Free BSD does't have gcc, but has clang.
+  my $config_gcc_version = $Config{gccversion};
+  if ($config_gcc_version =~ /\bclang\b/i) {
+    $self->cc('clang');
+  }
+  else {
+    $self->cc('gcc');
+  }
   
   $self->language('c');
   
@@ -696,9 +704,8 @@ sub new_cpp {
   
   my $self = $class->new(@_);
   
-  # The compiler
-  # [Memo]Free BSD don't have g++ in the environment clang++ exists.
-  # [Memo]"Clang" or "clang" is assumed.
+  # C++ compiler
+  # Free BSD does't have g++, but have clang++.
   my $config_gcc_version = $Config{gccversion};
   if ($config_gcc_version =~ /\bclang\b/i) {
     $self->cc('clang++');
