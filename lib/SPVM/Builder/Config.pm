@@ -275,6 +275,18 @@ sub bcrypt_ldflags {
   }
 }
 
+sub libcpp_ldflags {
+  my $self = shift;
+  
+  if (@_) {
+    $self->{libcpp_ldflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{libcpp_ldflags};
+  }
+}
+
 sub static_lib_ldflag {
   my $self = shift;
   if (@_) {
@@ -581,6 +593,17 @@ sub new {
     }
     else {
       $self->bcrypt_ldflags([]);
+    }
+  }
+  
+  unless (defined $self->{libcpp_ldflags}) {
+    if ($^O eq 'MSWin32') {
+      # Windows (MinGW)
+      $self->libcpp_ldflags(['-Wl,-Bstatic', '-lstdc++', '-lgcc', '-Wl,-Bdynamic']);
+    }
+    else {
+      # Others. On macOS, -lstdc++ is not needed but simply ignored.
+      $self->libcpp_ldflags(['-lstdc++']);
     }
   }
   

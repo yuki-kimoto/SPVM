@@ -103,6 +103,8 @@ sub create_ldflags {
   
   push @merged_ldflags, grep { length $_ } @{$config->thread_ldflags};
   
+  push @merged_ldflags, grep { length $_ } @{$config->libcpp_ldflags};
+  
   # bcrypt_ldflags
   # Add bcrypt_ldflags only when the output type is 'exe'
   if ($output_type eq 'exe') {
