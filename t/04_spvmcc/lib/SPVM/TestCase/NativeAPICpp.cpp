@@ -3,6 +3,8 @@
 #include <iostream>
 #include <sstream>
 #include <thread>
+#include <stdexcept>
+#include <functional>
 
 extern "C" {
 
@@ -15,6 +17,13 @@ int32_t SPVM__TestCase__NativeAPICpp__call_cpp_func(SPVM_ENV* env, SPVM_VALUE* s
   int32_t value = stack[0].ival;
 
   value *= 2;
+
+  try {
+    throw std::runtime_error("Dummy Error");
+  }
+  catch (const std::runtime_error& e) {
+    value += 2;
+  }
 
   std::thread th1(ThreadFunc, std::ref(value));
   th1.join();
