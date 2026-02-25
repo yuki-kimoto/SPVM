@@ -1,8 +1,8 @@
 0.990137 2026-02-25
-
   [New Features]
     * Add after_link_cbs field and add_after_link_cb method in SPVM::Builder::Config to support callbacks after linking.
-  
+    * Add clear_system_settings method to SPVM::Builder::Config to clear default environment settings.
+    
 0.990136 2026-02-25
   [New Features]
     * Add language and dialect fields to SPVM::Builder::Config.

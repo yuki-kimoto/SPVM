@@ -1085,6 +1085,20 @@ sub _remove_ext_from_config_file {
   return $config_file_without_ext;
 }
 
+sub clear_system_settings {
+  my $self = shift;
+
+  $self->ld(undef);
+  $self->optimize(undef);
+  $self->dynamic_lib_ccflags([]);
+  $self->thread_ccflags([]);
+  $self->mingw_ccflags([]);
+  $self->thread_ldflags([]);
+  $self->static_lib_ldflag([]);
+  $self->libcpp_ldflags([]);
+  $self->dynamic_lib_ldflags([]);
+}
+
 1;
 
 =head1 Name
@@ -2139,6 +2153,22 @@ Returns the config files loaded by L</"load_config"> method.
   my $clone = $self->clone;
 
 Clones L<SPVM::Builder::Config> object, and returns it.
+
+=head2 clear_system_settings
+
+  $config->clear_system_settings;
+
+Clears the fields that are set by default for a specific environment.
+
+These fields might be updated in the future to support appropriate settings for different environments.
+
+The following fields are set to C<undef>.
+
+L</"ld">, L</"optimize">
+
+The following fields are set to C<[]>.
+
+L</"dynamic_lib_ccflags">, L</"thread_ccflags">, L</"mingw_ccflags">, L</"thread_ldflags">, L</"static_lib_ldflag">, L</"libcpp_ldflags">, L</"dynamic_lib_ldflags">
 
 =head1 Library Path Resolution
 
