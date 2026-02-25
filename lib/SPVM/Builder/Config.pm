@@ -498,12 +498,7 @@ sub new {
   
   # thread_ccflags
   unless (defined $self->{thread_ccflags}) {
-    if ($^O eq 'MSWin32') {
-      $self->thread_ccflags([]);
-    }
-    else {
-      $self->thread_ccflags(['-pthread']);
-    }
+    $self->thread_ccflags(['-pthread']);
   }
   
   # mingw_ccflags
@@ -568,17 +563,15 @@ sub new {
       $self->dynamic_lib_ldflags(['-mdll', '-s']);
     }
     else {
-      $self->dynamic_lib_ldflags(['-shared', '-pthread']);
+      $self->dynamic_lib_ldflags(['-shared']);
     }
   }
   
   # thread_ldflags
   unless (defined $self->{thread_ldflags}) {
+    $self->thread_ldflags(['-pthread']);
     if ($^O eq 'MSWin32') {
-      $self->thread_ldflags([]);
-    }
-    else {
-      $self->thread_ldflags(['-pthread']);
+      push @{$self->thread_ldflags}, '-Wl,-Bstatic', '-lwinpthread', '-Wl,-Bdynamic';
     }
   }
   
@@ -1729,12 +1722,6 @@ Other OSs:
 
 =item * L</"thread_ccflags">
 
-Windows:
-
-  []
-
-Other OSs:
-
   ["-pthread"]
 
 =item * L</"mingw_ccflags">
@@ -1801,7 +1788,7 @@ Other OSs:
 
 Windows:
 
-  []
+  ["-pthread", "-Wl,-Bstatic", "-lwinpthread", "-Wl,-Bdynamic"]
 
 Other OSs:
 
