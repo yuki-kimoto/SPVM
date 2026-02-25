@@ -546,7 +546,15 @@ sub new {
   
   # ld
   unless (defined $self->{ld}) {
-    $self->ld($Config{ld});
+    # C++ Linker
+    # Use C++ linker even for C to ensure compatibility when C and C++ object files are mixed. 
+    my $config_gcc_version = $Config{gccversion};
+    if ($config_gcc_version =~ /\bclang\b/i) {
+      $self->ld('clang++');
+    }
+    else {
+      $self->ld('g++');
+    }
   }
   
   # ldflags
@@ -638,7 +646,6 @@ sub new_c {
   my $self = $class->new(@_);
   
   # C compiler
-  # Free BSD does't have gcc, but has clang.
   my $config_gcc_version = $Config{gccversion};
   if ($config_gcc_version =~ /\bclang\b/i) {
     $self->cc('clang');
@@ -705,15 +712,12 @@ sub new_cpp {
   my $self = $class->new(@_);
   
   # C++ compiler
-  # Free BSD does't have g++, but have clang++.
   my $config_gcc_version = $Config{gccversion};
   if ($config_gcc_version =~ /\bclang\b/i) {
     $self->cc('clang++');
-    $self->ld('clang++');
   }
   else {
     $self->cc('g++');
-    $self->ld('g++');
   }
   
   $self->language('cpp');
@@ -1141,10 +1145,6 @@ Examples:
   # nvcc for CUDA/GUP
   $config->cc('nvcc');
   
-  # cc that compiled this Perl
-  use Config;
-  $config->cc($Config{cc});
-
 =head2 include_dirs
 
   my $include_dirs = $config->include_dirs;
@@ -1297,7 +1297,6 @@ Gets and sets C<ld> field, a linker name.
 
 Examples:
 
-  $config->ld('gcc');
   $config->ld('g++');
 
 =head2 lib_dirs
@@ -1704,7 +1703,7 @@ This value is set automatically.
 
 =item * L</"cc">
 
-The C<$Config{cc}> of L<Config> module.
+  undef
 
 =item * L</"ccflags">
 
@@ -1782,7 +1781,7 @@ Examples:
 
 =item * L</"ld">
 
-The C<$Config{ld}> of L<Config> module.
+If C<$Config{gccversion}> contains C<clang>, L</"ld"> field are set to C<clang++>. Otherwise, L</"cc"> field are set to C<g++>.
 
 =item * L</"ldflags">
 
