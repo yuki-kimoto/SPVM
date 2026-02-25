@@ -1377,6 +1377,15 @@ Gets and sets C<bcrypt_ldflags> field, an array reference containing arguments o
 
 This field is automatically set and users normally do not change it.
 
+=head2 libcpp_ldflags
+
+  my $libcpp_ldflags = $config->libcpp_ldflags;
+  $config->libcpp_ldflags($libcpp_ldflags);
+
+Gets and sets C<libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library.
+
+This field is automatically set depending on the OS, and users normally do not change it.
+
 =head2 static_lib_ldflag
 
   my static_lib_ldflag = $config->static_lib_ldflag;
@@ -1826,6 +1835,16 @@ Windows:
 Other OSs:
 
   []
+
+=item * L</"libcpp_ldflags">
+
+Windows:
+
+  ["-Wl,-Bstatic", "-lstdc++", "-lgcc", "-Wl,-Bdynamic"]
+
+Other OSs:
+
+  ["-lstdc++"]
 
 =item * L</"static_lib_ldflag">
 
