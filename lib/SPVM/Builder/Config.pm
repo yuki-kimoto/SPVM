@@ -342,6 +342,18 @@ sub before_link_cbs {
   }
 }
 
+sub after_link_cbs {
+  my $self = shift;
+  
+  if (@_) {
+    $self->{after_link_cbs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{after_link_cbs};
+  }
+}
+
 sub output_type {
   my $self = shift;
   if (@_) {
@@ -634,6 +646,11 @@ sub new {
     $self->before_link_cbs([]);
   }
   
+  # after_link_cbs
+  unless (defined $self->{after_link_cbs}) {
+    $self->after_link_cbs([]);
+  }
+  
   # output_type
   unless (defined $self->output_type) {
     $self->output_type('dynamic_lib');
@@ -871,6 +888,12 @@ sub add_before_link_cb {
   my ($self, @before_link_cbs) = @_;
   
   push @{$self->{before_link_cbs}}, @before_link_cbs;
+}
+
+sub add_after_link_cb {
+  my ($self, @after_link_cbs) = @_;
+  
+  push @{$self->{after_link_cbs}}, @after_link_cbs;
 }
 
 sub load_config {
@@ -1429,11 +1452,24 @@ Examples:
 
 Gets and sets C<before_link_cbs> field, an array reference containing callbacks called just before the link command L</"ld"> is executed.
 
-These callbacks are executed only if a dynamic link library is actually generated.
+These callbacks are executed even if the link command is not actually executed because of caching.
 
 The 1th argument of the callback is an L<SPVM::Builder::Config> object.
 
 The 2th argument of the callback is an L<SPVM::Builder::LinkInfo> object.
+
+=head2 after_link_cbs
+
+  my $after_link_cbs = $config->after_link_cbs;
+  $config->after_link_cbs($after_link_cbs);
+
+Gets and sets C<after_link_cbs> field, an array reference containing callbacks called just after the link command L</"ld"> is executed.
+
+These callbacks are executed even if the link command is not actually executed because of caching.
+
+The 1st argument of the callback is an L<SPVM::Builder::Config> object.
+
+The 2nd argument of the callback is an L<SPVM::Builder::LinkInfo> object.
 
 =head2 force
 

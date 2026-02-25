@@ -822,6 +822,12 @@ sub link {
     }
   }
   
+  # after_link_cbs
+  my $after_link_cbs = $config->after_link_cbs;
+  for my $after_link_cb (@$after_link_cbs) {
+    $after_link_cb->($link_info->config, $link_info);
+  }
+  
   return $output_file;
 }
 
