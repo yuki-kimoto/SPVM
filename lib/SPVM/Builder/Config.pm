@@ -440,6 +440,28 @@ sub is_resource {
   }
 }
 
+sub language {
+  my $self = shift;
+  if (@_) {
+    $self->{language} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{language};
+  }
+}
+
+sub dialect {
+  my $self = shift;
+  if (@_) {
+    $self->{dialect} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{dialect} || 'standard';
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -1514,6 +1536,142 @@ This field is automatically set and users nomally do not change it.
 Gets and sets C<is_resource> field.
 
 If this field is true, this config is for a L<resource|SPVM::Document::Resource> class.
+
+=head2 language
+
+  my $language = $config->language;
+  $config->language($language);
+
+Gets and sets the C<language> field.
+
+The language of the source files.
+
+One of the following languages can be specified:
+
+=over 2
+
+=item * C<c>
+
+C language
+
+=item * C<cpp>
+
+C++ language
+
+=back
+
+=head2 dialect
+
+  my $dialect = $config->dialect;
+  $config->dialect($dialect);
+
+Gets and sets the C<dialect> field.
+
+The dialect of the language.
+
+You can specify any dialect name, but the following names are reserved for specific compilers or toolchains:
+
+Each unit of a dialect name must consist of lowercase alphanumeric characters (C<a-z0-9>).
+
+Multiple units can be combined using a hyphen (C<->) to represent sub-dialects, such as C<arduino-avr>, C<esp32-s3>, or C<cuda-sm80>.
+
+You can specify any dialect name, but the following names are reserved for specific compilers or toolchains:
+
+=over 2
+
+=item * C Based Dialects
+
+=over 4
+
+=item * Languages
+
+=over 6
+
+=item * C<objc>
+
+Objective-C language
+
+=back
+
+=item * Shaders
+
+=over 6
+
+=item * C<glsl>
+
+Vulkan/OpenGL Shading Language. (Requires C<glslc>)
+
+=back
+
+=item * Microcontrollers
+
+=over 6
+
+=item * C<arduino>
+
+Arduino dialect. Requires C<avr-gcc> or C<arm-none-eabi-gcc>.
+
+=item * C<esp32>
+
+ESP32 specific dialect. Requires C<xtensa-esp32-elf-gcc>.
+
+=item * C<pic>
+
+Microchip PIC dialect. Requires C<xc8>, C<xc16>, or C<xc32>.
+
+=item * C<avr>
+
+Raw AVR dialect. Requires C<avr-gcc>.
+
+=back
+
+=back
+
+=item * C++ Based Dialects
+
+=over 4
+
+=item * Languages
+
+=over 6
+
+=item * C<objcpp>
+
+Objective-C++ language
+
+=back
+
+=item * Shaders
+
+=over 6
+
+=item * C<metal> - Apple Metal Shading Language. (Based on C++14. Requires C<metal> compiler)
+
+=back
+
+=item * GPU Computing
+
+=over 6
+
+=item * C<cuda> - NVIDIA CUDA dialect. (Requires C<nvcc>)
+
+=item * C<hip> - AMD ROCm HIP dialect. (Requires C<hipcc>)
+
+=item * C<sycl> - SYCL dialect for heterogeneous computing. (Requires C<dpc++>)
+
+=back
+
+=item * Hardware Logic Design (FPGA)
+
+=over 6
+
+=item * C<hls> - High-Level Synthesis dialect. (Usually based on C++. Requires C<v++>)
+
+=back
+
+=back
+
+=back
 
 =head1 Class Methods
 
