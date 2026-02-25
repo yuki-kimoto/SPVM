@@ -474,9 +474,7 @@ sub new {
   $self->file(undef);
   
   # cc
-  unless (defined $self->{cc}) {
-    $self->cc($Config{cc});
-  }
+  # Do nothing
   
   # ccflags
   unless (defined $self->{ccflags}) {
@@ -638,6 +636,8 @@ sub new_c {
   my $class = shift;
   
   my $self = $class->new(@_);
+  
+  $self->cc($Config{cc});
   
   $self->language('c');
   
@@ -1849,7 +1849,7 @@ Other OSs:
 
   my $config = SPVM::Builder::Config->new_c;
 
-Calls L</"new"> method and sets L</"ext"> field to C<c> and L</"language"> field to C<c>, and returns the return value of L</"new"> method.
+Calls L</"new"> method and sets L</"ext"> field to C<c>, L</"language"> field to C<c>, L</"cc"> field to a C++ compiler, and returns the return value of L</"new"> method.
 
 =head2 new_gnu99
   

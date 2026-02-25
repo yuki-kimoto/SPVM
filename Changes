@@ -2,7 +2,9 @@
   [New Features]
     * Add language and dialect fields to SPVM::Builder::Config.
     * Set language field in new_c and new_cpp methods.
-    
+  [Incompatible Change]
+    * SPVM::Builder::Config#new method no longer sets a default cc, and new_c method now sets it explicitly.
+  
 0.990135 2026-02-22
   
   [Changes]
