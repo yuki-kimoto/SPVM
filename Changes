@@ -5,7 +5,8 @@
   [Incompatible Change]
     * SPVM::Builder::Config#new method no longer sets a default cc, and new_c method now sets it explicitly.
     * Change the default ld field in SPVM::Builder::Config to clang++/g++ instead of $Config{ld} to support C/C++ mixed linking.
-    * Abstract thread flags and winpthread static linking into SPVM::Builder::Config on Windows.
+    * Abstract thread flags and libwinpthread static linking into SPVM::Builder::Config on Windows.
+    * libstdc++ and libgcc static linking into SPVM::Builder::Config on Windows.
     * C object files are now linked using the C++ linker and its default settingsin spvmcc command.
     
 0.990135 2026-02-22
