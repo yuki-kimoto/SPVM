@@ -48,7 +48,7 @@ sub to_cmd {
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
+    my $output_expect = "AAA $execute_cmd 3 1 1 7 22 args1 args2 1";
     is($output, $output_expect);
     
     # Check -B option
@@ -131,7 +131,7 @@ sub to_cmd {
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
+    my $output_expect = "AAA $execute_cmd 3 1 1 7 22 args1 args2 1";
     is($output, $output_expect);
     
     # Check -B option
@@ -228,7 +228,7 @@ sub to_cmd {
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
+    my $output_expect = "AAA $execute_cmd 3 1 1 7 22 args1 args2 1";
     is($output, $output_expect);
     
     {

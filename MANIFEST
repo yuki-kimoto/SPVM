@@ -1093,6 +1093,9 @@ t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/src/baz/noneed.txt
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/src/foo.c
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/src/noneed.txt
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.spvm
+t/04_spvmcc/lib/SPVM/TestCase/NativeAPICpp.config
+t/04_spvmcc/lib/SPVM/TestCase/NativeAPICpp.cpp
+t/04_spvmcc/lib/SPVM/TestCase/NativeAPICpp.spvm
 t/04_spvmcc/lib/SPVM/TestCase/Precompile.config
 t/04_spvmcc/lib/SPVM/TestCase/Precompile.spvm
 t/04_spvmcc/lib/SPVM/TestCase/Resource/Mylib1.config

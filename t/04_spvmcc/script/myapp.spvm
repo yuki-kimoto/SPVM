@@ -2,6 +2,7 @@ class {
   use TestCase::Precompile;
   use TestCase::NativeAPI;
   use TestCase::NativeAPI2;
+  use TestCase::NativeAPICpp;
   
   use Fn;
   
@@ -24,6 +25,8 @@ class {
     my $ret3 = TestCase::Precompile->anon_method_sum;
     
     my $ret4 = TestCase::NativeAPI2->mylib2_source1_func1;
+    
+    my $ret5 =  TestCase::NativeAPICpp->call_cpp_func(11);
     
     my $global_program_name = CommandInfo->PROGRAM_NAME;
     
@@ -51,6 +54,6 @@ class {
       $basetime_ok = 1;
     }
     
-    print "AAA $program_name $sum $ret1 $ret2 $ret3 $argv->[0] $argv->[1] $basetime_ok\n";
+    print "AAA $program_name $sum $ret1 $ret2 $ret3 $ret5 $argv->[0] $argv->[1] $basetime_ok\n";
   }
 }
