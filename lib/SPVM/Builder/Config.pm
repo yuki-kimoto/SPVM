@@ -639,6 +639,8 @@ sub new_c {
   
   my $self = $class->new(@_);
   
+  $self->language('c');
+  
   $self->ext('c');
   
   return $self;
@@ -706,6 +708,8 @@ sub new_cpp {
     $self->cc('g++');
     $self->ld('g++');
   }
+  
+  $self->language('cpp');
   
   $self->ext('cpp');
   
@@ -1842,10 +1846,10 @@ Other OSs:
 =back
 
 =head2 new_c
-  
+
   my $config = SPVM::Builder::Config->new_c;
 
-Calls L</"new"> method and sets L</"ext"> field to C<c>, and returns the return value of L</"new"> method.
+Calls L</"new"> method and sets L</"ext"> field to C<c> and L</"language"> field to C<c>, and returns the return value of L</"new"> method.
 
 =head2 new_gnu99
   
@@ -1872,10 +1876,10 @@ Calls L</"new_c"> method and sets L</"std"> field to C<c99>, and returns the ret
 Calls L</"new_c"> method and sets L</"std"> field to C<c11>, and returns the return value of L</"new_c"> method.
 
 =head2 new_cpp
-  
+
   my $config = SPVM::Builder::Config->new_cpp;
 
-Calls L</"new"> method and sets L</"ext"> field to C<cpp> and sets L</"cc"> field to a C<C++> compiler and sets L</"ld"> field to a C<C++> linker, and returns the return value of L</"new"> method.
+Calls L</"new"> method and sets L</"ext"> field to C<cpp>, L</"language"> field to C<cpp>, L</"cc"> field to a C++ compiler, and L</"ld"> field to a C++ linker, and returns the return value of L</"new"> method.
 
 If C<$Config{gccversion}> contains C<clang>, L</"cc"> field and L</"ld"> field are set to C<clang++>. Otherwise, L</"cc"> field and L</"ld"> field are set to C<g++>.
 
