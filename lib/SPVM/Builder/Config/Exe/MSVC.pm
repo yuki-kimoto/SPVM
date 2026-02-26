@@ -50,10 +50,12 @@ sub apply {
   # Clear and set optimization
   $self->clear_system_settings;
   $self->optimize('-O2');
-  $self->ld_optimize('-OPT:REF');
+  
+  # Optimization for dead code elimination and identical code folding
+  $self->ld_optimize('-OPT:REF,ICF');
 
   # Set compiler callback
-  $config->add_before_compile_cb_global(sub {
+  $self->add_before_compile_cb_global(sub {
     my ($config) = @_;
     
     $self->_apply_msvc_settings_to_config($config);
@@ -75,16 +77,24 @@ sub _apply_msvc_settings_to_config {
   my $lang = $config->language // '';
   my $dialect = $config->dialect;
   
-  if ($lang eq 'c' && !defined $dialect) {
+  if (($lang eq 'c' || $lang eq 'cpp') && !defined $dialect) {
     $config->clear_system_settings;
-    push @{$config->language_ccflags}, '-TC';
+    
+    # Enable function-level linking
+    push @{$config->compiler_ccflags}, '-Gy';
+    
+    # Static runtime
     push @{$config->ld_ccflags}, '-MT';
-  }
-  elsif ($lang eq 'cpp' && !defined $dialect) {
-    $config->clear_system_settings;
-    push @{$config->language_ccflags}, '-TP';
-    push @{$config->runtime_ccflags}, '-EHsc';
-    push @{$config->ld_ccflags}, '-MT';
+
+    if ($lang eq 'c') {
+      # Force C compiler
+      push @{$config->language_ccflags}, '-TC';
+    }
+    elsif ($lang eq 'cpp') {
+      # Force C++ compiler and enable exceptions
+      push @{$config->language_ccflags}, '-TP';
+      push @{$config->runtime_ccflags}, '-EHsc';
+    }
   }
 }
 
