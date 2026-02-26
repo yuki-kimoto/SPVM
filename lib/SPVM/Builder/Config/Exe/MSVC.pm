@@ -21,8 +21,6 @@ sub apply {
 
   for my $dir (@path_dirs) {
     my $abs_path = File::Spec->catfile($dir, $cc_exe);
-    
-    # Strictly check for file existence and executable bit
     if (-f $abs_path && -x _) {
       $cc_path = $abs_path;
       last;
@@ -33,7 +31,7 @@ sub apply {
     Carp::confess("Can't find compiler 'cl.exe' in PATH.");
   }
 
-  # Linker must be 'link.exe' in the same directory
+  # Linker must be 'link.exe' in the same directory as cl.exe
   my $msvc_bin_dir = File::Basename::dirname($cc_path);
   my $link_path = File::Spec->catfile($msvc_bin_dir, 'link.exe');
 
@@ -41,33 +39,41 @@ sub apply {
     Carp::confess("Can't find linker 'link.exe' in the same directory as '$cc_path'.");
   }
 
-  # Avoid MSYS2 path conversion issues by forcing backslashes
+  # MSYS2 safety: convert to backslashes
   $cc_path =~ s/\//\\/g;
   $link_path =~ s/\//\\/g;
 
-  # Set paths
   $self->cc($cc_path);
   $self->ld($link_path);
 
-  # --- Optimization: Remove redundant options found in ExtUtils::CBuilder ---
-  
-  # CBuilder handles '-nologo' and option prefixes (-I, -out:, -libpath:),
-  # and also handles '-c' and output filenames.
-  
   $self->long_option_sep(':');
-  $self->lib_dir_option_name('-libpath:'); # Use '-' instead of '/' for MSYS2
+  $self->lib_dir_option_name('-libpath:');
 
-  # Clear existing settings to avoid pollution
   $self->clear_system_settings;
-
-  # Global compiler flags:
-  # CBuilder already adds '-nologo', so we only add necessary runtime/exception flags.
-  # Use '-' prefix for all to satisfy MSYS2.
-  $self->add_ccflag_global('-EHsc', '-MD');
 
   # Optimization flags
   $self->optimize('-O2');
   $self->ld_optimize('-OPT:REF');
+
+  # --- Language specific flags via callback (Static Linking) ---
+  $self->add_before_compile_cb_global(sub {
+    my ($config, $compile_info) = @_;
+    
+    my $lang = $config->language // '';
+    my $dialect = $config->dialect;
+    
+    # Check if dialect is undefined to avoid overriding specific configurations
+    if (!defined $dialect) {
+      if ($lang eq 'c') {
+        # Static runtime for C
+        $config->add_ccflags('-MT');
+      }
+      elsif ($lang eq 'cpp') {
+        # Static runtime and Exception Handling for C++
+        $config->add_ccflags('-EHsc', '-MT');
+      }
+    }
+  });
 
   return $self;
 }
