@@ -120,6 +120,49 @@ sub to_string {
   return $self->name;
 }
 
+sub resolve {
+  my ($self) = @_;
+  
+  my $config = $self->config;
+  
+  my $lib_dirs = $self->config->lib_dirs;
+  
+  # Library is linked by file path
+  my $static = $self->is_static;
+  my $lib_name = $self->name;
+  my $is_abs = $self->is_abs;
+  
+  if ($is_abs) {
+    my $found_lib_file;
+    for my $lib_dir (@$lib_dirs) {
+      $lib_dir =~ s|[\\/]$||;
+      
+      # Search dynamic library
+      unless ($static) {
+        my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
+        my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
+        
+        if (-f $dynamic_lib_file) {
+          $found_lib_file = $dynamic_lib_file;
+          last;
+        }
+      }
+      
+      # Search static library
+      my $static_lib_file_base = "lib$lib_name.a";
+      my $static_lib_file = "$lib_dir/$static_lib_file_base";
+      if (-f $static_lib_file) {
+        $found_lib_file = $static_lib_file;
+        last;
+      }
+    }
+    
+    if (defined $found_lib_file) {
+      $self->file = $found_lib_file;
+    }
+  }
+}
+
 1;
 
 =head1 Name

@@ -852,56 +852,9 @@ sub create_link_info {
   
   my $lib_infos = [];
   my $libs = $config->libs;
-  my $lib_dirs = $config->lib_dirs;
   for my $lib (@$libs) {
-    my $lib_info;
-    
-    # Library is linked by file path
-    my $static;
-    my $lib_name;
-    my $is_abs;
-    if (ref $lib) {
-      $static = $lib->is_static;
-      $lib_name = $lib->name;
-      $is_abs = $lib->is_abs;
-      $lib_info = $lib;
-    }
-    else {
-      $lib_name = $lib;
-      $lib_info = SPVM::Builder::LibInfo->new(config => $config);
-      $lib_info->name($lib_name);
-    }
-    
-    if ($is_abs) {
-      my $found_lib_file;
-      for my $lib_dir (@$lib_dirs) {
-        $lib_dir =~ s|[\\/]$||;
-        
-        # Search dynamic library
-        unless ($static) {
-          my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
-          my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
-          
-          if (-f $dynamic_lib_file) {
-            $found_lib_file = $dynamic_lib_file;
-            last;
-          }
-        }
-        
-        # Search static library
-        my $static_lib_file_base = "lib$lib_name.a";
-        my $static_lib_file = "$lib_dir/$static_lib_file_base";
-        if (-f $static_lib_file) {
-          $found_lib_file = $static_lib_file;
-          last;
-        }
-      }
-      
-      if (defined $found_lib_file) {
-        $lib_info->file = $found_lib_file;
-      }
-    }
-    
+    my $lib_info = ref $lib ? $lib : SPVM::Builder::LibInfo->new(name => $lib, config => $config);
+    $lib_info->resolve;
     push @$lib_infos, $lib_info;
   }
   $config->libs($lib_infos);
