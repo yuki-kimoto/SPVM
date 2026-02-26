@@ -552,14 +552,14 @@ sub debug_ldflags {
   }
 }
 
-sub option_sep {
+sub long_option_sep {
   my $self = shift;
   if (@_) {
-    $self->{option_sep} = $_[0];
+    $self->{long_option_sep} = $_[0];
     return $self;
   }
   else {
-    return $self->{option_sep};
+    return $self->{long_option_sep};
   }
 }
 
@@ -777,9 +777,9 @@ sub new {
     $self->debug_ldflags([]);
   }
   
-  # option_sep
-  unless (defined $self->{option_sep}) {
-    $self->option_sep("=");
+  # long_option_sep
+  unless (defined $self->{long_option_sep}) {
+    $self->long_option_sep("=");
   }
   
   return $self;
@@ -1202,7 +1202,7 @@ sub clear_system_settings {
   
   $self->ld(undef);
   $self->optimize(undef);
-  $self->option_sep(undef);
+  $self->long_option_sep(undef);
   
   $self->dynamic_lib_ccflags([]);
   $self->thread_ccflags([]);
@@ -1918,12 +1918,12 @@ Gets and sets C<warn_ldflags> field, an array reference containing arguments of 
 
 Gets and sets C<debug_ldflags> field, an array reference containing arguments of the linker L</"ld"> for debug information.
 
-=head2 option_sep
+=head2 long_option_sep
 
-  my $option_sep = $config->option_sep;
-  $config->option_sep($option_sep);
+  my $long_option_sep = $config->long_option_sep;
+  $config->long_option_sep($long_option_sep);
 
-Gets and sets C<option_sep> field, a string that is a separator between an option name and its value.
+Gets and sets C<long_option_sep> field, a string that is a separator between an option name and its value.
 
 If this field is not defined, C<=> is used.
 
