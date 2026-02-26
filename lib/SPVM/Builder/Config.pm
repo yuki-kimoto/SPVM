@@ -486,6 +486,83 @@ sub dialect {
   }
 }
 
+sub warn_ccflags {
+  my $self = shift;
+  if (@_) {
+    $self->{warn_ccflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{warn_ccflags};
+  }
+}
+
+sub language_ccflags {
+  my $self = shift;
+  if (@_) {
+    $self->{language_ccflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{language_ccflags};
+  }
+}
+
+sub compiler_ccflags {
+  my $self = shift;
+  if (@_) {
+    $self->{compiler_ccflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{compiler_ccflags};
+  }
+}
+
+sub runtime_ccflags {
+  my $self = shift;
+  if (@_) {
+    $self->{runtime_ccflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{runtime_ccflags};
+  }
+}
+
+sub ld_ccflags {
+  my $self = shift;
+  if (@_) {
+    $self->{ld_ccflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{ld_ccflags};
+  }
+}
+
+sub warn_ldflags {
+  my $self = shift;
+  if (@_) {
+    $self->{warn_ldflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{warn_ldflags};
+  }
+}
+
+sub debug_ldflags {
+  my $self = shift;
+  if (@_) {
+    $self->{debug_ldflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{debug_ldflags};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -668,6 +745,41 @@ sub new {
   # resources
   unless (defined $self->{resources}) {
     $self->{resources} = {};
+  }
+  
+  # warn_ccflags
+  unless (defined $self->{warn_ccflags}) {
+    $self->warn_ccflags([]);
+  }
+
+  # language_ccflags
+  unless (defined $self->{language_ccflags}) {
+    $self->language_ccflags([]);
+  }
+
+  # compiler_ccflags
+  unless (defined $self->{compiler_ccflags}) {
+    $self->compiler_ccflags([]);
+  }
+
+  # runtime_ccflags
+  unless (defined $self->{runtime_ccflags}) {
+    $self->runtime_ccflags([]);
+  }
+
+  # ld_ccflags
+  unless (defined $self->{ld_ccflags}) {
+    $self->ld_ccflags([]);
+  }
+
+  # warn_ldflags
+  unless (defined $self->{warn_ldflags}) {
+    $self->warn_ldflags([]);
+  }
+
+  # debug_ldflags
+  unless (defined $self->{debug_ldflags}) {
+    $self->debug_ldflags([]);
   }
   
   return $self;
@@ -1090,14 +1202,16 @@ sub clear_system_settings {
 
   $self->ld(undef);
   $self->optimize(undef);
+  
   $self->dynamic_lib_ccflags([]);
   $self->thread_ccflags([]);
   $self->mingw_ccflags([]);
-  $self->thread_ldflags([]);
-  $self->static_lib_ldflag([]);
-  $self->libcpp_ldflags([]);
+  
   $self->dynamic_lib_ldflags([]);
+  $self->thread_ldflags([]);
+  $self->libcpp_ldflags([]);
 }
+
 
 1;
 
@@ -1757,6 +1871,55 @@ Objective-C++ language
 =back
 
 =back
+
+=head2 warn_ccflags
+
+  my $warn_ccflags = $config->warn_ccflags;
+  $config->warn_ccflags($warn_ccflags);
+
+Gets and sets C<warn_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for warning settings.
+
+=head2 language_ccflags
+
+  my $language_ccflags = $config->language_ccflags;
+  $config->language_ccflags($language_ccflags);
+
+Gets and sets C<language_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for language.
+
+=head2 compiler_ccflags
+
+  my $compiler_ccflags = $config->compiler_ccflags;
+  $config->compiler_ccflags($compiler_ccflags);
+
+Gets and sets C<compiler_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for compiler behavior.
+
+=head2 runtime_ccflags
+
+  my $runtime_ccflags = $config->runtime_ccflags;
+  $config->runtime_ccflags($runtime_ccflags);
+
+Gets and sets C<runtime_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for runtime behavior.
+
+=head2 ld_ccflags
+
+  my $ld_ccflags = $config->ld_ccflags;
+  $config->ld_ccflags($ld_ccflags);
+
+Gets and sets C<ld_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for linker instructions.
+
+=head2 warn_ldflags
+
+  my $warn_ldflags = $config->warn_ldflags;
+  $config->warn_ldflags($warn_ldflags);
+
+Gets and sets C<warn_ldflags> field, an array reference containing arguments of the linker L</"ld"> for warning settings.
+
+=head2 debug_ldflags
+
+  my $debug_ldflags = $config->debug_ldflags;
+  $config->debug_ldflags($debug_ldflags);
+
+Gets and sets C<debug_ldflags> field, an array reference containing arguments of the linker L</"ld"> for debug information.
 
 =head1 Class Methods
 
