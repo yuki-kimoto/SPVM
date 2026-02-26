@@ -552,6 +552,17 @@ sub debug_ldflags {
   }
 }
 
+sub std_sep {
+  my $self = shift;
+  if (@_) {
+    $self->{std_sep} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{std_sep};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -764,6 +775,11 @@ sub new {
   # debug_ldflags
   unless (defined $self->{debug_ldflags}) {
     $self->debug_ldflags([]);
+  }
+  
+  # std_sep
+  unless (defined $self->{std_sep}) {
+    $self->std_sep("=");
   }
   
   return $self;
@@ -1183,7 +1199,7 @@ sub _remove_ext_from_config_file {
 
 sub clear_system_settings {
   my $self = shift;
-
+  
   $self->ld(undef);
   $self->optimize(undef);
   
@@ -1201,7 +1217,6 @@ sub clear_system_settings {
   $self->warn_ldflags([]);
   $self->debug_ldflags([]);
 }
-
 
 1;
 
@@ -1901,6 +1916,15 @@ Gets and sets C<warn_ldflags> field, an array reference containing arguments of 
   $config->debug_ldflags($debug_ldflags);
 
 Gets and sets C<debug_ldflags> field, an array reference containing arguments of the linker L</"ld"> for debug information.
+
+=head2 std_sep
+
+  my $std_sep = $config->std_sep;
+  $config->std_sep($std_sep);
+
+Gets and sets C<std_sep> field, a string that is a separator between the C<std> field and the C<-std> option.
+
+If this field is not defined, C<=> is used.
 
 =head1 Class Methods
 
