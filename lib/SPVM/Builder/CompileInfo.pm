@@ -111,8 +111,8 @@ sub create_ccflags {
   
   my $std = $config->std;
   if (length $std) {
-    my $std_sep = $config->std_sep;
-    push @compile_command_args, "-std$std_sep$std";
+    my $option_sep = $config->option_sep;
+    push @compile_command_args, "-std$option_sep$std";
   }
   
   push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config->defines};

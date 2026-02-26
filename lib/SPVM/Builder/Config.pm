@@ -552,14 +552,14 @@ sub debug_ldflags {
   }
 }
 
-sub std_sep {
+sub option_sep {
   my $self = shift;
   if (@_) {
-    $self->{std_sep} = $_[0];
+    $self->{option_sep} = $_[0];
     return $self;
   }
   else {
-    return $self->{std_sep};
+    return $self->{option_sep};
   }
 }
 
@@ -777,9 +777,9 @@ sub new {
     $self->debug_ldflags([]);
   }
   
-  # std_sep
-  unless (defined $self->{std_sep}) {
-    $self->std_sep("=");
+  # option_sep
+  unless (defined $self->{option_sep}) {
+    $self->option_sep("=");
   }
   
   return $self;
@@ -1202,6 +1202,7 @@ sub clear_system_settings {
   
   $self->ld(undef);
   $self->optimize(undef);
+  $self->option_sep(undef);
   
   $self->dynamic_lib_ccflags([]);
   $self->thread_ccflags([]);
@@ -1917,12 +1918,12 @@ Gets and sets C<warn_ldflags> field, an array reference containing arguments of 
 
 Gets and sets C<debug_ldflags> field, an array reference containing arguments of the linker L</"ld"> for debug information.
 
-=head2 std_sep
+=head2 option_sep
 
-  my $std_sep = $config->std_sep;
-  $config->std_sep($std_sep);
+  my $option_sep = $config->option_sep;
+  $config->option_sep($option_sep);
 
-Gets and sets C<std_sep> field, a string that is a separator between the C<std> field and the C<-std> option.
+Gets and sets C<option_sep> field, a string that is a separator between the C<std> field and the C<-std> option.
 
 If this field is not defined, C<=> is used.
 
