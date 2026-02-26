@@ -49,29 +49,35 @@ sub apply {
   $self->long_option_sep(':');
   $self->lib_dir_option_name('-libpath:');
 
+  # Global clear (at apply time)
   $self->clear_system_settings;
 
   # Optimization flags
   $self->optimize('-O2');
   $self->ld_optimize('-OPT:REF');
 
-  # --- Language specific flags via callback (Static Linking) ---
+  # --- Language/Runtime specific flags via callback ---
   $self->add_before_compile_cb_global(sub {
     my ($config, $compile_info) = @_;
     
     my $lang = $config->language // '';
     my $dialect = $config->dialect;
     
-    # Check if dialect is undefined to avoid overriding specific configurations
-    if (!defined $dialect) {
-      if ($lang eq 'c') {
-        # Static runtime for C
-        $config->add_ccflags('-MT');
-      }
-      elsif ($lang eq 'cpp') {
-        # Static runtime and Exception Handling for C++
-        $config->add_ccflags('-EHsc', '-MT');
-      }
+    if ($lang eq 'c' && !defined $dialect) {
+      $config->clear_system_settings;
+      # -TC: Force C compiler
+      push @{$config->language_ccflags}, '-TC';
+      # -MT: Static runtime (affects linking)
+      push @{$config->ld_ccflags}, '-MT';
+    }
+    elsif ($lang eq 'cpp' && !defined $dialect) {
+      $config->clear_system_settings;
+      # -TP: Force C++ compiler
+      push @{$config->language_ccflags}, '-TP';
+      # -EHsc: Exception handling (Runtime behavior for C++)
+      push @{$config->runtime_ccflags}, '-EHsc';
+      # -MT: Static runtime (affects linking)
+      push @{$config->ld_ccflags}, '-MT';
     }
   });
 
