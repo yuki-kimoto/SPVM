@@ -118,19 +118,15 @@ sub create_ldflags {
   my $lib_dirs = $config->lib_dirs;
   push @merged_ldflags, map { $config->build_option($config->lib_dir_option_name, $_) } grep { length $_ } @$lib_dirs;
   
-  my @lib_ldflags;
   my $libs = $config->libs;
-  for my $lib (@$libs) {
-    if (ref $lib || length $lib) {
-      my $lib_ldflag;
-      
-      unless (ref $lib) {
-        $lib = SPVM::Builder::LibInfo->new(config => $config, name => $lib);
-      }
-      
-      my $lib_ldflags = $lib->create_ldflags;
-      push @lib_ldflags, @$lib_ldflags;
-    }
+  my @lib_ldflags;
+  for (my $i = 0; $i < @$libs; $i++) {
+    my $lib = $libs->[$i];
+    $lib = ref $lib ? $lib : SPVM::Builder::LibInfo->new(name => $lib, config => $config);
+    $libs->[$i] = $lib;
+    $lib->resolve;
+    my $lib_ldflags = $lib->create_ldflags;
+    push @lib_ldflags, @$lib_ldflags;
   }
   
   push @merged_ldflags, @lib_ldflags;

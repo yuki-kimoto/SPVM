@@ -850,15 +850,6 @@ sub create_link_info {
   
   my $output_type = $config->output_type;
   
-  my $lib_infos = [];
-  my $libs = $config->libs;
-  for my $lib (@$libs) {
-    my $lib_info = ref $lib ? $lib : SPVM::Builder::LibInfo->new(name => $lib, config => $config);
-    $lib_info->resolve;
-    push @$lib_infos, $lib_info;
-  }
-  $config->libs($lib_infos);
-  
   # Output file
   unless (defined $output_file) {
     unless (defined $output_dir) {
