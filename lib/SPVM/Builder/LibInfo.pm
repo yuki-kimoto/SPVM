@@ -85,44 +85,6 @@ sub new {
 sub create_ldflags {
   my ($self) = @_;
   
-  my @link_command_ldflags;
-  
-  if ($self->is_abs) {
-    if (length $self->file) {
-      push @link_command_ldflags, $self->file;
-    }
-  }
-  else {
-    my $name = $self->name;
-    if ($self->is_static) {
-      my $config = $self->config;
-      
-      my $static_lib_begin = $config->static_lib_ldflag->[0];
-      my $static_lib_end = $config->static_lib_ldflag->[1];
-      
-      if (length $name) {
-        push @link_command_ldflags, "$static_lib_begin -l$name $static_lib_end";
-      }
-    }
-    else {
-      if (length $name) {
-        push @link_command_ldflags, "-l$name";
-      }
-    }
-  }
-  
-  return \@link_command_ldflags;
-}
-
-sub to_string { 
-  my ($self) = @_;
-  
-  return $self->name;
-}
-
-sub resolve {
-  my ($self) = @_;
-  
   my $config = $self->config;
   
   my $lib_dirs = $self->config->lib_dirs;
@@ -161,6 +123,38 @@ sub resolve {
       $self->file = $found_lib_file;
     }
   }
+  
+  my @link_command_ldflags;
+  
+  if ($self->is_abs) {
+    if (length $self->file) {
+      push @link_command_ldflags, $self->file;
+    }
+  }
+  else {
+    my $name = $self->name;
+    if ($self->is_static) {
+      my $static_lib_begin = $config->static_lib_ldflag->[0];
+      my $static_lib_end = $config->static_lib_ldflag->[1];
+      
+      if (length $name) {
+        push @link_command_ldflags, "$static_lib_begin -l$name $static_lib_end";
+      }
+    }
+    else {
+      if (length $name) {
+        push @link_command_ldflags, "-l$name";
+      }
+    }
+  }
+  
+  return \@link_command_ldflags;
+}
+
+sub to_string { 
+  my ($self) = @_;
+  
+  return $self->name;
 }
 
 1;

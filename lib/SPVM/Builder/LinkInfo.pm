@@ -124,7 +124,6 @@ sub create_ldflags {
     my $lib = $libs->[$i];
     $lib = ref $lib ? $lib : SPVM::Builder::LibInfo->new(name => $lib, config => $config);
     $libs->[$i] = $lib;
-    $lib->resolve;
     my $lib_ldflags = $lib->create_ldflags;
     push @lib_ldflags, @$lib_ldflags;
   }
