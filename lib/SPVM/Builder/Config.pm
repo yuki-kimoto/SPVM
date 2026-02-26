@@ -607,6 +607,17 @@ sub exe_ext {
   }
 }
 
+sub lib_prefix {
+  my $self = shift;
+  if (@_) {
+    $self->{lib_prefix} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{lib_prefix};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -855,6 +866,11 @@ sub new {
     else {
       $self->exe_ext(undef);
     }
+  }
+  
+  # lib_prefix
+  unless (defined $self->{lib_prefix}) {
+    $self->lib_prefix("lib");
   }
   
   return $self;
@@ -2053,6 +2069,13 @@ Gets and sets C<exe_ext> field, the extension of an executable file such as C<ex
 
 The dot C<.> is not included.
 
+=head2 lib_prefix
+
+  my $lib_prefix = $config->lib_prefix;
+  $config->lib_prefix($lib_prefix);
+
+Gets and sets C<lib_prefix> field, the prefix of a library name such as C<lib>.
+
 =head1 Class Methods
 
 =head2 new
@@ -2262,6 +2285,10 @@ Other OSs:
 =item * L</"exe_ext">
 
   $Config{_exe} without the leading dot. If $Config{_exe} is an empty string, it is set to undef.
+
+=item * L</"lib_prefix">
+
+  "lib"
 
 =back
 
