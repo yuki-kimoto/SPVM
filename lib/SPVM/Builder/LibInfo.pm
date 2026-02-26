@@ -94,7 +94,9 @@ sub create_ldflags {
   my $lib_name = $self->name;
   my $is_abs = $self->is_abs;
   
-  if ($is_abs) {
+  my @link_command_ldflags;
+  
+  if ($self->is_abs) {
     my $found_lib_file;
     for my $lib_dir (@$lib_dirs) {
       $lib_dir =~ s|[\\/]$||;
@@ -121,13 +123,6 @@ sub create_ldflags {
     
     if (defined $found_lib_file) {
       $self->file = $found_lib_file;
-    }
-  }
-  
-  my @link_command_ldflags;
-  
-  if ($self->is_abs) {
-    if (length $self->file) {
       push @link_command_ldflags, $self->file;
     }
   }
