@@ -1923,7 +1923,9 @@ Gets and sets C<debug_ldflags> field, an array reference containing arguments of
   my $option_sep = $config->option_sep;
   $config->option_sep($option_sep);
 
-Gets and sets C<option_sep> field, a string that is a separator between the C<std> field and the C<-std> option.
+Gets and sets C<option_sep> field, a string that is a separator between an option name and its value.
+
+If this field is not defined, C<=> is used.
 
 If this field is not defined, C<=> is used.
 
