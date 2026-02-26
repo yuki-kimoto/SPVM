@@ -13,6 +13,7 @@ use File::Spec;
 
 use SPVM::Builder;
 use SPVM::Builder::Util;
+use SPVM::Builder::Config::Exe::MSVC;
 
 my $devnull = File::Spec->devnull;
 
