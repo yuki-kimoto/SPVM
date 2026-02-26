@@ -1216,10 +1216,6 @@ sub _remove_ext_from_config_file {
 sub clear_system_settings {
   my $self = shift;
   
-  $self->ld(undef);
-  $self->optimize(undef);
-  $self->long_option_sep(undef);
-  
   $self->dynamic_lib_ccflags([]);
   $self->thread_ccflags([]);
   $self->warn_ccflags([]);
@@ -2399,13 +2395,37 @@ Clears the fields that are set by default for a specific environment.
 
 These fields might be updated in the future to support appropriate settings for different environments.
 
-The following fields are set to C<undef>.
-
-L</"ld">, L</"optimize">
+The following fields are set to C<[]>.
 
 The following fields are set to C<[]>.
 
-L</"dynamic_lib_ccflags">, L</"thread_ccflags">, L</"warn_ccflags">, L</"language_ccflags">, L</"compiler_ccflags">, L</"runtime_ccflags">, L</"ld_ccflags">, L</"thread_ldflags">, L</"static_lib_ldflag">, L</"libcpp_ldflags">, L</"dynamic_lib_ldflags">, L</"warn_ldflags">, L</"debug_ldflags">
+=over 2
+
+=item * L</"dynamic_lib_ccflags">
+
+=item * L</"thread_ccflags">
+
+=item * L</"warn_ccflags">
+
+=item * L</"language_ccflags">
+
+=item * L</"compiler_ccflags">
+
+=item * L</"runtime_ccflags">
+
+=item * L</"ld_ccflags">
+
+=item * L</"thread_ldflags">
+
+=item * L</"dynamic_lib_ldflags">
+
+=item * L</"warn_ldflags">
+
+=item * L</"debug_ldflags">
+
+=item * L</"libcpp_ldflags">
+
+=back
 
 =head2 build_option
 
