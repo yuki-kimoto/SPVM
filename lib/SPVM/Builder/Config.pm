@@ -581,7 +581,7 @@ sub dynamic_lib_ext {
     return $self;
   }
   else {
-    return $self->{dynamic_lib_ext} //= ".$Config{dlext}";
+    return $self->{dynamic_lib_ext};
   }
 }
 
@@ -592,7 +592,7 @@ sub static_lib_ext {
     return $self;
   }
   else {
-    return $self->{static_lib_ext} //= $Config{_a};
+    return $self->{static_lib_ext};
   }
 }
 
@@ -603,7 +603,7 @@ sub exe_ext {
     return $self;
   }
   else {
-    return $self->{exe_ext} //= $Config{_exe};
+    return $self->{exe_ext};
   }
 }
 
