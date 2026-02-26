@@ -122,6 +122,16 @@ sub create_ccflags {
   
   push @compile_command_args, grep { length $_ } @{$config->mingw_ccflags};
   
+  push @compile_command_args, grep { length $_ } @{$config->warn_ccflags};
+  
+  push @compile_command_args, grep { length $_ } @{$config->language_ccflags};
+  
+  push @compile_command_args, grep { length $_ } @{$config->compiler_ccflags};
+  
+  push @compile_command_args, grep { length $_ } @{$config->runtime_ccflags};
+  
+  push @compile_command_args, grep { length $_ } @{$config->ld_ccflags};
+  
   my $output_type = $config->output_type;
   
   if ($output_type eq 'dynamic_lib') {
