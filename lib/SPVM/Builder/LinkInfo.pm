@@ -116,8 +116,7 @@ sub create_ldflags {
   }
   
   my $lib_dirs = $config->lib_dirs;
-  
-  push @merged_ldflags, map { "-L$_" } grep { length $_ } @$lib_dirs;
+  push @merged_ldflags, map { $config->build_option($config->lib_dir_option_name, $_) } grep { length $_ } @$lib_dirs;
   
   my @lib_ldflags;
   my $libs = $config->libs;

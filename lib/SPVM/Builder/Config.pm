@@ -563,6 +563,17 @@ sub long_option_sep {
   }
 }
 
+sub lib_dir_option_name {
+  my $self = shift;
+  if (@_) {
+    $self->{lib_dir_option_name} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{lib_dir_option_name};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -780,6 +791,11 @@ sub new {
   # long_option_sep
   unless (defined $self->{long_option_sep}) {
     $self->long_option_sep("=");
+  }
+  
+  # lib_dir_option_name
+  unless (defined $self->{lib_dir_option_name}) {
+    $self->lib_dir_option_name("-L");
   }
   
   return $self;
@@ -1949,6 +1965,15 @@ Gets and sets C<long_option_sep> field, a string that is a separator between an 
 If this field is not defined, C<=> is used.
 
 If this field is not defined, C<=> is used.
+
+=head2 lib_dir_option_name
+
+  my $lib_dir_option_name = $config->lib_dir_option_name;
+  $config->lib_dir_option_name($lib_dir_option_name);
+
+Gets and sets C<lib_dir_option_name> field, a string that is an option name to specify a library search path.
+
+If this field is not defined, C<-L> is used.
 
 =head1 Class Methods
 
