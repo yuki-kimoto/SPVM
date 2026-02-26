@@ -574,6 +574,39 @@ sub lib_dir_option_name {
   }
 }
 
+sub dynamic_lib_ext {
+  my $self = shift;
+  if (@_) {
+    $self->{dynamic_lib_ext} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{dynamic_lib_ext} //= ".$Config{dlext}";
+  }
+}
+
+sub static_lib_ext {
+  my $self = shift;
+  if (@_) {
+    $self->{static_lib_ext} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{static_lib_ext} //= $Config{_a};
+  }
+}
+
+sub exe_ext {
+  my $self = shift;
+  if (@_) {
+    $self->{exe_ext} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{exe_ext} //= $Config{_exe};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -796,6 +829,32 @@ sub new {
   # lib_dir_option_name
   unless (defined $self->{lib_dir_option_name}) {
     $self->lib_dir_option_name("-L");
+  }
+  
+  # dynamic_lib_ext
+  unless (defined $self->{dynamic_lib_ext}) {
+    my $ext = $Config{dlext};
+    $ext =~ s/^\.//;
+    $self->dynamic_lib_ext($ext);
+  }
+
+  # static_lib_ext
+  unless (defined $self->{static_lib_ext}) {
+    my $ext = $Config{_a};
+    $ext =~ s/^\.//;
+    $self->static_lib_ext($ext);
+  }
+
+  # exe_ext
+  unless (defined $self->{exe_ext}) {
+    my $ext = $Config{_exe};
+    if (length $ext) {
+      $ext =~ s/^\.//;
+      $self->exe_ext($ext);
+    }
+    else {
+      $self->exe_ext(undef);
+    }
   }
   
   return $self;
@@ -1967,6 +2026,33 @@ Gets and sets C<lib_dir_option_name> field, a string that is an option name to s
 
 If this field is not defined, C<-L> is used.
 
+=head2 dynamic_lib_ext
+
+  my $dynamic_lib_ext = $config->dynamic_lib_ext;
+  $config->dynamic_lib_ext($dynamic_lib_ext);
+
+Gets and sets C<dynamic_lib_ext> field, the extension of a dynamic library such as C<so> or C<dll>.
+
+The dot C<.> is not included.
+
+=head2 static_lib_ext
+
+  my $static_lib_ext = $config->static_lib_ext;
+  $config->static_lib_ext($static_lib_ext);
+
+Gets and sets C<static_lib_ext> field, the extension of a static library such as C<a> or C<lib>.
+
+The dot C<.> is not included.
+
+=head2 exe_ext
+
+  my $exe_ext = $config->exe_ext;
+  $config->exe_ext($exe_ext);
+
+Gets and sets C<exe_ext> field, the extension of an executable file such as C<exe>.
+
+The dot C<.> is not included.
+
 =head1 Class Methods
 
 =head2 new
@@ -2157,7 +2243,28 @@ Other OSs:
 
   []
 
+=item * L</"long_option_sep">
+
+  "="
+
+=item * L</"lib_dir_option_name">
+
+  "-L"
+
+=item * L</"dynamic_lib_ext">
+
+  $Config{dlext} without the leading dot.
+
+=item * L</"static_lib_ext">
+
+  $Config{_a} without the leading dot.
+
+=item * L</"exe_ext">
+
+  $Config{_exe} without the leading dot. If $Config{_exe} is an empty string, it is set to undef.
+
 =back
+
 
 =head2 new_c
 
