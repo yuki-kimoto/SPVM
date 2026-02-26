@@ -1219,6 +1219,27 @@ sub clear_system_settings {
   $self->debug_ldflags([]);
 }
 
+sub build_option {
+  my ($self, $name, $value) = @_;
+  
+  # Extract the option name without leading hyphens or slashes to check its length
+  my $pure_name = $name;
+  $pure_name =~ s/^[\-\/]+//;
+  
+  my $option;
+  if (length $pure_name <= 1) {
+    # Short option: Connect directly
+    $option = "$name$value";
+  }
+  else {
+    # Long option: Connect using long_option_sep
+    my $sep = $self->long_option_sep;
+    $option = "$name$sep$value";
+  }
+  
+  return $option;
+}
+
 1;
 
 =head1 Name
@@ -2360,6 +2381,24 @@ L</"ld">, L</"optimize">
 The following fields are set to C<[]>.
 
 L</"dynamic_lib_ccflags">, L</"thread_ccflags">, L</"warn_ccflags">, L</"language_ccflags">, L</"compiler_ccflags">, L</"runtime_ccflags">, L</"ld_ccflags">, L</"thread_ldflags">, L</"static_lib_ldflag">, L</"libcpp_ldflags">, L</"dynamic_lib_ldflags">, L</"warn_ldflags">, L</"debug_ldflags">
+
+=head2 build_option
+
+  my $option = $config->build_option("-std", "c11");
+
+Builds a command line option from the option name and the value.
+
+If the length of the option name (excluding leading C<-> and C</>) is 1, the option name and the value are connected without a separator.
+
+  # Results in "-Ic:/path"
+  my $option = $config->build_option("-I", "c:/path");
+
+If the length of the option name is greater than 1, they are connected using L</"long_option_sep">.
+
+  # Results in "-std=c11" (if long_option_sep is "=")
+  my $option = $config->build_option("-std", "c11");
+
+This method is useful for supporting different compiler conventions such as GCC/Clang and MSVC.
 
 =head1 Library Path Resolution
 
