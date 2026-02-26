@@ -131,17 +131,6 @@ sub thread_ccflags {
   }
 }
 
-sub mingw_ccflags {
-  my $self = shift;
-  if (@_) {
-    $self->{mingw_ccflags} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{mingw_ccflags};
-  }
-}
-
 sub std {
   my $self = shift;
   if (@_) {
@@ -602,16 +591,6 @@ sub new {
     $self->thread_ccflags(['-pthread']);
   }
   
-  # mingw_ccflags
-  unless (defined $self->{mingw_ccflags}) {
-    if ($^O eq 'MSWin32') {
-      $self->mingw_ccflags(['-D__USE_MINGW_ANSI_STDIO']);
-    }
-    else {
-      $self->mingw_ccflags([]);
-    }
-  }
-  
   # optimize
   unless (defined $self->{optimize}) {
     $self->optimize('-O3');
@@ -764,7 +743,12 @@ sub new {
 
   # runtime_ccflags
   unless (defined $self->{runtime_ccflags}) {
-    $self->runtime_ccflags([]);
+    if ($^O eq 'MSWin32') {
+      $self->runtime_ccflags(['-D__USE_MINGW_ANSI_STDIO']);
+    }
+    else {
+      $self->runtime_ccflags([]);
+    }
   }
 
   # ld_ccflags
@@ -1205,7 +1189,6 @@ sub clear_system_settings {
   
   $self->dynamic_lib_ccflags([]);
   $self->thread_ccflags([]);
-  $self->mingw_ccflags([]);
   $self->warn_ccflags([]);
   $self->language_ccflags([]);
   $self->compiler_ccflags([]);
@@ -1404,15 +1387,6 @@ This field is automatically set and users nomally do not change it.
   $config->thread_ccflags($thread_ccflags);
 
 Gets and sets C<thread_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for threads.
-
-This field is automatically set and users nomally do not change it.
-
-=head2 mingw_ccflags
-
-  my $mingw_ccflags = $config->mingw_ccflags;
-  $config->mingw_ccflags($mingw_ccflags);
-
-Gets and sets C<mingw_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for MinGW.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1976,16 +1950,6 @@ Other OSs:
 
   ["-pthread"]
 
-=item * L</"mingw_ccflags">
-
-Windows:
-
-  ['-D__USE_MINGW_ANSI_STDIO']
-
-Other OSs:
-
-  []
-
 =item * L</"include_dirs">
 
   []
@@ -2107,6 +2071,12 @@ Other OSs:
   []
 
 =item * L</"runtime_ccflags">
+
+Windows:
+
+  ['-D__USE_MINGW_ANSI_STDIO']
+
+Other OSs:
 
   []
 
@@ -2362,7 +2332,7 @@ L</"ld">, L</"optimize">
 
 The following fields are set to C<[]>.
 
-L</"dynamic_lib_ccflags">, L</"thread_ccflags">, L</"mingw_ccflags">, L</"warn_ccflags">, L</"language_ccflags">, L</"compiler_ccflags">, L</"runtime_ccflags">, L</"ld_ccflags">, L</"thread_ldflags">, L</"static_lib_ldflag">, L</"libcpp_ldflags">, L</"dynamic_lib_ldflags">, L</"warn_ldflags">, L</"debug_ldflags">
+L</"dynamic_lib_ccflags">, L</"thread_ccflags">, L</"warn_ccflags">, L</"language_ccflags">, L</"compiler_ccflags">, L</"runtime_ccflags">, L</"ld_ccflags">, L</"thread_ldflags">, L</"static_lib_ldflag">, L</"libcpp_ldflags">, L</"dynamic_lib_ldflags">, L</"warn_ldflags">, L</"debug_ldflags">
 
 =head1 Library Path Resolution
 

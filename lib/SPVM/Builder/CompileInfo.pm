@@ -120,8 +120,6 @@ sub create_ccflags {
   
   push @compile_command_args, grep { length $_ } @{$config->thread_ccflags};
   
-  push @compile_command_args, grep { length $_ } @{$config->mingw_ccflags};
-  
   push @compile_command_args, grep { length $_ } @{$config->warn_ccflags};
   
   push @compile_command_args, grep { length $_ } @{$config->language_ccflags};

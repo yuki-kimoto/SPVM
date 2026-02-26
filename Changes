@@ -3,7 +3,9 @@
     * Add after_link_cbs field and add_after_link_cb method in SPVM::Builder::Config to support callbacks after linking.
     * Add clear_system_settings method to SPVM::Builder::Config to clear default environment settings.
     * SPVM::Builder::Config: Add warn_ccflags, language_ccflags, compiler_ccflags, runtime_ccflags, ld_ccflags, warn_ldflags and debug_ldflags fields.
-    
+  [Incompatible Change]
+    * SPVM::Builder::Config: Remove mingw_ccflags field for backward compatibility and move its Windows settings to runtime_ccflags.
+  
 0.990136 2026-02-25
   [New Features]
     * Add language and dialect fields to SPVM::Builder::Config.
