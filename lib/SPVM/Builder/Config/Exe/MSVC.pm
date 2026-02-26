@@ -45,7 +45,7 @@ sub apply {
   $self->ld($link_path);
 
   $self->long_option_sep(':');
-  $self->lib_dir_option_name('-libpath:');
+  $self->lib_dir_option_name('-libpath');
 
   # Clear and set optimization
   $self->clear_system_settings;
