@@ -53,7 +53,11 @@ sub apply {
   
   # Optimization for dead code elimination and identical code folding
   $self->ld_optimize('-OPT:REF,ICF');
-
+  
+  $config->static_lib_ldflag(["", ""]);
+  
+  $config->lib_prefix("");
+  
   # Set compiler callback
   $self->add_before_compile_cb_global(sub {
     my ($config) = @_;
