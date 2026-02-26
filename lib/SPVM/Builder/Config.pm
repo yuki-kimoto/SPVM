@@ -1206,10 +1206,17 @@ sub clear_system_settings {
   $self->dynamic_lib_ccflags([]);
   $self->thread_ccflags([]);
   $self->mingw_ccflags([]);
+  $self->warn_ccflags([]);
+  $self->language_ccflags([]);
+  $self->compiler_ccflags([]);
+  $self->runtime_ccflags([]);
+  $self->ld_ccflags([]);
   
   $self->dynamic_lib_ldflags([]);
   $self->thread_ldflags([]);
   $self->libcpp_ldflags([]);
+  $self->warn_ldflags([]);
+  $self->debug_ldflags([]);
 }
 
 
@@ -2087,9 +2094,33 @@ Other OSs:
 
   "native"
 
-=item * Other Fields
+=item * L</"warn_ccflags">
 
-  undef
+  []
+
+=item * L</"language_ccflags">
+
+  []
+
+=item * L</"compiler_ccflags">
+
+  []
+
+=item * L</"runtime_ccflags">
+
+  []
+
+=item * L</"ld_ccflags">
+
+  []
+
+=item * L</"warn_ldflags">
+
+  []
+
+=item * L</"debug_ldflags">
+
+  []
 
 =back
 
@@ -2331,7 +2362,7 @@ L</"ld">, L</"optimize">
 
 The following fields are set to C<[]>.
 
-L</"dynamic_lib_ccflags">, L</"thread_ccflags">, L</"mingw_ccflags">, L</"thread_ldflags">, L</"static_lib_ldflag">, L</"libcpp_ldflags">, L</"dynamic_lib_ldflags">
+L</"dynamic_lib_ccflags">, L</"thread_ccflags">, L</"mingw_ccflags">, L</"warn_ccflags">, L</"language_ccflags">, L</"compiler_ccflags">, L</"runtime_ccflags">, L</"ld_ccflags">, L</"thread_ldflags">, L</"static_lib_ldflag">, L</"libcpp_ldflags">, L</"dynamic_lib_ldflags">, L</"warn_ldflags">, L</"debug_ldflags">
 
 =head1 Library Path Resolution
 
