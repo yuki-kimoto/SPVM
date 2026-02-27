@@ -12,6 +12,7 @@ struct spvm_type {
   SPVM_BASIC_TYPE* basic_type;
   const char* unresolved_basic_type_name;
   SPVM_TYPE* of;
+  SPVM_LIST* union_types;
   int32_t dimension;
   int32_t flag;
   int8_t resolved_in_ast;
