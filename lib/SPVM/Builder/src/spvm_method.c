@@ -17,7 +17,7 @@ SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   
   method->var_decls = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   method->anon_method_fields = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
-  method->overload_method_names = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
+  method->target_method_names = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   
   method->opcode_list = SPVM_OPCODE_LIST_new(compiler);
   

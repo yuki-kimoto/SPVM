@@ -4455,12 +4455,12 @@ SPVM_OP* SPVM_OP_build_virtual_method(SPVM_COMPILER* compiler, SPVM_OP* op_metho
   SPVM_OP* op_method_name = op_method_names->first;
   if (op_method_names->id == SPVM_OP_C_ID_LIST) {
     while (op_method_name) {
-      SPVM_LIST_push(method->overload_method_names, (char*)op_method_name->uv.name);
+      SPVM_LIST_push(method->target_method_names, (char*)op_method_name->uv.name);
       op_method_name = SPVM_OP_sibling(compiler, op_method_name);
     }
   }
   else {
-    SPVM_LIST_push(method->overload_method_names, (char*)op_method_names->uv.name);
+    SPVM_LIST_push(method->target_method_names, (char*)op_method_names->uv.name);
   }
 
   op_method->uv.method = method;
