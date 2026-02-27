@@ -950,29 +950,6 @@ sub new_c11 {
   return $self;
 }
 
-sub new_gnu99 {
-  my $class = shift;
-  
-  my $self = $class->new_c(@_);
-  
-  # GNU C99
-  $self->std('gnu99');
-  
-  return $self;
-}
-
-sub new_gnu11 {
-  my $class = shift;
-  
-  my $self = $class->new_c(@_);
-  
-  # GNU C11
-  $self->std('gnu11');
-  
-  return $self;
-}
-
-
 sub new_cpp {
   my $class = shift;
   
@@ -1378,9 +1355,6 @@ The SPVM::Builder::Config class has methods to get and set config for compiling 
   # C99
   my $config = SPVM::Builder::Config->new_c99;
   
-  # GNU C99
-  my $config = SPVM::Builder::Config->new_gnu99;
-  
   # C++
   my $config = SPVM::Builder::Config->new_cpp;
   
@@ -1558,9 +1532,6 @@ Examples:
   
   # -std=c99
   $config->std('c99');
-  
-  # -std=gnu99
-  $config->std('gnu99');
   
   # -std=cpp
   $config->std('cpp');
@@ -2346,18 +2317,6 @@ Other OSs:
 
 Calls L</"new"> method and sets L</"ext"> field to C<c>, L</"language"> field to C<c>, L</"cc"> field to a C++ compiler, and returns the return value of L</"new"> method.
 
-=head2 new_gnu99
-  
-  my $config = SPVM::Builder::Config->new_gnu99;
-
-Calls L</"new_c"> method and sets L</"std"> field to C<gnu99>, and returns the return value of L</"new_c"> method.
-
-=head2 new_gnu11
-  
-  my $config = SPVM::Builder::Config->new_gnu11;
-
-Calls L</"new_c"> method and sets L</"std"> field to C<gnu11>, and returns the return value of L</"new_c"> method.
-
 =head2 new_c99
   
   my $config = SPVM::Builder::Config->new_c99;
@@ -2641,10 +2600,6 @@ If L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field 
 If a library is found, C<-l> option of the linker L</"ld"> is created using the found absolute path.
 
 =head1 Examples
-
-GNU C99:
-
-  my $config = SPVM::Builder::Config->new_gnu99;
 
 C99:
 

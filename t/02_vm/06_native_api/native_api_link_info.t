@@ -20,7 +20,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 {
   my $link_info = $main::NATIVE_API_LINK_INFO;
   
-  my $config = SPVM::Builder::Config->new_gnu99;
+  my $config = SPVM::Builder::Config->new_c99;
   
   ok($link_info->config->class_name, 'TestCase::NativeAPILinkInfo');
   ok($link_info->config->ld, $config->ld);

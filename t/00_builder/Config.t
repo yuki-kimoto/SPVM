@@ -47,14 +47,14 @@ use SPVM::Builder::Config;
     is($config->std, 'c11');
   }
   {
-    my $config = SPVM::Builder::Config->new_gnu99;
+    my $config = SPVM::Builder::Config->new_c99;
     is($config->ext, 'c');
-    is($config->std, 'gnu99');
+    is($config->std, 'c99');
   }
   {
-    my $config = SPVM::Builder::Config->new_gnu11;
+    my $config = SPVM::Builder::Config->new_c11;
     is($config->ext, 'c');
-    is($config->std, 'gnu11');
+    is($config->std, 'c11');
   }
   {
     my $config = SPVM::Builder::Config->new_cpp;
