@@ -78,4 +78,6 @@ SPVM_OP* SPVM_CHECK_new_op_type_shared(SPVM_COMPILER* compiler, SPVM_TYPE* type,
 
 SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op);
 
+SPVM_OP* SPVM_CHECK_apply_union_type_mapping(SPVM_COMPILER* compiler, SPVM_OP* op_call_method);
+
 #endif
