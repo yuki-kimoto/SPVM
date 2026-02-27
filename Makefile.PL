@@ -20,10 +20,11 @@ use SPVM::Builder::Config;
 
 # Check supported environment
 {
-  # SPVM only support 64bit integer Perl
-  my $ivsize = $Config{ivsize};
-  if ($ivsize < 8) {
-    warn "SPVM doesn't support the Perl which \"ivsize\" is lower than 8. The current \"ivsize\" is $ivsize.\n";
+  # SPVM requires a 64-bit address space (pointer size must be 8 bytes)
+  # This ensures support for large memory maps required by coroutines.
+  my $ptrsize = $Config{ptrsize};
+  if ($ptrsize < 8) {
+    warn "SPVM doesn't support 32-bit address spaces (the pointer size is $ptrsize bytes). A 64-bit environment is required.\n";
     die "OS unsupported\n";
   }
   

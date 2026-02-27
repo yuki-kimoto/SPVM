@@ -23,11 +23,22 @@
           /* Enable BSD and System V extensions */
           #define _DEFAULT_SOURCE
         #endif
-
+    * Drop support for 32-bit architectures. SPVM now strictly requires a 
+          64-bit environment (pointer size of 8 bytes).
+          
+          Reasons:
+          1. To fully comply with the C99 floating-point specifications and 
+             ensure consistent results (avoiding non-deterministic behavior 
+             caused by x87 80-bit internal precision on 32-bit x86).
+             
+          2. To support efficient coroutine (goroutine-like) stack management. 
+             A 64-bit virtual address space is essential for allocating and 
+             optimizing stack sizes for a large number of coroutines using mmap.
   [Changes]
     * SPVM::Builder::Config: Add option_sep field to support different separators for the -std option and update documentation.
     * Update spvmdist to use the new_c99 method by default in the generated 
       native class configuration files to enforce the C99 standard for new modules.
+  
 0.990136 2026-02-25
   [New Features]
     * Add language and dialect fields to SPVM::Builder::Config.
