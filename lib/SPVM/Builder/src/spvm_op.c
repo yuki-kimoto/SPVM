@@ -1207,6 +1207,24 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       return NULL;
     }
     
+    // Check target methods
+    for (int32_t j = 0; j < virtual_method->target_method_names->length; j++) {
+      const char* target_method_name = SPVM_LIST_get(virtual_method->target_method_names, j);
+      SPVM_METHOD* target_method = SPVM_HASH_get(type->basic_type->method_symtable, target_method_name, strlen(target_method_name));
+      
+      // Target method existence
+      if (!target_method) {
+        SPVM_COMPILER_error(compiler, "The target method '%s' of Method Selection '%s' is not found in the class '%s'.\n  at %s line %d", target_method_name, virtual_method_name, basic_type_name, virtual_method->op_method->file, virtual_method->op_method->line);
+        return NULL;
+      }
+      
+      // Class/Instance method consistency
+      if (virtual_method->is_class_method != target_method->is_class_method) {
+        SPVM_COMPILER_error(compiler, "The 'static' attribute of the target method '%s' must be consistent with the Method Selection '%s'.\n  at %s line %d", target_method_name, virtual_method_name, virtual_method->op_method->file, virtual_method->op_method->line);
+        return NULL;
+      }
+    }
+    
     // Set current basic type
     virtual_method->current_basic_type = type->basic_type;
 
