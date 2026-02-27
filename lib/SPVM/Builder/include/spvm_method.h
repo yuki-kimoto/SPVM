@@ -45,6 +45,8 @@ struct spvm_method {
   int8_t is_required;
   int8_t access_control_type;
   SPVM_OP* op_anon_method_field_var_decl_start;
+  int8_t is_virtual;
+  SPVM_LIST* overload_method_names;
 };
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);

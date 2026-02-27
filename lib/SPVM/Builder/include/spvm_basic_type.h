@@ -34,6 +34,8 @@ struct spvm_basic_type {
   SPVM_HASH* field_symtable;
   SPVM_LIST* methods;
   SPVM_HASH* method_symtable;
+  SPVM_LIST* virtual_methods;
+  SPVM_HASH* virtual_method_symtable;
   SPVM_LIST* interface_basic_types;
   SPVM_HASH* interface_basic_symtable;
   SPVM_LIST* anon_unresolved_basic_type_names;
