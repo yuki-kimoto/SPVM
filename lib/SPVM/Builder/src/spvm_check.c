@@ -6154,51 +6154,56 @@ SPVM_OP* SPVM_CHECK_apply_union_type_mapping(SPVM_COMPILER* compiler, SPVM_OP* o
 
   int32_t match_index = -1;
 
-  // Search the first union type argument
-  for (int32_t i = 0; i < method->args_length; i++) {
+  // Actual arguments at the call site (AST)
+  SPVM_OP* op_list_args = op_call_method->first;
+  // The first child is the method name or similar, so start from the first sibling (real argument)
+  SPVM_OP* op_operand = op_list_args->first;
+  
+  // Iterate through both definitions and actual arguments simultaneously
+  for (int32_t i = 0; i < method->var_decls->length; i++) {
+    // Move to the next operand in the AST
+    op_operand = SPVM_OP_sibling(compiler, op_operand);
+    
+    // Safety: if no more actual arguments, stop
+    if (!op_operand) {
+      break;
+    }
+
     SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, i);
     
-    // Found a union type argument
+    // 1. Check the definition: Is this parameter a union type?
     if (arg_var_decl->type->union_types) {
-      // Get the corresponding operand from the call site
-      SPVM_OP* op_list_args = op_call_method->first;
-      SPVM_OP* op_operand = op_list_args->first;
-      for (int32_t j = 0; j <= i; j++) {
-        op_operand = SPVM_OP_sibling(compiler, op_operand);
-      }
-
-      if (op_operand) {
-        SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
+      // 2. Check the reality: What is the actual type of the operand?
+      SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
+      
+      // 3. Find the match: Which member of the union list matches the operand?
+      for (int32_t k = 0; k < arg_var_decl->type->union_types->length; k++) {
+        SPVM_TYPE* member_type = SPVM_LIST_get(arg_var_decl->type->union_types, k);
         
-        // Find match index in union_types list
-        for (int32_t k = 0; k < arg_var_decl->type->union_types->length; k++) {
-          SPVM_TYPE* member_type = SPVM_LIST_get(arg_var_decl->type->union_types, k);
-          
-          if (SPVM_TYPE_equals(
-                compiler, 
-                member_type->basic_type->id, member_type->dimension, member_type->flag,
-                operand_type->basic_type->id, operand_type->dimension, operand_type->flag
-              )) 
-          {
-            match_index = k;
-            break;
-          }
+        if (SPVM_TYPE_equals(
+              compiler, 
+              member_type->basic_type->id, member_type->dimension, member_type->flag,
+              operand_type->basic_type->id, operand_type->dimension, operand_type->flag
+            )) 
+        {
+          match_index = k;
+          break;
         }
       }
-      break; // Map only based on the first union argument
+      break; // Resolve mapping based on the first encountered union argument
     }
   }
 
-  // Apply auto-cast to the mapped return type
+  // Apply auto-cast if a match was found and return type is also a union
   if (match_index >= 0 && match_index < method->return_type->union_types->length) {
     SPVM_TYPE* dist_type = SPVM_LIST_get(method->return_type->union_types, match_index);
     
-    // Skip if the destination is a generic object type
+    // Skip if the destination is a generic object type (no cast needed)
     if (SPVM_TYPE_is_any_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
       return op_call_method;
     }
 
-    // Wrap the method call with a TYPE_CAST
+    // Wrap the method call with a TYPE_CAST in the AST
     SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_call_method);
     SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_call_method->file, op_call_method->line);
     SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, dist_type->basic_type->name, dist_type->basic_type, dist_type->dimension, dist_type->flag, op_call_method->file, op_call_method->line);
