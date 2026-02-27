@@ -58,6 +58,8 @@ sub apply {
   
   $config->lib_prefix("");
   
+  $config->lib_option_name("");
+  
   # Set compiler callback
   $self->add_before_compile_cb_global(sub {
     my ($config) = @_;
