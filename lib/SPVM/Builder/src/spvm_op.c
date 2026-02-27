@@ -3526,11 +3526,30 @@ SPVM_OP* SPVM_OP_build_mutable_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
 
 SPVM_OP* SPVM_OP_build_union_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_left, SPVM_OP* op_type_right) {
   
-  SPVM_OP* op_union_type = SPVM_OP_new_op_any_object_type(compiler, op_type_left->file, op_type_left->line);
-  op_union_type->uv.type->is_union_type = 1;
-  op_union_type->uv.type->has_union_type = 1;
+  SPVM_OP* op_union_type;
+  SPVM_TYPE* type_left = op_type_left->uv.type;
+  SPVM_TYPE* type_right = op_type_right->uv.type;
   
-  SPVM_OP_insert_child(compiler, op_type_left, op_type_left->last, op_type_right);
+  // If left is already a union type, reuse its list and append the right type
+  if (type_left->is_union_type) {
+    op_union_type = op_type_left;
+    SPVM_LIST_push(type_left->union_types, type_right);
+  }
+  else {
+    // Create a new union container (any object type)
+    op_union_type = SPVM_OP_new_op_any_object_type(compiler, op_type_left->file, op_type_left->line);
+    SPVM_TYPE* union_type = op_union_type->uv.type;
+    
+    union_type->is_union_type = 1;
+    union_type->has_union_type = 1;
+    
+    // Allocate permanent list for the union components
+    union_type->union_types = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
+    
+    // Add both types to the list in order
+    SPVM_LIST_push(union_type->union_types, type_left);
+    SPVM_LIST_push(union_type->union_types, type_right);
+  }
   
   return op_union_type;
 }
