@@ -88,20 +88,30 @@ sub _apply_msvc_settings_to_config {
   if (($lang eq 'c' || $lang eq 'cpp') && !defined $dialect) {
     $config->clear_system_settings;
     
-    # Enable function-level linking
+    # Common flags
     push @{$config->compiler_ccflags}, '-Gy';
-    
-    # Static runtime
     push @{$config->ld_ccflags}, '-MT';
 
+    my $std = $config->std // '';
+
     if ($lang eq 'c') {
-      # Force C compiler
+      # C compiler
       push @{$config->language_ccflags}, '-TC';
+
+      # Ensure C11 as baseline if unspecified or c99
+      if (!length $std || (length $std && $std eq 'c99')) {
+        $config->std('c11');
+      }
     }
     elsif ($lang eq 'cpp') {
-      # Force C++ compiler and enable exceptions
+      # C++ compiler
       push @{$config->language_ccflags}, '-TP';
       push @{$config->runtime_ccflags}, '-EHsc';
+
+      # Ensure C++14 as baseline if unspecified or c++11
+      if (length $std && $std eq 'c++11') {
+        $config->std('c++14');
+      }
     }
   }
 }
