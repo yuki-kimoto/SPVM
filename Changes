@@ -8,7 +8,7 @@
     * SPVM::Builder::Config: Add lib_dir_option_name field and refactor library directory option generation using build_option.
     * Add dynamic_lib_ext, static_lib_ext and exe_ext fields to SPVM::Builder::Config.
     * Add lib_prefix field to SPVM::Builder::Config.
-    * Add lib_suffix field to SPVM::Builder::Config.
+    * Add lib_option_suffix field to SPVM::Builder::Config.
   [Incompatible Change]
     * SPVM::Builder::Config: Remove mingw_ccflags field for backward compatibility and move its Windows settings to runtime_ccflags.
   [Changes]
