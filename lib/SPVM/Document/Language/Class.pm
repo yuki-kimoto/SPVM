@@ -1978,9 +1978,9 @@ The arguments signature of the following class method and instance method is C<s
   
   }
 
-=head2 Variable Length Arguments
+=head2 Variadic Arguments
 
-The variable length arguments syntax C<object...> is a syntax suger to pass a C<object[]> object as an argument.
+The variadic arguments syntax C<object...> is a syntax suger to pass a C<object[]> object as an argument.
 
   static method varargs_method : string ($args : object...) {
     
@@ -2002,11 +2002,11 @@ If you want to pass an C<object[]> object as one argument, you can use the type 
 
 Compilation Errors:
 
-The use of variable length arguments is restricted to object[] type. Otherwise a compilation error occurs.
+The use of variadic arguments is restricted to object[] type. Otherwise a compilation error occurs.
   
-The use of variable length arguments must be the last argument. Otherwise a compilation error occurs.
+The use of variadic arguments must be the last argument. Otherwise a compilation error occurs.
 
-The use of variable length arguments cannot have a default value. If so, a compilation error occurs.
+The use of variadic arguments cannot have a default value. If so, a compilation error occurs.
 
 =head2 Generics
 

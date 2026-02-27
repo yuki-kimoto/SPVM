@@ -1892,7 +1892,7 @@ use Test::More;
   }
 }
 
-# Variable length arguments - object...
+# Variadic arguments - object...
 {
   {
     my $source = 'class MyClass  { static method main : void () { &varargs("abc", 1); } static method varargs : void ($args : object...) { } }';
@@ -1911,17 +1911,17 @@ use Test::More;
   
   {
     my $source = 'class MyClass  { static method main : void () { &varargs(1, "abc", 1); } static method varargs : void ($args : string...) { } }';
-    compile_not_ok($source, q|The use of variable length arguments is restricted to object[] type.|);
+    compile_not_ok($source, q|The use of variadic arguments is restricted to object[] type.|);
   }
   
   {
     my $source = 'class MyClass  { static method main : void () { &varargs("abc", 1); } static method varargs : void ($args : object..., $arg2 : int) { } }';
-    compile_not_ok($source, q|The use of variable length arguments must be the last argument.|);
+    compile_not_ok($source, q|The use of variadic arguments must be the last argument.|);
   }
   
   {
     my $source = 'class MyClass  { static method main : void () { &varargs("abc", 1); } static method varargs : void ($args : object... = undef) { } }';
-    compile_not_ok($source, q|The use of variable length arguments cannot have a default value.|);
+    compile_not_ok($source, q|The use of variadic arguments cannot have a default value.|);
   }
   
 }

@@ -3754,7 +3754,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 return;
               }
               
-              // Check method call's variable length arguments
+              // Check method call's variadic arguments
               if (!call_method->varargs_checked) {
                 SPVM_OP* op_previous_args = SPVM_CHECK_check_call_method_varargs(compiler, op_call_method, method);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
@@ -5256,7 +5256,7 @@ SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* 
       SPVM_TYPE* any_object_type = SPVM_TYPE_new_any_object_type(compiler);
       
       char place[255];
-      sprintf(place, "the variable length arguments of %s#%s method", op_call_method->uv.call_method->method->current_basic_type->name, method_name);
+      sprintf(place, "the variadic arguments of %s#%s method", op_call_method->uv.call_method->method->current_basic_type->name, method_name);
       
       op_operand = SPVM_CHECK_check_assign(compiler, any_object_type, op_operand, place, op_list_array_init->file, op_list_array_init->line);
       if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {

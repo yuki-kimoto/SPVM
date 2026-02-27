@@ -1810,7 +1810,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_TYPE* arg_var_decl_type = arg_var_decl->type;
     if (arg_var_decl_type->flag & SPVM_NATIVE_C_TYPE_FLAG_VARARGS) {
       if (!(method->var_decls->length == method->args_length - 1)) {
-        SPVM_COMPILER_error(compiler, "The use of variable length arguments must be the last argument.\n  at %s line %d", op_method->file, op_method->line);
+        SPVM_COMPILER_error(compiler, "The use of variadic arguments must be the last argument.\n  at %s line %d", op_method->file, op_method->line);
       }
     }
     
@@ -1992,10 +1992,10 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   
   op_type->uv.type->resolved_in_ast = 0;
   
-  // The use of variable length arguments is restricted to object[] type
+  // The use of variadic arguments is restricted to object[] type
   if (op_type->uv.type->flag & SPVM_NATIVE_C_TYPE_FLAG_VARARGS) {
     if (op_arg_default) {
-      SPVM_COMPILER_error(compiler, "The use of variable length arguments cannot have a default value.\n  at %s line %d", op_type->file, op_type->line);
+      SPVM_COMPILER_error(compiler, "The use of variadic arguments cannot have a default value.\n  at %s line %d", op_type->file, op_type->line);
     }
   }
   
@@ -3638,9 +3638,9 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem
   if (is_varargs) {
     op_type->uv.type->flag |= SPVM_NATIVE_C_TYPE_FLAG_VARARGS;
     
-    // The use of variable length arguments is restricted to object[] type
+    // The use of variadic arguments is restricted to object[] type
     if (!(strcmp(op_type->uv.type->unresolved_basic_type_name, "object") == 0 && op_type->uv.type->dimension == 1)) {
-      SPVM_COMPILER_error(compiler, "The use of variable length arguments is restricted to object[] type.\n  at %s line %d", op_type_elem->file, op_type_elem->line);
+      SPVM_COMPILER_error(compiler, "The use of variadic arguments is restricted to object[] type.\n  at %s line %d", op_type_elem->file, op_type_elem->line);
     }
   }
   
