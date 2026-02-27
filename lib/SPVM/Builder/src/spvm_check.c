@@ -3754,7 +3754,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 return;
               }
               
-              // Check method call's variadic arguments
+              // Check method call's variable length arguments
               if (!call_method->varargs_checked) {
                 SPVM_OP* op_previous_args = SPVM_CHECK_check_call_method_varargs(compiler, op_call_method, method);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
@@ -5012,7 +5012,6 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
   // Class method call
   if (call_method->is_class_method) {
     SPVM_METHOD* found_method = NULL;
-    // Basic type name + method name
     const char* basic_type_name;
     if (call_method->is_current) {
       if (current_method->current_basic_type->is_generated_by_anon_method) {
@@ -5052,7 +5051,6 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
         update_closest_method_name(method_name, method->name, &closest_method_name);
       }
       
-      // 
       if (closest_method_name) {
         SPVM_COMPILER_error(compiler, "%s#%s method is not found. Did you mean %s#%s?\n  at %s line %d", found_basic_type->name, method_name, found_basic_type->name, closest_method_name, op_call_method->file, op_call_method->line);
       }
@@ -5088,12 +5086,10 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       method_name = last_colon_pos + 1;
       int32_t basic_type_name_length = (last_colon_pos - 1) - abs_method_name;
       
-      // SUPER::
       SPVM_METHOD* found_method = NULL;
       if (strstr(abs_method_name, "SUPER::") == abs_method_name) {
         SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
         if (parent_basic_type) {
-          // Search the method of the super class
           found_method = SPVM_CHECK_search_method(compiler, parent_basic_type, method_name);
         }
       }
@@ -5142,7 +5138,6 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
           }
         }
         
-        // 
         if (closest_method_name) {
           SPVM_COMPILER_error(compiler, "%s::%s method called as a static instance method call is not found. Did you mean %s::%s?\n  at %s line %d", abs_method_name_class_name, &abs_method_name[basic_type_name_length + 2], abs_method_name_class_name, closest_method_name, op_call_method->file, op_call_method->line);
         }
@@ -5153,11 +5148,48 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
         abs_method_name_class_name[basic_type_name_length] = ':';
         return;
       }
-      
     }
     // Instance method call
     else {
+      // Search ordinary method
       SPVM_METHOD* found_method = SPVM_CHECK_search_method(compiler, basic_type, method_name);
+      
+      // Search virtual method
+      if (!found_method) {
+        SPVM_METHOD* virtual_method = SPVM_HASH_get(basic_type->virtual_method_symtable, method_name, strlen(method_name));
+        
+        if (virtual_method) {
+          for (int32_t i = 0; i < virtual_method->target_method_names->length; i++) {
+            const char* target_method_name = SPVM_LIST_get(virtual_method->target_method_names, i);
+            SPVM_METHOD* target_method = SPVM_HASH_get(basic_type->method_symtable, target_method_name, strlen(target_method_name));
+            
+            // Match signatures
+            int32_t match = 1;
+            SPVM_OP* op_arg = SPVM_OP_sibling(compiler, op_list_args->first); 
+            op_arg = SPVM_OP_sibling(compiler, op_arg); // Skip invocant
+
+            for (int32_t arg_index = 0; arg_index < target_method->args_length; arg_index++) {
+              if (!op_arg) { match = 0; break; }
+              
+              SPVM_TYPE* call_arg_type = SPVM_CHECK_get_type(compiler, op_arg);
+              SPVM_VAR_DECL* target_arg_decl = SPVM_LIST_get(target_method->var_decls, arg_index);
+              SPVM_TYPE* target_arg_type = target_arg_decl->type;
+              
+              // Type comparison
+              if (!SPVM_TYPE_equals(compiler, call_arg_type->basic_type->id, call_arg_type->dimension, call_arg_type->flag, target_arg_type->basic_type->id, target_arg_type->dimension, target_arg_type->flag)) {
+                match = 0;
+                break;
+              }
+              op_arg = SPVM_OP_sibling(compiler, op_arg);
+            }
+            
+            if (match && op_arg == NULL) {
+              found_method = target_method;
+              break;
+            }
+          }
+        }
+      }
       
       if (found_method) {
         if (found_method->is_class_method) {
@@ -5168,21 +5200,16 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
         call_method->method = found_method;
       }
       else {
-        // Look for the closest method name in the class and its parent classes
         const char* closest_method_name = NULL;
         SPVM_BASIC_TYPE* current_basic_type = basic_type;
         while (current_basic_type) {
           SPVM_LIST* methods = current_basic_type->methods;
-          
           if (methods) {
             for (int32_t i = 0; i < methods->length; i++) {
               SPVM_METHOD* method = SPVM_LIST_get(methods, i);
-              // Compare the user's input with the method name and update the closest one
               update_closest_method_name(method_name, method->name, &closest_method_name);
             }
           }
-          
-          // Move to the parent class
           current_basic_type = current_basic_type->parent;
         }
                 
@@ -5192,7 +5219,6 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
         else {
           SPVM_COMPILER_error(compiler, "%s method is not found in %s class or its super classes.\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
         }
-        
         return;
       }
     }
@@ -5204,7 +5230,6 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       return;
     }
   }
-  
 }
 
 SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {
@@ -5256,7 +5281,7 @@ SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* 
       SPVM_TYPE* any_object_type = SPVM_TYPE_new_any_object_type(compiler);
       
       char place[255];
-      sprintf(place, "the variadic arguments of %s#%s method", op_call_method->uv.call_method->method->current_basic_type->name, method_name);
+      sprintf(place, "the variable length arguments of %s#%s method", op_call_method->uv.call_method->method->current_basic_type->name, method_name);
       
       op_operand = SPVM_CHECK_check_assign(compiler, any_object_type, op_operand, place, op_list_array_init->file, op_list_array_init->line);
       if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
