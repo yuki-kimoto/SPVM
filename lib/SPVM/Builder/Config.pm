@@ -618,6 +618,17 @@ sub lib_prefix {
   }
 }
 
+sub lib_option_name {
+  my $self = shift;
+  if (@_) {
+    $self->{lib_option_name} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{lib_option_name};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -871,6 +882,10 @@ sub new {
   # lib_prefix
   unless (defined $self->{lib_prefix}) {
     $self->lib_prefix("lib");
+  }
+  
+  unless (defined $self->{lib_option_name}) {
+    $self->lib_option_name("-l");
   }
   
   return $self;
@@ -2029,18 +2044,12 @@ Gets and sets C<debug_ldflags> field, an array reference containing arguments of
 
 Gets and sets C<long_option_sep> field, a string that is a separator between an option name and its value.
 
-If this field is not defined, C<=> is used.
-
-If this field is not defined, C<=> is used.
-
 =head2 lib_dir_option_name
 
   my $lib_dir_option_name = $config->lib_dir_option_name;
   $config->lib_dir_option_name($lib_dir_option_name);
 
 Gets and sets C<lib_dir_option_name> field, a string that is an option name to specify a library search path.
-
-If this field is not defined, C<-L> is used.
 
 =head2 dynamic_lib_ext
 
@@ -2075,6 +2084,13 @@ The dot C<.> is not included.
   $config->lib_prefix($lib_prefix);
 
 Gets and sets C<lib_prefix> field, the prefix of a library name such as C<lib>.
+
+=head2 lib_option_name
+
+  my $lib_option_name = $config->lib_option_name;
+  $config->lib_option_name($lib_option_name);
+
+Gets and sets C<lib_option_name> field, a string that is an option name to specify a library name.
 
 =head1 Class Methods
 
@@ -2289,6 +2305,10 @@ Other OSs:
 =item * L</"lib_prefix">
 
   "lib"
+
+=item * L</"lib_option_name">
+
+  "-l"
 
 =back
 
