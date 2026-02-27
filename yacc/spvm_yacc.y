@@ -30,7 +30,7 @@
 %token <opval> RETURN WEAKEN DIE WARN WARN_LEVEL DIAG PRINT SAY STDERR OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
 
 %type <opval> grammar
-%type <opval> field_name method_name class_name
+%type <opval> field_name method_name class_name method_names
 %type <opval> basic_type  opt_basic_type array_type array_type_with_length type runtime_type ref_type return_type
 %type <opval> union_type generic_type
 %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
@@ -52,7 +52,7 @@
 %type <opval> assign
 %type <opval> new array_init
 %type <opval> type_check type_cast can
-%type <opval> call_method caller
+%type <opval> call_method caller virtual_method
 %type <opval> array_element_access field_access hash_value_access
 %type <opval> weaken_field unweaken_field isweak_field
 %type <opval> sequential copy_fields break_point
@@ -342,6 +342,7 @@ definition
   | our
   | has ';'
   | method
+  | virtual_method
 
 init_block
   : INIT block
@@ -542,6 +543,12 @@ method
   | opt_attributes METHOD ':' return_type '(' opt_args ')' ';'
      {
        $$ = SPVM_OP_build_method(compiler, $2, NULL, $4, $6, $1, NULL);
+     }
+
+virtual_method
+  : opt_attributes METHOD method_name '[' method_names ']' ';'
+     {
+       $$ = SPVM_OP_build_virtual_method(compiler, $2, $3, $5, $1);
      }
 
 anon_method
@@ -1667,4 +1674,23 @@ break_point
     {
       $$ = SPVM_OP_build_caller(compiler, $1, NULL);
     }
+
+method_names
+  : method_names ',' method_name
+    {
+      SPVM_OP* op_list;
+      if ($1->id == SPVM_OP_C_ID_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+      
+      $$ = op_list;
+    }
+  | method_names ','
+  | method_name
+
 %%

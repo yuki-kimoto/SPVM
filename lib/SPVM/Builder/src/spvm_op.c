@@ -4377,3 +4377,8 @@ SPVM_OP* SPVM_OP_new_op_caller_info_type(SPVM_COMPILER* compiler, const char* fi
   
   return op_type;
 }
+
+SPVM_OP* SPVM_OP_build_virtual_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_method_names, SPVM_OP* op_attributes) {
+  
+  return op_method;
+}

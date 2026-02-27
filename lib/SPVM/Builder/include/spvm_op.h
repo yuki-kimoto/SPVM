@@ -432,6 +432,8 @@ SPVM_OP* SPVM_OP_build_version_from(SPVM_COMPILER* compiler, SPVM_OP* op_version
 
 SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_methodname, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_attributes, SPVM_OP* op_block);
 
+SPVM_OP* SPVM_OP_build_virtual_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_method_names, SPVM_OP* op_attributes);
+
 void SPVM_OP_attach_anon_method_fields(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_anon_method_fields);
 
 SPVM_OP* SPVM_OP_build_anon_method_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_anon_method_field_var_decl_start, SPVM_FIELD* field);
