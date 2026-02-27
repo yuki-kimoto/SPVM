@@ -87,6 +87,15 @@ sub create_ldflags {
   
   my $config = $self->config;
   
+  # Flags for the linker (e.g., "-l" or "")
+  my $lib_option_name = $config->lib_option_name;
+  my $lib_option_suffix = $config->lib_option_suffix;
+  
+  # Library file components for searching
+  my $lib_prefix = $config->lib_prefix;
+  my $static_lib_ext = $config->static_lib_ext;
+  my $dynamic_lib_ext = $config->dynamic_lib_ext;
+  
   my $lib_dirs = $self->config->lib_dirs;
   
   # Library is linked by file path
@@ -96,14 +105,16 @@ sub create_ldflags {
   
   my @link_command_ldflags;
   
-  if ($self->is_abs) {
+  if ($is_abs) {
     my $found_lib_file;
     for my $lib_dir (@$lib_dirs) {
       $lib_dir =~ s|[\\/]$||;
       
       # Search dynamic library
       unless ($static) {
-        my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
+        # Unix: libfoo.so, MSVC: foo.dll
+        # Search using $lib_prefix and $dynamic_lib_ext
+        my $dynamic_lib_file_base = "${lib_prefix}${lib_name}.${dynamic_lib_ext}";
         my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
         
         if (-f $dynamic_lib_file) {
@@ -113,7 +124,9 @@ sub create_ldflags {
       }
       
       # Search static library
-      my $static_lib_file_base = "lib$lib_name.a";
+      # Unix: libfoo.a, MSVC: foo.lib
+      # Search using $lib_prefix and $static_lib_ext
+      my $static_lib_file_base = "${lib_prefix}${lib_name}${static_lib_ext}";
       my $static_lib_file = "$lib_dir/$static_lib_file_base";
       if (-f $static_lib_file) {
         $found_lib_file = $static_lib_file;
@@ -133,12 +146,14 @@ sub create_ldflags {
       my $static_lib_end = $config->static_lib_ldflag->[1];
       
       if (length $name) {
-        push @link_command_ldflags, "$static_lib_begin -l$name $static_lib_end";
+        # Construct flag: e.g. "-Wl,-Bstatic -lfoo" or "foo.lib"
+        push @link_command_ldflags, "$static_lib_begin ${lib_option_name}${name}${lib_option_suffix} $static_lib_end";
       }
     }
     else {
       if (length $name) {
-        push @link_command_ldflags, "-l$name";
+        # Construct flag: e.g. "-lfoo" or "foo.lib"
+        push @link_command_ldflags, "${lib_option_name}${name}${lib_option_suffix}";
       }
     }
   }
