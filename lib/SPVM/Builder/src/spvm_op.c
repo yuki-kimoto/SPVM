@@ -933,15 +933,22 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       else if (op_decl->id == SPVM_OP_C_ID_METHOD) {
         SPVM_METHOD* method = op_decl->uv.method;
         
-        SPVM_LIST_push(type->basic_type->methods, op_decl->uv.method);
-        
-        // Fields of anon method
-        SPVM_LIST* anon_method_fields = op_decl->uv.method->anon_method_fields;
-        for (int32_t i = 0; i < anon_method_fields->length; i++) {
-          SPVM_FIELD* anon_method_field = SPVM_LIST_get(anon_method_fields, i);
+        // Method Selection
+        if (method->is_virtual) {
+          SPVM_LIST_push(type->basic_type->virtual_methods, method);
+        }
+        // Ordinary method
+        else {
+          SPVM_LIST_push(type->basic_type->methods, method);
           
-          SPVM_LIST_push(type->basic_type->original_fields, anon_method_field);
-          anon_method_field->is_anon_method_field = 1;
+          // Fields of anon method
+          SPVM_LIST* anon_method_fields = method->anon_method_fields;
+          for (int32_t i = 0; i < anon_method_fields->length; i++) {
+            SPVM_FIELD* anon_method_field = SPVM_LIST_get(anon_method_fields, i);
+            
+            SPVM_LIST_push(type->basic_type->original_fields, anon_method_field);
+            anon_method_field->is_anon_method_field = 1;
+          }
         }
       }
       // INIT block
@@ -1179,6 +1186,32 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_HASH_set(type->basic_type->method_symtable, method->name, strlen(method->name), method);
       }
     }
+  }
+  
+  // Virtual method declarations
+  for (int32_t i = 0; i < type->basic_type->virtual_methods->length; i++) {
+    SPVM_METHOD* virtual_method = SPVM_LIST_get(type->basic_type->virtual_methods, i);
+    const char* virtual_method_name = virtual_method->name;
+    
+    // Check duplication with ordinary methods
+    SPVM_METHOD* found_method = SPVM_HASH_get(type->basic_type->method_symtable, virtual_method_name, strlen(virtual_method_name));
+    if (found_method) {
+      SPVM_COMPILER_error(compiler, "Redeclaration of %s#%s method (already defined as an ordinary method).\n  at %s line %d", basic_type_name, virtual_method_name, virtual_method->op_method->file, virtual_method->op_method->line);
+      return NULL;
+    }
+
+    // Check duplication with other virtual methods
+    SPVM_METHOD* found_virtual_method = SPVM_HASH_get(type->basic_type->virtual_method_symtable, virtual_method_name, strlen(virtual_method_name));
+    if (found_virtual_method) {
+      SPVM_COMPILER_error(compiler, "Redeclaration of %s#%s virtual method.\n  at %s line %d", basic_type_name, virtual_method_name, virtual_method->op_method->file, virtual_method->op_method->line);
+      return NULL;
+    }
+    
+    // Set current basic type
+    virtual_method->current_basic_type = type->basic_type;
+
+    // Add to virtual method symtable
+    SPVM_HASH_set(type->basic_type->virtual_method_symtable, virtual_method->name, strlen(virtual_method->name), virtual_method);
   }
   
   // mulnum_t

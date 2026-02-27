@@ -108,6 +108,10 @@ SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
   basic_type->op_inits = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   basic_type->op_ends = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   
+  // Virtual methods
+  basic_type->virtual_methods = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
+  basic_type->virtual_method_symtable = SPVM_HASH_new_hash_permanent(compiler->current_each_compile_allocator, 0);
+  
   return basic_type;
 }
 
