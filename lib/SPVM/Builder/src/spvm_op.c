@@ -2707,7 +2707,7 @@ SPVM_OP* SPVM_OP_build_type_cast(SPVM_COMPILER* compiler, SPVM_OP* op_type_cast,
 SPVM_OP* SPVM_OP_build_generic_type(SPVM_COMPILER* compiler, SPVM_OP* op_container_type, SPVM_OP* op_element_type) {
   
   op_container_type->uv.type->of = op_element_type->uv.type;
-  op_container_type->uv.type->has_union_type = op_element_type->uv.type->has_union_type;
+  op_container_type->uv.type->union_types = op_element_type->uv.type->union_types;
   
   return op_container_type;
 }
@@ -2847,7 +2847,7 @@ SPVM_OP* SPVM_OP_build_accessor(SPVM_COMPILER* compiler, SPVM_OP* op_accessor, S
 SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_operand, SPVM_OP* op_type) {
   
   if (op_is->id == SPVM_OP_C_ID_IS_COMPILE_TYPE) {
-    if (op_type->uv.type->has_union_type) {
+    if (op_type->uv.type->union_types) {
       SPVM_COMPILER_error(compiler, "The right type must not contain union types.\n  at %s line %d", op_type->file, op_type->line);
       return op_is;
     }
@@ -2858,7 +2858,7 @@ SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_
       return op_is;
     }
     
-    if (op_type->uv.type->is_union_type) {
+    if (op_type->uv.type->union_types) {
       SPVM_COMPILER_error(compiler, "The right type must not be a union type.\n  at %s line %d", op_type->file, op_type->line);
       return op_is;
     }
@@ -3531,7 +3531,7 @@ SPVM_OP* SPVM_OP_build_union_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_left
   SPVM_TYPE* type_right = op_type_right->uv.type;
   
   // If left is already a union type, reuse its list and append the right type
-  if (type_left->is_union_type) {
+  if (type_left->union_types) {
     op_union_type = op_type_left;
     SPVM_LIST_push(type_left->union_types, type_right);
   }
@@ -3539,9 +3539,6 @@ SPVM_OP* SPVM_OP_build_union_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_left
     // Create a new union container (any object type)
     op_union_type = SPVM_OP_new_op_any_object_type(compiler, op_type_left->file, op_type_left->line);
     SPVM_TYPE* union_type = op_union_type->uv.type;
-    
-    union_type->is_union_type = 1;
-    union_type->has_union_type = 1;
     
     // Allocate permanent list for the union components
     union_type->union_types = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
