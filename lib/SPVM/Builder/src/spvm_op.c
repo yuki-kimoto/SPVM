@@ -1223,7 +1223,24 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_COMPILER_error(compiler, "The 'static' attribute of the target method '%s' must be consistent with the Method Selection '%s'.\n  at %s line %d", target_method_name, virtual_method_name, virtual_method->op_method->file, virtual_method->op_method->line);
         return NULL;
       }
+      
+      // Variadic method check
+      int32_t target_method_is_variadic = 0;
+      for (int32_t arg_index = 0; arg_index < target_method->args_length; arg_index++) {
+        SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(target_method->var_decls, arg_index);
+        SPVM_TYPE* arg_var_decl_type = arg_var_decl->type;
+        if (arg_var_decl_type->flag & SPVM_NATIVE_C_TYPE_FLAG_VARARGS) {
+          target_method_is_variadic = 1;
+          break;
+        }
+      }
+      
+      if (target_method_is_variadic) {
+        SPVM_COMPILER_error(compiler, "The target method '%s' of Method Selection '%s' cannot have variadic arguments.\n  at %s line %d", target_method_name, virtual_method_name, virtual_method->op_method->file, virtual_method->op_method->line);
+        return NULL;
+      }
     }
+    
     
     // Set current basic type
     virtual_method->current_basic_type = type->basic_type;
