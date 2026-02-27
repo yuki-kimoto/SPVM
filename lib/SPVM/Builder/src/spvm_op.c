@@ -3530,6 +3530,8 @@ SPVM_OP* SPVM_OP_build_union_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_left
   op_union_type->uv.type->is_union_type = 1;
   op_union_type->uv.type->has_union_type = 1;
   
+  SPVM_OP_insert_child(compiler, op_type_left, op_type_left->last, op_type_right);
+  
   return op_union_type;
 }
 
