@@ -4380,5 +4380,57 @@ SPVM_OP* SPVM_OP_new_op_caller_info_type(SPVM_COMPILER* compiler, const char* fi
 
 SPVM_OP* SPVM_OP_build_virtual_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_method_names, SPVM_OP* op_attributes) {
   
+  SPVM_METHOD* method = SPVM_METHOD_new(compiler);
+  
+  // Set method name
+  method->op_name = op_name_method;
+  method->name = method->op_name->uv.name;
+  
+  // Method Selection flag
+  method->is_virtual = 1;
+
+  // Attributes
+  int32_t found_virtual_attr = 0;
+  if (op_attributes) {
+    SPVM_OP* op_attribute = op_attributes->first;
+    while ((op_attribute = SPVM_OP_sibling(compiler, op_attribute))) {
+      SPVM_ATTRIBUTE* attribute = op_attribute->uv.attribute;
+      switch (attribute->id) {
+        case SPVM_ATTRIBUTE_C_ID_STATIC:
+          method->is_class_method = 1;
+          break;
+        case SPVM_ATTRIBUTE_C_ID_VIRTUAL:
+          found_virtual_attr = 1;
+          break;
+        default:
+          SPVM_COMPILER_error(compiler, "Invalid attribute for virtual method '%s'.\n  at %s line %d", 
+            SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
+          return op_method;
+      }
+    }
+  }
+
+  // Check virtual attribute
+  if (!found_virtual_attr) {
+    SPVM_COMPILER_error(compiler, "The 'virtual' attribute is required for Method Selection '%s'.\n  at %s line %d", method->name, op_method->file, op_method->line);
+    return op_method;
+  }
+
+  // Add overload method names
+  assert(op_method_names); // Always exists by yacc grammar
+  
+  SPVM_OP* op_method_name = op_method_names->first;
+  if (op_method_names->id == SPVM_OP_C_ID_LIST) {
+    while (op_method_name) {
+      SPVM_LIST_push(method->overload_method_names, (char*)op_method_name->uv.name);
+      op_method_name = SPVM_OP_sibling(compiler, op_method_name);
+    }
+  }
+  else {
+    SPVM_LIST_push(method->overload_method_names, (char*)op_method_names->uv.name);
+  }
+
+  op_method->uv.method = method;
+  
   return op_method;
 }
