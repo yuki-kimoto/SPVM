@@ -618,6 +618,17 @@ sub lib_prefix {
   }
 }
 
+sub lib_suffix {
+  my $self = shift;
+  if (@_) {
+    $self->{lib_suffix} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{lib_suffix};
+  }
+}
+
 sub lib_option_name {
   my $self = shift;
   if (@_) {
@@ -882,6 +893,11 @@ sub new {
   # lib_prefix
   unless (defined $self->{lib_prefix}) {
     $self->lib_prefix("lib");
+  }
+  
+  # lib_suffix
+  unless (defined $self->{lib_suffix}) {
+    $self->lib_suffix("");
   }
   
   unless (defined $self->{lib_option_name}) {
@@ -2085,6 +2101,13 @@ The dot C<.> is not included.
 
 Gets and sets C<lib_prefix> field, the prefix of a library name such as C<lib>.
 
+=head2 lib_suffix
+
+  my $lib_suffix = $config->lib_suffix;
+  $config->lib_suffix($lib_suffix);
+
+Gets and sets C<lib_suffix> field, the suffix of a library name such as C<.lib>.
+
 =head2 lib_option_name
 
   my $lib_option_name = $config->lib_option_name;
@@ -2305,6 +2328,10 @@ Other OSs:
 =item * L</"lib_prefix">
 
   "lib"
+
+=item * L</"lib_suffix">
+
+  ""
 
 =item * L</"lib_option_name">
 
