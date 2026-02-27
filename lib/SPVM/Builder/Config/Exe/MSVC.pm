@@ -60,7 +60,7 @@ sub apply {
   
   $config->lib_option_name("");
   
-  $config->lib_suffix(".lib");
+  $config->lib_option_suffix(".lib");
   
   # Set compiler callback
   $self->add_before_compile_cb_global(sub {
