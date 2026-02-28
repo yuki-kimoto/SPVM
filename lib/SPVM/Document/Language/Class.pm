@@ -2059,6 +2059,27 @@ Examples:
   # $array is casted to string[] type
   my $array = $list->get_array;
 
+=head2 Union Mapping
+
+If both the return type and an argument type of a method are L<union types|SPVM::Document::Language::Types/"Union Type">, the return type is automatically cast to the specific type corresponding to the index of the type of the passed argument at compile time.
+
+  # Mapping definition:
+  # Index 0: Int[]  -> int[]
+  # Index 1: Long[] -> long[]
+  static method union_mapping_method : int[]|long[] ($arg : Int[]|Long[]) {
+    # ...
+  }
+  
+  # The return type is automatically cast to int[]
+  my $int_array = &union_mapping_method(Int->new_array([1, 2]));
+  
+  # The return type is automatically cast to long[]
+  my $long_array = &union_mapping_method(Long->new_array([4L, 5L]));
+
+This mapping is resolved based on the first argument that has a union type.
+
+If the passed argument does not match any type in the argument's union type, or if no union type argument exists, no automatic casting is performed. In this case, the return type remains the defined union type (which is handled as the any object type C<object>).
+
 =head1 Local Variable
 
 A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.
