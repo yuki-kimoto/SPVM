@@ -2428,4 +2428,82 @@ class TestCase::Operator::MethodCall {
     return 1;
   }
   
+  static method union_mapping : int () {
+    
+    # Test mapping: Int[] -> int[]
+    {
+      my $int_object_array = [Int->new(1), Int->new(2)];
+      
+      # Return type should be auto-cast to int[] at compile time
+      my $ret = &union_mapping_method($int_object_array);
+      
+      # Verify the static type is int[]
+      unless ($ret is_compile_type int[]) {
+        return 0;
+      }
+      
+      unless ($ret->[0] == 1 && $ret->[1] == 2) {
+        return 0;
+      }
+    }
+    
+    # Test mapping: Long[] -> long[]
+    {
+      my $long_object_array = [Long->new(4L), Long->new(5L)];
+      
+      # Return type should be auto-cast to long[] at compile time
+      my $ret = &union_mapping_method($long_object_array);
+      
+      # Verify the static type is long[]
+      unless ($ret is_compile_type long[]) {
+        return 0;
+      }
+      
+      unless ($ret->[0] == 4L && $ret->[1] == 5L) {
+        return 0;
+      }
+    }
+
+    # Test fallback: No match
+    {
+      # No match found, so return type should remain as the union type
+      my $ret = &union_mapping_method(["1", "2"]);
+      
+      # Verify the static type is still the original union type
+      unless ($ret is_compile_type object) {
+        return 0;
+      }
+      
+      unless ($ret->(string[])->[0] eq "1" && $ret->(string[])->[1] eq "2") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  # Mapping definition:
+  # arg index 0 (Int[])  -> return index 0 (int[])
+  # arg index 1 (Long[]) -> return index 1 (long[])
+  static method union_mapping_method : int[]|long[]|object ($arg : Int[]|Long[]|object) {
+    if ($arg isa Int[]) {
+      my $int_object_array = (Int[])$arg;
+      my $int_array = new int[@$int_object_array];
+      for (my $i = 0; $i < @$int_object_array; $i++) {
+        $int_array->[$i] = $int_object_array->[$i]->value;
+      }
+      return $int_array;
+    }
+    elsif ($arg isa Long[]) {
+      my $long_object_array = (Long[])$arg;
+      my $long_array = new long[@$long_object_array];
+      for (my $i = 0; $i < @$long_object_array; $i++) {
+        $long_array->[$i] = $long_object_array->[$i]->value;
+      }
+      return $long_array;
+    }
+    
+    return $arg;
+  }
+  
 }
