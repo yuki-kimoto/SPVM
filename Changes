@@ -1,3 +1,7 @@
+0.990138 2026-02-28
+  [New Features]
+    * Add Union Mapping: a feature that automatically casts the return type of a method call to a specific type at compile time if both the return type and at least one argument type are union types, based on the index of the matched argument type.
+    
 0.990137 2026-02-26
   [New Features]
     * Add after_link_cbs field and add_after_link_cb method in SPVM::Builder::Config to support callbacks after linking.
