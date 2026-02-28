@@ -2466,16 +2466,32 @@ class TestCase::Operator::MethodCall {
 
     # Test fallback: No match
     {
-      # No match found, so return type should remain as the union type
-      my $ret = &union_mapping_method(["1", "2"]);
-      
-      # Verify the static type is still the original union type
-      unless ($ret is_compile_type object) {
-        return 0;
+      {
+        # No match found, so return type should remain as the union type
+        my $ret = &union_mapping_method([Float->new(4f), Float->new(5f)]);
+        
+        # Verify the static type is still the original union type
+        unless ($ret is_compile_type object) {
+          return 0;
+        }
+        
+        unless ($ret->(Float[])->[0]->value == 4f && $ret->(Float[])->[1]->value == 5f) {
+          return 0;
+        }
       }
       
-      unless ($ret->(string[])->[0] eq "1" && $ret->(string[])->[1] eq "2") {
-        return 0;
+      {
+        # No match found, so return type should remain as the union type
+        my $ret = &union_mapping_method(["1", "2"]);
+        
+        # Verify the static type is still the original union type
+        unless ($ret is_compile_type object) {
+          return 0;
+        }
+        
+        unless ($ret->(string[])->[0] eq "1" && $ret->(string[])->[1] eq "2") {
+          return 0;
+        }
       }
     }
     
@@ -2485,7 +2501,7 @@ class TestCase::Operator::MethodCall {
   # Mapping definition:
   # arg index 0 (Int[])  -> return index 0 (int[])
   # arg index 1 (Long[]) -> return index 1 (long[])
-  static method union_mapping_method : int[]|long[]|object ($arg : Int[]|Long[]|object) {
+  static method union_mapping_method : int[]|long[]|object ($arg : Int[]|Long[]|Float[]|object) {
     if ($arg isa Int[]) {
       my $int_object_array = (Int[])$arg;
       my $int_array = new int[@$int_object_array];
