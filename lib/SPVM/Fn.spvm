@@ -1844,7 +1844,7 @@ class Fn {
     return $ret;
   }
   
-  static method slice : object ($array : object, $offset : int, $length :int) {
+  static method slice : byte[]|short[]|int[]|long[]|float[]|double[]|object ($array : byte[]|short[]|int[]|long[]|float[]|double[]|object, $offset : int, $length :int) {
     
     unless ($array) {
       die "The array \$array must be defined.";

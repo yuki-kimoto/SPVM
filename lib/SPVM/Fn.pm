@@ -1547,7 +1547,7 @@ Exceptions thrown by L</"copy"> method and L</"reverse_inplace"> method could be
 
 =head2 slice
 
-C<static method slice : object ($array : object, $offset : int, $length :int);>
+C<static method slice : byte[]|short[]|int[]|long[]|float[]|double[]|object ($array : byte[]|short[]|int[]|long[]|float[]|double[]|object, $offset : int, $length :int);>
 
 Slices the array $array from the offset $offset to the length $length, and returns it.
 
