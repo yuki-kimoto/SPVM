@@ -6543,7 +6543,7 @@ class TestCase::Module::Fn {
       {
         my $array = [1, 3, 2];
         
-        my $ret = (int[])Fn->reverse($array);
+        my $ret = Fn->reverse($array);
         
         unless (Array->equals_int($ret, [2, 3, 1])) {
           return 0;
@@ -6557,12 +6557,99 @@ class TestCase::Module::Fn {
       {
         my $array = [1, 3, 2, 4];
         
-        my $ret = (int[])Fn->reverse($array);
+        my $ret = Fn->reverse($array);
         
         unless (Array->equals_int($ret, [4, 2, 3, 1])) {
           return 0;
         }
         
+      }
+    }
+    
+    # Union mapping
+    {
+      # byte[]
+      {
+        my $array = [(byte)1, 3, 2];
+        my $ret = Fn->reverse($array);
+        unless (Array->equals_byte($ret, [(byte)2, 3, 1])) {
+          return 0;
+        }
+        if ($ret == $array) { return 0; }
+      }
+      # short[]
+      {
+        my $array = [(short)1, 3, 2];
+        my $ret = Fn->reverse($array);
+        unless (Array->equals_short($ret, [(short)2, 3, 1])) {
+          return 0;
+        }
+        if ($ret == $array) { return 0; }
+      }
+      # int[]
+      {
+        my $array = [1, 3, 2];
+        my $ret = Fn->reverse($array);
+        unless (Array->equals_int($ret, [2, 3, 1])) {
+          return 0;
+        }
+        if ($ret == $array) { return 0; }
+      }
+      # long[]
+      {
+        my $array = [(long)1, 3, 2];
+        my $ret = Fn->reverse($array);
+        unless (Array->equals_long($ret, [(long)2, 3, 1])) {
+          return 0;
+        }
+        if ($ret == $array) { return 0; }
+      }
+      # float[]
+      {
+        my $array = [(float)1, 3, 2];
+        my $ret = Fn->reverse($array);
+        unless (Array->equals_float($ret, [(float)2, 3, 1])) {
+          return 0;
+        }
+        if ($ret == $array) { return 0; }
+      }
+      # double[]
+      {
+        my $array = [(double)1, 3, 2];
+        my $ret = Fn->reverse($array);
+        unless (Array->equals_double($ret, [(double)2, 3, 1])) {
+          return 0;
+        }
+        if ($ret == $array) { return 0; }
+      }
+      # string
+      {
+        my $array = "abc";
+        my $ret = Fn->reverse($array);
+        unless ($ret eq "cba") {
+          return 0;
+        }
+        # Check if it's a new string
+        if ($ret == $array) {
+          return 0;
+        }
+      }
+    }
+    
+    # Union mapping
+    {
+      {
+        my $array = [1, 3, 2];
+        
+        my $ret = Fn->reverse($array);
+        
+        unless (Array->equals_int($ret, [2, 3, 1])) {
+          return 0;
+        }
+        
+        if ($ret == $array) {
+          return 0;
+        }
       }
     }
     

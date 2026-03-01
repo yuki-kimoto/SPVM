@@ -1535,7 +1535,7 @@ The type of $array_or_string must be an array type or string type.
 
 =head2 reverse
 
-C<static method reverse : object ($array_or_string : object);>
+C<static method reverse : byte[]|short[]|int[]|long[]|float[]|double[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string|object);>
 
 Reterns a new array that reverses the elements in the array $array_or_string or the characters in the string $array_or_string.
 

@@ -1835,7 +1835,7 @@ class Fn {
     return $copy;
   }
   
-  static method reverse : object ($array_or_string : object) {
+  static method reverse : byte[]|short[]|int[]|long[]|float[]|double[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string|object) {
     
     my $ret = Fn->copy($array_or_string);
     
