@@ -951,4 +951,25 @@ use Test::More;
   }
 }
 
+# Extra
+{
+  # https://github.com/yuki-kimoto/SPVM/issues/855
+  {
+    my $source = 'class MyClass { static method main : void () { (Int)Int->new(1); } }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { [(Int)Int->new(1)]; } }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { (Int[])new Int[0]; } }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { (Int[][])new Int[][0]; } }';
+    compile_ok($source);
+  }
+}
+
 done_testing;

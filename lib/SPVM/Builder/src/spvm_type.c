@@ -1578,7 +1578,10 @@ int32_t SPVM_TYPE_satisfy_cast_requirement(
   // Dist type is numeric object type
   else if (SPVM_TYPE_is_numeric_object_type(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag)) {
     // Source type is numeric type
-    if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
+    if (SPVM_TYPE_equals(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag, src_type_basic_type_id, src_type_dimension, src_type_flag) && dist_type_flag == src_type_flag) {
+      can_cast = 1;
+    }
+    else if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       if (dist_type_basic_type_id == src_type_basic_type_id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
         can_cast = 1;
       }

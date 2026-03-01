@@ -1,3 +1,7 @@
+0.990139 2026-03-02
+  [Bug Fix]
+    * Fix a bug that numeric object types could not be cast to the same types.
+    
 0.990138 2026-02-28
   [New Features]
     * Add Union Mapping: a feature that automatically casts the return type of a method call to a specific type at compile time if both the return type and at least one argument type are union types, based on the index of the matched argument type.
