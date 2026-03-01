@@ -813,6 +813,8 @@ A union type expresses the logical OR of types.
 
 A union type is treated as any object type C<object>.
 
+Each element type in a union type must be an object type.
+
 Examples:
 
   my $union = (string|string[])undef;
