@@ -1333,7 +1333,7 @@ use Test::More;
     # Not OK: Union type contains a numeric type (int is not an object type)
     {
       my $source = 'class MyClass { static method main : void () { my $var : Int|int; } }';
-      compile_not_ok($source, qr/The type "int" in the union type must be an object type/);
+      compile_not_ok($source, qr/The type 'int' in the union type must be an object type/);
     }
     # OK: Union type in return type and argument type
     {
@@ -1343,12 +1343,12 @@ use Test::More;
     # Not OK: Union type contains a numeric type in argument type
     {
       my $source = 'class MyClass { static method foo : void ($arg : Int|int) { } }';
-      compile_not_ok($source, qr/The type "int" in the union type must be an object type/);
+      compile_not_ok($source, qr/The type 'int' in the union type must be an object type/);
     }
     # Not OK: Union type contains a numeric type in return type (int is not an object type)
     {
       my $source = 'class MyClass { static method foo : Int|int () { return undef; } }';
-      compile_not_ok($source, qr/The type "int" in the union type must be an object type/);
+      compile_not_ok($source, qr/The type 'int' in the union type must be an object type/);
     }
   }
   

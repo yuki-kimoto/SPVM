@@ -157,7 +157,7 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
         // Each type in the union must be an object type
         if (!SPVM_TYPE_is_object_type(compiler, union_type->basic_type->id, union_type->dimension, union_type->flag)) {
           const char* union_type_name = SPVM_TYPE_new_type_name(compiler, union_type->basic_type->id, union_type->dimension, union_type->flag);
-          SPVM_COMPILER_error(compiler, "The type \"%s\" in the union type must be an object type.\n  at %s line %d", union_type_name, op_type->file, op_type->line);
+          SPVM_COMPILER_error(compiler, "The type '%s' in the union type must be an object type.\n  at %s line %d", union_type_name, op_type->file, op_type->line);
           return;
         }
       }
