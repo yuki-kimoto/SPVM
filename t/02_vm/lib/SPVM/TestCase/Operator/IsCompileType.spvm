@@ -109,7 +109,7 @@ class TestCase::Operator::IsCompileType {
     
     {
       my $obj = (Hash of List of string)undef;
-      if ($obj is_compile_type Hash of List of string of int) {
+      if ($obj is_compile_type Hash of List of string of Int) {
         return 0;
       }
     }
