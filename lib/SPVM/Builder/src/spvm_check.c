@@ -142,6 +142,27 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
       SPVM_CHECK_check_op_type(compiler, op_type);
     }
   }
+  
+  // Check Union types
+  for (int32_t i = 0; i < op_types->length; i++) {
+    SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
+    
+    // Check if each type in union types is an object type
+    SPVM_TYPE* type = op_type->uv.type;
+    if (type->union_types) {
+      int32_t i;
+      for (i = 0; i < type->union_types->length; i++) {
+        SPVM_TYPE* union_type = SPVM_LIST_get(type->union_types, i);
+        
+        // Each type in the union must be an object type
+        if (!SPVM_TYPE_is_object_type(compiler, union_type->basic_type->id, union_type->dimension, union_type->flag)) {
+          const char* union_type_name = SPVM_TYPE_new_type_name(compiler, union_type->basic_type->id, union_type->dimension, union_type->flag);
+          SPVM_COMPILER_error(compiler, "The type \"%s\" in the union type must be an object type.\n  at %s line %d", union_type_name, op_type->file, op_type->line);
+          return;
+        }
+      }
+    }
+  }
 }
 
 void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {

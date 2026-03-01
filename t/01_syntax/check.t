@@ -1322,6 +1322,35 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { [(object[])undef]; } }';
     compile_not_ok($source, q|The creation of a multi dimensional array of any object is not allowed.|);
   }
+  
+  # Union type check
+  {
+    # OK: Union type contains only object types
+    {
+      my $source = 'class MyClass { use Point; static method main : void () { my $var : Int|Long|object|Point; } }';
+      compile_ok($source);
+    }
+    # Not OK: Union type contains a numeric type (int is not an object type)
+    {
+      my $source = 'class MyClass { static method main : void () { my $var : Int|int; } }';
+      compile_not_ok($source, qr/The type "int" in the union type must be an object type/);
+    }
+    # OK: Union type in return type and argument type
+    {
+      my $source = 'class MyClass { static method foo : Int|Long ($arg : Int|Long) { return $arg; } static method main : void () { } }';
+      compile_ok($source);
+    }
+    # Not OK: Union type contains a numeric type in argument type
+    {
+      my $source = 'class MyClass { static method foo : void ($arg : Int|int) { } }';
+      compile_not_ok($source, qr/The type "int" in the union type must be an object type/);
+    }
+    # Not OK: Union type contains a numeric type in return type (int is not an object type)
+    {
+      my $source = 'class MyClass { static method foo : Int|int () { return undef; } }';
+      compile_not_ok($source, qr/The type "int" in the union type must be an object type/);
+    }
+  }
 }
 
 # Method call - resolve
