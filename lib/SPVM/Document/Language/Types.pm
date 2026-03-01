@@ -815,6 +815,12 @@ A union type is treated as any object type C<object>.
 
 Each element type in a union type must be an object type.
 
+Compilation Errors:
+
+If the type specified as the generic type is not found, a compilation error occurs.
+
+If an element type is not an object type, a compilation error occurs.
+
 Examples:
 
   my $union = (string|string[])undef;
@@ -835,7 +841,9 @@ I<ELEMENT_TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
 A generic type is treated as C<TYPE>. C<ELEMETN_TYPE> is ignored in compilation time type checks.
 
-C<ELEMETN_TYPE> is only used for the type cast for C<element> type.
+I<ELEMETN_TYPE> is only used for the type cast for C<element> type.
+
+I<ELEMENT_TYPE> must be an object type.
 
 Examples:
 
@@ -855,6 +863,8 @@ Examples:
 Compilation Errors:
 
 If the type specified as the generic type is not found, a compilation error occurs.
+
+If I<ELEMENT_TYPE> is not an object type, a compilation error occurs.
 
 =head1 Assignment Requirement
 
