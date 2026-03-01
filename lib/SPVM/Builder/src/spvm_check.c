@@ -163,6 +163,26 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
       }
     }
   }
+  
+  // Check generic types
+  for (int32_t i = 0; i < op_types->length; i++) {
+    SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
+    SPVM_TYPE* type = op_type->uv.type;
+    
+    // Check if the element type in generic type is an object type
+    // type->of is the element type of the generic type (e.g., T in List<T>)
+    if (type->of) {
+      SPVM_TYPE* of_type = type->of;
+      
+      // Each element type in the generic type must be an object type
+      if (!SPVM_TYPE_is_object_type(compiler, of_type->basic_type->id, of_type->dimension, of_type->flag)) {
+        const char* of_type_name = SPVM_TYPE_new_type_name(compiler, of_type->basic_type->id, of_type->dimension, of_type->flag);
+        SPVM_COMPILER_error(compiler, "The element type '%s' in the generic type must be an object type.\n  at %s line %d", of_type_name, op_type->file, op_type->line);
+        return;
+      }
+    }
+  }
+
 }
 
 void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {

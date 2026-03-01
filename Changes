@@ -4,6 +4,7 @@
   
   [Incompatibe Changes]
     * Add a check to ensure that all types in a union type are object types, which makes it incompatible with using it as a simple type comment.
+    * Add a check to ensure that the element type in a generic type is an object type, which is a backward-incompatible change for users who used it only as a type comment.
     
 0.990138 2026-02-28
   [New Features]

@@ -1351,6 +1351,35 @@ use Test::More;
       compile_not_ok($source, qr/The type "int" in the union type must be an object type/);
     }
   }
+  
+  # Generic type check
+  {
+    # OK: Generic type contains an object type
+    {
+      my $source = 'class MyClass { use Hash; static method main : void () { my $var : Hash of Int; } }';
+      compile_ok($source);
+    }
+    # Not OK: Generic type contains a numeric type (int is not an object type)
+    {
+      my $source = 'class MyClass { use Hash; static method main : void () { my $var : Hash of int; } }';
+      compile_not_ok($source, q|The element type 'int' in the generic type must be an object type|);
+    }
+    # OK: Generic type in return type and argument type
+    {
+      my $source = 'class MyClass { use Hash; static method foo : Hash of Int ($arg : Hash of Long) { return undef; } static method main : void () { } }';
+      compile_ok($source);
+    }
+    # Not OK: Generic type contains a numeric type in argument type
+    {
+      my $source = 'class MyClass { use Hash; static method foo : void ($arg : Hash of int) { } }';
+      compile_not_ok($source, q|The element type 'int' in the generic type must be an object type|);
+    }
+    # Not OK: Generic type contains a numeric type in return type
+    {
+      my $source = 'class MyClass { use Hash; static method foo : Hash of int () { return undef; } }';
+      compile_not_ok($source, q|The element type 'int' in the generic type must be an object type|);
+    }
+  }
 }
 
 # Method call - resolve
