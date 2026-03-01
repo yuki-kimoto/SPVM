@@ -1877,7 +1877,7 @@ class Fn {
     return Format->sprintf($format, $args);
   }
   
-  static method sort_asc : object ($array : object) {
+  static method sort_asc : byte[]|short[]|int[]|long[]|float[]|double[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]) {
     
     unless ($array) {
       die "The array \$array must be defined.";
@@ -1911,7 +1911,7 @@ class Fn {
     return $sorted_array;
   }
   
-  static method sort_desc : object ($array : object) {
+  static method sort_desc : byte[]|short[]|int[]|long[]|float[]|double[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]) {
     
     unless ($array) {
       die "The array \$array must be defined.";

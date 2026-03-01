@@ -1585,7 +1585,7 @@ Examples:
 
 =head2 sort_asc
 
-C<static method sort_asc : object ($array : object);>
+C<static method sort_asc : byte[]|short[]|int[]|long[]|float[]|double[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]);>
 
 Copies the array $array using L</"copy"> method, sorts the copied array by ascendant order, and returns it.
 
@@ -1601,7 +1601,7 @@ The type of the array $array must be a numeric array type. Otherwise an exceptio
 
 =head2 sort_desc
 
-C<static method sort_desc : object ($array : object);>
+C<static method sort_desc : byte[]|short[]|int[]|long[]|float[]|double[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]);>
 
 Copies the array $array using L</"copy"> method, sorts the copied array by descendant order, and returns it.
 

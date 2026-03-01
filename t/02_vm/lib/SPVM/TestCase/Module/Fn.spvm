@@ -6766,7 +6766,7 @@ class TestCase::Module::Fn {
     {
       my $array = [(byte)2, 3, 1];
       
-      my $ret = (byte[])Fn->sort_asc($array);
+      my $ret = Fn->sort_asc($array);
       
       unless (Array->equals($ret, [(byte)1, 2, 3])) {
         return 0;
@@ -6780,7 +6780,7 @@ class TestCase::Module::Fn {
     {
       my $array = [(short)2, 3, 1];
       
-      my $ret = (short[])Fn->sort_asc($array);
+      my $ret = Fn->sort_asc($array);
       
       unless (Array->equals($ret, [(short)1, 2, 3])) {
         return 0;
@@ -6794,7 +6794,7 @@ class TestCase::Module::Fn {
     {
       my $array = [(int)2, 3, 1];
       
-      my $ret = (int[])Fn->sort_asc($array);
+      my $ret = Fn->sort_asc($array);
       
       unless (Array->equals($ret, [(int)1, 2, 3])) {
         return 0;
@@ -6808,7 +6808,7 @@ class TestCase::Module::Fn {
     {
       my $array = [(long)2, 3, 1];
       
-      my $ret = (long[])Fn->sort_asc($array);
+      my $ret = Fn->sort_asc($array);
       
       unless (Array->equals($ret, [(long)1, 2, 3])) {
         return 0;
@@ -6822,7 +6822,7 @@ class TestCase::Module::Fn {
     {
       my $array = [(float)2, 3, 1];
       
-      my $ret = (float[])Fn->sort_asc($array);
+      my $ret = Fn->sort_asc($array);
       
       unless (Array->equals($ret, [(float)1, 2, 3])) {
         return 0;
@@ -6836,7 +6836,7 @@ class TestCase::Module::Fn {
     {
       my $array = [(double)2, 3, 1];
       
-      my $ret = (double[])Fn->sort_asc($array);
+      my $ret = Fn->sort_asc($array);
       
       unless (Array->equals($ret, [(double)1, 2, 3])) {
         return 0;
