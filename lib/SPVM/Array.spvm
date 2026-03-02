@@ -1516,4 +1516,55 @@ class Array {
     return $ret_array;
   }
   
+  static method merge : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|object[] ($array1 : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|object[], $array2 : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|object[]) {
+    
+    unless ($array1) {
+      die "The array1 \$array1 must be defined.";
+    }
+    
+    unless ($array2) {
+      die "The array2 \$array2 must be defined.";
+    }
+    
+    # Pre-check: Ensure both arrays are of the exact same type
+    my $type_name1 = type_name $array1;
+    my $type_name2 = type_name $array2;
+    unless ($type_name1 eq $type_name2) {
+      die "The type of the array2 \$array2 must be the same as the type of the array1 \$array1.";
+    }
+    
+    my $merged_array : object = undef;
+    
+    # Internal dispatching using &
+    if ($array1 is_type byte[]) {
+      $merged_array = &merge_byte((byte[])$array1, (byte[])$array2);
+    }
+    elsif ($array1 is_type short[]) {
+      $merged_array = &merge_short((short[])$array1, (short[])$array2);
+    }
+    elsif ($array1 is_type int[]) {
+      $merged_array = &merge_int((int[])$array1, (int[])$array2);
+    }
+    elsif ($array1 is_type long[]) {
+      $merged_array = &merge_long((long[])$array1, (long[])$array2);
+    }
+    elsif ($array1 is_type float[]) {
+      $merged_array = &merge_float((float[])$array1, (float[])$array2);
+    }
+    elsif ($array1 is_type double[]) {
+      $merged_array = &merge_double((double[])$array1, (double[])$array2);
+    }
+    elsif ($array1 is_type string[]) {
+      $merged_array = &merge_string((string[])$array1, (string[])$array2);
+    }
+    elsif (Fn->is_object_array($array1)) {
+      $merged_array = &merge_object((object[])$array1, (object[])$array2);
+    }
+    else {
+      die "The type of the array1 \$array1 must be a supported array type.";
+    }
+    
+    return $merged_array;
+  }
+  
 }

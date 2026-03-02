@@ -1197,6 +1197,22 @@ The type of the array $array must be an array type. Otherwise an exception is th
 
 The repeat count $count must be a non-negative integer. Otherwise an exception is thrown.
 
+=head2 merge
+
+C<static method merge : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|object[] ($array1 : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|object[], $array2 : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|object[]);>
+
+Creates a new array by merging the array $array1 and the array $array2, and returns it.
+
+Exceptions:
+
+$array1 must be defined. Otherwise an exception is thrown.
+
+$array2 must be defined. Otherwise an exception is thrown.
+
+The type of $array1 must be the same as the type of $array2. Otherwise an exception is thrown.
+
+The type of $array1 must be a supported array type. Otherwise an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
