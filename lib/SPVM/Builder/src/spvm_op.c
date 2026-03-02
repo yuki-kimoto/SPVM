@@ -1946,8 +1946,6 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
   
   op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, op_attributes);
   
-  op_type->uv.type->resolved_in_ast = 0;
-  
   // The use of variable length arguments is restricted to object[] type
   if (op_type->uv.type->flag & SPVM_NATIVE_C_TYPE_FLAG_VARARGS) {
     if (op_arg_default) {
@@ -2436,10 +2434,6 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
     SPVM_OP_insert_child(compiler, op_new, op_new->last, op_length);
   }
   
-  if (op_type->id == SPVM_OP_C_ID_TYPE) {
-    op_type->uv.type->resolved_in_ast = 1;
-  }
-  
   if (op_type->id == SPVM_OP_C_ID_TYPE && strstr(op_type->uv.type->unresolved_basic_type_name, "::anon_method::")) {
     
     const char* anon_basic_type_name = op_type->uv.type->unresolved_basic_type_name;
@@ -2762,7 +2756,6 @@ SPVM_OP* SPVM_OP_build_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_var_decl, S
   if (op_type) {
     var_decl->type = op_type->uv.type;
     SPVM_OP_insert_child(compiler, op_var, op_var->last, op_type);
-    op_type->uv.type->resolved_in_ast = 1;
   }
   
   // Local temporary variable
@@ -2802,8 +2795,6 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
     if (op_invocant->id == SPVM_OP_C_ID_TYPE) {
       call_method->basic_type_name = op_invocant->uv.type->unresolved_basic_type_name;
       SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_invocant);
-      
-      op_invocant->uv.type->resolved_in_ast = 1;
       SPVM_LIST_push(compiler->current_op_types_for_alias_resolution, op_invocant);
     }
     else if (op_invocant->id == SPVM_OP_C_ID_OUTMOST_CLASS) {

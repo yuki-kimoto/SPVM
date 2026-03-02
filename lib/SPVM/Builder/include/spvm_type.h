@@ -15,7 +15,6 @@ struct spvm_type {
   SPVM_LIST* union_types;
   int32_t dimension;
   int32_t flag;
-  int8_t resolved_in_ast;
   int8_t is_generic_type;
 };
 
