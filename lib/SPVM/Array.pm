@@ -1213,6 +1213,34 @@ The type of $array1 must be the same as the type of $array2. Otherwise an except
 
 The type of $array1 must be a supported array type. Otherwise an exception is thrown.
 
+=head2 to_object_array
+
+C<static method to_object_array : Byte[]|Short[]|Int[]|Long[]|Float[]|Double[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]);>
+
+Converts a primitive array to an object array, and returns it.
+
+Each element in the primitive array is boxed into its corresponding wrapper object (e.g., C<byte> to C<Byte>).
+
+Exceptions:
+
+$array must be defined. Otherwise an exception is thrown.
+
+The type of $array must be a numeric array type. Otherwise an exception is thrown.
+
+=head2 to_array
+
+C<static method to_array : byte[]|short[]|int[]|long[]|float[]|double[] ($object_array : Byte[]|Short[]|Int[]|Long[]|Float[]|Double[]);>
+
+Converts an object array to a primitive array, and returns it.
+
+Each wrapper object in the array is unboxed into its corresponding primitive value (e.g., C<Byte> to C<byte>).
+
+Exceptions:
+
+$object_array must be defined. Otherwise an exception is thrown.
+
+The type of $object_array must be a numeric object array type. Otherwise an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

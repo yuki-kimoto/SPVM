@@ -1567,4 +1567,74 @@ class Array {
     return $merged_array;
   }
   
+  # Convert a primitive array to an object array
+  static method to_object_array : Byte[]|Short[]|Int[]|Long[]|Float[]|Double[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    my $object_array : object = undef;
+    
+    # Internal dispatching using &
+    if ($array is_type byte[]) {
+      $object_array = &to_object_array_byte((byte[])$array);
+    }
+    elsif ($array is_type short[]) {
+      $object_array = &to_object_array_short((short[])$array);
+    }
+    elsif ($array is_type int[]) {
+      $object_array = &to_object_array_int((int[])$array);
+    }
+    elsif ($array is_type long[]) {
+      $object_array = &to_object_array_long((long[])$array);
+    }
+    elsif ($array is_type float[]) {
+      $object_array = &to_object_array_float((float[])$array);
+    }
+    elsif ($array is_type double[]) {
+      $object_array = &to_object_array_double((double[])$array);
+    }
+    else {
+      die "The type of the array \$array must be a numeric array type.";
+    }
+    
+    return $object_array;
+  }
+
+  # Convert an object array to a primitive array
+  static method to_array : byte[]|short[]|int[]|long[]|float[]|double[] ($object_array : Byte[]|Short[]|Int[]|Long[]|Float[]|Double[]) {
+    
+    unless ($object_array) {
+      die "The array \$object_array must be defined.";
+    }
+    
+    my $array : object = undef;
+    
+    # Internal dispatching using &
+    if ($object_array is_type Byte[]) {
+      $array = &to_array_byte((Byte[])$object_array);
+    }
+    elsif ($object_array is_type Short[]) {
+      $array = &to_array_short((Short[])$object_array);
+    }
+    elsif ($object_array is_type Int[]) {
+      $array = &to_array_int((Int[])$object_array);
+    }
+    elsif ($object_array is_type Long[]) {
+      $array = &to_array_long((Long[])$object_array);
+    }
+    elsif ($object_array is_type Float[]) {
+      $array = &to_array_float((Float[])$object_array);
+    }
+    elsif ($object_array is_type Double[]) {
+      $array = &to_array_double((Double[])$object_array);
+    }
+    else {
+      die "The type of the array \$object_array must be a numeric object array type.";
+    }
+    
+    return $array;
+  }
+  
 }

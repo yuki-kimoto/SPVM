@@ -9,7 +9,7 @@
     * Rename the existing Fn->repeat method to Fn->repeat_string. Introduce a new Fn->repeat method that supports both strings and arrays using union mapping.
     
   [New Features]
-    The following methods in the Fn class now support union mapping for their arguments and return values.
+    * The following methods in the Fn class now support union mapping for their arguments and return values.
 
       static method sort_desc : byte[]|short[]|int[]|long[]|float[]|double[]|string[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]|string[]);
 
@@ -20,7 +20,11 @@
       static method reverse : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object);
 
       static method copy : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object, $shallow : int = 0);
-
+    
+   * Add to_object_array method to Array class.
+   * Add to_array method to Array class.
+   * Add merge method to Array class.
+   
 0.990138 2026-02-28
   [New Features]
     * Add Union Mapping: a feature that automatically casts the return type of a method call to a specific type at compile time if both the return type and at least one argument type are union types, based on the index of the matched argument type.
