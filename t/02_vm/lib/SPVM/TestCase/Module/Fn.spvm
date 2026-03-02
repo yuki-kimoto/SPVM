@@ -6371,7 +6371,7 @@ class TestCase::Module::Fn {
   static method copy : int () {
     
     {
-      my $array = [1, 2, 3];
+      my $array = (object)[1, 2, 3];
       my $array_out = Fn->copy($array);
       
       unless ($array_out is_compile_type object) {
@@ -6530,6 +6530,101 @@ class TestCase::Module::Fn {
       # Equals the value
       unless ($string_out == undef) {
         return 0;
+      }
+    }
+    
+    # copy with union mapping (no explicit casting)
+    {
+      # byte[]
+      {
+        my $array = [(byte)1, 2, 3];
+        my $array_out = Fn->copy($array);
+        unless (Array->equals_byte($array_out, $array)) {
+          diag;
+          return 0;
+        }
+        if ($array == $array_out) {
+          diag;
+          return 0;
+        }
+      }
+      # short[]
+      {
+        my $array = [(short)1, 2, 3];
+        my $array_out = Fn->copy($array);
+        unless (Array->equals_short($array_out, $array)) {
+          diag;
+          return 0;
+        }
+        if ($array == $array_out) {
+          diag;
+          return 0;
+        }
+      }
+      # int[]
+      {
+        my $array = [1, 2, 3];
+        my $array_out = Fn->copy($array);
+        unless (Array->equals_int($array_out, $array)) {
+          diag;
+          return 0;
+        }
+        if ($array == $array_out) {
+          diag;
+          return 0;
+        }
+      }
+      # long[]
+      {
+        my $array = [(long)1, 2, 3];
+        my $array_out = Fn->copy($array);
+        unless (Array->equals_long($array_out, $array)) {
+          diag;
+          return 0;
+        }
+        if ($array == $array_out) {
+          diag;
+          return 0;
+        }
+      }
+      # float[]
+      {
+        my $array = [(float)1, 2, 3];
+        my $array_out = Fn->copy($array);
+        unless (Array->equals_float($array_out, $array)) {
+          diag;
+          return 0;
+        }
+        if ($array == $array_out) {
+          diag;
+          return 0;
+        }
+      }
+      # double[]
+      {
+        my $array = [(double)1, 2, 3];
+        my $array_out = Fn->copy($array);
+        unless (Array->equals_double($array_out, $array)) {
+          diag;
+          return 0;
+        }
+        if ($array == $array_out) {
+          diag;
+          return 0;
+        }
+      }
+      # string
+      {
+        my $string = "abc";
+        my $string_out = Fn->copy($string);
+        unless ($string_out eq "abc") {
+          diag;
+          return 0;
+        }
+        if ($string == $string_out) {
+          diag;
+          return 0;
+        }
       }
     }
     

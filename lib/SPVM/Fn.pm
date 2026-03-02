@@ -1509,7 +1509,7 @@ The type of the array $array_or_string must be an array type. Otherwise, an exce
 
 =head2 copy
 
-C<static method copy : object ($array_or_string : object, $shallow : int = 0);>
+C<static method copy : byte[]|short[]|int[]|long[]|float[]|double[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string|object, $shallow : int = 0);>
 
 Copies $array_or_string and returns it.
 

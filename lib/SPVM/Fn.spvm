@@ -1799,7 +1799,7 @@ class Fn {
     return $size;
   }
   
-  static method copy : object ($array_or_string : object, $shallow : int = 0) {
+  static method copy : byte[]|short[]|int[]|long[]|float[]|double[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string|object, $shallow : int = 0) {
     
     unless ($array_or_string) {
       return undef;
