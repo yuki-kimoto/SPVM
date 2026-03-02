@@ -3841,7 +3841,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               }
               
               // Generics
-              if (call_method->method->return_type->is_generic_type) {
+              if (call_method->method->return_type->is_generic_element_type || call_method->method->return_type->is_generic_element_array_type) {
                 SPVM_TYPE* element_type = call_method->type->of;
                 if (element_type) {
                   if (!SPVM_TYPE_is_object_type(compiler, element_type->basic_type->id, element_type->dimension, element_type->flag)) {

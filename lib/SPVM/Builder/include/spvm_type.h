@@ -15,7 +15,8 @@ struct spvm_type {
   SPVM_LIST* union_types;
   int32_t dimension;
   int32_t flag;
-  int8_t is_generic_type;
+  int8_t is_generic_element_type;
+  int8_t is_generic_element_array_type;
 };
 
 SPVM_TYPE* SPVM_TYPE_new_uninitialized(SPVM_COMPILER* compiler);
