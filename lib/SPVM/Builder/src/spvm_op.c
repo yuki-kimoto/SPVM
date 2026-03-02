@@ -1202,25 +1202,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     }
   }
   
-                if (op_type->uv.type->resolved_in_ast) {
-                const char* unresolved_basic_type_name_maybe_alias = op_type->uv.type->unresolved_basic_type_name;
-                
-                SPVM_HASH* alias_symtable = NULL;
-                if (basic_type->is_generated_by_anon_method && basic_type->outmost) {
-                  alias_symtable = basic_type->outmost->alias_symtable;
-                }
-                else {
-                  alias_symtable = basic_type->alias_symtable;
-                }
-                
-                const char* unresolved_basic_type_name = SPVM_HASH_get(alias_symtable, unresolved_basic_type_name_maybe_alias, strlen(unresolved_basic_type_name_maybe_alias));
-                if (unresolved_basic_type_name) {
-                  op_type->uv.type->unresolved_basic_type_name = unresolved_basic_type_name;
-                  op_type->uv.type->basic_type = SPVM_LIST_get(compiler->basic_types, 0);
-                }
-              }
-
-
   // Resolve type aliases in the class scope
   SPVM_LIST* op_types_for_alias_resolution = compiler->current_op_types_for_alias_resolution;
   SPVM_HASH* alias_symtable = type->basic_type->alias_symtable;
