@@ -5,7 +5,20 @@
   [Incompatibe Changes]
     * Add a check to ensure that all types in a union type are object types, which makes it incompatible with using it as a simple type comment.
     * Add a check to ensure that the element type in a generic type is an object type, which is a backward-incompatible change for users who used it only as a type comment.
-    
+  
+  [New Features]
+    The following methods in the Fn class now support union mapping for their arguments and return values.
+
+      static method sort_desc : byte[]|short[]|int[]|long[]|float[]|double[]|string[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]|string[]);
+
+      static method sort_asc : byte[]|short[]|int[]|long[]|float[]|double[]|string[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]|string[]);
+
+      static method slice : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|object ($array : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|object, $offset : int, $length :int);
+
+      static method reverse : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object);
+
+      static method copy : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object, $shallow : int = 0);
+
 0.990138 2026-02-28
   [New Features]
     * Add Union Mapping: a feature that automatically casts the return type of a method call to a specific type at compile time if both the return type and at least one argument type are union types, based on the index of the matched argument type.
