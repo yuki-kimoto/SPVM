@@ -1202,6 +1202,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     }
   }
   
+  
+  
   return op_class;
 }
 
@@ -3491,6 +3493,8 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   }
   
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
+  
+  SPVM_LIST_push(compiler->current_op_types_for_alias_resolution, op_type);
   
   return op_type;
 }

@@ -40,6 +40,7 @@
 #include "spvm_mutex.h"
 #include "spvm_version_from.h"
 #include "spvm_version.h"
+#include "spvm_toke.h"
 
 #include "spvm_api.h"
 #include "spvm_api_runtime.h"
@@ -185,6 +186,8 @@ int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_
     
     SPVM_COMPILER_set_default_loaded_class_files(compiler);
   }
+  
+  SPVM_TOKE_init_compiler_current_info(compiler);
   
   SPVM_COMPILER_use_default_loaded_classes(compiler);
   

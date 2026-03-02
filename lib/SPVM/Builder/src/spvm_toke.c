@@ -2757,6 +2757,7 @@ void SPVM_TOKE_init_compiler_current_info(SPVM_COMPILER* compiler) {
   compiler->ch_ptr = NULL;
   compiler->token_begin_ch_ptr = NULL;
   compiler->line_begin_ch_ptr = NULL;
+  compiler->current_op_types_for_alias_resolution = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 128);
   compiler->current_anon_op_types = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 128);
   compiler->current_line = 1;
 }
