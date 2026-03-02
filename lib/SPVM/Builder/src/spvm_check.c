@@ -138,7 +138,50 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
   for (int32_t i = 0; i < op_types->length; i++) {
     SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
     
-    SPVM_CHECK_check_op_type(compiler, op_type);
+    SPVM_TYPE* type = op_type->uv.type;
+    
+    if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN) {
+      const char* unresolved_basic_type_name = type->unresolved_basic_type_name;
+      
+      assert(unresolved_basic_type_name);
+      
+      SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, unresolved_basic_type_name, strlen(unresolved_basic_type_name));
+      if (found_basic_type) {
+        type->basic_type = found_basic_type;
+      }
+    }
+    
+    // Basic type name
+    const char* basic_type_name = type->basic_type->name;
+    
+    if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN) {
+      const char* if_require_not_found_basic_type_name = SPVM_HASH_get(compiler->if_require_not_found_basic_type_name_symtable, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
+      
+      if (!if_require_not_found_basic_type_name) {
+        SPVM_COMPILER_error(compiler, "%s class is not found.\n  at %s line %d", type->unresolved_basic_type_name, op_type->file, op_type->line);
+        return;
+      }
+    }
+    
+    // Reference type must be numeric refernce type or multi-numeric reference type
+    if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+      if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+        SPVM_COMPILER_error(compiler, "The reference type must be a numeric refernce type or a multi-numeric reference type.\n  at %s line %d", op_type->file, op_type->line);
+        return;
+      }
+    }
+
+    // mutable only allow string type
+    if (type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
+      SPVM_COMPILER_error(compiler, "The type qualifier 'mutable' is only allowed in string type.\n  at %s line %d", op_type->file, op_type->line);
+      return;
+    }
+    
+    if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {
+      const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
+      SPVM_COMPILER_error(compiler, "The multi dimensional array of any object is not allowed.\n  at %s line %d", op_type->file, op_type->line);
+      return;
+    }
   }
   
   // Check Union types
@@ -4733,52 +4776,6 @@ void SPVM_CHECK_check_ast_resolve_typed_var_indexes(SPVM_COMPILER* compiler, SPV
   SPVM_LIST_free(runtime_vars_double);
   SPVM_LIST_free(runtime_vars_object);
   SPVM_LIST_free(runtime_vars_ref);
-}
-
-void SPVM_CHECK_check_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
-  
-  SPVM_TYPE* type = op_type->uv.type;
-  
-  if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN) {
-    const char* unresolved_basic_type_name = type->unresolved_basic_type_name;
-    
-    assert(unresolved_basic_type_name);
-    
-    SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, unresolved_basic_type_name, strlen(unresolved_basic_type_name));
-    if (found_basic_type) {
-      type->basic_type = found_basic_type;
-    }
-  }
-  
-  // Basic type name
-  const char* basic_type_name = type->basic_type->name;
-  
-  if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN) {
-    const char* if_require_not_found_basic_type_name = SPVM_HASH_get(compiler->if_require_not_found_basic_type_name_symtable, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
-    
-    if (!if_require_not_found_basic_type_name) {
-      SPVM_COMPILER_error(compiler, "%s class is not found.\n  at %s line %d", type->unresolved_basic_type_name, op_type->file, op_type->line);
-      return;
-    }
-  }
-  
-  // Reference type must be numeric refernce type or multi-numeric reference type
-  if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-    if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-      SPVM_COMPILER_error(compiler, "The reference type must be a numeric refernce type or a multi-numeric reference type.\n  at %s line %d", op_type->file, op_type->line);
-    }
-  }
-
-  // mutable only allow string type
-  if (type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
-    SPVM_COMPILER_error(compiler, "The type qualifier 'mutable' is only allowed in string type.\n  at %s line %d", op_type->file, op_type->line);
-  }
-  
-  if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {
-    const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-    SPVM_COMPILER_error(compiler, "The multi dimensional array of any object is not allowed.\n  at %s line %d", op_type->file, op_type->line);
-  }
-  
 }
 
 void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, SPVM_METHOD* current_method) {
