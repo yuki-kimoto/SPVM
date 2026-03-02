@@ -134,10 +134,9 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
   
   SPVM_LIST* op_types = compiler->op_types;
   
-  // Check type names
+  // Resove basic types
   for (int32_t i = 0; i < op_types->length; i++) {
     SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
-    
     SPVM_TYPE* type = op_type->uv.type;
     
     if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN) {
@@ -150,6 +149,11 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
         type->basic_type = found_basic_type;
       }
     }
+  }
+  
+  for (int32_t i = 0; i < op_types->length; i++) {
+    SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
+    SPVM_TYPE* type = op_type->uv.type;
     
     // Basic type name
     const char* basic_type_name = type->basic_type->name;
@@ -162,7 +166,11 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
         return;
       }
     }
-    
+  }
+  
+  for (int32_t i = 0; i < op_types->length; i++) {
+    SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
+    SPVM_TYPE* type = op_type->uv.type;
     // Reference type must be numeric refernce type or multi-numeric reference type
     if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
@@ -182,14 +190,9 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
       SPVM_COMPILER_error(compiler, "The multi dimensional array of any object is not allowed.\n  at %s line %d", op_type->file, op_type->line);
       return;
     }
-  }
-  
-  // Check Union types
-  for (int32_t i = 0; i < op_types->length; i++) {
-    SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
     
+    // Check Union types
     // Check if each type in union types is an object type
-    SPVM_TYPE* type = op_type->uv.type;
     if (type->union_types) {
       int32_t i;
       for (i = 0; i < type->union_types->length; i++) {
@@ -203,13 +206,8 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
         }
       }
     }
-  }
-  
-  // Check generic types
-  for (int32_t i = 0; i < op_types->length; i++) {
-    SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
-    SPVM_TYPE* type = op_type->uv.type;
     
+    // Check generic types
     // Check if the element type in generic type is an object type
     // type->of is the element type of the generic type (e.g., T in List<T>)
     if (type->of) {
