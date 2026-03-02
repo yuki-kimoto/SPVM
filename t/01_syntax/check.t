@@ -1379,6 +1379,11 @@ use Test::More;
       my $source = 'class MyClass { use Hash; static method foo : Hash of int () { return undef; } }';
       compile_not_ok($source, q|The element type 'int' in the generic type must be an object type|);
     }
+    # Not OK: Generic type contains a numeric type in return type
+    {
+      my $source = 'class MyClass { use Hash; static method foo : int of Hash () {} }';
+      compile_not_ok($source, q|The container type 'int' in the generic type must be an object type.|);
+    }
   }
 }
 

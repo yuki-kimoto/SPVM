@@ -222,6 +222,14 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
     // Check if the element type in generic type is an object type
     // type->of is the element type of the generic type (e.g., T in List<T>)
     if (type->of) {
+      // The container type itself must be an object type
+      /* Check container type */
+      if (!SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+        const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
+        SPVM_COMPILER_error(compiler, "The container type '%s' in the generic type must be an object type.\n  at %s line %d", type_name, op_type->file, op_type->line);
+        return;
+      }
+      
       SPVM_TYPE* of_type = type->of;
       
       // Each element type in the generic type must be an object type
