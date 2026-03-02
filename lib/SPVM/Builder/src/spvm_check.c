@@ -155,6 +155,17 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
     SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
     SPVM_TYPE* type = op_type->uv.type;
     
+    SPVM_TYPE* of = op_type->uv.type;
+    while (1) {
+      of = of->of;
+      
+      if (!of) {
+        break;
+      }
+      
+      SPVM_BASIC_TYPE_add_constant_string(compiler, type->basic_type, of->basic_type->name, strlen(of->basic_type->name));
+    }
+    
     // Basic type name
     const char* basic_type_name = type->basic_type->name;
     
@@ -1381,24 +1392,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           // [START]Postorder traversal position
           
           switch (op_cur->id) {
-            case SPVM_OP_C_ID_TYPE: {
-              SPVM_OP* op_type = op_cur;
-              
-              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, op_type->uv.type->basic_type->name, strlen(op_type->uv.type->basic_type->name));
-              
-              SPVM_TYPE* of = op_type->uv.type;
-              while (1) {
-                of = of->of;
-                
-                if (!of) {
-                  break;
-                }
-                
-                SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, of->basic_type->name, strlen(of->basic_type->name));
-              }
-              
-              break;
-            }
             case SPVM_OP_C_ID_NEXT: {
               if (loop_block_stack_length == 0) {
                 SPVM_COMPILER_error(compiler, "The next statement must be in a loop block.\n  at %s line %d", op_cur->file, op_cur->line);
