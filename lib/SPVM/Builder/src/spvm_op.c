@@ -2782,6 +2782,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
       SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_invocant);
       
       op_invocant->uv.type->resolved_in_ast = 1;
+      SPVM_LIST_push(compiler->current_op_types_for_alias_resolution, op_invocant);
     }
     else if (op_invocant->id == SPVM_OP_C_ID_OUTMOST_CLASS) {
       call_method->is_current = 1;
@@ -3493,8 +3494,6 @@ SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   }
   
   SPVM_OP_insert_child(compiler, op_type, op_type->last, op_name);
-  
-  SPVM_LIST_push(compiler->current_op_types_for_alias_resolution, op_type);
   
   return op_type;
 }
