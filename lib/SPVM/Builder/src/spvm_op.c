@@ -1202,7 +1202,24 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     }
   }
   
-  
+  // Resolve type aliases in the class scope
+  SPVM_LIST* op_types_for_alias_resolution = compiler->current_op_types_for_alias_resolution;
+  SPVM_HASH* alias_symtable = type->basic_type->alias_symtable;
+  for (int32_t i = 0; i < op_types_for_alias_resolution->length; i++) {
+    SPVM_OP* op_type = SPVM_LIST_get(op_types_for_alias_resolution, i);
+    SPVM_TYPE* type_in_op = op_type->uv.type;
+    
+    // If the type has an unresolved name, check the alias symbol table
+    if (type_in_op->unresolved_basic_type_name) {
+      const char* alias_name = type_in_op->unresolved_basic_type_name;
+      const char* real_name = SPVM_HASH_get(alias_symtable, alias_name, strlen(alias_name));
+      
+      // If an alias exists, resolve it to the real class name
+      if (real_name) {
+        type_in_op->unresolved_basic_type_name = real_name;
+      }
+    }
+  }
   
   return op_class;
 }
