@@ -3,7 +3,6 @@
 
 class Complex_2d : mulnum_t {
   version_from SPVM;
-
   
   use Fn;
   

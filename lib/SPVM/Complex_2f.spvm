@@ -3,7 +3,8 @@
 
 class Complex_2f : mulnum_t {
   version_from SPVM;
-
+  
+  use Fn;
   
   # Fields
   has re : float;
