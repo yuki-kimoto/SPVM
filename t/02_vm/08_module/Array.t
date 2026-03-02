@@ -98,6 +98,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   ok(SPVM::TestCase::Module::Array->shuffle);
   ok(SPVM::TestCase::Module::Array->repeat);
   ok(SPVM::TestCase::Module::Array->merge);
+  ok(SPVM::TestCase::Module::Array->to_object_array);
 }
 
 $api->destroy_runtime_permanent_vars;
