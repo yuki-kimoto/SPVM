@@ -6665,4 +6665,74 @@ class TestCase::Module::Array {
     
     return 1;
   }
+  
+  static method merge : int () {
+    
+    # byte[]
+    {
+      my $a1 = [(byte)1, 2];
+      my $a2 = [(byte)3, 4];
+      my $m : byte[] = Array->merge($a1, $a2);
+      unless ($m->[0] == 1 && $m->[1] == 2 && $m->[2] == 3 && $m->[3] == 4) { return 0; }
+    }
+    
+    # short[]
+    {
+      my $a1 = [(short)1, 2];
+      my $a2 = [(short)3, 4];
+      my $m : short[] = Array->merge($a1, $a2);
+      unless ($m->[0] == 1 && $m->[1] == 2 && $m->[2] == 3 && $m->[3] == 4) { return 0; }
+    }
+    
+    # int[]
+    {
+      my $a1 = [1, 2];
+      my $a2 = [3, 4];
+      my $m : int[] = Array->merge($a1, $a2);
+      unless ($m->[0] == 1 && $m->[1] == 2 && $m->[2] == 3 && $m->[3] == 4) { return 0; }
+    }
+    
+    # long[]
+    {
+      my $a1 = [(long)1, 2];
+      my $a2 = [(long)3, 4];
+      my $m : long[] = Array->merge($a1, $a2);
+      unless ($m->[0] == 1 && $m->[1] == 2 && $m->[2] == 3 && $m->[3] == 4) { return 0; }
+    }
+    
+    # float[]
+    {
+      my $a1 = [(float)1, 2];
+      my $a2 = [(float)3, 4];
+      my $m : float[] = Array->merge($a1, $a2);
+      unless ($m->[0] == 1 && $m->[1] == 2 && $m->[2] == 3 && $m->[3] == 4) { return 0; }
+    }
+    
+    # double[]
+    {
+      my $a1 = [1.1, 2.2];
+      my $a2 = [3.3, 4.4];
+      my $m : double[] = Array->merge($a1, $a2);
+      unless ($m->[0] == 1.1 && $m->[1] == 2.2 && $m->[2] == 3.3 && $m->[3] == 4.4) { return 0; }
+    }
+
+    # string[]
+    {
+      my $a1 = ["a", "b"];
+      my $a2 = ["c", "d"];
+      my $m : string[] = Array->merge($a1, $a2);
+      unless ($m->[0] eq "a" && $m->[1] eq "b" && $m->[2] eq "c" && $m->[3] eq "d") { return 0; }
+    }
+
+    # object[] (using Int[] as an example of generic object array)
+    {
+      my $a1 = [(object)Int->new(1), Int->new(2)];
+      my $a2 = [(object)Int->new(3), Int->new(4)];
+      my $m : object[] = Array->merge($a1, $a2);
+      unless (((Int)$m->[0])->value == 1 && ((Int)$m->[3])->value == 4) { return 0; }
+    }
+    
+    return 1;
+  }
+  
 }
