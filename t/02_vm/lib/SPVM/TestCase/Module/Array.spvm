@@ -6788,4 +6788,57 @@ class TestCase::Module::Array {
     return 1;
   }
   
+  static method to_array : int () {
+
+    # Byte[] to byte[]
+    {
+      my $o = [Byte->new((byte)1), Byte->new((byte)127)];
+      my $p : byte[] = Array->to_array($o);
+      unless ($p->[0] == 1 && $p->[1] == 127) { return 0; }
+    }
+
+    # Short[] to short[]
+    {
+      my $o = [Short->new((short)1), Short->new((short)32767)];
+      my $p : short[] = Array->to_array($o);
+      unless ($p->[0] == 1 && $p->[1] == 32767) { return 0; }
+    }
+
+    # Int[] to int[]
+    {
+      my $o = [Int->new(1), Int->new(2147483647)];
+      my $p : int[] = Array->to_array($o);
+      unless ($p->[0] == 1 && $p->[1] == 2147483647) { return 0; }
+    }
+
+    # Long[] to long[]
+    {
+      my $o = [Long->new(1L), Long->new(9223372036854775807L)];
+      my $p : long[] = Array->to_array($o);
+      unless ($p->[0] == 1L && $p->[1] == 9223372036854775807L) { return 0; }
+    }
+
+    # Float[] to float[]
+    {
+      my $o = [Float->new(1.25f), Float->new(2.5f)];
+      my $p : float[] = Array->to_array($o);
+      unless ($p->[0] == 1.25f && $p->[1] == 2.5f) { return 0; }
+    }
+
+    # Double[] to double[]
+    {
+      my $o = [Double->new(1.1), Double->new(2.2)];
+      my $p : double[] = Array->to_array($o);
+      unless ($p->[0] == 1.1 && $p->[1] == 2.2) { return 0; }
+    }
+
+    # Exception: undef
+    {
+      eval { Array->to_array(undef); };
+      unless (Fn->contains($@, "The array \$object_array must be defined.")) { return 0; }
+    }
+    
+    return 1;
+  }
+  
 }
