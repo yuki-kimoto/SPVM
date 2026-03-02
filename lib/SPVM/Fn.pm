@@ -1509,7 +1509,7 @@ The type of the array $array_or_string must be an array type. Otherwise, an exce
 
 =head2 copy
 
-C<static method copy : byte[]|short[]|int[]|long[]|float[]|double[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string|object, $shallow : int = 0);>
+C<static method copy : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object, $shallow : int = 0);>
 
 Copies $array_or_string and returns it.
 
@@ -1535,7 +1535,7 @@ The type of $array_or_string must be an array type or string type.
 
 =head2 reverse
 
-C<static method reverse : byte[]|short[]|int[]|long[]|float[]|double[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string|object);>
+C<static method reverse : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object);>
 
 Reterns a new array that reverses the elements in the array $array_or_string or the characters in the string $array_or_string.
 
@@ -1547,7 +1547,7 @@ Exceptions thrown by L</"copy"> method and L</"reverse_inplace"> method could be
 
 =head2 slice
 
-C<static method slice : byte[]|short[]|int[]|long[]|float[]|double[]|object ($array : byte[]|short[]|int[]|long[]|float[]|double[]|object, $offset : int, $length :int);>
+C<static method slice : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|object ($array : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|object, $offset : int, $length :int);>
 
 Slices the array $array from the offset $offset to the length $length, and returns it.
 
@@ -1585,7 +1585,7 @@ Examples:
 
 =head2 sort_asc
 
-C<static method sort_asc : byte[]|short[]|int[]|long[]|float[]|double[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]);>
+C<static method sort_asc : byte[]|short[]|int[]|long[]|float[]|double[]|string[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]|string[]);>
 
 Copies the array $array using L</"copy"> method, sorts the copied array by ascendant order, and returns it.
 
@@ -1601,7 +1601,7 @@ The type of the array $array must be a numeric array type. Otherwise an exceptio
 
 =head2 sort_desc
 
-C<static method sort_desc : byte[]|short[]|int[]|long[]|float[]|double[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]);>
+C<static method sort_desc : byte[]|short[]|int[]|long[]|float[]|double[]|string[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]|string[]);>
 
 Copies the array $array using L</"copy"> method, sorts the copied array by descendant order, and returns it.
 

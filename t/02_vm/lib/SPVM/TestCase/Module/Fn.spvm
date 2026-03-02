@@ -6626,6 +6626,19 @@ class TestCase::Module::Fn {
           return 0;
         }
       }
+      # string[]
+      {
+        my $array = ["a", "b", "c"];
+        my $array_out = (string[])Fn->copy($array);
+        unless (Array->equals_string($array_out, $array)) {
+          diag;
+          return 0;
+        }
+        if ($array == $array_out) {
+          diag;
+          return 0;
+        }
+      }
     }
     
     return 1;
@@ -6729,20 +6742,17 @@ class TestCase::Module::Fn {
           return 0;
         }
       }
-    }
-    
-    # Union mapping
-    {
+      # string[]
       {
-        my $array = [1, 3, 2];
-        
+        my $array = ["a", "b", "c"];
         my $ret = Fn->reverse($array);
-        
-        unless (Array->equals_int($ret, [2, 3, 1])) {
+        unless (Array->equals_string($ret, ["c", "b", "a"])) {
+          diag;
           return 0;
         }
-        
+        # Check if it's a new array
         if ($ret == $array) {
+          diag;
           return 0;
         }
       }
@@ -6938,6 +6948,15 @@ class TestCase::Module::Fn {
           return 0;
         }
       }
+      # string[]
+      {
+        my $source = ["a", "b", "c", "d"];
+        my $dest = Fn->slice($source, 1, 2);
+        unless (Array->equals_string($dest, ["b", "c"])) {
+          diag;
+          return 0;
+        }
+      }
     }
     
     # Exception
@@ -7073,6 +7092,23 @@ class TestCase::Module::Fn {
       }
     }
     
+    # string[]
+    {
+      my $array = ["b", "c", "a"];
+      
+      my $ret = Fn->sort_asc($array);
+      
+      unless (Array->equals_string($ret, ["a", "b", "c"])) {
+        diag;
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        diag;
+        return 0;
+      }
+    }
+    
     # Exceptions
     {
       {
@@ -7183,6 +7219,23 @@ class TestCase::Module::Fn {
       }
       
       if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    # string[] (descending)
+    {
+      my $array = ["b", "c", "a"];
+      
+      my $ret = Fn->sort_desc($array);
+      
+      unless (Array->equals_string($ret, ["c", "b", "a"])) {
+        diag;
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        diag;
         return 0;
       }
     }

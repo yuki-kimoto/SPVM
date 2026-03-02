@@ -1799,7 +1799,7 @@ class Fn {
     return $size;
   }
   
-  static method copy : byte[]|short[]|int[]|long[]|float[]|double[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string|object, $shallow : int = 0) {
+  static method copy : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object, $shallow : int = 0) {
     
     unless ($array_or_string) {
       return undef;
@@ -1835,7 +1835,7 @@ class Fn {
     return $copy;
   }
   
-  static method reverse : byte[]|short[]|int[]|long[]|float[]|double[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string|object) {
+  static method reverse : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object ($array_or_string : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object) {
     
     my $ret = Fn->copy($array_or_string);
     
@@ -1844,7 +1844,7 @@ class Fn {
     return $ret;
   }
   
-  static method slice : byte[]|short[]|int[]|long[]|float[]|double[]|object ($array : byte[]|short[]|int[]|long[]|float[]|double[]|object, $offset : int, $length :int) {
+  static method slice : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|object ($array : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|object, $offset : int, $length :int) {
     
     unless ($array) {
       die "The array \$array must be defined.";
@@ -1877,14 +1877,10 @@ class Fn {
     return Format->sprintf($format, $args);
   }
   
-  static method sort_asc : byte[]|short[]|int[]|long[]|float[]|double[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]) {
+  static method sort_asc : byte[]|short[]|int[]|long[]|float[]|double[]|string[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]|string[]) {
     
     unless ($array) {
       die "The array \$array must be defined.";
-    }
-    
-    unless (Fn->is_numeric_array($array)) {
-      die "The type of the array \$array must be a numeric array type.";
     }
     
     my $sorted_array = Fn->copy($array);
@@ -1907,18 +1903,20 @@ class Fn {
     elsif ($array is_type double[]) {
       Sort->sort_double_asc((double[])$sorted_array);
     }
+    elsif ($array is_type string[]) {
+      Sort->sort_string_asc((string[])$sorted_array);
+    }
+    else {
+      die "The type of the array \$array must be a numeric array type or a string array type.";
+    }
     
     return $sorted_array;
   }
   
-  static method sort_desc : byte[]|short[]|int[]|long[]|float[]|double[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]) {
+  static method sort_desc : byte[]|short[]|int[]|long[]|float[]|double[]|string[] ($array : byte[]|short[]|int[]|long[]|float[]|double[]|string[]) {
     
     unless ($array) {
       die "The array \$array must be defined.";
-    }
-    
-    unless (Fn->is_numeric_array($array)) {
-      die "The type of the array \$array must be a numeric array type.";
     }
     
     my $sorted_array = Fn->copy($array);
@@ -1940,6 +1938,12 @@ class Fn {
     }
     elsif ($array is_type double[]) {
       Sort->sort_double_desc((double[])$sorted_array);
+    }
+    elsif ($array is_type string[]) {
+      Sort->sort_string_desc((string[])$sorted_array);
+    }
+    else {
+      die "The type of the array \$array must be a numeric array type or a string array type.";
     }
     
     return $sorted_array;
