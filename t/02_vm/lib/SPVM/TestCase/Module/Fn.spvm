@@ -2667,6 +2667,73 @@ class TestCase::Module::Fn {
       }
     }
     
+    # Union mapping for arrays
+    {
+      # byte[]
+      {
+        my $array = [(byte)1, 2];
+        my $ret = Fn->repeat($array, 3);
+        unless (Array->equals_byte($ret, [(byte)1, 2, 1, 2, 1, 2])) {
+          diag;
+          return 0;
+        }
+      }
+      # short[]
+      {
+        my $array = [(short)1, 2];
+        my $ret = Fn->repeat($array, 3);
+        unless (Array->equals_short($ret, [(short)1, 2, 1, 2, 1, 2])) {
+          diag;
+          return 0;
+        }
+      }
+      # int[]
+      {
+        my $array = [1, 2];
+        my $ret = Fn->repeat($array, 3);
+        unless (Array->equals_int($ret, [1, 2, 1, 2, 1, 2])) {
+          diag;
+          return 0;
+        }
+      }
+      # long[]
+      {
+        my $array = [(long)1, 2];
+        my $ret = Fn->repeat($array, 3);
+        unless (Array->equals_long($ret, [(long)1, 2, 1, 2, 1, 2])) {
+          diag;
+          return 0;
+        }
+      }
+      # float[]
+      {
+        my $array = [(float)1, 2];
+        my $ret = Fn->repeat($array, 3);
+        unless (Array->equals_float($ret, [(float)1, 2, 1, 2, 1, 2])) {
+          diag;
+          return 0;
+        }
+      }
+      # double[]
+      {
+        my $array = [(double)1, 2];
+        my $ret = Fn->repeat($array, 3);
+        unless (Array->equals_double($ret, [(double)1, 2, 1, 2, 1, 2])) {
+          diag;
+          return 0;
+        }
+      }
+      # string[]
+      {
+        my $array = ["a", "b"];
+        my $ret = (string[])Fn->repeat($array, 3);
+        unless (Array->equals_string($ret, ["a", "b", "a", "b", "a", "b"])) {
+          diag;
+          return 0;
+        }
+      }
+    }
+    
     # Exception
     {
       eval { Fn->repeat(undef, 1); };
@@ -2675,7 +2742,33 @@ class TestCase::Module::Fn {
       }
     }
     
+    unless (&repeat_string) {
+      return 0;
+    }
     
+    return 1;
+  }
+  
+  static method repeat_string : int () {
+    
+    unless (Fn->repeat_string("abc", 3) eq "abcabcabc") {
+      return 0;
+    }
+    
+    {
+      my $ret = Fn->repeat_string("abc", 0);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      eval { Fn->repeat_string(undef, 1); };
+      unless ($@) {
+        return 0;
+      }
+    }
     
     return 1;
   }

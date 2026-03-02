@@ -680,7 +680,29 @@ If you want to omit $seed, you can use L<Sys#rand|SPVM::Sys/"rand"> method.
 
 =head2 repeat
 
-C<static method repeat : string ($string : string, $count : int);>
+C<static method repeat : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object ($string_or_array : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object, $count : int);>
+
+If $string_or_array is a string, concatenates $string the number of times specified in $count and return it.
+
+Otherwise, retruns a new array that repeats the array $array $count times.
+
+Exceptions:
+
+The $string_or_array must be defined. Otherwise an exception is thrown.
+
+The count $count count be a non-negative integer. Otherwise an exception is thrown.
+
+Examples:
+  
+  # "abcabcabc"
+  my $repeat_string = Fn->repeat("abc", 3);
+
+  # [1, 2, 3, 1, 2, 3, 1, 2, 3]
+  my $repeat_int_array = Fn->repeat([1, 2, 3], 3);
+
+=head2 repeat_string
+
+C<static method repeat_string : string ($string : string, $count : int);>
 
 Concatenates $string the number of times specified in $count and return it.
 
@@ -688,16 +710,16 @@ Exceptions:
 
 The $string must be defined. Otherwise an exception is thrown.
 
-The repeat count $count count be a non-negative integer. Otherwise an exception is thrown.
+The repeat_string count $count count be a non-negative integer. Otherwise an exception is thrown.
 
 Examples:
   
   # "abcabcabc"
-  my $repeat_string = Fn->repeat("abc", 3);
+  my $repeat_string_string = Fn->repeat_string("abc", 3);
 
 See Also:
 
-See L<Array#repeat|SPVM::Array/"repeat"> method about repeating an array.
+See L<Array#repeat|SPVM::Array/"repeat"> method about repeat_stringing an array.
 
 =head2 replace_chars
 

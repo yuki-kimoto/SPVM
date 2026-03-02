@@ -633,7 +633,25 @@ class Fn {
     return $random_number;
   }
   
-  precompile static method repeat : string ($string : string, $count : int) {
+  static method repeat : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object ($string_or_array : byte[]|short[]|int[]|long[]|float[]|double[]|string[]|string|object, $count : int) {
+    
+    unless ($string_or_array) {
+      die "The string \$string must be defined.";
+    }
+    
+    unless ($count >= 0) {
+      die "The repeat count \$count must be a non-negative integer.";
+    }
+    
+    if ($string_or_array isa string) {
+      return &repeat_string($string_or_array->(string), $count);
+    }
+    else {
+      return Array->repeat($string_or_array, $count);
+    }
+  }
+  
+  precompile static method repeat_string : string ($string : string, $count : int) {
     
     unless ($string) {
       die "The string \$string must be defined.";

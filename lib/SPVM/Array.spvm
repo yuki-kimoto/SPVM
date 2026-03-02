@@ -1498,14 +1498,18 @@ class Array {
     
     my $ret_array = Array->new_proto_any($array, $ret_length);
     
+    # Repetition logic
     if (Fn->is_object_array($array)) {
-      for (my $i = 0; $i < $length; $i++) {
-        Array->memcpy_object_address((object[])$ret_array, $count * $i, (object[])$array, 0, $count);
+      for (my $i = 0; $i < $count; $i++) {
+        # Copy the entire array at each offset
+        Array->memcpy_object_address((object[])$ret_array, $i * $length, (object[])$array, 0, $length);
       }
     }
     else {
-      for (my $i = 0; $i < $length; $i++) {
-        Fn->memcpy($ret_array, $elem_size * $count * $i, $array, 0, $elem_size * $count);
+      my $byte_length = $elem_size * $length;
+      for (my $i = 0; $i < $count; $i++) {
+        # Copy the entire array at each byte offset
+        Fn->memcpy($ret_array, $i * $byte_length, $array, 0, $byte_length);
       }
     }
     
