@@ -1,21 +1,73 @@
-/blib
+# ===============================================================
+# Common
+# ===============================================================
+
+# Perl build
+/blib/
 /Makefile
 /Makefile.old
 /MYMETA.yml
 /MYMETA.json
 /pm_to_blib
-/core.*
+/_build/
+/Build
+/Build.bat
+/Build.com
+
+# C/C++
+*.o
+*.bs
+*.a
+*.so
+*.out
 /core
+/core.*
+
+# Temp & archives
 /SPVM-*
+.spvm_build/
+.tmp/
 *.bak
 *.BAK
 *.tmp
-*.o
-*.bs
-.tmp
-.git
-.spvm_build
+*.swp
+*~
+*.log
 
-# SPVM Specific
+# Version control
+.git/
+
+# ===============================================================
+# OS specific
+# ===============================================================
+
+# Windows
+*.def
+*.obj
+*.exe
+*.dll
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.manifest
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# macOS / iOS
+*.dylib
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux / Android
+.thumbnails/
+.cache/
+
+# ===============================================================
+# This repository specific
+# ===============================================================
 /SPVM.c
 /t/03_precompile
