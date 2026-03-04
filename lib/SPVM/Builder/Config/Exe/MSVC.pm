@@ -50,8 +50,9 @@ sub apply {
   });
   
   # Apply settings to resources
-  my $resources = $self->resources;
-  for my $resource (@$resources) {
+  my $resource_names = $self->get_resource_names;
+  for my $resource_name (@$resource_names) {
+    my $resource = $self->get_resource($resource_name);
     my $resource_config = $resource->config;
     $self->_apply_msvc_settings_to_config($resource_config);
   }
