@@ -135,11 +135,10 @@ sub setup_env {
       File::Find::find({
         wanted => sub {
           return if $cl_long_path; # Already found
-          return unless $_ eq 'cl.exe';
           
           my $full_path = $File::Find::name;
           # Check if path contains the correct host/target
-          if (index($full_path, $host_target) != -1) {
+          if ($full_path =~ m#\Q$host_target\E/cl.exe$#i) {
             $cl_long_path = $full_path;
           }
         },
