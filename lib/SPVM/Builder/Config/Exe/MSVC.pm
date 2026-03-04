@@ -13,42 +13,20 @@ use base 'SPVM::Builder::Config::Exe';
 
 sub apply {
   my ($self, $options) = @_;
-
-  # Search only cl.exe in PATH
-  my $cc_exe = 'cl.exe';
-  my $cc_path;
-  my @path_dirs = File::Spec->path;
-
-  for my $dir (@path_dirs) {
-    my $abs_path = File::Spec->catfile($dir, $cc_exe);
-    if (-f $abs_path && -x _) {
-      $cc_path = $abs_path;
-      last;
-    }
-  }
-
-  unless (defined $cc_path) {
-    Carp::confess("Can't find compiler 'cl.exe' in PATH.");
-  }
-
-  # Linker must be link.exe
-  my $msvc_bin_dir = File::Basename::dirname($cc_path);
-  my $link_path = File::Spec->catfile($msvc_bin_dir, 'link.exe');
-
-  unless (-f $link_path && -x _) {
-    Carp::confess("Can't find linker 'link.exe' in the same directory as '$cc_path'.");
-  }
-
-  # Convert for MSYS2
-  $cc_path =~ s/\//\\/g;
-  $link_path =~ s/\//\\/g;
-
-  $self->cc($cc_path);
-  $self->ld($link_path);
-
+  
+  $options //= {};
+  
+  $self->setup_env;
+  
+  my $cc = $options->{cc} // 'cl';
+  my $ld = $options->{ld} // 'link';
+  
+  $self->cc($cc);
+  $self->ld($ld);
+  
   $self->long_option_sep(':');
   $self->lib_dir_option_name('-libpath');
-
+  
   # Clear and set optimization
   $self->clear_system_settings;
   $self->optimize('-O2');
