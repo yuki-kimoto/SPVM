@@ -149,42 +149,42 @@ sub setup_env {
     'C:/Program Files (x86)/Microsoft Visual Studio',
   );
   
-  my $cc_long_path;
+  my $cl_long_path;
   
   for my $base_dir (@search_dirs) {
     next unless -d $base_dir;
     
     File::Find::find({
       wanted => sub {
-        return if $cc_long_path; # Already found
+        return if $cl_long_path; # Already found
         return unless $_ eq 'cl.exe';
         
         my $full_path = $File::Find::name;
         # Check if path contains the correct host/target
         if (index($full_path, $host_target) != -1) {
-          $cc_long_path = $full_path;
+          $cl_long_path = $full_path;
         }
       },
       no_chdir => 1,
     }, $base_dir);
     
-    last if $cc_long_path;
+    last if $cl_long_path;
   }
   
-  unless ($cc_long_path) {
+  unless ($cl_long_path) {
     Carp::confess("Can't find cl.exe in Microsoft Visual Studio directories for architecture: $arch");
   }
   
   # Convert to short path (handle spaces)
-  my $cc_short_path = Win32::GetShortPathName($cc_long_path);
-  unless ($cc_short_path) {
-    Carp::confess("Failed to convert path to short format: $cc_long_path");
+  my $cl_short_path = Win32::GetShortPathName($cl_long_path);
+  unless ($cl_short_path) {
+    Carp::confess("Failed to convert path to short format: $cl_long_path");
   }
   
   # Derive vcvarsall.bat path from cl.exe path
   # Replace: VC/Tools/MSVC/{version}/bin/Hostx64/x64
   # With:    VC/Auxiliary/Build
-  my $vcvars_path = $cc_short_path;
+  my $vcvars_path = $cl_short_path;
   $vcvars_path =~ s|VC/Tools/MSVC/[^/]+/bin/[^/]+/[^/]+|VC/Auxiliary/Build|i;
   $vcvars_path =~ s/cl\.exe$/vcvarsall.bat/i;
   
