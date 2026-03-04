@@ -344,6 +344,8 @@ sub load_mode_config {
     $config->mode($mode);
   }
   
+  bless $config, ref $self || $self;
+  
   return $config;
 }
 
