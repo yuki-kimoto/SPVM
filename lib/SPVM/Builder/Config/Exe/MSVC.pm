@@ -16,7 +16,7 @@ sub apply {
   
   $options //= {};
   
-  $self->setup_env;
+  $self->setup_env($options);
   
   my $cc = $options->{cc} // 'cl';
   my $ld = $options->{ld} // 'link';
@@ -97,60 +97,65 @@ sub _apply_msvc_settings_to_config {
 }
 
 sub setup_env {
-  my ($self) = @_;
+  my ($self, $options) = @_;
   
-  # Determine architecture (Windows only)
-  my $arch = $ENV{PROCESSOR_ARCHITECTURE} || '';
+  $options //= {};
   
-  unless ($arch) {
-    Carp::confess("Can't determine processor architecture. PROCESSOR_ARCHITECTURE environment variable not set.");
-  }
+  my $cl_long_path = $options->{cl};
   
-  # Map Windows architecture to MSVC host/target path
-  my $host_target;
-  if ($arch eq 'AMD64') {
-    $host_target = 'Hostx64/x64';
-  }
-  elsif ($arch eq 'ARM64') {
-    $host_target = 'Hostarm64/arm64';
-  }
-  elsif ($arch eq 'x86') {
-    $host_target = 'Hostx86/x86';
-  }
-  else {
-    Carp::confess("Unsupported processor architecture: $arch");
-  }
-  
-  # Search for cl.exe in Visual Studio installation directories
-  my @search_dirs = (
-    'C:/Program Files/Microsoft Visual Studio',
-    'C:/Program Files (x86)/Microsoft Visual Studio',
-  );
-  
-  my $cl_long_path;
-  
-  for my $base_dir (@search_dirs) {
-    next unless -d $base_dir;
+  unless (defined $cl_long_path) {
+    # Determine architecture (Windows only)
+    my $arch = $ENV{PROCESSOR_ARCHITECTURE} || '';
     
-    File::Find::find({
-      wanted => sub {
-        return if $cl_long_path; # Already found
-        return unless $_ eq 'cl.exe';
-        
-        my $full_path = $File::Find::name;
-        # Check if path contains the correct host/target
-        if (index($full_path, $host_target) != -1) {
-          $cl_long_path = $full_path;
-        }
-      },
-      no_chdir => 1,
-    }, $base_dir);
+    unless ($arch) {
+      Carp::confess("Can't determine processor architecture. PROCESSOR_ARCHITECTURE environment variable not set.");
+    }
     
-    last if $cl_long_path;
+    # Map Windows architecture to MSVC host/target path
+    my $host_target;
+    if ($arch eq 'AMD64') {
+      $host_target = 'Hostx64/x64';
+    }
+    elsif ($arch eq 'ARM64') {
+      $host_target = 'Hostarm64/arm64';
+    }
+    else {
+      Carp::confess("Unsupported processor architecture: $arch");
+    }
+    
+    # Search for cl.exe in Visual Studio installation directories
+    my @search_dirs = (
+      'C:/Program Files/Microsoft Visual Studio',
+      'C:/Program Files (x86)/Microsoft Visual Studio',
+    );
+    
+    for my $base_dir (@search_dirs) {
+      next unless -d $base_dir;
+      
+      File::Find::find({
+        wanted => sub {
+          return if $cl_long_path; # Already found
+          return unless $_ eq 'cl.exe';
+          
+          my $full_path = $File::Find::name;
+          # Check if path contains the correct host/target
+          if (index($full_path, $host_target) != -1) {
+            $cl_long_path = $full_path;
+          }
+        },
+        no_chdir => 1,
+      }, $base_dir);
+      
+      last if $cl_long_path;
+    }
+    
+    unless (defined $cl_long_path) {
+      Carp::confess("Can't find cl.exe in Microsoft Visual Studio directories for architecture: $arch");
+    }
   }
   
-  unless ($cl_long_path) {
-    Carp::confess("Can't find cl.exe in Microsoft Visual Studio directories for architecture: $arch");
+  unless (-f $cl_long_path && -x $cl_long_path) {
+    Carp::confess("'$cl_long_path' is not an executable file.");
   }
   
   # Convert to short path (handle spaces)
@@ -162,42 +167,37 @@ sub setup_env {
   # Derive vcvarsall.bat path from cl.exe path
   # Replace: VC/Tools/MSVC/{version}/bin/Hostx64/x64
   # With:    VC/Auxiliary/Build
-  my $vcvars_path = $cl_short_path;
-  $vcvars_path =~ s|VC/Tools/MSVC/[^/]+/bin/[^/]+/[^/]+|VC/Auxiliary/Build|i;
-  $vcvars_path =~ s/cl\.exe$/vcvarsall.bat/i;
+  my $vcvarsall_path = $cl_short_path;
+  $vcvarsall_path =~ s|VC/Tools/MSVC/[^/]+/bin/[^/]+/[^/]+|VC/Auxiliary/Build|i;
+  $vcvarsall_path =~ s/cl\.exe$/vcvarsall.bat/i;
   
-  unless (-f $vcvars_path) {
-    Carp::confess("Can't find vcvarsall.bat at: $vcvars_path");
+  unless (-f $vcvarsall_path) {
+    Carp::confess("Can't find vcvarsall.bat at: $vcvarsall_path");
   }
   
-  # Determine vcvarsall.bat argument based on architecture
-  my $vcvars_arg;
-  if ($arch eq 'AMD64') {
-    $vcvars_arg = 'x64';
+  # Parse Host and Target from path
+  unless ($cl_short_path =~ m#bin/Host(x64|x86|arm64|arm)/(x64|x86|arm64|arm)/cl\.exe#i) {
+    Carp::confess("Failed to parse architecture from cl.exe path: $cl_short_path");
   }
-  elsif ($arch eq 'ARM64') {
-    $vcvars_arg = 'arm64';
-  }
-  elsif ($arch eq 'x86') {
-    $vcvars_arg = 'x86';
-  }
-  else {
-    Carp::confess("Unsupported architecture for vcvarsall.bat: $arch");
-  }
+  my $host   = lc $1;
+  my $target = lc $2;
+
+  # Determine vcvarsall.bat argument
+  my $vcvarsall_arg = ($host eq $target) ? $target : "${host}_${target}";
   
   # For system/backtick execution, convert path to Windows format with backslashes
-  my $vcvars_path_win = $vcvars_path;
-  $vcvars_path_win =~ s|/|\\|g;
+  my $vcvarsall_path_win = $vcvarsall_path;
+  $vcvarsall_path_win =~ s|/|\\|g;
   
   # Execute vcvarsall.bat and capture environment variables
   # Set MSYS2_ARG_CONV_EXCL to prevent MSYS2 path conversion in Git Bash
   local $ENV{MSYS2_ARG_CONV_EXCL} = '*';
   
-  my $cmd = qq{cmd.exe /c "$vcvars_path_win" $vcvars_arg && set};
+  my $cmd = qq{cmd.exe /c "$vcvarsall_path_win" $vcvarsall_arg && set};
   my @output = `$cmd`;
   
   if ($? != 0) {
-    Carp::confess("Failed to execute vcvarsall.bat: $vcvars_path");
+    Carp::confess("Failed to execute vcvarsall.bat: $vcvarsall_path");
   }
   
   my %msvc_env;
