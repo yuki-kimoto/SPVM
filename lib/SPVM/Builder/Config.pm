@@ -471,7 +471,7 @@ sub dialect {
     return $self;
   }
   else {
-    return $self->{dialect} || 'standard';
+    return $self->{dialect};
   }
 }
 
