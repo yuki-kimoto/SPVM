@@ -194,15 +194,24 @@ sub setup_env {
   local $ENV{MSYS2_ARG_CONV_EXCL} = '*';
   
   my $cmd = qq{cmd.exe /c "$vcvarsall_path_win" $vcvarsall_arg && set};
-  my @output = `$cmd`;
+  my $vcvarsall_output = `$cmd`;
+  my @vcvarsall_lines = split /\x0D?\x0A/, $vcvarsall_output;
   
   if ($? != 0) {
     Carp::confess("Failed to execute vcvarsall.bat: $vcvarsall_path");
   }
   
+  # Remove all environment variables that match INCLUDE, LIB, or PATH case-insensitively
+  for my $name (keys %ENV) {
+    if ($name =~ /^(?:INCLUDE|LIB|PATH)$/i) {
+        delete $ENV{$name};
+    }
+  }
+  
   my %msvc_env;
-  for my $line (@output) {
-    chomp $line;
+  for my $line (@vcvarsall_lines) {
+    $line =~ s/[\x0D\x0A]//g;
+    
     if ($line =~ /^(INCLUDE|LIB|PATH)=(.*)$/) {
       my ($name, $value) = ($1, $2);
       $ENV{$name} = $value;
@@ -211,7 +220,6 @@ sub setup_env {
       }
     }
   }
-  
 }
 
 1;
