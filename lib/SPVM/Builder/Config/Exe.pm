@@ -326,7 +326,9 @@ sub new {
 
 # Instance Methods
 sub load_mode_config {
-  my ($self, $config_file, $mode) = @_;
+  my ($self, $config_file, $mode, $options) = @_;
+  
+  $options //= {};
   
   my $mode_config_file = $self->_remove_ext_from_config_file($config_file);
   if (defined $mode) {
@@ -344,7 +346,9 @@ sub load_mode_config {
     $config->mode($mode);
   }
   
-  bless $config, ref $self || $self;
+  unless ($options->{no_rebless}) {
+    bless $config, ref $self || $self;
+  }
   
   return $config;
 }
