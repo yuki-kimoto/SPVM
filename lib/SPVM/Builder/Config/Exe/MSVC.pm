@@ -74,7 +74,7 @@ sub _apply_msvc_settings_to_config {
     $config->clear_system_settings;
     
     # Common flags
-    push @{$config->compiler_ccflags}, '-Gy';
+    push @{$config->compiler_ccflags}, '-utf-8', '-Gy';
     push @{$config->ld_ccflags}, '-MT';
 
     my $std = $config->std // '';

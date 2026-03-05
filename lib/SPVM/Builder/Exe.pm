@@ -860,16 +860,38 @@ EOS
     }
     
     if (defined $class_file_content) {
-      my $content_espcaped = $class_file_content;
-      
+      my $content_raw = $class_file_content;
+      my @chunks;
+      my $current_chunk = '';
+      my $count = 0;
+
       {
         use bytes;
-        $content_espcaped =~ s/\\/\\\\/g;
-        $content_espcaped =~ s/"/\\"/g;
-        $content_espcaped =~ s/([^[:print:]])/sprintf("\\%03o", ord($1))/ge;
+        for my $i (0 .. length($content_raw) - 1) {
+          my $char = substr($content_raw, $i, 1);
+          my $escaped;
+          
+          # Escape logic
+          if ($char eq "\\") { $escaped = "\\\\"; }
+          elsif ($char eq "\"") { $escaped = "\\\""; }
+          elsif ($char =~ /[[:print:]]/) { $escaped = $char; }
+          else { $escaped = sprintf("\\%03o", ord($char)); }
+
+          $current_chunk .= $escaped;
+          $count++;
+
+          # Split every 100 characters (safe limit)
+          if ($count >= 100) {
+            push @chunks, qq(      "$current_chunk"\n);
+            $current_chunk = '';
+            $count = 0;
+          }
+        }
+        push @chunks, qq(      "$current_chunk"\n) if length $current_chunk;
       }
       
-      $source_class_file .= qq|    env->api->class_file->set_content(compiler, class_file, "$content_espcaped");\n|;
+      my $content_literal = join('', @chunks);
+      $source_class_file .= qq|    env->api->class_file->set_content(compiler, class_file, \n$content_literal    );\n|;
     }
     
     $source_class_file .= qq|    env->api->class_file->set_content_length(compiler, class_file, $class_file_content_length);\n|;
