@@ -5,8 +5,15 @@
 #include <string.h>
 #include <assert.h>
 #include <stdarg.h>
-#include <unistd.h>
 #include <fcntl.h>
+
+#if defined(_WIN32)
+#  include <io.h>
+#  define dup _dup
+#  define fileno _fileno
+#else
+#  include <unistd.h>
+#endif
 
 #include "spvm_allocator.h"
 #include "spvm_runtime.h"
