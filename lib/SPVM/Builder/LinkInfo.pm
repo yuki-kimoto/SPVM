@@ -70,6 +70,7 @@ sub create_command {
   my $config = $self->config;
   
   my $ld = $config->ld;
+  
   my $output_file = $config->output_file;
   my $object_files = $self->object_files;
   my $object_file_names = [map { $_->to_string; } @$object_files];
