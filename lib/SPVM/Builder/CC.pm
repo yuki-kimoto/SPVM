@@ -711,6 +711,12 @@ sub link {
   my $cc = $config->cc;
   my $ld = $config->ld;
   
+  # On Windows/gcc(MinGW) "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
+  # Linker Script File(.lds) when "perllibs" is empty string.
+  # This is syntax error in Linker Script File(.lds)
+  # For the reason, libm is linked which seems to have no effect.
+  my $perllibs = $config->isa('ExtUtils::CBuilder::Platform::Windows::GCC') ? '-lm' : '';
+  
   my $cbuilder_config = {
     cc => $cc,
     ld => $ld,
@@ -718,12 +724,7 @@ sub link {
     shrpenv => '',
     libpth => '',
     libperl => '',
-    
-    # "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
-    # Linker Script File(.lds) when "perllibs" is empty string.
-    # This is syntax error in Linker Script File(.lds)
-    # For the reason, libm is linked which seems to have no effect.
-    perllibs => '-lm',
+    perllibs => $perllibs,
   };
   
   my $quiet = $self->detect_quiet($config);
