@@ -708,9 +708,11 @@ sub link {
   
   $link_info->no_generate(!$need_generate);
   
+  my $cc = $config->cc;
   my $ld = $config->ld;
   
   my $cbuilder_config = {
+    cc => $cc,
     ld => $ld,
     lddlflags => '',
     shrpenv => '',
@@ -746,7 +748,6 @@ sub link {
   }
   
   if ($need_generate) {
-    
     mkpath dirname $link_info_output_file;
     
     # Create a dynamic library

@@ -19,21 +19,18 @@ sub apply {
   $self->setup_env($options);
   
   my $cc = $options->{cc} // 'cl';
-  my $ld = $options->{ld} // 'link';
+  my $ld = $options->{ld} // 'link.exe';
   
   $self->cc($cc);
   $self->ld($ld);
   
   $self->long_option_sep(':');
-  $self->lib_dir_option_name('-libpath');
   
   # Clear and set optimization
   $self->clear_system_settings;
   $self->optimize('-O2');
   
   # Optimization for dead code elimination and identical code folding
-  $self->ld_optimize('-OPT:REF,ICF');
-  
   $self->static_lib_ldflag(["", ""]);
   
   $self->lib_prefix("");
@@ -44,8 +41,9 @@ sub apply {
   
   $self->cc_output_option_name('-Fo');
   
-  $self->ld_output_option_name('-out');
-  
+  # $self->ld_output_option_name('-OUT');
+  $self->ld_optimize('');
+  $self->lib_dir_option_name('-LIBPATH');
   $self->bcrypt_ldflags(['bcrypt.lib']);
   
   # Set compiler callback
