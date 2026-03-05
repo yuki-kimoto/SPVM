@@ -46,6 +46,8 @@ sub apply {
   
   $self->ld_output_option_name('-out');
   
+  $self->bcrypt_ldflags(['bcrypt.lib']);
+  
   # Set compiler callback
   $self->add_before_compile_cb_global(sub {
     my ($config) = @_;
