@@ -248,7 +248,7 @@ sub new {
   
   my $config;
   if (-f $config_file) {
-    $config = SPVM::Builder::Config::Exe->load_mode_config($config_file, $config_mode, {no_rebless => 1});
+    $config = SPVM::Builder::Config::Exe::load_mode_config(undef, $config_file, $config_mode);
   }
   else {
     if ($allow_no_config_file) {
