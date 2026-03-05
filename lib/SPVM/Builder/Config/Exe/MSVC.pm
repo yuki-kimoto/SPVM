@@ -42,6 +42,10 @@ sub apply {
   
   $self->lib_option_suffix(".lib");
   
+  $self->cc_output_option_name('-Fo');
+  
+  $self->ld_output_option_name('-out');
+  
   # Set compiler callback
   $self->add_before_compile_cb_global(sub {
     my ($config) = @_;
@@ -74,7 +78,7 @@ sub _apply_msvc_settings_to_config {
     push @{$config->ld_ccflags}, '-MT';
 
     my $std = $config->std // '';
-
+    
     if ($lang eq 'c') {
       # C compiler
       push @{$config->language_ccflags}, '-TC';
