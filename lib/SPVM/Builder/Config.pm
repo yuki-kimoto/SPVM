@@ -651,6 +651,28 @@ sub lib_option_name {
   }
 }
 
+sub cc_output_option_name {
+  my $self = shift;
+  if (@_) {
+    $self->{cc_output_option_name} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{cc_output_option_name};
+  }
+}
+
+sub ld_output_option_name {
+  my $self = shift;
+  if (@_) {
+    $self->{ld_output_option_name} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{ld_output_option_name};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -916,8 +938,19 @@ sub new {
     $self->lib_option_suffix("");
   }
   
+  # lib_option_name
   unless (defined $self->{lib_option_name}) {
     $self->lib_option_name("-l");
+  }
+  
+  # cc_output_option_name
+  unless (defined $self->{cc_output_option_name}) {
+    $self->cc_output_option_name("-o");
+  }
+
+  # ld_output_option_name
+  unless (defined $self->{ld_output_option_name}) {
+    $self->ld_output_option_name("-o");
   }
   
   return $self;
@@ -2110,6 +2143,20 @@ Gets and sets C<lib_option_suffix> field, the suffix of a library name such as C
 
 Gets and sets C<lib_option_name> field, a string that is an option name to specify a library name.
 
+=head2 cc_output_option_name
+
+  my $cc_output_option_name = $config->cc_output_option_name;
+  $config->cc_output_option_name($cc_output_option_name);
+
+Gets and sets C<cc_output_option_name> field, a string that is an option name to specify a compiler output file name.
+
+=head2 ld_output_option_name
+
+  my $ld_output_option_name = $config->ld_output_option_name;
+  $config->ld_output_option_name($ld_output_option_name);
+
+Gets and sets C<ld_output_option_name> field, a string that is an option name to specify a linker output file name.
+
 =head1 Class Methods
 
 =head2 new
@@ -2335,6 +2382,14 @@ Other OSs:
 =item * L</"lib_option_name">
 
   "-l"
+
+=item * L</"cc_output_option_name">
+
+"-o"
+
+=item * L</"ld_output_option_name">
+
+"-o"
 
 =back
 
