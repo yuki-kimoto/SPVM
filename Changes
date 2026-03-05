@@ -1,6 +1,8 @@
 0.990140 2026-03-05
   [New Features]
     * Add cc_output_option_name and ld_output_option_name fields to SPVM::Builder::Config.
+    * Introduce build_option_short/long and use them for output options in CompileInfo and LinkInfo to support MSVC and other compilers.
+    
   [Bug Fix]
     * Fix SPVM::Builder::Config#load_mode_config to re-bless the config object into the invocant class to ensure correct method inheritance.
     * Change 'standart' to undef of the default value of dialect field in SPVM::Builder::Config.
