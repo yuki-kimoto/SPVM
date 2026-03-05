@@ -67,6 +67,34 @@ sub apply {
 sub _apply_msvc_settings_to_config {
   my ($self, $config) = @_;
   
+  my $cc = 'cl';
+  my $ld = 'link.exe';
+  
+  $config->cc($cc);
+  $config->ld($ld);
+  
+  $config->long_option_sep(':');
+  
+  # Clear and set optimization
+  $config->clear_system_settings;
+  $config->optimize('-O2');
+  
+  # Optimization for dead code elimination and identical code folding
+  $config->static_lib_ldflag(["", ""]);
+  
+  $config->lib_prefix("");
+  
+  $config->lib_option_name("");
+  
+  $config->lib_option_suffix(".lib");
+  
+  $config->cc_output_option_name('-Fo');
+  
+  # $config->ld_output_option_name('-OUT');
+  $config->ld_optimize('');
+  $config->lib_dir_option_name('-LIBPATH');
+  $config->bcrypt_ldflags(['bcrypt.lib']);
+  
   my $lang = $config->language // '';
   my $dialect = $config->dialect;
   
