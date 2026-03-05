@@ -1364,6 +1364,7 @@ sub clear_system_settings {
   $self->debug_ldflags([]);
 }
 
+# Main build_option (Auto-detect by length)
 sub build_option {
   my ($self, $name, $value) = @_;
   
@@ -1371,18 +1372,28 @@ sub build_option {
   my $pure_name = $name;
   $pure_name =~ s/^[\-\/]+//;
   
-  my $option;
   if (length $pure_name <= 1) {
-    # Short option: Connect directly
-    $option = "$name$value";
+    return $self->build_option_short($name, $value);
   }
   else {
-    # Long option: Connect using long_option_sep
-    my $sep = $self->long_option_sep;
-    $option = "$name$sep$value";
+    return $self->build_option_long($name, $value);
   }
+}
+
+# Connect directly (e.g. -oFILE, -I/path)
+sub build_option_short {
+  my ($self, $name, $value) = @_;
   
-  return $option;
+  return "$name$value";
+}
+
+# Connect using long_option_sep (e.g. --prefix=/usr, -out:FILE)
+sub build_option_long {
+  my ($self, $name, $value) = @_;
+  
+  my $sep = $self->long_option_sep;
+  
+  return "$name$sep$value";
 }
 
 1;
@@ -2665,6 +2676,32 @@ If the length of the option name is greater than 1, they are connected using L</
   my $option = $config->build_option("-std", "c11");
 
 This method is useful for supporting different compiler conventions such as GCC/Clang and MSVC.
+
+=head2 build_option_short
+
+  my $option = $config->build_option_short("-I", "c:/path");
+
+Builds a command line option by connecting the option name and the value directly without a separator.
+
+  # Results in "-Ic:/path"
+  my $option = $config->build_option_short("-I", "c:/path");
+
+  # Results in "-Foc:/path" (Useful for MSVC even if the option name length > 1)
+  my $option = $config->build_option_short("-Fo", "c:/path");
+
+=head2 build_option_long
+
+  my $option = $config->build_option_long("-std", "c11");
+
+Builds a command line option by connecting the option name and the value using L</"long_option_sep">.
+
+  # Results in "-std=c11" (if long_option_sep is "=")
+  my $option = $config->build_option_long("-std", "c11");
+
+  # Results in "-out:c:/path" (if long_option_sep is ":")
+  my $option = $config->build_option_long("-out", "c:/path");
+
+=cut
 
 =head1 Library Path Resolution
 

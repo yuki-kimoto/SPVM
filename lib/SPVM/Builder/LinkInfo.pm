@@ -76,8 +76,14 @@ sub create_command {
   
   my $ldflags = $self->create_ldflags;
   
-  # ldflags must be after object files to resolve symbol names properly
-  my @link_command = ($ld, '-o', $output_file, @$object_file_names, @$ldflags);
+  # Get output option name
+  my $ld_output_option_name = $config->ld_output_option_name;
+
+  # Build output option
+  my $output_option = $config->build_option($ld_output_option_name, $output_file);
+
+  # Build command
+  my @link_command = ($ld, $output_option, @$object_file_names, @$ldflags);
   
   return \@link_command;
 }

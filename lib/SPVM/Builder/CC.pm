@@ -182,11 +182,7 @@ sub compile_source_file {
   my $source_file = $compile_info->source_file;
   
   # Execute compile command
-  my $cbuilder_config = {
-    cc => $config->cc,
-  };
-  
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
   
   my $output_file = $compile_info->output_file;
   
