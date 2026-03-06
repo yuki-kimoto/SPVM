@@ -77,8 +77,14 @@ sub create_command {
   
   my $ldflags = $self->create_ldflags;
   
+  # Get output option name
+  my $ld_output_option_name = $config->ld_output_option_name;
+  
+  # Build output option
+  my $output_option = $config->create_option($ld_output_option_name, $output_file);
+  
   # Build command
-  my @link_command = ($ld, @$object_file_names, @$ldflags);
+  my @link_command = ($ld, $output_option, @$object_file_names, @$ldflags);
   
   return \@link_command;
 }
