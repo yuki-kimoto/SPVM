@@ -7,14 +7,6 @@
 #include <stdarg.h>
 #include <fcntl.h>
 
-#if defined(_WIN32)
-#  include <io.h>
-#  define dup _dup
-#  define fileno _fileno
-#else
-#  include <unistd.h>
-#endif
-
 #include "spvm_allocator.h"
 #include "spvm_runtime.h"
 #include "spvm_hash.h"
@@ -26,6 +18,7 @@
 #include "spvm_runtime_arg.h"
 #include "spvm_opcode.h"
 #include "spvm_mutex.h"
+#include "spvm_unistd.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   SPVM_RUNTIME* runtime = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_RUNTIME));

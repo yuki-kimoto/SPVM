@@ -132,6 +132,7 @@ lib/SPVM/Builder/include/spvm_switch_info.h
 lib/SPVM/Builder/include/spvm_toke.h
 lib/SPVM/Builder/include/spvm_type.h
 lib/SPVM/Builder/include/spvm_typedecl.h
+lib/SPVM/Builder/include/spvm_unistd.h
 lib/SPVM/Builder/include/spvm_use.h
 lib/SPVM/Builder/include/spvm_utf8.h
 lib/SPVM/Builder/include/spvm_var.h
