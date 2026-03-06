@@ -30,7 +30,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
-#include "spvm_string_buffer.h"
+#include "spvm_compiler_string_buffer.h"
 #include "spvm_use.h"
 #include "spvm_interface.h"
 #include "spvm_string.h"
@@ -1219,7 +1219,7 @@ void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler) {
     
     // String pool must end with "\0"
     // This is not needed, but maybe there are bugs in other places
-    SPVM_STRING_BUFFER_add_len(basic_type->string_pool, "\0\0\0\0", 4);
+    SPVM_COMPILER_STRING_BUFFER_add_len(basic_type->string_pool, "\0\0\0\0", 4);
   }
 }
 

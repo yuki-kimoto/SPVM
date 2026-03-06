@@ -7,23 +7,23 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include "spvm_string_buffer.h"
+#include "spvm_compiler_string_buffer.h"
 #include "spvm_allocator.h"
 #include "spvm_allocator.h"
 #include "spvm_native.h"
 
-SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(SPVM_ALLOCATOR* allocator, int32_t capacity, int32_t memory_block_type) {
+SPVM_COMPILER_STRING_BUFFER* SPVM_COMPILER_STRING_BUFFER_new(SPVM_ALLOCATOR* allocator, int32_t capacity, int32_t memory_block_type) {
   
   if (capacity == 0) {
     capacity = 16;
   }
   
-  SPVM_STRING_BUFFER* string_buffer;
+  SPVM_COMPILER_STRING_BUFFER* string_buffer;
   if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-    string_buffer = (SPVM_STRING_BUFFER*)SPVM_ALLOCATOR_alloc_memory_block_tmp(allocator, sizeof(SPVM_STRING_BUFFER));
+    string_buffer = (SPVM_COMPILER_STRING_BUFFER*)SPVM_ALLOCATOR_alloc_memory_block_tmp(allocator, sizeof(SPVM_COMPILER_STRING_BUFFER));
   }
   else if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-    string_buffer = (SPVM_STRING_BUFFER*)SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_STRING_BUFFER));
+    string_buffer = (SPVM_COMPILER_STRING_BUFFER*)SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(SPVM_COMPILER_STRING_BUFFER));
   }
   else {
     assert(0);
@@ -48,16 +48,16 @@ SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(SPVM_ALLOCATOR* allocator, int32_t ca
 }
 
 
-SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new_tmp(SPVM_ALLOCATOR* allocator, int32_t capacity) {
-  return SPVM_STRING_BUFFER_new(allocator, capacity, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+SPVM_COMPILER_STRING_BUFFER* SPVM_COMPILER_STRING_BUFFER_new_tmp(SPVM_ALLOCATOR* allocator, int32_t capacity) {
+  return SPVM_COMPILER_STRING_BUFFER_new(allocator, capacity, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 }
 
-char* SPVM_STRING_BUFFER_get_buffer(SPVM_STRING_BUFFER* string_buffer) {
+char* SPVM_COMPILER_STRING_BUFFER_get_buffer(SPVM_COMPILER_STRING_BUFFER* string_buffer) {
   
   return string_buffer->string;
 }
 
-void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t new_length) {
+void SPVM_COMPILER_STRING_BUFFER_maybe_extend(SPVM_COMPILER_STRING_BUFFER* string_buffer, int32_t new_length) {
 
   SPVM_ALLOCATOR* allocator = string_buffer->allocator;
 
@@ -92,7 +92,7 @@ void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t 
   }
 }
 
-int32_t SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, const char* string) {
+int32_t SPVM_COMPILER_STRING_BUFFER_add(SPVM_COMPILER_STRING_BUFFER* string_buffer, const char* string) {
   
   int32_t id = string_buffer->length;
   
@@ -101,7 +101,7 @@ int32_t SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, const char* st
   int32_t new_length = string_buffer->length + string_length;
   
   // Extend
-  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_length);
+  SPVM_COMPILER_STRING_BUFFER_maybe_extend(string_buffer, new_length);
   
   memcpy(string_buffer->string + string_buffer->length, string, string_length);
   
@@ -110,14 +110,14 @@ int32_t SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, const char* st
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_len(SPVM_STRING_BUFFER* string_buffer, char* string, int32_t string_length) {
+int32_t SPVM_COMPILER_STRING_BUFFER_add_len(SPVM_COMPILER_STRING_BUFFER* string_buffer, char* string, int32_t string_length) {
   
   int32_t id = string_buffer->length;
   
   int32_t new_length = string_buffer->length + string_length;
   
   // Extend
-  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_length);
+  SPVM_COMPILER_STRING_BUFFER_maybe_extend(string_buffer, new_length);
   
   memcpy(string_buffer->string + string_buffer->length, string, string_length);
   
@@ -126,14 +126,14 @@ int32_t SPVM_STRING_BUFFER_add_len(SPVM_STRING_BUFFER* string_buffer, char* stri
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_len_nullstr(SPVM_STRING_BUFFER* string_buffer, char* string, int32_t string_length) {
+int32_t SPVM_COMPILER_STRING_BUFFER_add_len_nullstr(SPVM_COMPILER_STRING_BUFFER* string_buffer, char* string, int32_t string_length) {
   
   int32_t id = string_buffer->length;
   
   int32_t new_length = string_buffer->length + string_length + 1;
   
   // Extend
-  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_length);
+  SPVM_COMPILER_STRING_BUFFER_maybe_extend(string_buffer, new_length);
   
   memcpy(string_buffer->string + string_buffer->length, string, string_length);
   *(string_buffer->string + string_buffer->length + string_length) = '\0';
@@ -143,14 +143,14 @@ int32_t SPVM_STRING_BUFFER_add_len_nullstr(SPVM_STRING_BUFFER* string_buffer, ch
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_hex_char(SPVM_STRING_BUFFER* string_buffer, char ch) {
+int32_t SPVM_COMPILER_STRING_BUFFER_add_hex_char(SPVM_COMPILER_STRING_BUFFER* string_buffer, char ch) {
   
   int32_t id = string_buffer->length;
 
   int32_t new_length = string_buffer->length + 4;
   
   // Extend
-  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_length);
+  SPVM_COMPILER_STRING_BUFFER_maybe_extend(string_buffer, new_length);
   
   sprintf(string_buffer->string + string_buffer->length, "\\x%02X", ch & 0x000000FF);
   
@@ -159,7 +159,7 @@ int32_t SPVM_STRING_BUFFER_add_hex_char(SPVM_STRING_BUFFER* string_buffer, char 
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_byte(SPVM_STRING_BUFFER* string_buffer, int8_t value) {
+int32_t SPVM_COMPILER_STRING_BUFFER_add_byte(SPVM_COMPILER_STRING_BUFFER* string_buffer, int8_t value) {
   
   int32_t id = string_buffer->length;
   
@@ -168,7 +168,7 @@ int32_t SPVM_STRING_BUFFER_add_byte(SPVM_STRING_BUFFER* string_buffer, int8_t va
   int32_t new_max_length = string_buffer->length + max_length;
   
   // Extend
-  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
+  SPVM_COMPILER_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
   int32_t write_length = sprintf(string_buffer->string + string_buffer->length, "%" PRId8, value);
   
@@ -177,7 +177,7 @@ int32_t SPVM_STRING_BUFFER_add_byte(SPVM_STRING_BUFFER* string_buffer, int8_t va
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_short(SPVM_STRING_BUFFER* string_buffer, int16_t value) {
+int32_t SPVM_COMPILER_STRING_BUFFER_add_short(SPVM_COMPILER_STRING_BUFFER* string_buffer, int16_t value) {
   
   int32_t id = string_buffer->length;
   
@@ -186,7 +186,7 @@ int32_t SPVM_STRING_BUFFER_add_short(SPVM_STRING_BUFFER* string_buffer, int16_t 
   int32_t new_max_length = string_buffer->length + max_length;
   
   // Extend
-  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
+  SPVM_COMPILER_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
   int32_t write_length = sprintf(string_buffer->string + string_buffer->length, "%" PRId16, value);
   
@@ -195,7 +195,7 @@ int32_t SPVM_STRING_BUFFER_add_short(SPVM_STRING_BUFFER* string_buffer, int16_t 
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_int(SPVM_STRING_BUFFER* string_buffer, int32_t value) {
+int32_t SPVM_COMPILER_STRING_BUFFER_add_int(SPVM_COMPILER_STRING_BUFFER* string_buffer, int32_t value) {
   
   int32_t id = string_buffer->length;
   
@@ -204,7 +204,7 @@ int32_t SPVM_STRING_BUFFER_add_int(SPVM_STRING_BUFFER* string_buffer, int32_t va
   int32_t new_max_length = string_buffer->length + max_length;
   
   // Extend
-  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
+  SPVM_COMPILER_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
   int32_t write_length;
   if (value == INT32_MIN) {
@@ -219,7 +219,7 @@ int32_t SPVM_STRING_BUFFER_add_int(SPVM_STRING_BUFFER* string_buffer, int32_t va
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_long(SPVM_STRING_BUFFER* string_buffer, int64_t value) {
+int32_t SPVM_COMPILER_STRING_BUFFER_add_long(SPVM_COMPILER_STRING_BUFFER* string_buffer, int64_t value) {
   
   int32_t id = string_buffer->length;
 
@@ -228,7 +228,7 @@ int32_t SPVM_STRING_BUFFER_add_long(SPVM_STRING_BUFFER* string_buffer, int64_t v
   int32_t new_max_length = string_buffer->length + max_length;
   
   // Extend
-  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
+  SPVM_COMPILER_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
   int32_t write_length;
   if (value == INT64_MIN) {
@@ -243,7 +243,7 @@ int32_t SPVM_STRING_BUFFER_add_long(SPVM_STRING_BUFFER* string_buffer, int64_t v
   return id;
 }
 
-void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer) {
+void SPVM_COMPILER_STRING_BUFFER_free(SPVM_COMPILER_STRING_BUFFER* string_buffer) {
 
   SPVM_ALLOCATOR* allocator = string_buffer->allocator;
   
@@ -259,7 +259,7 @@ void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer) {
   }
 }
 
-int32_t SPVM_STRING_BUFFER_contains(SPVM_STRING_BUFFER* string_buffer, int32_t offset, const char* string) {
+int32_t SPVM_COMPILER_STRING_BUFFER_contains(SPVM_COMPILER_STRING_BUFFER* string_buffer, int32_t offset, const char* string) {
   const char* found_ptr = strstr(string_buffer->string + offset, string);
   
   int32_t found = 0;

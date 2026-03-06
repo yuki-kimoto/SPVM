@@ -11,7 +11,7 @@
 #include "spvm_list.h"
 #include "spvm_hash.h"
 #include "spvm_method.h"
-#include "spvm_string_buffer.h"
+#include "spvm_compiler_string_buffer.h"
 #include "spvm_string.h"
 #include "spvm_op.h"
 #include "spvm_type.h"
@@ -77,7 +77,7 @@ SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
   
   basic_type->constant_strings = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 128);
   basic_type->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->current_each_compile_allocator, 128);
-  basic_type->string_pool = SPVM_STRING_BUFFER_new(compiler->current_each_compile_allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  basic_type->string_pool = SPVM_COMPILER_STRING_BUFFER_new(compiler->current_each_compile_allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   
   // Fields
   basic_type->original_fields = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
@@ -360,7 +360,7 @@ SPVM_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compiler, SPVM_B
   else {
     int32_t string_pool_index = basic_type->string_pool->length;
     
-    SPVM_STRING_BUFFER_add_len_nullstr(basic_type->string_pool, (char*)value, length);
+    SPVM_COMPILER_STRING_BUFFER_add_len_nullstr(basic_type->string_pool, (char*)value, length);
     
     SPVM_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, sizeof(SPVM_STRING));
     string->value = value;

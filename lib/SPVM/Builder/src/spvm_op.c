@@ -34,7 +34,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
-#include "spvm_string_buffer.h"
+#include "spvm_compiler_string_buffer.h"
 #include "spvm_allow.h"
 #include "spvm_interface.h"
 #include "spvm_string.h"

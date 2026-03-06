@@ -107,10 +107,6 @@ typedef struct spvm_opcode_list SPVM_OPCODE_LIST;
 struct spvm_opcode;
 typedef struct spvm_opcode SPVM_OPCODE;
 
-// spvm_string_buffer.h
-struct spvm_string_buffer;
-typedef struct spvm_string_buffer SPVM_STRING_BUFFER;
-
 // spvm_class_var_access.h
 struct spvm_class_var_access;
 typedef struct spvm_class_var_access SPVM_CLASS_VAR_ACCESS;
@@ -201,5 +197,9 @@ typedef struct spvm_method SPVM_METHOD;
 
 union spvm_yystype;
 typedef union spvm_yystype SPVM_YYSTYPE;
+
+// spvm_compiler_string_buffer.h
+struct spvm_compiler_string_buffer;
+typedef struct spvm_compiler_string_buffer SPVM_COMPILER_STRING_BUFFER;
 
 #endif

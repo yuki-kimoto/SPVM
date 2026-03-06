@@ -65,35 +65,35 @@ void SPVM_PRECOMPILE_set_runtime(SPVM_PRECOMPILE* precompile, SPVM_RUNTIME* runt
 
 SPVM_RUNTIME* SPVM_PRECOMPILE_get_runtime(SPVM_PRECOMPILE* precompile);
 
-void SPVM_PRECOMPILE_build_module_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+void SPVM_PRECOMPILE_build_module_source(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* basic_type);
 
-void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer);
+void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer);
 
-void SPVM_PRECOMPILE_build_method_declaration(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_METHOD* method);
+void SPVM_PRECOMPILE_build_method_declaration(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_METHOD* method);
 
-void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* current_basic_type, SPVM_RUNTIME_METHOD* current_method);
+void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* current_basic_type, SPVM_RUNTIME_METHOD* current_method);
 
-void SPVM_PRECOMPILE_add_operand(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index);
+void SPVM_PRECOMPILE_add_operand(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index);
 
-void SPVM_PRECOMPILE_add_operand_address(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index);
+void SPVM_PRECOMPILE_add_operand_address(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index);
 
 const char* SPVM_PRECOMPILE_get_ctype_name(SPVM_PRECOMPILE* precompile, int32_t ctype_id);
 
 void SPVM_PRECOMPILE_replace_colon_with_under_score(SPVM_PRECOMPILE* precompile, char* string);
 
-void SPVM_PRECOMPILE_add_basic_type(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name);
+void SPVM_PRECOMPILE_add_basic_type(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer, const char* basic_type_name);
 
-void SPVM_PRECOMPILE_add_class_var(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* class_var_name);
+void SPVM_PRECOMPILE_add_class_var(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* class_var_name);
 
-void SPVM_PRECOMPILE_add_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name);
+void SPVM_PRECOMPILE_add_field(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name);
 
-void SPVM_PRECOMPILE_add_field_offset(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name);
+void SPVM_PRECOMPILE_add_field_offset(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name);
 
-void SPVM_PRECOMPILE_add_field_exists_offset(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name);
+void SPVM_PRECOMPILE_add_field_exists_offset(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name);
 
-void SPVM_PRECOMPILE_add_field_exists_bit(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name);
+void SPVM_PRECOMPILE_add_field_exists_bit(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* field_name);
 
-void SPVM_PRECOMPILE_add_method(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* method_name);
+void SPVM_PRECOMPILE_add_method(SPVM_PRECOMPILE* precompile, SPVM_COMPILER_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* method_name);
 
 int32_t SPVM_PRECOMPILE_contains_basic_type(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name);
 

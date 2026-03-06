@@ -25,7 +25,7 @@ struct spvm_basic_type {
   const char* basic_type_name_in_version_from;
   SPVM_LIST* constant_strings;
   SPVM_HASH* constant_string_symtable;
-  SPVM_STRING_BUFFER* string_pool;
+  SPVM_COMPILER_STRING_BUFFER* string_pool;
   SPVM_LIST* class_vars;
   SPVM_HASH* class_var_symtable;
   SPVM_LIST* original_fields;
