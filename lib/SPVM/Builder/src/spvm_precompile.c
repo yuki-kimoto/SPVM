@@ -89,7 +89,6 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "#include <string.h>\n"
     "#include <stdio.h>\n"
     "#include <inttypes.h>\n"
-    "#include <assert.h>\n"
     
     "#include \"spvm_native.h\"\n"
     "#include \"spvm_builtin_expect.h\"\n"
