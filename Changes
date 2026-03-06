@@ -1,3 +1,7 @@
+0.990140 2026-03-04
+  [New Features]
+    * Add arch_ccflags field to SPVM::Builder::Config and reflect it in compile command.
+    
 0.990139 2026-03-02
   [Bug Fix]
     * Fix a bug that numeric object types could not be cast to the same types.

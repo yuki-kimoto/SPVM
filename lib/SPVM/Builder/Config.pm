@@ -497,6 +497,17 @@ sub language_ccflags {
   }
 }
 
+sub arch_ccflags {
+  my $self = shift;
+  if (@_) {
+    $self->{arch_ccflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{arch_ccflags};
+  }
+}
+
 sub compiler_ccflags {
   my $self = shift;
   if (@_) {
@@ -824,6 +835,11 @@ sub new {
     $self->language_ccflags([]);
   }
 
+  # arch_ccflags
+  unless (defined $self->{arch_ccflags}) {
+    $self->arch_ccflags([]);
+  }
+  
   # compiler_ccflags
   unless (defined $self->{compiler_ccflags}) {
     $self->compiler_ccflags([]);
@@ -1303,6 +1319,7 @@ sub clear_system_settings {
   $self->thread_ccflags([]);
   $self->warn_ccflags([]);
   $self->language_ccflags([]);
+  $self->arch_ccflags([]);
   $self->compiler_ccflags([]);
   $self->runtime_ccflags([]);
   $self->ld_ccflags([]);
@@ -1989,6 +2006,13 @@ Gets and sets C<warn_ccflags> field, an array reference containing arguments of 
 
 Gets and sets C<language_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for language.
 
+=head2 arch_ccflags
+
+  my $arch_ccflags = $config->arch_ccflags;
+  $config->arch_ccflags($arch_ccflags);
+
+Gets and sets C<arch_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for CPU architecture or host environment.
+
 =head2 compiler_ccflags
 
   my $compiler_ccflags = $config->compiler_ccflags;
@@ -2247,6 +2271,10 @@ Other OSs:
   []
 
 =item * L</"language_ccflags">
+
+  []
+
+=item * L</"arch_ccflags">
 
   []
 
@@ -2544,6 +2572,8 @@ The following fields are set to C<[]>.
 =item * L</"warn_ccflags">
 
 =item * L</"language_ccflags">
+
+=item * L</"arch_ccflags">
 
 =item * L</"compiler_ccflags">
 
