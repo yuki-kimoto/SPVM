@@ -97,7 +97,7 @@ sub create_command {
   my $cc_output_option_name = $config->cc_output_option_name;
   
   # Build output option
-  my $output_option = $config->build_option_short($cc_output_option_name, $output_file);
+  my $output_option = $config->create_option_short($cc_output_option_name, $output_file);
   
   # Build command
   my @compile_command = ($cc, '-c', $output_option, @$compile_command_args, $source_file);
@@ -118,7 +118,7 @@ sub create_ccflags {
   
   my $std = $config->std;
   if (length $std) {
-    push @compile_command_args, $config->build_option("-std", $std);
+    push @compile_command_args, $config->create_option("-std", $std);
   }
   
   push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config->defines};

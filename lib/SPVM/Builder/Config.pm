@@ -1368,8 +1368,8 @@ sub clear_system_settings {
   $self->debug_ldflags([]);
 }
 
-# Main build_option (Auto-detect by length)
-sub build_option {
+# Main create_option (Auto-detect by length)
+sub create_option {
   my ($self, $name, $value) = @_;
   
   # Extract the option name without leading hyphens or slashes to check its length
@@ -1377,22 +1377,22 @@ sub build_option {
   $pure_name =~ s/^[\-\/]+//;
   
   if (length $pure_name <= 1) {
-    return $self->build_option_short($name, $value);
+    return $self->create_option_short($name, $value);
   }
   else {
-    return $self->build_option_long($name, $value);
+    return $self->create_option_long($name, $value);
   }
 }
 
 # Connect directly (e.g. -oFILE, -I/path)
-sub build_option_short {
+sub create_option_short {
   my ($self, $name, $value) = @_;
   
   return "$name$value";
 }
 
 # Connect using long_option_sep (e.g. --prefix=/usr, -out:FILE)
-sub build_option_long {
+sub create_option_long {
   my ($self, $name, $value) = @_;
   
   my $sep = $self->long_option_sep;
@@ -2663,47 +2663,47 @@ The following fields are set to C<[]>.
 
 =back
 
-=head2 build_option
+=head2 create_option
 
-  my $option = $config->build_option("-std", "c11");
+  my $option = $config->create_option("-std", "c11");
 
 Builds a command line option from the option name and the value.
 
 If the length of the option name (excluding leading C<-> and C</>) is 1, the option name and the value are connected without a separator.
 
   # Results in "-Ic:/path"
-  my $option = $config->build_option("-I", "c:/path");
+  my $option = $config->create_option("-I", "c:/path");
 
 If the length of the option name is greater than 1, they are connected using L</"long_option_sep">.
 
   # Results in "-std=c11" (if long_option_sep is "=")
-  my $option = $config->build_option("-std", "c11");
+  my $option = $config->create_option("-std", "c11");
 
 This method is useful for supporting different compiler conventions such as GCC/Clang and MSVC.
 
-=head2 build_option_short
+=head2 create_option_short
 
-  my $option = $config->build_option_short("-I", "c:/path");
+  my $option = $config->create_option_short("-I", "c:/path");
 
 Builds a command line option by connecting the option name and the value directly without a separator.
 
   # Results in "-Ic:/path"
-  my $option = $config->build_option_short("-I", "c:/path");
+  my $option = $config->create_option_short("-I", "c:/path");
 
   # Results in "-Foc:/path" (Useful for MSVC even if the option name length > 1)
-  my $option = $config->build_option_short("-Fo", "c:/path");
+  my $option = $config->create_option_short("-Fo", "c:/path");
 
-=head2 build_option_long
+=head2 create_option_long
 
-  my $option = $config->build_option_long("-std", "c11");
+  my $option = $config->create_option_long("-std", "c11");
 
 Builds a command line option by connecting the option name and the value using L</"long_option_sep">.
 
   # Results in "-std=c11" (if long_option_sep is "=")
-  my $option = $config->build_option_long("-std", "c11");
+  my $option = $config->create_option_long("-std", "c11");
 
   # Results in "-out:c:/path" (if long_option_sep is ":")
-  my $option = $config->build_option_long("-out", "c:/path");
+  my $option = $config->create_option_long("-out", "c:/path");
 
 =cut
 
