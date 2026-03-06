@@ -90,13 +90,10 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "#include <stdio.h>\n"
     "#include <inttypes.h>\n"
     "#include <assert.h>\n"
+    
     "#include \"spvm_native.h\"\n"
-    
-    "/* Fix MSVC compatibility */\n"
-    "#ifdef _MSC_VER\n"
-    "#define __builtin_expect(expr, val) (expr)\n"
-    "#endif\n"
-    
+    "#include \"spvm_builtin_expect.h\"\n"
+
     "#include \"spvm_implement.h\"\n"
   );
 }
