@@ -447,15 +447,15 @@ struct spvm_api_allocator {
 };
 
 struct spvm_api_arg {
-  const char* (*get_name)(void* runtime, void* arg);
-  int32_t (*get_index)(void* runtime, void* arg);
-  void* (*get_basic_type)(void* runtime, void* arg);
-  int32_t (*get_type_dimension)(void* runtime, void* arg);
-  int32_t (*get_type_flag)(void* runtime, void* arg);
-  int32_t (*get_stack_index)(void* runtime, void* arg);
-  void* (*get_current_method)(void* runtime, void* arg);
-  int32_t (*is_optional)(void* runtime, void* arg);
-  SPVM_VALUE (*get_default_value)(void* runtime, void* arg);
+  const char* (*get_name)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  int32_t (*get_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  SPVM_NATIVE_BASIC_TYPE* (*get_basic_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  int32_t (*get_type_dimension)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  int32_t (*get_type_flag)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  int32_t (*get_stack_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  SPVM_NATIVE_METHOD* (*get_current_method)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  int32_t (*is_optional)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  SPVM_VALUE (*get_default_value)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
 };
 
 struct spvm_api_basic_type {

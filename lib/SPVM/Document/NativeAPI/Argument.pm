@@ -12,67 +12,67 @@ The argument native APIs in L<SPVM> are the APIs to get definition information f
   
   SPVM_API_METHOD* api_method = env->api->method;
   
-  void* basic_type = env->get_basic_type(env, stack, "Foo");
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->get_basic_type(env, stack, "Foo");
   
-  void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "get");
+  SPVM_NATIVE_METHOD* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "get");
   
-  void* arg = api_method->get_arg_by_index(env->runtime, method, 0);
+  SPVM_NATIVE_ARG* arg = api_method->get_arg_by_index(env->runtime, method, 0);
   
-  void* arg_basic_type = api_arg->get_basic_type(env->runtime, arg);
+  SPVM_NATIVE_BASIC_TYPE* arg_basic_type = api_arg->get_basic_type(env->runtime, arg);
 
 =head1 Native APIs
 
 =head2 get_name
 
-C<const char* (*get_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
+C<const char* (*get_name)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);>
 
 Returns the name of the argument I<arg>.
 
 =head2 get_index
 
-C<int32_t (*get_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
+C<int32_t (*get_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);>
 
 Returns the index of the argument I<arg>.
 
 =head2 get_basic_type
 
-C<void* (*get_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
+C<SPVM_NATIVE_BASIC_TYPE* (*get_basic_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);>
 
 Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the argument I<arg>.
 
 =head2 get_type_dimension
 
-C<int32_t (*get_type_dimension)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
+C<int32_t (*get_type_dimension)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);>
 
 Returns the type dimention of the argument I<arg>.
 
 =head2 get_type_flag
 
-C<int32_t (*get_type_flag)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
+C<int32_t (*get_type_flag)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);>
 
 Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the argument I<arg>.
 
 =head2 get_stack_index
 
-C<int32_t (*get_stack_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
+C<int32_t (*get_stack_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);>
 
 Returns the stack index of the argument I<arg>. The stack index is the position in a L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack">.
 
 =head2 get_current_method
 
-C<void* (*get_current_method)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
+C<SPVM_NATIVE_METHOD* (*get_current_method)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);>
 
 Returns the L<method|SPVM::Document::NativeAPI::Method> that owns the argment I<arg>.
 
 =head2 is_optional
 
-C<int32_t (*is_optional)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
+C<int32_t (*is_optional)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);>
 
 If the argument I<arg> is an optional argument, returns 1, otherwise returns 0.
 
 =head2 get_default_value
 
-C<SPVM_VALUE (*get_default_value)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
+C<SPVM_VALUE (*get_default_value)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);>
 
 Returns the default value of the optional argument I<arg>.
 

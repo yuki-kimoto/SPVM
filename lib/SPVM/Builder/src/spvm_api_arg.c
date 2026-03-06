@@ -36,47 +36,47 @@ void SPVM_API_ARG_free_api(SPVM_API_ARG* api) {
   free(api);
 }
 
-const char* SPVM_API_ARG_get_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+const char* SPVM_API_ARG_get_name(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg) {
   
-  return arg->name;
+  return ((SPVM_RUNTIME_ARG*)arg)->name;
 }
 
-int32_t SPVM_API_ARG_get_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+int32_t SPVM_API_ARG_get_index(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg) {
   
-  return arg->index;
+  return ((SPVM_RUNTIME_ARG*)arg)->index;
 }
 
-SPVM_RUNTIME_BASIC_TYPE* SPVM_API_ARG_get_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+SPVM_NATIVE_BASIC_TYPE* SPVM_API_ARG_get_basic_type(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg) {
   
-  return arg->basic_type;
+  return (SPVM_NATIVE_BASIC_TYPE*)((SPVM_RUNTIME_ARG*)arg)->basic_type;
 }
 
-int32_t SPVM_API_ARG_get_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+int32_t SPVM_API_ARG_get_type_dimension(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg) {
   
-  return arg->type_dimension;
+  return ((SPVM_RUNTIME_ARG*)arg)->type_dimension;
 }
 
-int32_t SPVM_API_ARG_get_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+int32_t SPVM_API_ARG_get_type_flag(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg) {
   
-  return arg->type_flag;
+  return ((SPVM_RUNTIME_ARG*)arg)->type_flag;
 }
 
-int32_t SPVM_API_ARG_get_stack_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+int32_t SPVM_API_ARG_get_stack_index(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg) {
   
-  return arg->stack_index;
+  return ((SPVM_RUNTIME_ARG*)arg)->stack_index;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_ARG_get_current_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+SPVM_NATIVE_METHOD* SPVM_API_ARG_get_current_method(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg) {
   
-  return arg->current_method;
+  return (SPVM_NATIVE_METHOD*)((SPVM_RUNTIME_ARG*)arg)->current_method;
 }
 
-int32_t SPVM_API_ARG_is_optional(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+int32_t SPVM_API_ARG_is_optional(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg) {
   
-  return arg->is_optional;
+  return ((SPVM_RUNTIME_ARG*)arg)->is_optional;
 }
 
-SPVM_VALUE SPVM_API_ARG_get_default_value(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+SPVM_VALUE SPVM_API_ARG_get_default_value(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg) {
   
-  return arg->default_value;
+  return ((SPVM_RUNTIME_ARG*)arg)->default_value;
 }
