@@ -84,14 +84,7 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
   
   // Include headers and define macros
   SPVM_STRING_BUFFER_add(string_buffer,
-    
-    "#include <stdlib.h>\n"
-    "#include <string.h>\n"
-    "#include <inttypes.h>\n"
-    
     "#include \"spvm_native.h\"\n"
-    "#include \"spvm_builtin_expect.h\"\n"
-
     "#include \"spvm_implement.h\"\n"
   );
 }

@@ -4,12 +4,16 @@
 #ifndef SPVM_NATIVE_H
 #define SPVM_NATIVE_H
 
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdarg.h>
-
-#include "spvm_version.h"
+#ifndef SPVM_NATIVE_NO_INCLUDE_FILES
+  #include <stdint.h>
+  #include <stdio.h>
+  #include <string.h>
+  #include <stdarg.h>
+  #include <stdlib.h>
+  #include <inttypes.h>
+  #include "spvm_version.h"
+  #include "spvm_builtin_expect.h"
+#endif
 
 #define SPVM_NATIVE_GET_POINTER(object) (*(void**)object)
 
