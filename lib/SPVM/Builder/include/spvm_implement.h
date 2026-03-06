@@ -2735,7 +2735,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(SPVM_ENV* env, 
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
-  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId8, value);
+  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%lld", (long long)value);
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
@@ -2745,7 +2745,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_STRING(SPVM_ENV* env,
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
-  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId16, value);
+  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%lld", (long long)value);
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
@@ -2755,7 +2755,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_STRING(SPVM_ENV* env, S
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
-  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId32, value);
+  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%lld", (long long)value);
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
@@ -2765,7 +2765,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(SPVM_ENV* env, 
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
-  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId64, value);
+  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%lld", (long long)value);
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);

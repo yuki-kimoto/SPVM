@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stddef.h>
+#include <inttypes.h>
 
 #include "spvm_precompile.h"
 

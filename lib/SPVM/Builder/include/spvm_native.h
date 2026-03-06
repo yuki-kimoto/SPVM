@@ -9,7 +9,6 @@
   #include <stdio.h>
   #include <string.h>
   #include <stdlib.h>
-  #include <inttypes.h>
   #include "spvm_version.h"
   #include "spvm_builtin_expect.h"
 #endif
