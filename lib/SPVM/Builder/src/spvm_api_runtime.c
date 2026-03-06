@@ -13,7 +13,7 @@
 #include "spvm_native.h"
 
 #include "spvm_type.h"
-#include "spvm_method.h"
+#include "spvm_compiler_method.h"
 
 #include "spvm_list.h"
 #include "spvm_hash.h"

@@ -17,7 +17,7 @@
 #include "spvm_check.h"
 #include "spvm_type.h"
 #include "spvm_list.h"
-#include "spvm_method.h"
+#include "spvm_compiler_method.h"
 #include "spvm_var.h"
 #include "spvm_var_decl.h"
 #include "spvm_allocator.h"
@@ -45,7 +45,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     SPVM_LIST* methods = basic_type->methods;
     for (int32_t method_index = 0; method_index < methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
+      SPVM_COMPILER_METHOD* method = SPVM_LIST_get(methods, method_index);
       
       SPVM_OPCODE_LIST* opcode_list = method->opcode_list;
       
@@ -1153,7 +1153,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       SPVM_CALL_METHOD* call_method = op_assign_src->uv.call_method;
                       const char* call_method_method_name = call_method->method->name;
                       
-                      SPVM_METHOD* method_call_method = SPVM_HASH_get(call_method->method->current_basic_type->method_symtable, call_method_method_name, strlen(call_method_method_name));
+                      SPVM_COMPILER_METHOD* method_call_method = SPVM_HASH_get(call_method->method->current_basic_type->method_symtable, call_method_method_name, strlen(call_method_method_name));
                       
                       SPVM_OP* op_term_args = op_assign_src->first;
                       SPVM_OP* op_term_arg = op_term_args->first;
@@ -5562,7 +5562,7 @@ void SPVM_OPCODE_BUILDER_push_opcode_on_exception(
   int32_t no_die
 )
 {
-  SPVM_METHOD* method = op_method->uv.method;
+  SPVM_COMPILER_METHOD* method = op_method->uv.method;
   int32_t method_opcodes_base_address_id = 0;
   
   if (in_eval_block) {

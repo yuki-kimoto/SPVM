@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#include "spvm_method.h"
+#include "spvm_compiler_method.h"
 #include "assert.h"
 
 #include "spvm_allocator.h"
@@ -12,8 +12,8 @@
 #include "spvm_op.h"
 #include "spvm_opcode_list.h"
 
-SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
-  SPVM_METHOD* method = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, sizeof(SPVM_METHOD));
+SPVM_COMPILER_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
+  SPVM_COMPILER_METHOD* method = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, sizeof(SPVM_COMPILER_METHOD));
   
   method->var_decls = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   method->anon_method_fields = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);

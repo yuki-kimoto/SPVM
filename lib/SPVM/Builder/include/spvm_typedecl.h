@@ -191,9 +191,9 @@ typedef struct spvm_field SPVM_FIELD;
 struct spvm_attribute;
 typedef struct spvm_attribute SPVM_ATTRIBUTE;
 
-// spvm_method.h
-struct spvm_method;
-typedef struct spvm_method SPVM_METHOD;
+// spvm_compiler_method.h
+struct spvm_compiler_method;
+typedef struct spvm_compiler_method SPVM_COMPILER_METHOD;
 
 union spvm_yystype;
 typedef union spvm_yystype SPVM_YYSTYPE;

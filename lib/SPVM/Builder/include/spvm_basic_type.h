@@ -42,10 +42,10 @@ struct spvm_basic_type {
   SPVM_LIST* interface_decls;
   SPVM_LIST* use_basic_type_names;
   SPVM_HASH* alias_symtable;
-  SPVM_METHOD* required_method;
-  SPVM_METHOD* destroy_method;
-  SPVM_METHOD* init_method;
-  SPVM_METHOD* end_method;
+  SPVM_COMPILER_METHOD* required_method;
+  SPVM_COMPILER_METHOD* destroy_method;
+  SPVM_COMPILER_METHOD* init_method;
+  SPVM_COMPILER_METHOD* end_method;
   SPVM_LIST* op_inits;
   SPVM_LIST* op_ends;
   const char* parent_name;

@@ -14,7 +14,7 @@
 #include "spvm_allocator.h"
 #include "spvm_op.h"
 #include "spvm_check.h"
-#include "spvm_method.h"
+#include "spvm_compiler_method.h"
 #include "spvm_constant.h"
 #include "spvm_field.h"
 #include "spvm_var_decl.h"
@@ -109,7 +109,7 @@ void SPVM_CHECK_build_string_class(SPVM_COMPILER* compiler) {
     op_method = SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block);
     
     // 6. Register the method to string's basic_type
-    SPVM_METHOD* method = op_method->uv.method;
+    SPVM_COMPILER_METHOD* method = op_method->uv.method;
     
     // 5. Re-construct the string class structure to register the method
     // This mimics the logic in SPVM_OP_build_anon_method
@@ -379,7 +379,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+      SPVM_COMPILER_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       
       if (method->current_basic_type->is_generated_by_anon_method) {
         char* found_ptr = strstr(basic_type->name, "::anon_method::");
@@ -398,7 +398,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
-    SPVM_METHOD* found_destroy_method = SPVM_CHECK_search_method(compiler, basic_type, "DESTROY");
+    SPVM_COMPILER_METHOD* found_destroy_method = SPVM_CHECK_search_method(compiler, basic_type, "DESTROY");
     
     basic_type->destroy_method = found_destroy_method;
   }
@@ -675,7 +675,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
     
     // Edit INIT blocks
     // The INIT blocks that is the parent basic type and used basic types in the order.
-    SPVM_METHOD* init_method = basic_type->init_method;
+    SPVM_COMPILER_METHOD* init_method = basic_type->init_method;
     if (init_method) {
       SPVM_OP* op_block = init_method->op_block;
       SPVM_OP* op_list_statement = op_block->first;
@@ -714,7 +714,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
     // Check methods
     SPVM_LIST* methods = basic_type->methods;
     for (int32_t i = 0; i < methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(methods, i);
+      SPVM_COMPILER_METHOD* method = SPVM_LIST_get(methods, i);
       
       // Argument limit check
       int32_t args_width = 0;
@@ -1142,11 +1142,11 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
     }
     
     // Sort methods by name
-    qsort(methods->values, methods->length, sizeof(SPVM_METHOD*), &SPVM_CHECK_method_name_compare_cb);
+    qsort(methods->values, methods->length, sizeof(SPVM_COMPILER_METHOD*), &SPVM_CHECK_method_name_compare_cb);
     
     // Create method IDs
     for (int32_t i = 0; i < methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(methods, i);
+      SPVM_COMPILER_METHOD* method = SPVM_LIST_get(methods, i);
       
       method->index = i;
     }
@@ -1188,13 +1188,13 @@ void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler) {
     }
     
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+      SPVM_COMPILER_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method->name, strlen(method->name));
     }
     
     int32_t compile_error = 0;
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+      SPVM_COMPILER_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       // AST traversals
       if (method->op_block) {
         // AST traversal - Check syntax and generate some operations
@@ -1223,7 +1223,7 @@ void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler) {
   }
 }
 
-void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_COMPILER_METHOD* method) {
   
   if (!method->op_block) {
     return;
@@ -4197,7 +4197,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               SPVM_BASIC_TYPE* var_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, var_basic_type_name, strlen(var_basic_type_name));
               
               const char* method_name = op_name_method->uv.name;
-              SPVM_METHOD* found_method = SPVM_HASH_get(
+              SPVM_COMPILER_METHOD* found_method = SPVM_HASH_get(
                 var_basic_type->method_symtable,
                 method_name,
                 strlen(method_name)
@@ -4292,7 +4292,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
   }
 }
 
-void SPVM_CHECK_check_ast_assign_form(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_assign_form(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_COMPILER_METHOD* method) {
   
   if (!method->op_block) {
     return;
@@ -4504,7 +4504,7 @@ void SPVM_CHECK_check_ast_assign_form(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* 
   }
 }
 
-void SPVM_CHECK_check_ast_fix_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_fix_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_COMPILER_METHOD* method) {
   
   // Block stack
   SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -4604,7 +4604,7 @@ void SPVM_CHECK_check_ast_fix_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TY
   SPVM_LIST_free(op_block_stack);
 }
 
-void SPVM_CHECK_check_ast_resolve_typed_var_indexes(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_resolve_typed_var_indexes(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_COMPILER_METHOD* method) {
   
   SPVM_LIST* tmp_var_decl_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 
@@ -4777,7 +4777,7 @@ void SPVM_CHECK_check_ast_resolve_typed_var_indexes(SPVM_COMPILER* compiler, SPV
   SPVM_LIST_free(runtime_vars_ref);
 }
 
-void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, SPVM_METHOD* current_method) {
+void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, SPVM_COMPILER_METHOD* current_method) {
   
   if (op_class_var_access->uv.class_var_access->class_var) {
     return;
@@ -5015,7 +5015,7 @@ static void update_closest_method_name(const char* method_name_user, const char*
   }
 }
 
-void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {
+void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_COMPILER_METHOD* current_method) {
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
   
@@ -5027,7 +5027,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
   
   // Class method call
   if (call_method->is_class_method) {
-    SPVM_METHOD* found_method = NULL;
+    SPVM_COMPILER_METHOD* found_method = NULL;
     // Basic type name + method name
     const char* basic_type_name;
     if (call_method->is_current) {
@@ -5064,7 +5064,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       SPVM_LIST* methods = found_basic_type->methods;
       const char* closest_method_name = NULL;
       for (int32_t i = 0; i < methods->length; i++) {
-        SPVM_METHOD* method = SPVM_LIST_get(methods, i);
+        SPVM_COMPILER_METHOD* method = SPVM_LIST_get(methods, i);
         update_closest_method_name(method_name, method->name, &closest_method_name);
       }
       
@@ -5105,7 +5105,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
       int32_t basic_type_name_length = (last_colon_pos - 1) - abs_method_name;
       
       // SUPER::
-      SPVM_METHOD* found_method = NULL;
+      SPVM_COMPILER_METHOD* found_method = NULL;
       if (strstr(abs_method_name, "SUPER::") == abs_method_name) {
         SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
         if (parent_basic_type) {
@@ -5153,7 +5153,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
         if (found_basic_type) {
           SPVM_LIST* methods = found_basic_type->methods;
           for (int32_t i = 0; i < methods->length; i++) {
-            SPVM_METHOD* method = SPVM_LIST_get(methods, i);
+            SPVM_COMPILER_METHOD* method = SPVM_LIST_get(methods, i);
             update_closest_method_name(&abs_method_name[basic_type_name_length + 2], method->name, &closest_method_name);
           }
         }
@@ -5173,7 +5173,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
     }
     // Instance method call
     else {
-      SPVM_METHOD* found_method = SPVM_CHECK_search_method(compiler, basic_type, method_name);
+      SPVM_COMPILER_METHOD* found_method = SPVM_CHECK_search_method(compiler, basic_type, method_name);
       
       if (found_method) {
         if (found_method->is_class_method) {
@@ -5192,7 +5192,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
           
           if (methods) {
             for (int32_t i = 0; i < methods->length; i++) {
-              SPVM_METHOD* method = SPVM_LIST_get(methods, i);
+              SPVM_COMPILER_METHOD* method = SPVM_LIST_get(methods, i);
               // Compare the user's input with the method name and update the closest one
               update_closest_method_name(method_name, method->name, &closest_method_name);
             }
@@ -5223,7 +5223,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
   
 }
 
-SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {
+SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_COMPILER_METHOD* current_method) {
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
   
@@ -5311,7 +5311,7 @@ SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* 
   return op_array_init_previous;
 }
 
-void SPVM_CHECK_check_call_method_args(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {
+void SPVM_CHECK_check_call_method_args(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_COMPILER_METHOD* current_method) {
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
   const char* method_name = call_method->op_name->uv.name;
@@ -5376,8 +5376,8 @@ void SPVM_CHECK_check_call_method_args(SPVM_COMPILER* compiler, SPVM_OP* op_call
             
 }
 
-SPVM_METHOD* SPVM_CHECK_search_method(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* method_name) {
-  SPVM_METHOD* found_method = NULL;
+SPVM_COMPILER_METHOD* SPVM_CHECK_search_method(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* method_name) {
+  SPVM_COMPILER_METHOD* found_method = NULL;
   
   SPVM_BASIC_TYPE* parent_basic_type = basic_type;
   while (1) {
@@ -5470,8 +5470,8 @@ int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* src_basi
 
 int SPVM_CHECK_method_name_compare_cb(const void* method1_ptr, const void* method2_ptr) {
   
-  SPVM_METHOD* method1 = *(SPVM_METHOD**)method1_ptr;
-  SPVM_METHOD* method2 = *(SPVM_METHOD**)method2_ptr;
+  SPVM_COMPILER_METHOD* method1 = *(SPVM_COMPILER_METHOD**)method1_ptr;
+  SPVM_COMPILER_METHOD* method2 = *(SPVM_COMPILER_METHOD**)method2_ptr;
   
   const char* method1_name = method1->name;
   const char* method2_name = method2->name;
@@ -5800,7 +5800,7 @@ int32_t SPVM_CHECK_get_typed_var_index(SPVM_COMPILER* compiler, SPVM_LIST* runti
   return found_typed_var_index;
 }
 
-SPVM_OP* SPVM_CHECK_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_METHOD* method, const char* file, int32_t line) {
+SPVM_OP* SPVM_CHECK_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_COMPILER_METHOD* method, const char* file, int32_t line) {
   
   // Temparary variable name
   char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, strlen("$.tmp_in_method2147483647") + 1);
@@ -6048,7 +6048,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CALL_METHOD: {
       SPVM_CALL_METHOD*call_method = op->uv.call_method;
       const char*call_method_method_name =call_method->method->name;
-      SPVM_METHOD* method = SPVM_HASH_get(call_method->method->current_basic_type->method_symtable,call_method_method_name, strlen(call_method_method_name));
+      SPVM_COMPILER_METHOD* method = SPVM_HASH_get(call_method->method->current_basic_type->method_symtable,call_method_method_name, strlen(call_method_method_name));
       type = method->return_type;
       break;
     }
@@ -6159,7 +6159,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
 
 SPVM_OP* SPVM_CHECK_apply_union_type_mapping(SPVM_COMPILER* compiler, SPVM_OP* op_call_method) {
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
-  SPVM_METHOD* method = call_method->method;
+  SPVM_COMPILER_METHOD* method = call_method->method;
   
   // Return type is not a union type
   if (!method->return_type->union_types) {

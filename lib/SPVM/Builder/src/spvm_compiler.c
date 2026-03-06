@@ -15,7 +15,7 @@
 #include "spvm_yacc_util.h"
 #include "spvm_list.h"
 #include "spvm_opcode_list.h"
-#include "spvm_method.h"
+#include "spvm_compiler_method.h"
 #include "spvm_field.h"
 #include "spvm_class_var.h"
 #include "spvm_native.h"
@@ -1088,7 +1088,7 @@ void SPVM_COMPILER_free_memory_tmp_each_compile(SPVM_COMPILER* compiler) {
     {
       int32_t method_index;
       for (method_index = 0; method_index < methods->length; method_index++) {
-        SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
+        SPVM_COMPILER_METHOD* method = SPVM_LIST_get(methods, method_index);
         method->op_method = NULL;
         method->op_name = NULL;
         method->op_block = NULL;
@@ -1207,7 +1207,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       SPVM_RUNTIME_METHOD* runtime_methods = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_METHOD) * basic_type->methods->length);
       for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
         
-        SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+        SPVM_COMPILER_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
         SPVM_RUNTIME_METHOD* runtime_method = &runtime_methods[method_index];
         
         assert(method->opcode_list->length > 0);

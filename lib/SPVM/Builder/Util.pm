@@ -67,7 +67,7 @@ sub get_spvm_core_source_file_names {
     spvm_hash.c
     spvm_interface.c
     spvm_list.c
-    spvm_method.c
+    spvm_compiler_method.c
     spvm_mutex.c
     spvm_op.c
     spvm_opcode_builder.c

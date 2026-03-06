@@ -25,7 +25,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_var_decl.h"
 #include "spvm_compiler_string_buffer.h"
-#include "spvm_method.h"
+#include "spvm_compiler_method.h"
 #include "spvm_string.h"
 #include "spvm_class_file.h"
 #include "spvm_utf8.h"

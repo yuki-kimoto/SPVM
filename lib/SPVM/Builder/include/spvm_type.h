@@ -216,7 +216,7 @@ int32_t SPVM_TYPE_is_super_class(SPVM_COMPILER* compiler,
 
 int32_t SPVM_TYPE_equals(SPVM_COMPILER* compiler, int32_t basic_type_id1, int32_t type_dimension1, int32_t type_flag1, int32_t basic_type_id2, int32_t type_dimension2, int32_t type_flag2);
 
-int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, SPVM_METHOD* dist_method, SPVM_METHOD* src_method, char* error_reason);
+int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, SPVM_COMPILER_METHOD* dist_method, SPVM_COMPILER_METHOD* src_method, char* error_reason);
 
 int32_t SPVM_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag, int32_t interface_basic_type_id);
 

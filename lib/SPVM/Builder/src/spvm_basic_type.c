@@ -10,7 +10,7 @@
 #include "spvm_allocator.h"
 #include "spvm_list.h"
 #include "spvm_hash.h"
-#include "spvm_method.h"
+#include "spvm_compiler_method.h"
 #include "spvm_compiler_string_buffer.h"
 #include "spvm_string.h"
 #include "spvm_op.h"
@@ -280,10 +280,10 @@ int32_t SPVM_BASIC_TYPE_has_interface_common(SPVM_COMPILER* compiler, int32_t sr
   }
   
   for (int32_t dist_method_index = 0; dist_method_index < dist_basic_type->methods->length; dist_method_index++) {
-    SPVM_METHOD* dist_method = SPVM_LIST_get(dist_basic_type->methods, dist_method_index);
+    SPVM_COMPILER_METHOD* dist_method = SPVM_LIST_get(dist_basic_type->methods, dist_method_index);
     
     if (!dist_method->is_class_method) {
-      SPVM_METHOD* src_method = NULL;
+      SPVM_COMPILER_METHOD* src_method = NULL;
       SPVM_BASIC_TYPE* parent_src_basic_type = src_basic_type;
       while (1) {
         

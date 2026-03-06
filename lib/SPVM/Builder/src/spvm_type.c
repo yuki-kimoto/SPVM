@@ -14,7 +14,7 @@
 #include "spvm_yacc_util.h"
 #include "spvm_basic_type.h"
 #include "spvm_field.h"
-#include "spvm_method.h"
+#include "spvm_compiler_method.h"
 #include "spvm_constant.h"
 #include "spvm_var_decl.h"
 
@@ -1952,7 +1952,7 @@ int32_t SPVM_TYPE_equals(SPVM_COMPILER* compiler, int32_t basic_type_id1, int32_
   }
 }
 
-int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, SPVM_METHOD* dist_method, SPVM_METHOD* src_method, char* error_reason) {
+int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, SPVM_COMPILER_METHOD* dist_method, SPVM_COMPILER_METHOD* src_method, char* error_reason) {
   
   assert(src_method);
   

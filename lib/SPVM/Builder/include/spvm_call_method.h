@@ -8,7 +8,7 @@
 
 struct spvm_call_method {
   SPVM_OP* op_name;
-  SPVM_METHOD* method;
+  SPVM_COMPILER_METHOD* method;
   SPVM_TYPE* type;
   const char* basic_type_name;
   int32_t args_length;

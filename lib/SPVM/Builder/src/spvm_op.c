@@ -12,7 +12,7 @@
 #include "spvm_list.h"
 #include "spvm_hash.h"
 #include "spvm_op.h"
-#include "spvm_method.h"
+#include "spvm_compiler_method.h"
 #include "spvm_constant.h"
 #include "spvm_field.h"
 #include "spvm_var_decl.h"
@@ -931,7 +931,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       // Method definition
       else if (op_decl->id == SPVM_OP_C_ID_METHOD) {
-        SPVM_METHOD* method = op_decl->uv.method;
+        SPVM_COMPILER_METHOD* method = op_decl->uv.method;
         
         SPVM_LIST_push(type->basic_type->methods, op_decl->uv.method);
         
@@ -1071,7 +1071,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   // Method declarations
   for (int32_t i = 0; i < type->basic_type->methods->length; i++) {
-    SPVM_METHOD* method = SPVM_LIST_get(type->basic_type->methods, i);
+    SPVM_COMPILER_METHOD* method = SPVM_LIST_get(type->basic_type->methods, i);
     
     if (!method->is_class_method) {
       SPVM_VAR_DECL* arg_var_decl_first = SPVM_LIST_get(method->var_decls, 0);
@@ -1140,7 +1140,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
     }
     
-    SPVM_METHOD* found_method = SPVM_HASH_get(type->basic_type->method_symtable, method_name, strlen(method_name));
+    SPVM_COMPILER_METHOD* found_method = SPVM_HASH_get(type->basic_type->method_symtable, method_name, strlen(method_name));
     
     if (found_method) {
       SPVM_COMPILER_error(compiler, "Redeclaration of %s#%s method.\n  at %s line %d", basic_type_name, method_name, method->op_method->file, method->op_method->line);
@@ -1184,7 +1184,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   // mulnum_t
   if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
     for (int32_t i = 0; i < type->basic_type->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(type->basic_type->methods, i);
+      SPVM_COMPILER_METHOD* method = SPVM_LIST_get(type->basic_type->methods, i);
       
       if (!method->is_class_method) {
         SPVM_COMPILER_error(compiler, "A multi-numeric type cannnot have instance methods.\n  at %s line %d", method->op_method->file, method->op_method->line);
@@ -1316,7 +1316,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
   SPVM_OP* op_enumeration_items = op_enumeration_block->first;
   SPVM_OP* op_method = op_enumeration_items->first;
   while ((op_method = SPVM_OP_sibling(compiler, op_method))) {
-    SPVM_METHOD* method = op_method->uv.method;
+    SPVM_COMPILER_METHOD* method = op_method->uv.method;
 
     // Enumeration attributes
     int32_t access_control_attributes_count = 0;
@@ -1621,7 +1621,7 @@ SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP
 }
 
 SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_attributes, SPVM_OP* op_block) {
-  SPVM_METHOD* method = SPVM_METHOD_new(compiler);
+  SPVM_COMPILER_METHOD* method = SPVM_METHOD_new(compiler);
   
   if (op_name_method == NULL) {
     SPVM_STRING* anon_method_name_string = SPVM_STRING_new(compiler, "", strlen(""));
@@ -1868,7 +1868,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
 
 void SPVM_OP_attach_anon_method_fields(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_anon_method_fields) {
   
-  SPVM_METHOD* method = op_method->uv.method;
+  SPVM_COMPILER_METHOD* method = op_method->uv.method;
   
   SPVM_OP* op_block = method->op_block;
   
@@ -2442,7 +2442,7 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
     assert(anon_basic_type);
     
     // Anon method
-    SPVM_METHOD* anon_method = SPVM_LIST_get(anon_basic_type->methods, 0);
+    SPVM_COMPILER_METHOD* anon_method = SPVM_LIST_get(anon_basic_type->methods, 0);
     
     if (anon_method->anon_method_fields->length) {
       // [Before]

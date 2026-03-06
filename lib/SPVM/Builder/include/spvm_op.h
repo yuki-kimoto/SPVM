@@ -339,7 +339,7 @@ struct spvm_op {
     const char* name;
     SPVM_CLASS_VAR* class_var;
     SPVM_FIELD* field;
-    SPVM_METHOD* method;
+    SPVM_COMPILER_METHOD* method;
     SPVM_SWITCH_INFO* switch_info;
     SPVM_CASE_INFO* case_info;
     SPVM_VERSION_FROM* version_from;

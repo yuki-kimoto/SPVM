@@ -14,7 +14,7 @@
 #include "spvm_hash.h"
 #include "spvm_constant.h"
 #include "spvm_field.h"
-#include "spvm_method.h"
+#include "spvm_compiler_method.h"
 #include "spvm_var_decl.h"
 #include "spvm_var.h"
 #include "spvm_op.h"
@@ -202,7 +202,7 @@ void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_type
     {
       int32_t j;
       for (j = 0; j < basic_type->methods->length; j++) {
-        SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, j);
+        SPVM_COMPILER_METHOD* method = SPVM_LIST_get(basic_type->methods, j);
         fprintf(stderr, "  methods[%" PRId32 "]\n", j);
         SPVM_DUMPER_dump_method(compiler, method);
       }
@@ -225,7 +225,7 @@ void SPVM_DUMPER_dump_basic_types_opcode_list(SPVM_COMPILER* compiler, SPVM_LIST
     {
       int32_t j;
       for (j = 0; j < basic_type->methods->length; j++) {
-        SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, j);
+        SPVM_COMPILER_METHOD* method = SPVM_LIST_get(basic_type->methods, j);
         fprintf(stderr, "  methods[%" PRId32 "]\n", j);
         SPVM_DUMPER_dump_method_opcode_list(compiler, method);
       }
@@ -274,7 +274,7 @@ void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant)
   }
 }
 
-void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
+void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_COMPILER_METHOD* method) {
   
   if (method) {
     
@@ -312,7 +312,7 @@ void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
   }
 }
 
-void SPVM_DUMPER_dump_method_opcode_list(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
+void SPVM_DUMPER_dump_method_opcode_list(SPVM_COMPILER* compiler, SPVM_COMPILER_METHOD* method) {
   
   if (method) {
     fprintf(stderr, "      name => \"%s\"\n", method->name);

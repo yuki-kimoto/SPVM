@@ -12,7 +12,7 @@
 #include "spvm_api_compiler.h"
 #include "spvm_list.h"
 #include "spvm_hash.h"
-#include "spvm_method.h"
+#include "spvm_compiler_method.h"
 #include "spvm_compiler_string_buffer.h"
 #include "spvm_allocator.h"
 #include "spvm_string.h"

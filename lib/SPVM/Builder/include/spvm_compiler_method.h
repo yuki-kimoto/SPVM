@@ -7,7 +7,7 @@
 #include "spvm_typedecl.h"
 
 // Method information
-struct spvm_method {
+struct spvm_compiler_method {
   const char* name;
   SPVM_OP* op_method;
   SPVM_OP* op_name;
@@ -47,6 +47,6 @@ struct spvm_method {
   SPVM_OP* op_anon_method_field_var_decl_start;
 };
 
-SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);
+SPVM_COMPILER_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);
 
 #endif
