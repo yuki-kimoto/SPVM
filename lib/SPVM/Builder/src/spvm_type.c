@@ -13,7 +13,7 @@
 #include "spvm_hash.h"
 #include "spvm_yacc_util.h"
 #include "spvm_basic_type.h"
-#include "spvm_field.h"
+#include "spvm_compiler_field.h"
 #include "spvm_compiler_method.h"
 #include "spvm_constant.h"
 #include "spvm_var_decl.h"
@@ -972,7 +972,7 @@ int32_t SPVM_TYPE_get_mulnum_field_basic_type_id(SPVM_COMPILER* compiler, int32_
     
     assert(basic_type->fields->length > 0);
     
-    SPVM_FIELD* mulnum_field = SPVM_LIST_get(basic_type->fields, 0);
+    SPVM_COMPILER_FIELD* mulnum_field = SPVM_LIST_get(basic_type->fields, 0);
     
     SPVM_TYPE* mulnum_field_type = mulnum_field->type;
     

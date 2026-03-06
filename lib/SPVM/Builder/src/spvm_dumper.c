@@ -13,7 +13,7 @@
 #include "spvm_list.h"
 #include "spvm_hash.h"
 #include "spvm_constant.h"
-#include "spvm_field.h"
+#include "spvm_compiler_field.h"
 #include "spvm_compiler_method.h"
 #include "spvm_var_decl.h"
 #include "spvm_var.h"
@@ -194,7 +194,7 @@ void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_type
     {
       int32_t j;
       for (j = 0; j < fields->length; j++) {
-        SPVM_FIELD* field = SPVM_LIST_get(fields, j);
+        SPVM_COMPILER_FIELD* field = SPVM_LIST_get(fields, j);
         fprintf(stderr, "    fields[%" PRId32 "]\n", j);
         SPVM_DUMPER_dump_field(compiler, field);
       }
@@ -337,7 +337,7 @@ void SPVM_DUMPER_dump_method_opcode_list(SPVM_COMPILER* compiler, SPVM_COMPILER_
   }
 }
 
-void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
+void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_COMPILER_FIELD* field) {
   
   if (field) {
     fprintf(stderr, "      name => \"%s\"\n", field->name);
@@ -404,7 +404,7 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
       fprintf(stderr, "ref");
     }
     else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->original_fields, 0);
+      SPVM_COMPILER_FIELD* first_field = SPVM_LIST_get(type->basic_type->original_fields, 0);
       assert(first_field);
       
       SPVM_TYPE* field_type = first_field->type;

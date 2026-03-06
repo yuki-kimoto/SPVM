@@ -14,7 +14,7 @@
 #include "spvm_op.h"
 #include "spvm_compiler_method.h"
 #include "spvm_constant.h"
-#include "spvm_field.h"
+#include "spvm_compiler_field.h"
 #include "spvm_var_decl.h"
 #include "spvm_var.h"
 #include "spvm_type.h"
@@ -749,7 +749,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
       // Field declarations
       else if (op_decl->id == SPVM_OP_C_ID_FIELD) {
-        SPVM_FIELD* field = op_decl->uv.field;
+        SPVM_COMPILER_FIELD* field = op_decl->uv.field;
         
         if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
           SPVM_COMPILER_error(compiler, "An interface cannnot have fields.\n  at %s line %d", op_decl->file, op_decl->line);
@@ -938,7 +938,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         // Fields of anon method
         SPVM_LIST* anon_method_fields = op_decl->uv.method->anon_method_fields;
         for (int32_t i = 0; i < anon_method_fields->length; i++) {
-          SPVM_FIELD* anon_method_field = SPVM_LIST_get(anon_method_fields, i);
+          SPVM_COMPILER_FIELD* anon_method_field = SPVM_LIST_get(anon_method_fields, i);
           
           SPVM_LIST_push(type->basic_type->original_fields, anon_method_field);
           anon_method_field->is_anon_method_field = 1;
@@ -966,7 +966,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   // Field declarations
   for (int32_t i = 0; i < type->basic_type->original_fields->length; i++) {
-    SPVM_FIELD* field = SPVM_LIST_get(type->basic_type->original_fields, i);
+    SPVM_COMPILER_FIELD* field = SPVM_LIST_get(type->basic_type->original_fields, i);
     
     // The default of the access controll of the field is private.
     if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
@@ -987,7 +987,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     field->index = i;
     const char* field_name = field->op_name->uv.name;
     
-    SPVM_FIELD* found_field = SPVM_HASH_get(type->basic_type->original_field_symtable, field_name, strlen(field_name));
+    SPVM_COMPILER_FIELD* found_field = SPVM_HASH_get(type->basic_type->original_field_symtable, field_name, strlen(field_name));
     
     if (found_field) {
       SPVM_COMPILER_error(compiler, "Redeclaration of %s#%s field.\n  at %s line %d", basic_type_name, field_name, field->op_field->file, field->op_field->line);
@@ -1527,7 +1527,7 @@ SPVM_OP* SPVM_OP_build_class_var(SPVM_COMPILER* compiler, SPVM_OP* op_class_var,
 SPVM_OP* SPVM_OP_build_field(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type, SPVM_OP* op_getter, SPVM_OP* op_setter) {
 
   // Create field information
-  SPVM_FIELD* field = SPVM_FIELD_new(compiler);
+  SPVM_COMPILER_FIELD* field = SPVM_FIELD_new(compiler);
 
   // Field Name
   field->op_name = op_name_field;
@@ -1888,7 +1888,7 @@ void SPVM_OP_attach_anon_method_fields(SPVM_COMPILER* compiler, SPVM_OP* op_meth
       // 2. Process "self" field last to avoid overriding the invocant $self too early
       op_anon_method_field = op_anon_method_fields->first;
       while ((op_anon_method_field = SPVM_OP_sibling(compiler, op_anon_method_field))) {
-        SPVM_FIELD* field = op_anon_method_field->uv.field;
+        SPVM_COMPILER_FIELD* field = op_anon_method_field->uv.field;
         if (field->is_decl_var_in_anon_method) {
           if (strcmp(field->name, "self") == 0) {
             SPVM_OP* op_assign_var_decl = SPVM_OP_build_anon_method_var_decl(compiler, op_anon_method_field_var_decl_start, field);
@@ -1899,7 +1899,7 @@ void SPVM_OP_attach_anon_method_fields(SPVM_COMPILER* compiler, SPVM_OP* op_meth
       // 1. Process fields other than "self" first
       SPVM_OP* op_anon_method_field = op_anon_method_fields->first;
       while ((op_anon_method_field = SPVM_OP_sibling(compiler, op_anon_method_field))) {
-        SPVM_FIELD* field = op_anon_method_field->uv.field;
+        SPVM_COMPILER_FIELD* field = op_anon_method_field->uv.field;
         if (field->is_decl_var_in_anon_method) {
           if (!(strcmp(field->name, "self") == 0)) {
             SPVM_OP* op_assign_var_decl = SPVM_OP_build_anon_method_var_decl(compiler, op_anon_method_field_var_decl_start, field);
@@ -1912,7 +1912,7 @@ void SPVM_OP_attach_anon_method_fields(SPVM_COMPILER* compiler, SPVM_OP* op_meth
   
 }
 
-SPVM_OP* SPVM_OP_build_anon_method_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_anon_method_field_var_decl_start, SPVM_FIELD* field) {
+SPVM_OP* SPVM_OP_build_anon_method_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_anon_method_field_var_decl_start, SPVM_COMPILER_FIELD* field) {
   
   char* var_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, 1 + strlen(field->name) + 1);
   sprintf(var_name, "$%s", field->name);
@@ -2468,7 +2468,7 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
       SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
       
       for (int32_t caputre_index = 0; caputre_index < anon_method->anon_method_fields->length; caputre_index++) {
-        SPVM_FIELD* anon_method_field = SPVM_LIST_get(anon_method->anon_method_fields, caputre_index);
+        SPVM_COMPILER_FIELD* anon_method_field = SPVM_LIST_get(anon_method->anon_method_fields, caputre_index);
         const char* anon_method_field_name = anon_method_field->name;
         SPVM_OP* op_anon_method_field_default = anon_method_field->op_anon_method_field_default;
         

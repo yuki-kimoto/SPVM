@@ -16,7 +16,7 @@
 #include "spvm_check.h"
 #include "spvm_compiler_method.h"
 #include "spvm_constant.h"
-#include "spvm_field.h"
+#include "spvm_compiler_field.h"
 #include "spvm_var_decl.h"
 #include "spvm_var.h"
 #include "spvm_type.h"
@@ -442,7 +442,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
     // Multi-numeric type limitation
     if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
       SPVM_LIST* fields = basic_type->original_fields;
-      SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
+      SPVM_COMPILER_FIELD* first_field = SPVM_LIST_get(fields, 0);
       SPVM_TYPE* first_field_type = first_field->type;
       if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
         SPVM_COMPILER_error(compiler, "The multi-numeric type must have the only fields of numeric types.\n  at %s line %d", first_field->op_field->file, first_field->op_field->line);
@@ -451,7 +451,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
       
       int32_t field_index;
       for (field_index = 0; field_index < basic_type->original_fields->length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
+        SPVM_COMPILER_FIELD* field = SPVM_LIST_get(fields, field_index);
         SPVM_TYPE* field_type = field->type;
         if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
           SPVM_COMPILER_error(compiler, "The fields of the multi-numeric type must be of the same type.\n  at %s line %d", field_type->basic_type->name, field->op_field->file, field->op_field->line);
@@ -495,7 +495,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
     
     // Check fields
     for (int32_t field_index = 0; field_index < basic_type->original_fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(basic_type->original_fields, field_index);
+      SPVM_COMPILER_FIELD* field = SPVM_LIST_get(basic_type->original_fields, field_index);
       SPVM_TYPE* field_type = field->type;
       
       // valut_t cannnot become field
@@ -541,21 +541,21 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
           
           unmerged_fields = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
           for (int32_t original_field_index = 0; original_field_index < original_fields_length; original_field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_get(original_fields, original_field_index);
+            SPVM_COMPILER_FIELD* field = SPVM_LIST_get(original_fields, original_field_index);
             field->order = SPVM_TYPE_get_field_order(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag);
             SPVM_LIST_push(unmerged_fields, field);
           }
           
-          qsort(unmerged_fields->values, unmerged_fields->length, sizeof(SPVM_FIELD*), SPVM_CHECK_field_order_compare_cb);
+          qsort(unmerged_fields->values, unmerged_fields->length, sizeof(SPVM_COMPILER_FIELD*), SPVM_CHECK_field_order_compare_cb);
           
           int32_t unmerged_fields_length = unmerged_fields->length;
           
           // exists fields
-          SPVM_FIELD* exists_field = NULL;
+          SPVM_COMPILER_FIELD* exists_field = NULL;
           int32_t field_exists_index = 0;
           int32_t field_exists_bit = 0;
           for (int32_t unmerged_field_index = 0; unmerged_field_index < unmerged_fields_length; unmerged_field_index++) {
-            SPVM_FIELD* field = SPVM_LIST_get(unmerged_fields, unmerged_field_index);
+            SPVM_COMPILER_FIELD* field = SPVM_LIST_get(unmerged_fields, unmerged_field_index);
             
             if (unmerged_field_index % 8 == 0) {
               exists_field = SPVM_FIELD_new(compiler);
@@ -588,9 +588,9 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
         int32_t unmerged_fields_length = unmerged_fields->length;
         
         for (int32_t unmerged_field_index = 0; unmerged_field_index < unmerged_fields_length; unmerged_field_index++) {
-          SPVM_FIELD* field = SPVM_LIST_get(unmerged_fields, unmerged_field_index);
+          SPVM_COMPILER_FIELD* field = SPVM_LIST_get(unmerged_fields, unmerged_field_index);
           
-          SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_original_field(compiler, basic_type->parent, field->name);
+          SPVM_COMPILER_FIELD* found_field_in_super_class = SPVM_CHECK_search_original_field(compiler, basic_type->parent, field->name);
           
           if (found_field_in_super_class) {
             
@@ -604,7 +604,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
             }
           }
           
-          SPVM_FIELD* new_field;
+          SPVM_COMPILER_FIELD* new_field;
           if (strcmp(field->current_basic_type->name, current_basic_type->name) == 0) {
             new_field = field;
           }
@@ -637,11 +637,11 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
       
       int32_t field_index = 0;
       for (int32_t merged_field_index = 0; merged_field_index < merged_fields->length; merged_field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_get(merged_fields, merged_field_index);
+        SPVM_COMPILER_FIELD* field = SPVM_LIST_get(merged_fields, merged_field_index);
         
         if (!(field->name[0] == '.')) {
           if (!field->exists_field) {
-            SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_original_field(compiler, field->current_basic_type->parent, field->name);
+            SPVM_COMPILER_FIELD* found_field_in_super_class = SPVM_CHECK_search_original_field(compiler, field->current_basic_type->parent, field->name);
             if (found_field_in_super_class) {
               field->exists_field = found_field_in_super_class->exists_field;
               field->exists_bit = found_field_in_super_class->exists_bit;
@@ -1183,7 +1183,7 @@ void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler) {
     }
     
     for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
+      SPVM_COMPILER_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
       SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field->name, strlen(field->name));
     }
     
@@ -1340,7 +1340,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           
           for (int32_t i = 0; i < dist_fields->length; i++) {
             
-            SPVM_FIELD* field = SPVM_LIST_get(dist_fields, i);
+            SPVM_COMPILER_FIELD* field = SPVM_LIST_get(dist_fields, i);
             
             SPVM_OP* op_name_field_access_exists_dist = SPVM_OP_new_op_name(compiler, field->name, op_cur->file, op_cur->line);
             SPVM_OP* op_field_access_exists_dist = SPVM_OP_new_op_field_access(compiler, op_cur->file, op_cur->line);
@@ -4005,7 +4005,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 return;
               }
               
-              SPVM_FIELD* field = op_cur->uv.field_access->field;
+              SPVM_COMPILER_FIELD* field = op_cur->uv.field_access->field;
               
               if (!field) {
                 const char* invocant_type_name = SPVM_TYPE_new_type_name(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
@@ -4076,14 +4076,14 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
               
-              SPVM_FIELD* found_field_in_current_basic_type = SPVM_HASH_get(method->current_basic_type->original_field_symtable, field_access->field->name, strlen(field_access->field->name));
+              SPVM_COMPILER_FIELD* found_field_in_current_basic_type = SPVM_HASH_get(method->current_basic_type->original_field_symtable, field_access->field->name, strlen(field_access->field->name));
               
               int32_t is_parent_field = !found_field_in_current_basic_type && !method->current_basic_type->is_generated_by_anon_method;
               
               if (!SPVM_CHECK_can_access(compiler, method->current_basic_type,  field_access->field->current_basic_type, field_access->field->access_control_type, is_parent_field)) {
                 if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, field->current_basic_type, is_parent_field)) {
                   
-                  SPVM_FIELD* found_original_field = SPVM_CHECK_search_original_field(compiler, field->current_basic_type, field->name);
+                  SPVM_COMPILER_FIELD* found_original_field = SPVM_CHECK_search_original_field(compiler, field->current_basic_type, field->name);
                   
                   SPVM_COMPILER_error(compiler, "The %s %s#%s field cannnot be accessed from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), found_original_field->current_basic_type->name, found_original_field->name, method->current_basic_type->name, op_cur->file, op_cur->line);
                   return;
@@ -4648,7 +4648,7 @@ void SPVM_CHECK_check_ast_resolve_typed_var_indexes(SPVM_COMPILER* compiler, SPV
                 typed_var_index = SPVM_CHECK_get_typed_var_index(compiler, runtime_vars_ref, var_decl);
               }
               else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->fields, 0);
+                SPVM_COMPILER_FIELD* first_field = SPVM_LIST_get(type->basic_type->fields, 0);
                 assert(first_field);
                 
                 SPVM_TYPE* field_type = first_field->type;
@@ -4841,7 +4841,7 @@ void SPVM_CHECK_check_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_ac
   const char* field_name = op_name->uv.name;
 
   // Search the field of the super class
-  SPVM_FIELD* found_field = NULL;
+  SPVM_COMPILER_FIELD* found_field = NULL;
   SPVM_BASIC_TYPE* parent_basic_type = basic_type;
   
   while (1) {
@@ -4887,7 +4887,7 @@ void SPVM_CHECK_check_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* bas
   
   // 8 byte data
   for (int32_t field_index = 0; field_index < merged_fields->length; field_index++) {
-    SPVM_FIELD* field = SPVM_LIST_get(merged_fields, field_index);
+    SPVM_COMPILER_FIELD* field = SPVM_LIST_get(merged_fields, field_index);
     SPVM_TYPE* field_type = field->type;
     
     int32_t next_offset;
@@ -5399,8 +5399,8 @@ SPVM_COMPILER_METHOD* SPVM_CHECK_search_method(SPVM_COMPILER* compiler, SPVM_BAS
   return found_method;
 }
 
-SPVM_FIELD* SPVM_CHECK_search_original_field(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* field_name) {
-  SPVM_FIELD* found_field = NULL;
+SPVM_COMPILER_FIELD* SPVM_CHECK_search_original_field(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* field_name) {
+  SPVM_COMPILER_FIELD* found_field = NULL;
   
   if (basic_type) {
     SPVM_BASIC_TYPE* parent_basic_type = basic_type;
@@ -5481,8 +5481,8 @@ int SPVM_CHECK_method_name_compare_cb(const void* method1_ptr, const void* metho
 
 int SPVM_CHECK_field_order_compare_cb(const void* field1_ptr, const void* field2_ptr) {
   
-  SPVM_FIELD* field1 = *(SPVM_FIELD**)field1_ptr;
-  SPVM_FIELD* field2 = *(SPVM_FIELD**)field2_ptr;
+  SPVM_COMPILER_FIELD* field1 = *(SPVM_COMPILER_FIELD**)field1_ptr;
+  SPVM_COMPILER_FIELD* field2 = *(SPVM_COMPILER_FIELD**)field2_ptr;
   
   if (field1->order > field2->order) {
     return 1;
@@ -6058,19 +6058,19 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       else {
         SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
-        SPVM_FIELD* field = field_access->field;
+        SPVM_COMPILER_FIELD* field = field_access->field;
         type = field->type;
       }
       break;
     }
     case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
       SPVM_ARRAY_FIELD_ACCESS* array_field_access = op->uv.array_field_access;
-      SPVM_FIELD* field = array_field_access->field;
+      SPVM_COMPILER_FIELD* field = array_field_access->field;
       type = field->type;
       break;
     }
     case SPVM_OP_C_ID_FIELD: {
-      SPVM_FIELD* field = op->uv.field;
+      SPVM_COMPILER_FIELD* field = op->uv.field;
       type = field->type;
       break;
     }

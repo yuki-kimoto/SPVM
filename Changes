@@ -2,6 +2,7 @@
   [Internal Changes]
     * Rename SPVM_STRING_BUFFER type to SPVM_COMPILER_STRING_BUFFER.
     * Rename SPVM_METHOD type to SPVM_COMPILER_METHOD.
+    * Rename SPVM_FIELD type to SPVM_COMPILER_FIELD.
 0.990141 2026-03-07
   [New Features]
     * Add arch_ccflags field to SPVM::Builder::Config and reflect it in compile command.

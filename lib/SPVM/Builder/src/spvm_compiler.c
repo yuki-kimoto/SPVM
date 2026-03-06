@@ -16,7 +16,7 @@
 #include "spvm_list.h"
 #include "spvm_opcode_list.h"
 #include "spvm_compiler_method.h"
-#include "spvm_field.h"
+#include "spvm_compiler_field.h"
 #include "spvm_class_var.h"
 #include "spvm_native.h"
 #include "spvm_opcode.h"
@@ -1178,7 +1178,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     if (basic_type->fields->length > 0) {
       SPVM_RUNTIME_FIELD* runtime_fields = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_FIELD) * basic_type->fields->length);
       for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
+        SPVM_COMPILER_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
         SPVM_RUNTIME_FIELD* runtime_field = &runtime_fields[field_index];
         
         runtime_field->index = field->index;

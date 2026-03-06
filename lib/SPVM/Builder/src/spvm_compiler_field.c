@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include "spvm_field.h"
+#include "spvm_compiler_field.h"
 
 #include "spvm_allocator.h"
 #include "spvm_type.h"
@@ -12,12 +12,12 @@
 #include "spvm_compiler.h"
 #include "spvm_basic_type.h"
 
-SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler) {
+SPVM_COMPILER_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler) {
   
-  return SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, sizeof(SPVM_FIELD));
+  return SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, sizeof(SPVM_COMPILER_FIELD));
 }
 
-int32_t SPVM_FIELD_get_size(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
+int32_t SPVM_FIELD_get_size(SPVM_COMPILER* compiler, SPVM_COMPILER_FIELD* field) {
   
   SPVM_TYPE* field_type = field->type;
   

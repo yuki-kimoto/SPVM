@@ -8,7 +8,7 @@
 
 struct spvm_field_access {
   SPVM_OP* op_name;
-  SPVM_FIELD* field;
+  SPVM_COMPILER_FIELD* field;
   int8_t is_hash_value_access;
 };
 

@@ -183,9 +183,9 @@ typedef struct spvm_constant SPVM_CONSTANT;
 struct spvm_op;
 typedef struct spvm_op SPVM_OP;
 
-// spvm_field.h
-struct spvm_field;
-typedef struct spvm_field SPVM_FIELD;
+// spvm_compiler_field.h
+struct spvm_compiler_field;
+typedef struct spvm_compiler_field SPVM_COMPILER_FIELD;
 
 // spvm_attribute.h
 struct spvm_attribute;

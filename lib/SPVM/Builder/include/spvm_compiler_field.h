@@ -6,7 +6,7 @@
 
 #include "spvm_typedecl.h"
 
-struct spvm_field {
+struct spvm_compiler_field {
   SPVM_OP* op_field;
   SPVM_OP* op_name;
   SPVM_OP* op_anon_method_field_default;
@@ -15,7 +15,7 @@ struct spvm_field {
   SPVM_BASIC_TYPE* current_basic_type;
   SPVM_OP* op_getter;
   SPVM_OP* op_setter;
-  SPVM_FIELD* exists_field;
+  SPVM_COMPILER_FIELD* exists_field;
   int32_t index;
   int32_t offset;
   int32_t order;
@@ -29,6 +29,6 @@ struct spvm_field {
   int8_t exists_bit;
 };
 
-SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);
+SPVM_COMPILER_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);
 
 #endif
