@@ -57,17 +57,6 @@ sub apply {
     $self->_apply_msvc_settings_to_config($config);
   });
   
-  # Apply settings to resources
-  my $resource_names = $self->get_resource_names;
-  for my $resource_name (@$resource_names) {
-    my $resource = $self->get_resource($resource_name);
-    my $resource_config = $resource->config;
-    
-    $resource_config->config_exe($self);
-    
-    $self->_apply_msvc_settings_to_config($resource_config);
-  }
-  
   return $self;
 }
 
