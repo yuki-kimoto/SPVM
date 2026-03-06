@@ -4,7 +4,7 @@
 #ifndef SPVM_NATIVE_H
 #define SPVM_NATIVE_H
 
-#ifndef SPVM_NATIVE_NO_INCLUDE_FILES
+#ifndef SPVM_NATIVE_NO_INCLUDE_HEADERS
   #include <stdint.h>
   #include <stdio.h>
   #include <string.h>
