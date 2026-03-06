@@ -38,6 +38,7 @@ sub apply {
   $self->ld_optimize('-OPT:REF,ICF');
   $self->lib_dir_option_name('-LIBPATH');
   $self->bcrypt_ldflags(['bcrypt.lib']);
+  $self->warn_ldflags(['-nologo']);
   
   # Set compiler callback
   $self->add_before_compile_cb_global(sub {
@@ -63,6 +64,8 @@ sub _apply_msvc_settings_to_config {
   
   $config->cc($cc);
   
+  $config->warn_ccflags(['-nologo']);
+  
   $config->optimize($self->optimize_global // '-O2');
   
   $config->cc_output_option_name('-Fo');
@@ -71,7 +74,6 @@ sub _apply_msvc_settings_to_config {
   my $dialect = $config->dialect;
   
   if (($lang eq 'c' || $lang eq 'cpp') && !defined $dialect) {
-    $config->clear_system_settings;
     
     # Common flags
     push @{$config->compiler_ccflags}, '-utf-8', '-Gy';
