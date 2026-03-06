@@ -1,5 +1,62 @@
 0.990142 2026-03-07
-  
+  [New Features and Future Incompatible Changes]
+    * Added SPVM_NATIVE_ALLOCATOR, SPVM_NATIVE_STRING_BUFFER, SPVM_NATIVE_COMPILER, SPVM_NATIVE_CLASS_FILE, SPVM_NATIVE_RUNTIME, SPVM_NATIVE_BASIC_TYPE, SPVM_NATIVE_CLASS_VAR, SPVM_NATIVE_FIELD, SPVM_NATIVE_METHOD, SPVM_NATIVE_ARG, and SPVM_NATIVE_MUTEX types to spvm_native.h.
+
+      #ifdef SPVM_NATIVE_TYPE_STRICT
+        struct spvm_native_allocator;
+        typedef struct spvm_native_allocator SPVM_NATIVE_ALLOCATOR;
+
+        struct spvm_native_string_buffer;
+        typedef struct spvm_native_string_buffer SPVM_NATIVE_STRING_BUFFER;
+
+        struct spvm_native_compiler;
+        typedef struct spvm_native_compiler SPVM_NATIVE_COMPILER;
+
+        struct spvm_native_class_file;
+        typedef struct spvm_native_class_file SPVM_NATIVE_CLASS_FILE;
+
+        struct spvm_native_runtime;
+        typedef struct spvm_native_runtime SPVM_NATIVE_RUNTIME;
+
+        struct spvm_native_basic_type;
+        typedef struct spvm_native_basic_type SPVM_NATIVE_BASIC_TYPE;
+
+        struct spvm_native_class_var;
+        typedef struct spvm_native_class_var SPVM_NATIVE_CLASS_VAR;
+
+        struct spvm_native_field;
+        typedef struct spvm_native_field SPVM_NATIVE_FIELD;
+
+        struct spvm_native_method;
+        typedef struct spvm_native_method SPVM_NATIVE_METHOD;
+
+        struct spvm_native_arg;
+        typedef struct spvm_native_arg SPVM_NATIVE_ARG;
+
+        struct spvm_native_mutex;
+        typedef struct spvm_native_mutex SPVM_NATIVE_MUTEX;
+      #else
+        #define SPVM_NATIVE_ALLOCATOR void
+        #define SPVM_NATIVE_STRING_BUFFER void
+        #define SPVM_NATIVE_COMPILER void
+        #define SPVM_NATIVE_CLASS_FILE void
+        #define SPVM_NATIVE_RUNTIME void
+        #define SPVM_NATIVE_BASIC_TYPE void
+        #define SPVM_NATIVE_CLASS_VAR void
+        #define SPVM_NATIVE_FIELD void
+        #define SPVM_NATIVE_METHOD void
+        #define SPVM_NATIVE_ARG void
+        #define SPVM_NATIVE_MUTEX void
+      #endif
+
+      These types are currently defined as void by default for smooth migration. However, if SPVM_NATIVE_TYPE_STRICT is defined, they become strict pointer types using incomplete struct definitions for better type safety.
+
+      Future Plans:
+
+      In a future release, SPVM_NATIVE_TYPE_STRICT will be defined by default.
+
+      Eventually, the #ifdef switch and the void macro definitions will be removed, leaving only the strict struct-based type definitions.
+
 0.990141 2026-03-07
   [New Features]
     * Add arch_ccflags field to SPVM::Builder::Config and reflect it in compile command.
