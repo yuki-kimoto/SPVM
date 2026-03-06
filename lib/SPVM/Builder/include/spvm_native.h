@@ -628,10 +628,10 @@ struct spvm_api_mutex {
 };
 
 struct spvm_api_string_buffer {
-  void* (*new_instance)(void* allocator, int32_t capacity);
-  void (*free_instance)(void* string_buffer);
-  const char* (*get_string)(void* string_buffer);
-  int32_t (*get_length)(void* string_buffer);
+  SPVM_NATIVE_STRING_BUFFER* (*new_instance)(SPVM_NATIVE_ALLOCATOR* allocator, int32_t capacity);
+  void (*free_instance)(SPVM_NATIVE_STRING_BUFFER* string_buffer);
+  const char* (*get_string)(SPVM_NATIVE_STRING_BUFFER* string_buffer);
+  int32_t (*get_length)(SPVM_NATIVE_STRING_BUFFER* string_buffer);
 };
 
 struct spvm_api_type {
