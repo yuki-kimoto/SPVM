@@ -54,20 +54,20 @@ typedef struct spvm_api_class_var SPVM_API_CLASS_VAR;
 struct spvm_api_field;
 typedef struct spvm_api_field SPVM_API_FIELD;
 
-struct spvm_api_type;
-typedef struct spvm_api_type SPVM_API_TYPE;
-
 struct spvm_api_method;
 typedef struct spvm_api_method SPVM_API_METHOD;
 
 struct spvm_api_arg;
 typedef struct spvm_api_arg SPVM_API_ARG;
 
-struct spvm_api_internal;
-typedef struct spvm_api_internal SPVM_API_INTERNAL;
-
 struct spvm_api_mutex;
 typedef struct spvm_api_mutex SPVM_API_MUTEX;
+
+struct spvm_api_type;
+typedef struct spvm_api_type SPVM_API_TYPE;
+
+struct spvm_api_internal;
+typedef struct spvm_api_internal SPVM_API_INTERNAL;
 
 union spvm_value {
   int8_t bval;
