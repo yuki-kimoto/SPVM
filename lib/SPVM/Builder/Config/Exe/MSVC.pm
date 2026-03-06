@@ -113,7 +113,7 @@ sub _apply_msvc_settings_to_config {
     # Common flags
     push @{$config->compiler_ccflags}, '-utf-8', '-Gy';
     push @{$config->ld_ccflags}, '-MT';
-
+    
     my $std = $config->std // '';
     
     if ($lang eq 'c') {
