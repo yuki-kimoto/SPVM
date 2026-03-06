@@ -21,14 +21,14 @@ SPVM_API_ALLOCATOR* SPVM_API_ALLOCATOR_new_api() {
   return env_allocator;
 }
 
-SPVM_ALLOCATOR* SPVM_API_ALLOCATOR_new_instance() {
+SPVM_NATIVE_ALLOCATOR* SPVM_API_ALLOCATOR_new_instance() {
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
 
-  return allocator;
+  return (SPVM_NATIVE_ALLOCATOR*)allocator;
 }
 
-void SPVM_API_ALLOCATOR_free_instance(SPVM_ALLOCATOR* allocator) {
-  SPVM_ALLOCATOR_free(allocator);
+void SPVM_API_ALLOCATOR_free_instance(SPVM_NATIVE_ALLOCATOR* allocator) {
+  SPVM_ALLOCATOR_free((SPVM_ALLOCATOR*)allocator);
 }
 
 void SPVM_API_ALLOCATOR_free_api(SPVM_API_ALLOCATOR* api) {

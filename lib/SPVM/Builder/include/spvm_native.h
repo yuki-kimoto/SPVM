@@ -442,8 +442,8 @@ struct spvm_env_api {
 };
 
 struct spvm_api_allocator {
-  void* (*new_instance)(void);
-  void (*free_instance)(void* allocator);
+  SPVM_NATIVE_ALLOCATOR* (*new_instance)(void);
+  void (*free_instance)(SPVM_NATIVE_ALLOCATOR* allocator);
 };
 
 struct spvm_api_arg {
