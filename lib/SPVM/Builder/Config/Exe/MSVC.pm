@@ -44,7 +44,7 @@ sub apply {
   $self->cc_output_option_name('-Fo');
   
   $self->ld_output_option_name('-OUT');
-  $self->ld_optimize('');
+  $self->ld_optimize('-OPT:REF,ICF');
   $self->lib_dir_option_name('-LIBPATH');
   $self->bcrypt_ldflags(['bcrypt.lib']);
   
