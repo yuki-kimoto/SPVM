@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <errno.h>
 #include <ctype.h>
+#include <stdarg.h>
 
 #include "spvm_native.h"
 #include "spvm_api.h"
