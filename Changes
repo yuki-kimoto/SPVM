@@ -1,3 +1,6 @@
+0.990141 2026-03-07
+  [New Features]
+    * Add arch_ccflags field to SPVM::Builder::Config and reflect it in compile command.
 0.990140 2026-03-06
   [New Features]
     * Add cc_output_option_name and ld_output_option_name fields to SPVM::Builder::Config.
