@@ -4,8 +4,8 @@
 #ifndef SPVM_IMPLEMENT_H
 #define SPVM_IMPLEMENT_H
 
-#include <inttypes.h>
-#include <stdlib.h>
+// Do not include any header files.
+// SPVM precompiled code will be executed in a security sandbox via JIT in the future.
 
 
 
