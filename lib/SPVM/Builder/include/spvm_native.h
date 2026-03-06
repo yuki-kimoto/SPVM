@@ -8,6 +8,7 @@
   #include <stdint.h>
   #include <stdio.h>
   #include <string.h>
+  #include <stdlib.h>
   #include "spvm_version.h"
   #include "spvm_builtin_expect.h"
 #endif
