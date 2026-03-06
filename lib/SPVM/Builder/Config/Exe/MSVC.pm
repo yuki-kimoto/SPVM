@@ -28,7 +28,9 @@ sub apply {
   
   # Clear and set optimization
   $self->clear_system_settings;
-  $self->optimize('-O2');
+  if (defined $self->optimize_global) {
+    $self->optimize($self->optimize_global // '-O2');
+  }
   
   # Optimization for dead code elimination and identical code folding
   $self->static_lib_ldflag(["", ""]);
@@ -50,6 +52,8 @@ sub apply {
   $self->add_before_compile_cb_global(sub {
     my ($config) = @_;
     
+    $config->config_exe($self);
+    
     $self->_apply_msvc_settings_to_config($config);
   });
   
@@ -58,6 +62,9 @@ sub apply {
   for my $resource_name (@$resource_names) {
     my $resource = $self->get_resource($resource_name);
     my $resource_config = $resource->config;
+    
+    $resource_config->config_exe($self);
+    
     $self->_apply_msvc_settings_to_config($resource_config);
   }
   
@@ -77,7 +84,9 @@ sub _apply_msvc_settings_to_config {
   
   # Clear and set optimization
   $config->clear_system_settings;
-  $config->optimize('-O2');
+  if (defined $config->config_exe->optimize_global) {
+    $config->config_exe->optimize($config->config_exe->optimize_global // '-O2');
+  }
   
   # Optimization for dead code elimination and identical code folding
   $config->static_lib_ldflag(["", ""]);
