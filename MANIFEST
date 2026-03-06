@@ -86,6 +86,7 @@ lib/SPVM/Builder/include/spvm_api_runtime.h
 lib/SPVM/Builder/include/spvm_api_string_buffer.h
 lib/SPVM/Builder/include/spvm_api_type.h
 lib/SPVM/Builder/include/spvm_array_field_access.h
+lib/SPVM/Builder/include/spvm_atomic.h
 lib/SPVM/Builder/include/spvm_attribute.h
 lib/SPVM/Builder/include/spvm_basic_type.h
 lib/SPVM/Builder/include/spvm_block.h
@@ -1123,6 +1124,7 @@ t/04_spvmcc/script/external.spvm
 t/04_spvmcc/script/inc-order.spvm
 t/04_spvmcc/script/myapp.config
 t/04_spvmcc/script/myapp.debug.config
+t/04_spvmcc/script/myapp.msvc.config
 t/04_spvmcc/script/myapp.spvm
 t/04_spvmcc/script/myapp/foo/bar.config
 t/04_spvmcc/script/myapp/foo/bar.spvm

@@ -45,18 +45,11 @@
 #include "spvm_type.h"
 #include "spvm_runtime_call_stack_frame_info.h"
 #include "spvm_toke.h"
+#include "spvm_atomic.h"
 
 #ifdef _MSC_VER
-  #include <intrin.h>
-
   /* Branch prediction hint (Not supported in MSVC, defined as a no-op) */
   #define __builtin_expect(expr, val) (expr)
-
-  /* Atomic operations (Mapped to MSVC intrinsics) */
-  #define __sync_fetch_and_add(ptr, val)  _InterlockedExchangeAdd((long volatile*)(ptr), (long)(val))
-  #define __sync_fetch_and_or(ptr, val)   _InterlockedOr((long volatile*)(ptr), (long)(val))
-  #define __sync_fetch_and_xor(ptr, val)  _InterlockedXor((long volatile*)(ptr), (long)(val))
-  #define __sync_fetch_and_and(ptr, val)  _InterlockedAnd((long volatile*)(ptr), (long)(val))
 #endif
 
 static const char* FILE_NAME = "spvm_api.c";
