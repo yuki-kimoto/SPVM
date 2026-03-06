@@ -76,7 +76,7 @@ sub _apply_msvc_settings_to_config {
   if (($lang eq 'c' || $lang eq 'cpp') && !defined $dialect) {
     
     # Common flags
-    push @{$config->compiler_ccflags}, '-utf-8', '-Gy';
+    push @{$config->compiler_ccflags}, '-utf-8', '-Gy', '-Zc:preprocessor';
     push @{$config->ld_ccflags}, '-MT';
     
     my $std = $config->std // '';
