@@ -1360,6 +1360,7 @@ sub clear_system_settings {
   $self->compiler_ccflags([]);
   $self->runtime_ccflags([]);
   $self->ld_ccflags([]);
+  $self->thread_ccflags([]);
   
   $self->dynamic_lib_ldflags([]);
   $self->thread_ldflags([]);
@@ -2650,6 +2651,8 @@ The following fields are set to C<[]>.
 =item * L</"runtime_ccflags">
 
 =item * L</"ld_ccflags">
+
+=item * L</"thread_ccflags">
 
 =item * L</"thread_ldflags">
 

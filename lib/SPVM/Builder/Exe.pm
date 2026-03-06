@@ -1244,7 +1244,7 @@ sub compile_precompile_class {
     force => $self->force,
   );
   
-  my $config = $config_exe->clone;
+  my $config =  SPVM::Builder::Util::API::create_default_config();
   
   $config->category('precompile');
   

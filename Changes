@@ -2,13 +2,17 @@
   [New Features]
     * Add cc_output_option_name and ld_output_option_name fields to SPVM::Builder::Config.
     * Introduce create_option_short/long and use them for output options in CompileInfo and LinkInfo to support MSVC and other compilers.
-    
+    * Add experimental SPVM::Builder::Config::Exe::MSVC for Visual Studio support.
   [Bug Fix]
     * Fix SPVM::Builder::Config#load_mode_config to re-bless the config object into the invocant class to ensure correct method inheritance.
     * Change 'standart' to undef of the default value of dialect field in SPVM::Builder::Config.
   [Incompatible Changes]
     * SPVM::Builder::Config#build_option is renamed to create_option.
-    
+  [Internal Changes]
+    * Add spvm_atomic.h
+    * Add spvm_builtin_expect.h
+    * Add spvm_unistd.h
+  
 0.990139 2026-03-02
   [Bug Fix]
     * Fix a bug that numeric object types could not be cast to the same types.

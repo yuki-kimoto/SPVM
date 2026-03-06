@@ -21,28 +21,19 @@ sub apply {
   my $cc = $options->{cc} // 'cl';
   my $ld = $options->{ld} // 'link.exe';
   
-  $self->cc($cc);
-  $self->ld($ld);
-  
-  $self->long_option_sep(':');
-  
   # Clear and set optimization
   $self->clear_system_settings;
-  if (defined $self->optimize_global) {
-    $self->optimize($self->optimize_global // '-O2');
-  }
   
-  # Optimization for dead code elimination and identical code folding
+  # Common cc and ld
+  $self->cc($cc); # For Extutils::CBuiler
+  $self->long_option_sep(':');
+  
+  # ld
+  $self->ld($ld);
   $self->static_lib_ldflag(["", ""]);
-  
   $self->lib_prefix("");
-  
   $self->lib_option_name("");
-  
   $self->lib_option_suffix(".lib");
-  
-  $self->cc_output_option_name('-Fo');
-  
   $self->ld_output_option_name('-OUT');
   $self->ld_optimize('-OPT:REF,ICF');
   $self->lib_dir_option_name('-LIBPATH');
@@ -66,32 +57,15 @@ sub _apply_msvc_settings_to_config {
   my $cc = 'cl';
   my $ld = 'link.exe';
   
-  $config->cc($cc);
-  $config->ld($ld);
+  $config->clear_system_settings;
   
   $config->long_option_sep(':');
   
-  # Clear and set optimization
-  $config->clear_system_settings;
-  if (defined $config->config_exe->optimize_global) {
-    $config->config_exe->optimize($config->config_exe->optimize_global // '-O2');
-  }
+  $config->cc($cc);
   
-  # Optimization for dead code elimination and identical code folding
-  $config->static_lib_ldflag(["", ""]);
-  
-  $config->lib_prefix("");
-  
-  $config->lib_option_name("");
-  
-  $config->lib_option_suffix(".lib");
+  $config->optimize($self->optimize_global // '-O2');
   
   $config->cc_output_option_name('-Fo');
-  
-  # $config->ld_output_option_name('-OUT');
-  $config->ld_optimize('');
-  $config->lib_dir_option_name('-LIBPATH');
-  $config->bcrypt_ldflags(['bcrypt.lib']);
   
   my $lang = $config->language // '';
   my $dialect = $config->dialect;
