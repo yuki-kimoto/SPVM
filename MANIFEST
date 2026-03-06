@@ -90,6 +90,7 @@ lib/SPVM/Builder/include/spvm_atomic.h
 lib/SPVM/Builder/include/spvm_attribute.h
 lib/SPVM/Builder/include/spvm_basic_type.h
 lib/SPVM/Builder/include/spvm_block.h
+lib/SPVM/Builder/include/spvm_builtin_expect.h
 lib/SPVM/Builder/include/spvm_call_method.h
 lib/SPVM/Builder/include/spvm_case_info.h
 lib/SPVM/Builder/include/spvm_check.h

@@ -40,17 +40,15 @@
 #include "spvm_api_type.h"
 #include "spvm_api_internal.h"
 #include "spvm_api_mutex.h"
-#include "spvm_mutex.h"
 #include "spvm_utf8.h"
 #include "spvm_type.h"
 #include "spvm_runtime_call_stack_frame_info.h"
 #include "spvm_toke.h"
-#include "spvm_atomic.h"
 
-#ifdef _MSC_VER
-  /* Branch prediction hint (Not supported in MSVC, defined as a no-op) */
-  #define __builtin_expect(expr, val) (expr)
-#endif
+// OS specific
+#include "spvm_builtin_expect.h"
+#include "spvm_atomic.h"
+#include "spvm_mutex.h"
 
 static const char* FILE_NAME = "spvm_api.c";
 

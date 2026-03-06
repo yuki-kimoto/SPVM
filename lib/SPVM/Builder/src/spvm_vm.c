@@ -44,17 +44,15 @@
 #include "spvm_api_field.h"
 #include "spvm_api_method.h"
 #include "spvm_api_arg.h"
-
-#include "spvm_implement.h"
 #include "spvm_type.h"
 #include "spvm_runtime_call_stack_frame_info.h"
 
-#ifdef _MSC_VER
-  #include <intrin.h>
+// OS specific
+#include "spvm_builtin_expect.h"
 
-  /* Branch prediction hint (Not supported in MSVC, defined as a no-op) */
-  #define __builtin_expect(expr, val) (expr)
-#endif
+// OP codes implementation
+// This must be the end of including header files
+#include "spvm_implement.h"
 
 static const char* FILE_NAME = "spvm_vm.c";
 
