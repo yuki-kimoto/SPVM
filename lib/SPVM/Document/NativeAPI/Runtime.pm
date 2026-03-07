@@ -16,7 +16,7 @@ The runtime native APIs of L<SPVM> are the APIs for SPVM runtimes.
 
 =head2 get_object_data_offset
 
-C<int32_t (*get_object_data_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+C<int32_t (*get_object_data_offset)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
 Returns the offset of data area in L<SPVM_OBJECT|SPVM::Document::NativeAPI/"SPVM_OBJECT"> struct.
 
@@ -24,19 +24,19 @@ Elements in an array or fields or a pointer in a pointer class is stored into th
 
 =head2 get_object_ref_count_offset
 
-C<int32_t (*get_object_ref_count_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+C<int32_t (*get_object_ref_count_offset)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
 Returns the offset of the C<ref_count> field in L<SPVM_OBJECT|SPVM::Document::NativeAPI/"SPVM_OBJECT"> struct.
 
 =head2 get_object_length_offset
 
-C<int32_t (*get_object_length_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+C<int32_t (*get_object_length_offset)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
 Returns the offset of the C<length> field in L<SPVM_OBJECT|SPVM::Document::NativeAPI/"SPVM_OBJECT"> struct.
 
 =head2 get_basic_type_by_id
 
-C<void* (*get_basic_type_by_id)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, int32_t basic_type_id);>
+C<SPVM_NATIVE_BASIC_TYPE* (*get_basic_type_by_id)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, int32_t basic_type_id);>
 
 Searches a L<basic type|SPVM::Document::NativeAPI::BasicType> given the basic type ID I<basic_type_id>.
 
@@ -44,7 +44,7 @@ If it is found, returns it. Otherwise, returns C<NULL>.
 
 =head2 get_basic_type_by_name
 
-C<void* (*get_basic_type_by_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, const char* basic_type_name);>
+C<SPVM_NATIVE_BASIC_TYPE* (*get_basic_type_by_name)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, const char* basic_type_name);>
 
 Searches a L<basic type|SPVM::Document::NativeAPI::BasicType> given the basic type name I<basic_type_name>.
 
@@ -52,63 +52,63 @@ If it is found, returns it. Otherwise, returns C<NULL>.
 
 =head2 get_basic_types_length
 
-C<int32_t (*get_basic_types_length)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+C<int32_t (*get_basic_types_length)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
 Returns the length of the basic types owned by the SPVM runtime I<runtime>.
 
 =head2 build_precompile_class_source
 
-C<void (*build_precompile_class_source)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* string_buffer|SPVM::Document::NativeAPI::StringBuffer>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+C<void (*build_precompile_class_source)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_STRING_BUFFER* string_buffer|SPVM::Document::NativeAPI::StringBuffer>, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
 Creates a C source code for methods with the C<precompile> attribute defined in the class given by the its basic type I<basic_type>, and saves it to the string buffer I<string_buffer>.
 
 =head2 build_precompile_method_source
 
-C<void (*build_precompile_method_source)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* string_buffer|SPVM::Document::NativeAPI::StringBuffer>, L<void* method|SPVM::Document::NativeAPI::Method>);>
+C<void (*build_precompile_method_source)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_STRING_BUFFER* string_buffer|SPVM::Document::NativeAPI::StringBuffer>, L<SPVM_NATIVE_METHOD* method|SPVM::Document::NativeAPI::Method>);>
 
 Creates a C source code for the method I<method>, and saves it to the string buffer I<string_buffer>.
 
 =head2 get_compiler
 
-C<void* (*get_compiler)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+C<SPVM_NATIVE_COMPILER* (*get_compiler)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
 Returns the value of the C<compiler> field. The compiler that build the runtime I<runtime> is stored to this field.
 
 =head2 set_compiler
 
-C<void (*set_compiler)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* compiler|SPVM::Document::NativeAPI::Compiler>);>
+C<void (*set_compiler)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_COMPILER* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
 Sets I<compiler> to the C<compiler> field.
 
 =head2 get_spvm_stdin
 
-C<FILE* (*get_spvm_stdin)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+C<FILE* (*get_spvm_stdin)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
 Returns L<SPVM's standard input|SPVM::Document::Language::System/"Standard Streams">.
 
 =head2 get_spvm_stdout
 
-C<FILE* (*get_spvm_stdout)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+C<FILE* (*get_spvm_stdout)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
 Returns L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams">.
 
 =head2 get_spvm_stderr
 
-C<FILE* (*get_spvm_stderr)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+C<FILE* (*get_spvm_stderr)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
 Returns L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
 =head2 get_env
 
-C<SPVM_ENV* (*get_env)(void* runtime);>
+C<SPVM_ENV* (*get_env)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
 Returns the runtime environment.
 
 =head2 get_object_capacity_offset
 
-C<int32_t (*get_object_capacity_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+C<int32_t (*get_object_capacity_offset)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
-Returns the offset of C<capacity> membar variable in L<SPVM_OBJECT|SPVM::Document::NativeAPI/"SPVM_OBJECT"> struct.
+Returns the offset of C<capacity> member variable in L<SPVM_OBJECT|SPVM::Document::NativeAPI/"SPVM_OBJECT"> struct.
 
 =head2 method_begin_cb
 
@@ -142,21 +142,21 @@ The arguments are the same as L</"method_begin_cb">. This can be used to access 
 
 =head2 object_data_offset
 
-C<void* object_data_offset;>.
+C<void* object_data_offset;>
 
-Returns the offset of C<data> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
+Returns the offset of C<data> member variable in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
 
 =head2 object_length_offset
 
 C<void* object_length_offset;>
 
-Returns the offset of C<length> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
+Returns the offset of C<length> member variable in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
 
 =head2 object_capacity_offset
 
 C<void* object_capacity_offset;>
 
-Returns the offset of C<capacity> member variavle in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
+Returns the offset of C<capacity> member variable in C<SPVM_OBJECT> object. This must not be used because it is only for internal.
 
 =head2 stack_index_call_depth
 
