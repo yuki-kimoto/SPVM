@@ -47,6 +47,9 @@
 
   struct spvm_native_mutex;
   typedef struct spvm_native_mutex SPVM_NATIVE_MUTEX;
+
+  struct spvm_native_opcode;
+  typedef struct spvm_native_opcode SPVM_NATIVE_OPCODE;
 #else
   #define SPVM_NATIVE_ALLOCATOR void
   #define SPVM_NATIVE_STRING_BUFFER void
@@ -59,6 +62,7 @@
   #define SPVM_NATIVE_METHOD void
   #define SPVM_NATIVE_ARG void
   #define SPVM_NATIVE_MUTEX void
+  #define SPVM_NATIVE_OPCODE void
 #endif
 
 #define SPVM_NATIVE_GET_POINTER(object) (*(void**)object)
@@ -442,164 +446,164 @@ struct spvm_env_api {
 };
 
 struct spvm_api_allocator {
-  void* (*new_instance)(void);
-  void (*free_instance)(void* allocator);
+  SPVM_NATIVE_ALLOCATOR* (*new_instance)(void);
+  void (*free_instance)(SPVM_NATIVE_ALLOCATOR* allocator);
 };
 
 struct spvm_api_arg {
-  const char* (*get_name)(void* runtime, void* arg);
-  int32_t (*get_index)(void* runtime, void* arg);
-  void* (*get_basic_type)(void* runtime, void* arg);
-  int32_t (*get_type_dimension)(void* runtime, void* arg);
-  int32_t (*get_type_flag)(void* runtime, void* arg);
-  int32_t (*get_stack_index)(void* runtime, void* arg);
-  void* (*get_current_method)(void* runtime, void* arg);
-  int32_t (*is_optional)(void* runtime, void* arg);
-  SPVM_VALUE (*get_default_value)(void* runtime, void* arg);
+  const char* (*get_name)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  int32_t (*get_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  SPVM_NATIVE_BASIC_TYPE* (*get_basic_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  int32_t (*get_type_dimension)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  int32_t (*get_type_flag)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  int32_t (*get_stack_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  SPVM_NATIVE_METHOD* (*get_current_method)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  int32_t (*is_optional)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
+  SPVM_VALUE (*get_default_value)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_ARG* arg);
 };
 
 struct spvm_api_basic_type {
-  const char* (*get_name)(void* runtime, void* basic_type);
-  int32_t (*get_id)(void* runtime, void* basic_type);
-  int32_t (*get_category)(void* runtime, void* basic_type);
-  void* (*get_parent)(void* runtime, void* basic_type);
-  const char* (*get_version_string)(void* runtime, void* basic_type);
-  const char* (*get_class_dir)(void* runtime, void* basic_type);
-  const char* (*get_class_rel_file)(void* runtime, void* basic_type);
-  int32_t (*is_pointer)(void* runtime, void* basic_type);
-  int32_t (*is_anon)(void* runtime, void* basic_type);
-  void* (*get_class_var_by_index)(void* runtime, void* basic_type, int32_t class_var_index);
-  void* (*get_class_var_by_name)(void* runtime, void* basic_type, const char* class_var_name);
-  int32_t (*get_class_vars_length)(void* runtime, void* basic_type);
-  void* (*get_field_by_index)(void* runtime, void* basic_type, int32_t field_index);
-  void* (*get_field_by_name)(void* runtime, void* basic_type, const char* field_name);
-  int32_t (*get_fields_length)(void* runtime, void* basic_type);
-  void* (*get_method_by_index)(void* runtime, void* basic_type, int32_t method_index);
-  void* (*get_method_by_name)(void* runtime, void* basic_type, const char* method_name);
-  int32_t (*get_methods_length)(void* runtime, void* basic_type);
-  void* (*get_anon_basic_type_by_index)(void* runtime, void* basic_type, int32_t anon_basic_type_index);
-  int32_t (*get_anon_basic_types_length)(void* runtime, void* basic_type);
-  int32_t (*has_interface)(void* runtime, void* basic_type, void* interface_basic_type);
-  int32_t (*is_super_class)(void* runtime, void* dist_basic_type, void* src_basic_type);
-  const char* (*get_file)(void* runtime, void* basic_type);
-  void* (*get_current_runtime)(void* runtime, void* basic_type);
-  void* (*get_basic_type_in_version_from)(void* runtime, void* basic_type);
-  int32_t (*get_fields_size)(void* runtime, void* basic_type);
-  int32_t (*get_monitor_var_type)(void* runtime, void* basic_type, int32_t* ret_basic_type_id, int32_t* ret_dimension, int32_t* ret_flag);
-  int32_t (*has_monitor_var)(void* runtime, void* basic_type);
+  const char* (*get_name)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  int32_t (*get_id)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  int32_t (*get_category)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  SPVM_NATIVE_BASIC_TYPE* (*get_parent)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  const char* (*get_version_string)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  const char* (*get_class_dir)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  const char* (*get_class_rel_file)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  int32_t (*is_pointer)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  int32_t (*is_anon)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  SPVM_NATIVE_CLASS_VAR* (*get_class_var_by_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t class_var_index);
+  SPVM_NATIVE_CLASS_VAR* (*get_class_var_by_name)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, const char* class_var_name);
+  int32_t (*get_class_vars_length)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  SPVM_NATIVE_FIELD* (*get_field_by_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t field_index);
+  SPVM_NATIVE_FIELD* (*get_field_by_name)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, const char* field_name);
+  int32_t (*get_fields_length)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  SPVM_NATIVE_METHOD* (*get_method_by_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t method_index);
+  SPVM_NATIVE_METHOD* (*get_method_by_name)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, const char* method_name);
+  int32_t (*get_methods_length)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  SPVM_NATIVE_BASIC_TYPE* (*get_anon_basic_type_by_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t anon_basic_type_index);
+  int32_t (*get_anon_basic_types_length)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  int32_t (*has_interface)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, SPVM_NATIVE_BASIC_TYPE* interface_basic_type);
+  int32_t (*is_super_class)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* dist_basic_type, SPVM_NATIVE_BASIC_TYPE* src_basic_type);
+  const char* (*get_file)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  SPVM_NATIVE_RUNTIME* (*get_current_runtime)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  SPVM_NATIVE_BASIC_TYPE* (*get_basic_type_in_version_from)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  int32_t (*get_fields_size)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  int32_t (*get_monitor_var_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t* ret_basic_type_id, int32_t* ret_dimension, int32_t* ret_flag);
+  int32_t (*has_monitor_var)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
 };
 
 struct spvm_api_class_file {
-  const char* (*get_class_name)(void* compiler, void* class_file);
-  const char* (*get_file)(void* compiler, void* class_file);
-  void (*set_file)(void* compiler, void* class_file, const char* file);
-  const char* (*get_dir)(void* compiler, void* class_file);
-  void (*set_dir)(void* compiler, void* class_file, const char* dir);
-  const char* (*get_rel_file)(void* compiler, void* class_file);
-  void (*set_rel_file)(void* compiler, void* class_file, const char* rel_file);
-  const char* (*get_content)(void* compiler, void* class_file);
-  void (*set_content)(void* compiler, void* class_file, const char* content);
-  int32_t (*get_content_length)(void* compiler, void* class_file);
-  void (*set_content_length)(void* compiler, void* class_file, int32_t content_length);
+  const char* (*get_class_name)(SPVM_NATIVE_COMPILER* compiler, SPVM_NATIVE_CLASS_FILE* class_file);
+  const char* (*get_file)(SPVM_NATIVE_COMPILER* compiler, SPVM_NATIVE_CLASS_FILE* class_file);
+  void (*set_file)(SPVM_NATIVE_COMPILER* compiler, SPVM_NATIVE_CLASS_FILE* class_file, const char* file);
+  const char* (*get_dir)(SPVM_NATIVE_COMPILER* compiler, SPVM_NATIVE_CLASS_FILE* class_file);
+  void (*set_dir)(SPVM_NATIVE_COMPILER* compiler, SPVM_NATIVE_CLASS_FILE* class_file, const char* dir);
+  const char* (*get_rel_file)(SPVM_NATIVE_COMPILER* compiler, SPVM_NATIVE_CLASS_FILE* class_file);
+  void (*set_rel_file)(SPVM_NATIVE_COMPILER* compiler, SPVM_NATIVE_CLASS_FILE* class_file, const char* rel_file);
+  const char* (*get_content)(SPVM_NATIVE_COMPILER* compiler, SPVM_NATIVE_CLASS_FILE* class_file);
+  void (*set_content)(SPVM_NATIVE_COMPILER* compiler, SPVM_NATIVE_CLASS_FILE* class_file, const char* content);
+  int32_t (*get_content_length)(SPVM_NATIVE_COMPILER* compiler, SPVM_NATIVE_CLASS_FILE* class_file);
+  void (*set_content_length)(SPVM_NATIVE_COMPILER* compiler, SPVM_NATIVE_CLASS_FILE* class_file, int32_t content_length);
 };
 
 struct spvm_api_class_var {
-  const char* (*get_name)(void* runtime, void* class_var);
-  int32_t (*get_index)(void* runtime, void* class_var);
-  void* (*get_basic_type)(void* runtime, void* class_var);
-  int32_t (*get_type_dimension)(void* runtime, void* class_var);
-  int32_t (*get_type_flag)(void* runtime, void* class_var);
-  void* (*get_current_basic_type)(void* runtime, void* class_var);
-  int32_t (*is_cache)(void* runtime, void* class_var);
+  const char* (*get_name)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_CLASS_VAR* class_var);
+  int32_t (*get_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_CLASS_VAR* class_var);
+  SPVM_NATIVE_BASIC_TYPE* (*get_basic_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_CLASS_VAR* class_var);
+  int32_t (*get_type_dimension)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_CLASS_VAR* class_var);
+  int32_t (*get_type_flag)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_CLASS_VAR* class_var);
+  SPVM_NATIVE_BASIC_TYPE* (*get_current_basic_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_CLASS_VAR* class_var);
+  int32_t (*is_cache)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_CLASS_VAR* class_var);
 };
 
 struct spvm_api_compiler {
-  void* (*new_instance)(void);
-  void (*free_instance)(void* compiler);
-  int32_t (*get_start_line)(void* compiler);
-  void (*set_start_line)(void* compiler, int32_t start_line);
-  const char* (*get_start_file)(void* compiler);
-  void (*set_start_file)(void* compiler, const char* start_file);
-  int32_t (*get_include_dirs_length )(void* compiler);
-  const char* (*get_include_dir )(void* compiler, int32_t index);
-  void (*add_include_dir)(void* compiler, const char* include_dir);
-  void (*clear_include_dirs)(void* compiler);
-  void (*add_class_file)(void* compiler, const char* class_name);
-  void (*delete_class_file)(void* compiler, const char* class_name);
-  void* (*get_class_file)(void* compiler, const char* class_name);
-  int32_t (*compile)(void* compiler, const char* basic_type_name);
-  const char* (*get_error_message)(void* compiler, int32_t index);
-  int32_t (*get_error_messages_length)(void* compiler);
-  void* (*get_runtime)(void* compiler);
-  void (*prepend_include_dir)(void* compiler, const char* include_dir);
-  int32_t (*compile_anon_class)(void* compiler, const char* source, const char** anon_basic_type_name_ptr);
-  int32_t (*compile_script)(void* compiler, const char* source, const char** anon_basic_type_name_ptr);
+  SPVM_NATIVE_COMPILER* (*new_instance)(void);
+  void (*free_instance)(SPVM_NATIVE_COMPILER* compiler);
+  int32_t (*get_start_line)(SPVM_NATIVE_COMPILER* compiler);
+  void (*set_start_line)(SPVM_NATIVE_COMPILER* compiler, int32_t start_line);
+  const char* (*get_start_file)(SPVM_NATIVE_COMPILER* compiler);
+  void (*set_start_file)(SPVM_NATIVE_COMPILER* compiler, const char* start_file);
+  int32_t (*get_include_dirs_length )(SPVM_NATIVE_COMPILER* compiler);
+  const char* (*get_include_dir )(SPVM_NATIVE_COMPILER* compiler, int32_t index);
+  void (*add_include_dir)(SPVM_NATIVE_COMPILER* compiler, const char* include_dir);
+  void (*clear_include_dirs)(SPVM_NATIVE_COMPILER* compiler);
+  void (*add_class_file)(SPVM_NATIVE_COMPILER* compiler, const char* class_name);
+  void (*delete_class_file)(SPVM_NATIVE_COMPILER* compiler, const char* class_name);
+  SPVM_NATIVE_CLASS_FILE* (*get_class_file)(SPVM_NATIVE_COMPILER* compiler, const char* class_name);
+  int32_t (*compile)(SPVM_NATIVE_COMPILER* compiler, const char* basic_type_name);
+  const char* (*get_error_message)(SPVM_NATIVE_COMPILER* compiler, int32_t index);
+  int32_t (*get_error_messages_length)(SPVM_NATIVE_COMPILER* compiler);
+  SPVM_NATIVE_RUNTIME* (*get_runtime)(SPVM_NATIVE_COMPILER* compiler);
+  void (*prepend_include_dir)(SPVM_NATIVE_COMPILER* compiler, const char* include_dir);
+  int32_t (*compile_anon_class)(SPVM_NATIVE_COMPILER* compiler, const char* source, const char** anon_basic_type_name_ptr);
+  int32_t (*compile_script)(SPVM_NATIVE_COMPILER* compiler, const char* source, const char** anon_basic_type_name_ptr);
 };
 
 struct spvm_api_field {
-  const char* (*get_name)(void* runtime, void* field);
-  int32_t (*get_index)(void* runtime, void* field);
-  int32_t (*get_offset)(void* runtime, void* field);
-  void* (*get_basic_type)(void* runtime, void* field);
-  int32_t (*get_type_dimension)(void* runtime, void* field);
-  int32_t (*get_type_flag)(void* runtime, void* field);
-  void* (*get_current_basic_type)(void* runtime, void* field);
-  int32_t (*get_exists_offset)(void* runtime, void* field);
-  int32_t (*get_exists_bit)(void* runtime, void* field);
+  const char* (*get_name)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_FIELD* field);
+  int32_t (*get_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_FIELD* field);
+  int32_t (*get_offset)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_FIELD* field);
+  SPVM_NATIVE_BASIC_TYPE* (*get_basic_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_FIELD* field);
+  int32_t (*get_type_dimension)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_FIELD* field);
+  int32_t (*get_type_flag)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_FIELD* field);
+  SPVM_NATIVE_BASIC_TYPE* (*get_current_basic_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_FIELD* field);
+  int32_t (*get_exists_offset)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_FIELD* field);
+  int32_t (*get_exists_bit)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_FIELD* field);
 };
 
 struct spvm_api_method {
-  const char* (*get_name)(void* runtime, void* method);
-  int32_t (*get_index)(void* runtime, void* method);
-  void* (*get_return_basic_type)(void* runtime, void* method);
-  int32_t (*get_return_type_dimension)(void* runtime, void* method);
-  int32_t (*get_return_type_flag)(void* runtime, void* method);
-  void* (*get_arg_by_index)(void* runtime, void* method, int32_t arg_index);
-  int32_t (*get_args_length)(void* runtime, void* method);
-  int32_t (*get_required_args_length)(void* runtime, void* method);
-  void* (*get_current_basic_type)(void* runtime, void* method);
-  void* (*get_opcode_by_index)(void* runtime, void* method, int32_t opcode_index);
-  int32_t (*get_opcodes_length)(void* runtime, void* method);
-  int32_t (*is_class_method)(void* runtime, void* method);
-  int32_t (*is_anon)(void* runtime, void* method);
-  int32_t (*is_native)(void* runtime, void* method);
-  int32_t (*is_precompile)(void* runtime, void* method);
-  int32_t (*is_enum)(void* runtime, void* method);
-  int32_t (*get_byte_vars_width)(void* runtime, void* method);
-  int32_t (*get_short_vars_width)(void* runtime, void* method);
-  int32_t (*get_int_vars_width)(void* runtime, void* method);
-  int32_t (*get_long_vars_width)(void* runtime, void* method);
-  int32_t (*get_float_vars_width)(void* runtime, void* method);
-  int32_t (*get_double_vars_width)(void* runtime, void* method);
-  int32_t (*get_object_vars_width)(void* runtime, void* method);
-  int32_t (*get_ref_vars_width)(void* runtime, void* method);
-  int32_t (*get_mortal_stack_length)(void* runtime, void* method);
-  void* (*get_native_address)(void* runtime, void* method);
-  void (*set_native_address)(void* runtime, void* method, void* address);
-  void* (*get_precompile_address)(void* runtime, void* method);
-  void (*set_precompile_address)(void* runtime, void* method, void* address);
-  int32_t (*is_precompile_fallback)(void* runtime, void* method);
-  void (*set_is_precompile_fallback)(void* runtime, void* method, int32_t is_precompile_fallback);
-  const char* (*get_args_signature)(void* runtime, void* method);
-  const char* (*get_abs_name)(void* runtime, void* method);
+  const char* (*get_name)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  SPVM_NATIVE_BASIC_TYPE* (*get_return_basic_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_return_type_dimension)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_return_type_flag)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  SPVM_NATIVE_ARG* (*get_arg_by_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method, int32_t arg_index);
+  int32_t (*get_args_length)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_required_args_length)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  SPVM_NATIVE_BASIC_TYPE* (*get_current_basic_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  SPVM_NATIVE_OPCODE* (*get_opcode_by_index)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method, int32_t opcode_index);
+  int32_t (*get_opcodes_length)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*is_class_method)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*is_anon)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*is_native)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*is_precompile)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*is_enum)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_byte_vars_width)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_short_vars_width)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_int_vars_width)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_long_vars_width)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_float_vars_width)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_double_vars_width)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_object_vars_width)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_ref_vars_width)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  int32_t (*get_mortal_stack_length)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  void* (*get_native_address)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  void (*set_native_address)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method, void* address);
+  void* (*get_precompile_address)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  void (*set_precompile_address)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method, void* address);
+  int32_t (*is_precompile_fallback)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  void (*set_is_precompile_fallback)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method, int32_t is_precompile_fallback);
+  const char* (*get_args_signature)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
+  const char* (*get_abs_name)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_METHOD* method);
 };
 
 struct spvm_api_runtime {
-  int32_t (*get_object_data_offset)(void* runtime);
-  int32_t (*get_object_ref_count_offset)(void* runtime);
-  int32_t (*get_object_length_offset)(void* runtime);
-  void* (*get_basic_type_by_id)(void* runtime, int32_t basic_type_id);
-  void* (*get_basic_type_by_name)(void* runtime, const char* basic_type_name);
-  int32_t (*get_basic_types_length)(void* runtime);
-  void (*build_precompile_class_source)(void* runtime, void* string_buffer, void* module_basic_type);
-  void (*build_precompile_method_source)(void* runtime, void* string_buffer, void* method);
-  void* (*get_compiler)(void* runtime);
-  void (*set_compiler)(void* runtime, void* compiler);
-  FILE* (*get_spvm_stdin)(void* runtime);
-  FILE* (*get_spvm_stdout)(void* runtime);
-  FILE* (*get_spvm_stderr)(void* runtime);
-  SPVM_ENV* (*get_env)(void* runtime);
-  int32_t (*get_object_capacity_offset)(void* runtime);
+  int32_t (*get_object_data_offset)(SPVM_NATIVE_RUNTIME* runtime);
+  int32_t (*get_object_ref_count_offset)(SPVM_NATIVE_RUNTIME* runtime);
+  int32_t (*get_object_length_offset)(SPVM_NATIVE_RUNTIME* runtime);
+  SPVM_NATIVE_BASIC_TYPE* (*get_basic_type_by_id)(SPVM_NATIVE_RUNTIME* runtime, int32_t basic_type_id);
+  SPVM_NATIVE_BASIC_TYPE* (*get_basic_type_by_name)(SPVM_NATIVE_RUNTIME* runtime, const char* basic_type_name);
+  int32_t (*get_basic_types_length)(SPVM_NATIVE_RUNTIME* runtime);
+  void (*build_precompile_class_source)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_STRING_BUFFER* string_buffer, SPVM_NATIVE_BASIC_TYPE* module_basic_type);
+  void (*build_precompile_method_source)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_STRING_BUFFER* string_buffer, SPVM_NATIVE_METHOD* method);
+  SPVM_NATIVE_COMPILER* (*get_compiler)(SPVM_NATIVE_RUNTIME* runtime);
+  void (*set_compiler)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_COMPILER* compiler);
+  FILE* (*get_spvm_stdin)(SPVM_NATIVE_RUNTIME* runtime);
+  FILE* (*get_spvm_stdout)(SPVM_NATIVE_RUNTIME* runtime);
+  FILE* (*get_spvm_stderr)(SPVM_NATIVE_RUNTIME* runtime);
+  SPVM_ENV* (*get_env)(SPVM_NATIVE_RUNTIME* runtime);
+  int32_t (*get_object_capacity_offset)(SPVM_NATIVE_RUNTIME* runtime);
   void* method_begin_cb;
   void* method_end_cb;
   void* object_data_offset;
@@ -611,19 +615,19 @@ struct spvm_api_runtime {
 };
 
 struct spvm_api_mutex {
-  void* (*new_instance)(SPVM_ENV* env, SPVM_VALUE* stack);
-  void (*free_instance)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
-  void (*lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
-  void (*unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
-  void (*reader_lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
-  void (*reader_unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+  SPVM_NATIVE_MUTEX* (*new_instance)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void (*free_instance)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_NATIVE_MUTEX* mutex);
+  void (*lock)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_NATIVE_MUTEX* mutex);
+  void (*unlock)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_NATIVE_MUTEX* mutex);
+  void (*reader_lock)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_NATIVE_MUTEX* mutex);
+  void (*reader_unlock)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_NATIVE_MUTEX* mutex);
 };
 
 struct spvm_api_string_buffer {
-  void* (*new_instance)(void* allocator, int32_t capacity);
-  void (*free_instance)(void* string_buffer);
-  const char* (*get_string)(void* string_buffer);
-  int32_t (*get_length)(void* string_buffer);
+  SPVM_NATIVE_STRING_BUFFER* (*new_instance)(SPVM_NATIVE_ALLOCATOR* allocator, int32_t capacity);
+  void (*free_instance)(SPVM_NATIVE_STRING_BUFFER* string_buffer);
+  const char* (*get_string)(SPVM_NATIVE_STRING_BUFFER* string_buffer);
+  int32_t (*get_length)(SPVM_NATIVE_STRING_BUFFER* string_buffer);
 };
 
 struct spvm_api_internal {
