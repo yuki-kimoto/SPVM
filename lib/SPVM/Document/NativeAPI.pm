@@ -12,13 +12,13 @@ These APIs are available in L<native classes|SPVM::Document::NativeClass>.
 
 =head2 runtime
 
-L<void* runtime|SPVM::Document::NativeAPI::Runtime>;
+L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>;
 
 The runtime for this L<runtime environment|SPVM::Document::NativeClass/"Runtime Environment">.
 
 Examples:
 
-  void* runtime = env->runtime;
+  SPVM_NATIVE_RUNTIME* runtime = env->runtime;
 
 =head2 api
 
@@ -152,7 +152,7 @@ Examples:
 
 =head2 get_object_basic_type
 
-C<void* (*get_object_basic_type)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
+C<SPVM_NATIVE_BASIC_TYPE* (*get_object_basic_type)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
 Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the object I<object>.
 
@@ -176,7 +176,7 @@ Returns the type dimension of the object I<object>.
 
 =head2 get_basic_type
 
-C<void* (*get_basic_type)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name);>
+C<SPVM_NATIVE_BASIC_TYPE* (*get_basic_type)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name);>
 
 Searches a L<basic type|SPVM::Document::NativeAPI::BasicType> given the basic type name I<basic_type_name>.
 
@@ -184,7 +184,7 @@ If it is found, returns it. Otherwise, returns C<NULL>.
 
 =head2 get_basic_type_by_name
 
-C<void* (*get_basic_type_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+C<SPVM_NATIVE_BASIC_TYPE* (*get_basic_type_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Searches a L<basic type|SPVM::Document::NativeAPI::BasicType> given the basic type name I<basic_type_name>.
 
@@ -198,7 +198,7 @@ If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise, it
 
 =head2 get_basic_type_by_id
 
-C<void* (*get_basic_type_by_id)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t basic_type_id);>
+C<SPVM_NATIVE_BASIC_TYPE* (*get_basic_type_by_id)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t basic_type_id);>
 
 Searches a L<basic type|SPVM::Document::NativeAPI::BasicType> given the  basic type ID I<basic_type_id>.
 
@@ -230,7 +230,7 @@ If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise, it
 
 =head2 get_class_var
 
-C<void* (*get_class_var)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name);>
+C<SPVM_NATIVE_CLASS_VAR* (*get_class_var)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name);>
 
 Searches a L<class variable|SPVM::Document::NativeAPI::ClassVariable> given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
@@ -238,107 +238,107 @@ If it is found, returns it. Otherwise, returns C<NULL>.
 
 Examples:
 
-  void* class_var = env->get_class_var(env, stack, "MyClass", "$VAR");
+  SPVM_NATIVE_CLASS_VAR* class_var = env->get_class_var(env, stack, "MyClass", "$VAR");
 
 =head2 get_class_var_byte
 
-C<int8_t (*get_class_var_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
+C<int8_t (*get_class_var_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
 Returns the value of the class variable I<class_var> interpreting its type is byte type.
 
 =head2 get_class_var_short
 
-C<int16_t (*get_class_var_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
+C<int16_t (*get_class_var_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
 Returns the value of the class variable I<class_var> interpreting its type is short type.
 
 =head2 get_class_var_int
 
-C<int32_t (*get_class_var_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
+C<int32_t (*get_class_var_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
 Returns the value of the class variable I<class_var> interpreting its type is int type.
 
 =head2 get_class_var_long
 
-C<int64_t (*get_class_var_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
+C<int64_t (*get_class_var_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
 Returns the value of the class variable I<class_var> interpreting its type is long type.
 
 =head2 get_class_var_float
 
-C<float (*get_class_var_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
+C<float (*get_class_var_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
 Returns the value of the class variable I<class_var> interpreting its type is float type.
 
 =head2 get_class_var_double
 
-C<double (*get_class_var_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
+C<double (*get_class_var_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
 Returns the value of the class variable I<class_var> interpreting its type is double type.
 
 =head2 get_class_var_object
 
-C<void* (*get_class_var_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
+C<void* (*get_class_var_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
 Returns the value of the class variable I<class_var> interpreting its type is an object type.
 
 =head2 get_class_var_string
 
-C<void* (*get_class_var_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
+C<void* (*get_class_var_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
 Returns the value of the class variable I<class_var> interpreting its type is string type.
 
 =head2 set_class_var_byte
 
-C<void (*set_class_var_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>, int8_t value);>
+C<void (*set_class_var_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>, int8_t value);>
 
 Sets I<value> to the class variable I<class_var> interpreting its type is byte type.
 
 =head2 set_class_var_short
 
-C<void (*set_class_var_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>, int16_t value);>
+C<void (*set_class_var_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>, int16_t value);>
 
 Sets I<value> to the class variable I<class_var> interpreting its type is short type.
 
 =head2 set_class_var_int
 
-C<void (*set_class_var_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>, int32_t value);>
+C<void (*set_class_var_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>, int32_t value);>
 
 Sets I<value> to the class variable I<class_var> interpreting its type is int type.
 
 =head2 set_class_var_long
 
-C<void (*set_class_var_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>, int64_t value);>
+C<void (*set_class_var_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>, int64_t value);>
 
 Sets I<value> to the class variable I<class_var> interpreting its type is long type.
 
 =head2 set_class_var_float
 
-C<void (*set_class_var_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>, float value);>
+C<void (*set_class_var_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>, float value);>
 
 Sets I<value> to the class variable I<class_var> interpreting its type is float type.
 
 =head2 set_class_var_double
 
-C<void (*set_class_var_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>, double value);>
+C<void (*set_class_var_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>, double value);>
 
 Sets I<value> to the class variable I<class_var> interpreting its type is double type.
 
 =head2 set_class_var_object
 
-C<void (*set_class_var_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>, void* value);>
+C<void (*set_class_var_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>, void* value);>
 
 Sets I<value> to the class variable I<class_var> interpreting its type is an object type.
 
 =head2 set_class_var_string
 
-C<void (*set_class_var_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>, void* value);>
+C<void (*set_class_var_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>, void* value);>
 
 Sets I<value> to the class variable I<class_var> interpreting its type is string type.
 
 =head2 get_class_var_object_ref
 
-C<void** (*get_class_var_object_ref)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
+C<void** (*get_class_var_object_ref)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
 Returns the address where the value of the class variable I<class_var> is stored.
 
@@ -358,9 +358,9 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -384,9 +384,9 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -410,9 +410,10 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
 Examples:
 
   int32_t error_id = 0;
@@ -435,9 +436,10 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
 Examples:
 
   int32_t error_id = 0;
@@ -460,9 +462,10 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
 Examples:
 
   int32_t error_id = 0;
@@ -485,9 +488,10 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
+
 Examples:
 
   int32_t error_id = 0;
@@ -510,9 +514,9 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
   
@@ -542,9 +546,9 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -568,9 +572,9 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -594,9 +598,9 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -620,9 +624,9 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -646,9 +650,9 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -672,9 +676,9 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -685,7 +689,6 @@ Examples:
 =head2 set_class_var_object_by_name
 
 C<void (*set_class_var_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* class_var_name, void* value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
-Searches a class variable I<class_var> given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
 Sets the class variable specified by the basic type name I<basic_type_name> and the class variable name I<class_var_name> to the value I<value>.
 
@@ -699,9 +702,9 @@ Exceptions:
 
 If I<basic_type_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<class_var_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<class_var_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the class variable type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the class variable type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -717,7 +720,7 @@ The same as L</"set_class_var_object_by_name"> native API.
 
 =head2 get_field
 
-C<void* (*get_field_by_index)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name);>
+C<SPVM_NATIVE_FIELD* (*get_field)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name);>
 
 Searches a L<field|SPVM::Document::NativeAPI::Field> object given the object I<object> and the field name I<field_name>.
 
@@ -725,11 +728,11 @@ If it is found, returns it. Otherwise, returns C<NULL>.
 
 Examples:
 
-  void* field = env->get_field(env, stack, object, "x");
+  SPVM_NATIVE_FIELD* field = env->get_field(env, stack, object, "x");
 
 =head2 get_field_static
 
-C<void* (*get_field_static)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* field_name);>
+C<SPVM_NATIVE_FIELD* (*get_field_static)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* field_name);>
 
 Searches a L<field|SPVM::Document::NativeAPI::Field> object given the basic type name I<basic_type_name> and the field name I<field_name>.
 
@@ -737,119 +740,119 @@ If it is found, returns it. Otherwise, returns C<NULL>.
 
 Examples:
 
-  void* field = env->get_field_static(env, stack, "Point", "x");
+  SPVM_NATIVE_FIELD* field = env->get_field_static(env, stack, "Point", "x");
 
 =head2 get_field_byte
 
-C<int8_t (*get_field_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>);>
+C<int8_t (*get_field_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the value of the field I<field> of the object I<object> interpreting its type is byte type.
 
 =head2 get_field_short
 
-C<int16_t (*get_field_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>);>
+C<int16_t (*get_field_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the value of the field I<field> of the object I<object> interpreting its type is short type.
 
 =head2 get_field_int
 
-C<int32_t (*get_field_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>);>
+C<int32_t (*get_field_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the value of the field I<field> of the object I<object> interpreting its type is int type.
 
 =head2 get_field_long
 
-C<int64_t (*get_field_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>);>
+C<int64_t (*get_field_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the value of the field I<field> of the object I<object> interpreting its type is long type.
 
 =head2 get_field_float
 
-C<float (*get_field_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>);>
+C<float (*get_field_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the value of the field I<field> of the object I<object> interpreting its type is float type.
 
 =head2 get_field_double
 
-C<double (*get_field_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>);>
+C<double (*get_field_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the value of the field I<field> of the object I<object> interpreting its type is double type.
 
 =head2 get_field_object
 
-C<void* (*get_field_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>);>
+C<void* (*get_field_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the value of the field I<field> of the object I<object> interpreting its type is an object type.
 
 =head2 get_field_string
 
-C<void* (*get_field_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>);>
+C<void* (*get_field_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the value of the field I<field> of the object I<object> interpreting its type is string type.
 
 =head2 set_field_byte
 
-C<void (*set_field_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, int8_t value);>
+C<void (*set_field_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>, int8_t value);>
 
 Sets I<value> to the field I<field> of the object I<object>.
 
-I<value> must be a numeric type. It is casted to byte type.
+I<value> must be a numeric type. It is cast to byte type.
 
 And the field existence flag is set to 1.
 
 =head2 set_field_short
 
-C<void (*set_field_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, int16_t value);>
+C<void (*set_field_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>, int16_t value);>
 
 Sets I<value> to the field I<field> of the object I<object>.
 
-I<value> must be a numeric type. It is casted to short type.
+I<value> must be a numeric type. It is cast to short type.
 
 And the field existence flag is set to 1.
 
 =head2 set_field_int
 
-C<void (*set_field_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, int32_t value);>
+C<void (*set_field_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>, int32_t value);>
 
 Sets I<value> to the field I<field> of the object I<object>.
 
-I<value> must be a numeric type. It is casted to int type.
+I<value> must be a numeric type. It is cast to int type.
 
 And the field existence flag is set to 1.
 
 =head2 set_field_long
 
-C<void (*set_field_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, int64_t value);>
+C<void (*set_field_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>, int64_t value);>
 
 Sets I<value> to the field I<field> of the object I<object>.
 
-I<value> must be a numeric type. It is casted to long type.
+I<value> must be a numeric type. It is cast to long type.
 
 And the field existence flag is set to 1.
 
 =head2 set_field_float
 
-C<void (*set_field_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, float value);>
+C<void (*set_field_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>, float value);>
 
 Sets I<value> to the field I<field> of the object I<object>.
 
-I<value> must be a numeric type. It is casted to float type.
+I<value> must be a numeric type. It is cast to float type.
 
 And the field existence flag is set to 1.
 
 =head2 set_field_double
 
-C<void (*set_field_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, double value);>
+C<void (*set_field_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>, double value);>
 
 Sets I<value> to the field I<field> of the object I<object>.
 
-I<value> must be a numeric type. It is casted to double type.
+I<value> must be a numeric type. It is cast to double type.
 
 And the field existence flag is set to 1.
 
 =head2 set_field_object
 
-C<void (*set_field_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, void* value);>
+C<void (*set_field_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>, void* value);>
 
 Sets I<value> to the field I<field> of the object I<object> interpreting its type is an object type.
 
@@ -857,7 +860,7 @@ And the field existence flag is set to 1.
 
 =head2 set_field_string
 
-C<void (*set_field_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, void* value);>
+C<void (*set_field_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>, void* value);>
 
 Alias for L</"set_field_object">
 
@@ -865,9 +868,9 @@ Alias for L</"set_field_object">
 
 C<int8_t (*get_field_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Retruns the value of the field specified by the invocant I<object> and the field name I<field_name>.
+Returns the value of the field specified by the invocant I<object> and the field name I<field_name>.
 
-The type of the field must be a numeric type. The value is casted to byte type.
+The type of the field must be a numeric type. The value is cast to byte type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -877,9 +880,9 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -893,7 +896,7 @@ C<int16_t (*get_field_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<short> type.
 
-The type of the field must be a numeric type. The value is casted to short type.
+The type of the field must be a numeric type. The value is cast to short type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -903,14 +906,14 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
   int32_t error_id = 0;
-  int8_t short_value = env->get_field_short_by_name(env, stack, object, "short_value", &error_id, __func__, FILE_NAME, __LINE__);
+  int16_t short_value = env->get_field_short_by_name(env, stack, object, "short_value", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
 
 =head2 get_field_int_by_name
@@ -919,7 +922,7 @@ C<int32_t (*get_field_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<int> type.
 
-The type of the field must be a numeric type. The value is casted to int type.
+The type of the field must be a numeric type. The value is cast to int type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -929,14 +932,14 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
   int32_t error_id = 0;
-  int8_t int_value = env->get_field_int_by_name(env, stack, object, "int_value", &error_id, __func__, FILE_NAME, __LINE__);
+  int32_t int_value = env->get_field_int_by_name(env, stack, object, "int_value", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
 
 =head2 get_field_long_by_name
@@ -945,7 +948,7 @@ C<int64_t (*get_field_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/
 
 Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<long> type.
 
-The type of the field must be a numeric type. The value is casted to long type.
+The type of the field must be a numeric type. The value is cast to long type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -955,14 +958,14 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
   int32_t error_id = 0;
-  int8_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &error_id, __func__, FILE_NAME, __LINE__);
+  int64_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
 
 =head2 get_field_float_by_name
@@ -971,7 +974,7 @@ C<float (*get_field_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<float> type.
 
-The type of the field must be a numeric type. The value is casted to float type.
+The type of the field must be a numeric type. The value is cast to float type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -981,14 +984,14 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
   int32_t error_id = 0;
-  int8_t float_value = env->get_field_float_by_name(env, stack, object, "float_value", &error_id, __func__, FILE_NAME, __LINE__);
+  float float_value = env->get_field_float_by_name(env, stack, object, "float_value", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
 
 =head2 get_field_double_by_name
@@ -997,7 +1000,7 @@ C<double (*get_field_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Gets the value of the field specified by the invocant I<object> and the field name I<field_name>, and returns the value casting to C<double> type.
 
-The type of the field must be a numeric type. The value is casted to double type.
+The type of the field must be a numeric type. The value is cast to double type.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> are needed for the exception stack trace.
 
@@ -1007,14 +1010,14 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
   int32_t error_id = 0;
-  int8_t double_value = env->get_field_double_by_name(env, stack, object, "double_value", &error_id, __func__, FILE_NAME, __LINE__);
+  double double_value = env->get_field_double_by_name(env, stack, object, "double_value", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
 
 =head2 get_field_object_by_name
@@ -1033,9 +1036,9 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -1065,9 +1068,9 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -1091,9 +1094,9 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -1117,9 +1120,9 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -1143,9 +1146,9 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -1169,14 +1172,14 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
   int32_t error_id = 0;
-  env->set_field_float_by_name(env, stack, object, "float_value", 13, &error_id, __func__, FILE_NAME, __LINE__);
+  env->set_field_float_by_name(env, stack, object, "float_value", 13.0f, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
 
 =head2 set_field_double_by_name
@@ -1195,14 +1198,14 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
   int32_t error_id = 0;
-  env->set_field_double_by_name(env, stack, object, "double_value", 13, &error_id, __func__, FILE_NAME, __LINE__);
+  env->set_field_double_by_name(env, stack, object, "double_value", 13.0, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
 
 =head2 set_field_object_by_name
@@ -1221,9 +1224,9 @@ Exceptions:
 
 If I<object> is not a class type, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If I<field_name> is not found, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If I<field_name> is not found, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
-If the field type is invalid, an exception is set and I<error_id> ise set to the basic type id of L<Error|SPVM::Error> class.
+If the field type is invalid, an exception is set and I<error_id> is set to the basic type id of L<Error|SPVM::Error> class.
 
 Examples:
 
@@ -1245,7 +1248,7 @@ Calls the L</"get_field_string_by_name">. If the return value is C<NULL>, return
 
 =head2 get_method
 
-C<void* (*get_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
+C<SPVM_NATIVE_METHOD* (*get_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
 
 Searches a L<method|SPVM::Document::NativeAPI::Method> given the basic type name I<basic_type_name> and the method name I<method_name>.
 
@@ -1253,11 +1256,11 @@ If it is found, returns it. Otherwise, returns C<NULL>.
 
 Examples:
 
-  void* method = env->get_method(env, stack, "Foo", "get");
+  SPVM_NATIVE_METHOD* method = env->get_method(env, stack, "Foo", "get");
 
 =head2 get_class_method
 
-C<void* (*get_class_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
+C<SPVM_NATIVE_METHOD* (*get_class_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
 
 Searches a class L<method|SPVM::Document::NativeAPI::Method> given the basic type name I<basic_type_name> and the method name I<method_name>.
 
@@ -1265,11 +1268,11 @@ If it is found, returns it. Otherwise, returns C<NULL>.
 
 Examples:
 
-  void* method = env->get_class_method(env, stack, "Foo", "get");
+  SPVM_NATIVE_METHOD* method = env->get_class_method(env, stack, "Foo", "get");
 
 =head2 get_instance_method_static
 
-C<void* (*get_instance_method_static)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
+C<SPVM_NATIVE_METHOD* (*get_instance_method_static)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
 
 Searches an instance method given the basic type name I<basic_type_name> and the method name I<method_name>.
 
@@ -1277,11 +1280,11 @@ If found, returns it. Otherwise, returns C<NULL>.
 
 Examples:
   
-  void* method = env->get_instance_method_static(env, stack, "Foo", "get");
+  SPVM_NATIVE_METHOD* method = env->get_instance_method_static(env, stack, "Foo", "get");
 
 =head2 get_instance_method
 
-C<void* (*get_instance_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* method_name);>
+C<SPVM_NATIVE_METHOD* (*get_instance_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* method_name);>
 
 Searches an instance L<method|SPVM::Document::NativeAPI::Method> given the object I<object> and the method name I<method_name>.
 
@@ -1289,11 +1292,11 @@ If it is found, returns it. Otherwise, returns C<NULL>.
 
 Examples:
 
-  void* method = env->get_instance_method(env, stack, object, "get");
+  SPVM_NATIVE_METHOD* method = env->get_instance_method(env, stack, object, "get");
 
 =head2 call_method_no_mortal
 
-C<int32_t (call_method_no_mortal)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t args_width, const char* func_name, const char* file, int32_t line);>
+C<int32_t (*call_method_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_METHOD* method|SPVM::Document::NativeAPI::Method>, int32_t args_width, const char* func_name, const char* file, int32_t line);>
 
 Calls the method I<method> given the L<width of the argument|SPVM::Document::NativeClass/"Arguments Width"> I<args_width>.
 
@@ -1301,15 +1304,17 @@ The func_name, file, and line arguments are used to store the caller information
 
 If the method throws an exception, returns a basic type ID of an error class. Otherwise, returns 0.
 
-C<stack[0].oval> is set to the return value of the method.
+C<stack[0]> is set to the return value of the method.
 
 This native API should not be used unless special purposes are intended. Normally, use L</"call_method"> native API.
 
 =head2 call_method
 
-C<int32_t (*call_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t args_width, const char* func_name, const char* file, int32_t line);>
+C<int32_t (*call_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_METHOD* method|SPVM::Document::NativeAPI::Method>, int32_t args_width, const char* func_name, const char* file, int32_t line);>
 
-Calls L</"call_method_no_mortal"> native API and if the type of the its return value is an object type, it is push to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"call_method_no_mortal"> native API and if the type of its return value is an object type, it is pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
+
+Returns the return value of L</"call_method_no_mortal">.
 
 =head2 call_class_method_by_name
 
@@ -1386,15 +1391,13 @@ If C<stack[0].oval> is C<NULL>, an exception is thrown.
 
 The type dimension of C<stack[0].oval> must be 0. Otherwise, an exception is thrown.
 
-If the basic type given by I<basic_type_name> is not found, an exception is thrown.
-
-If the instance method given by I<method_name> is not found in the class or super classes, an exception is thrown.
+If the instance method given by I<method_name> is not found in the class of the object or its superclasses, an exception is thrown.
 
 If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise, it is set to 0.
 
 =head2 new_object_no_mortal
 
-C<void* (*new_object_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+C<void* (*new_object_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
 Creates a new object given the basic type I<basic_type>.
 
@@ -1408,13 +1411,13 @@ This native API should not be used unless special purposes are intended. Normall
 
 =head2 new_object
 
-C<void* (*new_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+C<void* (*new_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Calls C<new_object_no_mortal> and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_object_no_mortal"> and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
-  void* basic_type = env->get_basic_type(env, stack, "Int");
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->get_basic_type(env, stack, "Int");
   void* object = env->new_object(env, stack, basic_type);
 
 =head2 new_object_by_name
@@ -1423,7 +1426,7 @@ C<void* (*new_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runti
 
 Creates a new object given the basic type name I<basic_type_name>, and returns it.
 
-The create object is pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
+The created object is pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
 
@@ -1431,7 +1434,7 @@ If the basic type given by I<basic_type_name> is not found, an exception is thro
 
 If the creation of the object failed, an exception is thrown.
 
-If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise, it is set to 0.
+If an exception is thrown, I<error_id> is set to a non-zero value. Otherwise, it is set to 0.
 
 Examples:
 
@@ -1441,7 +1444,7 @@ Examples:
 
 =head2 new_pointer_object_no_mortal
 
-C<void* (*new_pointer_object_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, void* pointer);>
+C<void* (*new_pointer_object_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, void* pointer);>
 
 Calls L</"new_object_no_mortal"> native API and sets the pointer I<pointer> to a native data to the created object, and returns it.
 
@@ -1449,15 +1452,15 @@ This native API should not be used unless special purposes are intended. Normall
 
 =head2 new_pointer_object
 
-C<void* (*new_pointer_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, void* pointer);>
+C<void* (*new_pointer_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, void* pointer);>
 
-Calls L</"new_pointer_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_pointer_object_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
-  void* basic_type = env->get_basic_type(env, stack, "MyTm");
-  void* st_tm = env->new_memory_block(env, stack, sizeof (struct tm));
-  void* obj_st_tm = env->new_pointer(env, stack, basic_type, st_tm);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->get_basic_type(env, stack, "MyTm");
+  void* native_ptr = env->new_memory_block(env, stack, sizeof(struct tm));
+  void* obj_tm = env->new_pointer_object(env, stack, basic_type, native_ptr);
 
 =head2 new_pointer_object_by_name
 
@@ -1465,8 +1468,11 @@ C<void* (*new_pointer_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClas
 
 Calls L</"new_object_by_name"> native API and sets the pointer I<pointer> to a native data to the created object, and returns it.
 
+Examples:
+
   int32_t error_id = 0;
-  void* minimal = env->new_pointer_object_by_name(env, stack, "TestCase::Pointer", pointer, &error_id, __func__, FILE_NAME, __LINE__);
+  void* native_ptr = env->new_memory_block(env, stack, 16);
+  void* obj = env->new_pointer_object_by_name(env, stack, "TestCase::Pointer", native_ptr, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
 
 =head2 get_pointer
@@ -1477,7 +1483,7 @@ Returns L<pointer value|SPVM::Document::NativeClass/"Pointer Value"> of the obje
 
 Examples:
 
-  strcut tm* tm = (struct tm*)env->get_pointer(env, stack, obj_tm);
+  struct tm* tm = (struct tm*)env->get_pointer(env, stack, obj_tm);
 
 =head2 set_pointer
 
@@ -1489,7 +1495,7 @@ Sets the L<pointer value|SPVM::Document::NativeClass/"Pointer Value"> of the obj
 
 C<void* (*new_string_nolen_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* bytes);>
 
-Creates a new string object given a C string I<bytes>. I<bytes> must end with C<\0>, and returns it.
+Creates a new string object given a C string I<bytes>. I<bytes> must end with C<\0>.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1499,7 +1505,7 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*new_string_nolen)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* bytes);>
 
-Calls L</"new_string_nolen_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_string_nolen_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
@@ -1513,7 +1519,7 @@ Creates a new string object given the C string I<bytes> and the length I<length>
 
 If its memory allocation failed, returns C<NULL>.
 
-If the length of I<bytes> is lower than I<length> or I<bytes> is NULL, The part that longer than the length of I<bytes> is filled with C<\0>. 
+If the actual length of I<bytes> is less than I<length>, or if I<bytes> is C<NULL>, the remaining part up to I<length> is filled with C<\0>. 
 
 This native API should not be used unless special purposes are intended. Normally, use L</"new_string"> native API.
 
@@ -1521,7 +1527,7 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*new_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* bytes, int32_t length);>
 
-Calls L</"new_string_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_string_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
@@ -1531,7 +1537,7 @@ Examples:
 
 C<void* (*new_byte_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new array of the byte[] type given the length I<length>, and returns it.
+Creates a new array of the C<byte[]> type given the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1541,7 +1547,7 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*new_byte_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Calls L</"new_byte_array_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_byte_array_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
@@ -1551,7 +1557,7 @@ Examples:
 
 C<void* (*new_short_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new array of the short[] type given the length I<length>, and returns it.
+Creates a new array of the C<short[]> type given the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1561,7 +1567,7 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*new_short_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Calls L</"new_short_array_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_short_array_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
@@ -1571,7 +1577,7 @@ Examples:
 
 C<void* (*new_int_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new array of the int[] type given the length I<length>, and returns it.
+Creates a new array of the C<int[]> type given the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1581,7 +1587,7 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*new_int_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Calls L</"new_int_array_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_int_array_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
@@ -1591,7 +1597,7 @@ Examples:
 
 C<void* (*new_long_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new array of the long[] type given the length I<length>, and returns it.
+Creates a new array of the C<long[]> type given the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1601,7 +1607,7 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*new_long_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Calls L</"new_long_array_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_long_array_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
@@ -1611,7 +1617,7 @@ Examples:
 
 C<void* (*new_float_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new array of float[] type given the length I<length>, and returns it.
+Creates a new array of the C<float[]> type given the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1621,7 +1627,7 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*new_float_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Calls L</"new_float_array_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_float_array_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
@@ -1631,7 +1637,7 @@ Examples:
 
 C<void* (*new_double_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new array of double[] type given the length I<length>, and returns it.
+Creates a new array of the C<double[]> type given the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1641,7 +1647,7 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*new_double_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Calls L</"new_double_array_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_double_array_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
@@ -1649,7 +1655,7 @@ Examples:
 
 =head2 new_object_array_no_mortal
 
-C<void* (*new_object_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t length);>
+C<void* (*new_object_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t length);>
 
 Creates a new array of an object type given the basic type I<basic_type> and the array length I<length>, and returns it.
 
@@ -1659,64 +1665,64 @@ This native API should not be used unless special purposes are intended. Normall
 
 =head2 new_object_array
 
-C<void* (*new_object_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t length);>
+C<void* (*new_object_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t length);>
 
-Calls L</"new_object_array_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_object_array_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, "Int");
-  void* object_array = env->new_object_array(env, stack, basic_type_id, 100);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->get_basic_type(env, stack, "Int");
+  void* object_array = env->new_object_array(env, stack, basic_type, 100);
 
 =head2 new_object_array_by_name
 
-C<void* (*new_object_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+C<void* (*new_object_array_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t length, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Creates a new object array given the basic type name I<basic_type_name> and the array length I<length>, and returns it.
 
 The created array is pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+
 If the basic type given by I<basic_type_name> is not found, an exception is thrown.
 
 If the creation of the array failed, an exception is thrown.
 
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
-
-If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise, it is set to 0.
+If an exception is thrown, I<error_id> is set to a non-zero value. Otherwise, it is set to 0.
 
 =head2 new_string_array
 
 C<void* (*new_string_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Calls L</"new_string_array_no_mortal"> native API and calls L</"push_mortal"> native API given the return value.
+Calls L</"new_string_array_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 =head2 new_muldim_array_no_mortal
 
-C<void* (*new_muldim_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t length);>
+C<void* (*new_muldim_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t length);>
 
 Creates a new multi-dimensional array given the basic type I<basic_type>, the type dimension I<type_dimension>, and the array length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
-I<type_dimension> must be less than or equals to 255.
+I<type_dimension> must be less than or equal to 255.
 
 This native API should not be used unless special purposes are intended. Normally, use L</"new_muldim_array"> native API.
 
 =head2 new_muldim_array
 
-C<void* (*new_muldim_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t length);>
+C<void* (*new_muldim_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t length);>
 
-Calls L</"new_muldim_array_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_muldim_array_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
   // Creates 2-dimensional array - new Int[][100].
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, "Int");
-  void* multi_array = env->new_muldim_array(env, stack, basic_type_id, 2, 100);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->get_basic_type(env, stack, "Int");
+  void* multi_array = env->new_muldim_array(env, stack, basic_type, 2, 100);
 
 =head2 new_muldim_array_by_name
 
-C<void* (*new_muldim_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t length, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+C<void* (*new_muldim_array_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t type_dimension, int32_t length, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Creates a new multi-dimensional array given the basic type name I<basic_type_name>, the type dimension I<type_dimension>, and the array length I<length>, and returns it.
 
@@ -1728,11 +1734,11 @@ If the basic type given by I<basic_type_name> is not found, an exception is thro
 
 If the creation of the array failed, an exception is thrown.
 
-If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise, it is set to 0.
+If an exception is thrown, I<error_id> is set to a non-zero value. Otherwise, it is set to 0.
 
 =head2 new_mulnum_array_no_mortal
 
-C<void* (*new_mulnum_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t length);>
+C<void* (*new_mulnum_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t length);>
 
 Creates a new multi-numeric array given the basic type I<basic_type> and the array length I<length>, and returns it.
 
@@ -1742,20 +1748,20 @@ This native API should not be used unless special purposes are intended. Normall
 
 =head2 new_mulnum_array
 
-C<void* (*new_mulnum_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t length);>
+C<void* (*new_mulnum_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t length);>
 
-Calls L</"new_mulnum_array_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_mulnum_array_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 Examples:
 
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, "Complex_2d");
-  void* value_array = env->new_mulnum_array(env, stack, basic_type_id, 100);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->get_basic_type(env, stack, "Complex_2d");
+  void* value_array = env->new_mulnum_array(env, stack, basic_type, 100);
 
 =head2 new_mulnum_array_by_name
 
-C<void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+C<void* (*new_mulnum_array_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t length, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Creates a new multi-numeric array given the basic type name I<basic_type_name>, the type dimension I<type_dimension>, and the array length I<length>, and returns it.
+Creates a new multi-numeric array given the basic type name I<basic_type_name> and the array length I<length>, and returns it.
 
 The created array is pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
@@ -1765,11 +1771,11 @@ If the basic type given by I<basic_type_name> is not found, an exception is thro
 
 If the creation of the array failed, an exception is thrown.
 
-If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise, it is set to 0.
+If an exception is thrown, I<error_id> is set to a non-zero value. Otherwise, it is set to 0.
 
 =head2 new_array_proto_no_mortal
 
-C<void* (*new_array_proto_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);>
+C<void* (*new_array_proto_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array, int32_t length);>
 
 Creates a new array given the prototype array I<array> and the length I<length>, and returns it.
 
@@ -1777,7 +1783,7 @@ If I<array> is C<NULL>, returns C<NULL>.
 
 If the type of I<array> is not an array type, returns C<NULL>.
 
-If I<length> is lower than 0, returns C<NULL>.
+If I<length> is less than 0, returns C<NULL>.
 
 This native API should not be used unless special purposes are intended. Normally, use L</"new_array_proto"> native API.
 
@@ -1785,21 +1791,21 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*new_array_proto)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array, int32_t length);>
 
-Calls L</"new_array_proto_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_array_proto_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 =head2 length
 
 C<int32_t (*length)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Returns the value of C<length> member variable in L</"SPVM_OBJECT"> struct given the object I<object>.
+Returns the length of the object I<object>.
 
 I<object> must be defined.
 
-If I<object> is an array, C<length> is its array length.
+If I<object> is an array, its array length is returned.
 
-If I<object> is a string, C<length> is its string length.
+If I<object> is a string, its string length is returned.
 
-Otherwise C<length> is 0.
+Otherwise 0 is returned.
 
 Examples:
 
@@ -1895,7 +1901,7 @@ Sets I<object> to the element of the array I<array> at the index I<index>.
 
 Examples:
 
-  env->get_elem_object(env, stack, array, 3, object);
+  env->set_elem_object(env, stack, array, 3, object);
 
 =head2 set_elem_string
 
@@ -1929,7 +1935,7 @@ Examples:
 
 C<void* (*concat_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string1, void* string2);>
 
-Creates a new string concating two strings I<string1> and I<string2>, and returns it.
+Creates a new string by concatenating two strings I<string1> and I<string2>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1939,29 +1945,29 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*concat)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string1, void* string2);>
 
-Calls L</"concat_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"concat_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 =head2 shorten
 
 C<void (*shorten)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string, int32_t new_length);>
 
-Shorten the string C<string> to the length I<length>.
+Shortens the string C<string> to the length I<new_length>.
 
-Characters whose index is greater than I<length> are are filled with C<\0>.
+Characters whose index is greater than or equal to I<new_length> are filled with C<\0>.
 
 If the string C<string> is C<NULL>, nothing is performed.
 
-If the type of C<string> is not string type, nothing is performed.
+If the type of C<string> is not the string type, nothing is performed.
 
 If C<string> is read-only, nothing is performed.
 
-If I<length> is not greater than or equal to 0, nothing is performed.
+If I<new_length> is not greater than or equal to 0, nothing is performed.
 
-If I<length> is less than the length of I<string>, nothing is performed.
+If I<new_length> is greater than the current length of I<string>, nothing is performed.
 
 =head2 make_read_only
 
-C<void (*make_read_only)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string)>
+C<void (*make_read_only)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string);>
 
 Makes the string I<string> read-only.
 
@@ -1969,9 +1975,9 @@ If I<string> is C<NULL>, no operation is performed.
 
 =head2 is_read_only
 
-C<void (*make_read_only)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string)>
+C<int32_t (*is_read_only)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string);>
 
-If the string  I<string> is not C<NULL> and it is read-only, returns 1, otherwise returns 0.
+If the string I<string> is not C<NULL> and it is read-only, returns 1, otherwise returns 0.
 
 =head2 print
 
@@ -1985,7 +1991,7 @@ C<void (*print_stderr)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Envi
 
 Prints the string I<string> to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
-If I<string> is NULL, this method produces no output.
+If I<string> is C<NULL>, no output is produced.
 
 =head2 dump_no_mortal
 
@@ -1999,23 +2005,23 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*dump)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Calls L</"dump_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"dump_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 =head2 dumpc
 
 C<const char* (*dumpc)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Calls L</"dump"> native API and calls L</"get_chars"> native API given the return value of C<dump> to I<string>, and returns the return value of C<get_chars>.
+Calls L</"dump"> native API, then calls L</"get_chars"> native API with the returned string object, and returns the character pointer.
 
 =head2 copy_no_mortal
 
-C<void* (*copy_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+C<void* (*copy_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
 The type of the object I<object> must be a string type, a numeric array type, or a multi-numeric array type.
 
-If the type of the object I<object> is string type, creates a string and copies the characters stored in I<object> to the created string, and returns the created object.
+If the type of the object I<object> is the string type, creates a new string and copies the characters stored in I<object> to it, and returns the new string object.
 
-If the type of the object I<object> is a numeric array type or a multi-numeric array type, creates an array using type of I<object> as a prototype and copies the elements stored in I<object> to the created array, and returns the created array.
+If the type of the object I<object> is a numeric array type or a multi-numeric array type, creates a new array using the type of I<object> as a prototype and copies the elements stored in I<object> to it, and returns the new array object.
 
 If I<object> is C<NULL>, returns C<NULL>.
 
@@ -2025,7 +2031,7 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*copy)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Calls L</"copy_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"copy_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 =head2 get_spvm_version_string
 
@@ -2037,11 +2043,11 @@ Returns the L<version string|SPVM::Document::Language::Class/"Version String"> o
 
 C<double (*get_spvm_version_number)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Calls L</"get_spvm_version_string"> native API and converts its return value to a double value.
+Calls L</"get_spvm_version_string"> native API and converts its return value to a C<double> value.
 
 =head2 get_version_string
 
-C<const char* (*get_version_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+C<const char* (*get_version_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
 Returns the L<version string|SPVM::Document::Language::Class/"Version String"> of the basic type I<basic_type>.
 
@@ -2049,17 +2055,17 @@ If the version string is not defined, returns C<NULL>.
 
 =head2 get_version_number
 
-C<double (*get_version_number)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+C<double (*get_version_number)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Calls L</"get_version_string"> native API and converts its return value to a double value.
+Calls L</"get_version_string"> native API and converts its return value to a C<double> value.
 
 If the version string is not defined, returns -1.
 
 =head2 die
 
-C<int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...);>
+C<int32_t (*die)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* exception_format, const char* func_name, const char* file, int32_t line, ...);>
 
-Sets an exception message using a format string and its metadata, then returns a basic type ID of an error class.
+Sets an exception message using a format string and its metadata, then returns the basic type ID of the error class.
 
 I<exception_format> is a format string in the style of C<printf>.
 
@@ -2067,12 +2073,12 @@ I<func_name>, I<file>, and I<line> are metadata that indicate where the exceptio
 
 The subsequent arguments are values to be formatted according to I<exception_format>.
 
-B<Examples:>
+Examples:
 
-  return env->die(env, stack, "Error: %s", func_name, file, line, "Something went wrong");
+  return env->die(env, stack, "Error: %s", __func__, FILE_NAME, __LINE__, "Something went wrong");
 
   int32_t id = 10;
-  return env->die(env, stack, "Invalid ID %d", func_name, file, line, id);
+  return env->die(env, stack, "Invalid ID %d", __func__, FILE_NAME, __LINE__, id);
 
 =head2 get_exception
 
@@ -2080,7 +2086,7 @@ C<void* (*get_exception)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime En
 
 Returns the value of the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
 
-The return value is a SVPM string.
+The return value is an SPVM string object.
 
 =head2 set_exception
 
@@ -2088,31 +2094,31 @@ C<void (*set_exception)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Env
 
 Sets I<exception> to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
 
-I<exception> is an SPVM string.
+I<exception> must be an SPVM string object or C<NULL>.
 
 =head2 new_stack_trace_no_mortal
 
-C<void* (*new_stack_trace_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* exception, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t line);>
+C<void* (*new_stack_trace_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* exception, L<SPVM_NATIVE_METHOD* method|SPVM::Document::NativeAPI::Method>, int32_t line);>
 
-Creates a new string adding a string line of a stack trace given the file I<file> and the line I<line> to the end of the exception I<exception>, and returns it.
+Creates a new string by appending a stack trace line (including the method and the line number) to the end of the exception I<exception>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
-I<exception> is an SPVM string. The return value is an SPVM string.
+I<exception> must be an SPVM string object. The return value is an SPVM string object.
 
 This native API should not be used unless special purposes are intended. Normally, use L</"new_stack_trace"> native API.
 
 =head2 new_stack_trace
 
-C<void* (*new_stack_trace)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* exception, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t line);>
+C<void* (*new_stack_trace)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* exception, L<SPVM_NATIVE_METHOD* method|SPVM::Document::NativeAPI::Method>, int32_t line);>
 
-Calls L</"new_stack_trace_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_stack_trace_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 =head2 is_string
 
 C<int32_t (*is_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is not C<NULL> and its type is string type, returns 1, otherwise returns 0.
+If the object I<object> is not C<NULL> and its type is the string type, returns 1, otherwise returns 0.
 
 =head2 is_class
 
@@ -2124,7 +2130,7 @@ If the object I<object> is not C<NULL> and its type is a class type, returns 1, 
 
 C<int32_t (*is_pointer_class)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is not C<NULL> and the class of I<object> has the C<pointer> attribute, returns 1, otherwise returns 0.
+If the object I<object> is not C<NULL> and its class has the C<pointer> attribute, returns 1, otherwise returns 0.
 
 =head2 is_array
 
@@ -2152,21 +2158,21 @@ If the object I<object> is not C<NULL> and its type is a multi-numeric array typ
 
 =head2 isa
 
-C<int32_t (*isa)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, void* basic_type, int32_t type_dimension);>
+C<int32_t (*isa)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension);>
 
-If the object I<object> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type given by the basic type C<basic_type> and the type dimension C<type_dimension>, returns 1, otherwise returns 0.
+If the object I<object> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type given by the basic type I<basic_type> and the type dimension I<type_dimension>, returns 1, otherwise returns 0.
 
 =head2 isa_by_name
 
 C<int32_t (*isa_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* basic_type_name, int32_t type_dimension);>
 
-If the basic type given by the basic type name I<basic_type_name> is not found, returns 0.
+If the basic type given by I<basic_type_name> is not found, returns 0.
 
-If the object I<object> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type given by the basic type name C<basic_type_name> and the type dimension C<type_dimension>, returns 1, otherwise returns 0.
+If the object I<object> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type given by I<basic_type_name> and the type dimension I<type_dimension>, returns 1, otherwise returns 0.
 
 =head2 is_type
 
-C<int32_t (*is_type)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension);>
+C<int32_t (*is_type)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension);>
 
 If the type of the object I<object> is equal to the type given by the basic type I<basic_type> and the type dimension I<type_dimension>, returns 1, otherwise returns 0.
 
@@ -2176,9 +2182,9 @@ I<object> must not be C<NULL>.
 
 C<int32_t (*is_type_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* basic_type_name, int32_t type_dimension);>
 
-If the basic type given by the basic type name I<basic_type_name> is not found, returns 0.
+If the basic type given by I<basic_type_name> is not found, returns 0.
 
-If the object I<object> is not C<NULL> and its type of the object I<object> is equal to the basic type given by the basic type name I<basic_type_name> and the type dimension I<type_dimension>, returns 1, otherwise returns 0.
+If the object I<object> is not C<NULL> and its type is equal to the type given by I<basic_type_name> and the type dimension I<type_dimension>, returns 1, otherwise returns 0.
 
 =head2 elem_isa
 
@@ -2190,13 +2196,13 @@ If the element I<element> satisfies the L<assignment requirement|SPVM::Document:
 
 C<int32_t (*get_elem_size)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the byte size of the element of the array I<array>.
+Returns the byte size of an element of the array I<array>.
 
 =head2 get_type_name_no_mortal
 
 C<void* (*get_type_name_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Creates a new string that is the type name of the object I<object>, and returns it.
+Creates a new string object that represents the type name of the object I<object>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -2206,13 +2212,13 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*get_type_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Calls L</"get_type_name_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"get_type_name_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 =head2 get_compile_type_name_no_mortal
 
 C<void* (*get_compile_type_name_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);>
 
-Creates a new string that is the the compile-time type name of the type given by the basic type name I<basic_type_name>, the type dimension I<type_dimension>, the type flag I<type_flag>, and returns it.
+Creates a new string object that represents the compile-time type name of the type given by I<basic_type_name>, I<type_dimension>, and I<type_flag>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -2222,13 +2228,13 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*get_compile_type_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);>
 
-Calls L</"get_compile_type_name_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"get_compile_type_name_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 =head2 enter_scope
 
 C<int32_t (*enter_scope)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Performs an L<enterring scope|SPVM::Document::Language::GarbageCollection/"Entering Scope"> operation and returns the top position of the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">. This value is used as an argument to L</"leave_scope"> native API.
+Performs an L<entering scope|SPVM::Document::Language::GarbageCollection/"Entering Scope"> operation and returns the current top position of the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">. This value is used as an argument to L</"leave_scope"> native API.
 
 =head2 leave_scope
 
@@ -2236,7 +2242,7 @@ C<void (*leave_scope)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Envir
 
 Performs a L<leaving scope operation|SPVM::Document::Language::GarbageCollection/"Leaving Scope"> given the top position of the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack"> I<mortal_stack_top>.
 
-Normally, I<mortal_stack_top> is a return value from L</"enter_scope"> native API.
+Normally, I<mortal_stack_top> is the return value from L</"enter_scope"> native API.
 
 =head2 push_mortal
 
@@ -2244,7 +2250,7 @@ C<int32_t (*push_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime En
 
 Pushes the object I<object> to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
-If I<object> is NULL, no operation is performed.
+If I<object> is C<NULL>, no operation is performed.
 
 If successful, returns 0. Otherwise, returns a non-zero value.
 
@@ -2252,7 +2258,7 @@ If successful, returns 0. Otherwise, returns a non-zero value.
 
 C<int32_t (*weaken)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void** ref);>
 
-Weakens the reference C<ref>.
+Weakens the reference I<ref>.
 
 I<ref> must not be C<NULL>.
 
@@ -2260,25 +2266,23 @@ If the object referenced by I<ref> is C<NULL>, no operation is performed.
 
 If I<ref> is already weakened, no operation is performed.
 
-See the doc of L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference"> about weak references.
+See the documentation of L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference"> for more details.
 
-=head2 isweak 
+=head2 isweak
 
-C<int32_t (*isweak()SPVM_ENV* env, void** ref);>
+C<int32_t (*isweak)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void** ref);>
 
-If the reference C<ref> is weakened, returns 1, otherwise returns 0.
+If the reference I<ref> is weakened, returns 1, otherwise returns 0.
 
 I<ref> must not be C<NULL>.
 
 If the object referenced by I<ref> is C<NULL>, returns 0.
 
-See the doc of L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference"> about weak references.
-
 =head2 unweaken
 
 C<void (*unweaken)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void** ref);>
 
-Unweakens the reference C<ref>.
+Unweakens the reference I<ref>.
 
 I<ref> must not be C<NULL>.
 
@@ -2286,63 +2290,45 @@ If the object referenced by I<ref> is C<NULL>, no operation is performed.
 
 If I<ref> is not weakened, no operation is performed.
 
-See the doc of L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference"> about weak references.
-
 =head2 strerror_string
 
 C<void* (*strerror_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t errno_value, int32_t length);>
 
-Calls the L</"strerror"> function and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"strerror"> and creates an SPVM string object from its return value, pushes it to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 =head2 strerror_string_nolen
 
 C<void* (*strerror_string_nolen)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t errno_value);>
 
-Calls the L</"strerror_string"> function given 0 to I<length>, and returns its return value.
+Calls L</"strerror_string"> with I<length> set to 0, and returns its return value.
 
 =head2 strerror
 
 C<const char* (*strerror)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t errno_value, int32_t length);>
 
-Returns the return value of the L<strerror|https://linux.die.net/man/3/strerror> function in the C language.
+Returns the error string corresponding to I<errno_value>, similar to the L<strerror|https://linux.die.net/man/3/strerror> function in C.
 
-If the length is 0, the length is set to 128.
+If I<length> is 0, the internal buffer length is set to 128.
 
-If the C<strerror> function failed, C<errno> is set to the a positive value.
+If the operation fails, C<errno> is set to a positive value.
 
 This native API is thread-safe.
-
-This native API is implemented by the following functions:
-
-Windows:
-
-L<strerror_s|https://learn.microsoft.com/ja-jp/cpp/c-runtime-library/reference/strerror-s-strerror-s-wcserror-s-wcserror-s?view=msvc-170>
-
-Linux and UNIX:
-
-L<strerror_r - XSI-compliant|https://linux.die.net/man/3/strerror_r>
 
 =head2 strerror_nolen
 
 C<const char* (*strerror_nolen)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t errno_value);>
 
-Calls the L</"strerror"> function given 0 to I<length>, and returns its return value.
+Calls L</"strerror"> with I<length> set to 0, and returns its return value.
 
 =head2 is_binary_compatible_object
 
 C<int32_t (*is_binary_compatible_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is binary compatible with the runtime environment I<runtime> and the runtime stack I<stack>, returns 1, otherwise returns 0.
-
-=head2 reserved195
-
-C<void* reserved195;>
-
-Reserved for the future use.
+If the object I<object> is binary compatible with the current runtime environment, returns 1, otherwise returns 0.
 
 =head2 new_stack
 
-C<SPVM_VALUE* (*new_stack)(SPVM_ENV* env);>
+C<SPVM_VALUE* (*new_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">);>
 
 Creates a new L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack">, and returns it.
 
@@ -2364,7 +2350,7 @@ If the pointer stored in the return value is C<NULL>, an exception is thrown.
 
 =head2 get_field_object_ref
 
-C<void** (*get_field_object_ref)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>);>
+C<void** (*get_field_object_ref)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the address where the value of the field I<field> is stored.
 
@@ -2372,27 +2358,25 @@ Returns the address where the value of the field I<field> is stored.
 
 C<void** (*get_field_object_ref_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Searches a field field given the object I<object> and the field name I<field_name>.
+Searches for a field given the object I<object> and the field name I<field_name>.
 
-If it is found, the address where the value of the field I<field> is stored. Otherwise, an exception is thrown.
+If it is found, returns the address where the value of the field is stored. Otherwise, an exception is thrown.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
 
-If the field given by I<field_name> is not found, an exception is thrown.
-
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value. Otherwise, set to 0.
+If an exception is thrown, the value referenced by I<error_id> is set to a non-zero value. Otherwise, it is set to 0.
 
 =head2 is_binary_compatible_stack
 
 C<int32_t (*is_binary_compatible_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-If the runtime stack I<stack> is binary compatible with the runtime environment I<runtime>, returns 1, otherwise returns 0.
+If the runtime stack I<stack> is binary compatible with the runtime environment I<env>, returns 1, otherwise returns 0.
 
 =head2 assign_object
 
 C<void (*assign_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void** ref, void* object);>
 
-Assigns the object C<object> to the place referenced by the reference C<ref>.
+Assigns the object I<object> to the place referenced by the reference I<ref>.
 
 This native API should not be used unless special purposes are intended.
 
@@ -2410,9 +2394,9 @@ C<void* (*new_memory_block)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime
 
 Creates a new memory block given the byte size I<size> and returns its address.
 
-If I<size> is 0, retunrs C<NULL>.
+If I<size> is 0, returns C<NULL>.
 
-If I<size> is greater than C<SIZE_MAX> defined in the sysmte, returns C<NULL>.
+If I<size> is greater than C<SIZE_MAX> defined in the system, returns C<NULL>.
 
 If the system memory allocation function returns C<NULL>, this native API returns C<NULL>.
 
@@ -2438,7 +2422,7 @@ Returns the count of the memory blocks managed by this runtime.
 
 C<void (*say)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string);>
 
-Prints the string I<string> and C<\n> to L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams">.
+Prints the string I<string> followed by a newline (C<\n>) to L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams">.
 
 =head2 warn
 
@@ -2476,27 +2460,27 @@ If an exception is thrown, returns a non-zero value. Otherwise, returns 0.
 
 =head2 new_array_proto_element_no_mortal
 
-C<void* (*new_array_proto_element_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* element, int32_t length);>
+C<void* (*new_array_proto_element_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* element, int32_t length);>
 
 Creates a new array given the prototype element I<element> and the length I<length>, and returns it.
 
 If I<element> is C<NULL>, returns C<NULL>.
 
-If the type of I<element> must be an object type.
+The type of I<element> must be an object type.
 
-If I<length> is lower than 0, returns C<NULL>.
+If I<length> is less than 0, returns C<NULL>.
 
 This native API should not be used unless special purposes are intended. Normally, use L</"new_array_proto_element"> native API.
 
 =head2 new_array_proto_element
 
-C<void* (*new_array_proto_element)(SPVM_ENV* env, SPVM_VALUE* stack, void* element, int32_t length);>
+C<void* (*new_array_proto_element)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* element, int32_t length);>
 
-Calls L</"new_array_proto_element_no_mortal"> native API and push its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"new_array_proto_element_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
 
 =head2 get_byte_object_value
 
-C<int32_t (*get_byte_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* byte_object);>
+C<int8_t (*get_byte_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* byte_object);>
 
 Returns the value of the C<value> field of L<Byte|SPVM::Byte> object I<byte_object>.
 
@@ -2504,7 +2488,7 @@ I<byte_object> must be a L<Byte|SPVM::Byte> object.
 
 =head2 get_short_object_value
 
-C<int32_t (*get_short_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* short_object);>
+C<int16_t (*get_short_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* short_object);>
 
 Returns the value of the C<value> field of L<Short|SPVM::Short> object I<short_object>.
 
@@ -2512,7 +2496,7 @@ I<short_object> must be a L<Short|SPVM::Short> object.
 
 =head2 get_int_object_value
 
-C<int32_t (*get_int_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* int_object);>
+C<int32_t (*get_int_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* int_object);>
 
 Returns the value of the C<value> field of L<Int|SPVM::Int> object I<int_object>.
 
@@ -2520,7 +2504,7 @@ I<int_object> must be an L<Int|SPVM::Int> object.
 
 =head2 get_long_object_value
 
-C<int64_t (*get_long_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* long_object);>
+C<int64_t (*get_long_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* long_object);>
 
 Returns the value of the C<value> field of L<Long|SPVM::Long> object I<long_object>.
 
@@ -2528,7 +2512,7 @@ I<long_object> must be a L<Long|SPVM::Long> object.
 
 =head2 get_float_object_value
 
-C<float (*get_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* float_object);>
+C<float (*get_float_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* float_object);>
 
 Returns the value of the C<value> field of L<Float|SPVM::Float> object I<float_object>.
 
@@ -2536,7 +2520,7 @@ I<float_object> must be a L<Float|SPVM::Float> object.
 
 =head2 get_double_object_value
 
-C<double (*get_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* double_object);>
+C<double (*get_double_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* double_object);>
 
 Returns the value of the C<value> field of L<Double|SPVM::Double> object I<double_object>.
 
@@ -2544,19 +2528,19 @@ I<double_object> must be a L<Double|SPVM::Double> object.
 
 =head2 no_free
 
-C<int32_t (*no_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+C<int32_t (*no_free)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If C<no_free> flag of the object I<object> is enabled, retunrs 1, otherwise retunrs 0.
+If the C<no_free> flag of the object I<object> is enabled, returns 1, otherwise returns 0.
 
 =head2 set_no_free
 
-C<void (*set_no_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t no_free);>
+C<void (*set_no_free)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, int32_t no_free);>
 
-If I<no_free> is a true value, enables C<no_free> flag of the object I<object>, otherwise disables C<no_free> flag.
+If I<no_free> is a true value, enables the C<no_free> flag of the object I<object>, otherwise disables it.
 
 =head2 get_stack_tmp_buffer
 
-C<char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);>
+C<char* (*get_stack_tmp_buffer)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
 Returns the temporary buffer on the runtime stack I<stack>.
 
@@ -2564,23 +2548,19 @@ The byte size of the temporary buffer is L</"SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE
 
 =head2 print_exception_to_stderr
 
-C<void (*print_exception_to_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);>
+C<void (*print_exception_to_stderr)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Prints C<"[An exception is converted to a warning]\n"> to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
-
-And prints the current exception to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
-
-And prints C<"\n"> to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
+Prints C<"[An exception is converted to a warning]\n">, the current exception, and C<"\n"> to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
 =head2 dump_object_internal
 
-C<void* (*dump_object_internal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+C<void* (*dump_object_internal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Dumps the internal information of the object I<object>, creates a new string from the information, and returns it.
+Dumps the internal information of the object I<object>, creates a new SPVM string from the information, and returns it.
 
-The dumped internal information looks like the following one.
+The dumped internal information looks like the following:
 
-  [Object Intenal:0x55dd87806090]
+  [Object Internal:0x55dd87806090]
   pointer:(nil)
   weaken_backrefs_length:0
   ref_count:1
@@ -2589,41 +2569,41 @@ The dumped internal information looks like the following one.
   flag:
   length:2
 
-If I<object> is NULL, returns a string C<"undef">.
+If I<object> is C<NULL>, returns a string C<"undef">.
 
 =head2 get_seed
 
-C<int32_t (*get_seed)(SPVM_ENV* env, SPVM_VALUE* stack);>
+C<int32_t (*get_seed)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns the value of C<seed> stack variable on the runtime stack I<stack>.
+Returns the value of the C<seed> stack variable on the runtime stack I<stack>.
 
 =head2 set_seed
 
-C<void (*set_seed)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t seed);>
+C<void (*set_seed)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t seed);>
 
-Sets the value of C<seed> stack variable on the runtime stack I<stack> to I<seed>.
+Sets the value of the C<seed> stack variable on the runtime stack I<stack> to I<seed>.
 
-If the value of C<seed_initialized> stack variable on the runtime stack I<stack> is 0, sets it to 1.
+If the value of the C<seed_initialized> stack variable on the runtime stack I<stack> is 0, it is set to 1.
 
 =head2 seed_initialized
 
-C<int32_t (*seed_initialized)(SPVM_ENV* env, SPVM_VALUE* stack);>
+C<int32_t (*seed_initialized)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns the value of C<seed_initialized> stack variable on the runtime stack I<stack>.
+Returns the value of the C<seed_initialized> stack variable on the runtime stack I<stack>.
 
 =head2 get_basic_type_name_in_version_from
 
-C<const char* (*get_basic_type_name_in_version_from)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);>
+C<const char* (*get_basic_type_name_in_version_from)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the basic type name specified by C<version_from> statement. If it is not specified, returns NULL.
+Returns the basic type name specified by the C<version_from> statement. If it is not specified, returns C<NULL>.
 
 =head2 set_command_info_warning
 
-C<int32_t (*set_command_info_warning)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t warning);>
+C<int32_t (*set_command_info_warning)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t warning);>
 
-Sets L<CommandInfo#WARNING|SPVM::CommandInfo/"WARNING"> class variable to I<warning>.
+Sets the L<CommandInfo#WARNING|SPVM::CommandInfo/"WARNING"> class variable to I<warning>.
 
-If an exception is thrown, returns the basic type ID of L<Error|SPVM::Error> classs, otherwise returns 0.
+If an exception is thrown, returns the basic type ID of the L<Error|SPVM::Error> class, otherwise returns 0.
 
 This native API should not be used unless special purposes are intended.
 
@@ -2631,341 +2611,285 @@ This native API should not be used unless special purposes are intended.
   
 C<void (*destroy_cache_class_vars)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Sets all class variables of all classes that is a object type and C<cache> class variable attribute is specified to undef.
+Sets all class variables that have the C<cache> attribute and are of an object type to C<undef>.
 
 =head2 new_stack_with_all_method_call_permitted
 
-C<SPVM_VALUE* (*new_stack_with_all_method_call_permitted)(SPVM_ENV* env);>
+C<SPVM_VALUE* (*new_stack_with_all_method_call_permitted)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">);>
 
-Creates a new L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> with all method call are permitted.
+Creates a new L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> where all method calls are permitted.
 
-This native API is intended for use by browser applications that want to implement a security sandbox.
+This native API is intended for use by applications (such as browsers) that implement a security sandbox.
 
 =head2 call_instance_method_no_mortal
 
-C<int32_t (*call_instance_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);>
+C<int32_t (*call_instance_method_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* method_name, int32_t args_width);>
 
-Call an instance method given the method name I<method_name>, the L<width of the argument|SPVM::Document::NativeClass/"Arguments Width"> I<args_width>
+Calls an instance method by its name I<method_name> with the specified L<argument width|SPVM::Document::NativeClass/"Arguments Width"> I<args_width>.
 
-C<stack[0].oval> must be a invocant.
+C<stack[0].oval> must contain the invocant object.
 
-If the method throws an exception, returns a basic type ID of an error class. Otherwise, returns 0.
+If the method throws an exception, returns the basic type ID of the error class. Otherwise, returns 0.
 
-C<stack[0].oval> is set to the return value of the method.
+The return value of the method is set to C<stack[0]>.
 
 This native API should not be used unless special purposes are intended. Normally, use L</"call_instance_method"> native API.
 
 =head2 call_instance_method
 
-C<int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);>
+C<int32_t (*call_instance_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* method_name, int32_t args_width);>
 
-Calls L</"call_method_no_mortal"> native API and if the type of the its return value is an object type, it is push to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
+Calls L</"call_instance_method_no_mortal">. If the return value is an object type, it is pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
 =head2 call_method_no_mortal_no_check_args
 
-C<int32_t (*call_method_no_mortal_no_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width, const char* func_name, const char* file_name, int32_t line);>
+C<int32_t (*call_method_no_mortal_no_check_args)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_NATIVE_METHOD* method|SPVM::Document::NativeAPI::Method>, int32_t args_width, const char* func_name, const char* file_name, int32_t line);>
 
-Same as L</"call_method_no_mortal">, but does not perform any type checking of arguments.
+Same as L</"call_method_no_mortal">, but performs no type checking on arguments.
 
 =head2 call_instance_method_no_mortal_less_check_args
 
-C<int32_t (*call_instance_method_no_mortal_less_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, const char* decl_args_signature, const char* func_name, const char* file_name, int32_t line);>
+C<int32_t (*call_instance_method_no_mortal_less_check_args)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* method_name, int32_t args_width, const char* decl_args_signature, const char* func_name, const char* file_name, int32_t line);>
 
-Same as L</"call_instance_method_no_mortal">, but performs less type checking of arguments using the hint decl_args_signature.
+Same as L</"call_instance_method_no_mortal">, but performs reduced type checking using the hint I<decl_args_signature>.
 
 =head2 enable_options
 
-C<void (*enable_options)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+C<void (*enable_options)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Turns on C<options> flag of the object I<object> if the type of I<object> is any object array C<object[]>.
+Turns on the C<options> flag if the type of I<object> is an object array (C<object[]>).
 
 =head2 disable_options
 
-C<void (*disable_options)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+C<void (*disable_options)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Turns off C<options> flag of the object I<object>.
+Turns off the C<options> flag of the object I<object>.
 
 =head2 is_options
 
-C<int32_t (*is_options)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+C<int32_t (*is_options)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If C<options> flag of the object I<object> is set, returns 1; otherwise returns 0.
+If the C<options> flag of the object I<object> is set, returns 1; otherwise returns 0.
 
 =head2 is_any_object_array
 
-C<int32_t (*is_any_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+C<int32_t (*is_any_object_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is not C<NULL> and its type is any object array C<object[]>, returns 1; otherwise returns 0.
+If the object I<object> is not C<NULL> and its type is an object array type (C<object[]>), returns 1; otherwise returns 0.
 
 =head2 exists_field
 
-C<int32_t (*exists_field)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
+C<int32_t (*exists_field)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>);>
 
-Checks if the field I<field> exists.
-
-If the field existence flag is a true value, returns 1, otherwise returns 0.
+Returns 1 if the field existence flag of the field I<field> in I<object> is true, otherwise returns 0.
 
 =head2 exists_field_by_name
 
-C<int32_t (*exists_field_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+C<int32_t (*exists_field_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Same as L</"exists_field">, but you can specify a field name.
+Same as L</"exists_field">, but the field is specified by its name I<field_name>.
 
 =head2 delete_field
 
-C<void (*delete_field)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
+C<void (*delete_field)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<SPVM_NATIVE_FIELD* field|SPVM::Document::NativeAPI::Field>);>
 
-Deletes the field I<field>.
+Deletes the field I<field> from I<object>.
 
-The field existence flag is set to 0, and the value of the field is set to 0 in the case of numeric types or undef in the case of object types.
+The field existence flag is set to 0. The value of the field is reset to 0 (for numeric types) or C<undef> (for object types).
 
 =head2 delete_field_by_name
 
-C<void (*delete_field_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+C<void (*delete_field_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Same as L</"delete_field">, but you can specify a field name.
+Same as L</"delete_field">, but the field is specified by its name I<field_name>.
 
 =head2 make_fixed_length
 
-C<void (*make_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+C<void (*make_fixed_length)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
+
+Sets the fixed-length flag of the object I<object>.
 
 =head2 is_fixed_length
 
-C<int32_t (*is_fixed_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+C<int32_t (*is_fixed_length)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
+
+Returns 1 if the fixed-length flag of the object I<object> is set, otherwise returns 0.
 
 =head2 set_length
 
-C<int32_t (*set_length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t length);>
+C<int32_t (*set_length)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, int32_t length);>
 
-Set the length of the object I<object>. The type of I<object> must be string type or an array type.
+Sets the length of the object I<object>. I<object> must be a string or an array.
 
-If succeeded, returns 0, otherwise sets an exception and returns a basic type of one of error classes.
+If the length is extended, L</"set_capacity"> is called automatically if needed. If shortened, unused elements are destroyed.
 
-If the length is extended, L</"set_capacity"> is called if needed.
-
-If the length is shorten, unused elements is destroyed.
+If successful, returns 0. Otherwise, sets an exception and returns a basic type ID of an error class.
 
 =head2 capacity
 
-C<int32_t (*capacity)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+C<int32_t (*capacity)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Returns C<capacity> member variavle in C<SPVM_OBJECT> object.
+Returns the value of the C<capacity> member in the C<SPVM_OBJECT> structure.
 
 =head2 set_capacity
 
-C<int32_t (*set_capacity)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t capacity);>
+C<int32_t (*set_capacity)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, int32_t capacity);>
 
-Set the capacity of the object I<object>. The type of I<object> must be string type or an array type.
+Sets the capacity of the object I<object>. I<object> must be a string or an array.
 
-The new capacity is allocated and old elements are copied on it.
+A new memory area is allocated, and existing elements are copied to it.
 
-If succeeded, returns 0, otherwise sets an exception and returns a basic type of one of error classes.
+If successful, returns 0. Otherwise, sets an exception and returns a basic type ID of an error class.
 
 =head2 numeric_object_to_byte
 
-C<int8_t (*numeric_object_to_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+C<int8_t (*numeric_object_to_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, int32_t* error_id);>
 
-Converts a numeric object to byte value.
+Converts a numeric object (Box object) to an C<int8_t> value.
 
-If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+If successful, I<error_id> is set to 0. Otherwise, it is set to a non-zero value.
 
 =head2 numeric_object_to_short
 
-C<int16_t (*numeric_object_to_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+C<int16_t (*numeric_object_to_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, int32_t* error_id);>
 
-Converts a numeric object to short value.
-
-If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+Converts a numeric object to an C<int16_t> value.
 
 =head2 numeric_object_to_int
 
-C<int32_t (*numeric_object_to_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+C<int32_t (*numeric_object_to_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, int32_t* error_id);>
 
-Converts a numeric object to int value.
-
-If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+Converts a numeric object to an C<int32_t> value.
 
 =head2 numeric_object_to_long
 
-C<int64_t (*numeric_object_to_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+C<int64_t (*numeric_object_to_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, int32_t* error_id);>
 
-Converts a numeric object to long value.
-
-If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+Converts a numeric object to an C<int64_t> value.
 
 =head2 numeric_object_to_float
 
-C<float (*numeric_object_to_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+C<float (*numeric_object_to_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, int32_t* error_id);>
 
-Converts a numeric object to float value.
-
-If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+Converts a numeric object to a C<float> value.
 
 =head2 numeric_object_to_double
 
-C<double (*numeric_object_to_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+C<double (*numeric_object_to_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, int32_t* error_id);>
 
-Converts a numeric object to double value.
-
-If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+Converts a numeric object to a C<double> value.
 
 =head2 numeric_object_to_string_no_mortal
 
-C<void* (*numeric_object_to_string_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+C<void* (*numeric_object_to_string_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, int32_t* error_id);>
 
-Converts a numeric object to string.
+Converts a numeric object to an SPVM string object.
 
-If succeeded, erorr_id is set to 0, otherwise set to non-zero value.
+If successful, I<error_id> is set to 0. Otherwise, it is set to a non-zero value.
 
 =head2 numeric_object_to_string
 
-C<void* (*numeric_object_to_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t* error_id);>
+C<void* (*numeric_object_to_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, int32_t* error_id);>
 
-Same as L</"numeric_object_to_string_no_mortal">, but I<object> is pushed to the mortal stack.
+Same as L</"numeric_object_to_string_no_mortal">, but the return value is pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
 =head2 is_numeric_object
 
-C<int32_t (*is_numeric_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+C<int32_t (*is_numeric_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If I<object> is defined and a numeric object, returns 1, otherwise returns 0.
+Returns 1 if I<object> is not C<NULL> and is a numeric object (Box object), otherwise returns 0.
 
 =head2 say_stderr
 
-C<void (*say_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);>
+C<void (*say_stderr)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string);>
 
 Same as L</"say">, but prints the output to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
 =head2 get_call_depth
 
-C<int32_t (*get_call_depth)(SPVM_ENV* env, SPVM_VALUE* stack);>
+C<int32_t (*get_call_depth)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns the value of C<call_depth> stack variable on the runtime stack I<stack>.
-
-Examples:
-
-  int32_t call_depth = env->get_call_depth(env, stack);
+Returns the current call depth on the runtime stack I<stack>.
 
 =head2 get_caller_info_stack
 
-C<void** (*get_caller_info_stack)(SPVM_ENV* env, SPVM_VALUE* stack);>
+C<void** (*get_caller_info_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns the value of C<caller_info_stack> stack variable on the runtime stack I<stack>.
+Returns the address of the C<caller_info_stack> internal variable on the runtime stack I<stack>.
 
-Note that string elements in the record (like C<caller_name> and C<caller_file>) may be C<NULL> or may not be null-terminated, so perform a C<NULL> check and use C<strncpy> for safe copying.
-
-Examples:
-
-  void** caller_info_stack = env->get_caller_info_stack(env, stack);
+Note: String fields in the records (e.g., method name or file name) may not be null-terminated. Perform C<NULL> checks and use C<strncpy> for safe copying.
 
 =head2 get_caller_info_stack_record_size
 
-C<int32_t (*get_caller_info_stack_record_size)(SPVM_ENV* env, SPVM_VALUE* stack);>
+C<int32_t (*get_caller_info_stack_record_size)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns the value of C<caller_info_stack_record_size> stack variable on the runtime stack I<stack>.
-
-Examples:
-
-  int32_t record_size = env->get_caller_info_stack_record_size(env, stack);
+Returns the size of a single record in the caller info stack.
 
 =head2 get_current_method
 
-C<void* (*get_current_method)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);>
+C<void* (*get_current_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t level, int32_t* error_id);>
 
-Returns the method at the specified C<level> on the runtime stack C<stack>.
+Returns the method object at the specified I<level> on the runtime stack I<stack>.
 
-C<level> is the stack level. C<0> is the current method, C<1> is its caller's method, and so on.
+I<level> 0 is the current method, 1 is its caller, and so on.
 
-C<error_id> is set to 0 at the beginning of this function.
-
-If C<level> is negative, or if C<level> is greater than the current call depth, C<NULL> is returned.
-
-If the call depth is negative, an exception is thrown by C<die>, C<error_id> is set to a non-zero value, and C<NULL> is returned.
-
-B<Examples:>
-
-  int32_t error_id = 0;
-  
-  // Get the currently executing method (level 0)
-  void* current_method = env->get_current_method(env, stack, 0, &error_id);
-  
-  // Check for exception
-  if (error_id) {
-    return error_id;
-  }
-  
-  // Get the caller's method (level 1)
-  void* caller_method = env->get_current_method(env, stack, 1, &error_id);
+If I<level> is out of range or an internal error occurs, returns C<NULL> and sets I<error_id> to a non-zero value.
 
 =head2 caller
 
-C<void* (*caller)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);>
+C<void* (*caller)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t level, int32_t* error_id);>
 
-Returns a C<CallerInfo> object that contains information about the caller at the specified I<level> on the runtime stack I<stack>. 
+Returns a C<CallerInfo> object containing information about the caller at the specified I<level>.
 
-This object is automatically pushed to the mortal stack.
+The object is automatically pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
-I<level> specifies how many stack frames to go back. 
+* 0 represents the caller of the current method.
+* 1 represents the caller of the caller.
 
-* 0 represents the information of the caller of the current method.
-
-* 1 represents the information of the caller of the caller.
-
-If succeeded, I<error_id> is set to 0 and returns the C<CallerInfo> object.
-
-If the I<level> is out of range or an error occurs during object creation, returns C<NULL> and sets I<error_id> to a non-zero value.
-
-Examples:
-
-  int32_t error_id = 0;
-  void* obj_caller_info = env->caller(env, stack, 0, &error_id);
-  
-  if (error_id) {
-    // Handle error...
-    return NULL;
-  }
+If successful, returns the C<CallerInfo> object and sets I<error_id> to 0. Otherwise, returns C<NULL> and sets I<error_id> to a non-zero value.
 
 =head2 caller_no_mortal
 
-C<void* (*caller_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);>
+C<void* (*caller_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t level, int32_t* error_id);>
 
-This is the same as L</"caller">, but the returned object is not pushed to the mortal stack.
+This is the same as L</"caller">, but the returned object is not pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
 =head2 die_with_string
 
-C<int32_t (*die_with_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_exception, const char* func_name, const char* file, int32_t line);>
+C<int32_t (*die_with_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* obj_exception, const char* func_name, const char* file, int32_t line);>
 
-Sets an exception with an existing string object and its metadata, then returns a basic type ID of an error class.
+Sets an exception with an existing string object I<obj_exception> and its metadata, then returns the basic type ID of an error class.
 
-This is the same as L</"die">, but it takes a string object I<obj_exception> instead of a format string.
+This is the same as L</"die">, but it takes an SPVM string object instead of a format string.
 
 B<Examples:>
 
   void* obj_exception = env->new_string_nolen(env, stack, "Custom error message");
-  return env->die_with_string(env, stack, obj_exception, func_name, file, line);
+  return env->die_with_string(env, stack, obj_exception, __func__, __FILE__, __LINE__);
 
 =head2 build_exception_message_no_mortal
 
-C<void* (*build_exception_message_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level);>
+C<void* (*build_exception_message_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t level);>
 
-This is the same as L</"build_exception_message">, but the returned object is not pushed to the mortal stack.
+This is the same as L</"build_exception_message">, but the returned object is not pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
 =head2 build_exception_message
 
-C<void* (*build_exception_message)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level);>
+C<void* (*build_exception_message)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t level);>
 
-Reconstructs the full exception message, including a stack trace, using the metadata stored in the runtime stack.
+Reconstructs a full exception message including a stack trace by using the metadata stored in the runtime stack.
 
-This function creates a new string object by combining the original exception message (stored in the exception slot of the stack) with caller information retrieved from the metadata slots.
+This function creates a new SPVM string object by combining the original exception message (stored in the exception slot of the stack) with caller information retrieved from the metadata slots.
 
-The I<level> argument specifies the range of the stack trace relative to the current call depth.
+The I<level> argument specifies the range of the stack trace relative to the current call depth:
 
 * Positive values or zero: The trace starts from the exception origin down to the depth calculated as C<current_call_depth + level>.
 
-* This is useful for C<eval> blocks or L<Fn#build_exception_message|SPVM::Fn/"build_exception_message"> to limit the trace depth.
+This is useful for C<eval> blocks or L<Fn#build_exception_message|SPVM::Fn/"build_exception_message"> to limit the trace depth.
 
-The metadata used for reconstruction includes the function name, file name, line number, and the caller information stack.
+The metadata used for reconstruction includes the function name, file path, line number, and the caller information stack.
 
-Returns the newly created string object. This object is not pushed to the mortal stack.
+Returns the newly created string object. This object is automatically pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
 B<Examples:>
 
@@ -2974,68 +2898,65 @@ B<Examples:>
 
 =head2 is_utf8
 
-C<int32_t (*is_utf8)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_string, int32_t* error_id);>
+C<int32_t (*is_utf8)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* obj_string, int32_t* error_id);>
 
 Checks if the given string I<obj_string> is a valid UTF-8 sequence.
 
-If the string is a valid UTF-8 sequence, returns 1, otherwise returns 0.
+If it is a valid UTF-8 sequence, returns 1, otherwise returns 0.
 
-Exceptions:
-
-Initially I<error_id> is set to 0.
-
-If the I<obj_string> is NULL, I<error_id> is set to a non-zero value.
+If I<obj_string> is C<NULL>, I<error_id> is set to a non-zero value and returns 0. Otherwise, I<error_id> is set to 0.
 
 =head2 set_byte_object_value
 
-C<void (*set_byte_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* byte_object, int8_t value);>
+C<void (*set_byte_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* byte_object, int8_t value);>
 
-Sets the C<byte> value of the L<Byte|SPVM::Byte> object I<byte_object>.
+Sets the value of the C<value> field of the L<Byte|SPVM::Byte> object I<byte_object>.
 
 B<Note:> This method sets the value even if the object is marked as read-only.
 
 =head2 set_short_object_value
 
-C<void (*set_short_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* short_object, int16_t value);>
+C<void (*set_short_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* short_object, int16_t value);>
 
-Sets the C<short> value of the L<Short|SPVM::Short> object I<short_object>.
+Sets the value of the C<value> field of the L<Short|SPVM::Short> object I<short_object>.
 
 B<Note:> This method sets the value even if the object is marked as read-only.
 
 =head2 set_int_object_value
 
-C<void (*set_int_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* int_object, int32_t value);>
+C<void (*set_int_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* int_object, int32_t value);>
 
-Sets the C<int> value of the L<Int|SPVM::Int> object I<int_object>.
+Sets the value of the C<value> field of the L<Int|SPVM::Int> object I<int_object>.
 
 B<Note:> This method sets the value even if the object is marked as read-only.
 
 =head2 set_long_object_value
 
-C<void (*set_long_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* long_object, int64_t value);>
+C<void (*set_long_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* long_object, int64_t value);>
 
-Sets the C<long> value of the L<Long|SPVM::Long> object I<long_object>.
+Sets the value of the C<value> field of the L<Long|SPVM::Long> object I<long_object>.
 
 B<Note:> This method sets the value even if the object is marked as read-only.
 
 =head2 set_float_object_value
 
-C<void (*set_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* float_object, float value);>
+C<void (*set_float_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* float_object, float value);>
 
-Sets the C<float> value of the L<Float|SPVM::Float> object I<float_object>.
+Sets the value of the C<value> field of the L<Float|SPVM::Float> object I<float_object>.
 
 B<Note:> This method sets the value even if the object is marked as read-only.
 
 =head2 set_double_object_value
 
-C<void (*set_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* double_object, double value);>
+C<void (*set_double_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* double_object, double value);>
 
-Sets the C<double> value of the L<Double|SPVM::Double> object I<double_object>.
+Sets the value of the C<value> field of the L<Double|SPVM::Double> object I<double_object>.
 
 B<Note:> This method sets the value even if the object is marked as read-only.
 
 B<Examples:>
 
+  int32_t error_id = 0;
   void* obj_int = env->new_object_by_name(env, stack, "Int", &error_id);
   env->set_int_object_value(env, stack, obj_int, 10);
 
