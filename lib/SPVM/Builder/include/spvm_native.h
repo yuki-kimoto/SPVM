@@ -610,14 +610,6 @@ struct spvm_api_runtime {
   void* stack_index_caller_info_stack_record_size;
 };
 
-struct spvm_api_internal {
-  int32_t (*get_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  void (*inc_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);
-  void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack_typed_var_index, int32_t* mortal_stack_top_ptr, int32_t* mortal_stack_tops, int32_t mortal_stack_tops_index);
-};
-
 struct spvm_api_mutex {
   void* (*new_instance)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*free_instance)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
@@ -632,6 +624,14 @@ struct spvm_api_string_buffer {
   void (*free_instance)(void* string_buffer);
   const char* (*get_string)(void* string_buffer);
   int32_t (*get_length)(void* string_buffer);
+};
+
+struct spvm_api_internal {
+  int32_t (*get_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void (*inc_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack_typed_var_index, int32_t* mortal_stack_top_ptr, int32_t* mortal_stack_tops, int32_t mortal_stack_tops_index);
 };
 
 struct spvm_api_type {
