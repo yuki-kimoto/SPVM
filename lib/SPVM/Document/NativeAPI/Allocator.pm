@@ -10,7 +10,7 @@ The allocator native APIs in L<SPVM> are the APIs for memory allocators.
 
   SPVM_API_ALLOCATOR* api_allocator = env->api->allocator;
   
-  void* allocator = api_allocator->new_instance();
+  SPVM_NATIVE_ALLOCATOR* allocator = api_allocator->new_instance();
   
   api_allocator->free_instance(allocator);
 
@@ -18,15 +18,15 @@ The allocator native APIs in L<SPVM> are the APIs for memory allocators.
 
 =head2 new_instance
 
-C<void* (*new_instance)(void);>
+C<SPVM_NATIVE_ALLOCATOR* (*new_instance)(void);>
 
 Creates a new L<memory allocator|SPVM::Document::NativeAPI::Allocator> and returns it.
 
 =head2 free_instance
 
-C<void (*free_instance)(L<void* allocator|SPVM::Document::NativeAPI::Allocator>);>
+C<void (*free_instance)(L<SPVM_NATIVE_ALLOCATOR* allocator|SPVM::Document::NativeAPI::Allocator>);>
 
-Frees the memory allocator I<allocator>.
+Frees the L<memory allocator|SPVM::Document::NativeAPI::Allocator> I<allocator>.
 
 =head1 Native API IDs
 
