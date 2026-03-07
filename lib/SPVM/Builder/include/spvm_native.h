@@ -639,14 +639,14 @@ struct spvm_api_internal {
 };
 
 struct spvm_api_type {
-  int32_t (*can_assign)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
-  int32_t (*get_type_width)(void* runtime, void* basic_type, int32_t type_dimension, int32_t type_flag);
-  int32_t (*is_object_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t type_flag);
-  int32_t (*is_any_object_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t type_flag);
-  int32_t (*is_object_array_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t type_flag);
-  int32_t (*is_any_object_array_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t type_flag);
-  int32_t (*is_numeric_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t type_flag);
-  int32_t (*is_class_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t type_flag);
+  int32_t (*can_assign)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, SPVM_NATIVE_BASIC_TYPE* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
+  int32_t (*get_type_width)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag);
+  int32_t (*is_object_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag);
+  int32_t (*is_any_object_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag);
+  int32_t (*is_object_array_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag);
+  int32_t (*is_any_object_array_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag);
+  int32_t (*is_numeric_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag);
+  int32_t (*is_class_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t type_flag);
 };
 
 enum {

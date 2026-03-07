@@ -14,49 +14,49 @@ The type native APIs in L<SPVM> are the APIs to get type information.
 
 =head2 can_assign
 
-C<int32_t (*can_assign)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* dist_basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t dist_type_dimension, int32_t dist_type_flag, L<void* src_basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t src_type_dimension, int32_t src_type_flag);>
+C<int32_t (*can_assign)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_BASIC_TYPE* dist_basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t dist_type_dimension, int32_t dist_type_flag, L<SPVM_NATIVE_BASIC_TYPE* src_basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t src_type_dimension, int32_t src_type_flag);>
 
 If the source type given by I<src_basic_type>, I<src_type_dimension>, and I<src_type_flag> can be assigned to the dist type given by I<dist_basic_type>, I<dist_type_dimension>, and I<dist_type_flag> , returns 1, otherwise returns 0.
 
 =head2 get_type_width
 
-C<int32_t (*get_type_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
+C<int32_t (*get_type_width)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
 Returns the L<type width|SPVM::Document::Language::Types/"Type Width"> of the type given by I<basic_type>, I<type_dimension>, and I<type_flag>.
 
 =head2 is_object_type
 
-C<int32_t (*is_object_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
+C<int32_t (*is_object_type)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
 If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is an object type, returns 1, otherwise returns 0.
 
 =head2 is_any_object_type
 
-C<int32_t (*is_any_object_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
+C<int32_t (*is_any_object_type)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
 If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is the any object type C<object>, returns 1, otherwise returns 0.
 
 =head2 is_object_array_type
 
-C<int32_t (*is_object_array_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
+C<int32_t (*is_object_array_type)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
 If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is an object array type, returns 1, otherwise returns 0.
 
 =head2 is_any_object_array_type
 
-C<int32_t (*is_any_object_array_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
+C<int32_t (*is_any_object_array_type)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
 If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is any object array type C<object[]>, returns 1, otherwise returns 0.
 
 =head2 is_numeric_type
 
-C<int32_t (*is_numeric_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
+C<int32_t (*is_numeric_type)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
 If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is a numeric type, returns 1, otherwise returns 0.
 
 =head2 is_class_type
 
-C<int32_t (*is_class_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
+C<int32_t (*is_class_type)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
 If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is a class type, returns 1, otherwise returns 0.
 
@@ -69,7 +69,7 @@ If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is a cla
   4 is_object_array_type
   5 is_any_object_array_type
   6 is_numeric_type
-  6 is_class_type
+  7 is_class_type
 
 =head1 See Also
 
