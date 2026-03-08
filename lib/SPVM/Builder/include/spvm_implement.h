@@ -1517,7 +1517,7 @@ static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
   }
   else {
     SPVM_OBJ** ref = (SPVM_OBJ**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
-    int32_t status = env->weaken(env, stack, (void**)ref);
+    int32_t status = env->weaken(env, stack, (SPVM_OBJ**)ref);
     if (status != 0) {
       SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED]);
       env->set_exception(env, stack, exception);
@@ -1534,7 +1534,7 @@ static inline void SPVM_IMPLEMENT_UNWEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stac
   }
   else {
     SPVM_OBJ** ref = (SPVM_OBJ**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
-    env->unweaken(env, stack, (void**)ref);
+    env->unweaken(env, stack, (SPVM_OBJ**)ref);
   }
 }
 
@@ -1546,7 +1546,7 @@ static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
   }
   else {
     SPVM_OBJ** ref = (SPVM_OBJ**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
-    *out = env->isweak(env, stack, (void**)ref);
+    *out = env->isweak(env, stack, (SPVM_OBJ**)ref);
   }
 }
 
