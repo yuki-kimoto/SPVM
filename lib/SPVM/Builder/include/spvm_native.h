@@ -49,7 +49,10 @@
   typedef struct spvm_native_mutex SPVM_NATIVE_MUTEX;
 
   struct spvm_native_opcode;
-  typedef struct spvm_native_opcode SPVM_NATIVE_OPCODE;
+  
+  struct spvm_obj;
+  typedef struct spvm_obj SPVM_OBJ;
+
 #else
   #define SPVM_NATIVE_ALLOCATOR void
   #define SPVM_NATIVE_STRING_BUFFER void
@@ -63,6 +66,7 @@
   #define SPVM_NATIVE_ARG void
   #define SPVM_NATIVE_MUTEX void
   #define SPVM_NATIVE_OPCODE void
+  #define SPVM_OBJ void
 #endif
 
 #define SPVM_NATIVE_GET_POINTER(object) (*(void**)object)
