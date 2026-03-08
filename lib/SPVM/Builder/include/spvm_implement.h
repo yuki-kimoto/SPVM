@@ -1406,10 +1406,10 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, int8_t in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, int32_t field_offset, int8_t in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
   
   if (__builtin_expect(object == NULL, 0)) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
@@ -1419,10 +1419,10 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stac
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, int16_t in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, int32_t field_offset, int16_t in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
   
   if (__builtin_expect(object == NULL, 0)) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
@@ -1432,10 +1432,10 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_SHORT(SPVM_ENV* env, SPVM_VALUE* sta
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, int32_t in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, int32_t field_offset, int32_t in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
   
   if (__builtin_expect(object == NULL, 0)) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
@@ -1445,10 +1445,10 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_INT(SPVM_ENV* env, SPVM_VALUE* stack
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, int64_t in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, int32_t field_offset, int64_t in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
   
   if (__builtin_expect(object == NULL, 0)) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
@@ -1458,10 +1458,10 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_LONG(SPVM_ENV* env, SPVM_VALUE* stac
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, float in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
+static inline void SPVM_IMPLEMENT_SET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, int32_t field_offset, float in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
   
   if (__builtin_expect(object == NULL, 0)) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
@@ -1471,10 +1471,9 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_FLOAT(SPVM_ENV* env, SPVM_VALUE* sta
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, double in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
-  
+static inline void SPVM_IMPLEMENT_SET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, int32_t field_offset, double in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
   if (__builtin_expect(object == NULL, 0)) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
@@ -1484,79 +1483,76 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_DOUBLE(SPVM_ENV* env, SPVM_VALUE* st
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, void* in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
-  
+static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, int32_t field_offset, SPVM_OBJ* in, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
   if (__builtin_expect(object == NULL, 0)) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void** ref = (void**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
+    SPVM_OBJ** ref = (SPVM_OBJ**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
     env->assign_object(env, stack, ref, in);
     SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(env, stack, object, exists_offset, exists_bit);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
-  
+static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, int32_t field_offset, int32_t* error_id, int32_t exists_offset, int32_t exists_bit) {
   if (__builtin_expect(object == NULL, 0)) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void** ref = (void**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
+    SPVM_OBJ** ref = (SPVM_OBJ**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
     env->assign_object(env, stack, ref, NULL);
     SPVM_IMPLEMENT_ENABLE_EXISTS_FLAG(env, stack, object, exists_offset, exists_bit);
   }
 }
 
-static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, int32_t field_offset, int32_t* error_id) {
   if (object == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void** ref = (void**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
-    int32_t status = env->weaken(env, stack, ref);
+    SPVM_OBJ** ref = (SPVM_OBJ**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
+    int32_t status = env->weaken(env, stack, (void**)ref);
     if (status != 0) {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED]);
+      SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED]);
       env->set_exception(env, stack, exception);
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
   }
 }
 
-static inline void SPVM_IMPLEMENT_UNWEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t field_offset, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_UNWEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, int32_t field_offset, int32_t* error_id) {
   if (object == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void** ref = (void**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
-    env->unweaken(env, stack, ref);
+    SPVM_OBJ** ref = (SPVM_OBJ**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
+    env->unweaken(env, stack, (void**)ref);
   }
 }
 
-static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t field_offset, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, SPVM_OBJ* object, int32_t field_offset, int32_t* error_id) {
   if (object == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void** ref = (void**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
-    *out = env->isweak(env, stack, ref);
+    SPVM_OBJ** ref = (SPVM_OBJ**)(GET_DATA_ADDRESS(env, stack, object) + field_offset);
+    *out = env->isweak(env, stack, (void**)ref);
   }
 }
 
-static inline void SPVM_IMPLEMENT_EXISTS(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t field_exists_offset, int32_t field_exists_bit, int32_t* error_id) {
-  
+static inline void SPVM_IMPLEMENT_EXISTS(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, SPVM_OBJ* object, int32_t field_exists_offset, int32_t field_exists_bit, int32_t* error_id) {
   if (object == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
@@ -1565,10 +1561,9 @@ static inline void SPVM_IMPLEMENT_EXISTS(SPVM_ENV* env, SPVM_VALUE* stack, int32
   }
 }
 
-static inline void SPVM_IMPLEMENT_DELETE(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t* error_id) {
-  
+static inline void SPVM_IMPLEMENT_DELETE(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, SPVM_NATIVE_FIELD* field, int32_t* error_id) {
   if (object == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_FIELD_ACCESS_INVOCANT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
@@ -1598,7 +1593,7 @@ static inline void SPVM_IMPLEMENT_DELETE(SPVM_ENV* env, SPVM_VALUE* stack, void*
 #define SPVM_IMPLEMENT_SET_EXCEPTION_VAR(env, stack, in) (env->set_exception(env, stack, in))
 #define SPVM_IMPLEMENT_SET_EXCEPTION_VAR_UNDEF(env, stack) (env->set_exception(env, stack, NULL))
 
-static inline void SPVM_IMPLEMENT_ISA(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, void* dist_basic_type, int32_t dist_type_dimension) {
+static inline void SPVM_IMPLEMENT_ISA(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, SPVM_OBJ* object, SPVM_NATIVE_BASIC_TYPE* dist_basic_type, int32_t dist_type_dimension) {
   if (object) {
     *out = env->isa(env, stack, object, dist_basic_type, dist_type_dimension);
   }
@@ -1607,11 +1602,11 @@ static inline void SPVM_IMPLEMENT_ISA(SPVM_ENV* env, SPVM_VALUE* stack, int32_t*
   }
 }
 
-static inline void SPVM_IMPLEMENT_ISA_ERROR(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* src_basic_type, void* dist_basic_type, int32_t dist_type_dimension) {
+static inline void SPVM_IMPLEMENT_ISA_ERROR(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, SPVM_NATIVE_BASIC_TYPE* src_basic_type, SPVM_NATIVE_BASIC_TYPE* dist_basic_type, int32_t dist_type_dimension) {
   *out = env->api->type->can_assign(env->runtime, dist_basic_type, dist_type_dimension, 0, src_basic_type, 0, 0);
 }
 
-static inline void SPVM_IMPLEMENT_IS_TYPE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, void* dist_basic_type, int32_t dist_type_dimension) {
+static inline void SPVM_IMPLEMENT_IS_TYPE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, SPVM_OBJ* object, SPVM_NATIVE_BASIC_TYPE* dist_basic_type, int32_t dist_type_dimension) {
   if (object) {
     *out = env->is_type(env, stack, object, dist_basic_type, dist_type_dimension);
   }
@@ -1620,13 +1615,13 @@ static inline void SPVM_IMPLEMENT_IS_TYPE(SPVM_ENV* env, SPVM_VALUE* stack, int3
   }
 }
 
-static inline void SPVM_IMPLEMENT_IS_ERROR(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* src_basic_type, void* dist_basic_type, int32_t dist_type_dimension) {
+static inline void SPVM_IMPLEMENT_IS_ERROR(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, SPVM_NATIVE_BASIC_TYPE* src_basic_type, SPVM_NATIVE_BASIC_TYPE* dist_basic_type, int32_t dist_type_dimension) {
   *out = (dist_basic_type == src_basic_type && dist_type_dimension == 0);
 }
 
 #define SPVM_IMPLEMENT_CAN(env, stack, out, object, method_name) (out = (env->get_instance_method(env, stack, object, method_name) != NULL))
 
-static inline void SPVM_IMPLEMENT_PRINT(SPVM_ENV* env, SPVM_VALUE* stack, void* string, int32_t is_stderr) {
+static inline void SPVM_IMPLEMENT_PRINT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* string, int32_t is_stderr) {
   if (is_stderr) {
     env->print_stderr(env, stack, string);
   }
@@ -1635,7 +1630,7 @@ static inline void SPVM_IMPLEMENT_PRINT(SPVM_ENV* env, SPVM_VALUE* stack, void* 
   }
 }
 
-static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, void* string, int32_t is_stderr) {
+static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* string, int32_t is_stderr) {
   if (is_stderr) {
     env->say_stderr(env, stack, string);
   }
@@ -1644,50 +1639,41 @@ static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, void* st
   }
 }
 
-static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* func_name, const char* file, int32_t line) {
+static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* string, const char* func_name, const char* file, int32_t line) {
   env->warn(env, stack, string, func_name, file, line);
 }
 
 #define SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_ID(eval_error_id) (eval_error_id = 0)
-
 #define SPVM_IMPLEMENT_GET_EVAL_ERROR_ID(out, eval_error_id) (out = eval_error_id)
-
 #define SPVM_IMPLEMENT_SET_ERROR_ID(error_id, die_error_id) (error_id = die_error_id)
-
 #define SPVM_IMPLEMENT_SET_EVAL_ERROR_ID(eval_error_id, die_error_id) (eval_error_id = die_error_id)
-
 #define SPVM_IMPLEMENT_ARGS_WIDTH(env, stack, out) (out = env->args_width(env, stack))
-
 #define SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(env, stack, out, basic_type) (out = env->api->basic_type->get_id(env->runtime, basic_type))
 
-static inline void SPVM_IMPLEMENT_TYPE_NAME(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object) {
+static inline void SPVM_IMPLEMENT_TYPE_NAME(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, SPVM_OBJ* object) {
   if (object == NULL) {
     *out = NULL;
   }
   else {
-    void* type_name = env->get_type_name_no_mortal(env, stack, object);
+    SPVM_OBJ* type_name = env->get_type_name_no_mortal(env, stack, object);
     env->assign_object(env, stack, out, type_name);
   }
 }
 
-static inline void SPVM_IMPLEMENT_DUMP(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object) {
-  void* dump = env->dump_no_mortal(env, stack, object);
+static inline void SPVM_IMPLEMENT_DUMP(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, SPVM_OBJ* object) {
+  SPVM_OBJ* dump = env->dump_no_mortal(env, stack, object);
   env->assign_object(env, stack, out, dump);
 }
 
-static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object, int32_t* error_id) {
-  void* object_copy = env->copy_no_mortal(env, stack, object);
+static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, SPVM_OBJ* object, int32_t* error_id) {
+  SPVM_OBJ* object_copy = env->copy_no_mortal(env, stack, object);
   env->assign_object(env, stack, out, object_copy);
 }
 
-static inline void SPVM_IMPLEMENT_GET_ADDRESS(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* address) {
-  
+static inline void SPVM_IMPLEMENT_GET_ADDRESS(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, void* address) {
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-  
   sprintf(tmp_buffer, "%p", address);
-  
-  void* object_address = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
-  
+  SPVM_OBJ* object_address = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
   env->assign_object(env, stack, out, object_address);
 }
 
