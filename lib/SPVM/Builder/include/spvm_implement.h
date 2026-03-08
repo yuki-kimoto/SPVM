@@ -432,8 +432,8 @@ static inline void SPVM_IMPLEMENT_MOVE_MULNUM_DOUBLE_ZERO(SPVM_ENV* env, SPVM_VA
 #define SPVM_IMPLEMENT_MOVE_DOUBLE(out, in) (out = in)
 #define SPVM_IMPLEMENT_MOVE_OBJECT(env, stack, out, in) (env->assign_object(env, stack, out, in))
 
-static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, void* dist_basic_type, int32_t dist_type_dimension, int32_t* error_id) {
-  void* object = in;
+static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, SPVM_OBJ* in, SPVM_NATIVE_BASIC_TYPE* dist_basic_type, int32_t dist_type_dimension, int32_t* error_id) {
+  SPVM_OBJ* object = in;
   int32_t isa = env->isa(env, stack, object, dist_basic_type, dist_type_dimension);
   if (isa) {
     env->assign_object(env, stack, out, in);
@@ -441,16 +441,16 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(SPVM_ENV* env, SPV
   else {
     int32_t scope_id = env->enter_scope(env, stack);
     
-    void* obj_src_type_name = env->get_type_name(env, stack, object);
+    SPVM_OBJ* obj_src_type_name = env->get_type_name(env, stack, object);
     const char* src_type_name = env->get_chars(env, stack, obj_src_type_name);
     const char* dist_basic_type_name = env->api->basic_type->get_name(env->runtime, dist_basic_type);
-    void* obj_dist_type_name = env->get_compile_type_name(env, stack, dist_basic_type_name, dist_type_dimension, 0);
+    SPVM_OBJ* obj_dist_type_name = env->get_compile_type_name(env, stack, dist_basic_type_name, dist_type_dimension, 0);
     const char* dist_type_name = env->get_chars(env, stack, obj_dist_type_name);
     char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
     snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], src_type_name, dist_type_name);
     
     int32_t string_length = strlen(tmp_buffer);
-    void* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
+    SPVM_OBJ* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     
@@ -458,11 +458,11 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(SPVM_ENV* env, SPV
   }
 }
 
-static inline void SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, SPVM_OBJ* in, int32_t* error_id) {
   
-  void* string = in;
+  SPVM_OBJ* string = in;
   if (string && env->is_read_only(env, stack, string)) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
@@ -471,14 +471,14 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING(SPVM_ENV* e
   }
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, int32_t is_mutable, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, SPVM_OBJ* in, int32_t is_mutable, int32_t* error_id) {
   
-  void* object = in;
+  SPVM_OBJ* object = in;
   if (!object) {
     env->assign_object(env, stack, out, object);
   }
   else if (is_mutable && env->is_read_only(env, stack, object)) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
@@ -488,16 +488,16 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(SPVM_ENV*
   else if (!env->is_string(env, stack, object)) {
     int32_t scope_id = env->enter_scope(env, stack);
     
-    void* obj_src_type_name = env->get_type_name(env, stack, object);
+    SPVM_OBJ* obj_src_type_name = env->get_type_name(env, stack, object);
     const char* src_type_name = env->get_chars(env, stack, obj_src_type_name);
     const char* dist_basic_type_name = "string";
-    void* obj_dist_type_name = env->get_compile_type_name(env, stack, dist_basic_type_name, 0, 0);
+    SPVM_OBJ* obj_dist_type_name = env->get_compile_type_name(env, stack, dist_basic_type_name, 0, 0);
     const char* dist_type_name = env->get_chars(env, stack, obj_dist_type_name);
     char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
     snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], src_type_name, dist_type_name);
     
     int32_t string_length = strlen(tmp_buffer);
-    void* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
+    SPVM_OBJ* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     
@@ -508,8 +508,8 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(SPVM_ENV*
   }
 }
 
-#define SPVM_IMPLEMENT_MOVE_REF(out, in) (out = in)
-#define SPVM_IMPLEMENT_MOVE_REF_UNDEF(out) (out = NULL)
+#define SPVM_IMPLEMENT_MOVE_REF(out, in) (out = (SPVM_OBJ*)in)
+#define SPVM_IMPLEMENT_MOVE_REF_UNDEF(out) (out = (SPVM_OBJ*)NULL)
 
 #define SPVM_IMPLEMENT_BIT_NOT_INT(out, in) (out = ~in)
 #define SPVM_IMPLEMENT_BIT_NOT_LONG(out, in) (out = ~in)
@@ -518,21 +518,21 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(SPVM_ENV*
 #define SPVM_IMPLEMENT_NEGATE_FLOAT(out, in) (out = -in)
 #define SPVM_IMPLEMENT_NEGATE_DOUBLE(out, in) (out = -in)
 
-static inline void SPVM_IMPLEMENT_STRING_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in1, void* in2, int32_t* error_id) {
-  void* string1 = in1;
-  void* string2 = in2;
+static inline void SPVM_IMPLEMENT_STRING_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, SPVM_OBJ* in1, SPVM_OBJ* in2, int32_t* error_id) {
+  SPVM_OBJ* string1 = in1;
+  SPVM_OBJ* string2 = in2;
   if (string1 == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_STRING_CONCAT_LEFT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_STRING_CONCAT_LEFT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else if (string2 == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_STRING_CONCAT_RIGHT_UNDEFINED]);
+    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_STRING_CONCAT_RIGHT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void* string3 = env->concat_no_mortal(env, stack, string1, string2);
+    SPVM_OBJ* string3 = env->concat_no_mortal(env, stack, string1, string2);
     env->assign_object(env, stack, out, string3);
   }
 }
@@ -541,23 +541,23 @@ static inline void SPVM_IMPLEMENT_STRING_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack
 #define SPVM_IMPLEMENT_CONDITION_EVALUATION_LONG(out, in) (out = !!in)
 #define SPVM_IMPLEMENT_CONDITION_EVALUATION_FLOAT(out, in) (out = !!in)
 #define SPVM_IMPLEMENT_CONDITION_EVALUATION_DOUBLE(out, in) (out = !!in)
-#define SPVM_IMPLEMENT_CONDITION_EVALUATION_OBJECT(out, in) (out = !!in)
-#define SPVM_IMPLEMENT_CONDITION_EVALUATION_REF(out, in) (out = !!in)
-#define SPVM_IMPLEMENT_CONDITION_EVALUATION_BOOL_OBJECT(env, stack, out, in) (out = !!env->get_bool_object_value(env, stack, in))
+#define SPVM_IMPLEMENT_CONDITION_EVALUATION_OBJECT(out, in) (out = !!(SPVM_OBJ*)in)
+#define SPVM_IMPLEMENT_CONDITION_EVALUATION_REF(out, in) (out = !!(SPVM_OBJ*)in)
+#define SPVM_IMPLEMENT_CONDITION_EVALUATION_BOOL_OBJECT(env, stack, out, in) (out = !!env->get_bool_object_value(env, stack, (SPVM_OBJ*)in))
 
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_INT(out, in1, in2) (out = (in1 == in2))
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_LONG(out, in1, in2) (out = (in1 == in2))
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_FLOAT(out, in1, in2) (out = (in1 == in2))
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_DOUBLE(out, in1, in2) (out = (in1 == in2))
-#define SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_OBJECT(out, in1, in2) (out = (in1 == in2))
-#define SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_REF(out, in1, in2) (out = (in1 == in2))
+#define SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_OBJECT(out, in1, in2) (out = ((SPVM_OBJ*)in1 == (SPVM_OBJ*)in2))
+#define SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_REF(out, in1, in2) (out = ((SPVM_OBJ*)in1 == (SPVM_OBJ*)in2))
 
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_INT(out, in1, in2) (out = (in1 != in2))
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_LONG(out, in1, in2) (out = (in1 != in2))
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_FLOAT(out, in1, in2) (out = (in1 != in2))
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_DOUBLE(out, in1, in2) (out = (in1 != in2))
-#define SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_OBJECT(out, in1, in2) (out = (in1 != in2))
-#define SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_REF(out, in1, in2) (out = (in1 != in2))
+#define SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_OBJECT(out, in1, in2) (out = ((SPVM_OBJ*)in1 != (SPVM_OBJ*)in2))
+#define SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_REF(out, in1, in2) (out = ((SPVM_OBJ*)in1 != (SPVM_OBJ*)in2))
 
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_GT_INT(out, in1, in2) (out = (in1 > in2))
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_GT_LONG(out, in1, in2) (out = (in1 > in2))
@@ -584,14 +584,14 @@ static inline void SPVM_IMPLEMENT_STRING_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_CMP_FLOAT(out, in1, in2) (out = in1 > in2 ? 1 : in1 < in2 ? -1 : 0)
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_CMP_DOUBLE(out, in1, in2) (out = in1 > in2 ? 1 : in1 < in2 ? -1 : 0)
 
-#define SPVM_IMPLEMENT_IS_UNDEF_OBJECT(out, in) (out = (in == NULL))
-#define SPVM_IMPLEMENT_IS_UNDEF_REF(out, in) (out = (in == NULL))
-#define SPVM_IMPLEMENT_IS_NOT_UNDEF_OBJECT(out, in) (out = (in != NULL))
-#define SPVM_IMPLEMENT_IS_NOT_UNDEF_REF(out, in) (out = (in != NULL))
+#define SPVM_IMPLEMENT_IS_UNDEF_OBJECT(out, in) (out = ((SPVM_OBJ*)in == NULL))
+#define SPVM_IMPLEMENT_IS_UNDEF_REF(out, in) (out = ((SPVM_OBJ*)in == NULL))
+#define SPVM_IMPLEMENT_IS_NOT_UNDEF_OBJECT(out, in) (out = ((SPVM_OBJ*)in != NULL))
+#define SPVM_IMPLEMENT_IS_NOT_UNDEF_REF(out, in) (out = ((SPVM_OBJ*)in != NULL))
 
-static inline void SPVM_IMPLEMENT_STRING_COMPARISON(SPVM_ENV* env, SPVM_VALUE* stack, int32_t comparison_op_id, int32_t* out, void* in1, void* in2) {
-  void* object1 = in1;
-  void* object2 = in2;
+static inline void SPVM_IMPLEMENT_STRING_COMPARISON(SPVM_ENV* env, SPVM_VALUE* stack, int32_t comparison_op_id, int32_t* out, SPVM_OBJ* in1, SPVM_OBJ* in2) {
+  SPVM_OBJ* object1 = in1;
+  SPVM_OBJ* object2 = in2;
   
   int32_t cmp = 0;
   if (object1 == NULL && object2 == NULL) {
@@ -652,6 +652,9 @@ static inline void SPVM_IMPLEMENT_STRING_COMPARISON(SPVM_ENV* env, SPVM_VALUE* s
     case SPVM_IMPLEMENT_C_EXCEPTION_COMPARISON_CMP: {
       flag = cmp;
       break;
+    }
+    default: {
+      assert(0);
     }
   }
   
