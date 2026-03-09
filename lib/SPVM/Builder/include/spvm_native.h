@@ -139,7 +139,9 @@ union spvm_value {
   int64_t lval;
   float fval;
   double dval;
-  void* oval;
+  SPVM_OBJ* oval;
+  SPVM_REF* ref;
+  void* address;
   int8_t* bref;
   int16_t* sref;
   int32_t* iref;
