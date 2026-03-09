@@ -654,7 +654,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   END_OF_FUNC:
   
   if (method->return_type_is_void) {
-    stack[0].oval = (SPVM_OBJ*)NULL;
+    stack[0].oval = NULL;
   }
   
   /* Call method end callback */
@@ -3241,20 +3241,20 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   if (native_mortal_stack == NULL) {
     return NULL;
   }
-  stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].oval = (SPVM_OBJ*)native_mortal_stack;
-  stack[SPVM_API_C_STACK_INDEX_ENV].oval = (SPVM_OBJ*)env;
+  stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].address = native_mortal_stack;
+  stack[SPVM_API_C_STACK_INDEX_ENV].address = env;
   
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival = -1;
   
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival = 1;
-  stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS].oval = (SPVM_OBJ*)SPVM_API_new_memory_block_for_call_stack(env, stack, sizeof(SPVM_RUNTIME_CALL_STACK_FRAME_INFO) * stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival);
+  stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS].address = SPVM_API_new_memory_block_for_call_stack(env, stack, sizeof(SPVM_RUNTIME_CALL_STACK_FRAME_INFO) * stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival);
   
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival = 1;
   void** call_stack_memory_blocks = SPVM_API_new_memory_block_for_call_stack(env, stack, sizeof(void*) * stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival);
   for (int32_t i = 0; i < stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival; i++) {
     call_stack_memory_blocks[i] = SPVM_API_new_memory_block_for_call_stack(env, stack, SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE);
   }
-  stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval = (SPVM_OBJ*)call_stack_memory_blocks;
+  stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].address = call_stack_memory_blocks;
   
   // Initialize the record size of the caller information stack (e.g., name, file, line)
   int32_t caller_info_stack_record_size = 4;
@@ -3272,7 +3272,7 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
     return NULL;
   }
   
-  stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].oval = (SPVM_OBJ*)caller_info_stack;
+  stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address = caller_info_stack;
   
   return stack;
 }
@@ -5674,8 +5674,8 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             
             // Save return value and exception variable
             SPVM_VALUE save_stack_ret = stack[0];
-            void* save_stack_exception_var = stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval;
-            stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = (SPVM_OBJ*)NULL;
+            SPVM_OBJ* save_stack_exception_var = stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval;
+            stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = NULL;
             
             SPVM_RUNTIME_METHOD* destroy_method = released_object_basic_type->destroy_method;
             
@@ -5698,7 +5698,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             
             // Restore return value and exception variable
             stack[0] = save_stack_ret;
-            stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = (SPVM_OBJ*)save_stack_exception_var;
+            stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = save_stack_exception_var;
           }
           
           // Free released_object fields
@@ -6373,7 +6373,7 @@ int32_t SPVM_API_push_call_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RU
       
       memcpy(new_call_stack_memory_blocks, call_stack_memory_blocks, sizeof(void*) * call_stack_memory_blocks_capacity);
       
-      stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].oval = (SPVM_OBJ*)new_call_stack_memory_blocks;
+      stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].address = new_call_stack_memory_blocks;
       stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival = new_call_stack_memory_blocks_capacity;
       
       SPVM_API_free_memory_block_for_call_stack(env, stack, call_stack_memory_blocks);
@@ -7290,8 +7290,8 @@ int32_t SPVM_API_die_with_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
   SPVM_API_set_exception(env, stack, obj_exception);
 
   /* Set exception metadata to the stack indices */
-  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval = (SPVM_OBJ*)(void*)func_name;
-  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].oval = (SPVM_OBJ*)(void*)file;
+  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].address = (char*)func_name;
+  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].address = (char*)file;
   stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival = line;
   stack[SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH].ival = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
 
