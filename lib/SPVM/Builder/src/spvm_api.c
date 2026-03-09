@@ -3250,7 +3250,7 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS].address = SPVM_API_new_memory_block_for_call_stack(env, stack, sizeof(SPVM_RUNTIME_CALL_STACK_FRAME_INFO) * stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival);
   
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival = 1;
-  void** call_stack_memory_blocks = SPVM_API_new_memory_block_for_call_stack(env, stack, sizeof(void*) * stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival);
+  char** call_stack_memory_blocks = SPVM_API_new_memory_block_for_call_stack(env, stack, sizeof(char*) * stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival);
   for (int32_t i = 0; i < stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival; i++) {
     call_stack_memory_blocks[i] = SPVM_API_new_memory_block_for_call_stack(env, stack, SPVM_API_C_CALL_STACK_MEMORY_BLOCK_SIZE);
   }
@@ -3265,7 +3265,6 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = caller_info_stack_capacity;
 
   // Allocate the caller information stack with the initial capacity
-  // The size is (sizeof(void*) * record_size * capacity)
   void** caller_info_stack = (void**)SPVM_API_new_memory_block(env, stack, sizeof(void*) * caller_info_stack_record_size * caller_info_stack_capacity);
   
   if (caller_info_stack == NULL) {
@@ -3306,10 +3305,10 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
     caller_info_stack = NULL;
   }
   
-  void** call_stack_memory_blocks = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].address;
+  char** call_stack_memory_blocks = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].address;
   int32_t call_stack_memory_blocks_capacity = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival;
   for (int32_t i = 0; i < call_stack_memory_blocks_capacity; i++) {
-    void* call_stack_memory_block = call_stack_memory_blocks[i];
+    char* call_stack_memory_block = call_stack_memory_blocks[i];
     SPVM_API_free_memory_block_for_call_stack(env, stack, call_stack_memory_block);
     call_stack_memory_block = NULL;
   }
@@ -4821,7 +4820,7 @@ int32_t SPVM_API_set_capacity(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj
   char* data = (char*)SPVM_API_get_chars(env, stack, object);
   memcpy(new_data, data, elem_size * object->length);
   SPVM_API_free_memory_block(env, stack, data);
-  object->data = (void*)new_data;;
+  object->data = new_data;;
   
   object->capacity = capacity;
   
@@ -6349,7 +6348,7 @@ int32_t SPVM_API_push_call_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RU
     call_stack_frame_info->on_heap = 1;
   }
   else {
-    void** call_stack_memory_blocks = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].address;
+    char** call_stack_memory_blocks = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].address;
     
     int32_t call_stack_offset = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_OFFSET].ival;
     
@@ -6366,12 +6365,12 @@ int32_t SPVM_API_push_call_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RU
     
     if (call_stack_memory_blocks_index >= call_stack_memory_blocks_capacity) {
       int32_t new_call_stack_memory_blocks_capacity = call_stack_memory_blocks_capacity * 2;
-      void** new_call_stack_memory_blocks = SPVM_API_new_memory_block_for_call_stack(env, stack, sizeof(void*) * new_call_stack_memory_blocks_capacity);
+      char** new_call_stack_memory_blocks = SPVM_API_new_memory_block_for_call_stack(env, stack, sizeof(char*) * new_call_stack_memory_blocks_capacity);
       if (!new_call_stack_memory_blocks) {
         return -1;
       }
       
-      memcpy(new_call_stack_memory_blocks, call_stack_memory_blocks, sizeof(void*) * call_stack_memory_blocks_capacity);
+      memcpy(new_call_stack_memory_blocks, call_stack_memory_blocks, sizeof(char*) * call_stack_memory_blocks_capacity);
       
       stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].address = new_call_stack_memory_blocks;
       stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY].ival = new_call_stack_memory_blocks_capacity;
@@ -7345,8 +7344,8 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
     const char* new_exception_bytes = SPVM_API_get_chars(env, stack, new_exception);
     
     memcpy(
-      (void*)(new_exception_bytes),
-      (void*)(exception_bytes),
+      (char*)(new_exception_bytes),
+      (char*)(exception_bytes),
       exception_length
     );
     
