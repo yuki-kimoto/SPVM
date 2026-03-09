@@ -82,7 +82,69 @@ void SPVM_PRECOMPILE_build_module_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
 void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
-  // Include headers and define macros
+  // Define the macro to skip standard headers in spvm_native.h
+  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_NATIVE_NO_INCLUDE_HEADERS\n\n");
+
+  // Add minimal definitions for standard library types and functions
+  SPVM_STRING_BUFFER_add(string_buffer,
+    "/* Minimal definitions for 64-bit systems */\n"
+    "#ifndef NULL\n"
+    "  #define NULL ((void*)0)\n"
+    "#endif\n"
+    
+    "/* Forward declaration for FILE */\n"
+    "struct _iobuf;\n"
+    "typedef struct _iobuf FILE;\n\n"
+
+    "typedef signed char int8_t;\n"
+    "typedef short int16_t;\n"
+    "typedef int int32_t;\n"
+    "typedef unsigned char uint8_t;\n"
+    "typedef unsigned short uint16_t;\n"
+    "typedef unsigned int uint32_t;\n\n"
+
+    "#if defined(_WIN64)\n"
+    "  typedef long long int64_t;\n" // Windows 64-bit uses long long for 64-bit int
+    "  typedef unsigned long long uint64_t;\n"
+    "  typedef long long intptr_t;\n"
+    "  typedef unsigned long long size_t;\n"
+    "  #define PRId64 \"lld\"\n"
+    "#else\n"
+    "  typedef long int64_t;\n" // Unix 64-bit (LP64) uses long for 64-bit int
+    "  typedef unsigned long uint64_t;\n"
+    "  typedef long intptr_t;\n"
+    "  typedef unsigned long size_t;\n"
+    "  #define PRId64 \"ld\"\n"
+    "#endif\n\n"
+
+    "#define PRId8 \"d\"\n"
+    "#define PRId16 \"d\"\n"
+    "#define PRId32 \"d\"\n"
+    "#define INT8_MIN (-128)\n"
+    "#define INT8_MAX 127\n"
+    "#define INT16_MIN (-32768)\n"
+    "#define INT16_MAX 32767\n"
+    "#define INT32_MIN (-2147483647 - 1)\n"
+    "#define INT32_MAX 2147483647\n\n"
+    "#if !defined(__GNUC__) && !defined(__clang__)\n"
+    "  #define __builtin_expect(exp, c) (exp)\n"
+    "#endif\n"
+    "extern void abort(void);\n"
+    "#ifndef assert\n"
+    "  #define assert(expr) ((expr) ? (void)0 : abort())\n"
+    "#endif\n"
+    "extern int snprintf(char *str, size_t size, const char *format, ...);\n"
+    "extern int sprintf(char *str, const char *format, ...);\n"
+    "extern size_t strlen(const char *str);\n"
+    "extern void *memcpy(void *dest, const void *src, size_t n);\n"
+    "extern void *memset(void *s, int c, size_t n);\n"
+    "extern int memcmp(const void *s1, const void *s2, size_t n);\n"
+    "extern long long strtoll(const char *str, char **endptr, int base);\n"
+    "extern float strtof(const char *str, char **endptr);\n"
+    "extern double strtod(const char *str, char **endptr);\n\n"
+  );
+
+  // Add SPVM specific headers
   SPVM_STRING_BUFFER_add(string_buffer,
     "#include \"spvm_native.h\"\n"
     "#include \"spvm_implement.h\"\n"
