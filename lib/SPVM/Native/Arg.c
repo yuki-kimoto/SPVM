@@ -40,7 +40,7 @@ int32_t SPVM__Native__Arg__get_basic_type(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* basic_type = env->api->arg->get_basic_type(runtime, self);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->arg->get_basic_type(runtime, self);
   
   SPVM_OBJ* obj_address_basic_type = env->new_pointer_object_by_name(env, stack, "Address", basic_type, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }

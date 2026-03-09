@@ -584,7 +584,7 @@ int32_t SPVM__Native__BasicType__get_basic_type_in_version_from(SPVM_ENV* env, S
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* basic_type_in_version_from = env->api->basic_type->get_basic_type_in_version_from(runtime, self);
+  SPVM_NATIVE_BASIC_TYPE* basic_type_in_version_from = env->api->basic_type->get_basic_type_in_version_from(runtime, self);
   
   SPVM_OBJ* obj_basic_type_in_version_from = NULL;
   if (basic_type_in_version_from) {
