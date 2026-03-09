@@ -3318,7 +3318,7 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   call_stack_memory_blocks = NULL;
   
-  void** call_stack_frame_infos = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS].address;
+  SPVM_RUNTIME_CALL_STACK_FRAME_INFO** call_stack_frame_infos = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS].address;
   SPVM_API_free_memory_block_for_call_stack(env, stack, call_stack_frame_infos);
   call_stack_frame_infos = NULL;
   
