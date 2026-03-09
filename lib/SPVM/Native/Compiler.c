@@ -11,17 +11,17 @@ int32_t SPVM__Native__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* self = env->api->compiler->new_instance();
   
-  void* obj_self = env->new_pointer_object_by_name(env, stack, "Native::Compiler", self, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_self = env->new_pointer_object_by_name(env, stack, "Native::Compiler", self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->api->compiler->get_runtime(self);
   
-  void* obj_address_runtime = env->new_pointer_object_by_name(env, stack, "Address", runtime, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_address_runtime = env->new_pointer_object_by_name(env, stack, "Address", runtime, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   stack[0].oval = obj_address_runtime;
   env->call_class_method_by_name(env, stack, "Native::Runtime", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
-  void* obj_runtime = stack[0].oval;
+  SPVM_OBJ* obj_runtime = stack[0].oval;
   
   env->set_field_object_by_name(env, stack, obj_runtime, "compiler", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -34,12 +34,12 @@ int32_t SPVM__Native__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_ENV* runtime_env = env->api->runtime->get_env(runtime);
   
-  void* obj_address_runtime_env = env->new_pointer_object_by_name(env, stack, "Address", runtime_env, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_address_runtime_env = env->new_pointer_object_by_name(env, stack, "Address", runtime_env, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   stack[0].oval = obj_address_runtime_env;
   env->call_class_method_by_name(env, stack, "Native::Env", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
-  void* obj_runtime_env = stack[0].oval;
+  SPVM_OBJ* obj_runtime_env = stack[0].oval;
   
   env->set_no_free(env, stack, obj_runtime_env, 1);
   
@@ -55,12 +55,12 @@ int32_t SPVM__Native__Compiler__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  void* obj_runtime_env = env->get_field_object_by_name(env, stack, obj_runtime, "env", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime_env = env->get_field_object_by_name(env, stack, obj_runtime, "env", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   env->set_no_free(env, stack, obj_runtime_env, 1);
@@ -79,9 +79,9 @@ int32_t SPVM__Native__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_basic_type_name = stack[1].oval;
+  SPVM_OBJ* obj_basic_type_name = stack[1].oval;
   const char* basic_type_name = NULL;
   if (obj_basic_type_name) {
     basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
@@ -94,19 +94,19 @@ int32_t SPVM__Native__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   if (!(status == 0)) {
     
-    void* obj_prefix = env->new_string_nolen(env, stack, "[Compile Error]");
+    SPVM_OBJ* obj_prefix = env->new_string_nolen(env, stack, "[Compile Error]");
     
-    void* obj_error_messages_string = env->new_string(env, stack, NULL, 0);
+    SPVM_OBJ* obj_error_messages_string = env->new_string(env, stack, NULL, 0);
     
-    void* obj_lf = env->new_string_nolen(env, stack, "\n");
+    SPVM_OBJ* obj_lf = env->new_string_nolen(env, stack, "\n");
     
     int32_t error_messages_length = env->api->compiler->get_error_messages_length(self);
     
-    void* obj_error_messages = env->new_string_array(env, stack, error_messages_length);
+    SPVM_OBJ* obj_error_messages = env->new_string_array(env, stack, error_messages_length);
     for (int32_t i = 0; i < error_messages_length; i++) {
       
       const char* error_message = env->api->compiler->get_error_message(self, i);
-      void* obj_error_message = env->new_string_nolen(env, stack, error_message);
+      SPVM_OBJ* obj_error_message = env->new_string_nolen(env, stack, error_message);
       
       obj_error_messages_string = env->concat(env, stack, obj_error_messages_string, obj_prefix);
       obj_error_messages_string = env->concat(env, stack, obj_error_messages_string, obj_error_message);
@@ -125,9 +125,9 @@ int32_t SPVM__Native__Compiler__get_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   stack[0].oval = obj_runtime;
@@ -139,9 +139,9 @@ int32_t SPVM__Native__Compiler__set_start_file(SPVM_ENV* env, SPVM_VALUE* stack)
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_start_file = stack[1].oval;
+  SPVM_OBJ* obj_start_file = stack[1].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
@@ -158,7 +158,7 @@ int32_t SPVM__Native__Compiler__set_start_line(SPVM_ENV* env, SPVM_VALUE* stack)
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   int32_t start_line = stack[1].ival;
   
@@ -173,16 +173,16 @@ int32_t SPVM__Native__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* st
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
   int32_t error_messages_length = env->api->compiler->get_error_messages_length(self);
   
-  void* obj_error_messages = env->new_string_array(env, stack, error_messages_length);
+  SPVM_OBJ* obj_error_messages = env->new_string_array(env, stack, error_messages_length);
   for (int32_t i = 0; i < error_messages_length; i++) {
     const char* error_message = env->api->compiler->get_error_message(self, i);
-    void* obj_error_message = env->new_string_nolen(env, stack, error_message);
+    SPVM_OBJ* obj_error_message = env->new_string_nolen(env, stack, error_message);
     env->set_elem_object(env, stack, obj_error_messages, i, obj_error_message);
   }
   
@@ -195,9 +195,9 @@ int32_t SPVM__Native__Compiler__add_include_dir(SPVM_ENV* env, SPVM_VALUE* stack
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_include_dir = stack[1].oval;
+  SPVM_OBJ* obj_include_dir = stack[1].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
@@ -214,9 +214,9 @@ int32_t SPVM__Native__Compiler__prepend_include_dir(SPVM_ENV* env, SPVM_VALUE* s
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_include_dir = stack[1].oval;
+  SPVM_OBJ* obj_include_dir = stack[1].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
@@ -234,9 +234,9 @@ int32_t SPVM__Native__Compiler__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack)
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_class_name = stack[1].oval;
+  SPVM_OBJ* obj_class_name = stack[1].oval;
   
   if (!obj_class_name) {
     return env->die(env, stack, "The class name $class_name must be defined.", __func__, FILE_NAME, __LINE__);
@@ -247,9 +247,9 @@ int32_t SPVM__Native__Compiler__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack)
   
   void* class_file = env->api->compiler->get_class_file(self, class_name);
   
-  void* obj_class_file = NULL;
+  SPVM_OBJ* obj_class_file = NULL;
   if (class_file) {
-    void* obj_address_class_file = env->new_pointer_object_by_name(env, stack, "Address", class_file, &error_id, __func__, FILE_NAME, __LINE__);
+    SPVM_OBJ* obj_address_class_file = env->new_pointer_object_by_name(env, stack, "Address", class_file, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     stack[0].oval = obj_address_class_file;
     env->call_class_method_by_name(env, stack, "Native::ClassFile", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
@@ -269,9 +269,9 @@ int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* st
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_source = stack[1].oval;
+  SPVM_OBJ* obj_source = stack[1].oval;
   const char* source = NULL;
   if (obj_source) {
     source = env->get_chars(env, stack, obj_source);
@@ -285,19 +285,19 @@ int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* st
   
   if (!(status == 0)) {
     
-    void* obj_prefix = env->new_string_nolen(env, stack, "[Compile Error]");
+    SPVM_OBJ* obj_prefix = env->new_string_nolen(env, stack, "[Compile Error]");
     
-    void* obj_error_messages_string = env->new_string(env, stack, NULL, 0);
+    SPVM_OBJ* obj_error_messages_string = env->new_string(env, stack, NULL, 0);
     
-    void* obj_lf = env->new_string_nolen(env, stack, "\n");
+    SPVM_OBJ* obj_lf = env->new_string_nolen(env, stack, "\n");
     
     int32_t error_messages_length = env->api->compiler->get_error_messages_length(self);
     
-    void* obj_error_messages = env->new_string_array(env, stack, error_messages_length);
+    SPVM_OBJ* obj_error_messages = env->new_string_array(env, stack, error_messages_length);
     for (int32_t i = 0; i < error_messages_length; i++) {
       
       const char* error_message = env->api->compiler->get_error_message(self, i);
-      void* obj_error_message = env->new_string_nolen(env, stack, error_message);
+      SPVM_OBJ* obj_error_message = env->new_string_nolen(env, stack, error_message);
       
       obj_error_messages_string = env->concat(env, stack, obj_error_messages_string, obj_prefix);
       obj_error_messages_string = env->concat(env, stack, obj_error_messages_string, obj_error_message);
@@ -309,7 +309,7 @@ int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* st
     return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS;
   }
   
-  void* obj_anon_basic_type_name = env->new_string(env, stack, anon_basic_type_name, strlen(anon_basic_type_name));
+  SPVM_OBJ* obj_anon_basic_type_name = env->new_string(env, stack, anon_basic_type_name, strlen(anon_basic_type_name));
   
   stack[0].oval = obj_anon_basic_type_name;
   
@@ -325,7 +325,7 @@ int32_t SPVM__Native__Compiler__clear_include_dirs(SPVM_ENV* env, SPVM_VALUE* st
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
@@ -338,7 +338,7 @@ int32_t SPVM__Native__Compiler__get_include_dirs_length(SPVM_ENV* env, SPVM_VALU
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
@@ -353,7 +353,7 @@ int32_t SPVM__Native__Compiler__get_include_dir(SPVM_ENV* env, SPVM_VALUE* stack
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   int32_t index = stack[1].ival;
   
@@ -367,7 +367,7 @@ int32_t SPVM__Native__Compiler__get_include_dir(SPVM_ENV* env, SPVM_VALUE* stack
   
   const char* include_dir = env->api->compiler->get_include_dir(self, index);
   
-  void* obj_include_dir = env->new_string_nolen(env, stack, include_dir);
+  SPVM_OBJ* obj_include_dir = env->new_string_nolen(env, stack, include_dir);
   
   stack[0].oval = obj_include_dir;
   

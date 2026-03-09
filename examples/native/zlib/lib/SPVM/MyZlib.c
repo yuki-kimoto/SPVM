@@ -7,7 +7,7 @@ static const char* FILE_NAME = "MyZlib.c";
 
 int32_t SPVM__MyZlib__test(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_out_file = stack[0].oval;
+  SPVM_OBJ* obj_out_file = stack[0].oval;
   
   if (!obj_out_file){
     return env->die(env, stack, "$ouf_file must be defined.", __func__, FILE_NAME, __LINE__);

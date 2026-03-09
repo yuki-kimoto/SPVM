@@ -11,11 +11,11 @@ int32_t SPVM__Native__BasicType__get_id(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -31,18 +31,18 @@ int32_t SPVM__Native__BasicType__get_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
   const char* name = env->api->basic_type->get_name(runtime, self);
   
-  void* obj_name = env->new_string_nolen(env, stack, name);
+  SPVM_OBJ* obj_name = env->new_string_nolen(env, stack, name);
   
   stack[0].oval = obj_name;
   
@@ -53,18 +53,18 @@ int32_t SPVM__Native__BasicType__get_class_dir(SPVM_ENV* env, SPVM_VALUE* stack)
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
   const char* class_dir = env->api->basic_type->get_class_dir(runtime, self);
   
-  void* obj_class_dir = NULL;
+  SPVM_OBJ* obj_class_dir = NULL;
   if (class_dir) {
     obj_class_dir = env->new_string_nolen(env, stack, class_dir);
   }
@@ -78,18 +78,18 @@ int32_t SPVM__Native__BasicType__get_class_rel_file(SPVM_ENV* env, SPVM_VALUE* s
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
   const char* class_rel_file = env->api->basic_type->get_class_rel_file(runtime, self);
   
-  void* obj_class_rel_file = NULL;
+  SPVM_OBJ* obj_class_rel_file = NULL;
   if (class_rel_file) {
     obj_class_rel_file = env->new_string_nolen(env, stack, class_rel_file);
   }
@@ -103,20 +103,20 @@ int32_t SPVM__Native__BasicType__get_parent(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
   void* parent = env->api->basic_type->get_parent(runtime, self);
   
-  void* obj_parent = NULL;
+  SPVM_OBJ* obj_parent = NULL;
   if (parent) {
-    void* obj_address_parent = env->new_pointer_object_by_name(env, stack, "Address", parent, &error_id, __func__, FILE_NAME, __LINE__);
+    SPVM_OBJ* obj_address_parent = env->new_pointer_object_by_name(env, stack, "Address", parent, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     stack[0].oval = obj_address_parent;
     env->call_class_method_by_name(env, stack, "Native::BasicType", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
@@ -137,11 +137,11 @@ int32_t SPVM__Native__BasicType__get_category(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -157,18 +157,18 @@ int32_t SPVM__Native__BasicType__get_version_string(SPVM_ENV* env, SPVM_VALUE* s
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
   const char* version_string = env->api->basic_type->get_version_string(runtime, self);
   
-  void* obj_version_string = NULL;
+  SPVM_OBJ* obj_version_string = NULL;
   
   if (version_string) {
     obj_version_string = env->new_string_nolen(env, stack, version_string);
@@ -183,11 +183,11 @@ int32_t SPVM__Native__BasicType__is_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -204,11 +204,11 @@ int32_t SPVM__Native__BasicType__is_anon(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -225,13 +225,13 @@ int32_t SPVM__Native__BasicType__get_class_var_by_index(SPVM_ENV* env, SPVM_VALU
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
   int32_t class_var_index = stack[1].ival;
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -241,12 +241,12 @@ int32_t SPVM__Native__BasicType__get_class_var_by_index(SPVM_ENV* env, SPVM_VALU
     return env->die(env, stack, "The class variable is not found.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_address_class_var = env->new_pointer_object_by_name(env, stack, "Address", class_var, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_address_class_var = env->new_pointer_object_by_name(env, stack, "Address", class_var, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   stack[0].oval = obj_address_class_var;
   env->call_class_method_by_name(env, stack, "Native::ClassVar", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
-  void* obj_class_var = stack[0].oval;
+  SPVM_OBJ* obj_class_var = stack[0].oval;
   env->set_no_free(env, stack, obj_class_var, 1);
   
   env->set_field_object_by_name(env, stack, obj_class_var, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
@@ -261,11 +261,11 @@ int32_t SPVM__Native__BasicType__get_class_var_by_name(SPVM_ENV* env, SPVM_VALUE
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_class_var_name = stack[1].oval;
+  SPVM_OBJ* obj_class_var_name = stack[1].oval;
   
   if (!obj_class_var_name) {
     return env->die(env, stack, "The class variable name must be specified.", __func__, FILE_NAME, __LINE__);
@@ -273,7 +273,7 @@ int32_t SPVM__Native__BasicType__get_class_var_by_name(SPVM_ENV* env, SPVM_VALUE
   
   const char* class_var_name = env->get_chars(env, stack, obj_class_var_name);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -283,12 +283,12 @@ int32_t SPVM__Native__BasicType__get_class_var_by_name(SPVM_ENV* env, SPVM_VALUE
     return env->die(env, stack, "The class variable is not found.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_address_class_var = env->new_pointer_object_by_name(env, stack, "Address", class_var, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_address_class_var = env->new_pointer_object_by_name(env, stack, "Address", class_var, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   stack[0].oval = obj_address_class_var;
   env->call_class_method_by_name(env, stack, "Native::ClassVar", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
-  void* obj_class_var = stack[0].oval;
+  SPVM_OBJ* obj_class_var = stack[0].oval;
   env->set_no_free(env, stack, obj_class_var, 1);
   
   env->set_field_object_by_name(env, stack, obj_class_var, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
@@ -303,11 +303,11 @@ int32_t SPVM__Native__BasicType__get_class_vars_length(SPVM_ENV* env, SPVM_VALUE
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -323,13 +323,13 @@ int32_t SPVM__Native__BasicType__get_field_by_index(SPVM_ENV* env, SPVM_VALUE* s
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
   int32_t field_index = stack[1].ival;
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -339,12 +339,12 @@ int32_t SPVM__Native__BasicType__get_field_by_index(SPVM_ENV* env, SPVM_VALUE* s
     return env->die(env, stack, "The class variable is not found.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_address_field = env->new_pointer_object_by_name(env, stack, "Address", field, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_address_field = env->new_pointer_object_by_name(env, stack, "Address", field, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   stack[0].oval = obj_address_field;
   env->call_class_method_by_name(env, stack, "Native::Field", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
-  void* obj_field = stack[0].oval;
+  SPVM_OBJ* obj_field = stack[0].oval;
   env->set_no_free(env, stack, obj_field, 1);
   
   env->set_field_object_by_name(env, stack, obj_field, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
@@ -359,11 +359,11 @@ int32_t SPVM__Native__BasicType__get_field_by_name(SPVM_ENV* env, SPVM_VALUE* st
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_field_name = stack[1].oval;
+  SPVM_OBJ* obj_field_name = stack[1].oval;
   
   if (!obj_field_name) {
     return env->die(env, stack, "The field name must be specified.", __func__, FILE_NAME, __LINE__);
@@ -371,7 +371,7 @@ int32_t SPVM__Native__BasicType__get_field_by_name(SPVM_ENV* env, SPVM_VALUE* st
   
   const char* field_name = env->get_chars(env, stack, obj_field_name);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -381,12 +381,12 @@ int32_t SPVM__Native__BasicType__get_field_by_name(SPVM_ENV* env, SPVM_VALUE* st
     return env->die(env, stack, "The field is not found.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_address_field = env->new_pointer_object_by_name(env, stack, "Address", field, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_address_field = env->new_pointer_object_by_name(env, stack, "Address", field, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   stack[0].oval = obj_address_field;
   env->call_class_method_by_name(env, stack, "Native::Field", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
-  void* obj_field = stack[0].oval;
+  SPVM_OBJ* obj_field = stack[0].oval;
   env->set_no_free(env, stack, obj_field, 1);
   
   env->set_field_object_by_name(env, stack, obj_field, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
@@ -401,11 +401,11 @@ int32_t SPVM__Native__BasicType__get_fields_length(SPVM_ENV* env, SPVM_VALUE* st
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -421,13 +421,13 @@ int32_t SPVM__Native__BasicType__get_method_by_index(SPVM_ENV* env, SPVM_VALUE* 
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
   int32_t method_index = stack[1].ival;
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -437,12 +437,12 @@ int32_t SPVM__Native__BasicType__get_method_by_index(SPVM_ENV* env, SPVM_VALUE* 
     return env->die(env, stack, "The method is not found.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_address_method = env->new_pointer_object_by_name(env, stack, "Address", method, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_address_method = env->new_pointer_object_by_name(env, stack, "Address", method, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   stack[0].oval = obj_address_method;
   env->call_class_method_by_name(env, stack, "Native::Method", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
-  void* obj_method = stack[0].oval;
+  SPVM_OBJ* obj_method = stack[0].oval;
   env->set_no_free(env, stack, obj_method, 1);
   
   env->set_field_object_by_name(env, stack, obj_method, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
@@ -457,11 +457,11 @@ int32_t SPVM__Native__BasicType__get_method_by_name(SPVM_ENV* env, SPVM_VALUE* s
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_method_name = stack[1].oval;
+  SPVM_OBJ* obj_method_name = stack[1].oval;
   
   if (!obj_method_name) {
     return env->die(env, stack, "The method name must be specified.", __func__, FILE_NAME, __LINE__);
@@ -469,7 +469,7 @@ int32_t SPVM__Native__BasicType__get_method_by_name(SPVM_ENV* env, SPVM_VALUE* s
   
   const char* method_name = env->get_chars(env, stack, obj_method_name);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -479,12 +479,12 @@ int32_t SPVM__Native__BasicType__get_method_by_name(SPVM_ENV* env, SPVM_VALUE* s
     return env->die(env, stack, "The method is not found.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_address_method = env->new_pointer_object_by_name(env, stack, "Address", method, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_address_method = env->new_pointer_object_by_name(env, stack, "Address", method, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   stack[0].oval = obj_address_method;
   env->call_class_method_by_name(env, stack, "Native::Method", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
-  void* obj_method = stack[0].oval;
+  SPVM_OBJ* obj_method = stack[0].oval;
   env->set_no_free(env, stack, obj_method, 1);
   
   env->set_field_object_by_name(env, stack, obj_method, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
@@ -499,11 +499,11 @@ int32_t SPVM__Native__BasicType__get_methods_length(SPVM_ENV* env, SPVM_VALUE* s
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -519,13 +519,13 @@ int32_t SPVM__Native__BasicType__get_anon_basic_type_by_index(SPVM_ENV* env, SPV
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
   int32_t anon_basic_type_index = stack[1].ival;
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -535,12 +535,12 @@ int32_t SPVM__Native__BasicType__get_anon_basic_type_by_index(SPVM_ENV* env, SPV
     return env->die(env, stack, "The basic type is not found.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_address_anon_basic_type = env->new_pointer_object_by_name(env, stack, "Address", anon_basic_type, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_address_anon_basic_type = env->new_pointer_object_by_name(env, stack, "Address", anon_basic_type, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   stack[0].oval = obj_address_anon_basic_type;
   env->call_class_method_by_name(env, stack, "Native::BasicType", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
-  void* obj_anon_basic_type = stack[0].oval;
+  SPVM_OBJ* obj_anon_basic_type = stack[0].oval;
   env->set_no_free(env, stack, obj_anon_basic_type, 1);
   
   env->set_field_object_by_name(env, stack, obj_anon_basic_type, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
@@ -555,11 +555,11 @@ int32_t SPVM__Native__BasicType__get_anon_basic_types_length(SPVM_ENV* env, SPVM
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -575,20 +575,20 @@ int32_t SPVM__Native__BasicType__get_basic_type_in_version_from(SPVM_ENV* env, S
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
   void* basic_type_in_version_from = env->api->basic_type->get_basic_type_in_version_from(runtime, self);
   
-  void* obj_basic_type_in_version_from = NULL;
+  SPVM_OBJ* obj_basic_type_in_version_from = NULL;
   if (basic_type_in_version_from) {
-    void* obj_address_basic_type_in_version_from = env->new_pointer_object_by_name(env, stack, "Address", basic_type_in_version_from, &error_id, __func__, FILE_NAME, __LINE__);
+    SPVM_OBJ* obj_address_basic_type_in_version_from = env->new_pointer_object_by_name(env, stack, "Address", basic_type_in_version_from, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     stack[0].oval = obj_address_basic_type_in_version_from;
     env->call_class_method_by_name(env, stack, "Native::BasicType", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
@@ -609,11 +609,11 @@ int32_t SPVM__Native__BasicType__has_monitor_var(SPVM_ENV* env, SPVM_VALUE* stac
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
@@ -629,7 +629,7 @@ int32_t SPVM__Native__BasicType__get_monitor_var_type(SPVM_ENV* env, SPVM_VALUE*
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   // int* basic_type_id_ref, int* type_dimension_ref, int* type_flag_ref
   int32_t* basic_type_id_ref = stack[1].iref;
@@ -649,7 +649,7 @@ int32_t SPVM__Native__BasicType__get_monitor_var_type(SPVM_ENV* env, SPVM_VALUE*
   
   void* self = env->get_pointer(env, stack, obj_self);
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);

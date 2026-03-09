@@ -17,7 +17,7 @@ int32_t SPVM__TestCase__Util__Thread__ThisThread__get_id(SPVM_ENV* env, SPVM_VAL
   
   *thread_id = std::this_thread::get_id();
   
-  void* obj_thread_id = env->new_object_by_name(env, stack, "TestCase::Util::Thread::ID", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_thread_id = env->new_object_by_name(env, stack, "TestCase::Util::Thread::ID", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   env->set_pointer(env, stack, obj_thread_id, (void*)thread_id);

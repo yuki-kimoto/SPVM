@@ -9,9 +9,9 @@ static const char* FILE_NAME = "Array.c";
 
 int32_t SPVM__Array__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -60,9 +60,9 @@ int32_t SPVM__Array__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Array__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -111,9 +111,9 @@ int32_t SPVM__Array__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Array__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -162,9 +162,9 @@ int32_t SPVM__Array__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Array__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -213,9 +213,9 @@ int32_t SPVM__Array__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Array__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -264,9 +264,9 @@ int32_t SPVM__Array__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Array__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -315,9 +315,9 @@ int32_t SPVM__Array__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Array__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
@@ -366,9 +366,9 @@ int32_t SPVM__Array__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Array__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -417,9 +417,9 @@ int32_t SPVM__Array__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Array__memmove_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -468,9 +468,9 @@ int32_t SPVM__Array__memmove_float(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Array__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -519,9 +519,9 @@ int32_t SPVM__Array__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Array__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -570,9 +570,9 @@ int32_t SPVM__Array__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Array__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -621,7 +621,7 @@ int32_t SPVM__Array__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Array__new_proto_any(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* array = stack[0].oval;
+  SPVM_OBJ* array = stack[0].oval;
   int32_t length = stack[1].ival;
   
   if (!array) {

@@ -11,15 +11,15 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
   
   int32_t error_id = 0;
   
-  void* obj_self_env = stack[0].oval;
+  SPVM_OBJ* obj_self_env = stack[0].oval;
   
-  void* obj_self_stack = stack[1].oval;
+  SPVM_OBJ* obj_self_stack = stack[1].oval;
   
-  void* obj_instance = stack[2].oval;
+  SPVM_OBJ* obj_instance = stack[2].oval;
   
-  void* obj_basic_type_name = stack[2].oval;
+  SPVM_OBJ* obj_basic_type_name = stack[2].oval;
   
-  void* obj_method_name = stack[3].oval;
+  SPVM_OBJ* obj_method_name = stack[3].oval;
   
   SPVM_ENV* self_env = NULL;
   if (obj_self_env) {
@@ -28,7 +28,7 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
   else {
     self_env = env;
     
-    void* obj_address_self_env = env->new_pointer_object_by_name(env, stack, "Address", self_env, &error_id, __func__, FILE_NAME, __LINE__);
+    SPVM_OBJ* obj_address_self_env = env->new_pointer_object_by_name(env, stack, "Address", self_env, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     stack[0].oval = obj_address_self_env;
     env->call_class_method_by_name(env, stack, "Native::Env", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
@@ -45,7 +45,7 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
   else {
     self_stack = stack;
     
-    void* obj_address_self_stack = env->new_pointer_object_by_name(env, stack, "Address", self_stack, &error_id, __func__, FILE_NAME, __LINE__);
+    SPVM_OBJ* obj_address_self_stack = env->new_pointer_object_by_name(env, stack, "Address", self_stack, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     stack[0].oval = obj_address_self_stack;
     env->call_class_method_by_name(env, stack, "Native::Stack", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
@@ -120,15 +120,15 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
     }
   }
   
-  void* obj_address_method = env->new_pointer_object_by_name(env, stack, "Address", method, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_address_method = env->new_pointer_object_by_name(env, stack, "Address", method, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   stack[0].oval = obj_address_method;
   env->call_class_method_by_name(env, stack, "Native::Method", "new_with_pointer", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
-  void* obj_method = stack[0].oval;
+  SPVM_OBJ* obj_method = stack[0].oval;
   env->set_no_free(env, stack, obj_method, 1);
   
-  void* obj_self = env->new_pointer_object_by_name(env, stack, "Native::MethodCall", method, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_self = env->new_pointer_object_by_name(env, stack, "Native::MethodCall", method, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   env->set_field_object_by_name(env, stack, obj_self, "method", obj_method, &error_id, __func__, FILE_NAME, __LINE__);
@@ -170,11 +170,11 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_args = stack[1].oval;
+  SPVM_OBJ* obj_args = stack[1].oval;
   
-  void* obj_error_id_ref = stack[2].oval;
+  SPVM_OBJ* obj_error_id_ref = stack[2].oval;
   
   if (obj_error_id_ref) {
     int32_t error_id_ref_length = env->length(env, stack, obj_error_id_ref);
@@ -191,7 +191,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t args_length = env->length(env, stack, obj_args);
   
-  void* obj_method = env->get_field_object_by_name(env, stack, obj_self, "method", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_method = env->get_field_object_by_name(env, stack, obj_self, "method", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* runtime = env->runtime;
@@ -216,17 +216,17 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
     args_length = method_args_length;
   }
   
-  void* obj_self_env = env->get_field_object_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_self_env = env->get_field_object_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   SPVM_ENV* self_env = env->get_pointer(env, stack, obj_self_env);
   
-  void* obj_self_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_self_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   SPVM_VALUE* self_stack = env->get_pointer(env, stack, obj_self_stack);
   
   int32_t stack_index = 0;
   for (int32_t arg_index = 0; arg_index < args_length; arg_index++) {
-    void* obj_arg = env->get_elem_object(env, stack, obj_args, arg_index);
+    SPVM_OBJ* obj_arg = env->get_elem_object(env, stack, obj_args, arg_index);
     
     void* method_arg = env->api->method->get_arg_by_index(runtime, method, arg_index);
     
@@ -724,7 +724,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
       
       switch (method_return_mulnum_field_basic_type_id) {
         case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
-          void* obj_return_value = env->new_byte_array(env, stack, method_return_width);
+          SPVM_OBJ* obj_return_value = env->new_byte_array(env, stack, method_return_width);
           if (error_id) { return error_id; }
           
           int8_t* return_value_ref = env->get_elems_byte(env, stack, obj_return_value);
@@ -738,7 +738,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
-          void* obj_return_value = env->new_short_array(env, stack, method_return_width);
+          SPVM_OBJ* obj_return_value = env->new_short_array(env, stack, method_return_width);
           if (error_id) { return error_id; }
           
           int16_t* return_value_ref = env->get_elems_short(env, stack, obj_return_value);
@@ -752,7 +752,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
-          void* obj_return_value = env->new_int_array(env, stack, method_return_width);
+          SPVM_OBJ* obj_return_value = env->new_int_array(env, stack, method_return_width);
           if (error_id) { return error_id; }
           
           int32_t* return_value_ref = env->get_elems_int(env, stack, obj_return_value);
@@ -766,7 +766,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
-          void* obj_return_value = env->new_long_array(env, stack, method_return_width);
+          SPVM_OBJ* obj_return_value = env->new_long_array(env, stack, method_return_width);
           if (error_id) { return error_id; }
           
           int64_t* return_value_ref = env->get_elems_long(env, stack, obj_return_value);
@@ -780,7 +780,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
-          void* obj_return_value = env->new_float_array(env, stack, method_return_width);
+          SPVM_OBJ* obj_return_value = env->new_float_array(env, stack, method_return_width);
           if (error_id) { return error_id; }
           
           float* return_value_ref = env->get_elems_float(env, stack, obj_return_value);
@@ -794,7 +794,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
-          void* obj_return_value = env->new_double_array(env, stack, method_return_width);
+          SPVM_OBJ* obj_return_value = env->new_double_array(env, stack, method_return_width);
           if (error_id) { return error_id; }
           
           double* return_value_ref = env->get_elems_double(env, stack, obj_return_value);
@@ -827,17 +827,17 @@ int32_t SPVM__Native__MethodCall__get_exception(SPVM_ENV* env, SPVM_VALUE* stack
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_self_env = env->get_field_object_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_self_env = env->get_field_object_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   SPVM_ENV* self_env = env->get_pointer(env, stack, obj_self_env);
   
-  void* obj_self_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_self_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   SPVM_VALUE* self_stack = env->get_pointer(env, stack, obj_self_stack);
   
-  void* obj_exception = self_env->get_exception(self_env, self_stack);
+  SPVM_OBJ* obj_exception = self_env->get_exception(self_env, self_stack);
   
   stack[0].oval = obj_exception;
   
@@ -848,15 +848,15 @@ int32_t SPVM__Native__MethodCall__set_exception(SPVM_ENV* env, SPVM_VALUE* stack
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_exception = stack[1].oval;
+  SPVM_OBJ* obj_exception = stack[1].oval;
   
-  void* obj_self_env = env->get_field_object_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_self_env = env->get_field_object_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   SPVM_ENV* self_env = env->get_pointer(env, stack, obj_self_env);
   
-  void* obj_self_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_self_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   SPVM_VALUE* self_stack = env->get_pointer(env, stack, obj_self_stack);
   

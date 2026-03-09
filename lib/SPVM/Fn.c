@@ -210,7 +210,7 @@ int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_string = stack[0].oval;
+  SPVM_OBJ* obj_string = stack[0].oval;
   int32_t* offset_ref = stack[1].iref;
   
   if (!obj_string) {
@@ -261,7 +261,7 @@ int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__is_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   int32_t is_array;
   if (env->is_array(env, stack, object)) {
@@ -278,7 +278,7 @@ int32_t SPVM__Fn__is_array(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__is_class(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   int32_t is_class;
   if (env->is_class(env, stack, object)) {
@@ -295,7 +295,7 @@ int32_t SPVM__Fn__is_class(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   int32_t is_mulnum_array;
   if (env->is_mulnum_array(env, stack, object)) {
@@ -312,7 +312,7 @@ int32_t SPVM__Fn__is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   int32_t is_numeric_array;
   if (env->is_numeric_array(env, stack, object)) {
@@ -329,7 +329,7 @@ int32_t SPVM__Fn__is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__is_object_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   int32_t is_object_array;
   if (env->is_object_array(env, stack, object)) {
@@ -346,7 +346,7 @@ int32_t SPVM__Fn__is_object_array(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   int32_t is_pointer_class;
   if (env->is_pointer_class(env, stack, object)) {
@@ -363,9 +363,9 @@ int32_t SPVM__Fn__is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -422,9 +422,9 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dest = stack[0].oval;
+  SPVM_OBJ* obj_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
-  void* obj_source = stack[2].oval;
+  SPVM_OBJ* obj_source = stack[2].oval;
   int32_t source_offset = stack[3].ival;
   int32_t length = stack[4].ival;
 
@@ -497,7 +497,7 @@ int32_t SPVM__Fn__sizeof_native_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__shorten(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* string = stack[0].oval;
+  SPVM_OBJ* string = stack[0].oval;
   int32_t length = stack[1].ival;
   
   if (!string) {
@@ -515,7 +515,7 @@ int32_t SPVM__Fn__shorten(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_string = stack[0].oval;
+  SPVM_OBJ* obj_string = stack[0].oval;
   
   if (!obj_string) {
     return env->die(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
@@ -540,7 +540,7 @@ int32_t SPVM__Fn__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_string = stack[0].oval;
+  SPVM_OBJ* obj_string = stack[0].oval;
   
   if (!obj_string) {
     return env->die(env, stack, "The string $string must be defined.", __func__, FILE_NAME, __LINE__);
@@ -565,7 +565,7 @@ int32_t SPVM__Fn__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_string = stack[0].oval;
+  SPVM_OBJ* obj_string = stack[0].oval;
   int32_t digit = stack[1].ival;
   int32_t unsigned_flag = stack[2].ival;
   
@@ -608,7 +608,7 @@ int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_string = stack[0].oval;
+  SPVM_OBJ* obj_string = stack[0].oval;
   int32_t digit = stack[1].ival;
   int32_t unsigned_flag = stack[2].ival;
   
@@ -651,7 +651,7 @@ int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 
 int32_t SPVM__Fn__object_to_int(SPVM_ENV* env, SPVM_VALUE* stack) {
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   int32_t int_value = (int32_t)(intptr_t)object;
   
@@ -661,7 +661,7 @@ int32_t SPVM__Fn__object_to_int(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__object_to_long(SPVM_ENV* env, SPVM_VALUE* stack) {
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   int64_t long_value = (int64_t)(intptr_t)object;
   
@@ -671,7 +671,7 @@ int32_t SPVM__Fn__object_to_long(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__get_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
-  void* obj_basic_type_name = stack[0].oval;
+  SPVM_OBJ* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
     return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
@@ -686,7 +686,7 @@ int32_t SPVM__Fn__get_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   const char* version_string = env->get_version_string(env, stack, basic_type);
   
-  void* obj_version_string = NULL;
+  SPVM_OBJ* obj_version_string = NULL;
   if (version_string) {
     obj_version_string = env->new_string(env, stack, version_string, strlen(version_string));
   }
@@ -706,7 +706,7 @@ int32_t SPVM__Fn__get_spvm_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__get_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
-  void* obj_basic_type_name = stack[0].oval;
+  SPVM_OBJ* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
     return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
@@ -730,7 +730,7 @@ int32_t SPVM__Fn__get_spvm_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   const char* spvm_version = env->get_spvm_version_string(env, stack);
   
-  void* obj_spvm_version = env->new_string(env, stack, spvm_version, strlen(spvm_version));
+  SPVM_OBJ* obj_spvm_version = env->new_string(env, stack, spvm_version, strlen(spvm_version));
   
   stack[0].oval = obj_spvm_version;
   
@@ -748,7 +748,7 @@ int32_t SPVM__Fn__get_memory_blocks_count(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_basic_type_name = stack[0].oval;
+  SPVM_OBJ* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
     return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
@@ -768,7 +768,7 @@ int32_t SPVM__Fn__get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_basic_type_name = stack[0].oval;
+  SPVM_OBJ* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
     return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
@@ -784,7 +784,7 @@ int32_t SPVM__Fn__get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t type_flag = stack[2].ival;
   
-  void* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_name, type_dimension, type_flag);
+  SPVM_OBJ* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_name, type_dimension, type_flag);
   
   stack[0].oval = obj_compile_type_name;
   
@@ -793,7 +793,7 @@ int32_t SPVM__Fn__get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__array_length(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_array = stack[0].oval;
+  SPVM_OBJ* obj_array = stack[0].oval;
   
   if (!obj_array) {
     return env->die(env, stack, "The array $array must be defined.", __func__, FILE_NAME, __LINE__);
@@ -814,7 +814,7 @@ int32_t SPVM__Fn__array_length(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_array = stack[0].oval;
+  SPVM_OBJ* obj_array = stack[0].oval;
   
   if (!obj_array) {
     return env->die(env, stack, "The array $array must be defined.", __func__, FILE_NAME, __LINE__);
@@ -835,7 +835,7 @@ int32_t SPVM__Fn__get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__print_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_string = stack[0].oval;
+  SPVM_OBJ* obj_string = stack[0].oval;
   
   env->print_stderr(env, stack, obj_string);
   
@@ -844,7 +844,7 @@ int32_t SPVM__Fn__print_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__say_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_string = stack[0].oval;
+  SPVM_OBJ* obj_string = stack[0].oval;
   
   env->print_stderr(env, stack, obj_string);
   
@@ -855,9 +855,9 @@ int32_t SPVM__Fn__say_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__memcmp(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_data1 = stack[0].oval;
+  SPVM_OBJ* obj_data1 = stack[0].oval;
   int32_t data1_offset = stack[1].ival;
-  void* obj_data2 = stack[2].oval;
+  SPVM_OBJ* obj_data2 = stack[2].oval;
   int32_t data2_offset = stack[3].ival;
   int32_t length = stack[4].ival;
   
@@ -929,7 +929,7 @@ int32_t SPVM__Fn__system_is_little_endian(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   if (!object) {
     return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
@@ -944,7 +944,7 @@ int32_t SPVM__Fn__no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__set_no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   if (!object) {
     return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
@@ -961,7 +961,7 @@ int32_t SPVM__Fn__get_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_object = stack[0].oval;
+  SPVM_OBJ* obj_object = stack[0].oval;
   
   if (!obj_object) {
     return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
@@ -969,7 +969,7 @@ int32_t SPVM__Fn__get_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* pointer = env->get_pointer(env, stack, obj_object);
   
-  void* obj_address = env->new_object_by_name(env, stack, "Address", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_address = env->new_object_by_name(env, stack, "Address", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   env->set_pointer(env, stack, obj_address, pointer);
@@ -983,13 +983,13 @@ int32_t SPVM__Fn__set_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_object = stack[0].oval;
+  SPVM_OBJ* obj_object = stack[0].oval;
   
   if (!obj_object) {
     return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_address = stack[1].oval;
+  SPVM_OBJ* obj_address = stack[1].oval;
   
   if (!obj_address) {
     return env->die(env, stack, "The address $address must be defined.", __func__, FILE_NAME, __LINE__);
@@ -1006,7 +1006,7 @@ int32_t SPVM__Fn__has_null_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_object = stack[0].oval;
+  SPVM_OBJ* obj_object = stack[0].oval;
   
   if (!obj_object) {
     return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
@@ -1025,13 +1025,13 @@ int32_t SPVM__Fn__eq_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_object1 = stack[0].oval;
+  SPVM_OBJ* obj_object1 = stack[0].oval;
   
   if (!obj_object1) {
     return env->die(env, stack, "The object $object1 must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_object2 = stack[1].oval;
+  SPVM_OBJ* obj_object2 = stack[1].oval;
   
   if (!obj_object2) {
     return env->die(env, stack, "The object $object2 must be defined.", __func__, FILE_NAME, __LINE__);
@@ -1052,7 +1052,7 @@ int32_t SPVM__Fn__pointer_to_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_object = stack[0].oval;
+  SPVM_OBJ* obj_object = stack[0].oval;
   
   if (!obj_object) {
     return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
@@ -1064,7 +1064,7 @@ int32_t SPVM__Fn__pointer_to_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   snprintf(tmp_buffer, 64, "%p", pointer);
   
-  void* obj_string = env->new_string_nolen(env, stack, tmp_buffer);
+  SPVM_OBJ* obj_string = env->new_string_nolen(env, stack, tmp_buffer);
   
   stack[0].oval = obj_string;
   
@@ -1075,9 +1075,9 @@ int32_t SPVM__Fn__dump_object_internal(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_object = stack[0].oval;
+  SPVM_OBJ* obj_object = stack[0].oval;
   
-  void* obj_dump = env->dump_object_internal(env, stack, obj_object);
+  SPVM_OBJ* obj_dump = env->dump_object_internal(env, stack, obj_object);
   
   stack[0].oval = obj_dump;
   
@@ -1113,7 +1113,7 @@ int32_t SPVM__Fn__seed_initialized(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__get_basic_type_name_in_version_from(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_basic_type_name = stack[0].oval;
+  SPVM_OBJ* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
     return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
@@ -1128,7 +1128,7 @@ int32_t SPVM__Fn__get_basic_type_name_in_version_from(SPVM_ENV* env, SPVM_VALUE*
   
   const char* basic_type_name_in_version_from = env->get_basic_type_name_in_version_from(env, stack, basic_type);
   
-  void* obj_basic_type_name_in_version_from = NULL;
+  SPVM_OBJ* obj_basic_type_name_in_version_from = NULL;
   if (basic_type_name_in_version_from) {
     obj_basic_type_name_in_version_from = env->new_string(env, stack, basic_type_name_in_version_from, strlen(basic_type_name_in_version_from));
   }
@@ -1161,7 +1161,7 @@ int32_t SPVM__Fn__get_basic_type_name_by_id(SPVM_ENV* env, SPVM_VALUE* stack) {
   const char* basic_type_name = env->api->basic_type->get_name(env->runtime, basic_type);
   
   // Create a new SPVM string object
-  void* obj_basic_type_name = env->new_string(env, stack, basic_type_name, strlen(basic_type_name));
+  SPVM_OBJ* obj_basic_type_name = env->new_string(env, stack, basic_type_name, strlen(basic_type_name));
   
   stack[0].oval = obj_basic_type_name;
   
@@ -1194,7 +1194,7 @@ int32_t SPVM__Fn__get_current_method_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   const char* method_name = env->api->method->get_name(env->runtime, current_method);
   
   /* Create a new SPVM string object */
-  void* obj_method_name = env->new_string_nolen(env, stack, method_name);
+  SPVM_OBJ* obj_method_name = env->new_string_nolen(env, stack, method_name);
   
   stack[0].oval = obj_method_name;
   
@@ -1229,7 +1229,7 @@ int32_t SPVM__Fn__get_current_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack) 
   const char* basic_type_name = env->api->basic_type->get_name(env->runtime, basic_type);
   
   /* Create a new SPVM string object using new_string_nolen */
-  void* obj_basic_type_name = env->new_string_nolen(env, stack, basic_type_name);
+  SPVM_OBJ* obj_basic_type_name = env->new_string_nolen(env, stack, basic_type_name);
   
   stack[0].oval = obj_basic_type_name;
   
@@ -1249,7 +1249,7 @@ int32_t SPVM__Fn__build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t adjusted_level = level + 1;
   
   /* Call the Native API with the adjusted level */
-  void* obj_message = env->build_exception_message(env, stack, adjusted_level);
+  SPVM_OBJ* obj_message = env->build_exception_message(env, stack, adjusted_level);
   
   /* Set the result to stack[0] */
   stack[0].oval = obj_message;
@@ -1283,7 +1283,7 @@ int32_t SPVM__Fn__get_call_depth(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM__Fn__is_utf8(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Get the string object from stack[0]
-  void* obj_string = stack[0].oval;
+  SPVM_OBJ* obj_string = stack[0].oval;
   
   int32_t error_id = 0;
   
@@ -1313,7 +1313,7 @@ int32_t SPVM__Fn__getrandom(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   // Create a new string object for the random bytes
-  void* obj_buffer = env->new_string(env, stack, NULL, size);
+  SPVM_OBJ* obj_buffer = env->new_string(env, stack, NULL, size);
   unsigned char* buffer = (unsigned char*)env->get_chars(env, stack, obj_buffer);
   
   int32_t success = 0;
@@ -1349,7 +1349,7 @@ int32_t SPVM__Fn__getrandom(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM__Fn__env(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Get the environment variable name from stack[0]
-  void* obj_name = stack[0].oval;
+  SPVM_OBJ* obj_name = stack[0].oval;
   
   // Null check for the name argument
   if (!obj_name) {
@@ -1368,7 +1368,7 @@ int32_t SPVM__Fn__env(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   // Create a new SPVM string object from the value
-  void* obj_value = env->new_string_nolen(env, stack, value);
+  SPVM_OBJ* obj_value = env->new_string_nolen(env, stack, value);
   
   stack[0].oval = obj_value;
   

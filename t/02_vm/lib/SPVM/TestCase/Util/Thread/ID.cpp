@@ -11,9 +11,9 @@ static const char* FILE_NAME = "TestCase/Util/Thread/ID.cpp";
 
 int32_t SPVM__TestCase__Util__Thread__ID__eq(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_thread_id = stack[1].oval;
+  SPVM_OBJ* obj_thread_id = stack[1].oval;
   
   std::thread::id* self_thread_id = (std::thread::id*)env->get_pointer(env, stack, obj_self);
   
@@ -28,9 +28,9 @@ int32_t SPVM__TestCase__Util__Thread__ID__eq(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__Util__Thread__ID__ne(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_thread_id = stack[1].oval;
+  SPVM_OBJ* obj_thread_id = stack[1].oval;
   
   std::thread::id* self_thread_id = (std::thread::id*)env->get_pointer(env, stack, obj_self);
   
@@ -45,9 +45,9 @@ int32_t SPVM__TestCase__Util__Thread__ID__ne(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__Util__Thread__ID__gt(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_thread_id = stack[1].oval;
+  SPVM_OBJ* obj_thread_id = stack[1].oval;
   
   std::thread::id* self_thread_id = (std::thread::id*)env->get_pointer(env, stack, obj_self);
   
@@ -62,9 +62,9 @@ int32_t SPVM__TestCase__Util__Thread__ID__gt(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__Util__Thread__ID__ge(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_thread_id = stack[1].oval;
+  SPVM_OBJ* obj_thread_id = stack[1].oval;
   
   std::thread::id* self_thread_id = (std::thread::id*)env->get_pointer(env, stack, obj_self);
   
@@ -79,9 +79,9 @@ int32_t SPVM__TestCase__Util__Thread__ID__ge(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__Util__Thread__ID__lt(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_thread_id = stack[1].oval;
+  SPVM_OBJ* obj_thread_id = stack[1].oval;
   
   std::thread::id* self_thread_id = (std::thread::id*)env->get_pointer(env, stack, obj_self);
   
@@ -96,9 +96,9 @@ int32_t SPVM__TestCase__Util__Thread__ID__lt(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__Util__Thread__ID__le(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_thread_id = stack[1].oval;
+  SPVM_OBJ* obj_thread_id = stack[1].oval;
   
   std::thread::id* self_thread_id = (std::thread::id*)env->get_pointer(env, stack, obj_self);
   
@@ -113,7 +113,7 @@ int32_t SPVM__TestCase__Util__Thread__ID__le(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__Util__Thread__ID__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   std::thread::id* thread_id = (std::thread::id*)env->get_pointer(env, stack, obj_self);
   

@@ -39,7 +39,7 @@ int32_t SPVM__Format___native_snprintf_f(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // "-9223372036854775808" + "." + width + precision
   int32_t max_length = 20 + 1 + precision;
-  void* obj_formatted_string = env->new_string(env, stack, NULL, max_length);
+  SPVM_OBJ* obj_formatted_string = env->new_string(env, stack, NULL, max_length);
   
   char* formatted_string = (char*)env->get_chars(env, stack, obj_formatted_string);
   
@@ -66,7 +66,7 @@ int32_t SPVM__Format___native_snprintf_g(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // "-9223372036854775808" + "." + width + precision
   int32_t max_length = 20 + 1 + precision;
-  void* obj_formatted_string = env->new_string(env, stack, NULL, max_length);
+  SPVM_OBJ* obj_formatted_string = env->new_string(env, stack, NULL, max_length);
   
   char* formatted_string = (char*)env->get_chars(env, stack, obj_formatted_string);
   
@@ -124,7 +124,7 @@ int32_t SPVM__Format___native_snprintf_p(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // 0x8000000000000000
   int32_t max_length = 32;
-  void* obj_formatted_string = env->new_string(env, stack, NULL, max_length);
+  SPVM_OBJ* obj_formatted_string = env->new_string(env, stack, NULL, max_length);
   
   char* formatted_string = (char*)env->get_chars(env, stack, obj_formatted_string);
   

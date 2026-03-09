@@ -5,7 +5,7 @@
 
 int32_t SPVM__BindCLib__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* sv_nums = stack[0].oval;
+  SPVM_OBJ* sv_nums = stack[0].oval;
   
   int32_t length = env->length(env, stack, sv_nums);
   

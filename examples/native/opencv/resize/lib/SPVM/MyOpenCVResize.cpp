@@ -11,10 +11,10 @@ int32_t SPVM__MyOpenCVResize__resize(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   using namespace cv;
   
-  void* sv_in_file = stack[0].oval;
+  SPVM_OBJ* sv_in_file = stack[0].oval;
   const char* in_file = (const char*)env->get_elems_byte(env, sv_in_file);
   
-  void* sv_out_file = stack[1].oval;
+  SPVM_OBJ* sv_out_file = stack[1].oval;
   const char* out_file = (const char*)env->get_elems_byte(env, sv_out_file);
   
   Mat image;

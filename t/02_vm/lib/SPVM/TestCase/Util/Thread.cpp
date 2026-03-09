@@ -9,7 +9,7 @@ extern "C" {
 
 static const char* FILE_NAME = "TestCase/Util/Thread.cpp";
 
-static void thread_handler (SPVM_ENV* env, void* obj_self, void* obj_task) {
+static void thread_handler (SPVM_ENV* env, SPVM_OBJ* obj_self, SPVM_OBJ* obj_task) {
   
   int32_t error_id = 0;
   
@@ -20,7 +20,7 @@ static void thread_handler (SPVM_ENV* env, void* obj_self, void* obj_task) {
   
   if (error_id) {
     
-    void* obj_exception = env->get_exception(env, stack);
+    SPVM_OBJ* obj_exception = env->get_exception(env, stack);
     const char* exception = env->get_chars(env, stack, obj_exception);
     
     env->set_field_object_by_name(env, stack, obj_self, "exception", obj_exception, &error_id, __func__, FILE_NAME, __LINE__);
@@ -39,9 +39,9 @@ int32_t SPVM__TestCase__Util__Thread__create(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* obj_task = env->get_field_object_by_name(env, stack, obj_self, "task", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_task = env->get_field_object_by_name(env, stack, obj_self, "task", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   std::thread* nt_thread = (std::thread*)env->new_memory_block(env, stack, sizeof(std::thread));
@@ -55,7 +55,7 @@ int32_t SPVM__TestCase__Util__Thread__create(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__Util__Thread__joinable(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_thread = stack[0].oval;
+  SPVM_OBJ* obj_thread = stack[0].oval;
   
   std::thread* nt_thread = (std::thread*)env->get_pointer(env, stack, obj_thread);
   
@@ -68,7 +68,7 @@ int32_t SPVM__TestCase__Util__Thread__joinable(SPVM_ENV* env, SPVM_VALUE* stack)
 
 int32_t SPVM__TestCase__Util__Thread__join(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_thread = stack[0].oval;
+  SPVM_OBJ* obj_thread = stack[0].oval;
   
   std::thread* nt_thread = (std::thread*)env->get_pointer(env, stack, obj_thread);
   
@@ -86,7 +86,7 @@ int32_t SPVM__TestCase__Util__Thread__join(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__Util__Thread__detach(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_thread = stack[0].oval;
+  SPVM_OBJ* obj_thread = stack[0].oval;
   
   std::thread* nt_thread = (std::thread*)env->get_pointer(env, stack, obj_thread);
   
@@ -103,7 +103,7 @@ int32_t SPVM__TestCase__Util__Thread__detach(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__Util__Thread__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_thread = stack[0].oval;
+  SPVM_OBJ* obj_thread = stack[0].oval;
   
   std::thread* nt_thread = (std::thread*)env->get_pointer(env, stack, obj_thread);
   
@@ -120,7 +120,7 @@ int32_t SPVM__TestCase__Util__Thread__get_id(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_thread = stack[0].oval;
+  SPVM_OBJ* obj_thread = stack[0].oval;
   
   std::thread* nt_thread = (std::thread*)env->get_pointer(env, stack, obj_thread);
   
@@ -128,7 +128,7 @@ int32_t SPVM__TestCase__Util__Thread__get_id(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   *thread_id = nt_thread->get_id();
   
-  void* obj_thread_id = env->new_object_by_name(env, stack, "TestCase::Util::Thread::ID", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_thread_id = env->new_object_by_name(env, stack, "TestCase::Util::Thread::ID", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   env->set_pointer(env, stack, obj_thread_id, (void*)thread_id);
