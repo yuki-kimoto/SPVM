@@ -2961,7 +2961,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_DOUBLE(SPVM_ENV*
 #define SPVM_IMPLEMENT_SET_STACK_FLOAT(stack, stack_index, in) (*(float*)&stack[stack_index] = in)
 #define SPVM_IMPLEMENT_SET_STACK_DOUBLE(stack, stack_index, in) (*(double*)&stack[stack_index] = in)
 #define SPVM_IMPLEMENT_SET_STACK_OBJECT(stack, stack_index, in) (*(SPVM_OBJ**)&stack[stack_index] = in)
-#define SPVM_IMPLEMENT_SET_STACK_REF(stack, stack_index, in) (*(void**)&stack[stack_index] = in)
+#define SPVM_IMPLEMENT_SET_STACK_REF(stack, stack_index, in) (*(SPVM_REF**)&stack[stack_index] = in)
 #define SPVM_IMPLEMENT_SET_STACK_UNDEF(stack, stack_index) (*(SPVM_OBJ**)&stack[stack_index] = NULL)
 
 static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width, int8_t* in) {
@@ -3011,7 +3011,7 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OBJECT(SPVM_ENV* env, SPVM_OBJ** out
   env->assign_object(env, stack, out, *(SPVM_OBJ**)&stack[stack_index]);
 }
 
-#define SPVM_IMPLEMENT_GET_STACK_REF(out, stack, stack_index) (out = *(void**)&stack[stack_index])
+#define SPVM_IMPLEMENT_GET_STACK_REF(out, stack, stack_index) (out = *(SPVM_REF**)&stack[stack_index])
 
 static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_BYTE(SPVM_ENV* env, int8_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width) {
   for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {

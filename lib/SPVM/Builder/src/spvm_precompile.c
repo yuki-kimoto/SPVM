@@ -156,8 +156,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   int32_t ref_vars_width = current_method->ref_vars_width;
   if (ref_vars_width > 0) {
     // ref_vars contains pointers to pointers to primitives.
-    // To support SPVM_NATIVE_TYPE_STRICT, we use void* for the array itself to handle mixed types.
-    SPVM_STRING_BUFFER_add(string_buffer, "  void* ref_vars[");
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_REF* ref_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, ref_vars_width);
     SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
   }
@@ -255,7 +254,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* object1 = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* object2 = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* object_address = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* ref = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_REF* ref = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* new_object_no_mortal = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* array = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index = 0;\n");
@@ -5404,7 +5403,7 @@ const char* SPVM_PRECOMPILE_get_ctype_name(SPVM_PRECOMPILE* precompile, int32_t 
       return "SPVM_OBJ*";
       break;
     case SPVM_PRECOMPILE_C_CTYPE_ID_REF:
-      return "void*";
+      return "SPVM_REF*";
       break;
   }
   
