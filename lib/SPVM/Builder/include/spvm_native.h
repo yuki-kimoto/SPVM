@@ -54,6 +54,9 @@
   struct spvm_obj;
   typedef struct spvm_obj SPVM_OBJ;
 
+  struct spvm_obj;
+  typedef struct spvm_obj SPVM_OBJ;
+
 #else
   #define SPVM_NATIVE_ALLOCATOR void
   #define SPVM_NATIVE_STRING_BUFFER void

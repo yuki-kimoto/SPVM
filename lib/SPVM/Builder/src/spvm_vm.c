@@ -1553,51 +1553,51 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_BYTE: {
-        SPVM_IMPLEMENT_GET_DEREF_BYTE(env, stack, &byte_vars[opcode->operand0], &ref_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_GET_DEREF_BYTE(env, stack, &byte_vars[opcode->operand0], (int8_t**)&ref_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_SHORT: {
-        SPVM_IMPLEMENT_GET_DEREF_SHORT(env, stack, &short_vars[opcode->operand0], &ref_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_GET_DEREF_SHORT(env, stack, &short_vars[opcode->operand0], (int16_t**)&ref_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_INT: {
-        SPVM_IMPLEMENT_GET_DEREF_INT(env, stack, &int_vars[opcode->operand0], &ref_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_GET_DEREF_INT(env, stack, &int_vars[opcode->operand0], (int32_t**)&ref_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_LONG: {
-        SPVM_IMPLEMENT_GET_DEREF_LONG(env, stack, &long_vars[opcode->operand0], &ref_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_GET_DEREF_LONG(env, stack, &long_vars[opcode->operand0], (int64_t**)&ref_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_FLOAT: {
-        SPVM_IMPLEMENT_GET_DEREF_FLOAT(env, stack, &float_vars[opcode->operand0], &ref_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_GET_DEREF_FLOAT(env, stack, &float_vars[opcode->operand0], (float**)&ref_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_DOUBLE: {
-        SPVM_IMPLEMENT_GET_DEREF_DOUBLE(env, stack, &double_vars[opcode->operand0], &ref_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_GET_DEREF_DOUBLE(env, stack, &double_vars[opcode->operand0], (double**)&ref_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_BYTE: {
-        SPVM_IMPLEMENT_SET_DEREF_BYTE(env, stack, &ref_vars[opcode->operand0], byte_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_SET_DEREF_BYTE(env, stack, (int8_t**)&ref_vars[opcode->operand0], byte_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_SHORT: {
-        SPVM_IMPLEMENT_SET_DEREF_SHORT(env, stack, &ref_vars[opcode->operand0], short_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_SET_DEREF_SHORT(env, stack, (int16_t**)&ref_vars[opcode->operand0], short_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_INT: {
-        SPVM_IMPLEMENT_SET_DEREF_INT(env, stack, &ref_vars[opcode->operand0], int_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_SET_DEREF_INT(env, stack, (int32_t**)&ref_vars[opcode->operand0], int_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_LONG: {
-        SPVM_IMPLEMENT_SET_DEREF_LONG(env, stack, &ref_vars[opcode->operand0], long_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_SET_DEREF_LONG(env, stack, (int64_t**)&ref_vars[opcode->operand0], long_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_FLOAT: {
-        SPVM_IMPLEMENT_SET_DEREF_FLOAT(env, stack, &ref_vars[opcode->operand0], float_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_SET_DEREF_FLOAT(env, stack, (float**)&ref_vars[opcode->operand0], float_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_DEREF_DOUBLE: {
-        SPVM_IMPLEMENT_SET_DEREF_DOUBLE(env, stack, &ref_vars[opcode->operand0], double_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_SET_DEREF_DOUBLE(env, stack, (double**)&ref_vars[opcode->operand0], double_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_BYTE: {

@@ -1684,7 +1684,7 @@ static inline void SPVM_IMPLEMENT_GET_ADDRESS(SPVM_ENV* env, SPVM_VALUE* stack, 
 #define SPVM_IMPLEMENT_REF_FLOAT(out, in) (out = in)
 #define SPVM_IMPLEMENT_REF_DOUBLE(out, in) (out = in)
 
-static inline void SPVM_IMPLEMENT_GET_DEREF_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void** in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_GET_DEREF_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, int8_t** in, int32_t* error_id) {
   
   if (__builtin_expect(*in == NULL, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
@@ -1692,12 +1692,12 @@ static inline void SPVM_IMPLEMENT_GET_DEREF_BYTE(SPVM_ENV* env, SPVM_VALUE* stac
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *out = *(int8_t*)*(void**)in;
+    *out = *(int8_t*)*(int8_t**)in;
   }
   
 }
 
-static inline void SPVM_IMPLEMENT_GET_DEREF_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void** in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_GET_DEREF_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, int16_t** in, int32_t* error_id) {
   
   if (__builtin_expect(*in == NULL, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
@@ -1705,12 +1705,12 @@ static inline void SPVM_IMPLEMENT_GET_DEREF_SHORT(SPVM_ENV* env, SPVM_VALUE* sta
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *out = *(int16_t*)*(void**)in;
+    *out = *(int16_t*)*(int16_t**)in;
   }
   
 }
 
-static inline void SPVM_IMPLEMENT_GET_DEREF_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void** in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_GET_DEREF_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t** in, int32_t* error_id) {
   
   if (__builtin_expect(*in == NULL, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
@@ -1718,12 +1718,12 @@ static inline void SPVM_IMPLEMENT_GET_DEREF_INT(SPVM_ENV* env, SPVM_VALUE* stack
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *out = *(int32_t*)*(void**)in;
+    *out = *(int32_t*)*(int32_t**)in;
   }
   
 }
 
-static inline void SPVM_IMPLEMENT_GET_DEREF_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void** in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_GET_DEREF_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int64_t** in, int32_t* error_id) {
   
   if (__builtin_expect(*in == NULL, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
@@ -1731,12 +1731,12 @@ static inline void SPVM_IMPLEMENT_GET_DEREF_LONG(SPVM_ENV* env, SPVM_VALUE* stac
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *out = *(int64_t*)*(void**)in;
+    *out = *(int64_t*)*(int64_t**)in;
   }
   
 }
 
-static inline void SPVM_IMPLEMENT_GET_DEREF_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void** in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_GET_DEREF_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, float** in, int32_t* error_id) {
   
   if (__builtin_expect(*in == NULL, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
@@ -1744,12 +1744,12 @@ static inline void SPVM_IMPLEMENT_GET_DEREF_FLOAT(SPVM_ENV* env, SPVM_VALUE* sta
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *out = *(float*)*(void**)in;
+    *out = *(float*)*(float**)in;
   }
   
 }
 
-static inline void SPVM_IMPLEMENT_GET_DEREF_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void** in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_GET_DEREF_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, double** in, int32_t* error_id) {
   
   if (__builtin_expect(*in == NULL, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
@@ -1757,12 +1757,12 @@ static inline void SPVM_IMPLEMENT_GET_DEREF_DOUBLE(SPVM_ENV* env, SPVM_VALUE* st
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *out = *(double*)*(void**)in;
+    *out = *(double*)*(double**)in;
   }
   
 }
 
-static inline void SPVM_IMPLEMENT_SET_DEREF_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int8_t in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_SET_DEREF_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t** out, int8_t in, int32_t* error_id) {
   
   if (__builtin_expect(*out == NULL, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
@@ -1770,12 +1770,12 @@ static inline void SPVM_IMPLEMENT_SET_DEREF_BYTE(SPVM_ENV* env, SPVM_VALUE* stac
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *(int8_t*)*(void**)out = in;
+    *(int8_t*)*(int8_t**)out = in;
   }
   
 }
 
-static inline void SPVM_IMPLEMENT_SET_DEREF_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int16_t in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_SET_DEREF_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t** out, int16_t in, int32_t* error_id) {
   
   if (__builtin_expect(*out == NULL, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
@@ -1783,11 +1783,11 @@ static inline void SPVM_IMPLEMENT_SET_DEREF_SHORT(SPVM_ENV* env, SPVM_VALUE* sta
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *(int16_t*)*(void**)out = in;
+    *(int16_t*)*(int16_t**)out = in;
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_DEREF_INT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_SET_DEREF_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t** out, int32_t in, int32_t* error_id) {
   
   if (__builtin_expect(*out == NULL, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
@@ -1795,12 +1795,12 @@ static inline void SPVM_IMPLEMENT_SET_DEREF_INT(SPVM_ENV* env, SPVM_VALUE* stack
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *(int32_t*)*(void**)out = in;
+    *(int32_t*)*(int32_t**)out = in;
   }
   
 }
 
-static inline void SPVM_IMPLEMENT_SET_DEREF_LONG(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int64_t in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_SET_DEREF_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t** out, int64_t in, int32_t* error_id) {
   
   if (__builtin_expect(*out == NULL, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
@@ -1808,12 +1808,12 @@ static inline void SPVM_IMPLEMENT_SET_DEREF_LONG(SPVM_ENV* env, SPVM_VALUE* stac
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *(int64_t*)*(void**)out = in;
+    *(int64_t*)*(int64_t**)out = in;
   }
   
 }
 
-static inline void SPVM_IMPLEMENT_SET_DEREF_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_SET_DEREF_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float** out, float in, int32_t* error_id) {
   
   if (__builtin_expect(*out == NULL, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
@@ -1821,12 +1821,12 @@ static inline void SPVM_IMPLEMENT_SET_DEREF_FLOAT(SPVM_ENV* env, SPVM_VALUE* sta
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *(float*)*(void**)out = in;
+    *(float*)*(float**)out = in;
   }
   
 }
 
-static inline void SPVM_IMPLEMENT_SET_DEREF_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, void** out, double in, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_SET_DEREF_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double** out, double in, int32_t* error_id) {
   
   if (__builtin_expect(*out == NULL, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_REF_UNDEFINED]);
@@ -1834,7 +1834,7 @@ static inline void SPVM_IMPLEMENT_SET_DEREF_DOUBLE(SPVM_ENV* env, SPVM_VALUE* st
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    *(double*)*(void**)out = in;
+    *(double*)*(double**)out = in;
   }
   
 }
