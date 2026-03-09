@@ -129,14 +129,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, current_basic_type->name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer,"  void* current_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, current_basic_type_name);\n");
+  SPVM_STRING_BUFFER_add(string_buffer,"  SPVM_NATIVE_BASIC_TYPE* current_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, current_basic_type_name);\n");
   
   // Current method name
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* current_method_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, current_method->name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer,"  void* current_method = env->api->basic_type->get_method_by_name(env->runtime, current_basic_type, current_method_name);\n");
+  SPVM_STRING_BUFFER_add(string_buffer,"  SPVM_NATIVE_METHOD* current_method = env->api->basic_type->get_method_by_name(env->runtime, current_basic_type, current_method_name);\n");
   
   // Get current_method_abs_name using Native API
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* current_method_abs_name = env->api->method->get_abs_name(env->runtime, current_method);\n");
@@ -147,7 +147,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   // object variable declarations
   int32_t object_vars_width = current_method->object_vars_width;
   if (object_vars_width > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  void* object_vars[");
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* object_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, object_vars_width);
     SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
   }
@@ -155,6 +155,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   // ref variable declarations
   int32_t ref_vars_width = current_method->ref_vars_width;
   if (ref_vars_width > 0) {
+    // ref_vars contains pointers to pointers to primitives.
+    // To support SPVM_NATIVE_TYPE_STRICT, we use void* for the array itself to handle mixed types.
     SPVM_STRING_BUFFER_add(string_buffer, "  void* ref_vars[");
     SPVM_STRING_BUFFER_add_int(string_buffer, ref_vars_width);
     SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
@@ -241,38 +243,38 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t basic_type_id;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_basic_type_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t src_basic_type_id;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* basic_type = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* object_basic_type = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* src_basic_type = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* invocant_decl_basic_type = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_BASIC_TYPE* basic_type = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_BASIC_TYPE* object_basic_type = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_BASIC_TYPE* src_basic_type = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_BASIC_TYPE* invocant_decl_basic_type = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t original_mortal_stack_top = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t line = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t arg_mem_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t stack_index = 0;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* object = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* object1 = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* object2 = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* object_address = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* object = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* object1 = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* object2 = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* object_address = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* ref = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* new_object_no_mortal = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* array = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* new_object_no_mortal = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* array = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t args_width = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t return_value = 0;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* string = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* string1 = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* string2 = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* string3 = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* exception = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* type_name = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* get_field_object = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* dump = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* src_string = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* byte_arra = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void** element_address = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void** get_field_object_ref = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* src_byte_array = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* byte_array = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* string = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* string1 = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* string2 = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* string3 = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* exception = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* type_name = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* get_field_object = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* dump = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* src_string = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* byte_arra = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ** element_address = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ** get_field_object_ref = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* src_byte_array = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* byte_array = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t elem_isa = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t dist_type_dimension = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t type_dimension = 0;\n");
@@ -324,9 +326,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  char* file;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t fields_length;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_class_var;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_method;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_field;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_CLASS_VAR* decl_class_var = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_METHOD* decl_method = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_FIELD* decl_field = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_offset;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_exists_offset;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_exists_bit;\n");
@@ -483,7 +485,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t found_basic_type = SPVM_PRECOMPILE_contains_basic_type(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name);
         if (!found_basic_type) {
           
-          SPVM_STRING_BUFFER_add(string_buffer, "  void* ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_BASIC_TYPE* ");
           SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
@@ -510,7 +512,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t found = SPVM_PRECOMPILE_contains_class_var(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, class_var_name);
         
         if (!found) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  void* ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_CLASS_VAR* ");
           SPVM_PRECOMPILE_add_class_var(precompile, string_buffer, basic_type_name, class_var_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
@@ -540,7 +542,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t found = SPVM_PRECOMPILE_contains_field(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, field_name);
         
         if (!found) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  void* ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NAITIVE_FIELD* ");
           SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
@@ -624,7 +626,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t found = SPVM_PRECOMPILE_contains_method(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, method_name);
         
         if (!found) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  void* ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NAITVE_METHOD* ");
           SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
           
@@ -3113,7 +3115,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
         // Prepare stderr
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* spvm_stderr = env->spvm_stderr(env, stack);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    FILE* spvm_stderr = env->spvm_stderr(env, stack);\n");
         
         // Output debug message
         SPVM_STRING_BUFFER_add(string_buffer, "    fprintf((FILE*)spvm_stderr, \"[Break Point]%s at %s line %d\\n\", \"");
@@ -3127,7 +3129,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "    fprintf((FILE*)spvm_stderr, \"Press Enter to continue...\");\n");
         
         // Prepare stdin and wait for Enter
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* spvm_stdin = env->spvm_stdin(env, stack);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    FILE* spvm_stdin = env->spvm_stdin(env, stack);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t c;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    while ((c = fgetc((FILE*)spvm_stdin)) != '\\n' && c != EOF);\n");
         
@@ -3228,7 +3230,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_REF_BYTE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REF_BYTE(*(void**)");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REF_BYTE(*(int8_t**)");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand1);
@@ -3236,7 +3238,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_REF_SHORT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REF_SHORT(*(void**)");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REF_SHORT(*(int16_t**)");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand1);
@@ -3244,7 +3246,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_REF_INT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REF_INT(*(void**)");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REF_INT(*(int32_t**)");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
@@ -3252,7 +3254,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_REF_LONG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REF_LONG(*(void**)");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REF_LONG(*(int64_t**)");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
@@ -3260,7 +3262,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_REF_FLOAT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REF_FLOAT(*(void**)");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REF_FLOAT(*(float**)");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
@@ -3268,7 +3270,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_REF_DOUBLE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REF_DOUBLE(*(void**)");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REF_DOUBLE(*(double**)");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
@@ -5399,7 +5401,7 @@ const char* SPVM_PRECOMPILE_get_ctype_name(SPVM_PRECOMPILE* precompile, int32_t 
       return "double";
       break;
     case SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT:
-      return "void*";
+      return "SPVM_OBJ*";
       break;
     case SPVM_PRECOMPILE_C_CTYPE_ID_REF:
       return "void*";
