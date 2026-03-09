@@ -460,7 +460,7 @@ int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, c
     }
     else {
       int32_t scope_id = SPVM_API_enter_scope(env, stack);
-      void* obj_invocant_type_name = env->get_type_name(env, stack, object);
+      SPVM_OBJECT* obj_invocant_type_name = env->get_type_name(env, stack, object);
       const char* invocant_type_name = env->get_chars(env, stack, obj_invocant_type_name);
       
       char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
@@ -1067,7 +1067,7 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
     return NULL;
   };
   
-  void* object = SPVM_API_new_object(env, stack, basic_type);
+  SPVM_OBJECT* object = SPVM_API_new_object(env, stack, basic_type);
   
   if (!object) {
     *error_id = SPVM_API_die(env, stack, "The creation of the object of %s class failed.", func_name, file, line, basic_type_name);
@@ -1079,7 +1079,7 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
 
 SPVM_OBJECT* SPVM_API_new_pointer_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, void* pointer, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
   
-  void* object = SPVM_API_new_object_by_name(env, stack, basic_type_name, error_id, func_name, file, line);
+  SPVM_OBJECT* object = SPVM_API_new_object_by_name(env, stack, basic_type_name, error_id, func_name, file, line);
   
   if (object) {
     SPVM_API_set_pointer(env, stack, object, pointer);
@@ -1115,7 +1115,7 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
     return NULL;
   };
   
-  void* object = SPVM_API_new_muldim_array(env, stack, basic_type, type_dimension, length);
+  SPVM_OBJECT* object = SPVM_API_new_muldim_array(env, stack, basic_type, type_dimension, length);
   
   if (!object) {
     *error_id = SPVM_API_die(env, stack, "The creation of the multi-dimensional array of %s class with the dimension %d failed.", func_name, file, line, basic_type_name, type_dimension);
@@ -2689,11 +2689,11 @@ SPVM_OBJECT** SPVM_API_get_field_object_ref_by_name(SPVM_ENV* env, SPVM_VALUE* s
   return ref;
 }
 
-SPVM_OBJECT* SPVM_API_get_field_object_defined_and_has_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line) {
+SPVM_OBJECT* SPVM_API_get_field_object_defined_and_has_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line) {
   
   *error_id = 0;
   
-  void* obj_field = env->get_field_object_by_name(env, stack, object, field_name, error_id, func_name, file_name, line);
+  SPVM_OBJECT* obj_field = env->get_field_object_by_name(env, stack, object, field_name, error_id, func_name, file_name, line);
   
   if (*error_id) { return NULL; }
   
@@ -3642,7 +3642,7 @@ SPVM_OBJECT* SPVM_API_get_type_name_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, 
   //[]
   length += type_dimension * 2;
   
-  void* obj_type_name = SPVM_API_new_string_no_mortal(env, stack, NULL, length);
+  SPVM_OBJECT* obj_type_name = SPVM_API_new_string_no_mortal(env, stack, NULL, length);
   
   if (obj_type_name) {
     char* type_name = (char*)SPVM_API_get_chars(env, stack, obj_type_name);
@@ -3698,7 +3698,7 @@ SPVM_OBJECT* SPVM_API_get_compile_type_name_no_mortal(SPVM_ENV* env, SPVM_VALUE*
   
   int32_t compile_type_name_length = SPVM_API_get_compile_type_name_length(env, stack, basic_type_name, type_dimension, type_flag);
   
-  void* obj_compile_type_name = SPVM_API_new_string_no_mortal(env, stack, NULL, compile_type_name_length);
+  SPVM_OBJECT* obj_compile_type_name = SPVM_API_new_string_no_mortal(env, stack, NULL, compile_type_name_length);
   
   if (obj_compile_type_name) {
     char* compile_type_name = (char*)SPVM_API_get_chars(env, stack, obj_compile_type_name);
@@ -3793,7 +3793,7 @@ void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const 
     }
     else {
       int32_t scope_id = SPVM_API_enter_scope(env, stack);
-      void* obj_type_name = env->get_type_name(env, stack, string);
+      SPVM_OBJECT* obj_type_name = env->get_type_name(env, stack, string);
       const char* type_name = env->get_chars(env, stack, obj_type_name);
       
       fprintf(spvm_stderr, "%s", type_name);
@@ -4379,7 +4379,7 @@ SPVM_OBJECT* SPVM_API_new_object_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPV
 
 SPVM_OBJECT* SPVM_API_new_pointer_object_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE* basic_type, void* pointer) {
   
-  void* obj_object = SPVM_API_new_object_no_mortal(env, stack, basic_type);
+  SPVM_OBJECT* obj_object = SPVM_API_new_object_no_mortal(env, stack, basic_type);
   
   if (obj_object) {
     SPVM_API_set_pointer(env, stack, obj_object, pointer);
@@ -5231,7 +5231,7 @@ void* SPVM_API_strerror_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_v
     length = 128;
   }
   
-  void* obj_strerror_value = SPVM_API_new_string(env, stack, NULL, length);
+  SPVM_OBJECT* obj_strerror_value = SPVM_API_new_string(env, stack, NULL, length);
   char* strerror_value = (char*)SPVM_API_get_chars(env, stack, obj_strerror_value);
   
   int32_t status = SPVM_STRERROR_strerror(errno_value, strerror_value, length);
@@ -5248,7 +5248,7 @@ void* SPVM_API_strerror_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_v
 
 const char* SPVM_API_strerror(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length) {
   
-  void* obj_strerror_value = SPVM_API_strerror_string(env, stack, errno_value, length);
+  SPVM_OBJECT* obj_strerror_value = SPVM_API_strerror_string(env, stack, errno_value, length);
   
   if (obj_strerror_value) {
     char* strerror_value = (char*)SPVM_API_get_chars(env, stack, obj_strerror_value);
@@ -6010,7 +6010,7 @@ void SPVM_API_set_no_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object,
 
 void SPVM_API_print_exception_to_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_exception = env->get_exception(env, stack);
+  SPVM_OBJECT* obj_exception = env->get_exception(env, stack);
   const char* exception = env->get_chars(env, stack, obj_exception);
   
   fprintf(env->api->runtime->get_spvm_stderr(env->runtime), "[An exception is converted to a warning]\n");
@@ -6022,7 +6022,7 @@ void SPVM_API_print_exception_to_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 SPVM_OBJECT* SPVM_API_dump_object_internal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  void* obj_dump = NULL;
+  SPVM_OBJECT* obj_dump = NULL;
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   if (object) {
     void* pointer = object->pointer;
@@ -6923,7 +6923,7 @@ double SPVM_API_numeric_object_to_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   int32_t is_numeric_object_type = SPVM_API_is_numeric_object_type(env->runtime, object->basic_type, object->type_dimension, 0);
   
   if (!is_numeric_object_type) {
-    void* obj_exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Type conversion failed. The type of the object must be a numeric object type.");
+    SPVM_OBJECT* obj_exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Type conversion failed. The type of the object must be a numeric object type.");
     SPVM_API_set_exception(env, stack, obj_exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     return 0;
@@ -6992,7 +6992,7 @@ void* SPVM_API_numeric_object_to_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* sta
   int32_t is_numeric_object_type = SPVM_API_is_numeric_object_type(env->runtime, object->basic_type, object->type_dimension, 0);
   
   if (!is_numeric_object_type) {
-    void* obj_exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Type conversion failed. The type of the object must be a numeric object type.");
+    SPVM_OBJECT* obj_exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Type conversion failed. The type of the object must be a numeric object type.");
     SPVM_API_set_exception(env, stack, obj_exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     return 0;
@@ -7214,7 +7214,7 @@ void* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level,
   
   /* Create CallerInfo object without mortal (Unified creation) */
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_CALLER_INFO_CLASS);
-  void* obj_caller_info = env->new_object_no_mortal(env, stack, basic_type);
+  SPVM_OBJECT* obj_caller_info = env->new_object_no_mortal(env, stack, basic_type);
   if (!obj_caller_info) {
     *error_id = env->die(env, stack, "Failed to create a new CallerInfo object.", __func__, FILE_NAME, __LINE__);
     return NULL;
@@ -7224,13 +7224,13 @@ void* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level,
   /* Set fields to the new object (Strings are created as non-mortal for now, 
      as they are owned by the obj_caller_info fields) */
   if (caller_func_name) {
-    void* obj_func_name = env->new_string_nolen_no_mortal(env, stack, caller_func_name);
+    SPVM_OBJECT* obj_func_name = env->new_string_nolen_no_mortal(env, stack, caller_func_name);
     env->set_field_string_by_name(env, stack, obj_caller_info, "method_abs_name", obj_func_name, error_id, __func__, FILE_NAME, __LINE__);
     if (*error_id) { return NULL; }
   }
   
   if (caller_file) {
-    void* obj_file = env->new_string_nolen_no_mortal(env, stack, caller_file);
+    SPVM_OBJECT* obj_file = env->new_string_nolen_no_mortal(env, stack, caller_file);
     env->set_field_string_by_name(env, stack, obj_caller_info, "file", obj_file, error_id, __func__, FILE_NAME, __LINE__);
     if (*error_id) { return NULL; }
   }
@@ -7243,7 +7243,7 @@ void* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level,
 
 void* SPVM_API_caller(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id) {
   
-  void* obj_caller_info = SPVM_API_caller_no_mortal(env, stack, level, error_id);
+  SPVM_OBJECT* obj_caller_info = SPVM_API_caller_no_mortal(env, stack, level, error_id);
   
   if (*error_id) { return NULL; }
   
@@ -7272,7 +7272,7 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_for
   va_end(args);
 
   /* 2. Create the exception string object */
-  void* obj_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, length);
+  SPVM_OBJECT* obj_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, length);
   char* exception_chars = (char*)SPVM_API_get_chars(env, stack, obj_exception);
 
   /* 3. Write the formatted message into the string object */
@@ -7284,7 +7284,7 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_for
   return SPVM_API_die_with_string(env, stack, obj_exception, func_name, file, line);
 }
 
-int32_t SPVM_API_die_with_string(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_exception, const char* func_name, const char* file, int32_t line) {
+int32_t SPVM_API_die_with_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_exception, const char* func_name, const char* file, int32_t line) {
   
   /* Set the exception object */
   SPVM_API_set_exception(env, stack, obj_exception);
@@ -7409,7 +7409,7 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   const int32_t max_func_name_len = 511;
   const int32_t max_file_len = 1023;
   
-  void* obj_exception = SPVM_API_get_exception(env, stack);
+  SPVM_OBJECT* obj_exception = SPVM_API_get_exception(env, stack);
   const char* exception_bytes = SPVM_API_get_chars(env, stack, obj_exception);
   int32_t exception_length = SPVM_API_length(env, stack, obj_exception);
 
@@ -7477,7 +7477,7 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   }
 
   /* 2. Allocate */
-  void* obj_new_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
+  SPVM_OBJECT* obj_new_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
   char* new_exception_bytes = (char*)SPVM_API_get_chars(env, stack, obj_new_exception);
   
   /* 3. Fill */
@@ -7515,7 +7515,7 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
 }
 
 void* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
-  void* obj_message = SPVM_API_build_exception_message_no_mortal(env, stack, level);
+  SPVM_OBJECT* obj_message = SPVM_API_build_exception_message_no_mortal(env, stack, level);
   SPVM_API_push_mortal(env, stack, obj_message);
   return obj_message;
 }
