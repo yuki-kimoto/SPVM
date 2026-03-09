@@ -9,7 +9,7 @@ int32_t SPVM__Sync__Mutex__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* mutex = env->api->mutex->new_instance(env, stack);
+  SPVM_NATIVE_MUTEX* mutex = env->api->mutex->new_instance(env, stack);
   
   SPVM_OBJ* obj_mutex = env->new_pointer_object_by_name(env, stack, "Sync::Mutex", mutex, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -23,7 +23,7 @@ int32_t SPVM__Sync__Mutex__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_mutex = stack[0].oval;
   
-  void* mutex = env->get_pointer(env, stack, obj_mutex);
+  SPVM_NATIVE_MUTEX* mutex = env->get_pointer(env, stack, obj_mutex);
   
   env->api->mutex->free_instance(env, stack, mutex);
   
@@ -34,7 +34,7 @@ int32_t SPVM__Sync__Mutex__lock(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_mutex = stack[0].oval;
   
-  void* mutex = env->get_pointer(env, stack, obj_mutex);
+  SPVM_NATIVE_MUTEX* mutex = env->get_pointer(env, stack, obj_mutex);
   
   env->api->mutex->lock(env, stack, mutex);
   
@@ -45,7 +45,7 @@ int32_t SPVM__Sync__Mutex__unlock(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_mutex = stack[0].oval;
   
-  void* mutex = env->get_pointer(env, stack, obj_mutex);
+  SPVM_NATIVE_MUTEX* mutex = env->get_pointer(env, stack, obj_mutex);
   
   env->api->mutex->unlock(env, stack, mutex);
   
@@ -56,7 +56,7 @@ int32_t SPVM__Sync__Mutex__reader_lock(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_mutex = stack[0].oval;
   
-  void* mutex = env->get_pointer(env, stack, obj_mutex);
+  SPVM_NATIVE_MUTEX* mutex = env->get_pointer(env, stack, obj_mutex);
   
   env->api->mutex->reader_lock(env, stack, mutex);
   
@@ -67,7 +67,7 @@ int32_t SPVM__Sync__Mutex__reader_unlock(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_mutex = stack[0].oval;
   
-  void* mutex = env->get_pointer(env, stack, obj_mutex);
+  SPVM_NATIVE_MUTEX* mutex = env->get_pointer(env, stack, obj_mutex);
   
   env->api->mutex->reader_unlock(env, stack, mutex);
   

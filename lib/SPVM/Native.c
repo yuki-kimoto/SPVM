@@ -41,7 +41,7 @@ int32_t SPVM__Native__get_current_env(SPVM_ENV* env, SPVM_VALUE* stack) {
   env->set_field_object_by_name(env, stack, obj_compiler, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  void** obj_runtime_ref = env->get_field_object_ref_by_name(env, stack, obj_compiler, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ** obj_runtime_ref = env->get_field_object_ref_by_name(env, stack, obj_compiler, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   env->weaken(env, stack, obj_runtime_ref);

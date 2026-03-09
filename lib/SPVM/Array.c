@@ -636,19 +636,19 @@ int32_t SPVM__Array__new_proto_any(SPVM_ENV* env, SPVM_VALUE* stack) {
     return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* new_object_array = env->new_array_proto(env, stack, array, length);
+  SPVM_OBJ* obj_new_object_array = env->new_array_proto(env, stack, array, length);
   
-  stack[0].oval = new_object_array;
+  stack[0].oval = obj_new_object_array;
   
   return 0;
 }
 
 int32_t SPVM__Array__new_array_proto_element(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* element = stack[0].oval;
+  SPVM_OBJ* obj_element = stack[0].oval;
   int32_t length = stack[1].ival;
   
-  if (!element) {
+  if (!obj_element) {
     return env->die(env, stack, "The prototype element $prototype_element must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
@@ -656,9 +656,9 @@ int32_t SPVM__Array__new_array_proto_element(SPVM_ENV* env, SPVM_VALUE* stack) {
     return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* new_object_array = env->new_array_proto_element(env, stack, element, length);
+  SPVM_OBJ* obj_new_object_array = env->new_array_proto_element(env, stack, obj_element, length);
   
-  stack[0].oval = new_object_array;
+  stack[0].oval = obj_new_object_array;
   
   return 0;
 }
