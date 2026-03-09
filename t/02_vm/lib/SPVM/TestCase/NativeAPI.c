@@ -4267,7 +4267,7 @@ int32_t SPVM__TestCase__NativeAPI__precompile_build_methodd_source(SPVM_ENV* env
     SPVM_NATIVE_ALLOCATOR* allocator = env->api->allocator->new_instance();
     
     // New string buffer
-    SPVM_OBJ* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
+    SPVM_NATIVE_STRING_BUFFER* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
 
     SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
     
