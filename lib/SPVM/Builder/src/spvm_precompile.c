@@ -541,7 +541,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t found = SPVM_PRECOMPILE_contains_field(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, field_name);
         
         if (!found) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NAITIVE_FIELD* ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_FIELD* ");
           SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
           SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
