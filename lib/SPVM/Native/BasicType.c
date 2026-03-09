@@ -112,7 +112,7 @@ int32_t SPVM__Native__BasicType__get_parent(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* parent = env->api->basic_type->get_parent(runtime, self);
+  SPVM_NATIVE_BASIC_TYPE* parent = env->api->basic_type->get_parent(runtime, self);
   
   SPVM_OBJ* obj_parent = NULL;
   if (parent) {
@@ -236,7 +236,7 @@ int32_t SPVM__Native__BasicType__get_class_var_by_index(SPVM_ENV* env, SPVM_VALU
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* class_var = env->api->basic_type->get_class_var_by_index(runtime, self, class_var_index);
+  SPVM_NATIVE_CLASS_VAR* class_var = env->api->basic_type->get_class_var_by_index(runtime, self, class_var_index);
   if (!class_var) {
     return env->die(env, stack, "The class variable is not found.", __func__, FILE_NAME, __LINE__);
   }
@@ -278,7 +278,7 @@ int32_t SPVM__Native__BasicType__get_class_var_by_name(SPVM_ENV* env, SPVM_VALUE
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* class_var = env->api->basic_type->get_class_var_by_name(runtime, self, class_var_name);
+  SPVM_NATIVE_CLASS_VAR* class_var = env->api->basic_type->get_class_var_by_name(runtime, self, class_var_name);
   if (!class_var) {
     return env->die(env, stack, "The class variable is not found.", __func__, FILE_NAME, __LINE__);
   }
@@ -334,7 +334,7 @@ int32_t SPVM__Native__BasicType__get_field_by_index(SPVM_ENV* env, SPVM_VALUE* s
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* field = env->api->basic_type->get_field_by_index(runtime, self, field_index);
+  SPVM_NATIVE_FIELD* field = env->api->basic_type->get_field_by_index(runtime, self, field_index);
   if (!field) {
     return env->die(env, stack, "The class variable is not found.", __func__, FILE_NAME, __LINE__);
   }
@@ -376,7 +376,7 @@ int32_t SPVM__Native__BasicType__get_field_by_name(SPVM_ENV* env, SPVM_VALUE* st
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* field = env->api->basic_type->get_field_by_name(runtime, self, field_name);
+  SPVM_NATIVE_FIELD* field = env->api->basic_type->get_field_by_name(runtime, self, field_name);
   if (!field) {
     return env->die(env, stack, "The field is not found.", __func__, FILE_NAME, __LINE__);
   }
@@ -432,7 +432,7 @@ int32_t SPVM__Native__BasicType__get_method_by_index(SPVM_ENV* env, SPVM_VALUE* 
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* method = env->api->basic_type->get_method_by_index(runtime, self, method_index);
+  SPVM_NATIVE_METHOD* method = env->api->basic_type->get_method_by_index(runtime, self, method_index);
   if (!method) {
     return env->die(env, stack, "The method is not found.", __func__, FILE_NAME, __LINE__);
   }
@@ -474,7 +474,7 @@ int32_t SPVM__Native__BasicType__get_method_by_name(SPVM_ENV* env, SPVM_VALUE* s
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* method = env->api->basic_type->get_method_by_name(runtime, self, method_name);
+  SPVM_NATIVE_METHOD* method = env->api->basic_type->get_method_by_name(runtime, self, method_name);
   if (!method) {
     return env->die(env, stack, "The method is not found.", __func__, FILE_NAME, __LINE__);
   }
@@ -530,7 +530,7 @@ int32_t SPVM__Native__BasicType__get_anon_basic_type_by_index(SPVM_ENV* env, SPV
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* anon_basic_type = env->api->basic_type->get_anon_basic_type_by_index(runtime, self, anon_basic_type_index);
+  SPVM_NATIVE_BASIC_TYPE* anon_basic_type = env->api->basic_type->get_anon_basic_type_by_index(runtime, self, anon_basic_type_index);
   if (!anon_basic_type) {
     return env->die(env, stack, "The basic type is not found.", __func__, FILE_NAME, __LINE__);
   }

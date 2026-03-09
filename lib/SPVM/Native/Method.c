@@ -7,7 +7,7 @@
 
 static const char* FILE_NAME = "Native/Method.c";
 
-static void* get_field_native_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line) {
+static SPVM_OBJ* get_field_native_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line) {
   
   *error_id = 0;
   
@@ -159,7 +159,7 @@ int32_t SPVM__Native__Method__get_current_basic_type(SPVM_ENV* env, SPVM_VALUE* 
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* current_basic_type = env->api->method->get_current_basic_type(runtime, self);
+  SPVM_NATIVE_BASIC_TYPE* current_basic_type = env->api->method->get_current_basic_type(runtime, self);
   
   SPVM_OBJ* obj_address_current_basic_type = env->new_pointer_object_by_name(env, stack, "Address", current_basic_type, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -195,7 +195,7 @@ int32_t SPVM__Native__Method__get_arg_by_index(SPVM_ENV* env, SPVM_VALUE* stack)
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* arg = env->api->method->get_arg_by_index(runtime, self, arg_index);
+  SPVM_NATIVE_ARG* arg = env->api->method->get_arg_by_index(runtime, self, arg_index);
   if (!arg) {
     return env->die(env, stack, "The argument is not found.", __func__, FILE_NAME, __LINE__);
   }
@@ -417,9 +417,9 @@ int32_t SPVM__Native__Method__get_precompile_address(SPVM_ENV* env, SPVM_VALUE* 
   
   SPVM_NATIVE_RUNTIME* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  void* Precompile_address = env->api->method->get_precompile_address(runtime, self);
+  void* precompile_address = env->api->method->get_precompile_address(runtime, self);
   
-  SPVM_OBJ* obj_precompile_address = env->new_pointer_object_by_name(env, stack, "Address", Precompile_address, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_precompile_address = env->new_pointer_object_by_name(env, stack, "Address", precompile_address, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   stack[0].oval = obj_precompile_address;

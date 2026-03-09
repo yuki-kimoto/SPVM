@@ -26,7 +26,7 @@ int32_t SPVM__Native__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   env->set_field_object_by_name(env, stack, obj_runtime, "compiler", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  void** obj_compiler_address = env->get_field_object_ref_by_name(env, stack, obj_runtime, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ** obj_compiler_address = env->get_field_object_ref_by_name(env, stack, obj_runtime, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   env->weaken(env, stack, obj_compiler_address);
   
   env->set_field_object_by_name(env, stack, obj_self, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
@@ -245,7 +245,7 @@ int32_t SPVM__Native__Compiler__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack)
   
   SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
-  void* class_file = env->api->compiler->get_class_file(self, class_name);
+  SPVM_NATIVE_CLASS_FILE* class_file = env->api->compiler->get_class_file(self, class_name);
   
   SPVM_OBJ* obj_class_file = NULL;
   if (class_file) {

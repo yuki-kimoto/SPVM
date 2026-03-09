@@ -61,7 +61,7 @@ int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env
     return env->die(env, stack, "The runtime stack $stack is not compatible with the runtime environemnt $env.", __func__, __FILE__, __LINE__);
   }
   
-  void* method = NULL;
+  SPVM_NATIVE_METHOD* method = NULL;
   
   const char* method_disp = NULL;
   if (method_call_type == 0) {
@@ -196,11 +196,11 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_NATIVE_RUNTIME* runtime = env->runtime;
   
-  void* method = env->get_pointer(env, stack, obj_method);
+  SPVM_NATIVE_METHOD* method = env->get_pointer(env, stack, obj_method);
   
   const char* method_name = env->api->method->get_name(runtime, method);
   
-  void* basic_type = env->api->method->get_current_basic_type(runtime, method);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->method->get_current_basic_type(runtime, method);
   
   const char* class_name = env->api->basic_type->get_name(runtime, basic_type);
   
@@ -228,9 +228,9 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   for (int32_t arg_index = 0; arg_index < args_length; arg_index++) {
     SPVM_OBJ* obj_arg = env->get_elem_object(env, stack, obj_args, arg_index);
     
-    void* method_arg = env->api->method->get_arg_by_index(runtime, method, arg_index);
+    SPVM_NATIVE_ARG* method_arg = env->api->method->get_arg_by_index(runtime, method, arg_index);
     
-    void* method_arg_basic_type = env->api->arg->get_basic_type(runtime, method_arg);
+    SPVM_NATIVE_BASIC_TYPE* method_arg_basic_type = env->api->arg->get_basic_type(runtime, method_arg);
     int32_t method_arg_basic_type_id = env->api->basic_type->get_id(runtime, method_arg_basic_type);
     int32_t method_arg_type_dimension = env->api->arg->get_type_dimension(runtime, method_arg);
     int32_t method_arg_type_flag = env->api->arg->get_type_flag(runtime, method_arg);
@@ -241,7 +241,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
     if (method_arg_is_object_type) {
       
       if (obj_arg) {
-        void* arg_basic_type = env->get_object_basic_type(env, stack, obj_arg);
+        SPVM_NATIVE_BASIC_TYPE* arg_basic_type = env->get_object_basic_type(env, stack, obj_arg);
         const char* arg_basic_type_name = env->api->basic_type->get_name(runtime, arg_basic_type);
         
         int32_t arg_type_dimension = env->get_object_type_dimension(env, stack, obj_arg);
@@ -358,8 +358,8 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
             return env->die(env, stack, "%s#%s method failed to execute. The array length of the %dth argument must be %d.", class_name, method_name, arg_index + 1, method_arg_width, __func__, FILE_NAME, __LINE__);
           }
           
-          void* method_arg_mulnum_field = env->api->basic_type->get_field_by_index(runtime, method_arg_basic_type, 0);
-          void* method_arg_mulnum_field_basic_type = env->api->field->get_basic_type(runtime, method_arg_mulnum_field);
+          SPVM_NATIVE_FIELD* method_arg_mulnum_field = env->api->basic_type->get_field_by_index(runtime, method_arg_basic_type, 0);
+          SPVM_NATIVE_BASIC_TYPE* method_arg_mulnum_field_basic_type = env->api->field->get_basic_type(runtime, method_arg_mulnum_field);
           int32_t method_arg_mulnum_field_basic_type_id = env->api->basic_type->get_id(runtime, method_arg_mulnum_field_basic_type);
           
           switch (method_arg_mulnum_field_basic_type_id) {
@@ -540,8 +540,8 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
             return env->die(env, stack, "%s#%s method failed to execute. The array length of the %dth argument must be %d.", class_name, method_name, arg_index + 1, method_arg_width, __func__, FILE_NAME, __LINE__);
           }
           
-          void* method_arg_mulnum_field = env->api->basic_type->get_field_by_index(runtime, method_arg_basic_type, 0);
-          void* method_arg_mulnum_field_basic_type = env->api->field->get_basic_type(runtime, method_arg_mulnum_field);
+          SPVM_NATIVE_FIELD* method_arg_mulnum_field = env->api->basic_type->get_field_by_index(runtime, method_arg_basic_type, 0);
+          SPVM_NATIVE_BASIC_TYPE* method_arg_mulnum_field_basic_type = env->api->field->get_basic_type(runtime, method_arg_mulnum_field);
           int32_t method_arg_mulnum_field_basic_type_id = env->api->basic_type->get_id(runtime, method_arg_mulnum_field_basic_type);
           
           switch(method_arg_mulnum_field_basic_type_id) {
@@ -641,7 +641,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
     return error_id_exception_thrown;
   }
   
-  void* method_return_basic_type = env->api->method->get_return_basic_type(runtime, method);
+  SPVM_NATIVE_BASIC_TYPE* method_return_basic_type = env->api->method->get_return_basic_type(runtime, method);
   int32_t method_return_basic_type_id = env->api->basic_type->get_id(runtime, method_return_basic_type);
   int32_t method_return_type_dimension = env->api->method->get_return_type_dimension(runtime, method);
   int32_t method_return_type_flag = env->api->method->get_return_type_flag(runtime, method);
@@ -718,8 +718,8 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
     else if (method_return_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
       int32_t method_return_width = env->api->type->get_type_width(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
       
-      void* method_return_mulnum_field = env->api->basic_type->get_field_by_index(runtime, method_return_basic_type, 0);
-      void* method_return_mulnum_field_basic_type = env->api->field->get_basic_type(runtime, method_return_mulnum_field);
+      SPVM_NATIVE_FIELD* method_return_mulnum_field = env->api->basic_type->get_field_by_index(runtime, method_return_basic_type, 0);
+      SPVM_NATIVE_BASIC_TYPE* method_return_mulnum_field_basic_type = env->api->field->get_basic_type(runtime, method_return_mulnum_field);
       int32_t method_return_mulnum_field_basic_type_id = env->api->basic_type->get_id(runtime, method_return_mulnum_field_basic_type);
       
       switch (method_return_mulnum_field_basic_type_id) {
