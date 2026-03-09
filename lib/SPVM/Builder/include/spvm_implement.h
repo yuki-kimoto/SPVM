@@ -2698,67 +2698,67 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_DOUBLE(SPVM_ENV* env, S
 #define SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_LONG(out, in) (out = (int64_t)in)
 #define SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_FLOAT(out, in) (out = (float)in)
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int8_t value) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int8_t value) {
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId8, value);
   int32_t string_length = strlen(tmp_buffer);
-  void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
+  SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int16_t value) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int16_t value) {
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId16, value);
   int32_t string_length = strlen(tmp_buffer);
-  void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
+  SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t value) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int32_t value) {
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId32, value);
   int32_t string_length = strlen(tmp_buffer);
-  void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
+  SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int64_t value) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int64_t value) {
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId64, value);
   int32_t string_length = strlen(tmp_buffer);
-  void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
+  SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float value) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, float value) {
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%g", value);
   int32_t string_length = strlen(tmp_buffer);
-  void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
+  SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, double value) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, double value) {
   
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%g", value);
   int32_t string_length = strlen(tmp_buffer);
-  void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
+  SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* src_string) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, SPVM_OBJ* src_string) {
   
   int64_t num = 0;
   if (src_string) {
@@ -2777,7 +2777,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE(SPVM_ENV* env, 
   *out = (int8_t)num;
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* src_string) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, SPVM_OBJ* src_string) {
   
   int64_t num = 0;
   if (src_string) {
@@ -2796,7 +2796,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_SHORT(SPVM_ENV* env,
   *out = (int16_t)num;
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* src_string) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, SPVM_OBJ* src_string) {
   
   int64_t num = 0;
   if (src_string) {
@@ -2815,7 +2815,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_INT(SPVM_ENV* env, S
   *out = (int32_t)num;
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* src_string) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, SPVM_OBJ* src_string) {
   
   int64_t num = 0;
   if (src_string) {
@@ -2828,7 +2828,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_LONG(SPVM_ENV* env, 
   *out = (int64_t)num;
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* src_string) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, SPVM_OBJ* src_string) {
   
   float num = 0;
   if (src_string) {
@@ -2841,7 +2841,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_FLOAT(SPVM_ENV* env,
   *out = (float)num;
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* src_string) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, SPVM_OBJ* src_string) {
   
   double num = 0;
   if (src_string) {
@@ -2854,12 +2854,12 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_DOUBLE(SPVM_ENV* env
   *out = (double)num;
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* src_string) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, SPVM_OBJ* src_string) {
   
   if (src_string) {
     int32_t src_string_length = env->length(env, stack, src_string);
     const char* src_string_data = env->get_chars(env, stack, src_string);
-    void* byte_array = env->new_byte_array_no_mortal(env, stack, src_string_length);
+    SPVM_OBJ* byte_array = env->new_byte_array_no_mortal(env, stack, src_string_length);
     int8_t* byte_array_data = env->get_elems_byte(env, stack, byte_array);
     memcpy(byte_array_data, src_string_data, src_string_length);
     env->assign_object(env, stack, out, byte_array);
@@ -2869,87 +2869,87 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(SPVM_ENV*
   }
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* src_byte_array) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, SPVM_OBJ* src_byte_array) {
   int32_t src_byte_array_length = env->length(env, stack, src_byte_array);
   int8_t* src_byte_array_data = env->get_elems_byte(env, stack, src_byte_array);
-  void* string = env->new_string_no_mortal(env, stack, (const char*)src_byte_array_data, src_byte_array_length);
+  SPVM_OBJ* string = env->new_string_no_mortal(env, stack, (const char*)src_byte_array_data, src_byte_array_length);
   env->assign_object(env, stack, out, string);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int8_t value) {
-  void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS);
-  void* object = env->new_object_no_mortal(env, stack, basic_type);
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int8_t value) {
+  SPVM_OBJ* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS);
+  SPVM_OBJ* object = env->new_object_no_mortal(env, stack, basic_type);
   int8_t** fields = (int8_t**)(GET_DATA_ADDRESS(env, stack, object));
   *(int8_t*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int16_t value) {
-  void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS);
-  void* object = env->new_object_no_mortal(env, stack, basic_type);
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int16_t value) {
+  SPVM_OBJ* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS);
+  SPVM_OBJ* object = env->new_object_no_mortal(env, stack, basic_type);
   int16_t** fields = (int16_t**)(GET_DATA_ADDRESS(env, stack, object));
   *(int16_t*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t value) {
-  void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS);
-  void* object = env->new_object_no_mortal(env, stack, basic_type);
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int32_t value) {
+  SPVM_OBJ* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS);
+  SPVM_OBJ* object = env->new_object_no_mortal(env, stack, basic_type);
   int32_t** fields = (int32_t**)(GET_DATA_ADDRESS(env, stack, object));
   *(int32_t*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int64_t value) {
-  void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS);
-  void* object = env->new_object_no_mortal(env, stack, basic_type);
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int64_t value) {
+  SPVM_OBJ* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS);
+  SPVM_OBJ* object = env->new_object_no_mortal(env, stack, basic_type);
   int64_t** fields = (int64_t**)(GET_DATA_ADDRESS(env, stack, object));
   *(int64_t*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float value) {
-  void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS);
-  void* object = env->new_object_no_mortal(env, stack, basic_type);
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, float value) {
+  SPVM_OBJ* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS);
+  SPVM_OBJ* object = env->new_object_no_mortal(env, stack, basic_type);
   float** fields = (float**)(GET_DATA_ADDRESS(env, stack, object));
   *(float*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, double value) {
-  void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS);
-  void* object = env->new_object_no_mortal(env, stack, basic_type);
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, double value) {
+  SPVM_OBJ* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS);
+  SPVM_OBJ* object = env->new_object_no_mortal(env, stack, basic_type);
   double** fields = (double**)(GET_DATA_ADDRESS(env, stack, object));
   *(double*)&fields[0] = value;
   env->assign_object(env, stack, out, object);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* object, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, SPVM_OBJ* object, int32_t* error_id) {
   
   *out = env->numeric_object_to_byte(env, stack, object, error_id);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* object, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, SPVM_OBJ* object, int32_t* error_id) {
   
   *out = env->numeric_object_to_short(env, stack, object, error_id);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, SPVM_OBJ* object, int32_t* error_id) {
   
   *out = env->numeric_object_to_int(env, stack, object, error_id);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* object, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, SPVM_OBJ* object, int32_t* error_id) {
   
   *out = env->numeric_object_to_long(env, stack, object, error_id);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* object, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, SPVM_OBJ* object, int32_t* error_id) {
   
   *out = env->numeric_object_to_float(env, stack, object, error_id);
 }
 
-static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* object, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, SPVM_OBJ* object, int32_t* error_id) {
   
   *out = env->numeric_object_to_double(env, stack, object, error_id);
 }
