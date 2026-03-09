@@ -3265,7 +3265,7 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = caller_info_stack_capacity;
 
   // Allocate the caller information stack with the initial capacity
-  void** caller_info_stack = (void**)SPVM_API_new_memory_block(env, stack, sizeof(void*) * caller_info_stack_record_size * caller_info_stack_capacity);
+  SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)SPVM_API_new_memory_block(env, stack, sizeof(SPVM_VALUE) * caller_info_stack_record_size * caller_info_stack_capacity);
   
   if (caller_info_stack == NULL) {
     return NULL;
@@ -3299,7 +3299,7 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   // Free caller information stack
-  void** caller_info_stack = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
+  SPVM_VALUE* caller_info_stack = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
   if (caller_info_stack != NULL) {
     SPVM_API_free_memory_block(env, stack, caller_info_stack);
     caller_info_stack = NULL;
@@ -7088,23 +7088,23 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
     volatile char c = *caller_file;
   }
   
-  void*** current_caller_info_stack_ptr = (void***)&stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK];
-  int32_t* current_call_depth_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH];
-  int32_t* current_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY];
+  SPVM_VALUE** current_caller_info_stack_ptr = (SPVM_VALUE**)&stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
+  int32_t* current_call_depth_ptr = &stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
+  int32_t* current_capacity_ptr = &stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival;
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
   
   // Extend caller info stack if the current call depth reaches the capacity
   // Use __builtin_expect to hint that stack extension is unlikely (unlikely branch)
   if (__builtin_expect(*current_call_depth_ptr >= *current_capacity_ptr, 0)) {
     int32_t new_capacity = *current_capacity_ptr * 2;
-    void** new_caller_info_stack = (void**)SPVM_API_new_memory_block(env, stack, sizeof(void*) * record_size * new_capacity);
+    SPVM_VALUE* new_caller_info_stack = (SPVM_VALUE*)SPVM_API_new_memory_block(env, stack, sizeof(SPVM_VALUE) * record_size * new_capacity);
     
     if (__builtin_expect(new_caller_info_stack == NULL, 0)) {
       return -1; // Error
     }
     
     // Copy existing data
-    memcpy(new_caller_info_stack, *current_caller_info_stack_ptr, sizeof(void*) * record_size * *current_capacity_ptr);
+    memcpy(new_caller_info_stack, *current_caller_info_stack_ptr, sizeof(SPVM_VALUE) * record_size * *current_capacity_ptr);
     
     // Update capacity and free old block
     *current_capacity_ptr = new_capacity;
@@ -7114,10 +7114,10 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
   
   // Push the record at the index indicated by the current call depth
   int32_t offset = *current_call_depth_ptr * record_size;
-  (*current_caller_info_stack_ptr)[offset + 0] = (void*)caller_method_abs_name;
-  (*current_caller_info_stack_ptr)[offset + 1] = (void*)caller_file;
-  (*current_caller_info_stack_ptr)[offset + 2] = (void*)(intptr_t)caller_line;
-  (*current_caller_info_stack_ptr)[offset + 3] = current_method;
+  (*current_caller_info_stack_ptr)[offset + 0].address = (char*)caller_method_abs_name;
+  (*current_caller_info_stack_ptr)[offset + 1].address = (char*)caller_file;
+  (*current_caller_info_stack_ptr)[offset + 2].ival = caller_line;
+  (*current_caller_info_stack_ptr)[offset + 3].address = current_method;
   
   return 0;
 }
@@ -7128,9 +7128,9 @@ int32_t SPVM_API_get_call_depth(SPVM_ENV* env, SPVM_VALUE* stack) {
   return call_depth;
 }
 
-void** SPVM_API_get_caller_info_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+SPVM_VALUE* SPVM_API_get_caller_info_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t index = (int32_t)(intptr_t)env->api->runtime->stack_index_caller_info_stack;
-  void** caller_info_stack = (void**)stack[index].oval;
+  SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)stack[index].address;
   return caller_info_stack;
 }
 
@@ -7162,13 +7162,13 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stac
   }
   
   /* Get the raw pointer to the caller information stack and the record size */
-  void** caller_info_stack = SPVM_API_get_caller_info_stack(env, stack);
+  SPVM_VALUE* caller_info_stack = SPVM_API_get_caller_info_stack(env, stack);
   int32_t record_size = SPVM_API_get_caller_info_stack_record_size(env, stack);
   
   /* The method information is stored at index 3 of each record */
   int32_t offset = target_call_depth * record_size;
   
-  SPVM_RUNTIME_METHOD* method = (SPVM_RUNTIME_METHOD*)caller_info_stack[offset + 3];
+  SPVM_RUNTIME_METHOD* method = (SPVM_RUNTIME_METHOD*)caller_info_stack[offset + 3].address;
   
   /* method must not be NULL during method execution if target_call_depth is valid. */
   if (target_call_depth <= call_depth) {
@@ -7200,16 +7200,16 @@ SPVM_OBJECT* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t
     return NULL;
   }
   
-  void** caller_info_stack = SPVM_API_get_caller_info_stack(env, stack);
+  SPVM_VALUE* caller_info_stack = SPVM_API_get_caller_info_stack(env, stack);
   int32_t record_size = SPVM_API_get_caller_info_stack_record_size(env, stack);
   
   /* Calculate the target index in the caller info stack */
   int32_t target_index = target_call_depth * record_size;
   
   /* Extract information directly from the record. */
-  const char* caller_func_name = (const char*)caller_info_stack[target_index + 0];
-  const char* caller_file = (const char*)caller_info_stack[target_index + 1];
-  int32_t caller_line = (int32_t)(intptr_t)caller_info_stack[target_index + 2];
+  const char* caller_func_name = (const char*)caller_info_stack[target_index + 0].address;
+  const char* caller_file = (const char*)caller_info_stack[target_index + 1].address;
+  int32_t caller_line = caller_info_stack[target_index + 2].ival;
   
   /* Create CallerInfo object without mortal (Unified creation) */
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_CALLER_INFO_CLASS);
@@ -7431,7 +7431,7 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
   int32_t exception_line = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival;
   int32_t exception_call_depth = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH].ival;
 
-  void** caller_info_stack = (void**)stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].oval;
+  SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
 
   /* Calculate the target depth with clamping */
@@ -7454,7 +7454,7 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
   // Callers
   for (int32_t depth = exception_call_depth; depth >= target_call_depth; depth--) {
     int32_t offset = depth * record_size;
-    const char* func_name = (const char*)caller_info_stack[offset + 0];
+    const char* func_name = (const char*)caller_info_stack[offset + 0].address;
     if (!func_name) {
       func_name = unknown_func_name;
     }
@@ -7462,7 +7462,7 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
       func_name = too_long_func_name;
     }
     
-    const char* file = (const char*)caller_info_stack[offset + 1];
+    const char* file = (const char*)caller_info_stack[offset + 1].address;
     if (!file) {
       file = unknown_file;
     }
@@ -7470,7 +7470,7 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
       file = too_long_file;
     }
     
-    int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2];
+    int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2].ival;
     
     total_length += SPVM_API_build_caller_stack_line(NULL, func_name, file, line);
   }
@@ -7489,7 +7489,7 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
   // Write Callers
   for (int32_t depth = exception_call_depth; depth >= target_call_depth; depth--) {
     int32_t offset = depth * record_size;
-    const char* func_name = (const char*)caller_info_stack[offset + 0];
+    const char* func_name = (const char*)caller_info_stack[offset + 0].address;
     if (!func_name) {
       func_name = unknown_func_name;
     }
@@ -7497,7 +7497,7 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
       func_name = too_long_func_name;
     }
     
-    const char* file = (const char*)caller_info_stack[offset + 1];
+    const char* file = (const char*)caller_info_stack[offset + 1].address;
     if (!file) {
       file = unknown_file;
     }
@@ -7505,7 +7505,7 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
       file = too_long_file;
     }
     
-    int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2];
+    int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2].ival;
     
     current_offset += SPVM_API_build_caller_stack_line(new_exception_bytes + current_offset, func_name, file, line);
   }

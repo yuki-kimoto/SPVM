@@ -1,3 +1,7 @@
+0.990143 2026-03-09
+  [Incompatible Changes]
+    * Changed the return type of get_caller_info_stack from void** to SPVM_VALUE* for better type safety and consistency with the SPVM stack.
+    
 0.990142 2026-03-09
   [New Features and Future Incompatible Changes]
     * Added SPVM_NATIVE_ALLOCATOR, SPVM_NATIVE_STRING_BUFFER, SPVM_NATIVE_COMPILER, SPVM_NATIVE_CLASS_FILE, SPVM_NATIVE_RUNTIME, SPVM_NATIVE_BASIC_TYPE, SPVM_NATIVE_CLASS_VAR, SPVM_NATIVE_FIELD, SPVM_NATIVE_METHOD, SPVM_NATIVE_ARG, and SPVM_NATIVE_MUTEX types to spvm_native.h.

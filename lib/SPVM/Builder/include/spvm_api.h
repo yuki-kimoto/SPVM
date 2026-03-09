@@ -502,7 +502,7 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
 
 int32_t SPVM_API_get_call_depth(SPVM_ENV* env, SPVM_VALUE* stack);
 
-void** SPVM_API_get_caller_info_stack(SPVM_ENV* env, SPVM_VALUE* stack);
+SPVM_VALUE* SPVM_API_get_caller_info_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 
 int32_t SPVM_API_get_caller_info_stack_record_size(SPVM_ENV* env, SPVM_VALUE* stack);
 

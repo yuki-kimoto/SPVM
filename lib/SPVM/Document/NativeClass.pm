@@ -594,23 +594,23 @@ Example:
   int32_t call_depth = env->get_call_depth(env, stack);
   
   // Get the raw pointer to the caller information stack
-  void** caller_info_stack = env->get_caller_info_stack(env, stack);
+  SPVM_VALUE* caller_info_stack = env->get_caller_info_stack(env, stack);
   
   // Get the size of each record (Normally 4)
   int32_t record_size = env->get_caller_info_stack_record_size(env, stack);
   
   // Traverse the caller stack to build a backtrace
   for (int32_t i = 0; i < call_depth; i++) {
-    void** record = &caller_info_stack[i * record_size];
+    SPVM_VALUE* record = &caller_info_stack[i * record_size];
     
     // Get caller information from the record
     // caller_method_abs_name could be "Foo#bar" or "SPVM__Foo__bar"
-    const char* caller_method_abs_name = (const char*)record[0];
-    const char* caller_file = (const char*)record[1];
-    int32_t caller_line = (int32_t)(intptr_t)record[2];
+    const char* caller_method_abs_name = (const char*)record[0].address;
+    const char* caller_file = (const char*)record[1].address;
+    int32_t caller_line = record[2].ival;
     
     // Get the current method information from the pointer
-    void* current_method = record[3];
+    SPVM_NATIVE_METHOD* current_method = (SPVM_NATIVE_METHOD*)record[3].address;
     const char* current_method_abs_name = env->api->method->get_abs_name(env->runtime, current_method);
     
     // Process the information (e.g., printing a trace)

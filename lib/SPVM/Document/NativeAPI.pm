@@ -2813,7 +2813,7 @@ Returns the current call depth on the runtime stack I<stack>.
 
 =head2 get_caller_info_stack
 
-C<SPVM_OBJ** (*get_caller_info_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+C<SPVM_VALUE* (*get_caller_info_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
 Returns the address of the C<caller_info_stack> internal variable on the runtime stack I<stack>.
 
