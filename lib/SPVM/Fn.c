@@ -116,9 +116,9 @@ int32_t SPVM__Fn___chr_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   assert(utf8_bytes_length > 0);
   
-  void* utf8_string = env->new_string(env, stack, (char*)utf8_bytes, utf8_bytes_length);
+  SPVM_OBJ* obj_utf8_string = env->new_string(env, stack, (char*)utf8_bytes, utf8_bytes_length);
   
-  stack[0].oval = utf8_string;
+  stack[0].oval = obj_utf8_string;
   
   return 0;
 }
@@ -679,7 +679,7 @@ int32_t SPVM__Fn__get_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
   
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
   if (!basic_type) {
     return env->die(env, stack, "The class specified by the basic type name $basic_type_name must be loaded.", __func__, FILE_NAME, __LINE__);
   }
@@ -714,7 +714,7 @@ int32_t SPVM__Fn__get_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
   
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
   if (!basic_type) {
     return env->die(env, stack, "The class specified by the basic type name $basic_type_name must be loaded.", __func__, FILE_NAME, __LINE__);
   }
@@ -1121,7 +1121,7 @@ int32_t SPVM__Fn__get_basic_type_name_in_version_from(SPVM_ENV* env, SPVM_VALUE*
   
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
   
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
   if (!basic_type) {
     return env->die(env, stack, "The class specified by the basic type name $basic_type_name must be loaded.", __func__, FILE_NAME, __LINE__);
   }
@@ -1150,7 +1150,7 @@ int32_t SPVM__Fn__get_basic_type_name_by_id(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t basic_type_id = stack[0].ival;
   
   // Get the basic type by ID
-  void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
   
   // Throw an exception if the basic type is not found
   if (!basic_type) {
@@ -1183,7 +1183,7 @@ int32_t SPVM__Fn__get_current_method_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
   /* Get the method at the adjusted level */
-  void* current_method = env->get_current_method(env, stack, adjusted_level, &error_id);
+  SPVM_NATIVE_METHOD* current_method = env->get_current_method(env, stack, adjusted_level, &error_id);
   
   /* If get_current_method fails (e.g. out of range), re-throw the exception */
   if (error_id) {
@@ -1215,7 +1215,7 @@ int32_t SPVM__Fn__get_current_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack) 
   int32_t error_id = 0;
   
   /* Get the method at the adjusted level */
-  void* current_method = env->get_current_method(env, stack, adjusted_level, &error_id);
+  SPVM_NATIVE_METHOD* current_method = env->get_current_method(env, stack, adjusted_level, &error_id);
   
   /* If get_current_method fails (e.g. out of range), re-throw the exception */
   if (error_id) {
@@ -1223,7 +1223,7 @@ int32_t SPVM__Fn__get_current_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack) 
   }
   
   /* Get the basic type of the method */
-  void* basic_type = env->api->method->get_current_basic_type(env->runtime, current_method);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->method->get_current_basic_type(env->runtime, current_method);
   
   /* Get the basic type name */
   const char* basic_type_name = env->api->basic_type->get_name(env->runtime, basic_type);
