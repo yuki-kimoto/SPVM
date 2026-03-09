@@ -2702,9 +2702,9 @@ SPVM_OBJECT* SPVM_API_get_field_object_defined_and_has_pointer_by_name(SPVM_ENV*
     return obj_field;
   }
   
-  void* field = SPVM_API_get_pointer(env, stack, obj_field);
+  void* pointer = SPVM_API_get_pointer(env, stack, obj_field);
   
-  if (!field) {
+  if (!pointer) {
     *error_id = SPVM_API_die(env, stack, "The pointer of %s field must be defined.", func_name, file_name, line, field_name);
   }
   
