@@ -47,7 +47,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   runtime->env = env;
   
-  env->runtime = runtime;
+  env->runtime = (SPVM_NATIVE_RUNTIME*)runtime;
   
   return runtime;
 }

@@ -137,7 +137,7 @@ SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, void* spvm_object, cons
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   SV* sv_spvm_object = sv_2mortal(newSVpv("", sizeof(void*)));
-  void** spvm_object_ref = (void**)SvPV_nolen(sv_spvm_object);
+  SPVM_OBJ** spvm_object_ref = (SPVM_OBJ**)SvPV_nolen(sv_spvm_object);
   *spvm_object_ref = NULL;
   
   env->assign_object(env, stack, spvm_object_ref, spvm_object);
@@ -3861,7 +3861,7 @@ DESTROY(...)
   
   SV** sv_spvm_object_ptr = hv_fetch(hv_self, "spvm_object", strlen("spvm_object"), 0);
   SV* sv_spvm_object = sv_spvm_object_ptr ? *sv_spvm_object_ptr : &PL_sv_undef;
-  void** spvm_object_ref = (void**)SvPV_nolen(sv_spvm_object);
+  SPVM_OBJ** spvm_object_ref = (SPVM_OBJ**)SvPV_nolen(sv_spvm_object);
   
   SV** sv_api_ptr = hv_fetch(hv_self, "__api", strlen("__api"), 0);
   SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;

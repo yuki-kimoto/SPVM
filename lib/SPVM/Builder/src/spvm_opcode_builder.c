@@ -2947,7 +2947,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                         SPVM_CONSTANT* constant = op_assign_src->uv.constant;
                         
-                        const char* constant_string_value = constant->value.oval;
+                        const char* constant_string_value = constant->value.address;
                         int32_t constant_string_length = constant->string_length;
                         
                         opcode.operand0 = typed_var_index_out;
