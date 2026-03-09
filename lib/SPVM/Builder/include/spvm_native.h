@@ -57,6 +57,9 @@
   struct spvm_obj;
   typedef struct spvm_obj SPVM_OBJ;
 
+  struct spvm_ref;
+  typedef struct spvm_ref SPVM_REF;
+
 #else
   #define SPVM_NATIVE_ALLOCATOR void
   #define SPVM_NATIVE_STRING_BUFFER void
@@ -71,6 +74,7 @@
   #define SPVM_NATIVE_MUTEX void
   #define SPVM_NATIVE_OPCODE void
   #define SPVM_OBJ void
+  #define SPVM_REF void
 #endif
 
 #define SPVM_NATIVE_GET_POINTER(object) (*(void**)object)
