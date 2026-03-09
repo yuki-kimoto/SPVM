@@ -10,8 +10,8 @@ struct spvm_runtime_call_stack_frame_info {
   SPVM_RUNTIME_METHOD* method;
   int64_t** long_vars_address;
   double** double_vars_address;
-  void*** object_vars_address;
-  void*** ref_vars_address;
+  SPVM_OBJ*** object_vars_address;
+  SPVM_REF*** ref_vars_address;
   int32_t** int_vars_address;
   float** float_vars_address;
   int32_t** mortal_stack_address;

@@ -466,7 +466,7 @@ int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, c
       char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
       snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND], invocant_type_name, method_name);
       SPVM_API_leave_scope(env, stack, scope_id);
-      SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
+      SPVM_OBJECT* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
       env->set_exception(env, stack, exception);
       error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
@@ -474,7 +474,7 @@ int32_t SPVM_API_call_instance_method_common(SPVM_ENV* env, SPVM_VALUE* stack, c
   else {
     char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
     snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_CALL_INSTANCE_METHOD_INVOCANT_UNDEF], method_name);
-    SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
+    SPVM_OBJECT* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
@@ -716,7 +716,7 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   // Set an default exception message
   if (__builtin_expect(error_id, 0)) {
     if (SPVM_API_get_exception(env, stack) == NULL) {
-      SPVM_OBJ* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Error");
+      SPVM_OBJECT* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Error");
       SPVM_API_set_exception(env, stack, exception);
     }
   }
@@ -910,7 +910,7 @@ int32_t SPVM_API_call_end_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
       
       // An exception thrown in an END block is converted to a warning message
       if (error_id) {
-        SPVM_OBJ* exception = SPVM_API_get_exception(env, stack);
+        SPVM_OBJECT* exception = SPVM_API_get_exception(env, stack);
         
         if (exception) {
           const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
@@ -1637,7 +1637,7 @@ SPVM_OBJECT* SPVM_API_get_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* st
   
   int32_t is_invalid_type = 0;
   
-  void* value = 0;
+  SPVM_OBJECT* value = NULL;
   if (is_object_type) {
     value = SPVM_API_get_class_var_object(env, stack, class_var);
   }
@@ -3237,7 +3237,7 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   SPVM_VALUE* stack = env->new_memory_block(env, NULL, sizeof(SPVM_VALUE) * SPVM_API_C_STACK_LENGTH);
   
   stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival = 1;
-  void* native_mortal_stack = SPVM_API_new_memory_block(env, stack, sizeof(void*) * stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival);
+  SPVM_OBJECT* native_mortal_stack = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_OBJECT*) * stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival);
   if (native_mortal_stack == NULL) {
     return NULL;
   }
@@ -3566,7 +3566,7 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
       elem_size = 1;
     }
     else if (SPVM_API_is_object_array(env, stack, array)) {
-      elem_size = sizeof(void*);
+      elem_size = sizeof(SPVM_OBJECT*);
     }
     else if (SPVM_API_is_numeric_array(env, stack, array)) {
       
@@ -4567,7 +4567,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
     return NULL;
   }
   
-  size_t data_size = (size_t)sizeof(void*) * (length + 1);
+  size_t data_size = (size_t)sizeof(SPVM_OBJECT*) * (length + 1);
   
   SPVM_OBJECT* object = SPVM_API_new_object_common(env, stack, data_size, basic_type, 1, length, 0);
   
@@ -4600,7 +4600,7 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
     return NULL;
   }
   
-  size_t data_size = (size_t)sizeof(void*) * (length + 1);
+  size_t data_size = (size_t)sizeof(SPVM_OBJECT*) * (length + 1);
   
   SPVM_OBJECT* object = SPVM_API_new_object_common(env, stack, data_size, basic_type, type_dimension, length, 0);
   
@@ -5371,11 +5371,11 @@ int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
     // Extend mortal stack
     if (*current_mortal_stack_top_ptr >= *current_mortal_stack_capacity_ptr) {
       int32_t new_mortal_stack_capacity = *current_mortal_stack_capacity_ptr * 2;
-      SPVM_OBJECT** new_mortal_stack = SPVM_API_new_memory_block(env, stack, sizeof(void*) * new_mortal_stack_capacity);
+      SPVM_OBJECT** new_mortal_stack = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_OBJECT*) * new_mortal_stack_capacity);
       if (new_mortal_stack == NULL) {
         return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
       }
-      memcpy(new_mortal_stack, *current_mortal_stack_ptr, sizeof(void*) * *current_mortal_stack_capacity_ptr);
+      memcpy(new_mortal_stack, *current_mortal_stack_ptr, sizeof(SPVM_OBJECT*) * *current_mortal_stack_capacity_ptr);
       *current_mortal_stack_capacity_ptr = new_mortal_stack_capacity;
       SPVM_API_free_memory_block(env, stack, *current_mortal_stack_ptr);
       *current_mortal_stack_ptr = NULL;
@@ -5685,7 +5685,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             
             // An exception thrown in a destructor is converted to a warning message
             if (error_id) {
-              SPVM_OBJ* exception = SPVM_API_get_exception(env, stack);
+              SPVM_OBJECT* exception = SPVM_API_get_exception(env, stack);
               
               assert(exception);
               
@@ -5806,8 +5806,8 @@ int32_t SPVM_API_check_bootstrap_method(SPVM_ENV* env, SPVM_VALUE* stack, const 
   
   int32_t error_id = 0;
   
-  void* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
-  void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, "main");
+  SPVM_NATIVE_BASIC_TYPE* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
+  SPVM_NATIVE_METHOD* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, "main");
   
   if (method) {
     int32_t is_class_method = env->api->method->is_class_method(env->runtime, method);
@@ -5819,7 +5819,7 @@ int32_t SPVM_API_check_bootstrap_method(SPVM_ENV* env, SPVM_VALUE* stack, const 
         error_id = SPVM_API_die(env, stack, "The length of the arguments of %s#main method must be 0.", __func__, FILE_NAME, __LINE__, basic_type_name);
       }
       else {
-        void* return_basic_type = env->api->method->get_return_basic_type(env->runtime, method);
+        SPVM_NATIVE_BASIC_TYPE* return_basic_type = env->api->method->get_return_basic_type(env->runtime, method);
         const char* return_basic_type_name = env->api->basic_type->get_name(env->runtime, return_basic_type);
         
         if (!(strcmp(return_basic_type_name, "void") == 0)) {
@@ -5850,7 +5850,7 @@ SPVM_OBJECT* SPVM_API_new_array_proto_element_no_mortal(SPVM_ENV* env, SPVM_VALU
   
   size_t element_size = 1;
   
-  size_t data_size = (size_t)sizeof(void*) * (length + 1);
+  size_t data_size = (size_t)sizeof(SPVM_OBJECT*) * (length + 1);
   
   SPVM_RUNTIME_BASIC_TYPE* element_basic_type = SPVM_API_get_object_basic_type(env, stack, element);
   SPVM_OBJECT* new_array = SPVM_API_new_object_common(env, stack, data_size, element_basic_type, element->type_dimension + 1, length, 0);
@@ -6264,8 +6264,8 @@ int32_t SPVM_API_get_call_stack_frame_size(SPVM_RUNTIME_METHOD* method) {
   int32_t call_stack_frame_size = 0;
   call_stack_frame_size += (method->long_vars_width + 1) * sizeof(int64_t);
   call_stack_frame_size += (method->double_vars_width + 1) * sizeof(double);
-  call_stack_frame_size += (method->object_vars_width + 1) * sizeof(void*);
-  call_stack_frame_size += (method->ref_vars_width + 1) * sizeof(void*);
+  call_stack_frame_size += (method->object_vars_width + 1) * sizeof(SPVM_OBJECT*);
+  call_stack_frame_size += (method->ref_vars_width + 1) * sizeof(SPVM_REF*);
   call_stack_frame_size += (method->int_vars_width + 1) * sizeof(int32_t);
   call_stack_frame_size += (method->float_vars_width + 1) * sizeof(float);
   call_stack_frame_size += (method->mortal_stack_length + 1) * sizeof(int32_t);
@@ -6299,12 +6299,12 @@ void SPVM_API_set_call_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_R
   call_stack_frame_offset += (method->double_vars_width + 1) * sizeof(double);
   
   // Object variables. 8 bytes in 64bit architecture, 4 bytes in 32bit architecture
-  *call_stack_frame_info->object_vars_address = (void**)&call_stack_frame[call_stack_frame_offset];
-  call_stack_frame_offset += (method->object_vars_width + 1) * sizeof(void*);
+  *call_stack_frame_info->object_vars_address = (SPVM_OBJ**)&call_stack_frame[call_stack_frame_offset];
+  call_stack_frame_offset += (method->object_vars_width + 1) * sizeof(SPVM_OBJ*);
   
   // Refernce variables. 8 bytes in 64bit architecture, 4 bytes in 32bit architecture
-  *call_stack_frame_info->ref_vars_address = (void**)&call_stack_frame[call_stack_frame_offset];
-  call_stack_frame_offset += (method->ref_vars_width + 1) * sizeof(void*);
+  *call_stack_frame_info->ref_vars_address = (SPVM_REF**)&call_stack_frame[call_stack_frame_offset];
+  call_stack_frame_offset += (method->ref_vars_width + 1) * sizeof(SPVM_REF*);
   
   // Int variables. 4 bytes
   *call_stack_frame_info->int_vars_address = (int32_t*)&call_stack_frame[call_stack_frame_offset];
@@ -7065,7 +7065,7 @@ SPVM_OBJECT* SPVM_API_numeric_object_to_string_no_mortal(SPVM_ENV* env, SPVM_VAL
   }
   
   int32_t string_length = strlen(tmp_buffer);
-  void* string = SPVM_API_new_string_no_mortal(env, stack, tmp_buffer, string_length);
+  SPVM_OBJECT* string = SPVM_API_new_string_no_mortal(env, stack, tmp_buffer, string_length);
   
   return string;
 }
