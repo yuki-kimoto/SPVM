@@ -50,9 +50,7 @@
   typedef struct spvm_native_mutex SPVM_NATIVE_MUTEX;
 
   struct spvm_native_opcode;
-  
-  struct spvm_obj;
-  typedef struct spvm_obj SPVM_OBJ;
+  typedef struct spvm_native_opcode SPVM_NATIVE_OPCODE;
 
   struct spvm_obj;
   typedef struct spvm_obj SPVM_OBJ;
