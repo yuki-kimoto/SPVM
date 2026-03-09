@@ -7339,7 +7339,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
   total_length += strlen(tmp_buffer);
   
   // Create exception message
-  void* new_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
+  SPVM_OBJECT* new_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
   
   if (new_exception) {
     const char* new_exception_bytes = SPVM_API_get_chars(env, stack, new_exception);
@@ -7400,7 +7400,7 @@ static int32_t SPVM_API_build_caller_stack_line(char* buffer, const char* func_n
   }
 }
 
-void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
+SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
   
   const char* unknown_func_name = "(Method name unknown)";
   const char* unknown_file = "(File name unknown)";
@@ -7514,7 +7514,7 @@ void* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   return obj_new_exception;
 }
 
-void* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
+SPVM_OBJECT* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
   SPVM_OBJECT* obj_message = SPVM_API_build_exception_message_no_mortal(env, stack, level);
   SPVM_API_push_mortal(env, stack, obj_message);
   return obj_message;
