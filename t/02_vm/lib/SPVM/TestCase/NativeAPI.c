@@ -617,7 +617,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_type_ids(SPVM_ENV* env, SPVM
   if ((void*)&env->api->type->is_class_type != &env_array[7]) { stack[0].ival = 0; return 0; }
   
   {
-    void* basic_type = env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_INT);
+    SPVM_NATIVE_BASIC_TYPE* basic_type = env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_INT);
     
     int32_t ret = env->api->type->is_numeric_type(env->runtime, basic_type, 0, 0);
     
@@ -628,7 +628,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_type_ids(SPVM_ENV* env, SPVM
   }
   
   {
-    void* basic_type = env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS);
+    SPVM_NATIVE_BASIC_TYPE* basic_type = env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS);
     
     int32_t ret = env->api->type->is_class_type(env->runtime, basic_type, 0, 0);
     
@@ -639,7 +639,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_type_ids(SPVM_ENV* env, SPVM
   }
   
   {
-    void* basic_type = env->get_basic_type(env, stack, "Complex_2d");
+    SPVM_NATIVE_BASIC_TYPE* basic_type = env->get_basic_type(env, stack, "Complex_2d");
     
     {
       int32_t can_assign = env->api->type->can_assign(env->runtime, basic_type, 1, SPVM_NATIVE_C_TYPE_FLAG_REF, basic_type, 1, SPVM_NATIVE_C_TYPE_FLAG_REF);
@@ -754,7 +754,7 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var(SPVM_ENV* env, SPVM_VALUE* stac
   
   int32_t error_id = 0;
   
-  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$INT_VALUE");
+  SPVM_NATIVE_CLASS_VAR* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$INT_VALUE");
   
   if (!class_var) {
     stack[0].ival = 0;
@@ -777,7 +777,7 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var(SPVM_ENV* env, SPVM_VALUE* stac
 
 int32_t SPVM__TestCase__NativeAPI__get_class_var_byte_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE");
+  SPVM_NATIVE_CLASS_VAR* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE");
   
   if (!class_var) {
     stack[0].ival = 0;
@@ -797,7 +797,7 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_byte_native(SPVM_ENV* env, SPVM
 
 int32_t SPVM__TestCase__NativeAPI__get_class_var_int_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$INT_VALUE");
+  SPVM_NATIVE_CLASS_VAR* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$INT_VALUE");
  
   if (!class_var) {
     stack[0].ival = 0;
@@ -817,7 +817,7 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_int_native(SPVM_ENV* env, SPVM_
 
 int32_t SPVM__TestCase__NativeAPI__get_class_var_short_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE");
+  SPVM_NATIVE_CLASS_VAR* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE");
   
   if (!class_var) {
     stack[0].ival = 0;
@@ -837,7 +837,7 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_short_native(SPVM_ENV* env, SPV
 
 int32_t SPVM__TestCase__NativeAPI__get_class_var_long_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$LONG_VALUE");
+  SPVM_NATIVE_CLASS_VAR* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$LONG_VALUE");
   
   if (!class_var) {
     stack[0].ival = 0;
@@ -858,7 +858,7 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_long_native(SPVM_ENV* env, SPVM
 
 int32_t SPVM__TestCase__NativeAPI__get_class_var_float_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE");
+  SPVM_NATIVE_CLASS_VAR* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE");
   
   if (!class_var) {
     stack[0].ival = 0;
@@ -879,7 +879,7 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_float_native(SPVM_ENV* env, SPV
 
 int32_t SPVM__TestCase__NativeAPI__get_class_var_double_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE");
+  SPVM_NATIVE_CLASS_VAR* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE");
   
   if (!class_var) {
     stack[0].ival = 0;
@@ -1238,7 +1238,7 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_object_test(SPVM_ENV* env, SPVM
 
   int32_t error_id = 0;
   
-  void* value = env->get_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* value = env->get_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   stack[0].oval = value;
@@ -1250,7 +1250,7 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_object_by_name_test_exception(S
   
   int32_t error_id = 0;
   
-  void* value = env->get_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$NOT_FOUND", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* value = env->get_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$NOT_FOUND", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   stack[0].oval = value;
@@ -1415,7 +1415,7 @@ int32_t SPVM__TestCase__NativeAPI__set_class_var_double_by_name_test_exception(S
 int32_t SPVM__TestCase__NativeAPI__set_class_var_object_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   env->set_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", minimal, &error_id, __func__, FILE_NAME, __LINE__);
@@ -1426,7 +1426,7 @@ int32_t SPVM__TestCase__NativeAPI__set_class_var_object_by_name_test(SPVM_ENV* e
 int32_t SPVM__TestCase__NativeAPI__set_class_var_object_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
-  void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error_id, __func__, FILE_NAME, __LINE__);
   
   env->set_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$NOT_FOUND", minimal, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1437,7 +1437,7 @@ int32_t SPVM__TestCase__NativeAPI__set_class_var_object_by_name_test_exception(S
 int32_t SPVM__TestCase__NativeAPI__native_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
-  void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   stack[0].oval = minimal;
@@ -1447,7 +1447,7 @@ int32_t SPVM__TestCase__NativeAPI__native_new_object_by_name(SPVM_ENV* env, SPVM
 
 int32_t SPVM__TestCase__NativeAPI__native_new_object_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {  
   int32_t error_id = 0;
-  void* minimal = env->new_object_by_name(env, stack, "NotFound", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* minimal = env->new_object_by_name(env, stack, "NotFound", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   stack[0].oval = minimal;
@@ -1459,7 +1459,7 @@ int32_t SPVM__TestCase__NativeAPI__native_new_pointer_object_by_name_exception(S
   
   void* pointer;
   int32_t error_id = 0;
-  void* minimal = env->new_pointer_object_by_name(env, stack, "TestCase::NotFound", pointer, &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* minimal = env->new_pointer_object_by_name(env, stack, "TestCase::NotFound", pointer, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   stack[0].oval = minimal;
@@ -1469,9 +1469,9 @@ int32_t SPVM__TestCase__NativeAPI__native_new_pointer_object_by_name_exception(S
 
 int32_t SPVM__TestCase__NativeAPI__is_type_test_minimals(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
   if (!basic_type) {
     assert(0);
   }
@@ -1547,7 +1547,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_byte_by_name(SPVM_ENV* env, 
   
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   env->set_field_byte_by_name(env, stack, object, "byte_value", INT8_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1574,7 +1574,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_byte_by_name_exception(SPVM_
   
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   env->set_field_byte_by_name(env, stack, object, "not_found", INT8_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1585,7 +1585,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_byte_by_name_exception(SPVM_
 int32_t SPVM__TestCase__NativeAPI__native_set_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   env->set_field_short_by_name(env, stack, object, "byte_value", INT16_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1611,7 +1611,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_short_by_name(SPVM_ENV* env,
 int32_t SPVM__TestCase__NativeAPI__native_set_field_short_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   env->set_field_short_by_name(env, stack, object, "not_found", INT16_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1622,7 +1622,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_short_by_name_exception(SPVM
 int32_t SPVM__TestCase__NativeAPI__native_set_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   env->set_field_int_by_name(env, stack, object, "byte_value", INT32_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1648,7 +1648,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_int_by_name(SPVM_ENV* env, S
 int32_t SPVM__TestCase__NativeAPI__native_set_field_int_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   env->set_field_int_by_name(env, stack, object, "not_found", INT32_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1659,7 +1659,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_int_by_name_exception(SPVM_E
 int32_t SPVM__TestCase__NativeAPI__native_set_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   env->set_field_long_by_name(env, stack, object, "byte_value", INT64_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1685,7 +1685,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_long_by_name(SPVM_ENV* env, 
 int32_t SPVM__TestCase__NativeAPI__native_set_field_long_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   env->set_field_long_by_name(env, stack, object, "not_found", INT64_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1696,7 +1696,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_long_by_name_exception(SPVM_
 int32_t SPVM__TestCase__NativeAPI__native_set_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   env->set_field_float_by_name(env, stack, object, "byte_value", FLT_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1722,7 +1722,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_float_by_name(SPVM_ENV* env,
 int32_t SPVM__TestCase__NativeAPI__native_set_field_float_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   env->set_field_float_by_name(env, stack, object, "not_found", FLT_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1733,7 +1733,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_float_by_name_exception(SPVM
 int32_t SPVM__TestCase__NativeAPI__native_set_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   env->set_field_double_by_name(env, stack, object, "byte_value", DBL_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1759,7 +1759,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_double_by_name(SPVM_ENV* env
 int32_t SPVM__TestCase__NativeAPI__native_set_field_double_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   env->set_field_double_by_name(env, stack, object, "not_found", DBL_MIN, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1770,15 +1770,15 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_double_by_name_exception(SPV
 int32_t SPVM__TestCase__NativeAPI__native_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
-  void* object_simple = stack[0].oval;
+  SPVM_OBJ* object_simple = stack[0].oval;
   
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
   if (!basic_type) {
     return 1;
   }
-  void* object_minimal = env->new_object(env, stack, basic_type);
+  SPVM_OBJ* object_minimal = env->new_object(env, stack, basic_type);
   
-  void* field_minimal_x = env->get_field(env, stack, object_minimal, "x");
+  SPVM_NATIVE_FIELD* field_minimal_x = env->get_field(env, stack, object_minimal, "x");
   if (!field_minimal_x) {
     return 1;
   }
@@ -1792,15 +1792,15 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_object_by_name(SPVM_ENV* env
 int32_t SPVM__TestCase__NativeAPI__native_set_field_object_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
-  void* object_simple = stack[0].oval;
+  SPVM_OBJ* object_simple = stack[0].oval;
   
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
   if (!basic_type) {
     return 1;
   }
-  void* object_minimal = env->new_object(env, stack, basic_type);
+  SPVM_OBJ* object_minimal = env->new_object(env, stack, basic_type);
   
-  void* field_minimal_x = env->get_field(env, stack, object_minimal, "x");
+  SPVM_NATIVE_FIELD* field_minimal_x = env->get_field(env, stack, object_minimal, "x");
   if (!field_minimal_x) {
     return 1;
   }
@@ -1818,7 +1818,7 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_object_by_name_exception(SPV
 int32_t SPVM__TestCase__NativeAPI__native_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   {
     int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
@@ -1887,7 +1887,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_byte_by_name(SPVM_ENV* env, 
 int32_t SPVM__TestCase__NativeAPI__native_get_field_byte_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "not_found", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -1899,7 +1899,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_byte_by_name_exception(SPVM_
 int32_t SPVM__TestCase__NativeAPI__native_get_field_short_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   {
     int16_t short_value = env->get_field_short_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
@@ -1968,7 +1968,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_short_by_name(SPVM_ENV* env,
 int32_t SPVM__TestCase__NativeAPI__native_get_field_short_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   {
     int32_t int_value = env->get_field_short_by_name(env, stack, object, "not_found", &error_id, __func__, FILE_NAME, __LINE__);
@@ -1982,7 +1982,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_short_by_name_exception(SPVM
 int32_t SPVM__TestCase__NativeAPI__native_get_field_int_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   {
     int32_t int_value = env->get_field_int_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
@@ -2051,7 +2051,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_int_by_name(SPVM_ENV* env, S
 int32_t SPVM__TestCase__NativeAPI__native_get_field_int_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   {
     int32_t int_value = env->get_field_int_by_name(env, stack, object, "not_found", &error_id, __func__, FILE_NAME, __LINE__);
@@ -2065,7 +2065,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_int_by_name_exception(SPVM_E
 int32_t SPVM__TestCase__NativeAPI__native_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   {
     int64_t long_value = env->get_field_long_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
@@ -2134,7 +2134,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_long_by_name(SPVM_ENV* env, 
 int32_t SPVM__TestCase__NativeAPI__native_get_field_long_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   {
     int64_t long_value = env->get_field_long_by_name(env, stack, object, "not_found", &error_id, __func__, FILE_NAME, __LINE__);
@@ -2148,7 +2148,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_long_by_name_exception(SPVM_
 int32_t SPVM__TestCase__NativeAPI__native_get_field_float_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   {
     float float_value = env->get_field_float_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
@@ -2217,7 +2217,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_float_by_name(SPVM_ENV* env,
 int32_t SPVM__TestCase__NativeAPI__native_get_field_float_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   {
     float float_value = env->get_field_float_by_name(env, stack, object, "not_found", &error_id, __func__, FILE_NAME, __LINE__);
@@ -2231,7 +2231,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_float_by_name_exception(SPVM
 int32_t SPVM__TestCase__NativeAPI__native_get_field_double_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   {
     double double_value = env->get_field_double_by_name(env, stack, object, "byte_value", &error_id, __func__, FILE_NAME, __LINE__);
@@ -2300,7 +2300,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_double_by_name(SPVM_ENV* env
 int32_t SPVM__TestCase__NativeAPI__native_get_field_double_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* object = stack[0].oval;
+  SPVM_OBJ* object = stack[0].oval;
   
   {
     double double_value = env->get_field_double_by_name(env, stack, object, "not_found", &error_id, __func__, FILE_NAME, __LINE__);
@@ -2314,12 +2314,12 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_double_by_name_exception(SPV
 int32_t SPVM__TestCase__NativeAPI__native_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* object_simple = stack[0].oval;
+  SPVM_OBJ* object_simple = stack[0].oval;
   
-  void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  void* field_minimal_x = env->get_field(env, stack, object_minimal, "x");
+  SPVM_NATIVE_FIELD* field_minimal_x = env->get_field(env, stack, object_minimal, "x");
   if (!field_minimal_x) {
     return 1;
   }
@@ -2338,7 +2338,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_object_by_name(SPVM_ENV* env
 int32_t SPVM__TestCase__NativeAPI__native_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* string_chars_simple = stack[0].oval;
+  SPVM_OBJ* string_chars_simple = stack[0].oval;
   
   const char* string_chars = env->get_field_string_chars_by_name(env, stack, string_chars_simple, "string_value", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; };
@@ -2355,7 +2355,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_string_chars_by_name(SPVM_EN
 int32_t SPVM__TestCase__NativeAPI__native_get_field_string_chars_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* string_chars_simple = stack[0].oval;
+  SPVM_OBJ* string_chars_simple = stack[0].oval;
   
   const char* string_chars = env->get_field_string_chars_by_name(env, stack, string_chars_simple, "not_found", &error_id, __func__, FILE_NAME, __LINE__);
   if (!error_id) {
@@ -2370,12 +2370,12 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_string_chars_by_name_excepti
 int32_t SPVM__TestCase__NativeAPI__native_get_field_object_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
-  void* object_simple = stack[0].oval;
+  SPVM_OBJ* object_simple = stack[0].oval;
   
-  void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "not_found", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "not_found", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  void* field_minimal_x = env->get_field(env, stack, object_minimal, "x");
+  SPVM_NATIVE_FIELD* field_minimal_x = env->get_field(env, stack, object_minimal, "x");
   if (!field_minimal_x) {
     return 1;
   }
@@ -2393,7 +2393,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_object_by_name_exception(SPV
 
 int32_t SPVM__TestCase__NativeAPI__native_use_strlen(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* string = stack[0].oval;
+  SPVM_OBJ* string = stack[0].oval;
   
   int8_t* bytes = env->get_elems_byte(env, stack, string);
   
@@ -2406,9 +2406,9 @@ int32_t SPVM__TestCase__NativeAPI__native_use_strlen(SPVM_ENV* env, SPVM_VALUE* 
 
 int32_t SPVM__TestCase__NativeAPI__native_env_get_field_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* test_case = stack[0].oval;
+  SPVM_OBJ* test_case = stack[0].oval;
   
-  void* field = env->get_field(env, stack, test_case, "x_byte");
+  SPVM_NATIVE_FIELD* field = env->get_field(env, stack, test_case, "x_byte");
   if (!field) {
     return 1;
   }
@@ -2422,9 +2422,9 @@ int32_t SPVM__TestCase__NativeAPI__native_env_get_field_byte(SPVM_ENV* env, SPVM
 
 int32_t SPVM__TestCase__NativeAPI__native_env_get_field_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* test_case = stack[0].oval;
+  SPVM_OBJ* test_case = stack[0].oval;
   
-  void* field = env->get_field(env, stack, test_case, "x_short");
+  SPVM_NATIVE_FIELD* field = env->get_field(env, stack, test_case, "x_short");
   if (!field) {
     return 1;
   }
@@ -2438,9 +2438,9 @@ int32_t SPVM__TestCase__NativeAPI__native_env_get_field_short(SPVM_ENV* env, SPV
 
 int32_t SPVM__TestCase__NativeAPI__native_env_get_field_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* test_case = stack[0].oval;
+  SPVM_OBJ* test_case = stack[0].oval;
   
-  void* field = env->get_field(env, stack, test_case, "x_int");
+  SPVM_NATIVE_FIELD* field = env->get_field(env, stack, test_case, "x_int");
   if (!field) {
     return 1;
   }
@@ -2454,9 +2454,9 @@ int32_t SPVM__TestCase__NativeAPI__native_env_get_field_int(SPVM_ENV* env, SPVM_
 
 int32_t SPVM__TestCase__NativeAPI__native_env_get_field_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* test_case = stack[0].oval;
+  SPVM_OBJ* test_case = stack[0].oval;
   
-  void* field = env->get_field(env, stack, test_case, "x_long");
+  SPVM_NATIVE_FIELD* field = env->get_field(env, stack, test_case, "x_long");
   if (!field) {
     return 1;
   }
@@ -2470,9 +2470,9 @@ int32_t SPVM__TestCase__NativeAPI__native_env_get_field_long(SPVM_ENV* env, SPVM
 
 int32_t SPVM__TestCase__NativeAPI__native_env_get_field_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* test_case = stack[0].oval;
+  SPVM_OBJ* test_case = stack[0].oval;
   
-  void* field = env->get_field(env, stack, test_case, "x_float");
+  SPVM_NATIVE_FIELD* field = env->get_field(env, stack, test_case, "x_float");
   if (!field) {
     return 1;
   }
@@ -2486,9 +2486,9 @@ int32_t SPVM__TestCase__NativeAPI__native_env_get_field_float(SPVM_ENV* env, SPV
 
 int32_t SPVM__TestCase__NativeAPI__native_env_get_field_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* test_case = stack[0].oval;
+  SPVM_OBJ* test_case = stack[0].oval;
   
-  void* field = env->get_field(env, stack, test_case, "x_double");
+  SPVM_NATIVE_FIELD* field = env->get_field(env, stack, test_case, "x_double");
   if (!field) {
     return 1;
   }
@@ -2502,14 +2502,14 @@ int32_t SPVM__TestCase__NativeAPI__native_env_get_field_double(SPVM_ENV* env, SP
 
 int32_t SPVM__TestCase__NativeAPI__native_env_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* test_case = stack[0].oval;
+  SPVM_OBJ* test_case = stack[0].oval;
   
-  void* field = env->get_field(env, stack, test_case, "minimal");
+  SPVM_NATIVE_FIELD* field = env->get_field(env, stack, test_case, "minimal");
   if (!field) {
     return 1;
   }
   
-  void* value = env->get_field_object(env, stack, test_case, field);
+  SPVM_OBJ* value = env->get_field_object(env, stack, test_case, field);
   
   stack[0].oval = value;
   
@@ -2528,15 +2528,15 @@ int32_t SPVM__TestCase__NativeAPI__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__NativeAPI__add_int_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_nums1 = stack[0].oval;
-  void* obj_nums2 = stack[1].oval;
+  SPVM_OBJ* obj_nums1 = stack[0].oval;
+  SPVM_OBJ* obj_nums2 = stack[1].oval;
   
   int32_t length = env->length(env, stack, obj_nums1);
   
   int32_t* nums1 = env->get_elems_int(env, stack, obj_nums1);
   int32_t* nums2 = env->get_elems_int(env, stack, obj_nums2);
   
-  void* onums3 = env->new_int_array(env, stack, length);
+  SPVM_OBJ* onums3 = env->new_int_array(env, stack, length);
   int32_t* nums3 = env->get_elems_int(env, stack, onums3);
   
   for (int32_t i = 0; i < length; i++) {
@@ -2594,73 +2594,73 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
   int32_t length = 10;
   // 1
   {
-    void* obj_values = env->new_byte_array(env, stack, length);
+    SPVM_OBJ* obj_values = env->new_byte_array(env, stack, length);
     ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 2
   {
-    void* obj_values = env->new_short_array(env, stack, length);
+    SPVM_OBJ* obj_values = env->new_short_array(env, stack, length);
     ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 3
   {
-    void* obj_values = env->new_int_array(env, stack, length);
+    SPVM_OBJ* obj_values = env->new_int_array(env, stack, length);
     ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 4
   {
-    void* obj_values = env->new_long_array(env, stack, length);
+    SPVM_OBJ* obj_values = env->new_long_array(env, stack, length);
     ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 5
   {
-    void* obj_values = env->new_float_array(env, stack, length);
+    SPVM_OBJ* obj_values = env->new_float_array(env, stack, length);
     ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 6
   {
-    void* obj_values = env->new_long_array(env, stack, length);
+    SPVM_OBJ* obj_values = env->new_long_array(env, stack, length);
     ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 7
   {
-    void* obj_values = env->new_string(env, stack, "foo", (int32_t)strlen("foo"));
+    SPVM_OBJ* obj_values = env->new_string(env, stack, "foo", (int32_t)strlen("foo"));
     ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 8
   {
-    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
+    SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
     if (!basic_type) {
       return 1;
     }
-    void* obj_object = env->new_object(env, stack, basic_type);
+    SPVM_OBJ* obj_object = env->new_object(env, stack, basic_type);
     ref_count += env->api->internal->get_ref_count(env, stack, obj_object);
   }
   // 9
   {
-    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
+    SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
     if (!basic_type) {
       return 1;
     }
-    void* obj_objects = env->new_object_array(env, stack, basic_type, 3);
+    SPVM_OBJ* obj_objects = env->new_object_array(env, stack, basic_type, 3);
     ref_count += env->api->internal->get_ref_count(env, stack, obj_objects);
   }
   // 10
   {
-    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
+    SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
     if (!basic_type) {
       return 1;
     }
-    void* obj_objects = env->new_object_array(env, stack, basic_type, 3);
+    SPVM_OBJ* obj_objects = env->new_object_array(env, stack, basic_type, 3);
     ref_count += env->api->internal->get_ref_count(env, stack, obj_objects);
   }
   // 11
   {
-    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Pointer");
+    SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Pointer");
     if (!basic_type) {
       return 1;
     }
-    void* obj_objects = env->new_pointer_object(env, stack, basic_type, NULL);
+    SPVM_OBJ* obj_objects = env->new_pointer_object(env, stack, basic_type, NULL);
     ref_count += env->api->internal->get_ref_count(env, stack, obj_objects);
   }
   
@@ -2709,8 +2709,8 @@ int32_t SPVM__TestCase__NativeAPI__enter_scope_leave_scope(SPVM_ENV* env, SPVM_V
 
 int32_t SPVM__TestCase__NativeAPI__native_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
-  void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "my_value");
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
+  SPVM_NATIVE_METHOD* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "my_value");
   if (!method) {
     return 1;
   }
@@ -2738,12 +2738,12 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
   
   int32_t error_id = 0;
   
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "Point");
-  void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "new");
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "Point");
+  SPVM_NATIVE_METHOD* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "new");
   if (!method) {
     return 1;
   }
-  void* obj_point = NULL;
+  SPVM_OBJ* obj_point = NULL;
   {
     int32_t args_width = 2;
     stack[0].ival = 1;
@@ -2982,7 +2982,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_native_va
   
   int32_t error_id = 0;
   
-  void* minimal = stack[0].oval;
+  SPVM_OBJ* minimal = stack[0].oval;
   
   int32_t output;
   {
@@ -3002,7 +3002,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_exception
   
   int32_t error_id = 0;
 
-  void* minimal = stack[0].oval;
+  SPVM_OBJ* minimal = stack[0].oval;
   
   int32_t output;
   {
@@ -3031,7 +3031,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
       
       env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "new", 0, &error_id, __func__, FILE_NAME, __LINE__);
       if (error_id) { return error_id; }
-      void* object = stack[0].oval;
+      SPVM_OBJ* object = stack[0].oval;
       
       stack[0].oval = object;
       env->call_instance_method_by_name(env, stack, "not_found", 1, &error_id, __func__, FILE_NAME, __LINE__);
@@ -3052,7 +3052,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
       
       env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "new", 0, &error_id, __func__, FILE_NAME, __LINE__);
       if (error_id) { return error_id; }
-      void* object = stack[0].oval;
+      SPVM_OBJ* object = stack[0].oval;
       
       stack[0].oval = object;
       stack[1].oval = NULL;
@@ -3063,7 +3063,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
         return 0;
       }
       
-      void* obj_ret = stack[0].oval;
+      SPVM_OBJ* obj_ret = stack[0].oval;
       if (obj_ret) {
         stack[0].ival = 0;
         return 0;
@@ -3075,7 +3075,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
       
       env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "new", 0, &error_id, __func__, FILE_NAME, __LINE__);
       if (error_id) { return error_id; }
-      void* object = stack[0].oval;
+      SPVM_OBJ* object = stack[0].oval;
       
       stack[0].oval = env->new_string_nolen(env, stack, "a");
       stack[1].oval = NULL;
@@ -3097,7 +3097,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
       
       env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "new", 0, &error_id, __func__, FILE_NAME, __LINE__);
       if (error_id) { return error_id; }
-      void* object = stack[0].oval;
+      SPVM_OBJ* object = stack[0].oval;
       
       stack[0].oval = object;
       stack[1].oval = env->new_string_nolen(env, stack, "a");
@@ -3124,7 +3124,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
 int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native_value(SPVM_ENV* env, SPVM_VALUE* stack) {  
   int32_t error_id = 0;
   
-  void* minimal = stack[0].oval;
+  SPVM_OBJ* minimal = stack[0].oval;
   
   int32_t output;
   {
@@ -3144,7 +3144,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_exception_native
   
   int32_t error_id = 0;
 
-  void* minimal = stack[0].oval;
+  SPVM_OBJ* minimal = stack[0].oval;
   
   int32_t output;
   {
@@ -3166,7 +3166,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_exception_native
 
 int32_t SPVM__TestCase__NativeAPI__push_mortal_multi(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* iarray = env->new_int_array_no_mortal(env, stack, 10);
+  SPVM_OBJ* iarray = env->new_int_array_no_mortal(env, stack, 10);
   
   env->push_mortal(env, stack, iarray);
   env->push_mortal(env, stack, iarray);
@@ -3178,8 +3178,8 @@ int32_t SPVM__TestCase__NativeAPI__get_instance_method_static_native(SPVM_ENV* e
   
   int32_t error_id = 0;
   
-  void* minimal = stack[0].oval;
-  void* method = env->get_instance_method_static(env, stack, "TestCase::Minimal", "x");
+  SPVM_OBJ* minimal = stack[0].oval;
+  SPVM_NATIVE_METHOD* method = env->get_instance_method_static(env, stack, "TestCase::Minimal", "x");
   if (!method) { return 0; }
   
   int32_t ret;
@@ -3199,7 +3199,7 @@ int32_t SPVM__TestCase__NativeAPI__get_bool_object_value_native(SPVM_ENV* env, S
   
   int32_t error_id = 0;
   
-  void* bool_object = stack[0].oval;
+  SPVM_OBJ* bool_object = stack[0].oval;
   
   int32_t value = env->get_bool_object_value(env, stack, bool_object);
   
@@ -3216,7 +3216,7 @@ int32_t SPVM__TestCase__NativeAPI__get_byte_object_value(SPVM_ENV* env, SPVM_VAL
   {
     stack[0].ival = INT8_MIN;
     env->call_class_method_by_name(env, stack, "Byte", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    void* obj_num = stack[0].oval;
+    SPVM_OBJ* obj_num = stack[0].oval;
     if (error_id) { return error_id; }
     
     int32_t ret = env->get_byte_object_value(env, stack, obj_num);
@@ -3231,7 +3231,7 @@ int32_t SPVM__TestCase__NativeAPI__get_byte_object_value(SPVM_ENV* env, SPVM_VAL
   {
     stack[0].ival = 0;
     env->call_class_method_by_name(env, stack, "Byte", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    void* obj_num = stack[0].oval;
+    SPVM_OBJ* obj_num = stack[0].oval;
     if (error_id) { return error_id; }
 
     env->set_byte_object_value(env, stack, obj_num, INT8_MAX);
@@ -3256,7 +3256,7 @@ int32_t SPVM__TestCase__NativeAPI__get_short_object_value(SPVM_ENV* env, SPVM_VA
   {
     stack[0].ival = INT16_MIN;
     env->call_class_method_by_name(env, stack, "Short", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    void* obj_num = stack[0].oval;
+    SPVM_OBJ* obj_num = stack[0].oval;
     if (error_id) { return error_id; }
     
     int32_t ret = env->get_short_object_value(env, stack, obj_num);
@@ -3266,7 +3266,7 @@ int32_t SPVM__TestCase__NativeAPI__get_short_object_value(SPVM_ENV* env, SPVM_VA
   {
     stack[0].ival = 0;
     env->call_class_method_by_name(env, stack, "Short", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    void* obj_num = stack[0].oval;
+    SPVM_OBJ* obj_num = stack[0].oval;
     if (error_id) { return error_id; }
 
     env->set_short_object_value(env, stack, obj_num, INT16_MAX);
@@ -3285,7 +3285,7 @@ int32_t SPVM__TestCase__NativeAPI__get_int_object_value(SPVM_ENV* env, SPVM_VALU
   {
     stack[0].ival = INT32_MIN;
     env->call_class_method_by_name(env, stack, "Int", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    void* obj_num = stack[0].oval;
+    SPVM_OBJ* obj_num = stack[0].oval;
     if (error_id) { return error_id; }
     
     int32_t ret = env->get_int_object_value(env, stack, obj_num);
@@ -3295,7 +3295,7 @@ int32_t SPVM__TestCase__NativeAPI__get_int_object_value(SPVM_ENV* env, SPVM_VALU
   {
     stack[0].ival = 0;
     env->call_class_method_by_name(env, stack, "Int", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    void* obj_num = stack[0].oval;
+    SPVM_OBJ* obj_num = stack[0].oval;
     if (error_id) { return error_id; }
 
     env->set_int_object_value(env, stack, obj_num, INT32_MAX);
@@ -3314,7 +3314,7 @@ int32_t SPVM__TestCase__NativeAPI__get_long_object_value(SPVM_ENV* env, SPVM_VAL
   {
     stack[0].lval = INT64_MIN;
     env->call_class_method_by_name(env, stack, "Long", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    void* obj_num = stack[0].oval;
+    SPVM_OBJ* obj_num = stack[0].oval;
     if (error_id) { return error_id; }
     
     int64_t ret = env->get_long_object_value(env, stack, obj_num);
@@ -3324,7 +3324,7 @@ int32_t SPVM__TestCase__NativeAPI__get_long_object_value(SPVM_ENV* env, SPVM_VAL
   {
     stack[0].lval = 0L;
     env->call_class_method_by_name(env, stack, "Long", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    void* obj_num = stack[0].oval;
+    SPVM_OBJ* obj_num = stack[0].oval;
     if (error_id) { return error_id; }
 
     env->set_long_object_value(env, stack, obj_num, INT64_MAX);
@@ -3343,7 +3343,7 @@ int32_t SPVM__TestCase__NativeAPI__get_float_object_value(SPVM_ENV* env, SPVM_VA
   {
     stack[0].fval = -FLT_MAX;
     env->call_class_method_by_name(env, stack, "Float", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    void* obj_num = stack[0].oval;
+    SPVM_OBJ* obj_num = stack[0].oval;
     if (error_id) { return error_id; }
     
     float ret = env->get_float_object_value(env, stack, obj_num);
@@ -3353,7 +3353,7 @@ int32_t SPVM__TestCase__NativeAPI__get_float_object_value(SPVM_ENV* env, SPVM_VA
   {
     stack[0].fval = 0.0f;
     env->call_class_method_by_name(env, stack, "Float", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    void* obj_num = stack[0].oval;
+    SPVM_OBJ* obj_num = stack[0].oval;
     if (error_id) { return error_id; }
 
     env->set_float_object_value(env, stack, obj_num, FLT_MAX);
@@ -3372,7 +3372,7 @@ int32_t SPVM__TestCase__NativeAPI__get_double_object_value(SPVM_ENV* env, SPVM_V
   {
     stack[0].dval = -DBL_MAX;
     env->call_class_method_by_name(env, stack, "Double", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    void* obj_num = stack[0].oval;
+    SPVM_OBJ* obj_num = stack[0].oval;
     if (error_id) { return error_id; }
     
     double ret = env->get_double_object_value(env, stack, obj_num);
@@ -3382,7 +3382,7 @@ int32_t SPVM__TestCase__NativeAPI__get_double_object_value(SPVM_ENV* env, SPVM_V
   {
     stack[0].dval = 0.0;
     env->call_class_method_by_name(env, stack, "Double", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    void* obj_num = stack[0].oval;
+    SPVM_OBJ* obj_num = stack[0].oval;
     if (error_id) { return error_id; }
 
     env->set_double_object_value(env, stack, obj_num, DBL_MAX);
@@ -3400,14 +3400,14 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
   
   // Basic
   {
-    void* string = env->new_string_no_mortal(env, stack, "abc", 3);
+    SPVM_OBJ* string = env->new_string_no_mortal(env, stack, "abc", 3);
 
     const char* string_basic_type_name = env->get_object_basic_type_name(env, stack, string);
     int32_t string_type_dimension = env->get_object_type_dimension(env, stack, string);
     if (!(strcmp(string_basic_type_name, "string") == 0 && string_type_dimension == 0)) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
@@ -3416,7 +3416,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
     if (env->length(env, stack, string) != 3) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
@@ -3426,26 +3426,26 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
     if (strcmp(string_chars, "abc") != 0) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     // Assign and destroy
-    void* referent = NULL;
+    SPVM_OBJ* referent = NULL;
     env->assign_object(env, stack, &referent, string);
     env->assign_object(env, stack, &referent, NULL);
   }
 
   // Length is shorten than the string
   {
-    void* string = env->new_string_no_mortal(env, stack, "abc", 1);
+    SPVM_OBJ* string = env->new_string_no_mortal(env, stack, "abc", 1);
 
     if (env->length(env, stack, string) != 1) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
@@ -3455,26 +3455,26 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
     if (strcmp(string_chars, "a") != 0) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     // Assign and destroy
-    void* referent = NULL;
+    SPVM_OBJ* referent = NULL;
     env->assign_object(env, stack, &referent, string);
     env->assign_object(env, stack, &referent, NULL);
   }
 
   // Length is shorten than the string 0
   {
-    void* string = env->new_string_no_mortal(env, stack, "abc", 0);
+    SPVM_OBJ* string = env->new_string_no_mortal(env, stack, "abc", 0);
 
     if (env->length(env, stack, string) != 0) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
@@ -3484,26 +3484,26 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
     if (strcmp(string_chars, "") != 0) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     // Assign and destroy
-    void* referent = NULL;
+    SPVM_OBJ* referent = NULL;
     env->assign_object(env, stack, &referent, string);
     env->assign_object(env, stack, &referent, NULL);
   }
 
   // Length is longer than the string
   {
-    void* string = env->new_string_no_mortal(env, stack, "abc", 4);
+    SPVM_OBJ* string = env->new_string_no_mortal(env, stack, "abc", 4);
 
     if (env->length(env, stack, string) != 4) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
@@ -3513,26 +3513,26 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
     if (strncmp(string_chars, "abc\0\0", 5) != 0) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     // Assign and destroy
-    void* referent = NULL;
+    SPVM_OBJ* referent = NULL;
     env->assign_object(env, stack, &referent, string);
     env->assign_object(env, stack, &referent, NULL);
   }
 
   // NULL
   {
-    void* string = env->new_string_no_mortal(env, stack, NULL, 4);
+    SPVM_OBJ* string = env->new_string_no_mortal(env, stack, NULL, 4);
 
     if (env->length(env, stack, string) != 4) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
@@ -3542,26 +3542,26 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
     if (strncmp(string_chars, "\0\0\0\0\0", 5) != 0) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     // Assign and destroy
-    void* referent = NULL;
+    SPVM_OBJ* referent = NULL;
     env->assign_object(env, stack, &referent, string);
     env->assign_object(env, stack, &referent, NULL);
   }
 
   // NULL 0
   {
-    void* string = env->new_string_no_mortal(env, stack, NULL, 0);
+    SPVM_OBJ* string = env->new_string_no_mortal(env, stack, NULL, 0);
 
     if (env->length(env, stack, string) != 0) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
@@ -3571,14 +3571,14 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
     if (strncmp(string_chars, "\0", 1) != 0) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     // Assign and destroy
-    void* referent = NULL;
+    SPVM_OBJ* referent = NULL;
     env->assign_object(env, stack, &referent, string);
     env->assign_object(env, stack, &referent, NULL);
   }
@@ -3595,7 +3595,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   // Basic
   {
-    void* string = env->new_string(env, stack, "abc", 3);
+    SPVM_OBJ* string = env->new_string(env, stack, "abc", 3);
 
     const char* string_basic_type_name = env->get_object_basic_type_name(env, stack, string);
     int32_t string_type_dimension = env->get_object_type_dimension(env, stack, string);
@@ -3618,7 +3618,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string(SPVM_ENV* env, SPVM_VALUE* stack) 
 
   // Length is shorten than the string
   {
-    void* string = env->new_string(env, stack, "abc", 1);
+    SPVM_OBJ* string = env->new_string(env, stack, "abc", 1);
 
     if (env->length(env, stack, string) != 1) {
       stack[0].ival = 0;
@@ -3634,7 +3634,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string(SPVM_ENV* env, SPVM_VALUE* stack) 
 
   // Length is shorten than the string 0
   {
-    void* string = env->new_string(env, stack, "abc", 0);
+    SPVM_OBJ* string = env->new_string(env, stack, "abc", 0);
 
     if (env->length(env, stack, string) != 0) {
       stack[0].ival = 0;
@@ -3650,7 +3650,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string(SPVM_ENV* env, SPVM_VALUE* stack) 
 
   // Length is longer than the string
   {
-    void* string = env->new_string(env, stack, "abc", 4);
+    SPVM_OBJ* string = env->new_string(env, stack, "abc", 4);
 
     if (env->length(env, stack, string) != 4) {
       stack[0].ival = 0;
@@ -3666,7 +3666,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string(SPVM_ENV* env, SPVM_VALUE* stack) 
 
   // NULL
   {
-    void* string = env->new_string(env, stack, NULL, 4);
+    SPVM_OBJ* string = env->new_string(env, stack, NULL, 4);
 
     if (env->length(env, stack, string) != 4) {
       stack[0].ival = 0;
@@ -3682,7 +3682,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string(SPVM_ENV* env, SPVM_VALUE* stack) 
 
   // NULL 0
   {
-    void* string = env->new_string(env, stack, NULL, 0);
+    SPVM_OBJ* string = env->new_string(env, stack, NULL, 0);
 
     if (env->length(env, stack, string) != 0) {
       stack[0].ival = 0;
@@ -3707,14 +3707,14 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen_no_mortal(SPVM_ENV* env, SPV
   
   // Basic
   {
-    void* string = env->new_string_nolen_no_mortal(env, stack, "abc");
+    SPVM_OBJ* string = env->new_string_nolen_no_mortal(env, stack, "abc");
 
     const char* string_basic_type_name = env->get_object_basic_type_name(env, stack, string);
     int32_t string_type_dimension = env->get_object_type_dimension(env, stack, string);
     if (!(strcmp(string_basic_type_name, "string") == 0 && string_type_dimension == 0)) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
@@ -3723,7 +3723,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen_no_mortal(SPVM_ENV* env, SPV
     if (env->length(env, stack, string) != 3) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
@@ -3733,26 +3733,26 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen_no_mortal(SPVM_ENV* env, SPV
     if (strcmp(string_chars, "abc") != 0) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     // Assign and destroy
-    void* referent = NULL;
+    SPVM_OBJ* referent = NULL;
     env->assign_object(env, stack, &referent, string);
     env->assign_object(env, stack, &referent, NULL);
   }
 
   // ""
   {
-    void* string = env->new_string_nolen_no_mortal(env, stack, "");
+    SPVM_OBJ* string = env->new_string_nolen_no_mortal(env, stack, "");
 
     if (env->length(env, stack, string) != 0) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
@@ -3762,14 +3762,14 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen_no_mortal(SPVM_ENV* env, SPV
     if (strcmp(string_chars, "") != 0) {
       stack[0].ival = 0;
       // Assign and destroy
-      void* referent = NULL;
+      SPVM_OBJ* referent = NULL;
       env->assign_object(env, stack, &referent, string);
       env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     // Assign and destroy
-    void* referent = NULL;
+    SPVM_OBJ* referent = NULL;
     env->assign_object(env, stack, &referent, string);
     env->assign_object(env, stack, &referent, NULL);
   }
@@ -3785,7 +3785,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen(SPVM_ENV* env, SPVM_VALUE* s
   
   // Basic
   {
-    void* string = env->new_string_nolen(env, stack, "abc");
+    SPVM_OBJ* string = env->new_string_nolen(env, stack, "abc");
 
     const char* string_basic_type_name = env->get_object_basic_type_name(env, stack, string);
     int32_t string_type_dimension = env->get_object_type_dimension(env, stack, string);
@@ -3808,7 +3808,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen(SPVM_ENV* env, SPVM_VALUE* s
 
   // ""
   {
-    void* string = env->new_string_nolen(env, stack, "");
+    SPVM_OBJ* string = env->new_string_nolen(env, stack, "");
 
     if (env->length(env, stack, string) != 0) {
       stack[0].ival = 0;
@@ -3850,12 +3850,12 @@ int32_t SPVM__TestCase__NativeAPI__new_memory_apis(SPVM_ENV* env, SPVM_VALUE* st
   }
   
   {
-    void* new_stack = env->new_stack(env);
+    SPVM_VALUE* new_stack = env->new_stack(env);
     env->free_stack(env, new_stack);
   }
   
   {
-    void* new_stack = env->new_stack(env);
+    SPVM_VALUE* new_stack = env->new_stack(env);
     
     int32_t memory_blocks_count_start = env->get_memory_blocks_count(env, stack);
     
@@ -3911,7 +3911,7 @@ int32_t SPVM__TestCase__NativeAPI__strerror_value(SPVM_ENV* env, SPVM_VALUE* sta
   int32_t errno_value = stack[0].ival;
   
   const char* strerror_value = env->strerror(env, stack, errno_value, 0);
-  void* obj_strerror_value = env->new_string(env, stack, strerror_value, strlen(strerror_value));
+  SPVM_OBJ* obj_strerror_value = env->new_string(env, stack, strerror_value, strlen(strerror_value));
   
   stack[0].oval = obj_strerror_value;
   
@@ -3922,7 +3922,7 @@ int32_t SPVM__TestCase__NativeAPI__strerror_string(SPVM_ENV* env, SPVM_VALUE* st
   
   int32_t errno_value = -1;
   
-  void* strerror_string_value = env->strerror_string(env, stack, errno_value, 0);
+  SPVM_OBJ* strerror_string_value = env->strerror_string(env, stack, errno_value, 0);
   
   spvm_warn("[Test Output]strerr_string:%s", env->get_chars(env, stack, strerror_string_value));
   
@@ -3935,7 +3935,7 @@ int32_t SPVM__TestCase__NativeAPI__strerror_string_value(SPVM_ENV* env, SPVM_VAL
   
   int32_t errno_value = stack[0].ival;
   
-  void* strerror_string_value = env->strerror_string(env, stack, errno_value, 0);
+  SPVM_OBJ* strerror_string_value = env->strerror_string(env, stack, errno_value, 0);
   
   stack[0].oval = strerror_string_value;
   
@@ -3947,7 +3947,7 @@ int32_t SPVM__TestCase__NativeAPI__strerror_nolen_value(SPVM_ENV* env, SPVM_VALU
   int32_t errno_value = stack[0].ival;
   
   const char* strerror_value = env->strerror_nolen(env, stack, errno_value);
-  void* obj_strerror_value = env->new_string(env, stack, strerror_value, strlen(strerror_value));
+  SPVM_OBJ* obj_strerror_value = env->new_string(env, stack, strerror_value, strlen(strerror_value));
   
   stack[0].oval = obj_strerror_value;
   
@@ -3958,7 +3958,7 @@ int32_t SPVM__TestCase__NativeAPI__strerror_string_nolen_value(SPVM_ENV* env, SP
   
   int32_t errno_value = stack[0].ival;
   
-  void* strerror_string_value = env->strerror_string_nolen(env, stack, errno_value);
+  SPVM_OBJ* strerror_string_value = env->strerror_string_nolen(env, stack, errno_value);
   
   stack[0].oval = strerror_string_value;
   
@@ -3967,7 +3967,7 @@ int32_t SPVM__TestCase__NativeAPI__strerror_string_nolen_value(SPVM_ENV* env, SP
 
 int32_t SPVM__TestCase__NativeAPI__new_object_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_object_array = env->new_object_array_no_mortal(env, stack, env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 2);
+  SPVM_OBJ* obj_object_array = env->new_object_array_no_mortal(env, stack, env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 2);
   
   if (!(env->is_type(env, stack, obj_object_array, env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 1))) {
     stack[0].ival = 0;
@@ -3985,7 +3985,7 @@ int32_t SPVM__TestCase__NativeAPI__new_object_array_no_mortal(SPVM_ENV* env, SPV
   }
   
   // Assign and destroy
-  void* referent = NULL;
+  SPVM_OBJ* referent = NULL;
   env->assign_object(env, stack, &referent, obj_object_array);
   env->assign_object(env, stack, &referent, NULL);
   
@@ -3996,7 +3996,7 @@ int32_t SPVM__TestCase__NativeAPI__new_object_array_no_mortal(SPVM_ENV* env, SPV
 
 int32_t SPVM__TestCase__NativeAPI__new_object_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_object_array = env->new_object_array(env, stack, env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 2);
+  SPVM_OBJ* obj_object_array = env->new_object_array(env, stack, env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 2);
   
   if (!(env->is_type(env, stack, obj_object_array, env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 1))) {
     stack[0].ival = 0;
@@ -4019,7 +4019,7 @@ int32_t SPVM__TestCase__NativeAPI__new_object_array(SPVM_ENV* env, SPVM_VALUE* s
 
 int32_t SPVM__TestCase__NativeAPI__new_string_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_string_array = env->new_string_array(env, stack, 2);
+  SPVM_OBJ* obj_string_array = env->new_string_array(env, stack, 2);
   
   if (!(env->is_type(env, stack, obj_string_array, env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 1))) {
     stack[0].ival = 0;
@@ -4042,7 +4042,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string_array(SPVM_ENV* env, SPVM_VALUE* s
 
 int32_t SPVM__TestCase__NativeAPI__new_string_array_value(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_string_array = env->new_string_array(env, stack, 2);
+  SPVM_OBJ* obj_string_array = env->new_string_array(env, stack, 2);
   env->set_elem_object(env, stack, obj_string_array, 0, env->new_string_nolen(env, stack, "abc"));
   env->set_elem_object(env, stack, obj_string_array, 1, env->new_string_nolen(env, stack, "def"));
   
@@ -4089,7 +4089,7 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
   int64_t value_long = stack[3].lval;
   float value_float = stack[4].fval;
   double value_double = stack[5].dval;
-  void* value_object = stack[6].oval;
+  SPVM_OBJ* value_object = stack[6].oval;
   
   if (args_width >= 1) {
     if (!(value_byte == 1)) {
@@ -4264,14 +4264,14 @@ int32_t SPVM__TestCase__NativeAPI__precompile_build_methodd_source(SPVM_ENV* env
   
   {
     // New allocator
-    void* allocator = env->api->allocator->new_instance();
+    SPVM_NATIVE_ALLOCATOR* allocator = env->api->allocator->new_instance();
     
     // New string buffer
-    void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
+    SPVM_OBJ* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
 
-    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
+    SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
     
-    void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "get_class_var_byte_by_name");
+    SPVM_NATIVE_METHOD* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "get_class_var_byte_by_name");
     
     env->api->runtime->build_precompile_method_source(env->runtime, string_buffer, method);
     
@@ -4306,7 +4306,7 @@ int32_t SPVM__TestCase__NativeAPI__get_compile_type_name(SPVM_ENV* env, SPVM_VAL
     const char* basic_type_name = "int";
     int32_t type_dimension = 0;
     int32_t type_flag = 0;
-    void* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_name, type_dimension, type_flag);
+    SPVM_OBJ* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_name, type_dimension, type_flag);
     const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
     if (!(strcmp(compile_type_name, "int") == 0)) {
       stack[0].ival = 0;
@@ -4318,7 +4318,7 @@ int32_t SPVM__TestCase__NativeAPI__get_compile_type_name(SPVM_ENV* env, SPVM_VAL
     const char* basic_type_name = "int";
     int32_t type_dimension = 2;
     int32_t type_flag = 0;
-    void* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_name, type_dimension, type_flag);
+    SPVM_OBJ* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_name, type_dimension, type_flag);
     const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
     if (!(strcmp(compile_type_name, "int[][]") == 0)) {
       stack[0].ival = 0;
@@ -4330,7 +4330,7 @@ int32_t SPVM__TestCase__NativeAPI__get_compile_type_name(SPVM_ENV* env, SPVM_VAL
     const char* basic_type_name = "int";
     int32_t type_dimension = 0;
     int32_t type_flag = SPVM_NATIVE_C_TYPE_FLAG_REF;
-    void* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_name, type_dimension, type_flag);
+    SPVM_OBJ* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_name, type_dimension, type_flag);
     const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
     if (!(strcmp(compile_type_name, "int*") == 0)) {
       stack[0].ival = 0;
@@ -4342,7 +4342,7 @@ int32_t SPVM__TestCase__NativeAPI__get_compile_type_name(SPVM_ENV* env, SPVM_VAL
     const char* basic_type_name = "string";
     int32_t type_dimension = 0;
     int32_t type_flag = SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
-    void* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_name, type_dimension, type_flag);
+    SPVM_OBJ* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_name, type_dimension, type_flag);
     const char* compile_type_name = env->get_chars(env, stack, obj_compile_type_name);
     if (!(strcmp(compile_type_name, "mutable string") == 0)) {
       stack[0].ival = 0;
@@ -4357,8 +4357,8 @@ int32_t SPVM__TestCase__NativeAPI__runtime_get_method_is_enum(SPVM_ENV* env, SPV
 
   stack[0].ival = 1;
   
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
-  void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "VALUE0");
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
+  SPVM_NATIVE_METHOD* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "VALUE0");
   assert(method);
   
   int32_t is_enum = env->api->method->is_enum(env->runtime, method);
@@ -4375,8 +4375,8 @@ int32_t SPVM__TestCase__NativeAPI__method_native_api(SPVM_ENV* env, SPVM_VALUE* 
   
   // is_precompile_fallback, set_is_precompile_fallback
   {
-    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
-    void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "precompile_sum");
+    SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
+    SPVM_NATIVE_METHOD* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "precompile_sum");
     assert(method);
     
     if (!(env->api->method->is_precompile_fallback(env->runtime, method) == 0)) {
@@ -4399,24 +4399,24 @@ int32_t SPVM__TestCase__NativeAPI__method_native_api(SPVM_ENV* env, SPVM_VALUE* 
 
 int32_t SPVM__TestCase__NativeAPI__get_string_field_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* sv_self = stack[0].oval;
+  SPVM_OBJ* obj_self = stack[0].oval;
   
   int32_t error_id = 0;
   
-  void* sv_text = env->get_field_object_by_name(env, stack, sv_self, "text", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* obj_text = env->get_field_object_by_name(env, stack, obj_self, "text", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) {
     stack[0].ival = 0;
     return 0;
   }
   
-  int32_t length = env->length(env, stack, sv_text);
+  int32_t length = env->length(env, stack, obj_text);
   
   if (length != 5) {
     stack[0].ival = 0;
     return 0;
   }
 
-  const char* text_chars = env->get_chars(env, stack, sv_text);
+  const char* text_chars = env->get_chars(env, stack, obj_text);
 
   if (strcmp(text_chars, "Hello") != 0) {
     stack[0].ival = 0;
@@ -4463,7 +4463,7 @@ int32_t SPVM__TestCase__NativeAPI__get_object_basic_type_name(SPVM_ENV* env, SPV
   int32_t error_id = 0;
   
   {
-    void* string = env->new_string_nolen(env, stack, "abc");
+    SPVM_OBJ* string = env->new_string_nolen(env, stack, "abc");
     
     const char* string_basic_type_name = env->get_object_basic_type_name(env, stack, string);
     if (!(strcmp(string_basic_type_name, "string") == 0)) {
@@ -4535,7 +4535,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stdout(SPVM_ENV* env, SPVM_VALUE* sta
   
   int32_t error_id = 0;
   
-  void* obj_path = stack[0].oval;
+  SPVM_OBJ* obj_path = stack[0].oval;
   
   if (!obj_path) {
     return env->die(env, stack, "The path $path must be defined.", NULL, NULL, 0);
@@ -4575,7 +4575,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stderr(SPVM_ENV* env, SPVM_VALUE* sta
   
   int32_t error_id = 0;
   
-  void* obj_path = stack[0].oval;
+  SPVM_OBJ* obj_path = stack[0].oval;
   
   if (!obj_path) {
     return env->die(env, stack, "The path $path must be defined.", NULL, NULL, 0);
@@ -4656,7 +4656,7 @@ int32_t SPVM__TestCase__NativeAPI__no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* object = env->new_string_nolen(env, stack, "abc");
+  SPVM_OBJ* object = env->new_string_nolen(env, stack, "abc");
   
   // Check no effect SPVM_OBJECT_C_FLAG_IS_READ_ONLY
   env->make_read_only(env, stack, object);
@@ -4707,7 +4707,7 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
       return 0;
     }
     
-    void* obj_exception = env->build_exception_message(env, stack, 0);
+    SPVM_OBJ* obj_exception = env->build_exception_message(env, stack, 0);
     const char* exception = env->get_chars(env, stack, obj_exception);
     
     if (!strstr(exception, "abc")) {
@@ -4745,7 +4745,7 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
       return 0;
     }
     
-    void* obj_exception = env->build_exception_message(env, stack, 0);
+    SPVM_OBJ* obj_exception = env->build_exception_message(env, stack, 0);
     const char* exception = env->get_chars(env, stack, obj_exception);
     
     if (!strstr(exception, "abcd")) {
@@ -4812,7 +4812,7 @@ int32_t SPVM__TestCase__NativeAPI__field_exists(SPVM_ENV* env, SPVM_VALUE* stack
   
   int32_t error_id = 0;
   
-  void* object = env->new_object_by_name(env, stack, "TestCase::Simple", &error_id, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* object = env->new_object_by_name(env, stack, "TestCase::Simple", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   {
@@ -5175,14 +5175,14 @@ int32_t SPVM__TestCase__NativeAPI__field_exists(SPVM_ENV* env, SPVM_VALUE* stack
         }
       }
       
-      void* obj_minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error_id, __func__, FILE_NAME, __LINE__);
+      SPVM_OBJ* obj_minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error_id, __func__, FILE_NAME, __LINE__);
       if (error_id) { return error_id; }
       
       env->set_field_object_by_name(env, stack, object, "object_value", obj_minimal, &error_id, __func__, FILE_NAME, __LINE__);
       if (error_id) { return error_id; }
       
       {
-        void* value = env->get_field_object_by_name(env, stack, object, "object_value", &error_id, __func__, FILE_NAME, __LINE__);
+        SPVM_OBJ* value = env->get_field_object_by_name(env, stack, object, "object_value", &error_id, __func__, FILE_NAME, __LINE__);
         if (error_id) { return error_id; }
         
         if (!(value == obj_minimal)) {
@@ -5215,7 +5215,7 @@ int32_t SPVM__TestCase__NativeAPI__field_exists(SPVM_ENV* env, SPVM_VALUE* stack
       }
       
       {
-        void* value = env->get_field_object_by_name(env, stack, object, "object_value", &error_id, __func__, FILE_NAME, __LINE__);
+        SPVM_OBJ* value = env->get_field_object_by_name(env, stack, object, "object_value", &error_id, __func__, FILE_NAME, __LINE__);
         if (error_id) { return error_id; }
         
         if (!(value == NULL)) {
@@ -5235,8 +5235,8 @@ int32_t SPVM__TestCase__NativeAPI__field_exists(SPVM_ENV* env, SPVM_VALUE* stack
 // static variables to store detected method information
 static int32_t method_begin_call_count = 0;
 static int32_t method_end_call_count = 0;
-static void* last_begin_method = NULL;
-static void* last_end_method = NULL;
+static SPVM_NATIVE_METHOD* last_begin_method = NULL;
+static SPVM_NATIVE_METHOD* last_end_method = NULL;
 
 // callback for method begin
 static void test_method_begin_cb(SPVM_ENV* env, SPVM_VALUE* stack) {

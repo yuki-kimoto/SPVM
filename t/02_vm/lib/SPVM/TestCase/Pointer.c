@@ -10,8 +10,6 @@ struct TestCase__Pointer {
 static const char* FILE_NAME = "TestCase/Pointer.c";
 
 int32_t SPVM__TestCase__Pointer__new(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t x = stack[0].ival;
   
@@ -20,7 +18,7 @@ int32_t SPVM__TestCase__Pointer__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   pointer->x = x;
   
   int32_t e;
-  void* struct_object = env->new_pointer_object_by_name(env, stack, "TestCase::Pointer", pointer, &e, __func__, FILE_NAME, __LINE__);
+  SPVM_OBJ* struct_object = env->new_pointer_object_by_name(env, stack, "TestCase::Pointer", pointer, &e, __func__, FILE_NAME, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = struct_object;
@@ -29,10 +27,8 @@ int32_t SPVM__TestCase__Pointer__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__TestCase__Pointer__get_x(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
-  void* self = stack[0].oval;
+  SPVM_OBJ* self = stack[0].oval;
   
   struct TestCase__Pointer* pointer = (struct TestCase__Pointer*)env->get_pointer(env, stack, self);
   
@@ -42,10 +38,8 @@ int32_t SPVM__TestCase__Pointer__get_x(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__TestCase__Pointer__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
-  void* self = stack[0].oval;
+  SPVM_OBJ* self = stack[0].oval;
   
   struct TestCase__Pointer* pointer = (struct TestCase__Pointer*)env->get_pointer(env, stack, self);
   
