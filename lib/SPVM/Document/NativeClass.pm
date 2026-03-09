@@ -178,7 +178,9 @@ C<SPVM_VALUE> type is an union type in the C language.
     int64_t lval;
     float fval;
     double dval;
-    void* oval;
+    SPVM_OBJ* oval;
+    SPVM_REF* ref;
+    void* address;
     int8_t* bref;
     int16_t* sref;
     int32_t* iref;
@@ -681,6 +683,68 @@ The dependencies of compilation and link of a L<native class|/"Native Class">, L
 If L<SPVM::Builder::Config#force|SPVM::Builder::Config/"force"> field is set to 1, the compilation and the link are forced.
 
   $config->force(1);
+
+=head1 Native Types
+
+These types are used in the Native API.
+
+If C<SPVM_NATIVE_TYPE_STRICT> is defined, these types are defined as pointer types to opaque structures for strict type checking. Otherwise, they are defined as C<void>.
+
+=head2 SPVM_NATIVE_ALLOCATOR
+
+The native type for the allocator. See L<SPVM::Document::NativeAPI::Allocator>.
+
+=head2 SPVM_NATIVE_STRING_BUFFER
+
+The native type for the string buffer. See L<SPVM::Document::NativeAPI::StringBuffer>.
+
+=head2 SPVM_NATIVE_COMPILER
+
+The native type for the compiler. See L<SPVM::Document::NativeAPI::Compiler>.
+
+=head2 SPVM_NATIVE_CLASS_FILE
+
+The native type for the class file. See L<SPVM::Document::NativeAPI::ClassFile>.
+
+=head2 SPVM_NATIVE_RUNTIME
+
+The native type for the runtime. See L<SPVM::Document::NativeAPI::Runtime>.
+
+=head2 SPVM_NATIVE_BASIC_TYPE
+
+The native type for the basic type. See L<SPVM::Document::NativeAPI::BasicType>.
+
+=head2 SPVM_NATIVE_CLASS_VAR
+
+The native type for the class variable. See L<SPVM::Document::NativeAPI::ClassVariable>.
+
+=head2 SPVM_NATIVE_FIELD
+
+The native type for the field. See L<SPVM::Document::NativeAPI::Field>.
+
+=head2 SPVM_NATIVE_METHOD
+
+The native type for the method. See L<SPVM::Document::NativeAPI::Method>.
+
+=head2 SPVM_NATIVE_ARG
+
+The native type for the argument. See L<SPVM::Document::NativeAPI::Argument>.
+
+=head2 SPVM_NATIVE_MUTEX
+
+The native type for the mutex. See L<SPVM::Document::NativeAPI::Mutex>.
+
+=head2 SPVM_NATIVE_OPCODE
+
+The native type for the opcode.
+
+=head2 SPVM_OBJ
+
+The native type for the SPVM object. See L<SPVM::Document::NativeClass>.
+
+=head2 SPVM_REF
+
+The native type for the SPVM reference.
 
 =head1 Resource
 
