@@ -120,7 +120,7 @@ int32_t SPVM__Format___native_snprintf_lx(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 int32_t SPVM__Format___native_snprintf_p(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* value = stack[0].oval;
+  void* value = stack[0].address;
   
   // 0x8000000000000000
   int32_t max_length = 32;
