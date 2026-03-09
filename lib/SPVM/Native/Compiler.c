@@ -9,7 +9,7 @@ int32_t SPVM__Native__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* self = env->api->compiler->new_instance();
+  SPVM_NATIVE_COMPILER* self = env->api->compiler->new_instance();
   
   SPVM_OBJ* obj_self = env->new_pointer_object_by_name(env, stack, "Native::Compiler", self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -68,7 +68,7 @@ int32_t SPVM__Native__Compiler__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   env->set_field_object_by_name(env, stack, obj_runtime_env, "runtime", NULL, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
   env->api->compiler->free_instance(self);
   
@@ -87,7 +87,7 @@ int32_t SPVM__Native__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
     basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
   }
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
   // Compile SPVM
   int32_t status = env->api->compiler->compile(self, basic_type_name);
@@ -143,7 +143,7 @@ int32_t SPVM__Native__Compiler__set_start_file(SPVM_ENV* env, SPVM_VALUE* stack)
   
   SPVM_OBJ* obj_start_file = stack[1].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
   const char* start_file = NULL;
   if (obj_start_file) {
@@ -162,7 +162,7 @@ int32_t SPVM__Native__Compiler__set_start_line(SPVM_ENV* env, SPVM_VALUE* stack)
   
   int32_t start_line = stack[1].ival;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
   env->api->compiler->set_start_line(self, start_line);
   
@@ -175,7 +175,7 @@ int32_t SPVM__Native__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* st
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
   int32_t error_messages_length = env->api->compiler->get_error_messages_length(self);
   
@@ -199,7 +199,7 @@ int32_t SPVM__Native__Compiler__add_include_dir(SPVM_ENV* env, SPVM_VALUE* stack
   
   SPVM_OBJ* obj_include_dir = stack[1].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
   const char* include_dir = NULL;
   if (obj_include_dir) {
@@ -218,7 +218,7 @@ int32_t SPVM__Native__Compiler__prepend_include_dir(SPVM_ENV* env, SPVM_VALUE* s
   
   SPVM_OBJ* obj_include_dir = stack[1].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
   const char* include_dir = NULL;
   if (obj_include_dir) {
@@ -243,7 +243,7 @@ int32_t SPVM__Native__Compiler__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack)
   }
   const char* class_name = env->get_chars(env, stack, obj_class_name);
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
   void* class_file = env->api->compiler->get_class_file(self, class_name);
   
@@ -277,7 +277,7 @@ int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* st
     source = env->get_chars(env, stack, obj_source);
   }
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
   // Compile SPVM
   const char* anon_basic_type_name = NULL;
@@ -327,7 +327,7 @@ int32_t SPVM__Native__Compiler__clear_include_dirs(SPVM_ENV* env, SPVM_VALUE* st
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
   env->api->compiler->clear_include_dirs(self);
   
@@ -340,7 +340,7 @@ int32_t SPVM__Native__Compiler__get_include_dirs_length(SPVM_ENV* env, SPVM_VALU
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
   int32_t include_dirs_length = env->api->compiler->get_include_dirs_length(self);
   
@@ -357,7 +357,7 @@ int32_t SPVM__Native__Compiler__get_include_dir(SPVM_ENV* env, SPVM_VALUE* stack
   
   int32_t index = stack[1].ival;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
   int32_t include_dirs_length = env->api->compiler->get_include_dirs_length(self);
   

@@ -13,7 +13,7 @@ int32_t SPVM__Native__ClassFile__get_class_name(SPVM_ENV* env, SPVM_VALUE* stack
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_CLASS_FILE* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_OBJ* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -35,7 +35,7 @@ int32_t SPVM__Native__ClassFile__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_CLASS_FILE* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_OBJ* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -57,7 +57,7 @@ int32_t SPVM__Native__ClassFile__set_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_CLASS_FILE* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_OBJ* obj_file = stack[1].oval;
   
@@ -82,7 +82,7 @@ int32_t SPVM__Native__ClassFile__get_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_CLASS_FILE* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_OBJ* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -104,7 +104,7 @@ int32_t SPVM__Native__ClassFile__set_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_CLASS_FILE* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_OBJ* obj_dir = stack[1].oval;
   
@@ -129,7 +129,7 @@ int32_t SPVM__Native__ClassFile__get_rel_file(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_CLASS_FILE* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_OBJ* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -151,7 +151,7 @@ int32_t SPVM__Native__ClassFile__set_rel_file(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_CLASS_FILE* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_OBJ* obj_rel_file = stack[1].oval;
   
@@ -176,7 +176,7 @@ int32_t SPVM__Native__ClassFile__get_content(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_CLASS_FILE* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_OBJ* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -198,7 +198,7 @@ int32_t SPVM__Native__ClassFile__set_content(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_CLASS_FILE* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_OBJ* obj_content = stack[1].oval;
   
@@ -223,7 +223,7 @@ int32_t SPVM__Native__ClassFile__get_content_length(SPVM_ENV* env, SPVM_VALUE* s
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_CLASS_FILE* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_OBJ* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -243,7 +243,7 @@ int32_t SPVM__Native__ClassFile__set_content_length(SPVM_ENV* env, SPVM_VALUE* s
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_CLASS_FILE* self = env->get_pointer(env, stack, obj_self);
   
   int32_t content_length = stack[1].ival;
   

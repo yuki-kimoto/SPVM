@@ -15,13 +15,13 @@ int32_t SPVM__Native__Runtime__build_precompile_class_source(SPVM_ENV* env, SPVM
   
   SPVM_OBJ* obj_basic_type = stack[1].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_NATIVE_BASIC_TYPE* basic_type = env->get_pointer(env, stack, obj_basic_type);
   
   void* allocator = env->api->allocator->new_instance();
   
-  SPVM_OBJ* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
+  SPVM_NATIVE_STRING_BUFFER* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
   
   env->api->runtime->build_precompile_class_source(self, string_buffer, basic_type);
   
@@ -46,13 +46,13 @@ int32_t SPVM__Native__Runtime__build_precompile_method_source(SPVM_ENV* env, SPV
   
   SPVM_OBJ* obj_method = stack[1].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   void* method = env->get_pointer(env, stack, obj_method);
   
   void* allocator = env->api->allocator->new_instance();
   
-  SPVM_OBJ* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
+  SPVM_NATIVE_STRING_BUFFER* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
   
   env->api->runtime->build_precompile_method_source(self, string_buffer, method);
   
@@ -83,7 +83,7 @@ int32_t SPVM__Native__Runtime__set_native_method_address(SPVM_ENV* env, SPVM_VAL
   
   SPVM_OBJ* obj_address = stack[3].oval;
 
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   // Method id
   SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(self, basic_type_name);
@@ -105,7 +105,7 @@ int32_t SPVM__Native__Runtime__get_native_method_address(SPVM_ENV* env, SPVM_VAL
   SPVM_OBJ* obj_basic_type_name = stack[1].oval;
   SPVM_OBJ* obj_method_name = stack[2].oval;
 
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   // Basic type name
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
@@ -135,7 +135,7 @@ int32_t SPVM__Native__Runtime__get_method_is_class_method(SPVM_ENV* env, SPVM_VA
   SPVM_OBJ* obj_basic_type_name = stack[1].oval;
   SPVM_OBJ* obj_method_name = stack[2].oval;
 
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   // Basic type name
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
@@ -163,7 +163,7 @@ int32_t SPVM__Native__Runtime__get_precompile_method_address(SPVM_ENV* env, SPVM
   SPVM_OBJ* obj_basic_type_name = stack[1].oval;
   SPVM_OBJ* obj_method_name = stack[2].oval;
 
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   // Basic type name
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
@@ -199,7 +199,7 @@ int32_t SPVM__Native__Runtime__set_precompile_method_address(SPVM_ENV* env, SPVM
   
   SPVM_OBJ* obj_address = stack[3].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   // Method id
   SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(self, basic_type_name);
@@ -219,7 +219,7 @@ int32_t SPVM__Native__Runtime__get_basic_types_length(SPVM_ENV* env, SPVM_VALUE*
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   int32_t basic_types_length = env->api->runtime->get_basic_types_length(self);
   
@@ -236,7 +236,7 @@ int32_t SPVM__Native__Runtime__get_basic_type_by_id(SPVM_ENV* env, SPVM_VALUE* s
   
   int32_t index = stack[1].ival;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(self, index);
   
@@ -274,7 +274,7 @@ int32_t SPVM__Native__Runtime__get_basic_type_by_name(SPVM_ENV* env, SPVM_VALUE*
   
   const char* name = env->get_chars(env, stack, obj_name);
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(self, name);
   
@@ -307,7 +307,7 @@ int32_t SPVM__Native__Runtime__get_basic_type_parent_name(SPVM_ENV* env, SPVM_VA
   SPVM_OBJ* obj_basic_type_name = stack[1].oval;
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(self, basic_type_name);
   void* parent_basic_type = env->api->basic_type->get_parent(self, basic_type);
@@ -335,7 +335,7 @@ int32_t SPVM__Native__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stac
   int32_t precompile_flag = stack[3].ival;
   int32_t enum_flag = stack[4].ival;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(self, basic_type_name);
   
@@ -414,7 +414,7 @@ int32_t SPVM__Native__Runtime__get_compiler(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_basic_type = stack[1].oval;
   
-  void* self = env->get_pointer(env, stack, obj_self);
+  SPVM_NATIVE_RUNTIME* self = env->get_pointer(env, stack, obj_self);
   
   SPVM_OBJ* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
