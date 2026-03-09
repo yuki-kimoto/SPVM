@@ -457,7 +457,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         
-        const char* version_string = version_string_constant->value.oval;
+        const char* version_string = version_string_constant->value.address;
         int32_t version_string_length = version_string_constant->string_length;
         
         // Version string validation

@@ -2115,7 +2115,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               if (SPVM_TYPE_is_string_type(compiler, constant_type->basic_type->id, constant_type->dimension, constant_type->flag)) {
                 SPVM_CONSTANT* constant = op_constant->uv.constant;
                 
-                const char* constant_string_value = constant->value.oval;
+                const char* constant_string_value = constant->value.address;
                 int32_t constant_string_length = constant->string_length;
                 
                 SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, constant_string_value, constant_string_length);

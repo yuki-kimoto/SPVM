@@ -2877,7 +2877,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING(SPVM_ENV*
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int8_t value) {
-  SPVM_OBJ* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS);
   SPVM_OBJ* object = env->new_object_no_mortal(env, stack, basic_type);
   int8_t** fields = (int8_t**)(GET_DATA_ADDRESS(env, stack, object));
   *(int8_t*)&fields[0] = value;
@@ -2885,7 +2885,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_BYTE_OBJECT(SPVM_ENV* 
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int16_t value) {
-  SPVM_OBJ* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS);
   SPVM_OBJ* object = env->new_object_no_mortal(env, stack, basic_type);
   int16_t** fields = (int16_t**)(GET_DATA_ADDRESS(env, stack, object));
   *(int16_t*)&fields[0] = value;
@@ -2893,7 +2893,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_SHORT_OBJECT(SPVM_ENV
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int32_t value) {
-  SPVM_OBJ* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS);
   SPVM_OBJ* object = env->new_object_no_mortal(env, stack, basic_type);
   int32_t** fields = (int32_t**)(GET_DATA_ADDRESS(env, stack, object));
   *(int32_t*)&fields[0] = value;
@@ -2901,7 +2901,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_INT_OBJECT(SPVM_ENV* en
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int64_t value) {
-  SPVM_OBJ* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS);
   SPVM_OBJ* object = env->new_object_no_mortal(env, stack, basic_type);
   int64_t** fields = (int64_t**)(GET_DATA_ADDRESS(env, stack, object));
   *(int64_t*)&fields[0] = value;
@@ -2909,7 +2909,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_LONG_OBJECT(SPVM_ENV* 
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, float value) {
-  SPVM_OBJ* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS);
   SPVM_OBJ* object = env->new_object_no_mortal(env, stack, basic_type);
   float** fields = (float**)(GET_DATA_ADDRESS(env, stack, object));
   *(float*)&fields[0] = value;
@@ -2917,7 +2917,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_FLOAT_OBJECT(SPVM_ENV
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_DOUBLE_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, double value) {
-  SPVM_OBJ* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS);
+  SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS);
   SPVM_OBJ* object = env->new_object_no_mortal(env, stack, basic_type);
   double** fields = (double**)(GET_DATA_ADDRESS(env, stack, object));
   *(double*)&fields[0] = value;
