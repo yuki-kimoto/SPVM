@@ -625,7 +625,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t found = SPVM_PRECOMPILE_contains_method(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, method_name);
         
         if (!found) {
-          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NAITVE_METHOD* ");
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_METHOD* ");
           SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
           SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
           
