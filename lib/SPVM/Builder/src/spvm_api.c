@@ -1058,7 +1058,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env, SPVM_VALUE* stac
   return basic_type;
 }
 
-void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
   *error_id = 0;
   
   void* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
@@ -5221,7 +5221,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type_by_id(SPVM_ENV* env, SPVM_VALUE
   return basic_type;
 }
 
-void* SPVM_API_strerror_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length) {
+SPVM_OBJECT* SPVM_API_strerror_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length) {
   
   assert(length >= 0);
   
@@ -5259,7 +5259,7 @@ const char* SPVM_API_strerror(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_va
   }
 }
 
-void* SPVM_API_strerror_string_nolen(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value) {
+SPVM_OBJECT* SPVM_API_strerror_string_nolen(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value) {
   return SPVM_API_strerror_string(env, stack, errno_value, 0);
 }
 
@@ -6981,7 +6981,7 @@ double SPVM_API_numeric_object_to_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   return out;
 }
 
-void* SPVM_API_numeric_object_to_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
+SPVM_OBJECT* SPVM_API_numeric_object_to_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
   
   *error_id = 0;
   
@@ -7070,7 +7070,7 @@ void* SPVM_API_numeric_object_to_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* sta
   return string;
 }
 
-void* SPVM_API_numeric_object_to_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
+SPVM_OBJECT* SPVM_API_numeric_object_to_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* error_id) {
   
   SPVM_OBJECT* new_object = SPVM_API_numeric_object_to_string_no_mortal(env, stack, object, error_id);
   
@@ -7179,7 +7179,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stac
   return method;
 }
 
-void* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id) {
+SPVM_OBJECT* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id) {
   
   *error_id = 0;
   
@@ -7241,7 +7241,7 @@ void* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level,
   return obj_caller_info;
 }
 
-void* SPVM_API_caller(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id) {
+SPVM_OBJECT* SPVM_API_caller(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id) {
   
   SPVM_OBJECT* obj_caller_info = SPVM_API_caller_no_mortal(env, stack, level, error_id);
   
