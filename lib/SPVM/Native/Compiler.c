@@ -14,7 +14,7 @@ int32_t SPVM__Native__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_OBJ* obj_self = env->new_pointer_object_by_name(env, stack, "Native::Compiler", self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  void* runtime = env->api->compiler->get_runtime(self);
+  SPVM_NATIVE_RUNTIME* runtime = env->api->compiler->get_runtime(self);
   
   SPVM_OBJ* obj_address_runtime = env->new_pointer_object_by_name(env, stack, "Address", runtime, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
