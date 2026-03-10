@@ -134,6 +134,17 @@ For example, if the class is C<MyClass::Math> and the method name is C<sum_value
 
 C<spvm_native.h> is the header file for L<SPVM Native APIs|SPVM::Document::NativeAPI>.
 
+The following standard C headers are guaranteed to be available and can be used by default in your native code:
+
+  #include <stdint.h>
+  #include <stdio.h>
+  #include <string.h>
+  #include <stdlib.h>
+  #include <inttypes.h>
+  #include <assert.h>
+
+These headers are highly portable and compatible with major compilers including GCC, Clang, and MSVC.
+
 =head2 Native Function Arguments
 
 A native function must have two arguments.
