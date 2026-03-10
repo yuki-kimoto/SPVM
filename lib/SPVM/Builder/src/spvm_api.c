@@ -378,6 +378,15 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_set_long_object_value,
     SPVM_API_set_float_object_value,
     SPVM_API_set_double_object_value,
+    SPVM_API_c_strlen,
+    SPVM_API_c_memcpy,
+    SPVM_API_c_memset,
+    SPVM_API_c_memcmp,
+    SPVM_API_c_strtoll,
+    SPVM_API_c_strtof,
+    SPVM_API_c_strtod,
+    SPVM_API_c_fputs,
+    SPVM_API_c_fgetc,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -7537,4 +7546,40 @@ int32_t SPVM_API_is_utf8(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_stri
   int32_t is_utf8 = SPVM_UTF8_is_utf8(str, (size_t)int_len);
 
   return is_utf8;
+}
+
+size_t SPVM_API_c_strlen(SPVM_ENV* env, SPVM_VALUE* stack, const char* str) {
+  return strlen(str);
+}
+
+void* SPVM_API_c_memcpy(SPVM_ENV* env, SPVM_VALUE* stack, void* dest, const void* src, size_t n) {
+  return memcpy(dest, src, n);
+}
+
+void* SPVM_API_c_memset(SPVM_ENV* env, SPVM_VALUE* stack, void* s, int c, size_t n) {
+  return memset(s, c, n);
+}
+
+int SPVM_API_c_memcmp(SPVM_ENV* env, SPVM_VALUE* stack, const void* s1, const void* s2, size_t n) {
+  return memcmp(s1, s2, n);
+}
+
+long long SPVM_API_c_strtoll(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr, int base) {
+  return strtoll(str, endptr, base);
+}
+
+float SPVM_API_c_strtof(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr) {
+  return strtof(str, endptr);
+}
+
+double SPVM_API_c_strtod(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr) {
+  return strtod(str, endptr);
+}
+
+int SPVM_API_c_fputs(SPVM_ENV* env, SPVM_VALUE* stack, const char* s, void* stream) {
+  return fputs(s, (FILE*)stream);
+}
+
+int SPVM_API_c_fgetc(SPVM_ENV* env, SPVM_VALUE* stack, void* stream) {
+  return fgetc((FILE*)stream);
 }

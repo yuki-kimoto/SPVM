@@ -3240,7 +3240,15 @@ Native APIs have its IDs.
   273 set_long_object_value
   274 set_float_object_value
   275 set_double_object_value
-
+  276 c_strlen
+  277 c_memcpy
+  278 c_memset
+  279 c_memcmp
+  280 c_strtoll
+  281 c_strtof
+  282 c_strtod
+  283 c_fputs
+  284 c_fgetc
 
 =head1 Constant Values
 

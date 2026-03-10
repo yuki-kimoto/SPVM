@@ -528,4 +528,32 @@ SPVM_API_method_cb_t* SPVM_API_get_method_end_cb(SPVM_ENV* env);
 
 int32_t SPVM_API_is_utf8(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_string, int32_t* error_id);
 
+typedef size_t (*SPVM_ENV_C_STRLEN_T)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str);
+typedef void* (*SPVM_ENV_C_MEMCPY_T)(SPVM_ENV* env, SPVM_VALUE* stack, void* dest, const void* src, size_t n);
+typedef void* (*SPVM_ENV_C_MEMSET_T)(SPVM_ENV* env, SPVM_VALUE* stack, void* s, int c, size_t n);
+typedef int (*SPVM_ENV_C_MEMCMP_T)(SPVM_ENV* env, SPVM_VALUE* stack, const void* s1, const void* s2, size_t n);
+typedef long long (*SPVM_ENV_C_STRTOLL_T)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr, int base);
+typedef float (*SPVM_ENV_C_STRTOF_T)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr);
+typedef double (*SPVM_ENV_C_STRTOD_T)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr);
+typedef int (*SPVM_ENV_C_FPUTS_T)(SPVM_ENV* env, SPVM_VALUE* stack, const char* s, void* stream);
+typedef int (*SPVM_ENV_C_FGETC_T)(SPVM_ENV* env, SPVM_VALUE* stack, void* stream);
+
+size_t SPVM_API_c_strlen(SPVM_ENV* env, SPVM_VALUE* stack, const char* str);
+
+void* SPVM_API_c_memcpy(SPVM_ENV* env, SPVM_VALUE* stack, void* dest, const void* src, size_t n);
+
+void* SPVM_API_c_memset(SPVM_ENV* env, SPVM_VALUE* stack, void* s, int c, size_t n);
+
+int SPVM_API_c_memcmp(SPVM_ENV* env, SPVM_VALUE* stack, const void* s1, const void* s2, size_t n);
+
+long long SPVM_API_c_strtoll(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr, int base);
+
+float SPVM_API_c_strtof(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr);
+
+double SPVM_API_c_strtod(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr);
+
+int SPVM_API_c_fputs(SPVM_ENV* env, SPVM_VALUE* stack, const char* s, void* stream);
+
+int SPVM_API_c_fgetc(SPVM_ENV* env, SPVM_VALUE* stack, void* stream);
+
 #endif
