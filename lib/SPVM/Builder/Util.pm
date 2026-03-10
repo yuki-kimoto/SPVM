@@ -94,52 +94,59 @@ sub get_spvm_core_source_file_names {
   return \@spvm_core_source_file_names;
 }
 
+use Time::HiRes ();
+
 sub need_generate {
   my ($opt) = @_;
   
   my $force = $opt->{force};
-  my $input_files = $opt->{input_files};
+  my $input_files = $opt->{input_files} || [];
   my $output_file = $opt->{output_file};
   
-  my $need_generate;
+  # Always generate if force is true
   if ($force) {
-    $need_generate = 1;
+    return 1;
   }
-  else {
-    if (!-f $output_file) {
-      $need_generate = 1;
-    }
-    else {
-      my $input_files_mtime_max = 0;
-      my $exists_input_file_at_least_one;
-      for my $input_file (@$input_files) {
-        if (-f $input_file) {
-          $exists_input_file_at_least_one = 1;
-          my $input_file_mtime = (stat($input_file))[9];
-          if ($input_file_mtime > $input_files_mtime_max) {
-            $input_files_mtime_max = $input_file_mtime;
-          }
-        }
-      }
-      if ($exists_input_file_at_least_one) {
-        my $spvm_version_header_file = &get_spvm_version_header_file;
-        
-        my $spvm_version_header_file_mtime = (stat($spvm_version_header_file))[9];
-        
-        if ($spvm_version_header_file_mtime > $input_files_mtime_max) {
-          $input_files_mtime_max = $spvm_version_header_file_mtime;
-        }
-        
-        my $output_file_mtime = (stat($output_file))[9];
-        
-        if ($input_files_mtime_max > $output_file_mtime) {
-          $need_generate = 1;
-        }
+
+  # Generate if output file does not exist
+  if (!-f $output_file) {
+    return 1;
+  }
+
+  my $input_files_mtime_max = 0;
+  my $exists_input_file = 0;
+
+  # Find maximum mtime of input files with high resolution
+  for my $input_file (@$input_files) {
+    if (-f $input_file) {
+      $exists_input_file = 1;
+      my $mtime = (Time::HiRes::stat($input_file))[9];
+      if ($mtime > $input_files_mtime_max) {
+        $input_files_mtime_max = $mtime;
       }
     }
   }
-  
-  return $need_generate;
+
+  # Check input files and SPVM version header
+  if ($exists_input_file) {
+    my $spvm_version_header_file = &get_spvm_version_header_file;
+    if (-f $spvm_version_header_file) {
+      my $version_mtime = (Time::HiRes::stat($spvm_version_header_file))[9];
+      if ($version_mtime > $input_files_mtime_max) {
+        $input_files_mtime_max = $version_mtime;
+      }
+    }
+
+    # Compare with output file mtime
+    my $output_file_mtime = (Time::HiRes::stat($output_file))[9];
+    
+    if ($input_files_mtime_max > $output_file_mtime) {
+      return 1;
+    }
+  }
+
+  # No generation needed
+  return 0;
 }
 
 sub slurp_binary {
