@@ -74,6 +74,7 @@ sub get_spvm_core_source_file_names {
     spvm_opcode.c
     spvm_opcode_list.c
     spvm_precompile.c
+    spvm_precompile_header_content.c
     spvm_runtime.c
     spvm_strerror.c
     spvm_string_buffer.c
@@ -742,8 +743,6 @@ sub build_precompile_header_content_c_source {
 
   if ($need_generate) {
     my $header_content = <<'EOS';
-#define SPVM_NATIVE_NO_INCLUDE_HEADERS
-
 /* Minimal definitions for standard types and functions */
 #define NULL ((void*)0)
 struct _iobuf;
@@ -785,6 +784,8 @@ typedef unsigned int uint32_t;
 #define INT64_MIN (-9223372036854775807LL - 1)
 #define INT64_MAX 9223372036854775807LL
 #define EOF (-1)
+
+#define SPVM_NATIVE_NO_INCLUDE_HEADERS
 EOS
 
     $header_content .= "\n/* spvm_native.h */\n" . &slurp_binary($spvm_native_h);
