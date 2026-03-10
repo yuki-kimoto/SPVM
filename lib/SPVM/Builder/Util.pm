@@ -673,6 +673,44 @@ sub parse_lib_directive {
   return $include_dirs;
 }
 
+# Create C string literal for MSVC/TCC compatibility
+sub create_c_string_literal {
+  my ($content) = @_;
+  
+  return 'NULL' unless defined $content;
+
+  my @chunks;
+  my $current_chunk = '';
+  my $count = 0;
+
+  {
+    use bytes;
+    for my $i (0 .. length($content) - 1) {
+      my $char = substr($content, $i, 1);
+      my $escaped;
+      
+      # Escape characters
+      if ($char eq "\\") { $escaped = "\\\\"; }
+      elsif ($char eq "\"") { $escaped = "\\\""; }
+      elsif ($char =~ /[[:print:]]/) { $escaped = $char; }
+      else { $escaped = sprintf("\\%03o", ord($char)); }
+
+      $current_chunk .= $escaped;
+      $count++;
+
+      # Split for MSVC limit
+      if ($count >= 100) {
+        push @chunks, qq(      "$current_chunk"\n);
+        $current_chunk = '';
+        $count = 0;
+      }
+    }
+    push @chunks, qq(      "$current_chunk"\n) if length $current_chunk;
+  }
+  
+  return join('', @chunks);
+}
+
 1;
 
 =head1 Name

@@ -819,44 +819,6 @@ EOS
   return $source;
 }
 
-# Create C string literal for MSVC/TCC compatibility
-sub create_c_string_literal {
-  my ($content) = @_;
-  
-  return 'NULL' unless defined $content;
-
-  my @chunks;
-  my $current_chunk = '';
-  my $count = 0;
-
-  {
-    use bytes;
-    for my $i (0 .. length($content) - 1) {
-      my $char = substr($content, $i, 1);
-      my $escaped;
-      
-      # Escape characters
-      if ($char eq "\\") { $escaped = "\\\\"; }
-      elsif ($char eq "\"") { $escaped = "\\\""; }
-      elsif ($char =~ /[[:print:]]/) { $escaped = $char; }
-      else { $escaped = sprintf("\\%03o", ord($char)); }
-
-      $current_chunk .= $escaped;
-      $count++;
-
-      # Split for MSVC limit
-      if ($count >= 100) {
-        push @chunks, qq(      "$current_chunk"\n);
-        $current_chunk = '';
-        $count = 0;
-      }
-    }
-    push @chunks, qq(      "$current_chunk"\n) if length $current_chunk;
-  }
-  
-  return join('', @chunks);
-}
-
 sub create_bootstrap_compile_source {
   my ($self) = @_;
   
@@ -905,7 +867,7 @@ EOS
     
     # Set content as C string literal
     if (defined $class_file_content) {
-      my $content_literal = create_c_string_literal($class_file_content);
+      my $content_literal = SPVM::Builder::Util::create_c_string_literal($class_file_content);
       $source_class_file .= qq|    env->api->class_file->set_content(compiler, class_file, \n$content_literal    );\n|;
     }
     
