@@ -4,6 +4,13 @@
 #ifndef SPVM_NATIVE_H
 #define SPVM_NATIVE_H
 
+/*
+    Do not reduce these headers. 
+    When adding new headers, exercise extreme caution and ensure they are absolutely necessary.
+    
+    SPVM_NATIVE_NO_INCLUDE_HEADERS is defined in precompiled code
+    because precompiled code cannnot contain #include and export for generating portable JIT code(LLVM, tcc, Mir, etc).
+*/
 #ifndef SPVM_NATIVE_NO_INCLUDE_HEADERS
   #include <stdint.h>
   #include <stdio.h>
