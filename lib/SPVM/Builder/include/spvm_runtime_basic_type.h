@@ -41,6 +41,7 @@ struct spvm_runtime_basic_type {
   int8_t initialized;
   int8_t is_object_type;
   int8_t has_monitor_var;
+  int8_t is_generated_by_anon_method;
 };
 
 #endif

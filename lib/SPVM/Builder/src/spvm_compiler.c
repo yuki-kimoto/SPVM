@@ -1334,6 +1334,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     
     runtime_basic_type->is_anon = basic_type->is_anon;
     
+    runtime_basic_type->is_generated_by_anon_method = basic_type->is_generated_by_anon_method;
+    
     runtime_basic_type->is_pointer = basic_type->is_pointer;
     
     runtime_basic_type->is_object_type = SPVM_BASIC_TYPE_is_object_type(compiler, basic_type->id);
