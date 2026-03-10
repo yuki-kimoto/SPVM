@@ -718,7 +718,7 @@ sub create_c_string_literal {
   return join('', @chunks);
 }
 
-# Build the precompile inline header C source and save it to a file
+# Build the precompile header content C source and save it to a file
 sub build_precompile_header_content_c_source {
   my ($options) = @_;
   
@@ -729,10 +729,13 @@ sub build_precompile_header_content_c_source {
   my $spvm_native_h = "$include_dir/spvm_native.h";
   my $spvm_implement_h = "$include_dir/spvm_implement.h";
   my $output_file = "$src_dir/spvm_precompile_header_content.c";
+  
+  # This file itself
+  my $this_file = __FILE__;
 
   # Check if generation is needed
   my $need_generate = &need_generate({
-    input_files => [$spvm_native_h, $spvm_implement_h],
+    input_files => [$spvm_native_h, $spvm_implement_h, $this_file],
     output_file => $output_file,
     force => $options->{force},
   });
@@ -797,6 +800,9 @@ EOS
     $final_c_source .= "}\n";
 
     &spurt_binary($output_file, $final_c_source);
+    
+    # Show message when generated
+    warn "Generated \"$output_file\".\n";
   }
 
   return $output_file;
