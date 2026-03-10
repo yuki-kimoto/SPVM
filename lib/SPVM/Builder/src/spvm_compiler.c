@@ -1499,3 +1499,135 @@ const char* SPVM_COMPILER_get_include_dir (SPVM_COMPILER* compiler, int32_t incl
   const char* include_dir = SPVM_LIST_get(compiler->include_dirs, include_dir_id);
   return include_dir;
 }
+
+void SPVM_COMPILER_create_precompile_inline_header(SPVM_COMPILER* compiler) {
+  
+  SPVM_RUNTIME* runtime = compiler->runtime;
+  int32_t include_dirs_length = compiler->include_dirs->length;
+  const char* native_rel = "SPVM/Builder/include/spvm_native.h";
+  const char* implement_rel = "SPVM/Builder/include/spvm_implement.h";
+  
+  const char* found_native_path = NULL;
+  const char* found_implement_path = NULL;
+  int32_t native_size = 0;
+  int32_t implement_size = 0;
+
+  // Search header files and get their sizes
+  for (int32_t i = 0; i < include_dirs_length; i++) {
+    const char* include_dir = (const char*)SPVM_LIST_get(compiler->include_dirs, i);
+    int32_t include_dir_len = (int32_t)strlen(include_dir);
+    
+    // Search spvm_native.h
+    if (!found_native_path) {
+      int32_t path_len = include_dir_len + 1 + (int32_t)strlen(native_rel);
+      char* path = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, path_len + 1);
+      sprintf(path, "%s/%s", include_dir, native_rel);
+      
+      FILE* fp = fopen(path, "rb");
+      if (fp) {
+        fseek(fp, 0, SEEK_END);
+        native_size = (int32_t)ftell(fp);
+        fclose(fp);
+        found_native_path = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, path_len + 1);
+        memcpy((char*)found_native_path, path, path_len + 1);
+      }
+    }
+
+    // Search spvm_implement.h
+    if (!found_implement_path) {
+      int32_t path_len = include_dir_len + 1 + (int32_t)strlen(implement_rel);
+      char* path = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, path_len + 1);
+      sprintf(path, "%s/%s", include_dir, implement_rel);
+      
+      FILE* fp = fopen(path, "rb");
+      if (fp) {
+        fseek(fp, 0, SEEK_END);
+        implement_size = (int32_t)ftell(fp);
+        fclose(fp);
+        found_implement_path = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, path_len + 1);
+        memcpy((char*)found_implement_path, path, path_len + 1);
+      }
+    }
+
+    if (found_native_path && found_implement_path) {
+      break;
+    }
+  }
+
+  if (!found_native_path || !found_implement_path) {
+    return;
+  }
+
+  // Minimal C definitions
+  const char* prefix = 
+    "#define SPVM_NATIVE_NO_INCLUDE_HEADERS\n\n"
+    "#define NULL ((void*)0)\n"
+    "struct _iobuf;\n"
+    "typedef struct _iobuf FILE;\n\n"
+    "typedef signed char int8_t;\n"
+    "typedef short int16_t;\n"
+    "typedef int int32_t;\n"
+    "typedef unsigned char uint8_t;\n"
+    "typedef unsigned short uint16_t;\n"
+    "typedef unsigned int uint32_t;\n\n"
+    "#if defined(__LP64__)\n"
+    "  typedef long int64_t;\n"
+    "  typedef unsigned long uint64_t;\n"
+    "  typedef long intptr_t;\n"
+    "  typedef unsigned long size_t;\n"
+    "  #define PRId64 \"ld\"\n"
+    "#else\n"
+    "  typedef long long int64_t;\n"
+    "  typedef unsigned long long uint64_t;\n"
+    "  typedef long long intptr_t;\n"
+    "  typedef unsigned long long size_t;\n"
+    "  #define PRId64 \"lld\"\n"
+    "#endif\n\n"
+    "#define PRId8 \"d\"\n"
+    "#define PRId16 \"d\"\n"
+    "#define PRId32 \"d\"\n"
+    "#define INT8_MIN (-128)\n"
+    "#define INT8_MAX 127\n"
+    "#define INT16_MIN (-32768)\n"
+    "#define INT16_MAX 32767\n"
+    "#define INT32_MIN (-2147483647 - 1)\n"
+    "#define INT32_MAX 2147483647\n\n"
+    "#define INT64_MIN (-9223372036854775807LL - 1)\n"
+    "#define INT64_MAX 9223372036854775807LL\n"
+    "#define EOF (-1)\n\n";
+
+  int32_t prefix_len = (int32_t)strlen(prefix);
+
+  // Allocate memory for the inline header
+  int32_t total_len = prefix_len + native_size + implement_size;
+  char* inline_header = (char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, total_len + 1);
+
+  // Build the inline header string
+  char* p = inline_header;
+  memcpy(p, prefix, prefix_len);
+  p += prefix_len;
+
+  // Read spvm_native.h
+  FILE* fp_n = fopen(found_native_path, "rb");
+  if (fp_n) {
+    size_t read_size = fread(p, 1, native_size, fp_n);
+    (void)read_size; // Silence the warning or add an assert
+    fclose(fp_n);
+    p += native_size;
+  }
+
+  // Read spvm_implement.h
+  FILE* fp_i = fopen(found_implement_path, "rb");
+  if (fp_i) {
+    size_t read_size = fread(p, 1, implement_size, fp_i);
+    (void)read_size; // Silence the warning
+    fclose(fp_i);
+    p += implement_size;
+  }
+
+  *p = '\0';
+
+  // Set the inline header to the runtime
+  runtime->precompile_inline_header = inline_header;
+}
+
