@@ -135,7 +135,7 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "  #define __builtin_expect(exp, c) (exp)\n"
     "#endif\n"
     "extern int snprintf(char *str, size_t size, const char *format, ...);\n"
-    "extern int sprintf(char *str, const char *format, ...);\n"
+    "extern int fprintf(FILE *stream, const char *format, ...);\n"
     "extern size_t strlen(const char *str);\n"
     "extern void *memcpy(void *dest, const void *src, size_t n);\n"
     "extern void *memset(void *s, int c, size_t n);\n"
@@ -143,7 +143,6 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "extern long long strtoll(const char *str, char **endptr, int base);\n"
     "extern float strtof(const char *str, char **endptr);\n"
     "extern double strtod(const char *str, char **endptr);\n\n"
-    "extern int fprintf(FILE *stream, const char *format, ...);\n"
     "extern int fgetc(FILE *stream);\n"
   );
 

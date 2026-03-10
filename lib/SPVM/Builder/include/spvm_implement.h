@@ -1673,7 +1673,7 @@ static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 
 static inline void SPVM_IMPLEMENT_GET_ADDRESS(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, void* address) {
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-  sprintf(tmp_buffer, "%p", address);
+  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%p", address);
   SPVM_OBJ* object_address = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
   env->assign_object(env, stack, out, object_address);
 }
