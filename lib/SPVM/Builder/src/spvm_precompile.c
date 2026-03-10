@@ -88,6 +88,10 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
   // Add minimal definitions for standard library types and functions
   SPVM_STRING_BUFFER_add(string_buffer,
     "/* Minimal definitions for 64-bit systems */\n"
+    "#if defined(__MINGW32__) || defined(__MINGW64__)\n"
+    "  #define __USE_MINGW_ANSI_STDIO 1\n"
+    "#endif\n"
+    "/* Minimal definitions for 64-bit systems */\n"
     "#define NULL ((void*)0)\n"
     "struct _iobuf;\n"
     
