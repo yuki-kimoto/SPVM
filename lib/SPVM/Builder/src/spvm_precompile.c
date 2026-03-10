@@ -135,7 +135,7 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "  #define __builtin_expect(exp, c) (exp)\n"
     "#endif\n"
     "extern int snprintf(char *str, size_t size, const char *format, ...);\n"
-    "extern int fprintf(FILE *stream, const char *format, ...);\n"
+    "extern int fputs(const char *s, FILE *stream);\n"
     "extern size_t strlen(const char *str);\n"
     "extern void *memcpy(void *dest, const void *src, size_t n);\n"
     "extern void *memset(void *s, int c, size_t n);\n"
@@ -3177,11 +3177,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         // Print the breakpoint information
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
-        // Prepare stderr
+        // Prepare stderr and stack temporary buffer
         SPVM_STRING_BUFFER_add(string_buffer, "    FILE* spvm_stderr = env->spvm_stderr(env, stack);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);\n");
         
-        // Output debug message
-        SPVM_STRING_BUFFER_add(string_buffer, "    fprintf((FILE*)spvm_stderr, \"[Break Point]%s at %s line %d\\n\", \"");
+        // Format the debug message into the tmp_buffer
+        SPVM_STRING_BUFFER_add(string_buffer, "    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, \"[Break Point]%s at %s line %d\\n\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, method_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
         SPVM_STRING_BUFFER_add(string_buffer, file);
@@ -3189,9 +3190,13 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    fprintf((FILE*)spvm_stderr, \"Press Enter to continue...\");\n");
+        // Use fputs instead of fprintf (Fixed arguments!)
+        SPVM_STRING_BUFFER_add(string_buffer, "    fputs(tmp_buffer, (FILE*)spvm_stderr);\n");
         
-        // Prepare stdin and wait for Enter
+        // Print prompt
+        SPVM_STRING_BUFFER_add(string_buffer, "    fputs(\"Press Enter to continue...\", (FILE*)spvm_stderr);\n");
+        
+        // Input
         SPVM_STRING_BUFFER_add(string_buffer, "    FILE* spvm_stdin = env->spvm_stdin(env, stack);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t c;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    while ((c = fgetc((FILE*)spvm_stdin)) != '\\n' && c != EOF);\n");

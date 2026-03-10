@@ -1465,9 +1465,15 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         // Get the SPVM's stderr from the environment
         FILE* spvm_stderr = env->spvm_stderr(env, stack);
         
-        // Print the breakpoint information to SPVM's stderr
-        fprintf(spvm_stderr, "[Break Point]%s at %s line %d\n", method_abs_name, file, line);
-        fprintf(spvm_stderr, "Press Enter to continue...");
+        // Get stack temporary buffer
+        char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+        
+        // Format the breakpoint information to the temporary buffer
+        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "[Break Point]%s at %s line %d\n", method_abs_name, file, line);
+        
+        // Print the breakpoint information using fputs (Fixed arguments)
+        fputs(tmp_buffer, spvm_stderr);
+        fputs("Press Enter to continue...", spvm_stderr);
         
         // Get the SPVM's stdin from the environment
         FILE* spvm_stdin = env->spvm_stdin(env, stack);
