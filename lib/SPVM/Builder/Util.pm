@@ -724,10 +724,11 @@ sub build_precompile_header_content_c_source {
   
   my $builder_dir = &get_builder_dir;
   my $include_dir = "$builder_dir/include";
+  my $src_dir = "$builder_dir/src";
   
   my $spvm_native_h = "$include_dir/spvm_native.h";
   my $spvm_implement_h = "$include_dir/spvm_implement.h";
-  my $output_file = "$builder_dir/precompile_header_content.c";
+  my $output_file = "$src_dir/spvm_precompile_header_content.c";
 
   # Check if generation is needed
   my $need_generate = &need_generate({
