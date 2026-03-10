@@ -449,7 +449,7 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(SPVM_ENV* env, SPV
     char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
     snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], src_type_name, dist_type_name);
     
-    int32_t string_length = strlen(tmp_buffer);
+    int32_t string_length = env->c_strlen(env, stack, tmp_buffer);
     SPVM_OBJ* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -496,7 +496,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(SPVM_ENV*
     char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
     snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], src_type_name, dist_type_name);
     
-    int32_t string_length = strlen(tmp_buffer);
+    int32_t string_length = env->c_strlen(env, stack, tmp_buffer);
     SPVM_OBJ* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -611,7 +611,7 @@ static inline void SPVM_IMPLEMENT_STRING_COMPARISON(SPVM_ENV* env, SPVM_VALUE* s
     const char* bytes2 = env->get_chars(env, stack, object2);
     
     int32_t short_string_length = length1 < length2 ? length1 : length2;
-    int32_t retval = memcmp(bytes1, bytes2, short_string_length);
+    int32_t retval = env->c_memcmp(env, stack, bytes1, bytes2, short_string_length);
     if (retval) {
       cmp = retval < 0 ? -1 : 1;
     }
@@ -1223,7 +1223,7 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(SPVM_ENV* 
         char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
         snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], src_type_name, dist_type_name);
         
-        int32_t string_length = strlen(tmp_buffer);
+        int32_t string_length = env->c_strlen(env, stack, tmp_buffer);
         SPVM_OBJ* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
         env->set_exception(env, stack, exception);
         *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -2704,7 +2704,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(SPVM_ENV* env, 
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId8, value);
-  int32_t string_length = strlen(tmp_buffer);
+  int32_t string_length = env->c_strlen(env, stack, tmp_buffer);
   SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
@@ -2714,7 +2714,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_STRING(SPVM_ENV* env,
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId16, value);
-  int32_t string_length = strlen(tmp_buffer);
+  int32_t string_length = env->c_strlen(env, stack, tmp_buffer);
   SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
@@ -2724,7 +2724,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_STRING(SPVM_ENV* env, S
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId32, value);
-  int32_t string_length = strlen(tmp_buffer);
+  int32_t string_length = env->c_strlen(env, stack, tmp_buffer);
   SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
@@ -2734,7 +2734,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(SPVM_ENV* env, 
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId64, value);
-  int32_t string_length = strlen(tmp_buffer);
+  int32_t string_length = env->c_strlen(env, stack, tmp_buffer);
   SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
@@ -2744,7 +2744,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(SPVM_ENV* env,
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%g", value);
-  int32_t string_length = strlen(tmp_buffer);
+  int32_t string_length = env->c_strlen(env, stack, tmp_buffer);
   SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
@@ -2754,7 +2754,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(SPVM_ENV* env
   char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
   
   snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%g", value);
-  int32_t string_length = strlen(tmp_buffer);
+  int32_t string_length = env->c_strlen(env, stack, tmp_buffer);
   SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
@@ -2766,7 +2766,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE(SPVM_ENV* env, 
     const char* string = env->get_chars(env, stack, src_string);
     
     char *end;
-    num = strtoll(string, &end, 10);
+    num = env->c_strtoll(env, stack, string, &end, 10);
     if (num > INT8_MAX) {
       num = INT8_MAX;
     }
@@ -2785,7 +2785,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_SHORT(SPVM_ENV* env,
     const char* string = env->get_chars(env, stack, src_string);
     
     char *end;
-    num = strtoll(string, &end, 10);
+    num = env->c_strtoll(env, stack, string, &end, 10);
     if (num > INT16_MAX) {
       num = INT16_MAX;
     }
@@ -2804,7 +2804,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_INT(SPVM_ENV* env, S
     const char* string = env->get_chars(env, stack, src_string);
     
     char *end;
-    num = strtoll(string, &end, 10);
+    num = env->c_strtoll(env, stack, string, &end, 10);
     if (num > INT32_MAX) {
       num = INT32_MAX;
     }
@@ -2823,7 +2823,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_LONG(SPVM_ENV* env, 
     const char* string = env->get_chars(env, stack, src_string);
     
     char *end;
-    num = strtoll(string, &end, 10);
+    num = env->c_strtoll(env, stack, string, &end, 10);
   }
   
   *out = (int64_t)num;
@@ -2836,7 +2836,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_FLOAT(SPVM_ENV* env,
     const char* string = env->get_chars(env, stack, src_string);
     
     char *end;
-    num = strtof(string, &end);
+    num = env->c_strtof(env, stack, string, &end);
   }
   
   *out = (float)num;
@@ -2849,7 +2849,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_DOUBLE(SPVM_ENV* env
     const char* string = env->get_chars(env, stack, src_string);
     
     char *end;
-    num = strtod(string, &end);
+    num = env->c_strtod(env, stack, string, &end);
   }
   
   *out = (double)num;
@@ -2862,7 +2862,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(SPVM_ENV*
     const char* src_string_data = env->get_chars(env, stack, src_string);
     SPVM_OBJ* byte_array = env->new_byte_array_no_mortal(env, stack, src_string_length);
     int8_t* byte_array_data = env->get_elems_byte(env, stack, byte_array);
-    memcpy(byte_array_data, src_string_data, src_string_length);
+    env->c_memcpy(env, stack, byte_array_data, src_string_data, src_string_length);
     env->assign_object(env, stack, out, byte_array);
   }
   else {
