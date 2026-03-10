@@ -2960,6 +2960,60 @@ B<Examples:>
   SPVM_OBJ* obj_int = env->new_object_by_name(env, stack, "Int", &error_id);
   env->set_int_object_value(env, stack, obj_int, 10);
 
+=head2 c_strlen
+
+C<size_t (*c_strlen)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* str);>
+
+A wrapper for the C standard function L<strlen|https://linux.die.net/man/3/strlen>.
+
+=head2 c_memcpy
+
+C<void* (*c_memcpy)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* dest, const void* src, size_t n);>
+
+A wrapper for the C standard function L<memcpy|https://linux.die.net/man/3/memcpy>.
+
+=head2 c_memset
+
+C<void* (*c_memset)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* s, int c, size_t n);>
+
+A wrapper for the C standard function L<memset|https://linux.die.net/man/3/memset>.
+
+=head2 c_memcmp
+
+C<int (*c_memcmp)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const void* s1, const void* s2, size_t n);>
+
+A wrapper for the C standard function L<memcmp|https://linux.die.net/man/3/memcmp>.
+
+=head2 c_strtoll
+
+C<long long (*c_strtoll)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* str, char** endptr, int base);>
+
+A wrapper for the C standard function L<strtoll|https://linux.die.net/man/3/strtoll>.
+
+=head2 c_strtof
+
+C<float (*c_strtof)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* str, char** endptr);>
+
+A wrapper for the C standard function L<strtof|https://linux.die.net/man/3/strtof>.
+
+=head2 c_strtod
+
+C<double (*c_strtod)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* str, char** endptr);>
+
+A wrapper for the C standard function L<strtod|https://linux.die.net/man/3/strtod>.
+
+=head2 c_fputs
+
+C<int (*c_fputs)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* s, void* stream);>
+
+A wrapper for the C standard function L<fputs|https://linux.die.net/man/3/fputs>.
+
+=head2 c_fgetc
+
+C<int (*c_fgetc)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* stream);>
+
+A wrapper for the C standard function L<fgetc|https://linux.die.net/man/3/fgetc>.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
