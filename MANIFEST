@@ -197,6 +197,7 @@ lib/SPVM/Builder/src/spvm_opcode.c
 lib/SPVM/Builder/src/spvm_opcode_builder.c
 lib/SPVM/Builder/src/spvm_opcode_list.c
 lib/SPVM/Builder/src/spvm_precompile.c
+lib/SPVM/Builder/src/spvm_precompile_header_content.c
 lib/SPVM/Builder/src/spvm_runtime.c
 lib/SPVM/Builder/src/spvm_strerror.c
 lib/SPVM/Builder/src/spvm_string.c
