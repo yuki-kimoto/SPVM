@@ -104,6 +104,24 @@ C<int (*c_fgetc)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environmen
 
 A wrapper for the C standard function L<fgetc|https://linux.die.net/man/3/fgetc>.
 
+=head2 c_snprintf_len
+
+C<int32_t (*c_snprintf_len)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, char* s, size_t n, const char* format, L<SPVM_VALUE* args|SPVM::Document::NativeClass/"Runtime Stack">, int32_t args_length);>
+
+A wrapper for the C standard function L<snprintf|https://linux.die.net/man/3/snprintf>.
+
+This function receives arguments as an array of L<SPVM_VALUE|SPVM::Document::NativeClass/"Runtime Stack"> instead of variadic arguments. 
+
+The format specifiers in the C<format> string must match the types of the values stored in C<args>. 
+
+For example:
+* C<%d>, C<%x>: Expects an C<ival> (C<int32_t>).
+* C<%ld>, C<%lld> (or C<PRId64>): Expects a C<lval> (C<int64_t>).
+* C<%f>, C<%g>: Expects a C<dval> (C<double>).
+* C<%s>, C<%p>: Expects an C<address> (C<void*>).
+
+Returns the number of characters that would have been written if C<n> had been sufficiently large, not counting the terminating null character.
+
 =head1 Native Internal API IDs
 
   0 get_ref_count
