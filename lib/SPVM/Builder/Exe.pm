@@ -819,23 +819,65 @@ EOS
   return $source;
 }
 
+# Create C string literal for MSVC/TCC compatibility
+sub create_c_string_literal {
+  my ($content) = @_;
+  
+  return 'NULL' unless defined $content;
+
+  my @chunks;
+  my $current_chunk = '';
+  my $count = 0;
+
+  {
+    use bytes;
+    for my $i (0 .. length($content) - 1) {
+      my $char = substr($content, $i, 1);
+      my $escaped;
+      
+      # Escape characters
+      if ($char eq "\\") { $escaped = "\\\\"; }
+      elsif ($char eq "\"") { $escaped = "\\\""; }
+      elsif ($char =~ /[[:print:]]/) { $escaped = $char; }
+      else { $escaped = sprintf("\\%03o", ord($char)); }
+
+      $current_chunk .= $escaped;
+      $count++;
+
+      # Split for MSVC limit
+      if ($count >= 100) {
+        push @chunks, qq(      "$current_chunk"\n);
+        $current_chunk = '';
+        $count = 0;
+      }
+    }
+    push @chunks, qq(      "$current_chunk"\n) if length $current_chunk;
+  }
+  
+  return join('', @chunks);
+}
+
 sub create_bootstrap_compile_source {
   my ($self) = @_;
   
   # Builder
   my $builder = $self->builder;
   
+  # Namespace
   my $boostrap_name_space = $self->create_boostrap_name_space;
   
   my $source = '';
   
+  # Start function
   $source .= <<"EOS";
 static void compile_all_classes(SPVM_ENV* env) {
   
+  /* Get compiler */
   void* compiler = env->api->runtime->get_compiler(env->runtime);
   
 EOS
   
+  # User defined classes
   my $class_names = $self->get_user_defined_basic_type_names;
   
   my $compiler = $self->compiler;
@@ -851,66 +893,40 @@ EOS
     
     $source_class_file .= qq|  {\n|;
     
+    # Add class file
     $source_class_file .= qq|    env->api->compiler->add_class_file(compiler, "$class_name");\n|;
     
     $source_class_file .= qq|    void* class_file = env->api->compiler->get_class_file(compiler, "$class_name");\n|;
     
+    # Set relative file path
     if (defined $class_file_rel_file) {
       $source_class_file .= qq|    env->api->class_file->set_rel_file(compiler, class_file, "$class_file_rel_file");\n|;
     }
     
+    # Set content as C string literal
     if (defined $class_file_content) {
-      my $content_raw = $class_file_content;
-      my @chunks;
-      my $current_chunk = '';
-      my $count = 0;
-
-      {
-        use bytes;
-        for my $i (0 .. length($content_raw) - 1) {
-          my $char = substr($content_raw, $i, 1);
-          my $escaped;
-          
-          # Escape logic
-          if ($char eq "\\") { $escaped = "\\\\"; }
-          elsif ($char eq "\"") { $escaped = "\\\""; }
-          elsif ($char =~ /[[:print:]]/) { $escaped = $char; }
-          else { $escaped = sprintf("\\%03o", ord($char)); }
-
-          $current_chunk .= $escaped;
-          $count++;
-
-          # Split every 100 characters (safe limit)
-          if ($count >= 100) {
-            push @chunks, qq(      "$current_chunk"\n);
-            $current_chunk = '';
-            $count = 0;
-          }
-        }
-        push @chunks, qq(      "$current_chunk"\n) if length $current_chunk;
-      }
-      
-      my $content_literal = join('', @chunks);
+      my $content_literal = create_c_string_literal($class_file_content);
       $source_class_file .= qq|    env->api->class_file->set_content(compiler, class_file, \n$content_literal    );\n|;
     }
     
+    # Set content length
     $source_class_file .= qq|    env->api->class_file->set_content_length(compiler, class_file, $class_file_content_length);\n|;
-      
+    
     $source_class_file .= qq|  }\n|;
     
     $source .= $source_class_file;
   }
   
+  # Set debug info
   $source .= qq|  env->api->compiler->set_start_file(compiler, __FILE__);\n|;
-  
   $source .= qq|  env->api->compiler->set_start_line(compiler, __LINE__ + 1);\n|;
   
+  # Compile
   my $start_class_name = $self->{class_name};
-  
   $source .= qq|  int32_t error_id = env->api->compiler->compile(compiler, \"$start_class_name\");\n|;
   
+  # Error handling
   $source .= qq|  void* runtime = env->api->compiler->get_runtime(compiler);\n|;
-  
   $source .= qq|  FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(runtime);\n|;
   $source .= qq|  if (error_id != 0) {\n|;
   $source .= qq|    fprintf(spvm_stderr, "[Unexpected Compile Error]%s.", env->api->compiler->get_error_message(compiler, 0));\n|;
