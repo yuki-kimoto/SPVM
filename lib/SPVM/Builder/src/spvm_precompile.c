@@ -99,18 +99,20 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "typedef unsigned short uint16_t;\n"
     "typedef unsigned int uint32_t;\n\n"
 
-    "#if defined(_WIN64)\n"
-    "  typedef long long int64_t;\n" // Windows 64-bit uses long long for 64-bit int
-    "  typedef unsigned long long uint64_t;\n"
-    "  typedef long long intptr_t;\n"
-    "  typedef unsigned long long size_t;\n"
-    "  #define PRId64 \"lld\"\n"
-    "#else\n"
-    "  typedef long int64_t;\n" // Unix 64-bit (LP64) uses long for 64-bit int
+    "#if defined(__LP64__)\n"
+    "  /* LP64 System (Linux, macOS, etc.) */\n"
+    "  typedef long int64_t;\n"
     "  typedef unsigned long uint64_t;\n"
     "  typedef long intptr_t;\n"
     "  typedef unsigned long size_t;\n"
     "  #define PRId64 \"ld\"\n"
+    "#else\n"
+    "  /* LLP64 System (Windows 64-bit) */\n"
+    "  typedef long long int64_t;\n"
+    "  typedef unsigned long long uint64_t;\n"
+    "  typedef long long intptr_t;\n"
+    "  typedef unsigned long long size_t;\n"
+    "  #define PRId64 \"lld\"\n"
     "#endif\n\n"
 
     "#define PRId8 \"d\"\n"
