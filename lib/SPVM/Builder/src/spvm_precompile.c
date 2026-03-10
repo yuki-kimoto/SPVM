@@ -144,6 +144,9 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "extern long long strtoll(const char *str, char **endptr, int base);\n"
     "extern float strtof(const char *str, char **endptr);\n"
     "extern double strtod(const char *str, char **endptr);\n\n"
+    "#define EOF (-1)\n"
+    "extern int fprintf(FILE *stream, const char *format, ...);\n"
+    "extern int fgetc(FILE *stream);\n"
   );
 
   // Add SPVM specific headers
