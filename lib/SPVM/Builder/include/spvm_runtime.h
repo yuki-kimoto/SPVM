@@ -38,6 +38,8 @@ struct spvm_runtime {
   FILE* spvm_stdout;
   
   FILE* spvm_stderr;
+  
+  const char* precompile_inline_header;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
