@@ -87,14 +87,8 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
 
   // Add minimal definitions for standard library types and functions
   SPVM_STRING_BUFFER_add(string_buffer,
-    "/* Minimal definitions for 64-bit systems */\n"
-    "#if defined(__MINGW32__) || defined(__MINGW64__)\n"
-    "  #define __USE_MINGW_ANSI_STDIO 1\n"
-    "#endif\n"
-    "/* Minimal definitions for 64-bit systems */\n"
     "#define NULL ((void*)0)\n"
     "struct _iobuf;\n"
-    
     "typedef struct _iobuf FILE;\n\n"
     "typedef signed char int8_t;\n"
     "typedef short int16_t;\n"
@@ -131,7 +125,6 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "#define INT64_MIN (-9223372036854775807LL - 1)\n"
     "#define INT64_MAX 9223372036854775807LL\n"
     "#define EOF (-1)\n"
-    "extern int snprintf(char *str, size_t size, const char *format, ...);\n"
   );
 
   // Add SPVM specific headers
@@ -3167,18 +3160,30 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         // Prepare stderr and stack temporary buffer
         SPVM_STRING_BUFFER_add(string_buffer, "    FILE* spvm_stderr = env->spvm_stderr(env, stack);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);\n");
         
-        // Format the debug message into the tmp_buffer
-        SPVM_STRING_BUFFER_add(string_buffer, "    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, \"[Break Point]%s at %s line %d\\n\", \"");
+        // Prepare arguments for c_snprintf_len in the generated code
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE snprintf_args[3];\n");
+        
+        // method_abs_name
+        SPVM_STRING_BUFFER_add(string_buffer, "    snprintf_args[0].address = (void*)\"");
         SPVM_STRING_BUFFER_add(string_buffer, method_abs_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-        SPVM_STRING_BUFFER_add(string_buffer, file);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, line);
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        // Use fputs instead of fprintf (Fixed arguments!)
+        // file
+        SPVM_STRING_BUFFER_add(string_buffer, "    snprintf_args[1].address = (void*)\"");
+        SPVM_STRING_BUFFER_add(string_buffer, file);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        // line
+        SPVM_STRING_BUFFER_add(string_buffer, "    snprintf_args[2].ival = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, line);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        // Call c_snprintf_len (replaced snprintf)
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, \"[Break Point]%s at %s line %d\\n\", snprintf_args, 3);\n");
+        
+        // Use fputs instead of fprintf
         SPVM_STRING_BUFFER_add(string_buffer, "    env->api->internal->c_fputs(env, stack, tmp_buffer, (FILE*)spvm_stderr);\n");
         
         // Print prompt

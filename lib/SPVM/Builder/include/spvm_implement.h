@@ -86,12 +86,15 @@ enum {
 
 static inline SPVM_NATIVE_BASIC_TYPE* SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id) {
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
   SPVM_NATIVE_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
   
   if (!basic_type) {
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_BASIC_TYPE_NOT_FOUND], basic_type_name);
+    SPVM_VALUE args[1];
+    args[0].address = (void*)basic_type_name;
+    env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_BASIC_TYPE_NOT_FOUND], args, 1);
+    
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -102,12 +105,16 @@ static inline SPVM_NATIVE_BASIC_TYPE* SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(SPVM
 
 static inline SPVM_NATIVE_FIELD* SPVM_IMPLEMENT_GET_FIELD_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, int32_t* error_id) {
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
   SPVM_NATIVE_FIELD* field = env->get_field_static(env, stack, basic_type_name, field_name);
   
   if (!field) {
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_FIELD_NOT_FOUND], basic_type_name, field_name);
+    SPVM_VALUE args[2];
+    args[0].address = (void*)basic_type_name;
+    args[1].address = (void*)field_name;
+    env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_FIELD_NOT_FOUND], args, 2);
+    
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -119,12 +126,16 @@ static inline SPVM_NATIVE_FIELD* SPVM_IMPLEMENT_GET_FIELD_BY_NAME(SPVM_ENV* env,
 
 static inline int32_t SPVM_IMPLEMENT_GET_FIELD_OFFSET_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, int32_t* error_id) {
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
   SPVM_NATIVE_FIELD* field = env->get_field_static(env, stack, basic_type_name, field_name);
   
   if (!field) {
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_FIELD_NOT_FOUND], basic_type_name, field_name);
+    SPVM_VALUE args[2];
+    args[0].address = (void*)basic_type_name;
+    args[1].address = (void*)field_name;
+    env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_FIELD_NOT_FOUND], args, 2);
+    
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -138,12 +149,16 @@ static inline int32_t SPVM_IMPLEMENT_GET_FIELD_OFFSET_BY_NAME(SPVM_ENV* env, SPV
 
 static inline int32_t SPVM_IMPLEMENT_GET_FIELD_EXISTS_OFFSET_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, int32_t* error_id) {
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
   SPVM_NATIVE_FIELD* field = env->get_field_static(env, stack, basic_type_name, field_name);
   
   if (!field) {
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_FIELD_NOT_FOUND], basic_type_name, field_name);
+    SPVM_VALUE args[2];
+    args[0].address = (void*)basic_type_name;
+    args[1].address = (void*)field_name;
+    env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_FIELD_NOT_FOUND], args, 2);
+    
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -157,12 +172,16 @@ static inline int32_t SPVM_IMPLEMENT_GET_FIELD_EXISTS_OFFSET_BY_NAME(SPVM_ENV* e
 
 static inline int32_t SPVM_IMPLEMENT_GET_FIELD_EXISTS_BIT_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, int32_t* error_id) {
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
   SPVM_NATIVE_FIELD* field = env->get_field_static(env, stack, basic_type_name, field_name);
   
   if (!field) {
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_FIELD_NOT_FOUND], basic_type_name, field_name);
+    SPVM_VALUE args[2];
+    args[0].address = (void*)basic_type_name;
+    args[1].address = (void*)field_name;
+    env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_FIELD_NOT_FOUND], args, 2);
+    
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -176,12 +195,16 @@ static inline int32_t SPVM_IMPLEMENT_GET_FIELD_EXISTS_BIT_BY_NAME(SPVM_ENV* env,
 
 static inline SPVM_NATIVE_CLASS_VAR* SPVM_IMPLEMENT_GET_CLASS_VAR_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error_id) {
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
   SPVM_NATIVE_CLASS_VAR* class_var = env->get_class_var(env, stack, basic_type_name, class_var_name);
   
   if (!class_var) {
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_CLASS_VAR_NOT_FOUND], basic_type_name, class_var_name);
+    SPVM_VALUE args[2];
+    args[0].address = (void*)basic_type_name;
+    args[1].address = (void*)class_var_name;
+    env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_CLASS_VAR_NOT_FOUND], args, 2);
+    
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -192,12 +215,16 @@ static inline SPVM_NATIVE_CLASS_VAR* SPVM_IMPLEMENT_GET_CLASS_VAR_BY_NAME(SPVM_E
 
 static inline SPVM_NATIVE_METHOD* SPVM_IMPLEMENT_GET_METHOD_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t* error_id) {
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
   SPVM_NATIVE_METHOD* method = env->get_method(env, stack, basic_type_name, method_name);
   
   if (!method) {
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_METHOD_NOT_FOUND], basic_type_name, method_name);
+    SPVM_VALUE args[2];
+    args[0].address = (void*)basic_type_name;
+    args[1].address = (void*)method_name;
+    env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ERROR_METHOD_NOT_FOUND], args, 2);
+    
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -446,10 +473,14 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(SPVM_ENV* env, SPV
     const char* dist_basic_type_name = env->api->basic_type->get_name(env->runtime, dist_basic_type);
     SPVM_OBJ* obj_dist_type_name = env->get_compile_type_name(env, stack, dist_basic_type_name, dist_type_dimension, 0);
     const char* dist_type_name = env->get_chars(env, stack, obj_dist_type_name);
-    char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], src_type_name, dist_type_name);
     
-    int32_t string_length = env->api->internal->c_strlen(env, stack, tmp_buffer);
+    char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+    
+    SPVM_VALUE args[2];
+    args[0].address = (void*)src_type_name;
+    args[1].address = (void*)dist_type_name;
+    int32_t string_length = env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], args, 2);
+    
     SPVM_OBJ* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -493,10 +524,14 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_ANY_OBJECT_TO_STRING(SPVM_ENV*
     const char* dist_basic_type_name = "string";
     SPVM_OBJ* obj_dist_type_name = env->get_compile_type_name(env, stack, dist_basic_type_name, 0, 0);
     const char* dist_type_name = env->get_chars(env, stack, obj_dist_type_name);
-    char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], src_type_name, dist_type_name);
     
-    int32_t string_length = env->api->internal->c_strlen(env, stack, tmp_buffer);
+    char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+    
+    SPVM_VALUE args[2];
+    args[0].address = (void*)src_type_name;
+    args[1].address = (void*)dist_type_name;
+    int32_t string_length = env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], args, 2);
+    
     SPVM_OBJ* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -1220,10 +1255,14 @@ static inline void SPVM_IMPLEMENT_SET_ARRAY_ELEMENT_OBJECT_CHECK_TYPE(SPVM_ENV* 
         int32_t dist_type_dimension = env->get_object_type_dimension(env, stack, array) - 1;
         SPVM_OBJ* obj_dist_type_name = env->get_compile_type_name(env, stack, dist_basic_type_name, dist_type_dimension, 0);
         const char* dist_type_name = env->get_chars(env, stack, obj_dist_type_name);
-        char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], src_type_name, dist_type_name);
         
-        int32_t string_length = env->api->internal->c_strlen(env, stack, tmp_buffer);
+        char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+        
+        SPVM_VALUE args[2];
+        args[0].address = (void*)src_type_name;
+        args[1].address = (void*)dist_type_name;
+        int32_t string_length = env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_ELEMENT_ASSIGN_NOT_SATISFY_ASSIGNMENT_REQUIREMENT], args, 2);
+        
         SPVM_OBJ* exception = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
         env->set_exception(env, stack, exception);
         *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -1672,9 +1711,13 @@ static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 }
 
 static inline void SPVM_IMPLEMENT_GET_ADDRESS(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, void* address) {
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
-  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%p", address);
-  SPVM_OBJ* object_address = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
+  
+  SPVM_VALUE args[1];
+  args[0].address = address;
+  int32_t string_length = env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%p", args, 1);
+  
+  SPVM_OBJ* object_address = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, object_address);
 }
 
@@ -2700,61 +2743,67 @@ static inline void SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_DOUBLE(SPVM_ENV* env, S
 #define SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_FLOAT(out, in) (out = (float)in)
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int8_t value) {
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  SPVM_VALUE args[1];
+  args[0].ival = (int32_t)value;
+  int32_t string_length = env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId8, args, 1);
   
-  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId8, value);
-  int32_t string_length = env->api->internal->c_strlen(env, stack, tmp_buffer);
   SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int16_t value) {
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  SPVM_VALUE args[1];
+  args[0].ival = (int32_t)value;
+  int32_t string_length = env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId16, args, 1);
   
-  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId16, value);
-  int32_t string_length = env->api->internal->c_strlen(env, stack, tmp_buffer);
   SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int32_t value) {
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  SPVM_VALUE args[1];
+  args[0].ival = value;
+  int32_t string_length = env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId32, args, 1);
   
-  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId32, value);
-  int32_t string_length = env->api->internal->c_strlen(env, stack, tmp_buffer);
   SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int64_t value) {
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  SPVM_VALUE args[1];
+  args[0].lval = value;
+  int32_t string_length = env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId64, args, 1);
   
-  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%" PRId64, value);
-  int32_t string_length = env->api->internal->c_strlen(env, stack, tmp_buffer);
   SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, float value) {
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  SPVM_VALUE args[1];
+  args[0].dval = (double)value;
+  int32_t string_length = env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%g", args, 1);
   
-  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%g", value);
-  int32_t string_length = env->api->internal->c_strlen(env, stack, tmp_buffer);
   SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, double value) {
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
-  char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+  SPVM_VALUE args[1];
+  args[0].dval = value;
+  int32_t string_length = env->api->internal->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%g", args, 1);
   
-  snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "%g", value);
-  int32_t string_length = env->api->internal->c_strlen(env, stack, tmp_buffer);
   SPVM_OBJ* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
 }
