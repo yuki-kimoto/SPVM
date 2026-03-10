@@ -638,7 +638,7 @@ struct spvm_api_internal {
   double (*c_strtod)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr);
   int (*c_fputs)(SPVM_ENV* env, SPVM_VALUE* stack, const char* s, void* stream);
   int (*c_fgetc)(SPVM_ENV* env, SPVM_VALUE* stack, void* stream);
-
+  int (*c_snprintf_len)(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t size, const char* format, SPVM_VALUE* args, int32_t args_length);
 };
 
 struct spvm_api_type {

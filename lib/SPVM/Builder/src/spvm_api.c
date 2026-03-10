@@ -7575,3 +7575,123 @@ int SPVM_API_c_fgetc(SPVM_ENV* env, SPVM_VALUE* stack, void* stream) {
   return fgetc((FILE*)stream);
 }
 
+int SPVM_API_c_snprintf_len(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t size, const char* format, SPVM_VALUE* args, int32_t args_length) {
+  /* This implementation parses the format string and maps SPVM_VALUE args to snprintf. */
+  /* It supports %d, %u, %x, %p, %f, %g, %s, and length modifiers. */
+  
+  if (!format) {
+    return -1;
+  }
+
+  int32_t total_len = 0;
+  int32_t arg_index = 0;
+  const char* p = format;
+  char* dst = str;
+  size_t left = size;
+
+  while (*p) {
+    if (*p == '%' && *(p + 1) != '%') {
+      /* Start parsing format specifier */
+      const char* start = p;
+      p++; /* skip '%' */
+
+      /* Skip flags, width, precision */
+      while (*p && (strchr("-+ #0123456789.", *p))) {
+        p++;
+      }
+
+      /* Check length modifiers */
+      int32_t is_long_long = 0;
+      if (*p == 'l') {
+        p++;
+        if (*p == 'l') {
+          is_long_long = 1;
+          p++;
+        }
+      } else if (*p == 'h') {
+        p++;
+        if (*p == 'h') p++;
+      } else if (*p == 'z' || *p == 't' || *p == 'L') {
+        p++;
+      }
+
+      /* Get type specifier */
+      char type = *p;
+      if (type) p++;
+
+      /* Check argument bounds */
+      if (arg_index >= args_length) {
+        return -1;
+      }
+
+      /* Extract a single specifier like "%.2f" into a temporary buffer */
+      char sub_fmt[64];
+      size_t fmt_len = p - start;
+      if (fmt_len > 63) fmt_len = 63;
+      memcpy(sub_fmt, start, fmt_len);
+      sub_fmt[fmt_len] = '\0';
+
+      int32_t written = 0;
+      SPVM_VALUE value = args[arg_index++];
+
+      /* Call snprintf for this single argument using the correct union members */
+      if (type == 's') {
+        /* Use .address for char* strings */
+        written = snprintf(dst, left, sub_fmt, (char*)value.address);
+      } else if (type == 'd' || type == 'i') {
+        /* Use .lval for PRId64/long long, else .ival */
+        if (is_long_long) written = snprintf(dst, left, sub_fmt, value.lval);
+        else written = snprintf(dst, left, sub_fmt, value.ival);
+      } else if (type == 'u' || type == 'x' || type == 'X' || type == 'o') {
+        if (is_long_long) written = snprintf(dst, left, sub_fmt, (unsigned long long)value.lval);
+        else written = snprintf(dst, left, sub_fmt, (unsigned int)value.ival);
+      } else if (type == 'f' || type == 'g' || type == 'G' || type == 'e' || type == 'E') {
+        /* Both float and double are passed as double in variadic calls */
+        written = snprintf(dst, left, sub_fmt, value.dval);
+      } else if (type == 'p') {
+        /* Use .address for pointer addresses */
+        written = snprintf(dst, left, sub_fmt, value.address);
+      } else if (type == 'c') {
+        written = snprintf(dst, left, sub_fmt, value.ival);
+      } else {
+        /* Unsupported or invalid specifier */
+        return -1;
+      }
+
+      if (written < 0) return -1;
+      total_len += written;
+      
+      /* Update write pointer and remaining size */
+      if ((size_t)written < left) {
+        dst += written;
+        left -= written;
+      } else {
+        if (left > 0) {
+          dst += (left - 1);
+          left = 1;
+        }
+      }
+    } else {
+      /* Handle literal characters and "%%" */
+      if (*p == '%' && *(p + 1) == '%') p++;
+      
+      if (left > 1) {
+        *dst++ = *p;
+        left--;
+      }
+      p++;
+      total_len++;
+    }
+  }
+
+  /* Ensure null-termination if buffer size > 0 */
+  if (size > 0) {
+    if (left > 0) {
+      *dst = '\0';
+    } else {
+      str[size - 1] = '\0';
+    }
+  }
+
+  return total_len;
+}
