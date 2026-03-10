@@ -1677,12 +1677,12 @@ static inline void SPVM_IMPLEMENT_GET_ADDRESS(SPVM_ENV* env, SPVM_VALUE* stack, 
   env->assign_object(env, stack, out, object_address);
 }
 
-#define SPVM_IMPLEMENT_REF_BYTE(out, in) (out = in)
-#define SPVM_IMPLEMENT_REF_SHORT(out, in) (out = in)
-#define SPVM_IMPLEMENT_REF_INT(out, in) (out = in)
-#define SPVM_IMPLEMENT_REF_LONG(out, in) (out = in)
-#define SPVM_IMPLEMENT_REF_FLOAT(out, in) (out = in)
-#define SPVM_IMPLEMENT_REF_DOUBLE(out, in) (out = in)
+#define SPVM_IMPLEMENT_REF_BYTE(out, in) (out = (void*)(in))
+#define SPVM_IMPLEMENT_REF_SHORT(out, in) (out = (void*)(in))
+#define SPVM_IMPLEMENT_REF_INT(out, in) (out = (void*)(in))
+#define SPVM_IMPLEMENT_REF_LONG(out, in) (out = (void*)(in))
+#define SPVM_IMPLEMENT_REF_FLOAT(out, in) (out = (void*)(in))
+#define SPVM_IMPLEMENT_REF_DOUBLE(out, in) (out = (void*)(in))
 
 static inline void SPVM_IMPLEMENT_GET_DEREF_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, int8_t** in, int32_t* error_id) {
   

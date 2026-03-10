@@ -1529,27 +1529,27 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_REF_BYTE: {
-        SPVM_IMPLEMENT_REF_BYTE(*(int8_t**)&ref_vars[opcode->operand0], &byte_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_REF_BYTE(ref_vars[opcode->operand0], (int8_t*)&byte_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_REF_SHORT: {
-        SPVM_IMPLEMENT_REF_SHORT(*(int16_t**)&ref_vars[opcode->operand0], &short_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_REF_SHORT(ref_vars[opcode->operand0], (int16_t*)&short_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_REF_INT: {
-        SPVM_IMPLEMENT_REF_INT(*(int32_t**)&ref_vars[opcode->operand0], &int_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_REF_INT(ref_vars[opcode->operand0], (int32_t*)&int_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_REF_LONG: {
-        SPVM_IMPLEMENT_REF_LONG(*(int64_t**)&ref_vars[opcode->operand0], &long_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_REF_LONG(ref_vars[opcode->operand0], (int64_t*)&long_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_REF_FLOAT: {
-        SPVM_IMPLEMENT_REF_FLOAT(*(float**)&ref_vars[opcode->operand0], &float_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_REF_FLOAT(ref_vars[opcode->operand0], (float*)&float_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_REF_DOUBLE: {
-        SPVM_IMPLEMENT_REF_DOUBLE(*(double**)&ref_vars[opcode->operand0], &double_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_REF_DOUBLE(ref_vars[opcode->operand0], (double*)&double_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_DEREF_BYTE: {
@@ -1902,62 +1902,62 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_DEREF_BYTE: {
         int32_t field_index = opcode->operand2;
-        SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_BYTE(env, stack, &byte_vars[opcode->operand0], *(int8_t**)&ref_vars[opcode->operand1], field_index, &error_id);
+        SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_BYTE(env, stack, &byte_vars[opcode->operand0], (int8_t*)ref_vars[opcode->operand1], field_index, &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_DEREF_SHORT: {
         int32_t field_index = opcode->operand2;
-        SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_SHORT(env, stack, &short_vars[opcode->operand0], *(int16_t**)&ref_vars[opcode->operand1], field_index, &error_id);
+        SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_SHORT(env, stack, &short_vars[opcode->operand0], (int16_t*)ref_vars[opcode->operand1], field_index, &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_DEREF_INT: {
         int32_t field_index = opcode->operand2;
-        SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_INT(env, stack, &int_vars[opcode->operand0], *(int32_t**)&ref_vars[opcode->operand1], field_index, &error_id);
+        SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_INT(env, stack, &int_vars[opcode->operand0], (int32_t*)ref_vars[opcode->operand1], field_index, &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_DEREF_LONG: {
         int32_t field_index = opcode->operand2;
-        SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_LONG(env, stack, &long_vars[opcode->operand0], *(int64_t**)&ref_vars[opcode->operand1], field_index, &error_id);
+        SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_LONG(env, stack, &long_vars[opcode->operand0], (int64_t*)ref_vars[opcode->operand1], field_index, &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_DEREF_FLOAT: {
         int32_t field_index = opcode->operand2;
-        SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_FLOAT(env, stack, &float_vars[opcode->operand0], *(float**)&ref_vars[opcode->operand1], field_index, &error_id);
+        SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_FLOAT(env, stack, &float_vars[opcode->operand0], (float*)ref_vars[opcode->operand1], field_index, &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_MULNUM_FIELD_DEREF_DOUBLE: {
         int32_t field_index = opcode->operand2;
-        SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_DOUBLE(env, stack, &double_vars[opcode->operand0], *(double**)&ref_vars[opcode->operand1], field_index, &error_id);
+        SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_DOUBLE(env, stack, &double_vars[opcode->operand0], (double*)ref_vars[opcode->operand1], field_index, &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_FIELD_DEREF_BYTE: {
         int32_t field_index = opcode->operand2;
-        SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_BYTE(env, stack, *(int8_t**)&ref_vars[opcode->operand0], field_index, byte_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_BYTE(env, stack, (int8_t*)ref_vars[opcode->operand0], field_index, byte_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_FIELD_DEREF_SHORT: {
         int32_t field_index = opcode->operand2;
-        SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_SHORT(env, stack, *(int16_t**)&ref_vars[opcode->operand0], field_index, short_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_SHORT(env, stack, (int16_t*)ref_vars[opcode->operand0], field_index, short_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_FIELD_DEREF_INT: {
         int32_t field_index = opcode->operand2;
-        SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_INT(env, stack, *(int32_t**)&ref_vars[opcode->operand0], field_index, int_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_INT(env, stack, (int32_t*)ref_vars[opcode->operand0], field_index, int_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_FIELD_DEREF_LONG: {
         int32_t field_index = opcode->operand2;
-        SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_LONG(env, stack, *(int64_t**)&ref_vars[opcode->operand0], field_index, long_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_LONG(env, stack, (int64_t*)ref_vars[opcode->operand0], field_index, long_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_FIELD_DEREF_FLOAT: {
         int32_t field_index = opcode->operand2;
-        SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_FLOAT(env, stack, *(float**)&ref_vars[opcode->operand0], field_index, float_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_FLOAT(env, stack, (float*)ref_vars[opcode->operand0], field_index, float_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_MULNUM_FIELD_DEREF_DOUBLE: {
         int32_t field_index = opcode->operand2;
-        SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_DOUBLE(env, stack, *(double**)&ref_vars[opcode->operand0], field_index, double_vars[opcode->operand1], &error_id);
+        SPVM_IMPLEMENT_SET_MULNUM_FIELD_DEREF_DOUBLE(env, stack, (double*)ref_vars[opcode->operand0], field_index, double_vars[opcode->operand1], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_SHORT: {
