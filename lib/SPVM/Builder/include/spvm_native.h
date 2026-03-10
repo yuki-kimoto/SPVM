@@ -15,65 +15,47 @@
   #include "spvm_builtin_expect.h"
 #endif
 
-#ifdef SPVM_NATIVE_TYPE_STRICT
-  struct spvm_native_allocator;
-  typedef struct spvm_native_allocator SPVM_NATIVE_ALLOCATOR;
+struct spvm_native_allocator;
+typedef struct spvm_native_allocator SPVM_NATIVE_ALLOCATOR;
 
-  struct spvm_native_string_buffer;
-  typedef struct spvm_native_string_buffer SPVM_NATIVE_STRING_BUFFER;
+struct spvm_native_string_buffer;
+typedef struct spvm_native_string_buffer SPVM_NATIVE_STRING_BUFFER;
 
-  struct spvm_native_compiler;
-  typedef struct spvm_native_compiler SPVM_NATIVE_COMPILER;
+struct spvm_native_compiler;
+typedef struct spvm_native_compiler SPVM_NATIVE_COMPILER;
 
-  struct spvm_native_class_file;
-  typedef struct spvm_native_class_file SPVM_NATIVE_CLASS_FILE;
+struct spvm_native_class_file;
+typedef struct spvm_native_class_file SPVM_NATIVE_CLASS_FILE;
 
-  struct spvm_native_runtime;
-  typedef struct spvm_native_runtime SPVM_NATIVE_RUNTIME;
+struct spvm_native_runtime;
+typedef struct spvm_native_runtime SPVM_NATIVE_RUNTIME;
 
-  struct spvm_native_basic_type;
-  typedef struct spvm_native_basic_type SPVM_NATIVE_BASIC_TYPE;
+struct spvm_native_basic_type;
+typedef struct spvm_native_basic_type SPVM_NATIVE_BASIC_TYPE;
 
-  struct spvm_native_class_var;
-  typedef struct spvm_native_class_var SPVM_NATIVE_CLASS_VAR;
+struct spvm_native_class_var;
+typedef struct spvm_native_class_var SPVM_NATIVE_CLASS_VAR;
 
-  struct spvm_native_field;
-  typedef struct spvm_native_field SPVM_NATIVE_FIELD;
+struct spvm_native_field;
+typedef struct spvm_native_field SPVM_NATIVE_FIELD;
 
-  struct spvm_native_method;
-  typedef struct spvm_native_method SPVM_NATIVE_METHOD;
+struct spvm_native_method;
+typedef struct spvm_native_method SPVM_NATIVE_METHOD;
 
-  struct spvm_native_arg;
-  typedef struct spvm_native_arg SPVM_NATIVE_ARG;
+struct spvm_native_arg;
+typedef struct spvm_native_arg SPVM_NATIVE_ARG;
 
-  struct spvm_native_mutex;
-  typedef struct spvm_native_mutex SPVM_NATIVE_MUTEX;
+struct spvm_native_mutex;
+typedef struct spvm_native_mutex SPVM_NATIVE_MUTEX;
 
-  struct spvm_native_opcode;
-  typedef struct spvm_native_opcode SPVM_NATIVE_OPCODE;
+struct spvm_native_opcode;
+typedef struct spvm_native_opcode SPVM_NATIVE_OPCODE;
 
-  struct spvm_obj;
-  typedef struct spvm_obj SPVM_OBJ;
+struct spvm_obj;
+typedef struct spvm_obj SPVM_OBJ;
 
-  struct spvm_ref;
-  typedef struct spvm_ref SPVM_REF;
-
-#else
-  #define SPVM_NATIVE_ALLOCATOR void
-  #define SPVM_NATIVE_STRING_BUFFER void
-  #define SPVM_NATIVE_COMPILER void
-  #define SPVM_NATIVE_CLASS_FILE void
-  #define SPVM_NATIVE_RUNTIME void
-  #define SPVM_NATIVE_BASIC_TYPE void
-  #define SPVM_NATIVE_CLASS_VAR void
-  #define SPVM_NATIVE_FIELD void
-  #define SPVM_NATIVE_METHOD void
-  #define SPVM_NATIVE_ARG void
-  #define SPVM_NATIVE_MUTEX void
-  #define SPVM_NATIVE_OPCODE void
-  #define SPVM_OBJ void
-  #define SPVM_REF void
-#endif
+struct spvm_ref;
+typedef struct spvm_ref SPVM_REF;
 
 #define SPVM_NATIVE_GET_POINTER(object) (*(void**)object)
 
