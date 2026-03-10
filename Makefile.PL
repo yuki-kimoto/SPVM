@@ -102,6 +102,8 @@ if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
 # INC
 my $inc = '-Ilib/SPVM/Builder/include';
 
+SPVM::Builder::Util::build_precompile_header_content_c_source();
+
 # Source files
 my $spvm_core_source_file_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
 
