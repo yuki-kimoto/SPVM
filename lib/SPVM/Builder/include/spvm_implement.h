@@ -654,7 +654,8 @@ static inline void SPVM_IMPLEMENT_STRING_COMPARISON(SPVM_ENV* env, SPVM_VALUE* s
       break;
     }
     default: {
-      assert(0);
+      // Unexpected Error
+      flag = 0;
     }
   }
   

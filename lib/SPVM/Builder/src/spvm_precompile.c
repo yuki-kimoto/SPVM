@@ -88,14 +88,10 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
   // Add minimal definitions for standard library types and functions
   SPVM_STRING_BUFFER_add(string_buffer,
     "/* Minimal definitions for 64-bit systems */\n"
-    "#ifndef NULL\n"
-    "  #define NULL ((void*)0)\n"
-    "#endif\n"
-    
-    "/* Forward declaration for FILE */\n"
+    "#define NULL ((void*)0)\n"
     "struct _iobuf;\n"
+    
     "typedef struct _iobuf FILE;\n\n"
-
     "typedef signed char int8_t;\n"
     "typedef short int16_t;\n"
     "typedef int int32_t;\n"
@@ -128,12 +124,9 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "#define INT32_MAX 2147483647\n\n"
     "#define INT64_MIN (-9223372036854775807LL - 1)\n"
     "#define INT64_MAX 9223372036854775807LL\n"
+    "#define EOF (-1)\n"
     "#if !defined(__GNUC__) && !defined(__clang__)\n"
     "  #define __builtin_expect(exp, c) (exp)\n"
-    "#endif\n"
-    "extern void abort(void);\n"
-    "#ifndef assert\n"
-    "  #define assert(expr) ((expr) ? (void)0 : abort())\n"
     "#endif\n"
     "extern int snprintf(char *str, size_t size, const char *format, ...);\n"
     "extern int sprintf(char *str, const char *format, ...);\n"
@@ -144,7 +137,6 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "extern long long strtoll(const char *str, char **endptr, int base);\n"
     "extern float strtof(const char *str, char **endptr);\n"
     "extern double strtod(const char *str, char **endptr);\n\n"
-    "#define EOF (-1)\n"
     "extern int fprintf(FILE *stream, const char *format, ...);\n"
     "extern int fgetc(FILE *stream);\n"
   );
