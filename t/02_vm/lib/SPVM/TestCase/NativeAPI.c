@@ -294,15 +294,6 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->set_long_object_value != &env_array[273]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_float_object_value != &env_array[274]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_double_object_value != &env_array[275]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->c_strlen != &env_array[276]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->c_memcpy != &env_array[277]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->c_memset != &env_array[278]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->c_memcmp != &env_array[279]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->c_strtoll != &env_array[280]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->c_strtof != &env_array[281]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->c_strtod != &env_array[282]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->c_fputs != &env_array[283]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->c_fgetc != &env_array[284]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
@@ -490,7 +481,17 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_internal_ids(SPVM_ENV* env, 
   if ((void*)&env->api->internal->dec_ref_count != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->internal->get_stack_tmp_buffer != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->internal->leave_scope_local != &env_array[4]) { stack[0].ival = 0; return 0; }
-  
+  if ((void*)&env->api->internal->c_strlen != &env_array[5]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->c_memcpy != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->c_memset != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->c_memcmp != &env_array[8]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->c_strtoll != &env_array[9]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->c_strtof != &env_array[10]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->c_strtod != &env_array[11]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->c_fputs != &env_array[12]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->c_fgetc != &env_array[13]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->c_snprintf_len != &env_array[14]) { stack[0].ival = 0; return 0; }
+
   stack[0].ival = 1;
   
   return 0;

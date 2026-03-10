@@ -2,8 +2,7 @@
   [Incompatible Changes]
     Disallow void pointers for native types to enforce strict type checking.
   [New Features]
-    * Add new Native APIs c_strlen, c_memcpy, c_memset, c_memcmp, c_strtoll, c_strtof, c_strtod, c_fputs, and c_fgetc to the SPVM_ENV structure to provide standard C library functions through the environment.
-    
+    * Add new Native Internal APIs c_strlen, c_memcpy, c_memset, c_memcmp, c_strtoll, c_strtof, c_strtod, c_fputs, and c_fgetc to the SPVM_ENV structure to provide standard C library functions through the environment.
 0.990143 2026-03-09
   [Incompatible Changes]
     * Changed the return type of get_caller_info_stack from void** to SPVM_VALUE* for better type safety and consistency with the SPVM stack.

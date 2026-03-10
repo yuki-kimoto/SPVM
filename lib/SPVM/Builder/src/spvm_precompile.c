@@ -259,7 +259,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_typed_var_index[");
     SPVM_STRING_BUFFER_add_int(string_buffer, method_mortal_stack_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  env->c_memset(env, stack, mortal_stack_typed_var_index, -1, ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  env->api->internal->c_memset(env, stack, mortal_stack_typed_var_index, -1, ");
     SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_length * sizeof(int32_t));
     SPVM_STRING_BUFFER_add(string_buffer, ");");
   }
@@ -269,7 +269,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_tops[");
     SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_tops_length);
     SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  env->c_memset(env, stack, mortal_stack_tops, -1, ");
+    SPVM_STRING_BUFFER_add(string_buffer, "  env->api->internal->c_memset(env, stack, mortal_stack_tops, -1, ");
     SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_tops_length * sizeof(int32_t));
     SPVM_STRING_BUFFER_add(string_buffer, ");");
   }
@@ -3179,15 +3179,15 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         
         // Use fputs instead of fprintf (Fixed arguments!)
-        SPVM_STRING_BUFFER_add(string_buffer, "    env->c_fputs(env, stack, tmp_buffer, (FILE*)spvm_stderr);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->api->internal->c_fputs(env, stack, tmp_buffer, (FILE*)spvm_stderr);\n");
         
         // Print prompt
-        SPVM_STRING_BUFFER_add(string_buffer, "    env->c_fputs(env, stack, \"Press Enter to continue...\", (FILE*)spvm_stderr);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    env->api->internal->c_fputs(env, stack, \"Press Enter to continue...\", (FILE*)spvm_stderr);\n");
         
         // Input
         SPVM_STRING_BUFFER_add(string_buffer, "    FILE* spvm_stdin = env->spvm_stdin(env, stack);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t c;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    while ((c = env->c_fgetc(env, stack, (FILE*)spvm_stdin)) != '\\n' && c != EOF);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    while ((c = env->api->internal->c_fgetc(env, stack, (FILE*)spvm_stdin)) != '\\n' && c != EOF);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         break;

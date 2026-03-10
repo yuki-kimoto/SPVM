@@ -378,15 +378,6 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_set_long_object_value,
     SPVM_API_set_float_object_value,
     SPVM_API_set_double_object_value,
-    SPVM_API_c_strlen,
-    SPVM_API_c_memcpy,
-    SPVM_API_c_memset,
-    SPVM_API_c_memcmp,
-    SPVM_API_c_strtoll,
-    SPVM_API_c_strtof,
-    SPVM_API_c_strtod,
-    SPVM_API_c_fputs,
-    SPVM_API_c_fgetc,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -7583,3 +7574,4 @@ int SPVM_API_c_fputs(SPVM_ENV* env, SPVM_VALUE* stack, const char* s, void* stre
 int SPVM_API_c_fgetc(SPVM_ENV* env, SPVM_VALUE* stack, void* stream) {
   return fgetc((FILE*)stream);
 }
+

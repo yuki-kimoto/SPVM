@@ -420,15 +420,6 @@ struct spvm_env {
   void (*set_long_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* long_object, int64_t value);
   void (*set_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* float_object, float value);
   void (*set_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* double_object, double value);
-  size_t (*c_strlen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str);
-  void* (*c_memcpy)(SPVM_ENV* env, SPVM_VALUE* stack, void* dest, const void* src, size_t n);
-  void* (*c_memset)(SPVM_ENV* env, SPVM_VALUE* stack, void* s, int c, size_t n);
-  int (*c_memcmp)(SPVM_ENV* env, SPVM_VALUE* stack, const void* s1, const void* s2, size_t n);
-  long long (*c_strtoll)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr, int base);
-  float (*c_strtof)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr);
-  double (*c_strtod)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr);
-  int (*c_fputs)(SPVM_ENV* env, SPVM_VALUE* stack, const char* s, void* stream);
-  int (*c_fgetc)(SPVM_ENV* env, SPVM_VALUE* stack, void* stream);
 };
 
 struct spvm_env_api {
@@ -638,6 +629,16 @@ struct spvm_api_internal {
   void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object);
   char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** object_vars, int32_t* mortal_stack_typed_var_index, int32_t* mortal_stack_top_ptr, int32_t* mortal_stack_tops, int32_t mortal_stack_tops_index);
+  size_t (*c_strlen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str);
+  void* (*c_memcpy)(SPVM_ENV* env, SPVM_VALUE* stack, void* dest, const void* src, size_t n);
+  void* (*c_memset)(SPVM_ENV* env, SPVM_VALUE* stack, void* s, int c, size_t n);
+  int (*c_memcmp)(SPVM_ENV* env, SPVM_VALUE* stack, const void* s1, const void* s2, size_t n);
+  long long (*c_strtoll)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr, int base);
+  float (*c_strtof)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr);
+  double (*c_strtod)(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr);
+  int (*c_fputs)(SPVM_ENV* env, SPVM_VALUE* stack, const char* s, void* stream);
+  int (*c_fgetc)(SPVM_ENV* env, SPVM_VALUE* stack, void* stream);
+
 };
 
 struct spvm_api_type {

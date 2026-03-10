@@ -1480,7 +1480,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         // Wait for the Enter key (newline) from SPVM's stdin.
         int32_t c;
-        while ((c = env->c_fgetc(env, stack, spvm_stdin)) != '\n' && c != EOF) {
+        while ((c = env->api->internal->c_fgetc(env, stack, spvm_stdin)) != '\n' && c != EOF) {
           // Just discard characters
         }
         
