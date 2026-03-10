@@ -105,4 +105,7 @@ int32_t SPVM_PRECOMPILE_contains_field(SPVM_PRECOMPILE* precompile, const char* 
 
 int32_t SPVM_PRECOMPILE_contains_method(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name, const char* method_name);
 
+// Defined in spvm_precompile_header_content.c
+const char* get_precompile_header_content();
+
 #endif
