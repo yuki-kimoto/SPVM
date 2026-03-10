@@ -82,11 +82,10 @@ void SPVM_PRECOMPILE_build_module_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
 void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
-  // Define the macro to skip standard headers in spvm_native.h
-  SPVM_STRING_BUFFER_add(string_buffer, "#define SPVM_NATIVE_NO_INCLUDE_HEADERS\n\n");
-
-  // Add minimal definitions for standard library types and functions
   SPVM_STRING_BUFFER_add(string_buffer,
+    // Define the macro to skip standard headers in spvm_native.h
+    "#define SPVM_NATIVE_NO_INCLUDE_HEADERS\n\n"
+    // Add minimal definitions for standard library types and functions
     "#define NULL ((void*)0)\n"
     "struct _iobuf;\n"
     "typedef struct _iobuf FILE;\n\n"
@@ -96,7 +95,7 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "typedef unsigned char uint8_t;\n"
     "typedef unsigned short uint16_t;\n"
     "typedef unsigned int uint32_t;\n\n"
-
+    
     "#if defined(__LP64__)\n"
     "  /* LP64 System (Linux, macOS, etc.) */\n"
     "  typedef long int64_t;\n"
@@ -112,7 +111,7 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "  typedef unsigned long long size_t;\n"
     "  #define PRId64 \"lld\"\n"
     "#endif\n\n"
-
+    
     "#define PRId8 \"d\"\n"
     "#define PRId16 \"d\"\n"
     "#define PRId32 \"d\"\n"
@@ -125,13 +124,11 @@ void SPVM_PRECOMPILE_build_header(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
     "#define INT64_MIN (-9223372036854775807LL - 1)\n"
     "#define INT64_MAX 9223372036854775807LL\n"
     "#define EOF (-1)\n"
-  );
-
-  // Add SPVM specific headers
-  SPVM_STRING_BUFFER_add(string_buffer,
+    
     "#include \"spvm_native.h\"\n"
     "#include \"spvm_implement.h\"\n"
   );
+  
 }
 
 void SPVM_PRECOMPILE_build_method_declaration(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_METHOD* method) {
