@@ -719,7 +719,6 @@ sub create_c_string_literal {
   return join('', @chunks);
 }
 
-# Build the precompile header content C source and save it to a file
 sub build_precompile_header_content_c_source {
   my ($options) = @_;
   
@@ -731,10 +730,8 @@ sub build_precompile_header_content_c_source {
   my $spvm_implement_h = "$include_dir/spvm_implement.h";
   my $output_file = "$src_dir/spvm_precompile_header_content.c";
   
-  # This file itself
   my $this_file = __FILE__;
 
-  # Check if generation is needed
   my $need_generate = &need_generate({
     input_files => [$spvm_native_h, $spvm_implement_h, $this_file],
     output_file => $output_file,
@@ -742,6 +739,7 @@ sub build_precompile_header_content_c_source {
   });
 
   if ($need_generate) {
+    # Minimal definitions for standard types and functions
     my $header_content = <<'EOS';
 /* Minimal definitions for standard types and functions */
 #define NULL ((void*)0)
@@ -784,12 +782,21 @@ typedef unsigned int uint32_t;
 #define INT64_MIN (-9223372036854775807LL - 1)
 #define INT64_MAX 9223372036854775807LL
 #define EOF (-1)
-
-#define SPVM_NATIVE_NO_INCLUDE_HEADERS
 EOS
 
-    $header_content .= "\n/* spvm_native.h */\n" . &slurp_binary($spvm_native_h);
-    $header_content .= "\n/* spvm_implement.h */\n" . &slurp_binary($spvm_implement_h);
+    # Remove the #ifndef SPVM_NATIVE_NO_INCLUDE_HEADERS block
+    my $process_header = sub {
+      my ($path) = @_;
+      my $content = &slurp_binary($path);
+      
+      # Remove the block including #ifndef and #endif
+      $content =~ s/^\s*#ifndef\s+SPVM_NATIVE_NO_INCLUDE_HEADERS.*?#endif//msg;
+      
+      return $content;
+    };
+
+    $header_content .= "\n/* spvm_native.h (headers-stripped) */\n" . $process_header->($spvm_native_h);
+    $header_content .= "\n/* spvm_implement.h (headers-stripped) */\n" . $process_header->($spvm_implement_h);
 
     my $c_string_literal = &create_c_string_literal($header_content);
 
@@ -800,8 +807,6 @@ EOS
     $final_c_source .= "}\n";
 
     &spurt_binary($output_file, $final_c_source);
-    
-    # Show message when generated
     warn "Generated \"$output_file\".\n";
   }
 
