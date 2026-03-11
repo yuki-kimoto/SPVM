@@ -4,6 +4,8 @@
   [New Features]
     * Add new Native Internal APIs c_strlen, c_memcpy, c_memset, c_memcmp, c_strtoll, c_strtof, c_strtod, c_fputs, and c_fgetc to the SPVM_ENV structure to provide standard C library functions through the environment.
     * Add the new c_snprintf_len Native Internal API to provide formatted string generation through the environment and update the SPVM_API_INTERNAL structure and its initialization.
+    * Add is_generated_from_anon_method to the BasicType Native API.
+    
   [Changes]
     * Improve need_generate with high-resolution mtime using Time::HiRes and simplify logic.
   [Internal Changes]

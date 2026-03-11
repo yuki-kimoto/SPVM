@@ -321,3 +321,8 @@ int32_t SPVM_API_BASIC_TYPE_has_monitor_var(SPVM_RUNTIME* runtime, SPVM_RUNTIME_
   
   return (int32_t)basic_type->has_monitor_var;
 }
+
+int32_t SPVM_API_BASIC_TYPE_is_generated_from_anon_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
+  
+  return basic_type->is_generated_from_anon_method;
+}

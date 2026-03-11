@@ -484,6 +484,7 @@ struct spvm_api_basic_type {
   int32_t (*get_fields_size)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
   int32_t (*get_monitor_var_type)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type, int32_t* ret_basic_type_id, int32_t* ret_dimension, int32_t* ret_flag);
   int32_t (*has_monitor_var)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
+  int32_t (*is_generated_from_anon_method)(SPVM_NATIVE_RUNTIME* runtime, SPVM_NATIVE_BASIC_TYPE* basic_type);
 };
 
 struct spvm_api_class_file {

@@ -209,6 +209,18 @@ C<int32_t (*has_monitor_var)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::Nati
 
 If the basic type I<basic_type> has the C<$^MONITOR> special variable, returns 1. Otherwise returns 0.
 
+=head2 has_monitor_var
+
+C<int32_t (*has_monitor_var)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+
+If the basic type I<basic_type> has the C<$^MONITOR> special variable, returns 1. Otherwise returns 0.
+
+=head2 is_generated_from_anon_method
+
+C<int32_t (*is_generated_from_anon_method)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, L<SPVM_NATIVE_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+
+If the basic type I<basic_type> is generated from an anonymous method, returns 1. Otherwise returns 0.
+
 =head1 Native API IDs
 
   0 get_name
@@ -239,7 +251,8 @@ If the basic type I<basic_type> has the C<$^MONITOR> special variable, returns 1
   25 get_fields_size
   26 get_monitor_var_type
   27 has_monitor_var
-
+  28 is_generated_from_anon_method
+  
 =head1 See Also
 
 =over 2
