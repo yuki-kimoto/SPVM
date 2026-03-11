@@ -752,7 +752,17 @@ sub link {
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
       my $basic_type = $runtime->get_basic_type_by_name($class_name);
+      
+      # Get normal methods
       my $method_names = $basic_type->get_method_names_by_category($category);
+      
+      # [Added] Get anon methods from anon basic types
+      my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
+      for my $anon_basic_type_name (@$anon_basic_type_names) {
+        my $anon_basic_type = $runtime->get_basic_type_by_name($anon_basic_type_name);
+        my $anon_method_names = $anon_basic_type->get_method_names_by_category($category);
+        push @$method_names, @$anon_method_names;
+      }
       
       unless ($quiet) {
         my $for_precompile = $category eq 'precompile' ? ' for precompile' : '';
@@ -772,7 +782,6 @@ sub link {
         extra_linker_flags => "@$link_info_ldflags",
         dl_func_list => $dl_func_list,
       );
-      
     }
     # Create an executable file
     elsif ($output_type eq 'exe') {
