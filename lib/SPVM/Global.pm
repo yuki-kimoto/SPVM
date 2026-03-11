@@ -103,8 +103,6 @@ sub build_class_common {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
       my $class_name = $basic_type->get_name;
       
-      next if $class_name =~ /^(.*)::anon_method::/;
-      
       &load_dynamic_lib($runtime, $class_name);
     }
     
@@ -140,9 +138,6 @@ sub init_api {
     for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
       my $class_name = $basic_type->get_name;
-      
-      next if $class_name =~ /^(.*)::anon_method::/;
-      
       &load_dynamic_lib($runtime, $class_name);
     }
     
@@ -168,11 +163,16 @@ sub init_api {
   }
 }
 
+my $DYNAMIC_LIB_FILES_H = {};
 sub load_dynamic_lib {
   my ($runtime, $class_name) = @_;
   
+  my $outmost_class_name;
   if ($class_name =~ /^(.*)::anon_method::/) {
-    Carp::confess("The class \"$class_name\" cannot be loaded directly because it is generated from an anonymous method.");
+    $outmost_class_name = $1;
+  }
+  else {
+    $outmost_class_name = $class_name;
   }
   
   for my $category ('precompile', 'native') {
@@ -181,30 +181,38 @@ sub load_dynamic_lib {
     my $method_names = $basic_type->get_method_names_by_category($category);
     
     if (@$method_names) {
-      # Use the outmost class to find the class file and the dynamic library
-      my $dist_basic_type = $runtime->get_basic_type_by_name($class_name);
-      my $class_file = $dist_basic_type->get_class_file;
-      my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
       
-      # Try to build the shared library at runtime if shared library is not found
-      unless (-f $dynamic_lib_file) {
-        my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
-        my $builder = SPVM::Builder->new(build_dir => $build_dir);
-        my $builder_options = {
-          runtime => $runtime,
-          class_file => $class_file,
-          category => $category,
-        };
+      # Use the outmost class to find the class file and the dynamic library
+      unless ($DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category}) {
+        my $outmost_basic_type = $runtime->get_basic_type_by_name($outmost_class_name);
+        my $outmost_class_file = $outmost_basic_type->get_class_file;
+        my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($outmost_class_file, $category);
         
-        $dynamic_lib_file = $builder->build_jit(
-          $class_name, # Build the outmost class
-          $builder_options,
-        );
+        # Try to build the shared library at runtime if shared library is not found
+        if (-f $dynamic_lib_file_dist) {
+          $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_dist;
+        }
+        else {
+          my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
+          my $builder = SPVM::Builder->new(build_dir => $build_dir);
+          my $builder_options = {
+            runtime => $runtime,
+            class_file => $outmost_class_file,
+            category => $category,
+          };
+          
+          my $dynamic_lib_file_jit = $builder->build_jit(
+            $outmost_class_name,
+            $builder_options,
+          );
+          
+          $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_jit;
+        }
       }
       
-      if (-f $dynamic_lib_file) {
+      if (-f $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category}) {
         # Get addresses using the original class_name (containing the anon method name)
-        my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $category);
+        my $method_addresses = SPVM::Builder::Util::get_method_addresses($DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category}, $class_name, $method_names, $category);
         
         for my $method_name (sort keys %$method_addresses) {
           my $cfunc_address = $method_addresses->{$method_name};
