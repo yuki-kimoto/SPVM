@@ -1,6 +1,6 @@
 0.990144 2026-03-10
   [Incompatible Changes]
-    Disallow void pointers for native types to enforce strict type checking.
+    * Disallow void pointers for native types to enforce strict type checking.
   [New Features]
     * Add new Native Internal APIs c_strlen, c_memcpy, c_memset, c_memcmp, c_strtoll, c_strtof, c_strtod, c_fputs, and c_fgetc to the SPVM_ENV structure to provide standard C library functions through the environment.
     * Add the new c_snprintf_len Native Internal API to provide formatted string generation through the environment and update the SPVM_API_INTERNAL structure and its initialization.
@@ -12,6 +12,8 @@
     * Add build_precompile_inline_header_c_source to generate a C file containing an inlined header as a C string literal.
   [Bug Fix]
     * Fix a bug where anonymous methods were incorrectly expected to have their own dynamic libraries by ensuring they are loaded from their outmost class's library.
+  [Feature Improvement]
+    * Make precompiled C source code self-contained.
     
 0.990143 2026-03-09
   [Incompatible Changes]
