@@ -10,6 +10,9 @@
     * Improve need_generate with high-resolution mtime using Time::HiRes and simplify logic.
   [Internal Changes]
     * Add build_precompile_inline_header_c_source to generate a C file containing an inlined header as a C string literal.
+  [Bug Fix]
+    * Fix a bug where anonymous methods were incorrectly expected to have their own dynamic libraries by ensuring they are loaded from their outmost class's library.
+    
 0.990143 2026-03-09
   [Incompatible Changes]
     * Changed the return type of get_caller_info_stack from void** to SPVM_VALUE* for better type safety and consistency with the SPVM stack.

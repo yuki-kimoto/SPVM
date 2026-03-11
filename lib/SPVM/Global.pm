@@ -167,14 +167,21 @@ sub init_api {
 sub load_dynamic_lib {
   my ($runtime, $class_name) = @_;
   
+  # If the class is generated from an anonymous method, use its outmost class name to load the dynamic library.
+  my $dist_class_name = $class_name;
+  if ($class_name =~ /^(.*)::anon_method::/) {
+    $dist_class_name = $1;
+  }
+  
   for my $category ('precompile', 'native') {
     my $basic_type = $runtime->get_basic_type_by_name($class_name);
     
     my $method_names = $basic_type->get_method_names_by_category($category);
     
     if (@$method_names) {
-      # Build classes - Compile C source codes and link them generating a dynamic link library
-      my $class_file = $basic_type->get_class_file;
+      # Use the outmost class to find the class file and the dynamic library
+      my $dist_basic_type = $runtime->get_basic_type_by_name($dist_class_name);
+      my $class_file = $dist_basic_type->get_class_file;
       my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
       
       # Try to build the shared library at runtime if shared library is not found
@@ -188,12 +195,13 @@ sub load_dynamic_lib {
         };
         
         $dynamic_lib_file = $builder->build_jit(
-          $class_name,
+          $dist_class_name, # Build the outmost class
           $builder_options,
         );
       }
       
       if (-f $dynamic_lib_file) {
+        # Get addresses using the original class_name (containing the anon method name)
         my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $category);
         
         for my $method_name (sort keys %$method_addresses) {
