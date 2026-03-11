@@ -756,12 +756,18 @@ sub link {
       # Get normal methods
       my $method_names = $basic_type->get_method_names_by_category($category);
       
-      # [Added] Get anon methods from anon basic types
+      # Create the dynamic link function list for the class
+      my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
+      
+      # Get anon methods from anon basic types
       my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
       for my $anon_basic_type_name (@$anon_basic_type_names) {
         my $anon_basic_type = $runtime->get_basic_type_by_name($anon_basic_type_name);
         my $anon_method_names = $anon_basic_type->get_method_names_by_category($category);
-        push @$method_names, @$anon_method_names;
+        
+        # Create the dynamic link function list for each anon class and merge it
+        my $anon_dl_func_list = SPVM::Builder::Util::create_dl_func_list($anon_basic_type_name, $anon_method_names, {category => $category});
+        push @$dl_func_list, @$anon_dl_func_list;
       }
       
       unless ($quiet) {
@@ -772,8 +778,6 @@ sub link {
         my $link_command = $link_info->to_command;
         print "$link_command\n";
       }
-      
-      my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
       
       (undef, @link_tmp_files) = $cbuilder->link(
         objects => $link_info_object_file_names,
