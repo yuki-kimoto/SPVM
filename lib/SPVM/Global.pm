@@ -103,6 +103,8 @@ sub build_class_common {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
       my $class_name = $basic_type->get_name;
       
+      next if $class_name =~ /^(.*)::anon_method::/;
+      
       &load_dynamic_lib($runtime, $class_name);
     }
     
@@ -139,6 +141,8 @@ sub init_api {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
       my $class_name = $basic_type->get_name;
       
+      next if $class_name =~ /^(.*)::anon_method::/;
+      
       &load_dynamic_lib($runtime, $class_name);
     }
     
@@ -167,10 +171,8 @@ sub init_api {
 sub load_dynamic_lib {
   my ($runtime, $class_name) = @_;
   
-  # If the class is generated from an anonymous method, use its outmost class name to load the dynamic library.
-  my $dist_class_name = $class_name;
   if ($class_name =~ /^(.*)::anon_method::/) {
-    $dist_class_name = $1;
+    Carp::confess("The class \"$class_name\" cannot be loaded directly because it is generated from an anonymous method.");
   }
   
   for my $category ('precompile', 'native') {
@@ -180,7 +182,7 @@ sub load_dynamic_lib {
     
     if (@$method_names) {
       # Use the outmost class to find the class file and the dynamic library
-      my $dist_basic_type = $runtime->get_basic_type_by_name($dist_class_name);
+      my $dist_basic_type = $runtime->get_basic_type_by_name($class_name);
       my $class_file = $dist_basic_type->get_class_file;
       my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
       
@@ -195,7 +197,7 @@ sub load_dynamic_lib {
         };
         
         $dynamic_lib_file = $builder->build_jit(
-          $dist_class_name, # Build the outmost class
+          $class_name, # Build the outmost class
           $builder_options,
         );
       }
