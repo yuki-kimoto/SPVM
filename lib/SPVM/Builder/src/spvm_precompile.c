@@ -58,11 +58,16 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
   int32_t basic_type_methods_length = basic_type->methods_length;
   
   // Headers
-  const char* precompile_header_content = get_precompile_header_content();
-  SPVM_STRING_BUFFER_add(string_buffer, precompile_header_content);
+  int32_t header_added = 0;
   
   // Method implementations
   for (int32_t method_index = 0; method_index < basic_type_methods_length; method_index++) {
+    if (!header_added) {
+      const char* precompile_header_content = get_precompile_header_content();
+      SPVM_STRING_BUFFER_add(string_buffer, precompile_header_content);
+      header_added = 1;
+    }
+    
     SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, basic_type, method_index);
     const char* method_name = method->name;
     int32_t method_has_precompile_flag = method->is_precompile;
