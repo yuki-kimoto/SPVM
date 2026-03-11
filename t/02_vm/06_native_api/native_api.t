@@ -409,6 +409,23 @@ ok(SPVM::TestCase::NativeAPI->extra);
 
 ok(SPVM::TestCase::NativeAPI->method_begin_and_end_cb);
 
+{
+  # The target C source file
+  my $c_source_file = '.spvm_build/work/src/SPVM/Fn.precompile.c';
+
+  # Fail if the file does not exist
+  ok(-f $c_source_file, "The precompile C source file exists");
+
+  # Slurp the entire C source as a string
+  my $content = SPVM::Builder::Util::slurp_binary($c_source_file);
+
+  # Check if #include is physically removed
+  unlike($content, qr/^\s*#\s*include/m, "No #include found");
+
+  # Check if 'export' keyword is not used
+  unlike($content, qr/\bexport\b/, "No export keyword found");
+}
+
 # Clear exception
 $api->destroy_runtime_permanent_vars;
 
