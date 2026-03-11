@@ -381,7 +381,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       
-      if (method->current_basic_type->is_generated_by_anon_method) {
+      if (method->current_basic_type->is_generated_from_anon_method) {
         char* found_ptr = strstr(basic_type->name, "::anon_method::");
         assert(found_ptr);
         int32_t outmost_basic_type_name_length = (int32_t)(found_ptr - basic_type->name);
@@ -1425,7 +1425,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               
               const char* current_class_name = NULL;
-              if (method->current_basic_type->is_generated_by_anon_method) {
+              if (method->current_basic_type->is_generated_from_anon_method) {
                 SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method->outmost_basic_type_name, strlen(method->outmost_basic_type_name));
                 current_class_name = method->outmost_basic_type_name;
               }
@@ -4078,7 +4078,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               SPVM_FIELD* found_field_in_current_basic_type = SPVM_HASH_get(method->current_basic_type->original_field_symtable, field_access->field->name, strlen(field_access->field->name));
               
-              int32_t is_parent_field = !found_field_in_current_basic_type && !method->current_basic_type->is_generated_by_anon_method;
+              int32_t is_parent_field = !found_field_in_current_basic_type && !method->current_basic_type->is_generated_from_anon_method;
               
               if (!SPVM_CHECK_can_access(compiler, method->current_basic_type,  field_access->field->current_basic_type, field_access->field->access_control_type, is_parent_field)) {
                 if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, field->current_basic_type, is_parent_field)) {
@@ -4806,7 +4806,7 @@ void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_clas
     memcpy(base_name + 1, colon_ptr + 1, base_name_length);
   }
   else {
-    if (current_method->current_basic_type->is_generated_by_anon_method) {
+    if (current_method->current_basic_type->is_generated_from_anon_method) {
       basic_type_name = (char*)current_method->outmost_basic_type_name;
     }
     else {
@@ -5031,7 +5031,7 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
     // Basic type name + method name
     const char* basic_type_name;
     if (call_method->is_current) {
-      if (current_method->current_basic_type->is_generated_by_anon_method) {
+      if (current_method->current_basic_type->is_generated_from_anon_method) {
         basic_type_name = current_method->outmost_basic_type_name;
       }
       else {
@@ -5428,7 +5428,7 @@ int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* src_basi
   
   int32_t can_access = 0;
   
-  if (src_basic_type->is_generated_by_anon_method) {
+  if (src_basic_type->is_generated_from_anon_method) {
     src_basic_type = src_basic_type->outmost;
   }
   

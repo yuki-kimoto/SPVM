@@ -341,13 +341,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   if (strstr(basic_type_name, "::anon_method::")) {
     type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-    basic_type->is_generated_by_anon_method = 1;
+    basic_type->is_generated_from_anon_method = 1;
   }
   else if (strstr(basic_type_name, "::anon_class::")) {
     basic_type->is_anon = 1;
   }
   
-  if (!(basic_type->is_anon || basic_type->is_generated_by_anon_method)) {
+  if (!(basic_type->is_anon || basic_type->is_generated_from_anon_method)) {
     
     // If class name is different from the class name corresponding to the class file, compile error occur.
     if (strcmp(basic_type_name, compiler->current_outmost_class_name) != 0) {
@@ -971,7 +971,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     // The default of the access controll of the field is private.
     if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
       // If anon method, field is public
-      if (basic_type->is_generated_by_anon_method) {
+      if (basic_type->is_generated_from_anon_method) {
         field->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
       }
       // If multi-numeric type, field is public
@@ -1212,7 +1212,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     const char* unresolved_basic_type_name_maybe_alias = op_type->uv.type->unresolved_basic_type_name;
     
     SPVM_HASH* alias_symtable = NULL;
-    if (basic_type->is_generated_by_anon_method && basic_type->outmost) {
+    if (basic_type->is_generated_from_anon_method && basic_type->outmost) {
       alias_symtable = basic_type->outmost->alias_symtable;
     }
     else {
