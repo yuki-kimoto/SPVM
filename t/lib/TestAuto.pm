@@ -33,7 +33,6 @@ sub import {
   }
   elsif ($FindBin::Bin =~ /t\/$test_dir_precompile_base\b/) {
     $test_dir = $test_dir_precompile;
-    $ENV{SPVM_TEST_PRECOMPILE} = 1;
   }
   elsif ($FindBin::Bin =~ /t\/$test_dir_spvmcc_base\b/) {
     $test_dir = $test_dir_spvmcc;

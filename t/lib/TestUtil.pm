@@ -10,6 +10,7 @@ use Carp 'confess';
 use File::Path 'mkpath';
 use File::Basename 'dirname';
 use SPVM::Builder;
+use FindBin;
 
 our @EXPORT_OK = qw(compile_ok_file compile_ok compile_not_ok_file compile_not_ok);
 
@@ -288,6 +289,10 @@ EOS
   
   print $script_fh $content;
   close $script_fh;
+}
+
+sub is_in_precompile_test {
+  return $FindBin::Bin =~ m|t/03_precompile\b| ? 1 : 0;
 }
 
 1;
