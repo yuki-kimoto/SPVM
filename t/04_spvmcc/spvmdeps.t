@@ -1,5 +1,6 @@
 use lib "t/lib";
 use TestAuto;
+use MyLib;
 
 use Test::More;
 use strict;

@@ -1,5 +1,6 @@
 use lib "t/lib";
 use TestAuto;
+use MyLib;
 
 use strict;
 use warnings;
@@ -26,6 +27,7 @@ sub write_script_file {
   my $pre = <<"EOS";
 use lib "t/lib";
 use TestAuto;
+use MyLib;
 
 use strict;
 use warnings;
