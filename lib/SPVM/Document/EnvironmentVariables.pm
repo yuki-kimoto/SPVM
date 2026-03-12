@@ -31,6 +31,8 @@ Examples:
 
 If C<SPVM_CC_DEBUG> environement variable is a true value of Perl, debug messages and messages from L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are printed to stderr.
 
+Note that this environment variable is only effective during runtime compilation (JIT).
+
 =head2 SPVM_CC_QUIET
 
 If C<SPVM_CC_QUIET> environement variable is a true value of Perl, messages L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are not printed to stderr.
@@ -39,11 +41,15 @@ If it is defined and a false value of Perl, the messages are printed.
 
 This setting has a higher priority than L<SPVM::Builder::Config#quiet|SPVM::Builder::Config/"quiet"> field.
 
+Note that this environment variable is only effective during runtime compilation (JIT).
+
 =head2 SPVM_CC_FORCE
 
 If C<SPVM_CC_FORCE> environement variable is a true value of Perl, the compilation and link by L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are forced.
 
 This setting has a higher priority than L<SPVM::Builder::Config#force|SPVM::Builder::Config/"force"> field.
+
+Note that this environment variable is only effective during runtime compilation (JIT).
 
 =head1 See Also
 

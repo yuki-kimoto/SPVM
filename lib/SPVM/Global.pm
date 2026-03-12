@@ -201,6 +201,21 @@ sub load_dynamic_lib {
             category => $category,
           };
           
+          my $env_spvm_cc_debug = SPVM::Builder::Util::get_normalized_env('SPVM_CC_DEBUG');
+          if (defined $env_spvm_cc_debug) {
+            $builder_options->{debug} = 1;
+          }
+          
+          my $env_spvm_cc_quiet = SPVM::Builder::Util::get_normalized_env('SPVM_CC_QUIET');
+          if (defined $env_spvm_cc_quiet) {
+            $builder_options->{quiet} = 1;
+          }
+          
+          my $env_spvm_cc_force = SPVM::Builder::Util::get_normalized_env('SPVM_CC_FORCE');
+          if (defined $env_spvm_cc_force) {
+            $builder_options->{force} = 1;
+          }
+          
           my $dynamic_lib_file_jit = $builder->build_jit(
             $outmost_class_name,
             $builder_options,
