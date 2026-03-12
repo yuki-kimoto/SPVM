@@ -18,13 +18,6 @@ sub import {
   my $test_dir_spvmcc_base = '04_spvmcc';
   my $test_dir_spvmdist_base = '05_spvmdist';
 
-  $ENV{SPVM_TEST_DIR_BUILDER_BASE} = $test_dir_builder_base;
-  $ENV{SPVM_TEST_DIR_SYNTAX_BASE} = $test_dir_syntax_base;
-  $ENV{SPVM_TEST_DIR_VM_BASE} = $test_dir_vm_base;
-  $ENV{SPVM_TEST_DIR_PRECOMPILE_BASE} = $test_dir_precompile_base;
-  $ENV{SPVM_TEST_DIR_SPVMCC_BASE} = $test_dir_spvmcc_base;
-  $ENV{SPVM_TEST_DIR_SPVMDIST_BASE} = $test_dir_spvmdist_base;
-
   my $test_dir_builder = "t/$test_dir_builder_base";
   my $test_dir_syntax = "t/$test_dir_syntax_base";
   my $test_dir_vm = "t/$test_dir_vm_base";
@@ -32,13 +25,6 @@ sub import {
   my $test_dir_spvmcc = "t/$test_dir_spvmcc_base";
   my $test_dir_spvmdist = "t/$test_dir_spvmdist_base";
 
-  $ENV{SPVM_TEST_DIR_BUILDER} = $test_dir_builder;
-  $ENV{SPVM_TEST_DIR_SYNTAX} = $test_dir_syntax;
-  $ENV{SPVM_TEST_DIR_VM} = $test_dir_vm;
-  $ENV{SPVM_TEST_DIR_PRECOMPILE} = $test_dir_precompile;
-  $ENV{SPVM_TEST_DIR_SPVMCC} = $test_dir_spvmcc;
-  $ENV{SPVM_TEST_DIR_SPVMDIST} = $test_dir_spvmdist;
-  
   if ($FindBin::Bin =~ /t\/$test_dir_builder_base\b/) {
     $test_dir = $test_dir_builder;
   }
