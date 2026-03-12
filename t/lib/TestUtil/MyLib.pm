@@ -1,4 +1,4 @@
-package MyLib;
+package TestUtil::MyLib;
 
 use strict;
 use warnings;

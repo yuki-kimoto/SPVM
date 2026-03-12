@@ -1154,9 +1154,9 @@ t/04_spvmcc/spvmcc_solo.t
 t/04_spvmcc/spvmdeps.t
 t/05_spvmdist/command.t
 t/05_spvmdist/module.t
-t/lib/MyLib.pm
 t/lib/TestAuto.pm
 t/lib/TestUtil.pm
+t/lib/TestUtil/MyLib.pm
 t/test_add_class/SPVM/MyPoint.spvm
 t/test_files/file_eof.txt
 t/test_files/fread.txt

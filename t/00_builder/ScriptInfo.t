@@ -1,6 +1,6 @@
 use lib "t/lib";
 use TestAuto;
-use MyLib;
+use TestUtil::MyLib;
 use lib "t/02_vm/lib";
 
 use strict;

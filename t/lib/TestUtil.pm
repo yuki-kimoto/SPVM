@@ -272,7 +272,7 @@ sub generate_class_method_call_script {
   my $content = <<"EOS";
 use lib "t/lib";
 use TestAuto;
-use MyLib;
+use TestUtil::MyLib;
 
 use strict;
 use warnings;

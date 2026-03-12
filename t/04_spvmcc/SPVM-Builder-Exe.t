@@ -3,7 +3,7 @@ BEGIN { $ENV{SPVM_CC_FORCE} = 1; }
 
 use lib "t/lib";
 use TestAuto;
-use MyLib;
+use TestUtil::MyLib;
 
 use strict;
 use warnings;
