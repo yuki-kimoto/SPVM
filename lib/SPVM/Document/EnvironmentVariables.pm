@@ -51,6 +51,14 @@ This setting has a higher priority than L<SPVM::Builder::Config#force|SPVM::Buil
 
 Note that this environment variable is only effective during runtime compilation (JIT).
 
+=head2 SPVM_CC_OPTIMIZE
+
+If C<SPVM_CC_OPTIMIZE> environment variable is defined, the L<optimize|/"optimize"> field is overwritten by this value.
+
+This setting has a higher priority than L<SPVM::Builder::Config#optimize|SPVM::Builder::Config/"optimize"> field.
+
+Note that this environment variable is only effective during runtime compilation (JIT).
+
 =head1 See Also
 
 =over 2

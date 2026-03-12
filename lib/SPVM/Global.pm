@@ -216,6 +216,11 @@ sub load_dynamic_lib {
             $builder_options->{force} = 1;
           }
           
+          my $env_spvm_cc_optimize = SPVM::Builder::Util::get_normalized_env('SPVM_CC_OPTIMIZE');
+          if (defined $env_spvm_cc_optimize) {
+            $builder_options->{optimize} = $env_spvm_cc_optimize;
+          }
+          
           my $dynamic_lib_file_jit = $builder->build_jit(
             $outmost_class_name,
             $builder_options,
