@@ -714,7 +714,7 @@ sub new {
   
   # optimize
   unless (defined $self->{optimize}) {
-    $self->optimize('-O3');
+    $self->optimize('-O3 -DNDEBUG');
   }
   
   # include_dirs
@@ -1563,7 +1563,7 @@ Gets and sets C<optimize> field, an arugment of the compiler L</"cc"> for optimi
 
 Examples:
 
-  $config->optimize('-O3');
+  $config->optimize('-O3 -DNDEBUG');
   $config->optimize('-O2');
   $config->optimize('-g3 -O0');
 
@@ -2205,7 +2205,7 @@ This value is set automatically.
 
 =item * L</"optimize">
 
-  "-O3"
+  "-O3 -DNDEBUG"
 
 =item * L</"dynamic_lib_ccflags">
 
