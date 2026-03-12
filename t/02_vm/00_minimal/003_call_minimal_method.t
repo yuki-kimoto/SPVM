@@ -1,6 +1,7 @@
 use lib "t/lib";
 use TestAuto;
 use MyLib;
+use TestUtil;
 
 use strict;
 use warnings;
@@ -17,7 +18,7 @@ SPVM::MinimalMethod->foo;
 
 # Check precompile class file
 my $precompile_class_file = "$build_dir/work/lib/SPVM/MinimalMethod.precompile.$Config{dlext}";
-if ($ENV{SPVM_TEST_PRECOMPILE}) {
+if (TestUtil::is_in_precompile_test) {
   ok(-f $precompile_class_file);
 }
 else {
