@@ -1,6 +1,3 @@
-use lib "t/lib";
-use TestAuto;
-
 use strict;
 use warnings;
 use File::Copy 'copy';
@@ -8,10 +5,10 @@ use File::Basename 'basename', 'dirname';
 use File::Path 'mkpath', 'rmtree';
 use File::Find;
 
-my $test_dir_vm_base = $ENV{SPVM_TEST_DIR_VM_BASE};
-my $test_dir_vm = $ENV{SPVM_TEST_DIR_VM};
-my $test_dir_precompile_base = $ENV{SPVM_TEST_DIR_PRECOMPILE_BASE};
-my $test_dir_precompile = $ENV{SPVM_TEST_DIR_PRECOMPILE};
+my $test_dir_vm_base = '02_vm';
+my $test_dir_vm = "t/$test_dir_vm_base";
+my $test_dir_precompile_base = '03_precompile';
+my $test_dir_precompile = "t/$test_dir_precompile_base";
 
 mkpath $test_dir_precompile;
 
