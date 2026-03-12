@@ -925,7 +925,6 @@ t/02_vm/lib/SPVM/TestCase/ModuleContainsMultiClass/FloatMatrix.spvm
 t/02_vm/lib/SPVM/TestCase/ModuleContainsMultiPackage.spvm
 t/02_vm/lib/SPVM/TestCase/Mulnum.spvm
 t/02_vm/lib/SPVM/TestCase/MulnumArray.spvm
-t/02_vm/lib/SPVM/TestCase/Mutex.spvm
 t/02_vm/lib/SPVM/TestCase/NativeAPI.c
 t/02_vm/lib/SPVM/TestCase/NativeAPI.config
 t/02_vm/lib/SPVM/TestCase/NativeAPI.spvm
@@ -1164,6 +1163,7 @@ t/test_files/fread_eof.txt
 t/test_files/long_line.txt
 t/test_files/os_support/cpp11.cpp
 t/test_files/SPVM/Foo.config
+t/utils/build_test_classes.pl
 t/utils/copy_vm_to_precompile.pl
 t/utils/get_native_api_indexes.pl
 t/utils/sort_method_name_native.pl

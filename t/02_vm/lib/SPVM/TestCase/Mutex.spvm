@@ -1,9 +1,0 @@
-class TestCase::Statement::TypeDefaultValue {
-  use Mutex;
-  use TestCase::Util::Trhead;
-  
-  static method thread : int () {
-    
-    return 1;
-  }
-}
