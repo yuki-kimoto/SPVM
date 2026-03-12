@@ -19,7 +19,7 @@ use File::Spec;
 my $devnull = File::Spec->devnull;
 
 my $test_dir = $ENV{SPVM_TEST_DIR};
-my $build_dir = $ENV{SPVM_BUILD_DIR};
+my $build_dir = "$FindBin::Bin/.spvm_build";
 
 my $dev_null = File::Spec->devnull;
 

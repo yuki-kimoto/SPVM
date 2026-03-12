@@ -12,7 +12,7 @@ use Errno;
 use SPVM 'TestCase::NativeAPI';
 use SPVM 'TestCase::Pointer';
 
-my $build_dir = $ENV{SPVM_BUILD_DIR};
+my $build_dir = "$FindBin::Bin/.spvm_build";
 
 # Start objects count
 my $api = SPVM::api();

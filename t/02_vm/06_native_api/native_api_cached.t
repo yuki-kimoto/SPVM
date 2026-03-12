@@ -11,7 +11,7 @@ use Test::More;
 use Time::HiRes 'sleep';
 
 my $test_dir = $ENV{SPVM_TEST_DIR};
-my $build_dir = $ENV{SPVM_BUILD_DIR};
+my $build_dir = "$FindBin::Bin/../.spvm_build";
 
 # Wait 2 seconds because the time in 1 secend is not detected.
 my $wait_time = 1.1;

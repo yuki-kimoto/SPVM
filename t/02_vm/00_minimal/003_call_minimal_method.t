@@ -10,7 +10,7 @@ use Config;
 
 use SPVM 'MinimalMethod';
 
-my $build_dir = $ENV{SPVM_BUILD_DIR};
+my $build_dir = "$FindBin::Bin/../.spvm_build";
 
 SPVM::MinimalMethod->foo;
 

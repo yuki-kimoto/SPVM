@@ -13,7 +13,7 @@ use SPVM 'TestCase::Operator::Say';
 
 
 my $test_dir = $ENV{SPVM_TEST_DIR};
-my $build_dir = $ENV{SPVM_BUILD_DIR};
+my $build_dir = "$FindBin::Bin/.spvm_build";
 
 my $test_tmp_dir = "$test_dir/test_files/.tmp";
 

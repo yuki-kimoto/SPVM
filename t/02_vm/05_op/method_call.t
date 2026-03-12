@@ -9,8 +9,6 @@ use Test::More;
 
 use SPVM 'TestCase::Operator::MethodCall';
 
-my $build_dir = $ENV{SPVM_BUILD_DIR};
-
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
 my $SHORT_MAX = 32767;
@@ -218,6 +216,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 {
   # Check precompile class file
   {
+    my $build_dir = "$FindBin::Bin/../.spvm_build";
     my $precompile_class_file = "$build_dir/work/lib/SPVM/TestCase/Operator/MethodCall.precompile.$Config{dlext}";
     ok(-f $precompile_class_file);
   }
