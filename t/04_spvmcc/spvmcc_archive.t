@@ -21,8 +21,7 @@ my $devnull = File::Spec->devnull;
 
 my $test_dir = "$FindBin::Bin";
 my $test_script_dir = "t/04_spvmcc/script";
-my $build_dir = "t/04_spvmcc/.spvm_build/$$";
-END { rmtree $build_dir; }
+my $build_dir = "$FindBin::Bin/.spvm_build";
 
 my $tmp_dir = "$build_dir/.tmp";
 my $exe_dir = "$tmp_dir/exe";
