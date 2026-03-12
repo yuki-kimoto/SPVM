@@ -1,6 +1,6 @@
 use lib "t/lib";
 use TestAuto;
-use TestFile;
+use TestUtil;
 
 use strict;
 use warnings;

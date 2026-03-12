@@ -1155,7 +1155,6 @@ t/04_spvmcc/spvmdeps.t
 t/05_spvmdist/command.t
 t/05_spvmdist/module.t
 t/lib/TestAuto.pm
-t/lib/TestFile.pm
 t/lib/TestUtil.pm
 t/test_add_class/SPVM/MyPoint.spvm
 t/test_files/file_eof.txt

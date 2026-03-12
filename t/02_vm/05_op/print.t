@@ -7,7 +7,7 @@ use File::Path 'mkpath';
 
 use Test::More;
 
-use TestFile;
+use TestUtil;
 use SPVM 'TestCase::Operator::Print';
 
 my $test_dir = $ENV{SPVM_TEST_DIR};
@@ -32,10 +32,6 @@ use warnings;
 
 use SPVM 'TestCase::Operator::Print';
 
-
-
-use TestFile;
-
 EOS
 
   open my $script_fh, '>', $script_file
@@ -44,19 +40,6 @@ EOS
   my $output_source = "$pre$func_call;";
   
   print $script_fh $output_source;
-}
-
-sub slurp_binmode {
-  my ($output_file) = @_;
-  
-  open my $fh, '<', $output_file
-    or die "Can't open file $output_file:$!";
-  
-  binmode $fh;
-  
-  my $output = do { local $/; <$fh> };
-  
-  return $output;
 }
 
 # Start objects count
@@ -71,7 +54,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       my $func_call = 'SPVM::TestCase::Operator::Print->print';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
+      my $output = TestUtil::slurp_binmode($output_file);
       is($output, 'Hello');
     }
 
@@ -80,7 +63,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       my $func_call = 'SPVM::TestCase::Operator::Print->print_newline';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
+      my $output = TestUtil::slurp_binmode($output_file);
       is($output, "\x0A");
     }
     
@@ -89,7 +72,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       my $func_call = 'SPVM::TestCase::Operator::Print->print_long_lines';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
+      my $output = TestUtil::slurp_binmode($output_file);
       is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
     }
     # test_print_empty
@@ -97,7 +80,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       my $func_call = 'SPVM::TestCase::Operator::Print->print_empty';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
+      my $output = TestUtil::slurp_binmode($output_file);
       is($output, "");
     }
     # test_print_undef
@@ -105,7 +88,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
       my $func_call = 'SPVM::TestCase::Operator::Print->print_undef';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
+      my $output = TestUtil::slurp_binmode($output_file);
       is($output, "");
     }
   }

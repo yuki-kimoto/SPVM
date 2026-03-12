@@ -1,6 +1,9 @@
+package TestUtil;
+
+use parent 'Exporter';
+
 use strict;
 use warnings;
-use Exporter;
 use File::Temp();
 use Test::More;
 use Carp 'confess';
@@ -8,7 +11,7 @@ use File::Path 'mkpath';
 use File::Basename 'dirname';
 use SPVM::Builder;
 
-our @EXPORT_OK = qw(compile_not_ok_file compile_not_ok);
+our @EXPORT_OK = qw(compile_ok_file compile_ok compile_not_ok_file compile_not_ok);
 
 sub compile_not_ok {
   my ($sources, $error_message_re) = @_;
@@ -212,3 +215,79 @@ sub compile_ok_file {
     warn "[Compile Error]$first_error_message";
   }
 }
+
+sub copy_test_files_tmp {
+
+  my $test_files_dir = 't/test_files';
+  my $test_files_tmp_dir = 't/test_files/.tmp';
+  
+  mkpath $test_files_tmp_dir;
+  
+  my @test_files = glob "$test_files_dir/*";
+  
+  for my $file (@test_files) {
+    my $file_base = basename $file;
+    my $file_tmp = "$test_files_tmp_dir/$file_base";
+    
+    open my $in_fh, '<', $file
+      or die "Can't open file $file: $!";
+    
+    my $content = do { local $/; <$in_fh> };
+    
+    open my $out_fh, '>', $file_tmp
+      or die "Can't open file $file: $!";
+    
+    binmode $out_fh;
+    
+    print $out_fh $content;
+  }
+}
+
+sub slurp_binmode {
+  my ($output_file) = @_;
+  
+  open my $fh, '<', $output_file
+    or die "Can't open file $output_file:$!";
+  
+  binmode $fh;
+  
+  my $output = do { local $/; <$fh> };
+  
+  return $output;
+}
+
+sub generate_class_method_call_script {
+  my ($script_file, $class_name, $method_name) = @_;
+  
+  # Prepend "SPVM::" to the class name to create a valid Perl-side SPVM class name
+  my $spvm_class_name = "SPVM::$class_name";
+  
+  # Generate method call string only if $method_name is defined
+  my $method_call = "";
+  if (defined $method_name) {
+    $method_call = "$spvm_class_name->$method_name;";
+  }
+  
+  my $content = <<"EOS";
+use lib "t/lib";
+use TestAuto;
+
+use strict;
+use warnings;
+
+use SPVM '$class_name';
+
+use TestUtil;
+
+# Call the SPVM method if a method name is provided
+$method_call
+EOS
+
+  open my $script_fh, '>', $script_file
+    or die "Can't open file $script_file: $!";
+  
+  print $script_fh $content;
+  close $script_fh;
+}
+
+1;

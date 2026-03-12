@@ -7,7 +7,7 @@ use File::Path 'mkpath';
 
 use Test::More;
 
-use TestFile;
+use TestUtil;
 use SPVM 'TestCase::Operator::Say';
 
 
@@ -36,7 +36,7 @@ use SPVM 'TestCase::Operator::Say';
 
 
 
-use TestFile;
+use TestUtil;
 
 EOS
 

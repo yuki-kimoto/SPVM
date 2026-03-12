@@ -8,7 +8,7 @@ use Test::More;
 
 use SPVM 'TestCase::Module::Array';
 
-use TestFile;
+use TestUtil;
 
 my $api = SPVM::api();
 

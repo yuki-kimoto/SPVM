@@ -7,7 +7,7 @@ use File::Path 'mkpath';
 
 use Test::More;
 
-use TestFile;
+use TestUtil;
 use File::Spec;
 use SPVM (); # Load SPVM API
 
@@ -31,7 +31,7 @@ my $class_name = 'TestCase::Definition::EndBlock';
   {
     # Actually, just calling a non-existent method will still run END blocks if the class is loaded.
     # But for safety, let's assume we call a class method or just the class itself.
-    TestFile::generate_class_method_call_script($script_file, $class_name);
+    TestUtil::generate_class_method_call_script($script_file, $class_name);
     
     # Capture output. END blocks print to STDOUT in your SPVM code.
     my $output = `$^X -Mblib $script_file`;

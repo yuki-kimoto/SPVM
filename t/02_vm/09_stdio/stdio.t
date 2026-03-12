@@ -7,7 +7,7 @@ use File::Path 'mkpath';
 
 use Test::More;
 
-use TestFile;
+use TestUtil;
 use SPVM 'TestCase::Operator::Stdio';
 use SPVM 'TestCase::NativeAPI';
 
@@ -35,7 +35,7 @@ use SPVM 'TestCase::Operator::Stdio';
 
 
 
-use TestFile;
+use TestUtil;
 
 EOS
 

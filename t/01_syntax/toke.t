@@ -20,7 +20,7 @@ BEGIN {
 use lib "$test_dir_vm/lib";
 use lib "$test_dir/lib";
 
-use TestUtil qw(compile_not_ok_file compile_not_ok);
+use TestUtil qw(compile_ok_file compile_ok compile_not_ok_file compile_not_ok);
 
 use Test::More;
 
