@@ -16,7 +16,7 @@ use SPVM::Builder::Util;
 
 my $devnull = File::Spec->devnull;
 
-my $test_dir = $ENV{SPVM_TEST_DIR};
+my $test_dir = "$FindBin::Bin";
 my $build_dir = "$FindBin::Bin/.spvm_build";
 
 my $exe_dir = "$build_dir/.tmp/exe";

@@ -11,7 +11,7 @@ use TestUtil;
 use SPVM (); # Load SPVM API
 use SPVM 'TestCase::Operator::Warn';
 
-my $test_dir = $ENV{SPVM_TEST_DIR};
+my $test_dir = "$FindBin::Bin";
 my $test_tmp_dir = "$test_dir/test_files/.tmp";
 
 my $script_file = "$test_tmp_dir/warn-script.pl";

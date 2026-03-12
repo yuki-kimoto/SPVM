@@ -20,7 +20,7 @@ use SPVM::Builder::Exe;
 
 my $file = 't/' . basename $0;
 
-my $test_dir = $ENV{SPVM_TEST_DIR};
+my $test_dir = "$FindBin::Bin";
 my $build_dir = "$FindBin::Bin/.spvm_build";
 
 {

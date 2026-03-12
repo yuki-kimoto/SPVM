@@ -5,8 +5,6 @@ use warnings;
 
 use FindBin;
 use lib "t/lib";
-use File::Find;
-use File::Basename 'basename', 'dirname';
 
 sub import {
   my $test_dir;
@@ -54,7 +52,6 @@ sub import {
   my $test_lib_dir = "$test_dir/lib";
   unshift @INC, $test_lib_dir;
   
-  $ENV{SPVM_TEST_DIR} = $test_dir;
   $ENV{SPVM_BUILD_DIR} = "$test_dir/.spvm_build";
 }
 

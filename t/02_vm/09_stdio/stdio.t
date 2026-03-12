@@ -11,7 +11,7 @@ use TestUtil;
 use SPVM 'TestCase::Operator::Stdio';
 use SPVM 'TestCase::NativeAPI';
 
-my $test_dir = $ENV{SPVM_TEST_DIR};
+my $test_dir = "$FindBin::Bin";
 my $build_dir = "$FindBin::Bin/.spvm_build";
 
 my $test_tmp_dir = "$test_dir/test_files/.tmp";
