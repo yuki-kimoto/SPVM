@@ -12,8 +12,6 @@ use Errno;
 
 use SPVM 'TestCase::NativeAPILinkInfo';
 
-my $build_dir = "$FindBin::Bin/.spvm_build";
-
 # Start objects count
 my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count;

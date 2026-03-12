@@ -22,7 +22,7 @@ ok(SPVM::TestCase::UseResource::Basic->test);
   my $resource = $main::TEST_USE_RESOURCE_RET;
   is_deeply($resource->config->{_test_base_env}, ['args1', 'args2']);
   
-  my $object_file = 't/02_vm/.spvm_build/work/object/SPVM/TestCase/UseResource/Basic.resource/SPVM/TestCase/Resource/Mylib1.native/mylib1_source1.o';
+  my $object_file = "$ENV{SPVM_BUILD_DIR}/work/object/SPVM/TestCase/UseResource/Basic.resource/SPVM/TestCase/Resource/Mylib1.native/mylib1_source1.o";
   ok (-f $object_file);
 }
 
