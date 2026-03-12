@@ -7,6 +7,10 @@
   
   [Internal Changes]
     * Add --devel option to Makefile.PL to set optimization level to -O0 with debug information.
+  
+  [Bug Fix]
+    * Fix a bug that PRId64 format was not correctly parsed in SPVM_API_c_snprintf_len when its value is "ld".
+  
 0.990144 2026-03-11
   [Incompatible Changes]
     * Disallow void pointers for native types to enforce strict type checking.

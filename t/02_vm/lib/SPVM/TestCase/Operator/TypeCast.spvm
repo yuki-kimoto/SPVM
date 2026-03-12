@@ -629,6 +629,7 @@ class TestCase::Operator::TypeCast {
       my $long_string = (string)9223372036854775807L;
       
       unless ($long_string eq "9223372036854775807") {
+        diag $long_string;
         return 0;
       }
     }
@@ -637,6 +638,7 @@ class TestCase::Operator::TypeCast {
       my $long_string = (string)-9223372036854775808L;
       
       unless ($long_string eq "-9223372036854775808") {
+        diag $long_string;
         return 0;
       }
     }
