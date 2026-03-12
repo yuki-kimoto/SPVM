@@ -4,7 +4,9 @@
     
   [Incompatible Changes]
     * Move SPVM_CC_DEBUG, SPVM_CC_QUIET, and SPVM_CC_FORCE environment variables from SPVM::Builder::CC to JIT-only in SPVM::Global, which is an incompatible change.
-
+  
+  [Internal Changes]
+    * Add --devel option to Makefile.PL to set optimization level to -O0 with debug information.
 0.990144 2026-03-11
   [Incompatible Changes]
     * Disallow void pointers for native types to enforce strict type checking.
