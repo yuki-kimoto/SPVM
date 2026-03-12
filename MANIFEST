@@ -508,7 +508,6 @@ t/01_syntax/extra_others.t
 t/01_syntax/extra_statement.t
 t/01_syntax/extra_type.t
 t/01_syntax/issues/522.pl
-t/01_syntax/lib/MyTest.pm
 t/01_syntax/lib/SPVM/CompileError/Assign/ConstToNoConst.spvm
 t/01_syntax/lib/SPVM/CompileError/Assign/DifferentObject.spvm
 t/01_syntax/lib/SPVM/CompileError/Assign/NarrwoingConvertionIntToByte.spvm
@@ -1157,6 +1156,7 @@ t/05_spvmdist/command.t
 t/05_spvmdist/module.t
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
+t/lib/TestUtil.pm
 t/test_add_class/SPVM/MyPoint.spvm
 t/test_files/file_eof.txt
 t/test_files/fread.txt

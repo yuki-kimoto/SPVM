@@ -8,7 +8,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 use lib "$FindBin::Bin/../02_vm/lib";
 
-use MyTest qw(compile_not_ok_file compile_not_ok);
+use TestUtil qw(compile_not_ok_file compile_not_ok);
 
 use Test::More;
 # Call method
