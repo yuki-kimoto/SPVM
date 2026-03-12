@@ -85,7 +85,7 @@ sub to_cmd {
     use Config;
     my $lib_dir_in_spvm_archive = "$archive_dir/lib";
     my $include_dir_in_spvm_archive = "$archive_dir/include";
-    my $tmp_build_dir = "t/04_spvmcc/.spvm_build/.tmp";
+    my $tmp_build_dir = File::Temp->newdir;
     
     File::Path::mkpath $lib_dir_in_spvm_archive;
     File::Path::mkpath $include_dir_in_spvm_archive;
