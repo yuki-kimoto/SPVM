@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use FindBin;
-use lib "t/lib";
 
 sub import {
   my $test_dir;
