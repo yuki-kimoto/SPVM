@@ -26,8 +26,6 @@ my $tmp_dir = "$build_dir/.tmp";
 my $exe_dir = "$tmp_dir/exe";
 my $external_object_dir = "$tmp_dir/external_object";
 
-rmtree "$build_dir/work";
-
 mkpath $exe_dir;
 mkpath $external_object_dir;
 
