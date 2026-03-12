@@ -12,8 +12,6 @@ use File::Copy 'copy';
 use Config;
 use FindBin;
 
-use SPVM 'EmptyClass';
-use SPVM 'EmptyPackage';
 use SPVM 'MinimalMethod';
 use SPVM 'MyMath';
 use SPVM 'TestCase';
@@ -23,9 +21,6 @@ use SPVM 'TestCase::Allow';
 use SPVM 'TestCase::Allow::PrivateData';
 use SPVM 'TestCase::Comment::LF';
 use SPVM 'TestCase::DefaultLoadedClasses';
-use SPVM 'TestCase::Definition::EndBlock';
-use SPVM 'TestCase::Definition::EndBlock::Data';
-use SPVM 'TestCase::Definition::EndBlock::Manual';
 use SPVM 'TestCase::Definition::InitBlock';
 use SPVM 'TestCase::Definition::InitBlock::Data';
 use SPVM 'TestCase::Destroy';
@@ -106,7 +101,6 @@ use SPVM 'TestCase::Module::IntList';
 use SPVM 'TestCase::Module::List';
 use SPVM 'TestCase::Module::Long';
 use SPVM 'TestCase::Module::LongList';
-use SPVM 'TestCase::Module::Mutex';
 use SPVM 'TestCase::Module::Native::Argument';
 use SPVM 'TestCase::Module::Native::BasicType';
 use SPVM 'TestCase::Module::Native::Compiler';
@@ -123,12 +117,8 @@ use SPVM 'TestCase::Module::Sort';
 use SPVM 'TestCase::Module::StringBuffer';
 use SPVM 'TestCase::Module::StringList';
 use SPVM 'TestCase::Module::Sync::Mutex';
-use SPVM 'TestCase::ModuleContainsMultiClass';
-use SPVM 'TestCase::ModuleContainsMultiClass::FloatMatrix';
-use SPVM 'TestCase::ModuleContainsMultiPackage';
 use SPVM 'TestCase::Mulnum';
 use SPVM 'TestCase::MulnumArray';
-use SPVM 'TestCase::Mutex';
 use SPVM 'TestCase::NativeAPI';
 use SPVM 'TestCase::NativeAPICpp';
 use SPVM 'TestCase::NativeAPILinkInfo';
@@ -212,7 +202,6 @@ use SPVM 'TestCase::PrecompileClassAttribute';
 use SPVM 'TestCase::Private';
 use SPVM 'TestCase::Resource::Mylib1';
 use SPVM 'TestCase::Resource::Mylib2';
-use SPVM 'TestCase::Say';
 use SPVM 'TestCase::Scope';
 use SPVM 'TestCase::Simple';
 use SPVM 'TestCase::SimpleChild';
@@ -238,28 +227,27 @@ use SPVM 'TestCase::Util::Thread::ThisThread';
 
 copy_dlls_from_build_dir_to_lib($ENV{SPVM_BUILD_DIR});
 
-# (Comment: Copy DLLs from build directory to t/03_precompile/lib)
-sub copy_dlls {
+sub copy_dlls_from_build_dir_to_lib {
   my ($build_dir) = @_;
   
-  my $work_lib_dir = "$build_dir/work/lib";
+  # (Comment: Use absolute path to ensure regex matches correctly)
+  my $work_lib_dir = File::Spec->rel2abs("$build_dir/work/lib");
   return unless -d $work_lib_dir;
 
-  # (Comment: Destination is t/03_precompile/lib)
   my $script_lib_dir = "$FindBin::Bin/lib";
-
   my $dlext = $Config{dlext};
 
   find(sub {
     if (/\.$dlext$/) {
-      my $src_file = $File::Find::name;
+      my $src_file = File::Spec->rel2abs($File::Find::name);
       
-      # (Comment: Extract relative path like 'SPVM/TestCase/...')
+      # (Comment: More robust way to get relative path)
       my $rel_path = $src_file;
-      $rel_path =~ s|^\Q$work_lib_dir\E/||;
+      $rel_path =~ s|^\Q$work_lib_dir\E[/\\ ]*||; # (Comment: Support both / and \)
       
       my $dest_file = "$script_lib_dir/$rel_path";
       
+      # (Comment: Create destination directory before copy)
       my $dest_dir = dirname($dest_file);
       unless (-d $dest_dir) {
         mkpath($dest_dir) or die "Can't mkpath $dest_dir: $!";
@@ -270,7 +258,3 @@ sub copy_dlls {
   }, $work_lib_dir);
 }
 
-my $build_dir = $ENV{SPVM_BUILD_DIR};
-if ($build_dir) {
-  copy_dlls($build_dir);
-}
