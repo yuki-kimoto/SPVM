@@ -6,6 +6,7 @@ use Test::More;
 use Carp 'confess';
 use File::Path 'mkpath';
 use File::Basename 'dirname';
+use SPVM::Builder;
 
 our @EXPORT_OK = qw(compile_not_ok_file compile_not_ok);
 
