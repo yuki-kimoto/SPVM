@@ -4,7 +4,9 @@ use strict;
 use warnings;
 
 use FindBin;
+use File::Temp;
 
+my $BUILD_DIR;
 sub import {
   my $test_dir;
 
@@ -45,6 +47,10 @@ sub import {
   }
   else {
     die "\"$FindBin::Bin\" is an invalid test directory";
+  }
+  
+  unless ($test_dir) {
+    $test_dir = $BUILD_DIR = File::Temp->newdir;
   }
   
   $ENV{SPVM_BUILD_DIR} = "$test_dir/.spvm_build";
