@@ -22,7 +22,7 @@ use SPVM::Builder::Exe;
 my $file = 't/' . basename $0;
 
 my $test_dir = "$FindBin::Bin";
-my $build_dir = "$FindBin::Bin/.spvm_build";
+my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 {
   my $exe_dir = "$build_dir/work/exe";

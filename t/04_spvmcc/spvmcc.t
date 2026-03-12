@@ -18,7 +18,7 @@ use SPVM::Builder::Util;
 my $devnull = File::Spec->devnull;
 
 my $test_dir = "$FindBin::Bin";
-my $build_dir = "$FindBin::Bin/.spvm_build";
+my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 my $exe_dir = "$build_dir/.tmp/exe";
 my $external_object_dir = "$build_dir/.tmp/external_object";
@@ -233,12 +233,12 @@ sub to_cmd {
     is($output, $output_expect);
     
     {
-      ok(-d 't/04_spvmcc/.spvm_build/spvmcc/myapp/src');
-      ok(-d 't/04_spvmcc/.spvm_build/spvmcc/myapp/object');
+      ok(-d "$build_dir/spvmcc/myapp/src");
+      ok(-d "$build_dir/spvmcc/myapp/object");
     }
     
     {
-      my $bootstrap_file = 't/04_spvmcc/.spvm_build/spvmcc/myapp/src/bootstrap/myapp.c';
+      my $bootstrap_file = "$build_dir/spvmcc/myapp/src/bootstrap/myapp.c";
       open my $fh, '<', $bootstrap_file
         or die "Cannot open file \"$bootstrap_file\":$!";
       

@@ -14,7 +14,7 @@ use SPVM 'TestCase::Operator::Say';
 
 
 my $test_dir = "$FindBin::Bin";
-my $build_dir = "$FindBin::Bin/.spvm_build";
+my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 my $test_tmp_dir = "$test_dir/test_files/.tmp";
 

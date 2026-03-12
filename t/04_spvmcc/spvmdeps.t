@@ -20,7 +20,7 @@ use JSON::PP;
 my $devnull = File::Spec->devnull;
 
 my $test_dir = "$FindBin::Bin";
-my $build_dir = "$FindBin::Bin/.spvm_build";
+my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 my @build_dir_parts = split('/', $build_dir);
 my $exe_dir = "$build_dir/work/exe";
