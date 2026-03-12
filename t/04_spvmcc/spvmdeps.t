@@ -1,4 +1,4 @@
-use lib "t/testlib";
+use lib "t/lib";
 use TestAuto;
 
 use Test::More;

@@ -1155,6 +1155,8 @@ t/04_spvmcc/spvmcc_solo.t
 t/04_spvmcc/spvmdeps.t
 t/05_spvmdist/command.t
 t/05_spvmdist/module.t
+t/lib/TestAuto.pm
+t/lib/TestFile.pm
 t/test_add_class/SPVM/MyPoint.spvm
 t/test_files/file_eof.txt
 t/test_files/fread.txt
@@ -1162,8 +1164,6 @@ t/test_files/fread_eof.txt
 t/test_files/long_line.txt
 t/test_files/os_support/cpp11.cpp
 t/test_files/SPVM/Foo.config
-t/testlib/TestAuto.pm
-t/testlib/TestFile.pm
 t/utils/copy_vm_to_precompile.pl
 t/utils/get_native_api_indexes.pl
 t/utils/sort_method_name_native.pl

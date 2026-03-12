@@ -1,7 +1,7 @@
 # For add_before_link_cb and add_before_compile_cb
 BEGIN { $ENV{SPVM_CC_FORCE} = 1; }
 
-use lib "t/testlib";
+use lib "t/lib";
 use TestAuto;
 
 use strict;

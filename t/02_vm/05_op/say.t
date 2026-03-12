@@ -1,4 +1,4 @@
-use lib "t/testlib";
+use lib "t/lib";
 use TestAuto;
 
 use strict;
@@ -26,7 +26,7 @@ sub write_script_file {
   my ($script_file, $func_call) = @_;
   
   my $pre = <<"EOS";
-use lib "t/testlib";
+use lib "t/lib";
 use TestAuto;
 
 use strict;
