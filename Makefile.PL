@@ -249,4 +249,14 @@ sub MY::postamble {
   return $make_rule;
 }
 
+# (Comment: Calculate the number of logical cores)
+{
+  my $logical_cores = $^O eq 'MSWin32' 
+      ? ($ENV{NUMBER_OF_PROCESSORS} || 1) 
+      : (int(`nproc 2>/dev/null || grep -c ^processor /proc/cpuinfo`) || 1);
+
+  # (Comment: Output a single, easy-to-copy command for parallel build and test)
+  print "\n# Parallel build and test command:\n";
+  print "make -j$logical_cores && make test HARNESS_OPTIONS=j$logical_cores\n\n";}
+
 1;
