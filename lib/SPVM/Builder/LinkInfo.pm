@@ -137,6 +137,8 @@ sub create_ldflags {
   
   push @merged_ldflags, @lib_ldflags;
   
+  warn "@merged_ldflags";
+  
   return \@merged_ldflags;
 }
 
