@@ -12,37 +12,10 @@ use File::Copy 'copy';
 use Config;
 use FindBin;
 
-# Choose top 30 for performance
+# Choose classes that is shared for performance
 use SPVM 'TestCase';
 use SPVM 'TestCase::Minimal';
 use SPVM 'TestCase::Simple';
-use SPVM 'TestCase::Accessor';
-use SPVM 'TestCase::Alias';
-use SPVM 'TestCase::Allow';
-use SPVM 'TestCase::Inheritance';
-use SPVM 'TestCase::Interface';
-use SPVM 'TestCase::Enum';
-use SPVM 'TestCase::Exception';
-use SPVM 'TestCase::Destroy';
-use SPVM 'TestCase::Scope';
-use SPVM 'TestCase::GenericType';
-use SPVM 'TestCase::NativeAPI';
-use SPVM 'TestCase::NativeAPICpp';
-use SPVM 'TestCase::NativeAPISrc';
-use SPVM 'TestCase::NativeAPILinkInfo';
-use SPVM 'TestCase::Operator::Add';
-use SPVM 'TestCase::Operator::Subtract';
-use SPVM 'TestCase::Operator::Multiply';
-use SPVM 'TestCase::Operator::Divide';
-use SPVM 'TestCase::Operator::Assign';
-use SPVM 'TestCase::Operator::Concat';
-use SPVM 'TestCase::Operator::New';
-use SPVM 'TestCase::Operator::ArrayAccess';
-use SPVM 'TestCase::Operator::FieldAccess';
-use SPVM 'TestCase::Operator::MethodCall';
-use SPVM 'TestCase::Operator::LogicalOperator';
-use SPVM 'TestCase::Operator::BitOperator';
-use SPVM 'TestCase::Operator::ComparisonOperator';
 
 =pod ALL
 
