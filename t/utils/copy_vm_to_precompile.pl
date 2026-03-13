@@ -37,9 +37,12 @@ find(
         
         my $content = do { local $/; <$fh> };
         
-        # Edit content for precompile
-        $content =~ s/class +([\w:]+) *\{/class $1 : precompile {/g;
-
+        if ($file =~ /\.spvm$/) {
+          # Edit only the first class definition in the file
+          $content =~ s/{/ : precompile {/;
+          $content =~ s/:\s*([a-z][\w:]*)\s*:\s*precompile/: $1 precompile/g;
+        }
+        
         # Inject SPVM_CC_OPTIMIZE for .t files
         if ($file =~ /\.t$/) {
           # Force set the environment variable at the beginning of the test
@@ -63,6 +66,11 @@ find(
   },
   $test_dir_vm
 );
+
+# Build offten used DLL
+my $build_test_classes_cmd = "$^X $test_dir_precompile/build_test_classes.pl";
+warn "$build_test_classes_cmd\n";
+system($build_test_classes_cmd);
 
 # Add the time stamp file for Makefile
 my $time_stamp_file = "$test_dir_precompile/time_stamp.txt";
