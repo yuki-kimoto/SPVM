@@ -1,3 +1,5 @@
+BEGIN { $ENV{SPVM_CC_OPTIMIZE} = '-O0 -g3'; }
+
 use lib "t/lib";
 use TestAuto;
 use TestUtil::MyLib;
