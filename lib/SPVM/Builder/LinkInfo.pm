@@ -103,6 +103,10 @@ sub create_ldflags {
   my $output_type = $config->output_type;
   if ($output_type eq 'dynamic_lib') {
     push @merged_ldflags, grep { length $_ } @{$config->dynamic_lib_ldflags};
+    push @merged_ldflags, grep { length $_ } @{$config->dynamic_lib_libcpp_ldflags};
+  }
+  elsif ($output_type eq 'exe') {
+    push @merged_ldflags, grep { length $_ } @{$config->exe_libcpp_ldflags};
   }
   
   my $ldflags = $config->ldflags;
