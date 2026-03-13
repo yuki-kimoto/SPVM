@@ -785,23 +785,6 @@ sub new {
     }
   }
   
-  unless (defined $self->{libcpp_ldflags}) {
-    if ($^O eq 'MSWin32') {
-      # Windows (MinGW)
-      $self->libcpp_ldflags(['-Wl,-Bstatic', '-lstdc++', '-lgcc', '-Wl,-Bdynamic']);
-    }
-    elsif ($^O eq 'darwin') {
-      # macOS, iOS, etc.
-      # (Comment: Use -lc++ instead of -lstdc++ on Darwin. 
-      # This is necessary for spvmcc to link C++ standard library correctly.)
-      $self->libcpp_ldflags([]);
-    }
-    else {
-      # Others.
-      $self->libcpp_ldflags(['-lstdc++']);
-    }
-  }
-  
   # static_lib_ldflag
   unless (defined $self->{static_lib_ldflag}) {
     my $begin = '-Wl,-Bstatic';
@@ -837,6 +820,23 @@ sub new {
   # output_type
   unless (defined $self->output_type) {
     $self->output_type('dynamic_lib');
+  }
+  
+  unless (defined $self->{libcpp_ldflags}) {
+    if ($^O eq 'MSWin32') {
+      # Windows (MinGW)
+      $self->libcpp_ldflags(['-Wl,-Bstatic', '-lstdc++', '-lgcc', '-Wl,-Bdynamic']);
+    }
+    elsif ($^O eq 'darwin' && $self->output_type eq 'dynamic_lib') {
+      # macOS, iOS, etc.
+      # (Comment: Use -lc++ instead of -lstdc++ on Darwin. 
+      # This is necessary for spvmcc to link C++ standard library correctly.)
+      $self->libcpp_ldflags([]);
+    }
+    else {
+      # Others.
+      $self->libcpp_ldflags(['-lstdc++']);
+    }
   }
   
   # category
