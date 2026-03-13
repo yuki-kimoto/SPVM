@@ -790,13 +790,8 @@ sub new {
       # Windows (MinGW)
       $self->libcpp_ldflags(['-Wl,-Bstatic', '-lstdc++', '-lgcc', '-Wl,-Bdynamic']);
     }
-    elsif ($^O eq 'darwin') {
-      # macOS, iOS, etc.
-      # (Comment: On Darwin-based systems, Clang automatically handles C++ standard libraries.)
-      $self->libcpp_ldflags([]);
-    }
     else {
-      # Others.
+      # Others. On macOS, -lstdc++ is not needed but simply ignored.
       $self->libcpp_ldflags(['-lstdc++']);
     }
   }
