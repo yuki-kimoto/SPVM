@@ -13,21 +13,23 @@ sub import {
 
   # (Comment: Traverse up to 100 levels to find lib directories)
   for (1..100) {
-    # (Comment: If lib directory exists at this level, add it to the list)
-    if (-d "$current_dir/lib") {
-      push @test_lib_dirs, "$current_dir/lib";
-    }
-    
     # (Comment: Stop if Makefile.PL is found)
+    # (Comment: The lib directory at the project root is NOT added to @test_lib_dirs)
     if (-f "$current_dir/Makefile.PL") {
       $found_project_root = 1;
       last;
+    }
+
+    # (Comment: If lib directory exists at this level, add it to the list)
+    # (Comment: This level is definitely a subdirectory of the project root)
+    if (-d "$current_dir/lib") {
+      push @test_lib_dirs, "$current_dir/lib";
     }
     
     # (Comment: Get parent directory)
     my $parent_dir = abs_path("$current_dir/..");
     
-    # (Comment: Stop if the parent directory is the same as current directory, meaning root is reached)
+    # (Comment: Stop if root is reached)
     if ($parent_dir eq $current_dir) {
       last;
     }
