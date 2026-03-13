@@ -67,11 +67,6 @@ find(
   $test_dir_vm
 );
 
-# Build offten used DLL
-my $build_test_classes_cmd = "$^X $test_dir_precompile/build_test_classes.pl";
-warn "$build_test_classes_cmd\n";
-system($build_test_classes_cmd);
-
 # Add the time stamp file for Makefile
 my $time_stamp_file = "$test_dir_precompile/time_stamp.txt";
 open my $time_stamp_fh, '>', $time_stamp_file

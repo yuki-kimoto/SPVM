@@ -798,7 +798,6 @@ t/02_vm/99_extra/issue_715.t
 t/02_vm/99_extra/issue_816.t
 t/02_vm/99_extra/issues.t
 t/02_vm/99_extra/version.t
-t/02_vm/build_test_classes.pl
 t/02_vm/lib/SPVM/4foo.spvm
 t/02_vm/lib/SPVM/EmptyClass.spvm
 t/02_vm/lib/SPVM/EmptyPackage.spvm
