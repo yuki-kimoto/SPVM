@@ -808,6 +808,36 @@ EOS
   return $output_file;
 }
 
+sub get_cpu_count {
+  my $cpu_count;
+
+  if ($^O eq 'MSWin32') {
+    # Windows
+    $cpu_count = $ENV{NUMBER_OF_PROCESSORS} || 1;
+  }
+  else {
+    # Linux / Unix / macOS
+    # (Comment: Using nproc is the most reliable way on modern Linux)
+    my $nproc = `nproc 2>/dev/null`;
+    if ($nproc) {
+      $cpu_count = int($nproc);
+    }
+    else {
+      # (Comment: Fallback to /proc/cpuinfo or sysctl)
+      my $cpuinfo = `grep -c ^processor /proc/cpuinfo 2>/dev/null`;
+      if ($cpuinfo) {
+        $cpu_count = int($cpuinfo);
+      }
+      else {
+        my $sysctl = `sysctl -n hw.ncpu 2>/dev/null`;
+        $cpu_count = $sysctl ? int($sysctl) : 1;
+      }
+    }
+  }
+
+  return $cpu_count;
+}
+
 1;
 
 =head1 Name

@@ -249,14 +249,14 @@ sub MY::postamble {
   return $make_rule;
 }
 
-# (Comment: Calculate the number of logical cores)
 {
-  my $logical_cores = $^O eq 'MSWin32' 
-      ? ($ENV{NUMBER_OF_PROCESSORS} || 1) 
-      : (int(`nproc 2>/dev/null || grep -c ^processor /proc/cpuinfo`) || 1);
-
-  # (Comment: Output a single, easy-to-copy command for parallel build and test)
+  my $cpus = SPVM::Builder::Util::get_cpu_count();
+  
+  # Same as Ninja default
+  my $j = $cpus + 2;
+  
   print "\n# Parallel build and test command:\n";
-  print "make -j$logical_cores && make test HARNESS_OPTIONS=j$logical_cores\n\n";}
+  print "make -j$j && make test HARNESS_OPTIONS=j$j\n\n";
+}
 
 1;
