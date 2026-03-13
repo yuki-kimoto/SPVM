@@ -176,14 +176,6 @@ class TestCase::Interface {
       }
     }
 
-    # call_to_string_precompile
-    {
-      my $interface = new TestCase::Interface;
-      unless ($interface->test_call_to_string_precompile) {
-        return 0;
-      }
-    }
-    
     return 1;
   }
   
@@ -214,22 +206,7 @@ class TestCase::Interface {
     
     return 1;
   }
-
-  method test_call_to_string_precompile : int () {
-    # Call call_to_string_precompile
-    {
-      my $string = $self->call_to_string_precompile;
-      unless ($string eq "call_to_string_precompile TestCase::Interface") {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
   
-  
-  # method interface_shared2 : string ($num : int);
-
   static method join_stringables : string ($stringables : Stringable[]) {
     my $string = "";
     
@@ -360,10 +337,6 @@ class TestCase::Interface {
     return $self->TestCase::Interface::Type::call_to_string;
   }
 
-  method call_to_string_precompile : string () {
-    return $self->TestCase::Interface::Type::call_to_string_precompile;
-  }
-  
   static method void_and_any_object_return_type : int () {
     
     {
