@@ -20,7 +20,7 @@ These files are output when attempting to build a module containing methods with
 
 If the C<SPVM_BUILD_DIR> environment variable is defined, these files are output to the directory. If the directory does not exist, an exception is thrown.
 
-If the C<SPVM_BUILD_DIR> environment variable is not defined, a temporary directory is created when it is first needed, and the path is set to the environment variable.
+If the C<SPVM_BUILD_DIR> environment variable is not defined, a temporary directory is created at the beginning of the program, and the path is set to the environment variable.
 
 Examples:
 

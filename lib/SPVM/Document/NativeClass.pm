@@ -661,7 +661,8 @@ Object files and a shared library file are output to the build directory.
 
 If the L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable is defined, it is used as the build directory. If it does not exist, it is created.
 
-If the L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable is not defined, a temporary directory is automatically created and used as the build directory.
+If the C<SPVM_BUILD_DIR> environment variable is not defined, a temporary directory is created at the beginning of the program, and the path is set to the environment variable.
+
 
 Normally, C<~/.spvm_build> is used as the build directory.
 
