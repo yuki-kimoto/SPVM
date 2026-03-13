@@ -37,7 +37,15 @@ find(
         
         my $content = do { local $/; <$fh> };
         
+        # Edit content for precompile
         $content =~ s/class +([\w:]+) *\{/class $1 : precompile {/g;
+
+        # Inject SPVM_CC_OPTIMIZE for .t files
+        if ($file =~ /\.t$/) {
+          # Force set the environment variable at the beginning of the test
+          my $env_setting = "BEGIN { \$ENV{SPVM_CC_OPTIMIZE} = '-O0 -g3'; }\n";
+          $content = $env_setting . $content;
+        }
         
         mkpath $to_dir;
         
