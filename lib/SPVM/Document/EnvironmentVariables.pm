@@ -18,7 +18,10 @@ C source codes for precompilation, dynamic link libraries and object files are s
 
 These files are output when attempting to build a module containing methods with the C<native> attribute or the C<precompile> attribute.
 
-If these files are output and the directory given by C<SPVM_BUILD_DIR> environment variable does not exist, an exception is thrown.
+If the C<SPVM_BUILD_DIR> environment variable is defined, these files are output to the directory. If the directory does not exist, an exception is thrown.
+
+If the C<SPVM_BUILD_DIR> environment variable is not defined, a temporary directory is created when it is first needed, and the path is set to the environment variable.
+
 Examples:
 
   # bash

@@ -163,6 +163,7 @@ sub init_api {
   }
 }
 
+my $SPVM_BUILD_DIR_TMP;
 my $DYNAMIC_LIB_FILES_H = {};
 sub load_dynamic_lib {
   my ($runtime, $class_name) = @_;
@@ -194,6 +195,10 @@ sub load_dynamic_lib {
         }
         else {
           my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
+          unless (defined $build_dir) {
+            $SPVM_BUILD_DIR_TMP = $ENV{SPVM_BUILD_DIR} = File::Temp->newdir;
+          }
+          
           my $builder = SPVM::Builder->new(build_dir => $build_dir);
           my $builder_options = {
             runtime => $runtime,

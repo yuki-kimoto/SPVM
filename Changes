@@ -1,7 +1,7 @@
 0.990145 2026-03-13
   [Changes]
     * Change the default value of the optimize field from '-O3' to '-O3 -DNDEBUG' in SPVM::Builder::Config to disable assertions by default.
-    
+    * If the SPVM_BUILD_DIR environment variable is not defined, a temporary directory is created when it is first needed, and the path is set to the environment variable.
   [Incompatible Changes]
     * Move SPVM_CC_DEBUG, SPVM_CC_QUIET, and SPVM_CC_FORCE environment variables from SPVM::Builder::CC to JIT-only in SPVM::Global, which is an incompatible change.
   

@@ -657,19 +657,16 @@ A native class and native source files are compiled to object files and are link
 
 The extension of a shared library is C<.so> in Linux and UNIX, C<.dylib> in Mac, C<.dll> in Windows.
 
-L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable must be set to a build directoy path.
-
-Normally, C<~/.spvm_build> is set to it.
-
-  ~/.spvm_build
-
 Object files and a shared library file are output to the build directory.
 
-If the build directory does not exist, it is created.
+If the L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable is defined, it is used as the build directory. If it does not exist, it is created.
 
-Exceptions:
+If the L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable is not defined, a temporary directory is automatically created and used as the build directory.
 
-A string of non-zero length must be set to L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable. Otherwise, an exception is thrown.
+Normally, C<~/.spvm_build> is used as the build directory.
+
+  # Example
+  export SPVM_BUILD_DIR=~/.spvm_build
 
 =head2 Dependency Resolution
 
