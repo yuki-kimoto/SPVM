@@ -207,13 +207,13 @@ sub build {
   }
   
   unless (defined $build_dir) {
-    confess("A build directory must be defined. Perhaps the SPVM_BUILD_DIR environment variable is not set.");
+    confess("A build directory 'build_dir' must be defined.");
   }
   
   mkpath $build_dir;
   
   unless (-d $build_dir) {
-    confess("[Unexpected Error]A build directory must exists.");
+    confess("[Unexpected Error]A build directory 'build_dir' must exists.");
   }
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);

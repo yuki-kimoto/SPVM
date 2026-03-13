@@ -2,6 +2,17 @@ package SPVM::Global;
 use strict;
 use warnings;
 use Carp 'confess';
+use File::Temp;
+
+use SPVM::Builder::Util;
+my $SPVM_BUILD_DIR_TMP_DIR_OBJECT;
+BEGIN {
+  my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
+  unless (defined $build_dir) {
+    $SPVM_BUILD_DIR_TMP_DIR_OBJECT = File::Temp->newdir;
+    $ENV{SPVM_BUILD_DIR} = $SPVM_BUILD_DIR_TMP_DIR_OBJECT->dirname;
+  }
+}
 
 use SPVM::Builder;
 use SPVM::Builder::Native::Env;
@@ -163,7 +174,6 @@ sub init_api {
   }
 }
 
-my $SPVM_BUILD_DIR_TMP;
 my $DYNAMIC_LIB_FILES_H = {};
 sub load_dynamic_lib {
   my ($runtime, $class_name) = @_;
@@ -194,12 +204,7 @@ sub load_dynamic_lib {
           $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_dist;
         }
         else {
-          my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
-          unless (defined $build_dir) {
-            $SPVM_BUILD_DIR_TMP = $ENV{SPVM_BUILD_DIR} = File::Temp->newdir;
-          }
-          
-          my $builder = SPVM::Builder->new(build_dir => $build_dir);
+          my $builder = SPVM::Builder->new(build_dir => $ENV{SPVM_BUILD_DIR});
           my $builder_options = {
             runtime => $runtime,
             class_file => $outmost_class_file,
