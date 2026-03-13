@@ -814,8 +814,12 @@ sub new {
       # Windows (MinGW)
       $self->libcpp_ldflags(['-Wl,-Bstatic', '-lstdc++', '-lgcc', '-Wl,-Bdynamic']);
     }
+    elsif ($^O eq 'darwin') {
+      # macOS: -lstdc++ is not needed
+      $self->libcpp_ldflags([]);
+    }
     else {
-      # Others. On macOS, -lstdc++ is not needed but simply ignored.
+      # Others (Linux, etc.)
       $self->libcpp_ldflags(['-lstdc++']);
     }
   }
@@ -825,7 +829,13 @@ sub new {
   }
   
   unless (defined $self->{exe_libcpp_ldflags}) {
-    $self->exe_libcpp_ldflags([]);
+    if ($^O eq 'darwin') {
+      # macOS: Uses -lc++ for executables
+      $self->exe_libcpp_ldflags(['-lc++']);
+    }
+    else {
+      $self->exe_libcpp_ldflags([]);
+    }
   }
   
   # static_lib_ldflag
@@ -1751,7 +1761,7 @@ This field is automatically set depending on the OS, and users normally do not c
 
 Gets and sets C<dynamic_lib_libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library used for dynamic libraries.
 
-The default is an empty array reference.
+This field is automatically set depending on the OS, and users normally do not change it.
 
 =head2 exe_libcpp_ldflags
 
@@ -1760,7 +1770,7 @@ The default is an empty array reference.
 
 Gets and sets C<exe_libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library used for executable files.
 
-The default is an empty array reference.
+This field is automatically set depending on the OS, and users normally do not change it.
 
 =head2 static_lib_ldflag
 
