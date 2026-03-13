@@ -790,8 +790,14 @@ sub new {
       # Windows (MinGW)
       $self->libcpp_ldflags(['-Wl,-Bstatic', '-lstdc++', '-lgcc', '-Wl,-Bdynamic']);
     }
+    elsif ($^O eq 'darwin') {
+      # macOS, iOS, etc.
+      # (Comment: Use -lc++ instead of -lstdc++ on Darwin. 
+      # This is necessary for spvmcc to link C++ standard library correctly.)
+      $self->libcpp_ldflags([]);
+    }
     else {
-      # Others. On macOS, -lstdc++ is not needed but simply ignored.
+      # Others.
       $self->libcpp_ldflags(['-lstdc++']);
     }
   }
