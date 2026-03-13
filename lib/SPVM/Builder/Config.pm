@@ -792,9 +792,8 @@ sub new {
     }
     elsif ($^O eq 'darwin') {
       # macOS, iOS, etc.
-      # (Comment: Use -lc++ instead of -lstdc++ on Darwin. 
-      # This is necessary for spvmcc to link C++ standard library correctly.)
-      $self->libcpp_ldflags(['-lc++']);
+      # (Comment: On Darwin-based systems, Clang automatically handles C++ standard libraries.)
+      $self->libcpp_ldflags([]);
     }
     else {
       # Others.
