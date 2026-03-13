@@ -276,6 +276,30 @@ sub libcpp_ldflags {
   }
 }
 
+sub dynamic_lib_libcpp_ldflags {
+  my $self = shift;
+
+  if (@_) {
+    $self->{dynamic_lib_libcpp_ldflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{dynamic_lib_libcpp_ldflags};
+  }
+}
+
+sub exe_libcpp_ldflags {
+  my $self = shift;
+
+  if (@_) {
+    $self->{exe_libcpp_ldflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{exe_libcpp_ldflags};
+  }
+}
+
 sub static_lib_ldflag {
   my $self = shift;
   if (@_) {
@@ -794,6 +818,14 @@ sub new {
       # Others. On macOS, -lstdc++ is not needed but simply ignored.
       $self->libcpp_ldflags(['-lstdc++']);
     }
+  }
+  
+  unless (defined $self->{dynamic_lib_libcpp_ldflags}) {
+    $self->dynamic_lib_libcpp_ldflags([]);
+  }
+  
+  unless (defined $self->{exe_libcpp_ldflags}) {
+    $self->exe_libcpp_ldflags([]);
   }
   
   # static_lib_ldflag
@@ -1365,6 +1397,8 @@ sub clear_system_settings {
   $self->dynamic_lib_ldflags([]);
   $self->thread_ldflags([]);
   $self->libcpp_ldflags([]);
+  $self->dynamic_lib_libcpp_ldflags([]);
+  $self->exe_libcpp_ldflags([]);
   $self->warn_ldflags([]);
   $self->debug_ldflags([]);
 }
@@ -1709,6 +1743,24 @@ This field is automatically set and users normally do not change it.
 Gets and sets C<libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library.
 
 This field is automatically set depending on the OS, and users normally do not change it.
+
+=head2 dynamic_lib_libcpp_ldflags
+
+  my $dynamic_lib_libcpp_ldflags = $config->dynamic_lib_libcpp_ldflags;
+  $config->dynamic_lib_libcpp_ldflags($dynamic_lib_libcpp_ldflags);
+
+Gets and sets C<dynamic_lib_libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library used for dynamic libraries.
+
+The default is an empty array reference.
+
+=head2 exe_libcpp_ldflags
+
+  my $exe_libcpp_ldflags = $config->exe_libcpp_ldflags;
+  $config->exe_libcpp_ldflags($exe_libcpp_ldflags);
+
+Gets and sets C<exe_libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library used for executable files.
+
+The default is an empty array reference.
 
 =head2 static_lib_ldflag
 
@@ -2301,6 +2353,14 @@ Other OSs:
 
   ["-lstdc++"]
 
+=item * L</"dynamic_lib_libcpp_ldflags">
+
+  []
+
+=item * L</"exe_libcpp_ldflags">
+
+  []
+
 =item * L</"static_lib_ldflag">
 
   ["-Wl,-Bstatic", "-Wl,-Bdynamic"]
@@ -2663,6 +2723,10 @@ The following fields are set to C<[]>.
 =item * L</"debug_ldflags">
 
 =item * L</"libcpp_ldflags">
+
+=item * L</"dynamic_lib_libcpp_ldflags">
+
+=item * L</"exe_libcpp_ldflags">
 
 =back
 
