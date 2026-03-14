@@ -33,7 +33,7 @@ jobs:
         run: cat MYMETA.json
       - run: perl Makefile.PL
       - name: make disttest
-      - run: |
+        run: |
           MAKE_JOBS=1
           TEST_JOBS=1
           echo "MAKE_JOBS: $MAKE_JOBS"
