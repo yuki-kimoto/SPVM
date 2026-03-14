@@ -12,7 +12,7 @@ jobs:
   perl:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Perl version
         run: perl -V
       - name: Perl config
@@ -32,8 +32,14 @@ jobs:
       - name: cpanm installs dependent modules
         run: perl cpanm -v -n -L ~/mylib --installdeps . --configure-args="--meta"
       - name: Show MYMETA.json
-        run: perl -0777 -p -e 1 MYMETA.json
-      - name: Show MYMETA.json
         run: cat MYMETA.json
       - run: perl Makefile.PL
-      - run: gmake disttest
+      - name: make disttest
+        run: |
+          $MAKE_JOBS = perl -MJSON::PP -e 'undef $/; $m=decode_json(<>); print $m->{x_parallel_make_jobs} || 1' MYMETA.json
+          $TEST_JOBS = perl -MJSON::PP -e 'undef $/; $m=decode_json(<>); print $m->{x_parallel_test_jobs} || 1' MYMETA.json
+          echo "MAKE_JOBS: $MAKE_JOBS"
+          echo "TEST_JOBS: $TEST_JOBS"
+          $env:MAKEFLAGS = "j$MAKE_JOBS"
+          $env:HARNESS_OPTIONS = "j$TEST_JOBS"
+          gmake disttest
