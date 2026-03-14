@@ -195,6 +195,7 @@ sub MY::postamble {
     if (defined $optimize) {
       $options->{optimize} = $optimize;
     }
+    $options->{_core} = 1;
     
     # Build native
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn', $options);

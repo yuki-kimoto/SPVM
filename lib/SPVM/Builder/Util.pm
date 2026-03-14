@@ -408,25 +408,31 @@ sub create_make_rule {
   
   $options ||= {};
   
-  # Shared library file
+  # Output file
   my $dynamic_lib_rel_file = &convert_class_name_to_dynamic_lib_rel_file($class_name, $category);
   my $dynamic_lib_file = "blib/lib/$dynamic_lib_rel_file";
   
   my $make_rule = '';
   
-  # dynamic section
+  # Dynamic target
   $make_rule .= "dynamic :: $dynamic_lib_file\n";
   $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
   
-  # Get source files
+  # Source dependencies
   my $dependent_files = &get_possible_dependent_files($class_name, $category, $options);
-  $make_rule .= "$dynamic_lib_file :: @$dependent_files \$(INST_DYNAMIC)\n";
   
+  # Add $(INST_DYNAMIC) only for core
+  my $extra_deps = $options->{_core} ? ' $(INST_DYNAMIC)' : '';
+  
+  $make_rule .= "$dynamic_lib_file :: @$dependent_files$extra_deps\n";
+  
+  # Build options
   my $options_string = "build_dir => '.spvm_build'";
   if (defined(my $optimize = $options->{optimize})) {
     $options_string .= ", optimize => '$optimize'";
   }
   
+  # Build command
   $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($options_string)->build_dynamic_lib_dist_$category('$class_name')\"\n\n";
   
   return $make_rule;
