@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: '5.20.3'
@@ -33,4 +33,10 @@ jobs:
       - name: Show MYMETA.json
         run: cat MYMETA.json
       - run: perl Makefile.PL
-      - run: make disttest
+      - name: make disttest
+        run: |
+          MAKE_JOBS=$(perl -MJSON::PP -e 'undef $/; $m=decode_json(<>); print $m->{x_parallel_make_jobs} || 1' MYMETA.json)
+          TEST_JOBS=$(perl -MJSON::PP -e 'undef $/; $m=decode_json(<>); print $m->{x_parallel_test_jobs} || 1' MYMETA.json)
+          echo "MAKE_JOBS: $MAKE_JOBS"
+          echo "TEST_JOBS: $TEST_JOBS"
+          MAKEFLAGS="j$MAKE_JOBS" HARNESS_OPTIONS="j$TEST_JOBS" make disttest
