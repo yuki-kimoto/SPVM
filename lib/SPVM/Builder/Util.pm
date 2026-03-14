@@ -420,7 +420,7 @@ sub create_make_rule {
   
   # Get source files
   my $dependent_files = &get_possible_dependent_files($class_name, $category, $options);
-  $make_rule .= "$dynamic_lib_file :: @$dependent_files\n";
+  $make_rule .= "$dynamic_lib_file :: @$dependent_files \$(INST_DYNAMIC)\n";
   
   my $options_string = "build_dir => '.spvm_build'";
   if (defined(my $optimize = $options->{optimize})) {
