@@ -38,8 +38,4 @@ jobs:
           TEST_JOBS=$(perl -MJSON::PP -e 'undef $/; $m=decode_json(<>); print $m->{x_parallel_test_jobs} || 1' MYMETA.json)
           echo "MAKE_JOBS: $MAKE_JOBS"
           echo "TEST_JOBS: $TEST_JOBS"
-          export MAKEFLAGS="-j$MJ"
-          export HARNESS_OPTIONS="j$TJ"
-          echo "MAKEFLAGS: $MAKEFLAGS"
-          echo "HARNESS_OPTIONS: $HARNESS_OPTIONS"
-          make disttest
+          MAKEFLAGS="-j$MAKE_JOBS" HARNESS_OPTIONS="j$TEST_JOBS" make disttest
