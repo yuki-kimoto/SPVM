@@ -122,6 +122,9 @@ my @csource_files = ('SPVM.c', @spvm_csource_files);
 my @spvm_header_files = glob 'lib/SPVM/Builder/include/*.h';
 my @header_files = ('ppport.h', @spvm_header_files);
 
+my $cpus = SPVM::Builder::Util::get_cpu_count();
+my $jobs = $cpus + 2;
+
 WriteMakefile(
   NAME => 'SPVM',
   VERSION_FROM => 'lib/SPVM.pm',
@@ -163,6 +166,11 @@ WriteMakefile(
   },
   NORECURS => 1,
 );
+
+{
+  print "\n# Parallel build and test command:\n";
+  print "MAKEFLAGS=j$jobs make && HARNESS_OPTIONS=j$jobs make test\n\n";
+}
 
 # Add Build shared library make rule
 sub MY::postamble {
@@ -247,16 +255,6 @@ sub MY::postamble {
   }
   
   return $make_rule;
-}
-
-{
-  my $cpus = SPVM::Builder::Util::get_cpu_count();
-  
-  # Same as Ninja default
-  my $j = $cpus + 2;
-  
-  print "\n# Parallel build and test command:\n";
-  print "make -j$j && make test HARNESS_OPTIONS=j$j\n\n";
 }
 
 1;
