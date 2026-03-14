@@ -32,4 +32,10 @@ jobs:
       - name: Show MYMETA.json
         run: cat MYMETA.json
       - run: perl Makefile.PL
-      - run: make disttest
+      - name: make disttest
+      - run: |
+          MAKE_JOBS=1
+          TEST_JOBS=1
+          echo "MAKE_JOBS: $MAKE_JOBS"
+          echo "TEST_JOBS: $TEST_JOBS"
+          MAKEFLAGS="-j$MAKE_JOBS" HARNESS_OPTIONS="j$TEST_JOBS" make disttest
