@@ -1,4 +1,15 @@
 0.990146 2026-03-14
+  [New Features]
+    * Add dynamic_lib_libcpp_ldflags and exe_libcpp_ldflags to SPVM::Builder::Config to allow separate C++ linker flags for dynamic libraries and executables.
+  
+  [Changes]
+    * Update the default value of libcpp_ldflags to be empty on macOS, and set the default value of exe_libcpp_ldflags to ['-lc++'] on macOS.
+    * Create SPVM::Builder::Util#get_cpu_count subroutine and adopt a Ninja-style parallel job count (N + 2) for improved build performance in Makefile.PL.
+  
+  [Internal Changes]
+    * Update build_precompile_header_content_c_source to update the output file only when the content actually changes to avoid unnecessary re-compilation.
+    * Update SPVM::Builder::LinkInfo to support dynamic_lib_libcpp_ldflags and exe_libcpp_ldflags.
+    * Use new_cpp11 in SPVM::Builder::Config to simplify C++11 and pthread configurations in tests.
   
 0.990145 2026-03-13
   [Changes]
