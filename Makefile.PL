@@ -152,8 +152,10 @@ WriteMakefile(
       },
       bugtracker => {
         web => "https://github.com/yuki-kimoto/SPVM/issues",
-      },            
+      },
     },
+    x_parallel_make_jobs => $jobs,
+    x_parallel_test_jobs => $jobs,
   },
   EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
   PREREQ_PM => {
