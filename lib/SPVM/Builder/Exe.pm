@@ -295,22 +295,60 @@ sub new {
   
   $self->{builder} = $builder;
   
-  $config->ccflags_global($self->{ccflags_global});
-  $config->ccflags_spvm($self->{ccflags_spvm});
-  $config->ccflags_native($self->{ccflags_native});
-  $config->{ccflags_native_class} = $self->{ccflags_native_class};
-  $config->ccflags_precompile($self->{ccflags_precompile});
-  $config->defines_global($self->{defines_global});
-  $config->defines_spvm($self->{defines_spvm});
-  $config->defines_native($self->{defines_native});
-  $config->{defines_native_class} = $self->{defines_native_class};
-  $config->defines_precompile($self->{defines_precompile});
-  $config->optimize_global($self->{optimize_global});
-  $config->optimize_spvm($self->{optimize_spvm});
-  $config->optimize_native($self->{optimize_native});
-  $config->{optimize_native_class} = $self->{optimize_native_class};
-  $config->optimize_precompile($self->{optimize_precompile});
-  $config->external_object_files($self->{external_object_files});
+  # Override config settings with command line options if defined
+  {
+    if (defined $self->{ccflags_global}) {
+      $config->ccflags_global($self->{ccflags_global});
+    }
+    if (defined $self->{ccflags_spvm}) {
+      $config->ccflags_spvm($self->{ccflags_spvm});
+    }
+    if (defined $self->{ccflags_native}) {
+      $config->ccflags_native($self->{ccflags_native});
+    }
+    if (defined $self->{ccflags_native_class}) {
+      $config->{ccflags_native_class} = $self->{ccflags_native_class};
+    }
+    if (defined $self->{ccflags_precompile}) {
+      $config->ccflags_precompile($self->{ccflags_precompile});
+    }
+
+    if (defined $self->{defines_global}) {
+      $config->defines_global($self->{defines_global});
+    }
+    if (defined $self->{defines_spvm}) {
+      $config->defines_spvm($self->{defines_spvm});
+    }
+    if (defined $self->{defines_native}) {
+      $config->defines_native($self->{defines_native});
+    }
+    if (defined $self->{defines_native_class}) {
+      $config->{defines_native_class} = $self->{defines_native_class};
+    }
+    if (defined $self->{defines_precompile}) {
+      $config->defines_precompile($self->{defines_precompile});
+    }
+
+    if (defined $self->{optimize_global}) {
+      $config->optimize_global($self->{optimize_global});
+    }
+    if (defined $self->{optimize_spvm}) {
+      $config->optimize_spvm($self->{optimize_spvm});
+    }
+    if (defined $self->{optimize_native}) {
+      $config->optimize_native($self->{optimize_native});
+    }
+    if (defined $self->{optimize_native_class}) {
+      $config->{optimize_native_class} = $self->{optimize_native_class};
+    }
+    if (defined $self->{optimize_precompile}) {
+      $config->optimize_precompile($self->{optimize_precompile});
+    }
+
+    if (defined $self->{external_object_files}) {
+      $config->external_object_files($self->{external_object_files});
+    }
+  }
   
   my $compiler = SPVM::Builder::Native::Compiler->new;
   

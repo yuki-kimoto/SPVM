@@ -47,7 +47,7 @@ sub to_cmd {
     File::Path::rmtree $archive_dir if -e $archive_dir; # Clean up
     File::Path::mkpath "$tmp_dir";
     
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib/SPVM -o $archive_dir --build-spvm-archive $test_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -I $test_dir/lib/SPVM -o $archive_dir --build-spvm-archive $test_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -130,7 +130,7 @@ sub to_cmd {
   
   # use_spvm_archive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/spvm-archive $test_script_dir/spvm-archive.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/spvm-archive $test_script_dir/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -144,7 +144,7 @@ sub to_cmd {
   # use_spvm_archive with include and lib
   {
     use Config;
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/spvm-archive-static-lib $test_script_dir/spvm-archive-static-lib.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $exe_dir/spvm-archive-static-lib $test_script_dir/spvm-archive-static-lib.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -161,7 +161,7 @@ sub to_cmd {
     File::Path::rmtree $archive_output_dir if -e $archive_output_dir;
     
     # 2. Execute spvmcc
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $archive_output_dir --build-spvm-archive --mode linux-64bit $test_script_dir/spvm-archive.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -I $test_dir/lib2/SPVM -o $archive_output_dir --build-spvm-archive --mode linux-64bit $test_script_dir/spvm-archive.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
