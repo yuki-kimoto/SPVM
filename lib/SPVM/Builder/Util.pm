@@ -825,6 +825,31 @@ sub get_cpu_count {
   return $cpu_count;
 }
 
+sub check_option_names {
+  my ($options, $available_option_names) = @_;
+  
+  # Check if options exists
+  unless ($options) {
+    return;
+  }
+  
+  # Create a hash for fast lookup
+  my $available_option_names_h = {};
+  for my $available_option_name (@$available_option_names) {
+    $available_option_names_h->{$available_option_name} = 1;
+  }
+  
+  # Validate each option name
+  for (my $i = 0; $i < @$options; $i += 2) {
+    my $option_name = $options->[$i];
+    
+    # Check if the option name is available
+    unless ($available_option_names_h->{$option_name}) {
+      Carp::confess("'$option_name' option is not available.");
+    }
+  }
+}
+
 1;
 
 =head1 Name
