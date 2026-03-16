@@ -1,3 +1,19 @@
+0.990147 2026-03-16
+  [New Features]
+    * Add the input_files option to SPVM::Builder::Util#create_make_rule and get_possible_dependent_files to allow custom dependency tracking in Makefile.
+
+  [Changes]
+    * Replace the internal _core option with the generic input_files option in SPVM::Builder::Util and Makefile.PL to manage build dependencies more flexibly.
+    * Update SPVM::Builder::LinkInfo to support dynamic_lib_libcpp_ldflags and exe_libcpp_ldflags.
+    * Build: Add x_parallel_make_jobs and x_parallel_test_jobs to META_MERGE and extract them from MYMETA.json.
+    * Build: Update parallel build instructions to use MAKEFLAGS.
+    * Build: Ensure native modules correctly depend on $(INST_DYNAMIC) for reliable parallel builds.
+    * CI: Update Linux and Windows workflows to use parallel make and test.
+
+  [Internal Changes]
+    * CI: Upgrade GitHub Actions checkout to v4.
+    * Build: Parametrize parallel jobs for make disttest.
+    * Build: Revert the use of export for parallel job environment variables and use MAKEFLAGS instead.
 0.990146 2026-03-14
   [New Features]
     * Add dynamic_lib_libcpp_ldflags and exe_libcpp_ldflags to SPVM::Builder::Config to allow separate C++ linker flags for dynamic libraries and executables.
