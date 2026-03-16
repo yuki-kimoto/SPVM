@@ -60,6 +60,7 @@ lib/SPVM/BlessedObject/Class.pm
 lib/SPVM/BlessedObject/String.pm
 lib/SPVM/Bool.pm
 lib/SPVM/Builder.pm
+lib/SPVM/Builder/Accessor.pm
 lib/SPVM/Builder/API.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/CompileInfo.pm
