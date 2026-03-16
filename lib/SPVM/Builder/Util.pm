@@ -839,10 +839,8 @@ sub check_option_names {
     $available_option_names_h->{$available_option_name} = 1;
   }
   
-  # Validate each option name
-  for (my $i = 0; $i < @$options; $i += 2) {
-    my $option_name = $options->[$i];
-    
+  # Validate each option name (Iterate through hash keys)
+  for my $option_name (keys %$options) {
     # Check if the option name is available
     unless ($available_option_names_h->{$option_name}) {
       Carp::confess("'$option_name' option is not available.");
