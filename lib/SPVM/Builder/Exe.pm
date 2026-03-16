@@ -229,17 +229,25 @@ sub new {
   
   my $app_name = $self->app_name;
   
-  # New SPVM::Builder object
+  # Config mode
+  my $config_mode = $self->{mode};
+  
+  # Set work directory
   my $work_dir = "spvmcc/$app_name";
+  
+  # Append mode to work directory
+  if (defined $config_mode && length $config_mode) {
+    $work_dir .= ".$config_mode";
+  }
+  
+  # New SPVM::Builder object
   my $builder = SPVM::Builder->new(
     build_dir => $build_dir,
     work_dir => $work_dir,
   );
   
-  # Config file
+  # Config file settings
   my $allow_no_config_file = $self->{allow_no_config_file};
-  
-  my $config_mode = $self->{mode};
   
   # Config
   my $config_file = $script_name;

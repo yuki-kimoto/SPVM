@@ -213,6 +213,7 @@ sub to_cmd {
     
     my $compiler_options_string = join(' ', @compiler_options);
     
+    my $mode = 'debug';
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --mode debug $compiler_options_string $test_script_dir/myapp.spvm);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
@@ -234,12 +235,12 @@ sub to_cmd {
     is($output, $output_expect);
     
     {
-      ok(-d "$build_dir/spvmcc/myapp/src");
-      ok(-d "$build_dir/spvmcc/myapp/object");
+      ok(-d "$build_dir/spvmcc/myapp.$mode/src");
+      ok(-d "$build_dir/spvmcc/myapp.$mode/object");
     }
     
     {
-      my $bootstrap_file = "$build_dir/spvmcc/myapp/src/bootstrap/myapp.c";
+      my $bootstrap_file = "$build_dir/spvmcc/myapp.$mode/src/bootstrap/myapp.c";
       open my $fh, '<', $bootstrap_file
         or die "Cannot open file \"$bootstrap_file\":$!";
       
