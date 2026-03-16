@@ -40,7 +40,7 @@ sub to_cmd {
 
 # Execute solo test. This is described in DEVELOPMENT.txt
 {
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 --quiet -I solo/lib/SPVM -o $exe_dir/myapp_solo --no-config solo/script/myapp.spvm foo bar);
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -I solo/lib/SPVM -o $exe_dir/myapp_solo solo/script/myapp.spvm foo bar);
   system($spvmcc_cmd) == 0
    or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
