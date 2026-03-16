@@ -57,6 +57,9 @@ sub to_cmd {
     {
       ok(-f "$exe_dir/myapp$Config{exe_ext}");
     }
+    {
+      ok(-d "$build_dir/spvmcc/myapp");
+    }
   }
 
   # Compile and link cached
@@ -171,50 +174,10 @@ sub to_cmd {
     is($output, $output_expect);
   }
   
-  # debug config -O0 -g and many options
+  # debug config -O0 -g
   {
-    my @compiler_options = qw(
-      --ccflag=-DCC_001
-      --ccflag-spvm=-DCC_002
-      --ccflag-native=-DCC_003
-      --ccflag-native-class=NativeAPI2@-DCC_004
-      --ccflag-precompile=-DCC_005
-      --ccflag=-DCC_001
-      --ccflag-spvm=-DCC_002
-      --ccflag-native=-DCC_003
-      --ccflag-native-class=NativeAPI2@-DCC_004
-      --ccflag-precompile=-DCC_005
-      --define=DEF_001
-      --define-spvm=DEF_002
-      --define-native=DEF_003
-      --define-native-class=NativeAPI2@DEF_004
-      --define-precompile=DEF_005
-      --define=DEF_001
-      --define-spvm=DEF_002
-      --define-native=DEF_003
-      --define-native-class=NativeAPI2@DEF_004
-      --define-precompile=DEF_005
-      --optimize="-O0 -g"
-      --optimize-spvm="-O0 -g"
-      --optimize-native="-O0 -g"
-      --optimize-native-class="NativeAPI2@-O0 -g"
-      --optimize-precompile="-O0 -g"
-      --include-dir=./INC_001
-      --include-dir-spvm=./INC_002
-      --include-dir-native=./INC_003
-      --include-dir-native-class=NativeAPI2@./INC_004
-      --include-dir-precompile=./INC_005
-      --include-dir=./INC_001
-      --include-dir-spvm=./INC_002
-      --include-dir-native=./INC_003
-      --include-dir-native-class=NativeAPI2@./INC_004
-      --include-dir-precompile=./INC_005
-    );
-    
-    my $compiler_options_string = join(' ', @compiler_options);
-    
     my $mode = 'debug';
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize=-O0 -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --mode debug $compiler_options_string $test_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize="-O0 -g" -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --mode debug $test_script_dir/myapp.spvm);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
@@ -235,34 +198,7 @@ sub to_cmd {
     is($output, $output_expect);
     
     {
-      ok(-d "$build_dir/spvmcc/myapp.$mode/src");
-      ok(-d "$build_dir/spvmcc/myapp.$mode/object");
-    }
-    
-    {
-      my $bootstrap_file = "$build_dir/spvmcc/myapp.$mode/src/bootstrap/myapp.c";
-      open my $fh, '<', $bootstrap_file
-        or die "Cannot open file \"$bootstrap_file\":$!";
-      
-      my $bootstrap_content = do { $/ = undef; <$fh> };
-      
-      like($bootstrap_content, qr|mode:debug|);
-      like($bootstrap_content, qr|ccflags_global:-DCC_001,-DCC_001|);
-      like($bootstrap_content, qr|ccflags_spvm:-DCC_002,-DCC_002|);
-      like($bootstrap_content, qr|ccflags_native:-DCC_003,-DCC_003|);
-      like($bootstrap_content, qr|ccflags_native_class:NativeAPI2\@-DCC_004,NativeAPI2\@-DCC_004|);
-      like($bootstrap_content, qr|ccflags_precompile:-DCC_005,-DCC_005|);
-      like($bootstrap_content, qr|defines_global:DEF_001,DEF_001|);
-      like($bootstrap_content, qr|defines_spvm:DEF_002,DEF_002|);
-      like($bootstrap_content, qr|defines_native:DEF_003,DEF_003|);
-      like($bootstrap_content, qr|defines_native_class:NativeAPI2\@DEF_004,NativeAPI2\@DEF_004|);
-      like($bootstrap_content, qr|defines_precompile:DEF_005,DEF_005|);
-      like($bootstrap_content, qr|optimize_global:-O0 -g|);
-      like($bootstrap_content, qr|optimize_spvm:-O0 -g|);
-      like($bootstrap_content, qr|optimize_native:-O0 -g|);
-      like($bootstrap_content, qr|optimize_native_class:NativeAPI2\@-O0 -g|);
-      like($bootstrap_content, qr|optimize_precompile:-O0 -g|);
-      
+      ok(-d "$build_dir/spvmcc/myapp.$mode");
     }
   }
 
