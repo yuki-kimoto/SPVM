@@ -45,4 +45,50 @@ sub add_ninja_log {
   close $fh;
 }
 
+sub load_ninja_log {
+  my ($dir_name) = @_;
+
+  my $log_file = "$dir_name/.ninja_log";
+  my $ninja_log_entries_h = {};
+
+  # Return an empty hash if the log file does not exist
+  if (!-f $log_file) {
+    return $ninja_log_entries_h;
+  }
+
+  open my $fh, '<', $log_file or die "Can't open $log_file for reading: $!";
+  
+  # Use binary mode to handle physical LF (0x0A) consistently across platforms
+  binmode $fh;
+
+  while (my $line = <$fh>) {
+    # Remove the physical LF (0x0A) and optional CR (0x0D) just in case
+    $line =~ s/[\x0A\x0D]+$//;
+
+    # Skip the Ninja version header (e.g., "# ninja log v5")
+    next if $line =~ /^#/;
+
+    # Parse tab-separated values
+    # Format: start_time \t end_time \t mtime \t output_file \t command_hash
+    my @fields = split(/\t/, $line);
+
+    if (@fields >= 5) {
+      my ($start_time, $end_time, $mtime, $output_file, $command_hash) = @fields;
+
+      # Store the record. Later entries for the same output_file will overwrite previous ones.
+      $ninja_log_entries_h->{$output_file} = {
+        start_time   => $start_time,
+        end_time     => $end_time,
+        mtime        => $mtime,
+        output_file  => $output_file,
+        command_hash => $command_hash,
+      };
+    }
+  }
+
+  close $fh;
+
+  return $ninja_log_entries_h;
+}
+
 1;
