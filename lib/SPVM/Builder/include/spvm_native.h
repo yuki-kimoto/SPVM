@@ -68,8 +68,27 @@ typedef struct spvm_ref SPVM_REF;
 
 #define SPVM_NATIVE_SET_POINTER(object, pointer) (*(void**)object = pointer)
 
-#define spvm_warnf(stream, format, ...) fprintf(stream, format "\n  %s at %s line %d\n", ##__VA_ARGS__, __func__, __FILE__, __LINE__)
+/*
+ * spvm_warnf and spvm_warn macros
+ * * These macros provide a way to print formatted warning messages to a stream (or stderr),
+ * including the function name, file name, and line number.
+ * * Special care is taken for MSVC's traditional preprocessor which handles __VA_ARGS__ 
+ * as a single token. The SPVM_EXPAND macro forces a rescan of arguments to correctly
+ * separate them for fprintf.
+ */
 
+#if defined(_MSC_VER) && defined(_MSVC_TRADITIONAL) && _MSVC_TRADITIONAL
+  /* Support for MSVC Traditional Preprocessor (without -Zc:preprocessor) */
+  #define SPVM_EXPAND(x) x
+  #define spvm_warnf(stream, format, ...) \
+    SPVM_EXPAND(fprintf(stream, format "\n  %s at %s line %d\n", __VA_ARGS__, __func__, __FILE__, __LINE__))
+#else
+  /* Support for GCC, Clang, and Modern MSVC (with -Zc:preprocessor) */
+  /* The ##__VA_ARGS__ extension handles cases where the variable arguments are empty. */
+  #define spvm_warnf(stream, format, ...) fprintf(stream, format "\n  %s at %s line %d\n", ##__VA_ARGS__, __func__, __FILE__, __LINE__)
+#endif
+
+/* Standard warning macro pointing to stderr */
 #define spvm_warn(format, ...) spvm_warnf(stderr, format, ##__VA_ARGS__)
 
 typedef union spvm_value SPVM_VALUE;
