@@ -15,6 +15,7 @@ use Encode 'decode';
 use File::Find 'find';
 use Time::HiRes ();
 use Digest::SHA;
+use SPVM::Builder::Ninja;
 
 # SPVM::Builder::Util is used from Makefile.PL
 # so this class must be wrote as pure perl. Do not contain XS functions.
@@ -100,86 +101,12 @@ sub get_spvm_core_source_file_names {
 sub need_generate {
   my ($options) = @_;
   
-  my $force = $options->{force};
-  my $input_files = $options->{input_files} || [];
-  my $output_file = $options->{output_file};
+  my $ninja = SPVM::Builder::Ninja->new;
   
-  # command: The raw command line string to be executed
-  my $command = $options->{command};
+  $ninja->ninja_log_entries_h(undef);
   
-  # ninja_log_entries_h: A hash reference where keys are output file paths and values 
-  #          are LogEntry objects (hashes) containing 'command_hash'.
-  my $ninja_log_entries_h = $options->{ninja_log_entries_h}; 
-  
-  # Always generate if force is true
-  if ($force) {
-    return 1;
-  }
-
-  # Generate if output file does not exist
-  if (!-f $output_file) {
-    return 1;
-  }
-  
-  # If command_hash differs, rebuild.
-  if ($ninja_log_entries_h && defined $command) {
-    my $entry = $ninja_log_entries_h->{$output_file};
-    
-    if ($entry) {
-      my $last_command_hash = $entry->{command_hash}; 
-      
-      # Ninja uses MurmurHash64A for performance in its C++ core.
-      # However, since SPVM must rely strictly on Perl core modules,
-      # we use Digest::SHA (SHA-1). It is the most robust hashing algorithm 
-      # available in the Perl core and provides excellent collision resistance
-      # for command line strings.
-      my $sha = Digest::SHA->new(1);
-      $sha->add($command);
-      my $current_command_hash = $sha->hexdigest;
-
-      if (!defined $last_command_hash || $current_command_hash ne $last_command_hash) {
-        return 1;
-      }
-    } else {
-      # No log entry found for this file; treat as a new or modified build rule
-      return 1;
-    }
-  }
-
-  my $input_files_mtime_max = 0;
-  my $exists_input_file = 0;
-
-  # Find maximum mtime of input files with high resolution
-  for my $input_file (@$input_files) {
-    if (-f $input_file) {
-      $exists_input_file = 1;
-      my $mtime = (Time::HiRes::stat($input_file))[9];
-      if ($mtime > $input_files_mtime_max) {
-        $input_files_mtime_max = $mtime;
-      }
-    }
-  }
-
-  # Check input files and SPVM version header
-  if ($exists_input_file) {
-    my $spvm_version_header_file = &get_spvm_version_header_file;
-    if (-f $spvm_version_header_file) {
-      my $version_mtime = (Time::HiRes::stat($spvm_version_header_file))[9];
-      if ($version_mtime > $input_files_mtime_max) {
-        $input_files_mtime_max = $version_mtime;
-      }
-    }
-
-    # Compare with output file mtime
-    my $output_file_mtime = (Time::HiRes::stat($output_file))[9];
-    
-    if ($input_files_mtime_max > $output_file_mtime) {
-      return 1;
-    }
-  }
-
-  # No generation needed
-  return 0;
+  # Delegate to SPVM::Builder::Ninja instance method
+  return $ninja->need_generate($options);
 }
 
 sub slurp_binary {
