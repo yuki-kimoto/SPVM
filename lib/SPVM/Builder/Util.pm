@@ -17,6 +17,9 @@ use Time::HiRes ();
 use Digest::SHA;
 use SPVM::Builder::Ninja;
 
+use Exporter 'import';
+our @EXPORT_OK = qw(has);
+
 # SPVM::Builder::Util is used from Makefile.PL
 # so this class must be wrote as pure perl. Do not contain XS functions.
 
@@ -823,6 +826,35 @@ sub get_cpu_count {
   }
 
   return $cpu_count;
+}
+
+sub has {
+  my ($fields) = @_;
+  
+  # Get caller package name
+  my $caller = caller;
+
+  for my $field (@$fields) {
+    # Generate accessor with method chaining
+    my $code = <<"EOS";
+package $caller;
+sub $field {
+  my \$self = shift;
+  if (\@_) {
+    \$self->{$field} = shift;
+    return \$self;
+  }
+  return \$self->{$field};
+}
+EOS
+
+    eval $code;
+    
+    # Report error immediately
+    if ($@) {
+      die "Error generating accessor '$field' for class '$caller': $@";
+    }
+  }
 }
 
 1;
