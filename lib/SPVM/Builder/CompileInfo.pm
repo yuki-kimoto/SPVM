@@ -147,63 +147,63 @@ sub create_ccflags {
   
   my $optimize = $config->optimize;
   
-  my $config_exe = $config->config_exe;
-  if ($config_exe) {
-    push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_global};
+  my $config_global = $config->config_global;
+  if ($config_global) {
+    push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_global->defines_global};
     
     if ($config_category eq 'spvm') {
-      push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_spvm};
+      push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_global->defines_spvm};
     }
     elsif ($config_category eq 'native') {
-      push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_native};
+      push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_global->defines_native};
       
       if (defined $class_name) {
-        push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_native_class($class_name) || []};
+        push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_global->defines_native_class($class_name) || []};
       }
     }
     elsif ($config_category eq 'precompile') {
-      push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_exe->defines_precompile};
+      push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_global->defines_precompile};
     }
     
-    push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_global};
+    push @compile_command_args, grep { length $_ } @{$config_global->ccflags_global};
     
     if ($config_category eq 'spvm') {
-      push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_spvm};
+      push @compile_command_args, grep { length $_ } @{$config_global->ccflags_spvm};
     }
     elsif ($config_category eq 'native') {
-      push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_native};
+      push @compile_command_args, grep { length $_ } @{$config_global->ccflags_native};
       
       if (defined $class_name) {
-        push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_native_class($class_name) || []};
+        push @compile_command_args, grep { length $_ } @{$config_global->ccflags_native_class($class_name) || []};
       }
     }
     elsif ($config_category eq 'precompile') {
-      push @compile_command_args, grep { length $_ } @{$config_exe->ccflags_precompile};
+      push @compile_command_args, grep { length $_ } @{$config_global->ccflags_precompile};
     }
     
-    if (length $config_exe->optimize_global) {
-      $optimize = $config_exe->optimize_global;
+    if (length $config_global->optimize_global) {
+      $optimize = $config_global->optimize_global;
     }
     
     if ($config_category eq 'spvm') {
-      if (length $config_exe->optimize_spvm) {
-        $optimize = $config_exe->optimize_spvm;
+      if (length $config_global->optimize_spvm) {
+        $optimize = $config_global->optimize_spvm;
       }
     }
     elsif ($config_category eq 'native') {
-      if (length $config_exe->optimize_native) {
-        $optimize = $config_exe->optimize_native;
+      if (length $config_global->optimize_native) {
+        $optimize = $config_global->optimize_native;
       }
       
       if (defined $class_name) {
-        if (length $config_exe->optimize_native_class($class_name)) {
-          $optimize = $config_exe->optimize_native_class($config->class_name);
+        if (length $config_global->optimize_native_class($class_name)) {
+          $optimize = $config_global->optimize_native_class($config->class_name);
         }
       }
     }
     elsif ($config_category eq 'precompile') {
-      if (length $config_exe->optimize_precompile) {
-        $optimize = $config_exe->optimize_precompile;
+      if (length $config_global->optimize_precompile) {
+        $optimize = $config_global->optimize_precompile;
       }
     }
   }
@@ -216,21 +216,21 @@ sub create_ccflags {
   {
     my @all_include_dirs;
     
-    if ($config_exe) {
-      push @all_include_dirs, grep { length $_ } @{$config_exe->include_dirs_global};
+    if ($config_global) {
+      push @all_include_dirs, grep { length $_ } @{$config_global->include_dirs_global};
       
       if ($config_category eq 'spvm') {
-        push @all_include_dirs, grep { length $_ } @{$config_exe->include_dirs_spvm};
+        push @all_include_dirs, grep { length $_ } @{$config_global->include_dirs_spvm};
       }
       elsif ($config_category eq 'native') {
-        push @all_include_dirs, grep { length $_ } @{$config_exe->include_dirs_native};
+        push @all_include_dirs, grep { length $_ } @{$config_global->include_dirs_native};
         
         if (defined $class_name) {
-          push @all_include_dirs, grep { length $_ } @{$config_exe->include_dirs_native_class($class_name) || []};
+          push @all_include_dirs, grep { length $_ } @{$config_global->include_dirs_native_class($class_name) || []};
         }
       }
       elsif ($config_category eq 'precompile') {
-        push @all_include_dirs, grep { length $_ } @{$config_exe->include_dirs_precompile};
+        push @all_include_dirs, grep { length $_ } @{$config_global->include_dirs_precompile};
       }
     }
     

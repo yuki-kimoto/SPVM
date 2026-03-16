@@ -499,7 +499,7 @@ The SPVM::Builder::Config::Exe class has methods to manipulate the config for th
 
   use SPVM::Builder::Config::Exe;
   
-  my $config_exe = SPVM::Builder::Config::Exe->new;
+  my $config_global = SPVM::Builder::Config::Exe->new;
 
 =head1 Details
 
@@ -552,8 +552,8 @@ Gets and sets C<mode> field.
 
 =head2 before_compile_cbs_global
 
-  my $before_compile_cbs_global = $config_exe->before_compile_cbs_global;
-  $config_exe->before_compile_cbs_global($before_compile_cbs_global);
+  my $before_compile_cbs_global = $config_global->before_compile_cbs_global;
+  $config_global->before_compile_cbs_global($before_compile_cbs_global);
 
 Gets and sets the C<before_compile_cbs_global> field, an array reference of callbacks that work globally called just before the compile command L</"cc"> is executed.
 
@@ -716,7 +716,7 @@ See L</"use_spvm_archive"> and L</"get_spvm_archive">.
 
 =head2 new
 
-  my $config_exe = SPVM::Builder::Config::Exe->new(%fields);
+  my $config_global = SPVM::Builder::Config::Exe->new(%fields);
 
 Create a new L<SPVM::Builder::Config::Exe> object with L</"Fields"> and fields of its super classes.
 
@@ -770,13 +770,13 @@ L</"mode>" field is set to $mode.
 
 =head2 add_before_compile_cb_global
 
-  $config_exe->add_before_compile_cb_global(@before_compile_cbs_global);
+  $config_global->add_before_compile_cb_global(@before_compile_cbs_global);
 
 Adds @before_compile_cbs_global to the end of L</"before_compile_cbs_global"> field.
 
 Examples:
 
-  $config_exe->add_before_compile_cb_global(sub {
+  $config_global->add_before_compile_cb_global(sub {
     my ($config, $compile_info) = @_;
     
     my $cc_command = $compile_info->to_command;

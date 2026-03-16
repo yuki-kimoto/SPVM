@@ -49,7 +49,7 @@ my $cc_fields = [qw(
   source_files
   before_compile_cbs
   cc_output_option_name
-  config_exe
+  config_global
 )];
 
 my $ld_fields = [qw(
@@ -1301,12 +1301,12 @@ If this field is C<native>, this config is for a native class.
 
 This field is automatically set and users nomally do not change it.
 
-=head2 config_exe
+=head2 config_global
 
-  my $config_exe = $config->config_exe;
-  $config->config_exe($config_exe);
+  my $config_global = $config->config_global;
+  $config->config_global($config_global);
 
-Gets and sets C<config_exe> field.
+Gets and sets C<config_global> field.
 
 If L<spvmcc> command generates an excutable file, this field is set to an L<SPVM::Builder::Config::Exe> object.
 

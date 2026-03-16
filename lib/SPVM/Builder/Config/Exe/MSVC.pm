@@ -44,7 +44,7 @@ sub apply {
   $self->add_before_compile_cb_global(sub {
     my ($config) = @_;
     
-    $config->config_exe($self);
+    $config->config_global($self);
     
     $self->_apply_msvc_settings_to_config($config);
   });

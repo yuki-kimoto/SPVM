@@ -174,10 +174,10 @@ sub compile_source_file {
     $before_compile_cb->($compile_info->config, $compile_info);
   }
   
-  my $config_exe = $config->config_exe;
+  my $config_global = $config->config_global;
   
-  if ($config_exe) {
-    my $before_compile_cbs_global = $config_exe->before_compile_cbs_global;
+  if ($config_global) {
+    my $before_compile_cbs_global = $config_global->before_compile_cbs_global;
     for my $before_compile_cb_global (@$before_compile_cbs_global) {
       $before_compile_cb_global->($compile_info->config, $compile_info);
     }
@@ -279,7 +279,7 @@ sub compile_class {
   
   my $category = $config->category;
   
-  my $config_exe = $config->config_exe;
+  my $config_global = $config->config_global;
   
   # Native class file
   my $native_class_ext = $config->ext;
@@ -369,8 +369,8 @@ sub compile_class {
   my $object_files = [];
   
   my $need_compile_resources;
-  if ($config->config_exe) {
-    if ($class_name eq $config->config_exe->class_name) {
+  if ($config->config_global) {
+    if ($class_name eq $config->config_global->class_name) {
       $need_compile_resources = 1;
     }
     else {
@@ -409,7 +409,7 @@ sub compile_class {
       $resource_config->resource_loader_config($config),
       
       my $resource_object_dir;
-      if ($config->config_exe) {
+      if ($config->config_global) {
         $resource_object_dir = $self->builder->create_build_object_path;
       }
       else {
@@ -442,7 +442,7 @@ sub compile_class {
         $need_native_class_file = 0;
       }
       else {
-        if ($config->config_exe && $class_name eq $config->config_exe->class_name) {
+        if ($config->config_global && $class_name eq $config->config_global->class_name) {
           $need_native_class_file = 0;
         }
         else {
@@ -475,8 +475,8 @@ sub compile_class {
   # For executable files, the resources are compiled in the executable's configuration file, so we don't compile them here.
   my $is_compile_native_source_files;
   if ($is_resource) {
-    if ($config->config_exe) {
-      if ($class_name eq $config->config_exe->class_name) {
+    if ($config->config_global) {
+      if ($class_name eq $config->config_global->class_name) {
         $is_compile_native_source_files = 1;
       }
       else {

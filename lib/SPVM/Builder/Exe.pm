@@ -285,10 +285,10 @@ sub new {
   
   $spvmcc_info->{app_name} = $app_name;
   
-  my $config_exe = $self->config;
+  my $config_global = $self->config;
   
-  if (defined $config_exe->mode) {
-    $spvmcc_info->{mode} = $config_exe->mode;
+  if (defined $config_global->mode) {
+    $spvmcc_info->{mode} = $config_global->mode;
   }
   
   $spvmcc_info->{classes_h} = {};
@@ -365,8 +365,8 @@ sub new {
     # Setup paths using the extracted directory
     my $spvm_archive_extract_dir = $spvm_archive->dir;
     $compiler->add_include_dir("$spvm_archive_extract_dir/SPVM");
-    $config_exe->add_include_dir_native("$spvm_archive_extract_dir/include");
-    $config_exe->add_lib_dir("$spvm_archive_extract_dir/lib");
+    $config_global->add_include_dir_native("$spvm_archive_extract_dir/include");
+    $config_global->add_lib_dir("$spvm_archive_extract_dir/lib");
   }
   
   for my $include_dir (@{$builder->include_dirs}) {
@@ -386,7 +386,7 @@ sub build_exe_file {
   
   my $builder = $self->builder;
   
-  my $config_exe = $self->config;
+  my $config_global = $self->config;
   
   my $class_name = $self->{class_name};
   
@@ -418,7 +418,7 @@ sub build_exe_file {
   $self->generate_spvm_class_files_into_work_dir;
   
   # Add external object files
-  for my $external_object_file (@{$config_exe->external_object_files}) {
+  for my $external_object_file (@{$config_global->external_object_files}) {
     push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
   
@@ -560,13 +560,13 @@ sub compile_source_file {
   my $source_file = $options->{source_file};
   my $output_file = $options->{output_file};
   my $config = $options->{config};
-  my $config_exe = $self->config;
+  my $config_global = $self->config;
   
-  $config->config_exe($config_exe);
+  $config->config_global($config_global);
   
-  my $config_exe_loaded_config_files = $config_exe->get_loaded_config_files;
+  my $config_global_loaded_config_files = $config_global->get_loaded_config_files;
   my $config_loaded_config_files = $config->get_loaded_config_files;
-  my $need_generate_input_files = [$source_file, @$config_loaded_config_files, @$config_exe_loaded_config_files];
+  my $need_generate_input_files = [$source_file, @$config_loaded_config_files, @$config_global_loaded_config_files];
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $self->force || $config->force,
     output_file => $output_file,
@@ -609,7 +609,7 @@ sub create_bootstrap_header_source {
   my ($self) = @_;
 
   # Config
-  my $config_exe = $self->config;
+  my $config_global = $self->config;
 
   # Builder
   my $builder = $self->builder;
@@ -1065,7 +1065,7 @@ sub create_bootstrap_source {
   my $bootstrap_source_file = $self->create_bootstrap_source_file_path;
   
   # Config
-  my $config_exe = $self->config;
+  my $config_global = $self->config;
   
   # Build bootstrap source content
   my $bootstrap_source = '';
@@ -1108,11 +1108,11 @@ sub create_bootstrap_source {
   
   # For detecting changing fields
   for my $config_field_name (@config_field_names) {
-    $bootstrap_source .= "// $config_field_name:" . &_field_value_to_string($config_exe->{$config_field_name}) . "\n";
+    $bootstrap_source .= "// $config_field_name:" . &_field_value_to_string($config_global->{$config_field_name}) . "\n";
   }
   
   # Force flag from various sources
-  my $force = $self->force || $config_exe->force;
+  my $force = $self->force || $config_global->force;
   
   # Check if generating is needed by comparing content or if force is true
   my $need_generate = $force || SPVM::Builder::Util::need_generate_by_content($bootstrap_source, $bootstrap_source_file);
@@ -1159,7 +1159,7 @@ sub _field_value_to_string {
 sub compile_bootstrap_source_file {
   my ($self) = @_;
   
-  my $config_exe = $self->config;
+  my $config_global = $self->config;
   
   # Target class name
   my $class_name = $self->class_name;
@@ -1175,7 +1175,7 @@ sub compile_bootstrap_source_file {
   my $object_file = $self->compile_source_file({
     source_file => $source_file,
     output_file => $object_file_name,
-    config => $config_exe,
+    config => $config_global,
     category => 'bootstrap',
   });
   
@@ -1186,7 +1186,7 @@ sub compile_spvm_core_source_files {
   my ($self) = @_;
   
   # Config
-  my $config_exe = $self->config;
+  my $config_global = $self->config;
   
   my $builder_dir = SPVM::Builder::Util::get_builder_dir();
   
@@ -1212,7 +1212,7 @@ sub compile_spvm_core_source_files {
     my $object_file = $self->compile_source_file({
       source_file => $src_file,
       output_file => $object_file_name,
-      config => $config_exe,
+      config => $config_global,
       category => 'spvm_core',
     });
     push @$object_files, $object_file;
@@ -1224,7 +1224,7 @@ sub compile_spvm_core_source_files {
 sub compile_precompile_class {
   my ($self, $class_name) = @_;
   
-  my $config_exe = $self->config;
+  my $config_global = $self->config;
   
   my $builder = $self->builder;
   
@@ -1240,7 +1240,7 @@ sub compile_precompile_class {
   
   $config->category('precompile');
   
-  $config->config_exe($config_exe);
+  $config->config_global($config_global);
   
   my $runtime = $self->runtime;
   
@@ -1266,7 +1266,7 @@ sub compile_precompile_class {
 sub compile_native_class {
   my ($self, $class_name) = @_;
   
-  my $config_exe = $self->config;
+  my $config_global = $self->config;
   
   my $builder = $self->builder;
   
@@ -1298,7 +1298,7 @@ sub compile_native_class {
     
     my $config = SPVM::Builder::Config->load_config($config_file);
     
-    $config->config_exe($config_exe);
+    $config->config_global($config_global);
     
     my $object_files = $builder_cc->compile_class(
       $class_name,

@@ -58,13 +58,13 @@ If you have created an SPVM Archive named C<spvm-archive-myapp>, you can use it 
   use warnings;
   use File::Basename 'dirname';
 
-  my $config_exe = SPVM::Builder::Config::Exe->new;
+  my $config_global = SPVM::Builder::Config::Exe->new;
   my $config_dir = dirname __FILE__;
 
   # Load the pre-compiled assets from the SPVM Archive
-  $config_exe->use_spvm_archive("$config_dir/spvm-archive-myapp");
+  $config_global->use_spvm_archive("$config_dir/spvm-archive-myapp");
 
-  $config_exe;
+  $config_global;
 
 Then, build your application using the L<spvmcc|spvmcc> command:
 
@@ -79,7 +79,7 @@ Examples:
 If your C<myapp.config> uses an existing archive:
 
   # In myapp.config
-  $config_exe->use_spvm_archive("/path/to/existing-archive");
+  $config_global->use_spvm_archive("/path/to/existing-archive");
 
 And you run C<spvmcc> with the C<--build-spvm-archive> option:
 
