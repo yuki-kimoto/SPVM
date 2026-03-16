@@ -12,27 +12,54 @@ use SPVM::Builder::Resource;
 use SPVM::Builder::Accessor 'has';
 
 # Fields
-my $fields = [qw(
+my $base_fields = [qw(
   class_name
   file
-  ext
+  category
+  is_jit
+  is_resource
   quiet
   force
+  long_option_sep
+)];
+
+my $cc_fields = [qw(
   cc
   ccflags
   defines
   optimize
+  std
+  language
+  dialect
+  ext
+  warn_ccflags
+  language_ccflags
+  arch_ccflags
+  compiler_ccflags
+  runtime_ccflags
+  ld_ccflags
   dynamic_lib_ccflags
   thread_ccflags
-  std
+  cc_input_dir
+  cc_output_dir
   include_dirs
   spvm_core_include_dir
   native_include_dir
   native_src_dir
   source_files
   before_compile_cbs
+  cc_output_option_name
+  config_exe
+)];
+
+my $ld_fields = [qw(
   ld
   ldflags
+  ld_optimize
+  output_type
+  resource_loader_config
+  warn_ldflags
+  debug_ldflags
   dynamic_lib_ldflags
   thread_ldflags
   bcrypt_ldflags
@@ -40,42 +67,23 @@ my $fields = [qw(
   dynamic_lib_libcpp_ldflags
   exe_libcpp_ldflags
   static_lib_ldflag
-  ld_optimize
   lib_dirs
   libs
-  before_link_cbs
-  after_link_cbs
-  output_type
-  resource_loader_config
-  category
-  config_exe
-  is_jit
-  cc_input_dir
-  cc_output_dir
-  output_dir
-  output_file
-  is_resource
-  language
-  dialect
-  warn_ccflags
-  language_ccflags
-  arch_ccflags
-  compiler_ccflags
-  runtime_ccflags
-  ld_ccflags
-  warn_ldflags
-  debug_ldflags
-  long_option_sep
+  lib_prefix
+  lib_option_name
+  lib_option_suffix
   lib_dir_option_name
   dynamic_lib_ext
   static_lib_ext
   exe_ext
-  lib_prefix
-  lib_option_suffix
-  lib_option_name
-  cc_output_option_name
   ld_output_option_name
+  output_dir
+  output_file
+  before_link_cbs
+  after_link_cbs
 )];
+
+my $fields = [@$base_fields, @$cc_fields, @$ld_fields];
 
 has($fields);
 
