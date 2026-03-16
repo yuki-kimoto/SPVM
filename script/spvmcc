@@ -8,6 +8,7 @@ use SPVM::Builder::Exe;
 use SPVM::Builder::Util;
 use FindBin;
 
+# NEVER add compiler/linker options here; all flags must be managed in config files to prevent object file inconsistency.
 SPVM::Builder::Util::getopt
   # spvmcc and spvm shared
   'h|help'          => \my $help,
@@ -23,26 +24,6 @@ SPVM::Builder::Util::getopt
   'f|force' => \my $force,
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
-  'ccflag=s' => \my @ccflags_global,
-  'ccflag-spvm=s' => \my @ccflags_spvm,
-  'ccflag-native=s' => \my @ccflags_native,
-  'ccflag-native-class=s' => \my @ccflags_native_class_strings,
-  'ccflag-precompile=s' => \my @ccflags_precompile,
-  'define=s' => \my @defines_global,
-  'define-spvm=s' => \my @defines_spvm,
-  'define-native=s' => \my @defines_native,
-  'define-native-class=s' => \my @defines_native_class_strings,
-  'define-precompile=s' => \my @defines_precompile,
-  'optimize=s' => \my $optimize_global,
-  'optimize-spvm=s' => \my $optimize_spvm,
-  'optimize-native=s' => \my $optimize_native,
-  'optimize-native-class=s' => \my @optimize_native_class_strings,
-  'optimize-precompile=s' => \my $optimize_precompile,
-  'include-dir=s' => \my @include_dirs_global,
-  'include-dir-spvm=s' => \my @include_dirs_spvm,
-  'include-dir-native=s' => \my @include_dirs_native,
-  'include-dir-native-class=s' => \my @include_dirs_native_class_strings,
-  'include-dir-precompile=s' => \my @include_dirs_precompile,
   'object-file=s' => \my @external_object_files,
   'build-spvm-archive' => \my $build_spvm_archive,
 ;
@@ -85,14 +66,6 @@ unless (defined $output_file) {
   exit 255;
 }
 
-my $ccflags_native_class = SPVM::Builder::Exe->parse_option_values_native_class('ccflag-native-class', \@ccflags_native_class_strings, 1);
-
-my $defines_native_class = SPVM::Builder::Exe->parse_option_values_native_class('define-native-class', \@defines_native_class_strings, 1);
-
-my $optimize_native_class = SPVM::Builder::Exe->parse_option_values_native_class('optimize-native-class', \@optimize_native_class_strings, 0);
-
-my $include_dirs_native_class = SPVM::Builder::Exe->parse_option_values_native_class('include-dir-native-class', \@include_dirs_native_class_strings, 1);
-
 my $build_exe = SPVM::Builder::Exe->new(
   script_name => $script_name,
   build_dir => $build_dir,
@@ -101,26 +74,6 @@ my $build_exe = SPVM::Builder::Exe->new(
   force => $force,
   allow_no_config_file => $allow_no_config_file,
   mode => $mode,
-  ccflags_global => \@ccflags_global,
-  ccflags_spvm => \@ccflags_spvm,
-  ccflags_native => \@ccflags_native,
-  ccflags_native_class => $ccflags_native_class,
-  ccflags_precompile => \@ccflags_precompile,
-  defines_global => \@defines_global,
-  defines_spvm => \@defines_spvm,
-  defines_native => \@defines_native,
-  defines_native_class => $defines_native_class,
-  defines_precompile => \@defines_precompile,
-  optimize_global => $optimize_global,
-  optimize_spvm => $optimize_spvm,
-  optimize_native => $optimize_native,
-  optimize_native_class => $optimize_native_class,
-  optimize_precompile => $optimize_precompile,
-  include_dirs_global => \@include_dirs_global,
-  include_dirs_spvm => \@include_dirs_spvm,
-  include_dirs_native => \@include_dirs_native,
-  include_dirs_native_class => $include_dirs_native_class,
-  include_dirs_precompile => \@include_dirs_precompile,
   external_object_files => \@external_object_files,
   build_spvm_archive => $build_spvm_archive,
 );
@@ -157,58 +110,6 @@ The spvmcc command generates an executable file from SPVM classes.
     -m, --mode MODE                 Config mode
     -w                              Enables warning flag
     -Mblib                          Same as "-Mblib" in perl
-    --ccflag VALUE                  Compiler flag
-    --ccflag-spvm VALUE             Same as --ccflag,
-                                    but only SPVM core source files
-                                    and a bootstrap file
-    --ccflag-native VALUE           Same as --ccflag,
-                                    but only native class source files
-                                    and native source files
-                                    
-    --ccflag-native-class CLASS_NAME@VALUE       Same as --ccflag-native,
-                                                 but only a class
-                                             
-    --ccflag-precompile VALUE       Same as --ccflag,
-                                    but only precompile class source files
-    --define VALUE                  Same as --ccflag, but -D is prefixed.
-    --define-spvm VALUE             Same as --define,
-                                    but only SPVM core source files
-                                    and a bootstrap file
-    --define-native VALUE           Same as --define,
-                                    but only native class source files
-                                    and native source files
-                                    
-    --define-native-class CLASS_NAME@VALUE       Same as --define-native,
-                                                 but only a class
-                                             
-    --define-precompile VALUE       Same as --define,
-                                    but only precompile class source files
-    --optimize LEVEL                Optimization level such as "-O3", "-O0 -g".
-    --optimize-spvm LEVEL           Same as --optimize,
-                                    but only SPVM core source files
-                                    and a bootstrap file
-    --optimize-native LEVEL         Same as --optimize,
-                                    but only native class source files
-                                    and native source files
-                                    
-    --optimize-native-class CLASS_NAME@LEVEL     Same as --optimize-native,
-                                                 but only a class
-                                               
-    --optimize-precompile LEVEL     Same as --optimize,
-                                    but only precompile class source files
-    --include-dir DIR               Same as --ccflag, but -I is prefixed.
-    --include-dir-spvm DIR          Same as --include-dir,
-                                    but only SPVM core source files
-                                    and a bootstrap file
-    --include-dir-native DIR        Same as --include-dir,
-                                    but only native class source files
-                                    and native source files
-                                    
-    --include-dir-native-class CLASS_NAME@DIR    Same as --include-dir-native,
-                                                 but only a class
-                                             
-    --include-dir-precompile DIR    Same as --include-dir,
-                                    but only precompile class source files
     --build-spvm-archive            Generate an SPVM archive
 
 =head1 Details
@@ -293,7 +194,7 @@ If the source code specified by I<SCRIPT_NAME> contains lib directives, The dire
   
   #lib "$FindBin::Bin/lib"
 
-This directories specified by lib directive is placed after the directories specified by L</"--include-dir"> option.
+This directories specified by lib directive is placed after the directories specified by L</"-I"> option.
 
 =head1 Options
 
@@ -400,219 +301,6 @@ See L<Config Mode|SPVM::Builder::Config/"Config Mode"> about config modes.
   -m MODE
 
 Same as L</"--mode">.
-
-=head2 --ccflag
-
-  --ccflag VALUE
-
-A compiler flag.
-
-This affects all source files.
-
-This option can be repeated.
-
-=head2 --ccflag-spvm
-
-  --ccflag-spvm VALUE
-
-A compiler flag.
-
-This affects SPVM core source files and a bootstrap file.
-
-This option can be repeated.
-
-=head2 --ccflag-native
-
-  --ccflag-native VALUE
-
-A compiler flag.
-
-This affects native class source files(such as C<MyClass.c>) and native source files(such as C<MyClass.native/src/foo>).
-
-This option can be repeated.
-
-=head2 --ccflag-native-class
-
-  --ccflag-native-class CLASS_NAME@VALUE
-
-A compiler flag.
-
-This affects a native class source file specified by I<CLASS_NAME>(such as C<MyClass.c>) and its native source files(such as C<MyClass.native/src/foo>).
-
-This option can be repeated.
-
-Examples:
-
-  --ccflag-native-class MyClass@-Wall
-
-=head2 --ccflag-precompile
-
-  --ccflag-precompile VALUE
-
-A compiler flag.
-
-This affects precompile class source files.
-
-This option can be repeated.
-
-=head2 --define
-
-  --define VALUE
-
-A compiler flag, but C<-D> is prefiex.
-
-This affects all source files.
-
-This option can be repeated.
-
-=head2 --define-spvm
-
-  --define-spvm VALUE
-
-A compiler flag, but C<-D> is prefiex.
-
-This affects SPVM core source files and a bootstrap file.
-
-This option can be repeated.
-
-=head2 --define-native
-
-  --define-native CLASS_NAME@VALUE
-
-A compiler flag, but C<-D> is prefiex.
-
-This affects native class source files(such as C<MyClass.c>) and native source files(such as C<MyClass.native/src/foo>).
-
-This option can be repeated.
-
-=head2 --define-native-class
-
-  --define-native-class VALUE
-
-A compiler flag, but C<-D> is prefiex.
-
-This affects a native class source file specified by I<CLASS_NAME>(such as C<MyClass.c>) and its native source files(such as C<MyClass.native/src/foo>).
-
-This option can be repeated.
-
-Examples:
-  
-  # Expanded to -DDEBUG_MEMORY
-  --define-native-class MyClass@DEBUG_MEMORY
-
-=head2 --define-precompile
-
-  --define-precompile VALUE
-
-A compiler flag, but C<-D> is prefiex.
-
-This affects precompile class source files.
-
-This option can be repeated.
-
-=head2 --optimize
-
-  --optimize LEVEL
-
-Optimization level.
-
-This affects all source files.
-
-Examples:
-
-  --optimize "-O0 -g"
-
-=head2 --optimize-spvm
-
-  --optimize-spvm LEVEL
-
-Optimization level.
-
-This affects SPVM core source files and a bootstrap file.
-
-=head2 --optimize-native
-
-  --optimize-native LEVEL
-
-Optimization level.
-
-This affects native class source files(such as C<MyClass.c>) and native source files(such as C<MyClass.native/src/foo>).
-
-=head2 --optimize-native-class
-
-  --optimize-native-class LEVEL
-
-Optimization level.
-
-This affects a native class source file specified by I<CLASS_NAME>(such as C<MyClass.c>) and its native source files(such as C<MyClass.native/src/foo>).
-
-This option can be repeated.
-
-Examples:
-
-  --optimize-native-class "MyClass@-O0 -g"
-
-=head2 --optimize-precompile
-
-  --optimize-precompile LEVEL
-
-Optimization level.
-
-This affects precompile class source files.
-
-=head2 --include-dir
-
-  --include-dir DIR
-
-A compiler flag, but C<-I> is prefiex.
-
-This affects all source files.
-
-This option can be repeated.
-
-=head2 --include-dir-spvm
-
-  --include-dir-spvm DIR
-
-A compiler flag, but C<-I> is prefiex.
-
-This affects SPVM core source files and a bootstrap file.
-
-This option can be repeated.
-
-=head2 --include-dir-native
-
-  --include-dir-native DIR
-
-A compiler flag, but C<-I> is prefiex.
-
-This affects native class source files(such as C<MyClass.c>) and native source files(such as C<MyClass.native/src/foo>).
-
-This option can be repeated.
-
-=head2 --include-dir-native-class
-
-  --include-dir-native-class DIR
-
-A compiler flag, but C<-I> is prefiex.
-
-This affects a native class source file specified by I<CLASS_NAME>(such as C<MyClass.c>) and its native source files(such as C<MyClass.native/src/foo>).
-
-This option can be repeated.
-
-Examples:
-
-  --include-dir-native-class MyClass@/path/foo
-
-=head2 --include-dir-precompile
-
-  --include-dir-precompile DIR
-
-A compiler flag, but C<-I> is prefiex.
-
-This affects precompile class source files.
-
-This option can be repeated.
 
 =head2 --object-file
 
