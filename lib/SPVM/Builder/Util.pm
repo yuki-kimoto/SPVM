@@ -98,11 +98,11 @@ sub get_spvm_core_source_file_names {
 use Time::HiRes ();
 
 sub need_generate {
-  my ($opt) = @_;
+  my ($options) = @_;
   
-  my $force = $opt->{force};
-  my $input_files = $opt->{input_files} || [];
-  my $output_file = $opt->{output_file};
+  my $force = $options->{force};
+  my $input_files = $options->{input_files} || [];
+  my $output_file = $options->{output_file};
   
   # Always generate if force is true
   if ($force) {
