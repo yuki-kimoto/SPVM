@@ -1,10 +1,49 @@
 package SPVM::Builder::Ninja;
 
+# SPVM::Builder::Ninja is used from Makefile.PL
+# so this class must be wrote as pure perl. Do not contain XS functions.
+
 use strict;
 use warnings;
 
+sub new {
+  my $class = shift;
+  
+  my $self = {
+    dir => undef,
+    ninja_log_entries_h => {},
+  };
+  
+  return bless $self, ref $class || $class;
+}
+
+sub dir {
+  my $self = shift;
+  if (@_) {
+    $self->{dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{dir};
+  }
+}
+
+sub ninja_log_entries_h {
+  my $self = shift;
+  if (@_) {
+    $self->{ninja_log_entries_h} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{ninja_log_entries_h};
+  }
+}
+
 sub add_ninja_log {
-  my ($dir_name, $new_record_h, $ninja_log_entries_h) = @_;
+  my ($self, $new_record_h) = @_;
+
+  my $dir_name = $self->dir;
+  my $ninja_log_entries_h = $self->ninja_log_entries_h;
 
   my $output_file  = $new_record_h->{output_file};
   my $command_hash = $new_record_h->{command_hash};
@@ -46,13 +85,15 @@ sub add_ninja_log {
 }
 
 sub load_ninja_log {
-  my ($dir_name) = @_;
+  my ($self) = @_;
 
+  my $dir_name = $self->dir;
   my $log_file = "$dir_name/.ninja_log";
   my $ninja_log_entries_h = {};
 
   # Return an empty hash if the log file does not exist
   if (!-f $log_file) {
+    $self->ninja_log_entries_h($ninja_log_entries_h);
     return $ninja_log_entries_h;
   }
 
@@ -69,13 +110,12 @@ sub load_ninja_log {
     next if $line =~ /^#/;
 
     # Parse tab-separated values
-    # Format: start_time \t end_time \t mtime \t output_file \t command_hash
     my @fields = split(/\t/, $line);
 
     if (@fields >= 5) {
       my ($start_time, $end_time, $mtime, $output_file, $command_hash) = @fields;
 
-      # Store the record. Later entries for the same output_file will overwrite previous ones.
+      # Store the record.
       $ninja_log_entries_h->{$output_file} = {
         start_time   => $start_time,
         end_time     => $end_time,
@@ -87,6 +127,9 @@ sub load_ninja_log {
   }
 
   close $fh;
+
+  # Update internal state
+  $self->ninja_log_entries_h($ninja_log_entries_h);
 
   return $ninja_log_entries_h;
 }
