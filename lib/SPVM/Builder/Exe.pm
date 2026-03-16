@@ -1014,31 +1014,13 @@ sub create_bootstrap_source {
   
   my $class_name = $self->class_name;
   
-  my $class_names = $self->get_user_defined_basic_type_names;
-  
-  my $class_files = [];
-  for my $class_name (@$class_names) {
-    my $class = $self->runtime->get_basic_type_by_name($class_name);
-    if ($class->get_class_dir) {
-      my $class_file = $class->get_class_file;
-      push @$class_files, $class_file;
-    }
-  }
-  
   # Source file - Output
   my $bootstrap_source_file = $self->create_bootstrap_source_file_path;
-  
-  mkpath dirname $bootstrap_source_file;
   
   # Config
   my $config_exe = $self->config;
   
-  my $input_files = [@$class_files];
-  my $output_file = $bootstrap_source_file;
-  
-  my $config_exe_loaded_config_files = $config_exe->get_loaded_config_files;
-  my $need_generate_input_files = [@$input_files, @$config_exe_loaded_config_files];
-  
+  # Build bootstrap source content
   my $bootstrap_source = '';
   
   $bootstrap_source .= $self->create_bootstrap_header_source;
@@ -1055,11 +1037,8 @@ sub create_bootstrap_source {
   
   $bootstrap_source .= "\n";
   
-  # For detecting chaging config mode
-  my $mode_string = $self->mode;
-  unless (defined $mode_string) {
-    $mode_string = '';
-  }
+  # For detecting changing config mode
+  my $mode_string = $self->mode // '';
   $bootstrap_source .= "// mode:$mode_string\n";
   
   my @config_field_names = qw(
@@ -1080,33 +1059,21 @@ sub create_bootstrap_source {
     optimize_precompile
   );
   
-  # For detecting chaging fields
+  # For detecting changing fields
   for my $config_field_name (@config_field_names) {
     $bootstrap_source .= "// $config_field_name:" . &_field_value_to_string($config_exe->{$config_field_name}) . "\n";
   }
   
-  my $bootstrap_source_original;
-  if (-f $bootstrap_source_file) {
-    $bootstrap_source_original = SPVM::Builder::Util::slurp_binary($bootstrap_source_file);
-  }
-  
+  # Force flag from various sources
   my $force = $self->force || $config_exe->force;
   
-  if (defined $bootstrap_source_original && $bootstrap_source ne $bootstrap_source_original) {
-    $force = 1;
-    $self->force($force);
-  }
-  
-  my $need_generate = SPVM::Builder::Util::need_generate({
-    force => $force,
-    output_file => $output_file,
-    input_files => $need_generate_input_files,
-  });
+  # Check if generating is needed by comparing content or if force is true
+  my $need_generate = $force || SPVM::Builder::Util::need_generate_by_content($bootstrap_source, $bootstrap_source_file);
   
   if ($need_generate) {
+    mkpath dirname $bootstrap_source_file;
     SPVM::Builder::Util::spurt_binary($bootstrap_source_file, $bootstrap_source);
   }
-  
 }
 
 sub _field_value_to_string {
