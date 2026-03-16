@@ -400,6 +400,11 @@ sub get_possible_dependent_files {
     push @dependent_files, $spvm_class_file;
   }
   
+  # Add input files
+  if (my $input_files = $options->{input_files}) {
+    push @dependent_files, @$input_files;
+  }
+  
   return \@dependent_files;
 }
 
