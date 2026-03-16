@@ -356,7 +356,7 @@ sub new {
   my $spvm_archive_path = $config->get_spvm_archive;
   if (defined $spvm_archive_path) {
     # Create and load the archive object
-    my $spvm_archive = SPVM::Builder::SPVMArchive->new;
+    my $spvm_archive = SPVM::Builder::SPVMArchive->new(builder => $self->builder);
     $spvm_archive->load($spvm_archive_path);
     
     # Store the object
@@ -432,7 +432,7 @@ sub build_exe_file {
   
   # Output file settings
   my $output_file = $self->{output_file};
-  my $output_dir_tmp = File::Temp->newdir(TEMPLATE => 'tmp_output_XXXXXXX');
+  my $output_dir_tmp = $self->builder->create_build_work_path('spvm_archive/output');
   my $build_spvm_archive = $self->build_spvm_archive;
   my $spvm_archive_out = $output_file;
   
@@ -458,7 +458,7 @@ sub build_exe_file {
     my $spvmcc_info = $self->spvmcc_info;
     
     # Store the SPVM archive using the new method
-    my $spvm_archive = $self->spvm_archive || SPVM::Builder::SPVMArchive->new;
+    my $spvm_archive = $self->spvm_archive || SPVM::Builder::SPVMArchive->new(builder => $self->builder);
     $spvm_archive->store($spvm_archive_out, $build_work_dir, $spvmcc_info);
   }
 }

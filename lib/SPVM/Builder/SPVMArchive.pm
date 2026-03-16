@@ -28,11 +28,22 @@ sub dir {
   }
 }
 
+sub builder {
+  my $self = shift;
+  if (@_) {
+    $self->{builder} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{builder};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
   
-  my $self = {};
+  my $self = {@_};
   
   return bless $self, $class || ref $class;
 }
@@ -172,8 +183,7 @@ sub load {
     }
     
     # Use a temporary directory for extraction
-    my $spvm_archive_dir_obj = File::Temp->newdir(TEMPLATE => 'tmp_spvm_archive_XXXXXXX');
-    $spvm_archive_dir = $spvm_archive_dir_obj->dirname;
+    $spvm_archive_dir = $self->builder->create_build_work_path('spvm_archive/archive');
     
     my $tar = Archive::Tar->new;
     $tar->read($spvm_archive) or die $tar->error;
@@ -199,9 +209,7 @@ sub load {
   $self->{info} = $spvm_archive_info;
 
   # 3. Prepare the final temporary directory for the compiler
-  my $dir_obj = File::Temp->newdir(TEMPLATE => 'tmp_spvm_archive_extract_XXXXXXX');
-  $self->{dir_obj} = $dir_obj;
-  my $dir = $dir_obj->dirname;
+  my $dir =  $self->builder->create_build_work_path('spvm_archive/extract');
   $self->{dir} = $dir;
 
   # 4. Copy and filter files
