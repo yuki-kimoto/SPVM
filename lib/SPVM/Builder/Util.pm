@@ -17,9 +17,6 @@ use Time::HiRes ();
 use Digest::SHA;
 use SPVM::Builder::Ninja;
 
-use Exporter 'import';
-our @EXPORT_OK = qw(has);
-
 # SPVM::Builder::Util is used from Makefile.PL
 # so this class must be wrote as pure perl. Do not contain XS functions.
 
