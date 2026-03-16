@@ -224,7 +224,7 @@ sub new {
   }
   
   unless (defined $build_dir) {
-    $build_dir = '.spvm_build';
+    $build_dir = dirname($output_file) . '/.spvm_build';
   }
   
   my $app_name = $self->app_name;
