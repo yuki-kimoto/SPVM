@@ -433,6 +433,7 @@ sub build_exe_file {
   # Output file settings
   my $output_file = $self->{output_file};
   my $output_dir_tmp = $self->builder->create_build_work_path('spvm_archive/output');
+  rmtree($output_dir_tmp);
   my $build_spvm_archive = $self->build_spvm_archive;
   my $spvm_archive_out = $output_file;
   

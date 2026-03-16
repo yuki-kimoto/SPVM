@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use JSON::PP;
 use File::Find 'find';
+use File::Path 'rmtree';
 
 # Fields
 sub info {
@@ -184,6 +185,7 @@ sub load {
     
     # Use a temporary directory for extraction
     $spvm_archive_dir = $self->builder->create_build_work_path('spvm_archive/archive');
+    rmtree($spvm_archive_dir);
     
     my $tar = Archive::Tar->new;
     $tar->read($spvm_archive) or die $tar->error;
@@ -210,8 +212,9 @@ sub load {
 
   # 3. Prepare the final temporary directory for the compiler
   my $dir =  $self->builder->create_build_work_path('spvm_archive/extract');
+  rmtree($dir);
   $self->{dir} = $dir;
-
+  
   # 4. Copy and filter files
   File::Copy::copy($json_file, "$dir/spvm-archive.json");
   
