@@ -134,4 +134,77 @@ sub load_ninja_log {
   return $ninja_log_entries_h;
 }
 
+sub need_generate {
+  my ($self, $options) = @_;
+  
+  my $ninja_log_entries_h = $self->ninja_log_entries_h;
+  
+  my $force       = $options->{force};
+  my $input_files = $options->{input_files} || [];
+  my $output_file = $options->{output_file};
+  my $command     = $options->{command};
+  
+  # Always generate if force is true
+  if ($force) {
+    return 1;
+  }
+
+  # Generate if output file does not exist
+  if (!-f $output_file) {
+    return 1;
+  }
+  
+  # If command_hash differs, rebuild.
+  if ($ninja_log_entries_h && defined $command) {
+    my $entry = $ninja_log_entries_h->{$output_file};
+    
+    if ($entry) {
+      my $last_command_hash = $entry->{command_hash}; 
+      
+      my $sha = Digest::SHA->new(1);
+      $sha->add($command);
+      my $current_command_hash = $sha->hexdigest;
+
+      if (!defined $last_command_hash || $current_command_hash ne $last_command_hash) {
+        return 1;
+      }
+    } else {
+      # No log entry found for this file; treat as a new or modified build rule
+      return 1;
+    }
+  }
+
+  # Timestamp-based check
+  my $input_files_mtime_max = 0;
+  my $exists_input_file = 0;
+
+  for my $input_file (@$input_files) {
+    if (-f $input_file) {
+      $exists_input_file = 1;
+      my $mtime = (Time::HiRes::stat($input_file))[9];
+      if ($mtime > $input_files_mtime_max) {
+        $input_files_mtime_max = $mtime;
+      }
+    }
+  }
+
+  if ($exists_input_file) {
+    my $spvm_version_header_file = SPVM::Builder::Util::get_spvm_version_header_file();
+    if (-f $spvm_version_header_file) {
+      my $version_mtime = (Time::HiRes::stat($spvm_version_header_file))[9];
+      if ($version_mtime > $input_files_mtime_max) {
+        $input_files_mtime_max = $version_mtime;
+      }
+    }
+
+    my $output_file_mtime = (Time::HiRes::stat($output_file))[9];
+    
+    if ($input_files_mtime_max > $output_file_mtime) {
+      return 1;
+    }
+  }
+
+  return 0;
+}
+
 1;
