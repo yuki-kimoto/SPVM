@@ -13,6 +13,8 @@ use File::Spec;
 use SPVM::Builder::Config;
 use Encode 'decode';
 use File::Find 'find';
+use Time::HiRes ();
+use Digest::SHA;
 
 # SPVM::Builder::Util is used from Makefile.PL
 # so this class must be wrote as pure perl. Do not contain XS functions.
@@ -94,10 +96,6 @@ sub get_spvm_core_source_file_names {
 
   return \@spvm_core_source_file_names;
 }
-
-use Time::HiRes ();
-
-use Digest::SHA;
 
 sub need_generate {
   my ($options) = @_;
