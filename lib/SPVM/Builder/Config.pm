@@ -93,6 +93,8 @@ sub new {
   
   my $self = {@_};
   
+  SPVM::Builder::Util::check_option_names($self, $fields);
+  
   bless $self, ref $class || $class;
   
   # [TODO]A config file name is set by load_config method. This is removed in a future release.
