@@ -426,10 +426,7 @@ sub create_make_rule {
   # Source dependencies
   my $dependent_files = &get_possible_dependent_files($class_name, $category, $options);
   
-  # Add $(INST_DYNAMIC) only for core
-  my $extra_deps = $options->{_core} ? ' $(INST_DYNAMIC)' : '';
-  
-  $make_rule .= "$dynamic_lib_file :: @$dependent_files$extra_deps\n";
+  $make_rule .= "$dynamic_lib_file :: @$dependent_files\n";
   
   # Build options
   my $options_string = "build_dir => '.spvm_build'";
