@@ -1,3 +1,31 @@
+0.990148 2026-03-17
+  [New Features]
+    * Add SPVM::Builder::Config::Global and SPVM::Builder::Config::DLL classes.
+    * Add SPVM::Builder::Config::Linker and SPVM::Builder::Config::Base classes to clarify the class hierarchy.
+    * Add SPVM::Builder::Accessor to generate accessors and move the "has" method from SPVM::Builder::Util to it.
+
+  [Incompatible Changes]
+    * Redesign the spvmcc build system and remove almost all compiler and linker options from command line arguments to ensure object file consistency by centralizing flag management into config files.
+      Removed options:
+        - ccflag, ccflag-spvm, ccflag-native, ccflag-native-class, ccflag-precompile
+        - define, define-spvm, define-native, define-native-class, define-precompile
+        - optimize, optimize-spvm, optimize-native, optimize-native-class, optimize-precompile
+        - include-dir, include-dir-spvm, include-dir-native, include-dir-native-class, include-dir-precompile
+    * Add option name validation to SPVM::Builder::Config#new.
+  
+  [Changes]
+    * Refactor SPVM::Builder::Config to inherit from SPVM::Builder::Config::Linker, moving linker-related fields and methods to the parent class.
+    * Refactor SPVM::Builder::Config::Linker to inherit from SPVM::Builder::Config::Base, moving common methods to the base class.
+    * Refactor SPVM::Builder::Config::Exe to inherit from SPVM::Builder::Config::Global and use SPVM::Builder::Accessor::has for field management.
+    * Rename config to config_global in SPVM::Builder::Exe for better clarity and type safety.
+    * Rename config_exe to config_global across the entire project.
+    * Update the new method in SPVM::Builder::Config and its base classes to use exists instead of defined for field initialization to allow explicit undef values.
+    * Split the documentation for the new method and library path resolution into the appropriate classes in the new hierarchy.
+    * Organize fields in SPVM::Builder::Config into base, cc, and ld groups.
+
+  [Internal Changes]
+    * Add SPVM::Builder::Util::check_option_names to validate option names.
+    
 0.990147 2026-03-16
   [New Features]
     * Add the input_files option to SPVM::Builder::Util#create_make_rule and get_possible_dependent_files to allow custom dependency tracking in Makefile.
