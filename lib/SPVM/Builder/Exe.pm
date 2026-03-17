@@ -200,16 +200,6 @@ sub new {
   my $build_dir = delete $options{build_dir};
   
   my $self = bless {
-    ccflags_global => [],
-    ccflags_spvm => [],
-    ccflags_native => [],
-    ccflags_native_class => {},
-    ccflags_precompile => [],
-    defines_global => [],
-    defines_spvm => [],
-    defines_native => [],
-    defines_native_class => {},
-    defines_precompile => [],
     optimize_native_class => {},
     external_object_files => [],
     %options
@@ -293,22 +283,6 @@ sub new {
   
   # Override config settings with command line options if defined
   {
-    if (defined $self->{ccflags_global}) {
-      $config_global->ccflags_global($self->{ccflags_global});
-    }
-    if (defined $self->{ccflags_spvm}) {
-      $config_global->ccflags_spvm($self->{ccflags_spvm});
-    }
-    if (defined $self->{ccflags_native}) {
-      $config_global->ccflags_native($self->{ccflags_native});
-    }
-    if (defined $self->{ccflags_native_class}) {
-      $config_global->{ccflags_native_class} = $self->{ccflags_native_class};
-    }
-    if (defined $self->{ccflags_precompile}) {
-      $config_global->ccflags_precompile($self->{ccflags_precompile});
-    }
-
     if (defined $self->{optimize_global}) {
       $config_global->optimize_global($self->{optimize_global});
     }
@@ -1068,11 +1042,6 @@ sub create_bootstrap_source {
   $bootstrap_source .= "// mode:$mode_string\n";
   
   my @config_field_names = qw(
-    ccflags_global
-    ccflags_spvm
-    ccflags_native
-    ccflags_native_class
-    ccflags_precompile
     defines_global
     defines_spvm
     defines_native
