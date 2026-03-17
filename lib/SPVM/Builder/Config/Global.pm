@@ -32,11 +32,6 @@ BEGIN {
     optimize_native
     optimize_native_class
     optimize_precompile
-    include_dirs_global
-    include_dirs_spvm
-    include_dirs_native
-    include_dirs_native_class
-    include_dirs_precompile
     external_object_files
     matches
   )];
@@ -92,20 +87,6 @@ BEGIN {
     }
   }
 
-  sub include_dirs_native_class {
-    my $self = shift;
-    my $class_name = shift;
-    unless (defined $class_name) {
-      confess("The class name \$class_name must be defined.");
-    }
-    if (@_) {
-      $self->{include_dirs_native_class}{$class_name} = $_[0];
-      return $self;
-    }
-    else {
-      return $self->{include_dirs_native_class}{$class_name};
-    }
-  }
 }
 
 sub option_names {
@@ -134,11 +115,6 @@ sub new {
     defines_native_class => {},
     defines_precompile => [],
     optimize_native_class => {},
-    include_dirs_global => [],
-    include_dirs_spvm => [],
-    include_dirs_native => [],
-    include_dirs_native_class => {},
-    include_dirs_precompile => [],
     external_object_files => [],
     matches => [],
     @_,
@@ -254,40 +230,6 @@ sub add_define_precompile {
   my ($self, @defines_precompile) = @_;
   
   push @{$self->{defines_precompile}}, @defines_precompile;
-}
-
-sub add_include_dir_global {
-  my ($self, @include_dirs_global) = @_;
-  
-  push @{$self->{include_dirs_global}}, @include_dirs_global;
-}
-
-sub add_include_dir_spvm {
-  my ($self, @include_dirs_spvm) = @_;
-  
-  push @{$self->{include_dirs_spvm}}, @include_dirs_spvm;
-}
-
-sub add_include_dir_native {
-  my ($self, @include_dirs_native) = @_;
-  
-  push @{$self->{include_dirs_native}}, @include_dirs_native;
-}
-
-sub add_include_dir_native_class {
-  my ($self, $class_name, @include_dirs_native_class) = @_;
-  
-  unless (defined $self->{include_dirs_native_class}{$class_name}) {
-    $self->{include_dirs_native_class}{$class_name} = [];
-  }
-  
-  push @{$self->{include_dirs_native_class}{$class_name}}, @include_dirs_native_class;
-}
-
-sub add_include_dir_precompile {
-  my ($self, @include_dirs_precompile) = @_;
-  
-  push @{$self->{include_dirs_precompile}}, @include_dirs_precompile;
 }
 
 sub add_external_object_file {
@@ -636,41 +578,6 @@ Gets and sets the value of C<optimize_native_class> field's class name key $clas
 
 Gets and sets C<optimize_precompile> field, an arugment of of the compiler L</"cc"> for optimization in compilation for precompilation.
 
-=head2 include_dirs_global
-
-  my $include_dirs_global = $config->include_dirs_global;
-  $config->include_dirs_global($include_dirs_global);
-
-Gets and sets C<include_dirs> field, an array reference containing C<-I> arugments of the compiler L</"cc"> in all compilation.
-
-=head2 include_dirs_spvm
-
-  my $include_dirs_spvm = $config->include_dirs_spvm;
-  $config->include_dirs_spvm($include_dirs_spvm);
-
-Gets and sets C<include_dirs_spvm> field, an array reference containing C<-I> arugments of the compiler L</"cc"> in compilations of SPVM source code and a bootstrap source file.
-
-=head2 include_dirs_native
-
-  my $include_dirs_native = $config->include_dirs_native;
-  $config->include_dirs_native($include_dirs_native);
-
-Gets and sets C<include_dirs_native> field, an array reference containing C<-I> arugments of the compiler L</"cc"> in compilation of all native class source file(such as MyClass.c) and all native source files(such as MyClass.native/src/mysource.c>.
-
-=head2 include_dirs_native_class
-
-  my $include_dirs_native_class = $config->include_dirs_native_class($class_name);
-  $config->include_dirs_native_class($class_name, $include_dirs_native);
-
-Gets and sets the value of C<include_dirs_native_class> field's class name key $class_name, an array reference containing C<-I> arugments of the compiler L</"cc"> in compilation of native class source file(such as MyClass.c) and all native source files(such as MyClass.native/src/mysource.c> in $class_name.
-
-=head2 include_dirs_precompile
-
-  my $include_dirs_precompile = $config->include_dirs_precompile;
-  $config->include_dirs_precompile($include_dirs_precompile);
-
-Gets and sets C<include_dirs_precompile> field, an array reference containing C<-I> arugments of the compiler L</"cc"> in compilation for precompilation.
-
 =head2 external_object_files
 
   my $external_object_files = $config->external_object_files;
@@ -815,36 +722,6 @@ Adds @defines_native_class to the end of L</"defines_native_class"> field's key 
   $config->add_define_precompile(@defines_precompile);
 
 Adds @defines_precompile to the end of L</"defines_precompile"> field.
-
-=head2 add_include_dir_global
-
-  $config->add_include_dir_global(@include_dirs_global);
-
-Adds @include_dirs_global to the end of L</"include_dirs_global"> field.
-
-=head2 add_include_dir_spvm
-
-  $config->add_include_dir_spvm(@include_dirs_spvm);
-
-Adds @include_dirs_spvm to the end of L</"include_dirs_spvm"> field.
-
-=head2 add_include_dir_native
-
-  $config->add_include_dir_native(@include_dirs_native);
-
-Adds @include_dirs_native to the end of L</"include_dirs_native"> field.
-
-=head2 add_include_dir_native_class
-
-  $config->add_include_dir_native_class($class_name, @include_dirs_native_class);
-
-Adds @include_dirs_native_class to the end of L</"include_dirs_native_class"> field's key $class_name.
-
-=head2 add_include_dir_precompile
-
-  $config->add_include_dir_precompile(@include_dirs_precompile);
-
-Adds @include_dirs_precompile to the end of L</"include_dirs_precompile"> field.
 
 =head2 add_external_object_file
 
