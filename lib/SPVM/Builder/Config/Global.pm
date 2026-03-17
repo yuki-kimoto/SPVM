@@ -38,6 +38,7 @@ BEGIN {
     include_dirs_native_class
     include_dirs_precompile
     external_object_files
+    matches
   )];
 
   has($fields);
@@ -139,6 +140,7 @@ sub new {
     include_dirs_native_class => {},
     include_dirs_precompile => [],
     external_object_files => [],
+    matches => [],
     @_,
   );
   
@@ -306,6 +308,142 @@ sub get_spvm_archive {
   my ($self) = @_;
   
   return $self->{spvm_archive};
+}
+
+# Upgrade a hash reference to an SPVM::Builder::Config object.
+# Checks for invalid keys using new_empty.
+sub _upgrade_to_config {
+  my ($self, $config) = @_;
+  
+  if (ref $config eq 'HASH') {
+    return SPVM::Builder::Config->new_empty(%$config);
+  }
+  return $config;
+}
+
+# Append a match rule to the end of the list.
+sub match {
+  my ($self, $condition, $config) = @_;
+  
+  $condition = $self->_upgrade_to_config($condition);
+  $config    = $self->_upgrade_to_config($config);
+
+  for my $match (@{$self->{matches} ||= []}) {
+    if ($self->_is_same_keys($match->{condition}, $condition)) {
+      my $keys_str = join(', ', sort keys %{$match->{condition}});
+      confess "A match rule with the same condition keys already exists: [$keys_str]";
+    }
+  }
+
+  push @{$self->{matches}}, {
+    condition => $condition,
+    config    => $config,
+  };
+  
+  return $self;
+}
+
+# Prepend a match rule to the beginning of the list.
+sub prepend_match {
+  my ($self, $condition, $config) = @_;
+  
+  $condition = $self->_upgrade_to_config($condition);
+  $config    = $self->_upgrade_to_config($config);
+
+  for my $match (@{$self->{matches} ||= []}) {
+    if ($self->_is_same_keys($match->{condition}, $condition)) {
+      my $keys_str = join(', ', sort keys %{$match->{condition}});
+      confess "A match rule with the same condition keys already exists: [$keys_str]";
+    }
+  }
+
+  unshift @{$self->{matches}}, {
+    condition => $condition,
+    config    => $config,
+  };
+  
+  return $self;
+}
+
+# Update an existing match rule.
+sub update_match {
+  my ($self, $condition, $config) = @_;
+  
+  $condition = $self->_upgrade_to_config($condition);
+  $config    = $self->_upgrade_to_config($config);
+
+  my $updated = 0;
+  for my $match (@{$self->{matches} ||= []}) {
+    if ($self->_is_same_keys($match->{condition}, $condition)) {
+      $match->{config} = $config;
+      $updated = 1;
+      last;
+    }
+  }
+
+  unless ($updated) {
+    my $keys_str = join(', ', sort keys %$condition);
+    confess "Could not find a match rule with the specified keys to update: [$keys_str]";
+  }
+  
+  return $self;
+}
+
+# Delete a match rule.
+sub delete_match {
+  my ($self, $condition) = @_;
+  
+  $condition = $self->_upgrade_to_config($condition);
+
+  my $deleted = 0;
+  my @new_matches;
+  for my $match (@{$self->{matches} ||= []}) {
+    if ($self->_is_same_keys($match->{condition}, $condition)) {
+      $deleted = 1;
+      next;
+    }
+    push @new_matches, $match;
+  }
+
+  if ($deleted) {
+    $self->{matches} = \@new_matches;
+  }
+  else {
+    my $keys_str = join(', ', sort keys %$condition);
+    confess "Could not find a match rule with the specified keys to delete: [$keys_str]";
+  }
+  
+  return $self;
+}
+
+# Search for a match rule and return its config.
+sub search_match {
+  my ($self, $condition) = @_;
+  
+  $condition = $self->_upgrade_to_config($condition);
+  
+  for my $match (@{$self->{matches} ||= []}) {
+    if ($self->_is_same_keys($match->{condition}, $condition)) {
+      return $match->{config};
+    }
+  }
+  return;
+}
+
+# Check if two config objects have the same set of keys.
+sub _is_same_keys {
+  my ($self, $c1, $c2) = @_;
+  
+  my @keys1 = sort keys %$c1;
+  my @keys2 = sort keys %$c2;
+  
+  return 0 unless scalar @keys1 == scalar @keys2;
+  
+  for my $i (0 .. $#keys1) {
+    return 0 unless $keys1[$i] eq $keys2[$i];
+  }
+  
+  return 1;
 }
 
 1;
