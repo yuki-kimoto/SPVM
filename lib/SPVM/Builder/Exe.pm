@@ -1042,11 +1042,6 @@ sub create_bootstrap_source {
   $bootstrap_source .= "// mode:$mode_string\n";
   
   my @config_field_names = qw(
-    defines_global
-    defines_spvm
-    defines_native
-    defines_native_class
-    defines_precompile
     optimize_global
     optimize_spvm
     optimize_native
