@@ -311,7 +311,6 @@ sub get_spvm_archive {
 }
 
 # Upgrade a hash reference to an SPVM::Builder::Config object.
-# Checks for invalid keys using new_empty.
 sub _upgrade_to_config {
   my ($self, $config) = @_;
   
@@ -321,12 +320,20 @@ sub _upgrade_to_config {
   return $config;
 }
 
-# Append a match rule to the end of the list.
+# --- Main Methods ---
+
+# Append a match rule.
 sub match {
   my ($self, $condition, $config) = @_;
   
-  $condition = $self->_upgrade_to_config($condition);
+  $condition = defined $condition ? $self->_upgrade_to_config($condition) 
+                                  : SPVM::Builder::Config->new_empty;
   $config    = $self->_upgrade_to_config($config);
+
+  # Validation: Config values must not be undef.
+  for my $key (keys %$config) {
+    confess "The value of the key '$key' in config cannot be undef" unless defined $config->{$key};
+  }
 
   for my $match (@{$self->{matches} ||= []}) {
     if ($self->_is_same_keys($match->{condition}, $condition)) {
@@ -335,19 +342,16 @@ sub match {
     }
   }
 
-  push @{$self->{matches}}, {
-    condition => $condition,
-    config    => $config,
-  };
-  
+  push @{$self->{matches}}, { condition => $condition, config => $config };
   return $self;
 }
 
-# Prepend a match rule to the beginning of the list.
+# Prepend a match rule.
 sub prepend_match {
   my ($self, $condition, $config) = @_;
   
-  $condition = $self->_upgrade_to_config($condition);
+  $condition = defined $condition ? $self->_upgrade_to_config($condition) 
+                                  : SPVM::Builder::Config->new_empty;
   $config    = $self->_upgrade_to_config($config);
 
   for my $match (@{$self->{matches} ||= []}) {
@@ -357,19 +361,16 @@ sub prepend_match {
     }
   }
 
-  unshift @{$self->{matches}}, {
-    condition => $condition,
-    config    => $config,
-  };
-  
+  unshift @{$self->{matches}}, { condition => $condition, config => $config };
   return $self;
 }
 
-# Update an existing match rule.
+# Update a match rule.
 sub update_match {
   my ($self, $condition, $config) = @_;
   
-  $condition = $self->_upgrade_to_config($condition);
+  $condition = defined $condition ? $self->_upgrade_to_config($condition) 
+                                  : SPVM::Builder::Config->new_empty;
   $config    = $self->_upgrade_to_config($config);
 
   my $updated = 0;
@@ -380,12 +381,7 @@ sub update_match {
       last;
     }
   }
-
-  unless ($updated) {
-    my $keys_str = join(', ', sort keys %$condition);
-    confess "Could not find a match rule with the specified keys to update: [$keys_str]";
-  }
-  
+  confess "Match rule not found for update" unless $updated;
   return $self;
 }
 
@@ -393,7 +389,8 @@ sub update_match {
 sub delete_match {
   my ($self, $condition) = @_;
   
-  $condition = $self->_upgrade_to_config($condition);
+  $condition = defined $condition ? $self->_upgrade_to_config($condition) 
+                                  : SPVM::Builder::Config->new_empty;
 
   my $deleted = 0;
   my @new_matches;
@@ -404,23 +401,17 @@ sub delete_match {
     }
     push @new_matches, $match;
   }
-
-  if ($deleted) {
-    $self->{matches} = \@new_matches;
-  }
-  else {
-    my $keys_str = join(', ', sort keys %$condition);
-    confess "Could not find a match rule with the specified keys to delete: [$keys_str]";
-  }
-  
+  confess "Match rule not found for delete" unless $deleted;
+  $self->{matches} = \@new_matches;
   return $self;
 }
 
-# Search for a match rule and return its config.
+# Search for a match rule.
 sub search_match {
   my ($self, $condition) = @_;
   
-  $condition = $self->_upgrade_to_config($condition);
+  $condition = defined $condition ? $self->_upgrade_to_config($condition) 
+                                  : SPVM::Builder::Config->new_empty;
   
   for my $match (@{$self->{matches} ||= []}) {
     if ($self->_is_same_keys($match->{condition}, $condition)) {
@@ -430,21 +421,29 @@ sub search_match {
   return;
 }
 
+# --- Syntax Sugar for "Any" Conditions ---
+
+sub match_any         { shift->match(undef, @_) }
+sub prepend_match_any { shift->prepend_match(undef, @_) }
+sub update_match_any  { shift->update_match(undef, @_) }
+sub delete_match_any  { shift->delete_match(undef, @_) }
+sub search_match_any  { shift->search_match(undef) }
+
+# --- Internal Helper ---
+
 # Check if two config objects have the same set of keys.
 sub _is_same_keys {
   my ($self, $c1, $c2) = @_;
-  
   my @keys1 = sort keys %$c1;
   my @keys2 = sort keys %$c2;
-  
   return 0 unless scalar @keys1 == scalar @keys2;
-  
   for my $i (0 .. $#keys1) {
     return 0 unless $keys1[$i] eq $keys2[$i];
   }
-  
   return 1;
 }
+
+1;
 
 1;
 
