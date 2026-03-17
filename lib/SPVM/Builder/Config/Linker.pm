@@ -51,7 +51,7 @@ sub new {
   my $class = shift;
   my $self = $class->SUPER::new(@_);
 
-  unless (defined $self->{ld}) {
+  unless (exists $self->{ld}) {
     my $config_gcc_version = $Config{gccversion};
     if ($config_gcc_version =~ /\bclang\b/i) {
       $self->ld('clang++');
@@ -61,11 +61,11 @@ sub new {
     }
   }
 
-  unless (defined $self->{ldflags}) {
+  unless (exists $self->{ldflags}) {
     $self->ldflags([]);
   }
 
-  unless (defined $self->{dynamic_lib_ldflags}) {
+  unless (exists $self->{dynamic_lib_ldflags}) {
     if ($^O eq 'MSWin32') {
       $self->dynamic_lib_ldflags(['-mdll', '-s']);
     }
@@ -74,14 +74,14 @@ sub new {
     }
   }
 
-  unless (defined $self->{thread_ldflags}) {
+  unless (exists $self->{thread_ldflags}) {
     $self->thread_ldflags(['-pthread']);
     if ($^O eq 'MSWin32') {
       push @{$self->thread_ldflags}, '-Wl,-Bstatic', '-lwinpthread', '-Wl,-Bdynamic';
     }
   }
 
-  unless (defined $self->{bcrypt_ldflags}) {
+  unless (exists $self->{bcrypt_ldflags}) {
     if ($^O eq 'MSWin32') {
       $self->bcrypt_ldflags(['-lbcrypt']);
     }
@@ -90,7 +90,7 @@ sub new {
     }
   }
 
-  unless (defined $self->{libcpp_ldflags}) {
+  unless (exists $self->{libcpp_ldflags}) {
     if ($^O eq 'MSWin32') {
       $self->libcpp_ldflags(['-Wl,-Bstatic', '-lstdc++', '-lgcc', '-Wl,-Bdynamic']);
     }
@@ -102,11 +102,11 @@ sub new {
     }
   }
 
-  unless (defined $self->{dynamic_lib_libcpp_ldflags}) {
+  unless (exists $self->{dynamic_lib_libcpp_ldflags}) {
     $self->dynamic_lib_libcpp_ldflags([]);
   }
 
-  unless (defined $self->{exe_libcpp_ldflags}) {
+  unless (exists $self->{exe_libcpp_ldflags}) {
     if ($^O eq 'darwin') {
       $self->exe_libcpp_ldflags(['-lc++']);
     }
@@ -115,61 +115,61 @@ sub new {
     }
   }
 
-  unless (defined $self->{static_lib_ldflag}) {
+  unless (exists $self->{static_lib_ldflag}) {
     my $begin = '-Wl,-Bstatic';
     my $end = '-Wl,-Bdynamic';
     $self->static_lib_ldflag([$begin, $end]);
   }
 
-  unless (defined $self->{ld_optimize}) {
+  unless (exists $self->{ld_optimize}) {
     $self->ld_optimize('-O2');
   }
 
-  unless (defined $self->{lib_dirs}) {
+  unless (exists $self->{lib_dirs}) {
     $self->lib_dirs([]);
   }
 
-  unless (defined $self->{libs}) {
+  unless (exists $self->{libs}) {
     $self->libs([]);
   }
 
-  unless (defined $self->{before_link_cbs}) {
+  unless (exists $self->{before_link_cbs}) {
     $self->before_link_cbs([]);
   }
 
-  unless (defined $self->{after_link_cbs}) {
+  unless (exists $self->{after_link_cbs}) {
     $self->after_link_cbs([]);
   }
 
-  unless (defined $self->output_type) {
+  unless (exists $self->{output_type}) {
     $self->output_type('dynamic_lib');
   }
 
-  unless (defined $self->{warn_ldflags}) {
+  unless (exists $self->{warn_ldflags}) {
     $self->warn_ldflags([]);
   }
 
-  unless (defined $self->{debug_ldflags}) {
+  unless (exists $self->{debug_ldflags}) {
     $self->debug_ldflags([]);
   }
 
-  unless (defined $self->{lib_dir_option_name}) {
+  unless (exists $self->{lib_dir_option_name}) {
     $self->lib_dir_option_name("-L");
   }
 
-  unless (defined $self->{dynamic_lib_ext}) {
+  unless (exists $self->{dynamic_lib_ext}) {
     my $ext = $Config{dlext};
     $ext =~ s/^\.//;
     $self->dynamic_lib_ext($ext);
   }
   
-  unless (defined $self->{static_lib_ext}) {
+  unless (exists $self->{static_lib_ext}) {
     my $ext = $Config{_a};
     $ext =~ s/^\.//;
     $self->static_lib_ext($ext);
   }
   
-  unless (defined $self->{exe_ext}) {
+  unless (exists $self->{exe_ext}) {
     my $ext = $Config{_exe};
     if (length $ext) {
       $ext =~ s/^\.//;
@@ -180,24 +180,24 @@ sub new {
     }
   }
 
-  unless (defined $self->{lib_prefix}) {
+  unless (exists $self->{lib_prefix}) {
     $self->lib_prefix("lib");
   }
 
-  unless (defined $self->{lib_option_suffix}) {
+  unless (exists $self->{lib_option_suffix}) {
     $self->lib_option_suffix("");
   }
 
-  unless (defined $self->{lib_option_name}) {
+  unless (exists $self->{lib_option_name}) {
     $self->lib_option_name("-l");
   }
 
-  unless (defined $self->{ld_output_option_name}) {
+  unless (exists $self->{ld_output_option_name}) {
     $self->ld_output_option_name("-o");
   }
   
   # resources
-  unless (defined $self->{resources}) {
+  unless (exists $self->{resources}) {
     $self->{resources} = {};
   }
   

@@ -39,16 +39,16 @@ sub new {
   # quiet (default is undef)
 
   # category
-  unless (defined $self->{category}) {
+  unless (exists $self->{category}) {
     $self->category('native');
   }
 
   # long_option_sep
-  unless (defined $self->{long_option_sep}) {
+  unless (exists $self->{long_option_sep}) {
     $self->long_option_sep("=");
   }
   
-  unless (defined $self->{_loaded_config_files}) {
+  unless (exists $self->{_loaded_config_files}) {
     $self->{_loaded_config_files} = [];
   }
   

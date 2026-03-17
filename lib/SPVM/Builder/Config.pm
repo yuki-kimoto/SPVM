@@ -55,17 +55,17 @@ sub new {
   my $self = $class->SUPER::new(@_);
   
   # ccflags
-  unless (defined $self->{ccflags}) {
+  unless (exists $self->{ccflags}) {
     $self->ccflags([]);
   }
 
   # defines
-  unless (defined $self->{defines}) {
+  unless (exists $self->{defines}) {
     $self->defines([]);
   }
 
   # dynamic_lib_ccflags
-  unless (defined $self->{dynamic_lib_ccflags}) {
+  unless (exists $self->{dynamic_lib_ccflags}) {
     if ($^O eq 'MSWin32') {
       $self->dynamic_lib_ccflags([]);
     }
@@ -75,22 +75,22 @@ sub new {
   }
 
   # thread_ccflags
-  unless (defined $self->{thread_ccflags}) {
+  unless (exists $self->{thread_ccflags}) {
     $self->thread_ccflags(['-pthread']);
   }
 
   # optimize
-  unless (defined $self->{optimize}) {
+  unless (exists $self->{optimize}) {
     $self->optimize('-O3 -DNDEBUG');
   }
 
   # include_dirs
-  unless (defined $self->{include_dirs}) {
+  unless (exists $self->{include_dirs}) {
     $self->include_dirs([]);
   }
 
   # spvm_core_include_dir
-  unless (defined $self->spvm_core_include_dir) {
+  unless (exists $self->{spvm_core_include_dir}) {
     my $builder_dir = SPVM::Builder::Util::get_builder_dir();
     my $spvm_core_include_dir = "$builder_dir/include";
     
@@ -98,37 +98,37 @@ sub new {
   }
 
   # source_files
-  unless (defined $self->{source_files}) {
+  unless (exists $self->{source_files}) {
     $self->source_files([]);
   }
 
   # before_compile_cbs
-  unless (defined $self->{before_compile_cbs}) {
+  unless (exists $self->{before_compile_cbs}) {
     $self->before_compile_cbs([]);
   }
 
   # warn_ccflags
-  unless (defined $self->{warn_ccflags}) {
+  unless (exists $self->{warn_ccflags}) {
     $self->warn_ccflags([]);
   }
 
   # language_ccflags
-  unless (defined $self->{language_ccflags}) {
+  unless (exists $self->{language_ccflags}) {
     $self->language_ccflags([]);
   }
 
   # arch_ccflags
-  unless (defined $self->{arch_ccflags}) {
+  unless (exists $self->{arch_ccflags}) {
     $self->arch_ccflags([]);
   }
   
   # compiler_ccflags
-  unless (defined $self->{compiler_ccflags}) {
+  unless (exists $self->{compiler_ccflags}) {
     $self->compiler_ccflags([]);
   }
 
   # runtime_ccflags
-  unless (defined $self->{runtime_ccflags}) {
+  unless (exists $self->{runtime_ccflags}) {
     if ($^O eq 'MSWin32') {
       $self->runtime_ccflags(['-D__USE_MINGW_ANSI_STDIO']);
     }
@@ -138,12 +138,12 @@ sub new {
   }
 
   # ld_ccflags
-  unless (defined $self->{ld_ccflags}) {
+  unless (exists $self->{ld_ccflags}) {
     $self->ld_ccflags([]);
   }
 
   # cc_output_option_name
-  unless (defined $self->{cc_output_option_name}) {
+  unless (exists $self->{cc_output_option_name}) {
     $self->cc_output_option_name("-o");
   }
 

@@ -9,8 +9,8 @@ sub new {
   my $class = shift;
   
   my $self = $class->SUPER::new(
-    @_,
     output_type => 'dynamic_lib',
+    @_,
   );
   
   return $self;
