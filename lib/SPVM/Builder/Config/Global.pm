@@ -11,17 +11,13 @@ use SPVM::Builder::Util::API;
 use SPVM::Builder::Accessor 'has';
 
 # Fields
-my $fields;
+my $fields = [qw(
+  mode
+  before_compile_cbs_global
+  include_dirs_global
+)];
 
-BEGIN {
-  $fields = [qw(
-    mode
-    before_compile_cbs_global
-    include_dirs_global
-  )];
-
-  has($fields);
-}
+has($fields);
 
 sub optimize_global {
   my $self = shift;
