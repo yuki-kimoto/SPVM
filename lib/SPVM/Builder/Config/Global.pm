@@ -111,152 +111,66 @@ sub get_spvm_archive {
   return $self->{spvm_archive};
 }
 
-# Upgrade a hash reference to an SPVM::Builder::Config object.
-# Validates that the input is a HASH ref, SPVM::Builder::Config, or undef.
-sub _upgrade_to_config {
-  my ($self, $config) = @_;
-  
-  return unless defined $config;
-
-  if (ref $config eq 'HASH') {
-    return SPVM::Builder::Config->new_empty(%$config);
-  }
-  
-  unless (UNIVERSAL::isa($config, 'SPVM::Builder::Config')) {
-    my $type = ref($config) || 'a scalar value';
-    confess "The configuration must be a HASH reference, an SPVM::Builder::Config object, or undef (got $type)";
-  }
-  
-  return $config;
-}
-
-# --- Main Methods ---
-
-# Append a match rule.
 sub match {
-  my ($self, $condition, $config) = @_;
+  my ($self, $condition, $match_config) = @_;
   
-  $condition = $self->_upgrade_to_config($condition);
-  
-  confess "The config argument must be defined" unless defined $config;
-  $config = $self->_upgrade_to_config($config);
-
-  # Validation: Config values must not be undef.
-  for my $key (keys %$config) {
-    confess "The value of the key '$key' in config cannot be undef" unless defined $config->{$key};
+  unless (defined $match_config) {
+    confess("The config argument must be defined");
   }
-
-  for my $match (@{$self->{matches} ||= []}) {
-    if ($self->_is_same_keys($match->{condition}, $condition)) {
-      my $keys_str = defined $condition ? join(', ', sort keys %$condition) : 'Any';
-      confess "A match rule with the same condition keys already exists: [$keys_str]";
+  
+  # Normalize condition to a Config object for key validation
+  unless ($condition && UNIVERSAL::isa($condition, 'SPVM::Builder::Config')) {
+    $condition = SPVM::Builder::Config->new_empty(%$condition);
+  }
+  
+  # Ensure match_config is a Config object
+  unless (UNIVERSAL::isa($match_config, 'SPVM::Builder::Config')) {
+    $match_config = SPVM::Builder::Config->new_empty(%$match_config);
+  }
+  
+  # Add callback to apply settings before compilation
+  $self->add_before_compile_cb_global(sub {
+    my ($config) = @_;
+    
+    my $match = 1;
+    if ($condition) {
+      for my $name (keys %$condition) {
+        my $condition_value = $condition->{$name};
+        
+        # Field must exist in the target config
+        unless (exists $config->{$name}) {
+          $match = 0;
+          last;
+        }
+        
+        my $config_value = $config->{$name};
+        
+        # Match by regex or string equality
+        if (ref $condition_value eq 'Regexp') {
+          unless ($config_value =~ $condition_value) {
+            $match = 0;
+            last;
+          }
+        }
+        else {
+          unless ($config_value eq $condition_value) {
+            $match = 0;
+            last;
+          }
+        }
+      }
     }
-  }
-
-  push @{$self->{matches}}, { condition => $condition, config => $config };
-  return $self;
-}
-
-# Prepend a match rule.
-sub prepend_match {
-  my ($self, $condition, $config) = @_;
-  
-  $condition = $self->_upgrade_to_config($condition);
-  
-  confess "The config argument must be defined" unless defined $config;
-  $config = $self->_upgrade_to_config($config);
-
-  for my $match (@{$self->{matches} ||= []}) {
-    if ($self->_is_same_keys($match->{condition}, $condition)) {
-      my $keys_str = defined $condition ? join(', ', sort keys %$condition) : 'Any';
-      confess "A match rule with the same condition keys already exists: [$keys_str]";
+    
+    # Overwrite config values if all conditions match
+    if ($match) {
+      for my $name (keys %$match_config) {
+        $config->{$name} = $match_config->{$name};
+      }
     }
-  }
-
-  unshift @{$self->{matches}}, { condition => $condition, config => $config };
-  return $self;
+  });
 }
 
-# Update a match rule.
-sub update_match {
-  my ($self, $condition, $config) = @_;
-  
-  $condition = $self->_upgrade_to_config($condition);
-  
-  confess "The config argument must be defined" unless defined $config;
-  $config = $self->_upgrade_to_config($config);
-
-  my $updated = 0;
-  for my $match (@{$self->{matches} ||= []}) {
-    if ($self->_is_same_keys($match->{condition}, $condition)) {
-      $match->{config} = $config;
-      $updated = 1;
-      last;
-    }
-  }
-  confess "Match rule not found for update" unless $updated;
-  return $self;
-}
-
-# Delete a match rule.
-sub delete_match {
-  my ($self, $condition) = @_;
-  
-  $condition = $self->_upgrade_to_config($condition);
-
-  my $deleted = 0;
-  my @new_matches;
-  for my $match (@{$self->{matches} ||= []}) {
-    if ($self->_is_same_keys($match->{condition}, $condition)) {
-      $deleted = 1;
-      next;
-    }
-    push @new_matches, $match;
-  }
-  confess "Match rule not found for delete" unless $deleted;
-  $self->{matches} = \@new_matches;
-  return $self;
-}
-
-# Search for a match rule.
-sub search_match {
-  my ($self, $condition) = @_;
-  
-  $condition = $self->_upgrade_to_config($condition);
-  
-  for my $match (@{$self->{matches} ||= []}) {
-    if ($self->_is_same_keys($match->{condition}, $condition)) {
-      return $match->{config};
-    }
-  }
-  return;
-}
-
-# --- Syntax Sugar for "Any" Conditions ---
-
-sub match_any         { shift->match(undef, @_) }
-sub prepend_match_any { shift->prepend_match(undef, @_) }
-sub update_match_any  { shift->update_match(undef, @_) }
-sub delete_match_any  { shift->delete_match(undef) }
-sub search_match_any  { shift->search_match(undef) }
-
-# --- Internal Helper ---
-
-# Check if two config objects have the same set of keys.
-sub _is_same_keys {
-  my ($self, $c1, $c2) = @_;
-  
-  return 1 if !defined $c1 && !defined $c2;
-  return 0 if !defined $c1 || !defined $c2;
-
-  my @keys1 = sort keys %$c1;
-  my @keys2 = sort keys %$c2;
-  return 0 unless scalar @keys1 == scalar @keys2;
-  for my $i (0 .. $#keys1) {
-    return 0 unless $keys1[$i] eq $keys2[$i];
-  }
-  return 1;
-}
+sub match_any { shift->match(undef, @_) }
 
 1;
 
