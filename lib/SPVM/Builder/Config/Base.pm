@@ -2,8 +2,10 @@ package SPVM::Builder::Config::Base;
 
 use strict;
 use warnings;
+use Carp 'confess';
 use SPVM::Builder::Util;
 use SPVM::Builder::Accessor 'has';
+use File::Basename 'dirname', 'fileparse';
 
 # Base Fields
 my $base_fields = [qw(
@@ -45,7 +47,11 @@ sub new {
   unless (defined $self->{long_option_sep}) {
     $self->long_option_sep("=");
   }
-
+  
+  unless (defined $self->{_loaded_config_files}) {
+    $self->{_loaded_config_files} = [];
+  }
+  
   # is_jit, is_resource are normally set via constructor if needed
   
   return $self;
@@ -89,6 +95,133 @@ sub create_option_long {
   return "$name$sep$value";
 }
 
+sub load_config {
+  my ($self, $config_file) = @_;
+  
+  unless (-f $config_file) {
+    confess("The config file \"$config_file\" must exist");
+  }
+  
+  my $config;
+  {
+    open my $fh, '<', $config_file
+      or confess("The config file \"$config_file\" can't found: $!");
+    
+    my $config_content = do { $/ = undef; <$fh> };
+    
+    $config = &_eval_config_content($config_content, $config_file);
+  }
+  
+  if ($@) {
+    confess("The config file \"$config_file\" can't be parsed: $@");
+  }
+  
+  unless (defined $config && $config->isa('SPVM::Builder::Config')) {
+    confess("The config file must be an SPVM::Builder::Config object");
+  }
+  
+  push @{$config->get_loaded_config_files}, $config_file;
+  
+  $config->file($config_file);
+  
+  # native_include_dir
+  unless (defined $config->native_include_dir) {
+    if (defined $config_file) {
+      my $native_dir = &_remove_ext_from_config_file($config_file);
+      $native_dir .= '.native';
+      my $native_include_dir = "$native_dir/include";
+      
+      $config->native_include_dir($native_include_dir);
+    }
+  }
+  
+  # native_src_dir
+  unless (defined $config->native_src_dir) {
+    if (defined $config_file) {
+      my $native_dir = &_remove_ext_from_config_file($config_file);
+      $native_dir .= '.native';
+      my $native_src_dir = "$native_dir/src";
+      
+      $config->native_src_dir($native_src_dir);
+    }
+  }
+  
+  if ($self) {
+    bless $config, ref $self || $self;
+  }
+  
+  return $config;
+}
+
+sub get_loaded_config_files {
+  my $self = shift;
+  
+  return $self->{_loaded_config_files};
+}
+
+sub clone {
+  my ($self) = @_;
+  
+  my $clone = bless {}, ref $self;
+  
+  for my $name (keys %$self) {
+    my $value = $self->{$name};
+    
+    if (ref $value eq 'ARRAY') {
+      $clone->{$name} = [@$value];
+    }
+    elsif (ref $value eq 'HASH') {
+      $clone->{$name} = &_copy_hash($value);
+    }
+    else {
+      $clone->{$name} = $value;
+    }
+  }
+  
+  return $clone;
+}
+
+sub _copy_hash {
+  my ($hash) = @_;
+  
+  my $clone = {};
+  
+  for my $name (keys %$hash) {
+    my $value = $hash->{$name};
+    
+    if (ref $value eq 'ARRAY') {
+      $clone->{$name} = [@$value];
+    }
+    elsif (ref $value eq 'HASH') {
+      $clone->{$name} = {%$value};
+    }
+    else {
+      $clone->{$name} = $value;
+    }
+  }
+  
+  return $clone;
+}
+
+sub _remove_ext_from_config_file {
+  my ($config_file) = @_;
+  
+  my ($config_base_name, $config_dir) = fileparse $config_file;
+  
+  $config_base_name =~ s/(\.[^\.]+)?\.config$//;
+  
+  my $config_file_without_ext = "$config_dir$config_base_name";
+  
+  return $config_file_without_ext;
+}
+
+sub _eval_config_content {
+  
+  $_[0] = qq|{\nuse strict;\nuse warnings;\nuse utf8;\n\nuse SPVM::Builder::Config;\nuse SPVM::Builder::Config::Exe;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
+  
+  return eval $_[0];
+}
+
 1;
 
 =head1 Name
@@ -126,7 +259,7 @@ This field is set by L</"load_config"> method and users should not set it.
 
 Gets and sets C<category> field.
 
-If this field is C<precompile>, this config is for precompilation.
+If this field is C<precompile>, this config is for precompilation, 
 
 If this field is C<native>, this config is for a native class.
 
@@ -246,4 +379,28 @@ Builds a command line option by connecting the option name and the value using L
   # Results in "-out:c:/path" (if long_option_sep is ":")
   my $option = $config->create_option_long("-out", "c:/path");
 
-=cut
+=head2 load_config
+
+  my $config = $config->load_config($config_file);
+
+Loads a config file given a config file path and an array refernce containing L<config arguments|/"Config Arguments">, and returns an L<SPVM::Builder::Config> object.
+
+Examples:
+
+  my $config = $config->load_config(__FILE__);
+
+=head2 get_loaded_config_files
+
+Returns the config files loaded by L</"load_config"> method.
+
+=head2 clone
+
+  my $clone = $self->clone;
+
+Clones L<SPVM::Builder::Config> object, and returns it.
+
+=head1 Copyright & License
+
+Copyright (c) 2023 Yuki Kimoto
+
+MIT License

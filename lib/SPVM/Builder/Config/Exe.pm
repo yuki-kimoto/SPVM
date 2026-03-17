@@ -154,7 +154,7 @@ sub load_mode_config {
   
   $options //= {};
   
-  my $mode_config_file = SPVM::Builder::Config::_remove_ext_from_config_file($config_file);
+  my $mode_config_file = SPVM::Builder::Config::Base::_remove_ext_from_config_file($config_file);
   if (defined $mode) {
     $mode_config_file .= ".$mode";
   }
@@ -164,7 +164,7 @@ sub load_mode_config {
     confess("Can't find the config file '$mode_config_file'");
   }
   
-  my $config = SPVM::Builder::Config::load_config($self, $mode_config_file);
+  my $config = SPVM::Builder::Config::Base::load_config($self, $mode_config_file);
   
   if (defined $mode) {
     $config->mode($mode);
