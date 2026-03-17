@@ -65,6 +65,7 @@ lib/SPVM/Builder/API.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/CompileInfo.pm
 lib/SPVM/Builder/Config.pm
+lib/SPVM/Builder/Config/Base.pm
 lib/SPVM/Builder/Config/Exe.pm
 lib/SPVM/Builder/Config/Exe/MSVC.pm
 lib/SPVM/Builder/ConfigBuilder.pm
