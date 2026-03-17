@@ -311,11 +311,9 @@ Gets and sets C<long_option_sep> field, a string that is a separator between an 
 
 =head2 new
 
-  my $config = SPVM::Builder::Config->new(%fields);
+  my $config = SPVM::Builder::Config::Base->new(%fields);
 
-Creates a new C<SPVM::Builder::Config> object with L<fields|/"Fields">, and returns it.
-
-Default settings for the GCC or Clang compiler are performed.
+Creates a new C<SPVM::Builder::Config::Base> object with L<fields|/"Fields">, and returns it.
 
 Field Default Values:
 
@@ -334,6 +332,8 @@ This value is set automatically.
   "="
 
 =back
+
+=cut
 
 =head1 Instance Methods
 

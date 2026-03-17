@@ -162,13 +162,13 @@ sub new {
     $ext =~ s/^\.//;
     $self->dynamic_lib_ext($ext);
   }
-
+  
   unless (defined $self->{static_lib_ext}) {
     my $ext = $Config{_a};
     $ext =~ s/^\.//;
     $self->static_lib_ext($ext);
   }
-
+  
   unless (defined $self->{exe_ext}) {
     my $ext = $Config{_exe};
     if (length $ext) {
@@ -620,6 +620,142 @@ Gets and sets C<output_file> field. A path of a dinamic link library or an execu
 
 This field is automatically set and users nomally do not change it.
 
+=head1 Class Methods
+
+=head2 new
+
+  my $config = SPVM::Builder::Config::Linker->new(%fields);
+
+Creates a new C<SPVM::Builder::Config::Linker> object. This method calls the C<new> method of the super class L<SPVM::Builder::Config::Base>.
+
+Field Default Values:
+
+=over 2
+
+=item * L</"ld">
+
+If C<$Config{gccversion}> contains C<clang>, L</"ld"> field are set to C<clang++>. Otherwise, it is set to C<g++>.
+
+=item * L</"ldflags">
+
+  []
+
+=item * L</"ld_optimize">
+
+  "-O2"
+
+=item * L</"output_type">
+
+  "dynamic_lib"
+
+=item * L</"warn_ldflags">
+
+  []
+
+=item * L</"debug_ldflags">
+
+  []
+
+=item * L</"dynamic_lib_ldflags">
+
+Windows:
+
+  ["-mdll", "-s"]
+
+Other OSs:
+
+  ["-shared"]
+
+=item * L</"thread_ldflags">
+
+Windows:
+
+  ["-pthread", "-Wl,-Bstatic", "-lwinpthread", "-Wl,-Bdynamic"]
+
+Other OSs:
+
+  ["-pthread"]
+
+=item * L</"bcrypt_ldflags">
+
+Windows:
+
+  ["-lbcrypt"]
+
+Other OSs:
+
+  []
+
+=item * L</"libcpp_ldflags">
+
+Windows:
+
+  ["-Wl,-Bstatic", "-lstdc++", "-lgcc", "-Wl,-Bdynamic"]
+
+Other OSs:
+
+  ["-lstdc++"]
+
+=item * L</"dynamic_lib_libcpp_ldflags">
+
+  []
+
+=item * L</"exe_libcpp_ldflags">
+
+  []
+
+=item * L</"static_lib_ldflag">
+
+  ["-Wl,-Bstatic", "-Wl,-Bdynamic"]
+
+=item * L</"lib_dirs">
+
+  []
+
+=item * L</"libs">
+
+  []
+
+=item * L</"lib_prefix">
+
+  "lib"
+
+=item * L</"lib_option_name">
+
+  "-l"
+
+=item * L</"lib_option_suffix">
+
+  ""
+
+=item * L</"lib_dir_option_name">
+
+  "-L"
+
+=item * L</"dynamic_lib_ext">
+
+  $Config{dlext} without the leading dot.
+
+=item * L</"exe_ext">
+
+  $Config{_exe} without the leading dot. If $Config{_exe} is an empty string, it is set to undef.
+
+=item * L</"ld_output_option_name">
+
+"-o"
+
+=item * L</"before_link_cbs">
+
+  []
+
+=item * L</"after_link_cbs">
+
+  []
+
+=back
+
+=cut
+
 =head1 Instance Methods
 
 =head2 add_ldflag
@@ -779,6 +915,24 @@ The following fields are set to C<[]>.
 =item * L</"exe_libcpp_ldflags">
 
 =back
+
+=head1 Library Path Resolution
+
+The following is the rule of library path resolution.
+
+Library names are converted to L<SPVM::Builder::LibInfo> objects.
+
+If L<SPVM::Builder::LibInfo#is_abs|SPVM::Builder::LibInfo/"is_abs"> field is a false value, the linker L</"ld"> resolves libaray paths.
+
+If L<SPVM::Builder::LibInfo#is_abs|SPVM::Builder::LibInfo/"is_abs"> field is a true value, libaray paths are resolved by the following rules.
+
+A library is searched in the library search directories contained in L</"lib_dir"> field from the beginning.
+
+If L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field is a false value, the search is performed in the order of a dynamic library, a static library.
+
+If L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field is a true value, the search is performed only in static libraries.
+
+If a library is found, C<-l> option of the linker L</"ld"> is created using the found absolute path.
 
 =head1 Copyright & License
 

@@ -765,17 +765,13 @@ Gets and sets C<cc_output_option_name> field, a string that is an option name to
 
   my $config = SPVM::Builder::Config->new(%fields);
 
-Creates a new C<SPVM::Builder::Config> object with L<fields|/"Fields">, and returns it.
+Creates a new C<SPVM::Builder::Config> object. This method calls the C<new> method of the super class L<SPVM::Builder::Config::Linker>.
 
 Default settings for the GCC or Clang compiler are performed.
 
 Field Default Values:
 
 =over 2
-
-=item * L</"file">
-
-This value is set automatically.
 
 =item * L</"cc">
 
@@ -792,136 +788,6 @@ This value is set automatically.
 =item * L</"optimize">
 
   "-O3 -DNDEBUG"
-
-=item * L</"dynamic_lib_ccflags">
-
-Windows:
-
-  []
-
-Other OSs:
-
-  ["-fPIC"]
-
-=item * L</"thread_ccflags">
-
-  ["-pthread"]
-
-=item * L</"include_dirs">
-
-  []
-
-=item * L</"spvm_core_include_dir">
-
-The SPVM core header file search directory.
-
-=item * L</"native_include_dir">
-
-The directory described in L<SPVM::Document::NativeClass/"Native Header Files">.
-
-Examples:
-
-  MyClass.naitve/include
-
-=item * L</"native_src_dir">
-
-The directory described in L<SPVM::Document::NativeClass/"Native Source Files">.
-
-Examples:
-
-  MyClass.naitve/src
-
-=item * L</"source_files">
-
-  []
-
-=item * L</"before_compile_cbs">
-
-  []
-
-=item * L</"ld">
-
-If C<$Config{gccversion}> contains C<clang>, L</"ld"> field are set to C<clang++>. Otherwise, L</"cc"> field are set to C<g++>.
-
-=item * L</"ldflags">
-
-  []
-
-=item * L</"dynamic_lib_ldflags">
-
-Windows:
-
-  ["-mdll", "-s"]
-
-Other OSs:
-
-  ["-shared"]
-
-=item * L</"thread_ldflags">
-
-Windows:
-
-  ["-pthread", "-Wl,-Bstatic", "-lwinpthread", "-Wl,-Bdynamic"]
-
-Other OSs:
-
-  ["-pthread"]
-
-=item * L</"bcrypt_ldflags">
-
-Windows:
-
-  ["-lbcrypt"]
-
-Other OSs:
-
-  []
-
-=item * L</"libcpp_ldflags">
-
-Windows:
-
-  ["-Wl,-Bstatic", "-lstdc++", "-lgcc", "-Wl,-Bdynamic"]
-
-Other OSs:
-
-  ["-lstdc++"]
-
-=item * L</"dynamic_lib_libcpp_ldflags">
-
-  []
-
-=item * L</"exe_libcpp_ldflags">
-
-  []
-
-=item * L</"static_lib_ldflag">
-
-  ["-Wl,-Bstatic", "-Wl,-Bdynamic"]
-
-=item * L</"ld_optimize">
-
-  "-O2"
-
-=item * L</"lib_dirs">
-
-  []
-
-=item * L</"libs">
-
-  []
-
-=item * L</"before_link_cbs">
-
-  []
-
-=item * L</"output_type">
-
-  "dynamic_lib"
-
-=item * L</"category">
-
-  "native"
 
 =item * L</"warn_ccflags">
 
@@ -953,56 +819,51 @@ Other OSs:
 
   []
 
-=item * L</"warn_ldflags">
+=item * L</"dynamic_lib_ccflags">
+
+Windows:
 
   []
 
-=item * L</"debug_ldflags">
+Other OSs:
+
+  ["-fPIC"]
+
+=item * L</"thread_ccflags">
+
+  ["-pthread"]
+
+=item * L</"include_dirs">
 
   []
 
-=item * L</"long_option_sep">
+=item * L</"spvm_core_include_dir">
 
-  "="
+The SPVM core header file search directory.
 
-=item * L</"lib_dir_option_name">
+=item * L</"native_include_dir">
 
-  "-L"
+The directory described in L<SPVM::Document::NativeClass/"Native Header Files">.
 
-=item * L</"dynamic_lib_ext">
+=item * L</"native_src_dir">
 
-  $Config{dlext} without the leading dot.
+The directory described in L<SPVM::Document::NativeClass/"Native Source Files">.
 
-=item * L</"static_lib_ext">
+=item * L</"source_files">
 
-  $Config{_a} without the leading dot.
+  []
 
-=item * L</"exe_ext">
+=item * L</"before_compile_cbs">
 
-  $Config{_exe} without the leading dot. If $Config{_exe} is an empty string, it is set to undef.
-
-=item * L</"lib_prefix">
-
-  "lib"
-
-=item * L</"lib_option_suffix">
-
-  ""
-
-=item * L</"lib_option_name">
-
-  "-l"
+  []
 
 =item * L</"cc_output_option_name">
 
 "-o"
 
-=item * L</"ld_output_option_name">
-
-"-o"
-
 =back
 
+=cut
 
 =head2 new_c
 
@@ -1123,50 +984,6 @@ This method calls the L<clear_system_settings|SPVM::Builder::Config::Linker/"cle
 =item * L</"ld_ccflags">
 
 =back
-
-=head1 Library Path Resolution
-
-The following is the rule of library path resolution.
-
-Library names are converted to L<SPVM::Builder::LibInfo> objects.
-
-If L<SPVM::Builder::LibInfo#is_abs|SPVM::Builder::LibInfo/"is_abs"> field is a false value, the linker L</"ld"> resolves libaray paths.
-
-If L<SPVM::Builder::LibInfo#is_abs|SPVM::Builder::LibInfo/"is_abs"> field is a true value, libaray paths are resolved by the following rules.
-
-A library is searched in the library search directories contained in L</"lib_dir"> field from the beginning.
-
-If L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field is a false value, the search is performed in the order of a dynamic library, a static library.
-
-If L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field is a true value, the search is performed only in static libraries.
-
-If a library is found, C<-l> option of the linker L</"ld"> is created using the found absolute path.
-
-=head1 Examples
-
-C99:
-
-  my $config = SPVM::Builder::Config->new_c99;
-
-C11:
-
-  my $config = SPVM::Builder::Config->new_c11;
-
-C++:
-
-  my $config = SPVM::Builder::Config->new_cpp;
-
-C++11:
-
-  my $config = SPVM::Builder::Config->new_cpp11;
-
-Output messages to C<stderr> from the compiler and the linker:
-
-  $config->quiet(0);
-
-Force the compilation and link:
-
-  $config->force(1);
 
 =head1 Copyright & License
 
