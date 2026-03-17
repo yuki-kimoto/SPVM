@@ -91,14 +91,14 @@ sub force {
   }
 }
 
-sub config {
+sub config_global {
   my $self = shift;
   if (@_) {
-    $self->{config} = $_[0];
+    $self->{config_global} = $_[0];
     return $self;
   }
   else {
-    return $self->{config};
+    return $self->{config_global};
   }
 }
 
@@ -256,24 +256,24 @@ sub new {
   $config_file =~ s/\..*$//;
   $config_file .= '.config';
   
-  my $config;
+  my $config_global;
   if (-f $config_file) {
-    $config = SPVM::Builder::Config::Global::load_mode_config(undef, $config_file, $config_mode);
+    $config_global = SPVM::Builder::Config::Global::load_mode_config(undef, $config_file, $config_mode);
   }
   else {
     if ($allow_no_config_file) {
-      $config = SPVM::Builder::Config::Exe->new;
+      $config_global = SPVM::Builder::Config::Exe->new;
     }
     else {
       Carp::confess("The config file '$config_file' is not found.");
     }
   }
   
-  unless ($config->isa('SPVM::Builder::Config::Global')) {
+  unless ($config_global->isa('SPVM::Builder::Config::Global')) {
     Carp::confess("The class of a config object for creating an executable file must be SPVM::Builder::Config::Global or its child class.");
   }
   
-  $self->{config} = $config;
+  $self->{config_global} = $config_global;
   
   my $spvmcc_info = {};
   
@@ -282,8 +282,6 @@ sub new {
   $spvmcc_info->{spvm_version} = $SPVM::VERSION;
   
   $spvmcc_info->{app_name} = $app_name;
-  
-  my $config_global = $self->config;
   
   if (defined $config_global->mode) {
     $spvmcc_info->{mode} = $config_global->mode;
@@ -296,62 +294,62 @@ sub new {
   # Override config settings with command line options if defined
   {
     if (defined $self->{ccflags_global}) {
-      $config->ccflags_global($self->{ccflags_global});
+      $config_global->ccflags_global($self->{ccflags_global});
     }
     if (defined $self->{ccflags_spvm}) {
-      $config->ccflags_spvm($self->{ccflags_spvm});
+      $config_global->ccflags_spvm($self->{ccflags_spvm});
     }
     if (defined $self->{ccflags_native}) {
-      $config->ccflags_native($self->{ccflags_native});
+      $config_global->ccflags_native($self->{ccflags_native});
     }
     if (defined $self->{ccflags_native_class}) {
-      $config->{ccflags_native_class} = $self->{ccflags_native_class};
+      $config_global->{ccflags_native_class} = $self->{ccflags_native_class};
     }
     if (defined $self->{ccflags_precompile}) {
-      $config->ccflags_precompile($self->{ccflags_precompile});
+      $config_global->ccflags_precompile($self->{ccflags_precompile});
     }
 
     if (defined $self->{defines_global}) {
-      $config->defines_global($self->{defines_global});
+      $config_global->defines_global($self->{defines_global});
     }
     if (defined $self->{defines_spvm}) {
-      $config->defines_spvm($self->{defines_spvm});
+      $config_global->defines_spvm($self->{defines_spvm});
     }
     if (defined $self->{defines_native}) {
-      $config->defines_native($self->{defines_native});
+      $config_global->defines_native($self->{defines_native});
     }
     if (defined $self->{defines_native_class}) {
-      $config->{defines_native_class} = $self->{defines_native_class};
+      $config_global->{defines_native_class} = $self->{defines_native_class};
     }
     if (defined $self->{defines_precompile}) {
-      $config->defines_precompile($self->{defines_precompile});
+      $config_global->defines_precompile($self->{defines_precompile});
     }
 
     if (defined $self->{optimize_global}) {
-      $config->optimize_global($self->{optimize_global});
+      $config_global->optimize_global($self->{optimize_global});
     }
     if (defined $self->{optimize_spvm}) {
-      $config->optimize_spvm($self->{optimize_spvm});
+      $config_global->optimize_spvm($self->{optimize_spvm});
     }
     if (defined $self->{optimize_native}) {
-      $config->optimize_native($self->{optimize_native});
+      $config_global->optimize_native($self->{optimize_native});
     }
     if (defined $self->{optimize_native_class}) {
-      $config->{optimize_native_class} = $self->{optimize_native_class};
+      $config_global->{optimize_native_class} = $self->{optimize_native_class};
     }
     if (defined $self->{optimize_precompile}) {
-      $config->optimize_precompile($self->{optimize_precompile});
+      $config_global->optimize_precompile($self->{optimize_precompile});
     }
 
     if (defined $self->{external_object_files}) {
-      $config->external_object_files($self->{external_object_files});
+      $config_global->external_object_files($self->{external_object_files});
     }
   }
   
   my $compiler = SPVM::Builder::Native::Compiler->new;
   
   # SPVM archive
-  my $spvm_archive_path = $config->get_spvm_archive;
+  my $spvm_archive_path = $config_global->get_spvm_archive;
   if (defined $spvm_archive_path) {
     # Create and load the archive object
     my $spvm_archive = SPVM::Builder::SPVMArchive->new(builder => $self->builder);
@@ -384,7 +382,7 @@ sub build_exe_file {
   
   my $builder = $self->builder;
   
-  my $config_global = $self->config;
+  my $config_global = $self->config_global;
   
   my $class_name = $self->{class_name};
   
@@ -442,7 +440,7 @@ sub build_exe_file {
   }
   
   # Link
-  my $config_linker = $self->config->clone;
+  my $config_linker = $self->config_global->clone;
   my $cc_linker = SPVM::Builder::CC->new(
     builder => $self->builder,
     quiet => $self->quiet,
@@ -519,7 +517,7 @@ sub compile {
   
   $self->class_name($class_name);
   
-  $self->config->class_name($class_name);
+  $self->config_global->class_name($class_name);
   
   my $runtime = $compiler->get_runtime;
   
@@ -558,7 +556,7 @@ sub compile_source_file {
   my $source_file = $options->{source_file};
   my $output_file = $options->{output_file};
   my $config = $options->{config};
-  my $config_global = $self->config;
+  my $config_global = $self->config_global;
   
   $config->config_global($config_global);
   
@@ -607,7 +605,7 @@ sub create_bootstrap_header_source {
   my ($self) = @_;
 
   # Config
-  my $config_global = $self->config;
+  my $config_global = $self->config_global;
 
   # Builder
   my $builder = $self->builder;
@@ -1063,7 +1061,7 @@ sub create_bootstrap_source {
   my $bootstrap_source_file = $self->create_bootstrap_source_file_path;
   
   # Config
-  my $config_global = $self->config;
+  my $config_global = $self->config_global;
   
   # Build bootstrap source content
   my $bootstrap_source = '';
@@ -1157,7 +1155,7 @@ sub _field_value_to_string {
 sub compile_bootstrap_source_file {
   my ($self) = @_;
   
-  my $config_global = $self->config;
+  my $config_global = $self->config_global;
   
   # Target class name
   my $class_name = $self->class_name;
@@ -1184,7 +1182,7 @@ sub compile_spvm_core_source_files {
   my ($self) = @_;
   
   # Config
-  my $config_global = $self->config;
+  my $config_global = $self->config_global;
   
   my $builder_dir = SPVM::Builder::Util::get_builder_dir();
   
@@ -1222,7 +1220,7 @@ sub compile_spvm_core_source_files {
 sub compile_precompile_class {
   my ($self, $class_name) = @_;
   
-  my $config_global = $self->config;
+  my $config_global = $self->config_global;
   
   my $builder = $self->builder;
   
@@ -1264,7 +1262,7 @@ sub compile_precompile_class {
 sub compile_native_class {
   my ($self, $class_name) = @_;
   
-  my $config_global = $self->config;
+  my $config_global = $self->config_global;
   
   my $builder = $self->builder;
   
