@@ -13,7 +13,9 @@ use File::Copy 'copy';
 use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
+use SPVM::Builder::Config::Global;
 use SPVM::Builder::Config::Exe;
+use SPVM::Builder::Config::DLL;
 
 use SPVM::Builder::Native::Compiler;
 use SPVM::Builder::Native::Runtime;
@@ -256,7 +258,7 @@ sub new {
   
   my $config;
   if (-f $config_file) {
-    $config = SPVM::Builder::Config::Exe::load_mode_config(undef, $config_file, $config_mode);
+    $config = SPVM::Builder::Config::Global::load_mode_config(undef, $config_file, $config_mode);
   }
   else {
     if ($allow_no_config_file) {
@@ -267,12 +269,8 @@ sub new {
     }
   }
   
-  unless ($config->isa('SPVM::Builder::Config::Exe')) {
-    Carp::confess("The class of a config object for creating an executable file must be SPVM::Builder::Config::Exe or its child class.");
-  }
-  
-  unless ($config->output_type eq 'exe') {
-    Carp::confess("output_type field in the config file '$config_file' for creating an executable file must be 'exe'.");
+  unless ($config->isa('SPVM::Builder::Config::Global')) {
+    Carp::confess("The class of a config object for creating an executable file must be SPVM::Builder::Config::Global or its child class.");
   }
   
   $self->{config} = $config;
