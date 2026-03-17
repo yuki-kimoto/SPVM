@@ -22,6 +22,17 @@ my $base_fields = [qw(
 # Accessors generation for base fields
 has($base_fields);
 
+sub new_empty {
+  my $class = shift;
+  
+  my $self = {@_};
+  
+  bless $self, ref $class || $class;
+  
+  SPVM::Builder::Util::check_option_names($self, $self->option_names);
+  
+}
+
 sub new {
   my $class = shift;
   
