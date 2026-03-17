@@ -205,11 +205,6 @@ sub new {
     ccflags_native => [],
     ccflags_native_class => {},
     ccflags_precompile => [],
-    defines_global => [],
-    defines_spvm => [],
-    defines_native => [],
-    defines_native_class => {},
-    defines_precompile => [],
     optimize_native_class => {},
     external_object_files => [],
     %options
@@ -307,22 +302,6 @@ sub new {
     }
     if (defined $self->{ccflags_precompile}) {
       $config_global->ccflags_precompile($self->{ccflags_precompile});
-    }
-
-    if (defined $self->{defines_global}) {
-      $config_global->defines_global($self->{defines_global});
-    }
-    if (defined $self->{defines_spvm}) {
-      $config_global->defines_spvm($self->{defines_spvm});
-    }
-    if (defined $self->{defines_native}) {
-      $config_global->defines_native($self->{defines_native});
-    }
-    if (defined $self->{defines_native_class}) {
-      $config_global->{defines_native_class} = $self->{defines_native_class};
-    }
-    if (defined $self->{defines_precompile}) {
-      $config_global->defines_precompile($self->{defines_precompile});
     }
 
     if (defined $self->{optimize_global}) {
@@ -1090,11 +1069,6 @@ sub create_bootstrap_source {
     ccflags_native
     ccflags_native_class
     ccflags_precompile
-    defines_global
-    defines_spvm
-    defines_native
-    defines_native_class
-    defines_precompile
     optimize_global
     optimize_spvm
     optimize_native
