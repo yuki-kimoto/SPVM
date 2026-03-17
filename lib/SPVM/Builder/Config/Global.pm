@@ -18,10 +18,6 @@ BEGIN {
     mode
     before_compile_cbs_global
     optimize_global
-    optimize_spvm
-    optimize_native
-    optimize_native_class
-    optimize_precompile
     include_dirs_global
     include_dirs_spvm
     include_dirs_native
@@ -36,21 +32,6 @@ BEGIN {
 
 {
   no warnings 'redefine';
-
-  sub optimize_native_class {
-    my $self = shift;
-    my $class_name = shift;
-    unless (defined $class_name) {
-      confess("The class name \$class_name must be defined.");
-    }
-    if (@_) {
-      $self->{optimize_native_class}{$class_name} = $_[0];
-      return $self;
-    }
-    else {
-      return $self->{optimize_native_class}{$class_name};
-    }
-  }
 
   sub include_dirs_native_class {
     my $self = shift;
@@ -83,7 +64,6 @@ sub new {
     %$default_config,
     category => 'spvm',
     before_compile_cbs_global => [],
-    optimize_native_class => {},
     include_dirs_global => [],
     include_dirs_spvm => [],
     include_dirs_native => [],
@@ -419,34 +399,6 @@ This affects all compilations.
   $config->optimize_global($optimize_global);
 
 Gets and sets C<optimize> field, an arugment of the compiler L</"cc"> for optimization in all compilation.
-
-=head2 optimize_spvm
-
-  my $optimize_spvm = $config->optimize_spvm;
-  $config->optimize_spvm($optimize_spvm);
-
-Gets and sets C<optimize_spvm> field, an arugment of the compiler L</"cc"> for optimization in compilations of SPVM source code and a bootstrap source file.
-
-=head2 optimize_native
-
-  my $optimize_native = $config->optimize_native;
-  $config->optimize_native($optimize_native);
-
-Gets and sets C<optimize_native> field, an arugment of of the compiler L</"cc"> for optimization in compilation of all native class source file(such as MyClass.c) and all native source files(such as MyClass.native/src/mysource.c>.
-
-=head2 optimize_native_class
-
-  my $optimize_native_class = $config->optimize_native_class($class_name);
-  $config->optimize_native_class($class_name, $optimize_native);
-
-Gets and sets the value of C<optimize_native_class> field's class name key $class_name, an arugments of the compiler L</"cc"> for optimization in compilation of native class source file(such as MyClass.c) and all native source files(such as MyClass.native/src/mysource.c> in $class_name.
-
-=head2 optimize_precompile
-
-  my $optimize_precompile = $config->optimize_precompile;
-  $config->optimize_precompile($optimize_precompile);
-
-Gets and sets C<optimize_precompile> field, an arugment of of the compiler L</"cc"> for optimization in compilation for precompilation.
 
 =head2 include_dirs_global
 

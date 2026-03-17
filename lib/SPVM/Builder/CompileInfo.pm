@@ -153,27 +153,6 @@ sub create_ccflags {
       $optimize = $config_global->optimize_global;
     }
     
-    if ($config_category eq 'spvm') {
-      if (length $config_global->optimize_spvm) {
-        $optimize = $config_global->optimize_spvm;
-      }
-    }
-    elsif ($config_category eq 'native') {
-      if (length $config_global->optimize_native) {
-        $optimize = $config_global->optimize_native;
-      }
-      
-      if (defined $class_name) {
-        if (length $config_global->optimize_native_class($class_name)) {
-          $optimize = $config_global->optimize_native_class($config->class_name);
-        }
-      }
-    }
-    elsif ($config_category eq 'precompile') {
-      if (length $config_global->optimize_precompile) {
-        $optimize = $config_global->optimize_precompile;
-      }
-    }
   }
   
   if (length $optimize) {

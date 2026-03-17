@@ -200,7 +200,6 @@ sub new {
   my $build_dir = delete $options{build_dir};
   
   my $self = bless {
-    optimize_native_class => {},
     external_object_files => [],
     %options
   }, $class;
@@ -286,19 +285,6 @@ sub new {
     if (defined $self->{optimize_global}) {
       $config_global->optimize_global($self->{optimize_global});
     }
-    if (defined $self->{optimize_spvm}) {
-      $config_global->optimize_spvm($self->{optimize_spvm});
-    }
-    if (defined $self->{optimize_native}) {
-      $config_global->optimize_native($self->{optimize_native});
-    }
-    if (defined $self->{optimize_native_class}) {
-      $config_global->{optimize_native_class} = $self->{optimize_native_class};
-    }
-    if (defined $self->{optimize_precompile}) {
-      $config_global->optimize_precompile($self->{optimize_precompile});
-    }
-
     if (defined $self->{external_object_files}) {
       $config_global->external_object_files($self->{external_object_files});
     }
@@ -1044,10 +1030,6 @@ sub create_bootstrap_source {
   
   my @config_field_names = qw(
     optimize_global
-    optimize_spvm
-    optimize_native
-    optimize_native_class
-    optimize_precompile
   );
   
   # For detecting changing fields
