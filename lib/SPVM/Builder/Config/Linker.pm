@@ -38,6 +38,7 @@ my $fields = [qw(
   output_file
   before_link_cbs
   after_link_cbs
+  external_object_files
   
   resources
 )];
@@ -201,6 +202,10 @@ sub new {
   # resources
   unless (exists $self->{resources}) {
     $self->{resources} = {};
+  }
+  
+  unless (exists $self->{external_object_files}) {
+    $self->{external_object_files} = [];
   }
   
   return $self;
@@ -622,6 +627,13 @@ Gets and sets C<output_file> field. A path of a dinamic link library or an execu
 
 This field is automatically set and users nomally do not change it.
 
+=head2 external_object_files
+
+  my $external_object_files = $config->external_object_files;
+  $config->external_object_files($external_object_files);
+
+Gets and sets C<external_object_files> field, an array reference containing additinal external object files linked to an executable file.
+
 =head1 Class Methods
 
 =head2 new
@@ -918,6 +930,12 @@ The following fields are set to C<[]>.
 
 =back
 
+=head2 add_external_object_file
+
+  $config->add_external_object_file(@external_object_files);
+
+Adds @external_object_files to the end of L</"external_object_files"> field.
+
 =head1 Library Path Resolution
 
 The following is the rule of library path resolution.
@@ -935,6 +953,7 @@ If L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field 
 If L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field is a true value, the search is performed only in static libraries.
 
 If a library is found, C<-l> option of the linker L</"ld"> is created using the found absolute path.
+
 
 =head1 Copyright & License
 

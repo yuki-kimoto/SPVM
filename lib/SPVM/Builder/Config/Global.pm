@@ -18,7 +18,6 @@ BEGIN {
     mode
     before_compile_cbs_global
     include_dirs_global
-    external_object_files
   )];
 
   has($fields);
@@ -53,7 +52,6 @@ sub new {
     category => 'spvm',
     before_compile_cbs_global => [],
     include_dirs_global => [],
-    external_object_files => [],
     @_,
   );
   
@@ -266,13 +264,6 @@ If this method is called without an argument, an exception is thrown.
 
 Gets and sets C<include_dirs> field, an array reference containing C<-I> arugments of the compiler L</"cc"> in all compilation.
 
-=head2 external_object_files
-
-  my $external_object_files = $config->external_object_files;
-  $config->external_object_files($external_object_files);
-
-Gets and sets C<external_object_files> field, an array reference containing additinal external object files linked to an executable file.
-
 =head2 spvm_archive
 
 An SPVM archive.
@@ -356,12 +347,6 @@ Examples:
   $config->add_include_dir_global(@include_dirs_global);
 
 Adds @include_dirs_global to the end of L</"include_dirs_global"> field.
-
-=head2 add_external_object_file
-
-  $config->add_external_object_file(@external_object_files);
-
-Adds @external_object_files to the end of L</"external_object_files"> field.
 
 =head2 use_spvm_archive
 
