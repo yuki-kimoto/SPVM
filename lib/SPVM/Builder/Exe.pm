@@ -247,7 +247,7 @@ sub new {
   
   my $config_global;
   if (-f $config_file) {
-    $config_global = SPVM::Builder::Config::Global::load_mode_config(undef, $config_file, $config_mode);
+    $config_global = SPVM::Builder::Config::Base::load_mode_config(undef, $config_file, $config_mode);
   }
   else {
     if ($allow_no_config_file) {
