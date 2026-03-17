@@ -17,11 +17,6 @@ BEGIN {
   $fields = [qw(
     mode
     before_compile_cbs_global
-    ccflags_global
-    ccflags_spvm
-    ccflags_native
-    ccflags_native_class
-    ccflags_precompile
     optimize_global
     optimize_spvm
     optimize_native
@@ -41,21 +36,6 @@ BEGIN {
 
 {
   no warnings 'redefine';
-
-  sub ccflags_native_class {
-    my $self = shift;
-    my $class_name = shift;
-    unless (defined $class_name) {
-      confess("The class name \$class_name must be defined.");
-    }
-    if (@_) {
-      $self->{ccflags_native_class}{$class_name} = $_[0];
-      return $self;
-    }
-    else {
-      return $self->{ccflags_native_class}{$class_name};
-    }
-  }
 
   sub optimize_native_class {
     my $self = shift;
@@ -103,11 +83,6 @@ sub new {
     %$default_config,
     category => 'spvm',
     before_compile_cbs_global => [],
-    ccflags_global => [],
-    ccflags_spvm => [],
-    ccflags_native => [],
-    ccflags_native_class => {},
-    ccflags_precompile => [],
     optimize_native_class => {},
     include_dirs_global => [],
     include_dirs_spvm => [],
@@ -161,40 +136,6 @@ sub add_before_compile_cb_global {
   my ($self, @before_compile_cbs_global) = @_;
   
   push @{$self->{before_compile_cbs_global}}, @before_compile_cbs_global;
-}
-
-sub add_ccflag_global {
-  my ($self, @ccflags_global) = @_;
-  
-  push @{$self->{ccflags_global}}, @ccflags_global;
-}
-
-sub add_ccflag_spvm {
-  my ($self, @ccflags_spvm) = @_;
-  
-  push @{$self->{ccflags_spvm}}, @ccflags_spvm;
-}
-
-sub add_ccflag_native {
-  my ($self, @ccflags_native) = @_;
-  
-  push @{$self->{ccflags_native}}, @ccflags_native;
-}
-
-sub add_ccflag_native_class {
-  my ($self, $class_name, @ccflags_native_class) = @_;
-  
-  unless (defined $self->{ccflags_native_class}{$class_name}) {
-    $self->{ccflags_native_class}{$class_name} = [];
-  }
-  
-  push @{$self->{ccflags_native_class}{$class_name}}, @ccflags_native_class;
-}
-
-sub add_ccflag_precompile {
-  my ($self, @ccflags_precompile) = @_;
-  
-  push @{$self->{ccflags_precompile}}, @ccflags_precompile;
 }
 
 sub add_include_dir_global {
@@ -472,41 +413,6 @@ Gets and sets the C<before_compile_cbs_global> field, an array reference of call
 
 This affects all compilations.
 
-=head2 ccflags_global
-
-  my $ccflags_global = $config->ccflags_global;
-  $config->ccflags_global($ccflags_global);
-
-Gets and sets C<ccflags> field, an array reference containing arugments of the compiler L</"cc"> in all compilation.
-
-=head2 ccflags_spvm
-
-  my $ccflags_spvm = $config->ccflags_spvm;
-  $config->ccflags_spvm($ccflags_spvm);
-
-Gets and sets C<ccflags_spvm> field, an array reference containing arugments of the compiler L</"cc"> in compilations of SPVM source code and a bootstrap source file.
-
-=head2 ccflags_native
-
-  my $ccflags_native = $config->ccflags_native;
-  $config->ccflags_native($ccflags_native);
-
-Gets and sets C<ccflags_native> field, an array reference containing arugments of the compiler L</"cc"> in compilation of all native class source file(such as MyClass.c) and all native source files(such as MyClass.native/src/mysource.c>.
-
-=head2 ccflags_native_class
-
-  my $ccflags_native_class = $config->ccflags_native_class($class_name);
-  $config->ccflags_native_class($class_name, $ccflags_native);
-
-Gets and sets the value of C<ccflags_native_class> field's class name key $class_name, an array reference containing arugments of the compiler L</"cc"> in compilation of native class source file(such as MyClass.c) and all native source files(such as MyClass.native/src/mysource.c> in $class_name.
-
-=head2 ccflags_precompile
-
-  my $ccflags_precompile = $config->ccflags_precompile;
-  $config->ccflags_precompile($ccflags_precompile);
-
-Gets and sets C<ccflags_precompile> field, an array reference containing arugments of the compiler L</"cc"> in compilation for precompilation.
-
 =head2 optimize_global
 
   my $optimize_global = $config->optimize_global;
@@ -661,36 +567,6 @@ Examples:
     
     # Do something
   });
-
-=head2 add_ccflag_global
-
-  $config->add_ccflag_global(@ccflags_global);
-
-Adds @ccflags_global to the end of L</"ccflags_global"> field.
-
-=head2 add_ccflag_spvm
-
-  $config->add_ccflag_spvm(@ccflags_spvm);
-
-Adds @ccflags_spvm to the end of L</"ccflags_spvm"> field.
-
-=head2 add_ccflag_native
-
-  $config->add_ccflag_native(@ccflags_native);
-
-Adds @ccflags_native to the end of L</"ccflags_native"> field.
-
-=head2 add_ccflag_native_class
-
-  $config->add_ccflag_native_class($class_name, @ccflags_native_class);
-
-Adds @ccflags_native_class to the end of L</"ccflags_native_class"> field's key $class_name.
-
-=head2 add_ccflag_precompile
-
-  $config->add_ccflag_precompile(@ccflags_precompile);
-
-Adds @ccflags_precompile to the end of L</"ccflags_precompile"> field.
 
 =head2 add_include_dir_global
 
