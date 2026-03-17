@@ -1,5 +1,7 @@
 package SPVM::Builder::Config;
 
+use parent 'SPVM::Builder::Config::Base';
+
 use strict;
 use warnings;
 use Config;
@@ -12,17 +14,6 @@ use SPVM::Builder::Resource;
 use SPVM::Builder::Accessor 'has';
 
 # Fields
-my $base_fields = [qw(
-  class_name
-  file
-  category
-  is_jit
-  is_resource
-  quiet
-  force
-  long_option_sep
-)];
-
 my $cc_fields = [qw(
   cc
   ccflags
@@ -83,36 +74,35 @@ my $ld_fields = [qw(
   after_link_cbs
 )];
 
-my $fields = [@$base_fields, @$cc_fields, @$ld_fields];
+my $fields = [@$cc_fields, @$ld_fields];
 
 has($fields);
+
+sub option_names {
+  my ($self) = @_;
+  
+  return [@{$self->SUPER::option_names}, @$fields];
+}
 
 # Class Methods
 sub new {
   my $class = shift;
   
-  my $self = {@_};
-  
-  SPVM::Builder::Util::check_option_names($self, $fields);
-  
-  bless $self, ref $class || $class;
-  
-  # [TODO]A config file name is set by load_config method. This is removed in a future release.
-  $self->file(undef);
+  my $self = $class->SUPER::new(@_);
   
   # cc
   # Do nothing
-  
+
   # ccflags
   unless (defined $self->{ccflags}) {
     $self->ccflags([]);
   }
-  
+
   # defines
   unless (defined $self->{defines}) {
     $self->defines([]);
   }
-  
+
   # dynamic_lib_ccflags
   unless (defined $self->{dynamic_lib_ccflags}) {
     if ($^O eq 'MSWin32') {
@@ -122,22 +112,22 @@ sub new {
       $self->dynamic_lib_ccflags(['-fPIC']);
     }
   }
-  
+
   # thread_ccflags
   unless (defined $self->{thread_ccflags}) {
     $self->thread_ccflags(['-pthread']);
   }
-  
+
   # optimize
   unless (defined $self->{optimize}) {
     $self->optimize('-O3 -DNDEBUG');
   }
-  
+
   # include_dirs
   unless (defined $self->{include_dirs}) {
     $self->include_dirs([]);
   }
-  
+
   # spvm_core_include_dir
   unless (defined $self->spvm_core_include_dir) {
     my $builder_dir = SPVM::Builder::Util::get_builder_dir();
@@ -145,17 +135,17 @@ sub new {
     
     $self->spvm_core_include_dir($spvm_core_include_dir);
   }
-  
+
   # source_files
   unless (defined $self->{source_files}) {
     $self->source_files([]);
   }
-  
+
   # before_compile_cbs
   unless (defined $self->{before_compile_cbs}) {
     $self->before_compile_cbs([]);
   }
-  
+
   # ld
   unless (defined $self->{ld}) {
     # C++ Linker
@@ -168,12 +158,12 @@ sub new {
       $self->ld('g++');
     }
   }
-  
+
   # ldflags
   unless (defined $self->{ldflags}) {
     $self->ldflags([]);
   }
-  
+
   # dynamic_lib_ldflags
   unless (defined $self->{dynamic_lib_ldflags}) {
     if ($^O eq 'MSWin32') {
@@ -183,7 +173,7 @@ sub new {
       $self->dynamic_lib_ldflags(['-shared']);
     }
   }
-  
+
   # thread_ldflags
   unless (defined $self->{thread_ldflags}) {
     $self->thread_ldflags(['-pthread']);
@@ -191,7 +181,7 @@ sub new {
       push @{$self->thread_ldflags}, '-Wl,-Bstatic', '-lwinpthread', '-Wl,-Bdynamic';
     }
   }
-  
+
   unless (defined $self->{bcrypt_ldflags}) {
     if ($^O eq 'MSWin32') {
       $self->bcrypt_ldflags(['-lbcrypt']);
@@ -200,7 +190,7 @@ sub new {
       $self->bcrypt_ldflags([]);
     }
   }
-  
+
   unless (defined $self->{libcpp_ldflags}) {
     if ($^O eq 'MSWin32') {
       # Windows (MinGW)
@@ -215,11 +205,11 @@ sub new {
       $self->libcpp_ldflags(['-lstdc++']);
     }
   }
-  
+
   unless (defined $self->{dynamic_lib_libcpp_ldflags}) {
     $self->dynamic_lib_libcpp_ldflags([]);
   }
-  
+
   unless (defined $self->{exe_libcpp_ldflags}) {
     if ($^O eq 'darwin') {
       # macOS: Uses -lc++ for executables
@@ -229,58 +219,53 @@ sub new {
       $self->exe_libcpp_ldflags([]);
     }
   }
-  
+
   # static_lib_ldflag
   unless (defined $self->{static_lib_ldflag}) {
     my $begin = '-Wl,-Bstatic';
     my $end = '-Wl,-Bdynamic';
     $self->static_lib_ldflag([$begin, $end]);
   }
-  
+
   # ld_optimize
   unless (defined $self->{ld_optimize}) {
     $self->ld_optimize('-O2');
   }
-  
+
   # lib_dirs
   unless (defined $self->{lib_dirs}) {
     $self->lib_dirs([]);
   }
-  
+
   # libs
   unless (defined $self->{libs}) {
     $self->libs([]);
   }
-  
+
   # before_link_cbs
   unless (defined $self->{before_link_cbs}) {
     $self->before_link_cbs([]);
   }
-  
+
   # after_link_cbs
   unless (defined $self->{after_link_cbs}) {
     $self->after_link_cbs([]);
   }
-  
+
   # output_type
   unless (defined $self->output_type) {
     $self->output_type('dynamic_lib');
   }
-  
-  # category
-  unless (defined $self->{category}) {
-    $self->category('native');
-  }
-  
+
   unless (defined $self->{_loaded_config_files}) {
     $self->{_loaded_config_files} = [];
   }
-  
+
   # resources
   unless (defined $self->{resources}) {
     $self->{resources} = {};
   }
-  
+
   # warn_ccflags
   unless (defined $self->{warn_ccflags}) {
     $self->warn_ccflags([]);
@@ -325,17 +310,12 @@ sub new {
   unless (defined $self->{debug_ldflags}) {
     $self->debug_ldflags([]);
   }
-  
-  # long_option_sep
-  unless (defined $self->{long_option_sep}) {
-    $self->long_option_sep("=");
-  }
-  
+
   # lib_dir_option_name
   unless (defined $self->{lib_dir_option_name}) {
     $self->lib_dir_option_name("-L");
   }
-  
+
   # dynamic_lib_ext
   unless (defined $self->{dynamic_lib_ext}) {
     my $ext = $Config{dlext};
@@ -361,22 +341,22 @@ sub new {
       $self->exe_ext(undef);
     }
   }
-  
+
   # lib_prefix
   unless (defined $self->{lib_prefix}) {
     $self->lib_prefix("lib");
   }
-  
+
   # lib_option_suffix
   unless (defined $self->{lib_option_suffix}) {
     $self->lib_option_suffix("");
   }
-  
+
   # lib_option_name
   unless (defined $self->{lib_option_name}) {
     $self->lib_option_name("-l");
   }
-  
+
   # cc_output_option_name
   unless (defined $self->{cc_output_option_name}) {
     $self->cc_output_option_name("-o");
@@ -386,7 +366,7 @@ sub new {
   unless (defined $self->{ld_output_option_name}) {
     $self->ld_output_option_name("-o");
   }
-  
+
   return $self;
 }
 
@@ -803,38 +783,6 @@ sub clear_system_settings {
   $self->exe_libcpp_ldflags([]);
   $self->warn_ldflags([]);
   $self->debug_ldflags([]);
-}
-
-# Main create_option (Auto-detect by length)
-sub create_option {
-  my ($self, $name, $value) = @_;
-  
-  # Extract the option name without leading hyphens or slashes to check its length
-  my $pure_name = $name;
-  $pure_name =~ s/^[\-\/]+//;
-  
-  if (length $pure_name <= 1) {
-    return $self->create_option_short($name, $value);
-  }
-  else {
-    return $self->create_option_long($name, $value);
-  }
-}
-
-# Connect directly (e.g. -oFILE, -I/path)
-sub create_option_short {
-  my ($self, $name, $value) = @_;
-  
-  return "$name$value";
-}
-
-# Connect using long_option_sep (e.g. --prefix=/usr, -out:FILE)
-sub create_option_long {
-  my ($self, $name, $value) = @_;
-  
-  my $sep = $self->long_option_sep;
-  
-  return "$name$sep$value";
 }
 
 1;
@@ -2131,50 +2079,6 @@ The following fields are set to C<[]>.
 =item * L</"exe_libcpp_ldflags">
 
 =back
-
-=head2 create_option
-
-  my $option = $config->create_option("-std", "c11");
-
-Builds a command line option from the option name and the value.
-
-If the length of the option name (excluding leading C<-> and C</>) is 1, the option name and the value are connected without a separator.
-
-  # Results in "-Ic:/path"
-  my $option = $config->create_option("-I", "c:/path");
-
-If the length of the option name is greater than 1, they are connected using L</"long_option_sep">.
-
-  # Results in "-std=c11" (if long_option_sep is "=")
-  my $option = $config->create_option("-std", "c11");
-
-This method is useful for supporting different compiler conventions such as GCC/Clang and MSVC.
-
-=head2 create_option_short
-
-  my $option = $config->create_option_short("-I", "c:/path");
-
-Builds a command line option by connecting the option name and the value directly without a separator.
-
-  # Results in "-Ic:/path"
-  my $option = $config->create_option_short("-I", "c:/path");
-
-  # Results in "-Foc:/path" (Useful for MSVC even if the option name length > 1)
-  my $option = $config->create_option_short("-Fo", "c:/path");
-
-=head2 create_option_long
-
-  my $option = $config->create_option_long("-std", "c11");
-
-Builds a command line option by connecting the option name and the value using L</"long_option_sep">.
-
-  # Results in "-std=c11" (if long_option_sep is "=")
-  my $option = $config->create_option_long("-std", "c11");
-
-  # Results in "-out:c:/path" (if long_option_sep is ":")
-  my $option = $config->create_option_long("-out", "c:/path");
-
-=cut
 
 =head1 Library Path Resolution
 

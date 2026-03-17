@@ -1,8 +1,7 @@
-package SPVM::Builder::Config;
+package SPVM::Builder::Config::Base;
 
 use strict;
 use warnings;
-use Carp 'confess';
 use SPVM::Builder::Util;
 use SPVM::Builder::Accessor 'has';
 
@@ -26,11 +25,9 @@ sub new {
   
   my $self = {@_};
   
-  # Base fields validation using the consolidated field list
-  # Note: $fields in your original code contains base + cc + ld
-  SPVM::Builder::Util::check_option_names($self, $self->option_names);
-  
   bless $self, ref $class || $class;
+  
+  # SPVM::Builder::Util::check_option_names($self, $self->option_names);
   
   # file
   $self->file(undef);
@@ -61,6 +58,28 @@ sub option_names {
   return $base_fields;
 }
 
+sub create_option {
+  my ($self, $name, $value) = @_;
+  
+  # Extract the option name without leading hyphens or slashes to check its length
+  my $pure_name = $name;
+  $pure_name =~ s/^[\-\/]+//;
+  
+  if (length $pure_name <= 1) {
+    return $self->create_option_short($name, $value);
+  }
+  else {
+    return $self->create_option_long($name, $value);
+  }
+}
+
+# Connect directly (e.g. -oFILE, -I/path)
+sub create_option_short {
+  my ($self, $name, $value) = @_;
+  
+  return "$name$value";
+}
+
 # Connect using long_option_sep (e.g. --prefix=/usr, -out:FILE)
 sub create_option_long {
   my ($self, $name, $value) = @_;
@@ -68,22 +87,6 @@ sub create_option_long {
   my $sep = $self->long_option_sep;
   
   return "$name$sep$value";
-}
-
-# Main create_option (Uses long_option_sep if name length > 1)
-sub create_option {
-  my ($self, $name, $value) = @_;
-  
-  my $pure_name = $name;
-  $pure_name =~ s/^[\-\/]+//;
-  
-  if (length $pure_name <= 1) {
-    # Short option logic (Directly connected)
-    return "$name$value";
-  }
-  else {
-    return $self->create_option_long($name, $value);
-  }
 }
 
 1;
@@ -198,5 +201,49 @@ This value is set automatically.
   "="
 
 =back
+
+=head1 Instance Methods
+
+=head2 create_option
+
+  my $option = $config->create_option("-std", "c11");
+
+Builds a command line option from the option name and the value.
+
+If the length of the option name (excluding leading C<-> and C</>) is 1, the option name and the value are connected without a separator.
+
+  # Results in "-Ic:/path"
+  my $option = $config->create_option("-I", "c:/path");
+
+If the length of the option name is greater than 1, they are connected using L</"long_option_sep">.
+
+  # Results in "-std=c11" (if long_option_sep is "=")
+  my $option = $config->create_option("-std", "c11");
+
+This method is useful for supporting different compiler conventions such as GCC/Clang and MSVC.
+
+=head2 create_option_short
+
+  my $option = $config->create_option_short("-I", "c:/path");
+
+Builds a command line option by connecting the option name and the value directly without a separator.
+
+  # Results in "-Ic:/path"
+  my $option = $config->create_option_short("-I", "c:/path");
+
+  # Results in "-Foc:/path" (Useful for MSVC even if the option name length > 1)
+  my $option = $config->create_option_short("-Fo", "c:/path");
+
+=head2 create_option_long
+
+  my $option = $config->create_option_long("-std", "c11");
+
+Builds a command line option by connecting the option name and the value using L</"long_option_sep">.
+
+  # Results in "-std=c11" (if long_option_sep is "=")
+  my $option = $config->create_option_long("-std", "c11");
+
+  # Results in "-out:c:/path" (if long_option_sep is ":")
+  my $option = $config->create_option_long("-out", "c:/path");
 
 =cut

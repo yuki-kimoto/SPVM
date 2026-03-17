@@ -37,7 +37,7 @@ use SPVM::Builder::Config;
   
   # Don't support C++ compilers that does not support -std=c++11 option.
   {
-    my $config = SPVM::Builder::Config->new_cpp(file_optional => 1);
+    my $config = SPVM::Builder::Config->new_cpp;
     
     my $cc = $config->cc;
     
