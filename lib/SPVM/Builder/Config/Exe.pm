@@ -1,291 +1,115 @@
 package SPVM::Builder::Config::Exe;
 
+use parent 'SPVM::Builder::Config';
+
 use strict;
 use warnings;
 use Carp 'confess';
 
 use SPVM::Builder::Util;
 use SPVM::Builder::Util::API;
-
-# Super Class
-use base 'SPVM::Builder::Config';
+use SPVM::Builder::Accessor 'has';
 
 # Fields
-sub mode {
-  my $self = shift;
-  if (@_) {
-    $self->{mode} = $_[0];
-    return $self;
+my $fields;
+
+BEGIN {
+  $fields = [qw(
+    mode
+    before_compile_cbs_global
+    ccflags_global
+    ccflags_spvm
+    ccflags_native
+    ccflags_native_class
+    ccflags_precompile
+    defines_global
+    defines_spvm
+    defines_native
+    defines_native_class
+    defines_precompile
+    optimize_global
+    optimize_spvm
+    optimize_native
+    optimize_native_class
+    optimize_precompile
+    include_dirs_global
+    include_dirs_spvm
+    include_dirs_native
+    include_dirs_native_class
+    include_dirs_precompile
+    external_object_files
+  )];
+
+  has($fields);
+}
+
+{
+  no warnings 'redefine';
+
+  sub ccflags_native_class {
+    my $self = shift;
+    my $class_name = shift;
+    unless (defined $class_name) {
+      confess("The class name \$class_name must be defined.");
+    }
+    if (@_) {
+      $self->{ccflags_native_class}{$class_name} = $_[0];
+      return $self;
+    }
+    else {
+      return $self->{ccflags_native_class}{$class_name};
+    }
   }
-  else {
-    return $self->{mode};
+
+  sub defines_native_class {
+    my $self = shift;
+    my $class_name = shift;
+    unless (defined $class_name) {
+      confess("The class name \$class_name must be defined.");
+    }
+    if (@_) {
+      $self->{defines_native_class}{$class_name} = $_[0];
+      return $self;
+    }
+    else {
+      return $self->{defines_native_class}{$class_name};
+    }
+  }
+
+  sub optimize_native_class {
+    my $self = shift;
+    my $class_name = shift;
+    unless (defined $class_name) {
+      confess("The class name \$class_name must be defined.");
+    }
+    if (@_) {
+      $self->{optimize_native_class}{$class_name} = $_[0];
+      return $self;
+    }
+    else {
+      return $self->{optimize_native_class}{$class_name};
+    }
+  }
+
+  sub include_dirs_native_class {
+    my $self = shift;
+    my $class_name = shift;
+    unless (defined $class_name) {
+      confess("The class name \$class_name must be defined.");
+    }
+    if (@_) {
+      $self->{include_dirs_native_class}{$class_name} = $_[0];
+      return $self;
+    }
+    else {
+      return $self->{include_dirs_native_class}{$class_name};
+    }
   }
 }
 
-sub before_compile_cbs_global {
-  my $self = shift;
-  if (@_) {
-    $self->{before_compile_cbs_global} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{before_compile_cbs_global};
-  }
-}
-
-sub ccflags_global {
-  my $self = shift;
-  if (@_) {
-    $self->{ccflags_global} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ccflags_global};
-  }
-}
-
-sub ccflags_spvm {
-  my $self = shift;
-  if (@_) {
-    $self->{ccflags_spvm} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ccflags_spvm};
-  }
-}
-
-sub ccflags_native {
-  my $self = shift;
-  if (@_) {
-    $self->{ccflags_native} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ccflags_native};
-  }
-}
-
-sub ccflags_native_class {
-  my $self = shift;
-  my $class_name = shift;
-  
-  unless (defined $class_name) {
-    Carp::confess("The class name \$class_name must be defined.");
-  }
-  
-  if (@_) {
-    $self->{ccflags_native_class}{$class_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ccflags_native_class}{$class_name};
-  }
-}
-
-sub ccflags_precompile {
-  my $self = shift;
-  if (@_) {
-    $self->{ccflags_precompile} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ccflags_precompile};
-  }
-}
-
-sub defines_global {
-  my $self = shift;
-  if (@_) {
-    $self->{defines_global} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{defines_global};
-  }
-}
-
-sub defines_spvm {
-  my $self = shift;
-  if (@_) {
-    $self->{defines_spvm} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{defines_spvm};
-  }
-}
-
-sub defines_native {
-  my $self = shift;
-  if (@_) {
-    $self->{defines_native} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{defines_native};
-  }
-}
-
-sub defines_native_class {
-  my $self = shift;
-  my $class_name = shift;
-  
-  unless (defined $class_name) {
-    Carp::confess("The class name \$class_name must be defined.");
-  }
-  
-  if (@_) {
-    $self->{defines_native_class}{$class_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{defines_native_class}{$class_name};
-  }
-}
-
-sub defines_precompile {
-  my $self = shift;
-  if (@_) {
-    $self->{defines_precompile} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{defines_precompile};
-  }
-}
-
-sub optimize_global {
-  my $self = shift;
-  if (@_) {
-    $self->{optimize_global} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{optimize_global};
-  }
-}
-
-sub optimize_spvm {
-  my $self = shift;
-  if (@_) {
-    $self->{optimize_spvm} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{optimize_spvm};
-  }
-}
-
-sub optimize_native {
-  my $self = shift;
-  if (@_) {
-    $self->{optimize_native} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{optimize_native};
-  }
-}
-
-sub optimize_native_class {
-  my $self = shift;
-  my $class_name = shift;
-  
-  unless (defined $class_name) {
-    Carp::confess("The class name \$class_name must be defined.");
-  }
-  
-  if (@_) {
-    $self->{optimize_native_class}{$class_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{optimize_native_class}{$class_name};
-  }
-}
-
-sub optimize_precompile {
-  my $self = shift;
-  if (@_) {
-    $self->{optimize_precompile} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{optimize_precompile};
-  }
-}
-
-sub include_dirs_global {
-  my $self = shift;
-  if (@_) {
-    $self->{include_dirs_global} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{include_dirs_global};
-  }
-}
-
-sub include_dirs_spvm {
-  my $self = shift;
-  if (@_) {
-    $self->{include_dirs_spvm} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{include_dirs_spvm};
-  }
-}
-
-sub include_dirs_native {
-  my $self = shift;
-  if (@_) {
-    $self->{include_dirs_native} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{include_dirs_native};
-  }
-}
-
-sub include_dirs_native_class {
-  my $self = shift;
-  my $class_name = shift;
-  
-  unless (defined $class_name) {
-    Carp::confess("The class name \$class_name must be defined.");
-  }
-  
-  if (@_) {
-    $self->{include_dirs_native_class}{$class_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{include_dirs_native_class}{$class_name};
-  }
-}
-
-sub include_dirs_precompile {
-  my $self = shift;
-  if (@_) {
-    $self->{include_dirs_precompile} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{include_dirs_precompile};
-  }
-}
-
-sub external_object_files {
-  my $self = shift;
-  if (@_) {
-    $self->{external_object_files} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{external_object_files};
-  }
+sub option_names {
+  my ($self) = @_;
+  return [@{$self->SUPER::option_names}, @$fields];
 }
 
 # Class Methods
