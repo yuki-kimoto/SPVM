@@ -22,11 +22,6 @@ BEGIN {
     ccflags_native
     ccflags_native_class
     ccflags_precompile
-    defines_global
-    defines_spvm
-    defines_native
-    defines_native_class
-    defines_precompile
     optimize_global
     optimize_spvm
     optimize_native
@@ -54,21 +49,6 @@ BEGIN {
     }
     else {
       return $self->{ccflags_native_class}{$class_name};
-    }
-  }
-
-  sub defines_native_class {
-    my $self = shift;
-    my $class_name = shift;
-    unless (defined $class_name) {
-      confess("The class name \$class_name must be defined.");
-    }
-    if (@_) {
-      $self->{defines_native_class}{$class_name} = $_[0];
-      return $self;
-    }
-    else {
-      return $self->{defines_native_class}{$class_name};
     }
   }
 
@@ -109,11 +89,6 @@ sub new {
     ccflags_native => [],
     ccflags_native_class => {},
     ccflags_precompile => [],
-    defines_global => [],
-    defines_spvm => [],
-    defines_native => [],
-    defines_native_class => {},
-    defines_precompile => [],
     optimize_native_class => {},
     external_object_files => [],
     matches => [],
@@ -196,40 +171,6 @@ sub add_ccflag_precompile {
   my ($self, @ccflags_precompile) = @_;
   
   push @{$self->{ccflags_precompile}}, @ccflags_precompile;
-}
-
-sub add_define_global {
-  my ($self, @defines_global) = @_;
-  
-  push @{$self->{defines_global}}, @defines_global;
-}
-
-sub add_define_spvm {
-  my ($self, @defines_spvm) = @_;
-  
-  push @{$self->{defines_spvm}}, @defines_spvm;
-}
-
-sub add_define_native {
-  my ($self, @defines_native) = @_;
-  
-  push @{$self->{defines_native}}, @defines_native;
-}
-
-sub add_define_native_class {
-  my ($self, $class_name, @defines_native_class) = @_;
-  
-  unless (defined $self->{defines_native_class}{$class_name}) {
-    $self->{defines_native_class}{$class_name} = []
-  }
-  
-  push @{$self->{defines_native_class}{$class_name}}, @defines_native_class;
-}
-
-sub add_define_precompile {
-  my ($self, @defines_precompile) = @_;
-  
-  push @{$self->{defines_precompile}}, @defines_precompile;
 }
 
 sub add_external_object_file {
@@ -508,41 +449,6 @@ Gets and sets the value of C<ccflags_native_class> field's class name key $class
 
 Gets and sets C<ccflags_precompile> field, an array reference containing arugments of the compiler L</"cc"> in compilation for precompilation.
 
-=head2 defines_global
-
-  my $defines_global = $config->defines_global;
-  $config->defines_global($defines_global);
-
-Gets and sets C<defines> field, an array reference containing the value of C<-D> arugments of the compiler L</"cc"> in all compilation.
-
-=head2 defines_spvm
-
-  my $defines_spvm = $config->defines_spvm;
-  $config->defines_spvm($defines_spvm);
-
-Gets and sets C<defines_spvm> field, an array reference containing the value of C<-D> arugments of the compiler L</"cc"> in compilations of SPVM source code and a bootstrap source file.
-
-=head2 defines_native
-
-  my $defines_native = $config->defines_native;
-  $config->defines_native($defines_native);
-
-Gets and sets C<defines_native> field, an array reference containing the value of C<-D> arugments of the compiler L</"cc"> in compilation of all native class source file(such as MyClass.c) and all native source files(such as MyClass.native/src/mysource.c>.
-
-=head2 defines_native_class
-
-  my $defines_native_class = $config->defines_native_class($class_name);
-  $config->defines_native_class($class_name, $defines_native);
-
-Gets and sets the value of C<defines_native_class> field's class name key $class_name, an array reference containing the value of C<-D> arugments of the compiler L</"cc"> in compilation of native class source file(such as MyClass.c) and all native source files(such as MyClass.native/src/mysource.c> in $class_name.
-
-=head2 defines_precompile
-
-  my $defines_precompile = $config->defines_precompile;
-  $config->defines_precompile($defines_precompile);
-
-Gets and sets C<defines_precompile> field, an array reference containing the value of C<-D> arugments of the compiler L</"cc"> in compilation for precompilation.
-
 =head2 optimize_global
 
   my $optimize_global = $config->optimize_global;
@@ -692,36 +598,6 @@ Adds @ccflags_native_class to the end of L</"ccflags_native_class"> field's key 
   $config->add_ccflag_precompile(@ccflags_precompile);
 
 Adds @ccflags_precompile to the end of L</"ccflags_precompile"> field.
-
-=head2 add_define_global
-
-  $config->add_define_global(@defines_global);
-
-Adds @defines_global to the end of L</"defines_global"> field.
-
-=head2 add_define_spvm
-
-  $config->add_define_spvm(@defines_spvm);
-
-Adds @defines_spvm to the end of L</"defines_spvm"> field.
-
-=head2 add_define_native
-
-  $config->add_define_native(@defines_native);
-
-Adds @defines_native to the end of L</"defines_native"> field.
-
-=head2 add_define_native_class
-
-  $config->add_define_native_class($class_name, @defines_native_class);
-
-Adds @defines_native_class to the end of L</"defines_native_class"> field's key $class_name.
-
-=head2 add_define_precompile
-
-  $config->add_define_precompile(@defines_precompile);
-
-Adds @defines_precompile to the end of L</"defines_precompile"> field.
 
 =head2 add_external_object_file
 

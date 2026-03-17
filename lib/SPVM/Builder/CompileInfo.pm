@@ -149,22 +149,6 @@ sub create_ccflags {
   
   my $config_global = $config->config_global;
   if ($config_global) {
-    push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_global->defines_global};
-    
-    if ($config_category eq 'spvm') {
-      push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_global->defines_spvm};
-    }
-    elsif ($config_category eq 'native') {
-      push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_global->defines_native};
-      
-      if (defined $class_name) {
-        push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_global->defines_native_class($class_name) || []};
-      }
-    }
-    elsif ($config_category eq 'precompile') {
-      push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config_global->defines_precompile};
-    }
-    
     push @compile_command_args, grep { length $_ } @{$config_global->ccflags_global};
     
     if ($config_category eq 'spvm') {

@@ -309,22 +309,6 @@ sub new {
       $config_global->ccflags_precompile($self->{ccflags_precompile});
     }
 
-    if (defined $self->{defines_global}) {
-      $config_global->defines_global($self->{defines_global});
-    }
-    if (defined $self->{defines_spvm}) {
-      $config_global->defines_spvm($self->{defines_spvm});
-    }
-    if (defined $self->{defines_native}) {
-      $config_global->defines_native($self->{defines_native});
-    }
-    if (defined $self->{defines_native_class}) {
-      $config_global->{defines_native_class} = $self->{defines_native_class};
-    }
-    if (defined $self->{defines_precompile}) {
-      $config_global->defines_precompile($self->{defines_precompile});
-    }
-
     if (defined $self->{optimize_global}) {
       $config_global->optimize_global($self->{optimize_global});
     }
@@ -361,7 +345,6 @@ sub new {
     # Setup paths using the extracted directory
     my $spvm_archive_extract_dir = $spvm_archive->dir;
     $compiler->add_include_dir("$spvm_archive_extract_dir/SPVM");
-    $config_global->add_include_dir_native("$spvm_archive_extract_dir/include");
     $config_global->add_lib_dir("$spvm_archive_extract_dir/lib");
   }
   
