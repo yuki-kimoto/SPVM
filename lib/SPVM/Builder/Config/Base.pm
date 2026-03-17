@@ -29,7 +29,7 @@ sub new {
   
   bless $self, ref $class || $class;
   
-  # SPVM::Builder::Util::check_option_names($self, $self->option_names);
+  SPVM::Builder::Util::check_option_names($self, $self->option_names);
   
   # file
   $self->file(undef);
