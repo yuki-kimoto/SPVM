@@ -17,6 +17,8 @@ my $base_fields = [qw(
   quiet
   force
   long_option_sep
+  
+  _loaded_config_files
 )];
 
 # Accessors generation for base fields

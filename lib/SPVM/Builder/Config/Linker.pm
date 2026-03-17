@@ -38,6 +38,8 @@ my $fields = [qw(
   output_file
   before_link_cbs
   after_link_cbs
+  
+  resources
 )];
 
 has($fields);
