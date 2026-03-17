@@ -282,9 +282,6 @@ sub new {
   
   # Override config settings with command line options if defined
   {
-    if (defined $self->{optimize_global}) {
-      $config_global->optimize_global($self->{optimize_global});
-    }
     if (defined $self->{external_object_files}) {
       $config_global->external_object_files($self->{external_object_files});
     }
@@ -1027,15 +1024,6 @@ sub create_bootstrap_source {
   # For detecting changing config mode
   my $mode_string = $self->mode // '';
   $bootstrap_source .= "// mode:$mode_string\n";
-  
-  my @config_field_names = qw(
-    optimize_global
-  );
-  
-  # For detecting changing fields
-  for my $config_field_name (@config_field_names) {
-    $bootstrap_source .= "// $config_field_name:" . &_field_value_to_string($config_global->{$config_field_name}) . "\n";
-  }
   
   # Force flag from various sources
   my $force = $self->force || $config_global->force;

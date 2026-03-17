@@ -148,12 +148,6 @@ sub create_ccflags {
   my $optimize = $config->optimize;
   
   my $config_global = $config->config_global;
-  if ($config_global) {
-    if (length $config_global->optimize_global) {
-      $optimize = $config_global->optimize_global;
-    }
-    
-  }
   
   if (length $optimize) {
     push @compile_command_args, split(/ +/, $optimize);

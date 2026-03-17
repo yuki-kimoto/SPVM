@@ -17,13 +17,24 @@ BEGIN {
   $fields = [qw(
     mode
     before_compile_cbs_global
-    optimize_global
     include_dirs_global
     external_object_files
-    matches
   )];
 
   has($fields);
+}
+
+sub optimize_global {
+  my $self = shift;
+  
+  if (@_) {
+    my $optimize = shift;
+    $self->match_any({optimize => $optimize});
+    return $self;
+  }
+  else {
+    confess "The optimize_global method only supports the setter. Use match methods to configure dynamic settings.";
+  }
 }
 
 sub option_names {
@@ -43,7 +54,6 @@ sub new {
     before_compile_cbs_global => [],
     include_dirs_global => [],
     external_object_files => [],
-    matches => [],
     @_,
   );
   
@@ -114,19 +124,13 @@ sub get_spvm_archive {
 sub match {
   my ($self, $condition, $match_config) = @_;
   
-  unless (defined $match_config) {
-    confess("The config argument must be defined");
-  }
-  
   # Normalize condition to a Config object for key validation
-  unless ($condition && UNIVERSAL::isa($condition, 'SPVM::Builder::Config')) {
-    $condition = SPVM::Builder::Config->new_empty(%$condition);
+  if ($condition) {
+    SPVM::Builder::Config->new_empty(%$condition);
   }
   
   # Ensure match_config is a Config object
-  unless (UNIVERSAL::isa($match_config, 'SPVM::Builder::Config')) {
-    $match_config = SPVM::Builder::Config->new_empty(%$match_config);
-  }
+  SPVM::Builder::Config->new_empty(%$match_config);
   
   # Add callback to apply settings before compilation
   $self->add_before_compile_cb_global(sub {
@@ -248,10 +252,12 @@ This affects all compilations.
 
 =head2 optimize_global
 
-  my $optimize_global = $config->optimize_global;
-  $config->optimize_global($optimize_global);
+  $config->optimize_global($optimize);
 
-Gets and sets C<optimize> field, an arugment of the compiler L</"cc"> for optimization in all compilation.
+Sets C<optimize> field, an argument of the compiler L</"cc"> for optimization in all compilations.
+
+This method is a setter-only method. It calls L</"match_any"> internally to apply the optimization setting. 
+If this method is called without an argument, an exception is thrown.
 
 =head2 include_dirs_global
 
@@ -383,6 +389,38 @@ Examples:
   my $spvm_archive = $config->get_spvm_archive;
 
 Gets an SPVM archive.
+
+=head2 match
+
+  $global_config->match($condition, $match_config);
+
+Adds a callback that dynamically updates the configuration before compilation if the given conditions are met.
+
+Parameters:
+
+=over 2
+
+=item * C<$condition>
+
+A hash reference or an L<SPVM::Builder::Config> object specifying the conditions. 
+The keys must exist in the target configuration. 
+If a value is a C<Regexp> object (e.g., C<qr/.../>), it performs a regex match against the target configuration value. 
+Otherwise, it performs a string equality check (C<eq>).
+
+=item * C<$match_config>
+
+A hash reference or an L<SPVM::Builder::Config> object containing the configuration values to be overwritten when all conditions in C<$condition> match.
+
+=back
+
+=head2 match_any
+
+  $global_config->match_any($match_config);
+
+A syntax sugar for L</"match"> with no conditions. 
+The C<$match_config> will be applied to all configurations before compilation.
+
+=cut
 
 =head1 Copyright & License
 
