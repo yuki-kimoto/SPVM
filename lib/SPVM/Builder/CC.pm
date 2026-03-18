@@ -189,22 +189,13 @@ sub compile_source_file {
     
     unless ($quiet) {
       
-      my $resource_loader_config = $compile_info->config->resource_loader_config;
-      
       my $compile_info_category = $compile_info->category;
       
       my $message;
-      if ($resource_loader_config) {
-        
-        my $resource_loader_config_class_name = $resource_loader_config->class_name;
-        
-        my $resource_loader_config_file = $resource_loader_config->file;
-        
+      if ($config->is_resource) {
         my $resource_class_name = $config->class_name;
         
-        my $resource_config_file = $config->file;
-        
-        $message = "[Compile a source file in $resource_class_name resource. The resource is used from $resource_loader_config_class_name class]";
+        $message = "[Compile a source file in $resource_class_name resource.";
       }
       else {
         my $config_class_name = $config->class_name;
@@ -409,8 +400,6 @@ sub compile_class {
       $resource_config->add_include_dir(@$resource_include_dirs);
       
       $resource_config->class_name($resource_class_name);
-      
-      $resource_config->resource_loader_config($config),
       
       my $resource_object_dir;
       if ($config->config_global) {

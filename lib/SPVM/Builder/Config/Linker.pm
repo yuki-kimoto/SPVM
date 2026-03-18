@@ -15,7 +15,6 @@ my $fields = [qw(
   ldflags
   ld_optimize
   output_type
-  resource_loader_config
   copyright_print_ldflags
   warn_ldflags
   debug_info_ldflags
@@ -1125,15 +1124,6 @@ Examples:
     # Do something
     
   });
-
-=head2 resource_loader_config
-
-  my $resource_loader_config = $config->resource_loader_config;
-  $config->resource_loader_config($resource_loader_config);
-
-Gets and sets C<resource_loader_config> field, the config file of the class that loaded a resource by L</"use_resource"> method.
-
-This field is automatically set and users nomally do not change it.
 
 =head2 use_resource
 
