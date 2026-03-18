@@ -22,7 +22,7 @@ sub optimize {
   
   if (@_) {
     my ($optimize, $condition) = @_;
-    $self->match($condition, {optimize => $optimize});
+    $self->compile_match($condition, {optimize => $optimize});
     return $self;
   }
   else {
@@ -54,7 +54,7 @@ sub add_before_compile_cb {
   push @{$self->{before_compile_cbs}}, @before_compile_cbs;
 }
 
-sub match {
+sub compile_match {
   my ($self, $condition, $match_config) = @_;
   
   # Normalize condition to a Config object for key validation
@@ -107,7 +107,7 @@ sub match {
   });
 }
 
-sub match_any { shift->match(undef, @_) }
+sub match_any { shift->compile_match(undef, @_) }
 
 1;
 
@@ -214,9 +214,9 @@ Examples:
     # Do something
   });
 
-=head2 match
+=head2 compile_match
 
-  $global_config->match($condition, $match_config);
+  $global_config->compile_match($condition, $match_config);
 
 Adds a callback that dynamically updates the configuration before compilation if the given conditions are met.
 
@@ -237,9 +237,9 @@ A hash reference or an L<SPVM::Builder::Config> object containing the configurat
 
 =back
 
-=head2 match_any
+=head2 compile_match_any
 
-  $global_config->match_any($match_config);
+  $global_config->compile_match_any($match_config);
 
 A syntax sugar for L</"match"> with no conditions. 
 The C<$match_config> will be applied to all configurations before compilation.
