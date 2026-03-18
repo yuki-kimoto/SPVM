@@ -1160,6 +1160,7 @@ t/04_spvmcc/script/spvm-archive.spvm
 t/04_spvmcc/script/spvm-archive.test-static-lib.config
 t/04_spvmcc/script/use-class.config
 t/04_spvmcc/script/use-class.spvm
+t/04_spvmcc/SPVM-Builder-Config-Global.t
 t/04_spvmcc/SPVM-Builder-Exe.t
 t/04_spvmcc/spvm.t
 t/04_spvmcc/spvmcc.t
