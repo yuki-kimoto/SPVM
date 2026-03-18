@@ -33,7 +33,7 @@ my $fields = [qw(
   extra_ldflags
   dynamic_lib_extra_ldflags
   exe_extra_ldflags
-  static_lib_ldflag
+  static_lib_braces
   lib_dirs
   libs
   lib_prefix
@@ -128,10 +128,10 @@ sub new {
     }
   }
 
-  unless (exists $self->{static_lib_ldflag}) {
+  unless (exists $self->{static_lib_braces}) {
     my $begin = '-Wl,-Bstatic';
     my $end = '-Wl,-Bdynamic';
-    $self->static_lib_ldflag([$begin, $end]);
+    $self->static_lib_braces([$begin, $end]);
   }
 
   unless (exists $self->{ld_optimize}) {
@@ -581,17 +581,17 @@ Gets and sets C<dynamic_lib_libcpp_ldflags> field, an array reference containing
 
 Gets and sets C<exe_libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library used for executable files.
 
-=head2 static_lib_ldflag
+=head2 static_lib_braces
 
-  my static_lib_ldflag = $config->static_lib_ldflag;
-  $config->static_lib_ldflag(static_lib_ldflag);
+  my static_lib_braces = $config->static_lib_braces;
+  $config->static_lib_braces(static_lib_braces);
 
-Gets and sets C<static_lib_ldflag> field, an array reference containing a pair of arguments to start statically linking and end it.
+Gets and sets C<static_lib_braces> field, an array reference containing a pair of arguments to start statically linking and end it.
 
 The library name added by the L</"add_static_lib"> are surrounded by the values of the pair.
 
   # -Wl,-Bstatic -llibfoo -Wl,-Bdynamic
-  $config->static_lib_ldflag(['-Wl,-Bstatic', '-Wl,-Bdynamic']);
+  $config->static_lib_braces(['-Wl,-Bstatic', '-Wl,-Bdynamic']);
   $config->add_static_lib('foo');
 
 This field is automatically set and users nomally do not change it.
@@ -971,7 +971,7 @@ Other OSs:
 
   []
 
-=item * L</"static_lib_ldflag">
+=item * L</"static_lib_braces">
 
   ["-Wl,-Bstatic", "-Wl,-Bdynamic"]
 

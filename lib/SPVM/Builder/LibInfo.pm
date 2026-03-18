@@ -142,8 +142,8 @@ sub create_ldflags {
   else {
     my $name = $self->name;
     if ($self->is_static) {
-      my $static_lib_begin = $config->static_lib_ldflag->[0];
-      my $static_lib_end = $config->static_lib_ldflag->[1];
+      my $static_lib_begin = $config->static_lib_braces->[0];
+      my $static_lib_end = $config->static_lib_braces->[1];
       
       if (length $name) {
         # Construct flag: e.g. "-Wl,-Bstatic -lfoo" or "foo.lib"

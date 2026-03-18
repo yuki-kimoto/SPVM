@@ -37,7 +37,7 @@ sub apply {
   
   # Linker settings
   $self->ld($ld);
-  $self->static_lib_ldflag(["", ""]);
+  $self->static_lib_braces(["", ""]);
   $self->lib_prefix("");
   $self->lib_option_name("");
   $self->lib_option_suffix(".lib");
