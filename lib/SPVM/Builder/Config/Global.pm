@@ -55,23 +55,27 @@ sub add_before_compile_cb {
 }
 
 sub compile_match {
-  my ($self, $condition, $match_config) = @_;
+  my ($self, $condition, $match_config_or_cb) = @_;
   
-  # Normalize condition and match_config for key validation
+  # Normalize condition for key validation
   if ($condition) {
     SPVM::Builder::Config->new_empty(%$condition);
   }
-  SPVM::Builder::Config->new_empty(%$match_config);
+  
+  # Normalize match_config if it's a hash (not a callback)
+  if (ref $match_config_or_cb eq 'HASH') {
+    SPVM::Builder::Config->new_empty(%$match_config_or_cb);
+  }
   
   $self->add_before_compile_cb(sub {
     my ($config) = @_;
     
-    &_match_apply($config, $condition, $match_config);
+    &_match_apply($config, $condition, $match_config_or_cb);
   });
 }
 
 sub _match_apply {
-  my ($config, $condition, $match_config) = @_;
+  my ($config, $condition, $match_config_or_cb) = @_;
   
   my $match = 1;
   if ($condition) {
@@ -102,45 +106,45 @@ sub _match_apply {
     }
   }
   
-  # Apply configuration
+  # Apply configuration or execute callback
   if ($match) {
-    for my $match_name (keys %$match_config) {
-      my $new_value = $match_config->{$match_name};
-      
-      # Handle addition (+foo)
-      if ($match_name =~ /^\+(.+)$/) {
-        my $name = $1;
-        my $old_value = $config->{$name};
+    if (ref $match_config_or_cb eq 'CODE') {
+      # Execute custom logic if a callback is provided
+      $match_config_or_cb->($config);
+    }
+    else {
+      # Apply static configuration (supporting +foo syntax)
+      for my $match_name (keys %$match_config_or_cb) {
+        my $new_value = $match_config_or_cb->{$match_name};
         
-        # Validation for addition
-        if (!defined $old_value) {
-          $config->{$name} = $new_value;
-        }
-        elsif (ref $old_value eq '' && ref $new_value eq '') {
-          # string + string -> string
-          $config->{$name} .= $new_value;
-        }
-        elsif (ref $old_value eq '' && ref $new_value eq 'ARRAY') {
-          # string + array -> array
-          $config->{$name} = [$old_value, @$new_value];
-        }
-        elsif (ref $old_value eq 'ARRAY' && ref $new_value eq '') {
-          # array + string -> array
-          push @{$config->{$name}}, $new_value;
-        }
-        elsif (ref $old_value eq 'ARRAY' && ref $new_value eq 'ARRAY') {
-          # array + array -> array
-          push @{$config->{$name}}, @$new_value;
+        if ($match_name =~ /^\+(.+)$/) {
+          my $name = $1;
+          my $old_value = $config->{$name};
+          
+          if (!defined $old_value) {
+            $config->{$name} = $new_value;
+          }
+          elsif (ref $old_value eq '' && ref $new_value eq '') {
+            $config->{$name} .= $new_value;
+          }
+          elsif (ref $old_value eq '' && ref $new_value eq 'ARRAY') {
+            $config->{$name} = [$old_value, @$new_value];
+          }
+          elsif (ref $old_value eq 'ARRAY' && ref $new_value eq '') {
+            push @{$config->{$name}}, $new_value;
+          }
+          elsif (ref $old_value eq 'ARRAY' && ref $new_value eq 'ARRAY') {
+            push @{$config->{$name}}, @$new_value;
+          }
+          else {
+            my $old_value_type = ref $old_value || 'scalar(string)';
+            my $new_value_type = ref $new_value || 'scalar(string)';
+            confess "The addition of the \"$match_name\" field is not supported for the combination of $old_value_type and $new_value_type.";
+          }
         }
         else {
-          my $old_value_type = ref $old_value || 'scalar(string)';
-          my $new_value_type = ref $new_value || 'scalar(string)';
-          confess "The addition of the \"$match_name\" field is not supported for the combination of $old_value_type and $new_value_type.";
+          $config->{$match_name} = $new_value;
         }
-      }
-      else {
-        # Normal overwrite
-        $config->{$match_name} = $new_value;
       }
     }
   }
