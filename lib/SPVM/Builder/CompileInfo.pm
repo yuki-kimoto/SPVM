@@ -121,28 +121,18 @@ sub create_ccflags {
     push @compile_command_args, $config->create_option("-std", $std);
   }
   
-  push @compile_command_args, map { "-D$_" } grep { length $_ } @{$config->defines};
-  
-  push @compile_command_args, grep { length $_ } @{$config->ccflags};
-  
-  push @compile_command_args, grep { length $_ } @{$config->thread_ccflags};
-  
-  push @compile_command_args, grep { length $_ } @{$config->copyright_print_ccflags};
-  
-  push @compile_command_args, grep { length $_ } @{$config->language_ccflags};
-  
-  push @compile_command_args, grep { length $_ } @{$config->arch_ccflags};
-  
-  push @compile_command_args, grep { length $_ } @{$config->function_level_linking_ccflags};
-  
-  push @compile_command_args, grep { length $_ } @{$config->cpp_exception_handling_ccflags};
-  
-  push @compile_command_args, grep { length $_ } @{$config->library_linkage_ccflags};
-  
+  my $field_names = $config->get_clear_system_field_names;
   my $output_type = $config->output_type;
-  
-  if ($output_type eq 'dynamic_lib') {
-    push @compile_command_args, grep { length $_ } @{$config->dynamic_lib_ccflags};
+
+  for my $field_name (@$field_names) {
+    if ($field_name eq 'dynamic_lib_ccflags') {
+      if ($output_type eq 'dynamic_lib') {
+        push @compile_command_args, grep { length $_ } @{$config->$field_name};
+      }
+    }
+    else {
+      push @compile_command_args, grep { length $_ } @{$config->$field_name};
+    }
   }
   
   my $optimize = $config->optimize;

@@ -354,17 +354,29 @@ sub get_resource_names {
   return \@resource_names;
 }
 
+sub get_clear_system_field_names {
+  my $self = shift;
+  
+  return [qw(
+    dynamic_lib_ldflags
+    thread_ldflags
+    libcpp_ldflags
+    libbcrypt_ldflags
+    dynamic_lib_libcpp_ldflags
+    exe_libcpp_ldflags
+    copyright_print_ldflags
+    warn_ldflags
+  )];
+}
+
 sub clear_system_fields {
   my $self = shift;
   
-  $self->dynamic_lib_ldflags([]);
-  $self->thread_ldflags([]);
-  $self->libcpp_ldflags([]);
-  $self->libbcrypt_ldflags([]);
-  $self->dynamic_lib_libcpp_ldflags([]);
-  $self->exe_libcpp_ldflags([]);
-  $self->copyright_print_ldflags([]);
-  $self->warn_ldflags([]);
+  my $field_names = $self->get_clear_system_field_names;
+  
+  for my $field_name (@$field_names) {
+    $self->$field_name([]);
+  }
 }
 
 sub use_spvm_archive {

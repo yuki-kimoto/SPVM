@@ -100,6 +100,9 @@ sub create_ldflags {
     push @merged_ldflags, split(/ +/, $config->ld_optimize);
   }
   
+  my $ldflags = $config->ldflags;
+  push @merged_ldflags, grep { length $_ } @{$config->ldflags};
+  
   my $output_type = $config->output_type;
   if ($output_type eq 'dynamic_lib') {
     push @merged_ldflags, grep { length $_ } @{$config->dynamic_lib_ldflags};
@@ -107,10 +110,8 @@ sub create_ldflags {
   }
   elsif ($output_type eq 'exe') {
     push @merged_ldflags, grep { length $_ } @{$config->exe_libcpp_ldflags};
+    push @merged_ldflags, grep { length $_ } @{$config->libbcrypt_ldflags};
   }
-  
-  my $ldflags = $config->ldflags;
-  push @merged_ldflags, grep { length $_ } @{$config->ldflags};
   
   push @merged_ldflags, grep { length $_ } @{$config->thread_ldflags};
   
@@ -119,12 +120,6 @@ sub create_ldflags {
   push @merged_ldflags, grep { length $_ } @{$config->copyright_print_ldflags};
   
   push @merged_ldflags, grep { length $_ } @{$config->warn_ldflags};
-  
-  # libbcrypt_ldflags
-  # Add libbcrypt_ldflags only when the output type is 'exe'
-  if ($output_type eq 'exe') {
-    push @merged_ldflags, grep { length $_ } @{$config->libbcrypt_ldflags};
-  }
   
   my $lib_dirs = $config->lib_dirs;
   push @merged_ldflags, map { $config->create_option($config->lib_dir_option_name, $_) } grep { length $_ } @$lib_dirs;

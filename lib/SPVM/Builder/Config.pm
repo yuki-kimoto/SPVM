@@ -277,20 +277,31 @@ sub add_before_compile_cb {
   push @{$self->{before_compile_cbs}}, @before_compile_cbs;
 }
 
+sub get_clear_system_field_names {
+  my $self = shift;
+  
+  return [qw(
+    dynamic_lib_ccflags
+    thread_ccflags
+    copyright_print_ccflags
+    language_ccflags
+    arch_ccflags
+    function_level_linking_ccflags
+    cpp_exception_handling_ccflags
+    library_linkage_ccflags
+  )];
+}
+
 sub clear_system_fields {
   my $self = shift;
   
   $self->SUPER::clear_system_fields;
   
-  $self->dynamic_lib_ccflags([]);
-  $self->thread_ccflags([]);
-  $self->copyright_print_ccflags([]);
-  $self->language_ccflags([]);
-  $self->arch_ccflags([]);
-  $self->function_level_linking_ccflags([]);
-  $self->cpp_exception_handling_ccflags([]);
-  $self->library_linkage_ccflags([]);
-  $self->thread_ccflags([]);
+  my $field_names = $self->get_clear_system_field_names;
+  
+  for my $field_name (@$field_names) {
+    $self->$field_name([]);
+  }
 }
 
 1;
