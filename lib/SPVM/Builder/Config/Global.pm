@@ -259,9 +259,9 @@ Examples:
 
 =head2 compile_match
 
-  $global_config->compile_match($condition, $match_config);
+  $global_config->compile_match($condition, $match_config_or_cb);
 
-Adds a callback that dynamically updates the configuration before compilation if the given conditions are met.
+Adds a rule to dynamically update the configuration before compilation if the given conditions are met.
 
 Parameters:
 
@@ -269,20 +269,43 @@ Parameters:
 
 =item * C<$condition>
 
-A hash reference or an L<SPVM::Builder::Config> object specifying the conditions. 
-The keys must exist in the target configuration. 
-If a value is a C<Regexp> object (e.g., C<qr/.../>), it performs a regex match against the target configuration value. 
-Otherwise, it performs a string equality check (C<eq>).
+A hash reference or an L<SPVM::Builder::Config> object specifying the match criteria. 
+Each key represents a field name in the target configuration.
 
-=item * C<$match_config>
+=over 4
 
-A hash reference or an L<SPVM::Builder::Config> object containing the configuration values to be overwritten when all conditions in C<$condition> match.
+=item * If the value is a C<Regexp> object (e.g., C<qr/.../>), it performs a regex match.
+
+=item * If the value is C<undef>, it matches if the target field is also C<undef>.
+
+=item * Otherwise, it performs a string equality check (C<eq>).
+
+=back
+
+=item * C<$match_config_or_cb>
+
+A hash reference, an L<SPVM::Builder::Config> object, or a code reference (callback).
+
+If it is a hash reference or a config object, the fields in the target configuration are updated. 
+You can use the B<C<+>> prefix in the field name to B<append> values instead of overwriting them:
+
+=over 4
+
+=item * B<C<+field => $string>> : Concatenates the string to the existing value.
+
+=item * B<C<+field => $array_ref>> : Pushes the elements of the array reference into the existing array. 
+If the existing value is a scalar, it is promoted to an array before the push.
+
+=back
+
+If it is a code reference, the callback is executed with the target L<SPVM::Builder::Config> object as its first argument. 
+This allows for complex, procedural updates to the configuration.
 
 =back
 
 =head2 compile_match_any
 
-  $global_config->compile_match_any($match_config);
+  $global_config->compile_match_any($match_config_or_cb);
 
 A syntax sugar for L</"match"> with no conditions. 
 The C<$match_config> will be applied to all configurations before compilation.
