@@ -1,3 +1,44 @@
+0.990149 2026-03-18
+  [New Features]
+    * SPVM::Builder::Config: Add debug_info_ccflags field to manage compiler arguments for generating debug information independently.
+    * SPVM::Builder::Config: Add source_encoding_ccflags to specify the source code encoding for the compiler.
+    * SPVM::Builder::Config::Linker: Add debug_info_ldflags field to manage linker arguments for generating debug information independently.
+    * SPVM::Builder::Config::Linker: Add hint_cc field to provide a compiler name hint (e.g., clang++, g++) for the linker.
+    * SPVM::Builder::Config::Linker: Add support for libgcc, libbcrypt, and output-type-specific extra flags.
+    * SPVM::Builder::Config::Global: Implement compile_match and compile_match_any (renamed from match/match_any) using a rule-based callback system.
+    * SPVM::Builder::Config::Global: Add support for configuration hashes and code references in compile_match, allowing custom logic during build conditions.
+    * SPVM::Builder::Config::Global: Introduce a new "+" prefix syntax for appending values (string concatenation and array merging) with strict type validation.
+    * SPVM::Builder::Config::Exe::MSVC: Add specific configurations for -Zi (debug info), -DEBUG (linker debug), -W3 (warnings), -utf-8 (encoding), and -Gy (function-level linking).
+    * SPVM::Builder::Config::Base: Add new_empty method to create a clean configuration object.
+
+  [Incompatible Changes]
+    * SPVM::Builder::Config::Global: Rename match/match_any to compile_match/compile_match_any to clarify they apply to the compilation phase.
+    * SPVM::Builder::Config::Global: Rename optimize_global to optimize, before_compile_cbs_global to before_compile_cbs, and add_before_compile_cb_global to add_before_compile_cb.
+    * SPVM::Builder::Config::Global: Remove obsolete fields: ccflags_global/spvm/native/native_class/precompile, defines_global/spvm/native/native_class/precompile, optimize_spvm/native/native_class/precompile, and include_dirs_spvm/native/native_class/precompile.
+    * SPVM::Builder::Config: Rename clear_system_settings to clear_system_fields.
+    * SPVM::Builder::Config::Linker: Rename debug_ldflags to warn_ldflags (linker warnings).
+    * SPVM::Builder::Config::Linker: Rename warn_ldflags to copyright_print_ldflags (e.g., -nologo in MSVC).
+    * SPVM::Builder::Config: Rename warn_ccflags to copyright_print_ccflags.
+    * SPVM::Builder::Config: Rename ld_ccflags to library_linkage_ccflags (e.g., -MT, -MD in MSVC).
+    * SPVM::Builder::Config: Rename runtime_ccflags to cpp_exception_handling_ccflags and change it to a boolean abstraction for C++ exception support.
+    * SPVM::Builder::Config: Rename bcrypt_ldflags to libbcrypt_ldflags and then to exe_libbcrypt_ldflags for consistency.
+
+  [Changes]
+    * SPVM::Builder::Config: Refactor field clearing (clear_system_fields) and command-line generation to use a more maintainable loop-based approach via get_clear_system_field_names.
+    * SPVM::Builder::Config::Linker: Move -s (strip symbols) from dynamic_lib_ldflags to the dedicated symbol_strip_ldflags field.
+    * SPVM::Builder::Config::Global: Refactor to inherit from SPVM::Builder::Config::Linker.
+    * SPVM::Builder::Config::Global: Move external_object_files and related methods to SPVM::Builder::Config::Linker.
+    * SPVM::Builder::Config::Global: Move mode and spvm_archive related fields to SPVM::Builder::Config::Base and SPVM::Builder::Config::Linker.
+    * SPVM::Builder::Config::Exe::MSVC: Refactor the apply method from a procedural approach to a declarative rule-based approach using compile_match and the "+" prefix.
+    * SPVM::Builder::Config::Exe::MSVC: Override the new method to automatically invoke apply upon instantiation.
+    * SPVM::Builder::CC: Remove the hardcoded .a extension for static libraries to support system-defined or config-defined extensions.
+    * SPVM::Builder::Exe: Replace include_dirs_global with a before_compile_cbs callback to dynamically manage include directories.
+
+  [Internal Changes]
+    * SPVM::Builder::Config::Global: Extract core logic into a private _match_apply function to improve modularity.
+    * SPVM::Builder::Config::Base: Enable check_option_names for stricter configuration validation.
+    * Test: Add t/04_spvmcc/SPVM-Builder-Config-Global.t to verify _match_apply (matching, "+" append, and callbacks).
+
 0.990148 2026-03-17
   [New Features]
     * Add SPVM::Builder::Config::Global and SPVM::Builder::Config::DLL classes.
