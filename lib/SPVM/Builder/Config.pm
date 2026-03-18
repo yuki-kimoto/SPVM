@@ -277,10 +277,10 @@ sub add_before_compile_cb {
   push @{$self->{before_compile_cbs}}, @before_compile_cbs;
 }
 
-sub clear_system_settings {
+sub clear_system_fields {
   my $self = shift;
   
-  $self->SUPER::clear_system_settings;
+  $self->SUPER::clear_system_fields;
   
   $self->dynamic_lib_ccflags([]);
   $self->thread_ccflags([]);
@@ -950,15 +950,15 @@ Examples:
     # Do something
   });
 
-=head2 clear_system_settings
+=head2 clear_system_fields
 
-  $config->clear_system_settings;
+  $config->clear_system_fields;
 
 Clears the fields that are set by default for a specific environment.
 
 These fields might be updated in the future to support appropriate settings for different environments.
 
-This method calls the L<clear_system_settings|SPVM::Builder::Config::Linker/"clear_system_settings"> method of the L<SPVM::Builder::Config::Linker> class to clear linker settings, and then clears the following compiler settings by setting them to C<[]>.
+This method calls the L<clear_system_fields|SPVM::Builder::Config::Linker/"clear_system_fields"> method of the L<SPVM::Builder::Config::Linker> class to clear linker settings, and then clears the following compiler settings by setting them to C<[]>.
 
 =over 2
 

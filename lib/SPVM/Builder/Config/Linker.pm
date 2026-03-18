@@ -354,7 +354,7 @@ sub get_resource_names {
   return \@resource_names;
 }
 
-sub clear_system_settings {
+sub clear_system_fields {
   my $self = shift;
   
   $self->dynamic_lib_ldflags([]);
@@ -948,9 +948,9 @@ Gets a resource loaded by L</"use_resource"> method given a resource name, and r
 
 Returns resource names loaded by L</"use_resource"> method.
 
-=head2 clear_system_settings
+=head2 clear_system_fields
 
-  $config->clear_system_settings;
+  $config->clear_system_fields;
 
 Clears the fields that are set by default for a specific environment.
 

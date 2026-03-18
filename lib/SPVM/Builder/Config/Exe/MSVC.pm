@@ -21,7 +21,7 @@ sub apply {
   my $ld = $options->{ld} // 'link.exe';
   
   # --- Initialize Global Config ---
-  $self->clear_system_settings;
+  $self->clear_system_fields;
   $self->cc($cc);
   $self->long_option_sep(':');
   
@@ -50,7 +50,7 @@ sub apply {
   });
   
   # Clear system settings before other rules
-  $self->compile_match_any(sub { $_[0]->clear_system_settings });
+  $self->compile_match_any(sub { $_[0]->clear_system_fields });
 
   # 2. Common C/C++ flags (when dialect is undefined)
   # Use '+' to preserve existing flags (equivalent to push)
