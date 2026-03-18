@@ -18,8 +18,7 @@ my $base_fields = [qw(
   force
   mode
   config_global
-  
-  _loaded_config_files
+  loaded_config_files
 )];
 
 # Accessors generation for base fields
@@ -57,8 +56,8 @@ sub new {
     $self->category('native');
   }
 
-  unless (exists $self->{_loaded_config_files}) {
-    $self->{_loaded_config_files} = [];
+  unless (exists $self->{loaded_config_files}) {
+    $self->{loaded_config_files} = [];
   }
   
   # is_jit, is_resource are normally set via constructor if needed
@@ -113,7 +112,7 @@ sub load_config {
     confess("The config file must be an SPVM::Builder::Config::Linker object.");
   }
   
-  push @{$config->get_loaded_config_files}, $config_file;
+  push @{$config->loaded_config_files}, $config_file;
   
   $config->file($config_file);
   
@@ -178,12 +177,6 @@ sub load_base_config {
   my $config = $self->load_mode_config($config_file, undef, $args);
   
   return $config;
-}
-
-sub get_loaded_config_files {
-  my $self = shift;
-  
-  return $self->{_loaded_config_files};
 }
 
 sub clone {
@@ -345,6 +338,10 @@ If L<spvmcc> command generates an excutable file, this field is set to an L<SPVM
 
 This field is automatically set and users nomally do not change it.
 
+=head2 loaded_config_files
+
+Returns the config files loaded by L</"load_config"> method.
+
 =head1 Class Methods
 
 =head2 new
@@ -380,10 +377,6 @@ Loads a config file given a config file path and an array refernce containing L<
 Examples:
 
   my $config = $config->load_config(__FILE__);
-
-=head2 get_loaded_config_files
-
-Returns the config files loaded by L</"load_config"> method.
 
 =head2 load_base_config
 

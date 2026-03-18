@@ -506,8 +506,8 @@ sub compile_source_file {
   
   $config->config_global($config_global);
   
-  my $config_global_loaded_config_files = $config_global->get_loaded_config_files;
-  my $config_loaded_config_files = $config->get_loaded_config_files;
+  my $config_global_loaded_config_files = $config_global->loaded_config_files;
+  my $config_loaded_config_files = $config->loaded_config_files;
   my $need_generate_input_files = [$source_file, @$config_loaded_config_files, @$config_global_loaded_config_files];
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $self->force || $config->force,
