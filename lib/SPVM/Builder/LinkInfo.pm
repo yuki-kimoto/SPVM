@@ -118,7 +118,7 @@ sub create_ldflags {
   
   push @merged_ldflags, grep { length $_ } @{$config->copyright_print_ldflags};
   
-  push @merged_ldflags, grep { length $_ } @{$config->debug_ldflags};
+  push @merged_ldflags, grep { length $_ } @{$config->warn_ldflags};
   
   # libbcrypt_ldflags
   # Add libbcrypt_ldflags only when the output type is 'exe'

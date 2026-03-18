@@ -17,7 +17,7 @@ my $fields = [qw(
   output_type
   resource_loader_config
   copyright_print_ldflags
-  debug_ldflags
+  warn_ldflags
   dynamic_lib_ldflags
   thread_ldflags
   libbcrypt_ldflags
@@ -154,8 +154,8 @@ sub new {
     $self->copyright_print_ldflags([]);
   }
 
-  unless (exists $self->{debug_ldflags}) {
-    $self->debug_ldflags([]);
+  unless (exists $self->{warn_ldflags}) {
+    $self->warn_ldflags([]);
   }
 
   unless (exists $self->{lib_dir_option_name}) {
@@ -360,10 +360,11 @@ sub clear_system_settings {
   $self->dynamic_lib_ldflags([]);
   $self->thread_ldflags([]);
   $self->libcpp_ldflags([]);
+  $self->libbcrypt_ldflags([]);
   $self->dynamic_lib_libcpp_ldflags([]);
   $self->exe_libcpp_ldflags([]);
   $self->copyright_print_ldflags([]);
-  $self->debug_ldflags([]);
+  $self->warn_ldflags([]);
 }
 
 sub use_spvm_archive {
@@ -577,12 +578,12 @@ If thie field is C<dynamic_lib>, the output file is a dynamic link library.
 
 Gets and sets the C<copyright_print_ldflags> field, an array reference containing linker arguments to control the printing of the copyright banner or logo (e.g., C<-nologo> in MSVC linker).
 
-=head2 debug_ldflags
+=head2 warn_ldflags
 
-  my $debug_ldflags = $config->debug_ldflags;
-  $config->debug_ldflags($debug_ldflags);
+  my $warn_ldflags = $config->warn_ldflags;
+  $config->warn_ldflags(['-Wl,--warn-common']);
 
-Gets and sets C<debug_ldflags> field, an array reference containing arguments of the linker L</"ld"> for debug information.
+Gets and sets the C<warn_ldflags> field, an array reference containing linker arguments for warning settings.
 
 =head2 lib_dir_option_name
 
@@ -709,7 +710,7 @@ If C<$Config{gccversion}> contains C<clang>, L</"ld"> field are set to C<clang++
 
   []
 
-=item * L</"debug_ldflags">
+=item * L</"warn_ldflags">
 
   []
 
@@ -967,13 +968,15 @@ The following fields are set to C<[]>.
 
 =item * L</"copyright_print_ldflags">
 
-=item * L</"debug_ldflags">
+=item * L</"warn_ldflags">
 
 =item * L</"libcpp_ldflags">
 
 =item * L</"dynamic_lib_libcpp_ldflags">
 
 =item * L</"exe_libcpp_ldflags">
+
+=item * L</"libbcrypt_ldflags">
 
 =back
 
