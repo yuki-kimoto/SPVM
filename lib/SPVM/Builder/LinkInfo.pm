@@ -103,23 +103,29 @@ sub create_ldflags {
   my $ldflags = $config->ldflags;
   push @merged_ldflags, grep { length $_ } @{$config->ldflags};
   
+  my $field_names = $config->get_ld_system_field_names;
   my $output_type = $config->output_type;
-  if ($output_type eq 'dynamic_lib') {
-    push @merged_ldflags, grep { length $_ } @{$config->dynamic_lib_ldflags};
-    push @merged_ldflags, grep { length $_ } @{$config->dynamic_lib_libcpp_ldflags};
+  for my $field_name (@$field_names) {
+    
+    my $add;
+    if ($field_name =~ /^dynamic_lib_(?:.+_)?ldflags$/) {
+      if ($output_type eq 'dynamic_lib') {
+        $add = 1;
+      }
+    }
+    elsif ($field_name =~ /^exe_(?:.+_)?ldflags$/) {
+      if ($output_type eq 'exe') {
+        $add = 1;
+      }
+    }
+    else {
+      $add = 1;
+    }
+    
+    if ($add) {
+      push @merged_ldflags, grep { length $_ } @{$config->$field_name};
+    }
   }
-  elsif ($output_type eq 'exe') {
-    push @merged_ldflags, grep { length $_ } @{$config->exe_libcpp_ldflags};
-    push @merged_ldflags, grep { length $_ } @{$config->exe_libbcrypt_ldflags};
-  }
-  
-  push @merged_ldflags, grep { length $_ } @{$config->thread_ldflags};
-  
-  push @merged_ldflags, grep { length $_ } @{$config->libcpp_ldflags};
-  
-  push @merged_ldflags, grep { length $_ } @{$config->copyright_print_ldflags};
-  
-  push @merged_ldflags, grep { length $_ } @{$config->warn_ldflags};
   
   my $lib_dirs = $config->lib_dirs;
   push @merged_ldflags, map { $config->create_option($config->lib_dir_option_name, $_) } grep { length $_ } @$lib_dirs;
