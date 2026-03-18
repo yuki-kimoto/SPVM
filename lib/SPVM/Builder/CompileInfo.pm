@@ -135,7 +135,7 @@ sub create_ccflags {
   
   push @compile_command_args, grep { length $_ } @{$config->compiler_ccflags};
   
-  push @compile_command_args, grep { length $_ } @{$config->runtime_ccflags};
+  push @compile_command_args, grep { length $_ } @{$config->cpp_exception_handling_ccflags};
   
   push @compile_command_args, grep { length $_ } @{$config->ld_ccflags};
   

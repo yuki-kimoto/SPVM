@@ -72,7 +72,7 @@ sub apply {
   # 4. C++ specific rules
   $self->compile_match({language => 'cpp', dialect => undef}, {
     '+language_ccflags' => ['-TP'],
-    '+runtime_ccflags'  => ['-EHsc'],
+    '+cpp_exception_handling_ccflags'  => ['-EHsc'],
   });
 
   # Ensure C++14 as baseline if specified as c++11

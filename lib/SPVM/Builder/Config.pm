@@ -24,7 +24,7 @@ my $cc_fields = [qw(
   language_ccflags
   arch_ccflags
   compiler_ccflags
-  runtime_ccflags
+  cpp_exception_handling_ccflags
   ld_ccflags
   dynamic_lib_ccflags
   thread_ccflags
@@ -126,13 +126,13 @@ sub new {
     $self->compiler_ccflags([]);
   }
 
-  # runtime_ccflags
-  unless (exists $self->{runtime_ccflags}) {
+  # cpp_exception_handling_ccflags
+  unless (exists $self->{cpp_exception_handling_ccflags}) {
     if ($^O eq 'MSWin32') {
-      $self->runtime_ccflags(['-D__USE_MINGW_ANSI_STDIO']);
+      $self->cpp_exception_handling_ccflags(['-D__USE_MINGW_ANSI_STDIO']);
     }
     else {
-      $self->runtime_ccflags([]);
+      $self->cpp_exception_handling_ccflags([]);
     }
   }
 
@@ -288,7 +288,7 @@ sub clear_system_settings {
   $self->language_ccflags([]);
   $self->arch_ccflags([]);
   $self->compiler_ccflags([]);
-  $self->runtime_ccflags([]);
+  $self->cpp_exception_handling_ccflags([]);
   $self->ld_ccflags([]);
   $self->thread_ccflags([]);
 }
@@ -726,12 +726,15 @@ Gets and sets C<arch_ccflags> field, an array reference containing arguments of 
 
 Gets and sets C<compiler_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for compiler behavior.
 
-=head2 runtime_ccflags
+=head2 cpp_exception_handling
 
-  my $runtime_ccflags = $config->runtime_ccflags;
-  $config->runtime_ccflags($runtime_ccflags);
+  my $cpp_exception_handling = $config->cpp_exception_handling;
+  $config->cpp_exception_handling(1);
 
-Gets and sets C<runtime_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for runtime behavior.
+Gets and sets the C<cpp_exception_handling> field, a boolean value that indicates whether C++ exception handling is enabled.
+
+If this value is true, the compiler is configured to support C++ exceptions (e.g., C<-EHsc> in MSVC, C<-fexceptions> in GCC). 
+Defaults to undef.
 
 =head2 ld_ccflags
 
@@ -793,7 +796,7 @@ Field Default Values:
 
   []
 
-=item * L</"runtime_ccflags">
+=item * L</"cpp_exception_handling_ccflags">
 
 Windows:
 
@@ -967,7 +970,7 @@ This method calls the L<clear_system_settings|SPVM::Builder::Config::Linker/"cle
 
 =item * L</"compiler_ccflags">
 
-=item * L</"runtime_ccflags">
+=item * L</"cpp_exception_handling_ccflags">
 
 =item * L</"ld_ccflags">
 
