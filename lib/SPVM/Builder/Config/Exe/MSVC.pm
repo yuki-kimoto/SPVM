@@ -55,13 +55,15 @@ sub apply {
   # 2. Common C/C++ flags (when dialect is undefined)
   # Use '+' to preserve existing flags (equivalent to push)
   $self->compile_match({language => qr/^(c|cpp)$/, dialect => undef}, {
-    '+function_level_linking_ccflags' => ['-utf-8', '-Gy'],
-    '+library_linkage_ccflags'       => ['-MT'],
+    'function_level_linking_ccflags' => ['-Gy'],
+    'source_encoding_ccflags' => ['-utf-8'],
+    'library_linkage_ccflags'       => ['-MT'],
+    'warn_ccflags'                  => ['-W3'],
   });
 
   # 3. C specific rules
   $self->compile_match({language => 'c', dialect => undef}, {
-    '+language_ccflags' => ['-TC'],
+    'language_ccflags' => ['-TC'],
   });
   
   # Ensure C11 as baseline if unspecified or c99
@@ -71,8 +73,8 @@ sub apply {
 
   # 4. C++ specific rules
   $self->compile_match({language => 'cpp', dialect => undef}, {
-    '+language_ccflags' => ['-TP'],
-    '+cpp_exception_handling_ccflags'  => ['-EHsc'],
+    'language_ccflags' => ['-TP'],
+    'cpp_exception_handling_ccflags'  => ['-EHsc'],
   });
 
   # Ensure C++14 as baseline if specified as c++11
