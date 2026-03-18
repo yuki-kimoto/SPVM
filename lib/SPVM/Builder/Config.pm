@@ -24,6 +24,7 @@ my $cc_fields = [qw(
   language_ccflags
   arch_ccflags
   warn_ccflags
+  debug_info_ccflags
   source_encoding_ccflags
   function_level_linking_ccflags
   cpp_exception_handling_ccflags
@@ -126,6 +127,11 @@ sub new {
   # warn_ccflags
   unless (exists $self->{warn_ccflags}) {
     $self->warn_ccflags([]);
+  }
+  
+  # debug_info_ccflags
+  unless (exists $self->{debug_info_ccflags}) {
+    $self->debug_info_ccflags([]);
   }
   
   # source_encoding_ccflags
@@ -299,6 +305,7 @@ sub get_clear_system_field_names {
     language_ccflags
     arch_ccflags
     warn_ccflags
+    debug_info_ccflags
     source_encoding_ccflags
     function_level_linking_ccflags
     cpp_exception_handling_ccflags
@@ -751,6 +758,13 @@ Gets and sets C<arch_ccflags> field, an array reference containing arguments of 
 
 Gets and sets the C<warn_ccflags> field, an array reference containing compiler arguments for warning settings.
 
+=head2 debug_info_ccflags
+
+  my $debug_info_ccflags = $config->debug_info_ccflags;
+  $config->debug_info_ccflags(['-g']);
+
+Gets and sets the C<debug_info_ccflags> field, an array reference containing compiler arguments for generating debug information.
+
 =head2 source_encoding_ccflags
 
   my $source_encoding_ccflags = $config->source_encoding_ccflags;
@@ -836,6 +850,10 @@ Field Default Values:
   []
 
 =item * L</"warn_ccflags">
+
+  []
+
+=item * L</"debug_info_ccflags">
 
   []
 
@@ -1020,6 +1038,8 @@ This method calls the L<clear_system_fields|SPVM::Builder::Config::Linker/"clear
 =item * L</"arch_ccflags">
 
 =item * L</"warn_ccflags">
+
+=item * L</"debug_info_ccflags">
 
 =item * L</"source_encoding_ccflags">
 
