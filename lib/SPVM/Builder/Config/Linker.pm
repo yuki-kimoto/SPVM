@@ -80,7 +80,7 @@ sub new {
 
   unless (exists $self->{dynamic_lib_ldflags}) {
     if ($^O eq 'MSWin32') {
-      $self->dynamic_lib_ldflags(['-mdll', '-s']);
+      $self->dynamic_lib_ldflags(['-mdll']);
     }
     else {
       $self->dynamic_lib_ldflags(['-shared']);
@@ -169,7 +169,7 @@ sub new {
 
   # symbol_strip_ldflags
   unless (exists $self->{symbol_strip_ldflags}) {
-    $self->symbol_strip_ldflags([]);
+    $self->symbol_strip_ldflags(['-s']);
   }
 
   # libgcc_ldflags
@@ -866,6 +866,12 @@ If C<$Config{gccversion}> contains C<clang>, L</"ld"> field are set to C<clang++
 
 =item * L</"symbol_strip_ldflags">
 
+Windows:
+
+  ["-s"]
+
+Other OSs:
+
   []
 
 =item * L</"libgcc_ldflags">
@@ -904,7 +910,7 @@ If C<$Config{gccversion}> contains C<clang>, L</"ld"> field are set to C<clang++
 
 Windows:
 
-  ["-mdll", "-s"]
+  ["-mdll"]
 
 Other OSs:
 
