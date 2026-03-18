@@ -45,7 +45,7 @@ sub apply {
     cc                    => 'cl',
     long_option_sep       => ':',
     cc_output_option_name => '-Fo',
-    warn_ccflags          => ['-nologo'],
+    copyright_print_ccflags          => ['-nologo'],
     optimize              => $self->optimize // '-O2',
   });
   

@@ -20,7 +20,7 @@ my $cc_fields = [qw(
   language
   dialect
   ext
-  warn_ccflags
+  copyright_print_ccflags
   language_ccflags
   arch_ccflags
   compiler_ccflags
@@ -106,9 +106,9 @@ sub new {
     $self->before_compile_cbs([]);
   }
 
-  # warn_ccflags
-  unless (exists $self->{warn_ccflags}) {
-    $self->warn_ccflags([]);
+  # copyright_print_ccflags
+  unless (exists $self->{copyright_print_ccflags}) {
+    $self->copyright_print_ccflags([]);
   }
 
   # language_ccflags
@@ -284,7 +284,7 @@ sub clear_system_settings {
   
   $self->dynamic_lib_ccflags([]);
   $self->thread_ccflags([]);
-  $self->warn_ccflags([]);
+  $self->copyright_print_ccflags([]);
   $self->language_ccflags([]);
   $self->arch_ccflags([]);
   $self->compiler_ccflags([]);
@@ -698,12 +698,12 @@ Objective-C++ language
 
 =back
 
-=head2 warn_ccflags
+=head2 copyright_print_ccflags
 
-  my $warn_ccflags = $config->warn_ccflags;
-  $config->warn_ccflags($warn_ccflags);
+  my $copyright_print_ccflags = $config->copyright_print_ccflags;
+  $config->copyright_print_ccflags(['-nologo']);
 
-Gets and sets C<warn_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for warning settings.
+Gets and sets the C<copyright_print_ccflags> field, an array reference containing compiler arguments to control the printing of the copyright banner or logo (e.g., C<-nologo> in MSVC).
 
 =head2 language_ccflags
 
@@ -782,7 +782,7 @@ Field Default Values:
 
   "-O3 -DNDEBUG"
 
-=item * L</"warn_ccflags">
+=item * L</"copyright_print_ccflags">
 
   []
 
@@ -964,7 +964,7 @@ This method calls the L<clear_system_settings|SPVM::Builder::Config::Linker/"cle
 
 =item * L</"thread_ccflags">
 
-=item * L</"warn_ccflags">
+=item * L</"copyright_print_ccflags">
 
 =item * L</"language_ccflags">
 
