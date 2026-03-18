@@ -66,46 +66,52 @@ sub compile_match {
   $self->add_before_compile_cb(sub {
     my ($config) = @_;
     
-    my $match = 1;
-    if ($condition) {
-      for my $name (keys %$condition) {
-        my $condition_value = $condition->{$name};
-        my $config_value = $config->{$name};
-        
-        if (ref $condition_value eq 'Regexp') {
-          # Match by regex if the key exists and the value is defined
-          unless (defined $config_value && $config_value =~ $condition_value) {
+    &_match_apply($config, $condition, $match_config);
+  });
+}
+
+sub _match_apply {
+  my ($config, $condition, $match_config) = @_;
+  
+  my $match = 1;
+  if ($condition) {
+    for my $name (keys %$condition) {
+      my $condition_value = $condition->{$name};
+      my $config_value    = $config->{$name};
+      
+      if (ref $condition_value eq 'Regexp') {
+        # Match by regex if the key exists and the value is defined
+        unless (defined $config_value && $config_value =~ $condition_value) {
+          $match = 0;
+          last;
+        }
+      }
+      else {
+        # Match by literal equality
+        if (defined $condition_value) {
+          # Both must be defined and equal
+          unless (defined $config_value && $config_value eq $condition_value) {
             $match = 0;
             last;
           }
         }
         else {
-          # Match by literal equality
-          if (defined $condition_value) {
-            # Both must be defined and equal
-            unless (defined $config_value && $config_value eq $condition_value) {
-              $match = 0;
-              last;
-            }
-          }
-          else {
-            # Both must be undefined
-            if (defined $config_value) {
-              $match = 0;
-              last;
-            }
+          # Both must be undefined
+          if (defined $config_value) {
+            $match = 0;
+            last;
           }
         }
       }
     }
-    
-    # Overwrite config values if all conditions match
-    if ($match) {
-      for my $name (keys %$match_config) {
-        $config->{$name} = $match_config->{$name};
-      }
+  }
+  
+  # Overwrite config values if all conditions match
+  if ($match) {
+    for my $name (keys %$match_config) {
+      $config->{$name} = $match_config->{$name};
     }
-  });
+  }
 }
 
 sub match_any { shift->compile_match(undef, @_) }
