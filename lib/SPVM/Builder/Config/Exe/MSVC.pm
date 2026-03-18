@@ -56,7 +56,7 @@ sub apply {
   # Use '+' to preserve existing flags (equivalent to push)
   $self->compile_match({language => qr/^(c|cpp)$/, dialect => undef}, {
     '+compiler_ccflags' => ['-utf-8', '-Gy'],
-    '+ld_ccflags'       => ['-MT'],
+    '+library_linkage_ccflags'       => ['-MT'],
   });
 
   # 3. C specific rules

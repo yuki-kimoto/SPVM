@@ -25,7 +25,7 @@ my $cc_fields = [qw(
   arch_ccflags
   compiler_ccflags
   cpp_exception_handling_ccflags
-  ld_ccflags
+  library_linkage_ccflags
   dynamic_lib_ccflags
   thread_ccflags
   cc_input_dir
@@ -136,9 +136,9 @@ sub new {
     }
   }
 
-  # ld_ccflags
-  unless (exists $self->{ld_ccflags}) {
-    $self->ld_ccflags([]);
+  # library_linkage_ccflags
+  unless (exists $self->{library_linkage_ccflags}) {
+    $self->library_linkage_ccflags([]);
   }
 
   # cc_output_option_name
@@ -289,7 +289,7 @@ sub clear_system_settings {
   $self->arch_ccflags([]);
   $self->compiler_ccflags([]);
   $self->cpp_exception_handling_ccflags([]);
-  $self->ld_ccflags([]);
+  $self->library_linkage_ccflags([]);
   $self->thread_ccflags([]);
 }
 
@@ -736,12 +736,14 @@ Gets and sets the C<cpp_exception_handling> field, a boolean value that indicate
 If this value is true, the compiler is configured to support C++ exceptions (e.g., C<-EHsc> in MSVC, C<-fexceptions> in GCC). 
 Defaults to undef.
 
-=head2 ld_ccflags
+=head2 library_linkage_ccflags
 
-  my $ld_ccflags = $config->ld_ccflags;
-  $config->ld_ccflags($ld_ccflags);
+  my $library_linkage_ccflags = $config->library_linkage_ccflags;
+  $config->library_linkage_ccflags(['-MT']);
 
-Gets and sets C<ld_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for linker instructions.
+Gets and sets the C<library_linkage_ccflags> field, an array reference containing compiler arguments to specify the library linkage (e.g., static or dynamic linking).
+
+These flags are passed to the compiler L</"cc"> to determine how libraries (such as the C runtime library) are linked. For example, C<-MT> or C<-MD> in MSVC.
 
 =head2 cc_output_option_name
 
@@ -806,7 +808,7 @@ Other OSs:
 
   []
 
-=item * L</"ld_ccflags">
+=item * L</"library_linkage_ccflags">
 
   []
 
@@ -972,7 +974,7 @@ This method calls the L<clear_system_settings|SPVM::Builder::Config::Linker/"cle
 
 =item * L</"cpp_exception_handling_ccflags">
 
-=item * L</"ld_ccflags">
+=item * L</"library_linkage_ccflags">
 
 =back
 

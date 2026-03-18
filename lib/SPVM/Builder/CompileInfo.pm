@@ -137,7 +137,7 @@ sub create_ccflags {
   
   push @compile_command_args, grep { length $_ } @{$config->cpp_exception_handling_ccflags};
   
-  push @compile_command_args, grep { length $_ } @{$config->ld_ccflags};
+  push @compile_command_args, grep { length $_ } @{$config->library_linkage_ccflags};
   
   my $output_type = $config->output_type;
   
