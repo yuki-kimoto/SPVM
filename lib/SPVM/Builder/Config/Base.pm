@@ -9,16 +9,16 @@ use File::Basename 'dirname', 'fileparse';
 
 # Base Fields
 my $base_fields = [qw(
-  class_name
+  mode
   file
+  class_name
   category
-  is_jit
-  is_resource
   quiet
   force
-  mode
-  config_global
+  is_jit
+  is_resource
   loaded_config_files
+  config_global
 )];
 
 # Accessors generation for base fields
@@ -332,11 +332,11 @@ Gets and sets C<mode> field.
   my $config_global = $config->config_global;
   $config->config_global($config_global);
 
-Gets and sets C<config_global> field.
+Gets and sets the C<config_global> field, which provides global compilation rules.
 
-If L<spvmcc> command generates an excutable file, this field is set to an L<SPVM::Builder::Config::Exe> object.
+This field is an L<SPVM::Builder::Config::Global> object (like L<SPVM::Builder::Config::Exe>) that stores shared settings used across multiple compilation units.
 
-This field is automatically set and users nomally do not change it.
+For example, when the L<spvmcc> command generates an executable file, it sets this field to an L<SPVM::Builder::Config::Exe> object. This allows individual resource configurations to inherit or refer to global flags, such as optimization levels or common library paths, defined in the executable's main configuration.
 
 =head2 loaded_config_files
 
