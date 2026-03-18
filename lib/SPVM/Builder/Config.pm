@@ -16,11 +16,19 @@ my $cc_fields = [qw(
   ccflags
   defines
   optimize
-  std
   language
   dialect
+  std
   ext
+  include_dirs
+  source_files
+  spvm_core_include_dir
+  native_include_dir
+  native_src_dir
+  cc_output_option_name
   copyright_print_ccflags
+  cc_input_dir
+  cc_output_dir
   language_ccflags
   arch_ccflags
   warn_ccflags
@@ -31,15 +39,7 @@ my $cc_fields = [qw(
   library_linkage_ccflags
   dynamic_lib_ccflags
   thread_ccflags
-  cc_input_dir
-  cc_output_dir
-  include_dirs
-  spvm_core_include_dir
-  native_include_dir
-  native_src_dir
-  source_files
   before_compile_cbs
-  cc_output_option_name
 )];
 
 has($cc_fields);
