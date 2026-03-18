@@ -414,7 +414,7 @@ sub get_resource_names {
   return \@resource_names;
 }
 
-sub get_clear_system_field_names {
+sub get_system_field_names {
   my $self = shift;
   
   return [qw(
@@ -442,7 +442,7 @@ sub get_clear_system_field_names {
 sub clear_system_fields {
   my $self = shift;
   
-  my $field_names = $self->get_clear_system_field_names;
+  my $field_names = $self->get_system_field_names;
   
   for my $field_name (@$field_names) {
     $self->$field_name([]);

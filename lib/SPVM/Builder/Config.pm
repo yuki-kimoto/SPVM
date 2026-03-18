@@ -295,7 +295,7 @@ sub add_before_compile_cb {
   push @{$self->{before_compile_cbs}}, @before_compile_cbs;
 }
 
-sub get_clear_system_field_names {
+sub get_system_field_names {
   my $self = shift;
   
   return [qw(
@@ -318,7 +318,7 @@ sub clear_system_fields {
   
   $self->SUPER::clear_system_fields;
   
-  my $field_names = $self->get_clear_system_field_names;
+  my $field_names = $self->get_system_field_names;
   
   for my $field_name (@$field_names) {
     $self->$field_name([]);
