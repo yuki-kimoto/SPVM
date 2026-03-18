@@ -16,7 +16,7 @@ my $fields = [qw(
   ld_optimize
   output_type
   resource_loader_config
-  warn_ldflags
+  copyright_print_ldflags
   debug_ldflags
   dynamic_lib_ldflags
   thread_ldflags
@@ -150,8 +150,8 @@ sub new {
     $self->output_type('dynamic_lib');
   }
 
-  unless (exists $self->{warn_ldflags}) {
-    $self->warn_ldflags([]);
+  unless (exists $self->{copyright_print_ldflags}) {
+    $self->copyright_print_ldflags([]);
   }
 
   unless (exists $self->{debug_ldflags}) {
@@ -362,7 +362,7 @@ sub clear_system_settings {
   $self->libcpp_ldflags([]);
   $self->dynamic_lib_libcpp_ldflags([]);
   $self->exe_libcpp_ldflags([]);
-  $self->warn_ldflags([]);
+  $self->copyright_print_ldflags([]);
   $self->debug_ldflags([]);
 }
 
@@ -578,12 +578,12 @@ If thie field is C<exe>, the output file is an executable file.
 
 If thie field is C<dynamic_lib>, the output file is a dynamic link library.
 
-=head2 warn_ldflags
+=head2 copyright_print_ldflags
 
-  my $warn_ldflags = $config->warn_ldflags;
-  $config->warn_ldflags($warn_ldflags);
+  my $copyright_print_ldflags = $config->copyright_print_ldflags;
+  $config->copyright_print_ldflags(['-nologo']);
 
-Gets and sets C<warn_ldflags> field, an array reference containing arguments of the linker L</"ld"> for warning settings.
+Gets and sets the C<copyright_print_ldflags> field, an array reference containing linker arguments to control the printing of the copyright banner or logo (e.g., C<-nologo> in MSVC linker).
 
 =head2 debug_ldflags
 
@@ -713,7 +713,7 @@ If C<$Config{gccversion}> contains C<clang>, L</"ld"> field are set to C<clang++
 
   "dynamic_lib"
 
-=item * L</"warn_ldflags">
+=item * L</"copyright_print_ldflags">
 
   []
 
@@ -973,7 +973,7 @@ The following fields are set to C<[]>.
 
 =item * L</"dynamic_lib_ldflags">
 
-=item * L</"warn_ldflags">
+=item * L</"copyright_print_ldflags">
 
 =item * L</"debug_ldflags">
 

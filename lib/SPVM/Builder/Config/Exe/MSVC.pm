@@ -35,7 +35,7 @@ sub apply {
   $self->ld_optimize('-OPT:REF,ICF');
   $self->lib_dir_option_name('-LIBPATH');
   $self->bcrypt_ldflags(['bcrypt.lib']);
-  $self->warn_ldflags(['-nologo']);
+  $self->copyright_print_ldflags(['-nologo']);
 
   # --- Rules for each Config ---
 
