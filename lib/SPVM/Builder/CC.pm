@@ -177,9 +177,8 @@ sub compile_source_file {
   my $config_global = $config->config_global;
   
   if ($config_global) {
-    my $before_compile_cbs_global = $config_global->before_compile_cbs_global;
-    for my $before_compile_cb_global (@$before_compile_cbs_global) {
-      $before_compile_cb_global->($compile_info->config, $compile_info);
+    for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
+      $before_compile_cb->($compile_info->config, $compile_info);
     }
   }
   

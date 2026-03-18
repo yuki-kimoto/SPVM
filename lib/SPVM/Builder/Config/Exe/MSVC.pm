@@ -41,7 +41,7 @@ sub apply {
   $self->warn_ldflags(['-nologo']);
   
   # Set compiler callback
-  $self->add_before_compile_cb_global(sub {
+  $self->add_before_compile_cb(sub {
     my ($config) = @_;
     
     $config->config_global($self);
@@ -66,7 +66,7 @@ sub _apply_msvc_settings_to_config {
   
   $config->warn_ccflags(['-nologo']);
   
-  $config->optimize($self->optimize_global // '-O2');
+  $config->optimize($self->optimize // '-O2');
   
   $config->cc_output_option_name('-Fo');
   

@@ -12,12 +12,12 @@ use SPVM::Builder::Accessor 'has';
 
 # Fields
 my $fields = [qw(
-  before_compile_cbs_global
+  before_compile_cbs
 )];
 
 has($fields);
 
-sub optimize_global {
+sub optimize {
   my $self = shift;
   
   if (@_) {
@@ -26,7 +26,7 @@ sub optimize_global {
     return $self;
   }
   else {
-    confess "The optimize_global method only supports the setter. Use match methods to configure dynamic settings.";
+    confess "The optimize method only supports the setter. Use match methods to configure dynamic settings.";
   }
 }
 
@@ -39,16 +39,19 @@ sub option_names {
 sub new {
   my $class = shift;
   
-  my $self = $class->SUPER::new(@_);
+  my $self = $class->SUPER::new(
+    before_compile_cbs => [],
+    @_
+  );
   
   return $self;
 }
 
 # Instance Methods
-sub add_before_compile_cb_global {
-  my ($self, @before_compile_cbs_global) = @_;
+sub add_before_compile_cb {
+  my ($self, @before_compile_cbs) = @_;
   
-  push @{$self->{before_compile_cbs_global}}, @before_compile_cbs_global;
+  push @{$self->{before_compile_cbs}}, @before_compile_cbs;
 }
 
 sub match {
@@ -63,7 +66,7 @@ sub match {
   SPVM::Builder::Config->new_empty(%$match_config);
   
   # Add callback to apply settings before compilation
-  $self->add_before_compile_cb_global(sub {
+  $self->add_before_compile_cb(sub {
     my ($config) = @_;
     
     my $match = 1;
@@ -140,18 +143,18 @@ This is because the compiler flags are used to compile SPVM core source files an
 
 =head1 Fields
 
-=head2 before_compile_cbs_global
+=head2 before_compile_cbs
 
-  my $before_compile_cbs_global = $config_global->before_compile_cbs_global;
-  $config_global->before_compile_cbs_global($before_compile_cbs_global);
+  my $before_compile_cbs = $config_global->before_compile_cbs;
+  $config_global->before_compile_cbs($before_compile_cbs);
 
-Gets and sets the C<before_compile_cbs_global> field, an array reference of callbacks that work globally called just before the compile command L</"cc"> is executed.
+Gets and sets the C<before_compile_cbs> field, an array reference of callbacks that work globally called just before the compile command L</"cc"> is executed.
 
 This affects all compilations.
 
-=head2 optimize_global
+=head2 optimize
 
-  $config->optimize_global($optimize, $condition);
+  $config->optimize($optimize, $condition);
 
 Sets C<optimize> field for the configs that match the condition C<$condition>.
 
@@ -162,10 +165,10 @@ If C<$condition> is not defined, the optimization setting is applied to all conf
 Examples:
 
   # Set -O3 for all configs
-  $config->optimize_global('-O3');
+  $config->optimize('-O3');
   
   # Set -O2 for native category configs
-  $config->optimize_global('-O2', {category => 'native'});
+  $config->optimize('-O2', {category => 'native'});
 
 =head1 Methods
 
@@ -185,7 +188,7 @@ Field Default Values:
 
   "exe"
 
-=item * L</"before_compile_cbs_global">
+=item * L</"before_compile_cbs">
 
   []
 
@@ -195,15 +198,15 @@ Field Default Values:
 
 =back
 
-=head2 add_before_compile_cb_global
+=head2 add_before_compile_cb
 
-  $config_global->add_before_compile_cb_global(@before_compile_cbs_global);
+  $config_global->add_before_compile_cb(@before_compile_cbs);
 
-Adds @before_compile_cbs_global to the end of L</"before_compile_cbs_global"> field.
+Adds @before_compile_cbs to the end of L</"before_compile_cbs"> field.
 
 Examples:
 
-  $config_global->add_before_compile_cb_global(sub {
+  $config_global->add_before_compile_cb(sub {
     my ($config, $compile_info) = @_;
     
     my $cc_command = $compile_info->to_command;
