@@ -15,20 +15,17 @@ sub apply {
   my ($self, $options) = @_;
   
   $options //= {};
-  
   $self->setup_env($options);
   
   my $cc = $options->{cc} // 'cl';
   my $ld = $options->{ld} // 'link.exe';
   
-  # Clear and set optimization
+  # --- Initialize Global Config ---
   $self->clear_system_settings;
-  
-  # Common cc and ld
-  $self->cc($cc); # For Extutils::CBuiler
+  $self->cc($cc);
   $self->long_option_sep(':');
   
-  # ld
+  # Linker settings
   $self->ld($ld);
   $self->static_lib_ldflag(["", ""]);
   $self->lib_prefix("");
@@ -39,68 +36,51 @@ sub apply {
   $self->lib_dir_option_name('-LIBPATH');
   $self->bcrypt_ldflags(['bcrypt.lib']);
   $self->warn_ldflags(['-nologo']);
-  
-  # Set compiler callback
-  $self->add_before_compile_cb(sub {
-    my ($config) = @_;
-    
-    $config->config_global($self);
-    
-    $self->_apply_msvc_settings_to_config($config);
+
+  # --- Rules for each Config ---
+
+  # 1. Common settings for all configs
+  $self->compile_match_any({
+    config_global         => $self,
+    cc                    => 'cl',
+    long_option_sep       => ':',
+    cc_output_option_name => '-Fo',
+    warn_ccflags          => ['-nologo'],
+    optimize              => $self->optimize // '-O2',
   });
   
+  # Clear system settings before other rules
+  $self->compile_match_any(sub { $_[0]->clear_system_settings });
+
+  # 2. Common C/C++ flags (when dialect is undefined)
+  # Use '+' to preserve existing flags (equivalent to push)
+  $self->compile_match({language => qr/^(c|cpp)$/, dialect => undef}, {
+    '+compiler_ccflags' => ['-utf-8', '-Gy'],
+    '+ld_ccflags'       => ['-MT'],
+  });
+
+  # 3. C specific rules
+  $self->compile_match({language => 'c', dialect => undef}, {
+    '+language_ccflags' => ['-TC'],
+  });
+  
+  # Ensure C11 as baseline if unspecified or c99
+  $self->compile_match({language => 'c', dialect => undef, std => qr/^(|c99)$/}, {
+    std => 'c11',
+  });
+
+  # 4. C++ specific rules
+  $self->compile_match({language => 'cpp', dialect => undef}, {
+    '+language_ccflags' => ['-TP'],
+    '+runtime_ccflags'  => ['-EHsc'],
+  });
+
+  # Ensure C++14 as baseline if specified as c++11
+  $self->compile_match({language => 'cpp', dialect => undef, std => 'c++11'}, {
+    std => 'c++14',
+  });
+
   return $self;
-}
-
-sub _apply_msvc_settings_to_config {
-  my ($self, $config) = @_;
-  
-  my $cc = 'cl';
-  my $ld = 'link.exe';
-  
-  $config->clear_system_settings;
-  
-  $config->long_option_sep(':');
-  
-  $config->cc($cc);
-  
-  $config->warn_ccflags(['-nologo']);
-  
-  $config->optimize($self->optimize // '-O2');
-  
-  $config->cc_output_option_name('-Fo');
-  
-  my $lang = $config->language // '';
-  my $dialect = $config->dialect;
-  
-  if (($lang eq 'c' || $lang eq 'cpp') && !defined $dialect) {
-    
-    # Common flags
-    push @{$config->compiler_ccflags}, '-utf-8', '-Gy';
-    push @{$config->ld_ccflags}, '-MT';
-    
-    my $std = $config->std // '';
-    
-    if ($lang eq 'c') {
-      # C compiler
-      push @{$config->language_ccflags}, '-TC';
-
-      # Ensure C11 as baseline if unspecified or c99
-      if (!length $std || (length $std && $std eq 'c99')) {
-        $config->std('c11');
-      }
-    }
-    elsif ($lang eq 'cpp') {
-      # C++ compiler
-      push @{$config->language_ccflags}, '-TP';
-      push @{$config->runtime_ccflags}, '-EHsc';
-
-      # Ensure C++14 as baseline if unspecified or c++11
-      if (length $std && $std eq 'c++11') {
-        $config->std('c++14');
-      }
-    }
-  }
 }
 
 sub setup_env {
