@@ -121,7 +121,7 @@ sub create_ccflags {
     push @compile_command_args, $config->create_option("-std", $std);
   }
   
-  my $field_names = $config->get_system_field_names;
+  my $field_names = $config->get_cc_system_field_names;
   my $output_type = $config->output_type;
 
   for my $field_name (@$field_names) {

@@ -295,7 +295,7 @@ sub add_before_compile_cb {
   push @{$self->{before_compile_cbs}}, @before_compile_cbs;
 }
 
-sub get_system_field_names {
+sub get_cc_system_field_names {
   my $self = shift;
   
   return [qw(
@@ -318,7 +318,7 @@ sub clear_system_fields {
   
   $self->SUPER::clear_system_fields;
   
-  my $field_names = $self->get_system_field_names;
+  my $field_names = $self->get_cc_system_field_names;
   
   for my $field_name (@$field_names) {
     $self->$field_name([]);
@@ -1023,33 +1023,51 @@ Clears the fields that are set by default for a specific environment.
 
 These fields might be updated in the future to support appropriate settings for different environments.
 
-This method calls the L<clear_system_fields|SPVM::Builder::Config::Linker/"clear_system_fields"> method of the L<SPVM::Builder::Config::Linker> class to clear linker settings, and then clears the following compiler settings by setting them to C<[]>.
+This method calls the L<clear_system_fields|SPVM::Builder::Config::Linker/"clear_system_fields"> method of the L<SPVM::Builder::Config::Linker> class to clear linker settings.
+
+Then it clears the compiler settings whose field names are returned by the L<get_cc_system_field_names|/"get_cc_system_field_names"> method by setting them to C<[]>.
+
+=cut
+
+=head2 get_cc_system_field_names
+
+  my $field_names = $config->get_cc_system_field_names;
+
+Returns the field names of the compiler settings that are set by default for a specific environment.
+
+These fields might be updated in the future to support appropriate settings for different environments.
+
+The field names returned by this method are used by the L<clear_system_fields|/"clear_system_fields"> method to clear the compiler settings.
+
+The following field names are returned:
 
 =over 2
 
-=item * L</"dynamic_lib_ccflags">
+=item * C<dynamic_lib_ccflags>
 
-=item * L</"thread_ccflags">
+=item * C<thread_ccflags>
 
-=item * L</"copyright_print_ccflags">
+=item * C<copyright_print_ccflags>
 
-=item * L</"language_ccflags">
+=item * C<language_ccflags>
 
-=item * L</"arch_ccflags">
+=item * C<arch_ccflags>
 
-=item * L</"warn_ccflags">
+=item * C<warn_ccflags>
 
-=item * L</"debug_info_ccflags">
+=item * C<debug_info_ccflags>
 
-=item * L</"source_encoding_ccflags">
+=item * C<source_encoding_ccflags>
 
-=item * L</"function_level_linking_ccflags">
+=item * C<function_level_linking_ccflags>
 
-=item * L</"cpp_exception_handling_ccflags">
+=item * C<cpp_exception_handling_ccflags>
 
-=item * L</"library_linkage_ccflags">
+=item * C<library_linkage_ccflags>
 
 =back
+
+=cut
 
 =head1 Copyright & License
 

@@ -414,7 +414,7 @@ sub get_resource_names {
   return \@resource_names;
 }
 
-sub get_system_field_names {
+sub get_ld_system_field_names {
   my $self = shift;
   
   return [qw(
@@ -442,7 +442,7 @@ sub get_system_field_names {
 sub clear_system_fields {
   my $self = shift;
   
-  my $field_names = $self->get_system_field_names;
+  my $field_names = $self->get_ld_system_field_names;
   
   for my $field_name (@$field_names) {
     $self->$field_name([]);
@@ -1158,6 +1158,60 @@ Gets a resource loaded by L</"use_resource"> method given a resource name, and r
 
 Returns resource names loaded by L</"use_resource"> method.
 
+=head2 get_ld_system_field_names
+
+  my $field_names = $config->get_ld_system_field_names;
+
+Returns the field names of the linker settings that are set by default for a specific environment.
+
+These fields might be updated in the future to support appropriate settings for different environments.
+
+The field names returned by this method are used by the L<clear_system_fields|/"clear_system_fields"> method to clear the linker settings.
+
+The following field names are returned:
+
+=over 2
+
+=item * C<dynamic_lib_ldflags>
+
+=item * C<thread_ldflags>
+
+=item * C<libcpp_ldflags>
+
+=item * C<exe_libbcrypt_ldflags>
+
+=item * C<dynamic_lib_libcpp_ldflags>
+
+=item * C<exe_libcpp_ldflags>
+
+=item * C<copyright_print_ldflags>
+
+=item * C<warn_ldflags>
+
+=item * C<debug_info_ldflags>
+
+=item * C<symbol_strip_ldflags>
+
+=item * C<libgcc_ldflags>
+
+=item * C<dynamic_lib_libgcc_ldflags>
+
+=item * C<exe_libgcc_ldflags>
+
+=item * C<libbcrypt_ldflags>
+
+=item * C<dynamic_lib_libbcrypt_ldflags>
+
+=item * C<extra_ldflags>
+
+=item * C<dynamic_lib_extra_ldflags>
+
+=item * C<exe_extra_ldflags>
+
+=back
+
+=cut
+
 =head2 clear_system_fields
 
   $config->clear_system_fields;
@@ -1166,9 +1220,7 @@ Clears the fields that are set by default for a specific environment.
 
 These fields might be updated in the future to support appropriate settings for different environments.
 
-The following fields are set to C<[]>.
-
-The following fields are set to C<[]>.
+This method clears the linker settings whose field names are returned by the L<get_ld_system_field_names|/"get_ld_system_field_names"> method by setting them to C<[]>.
 
 =over 2
 
