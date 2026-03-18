@@ -13,7 +13,6 @@ use SPVM::Builder::Accessor 'has';
 # Fields
 my $fields = [qw(
   before_compile_cbs_global
-  include_dirs_global
 )];
 
 has($fields);
@@ -46,7 +45,6 @@ sub new {
     %$default_config,
     category => 'spvm',
     before_compile_cbs_global => [],
-    include_dirs_global => [],
     @_,
   );
   
@@ -60,12 +58,6 @@ sub add_before_compile_cb_global {
   my ($self, @before_compile_cbs_global) = @_;
   
   push @{$self->{before_compile_cbs_global}}, @before_compile_cbs_global;
-}
-
-sub add_include_dir_global {
-  my ($self, @include_dirs_global) = @_;
-  
-  push @{$self->{include_dirs_global}}, @include_dirs_global;
 }
 
 sub match {
@@ -175,13 +167,6 @@ Sets C<optimize> field, an argument of the compiler L</"cc"> for optimization in
 This method is a setter-only method. It calls L</"match_any"> internally to apply the optimization setting. 
 If this method is called without an argument, an exception is thrown.
 
-=head2 include_dirs_global
-
-  my $include_dirs_global = $config->include_dirs_global;
-  $config->include_dirs_global($include_dirs_global);
-
-Gets and sets C<include_dirs> field, an array reference containing C<-I> arugments of the compiler L</"cc"> in all compilation.
-
 =head1 Methods
 
 =head2 new
@@ -225,12 +210,6 @@ Examples:
     
     # Do something
   });
-
-=head2 add_include_dir_global
-
-  $config->add_include_dir_global(@include_dirs_global);
-
-Adds @include_dirs_global to the end of L</"include_dirs_global"> field.
 
 =head2 match
 

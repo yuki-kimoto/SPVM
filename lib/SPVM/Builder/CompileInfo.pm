@@ -157,10 +157,6 @@ sub create_ccflags {
   {
     my @all_include_dirs;
     
-    if ($config_global) {
-      push @all_include_dirs, grep { length $_ } @{$config_global->include_dirs_global};
-    }
-    
     # SPVM core native directory
     my $spvm_core_include_dir = $config->spvm_core_include_dir;
     if (length $spvm_core_include_dir) {

@@ -302,7 +302,12 @@ sub new {
     # Setup paths using the extracted directory
     my $spvm_archive_extract_dir = $spvm_archive->dir;
     $compiler->add_include_dir("$spvm_archive_extract_dir/SPVM");
-    $config_global->add_include_dir_global("$spvm_archive_extract_dir/include");
+    $config_global->add_before_compile_cb_global(sub {
+      my ($config) = @_;
+      if ($config->category eq 'native') {
+        $config->add_include_dir("$spvm_archive_extract_dir/include");
+      }
+    });
     $config_global->add_lib_dir("$spvm_archive_extract_dir/lib");
   }
   
