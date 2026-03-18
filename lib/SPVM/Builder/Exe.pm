@@ -1078,7 +1078,9 @@ sub _field_value_to_string {
 sub compile_bootstrap_source_file {
   my ($self) = @_;
   
+  my $config = SPVM::Builder::Util::API::create_default_config();
   my $config_global = $self->config_global;
+  $config->config_global($config_global);
   
   # Target class name
   my $class_name = $self->class_name;
@@ -1094,7 +1096,7 @@ sub compile_bootstrap_source_file {
   my $object_file = $self->compile_source_file({
     source_file => $source_file,
     output_file => $object_file_name,
-    config => $config_global,
+    config => $config,
     category => 'bootstrap',
   });
   
@@ -1105,7 +1107,9 @@ sub compile_spvm_core_source_files {
   my ($self) = @_;
   
   # Config
+  my $config = SPVM::Builder::Util::API::create_default_config();
   my $config_global = $self->config_global;
+  $config->config_global($config_global);
   
   my $builder_dir = SPVM::Builder::Util::get_builder_dir();
   
@@ -1131,7 +1135,7 @@ sub compile_spvm_core_source_files {
     my $object_file = $self->compile_source_file({
       source_file => $src_file,
       output_file => $object_file_name,
-      config => $config_global,
+      config => $config,
       category => 'spvm_core',
     });
     push @$object_files, $object_file;
@@ -1155,7 +1159,7 @@ sub compile_precompile_class {
     force => $self->force,
   );
   
-  my $config =  SPVM::Builder::Util::API::create_default_config();
+  my $config = SPVM::Builder::Util::API::create_default_config();
   
   $config->category('precompile');
   

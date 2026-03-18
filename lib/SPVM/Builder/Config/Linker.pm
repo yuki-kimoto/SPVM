@@ -4,6 +4,7 @@ use parent 'SPVM::Builder::Config::Base';
 
 use strict;
 use warnings;
+use Carp 'confess';
 use Config;
 use SPVM::Builder::Accessor 'has';
 use SPVM::Builder::LibInfo;
@@ -39,6 +40,7 @@ my $fields = [qw(
   before_link_cbs
   after_link_cbs
   external_object_files
+  hint_cc
   
   resources
 )];
@@ -208,6 +210,17 @@ sub new {
     $self->{external_object_files} = [];
   }
   
+  # hint_cc
+  {
+    my $config_gcc_version = $Config{gccversion};
+    if ($config_gcc_version =~ /\bclang\b/i) {
+      $self->hint_cc('clang++');
+    }
+    else {
+      $self->hint_cc('g++');
+    }
+  }
+  
   return $self;
 }
 
@@ -304,7 +317,12 @@ sub use_resource {
     confess("A config file \"$config_rel_file\" is not found in (@INC)");
   }
   
-  my $config = $self->load_config($config_file);
+  my $config = SPVM::Builder::Config->load_config($config_file);
+  
+  unless ($config->isa('SPVM::Builder::Config')) {
+    confess("[Unexpected Error]The config must be an SPVM::Builder::Config object");
+  }
+  
   $config->file($config_file);
   
   $resource->config($config);
@@ -384,6 +402,19 @@ Gets and sets C<ld> field, a linker name.
 Examples:
 
   $config->ld('g++');
+
+=head2 hint_cc
+
+  my $hint_cc = $config->hint_cc;
+  $config->hint_cc($hint_cc);
+
+Gets and sets C<hint_cc> field, a compiler name that is used as a hint for the linker.
+
+The linker may use this field to determine how to link object files created by this compiler.
+
+Examples:
+
+  $config->hint_cc('gcc');
 
 =head2 lib_dirs
 
@@ -785,6 +816,10 @@ Other OSs:
 =item * L</"after_link_cbs">
 
   []
+
+=item * L</"hint_cc">
+
+The default value is C<clang++> if C<$Config{gccversion}> contains C<clang> (case-insensitive). Otherwise, it is C<g++>.
 
 =back
 

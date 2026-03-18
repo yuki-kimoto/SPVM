@@ -18,6 +18,7 @@ my $base_fields = [qw(
   force
   long_option_sep
   mode
+  config_global
   
   _loaded_config_files
 )];
@@ -130,33 +131,35 @@ sub load_config {
     confess("The config file \"$config_file\" can't be parsed: $@");
   }
   
-  unless (defined $config && $config->isa('SPVM::Builder::Config')) {
-    confess("The config file must be an SPVM::Builder::Config object");
+  unless (defined $config && $config->isa('SPVM::Builder::Config::Linker')) {
+    confess("The config file must be an SPVM::Builder::Config::Linker object.");
   }
   
   push @{$config->get_loaded_config_files}, $config_file;
   
   $config->file($config_file);
   
-  # native_include_dir
-  unless (defined $config->native_include_dir) {
-    if (defined $config_file) {
-      my $native_dir = &_remove_ext_from_config_file($config_file);
-      $native_dir .= '.native';
-      my $native_include_dir = "$native_dir/include";
-      
-      $config->native_include_dir($native_include_dir);
+  if ($config->isa('SPVM::Builder::Config')) {
+    # native_include_dir
+    unless (defined $config->native_include_dir) {
+      if (defined $config_file) {
+        my $native_dir = &_remove_ext_from_config_file($config_file);
+        $native_dir .= '.native';
+        my $native_include_dir = "$native_dir/include";
+        
+        $config->native_include_dir($native_include_dir);
+      }
     }
-  }
-  
-  # native_src_dir
-  unless (defined $config->native_src_dir) {
-    if (defined $config_file) {
-      my $native_dir = &_remove_ext_from_config_file($config_file);
-      $native_dir .= '.native';
-      my $native_src_dir = "$native_dir/src";
-      
-      $config->native_src_dir($native_src_dir);
+    
+    # native_src_dir
+    unless (defined $config->native_src_dir) {
+      if (defined $config_file) {
+        my $native_dir = &_remove_ext_from_config_file($config_file);
+        $native_dir .= '.native';
+        my $native_src_dir = "$native_dir/src";
+        
+        $config->native_src_dir($native_src_dir);
+      }
     }
   }
   
@@ -359,6 +362,17 @@ Gets and sets C<long_option_sep> field, a string that is a separator between an 
   $config->mode($mode);
 
 Gets and sets C<mode> field.
+
+=head2 config_global
+
+  my $config_global = $config->config_global;
+  $config->config_global($config_global);
+
+Gets and sets C<config_global> field.
+
+If L<spvmcc> command generates an excutable file, this field is set to an L<SPVM::Builder::Config::Exe> object.
+
+This field is automatically set and users nomally do not change it.
 
 =head1 Class Methods
 

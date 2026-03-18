@@ -360,6 +360,7 @@ sub compile_class {
   for my $resource_name (@$resource_names) {
     my $resource = $config->get_resource($resource_name);
     my $resource_config = $resource->config;
+    
     my $resource_include_dir = $resource_config->native_include_dir;
     if (defined $resource_include_dir) {
       push @$resource_include_dirs, $resource_include_dir;
@@ -400,6 +401,10 @@ sub compile_class {
       }
       else {
         $resource_class_name = $resource;
+      }
+      
+      unless ($resource_config->isa('SPVM::Builder::Config')) {
+        confess("[Unexpected Error]The resouce config must be an SPVM::Builder::Config object");
       }
       
       $resource_config->add_include_dir(@$resource_include_dirs);
@@ -691,11 +696,15 @@ sub link {
   
   $link_info->no_generate(!$need_generate);
   
-  my $cc = $config->cc;
+  unless ($config->isa('SPVM::Builder::Config::Linker')) {
+    confess("[Unexpected Error]The config must be an SPVM::Builder::Config object");
+  }
+  
+  my $hint_cc = $config->hint_cc;
   my $ld = $config->ld;
   
   my $cbuilder_config = {
-    cc => $cc,
+    cc => $hint_cc,
     ld => $ld,
     lddlflags => '',
     shrpenv => '',

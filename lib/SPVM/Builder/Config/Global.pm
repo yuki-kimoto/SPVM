@@ -1,6 +1,6 @@
 package SPVM::Builder::Config::Global;
 
-use parent 'SPVM::Builder::Config';
+use parent 'SPVM::Builder::Config::Linker';
 
 use strict;
 use warnings;
@@ -37,18 +37,9 @@ sub option_names {
 
 # Class Methods
 sub new {
-  my $self = shift;
+  my $class = shift;
   
-  my $default_config = SPVM::Builder::Util::API::create_default_config();
-  
-  my %fields = (
-    %$default_config,
-    category => 'spvm',
-    before_compile_cbs_global => [],
-    @_,
-  );
-  
-  $self = $self->SUPER::new(%fields);
+  my $self = $class->SUPER::new(@_);
   
   return $self;
 }

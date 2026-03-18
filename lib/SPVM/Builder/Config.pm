@@ -37,7 +37,6 @@ my $cc_fields = [qw(
   source_files
   before_compile_cbs
   cc_output_option_name
-  config_global
 )];
 
 has($cc_fields);
@@ -544,17 +543,6 @@ These callbacks are executed only if an object file is actually generated.
 The 1th argument of the callback is an L<SPVM::Builder::Config> object.
 
 The 2th argument of the callback is an L<SPVM::Builder::CompileInfo> object.
-
-=head2 config_global
-
-  my $config_global = $config->config_global;
-  $config->config_global($config_global);
-
-Gets and sets C<config_global> field.
-
-If L<spvmcc> command generates an excutable file, this field is set to an L<SPVM::Builder::Config::Exe> object.
-
-This field is automatically set and users nomally do not change it.
 
 =head2 cc_input_dir
 
