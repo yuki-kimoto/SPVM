@@ -21,8 +21,8 @@ sub optimize_global {
   my $self = shift;
   
   if (@_) {
-    my $optimize = shift;
-    $self->match_any({optimize => $optimize});
+    my ($optimize, $condition) = @_;
+    $self->match($condition, {optimize => $optimize});
     return $self;
   }
   else {
@@ -151,12 +151,21 @@ This affects all compilations.
 
 =head2 optimize_global
 
-  $config->optimize_global($optimize);
+  $config->optimize_global($optimize, $condition);
 
-Sets C<optimize> field, an argument of the compiler L</"cc"> for optimization in all compilations.
+Sets C<optimize> field for the configs that match the condition C<$condition>.
 
-This method is a setter-only method. It calls L</"match_any"> internally to apply the optimization setting. 
-If this method is called without an argument, an exception is thrown.
+This method is a setter-only method. It calls L</"match"> internally.
+
+If C<$condition> is not defined, the optimization setting is applied to all configs.
+
+Examples:
+
+  # Set -O3 for all configs
+  $config->optimize_global('-O3');
+  
+  # Set -O2 for native category configs
+  $config->optimize_global('-O2', {category => 'native'});
 
 =head1 Methods
 
