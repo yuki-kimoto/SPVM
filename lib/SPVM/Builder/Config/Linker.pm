@@ -18,12 +18,21 @@ my $fields = [qw(
   resource_loader_config
   copyright_print_ldflags
   warn_ldflags
+  symbol_strip_ldflags
   dynamic_lib_ldflags
   thread_ldflags
+  libgcc_ldflags
+  dynamic_lib_libgcc_ldflags
+  exe_libgcc_ldflags
+  libbcrypt_ldflags
+  dynamic_lib_libbcrypt_ldflags
   exe_libbcrypt_ldflags
   libcpp_ldflags
   dynamic_lib_libcpp_ldflags
   exe_libcpp_ldflags
+  extra_ldflags
+  dynamic_lib_extra_ldflags
+  exe_extra_ldflags
   static_lib_ldflag
   lib_dirs
   libs
@@ -41,7 +50,6 @@ my $fields = [qw(
   after_link_cbs
   external_object_files
   hint_cc
-  
   resources
 )];
 
@@ -366,6 +374,15 @@ sub get_clear_system_field_names {
     exe_libcpp_ldflags
     copyright_print_ldflags
     warn_ldflags
+    symbol_strip_ldflags
+    libgcc_ldflags
+    dynamic_lib_libgcc_ldflags
+    exe_libgcc_ldflags
+    libbcrypt_ldflags
+    dynamic_lib_libbcrypt_ldflags
+    extra_ldflags
+    dynamic_lib_extra_ldflags
+    exe_extra_ldflags
   )];
 }
 
@@ -599,6 +616,79 @@ Gets and sets the C<copyright_print_ldflags> field, an array reference containin
 
 Gets and sets the C<warn_ldflags> field, an array reference containing linker arguments for warning settings.
 
+=head2 symbol_strip_ldflags
+
+  my $symbol_strip_ldflags = $config->symbol_strip_ldflags;
+  $config->symbol_strip_ldflags(['-s']);
+
+Gets and sets the C<symbol_strip_ldflags> field, an array reference containing linker arguments to strip symbols.
+
+=head2 libgcc_ldflags
+
+  my $libgcc_ldflags = $config->libgcc_ldflags;
+  $config->libgcc_ldflags(['-lgcc']);
+
+Gets and sets the C<libgcc_ldflags> field, an array reference containing linker arguments for the gcc library.
+
+=head2 dynamic_lib_libgcc_ldflags
+
+  my $dynamic_lib_libgcc_ldflags = $config->dynamic_lib_libgcc_ldflags;
+  $config->dynamic_lib_libgcc_ldflags(['-lgcc']);
+
+Gets and sets the C<dynamic_lib_libgcc_ldflags> field, an array reference containing linker arguments for the gcc library used for dynamic libraries.
+
+Note that these flags are only added when the L</"output_type"> is C<dynamic_lib>.
+
+=head2 exe_libgcc_ldflags
+
+  my $exe_libgcc_ldflags = $config->exe_libgcc_ldflags;
+  $config->exe_libgcc_ldflags(['-lgcc']);
+
+Gets and sets the C<exe_libgcc_ldflags> field, an array reference containing linker arguments for the gcc library used for executable files.
+
+Note that these flags are only added when the L</"output_type"> is C<exe>.
+
+=head2 libbcrypt_ldflags
+
+  my $libbcrypt_ldflags = $config->libbcrypt_ldflags;
+  $config->libbcrypt_ldflags(['-lbcrypt']);
+
+Gets and sets the C<libbcrypt_ldflags> field, an array reference containing linker arguments for the bcrypt library.
+
+=head2 dynamic_lib_libbcrypt_ldflags
+
+  my $dynamic_lib_libbcrypt_ldflags = $config->dynamic_lib_libbcrypt_ldflags;
+  $config->dynamic_lib_libbcrypt_ldflags(['-lbcrypt']);
+
+Gets and sets the C<dynamic_lib_libbcrypt_ldflags> field, an array reference containing linker arguments for the bcrypt library used for dynamic libraries.
+
+Note that these flags are only added when the L</"output_type"> is C<dynamic_lib>.
+
+=head2 extra_ldflags
+
+  my $extra_ldflags = $config->extra_ldflags;
+  $config->extra_ldflags(['-lextra']);
+
+Gets and sets the C<extra_ldflags> field, an array reference containing extra linker arguments.
+
+=head2 dynamic_lib_extra_ldflags
+
+  my $dynamic_lib_extra_ldflags = $config->dynamic_lib_extra_ldflags;
+  $config->dynamic_lib_extra_ldflags(['-lextra']);
+
+Gets and sets the C<dynamic_lib_extra_ldflags> field, an array reference containing extra linker arguments used for dynamic libraries.
+
+Note that these flags are only added when the L</"output_type"> is C<dynamic_lib>.
+
+=head2 exe_extra_ldflags
+
+  my $exe_extra_ldflags = $config->exe_extra_ldflags;
+  $config->exe_extra_ldflags(['-lextra']);
+
+Gets and sets the C<exe_extra_ldflags> field, an array reference containing extra linker arguments used for executable files.
+
+Note that these flags are only added when the L</"output_type"> is C<exe>.
+
 =head2 lib_dir_option_name
 
   my $lib_dir_option_name = $config->lib_dir_option_name;
@@ -725,6 +815,42 @@ If C<$Config{gccversion}> contains C<clang>, L</"ld"> field are set to C<clang++
   []
 
 =item * L</"warn_ldflags">
+
+  []
+
+=item * L</"symbol_strip_ldflags">
+
+  []
+
+=item * L</"libgcc_ldflags">
+
+  []
+
+=item * L</"dynamic_lib_libgcc_ldflags">
+
+  []
+
+=item * L</"exe_libgcc_ldflags">
+
+  []
+
+=item * L</"libbcrypt_ldflags">
+
+  []
+
+=item * L</"dynamic_lib_libbcrypt_ldflags">
+
+  []
+
+=item * L</"extra_ldflags">
+
+  []
+
+=item * L</"dynamic_lib_extra_ldflags">
+
+  []
+
+=item * L</"exe_extra_ldflags">
 
   []
 
@@ -983,6 +1109,24 @@ The following fields are set to C<[]>.
 =item * L</"copyright_print_ldflags">
 
 =item * L</"warn_ldflags">
+
+=item * L</"symbol_strip_ldflags">
+
+=item * L</"libgcc_ldflags">
+
+=item * L</"dynamic_lib_libgcc_ldflags">
+
+=item * L</"exe_libgcc_ldflags">
+
+=item * L</"libbcrypt_ldflags">
+
+=item * L</"dynamic_lib_libbcrypt_ldflags">
+
+=item * L</"extra_ldflags">
+
+=item * L</"dynamic_lib_extra_ldflags">
+
+=item * L</"exe_extra_ldflags">
 
 =item * L</"libcpp_ldflags">
 

@@ -24,6 +24,7 @@ my $cc_fields = [qw(
   language_ccflags
   arch_ccflags
   warn_ccflags
+  source_encoding_ccflags
   function_level_linking_ccflags
   cpp_exception_handling_ccflags
   library_linkage_ccflags
@@ -125,6 +126,11 @@ sub new {
   # warn_ccflags
   unless (exists $self->{warn_ccflags}) {
     $self->warn_ccflags([]);
+  }
+  
+  # source_encoding_ccflags
+  unless (exists $self->{source_encoding_ccflags}) {
+    $self->source_encoding_ccflags([]);
   }
   
   # function_level_linking_ccflags
@@ -293,6 +299,7 @@ sub get_clear_system_field_names {
     language_ccflags
     arch_ccflags
     warn_ccflags
+    source_encoding_ccflags
     function_level_linking_ccflags
     cpp_exception_handling_ccflags
     library_linkage_ccflags
@@ -744,6 +751,13 @@ Gets and sets C<arch_ccflags> field, an array reference containing arguments of 
 
 Gets and sets the C<warn_ccflags> field, an array reference containing compiler arguments for warning settings.
 
+=head2 source_encoding_ccflags
+
+  my $source_encoding_ccflags = $config->source_encoding_ccflags;
+  $config->source_encoding_ccflags(['-finput-charset=UTF-8']);
+
+Gets and sets the C<source_encoding_ccflags> field, an array reference containing compiler arguments for source file encoding settings.
+
 =head2 function_level_linking_ccflags
 
   my $function_level_linking_ccflags = $config->function_level_linking_ccflags;
@@ -822,6 +836,10 @@ Field Default Values:
   []
 
 =item * L</"warn_ccflags">
+
+  []
+
+=item * L</"source_encoding_ccflags">
 
   []
 
@@ -1002,6 +1020,8 @@ This method calls the L<clear_system_fields|SPVM::Builder::Config::Linker/"clear
 =item * L</"arch_ccflags">
 
 =item * L</"warn_ccflags">
+
+=item * L</"source_encoding_ccflags">
 
 =item * L</"function_level_linking_ccflags">
 
