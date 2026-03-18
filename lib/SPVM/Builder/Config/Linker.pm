@@ -20,7 +20,7 @@ my $fields = [qw(
   debug_ldflags
   dynamic_lib_ldflags
   thread_ldflags
-  bcrypt_ldflags
+  libbcrypt_ldflags
   libcpp_ldflags
   dynamic_lib_libcpp_ldflags
   exe_libcpp_ldflags
@@ -86,12 +86,12 @@ sub new {
     }
   }
 
-  unless (exists $self->{bcrypt_ldflags}) {
+  unless (exists $self->{libbcrypt_ldflags}) {
     if ($^O eq 'MSWin32') {
-      $self->bcrypt_ldflags(['-lbcrypt']);
+      $self->libbcrypt_ldflags(['-lbcrypt']);
     }
     else {
-      $self->bcrypt_ldflags([]);
+      $self->libbcrypt_ldflags([]);
     }
   }
 
@@ -469,14 +469,12 @@ Gets and sets C<thread_ldflags> field, an array reference containing arguments o
 
 This field is automatically set and users nomally do not change it.
 
-=head2 bcrypt_ldflags
+=head2 libbcrypt_ldflags
 
-  my $bcrypt_ldflags = $config->bcrypt_ldflags;
-  $config->bcrypt_ldflags($bcrypt_ldflags);
+  my $libbcrypt_ldflags = $config->libbcrypt_ldflags;
+  $config->libbcrypt_ldflags(['-lbcrypt']);
 
-Gets and sets C<bcrypt_ldflags> field, an array reference containing arguments of the linker L</"ld"> for bcrypt.
-
-This field is automatically set and users normally do not change it.
+Gets and sets the C<libbcrypt_ldflags> field, an array reference containing linker arguments for the bcrypt library.
 
 =head2 libcpp_ldflags
 
@@ -485,8 +483,6 @@ This field is automatically set and users normally do not change it.
 
 Gets and sets C<libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library.
 
-This field is automatically set depending on the OS, and users normally do not change it.
-
 =head2 dynamic_lib_libcpp_ldflags
 
   my $dynamic_lib_libcpp_ldflags = $config->dynamic_lib_libcpp_ldflags;
@@ -494,16 +490,12 @@ This field is automatically set depending on the OS, and users normally do not c
 
 Gets and sets C<dynamic_lib_libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library used for dynamic libraries.
 
-This field is automatically set depending on the OS, and users normally do not change it.
-
 =head2 exe_libcpp_ldflags
 
   my $exe_libcpp_ldflags = $config->exe_libcpp_ldflags;
   $config->exe_libcpp_ldflags($exe_libcpp_ldflags);
 
 Gets and sets C<exe_libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library used for executable files.
-
-This field is automatically set depending on the OS, and users normally do not change it.
 
 =head2 static_lib_ldflag
 
@@ -741,7 +733,7 @@ Other OSs:
 
   ["-pthread"]
 
-=item * L</"bcrypt_ldflags">
+=item * L</"libbcrypt_ldflags">
 
 Windows:
 
