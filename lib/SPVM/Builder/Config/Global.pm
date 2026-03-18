@@ -57,15 +57,12 @@ sub add_before_compile_cb {
 sub compile_match {
   my ($self, $condition, $match_config) = @_;
   
-  # Normalize condition to a Config object for key validation
+  # Normalize condition and match_config for key validation
   if ($condition) {
     SPVM::Builder::Config->new_empty(%$condition);
   }
-  
-  # Ensure match_config is a Config object
   SPVM::Builder::Config->new_empty(%$match_config);
   
-  # Add callback to apply settings before compilation
   $self->add_before_compile_cb(sub {
     my ($config) = @_;
     
@@ -73,26 +70,30 @@ sub compile_match {
     if ($condition) {
       for my $name (keys %$condition) {
         my $condition_value = $condition->{$name};
-        
-        # Field must exist in the target config
-        unless (exists $config->{$name}) {
-          $match = 0;
-          last;
-        }
-        
         my $config_value = $config->{$name};
         
-        # Match by regex or string equality
         if (ref $condition_value eq 'Regexp') {
-          unless ($config_value =~ $condition_value) {
+          # Match by regex if the key exists and the value is defined
+          unless (defined $config_value && $config_value =~ $condition_value) {
             $match = 0;
             last;
           }
         }
         else {
-          unless ($config_value eq $condition_value) {
-            $match = 0;
-            last;
+          # Match by literal equality
+          if (defined $condition_value) {
+            # Both must be defined and equal
+            unless (defined $config_value && $config_value eq $condition_value) {
+              $match = 0;
+              last;
+            }
+          }
+          else {
+            # Both must be undefined
+            if (defined $config_value) {
+              $match = 0;
+              last;
+            }
           }
         }
       }
