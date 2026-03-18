@@ -23,6 +23,7 @@ my $cc_fields = [qw(
   copyright_print_ccflags
   language_ccflags
   arch_ccflags
+  warn_ccflags
   function_level_linking_ccflags
   cpp_exception_handling_ccflags
   library_linkage_ccflags
@@ -119,6 +120,11 @@ sub new {
   # arch_ccflags
   unless (exists $self->{arch_ccflags}) {
     $self->arch_ccflags([]);
+  }
+  
+  # warn_ccflags
+  unless (exists $self->{warn_ccflags}) {
+    $self->warn_ccflags([]);
   }
   
   # function_level_linking_ccflags
@@ -286,6 +292,7 @@ sub get_clear_system_field_names {
     copyright_print_ccflags
     language_ccflags
     arch_ccflags
+    warn_ccflags
     function_level_linking_ccflags
     cpp_exception_handling_ccflags
     library_linkage_ccflags
@@ -730,6 +737,13 @@ Gets and sets C<language_ccflags> field, an array reference containing arguments
 
 Gets and sets C<arch_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for CPU architecture or host environment.
 
+=head2 warn_ccflags
+
+  my $warn_ccflags = $config->warn_ccflags;
+  $config->warn_ccflags(['-Wall', '-Wextra']);
+
+Gets and sets the C<warn_ccflags> field, an array reference containing compiler arguments for warning settings.
+
 =head2 function_level_linking_ccflags
 
   my $function_level_linking_ccflags = $config->function_level_linking_ccflags;
@@ -804,6 +818,10 @@ Field Default Values:
   []
 
 =item * L</"arch_ccflags">
+
+  []
+
+=item * L</"warn_ccflags">
 
   []
 
@@ -982,6 +1000,8 @@ This method calls the L<clear_system_fields|SPVM::Builder::Config::Linker/"clear
 =item * L</"language_ccflags">
 
 =item * L</"arch_ccflags">
+
+=item * L</"warn_ccflags">
 
 =item * L</"function_level_linking_ccflags">
 

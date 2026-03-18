@@ -20,7 +20,7 @@ my $fields = [qw(
   warn_ldflags
   dynamic_lib_ldflags
   thread_ldflags
-  libbcrypt_ldflags
+  exe_libbcrypt_ldflags
   libcpp_ldflags
   dynamic_lib_libcpp_ldflags
   exe_libcpp_ldflags
@@ -86,12 +86,12 @@ sub new {
     }
   }
 
-  unless (exists $self->{libbcrypt_ldflags}) {
+  unless (exists $self->{exe_libbcrypt_ldflags}) {
     if ($^O eq 'MSWin32') {
-      $self->libbcrypt_ldflags(['-lbcrypt']);
+      $self->exe_libbcrypt_ldflags(['-lbcrypt']);
     }
     else {
-      $self->libbcrypt_ldflags([]);
+      $self->exe_libbcrypt_ldflags([]);
     }
   }
 
@@ -361,7 +361,7 @@ sub get_clear_system_field_names {
     dynamic_lib_ldflags
     thread_ldflags
     libcpp_ldflags
-    libbcrypt_ldflags
+    exe_libbcrypt_ldflags
     dynamic_lib_libcpp_ldflags
     exe_libcpp_ldflags
     copyright_print_ldflags
@@ -482,12 +482,14 @@ Gets and sets C<thread_ldflags> field, an array reference containing arguments o
 
 This field is automatically set and users nomally do not change it.
 
-=head2 libbcrypt_ldflags
+=head2 exe_libbcrypt_ldflags
 
-  my $libbcrypt_ldflags = $config->libbcrypt_ldflags;
-  $config->libbcrypt_ldflags(['-lbcrypt']);
+  my $exe_libbcrypt_ldflags = $config->exe_libbcrypt_ldflags;
+  $config->exe_libbcrypt_ldflags(['-lbcrypt']);
 
-Gets and sets the C<libbcrypt_ldflags> field, an array reference containing linker arguments for the bcrypt library.
+Gets and sets the C<exe_libbcrypt_ldflags> field, an array reference containing linker arguments for the bcrypt library used for executable files.
+
+Note that these flags are only added when the L</"output_type"> is C<exe>.
 
 =head2 libcpp_ldflags
 
@@ -746,7 +748,7 @@ Other OSs:
 
   ["-pthread"]
 
-=item * L</"libbcrypt_ldflags">
+=item * L</"exe_libbcrypt_ldflags">
 
 Windows:
 
@@ -988,7 +990,7 @@ The following fields are set to C<[]>.
 
 =item * L</"exe_libcpp_ldflags">
 
-=item * L</"libbcrypt_ldflags">
+=item * L</"exe_libbcrypt_ldflags">
 
 =back
 

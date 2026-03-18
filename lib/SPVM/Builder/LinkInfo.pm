@@ -110,7 +110,7 @@ sub create_ldflags {
   }
   elsif ($output_type eq 'exe') {
     push @merged_ldflags, grep { length $_ } @{$config->exe_libcpp_ldflags};
-    push @merged_ldflags, grep { length $_ } @{$config->libbcrypt_ldflags};
+    push @merged_ldflags, grep { length $_ } @{$config->exe_libbcrypt_ldflags};
   }
   
   push @merged_ldflags, grep { length $_ } @{$config->thread_ldflags};
