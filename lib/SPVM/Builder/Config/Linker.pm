@@ -40,6 +40,7 @@ my $fields = [qw(
   lib_option_name
   lib_option_suffix
   lib_dir_option_name
+  long_option_sep
   dynamic_lib_ext
   static_lib_ext
   exe_ext
@@ -280,6 +281,11 @@ sub new {
     }
   }
   
+  # long_option_sep
+  unless (exists $self->{long_option_sep}) {
+    $self->long_option_sep("=");
+  }
+  
   return $self;
 }
 
@@ -460,6 +466,22 @@ sub get_spvm_archive {
   my ($self) = @_;
   
   return $self->{spvm_archive};
+}
+
+# Connect directly (e.g. -oFILE, -I/path)
+sub create_option_short {
+  my ($self, $name, $value) = @_;
+  
+  return "$name$value";
+}
+
+# Connect using long_option_sep (e.g. --prefix=/usr, -out:FILE)
+sub create_option_long {
+  my ($self, $name, $value) = @_;
+  
+  my $sep = $self->long_option_sep;
+  
+  return "$name$sep$value";
 }
 
 1;
@@ -841,6 +863,13 @@ An SPVM archive.
 
 See L</"use_spvm_archive"> and L</"get_spvm_archive">.
 
+=head2 long_option_sep
+
+  my $long_option_sep = $config->long_option_sep;
+  $config->long_option_sep($long_option_sep);
+
+Gets and sets C<long_option_sep> field, a string that is a separator between an option name and its value.
+
 =head1 Class Methods
 
 =head2 new
@@ -1022,6 +1051,10 @@ Other OSs:
 =item * L</"hint_cc">
 
 The default value is C<clang++> if C<$Config{gccversion}> contains C<clang> (case-insensitive). Otherwise, it is C<g++>.
+
+=item * L</"long_option_sep">
+
+  "="
 
 =back
 
@@ -1284,6 +1317,48 @@ Examples:
   my $spvm_archive = $config->get_spvm_archive;
 
 Gets an SPVM archive.
+
+=head2 create_option
+
+  my $option = $config->create_option("-std", "c11");
+
+Builds a command line option from the option name and the value.
+
+If the length of the option name (excluding leading C<-> and C</>) is 1, the option name and the value are connected without a separator.
+
+  # Results in "-Ic:/path"
+  my $option = $config->create_option("-I", "c:/path");
+
+If the length of the option name is greater than 1, they are connected using L</"long_option_sep">.
+
+  # Results in "-std=c11" (if long_option_sep is "=")
+  my $option = $config->create_option("-std", "c11");
+
+This method is useful for supporting different compiler conventions such as GCC/Clang and MSVC.
+
+=head2 create_option_short
+
+  my $option = $config->create_option_short("-I", "c:/path");
+
+Builds a command line option by connecting the option name and the value directly without a separator.
+
+  # Results in "-Ic:/path"
+  my $option = $config->create_option_short("-I", "c:/path");
+
+  # Results in "-Foc:/path" (Useful for MSVC even if the option name length > 1)
+  my $option = $config->create_option_short("-Fo", "c:/path");
+
+=head2 create_option_long
+
+  my $option = $config->create_option_long("-std", "c11");
+
+Builds a command line option by connecting the option name and the value using L</"long_option_sep">.
+
+  # Results in "-std=c11" (if long_option_sep is "=")
+  my $option = $config->create_option_long("-std", "c11");
+
+  # Results in "-out:c:/path" (if long_option_sep is ":")
+  my $option = $config->create_option_long("-out", "c:/path");
 
 =head1 Library Path Resolution
 

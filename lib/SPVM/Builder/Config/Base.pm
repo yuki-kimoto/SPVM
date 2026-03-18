@@ -16,7 +16,6 @@ my $base_fields = [qw(
   is_resource
   quiet
   force
-  long_option_sep
   mode
   config_global
   
@@ -58,11 +57,6 @@ sub new {
     $self->category('native');
   }
 
-  # long_option_sep
-  unless (exists $self->{long_option_sep}) {
-    $self->long_option_sep("=");
-  }
-  
   unless (exists $self->{_loaded_config_files}) {
     $self->{_loaded_config_files} = [];
   }
@@ -92,22 +86,6 @@ sub create_option {
   else {
     return $self->create_option_long($name, $value);
   }
-}
-
-# Connect directly (e.g. -oFILE, -I/path)
-sub create_option_short {
-  my ($self, $name, $value) = @_;
-  
-  return "$name$value";
-}
-
-# Connect using long_option_sep (e.g. --prefix=/usr, -out:FILE)
-sub create_option_long {
-  my ($self, $name, $value) = @_;
-  
-  my $sep = $self->long_option_sep;
-  
-  return "$name$sep$value";
 }
 
 sub load_config {
@@ -349,13 +327,6 @@ If this field is a false value except for undef, the messages from the compiler 
 
 If this field is undef, this config does specify whether the messages from the compiler and the linker are output.
 
-=head2 long_option_sep
-
-  my $long_option_sep = $config->long_option_sep;
-  $config->long_option_sep($long_option_sep);
-
-Gets and sets C<long_option_sep> field, a string that is a separator between an option name and its value.
-
 =head2 mode
 
   my $mode = $config->mode;
@@ -394,57 +365,11 @@ This value is set automatically.
 
   "native"
 
-=item * L</"long_option_sep">
-
-  "="
-
 =back
 
 =cut
 
 =head1 Instance Methods
-
-=head2 create_option
-
-  my $option = $config->create_option("-std", "c11");
-
-Builds a command line option from the option name and the value.
-
-If the length of the option name (excluding leading C<-> and C</>) is 1, the option name and the value are connected without a separator.
-
-  # Results in "-Ic:/path"
-  my $option = $config->create_option("-I", "c:/path");
-
-If the length of the option name is greater than 1, they are connected using L</"long_option_sep">.
-
-  # Results in "-std=c11" (if long_option_sep is "=")
-  my $option = $config->create_option("-std", "c11");
-
-This method is useful for supporting different compiler conventions such as GCC/Clang and MSVC.
-
-=head2 create_option_short
-
-  my $option = $config->create_option_short("-I", "c:/path");
-
-Builds a command line option by connecting the option name and the value directly without a separator.
-
-  # Results in "-Ic:/path"
-  my $option = $config->create_option_short("-I", "c:/path");
-
-  # Results in "-Foc:/path" (Useful for MSVC even if the option name length > 1)
-  my $option = $config->create_option_short("-Fo", "c:/path");
-
-=head2 create_option_long
-
-  my $option = $config->create_option_long("-std", "c11");
-
-Builds a command line option by connecting the option name and the value using L</"long_option_sep">.
-
-  # Results in "-std=c11" (if long_option_sep is "=")
-  my $option = $config->create_option_long("-std", "c11");
-
-  # Results in "-out:c:/path" (if long_option_sep is ":")
-  my $option = $config->create_option_long("-out", "c:/path");
 
 =head2 load_config
 
