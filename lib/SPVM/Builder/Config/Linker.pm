@@ -18,6 +18,7 @@ my $fields = [qw(
   resource_loader_config
   copyright_print_ldflags
   warn_ldflags
+  debug_info_ldflags
   symbol_strip_ldflags
   dynamic_lib_ldflags
   thread_ldflags
@@ -165,6 +166,11 @@ sub new {
   # warn_ldflags
   unless (exists $self->{warn_ldflags}) {
     $self->warn_ldflags([]);
+  }
+  
+  # debug_info_ldflags
+  unless (exists $self->{debug_info_ldflags}) {
+    $self->debug_info_ldflags([]);
   }
 
   # symbol_strip_ldflags
@@ -420,6 +426,7 @@ sub get_clear_system_field_names {
     exe_libcpp_ldflags
     copyright_print_ldflags
     warn_ldflags
+    debug_info_ldflags
     symbol_strip_ldflags
     libgcc_ldflags
     dynamic_lib_libgcc_ldflags
@@ -662,6 +669,13 @@ Gets and sets the C<copyright_print_ldflags> field, an array reference containin
 
 Gets and sets the C<warn_ldflags> field, an array reference containing linker arguments for warning settings.
 
+=head2 debug_info_ldflags
+
+  my $debug_info_ldflags = $config->debug_info_ldflags;
+  $config->debug_info_ldflags(['-g']);
+
+Gets and sets the C<debug_info_ldflags> field, an array reference containing linker arguments for generating debug information.
+
 =head2 symbol_strip_ldflags
 
   my $symbol_strip_ldflags = $config->symbol_strip_ldflags;
@@ -861,6 +875,10 @@ If C<$Config{gccversion}> contains C<clang>, L</"ld"> field are set to C<clang++
   []
 
 =item * L</"warn_ldflags">
+
+  []
+
+=item * L</"debug_info_ldflags">
 
   []
 
@@ -1161,6 +1179,8 @@ The following fields are set to C<[]>.
 =item * L</"copyright_print_ldflags">
 
 =item * L</"warn_ldflags">
+
+=item * L</"debug_info_ldflags">
 
 =item * L</"symbol_strip_ldflags">
 
