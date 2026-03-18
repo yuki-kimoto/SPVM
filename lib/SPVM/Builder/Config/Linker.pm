@@ -162,8 +162,54 @@ sub new {
     $self->copyright_print_ldflags([]);
   }
 
+  # warn_ldflags
   unless (exists $self->{warn_ldflags}) {
     $self->warn_ldflags([]);
+  }
+
+  # symbol_strip_ldflags
+  unless (exists $self->{symbol_strip_ldflags}) {
+    $self->symbol_strip_ldflags([]);
+  }
+
+  # libgcc_ldflags
+  unless (exists $self->{libgcc_ldflags}) {
+    $self->libgcc_ldflags([]);
+  }
+
+  # dynamic_lib_libgcc_ldflags
+  unless (exists $self->{dynamic_lib_libgcc_ldflags}) {
+    $self->dynamic_lib_libgcc_ldflags([]);
+  }
+
+  # exe_libgcc_ldflags
+  unless (exists $self->{exe_libgcc_ldflags}) {
+    $self->exe_libgcc_ldflags([]);
+  }
+
+  # libbcrypt_ldflags
+  unless (exists $self->{libbcrypt_ldflags}) {
+    $self->libbcrypt_ldflags([]);
+  }
+
+  # dynamic_lib_libbcrypt_ldflags
+  unless (exists $self->{dynamic_lib_libbcrypt_ldflags}) {
+    $self->dynamic_lib_libbcrypt_ldflags([]);
+  }
+
+  # extra_ldflags
+  unless (exists $self->{extra_ldflags}) {
+    $self->extra_ldflags([]);
+  }
+
+  # dynamic_lib_extra_ldflags
+  unless (exists $self->{dynamic_lib_extra_ldflags}) {
+    $self->dynamic_lib_extra_ldflags([]);
+  }
+
+  # exe_extra_ldflags
+  unless (exists $self->{exe_extra_ldflags}) {
+    $self->exe_extra_ldflags([]);
   }
 
   unless (exists $self->{lib_dir_option_name}) {
