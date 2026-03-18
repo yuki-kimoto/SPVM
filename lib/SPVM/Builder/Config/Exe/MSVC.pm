@@ -36,7 +36,8 @@ sub apply {
   $self->lib_dir_option_name('-LIBPATH');
   $self->exe_libbcrypt_ldflags(['bcrypt.lib']);
   $self->copyright_print_ldflags(['-nologo']);
-
+  $self->debug_info_ldflags(['-DEBUG']);
+  
   # --- Rules for each Config ---
 
   # 1. Common settings for all configs
@@ -59,6 +60,7 @@ sub apply {
     'source_encoding_ccflags' => ['-utf-8'],
     'library_linkage_ccflags'       => ['-MT'],
     'warn_ccflags'                  => ['-W3'],
+    'debug_info_ccflags'            => ['-Zi'],
   });
 
   # 3. C specific rules
