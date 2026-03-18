@@ -55,7 +55,7 @@ sub apply {
   # 2. Common C/C++ flags (when dialect is undefined)
   # Use '+' to preserve existing flags (equivalent to push)
   $self->compile_match({language => qr/^(c|cpp)$/, dialect => undef}, {
-    '+compiler_ccflags' => ['-utf-8', '-Gy'],
+    '+function_level_linking_ccflags' => ['-utf-8', '-Gy'],
     '+library_linkage_ccflags'       => ['-MT'],
   });
 

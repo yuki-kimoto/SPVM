@@ -23,7 +23,7 @@ my $cc_fields = [qw(
   copyright_print_ccflags
   language_ccflags
   arch_ccflags
-  compiler_ccflags
+  function_level_linking_ccflags
   cpp_exception_handling_ccflags
   library_linkage_ccflags
   dynamic_lib_ccflags
@@ -121,9 +121,9 @@ sub new {
     $self->arch_ccflags([]);
   }
   
-  # compiler_ccflags
-  unless (exists $self->{compiler_ccflags}) {
-    $self->compiler_ccflags([]);
+  # function_level_linking_ccflags
+  unless (exists $self->{function_level_linking_ccflags}) {
+    $self->function_level_linking_ccflags([]);
   }
 
   # cpp_exception_handling_ccflags
@@ -287,7 +287,7 @@ sub clear_system_settings {
   $self->copyright_print_ccflags([]);
   $self->language_ccflags([]);
   $self->arch_ccflags([]);
-  $self->compiler_ccflags([]);
+  $self->function_level_linking_ccflags([]);
   $self->cpp_exception_handling_ccflags([]);
   $self->library_linkage_ccflags([]);
   $self->thread_ccflags([]);
@@ -719,12 +719,14 @@ Gets and sets C<language_ccflags> field, an array reference containing arguments
 
 Gets and sets C<arch_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for CPU architecture or host environment.
 
-=head2 compiler_ccflags
+=head2 function_level_linking_ccflags
 
-  my $compiler_ccflags = $config->compiler_ccflags;
-  $config->compiler_ccflags($compiler_ccflags);
+  my $function_level_linking_ccflags = $config->function_level_linking_ccflags;
+  $config->function_level_linking_ccflags(['-Gy']);
 
-Gets and sets C<compiler_ccflags> field, an array reference containing arguments of the compiler L</"cc"> for compiler behavior.
+Gets and sets the C<function_level_linking_ccflags> field, an array reference containing compiler arguments to enable function-level linking (e.g., C<-Gy> in MSVC).
+
+This allows the linker to optimize the executable size by removing unreferenced functions.
 
 =head2 cpp_exception_handling
 
@@ -794,7 +796,7 @@ Field Default Values:
 
   []
 
-=item * L</"compiler_ccflags">
+=item * L</"function_level_linking_ccflags">
 
   []
 
@@ -970,7 +972,7 @@ This method calls the L<clear_system_settings|SPVM::Builder::Config::Linker/"cle
 
 =item * L</"arch_ccflags">
 
-=item * L</"compiler_ccflags">
+=item * L</"function_level_linking_ccflags">
 
 =item * L</"cpp_exception_handling_ccflags">
 
