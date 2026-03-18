@@ -80,23 +80,19 @@ sub _match_apply {
       my $config_value    = $config->{$name};
       
       if (ref $condition_value eq 'Regexp') {
-        # Match by regex if the key exists and the value is defined
         unless (defined $config_value && $config_value =~ $condition_value) {
           $match = 0;
           last;
         }
       }
       else {
-        # Match by literal equality
         if (defined $condition_value) {
-          # Both must be defined and equal
           unless (defined $config_value && $config_value eq $condition_value) {
             $match = 0;
             last;
           }
         }
         else {
-          # Both must be undefined
           if (defined $config_value) {
             $match = 0;
             last;
@@ -106,10 +102,46 @@ sub _match_apply {
     }
   }
   
-  # Overwrite config values if all conditions match
+  # Apply configuration
   if ($match) {
-    for my $name (keys %$match_config) {
-      $config->{$name} = $match_config->{$name};
+    for my $match_name (keys %$match_config) {
+      my $new_value = $match_config->{$match_name};
+      
+      # Handle addition (+foo)
+      if ($match_name =~ /^\+(.+)$/) {
+        my $name = $1;
+        my $old_value = $config->{$name};
+        
+        # Validation for addition
+        if (!defined $old_value) {
+          $config->{$name} = $new_value;
+        }
+        elsif (ref $old_value eq '' && ref $new_value eq '') {
+          # string + string -> string
+          $config->{$name} .= $new_value;
+        }
+        elsif (ref $old_value eq '' && ref $new_value eq 'ARRAY') {
+          # string + array -> array
+          $config->{$name} = [$old_value, @$new_value];
+        }
+        elsif (ref $old_value eq 'ARRAY' && ref $new_value eq '') {
+          # array + string -> array
+          push @{$config->{$name}}, $new_value;
+        }
+        elsif (ref $old_value eq 'ARRAY' && ref $new_value eq 'ARRAY') {
+          # array + array -> array
+          push @{$config->{$name}}, @$new_value;
+        }
+        else {
+          my $old_value_type = ref $old_value || 'scalar(string)';
+          my $new_value_type = ref $new_value || 'scalar(string)';
+          confess "The addition of the \"$match_name\" field is not supported for the combination of $old_value_type and $new_value_type.";
+        }
+      }
+      else {
+        # Normal overwrite
+        $config->{$match_name} = $new_value;
+      }
     }
   }
 }
