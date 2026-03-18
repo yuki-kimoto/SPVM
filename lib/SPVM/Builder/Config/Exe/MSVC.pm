@@ -11,6 +11,16 @@ use Win32;
 # Inherit from SPVM::Builder::Config::Exe
 use base 'SPVM::Builder::Config::Exe';
 
+sub new {
+  my $class = shift;
+  
+  my $self = $class->SUPER::new(@_);
+  
+  $self->apply;
+  
+  return $self;
+}
+
 sub apply {
   my ($self, $options) = @_;
   
