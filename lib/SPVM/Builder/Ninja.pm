@@ -9,17 +9,17 @@ use warnings;
 use SPVM::Builder::Accessor 'has';
 
 has [qw(
-  dir
-  ninja_log_entries_h
-  ninja_log_fh
+  log_dir
+  log_entries_h
+  log_fh
 )];
 
 sub new {
   my $class = shift;
   
   my $self = {
-    dir => undef,
-    ninja_log_entries_h => {},
+    log_entries_h => {},
+    @_
   };
   
   return bless $self, ref $class || $class;
@@ -28,10 +28,10 @@ sub new {
 sub open_ninja_log {
   my ($self) = @_;
 
-  return if $self->{ninja_log_fh};
+  return if $self->{log_fh};
 
-  my $dir_name = $self->dir;
-  my $log_file = "$dir_name/.ninja_log";
+  my $log_dir_name = $self->log_dir;
+  my $log_file = "$log_dir_name/.ninja_log";
   my $must_write_header = !-f $log_file;
 
   open my $fh, '>>', $log_file or die "Can't open $log_file for appending: $!";
@@ -42,19 +42,19 @@ sub open_ninja_log {
     print $fh "# ninja log v5\x0A";
   }
 
-  $self->{ninja_log_fh} = $fh;
+  $self->{log_fh} = $fh;
 }
 
 sub add_ninja_log {
   my ($self, $new_record_h) = @_;
 
-  my $fh = $self->{ninja_log_fh} 
+  my $fh = $self->{log_fh} 
     or die "Ninja log is not open. Call open_ninja_log() first.";
 
   my $output_file  = $new_record_h->{output_file};
   my $command_hash = $new_record_h->{command_hash};
 
-  $self->ninja_log_entries_h->{$output_file} = $new_record_h;
+  $self->log_entries_h->{$output_file} = $new_record_h;
 
   my $start_time = $new_record_h->{start_time} || 0;
   my $end_time   = $new_record_h->{end_time}   || 0;
@@ -73,7 +73,7 @@ sub add_ninja_log {
 sub close_ninja_log {
   my ($self) = @_;
   
-  if (my $fh = delete $self->{ninja_log_fh}) {
+  if (my $fh = delete $self->{log_fh}) {
     close $fh;
   }
 }
@@ -81,14 +81,14 @@ sub close_ninja_log {
 sub load_ninja_log {
   my ($self) = @_;
 
-  my $dir_name = $self->dir;
-  my $log_file = "$dir_name/.ninja_log";
-  my $ninja_log_entries_h = {};
+  my $log_dir_name = $self->log_dir;
+  my $log_file = "$log_dir_name/.ninja_log";
+  my $log_entries_h = {};
 
   # Return an empty hash if the log file does not exist
   if (!-f $log_file) {
-    $self->ninja_log_entries_h($ninja_log_entries_h);
-    return $ninja_log_entries_h;
+    $self->log_entries_h($log_entries_h);
+    return $log_entries_h;
   }
 
   open my $fh, '<', $log_file or die "Can't open $log_file for reading: $!";
@@ -110,7 +110,7 @@ sub load_ninja_log {
       my ($start_time, $end_time, $mtime, $output_file, $command_hash) = @fields;
 
       # Store the record.
-      $ninja_log_entries_h->{$output_file} = {
+      $log_entries_h->{$output_file} = {
         start_time   => $start_time,
         end_time     => $end_time,
         mtime        => $mtime,
@@ -123,15 +123,15 @@ sub load_ninja_log {
   close $fh;
 
   # Update internal state
-  $self->ninja_log_entries_h($ninja_log_entries_h);
+  $self->log_entries_h($log_entries_h);
 
-  return $ninja_log_entries_h;
+  return $log_entries_h;
 }
 
 sub need_generate {
   my ($self, $options) = @_;
   
-  my $ninja_log_entries_h = $self->ninja_log_entries_h;
+  my $log_entries_h = $self->log_entries_h;
   
   my $force       = $options->{force};
   my $input_files = $options->{input_files} || [];
@@ -149,8 +149,8 @@ sub need_generate {
   }
   
   # If command_hash differs, rebuild.
-  if ($ninja_log_entries_h && defined $command) {
-    my $entry = $ninja_log_entries_h->{$output_file};
+  if ($log_entries_h && defined $command) {
+    my $entry = $log_entries_h->{$output_file};
     
     if ($entry) {
       my $last_command_hash = $entry->{command_hash}; 
