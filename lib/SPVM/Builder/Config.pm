@@ -39,6 +39,7 @@ my $cc_fields = [qw(
   library_linkage_ccflags
   position_independent_code_ccflags
   thread_ccflags
+  extra_ccflags
   before_compile_cbs
 )];
 
@@ -79,6 +80,11 @@ sub new {
   # thread_ccflags
   unless (exists $self->{thread_ccflags}) {
     $self->thread_ccflags(['-pthread']);
+  }
+  
+  # extra_ccflags
+  unless (exists $self->{extra_ccflags}) {
+    $self->extra_ccflags([]);
   }
 
   # optimize
@@ -301,6 +307,7 @@ sub get_cc_system_field_names {
   return [qw(
     position_independent_code_ccflags
     thread_ccflags
+    extra_ccflags
     copyright_print_ccflags
     language_ccflags
     arch_ccflags
@@ -526,6 +533,13 @@ necessary for building libraries intended for dynamic linking.
   $config->thread_ccflags($thread_ccflags);
 
 Gets and sets C<thread_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for threads.
+
+=head2 extra_ccflags
+
+  my $extra_ccflags = $config->extra_ccflags;
+  $config->extra_ccflags(['-Wno-unused-variable']);
+
+Gets and sets C<extra_ccflags> field, an array reference containing extra arguments of the compiler L</"cc">.
 
 =head2 std
 
@@ -883,6 +897,10 @@ Other OSs:
 
   ["-pthread"]
 
+=item * L</"extra_ccflags">
+
+  []
+
 =item * L</"include_dirs">
 
   []
@@ -1036,6 +1054,8 @@ The following field names are returned:
 =item * C<position_independent_code_ccflags>
 
 =item * C<thread_ccflags>
+
+=item * C<extra_ccflags>
 
 =item * C<copyright_print_ccflags>
 
