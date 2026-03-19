@@ -128,6 +128,9 @@ sub compile_rule {
 sub _match_apply {
   my ($config, $condition, $match_config_or_cb) = @_;
   
+  if ($condition) {
+    $condition = {%$condition};
+  }
   my $condition_global = delete $condition->{global};
   
   my $match = 1;
@@ -166,7 +169,8 @@ sub _match_apply {
           }
         }
       }
-      $inner_match;
+      
+      return $inner_match;
     };
     
     my $match_condition = $check_match->($config, $condition);

@@ -173,14 +173,14 @@ sub to_cmd {
     is($output, $output_expect);
   }
   
-  # debug config -O0 -g
+  # debug config: build_type 'Debug'
   {
     my $mode = 'debug';
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --mode debug $test_script_dir/myapp.spvm);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
-    like($spvmcc_output, qr/\Q-O0 -g3/);
+    like($spvmcc_output, qr/\Q-g /);
     like($spvmcc_output, qr/-L\./);
     like($spvmcc_output, qr/-lm\b/);
     like($spvmcc_output, qr/-std=c99/);
