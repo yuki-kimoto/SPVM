@@ -4,6 +4,7 @@ use utf8;
 use Test::More;
 use SPVM::Builder::Config;
 use SPVM::Builder::Config::Global;
+use SPVM::Builder::Config::Exe::MSVC;
 use Carp 'confess';
 
 # Helper to create a mock config object for internal testing

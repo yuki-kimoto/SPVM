@@ -6,7 +6,6 @@ use Carp ();
 use File::Basename 'dirname';
 use File::Spec;
 use File::Find;
-use Win32;
 
 # Inherit from SPVM::Builder::Config::Exe
 use base 'SPVM::Builder::Config::Exe';
@@ -199,6 +198,8 @@ sub setup_env {
   unless (-f $cl_long_path && -x $cl_long_path) {
     Carp::confess("'$cl_long_path' is not an executable file.");
   }
+  
+  require Win32;
   
   # Convert to short path (handle spaces)
   my $cl_short_path = Win32::GetShortPathName($cl_long_path);
