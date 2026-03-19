@@ -218,4 +218,32 @@ sub need_generate {
   return 0;
 }
 
+sub need_recompact {
+  my ($self) = @_;
+
+  my $log_file = $self->log_file;
+
+  # Return 0 if the log file does not exist
+  return 0 unless -f $log_file;
+
+  # Count the total number of records in the log file
+  my $total_count = 0;
+  open my $fh, '<', $log_file or die "Can't open $log_file for reading: $!";
+  while (<$fh>) {
+    $total_count++;
+  }
+  close $fh;
+
+  # Number of valid records in memory
+  my $log_entries_h = $self->log_entries_h;
+  my $valid_count = keys %$log_entries_h;
+
+  # Ninja's threshold: Recompact if total records > 3 * valid records
+  if ($total_count > 3 * $valid_count) {
+    return 1;
+  }
+
+  return 0;
+}
+
 1;
