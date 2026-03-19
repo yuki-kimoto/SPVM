@@ -75,6 +75,47 @@ sub new {
     $self->build_type($self->{build_type});
   }
   
+  # --- Build type rules (Strict CMake GCC/Clang Compatibility) ---
+  # Debug: Just -g (Optimization defaults to -O0 in GCC)
+  $self->compile_rule(
+    { global => {build_type => 'Debug'} },
+    {
+      optimize           => '', 
+      debug_info_ccflags => ['-g'],
+      ndebug_ccflags     => [],
+    }
+  );
+
+  # Release: -O3 -DNDEBUG
+  $self->compile_rule(
+    { global => {build_type => 'Release'} },
+    {
+      optimize           => '-O3',
+      debug_info_ccflags => [],
+      ndebug_ccflags     => ['-DNDEBUG'],
+    }
+  );
+
+  # RelWithDebInfo: -O2 -g -DNDEBUG
+  $self->compile_rule(
+    { global => {build_type => 'RelWithDebInfo'} },
+    {
+      optimize           => '-O2',
+      debug_info_ccflags => ['-g'],
+      ndebug_ccflags     => ['-DNDEBUG'],
+    }
+  );
+
+  # MinSizeRel: -Os -DNDEBUG
+  $self->compile_rule(
+    { global => {build_type => 'MinSizeRel'} },
+    {
+      optimize           => '-Os',
+      debug_info_ccflags => [],
+      ndebug_ccflags     => ['-DNDEBUG'],
+    }
+  );
+  
   return $self;
 }
 
@@ -246,29 +287,29 @@ The SPVM::Builder::Config::Global class has methods to manipulate the config for
   
   # Basic conditional update (Exact match)
   # If language is 'c', set optimization to -O3
-  $config_global->compile_rule({language => 'c'}, {optimize => '-O3'});
+  $self->compile_rule({language => 'c'}, {optimize => '-O3'});
 
   # Regex matching and field appending (+)
   # If dialect matches c11/c17, add a specific warning flag
-  $config_global->compile_rule({dialect => qr/^c1[17]$/}, {'+ccflags' => ['-Wpedantic']});
+  $self->compile_rule({dialect => qr/^c1[17]$/}, {'+ccflags' => ['-Wpedantic']});
 
   # Array Sensitivity (Checking if a flag exists in an array)
   # If '-DDEBUG' is already in ccflags, add debug linker flags
-  $config_global->compile_rule({ccflags => '-DDEBUG'}, {'+ldflags' => ['-DEBUG']});
+  $self->compile_rule({ccflags => '-DDEBUG'}, {'+ldflags' => ['-DEBUG']});
 
   # Negative Match (!prefix)
   # If '-Zi' is NOT in ccflags, enable linker optimizations
-  $config_global->compile_rule({'!ccflags' => '-Zi'}, {'+ld_optimize' => '-OPT:REF,ICF'});
+  $self->compile_rule({'!ccflags' => '-Zi'}, {'+ld_optimize' => '-OPT:REF,ICF'});
 
   # Complex conditions (AND logic)
   # If it's C++ AND dialect is NOT c++11 (e.g. c++14), add exception handling
-  $config_global->compile_rule({language => 'cpp', '!dialect' => 'c++11'}, {
+  $self->compile_rule({language => 'cpp', '!dialect' => 'c++11'}, {
     '+ccflags' => ['-EHsc']
   });
 
   # Procedural update with a callback
   # Dynamically modify the config object based on custom logic
-  $config_global->compile_rule({language => 'c'}, sub {
+  $self->compile_rule({language => 'c'}, sub {
     my $config = shift;
     if ($ENV{MY_CUSTOM_OPT}) {
       $config->optimize('-Ofast');
@@ -277,11 +318,11 @@ The SPVM::Builder::Config::Global class has methods to manipulate the config for
 
   # Apply to all configurations (compile_rule_any)
   # Ensure all configs have the -nologo flag regardless of any condition
-  $config_global->compile_rule_any({'+ccflags' => ['-nologo']});
+  $self->compile_rule_any({'+ccflags' => ['-nologo']});
 
   # Reset or global initialization via callback
   # Useful for clearing fields before applying specific rules
-  $config_global->compile_rule_any(sub {
+  $self->compile_rule_any(sub {
     my $config = shift;
     $config->clear_system_fields;
   });
@@ -306,8 +347,8 @@ This is because the compiler flags are used to compile SPVM core source files an
 
 =head2 before_compile_cbs
 
-  my $before_compile_cbs = $config_global->before_compile_cbs;
-  $config_global->before_compile_cbs($before_compile_cbs);
+  my $before_compile_cbs = $self->before_compile_cbs;
+  $self->before_compile_cbs($before_compile_cbs);
 
 Gets and sets the C<before_compile_cbs> field, an array reference of callbacks that work globally called just before the compile command L</"cc"> is executed.
 
@@ -392,13 +433,13 @@ Field Default Values:
 
 =head2 add_before_compile_cb
 
-  $config_global->add_before_compile_cb(@before_compile_cbs);
+  $self->add_before_compile_cb(@before_compile_cbs);
 
 Adds @before_compile_cbs to the end of L</"before_compile_cbs"> field.
 
 Examples:
 
-  $config_global->add_before_compile_cb(sub {
+  $self->add_before_compile_cb(sub {
     my ($config, $compile_info) = @_;
     
     my $cc_command = $compile_info->to_command;
