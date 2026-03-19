@@ -86,105 +86,45 @@ sub _match_apply {
   
   my $match = 1;
   if ($condition || $condition_global) {
-    my $match_condition = 1;
-    if ($condition) {
-      for my $name (keys %$condition) {
-        my $condition_value = $condition->{$name};
-        
-        my $is_not = 0;
-        my $target_name = $name;
-        if ($name =~ /^!(.+)$/) {
-          $is_not = 1;
-          $target_name = $1;
-        }
-        
-        my $config_value = $config->{$target_name};
-        my $found = 0;
-        my @config_values = ref $config_value eq 'ARRAY' ? @$config_value : ($config_value);
-        
-        for my $val (@config_values) {
-          if (ref $condition_value eq 'Regexp') {
-            if (defined $val && $val =~ $condition_value) {
-              $found = 1;
-              last;
+    my $check_match = sub {
+      my ($target_h, $cond_h) = @_;
+      
+      my $inner_match = 1;
+      if ($cond_h) {
+        for my $name (keys %$cond_h) {
+          my $cond_val = $cond_h->{$name};
+          my $target_name = $name;
+          my $is_not = ($target_name =~ s/^!//);
+          
+          my $val = $target_h ? $target_h->{$target_name} : undef;
+          my @candidates = (defined $val && ref $val eq 'ARRAY') ? @$val : ($val);
+          
+          my $found = 0;
+          for my $c (@candidates) {
+            if (ref $cond_val eq 'Regexp') {
+              if (defined $c && $c =~ $cond_val) { $found = 1; last; }
             }
-          }
-          else {
-            if (defined $condition_value) {
-              if (defined $val && $val eq $condition_value) {
-                $found = 1;
-                last;
-              }
+            elsif (defined $cond_val) {
+              if (defined $c && $c eq $cond_val) { $found = 1; last; }
             }
             else {
-              unless (defined $val) {
-                $found = 1;
-                last;
-              }
+              if (!defined $c) { $found = 1; last; }
             }
           }
-        }
-        
-        if ($is_not) {
-          $found = !$found;
-        }
-        
-        unless ($found) {
-          $match_condition = 0;
-          last;
+          
+          $found = !$found if $is_not;
+          
+          unless ($found) {
+            $inner_match = 0;
+            last;
+          }
         }
       }
-    }
+      $inner_match;
+    };
     
-    my $match_condition_global = 1;
-    if ($condition_global) {
-      for my $name (keys %$condition_global) {
-        my $condition_global_value = $condition_global->{$name};
-        
-        my $is_not = 0;
-        my $target_name = $name;
-        if ($name =~ /^!(.+)$/) {
-          $is_not = 1;
-          $target_name = $1;
-        }
-        
-        my $config_value = $config->{config_global}{$target_name};
-        my $found = 0;
-        my @config_values = ref $config_value eq 'ARRAY' ? @$config_value : ($config_value);
-        
-        for my $val (@config_values) {
-          if (ref $condition_global_value eq 'Regexp') {
-            if (defined $val && $val =~ $condition_global_value) {
-              $found = 1;
-              last;
-            }
-          }
-          else {
-            if (defined $condition_global_value) {
-              if (defined $val && $val eq $condition_global_value) {
-                $found = 1;
-                last;
-              }
-            }
-            else {
-              unless (defined $val) {
-                $found = 1;
-                last;
-              }
-            }
-          }
-        }
-        
-        if ($is_not) {
-          $found = !$found;
-        }
-        
-        unless ($found) {
-          $match_condition_global = 0;
-          last;
-        }
-      }
-    }
+    my $match_condition = $check_match->($config, $condition);
+    my $match_condition_global = $check_match->($config->{config_global}, $condition_global);
     
     $match = $match_condition && $match_condition_global;
   }
