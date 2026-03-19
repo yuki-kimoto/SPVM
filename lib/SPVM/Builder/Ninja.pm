@@ -6,6 +6,14 @@ package SPVM::Builder::Ninja;
 use strict;
 use warnings;
 
+use SPVM::Builder::Accessor 'has';
+
+has [qw(
+  dir
+  ninja_log_entries_h
+  ninja_log_fh
+)];
+
 sub new {
   my $class = shift;
   
@@ -17,32 +25,10 @@ sub new {
   return bless $self, ref $class || $class;
 }
 
-sub dir {
-  my $self = shift;
-  if (@_) {
-    $self->{dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{dir};
-  }
-}
-
-sub ninja_log_entries_h {
-  my $self = shift;
-  if (@_) {
-    $self->{ninja_log_entries_h} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ninja_log_entries_h};
-  }
-}
-
 sub open_ninja_log {
   my ($self) = @_;
 
-  return if $self->{_ninja_log_fh};
+  return if $self->{ninja_log_fh};
 
   my $dir_name = $self->dir;
   my $log_file = "$dir_name/.ninja_log";
@@ -56,13 +42,13 @@ sub open_ninja_log {
     print $fh "# ninja log v5\x0A";
   }
 
-  $self->{_ninja_log_fh} = $fh;
+  $self->{ninja_log_fh} = $fh;
 }
 
 sub add_ninja_log {
   my ($self, $new_record_h) = @_;
 
-  my $fh = $self->{_ninja_log_fh} 
+  my $fh = $self->{ninja_log_fh} 
     or die "Ninja log is not open. Call open_ninja_log() first.";
 
   my $output_file  = $new_record_h->{output_file};
@@ -87,7 +73,7 @@ sub add_ninja_log {
 sub close_ninja_log {
   my ($self) = @_;
   
-  if (my $fh = delete $self->{_ninja_log_fh}) {
+  if (my $fh = delete $self->{ninja_log_fh}) {
     close $fh;
   }
 }
