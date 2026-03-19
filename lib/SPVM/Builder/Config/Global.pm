@@ -89,18 +89,33 @@ sub compile_rule {
   my ($self, $condition, $match_config_or_cb) = @_;
   
   # Normalize condition for key validation
-  if ($condition) {
-    my $exists_global = exists $condition->{global};
-    my $condition_global = delete $condition->{global};
-    SPVM::Builder::Config->new_empty(%$condition);
-    if ($exists_global) {
-      $condition->{global} = $condition_global;
+  if (ref $condition eq 'HASH') {
+    my %normalized;
+    for my $name (keys %$condition) {
+      next if $name eq 'global';
+      
+      # Remove non-word characters (ASCII only)
+      my $target_name = $name;
+      $target_name =~ s/[^\w]//ga;
+      $normalized{$target_name} = $condition->{$name};
     }
+    
+    # Validate with normalized keys
+    SPVM::Builder::Config->new_empty(%normalized);
   }
-  
+
   # Normalize match_config if it's a hash (not a callback)
   if (ref $match_config_or_cb eq 'HASH') {
-    SPVM::Builder::Config->new_empty(%$match_config_or_cb);
+    my %normalized;
+    for my $name (keys %$match_config_or_cb) {
+      # Remove prefix operators like '+', '-', '.'
+      my $target_name = $name;
+      $target_name =~ s/[^\w]//ga;
+      $normalized{$target_name} = $match_config_or_cb->{$name};
+    }
+    
+    # Validate with normalized keys
+    SPVM::Builder::Config->new_empty(%normalized);
   }
   
   $self->add_before_compile_cb(sub {
