@@ -1,3 +1,36 @@
+0.990150 2026-03-20
+  [New Features]
+    * SPVM::Builder::Config::Global: Add support for "build_type" field to manage build configurations like Debug, Release, RelWithDebInfo, and MinSizeRel.
+    * SPVM::Builder::Config::Global: Support negative matching in rules using the "!" prefix (e.g., { build_type => '!Debug' }).
+    * SPVM::Builder::Config::Global: Support array-based matching in rules (e.g., { language => ['c', 'cpp'] }).
+    * SPVM::Builder::Config::Global: Add support for global condition matching to apply rules across all configurations.
+    * SPVM::Builder::Config: Add "ndebug_ccflags" field to manage flags for deactivating debug features (defaults to ["-DNDEBUG"]).
+    * SPVM::Builder::Config: Add "extra_ccflags" field to allow users to easily append custom compiler flags.
+    * SPVM::Builder::Config::Exe::MSVC: Implement CMake-compatible build type rules (Debug, Release, etc.) with binary-safe -MT runtime.
+    * SPVM::Builder::Exe: Implement CMake-compatible build type rules for GCC and Clang.
+
+  [Incompatible Changes]
+    * spvmcc: Completely remove SPVM Archive (.a/.lib) functionality. All native extensions and classes are now compiled from source to ensure 100% ABI compatibility and avoid "Binary Hell" (e.g., LNK4098).
+    * SPVM::Builder::Config::Global: Rename compile_match/compile_match_any to compile_rule/compile_rule_any for a clearer declarative API.
+    * SPVM::Builder::Config: Rename dynamic_lib_ccflags to position_independent_code_ccflags to clarify its role (e.g., -fPIC).
+    * SPVM::Builder::Config: Rename get_system_field_names to get_cc_system_field_names, and move long_option_sep/create_option to SPVM::Builder::Config::Linker.
+    * SPVM::Builder::Config::Linker: Rename get_system_field_names to get_ld_system_field_names and static_lib_ldflag to static_lib_braces.
+    * SPVM::Builder::Config::Linker: Remove the obsolete resource_loader_config field.
+    * SPVM::Builder::Config::Base: Rename get_loaded_config_files to loaded_config_files and change it to a public field.
+
+  [Changes]
+    * SPVM::Builder::Config: Move -DNDEBUG from the default "optimize" field to the new "ndebug_ccflags" field.
+    * SPVM::Builder::Config::Exe::MSVC: Remove "dialect => undef" from core rules to ensure mandatory flags like -MT and -utf-8 are always applied.
+    * SPVM::Builder::Config::Exe::MSVC: Refactor the "apply" method to use a declarative rule-based approach with the "+" prefix syntax.
+    * SPVM::Builder::Config::Exe::MSVC: Lazy load the Win32 module to ensure portability on non-Windows environments.
+    * SPVM::Builder::LinkInfo: Refactor "create_ldflags" to use a loop-based approach for better maintainability and fix missing fields during merging.
+    * SPVM::Builder::CC: Simplify resource compilation messages and remove hardcoded logic for static archives.
+
+  [Internal Changes]
+    * SPVM::Builder::Config::Global: Refactor "_match_apply" to eliminate redundant logic and support new matching operators (! and arrays).
+    * Documentation: Update POD for SPVM::Builder::Config::Global with comprehensive rule matching examples.
+    * Test: Add new test cases to t/04_spvmcc/SPVM-Builder-Config-Global.t covering negative matching and array sensitivity.
+    
 0.990149 2026-03-18
   [New Features]
     * SPVM::Builder::Config: Add debug_info_ccflags field to manage compiler arguments for generating debug information independently.
