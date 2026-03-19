@@ -40,6 +40,7 @@ my $cc_fields = [qw(
   position_independent_code_ccflags
   thread_ccflags
   extra_ccflags
+  ndebug_ccflags
   before_compile_cbs
 )];
 
@@ -85,6 +86,11 @@ sub new {
   # extra_ccflags
   unless (exists $self->{extra_ccflags}) {
     $self->extra_ccflags([]);
+  }
+  
+  # ndebug_ccflags
+  unless (exists $self->{ndebug_ccflags}) {
+    $self->ndebug_ccflags([]);
   }
 
   # optimize
@@ -308,6 +314,7 @@ sub get_cc_system_field_names {
     position_independent_code_ccflags
     thread_ccflags
     extra_ccflags
+    ndebug_ccflags
     copyright_print_ccflags
     language_ccflags
     arch_ccflags
@@ -540,6 +547,14 @@ Gets and sets C<thread_ccflags> field, an array reference containing arugments o
   $config->extra_ccflags(['-Wno-unused-variable']);
 
 Gets and sets C<extra_ccflags> field, an array reference containing extra arguments of the compiler L</"cc">.
+
+=head2 ndebug_ccflags
+
+  my $ndebug_ccflags = $config->ndebug_ccflags;
+  $config->ndebug_ccflags(['-DNDEBUG']);
+
+Gets and sets C<ndebug_ccflags> field, an array reference containing compiler flags to deactivate debug features like C<assert>. 
+This field is typically used to provide C<-DNDEBUG> for production builds.
 
 =head2 std
 
@@ -901,6 +916,10 @@ Other OSs:
 
   []
 
+=item * L</"ndebug_ccflags">
+
+  []
+
 =item * L</"include_dirs">
 
   []
@@ -1056,6 +1075,8 @@ The following field names are returned:
 =item * C<thread_ccflags>
 
 =item * C<extra_ccflags>
+
+=item * C<ndebug_ccflags>
 
 =item * C<copyright_print_ccflags>
 
