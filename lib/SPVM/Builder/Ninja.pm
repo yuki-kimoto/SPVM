@@ -5,11 +5,13 @@ package SPVM::Builder::Ninja;
 
 use strict;
 use warnings;
+use Carp 'confess';
 
 use SPVM::Builder::Accessor 'has';
 
 has [qw(
   log_dir
+  log_file_base_name
   log_entries_h
   log_fh
 )];
@@ -19,6 +21,7 @@ sub new {
   
   my $self = {
     log_entries_h => {},
+    log_file => '.ninja_log',
     @_
   };
   
@@ -30,8 +33,9 @@ sub open_ninja_log {
 
   return if $self->{log_fh};
 
-  my $log_dir_name = $self->log_dir;
-  my $log_file = "$log_dir_name/.ninja_log";
+  my $log_dir = $self->log_dir;
+  my $log_file_base_name = $self->log_file_base_name;
+  my $log_file = "$log_dir/$log_file_base_name";
   my $must_write_header = !-f $log_file;
 
   open my $fh, '>>', $log_file or die "Can't open $log_file for appending: $!";
@@ -81,8 +85,9 @@ sub close_ninja_log {
 sub load_ninja_log {
   my ($self) = @_;
 
-  my $log_dir_name = $self->log_dir;
-  my $log_file = "$log_dir_name/.ninja_log";
+  my $log_dir = $self->log_dir;
+  my $log_file_base_name = $self->log_file_base_name;
+  my $log_file = "$log_dir/$log_file_base_name";
   my $log_entries_h = {};
 
   # Return an empty hash if the log file does not exist
