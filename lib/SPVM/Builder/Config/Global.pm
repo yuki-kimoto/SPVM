@@ -81,8 +81,15 @@ sub _match_apply {
   if ($condition) {
     for my $name (keys %$condition) {
       my $condition_value = $condition->{$name};
-      my $config_value    = $config->{$name};
       
+      my $is_not = 0;
+      my $target_name = $name;
+      if ($name =~ /^!(.+)$/) {
+        $is_not = 1;
+        $target_name = $1;
+      }
+      
+      my $config_value = $config->{$target_name};
       my $found = 0;
       my @config_values = ref $config_value eq 'ARRAY' ? @$config_value : ($config_value);
       
@@ -107,6 +114,10 @@ sub _match_apply {
             }
           }
         }
+      }
+      
+      if ($is_not) {
+        $found = !$found;
       }
       
       unless ($found) {
@@ -174,6 +185,54 @@ The SPVM::Builder::Config::Global class has methods to manipulate the config for
   use SPVM::Builder::Config::Global;
   
   my $config_global = SPVM::Builder::Config::Global->new;
+
+=head1 Usage
+
+  use SPVM::Builder::Config::Global;
+  
+  my $config_global = SPVM::Builder::Config::Global->new;
+  
+  # Basic conditional update (Exact match)
+  # If language is 'c', set optimization to -O3
+  $config_global->compile_rule({language => 'c'}, {optimize => '-O3'});
+
+  # Regex matching and field appending (+)
+  # If dialect matches c11/c17, add a specific warning flag
+  $config_global->compile_rule({dialect => qr/^c1[17]$/}, {'+ccflags' => ['-Wpedantic']});
+
+  # Array Sensitivity (Checking if a flag exists in an array)
+  # If '-DDEBUG' is already in ccflags, add debug linker flags
+  $config_global->compile_rule({ccflags => '-DDEBUG'}, {'+ldflags' => ['-DEBUG']});
+
+  # Negative Match (!prefix)
+  # If '-Zi' is NOT in ccflags, enable linker optimizations
+  $config_global->compile_rule({'!ccflags' => '-Zi'}, {'+ld_optimize' => '-OPT:REF,ICF'});
+
+  # Complex conditions (AND logic)
+  # If it's C++ AND dialect is NOT c++11 (e.g. c++14), add exception handling
+  $config_global->compile_rule({language => 'cpp', '!dialect' => 'c++11'}, {
+    '+ccflags' => ['-EHsc']
+  });
+
+  # Procedural update with a callback
+  # Dynamically modify the config object based on custom logic
+  $config_global->compile_rule({language => 'c'}, sub {
+    my $config = shift;
+    if ($ENV{MY_CUSTOM_OPT}) {
+      $config->optimize('-Ofast');
+    }
+  });
+
+  # Apply to all configurations (compile_rule_any)
+  # Ensure all configs have the -nologo flag regardless of any condition
+  $config_global->compile_rule_any({'+ccflags' => ['-nologo']});
+
+  # Reset or global initialization via callback
+  # Useful for clearing fields before applying specific rules
+  $config_global->compile_rule_any(sub {
+    my $config = shift;
+    $config->clear_system_fields;
+  });
 
 =head1 Details
 
@@ -282,7 +341,9 @@ A match occurs only if B<all> specified conditions in the hash are satisfied (AN
 
 =over 4
 
-=item * B<Array Sensitivity>: If the field value in the target configuration is an B<array reference>, the condition matches if B<at least one element> within that array satisfies the criteria below (OR logic within the array).
+=item * B<Negative Match (!prefix)>: If a field name starts with B<C<!>> (e.g., C<'!ccflags' => '-O2'>), the condition is B<inverted>. It matches only if the criteria is B<not> met.
+
+=item * B<Array Sensitivity>: If the field value in the target configuration is an B<array reference>, the condition matches if B<at least one element> within that array satisfies the criteria below (OR logic within the array). When combined with the B<C<!>> prefix, it matches only if B<none> of the elements satisfy the criteria.
 
 =item * B<Regex Match>: If the condition value is a C<Regexp> object (e.g., C<qr/.../>), it performs a regex match against the field value (or its elements).
 

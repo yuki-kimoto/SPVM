@@ -144,4 +144,40 @@ subtest 'Array Sensitivity (Config side is ARRAY)' => sub {
     ok(!$called, 'Mismatch regex against all elements in ARRAY');
 };
 
+# --- Negative Matching (!prefix) ---
+subtest 'Negative Matching (!prefix)' => sub {
+  my $config = create_mock_config();
+  # Mock config: lang => 'c', ccflags => ['-Wall']
+
+  # Negative string match (Success: 'cpp' is NOT 'c')
+  my $called = 0;
+  SPVM::Builder::Config::Global::_match_apply($config, { '!lang' => 'cpp' }, sub { $called = 1 });
+  ok($called, 'Negative string match (match because value is different)');
+
+  # Negative string match (Failure: 'c' IS 'c')
+  $called = 0;
+  SPVM::Builder::Config::Global::_match_apply($config, { '!lang' => 'c' }, sub { $called = 1 });
+  ok(!$called, 'Negative string match (mismatch because value is same)');
+
+  # Negative Array Sensitivity (Success: '-O3' is NOT in ['-Wall'])
+  $called = 0;
+  SPVM::Builder::Config::Global::_match_apply($config, { '!ccflags' => '-O3' }, sub { $called = 1 });
+  ok($called, 'Negative array match (match because element is not in array)');
+
+  # Negative Array Sensitivity (Failure: '-Wall' IS in ['-Wall'])
+  $called = 0;
+  SPVM::Builder::Config::Global::_match_apply($config, { '!ccflags' => '-Wall' }, sub { $called = 1 });
+  ok(!$called, 'Negative array match (mismatch because element is in array)');
+
+  # Negative Regex match (Success: 'base' does not match /x/)
+  $called = 0;
+  SPVM::Builder::Config::Global::_match_apply($config, { '!str' => qr/x/ }, sub { $called = 1 });
+  ok($called, 'Negative regex match');
+
+  # Negative Undef match (Success: 'lang' is defined, so it matches '!lang => undef')
+  $called = 0;
+  SPVM::Builder::Config::Global::_match_apply($config, { '!lang' => undef }, sub { $called = 1 });
+  ok($called, 'Negative undef match (match because field is defined)');
+};
+
 done_testing;
