@@ -62,9 +62,9 @@ sub apply {
   # Clear system settings before other rules
   $self->compile_rule_any(sub { $_[0]->clear_system_fields });
 
-  # 2. Common C/C++ flags (when dialect is undefined)
+  # 2. Common C/C++ flags
   # Use '+' to preserve existing flags (equivalent to push)
-  $self->compile_rule({language => qr/^(c|cpp)$/, dialect => undef}, {
+  $self->compile_rule({language => qr/^(c|cpp)$/}, {
     'function_level_linking_ccflags' => ['-Gy'],
     'source_encoding_ccflags' => ['-utf-8'],
     'library_linkage_ccflags'       => ['-MT'],
@@ -73,23 +73,23 @@ sub apply {
   });
 
   # 3. C specific rules
-  $self->compile_rule({language => 'c', dialect => undef}, {
+  $self->compile_rule({language => 'c'}, {
     'language_ccflags' => ['-TC'],
   });
   
   # Ensure C11 as baseline if unspecified or c99
-  $self->compile_rule({language => 'c', dialect => undef, std => qr/^(|c99)$/}, {
+  $self->compile_rule({language => 'c', std => qr/^(|c99)$/}, {
     std => 'c11',
   });
 
   # 4. C++ specific rules
-  $self->compile_rule({language => 'cpp', dialect => undef}, {
+  $self->compile_rule({language => 'cpp'}, {
     'language_ccflags' => ['-TP'],
     'cpp_exception_handling_ccflags'  => ['-EHsc'],
   });
 
   # Ensure C++14 as baseline if specified as c++11
-  $self->compile_rule({language => 'cpp', dialect => undef, std => 'c++11'}, {
+  $self->compile_rule({language => 'cpp', std => 'c++11'}, {
     std => 'c++14',
   });
   
@@ -97,7 +97,7 @@ sub apply {
 
   # Debug: Equivalent to CMake's Debug but uses -MT to avoid LNK4098.
   # Includes debug symbols and disables optimization for a smooth debugging experience.
-  $config_global->compile_rule(
+  $self->compile_rule(
     { build_type => 'Debug' },
     {
       optimize           => '-Od',               # Disable optimization
@@ -107,7 +107,7 @@ sub apply {
   );
 
   # Release: Optimized for speed, no debug symbols.
-  $config_global->compile_rule(
+  $self->compile_rule(
     { build_type => 'Release' },
     {
       optimize           => '-O2',               # Maximize speed
@@ -117,7 +117,7 @@ sub apply {
   );
 
   # RelWithDebInfo: Optimized for speed but includes debug symbols for backtracing.
-  $config_global->compile_rule(
+  $self->compile_rule(
     { build_type => 'RelWithDebInfo' },
     {
       optimize           => '-O2',               # Maximize speed
@@ -127,7 +127,7 @@ sub apply {
   );
 
   # MinSizeRel: Optimized for binary size.
-  $config_global->compile_rule(
+  $self->compile_rule(
     { build_type => 'MinSizeRel' },
     {
       optimize           => '-O1',               # Minimize size
