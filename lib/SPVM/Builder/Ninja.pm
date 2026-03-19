@@ -39,40 +39,42 @@ sub ninja_log_entries_h {
   }
 }
 
-sub add_ninja_log {
-  my ($self, $new_record_h) = @_;
+sub open_ninja_log {
+  my ($self) = @_;
+
+  return if $self->{_ninja_log_fh};
 
   my $dir_name = $self->dir;
-  my $ninja_log_entries_h = $self->ninja_log_entries_h;
-
-  my $output_file  = $new_record_h->{output_file};
-  my $command_hash = $new_record_h->{command_hash};
-
-  # Update the global hash in memory
-  $ninja_log_entries_h->{$output_file} = $new_record_h;
-
   my $log_file = "$dir_name/.ninja_log";
   my $must_write_header = !-f $log_file;
 
   open my $fh, '>>', $log_file or die "Can't open $log_file for appending: $!";
   
-  # Use binary mode to ensure \x0A is not translated to \r\n on Windows
   binmode $fh;
-  
-  # Define LF as a physical byte 0x0A
-  my $LF = "\x0A";
 
-  # Write the Ninja log version header
   if ($must_write_header) {
-    print $fh "# ninja log v5$LF";
+    print $fh "# ninja log v5\x0A";
   }
+
+  $self->{_ninja_log_fh} = $fh;
+}
+
+sub add_ninja_log {
+  my ($self, $new_record_h) = @_;
+
+  my $fh = $self->{_ninja_log_fh} 
+    or die "Ninja log is not open. Call open_ninja_log() first.";
+
+  my $output_file  = $new_record_h->{output_file};
+  my $command_hash = $new_record_h->{command_hash};
+
+  $self->ninja_log_entries_h->{$output_file} = $new_record_h;
 
   my $start_time = $new_record_h->{start_time} || 0;
   my $end_time   = $new_record_h->{end_time}   || 0;
   my $mtime      = $new_record_h->{mtime}      || 0;
 
-  # Format the log entry and ensure it ends with a physical LF
-  my $record = sprintf("%d\t%d\t%d\t%s\t%s$LF", 
+  my $record = sprintf("%d\t%d\t%d\t%s\t%s\x0A", 
     $start_time, 
     $end_time, 
     $mtime, 
@@ -80,8 +82,14 @@ sub add_ninja_log {
     $command_hash);
     
   print $fh $record;
+}
 
-  close $fh;
+sub close_ninja_log {
+  my ($self) = @_;
+  
+  if (my $fh = delete $self->{_ninja_log_fh}) {
+    close $fh;
+  }
 }
 
 sub load_ninja_log {
