@@ -92,6 +92,49 @@ sub apply {
   $self->compile_rule({language => 'cpp', dialect => undef, std => 'c++11'}, {
     std => 'c++14',
   });
+  
+  # --- MSVC Build Type Rules (CMake-Compatible & Binary Safe) ---
+
+  # Debug: Equivalent to CMake's Debug but uses -MT to avoid LNK4098.
+  # Includes debug symbols and disables optimization for a smooth debugging experience.
+  $config_global->compile_rule(
+    { build_type => 'Debug' },
+    {
+      optimize           => '-Od',               # Disable optimization
+      debug_info_ccflags => ['-Zi', '-RTC1'],    # Generate PDB and enable runtime stack checks
+      ndebug_ccflags     => [],                  # Enable assertions
+    }
+  );
+
+  # Release: Optimized for speed, no debug symbols.
+  $config_global->compile_rule(
+    { build_type => 'Release' },
+    {
+      optimize           => '-O2',               # Maximize speed
+      debug_info_ccflags => [],
+      ndebug_ccflags     => ['-DNDEBUG'],        # Disable assertions
+    }
+  );
+
+  # RelWithDebInfo: Optimized for speed but includes debug symbols for backtracing.
+  $config_global->compile_rule(
+    { build_type => 'RelWithDebInfo' },
+    {
+      optimize           => '-O2',               # Maximize speed
+      debug_info_ccflags => ['-Zi'],             # Generate PDB
+      ndebug_ccflags     => ['-DNDEBUG'],        # Disable assertions
+    }
+  );
+
+  # MinSizeRel: Optimized for binary size.
+  $config_global->compile_rule(
+    { build_type => 'MinSizeRel' },
+    {
+      optimize           => '-O1',               # Minimize size
+      debug_info_ccflags => [],
+      ndebug_ccflags     => ['-DNDEBUG'],        # Disable assertions
+    }
+  );
 
   return $self;
 }
