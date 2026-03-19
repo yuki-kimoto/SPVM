@@ -37,7 +37,7 @@ my $cc_fields = [qw(
   function_level_linking_ccflags
   cpp_exception_handling_ccflags
   library_linkage_ccflags
-  dynamic_lib_ccflags
+  position_independent_code_ccflags
   thread_ccflags
   before_compile_cbs
 )];
@@ -66,13 +66,13 @@ sub new {
     $self->defines([]);
   }
 
-  # dynamic_lib_ccflags
-  unless (exists $self->{dynamic_lib_ccflags}) {
+  # position_independent_code_ccflags
+  unless (exists $self->{position_independent_code_ccflags}) {
     if ($^O eq 'MSWin32') {
-      $self->dynamic_lib_ccflags([]);
+      $self->position_independent_code_ccflags([]);
     }
     else {
-      $self->dynamic_lib_ccflags(['-fPIC']);
+      $self->position_independent_code_ccflags(['-fPIC']);
     }
   }
 
@@ -299,7 +299,7 @@ sub get_cc_system_field_names {
   my $self = shift;
   
   return [qw(
-    dynamic_lib_ccflags
+    position_independent_code_ccflags
     thread_ccflags
     copyright_print_ccflags
     language_ccflags
@@ -466,8 +466,6 @@ Gets and sets C<spvm_core_include_dir> field, an SPVM core header file search di
 
 The value of this field is converted to C<-I> option when the arguments of the compiler L</"cc"> are created.
 
-This field is automatically set and users nomally do not change it.
-
 =head2 native_include_dir
 
   my $native_include_dir = $config->native_include_dir;
@@ -477,16 +475,12 @@ Gets and sets C<native_include_dir> field, a L<native header file|SPVM::Document
 
 The value of this field is converted to C<-I> option when the arguments of the compiler L</"cc"> are created.
 
-This field is automatically set and users nomally do not change it.
-
 =head2 native_src_dir
 
   my $native_src_dir = $config->native_src_dir;
   $config->native_src_dir($native_src_dir);
 
 Gets and sets C<native_src_dir> field, a L<native source file|SPVM::Document::NativeClass/"Native Source Files"> search directory.
-
-This field is automatically set and users nomally do not change it.
 
 =head2 ccflags
 
@@ -515,14 +509,16 @@ Examples:
   $config->optimize('-O2');
   $config->optimize('-g3 -O0');
 
-=head2 dynamic_lib_ccflags
+=head2 position_independent_code_ccflags
 
-  my $dynamic_lib_ccflags = $config->dynamic_lib_ccflags;
-  $config->dynamic_lib_ccflags($dynamic_lib_ccflags);
+  my $flags = $config->position_independent_code_ccflags;
+  $config->position_independent_code_ccflags(['-fPIC']);
 
-Gets and sets C<dynamic_lib_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for dynamic linking.
+Gets or sets the compiler flags required to generate Position Independent Code (PIC). 
+This is typically an array reference containing flags like C<-fPIC>, which are 
+necessary for building libraries intended for dynamic linking.
 
-This field is automatically set and users nomally do not change it.
+=cut
 
 =head2 thread_ccflags
 
@@ -530,8 +526,6 @@ This field is automatically set and users nomally do not change it.
   $config->thread_ccflags($thread_ccflags);
 
 Gets and sets C<thread_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for threads.
-
-This field is automatically set and users nomally do not change it.
 
 =head2 std
 
@@ -583,16 +577,12 @@ The 2th argument of the callback is an L<SPVM::Builder::CompileInfo> object.
 
 Gets and sets C<cc_input_dir> field, an input directory for the compiler L</"cc">.
 
-This field is automatically set and users nomally do not change it.
-
 =head2 cc_output_dir
 
   my $cc_output_dir = $config->cc_output_dir;
   $config->cc_output_dir($cc_output_dir);
 
 Gets and sets C<cc_output_dir> field, an output directory for the compiler L</"cc">.
-
-This field is automatically set and users nomally do not change it.
 
 =head2 language
 
@@ -879,7 +869,7 @@ Other OSs:
 
   []
 
-=item * L</"dynamic_lib_ccflags">
+=item * L</"position_independent_code_ccflags">
 
 Windows:
 
@@ -1043,7 +1033,7 @@ The following field names are returned:
 
 =over 2
 
-=item * C<dynamic_lib_ccflags>
+=item * C<position_independent_code_ccflags>
 
 =item * C<thread_ccflags>
 

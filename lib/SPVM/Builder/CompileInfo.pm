@@ -125,7 +125,7 @@ sub create_ccflags {
   my $output_type = $config->output_type;
 
   for my $field_name (@$field_names) {
-    if ($field_name eq 'dynamic_lib_ccflags') {
+    if ($field_name eq 'position_independent_code_ccflags') {
       if ($output_type eq 'dynamic_lib') {
         push @compile_command_args, grep { length $_ } @{$config->$field_name};
       }
