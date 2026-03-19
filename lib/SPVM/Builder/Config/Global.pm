@@ -11,11 +11,38 @@ use SPVM::Builder::Util::API;
 use SPVM::Builder::Accessor 'has';
 
 # Fields
-my $fields = [qw(
-  before_compile_cbs
-)];
+my $fields;
+BEGIN {
+  $fields = [qw(
+    before_compile_cbs
+    build_type
+  )];
+  
+  has($fields);
+}
 
-has($fields);
+{
+  no warnings 'redefine';
+  sub build_type {
+    my $self = shift;
+    if (@_) {
+      my $build_type = $_[0];
+      
+      my %valid_build_types = map { $_ => 1 } qw(Debug Release RelWithDebInfo MinSizeRel);
+      
+      unless (defined $build_type && $valid_build_types{$build_type}) {
+        my $valid_build_types_string = join(', ', sort keys %valid_build_types);
+        confess("The build_type '$build_type' is invalid. It must be one of ($valid_build_types_string).");
+      }
+      
+      $self->{build_type} = $build_type;
+      return $self;
+    }
+    else {
+      return $self->{build_type};
+    }
+  }
+}
 
 sub optimize {
   my $self = shift;
@@ -43,6 +70,10 @@ sub new {
     before_compile_cbs => [],
     @_
   );
+  
+  if (exists $self->{build_type}) {
+    $self->build_type($self->{build_type});
+  }
   
   return $self;
 }
@@ -269,7 +300,7 @@ This affects all compilations.
 
 Sets C<optimize> field for the configs that match the condition C<$condition>.
 
-This method is a setter-only method. It calls L</"match"> internally.
+This method is a setter-only method. It calls L</"compile_rule"> internally.
 
 If C<$condition> is not defined, the optimization setting is applied to all configs.
 
@@ -280,6 +311,37 @@ Examples:
   
   # Set -O2 for native category configs
   $config->optimize('-O2', {category => 'native'});
+
+=head2 build_type
+
+  my $build_type = $config->build_type;
+  $config->build_type($build_type);
+
+Sets and gets the C<build_type> field.
+
+The C<build_type> field must be one of the following CMake-compatible values:
+
+=over 2
+
+=item * C<Debug>
+
+=item * C<Release>
+
+=item * C<RelWithDebInfo>
+
+=item * C<MinSizeRel>
+
+=back
+
+If an invalid value is specified, an exception is thrown.
+
+Examples:
+
+  # Set build_type
+  $config->build_type('Debug');
+  
+  # Get build_type
+  my $build_type = $config->build_type;
 
 =head1 Methods
 
