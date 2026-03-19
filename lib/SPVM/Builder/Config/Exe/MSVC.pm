@@ -11,31 +11,23 @@ use File::Find;
 use base 'SPVM::Builder::Config::Exe';
 
 sub new {
-  my $class = shift;
+  my $self = shift->SUPER::new(@_);
   
-  my $self = $class->SUPER::new(@_);
+  unless (exists $self->{hint_cc}) {
+    $self->{hint_cc} = 'cl';
+  }
   
-  $self->apply;
+  unless (exists $self->{ld}) {
+    $self->{ld} = 'link.exe';
+  }
   
-  return $self;
-}
-
-sub apply {
-  my ($self, $options) = @_;
-  
-  $options //= {};
-  $self->setup_env($options);
-  
-  my $cc = $options->{cc} // 'cl';
-  my $ld = $options->{ld} // 'link.exe';
+  $self->setup_env;
   
   # --- Initialize Global Config ---
   $self->clear_system_fields;
-  $self->cc($cc);
   $self->long_option_sep(':');
   
   # Linker settings
-  $self->ld($ld);
   $self->static_lib_braces(["", ""]);
   $self->lib_prefix("");
   $self->lib_option_name("");
@@ -139,11 +131,9 @@ sub apply {
 }
 
 sub setup_env {
-  my ($self, $options) = @_;
+  my ($self) = @_;
   
-  $options //= {};
-  
-  my $cl_long_path = $options->{cl};
+  my $cl_long_path = $self->hint_cc;
   
   unless (defined $cl_long_path) {
     # Determine architecture (Windows only)
