@@ -22,7 +22,7 @@ sub optimize {
   
   if (@_) {
     my ($optimize, $condition) = @_;
-    $self->compile_match($condition, {optimize => $optimize});
+    $self->compile_rule($condition, {optimize => $optimize});
     return $self;
   }
   else {
@@ -54,7 +54,7 @@ sub add_before_compile_cb {
   push @{$self->{before_compile_cbs}}, @before_compile_cbs;
 }
 
-sub compile_match {
+sub compile_rule {
   my ($self, $condition, $match_config_or_cb) = @_;
   
   # Normalize condition for key validation
@@ -150,7 +150,7 @@ sub _match_apply {
   }
 }
 
-sub match_any { shift->compile_match(undef, @_) }
+sub match_any { shift->compile_rule(undef, @_) }
 
 1;
 
@@ -257,9 +257,9 @@ Examples:
     # Do something
   });
 
-=head2 compile_match
+=head2 compile_rule
 
-  $global_config->compile_match($condition, $match_config_or_cb);
+  $global_config->compile_rule($condition, $match_config_or_cb);
 
 Adds a rule to dynamically update the configuration before compilation if the given conditions are met.
 
@@ -303,9 +303,9 @@ This allows for complex, procedural updates to the configuration.
 
 =back
 
-=head2 compile_match_any
+=head2 compile_rule_any
 
-  $global_config->compile_match_any($match_config_or_cb);
+  $global_config->compile_rule_any($match_config_or_cb);
 
 A syntax sugar for L</"match"> with no conditions. 
 The C<$match_config> will be applied to all configurations before compilation.

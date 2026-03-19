@@ -51,8 +51,7 @@ sub apply {
   # --- Rules for each Config ---
 
   # 1. Common settings for all configs
-  $self->compile_match_any({
-    config_global         => $self,
+  $self->compile_rule_any({
     cc                    => 'cl',
     long_option_sep       => ':',
     cc_output_option_name => '-Fo',
@@ -61,11 +60,11 @@ sub apply {
   });
   
   # Clear system settings before other rules
-  $self->compile_match_any(sub { $_[0]->clear_system_fields });
+  $self->compile_rule_any(sub { $_[0]->clear_system_fields });
 
   # 2. Common C/C++ flags (when dialect is undefined)
   # Use '+' to preserve existing flags (equivalent to push)
-  $self->compile_match({language => qr/^(c|cpp)$/, dialect => undef}, {
+  $self->compile_rule({language => qr/^(c|cpp)$/, dialect => undef}, {
     'function_level_linking_ccflags' => ['-Gy'],
     'source_encoding_ccflags' => ['-utf-8'],
     'library_linkage_ccflags'       => ['-MT'],
@@ -74,23 +73,23 @@ sub apply {
   });
 
   # 3. C specific rules
-  $self->compile_match({language => 'c', dialect => undef}, {
+  $self->compile_rule({language => 'c', dialect => undef}, {
     'language_ccflags' => ['-TC'],
   });
   
   # Ensure C11 as baseline if unspecified or c99
-  $self->compile_match({language => 'c', dialect => undef, std => qr/^(|c99)$/}, {
+  $self->compile_rule({language => 'c', dialect => undef, std => qr/^(|c99)$/}, {
     std => 'c11',
   });
 
   # 4. C++ specific rules
-  $self->compile_match({language => 'cpp', dialect => undef}, {
+  $self->compile_rule({language => 'cpp', dialect => undef}, {
     'language_ccflags' => ['-TP'],
     'cpp_exception_handling_ccflags'  => ['-EHsc'],
   });
 
   # Ensure C++14 as baseline if specified as c++11
-  $self->compile_match({language => 'cpp', dialect => undef, std => 'c++11'}, {
+  $self->compile_rule({language => 'cpp', dialect => undef, std => 'c++11'}, {
     std => 'c++14',
   });
 
