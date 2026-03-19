@@ -28,14 +28,28 @@ sub new {
   return bless $self, ref $class || $class;
 }
 
+sub log_file {
+  my ($self) = @_;
+
+  my $log_dir = $self->log_dir;
+
+  # Raise an exception if log_dir is not defined
+  unless (defined $log_dir) {
+    confess("The \"log_dir\" property must be defined");
+  }
+
+  my $log_file_base_name = $self->log_file_base_name;
+  my $log_file = "$log_dir/$log_file_base_name";
+
+  return $log_file;
+}
+
 sub open_ninja_log {
   my ($self) = @_;
 
   return if $self->{log_fh};
 
-  my $log_dir = $self->log_dir;
-  my $log_file_base_name = $self->log_file_base_name;
-  my $log_file = "$log_dir/$log_file_base_name";
+  my $log_file = $self->log_file;
   my $must_write_header = !-f $log_file;
 
   open my $fh, '>>', $log_file or die "Can't open $log_file for appending: $!";
@@ -85,9 +99,7 @@ sub close_ninja_log {
 sub load_ninja_log {
   my ($self) = @_;
 
-  my $log_dir = $self->log_dir;
-  my $log_file_base_name = $self->log_file_base_name;
-  my $log_file = "$log_dir/$log_file_base_name";
+  my $log_file = $self->log_file;
   my $log_entries_h = {};
 
   # Return an empty hash if the log file does not exist
