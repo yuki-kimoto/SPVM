@@ -25,7 +25,6 @@ SPVM::Builder::Util::getopt
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
   'object-file=s' => \my @external_object_files,
-  'build-spvm-archive' => \my $build_spvm_archive,
 ;
 
 if ($help) {
@@ -75,7 +74,6 @@ my $build_exe = SPVM::Builder::Exe->new(
   allow_no_config_file => $allow_no_config_file,
   mode => $mode,
   external_object_files => \@external_object_files,
-  build_spvm_archive => $build_spvm_archive,
 );
 
 $build_exe->build_exe_file;
@@ -110,7 +108,6 @@ The spvmcc command generates an executable file from SPVM classes.
     -m, --mode MODE                 Config mode
     -w                              Enables warning flag
     -Mblib                          Same as "-Mblib" in perl
-    --build-spvm-archive            Generate an SPVM archive
 
 =head1 Details
 
@@ -309,18 +306,6 @@ Same as L</"--mode">.
 An additional object file I<OBJECT_FILE> passed to the linker.
 
 This option can be repeated.
-
-=head2 --build-spvm-archive
-
-  --build-spvm-archive
-
-Generate an SPVM archive as a directory into the path of C<-o> option.
-
-If the directory already exists, it is not newly created. The C<spvm-archive.json> file and the classes described in it are overwritten.
-
-SPVM Archive is a format used to bundle SPVM class files, compiled SPVM native classes, precompiled classes, third-party header files, and static libraries into a single directory or a C<.tar.gz> file.
-
-See L<SPVM::Document::Archive> for details.
 
 =head1 Copyright & License
 

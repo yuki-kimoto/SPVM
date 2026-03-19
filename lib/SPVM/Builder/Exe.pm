@@ -146,50 +146,6 @@ sub mode {
   }
 }
 
-sub build_spvm_archive {
-  my $self = shift;
-  if (@_) {
-    $self->{build_spvm_archive} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{build_spvm_archive};
-  }
-}
-
-sub parent_runtime {
-  my $self = shift;
-  if (@_) {
-    $self->{parent_runtime} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{parent_runtime};
-  }
-}
-
-sub spvmcc_info {
-  my $self = shift;
-  if (@_) {
-    $self->{spvmcc_info} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{spvmcc_info};
-  }
-}
-
-sub spvm_archive {
-  my $self = shift;
-  if (@_) {
-    $self->{spvm_archive} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{spvm_archive};
-  }
-}
-
 # Class Methods
 
 sub new {
@@ -264,20 +220,6 @@ sub new {
   
   $self->{config_global} = $config_global;
   
-  my $spvmcc_info = {};
-  
-  $self->spvmcc_info($spvmcc_info);
-  
-  $spvmcc_info->{spvm_version} = $SPVM::VERSION;
-  
-  $spvmcc_info->{app_name} = $app_name;
-  
-  if (defined $config_global->mode) {
-    $spvmcc_info->{mode} = $config_global->mode;
-  }
-  
-  $spvmcc_info->{classes_h} = {};
-  
   $self->{builder} = $builder;
   
   # Override config settings with command line options if defined
@@ -288,30 +230,6 @@ sub new {
   }
   
   my $compiler = SPVM::Builder::Native::Compiler->new;
-  
-  # SPVM archive
-  my $spvm_archive_path = $config_global->get_spvm_archive;
-  if (defined $spvm_archive_path) {
-    # Create and load the archive object
-    my $spvm_archive = SPVM::Builder::SPVMArchive->new(builder => $self->builder);
-    $spvm_archive->load($spvm_archive_path);
-    
-    # Store the object
-    $self->spvm_archive($spvm_archive);
-    
-    # Setup paths using the extracted directory
-    my $spvm_archive_extract_dir = $spvm_archive->dir;
-    $compiler->add_include_dir("$spvm_archive_extract_dir/SPVM");
-    $config_global->compile_rule(
-      {
-        category => 'native',
-      },
-      {
-        '+include_dirs' => ["$spvm_archive_extract_dir/include"],
-      }
-    );
-    $config_global->add_lib_dir("$spvm_archive_extract_dir/lib");
-  }
   
   for my $include_dir (@{$builder->include_dirs}) {
     $compiler->add_include_dir($include_dir);
@@ -400,34 +318,12 @@ sub build_exe_file {
   my $classes_object_files = $self->compile_classes;
   push @$object_files, @$classes_object_files;
   
-  # Generate SPVM class files for archive
-  $self->generate_spvm_class_files_into_work_dir;
-  
   # Add external object files
   for my $external_object_file (@{$config_global->external_object_files}) {
     push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
   
-  # Add object files from loaded SPVM archive
-  if (my $spvm_archive = $self->spvm_archive) {
-    my $object_files_in_spvm_archive = $spvm_archive->find_object_files;
-    for my $object_file_in_spvm_archive (@$object_files_in_spvm_archive) {
-      push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $object_file_in_spvm_archive);
-    }
-  }
-  
-  # Output file settings
   my $output_file = $self->{output_file};
-  my $output_dir_tmp = $self->builder->create_build_work_path('spvm_archive/output');
-  rmtree($output_dir_tmp);
-  my $build_spvm_archive = $self->build_spvm_archive;
-  my $spvm_archive_out = $output_file;
-  
-  # Skip executable generation if archive mode is on
-  if ($build_spvm_archive) {
-    my $output_file_base = basename $output_file;
-    $output_file = "$output_dir_tmp/$output_file_base";
-  }
   
   # Link
   my $config_linker = $self->config_global->clone;
@@ -438,52 +334,6 @@ sub build_exe_file {
   );
   $config_linker->output_file($output_file);
   $cc_linker->link($class_name, $object_files, {config => $config_linker});
-  
-  # Archive output as directory
-  if ($build_spvm_archive) {
-    my $build_work_dir = $self->builder->create_build_work_path;
-    my $spvmcc_info = $self->spvmcc_info;
-    
-    # Store the SPVM archive using the new method
-    my $spvm_archive = $self->spvm_archive || SPVM::Builder::SPVMArchive->new(builder => $self->builder);
-    $spvm_archive->store($spvm_archive_out, $build_work_dir, $spvmcc_info);
-  }
-}
-
-sub generate_spvm_class_files_into_work_dir {
-  my ($self) = @_;
-  
-  my $compiler = $self->compiler;
-  
-  my $build_dir = $self->builder->build_dir;
-  my $work_dir = $self->builder->work_dir;
-  my $class_names = $self->get_user_defined_basic_type_names;
-  my $spvm_class_work_dir = "$build_dir/$work_dir/SPVM";
-  for my $class_name (@$class_names) {
-    my $spvm_class_path_part = $class_name;
-    $spvm_class_path_part =~ s/::/\//g;
-    my $spvm_class_path = "$spvm_class_work_dir/$spvm_class_path_part.spvm";
-    
-    mkpath dirname $spvm_class_path;
-    
-    my $class = $self->runtime->get_basic_type_by_name($class_name);
-    
-    if ($class_name =~ /^eval::anon_class::0$/) {
-      my $version_string = $self->runtime->get_basic_type_by_name($class_name)->get_version_string($class_name);
-      if (defined $version_string) {
-        $self->spvmcc_info->{app_version} = $version_string;
-      }
-    }
-    
-    my $class_file = $compiler->get_class_file($class_name);
-    my $class_file_content = $class_file->get_content;
-    my $class_file_content_length = $class_file->get_content_length;
-    
-    open my $fh, '>', $spvm_class_path
-      or die "Cannot open the file '$spvm_class_path':$!";
-    
-    syswrite($fh, $class_file_content, $class_file_content_length);
-  }
 }
 
 sub compile {
@@ -519,16 +369,8 @@ sub compile_classes {
   
   my $class_names = $self->get_user_defined_basic_type_names;
   
-  my $spvmcc_info = $self->spvmcc_info;
-  
   my $object_files = [];
   for my $class_name (@$class_names) {
-    
-    if (my $spvm_archive = $self->spvm_archive) {
-      next if $spvm_archive->exists($class_name);
-    }
-    
-    $spvmcc_info->{classes_h}{$class_name} = {};
     
     my $precompile_object_files = $self->compile_precompile_class($class_name);
     push @$object_files, @$precompile_object_files;
@@ -1221,12 +1063,6 @@ sub compile_precompile_class {
   );
   push @$object_files, @$precompile_object_files;
   
-  my $spvmcc_info = $self->spvmcc_info;
-  
-  if (@$precompile_object_files) {
-    $spvmcc_info->{classes_h}{$class_name}{precompile} = 1;
-  }
-  
   return $object_files;
 }
 
@@ -1275,12 +1111,6 @@ sub compile_native_class {
       }
     );
     push @$all_object_files, @$object_files;
-    
-    if (@$object_files) {
-      my $spvmcc_info = $self->spvmcc_info;
-      
-      $spvmcc_info->{classes_h}{$class_name}{native} = 1;
-    }
   }
   
   return $all_object_files;

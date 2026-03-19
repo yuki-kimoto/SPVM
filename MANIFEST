@@ -161,7 +161,6 @@ lib/SPVM/Builder/Ninja.pm
 lib/SPVM/Builder/ObjectFileInfo.pm
 lib/SPVM/Builder/Resource.pm
 lib/SPVM/Builder/ScriptInfo.pm
-lib/SPVM/Builder/SPVMArchive.pm
 lib/SPVM/Builder/src/spvm_allocator.c
 lib/SPVM/Builder/src/spvm_allow.c
 lib/SPVM/Builder/src/spvm_api.c
@@ -298,7 +297,6 @@ lib/SPVM/Document/NativeAPI/StringBuffer.pm
 lib/SPVM/Document/NativeAPI/Type.pm
 lib/SPVM/Document/NativeClass.pm
 lib/SPVM/Document/Resource.pm
-lib/SPVM/Document/SPVMArchive.pm
 lib/SPVM/Double.pm
 lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
@@ -1120,9 +1118,6 @@ t/04_spvmcc/lib/SPVM/TestCase/Resource/Mylib2.spvm
 t/04_spvmcc/lib2/SPVM/TestCase/NativeAPI3.c
 t/04_spvmcc/lib2/SPVM/TestCase/NativeAPI3.config
 t/04_spvmcc/lib2/SPVM/TestCase/NativeAPI3.spvm
-t/04_spvmcc/lib2/SPVM/TestCase/SPVMArchiveStaticLibCall.c
-t/04_spvmcc/lib2/SPVM/TestCase/SPVMArchiveStaticLibCall.config
-t/04_spvmcc/lib2/SPVM/TestCase/SPVMArchiveStaticLibCall.spvm
 t/04_spvmcc/myapp.pl
 t/04_spvmcc/script/anon_method.config
 t/04_spvmcc/script/anon_method.spvm
@@ -1152,19 +1147,12 @@ t/04_spvmcc/script/program_name.spvm
 t/04_spvmcc/script/runtime-extends.spvm
 t/04_spvmcc/script/runtime-parent.config
 t/04_spvmcc/script/runtime-parent.spvm
-t/04_spvmcc/script/spvm-archive-static-lib.config
-t/04_spvmcc/script/spvm-archive-static-lib.spvm
-t/04_spvmcc/script/spvm-archive.config
-t/04_spvmcc/script/spvm-archive.linux-64bit.config
-t/04_spvmcc/script/spvm-archive.spvm
-t/04_spvmcc/script/spvm-archive.test-static-lib.config
 t/04_spvmcc/script/use-class.config
 t/04_spvmcc/script/use-class.spvm
 t/04_spvmcc/SPVM-Builder-Config-Global.t
 t/04_spvmcc/SPVM-Builder-Exe.t
 t/04_spvmcc/spvm.t
 t/04_spvmcc/spvmcc.t
-t/04_spvmcc/spvmcc_archive.t
 t/04_spvmcc/spvmcc_error.t
 t/04_spvmcc/spvmcc_solo.t
 t/04_spvmcc/spvmdeps.t
