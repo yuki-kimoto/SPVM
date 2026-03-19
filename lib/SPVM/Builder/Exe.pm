@@ -317,6 +317,48 @@ sub new {
     $compiler->add_include_dir($include_dir);
   }
   
+  # --- Build type rules (Strict CMake GCC/Clang Compatibility) ---
+
+  # Debug: Just -g (Optimization defaults to -O0 in GCC)
+  $config_global->compile_rule(
+    { build_type => 'Debug' },
+    {
+      optimize           => '', 
+      debug_info_ccflags => ['-g'],
+      ndebug_ccflags     => [],
+    }
+  );
+
+  # Release: -O3 -DNDEBUG
+  $config_global->compile_rule(
+    { build_type => 'Release' },
+    {
+      optimize           => '-O3',
+      debug_info_ccflags => [],
+      ndebug_ccflags     => ['-DNDEBUG'],
+    }
+  );
+
+  # RelWithDebInfo: -O2 -g -DNDEBUG
+  $config_global->compile_rule(
+    { build_type => 'RelWithDebInfo' },
+    {
+      optimize           => '-O2',
+      debug_info_ccflags => ['-g'],
+      ndebug_ccflags     => ['-DNDEBUG'],
+    }
+  );
+
+  # MinSizeRel: -Os -DNDEBUG
+  $config_global->compile_rule(
+    { build_type => 'MinSizeRel' },
+    {
+      optimize           => '-Os',
+      debug_info_ccflags => [],
+      ndebug_ccflags     => ['-DNDEBUG'],
+    }
+  );
+  
   $self->{compiler} = $compiler;
   
   $self->compile;
