@@ -112,4 +112,36 @@ subtest 'Error Handling' => sub {
     like($@, qr/not supported for the combination of HASH/, 'Confess on unsupported type combination');
 };
 
+# --- Array Sensitivity (Match element in ARRAY) ---
+subtest 'Array Sensitivity (Config side is ARRAY)' => sub {
+    my $config = create_mock_config();
+    # Mock config current state: ccflags => ['-Wall']
+
+    # Match element in ARRAY (String)
+    my $called = 0;
+    SPVM::Builder::Config::Global::_match_apply($config, { ccflags => '-Wall' }, sub { $called = 1 });
+    ok($called, 'Match string element in ARRAY');
+
+    # Match element in ARRAY (Regex)
+    $called = 0;
+    SPVM::Builder::Config::Global::_match_apply($config, { ccflags => qr/^-W/ }, sub { $called = 1 });
+    ok($called, 'Match regex against elements in ARRAY');
+
+    # Mismatch element in ARRAY
+    $called = 0;
+    SPVM::Builder::Config::Global::_match_apply($config, { ccflags => '-O3' }, sub { $called = 1 });
+    ok(!$called, 'Mismatch string element in ARRAY');
+
+    # Match undef in ARRAY
+    $called = 0;
+    my $config_with_undef = bless { tags => ['stable', undef, 'v1'] }, 'SPVM::Builder::Config';
+    SPVM::Builder::Config::Global::_match_apply($config_with_undef, { tags => undef }, sub { $called = 1 });
+    ok($called, 'Match undef element in ARRAY');
+
+    # Mismatch regex against all elements
+    $called = 0;
+    SPVM::Builder::Config::Global::_match_apply($config, { ccflags => qr/^-O/ }, sub { $called = 1 });
+    ok(!$called, 'Mismatch regex against all elements in ARRAY');
+};
+
 done_testing;

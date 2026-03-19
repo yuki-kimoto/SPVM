@@ -83,37 +83,44 @@ sub _match_apply {
       my $condition_value = $condition->{$name};
       my $config_value    = $config->{$name};
       
-      if (ref $condition_value eq 'Regexp') {
-        unless (defined $config_value && $config_value =~ $condition_value) {
-          $match = 0;
-          last;
-        }
-      }
-      else {
-        if (defined $condition_value) {
-          unless (defined $config_value && $config_value eq $condition_value) {
-            $match = 0;
+      my $found = 0;
+      my @config_values = ref $config_value eq 'ARRAY' ? @$config_value : ($config_value);
+      
+      for my $val (@config_values) {
+        if (ref $condition_value eq 'Regexp') {
+          if (defined $val && $val =~ $condition_value) {
+            $found = 1;
             last;
           }
         }
         else {
-          if (defined $config_value) {
-            $match = 0;
-            last;
+          if (defined $condition_value) {
+            if (defined $val && $val eq $condition_value) {
+              $found = 1;
+              last;
+            }
+          }
+          else {
+            unless (defined $val) {
+              $found = 1;
+              last;
+            }
           }
         }
+      }
+      
+      unless ($found) {
+        $match = 0;
+        last;
       }
     }
   }
   
-  # Apply configuration or execute callback
   if ($match) {
     if (ref $match_config_or_cb eq 'CODE') {
-      # Execute custom logic if a callback is provided
       $match_config_or_cb->($config);
     }
     else {
-      # Apply static configuration (supporting +foo syntax)
       for my $match_name (keys %$match_config_or_cb) {
         my $new_value = $match_config_or_cb->{$match_name};
         
@@ -269,16 +276,19 @@ Parameters:
 
 =item * C<$condition>
 
-A hash reference or an L<SPVM::Builder::Config> object specifying the match criteria. 
-Each key represents a field name in the target configuration.
+A hash reference specifying the match criteria. Each key represents a field name in the target configuration.
+
+A match occurs only if B<all> specified conditions in the hash are satisfied (AND logic). For each individual field, the matching behavior is as follows:
 
 =over 4
 
-=item * If the value is a C<Regexp> object (e.g., C<qr/.../>), it performs a regex match.
+=item * B<Array Sensitivity>: If the field value in the target configuration is an B<array reference>, the condition matches if B<at least one element> within that array satisfies the criteria below (OR logic within the array).
 
-=item * If the value is C<undef>, it matches if the target field is also C<undef>.
+=item * B<Regex Match>: If the condition value is a C<Regexp> object (e.g., C<qr/.../>), it performs a regex match against the field value (or its elements).
 
-=item * Otherwise, it performs a string equality check (C<eq>).
+=item * B<Undef Match>: If the condition value is C<undef>, it matches if the target field (or an element within its array) is also C<undef>.
+
+=item * B<String Match>: Otherwise, it performs a string equality check (C<eq>) against the field value (or its elements).
 
 =back
 
@@ -291,15 +301,13 @@ You can use the B<C<+>> prefix in the field name to B<append> values instead of 
 
 =over 4
 
-=item * B<C<+field => $string>> : Concatenates the string to the existing value.
+=item * B<C<+field => $string>> : If the existing value is a string, it concatenates the new string. If the existing value is an array reference, it pushes the new string into the array.
 
-=item * B<C<+field => $array_ref>> : Pushes the elements of the array reference into the existing array. 
-If the existing value is a scalar, it is promoted to an array before the push.
+=item * B<C<+field => $array_ref>> : Pushes the elements of the array reference into the existing array. If the existing value is a scalar, it is promoted to an array before the push.
 
 =back
 
-If it is a code reference, the callback is executed with the target L<SPVM::Builder::Config> object as its first argument. 
-This allows for complex, procedural updates to the configuration.
+If it is a code reference, the callback is executed with the target L<SPVM::Builder::Config> object as its first argument. This allows for complex, procedural updates to the configuration.
 
 =back
 
