@@ -454,20 +454,6 @@ sub clear_system_fields {
   }
 }
 
-sub use_spvm_archive {
-  my ($self, $spvm_archive) = @_;
-  
-  $self->{spvm_archive} = $spvm_archive;
-  
-  return $self;
-}
-
-sub get_spvm_archive {
-  my ($self) = @_;
-  
-  return $self->{spvm_archive};
-}
-
 # Connect directly (e.g. -oFILE, -I/path)
 sub create_option_short {
   my ($self, $name, $value) = @_;
@@ -856,12 +842,6 @@ This field is automatically set and users nomally do not change it.
   $config->external_object_files($external_object_files);
 
 Gets and sets C<external_object_files> field, an array reference containing additinal external object files linked to an executable file.
-
-=head2 spvm_archive
-
-An SPVM archive.
-
-See L</"use_spvm_archive"> and L</"get_spvm_archive">.
 
 =head2 long_option_sep
 
@@ -1290,33 +1270,6 @@ This method clears the linker settings whose field names are returned by the L<g
   $config->add_external_object_file(@external_object_files);
 
 Adds @external_object_files to the end of L</"external_object_files"> field.
-
-=head2 use_spvm_archive
-
-  $config->use_spvm_archive($spvm_archive);
-  $config->use_spvm_archive($spvm_archive, $options);
-
-Loads an SPVM archive.
-
-Actually, L</"spvm_archive"> field is just set to $spvm_archive, and the loading happens later.
-
-SPVM Archive is a format used to bundle SPVM class files, compiled SPVM native classes, precompiled classes, third-party header files, and static libraries into a single directory or a C<.tar.gz> file.
-
-See L<SPVM::Document::Archive> for details.
-
-Examples:
-
-  my $config_dir = File::Basename::dirname __FILE__;
-  
-  $config->use_spvm_archive("$config_dir/spvm-archive-myapp");
-  
-  $config->use_spvm_archive("$config_dir/spvm-archive-myapp.tar.gz");
-  
-=head2 get_spvm_archive
-
-  my $spvm_archive = $config->get_spvm_archive;
-
-Gets an SPVM archive.
 
 =head2 create_option
 

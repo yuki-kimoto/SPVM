@@ -180,8 +180,6 @@ L<All SPVM Documents|SPVM::Document>
 
 =item * L<Native Class Config|SPVM::Builder::Config>
 
-=item * L<SPVM Archive|SPVM::Document::SPVMArchive>
-
 =item * L<Native APIs|SPVM::Document::NativeAPI>
 
 =over 2

@@ -22,7 +22,6 @@ use SPVM::Builder::Native::Runtime;
 use SPVM::Builder::Native::BasicType;
 use SPVM::Builder::Native::ClassFile;
 use SPVM::Builder::ScriptInfo;
-use SPVM::Builder::SPVMArchive;
 
 # Fields
 sub builder {
