@@ -91,9 +91,8 @@ sub compile_rule {
   # Normalize condition for key validation
   if (ref $condition eq 'HASH') {
     my %normalized;
-    my %field_map = map { $_ => 1 } @$fields;
     for my $name (keys %$condition) {
-      next if $field_map{$name};
+      next if $name eq 'global';
       
       # Remove non-word characters (ASCII only)
       my $target_name = $name;

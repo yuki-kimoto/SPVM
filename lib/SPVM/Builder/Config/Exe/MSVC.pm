@@ -97,7 +97,7 @@ sub apply {
   # Debug: Equivalent to CMake's Debug but uses -MT to avoid LNK4098.
   # Includes debug symbols and disables optimization for a smooth debugging experience.
   $self->compile_rule(
-    { build_type => 'Debug' },
+    { global => {build_type => 'Debug'} },
     {
       optimize           => '-Od',               # Disable optimization
       debug_info_ccflags => ['-Zi', '-RTC1'],    # Generate PDB and enable runtime stack checks
@@ -107,7 +107,7 @@ sub apply {
 
   # Release: Optimized for speed, no debug symbols.
   $self->compile_rule(
-    { build_type => 'Release' },
+    { global => {build_type => 'Release'} },
     {
       optimize           => '-O2',               # Maximize speed
       debug_info_ccflags => [],
@@ -117,7 +117,7 @@ sub apply {
 
   # RelWithDebInfo: Optimized for speed but includes debug symbols for backtracing.
   $self->compile_rule(
-    { build_type => 'RelWithDebInfo' },
+    { global => {build_type => 'RelWithDebInfo'} },
     {
       optimize           => '-O2',               # Maximize speed
       debug_info_ccflags => ['-Zi'],             # Generate PDB
@@ -127,7 +127,7 @@ sub apply {
 
   # MinSizeRel: Optimized for binary size.
   $self->compile_rule(
-    { build_type => 'MinSizeRel' },
+    { global => {build_type => 'MinSizeRel'} },
     {
       optimize           => '-O1',               # Minimize size
       debug_info_ccflags => [],

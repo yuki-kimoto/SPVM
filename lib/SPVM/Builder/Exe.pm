@@ -238,7 +238,7 @@ sub new {
 
   # Debug: Just -g (Optimization defaults to -O0 in GCC)
   $config_global->compile_rule(
-    { build_type => 'Debug' },
+    { global => {build_type => 'Debug'} },
     {
       optimize           => '', 
       debug_info_ccflags => ['-g'],
@@ -248,7 +248,7 @@ sub new {
 
   # Release: -O3 -DNDEBUG
   $config_global->compile_rule(
-    { build_type => 'Release' },
+    { global => {build_type => 'Release'} },
     {
       optimize           => '-O3',
       debug_info_ccflags => [],
@@ -258,7 +258,7 @@ sub new {
 
   # RelWithDebInfo: -O2 -g -DNDEBUG
   $config_global->compile_rule(
-    { build_type => 'RelWithDebInfo' },
+    { global => {build_type => 'RelWithDebInfo'} },
     {
       optimize           => '-O2',
       debug_info_ccflags => ['-g'],
@@ -268,7 +268,7 @@ sub new {
 
   # MinSizeRel: -Os -DNDEBUG
   $config_global->compile_rule(
-    { build_type => 'MinSizeRel' },
+    { global => {build_type => 'MinSizeRel'} },
     {
       optimize           => '-Os',
       debug_info_ccflags => [],
