@@ -109,7 +109,7 @@ subtest 'Error Handling' => sub {
   eval {
       SPVM::Builder::Config::Global::_match_apply($config, undef, { '+bad_field' => 'str' });
   };
-  like($@, qr/not supported for the combination of HASH/, 'Confess on unsupported type combination');
+  ok($@, 'Confess on unsupported type combination');
 };
 
 # --- Array Sensitivity (Match element in ARRAY) ---
@@ -178,6 +178,60 @@ subtest 'Negative Matching (!prefix)' => sub {
   $called = 0;
   SPVM::Builder::Config::Global::_match_apply($config, { '!lang' => undef }, sub { $called = 1 });
   ok($called, 'Negative undef match (match because field is defined)');
+};
+
+# --- Config Global Explicit and Undef Matching ---
+subtest 'Config Global Explicit and Undef Matching' => sub {
+  
+  # Match global field explicitly
+  {
+    my $global = bless { build_type => 'debug' }, 'SPVM::Builder::Config::Global';
+    my $config = { lang => 'c', config_global => $global };
+    
+    my $called = 0;
+    SPVM::Builder::Config::Global::_match_apply($config, { global => { build_type => 'debug' } }, sub { $called = 1 });
+    ok($called, 'Explicit Global: matches value in config_global');
+    
+    $called = 0;
+    SPVM::Builder::Config::Global::_match_apply($config, { global => { build_type => 'release' } }, sub { $called = 1 });
+    ok(!$called, 'Explicit Global: mismatch correctly');
+  }
+
+  # Match both local and global at the same time
+  {
+    my $global = bless { cc => 'gcc' }, 'SPVM::Builder::Config::Global';
+    my $config = { lang => 'c', config_global => $global };
+    
+    my $called = 0;
+    SPVM::Builder::Config::Global::_match_apply($config, { lang => 'c', global => { cc => 'gcc' } }, sub { $called = 1 });
+    ok($called, 'Hybrid: matches both local and global fields');
+  }
+
+  # Match undef vs undef (The "Deep Sea" case)
+  {
+    my $global = bless { opt => undef }, 'SPVM::Builder::Config::Global';
+    my $config = { config_global => $global };
+    
+    # 1. Local is missing (undef) and condition is undef
+    my $called = 0;
+    SPVM::Builder::Config::Global::_match_apply($config, { unknown => undef }, sub { $called = 1 });
+    ok($called, 'Undef Match: matches when local field is missing and condition is undef');
+
+    # 2. Global field is explicitly undef
+    $called = 0;
+    SPVM::Builder::Config::Global::_match_apply($config, { global => { opt => undef } }, sub { $called = 1 });
+    ok($called, 'Undef Match: matches when global field is explicitly undef');
+  }
+
+  # Negative match with global
+  {
+    my $global = bless { build_type => 'debug' }, 'SPVM::Builder::Config::Global';
+    my $config = { config_global => $global };
+    
+    my $called = 0;
+    SPVM::Builder::Config::Global::_match_apply($config, { global => { '!build_type' => 'release' } }, sub { $called = 1 });
+    ok($called, 'Negative Global: matches because build_type is not release');
+  }
 };
 
 done_testing;

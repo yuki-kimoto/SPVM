@@ -59,7 +59,12 @@ sub compile_rule {
   
   # Normalize condition for key validation
   if ($condition) {
+    my $exists_global = exists $condition->{global};
+    my $condition_global = delete $condition->{global};
     SPVM::Builder::Config->new_empty(%$condition);
+    if ($exists_global) {
+      $condition->{global} = $condition_global;
+    }
   }
   
   # Normalize match_config if it's a hash (not a callback)
@@ -77,54 +82,111 @@ sub compile_rule {
 sub _match_apply {
   my ($config, $condition, $match_config_or_cb) = @_;
   
+  my $condition_global = delete $condition->{global};
+  
   my $match = 1;
-  if ($condition) {
-    for my $name (keys %$condition) {
-      my $condition_value = $condition->{$name};
-      
-      my $is_not = 0;
-      my $target_name = $name;
-      if ($name =~ /^!(.+)$/) {
-        $is_not = 1;
-        $target_name = $1;
-      }
-      
-      my $config_value = $config->{$target_name};
-      my $found = 0;
-      my @config_values = ref $config_value eq 'ARRAY' ? @$config_value : ($config_value);
-      
-      for my $val (@config_values) {
-        if (ref $condition_value eq 'Regexp') {
-          if (defined $val && $val =~ $condition_value) {
-            $found = 1;
-            last;
-          }
+  if ($condition || $condition_global) {
+    my $match_condition = 1;
+    if ($condition) {
+      for my $name (keys %$condition) {
+        my $condition_value = $condition->{$name};
+        
+        my $is_not = 0;
+        my $target_name = $name;
+        if ($name =~ /^!(.+)$/) {
+          $is_not = 1;
+          $target_name = $1;
         }
-        else {
-          if (defined $condition_value) {
-            if (defined $val && $val eq $condition_value) {
+        
+        my $config_value = $config->{$target_name};
+        my $found = 0;
+        my @config_values = ref $config_value eq 'ARRAY' ? @$config_value : ($config_value);
+        
+        for my $val (@config_values) {
+          if (ref $condition_value eq 'Regexp') {
+            if (defined $val && $val =~ $condition_value) {
               $found = 1;
               last;
             }
           }
           else {
-            unless (defined $val) {
+            if (defined $condition_value) {
+              if (defined $val && $val eq $condition_value) {
+                $found = 1;
+                last;
+              }
+            }
+            else {
+              unless (defined $val) {
+                $found = 1;
+                last;
+              }
+            }
+          }
+        }
+        
+        if ($is_not) {
+          $found = !$found;
+        }
+        
+        unless ($found) {
+          $match_condition = 0;
+          last;
+        }
+      }
+    }
+    
+    my $match_condition_global = 1;
+    if ($condition_global) {
+      for my $name (keys %$condition_global) {
+        my $condition_global_value = $condition_global->{$name};
+        
+        my $is_not = 0;
+        my $target_name = $name;
+        if ($name =~ /^!(.+)$/) {
+          $is_not = 1;
+          $target_name = $1;
+        }
+        
+        my $config_value = $config->{config_global}{$target_name};
+        my $found = 0;
+        my @config_values = ref $config_value eq 'ARRAY' ? @$config_value : ($config_value);
+        
+        for my $val (@config_values) {
+          if (ref $condition_global_value eq 'Regexp') {
+            if (defined $val && $val =~ $condition_global_value) {
               $found = 1;
               last;
             }
           }
+          else {
+            if (defined $condition_global_value) {
+              if (defined $val && $val eq $condition_global_value) {
+                $found = 1;
+                last;
+              }
+            }
+            else {
+              unless (defined $val) {
+                $found = 1;
+                last;
+              }
+            }
+          }
+        }
+        
+        if ($is_not) {
+          $found = !$found;
+        }
+        
+        unless ($found) {
+          $match_condition_global = 0;
+          last;
         }
       }
-      
-      if ($is_not) {
-        $found = !$found;
-      }
-      
-      unless ($found) {
-        $match = 0;
-        last;
-      }
     }
+    
+    $match = $match_condition && $match_condition_global;
   }
   
   if ($match) {
