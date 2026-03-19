@@ -90,12 +90,12 @@ sub new {
   
   # ndebug_ccflags
   unless (exists $self->{ndebug_ccflags}) {
-    $self->ndebug_ccflags([]);
+    $self->ndebug_ccflags(['-DNDEBUG']);
   }
 
   # optimize
   unless (exists $self->{optimize}) {
-    $self->optimize('-O3 -DNDEBUG');
+    $self->optimize('-O3');
   }
 
   # include_dirs
@@ -854,7 +854,7 @@ Field Default Values:
 
 =item * L</"optimize">
 
-  "-O3 -DNDEBUG"
+  "-O3"
 
 =item * L</"copyright_print_ccflags">
 
@@ -918,7 +918,7 @@ Other OSs:
 
 =item * L</"ndebug_ccflags">
 
-  []
+  ["-DNDEBUG"]
 
 =item * L</"include_dirs">
 
