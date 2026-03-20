@@ -21,7 +21,7 @@ sub new {
   
   my $self = {
     log_entries_h => {},
-    log_file => '.log',
+    log_file => '.ninja_log',
     @_
   };
   
