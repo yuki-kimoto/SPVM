@@ -846,6 +846,25 @@ sub check_option_names {
   }
 }
 
+sub normalize_path {
+  my ($path, $base_dir) = @_;
+  
+  unless (defined $path) {
+    confess("The path \$path must be defined.");
+  }
+  
+  unless (defined $base_dir) {
+    confess("The base directory \$base_dir must be defined.");
+  }
+  
+  my $abs_path = File::Spec->rel2abs($path);
+  my $rel_path = File::Spec->abs2rel($abs_path, $base_dir);
+  
+  $rel_path =~ s|\\|/|g;
+  
+  return $rel_path;
+}
+
 1;
 
 =head1 Name
