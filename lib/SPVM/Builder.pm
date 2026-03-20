@@ -22,6 +22,7 @@ has [qw(
   optimize
   work_dir
   include_dirs
+  ninja
 )];
 
 # Class Methods
