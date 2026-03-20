@@ -21,7 +21,7 @@ sub new {
   
   my $self = {
     log_entries_h => {},
-    log_file => '.ninja_log',
+    log_file => '.log',
     @_
   };
   
@@ -44,7 +44,7 @@ sub log_file {
   return $log_file;
 }
 
-sub open_ninja_log {
+sub open_log {
   my ($self) = @_;
 
   return if $self->{log_fh};
@@ -63,11 +63,11 @@ sub open_ninja_log {
   $self->{log_fh} = $fh;
 }
 
-sub add_ninja_log {
+sub add_log {
   my ($self, $new_record_h) = @_;
 
   my $fh = $self->{log_fh} 
-    or confess("Ninja log is not open. Call open_ninja_log() first.");
+    or confess("Ninja log is not open. Call open_log() first.");
 
   my $output_file  = $new_record_h->{output_file};
   my $command_hash = $new_record_h->{command_hash};
@@ -88,7 +88,7 @@ sub add_ninja_log {
   print $fh $record;
 }
 
-sub close_ninja_log {
+sub close_log {
   my ($self) = @_;
   
   if (my $fh = delete $self->{log_fh}) {
@@ -96,7 +96,7 @@ sub close_ninja_log {
   }
 }
 
-sub load_ninja_log {
+sub load_log {
   my ($self) = @_;
 
   my $log_file = $self->log_file;
@@ -260,7 +260,7 @@ sub recompact {
   }
 
   # Open the log file and write the header
-  $self->open_ninja_log;
+  $self->open_log;
 
   # Get the file handle
   my $log_fh = $self->log_fh;
@@ -290,4 +290,10 @@ sub recompact {
   }
 }
 
+sub DESTROY {
+  my ($self) = @_;
+
+  # Ensure the log file handle is closed
+  $self->close_log;
+}
 1;
