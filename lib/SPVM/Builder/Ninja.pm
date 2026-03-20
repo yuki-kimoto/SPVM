@@ -127,7 +127,7 @@ sub add_log {
     confess("end_time must be defined.");
   }
 
-  my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file);
+  my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
 
   my $mtime = (stat $output_file)[9];
   unless (defined $mtime) {
@@ -285,7 +285,7 @@ sub need_generate_v2 {
 
     # Retrieve the recorded log entry for the output file
     my $log_entries_h = $self->log_entries_h;
-    my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file);
+    my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
     my $log_entry = $log_entries_h->{$normalized_output_file};
 
     # If the entry doesn't exist, or the hash simply doesn't match, rebuild.
@@ -380,7 +380,7 @@ sub create_command_hash {
   }
 
   # Sort input files by name to ensure consistent hash generation
-  @all_input_files = sort map { SPVM::Builder::Util::normalize_path($_) } @all_input_files;
+  @all_input_files = sort map { SPVM::Builder::Util::normalize_path($_, $self->log_dir) } @all_input_files;
 
   my $sha = Digest::SHA->new(1);
 
