@@ -88,9 +88,10 @@ sub create_log {
 
 sub open_log {
   my ($self) = @_;
-
-  return if $self->{log_fh};
   
+  if ($self->{log_fh}) {
+    return ;
+  }
   my $log_file = $self->log_file;
   
   open my $fh, '>>', $log_file
@@ -101,7 +102,9 @@ sub open_log {
 
 sub add_log {
   my ($self, $new_log_entry_h) = @_;
-
+  
+  use D;du $self;
+  
   my $fh = $self->{log_fh};
   unless (defined $fh) {
     confess("Ninja log is not open. Call open_log() first.");
@@ -162,12 +165,11 @@ sub load_log {
   my $log_entries_h = {};
   my $log_entries_length = 0;
   
-  open my $fh, '<', $log_file
-    or confess("Can't open $log_file for reading: $!");
+  $self->open_log;
   
-  binmode $fh;
+  my $log_fh = $self->log_fh;
   
-  while (my $line = <$fh>) {
+  while (my $line = <$log_fh>) {
     $line =~ s/[\x0A\x0D]+$//;
 
     next if $line =~ /^#/;
@@ -188,9 +190,7 @@ sub load_log {
       $log_entries_length++;
     }
   }
-
-  close $fh;
-
+  
   $self->log_entries_length($log_entries_length);
 
   $self->log_entries_h($log_entries_h);
@@ -403,7 +403,7 @@ sub create_command_hash {
 
 sub DESTROY {
   my ($self) = @_;
-
+  
   # Ensure the log file handle is closed
   $self->close_log;
 }
