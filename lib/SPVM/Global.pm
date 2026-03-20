@@ -205,7 +205,7 @@ sub load_dynamic_lib {
         }
         else {
           my $builder = SPVM::Builder->new(build_dir => $ENV{SPVM_BUILD_DIR});
-          my $builder_options = {
+          my $build_options = {
             runtime => $runtime,
             class_file => $outmost_class_file,
             category => $category,
@@ -213,27 +213,27 @@ sub load_dynamic_lib {
           
           my $env_spvm_cc_debug = SPVM::Builder::Util::get_normalized_env('SPVM_CC_DEBUG');
           if (defined $env_spvm_cc_debug) {
-            $builder_options->{debug} = 1;
+            $build_options->{debug} = 1;
           }
           
           my $env_spvm_cc_quiet = SPVM::Builder::Util::get_normalized_env('SPVM_CC_QUIET');
           if (defined $env_spvm_cc_quiet) {
-            $builder_options->{quiet} = 1;
+            $build_options->{quiet} = 1;
           }
           
           my $env_spvm_cc_force = SPVM::Builder::Util::get_normalized_env('SPVM_CC_FORCE');
           if (defined $env_spvm_cc_force) {
-            $builder_options->{force} = 1;
+            $build_options->{force} = 1;
           }
           
           my $env_spvm_cc_optimize = SPVM::Builder::Util::get_normalized_env('SPVM_CC_OPTIMIZE');
           if (defined $env_spvm_cc_optimize) {
-            $builder_options->{optimize} = $env_spvm_cc_optimize;
+            $build_options->{optimize} = $env_spvm_cc_optimize;
           }
           
           my $dynamic_lib_file_jit = $builder->build_jit(
             $outmost_class_name,
-            $builder_options,
+            $build_options,
           );
           
           $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_jit;
