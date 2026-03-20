@@ -100,28 +100,51 @@ sub open_log {
 }
 
 sub add_log {
-  my ($self, $new_log_entory_h) = @_;
+  my ($self, $new_log_entry_h) = @_;
 
-  my $fh = $self->{log_fh} 
-    or confess("Ninja log is not open. Call open_log() first.");
+  my $fh = $self->{log_fh};
+  unless (defined $fh) {
+    confess("Ninja log is not open. Call open_log() first.");
+  }
 
-  my $normalized_output_file = SPVM::Builder::Util::normalize_path($new_log_entory_h->{output_file});
-  my $command_hash = $new_log_entory_h->{command_hash};
+  my $output_file = $new_log_entry_h->{output_file};
+  unless (defined $output_file) {
+    confess("output_file must be defined.");
+  }
 
-  my $start_time = $new_log_entory_h->{start_time} || 0;
-  my $end_time   = $new_log_entory_h->{end_time}   || 0;
-  my $mtime      = $new_log_entory_h->{mtime}      || 0;
+  my $command_hash = $new_log_entry_h->{command_hash};
+  unless (defined $command_hash) {
+    confess("command_hash must be defined.");
+  }
 
-  my $log_entory_line = sprintf("%d\t%d\t%d\t%s\t%s\x0A", 
+  my $start_time = $new_log_entry_h->{start_time};
+  unless (defined $start_time) {
+    confess("start_time must be defined.");
+  }
+
+  my $end_time = $new_log_entry_h->{end_time};
+  unless (defined $end_time) {
+    confess("end_time must be defined.");
+  }
+
+  my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file);
+
+  my $mtime = (stat $output_file)[9];
+  unless (defined $mtime) {
+    confess("Could not get mtime of $output_file: $!");
+  }
+
+  my $log_entry_line = sprintf("%d\t%d\t%d\t%s\t%s\x0A", 
     $start_time, 
     $end_time, 
     $mtime, 
     $$normalized_output_file, 
     $command_hash);
     
-  print $fh $log_entory_line;
+  print $fh $log_entry_line;
   
-  $self->log_entries_h->{$normalized_output_file} = $new_log_entory_h;
+  $new_log_entry_h->{mtime} = $mtime;
+  $self->log_entries_h->{$normalized_output_file} = $new_log_entry_h;
 }
 
 sub close_log {
