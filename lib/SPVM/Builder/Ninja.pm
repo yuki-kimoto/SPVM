@@ -52,7 +52,7 @@ sub open_ninja_log {
   my $log_file = $self->log_file;
   my $must_write_header = !-f $log_file;
 
-  open my $fh, '>>', $log_file or die "Can't open $log_file for appending: $!";
+  open my $fh, '>>', $log_file or confess("Can't open $log_file for appending: $!");
   
   binmode $fh;
 
@@ -67,7 +67,7 @@ sub add_ninja_log {
   my ($self, $new_record_h) = @_;
 
   my $fh = $self->{log_fh} 
-    or die "Ninja log is not open. Call open_ninja_log() first.";
+    or confess("Ninja log is not open. Call open_ninja_log() first.");
 
   my $output_file  = $new_record_h->{output_file};
   my $command_hash = $new_record_h->{command_hash};
@@ -108,7 +108,7 @@ sub load_ninja_log {
     return $log_entries_h;
   }
 
-  open my $fh, '<', $log_file or die "Can't open $log_file for reading: $!";
+  open my $fh, '<', $log_file or confess("Can't open $log_file for reading: $!");
   
   # Use binary mode to handle physical LF (0x0A) consistently across platforms
   binmode $fh;
@@ -228,7 +228,7 @@ sub need_recompact {
 
   # Count the total number of records in the log file
   my $total_count = 0;
-  open my $fh, '<', $log_file or die "Can't open $log_file for reading: $!";
+  open my $fh, '<', $log_file or confess("Can't open $log_file for reading: $!");
   while (<$fh>) {
     $total_count++;
   }
@@ -244,6 +244,50 @@ sub need_recompact {
   }
 
   return 0;
+}
+
+sub recompact {
+  my ($self) = @_;
+
+  my $log_entries_h = $self->log_entries_h;
+
+  # Get the log file path
+  my $log_file = $self->log_file;
+
+  # Delete the log file if it exists
+  if (-f $log_file) {
+    unlink $log_file or confess("Can't unlink $log_file: $!");
+  }
+
+  # Open the log file and write the header
+  $self->open_ninja_log;
+
+  # Get the file handle
+  my $log_fh = $self->log_fh;
+
+  # Sort by start_time (ascending)
+  my @sorted_outputs = sort {
+    $log_entries_h->{$a}{start_time} <=> $log_entries_h->{$b}{start_time}
+  } keys %$log_entries_h;
+
+  # Write each valid record
+  for my $output_file (@sorted_outputs) {
+    my $record_h = $log_entries_h->{$output_file};
+
+    my $start_time   = $record_h->{start_time}   || 0;
+    my $end_time     = $record_h->{end_time}     || 0;
+    my $mtime        = $record_h->{mtime}        || 0;
+    my $command_hash = $record_h->{command_hash} || '';
+
+    my $record = sprintf("%d\t%d\t%d\t%s\t%s\x0A",
+      $start_time,
+      $end_time,
+      $mtime,
+      $output_file,
+      $command_hash);
+
+    print $log_fh $record;
+  }
 }
 
 1;
