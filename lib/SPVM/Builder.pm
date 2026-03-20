@@ -15,6 +15,7 @@ use SPVM::BlessedObject::Array;
 use SPVM::BlessedObject::Class;
 use SPVM::BlessedObject::String;
 use SPVM::Builder::Accessor 'has';
+use SPVM::Builder::Ninja;
 
 # Fields
 has [qw(
@@ -37,6 +38,10 @@ sub new {
   };
   
   bless $self, ref $class || $class;
+  
+  unless (exists $self->{ninja}) {
+    $self->{ninja} = SPVM::Builder::Ninja->new(log_dir => $self->build_dir);
+  }
   
   return $self;
 }
