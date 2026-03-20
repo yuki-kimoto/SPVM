@@ -246,6 +246,43 @@ sub need_generate {
   return 0;
 }
 
+sub need_generate_v2 {
+  my ($self, $options) = @_;
+  
+  my $force       = $options->{force};
+  my $output_file = $options->{output_file} // confess("output_file is required");
+  my $command     = $options->{command}     // confess("command is required");
+  my $input_files = $options->{input_files} || [];
+
+  my $need_generate = 0;
+
+  if ($force) {
+    $need_generate = 1;
+  }
+  elsif (!-f $output_file) {
+    $need_generate = 1;
+  }
+  else {
+    # Generate a robust hash of the command and the content of input files
+    my $current_command_hash = $self->create_command_hash({
+      command     => $command,
+      input_files => $input_files,
+    });
+
+    # Retrieve the recorded log entry for the output file
+    my $log_entries_h = $self->log_entries_h;
+    my $log_entry     = $log_entries_h->{$output_file};
+
+    # If the entry doesn't exist, or the hash simply doesn't match, rebuild.
+    # $log_entry->{command_hash} が undef の場合も ne で真になるからこれで十分や。
+    if (!$log_entry || $current_command_hash ne $log_entry->{command_hash}) {
+      $need_generate = 1;
+    }
+  }
+
+  return $need_generate;
+}
+
 sub recompact_if_needed {
   my ($self) = @_;
   
