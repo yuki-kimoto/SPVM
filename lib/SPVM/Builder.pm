@@ -14,52 +14,17 @@ use SPVM::BlessedObject;
 use SPVM::BlessedObject::Array;
 use SPVM::BlessedObject::Class;
 use SPVM::BlessedObject::String;
+use SPVM::Builder::Accessor 'has';
 
 # Fields
-sub build_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{build_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{build_dir};
-  }
-}
+has [qw(
+  build_dir
+  optimize
+  work_dir
+  include_dirs
+)];
 
-sub optimize {
-  my $self = shift;
-  if (@_) {
-    $self->{optimize} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{optimize};
-  }
-}
-
-sub work_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{work_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{work_dir};
-  }
-}
-
-sub include_dirs {
-  my $self = shift;
-  if (@_) {
-    $self->{include_dirs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{include_dirs};
-  }
-}
-
+# Class Methods
 sub new {
   my $class = shift;
   
