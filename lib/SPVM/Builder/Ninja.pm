@@ -380,19 +380,21 @@ sub create_command_hash {
   }
 
   # Sort input files by name to ensure consistent hash generation
-  @all_input_files = sort map { SPVM::Builder::Util::normalize_path($_, $self->log_dir) } @all_input_files;
+  @all_input_files = sort @all_input_files;
 
   my $sha = Digest::SHA->new(1);
 
   # Add SHA1 of the command string followed by a newline
   $sha->add(Digest::SHA::sha1_hex($command) . "\x0A");
 
-  for my $file (@all_input_files) {
+  for my $input_file (@all_input_files) {
+    
     # Add SHA1 of the file path followed by a newline
-    $sha->add(Digest::SHA::sha1_hex($file) . "\x0A");
+    my $normalized_input_file = SPVM::Builder::Util::normalize_path($input_file, $self->log_dir);
+    $sha->add(Digest::SHA::sha1_hex($normalized_input_file) . "\x0A");
     
     # Add SHA1 of the file content followed by a newline
-    $sha->addfile($file);
+    $sha->addfile($input_file);
     $sha->add("\x0A");
   }
 
