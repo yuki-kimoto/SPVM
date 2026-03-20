@@ -166,7 +166,7 @@ sub need_generate {
   }
   
   # If command_hash differs, rebuild.
-  if ($log_entries_h && defined $command) {
+  if (defined $command) {
     my $entry = $log_entries_h->{$output_file};
     
     if ($entry) {

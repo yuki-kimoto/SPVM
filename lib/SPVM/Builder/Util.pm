@@ -103,8 +103,6 @@ sub need_generate {
   
   my $ninja = SPVM::Builder::Ninja->new;
   
-  $ninja->log_entries_h(undef);
-  
   # Delegate to SPVM::Builder::Ninja instance method
   return $ninja->need_generate($options);
 }
