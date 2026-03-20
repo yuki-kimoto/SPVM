@@ -7,6 +7,7 @@ use strict;
 use warnings;
 use Digest::SHA;
 use Carp 'confess';
+use File::Path 'mkpath';
 
 use SPVM::Builder::Accessor 'has';
 
@@ -67,6 +68,13 @@ sub log_file {
 
 sub create_log {
   my ($self) = @_;
+  
+  # Create the log directory if it does not exist
+  my $log_dir = $self->log_dir;
+  unless (-d $log_dir) {
+    mkpath($log_dir)
+      or confess("Can't create directory $log_dir: $!");
+  }
   
   my $log_file = $self->log_file;
   
