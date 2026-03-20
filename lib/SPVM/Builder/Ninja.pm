@@ -100,28 +100,28 @@ sub open_log {
 }
 
 sub add_log {
-  my ($self, $new_record_h) = @_;
+  my ($self, $new_log_entory_h) = @_;
 
   my $fh = $self->{log_fh} 
     or confess("Ninja log is not open. Call open_log() first.");
 
-  my $output_file  = $new_record_h->{output_file};
-  my $command_hash = $new_record_h->{command_hash};
+  my $normalized_output_file = SPVM::Builder::Util::normalize_path($new_log_entory_h->{output_file});
+  my $command_hash = $new_log_entory_h->{command_hash};
 
-  $self->log_entries_h->{$output_file} = $new_record_h;
+  my $start_time = $new_log_entory_h->{start_time} || 0;
+  my $end_time   = $new_log_entory_h->{end_time}   || 0;
+  my $mtime      = $new_log_entory_h->{mtime}      || 0;
 
-  my $start_time = $new_record_h->{start_time} || 0;
-  my $end_time   = $new_record_h->{end_time}   || 0;
-  my $mtime      = $new_record_h->{mtime}      || 0;
-
-  my $record = sprintf("%d\t%d\t%d\t%s\t%s\x0A", 
+  my $log_entory_line = sprintf("%d\t%d\t%d\t%s\t%s\x0A", 
     $start_time, 
     $end_time, 
     $mtime, 
-    $output_file, 
+    $$normalized_output_file, 
     $command_hash);
     
-  print $fh $record;
+  print $fh $log_entory_line;
+  
+  $self->log_entries_h->{$normalized_output_file} = $new_log_entory_h;
 }
 
 sub close_log {
@@ -152,13 +152,13 @@ sub load_log {
     my @fields = split(/\t/, $line);
 
     if (@fields >= 5) {
-      my ($start_time, $end_time, $mtime, $output_file, $command_hash) = @fields;
+      my ($start_time, $end_time, $mtime, $normalized_output_file, $command_hash) = @fields;
 
-      $log_entries_h->{$output_file} = {
+      $log_entries_h->{$normalized_output_file} = {
         start_time   => $start_time,
         end_time     => $end_time,
         mtime        => $mtime,
-        output_file  => $output_file,
+        output_file  => $normalized_output_file,
         command_hash => $command_hash,
       };
       
@@ -193,26 +193,6 @@ sub need_generate {
     return 1;
   }
   
-  # If command_hash differs, rebuild.
-  if (defined $command) {
-    my $entry = $log_entries_h->{$output_file};
-    
-    if ($entry) {
-      my $last_command_hash = $entry->{command_hash}; 
-      
-      my $sha = Digest::SHA->new(1);
-      $sha->add($command);
-      my $current_command_hash = $sha->hexdigest;
-
-      if (!defined $last_command_hash || $current_command_hash ne $last_command_hash) {
-        return 1;
-      }
-    } else {
-      # No log entry found for this file; treat as a new or modified build rule
-      return 1;
-    }
-  }
-
   # Timestamp-based check
   my $input_files_mtime_max = 0;
   my $exists_input_file = 0;
@@ -253,7 +233,7 @@ sub need_generate_v2 {
   my $output_file = $options->{output_file} // confess("output_file is required");
   my $command     = $options->{command}     // confess("command is required");
   my $input_files = $options->{input_files} || [];
-
+  
   my $need_generate = 0;
 
   if ($force) {
@@ -271,7 +251,8 @@ sub need_generate_v2 {
 
     # Retrieve the recorded log entry for the output file
     my $log_entries_h = $self->log_entries_h;
-    my $log_entry     = $log_entries_h->{$output_file};
+    my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file);
+    my $log_entry = $log_entries_h->{$normalized_output_file};
 
     # If the entry doesn't exist, or the hash simply doesn't match, rebuild.
     # $log_entry->{command_hash} が undef の場合も ne で真になるからこれで十分や。
@@ -290,7 +271,7 @@ sub recompact_if_needed {
     confess("Entries are not loaded.");
   }
   
-  # Ninja's threshold: Recompact if total records > 3 * valid records
+  # Ninja's threshold: Recompact if total log entries > 3 * valid log entries
   my $threshold = 3;
   my $log_entries_length = $self->log_entries_length;
   my $log_entries_h = $self->log_entries_h;
@@ -308,14 +289,14 @@ sub recompact_if_needed {
     $self->open_log;
     
     # Sort by start_time (ascending)
-    my @names = sort {
+    my @normalized_output_files = sort {
       $log_entries_h->{$a}{start_time} <=> $log_entries_h->{$b}{start_time}
     } keys %$log_entries_h;
     
-    # Write each valid record
-    for my $name (@names) {
-      my $record_h = $log_entries_h->{$name};
-      $self->add_log($record_h);
+    # Write each valid log entry
+    for my $normalized_output_file (@normalized_output_files) {
+      my $log_entory_h = $log_entries_h->{$normalized_output_file};
+      $self->add_log($log_entory_h);
     }
     
     $self->log_entries_length(keys %$log_entries_h);
@@ -365,7 +346,7 @@ sub create_command_hash {
   }
 
   # Sort input files by name to ensure consistent hash generation
-  @all_input_files = sort @all_input_files;
+  @all_input_files = sort map { SPVM::Builder::Util::normalize_path($_) } @all_input_files;
 
   my $sha = Digest::SHA->new(1);
 
