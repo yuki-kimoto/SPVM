@@ -103,8 +103,6 @@ sub open_log {
 sub add_log {
   my ($self, $new_log_entry_h) = @_;
   
-  use D;du $self;
-  
   my $fh = $self->{log_fh};
   unless (defined $fh) {
     confess("Ninja log is not open. Call open_log() first.");
@@ -141,7 +139,7 @@ sub add_log {
     $start_time, 
     $end_time, 
     $mtime, 
-    $$normalized_output_file, 
+    $normalized_output_file, 
     $command_hash);
     
   print $fh $log_entry_line;
