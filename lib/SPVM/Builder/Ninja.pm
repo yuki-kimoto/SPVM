@@ -5,6 +5,7 @@ package SPVM::Builder::Ninja;
 
 use strict;
 use warnings;
+use Digest::SHA;
 use Carp 'confess';
 
 use SPVM::Builder::Accessor 'has';
@@ -272,6 +273,62 @@ sub recompact_if_needed {
     
     $self->log_entries_length(keys %$log_entries_h);
   }
+}
+
+sub create_command_hash {
+  my ($self, $options) = @_;
+
+  my $input_files = $options->{input_files} || [];
+  my $command     = $options->{command} // '';
+
+  my @all_input_files;
+
+  for my $path (@$input_files) {
+    if (-d $path) {
+      require File::Find;
+      File::Find::find({
+        wanted => sub {
+          my $full_path = $File::Find::name;
+          
+          # Extract the base name for hidden file check
+          my $base_name = $full_path;
+          $base_name =~ s|.*/||; 
+
+          # Check if the path is a file (or a valid symlink to a file)
+          # and ensure the base name does not start with a dot
+          if (-f $full_path && $base_name !~ /^\./) {
+            push @all_input_files, $full_path;
+          }
+        },
+        no_chdir    => 1,
+        follow      => 1,
+        follow_skip => 2,
+      }, $path);
+    }
+    elsif (-f $path) {
+      # Directly specified file or a valid symlink to a file
+      push @all_input_files, $path;
+    }
+  }
+
+  # Sort input files by name to ensure consistent hash generation
+  @all_input_files = sort @all_input_files;
+
+  my $sha = Digest::SHA->new(1);
+
+  # Add SHA1 of the command string followed by a newline
+  $sha->add(Digest::SHA::sha1_hex($command) . "\x0A");
+
+  for my $file (@all_input_files) {
+    # Add SHA1 of the file path followed by a newline
+    $sha->add(Digest::SHA::sha1_hex($file) . "\x0A");
+    
+    # Add SHA1 of the file content followed by a newline
+    $sha->addfile($file);
+    $sha->add("\x0A");
+  }
+
+  return $sha->hexdigest;
 }
 
 sub DESTROY {
