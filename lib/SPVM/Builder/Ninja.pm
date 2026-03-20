@@ -253,9 +253,20 @@ sub need_generate_v2 {
   my ($self, $options) = @_;
   
   my $force       = $options->{force};
-  my $output_file = $options->{output_file} // confess("output_file is required");
-  my $command     = $options->{command}     // confess("command is required");
-  my $input_files = $options->{input_files} || [];
+  my $output_file = $options->{output_file};
+  unless (defined $output_file) {
+    confess("output_file must be defined.");
+  }
+  
+  my $command     = $options->{command};
+  unless (defined $command ) {
+    confess("command must be defined.");
+  }
+  
+  my $input_files = $options->{input_files};
+  unless (defined $input_files) {
+    confess("input_files must be defined.");
+  }
   
   my $need_generate = 0;
 
