@@ -20,6 +20,7 @@ use SPVM::ExchangeAPI;
 
 my $COMPILER;
 my $API;
+my $BUILDER;
 
 END {
   
@@ -130,11 +131,11 @@ sub build_class_common {
 sub init_api {
   unless ($API) {
     my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
-    my $builder = SPVM::Builder->new(build_dir => $build_dir);
+    $BUILDER //= SPVM::Builder->new(build_dir => $build_dir);
     
     my $compiler = SPVM::Builder::Native::Compiler->new;
     
-    for my $include_dir (@{$builder->include_dirs}) {
+    for my $include_dir (@{$BUILDER->include_dirs}) {
       $compiler->add_include_dir($include_dir);
     }
     
@@ -204,7 +205,6 @@ sub load_dynamic_lib {
           $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_dist;
         }
         else {
-          my $builder = SPVM::Builder->new(build_dir => $ENV{SPVM_BUILD_DIR});
           my $build_options = {
             runtime => $runtime,
             class_file => $outmost_class_file,
@@ -231,7 +231,9 @@ sub load_dynamic_lib {
             $build_options->{optimize} = $env_spvm_cc_optimize;
           }
           
-          my $dynamic_lib_file_jit = $builder->build_jit(
+          my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
+          $BUILDER //= SPVM::Builder->new(build_dir => $build_dir);
+          my $dynamic_lib_file_jit = $BUILDER->build_jit(
             $outmost_class_name,
             $build_options,
           );
