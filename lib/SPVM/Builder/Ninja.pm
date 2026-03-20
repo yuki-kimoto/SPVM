@@ -17,6 +17,7 @@ has [qw(
   log_entries_h
   log_fh
   log_entries_length
+  header_exts
 )];
 
 sub new {
@@ -26,6 +27,7 @@ sub new {
     log_entries_h => {},
     log_file_base_name => '.ninja_log',
     log_entries_length => 0,
+    header_exts => [qw(h hpp hh hxx h++ inc inl c cpp cc cxx c++)],
     @_
   };
   
@@ -288,6 +290,13 @@ sub create_command_hash {
 
   my $input_files = $options->{input_files} || [];
   my $command     = $options->{command} // '';
+  
+  # Get extensions from the object accessor (default or user-defined in new)
+  my $extensions = $self->header_exts || [];
+  
+  # Build the regex from the extension array with proper escaping
+  my $ext_list = join '|', map { quotemeta $_ } @$extensions;
+  my $valid_ext_re = qr/\.(?:$ext_list)$/i;
 
   my @all_input_files;
 
@@ -298,13 +307,12 @@ sub create_command_hash {
         wanted => sub {
           my $full_path = $File::Find::name;
           
-          # Extract the base name for hidden file check
+          # Extract the base name for hidden file and extension checks
           my $base_name = $full_path;
           $base_name =~ s|.*/||; 
 
-          # Check if the path is a file (or a valid symlink to a file)
-          # and ensure the base name does not start with a dot
-          if (-f $full_path && $base_name !~ /^\./) {
+          # Check if the path is a file and matches the allowed C/C++ extensions
+          if (-f $full_path && $base_name =~ $valid_ext_re) {
             push @all_input_files, $full_path;
           }
         },
@@ -314,7 +322,7 @@ sub create_command_hash {
       }, $path);
     }
     elsif (-f $path) {
-      # Directly specified file or a valid symlink to a file
+      # Directly specified files are always included
       push @all_input_files, $path;
     }
   }
