@@ -101,7 +101,7 @@ sub get_spvm_core_source_file_names {
 sub need_generate {
   my ($options) = @_;
   
-  my $ninja = SPVM::Builder::Ninja->new;
+  my $ninja = SPVM::Builder::Ninja->new(log_dir => $ENV{SPVM_BUILD_DIR});
   
   # Delegate to SPVM::Builder::Ninja instance method
   return $ninja->need_generate($options);

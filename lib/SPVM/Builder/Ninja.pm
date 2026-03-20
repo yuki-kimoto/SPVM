@@ -14,6 +14,7 @@ has [qw(
   log_file_base_name
   log_entries_h
   log_fh
+  log_entries_length
 )];
 
 sub new {
@@ -21,11 +22,30 @@ sub new {
   
   my $self = {
     log_entries_h => {},
-    log_file => '.ninja_log',
+    log_file_base_name => '.ninja_log',
+    log_entries_length => 0,
     @_
   };
   
-  return bless $self, ref $class || $class;
+  bless $self, ref $class || $class;
+  
+  $self->prepare;
+  
+  return $self;
+}
+
+sub prepare {
+  my ($self) = @_;
+  
+  my $log_file = $self->log_file;
+  
+  unless (-f $log_file) {
+    $self->create_log;
+  }
+  
+  $self->load_log;
+  
+  $self->recompact_if_needed;
 }
 
 sub log_file {
@@ -44,22 +64,27 @@ sub log_file {
   return $log_file;
 }
 
+sub create_log {
+  my ($self) = @_;
+  
+  my $log_file = $self->log_file;
+  
+  open my $fh, '>', $log_file or confess("Can't open $log_file for appending: $!");
+  binmode $fh;
+  
+  print $fh "# ninja log v5\x0A";
+}
+
 sub open_log {
   my ($self) = @_;
 
   return if $self->{log_fh};
-
-  my $log_file = $self->log_file;
-  my $must_write_header = !-f $log_file;
-
-  open my $fh, '>>', $log_file or confess("Can't open $log_file for appending: $!");
   
-  binmode $fh;
-
-  if ($must_write_header) {
-    print $fh "# ninja log v5\x0A";
-  }
-
+  my $log_file = $self->log_file;
+  
+  open my $fh, '>>', $log_file
+    or confess("Can't open $log_file for appending: $!");
+  
   $self->{log_fh} = $fh;
 }
 
@@ -98,35 +123,26 @@ sub close_log {
 
 sub load_log {
   my ($self) = @_;
-
+  
   my $log_file = $self->log_file;
   my $log_entries_h = {};
-
-  # Return an empty hash if the log file does not exist
-  if (!-f $log_file) {
-    $self->log_entries_h($log_entries_h);
-    return $log_entries_h;
-  }
-
-  open my $fh, '<', $log_file or confess("Can't open $log_file for reading: $!");
+  my $log_entries_length = 0;
   
-  # Use binary mode to handle physical LF (0x0A) consistently across platforms
+  open my $fh, '<', $log_file
+    or confess("Can't open $log_file for reading: $!");
+  
   binmode $fh;
-
+  
   while (my $line = <$fh>) {
-    # Remove the physical LF (0x0A) and optional CR (0x0D) just in case
     $line =~ s/[\x0A\x0D]+$//;
 
-    # Skip the Ninja version header (e.g., "# ninja log v5")
     next if $line =~ /^#/;
 
-    # Parse tab-separated values
     my @fields = split(/\t/, $line);
 
     if (@fields >= 5) {
       my ($start_time, $end_time, $mtime, $output_file, $command_hash) = @fields;
 
-      # Store the record.
       $log_entries_h->{$output_file} = {
         start_time   => $start_time,
         end_time     => $end_time,
@@ -134,15 +150,16 @@ sub load_log {
         output_file  => $output_file,
         command_hash => $command_hash,
       };
+      
+      $log_entries_length++;
     }
   }
 
   close $fh;
 
-  # Update internal state
-  $self->log_entries_h($log_entries_h);
+  $self->log_entries_length($log_entries_length);
 
-  return $log_entries_h;
+  $self->log_entries_h($log_entries_h);
 }
 
 sub need_generate {
@@ -218,75 +235,42 @@ sub need_generate {
   return 0;
 }
 
-sub need_recompact {
+sub recompact_if_needed {
   my ($self) = @_;
-
-  my $log_file = $self->log_file;
-
-  # Return 0 if the log file does not exist
-  return 0 unless -f $log_file;
-
-  # Count the total number of records in the log file
-  my $total_count = 0;
-  open my $fh, '<', $log_file or confess("Can't open $log_file for reading: $!");
-  while (<$fh>) {
-    $total_count++;
+  
+  unless ($self->log_entries_h) {
+    confess("Entries are not loaded.");
   }
-  close $fh;
-
-  # Number of valid records in memory
-  my $log_entries_h = $self->log_entries_h;
-  my $valid_count = keys %$log_entries_h;
-
+  
   # Ninja's threshold: Recompact if total records > 3 * valid records
-  if ($total_count > 3 * $valid_count) {
-    return 1;
-  }
-
-  return 0;
-}
-
-sub recompact {
-  my ($self) = @_;
-
+  my $threshold = 3;
+  my $log_entries_length = $self->log_entries_length;
   my $log_entries_h = $self->log_entries_h;
-
-  # Get the log file path
-  my $log_file = $self->log_file;
-
-  # Delete the log file if it exists
-  if (-f $log_file) {
-    unlink $log_file or confess("Can't unlink $log_file: $!");
-  }
-
-  # Open the log file and write the header
-  $self->open_log;
-
-  # Get the file handle
-  my $log_fh = $self->log_fh;
-
-  # Sort by start_time (ascending)
-  my @sorted_outputs = sort {
-    $log_entries_h->{$a}{start_time} <=> $log_entries_h->{$b}{start_time}
-  } keys %$log_entries_h;
-
-  # Write each valid record
-  for my $output_file (@sorted_outputs) {
-    my $record_h = $log_entries_h->{$output_file};
-
-    my $start_time   = $record_h->{start_time}   || 0;
-    my $end_time     = $record_h->{end_time}     || 0;
-    my $mtime        = $record_h->{mtime}        || 0;
-    my $command_hash = $record_h->{command_hash} || '';
-
-    my $record = sprintf("%d\t%d\t%d\t%s\t%s\x0A",
-      $start_time,
-      $end_time,
-      $mtime,
-      $output_file,
-      $command_hash);
-
-    print $log_fh $record;
+  my $do_recompact = $log_entries_length > $threshold * keys %$log_entries_h;
+  
+  if ($do_recompact) {
+    $self->close_log;
+    
+    my $log_file = $self->log_file;
+    unlink $log_file
+      or confess("Cannot unlink the file '$log_file': $!");
+    
+    $self->create_log;
+    
+    $self->open_log;
+    
+    # Sort by start_time (ascending)
+    my @names = sort {
+      $log_entries_h->{$a}{start_time} <=> $log_entries_h->{$b}{start_time}
+    } keys %$log_entries_h;
+    
+    # Write each valid record
+    for my $name (@names) {
+      my $record_h = $log_entries_h->{$name};
+      $self->add_log($record_h);
+    }
+    
+    $self->log_entries_length(keys %$log_entries_h);
   }
 }
 
@@ -296,4 +280,5 @@ sub DESTROY {
   # Ensure the log file handle is closed
   $self->close_log;
 }
+
 1;
