@@ -349,15 +349,6 @@ sub compile_source_file {
   
   $config->config_global($config_global);
   
-  my $config_global_loaded_config_files = $config_global->loaded_config_files;
-  my $config_loaded_config_files = $config->loaded_config_files;
-  my $need_generate_input_files = [$source_file, @$config_loaded_config_files, @$config_global_loaded_config_files];
-  my $need_generate = SPVM::Builder::Util::need_generate({
-    force => $self->force || $config->force,
-    output_file => $output_file,
-    input_files => $need_generate_input_files,
-  });
-  
   my $builder = $self->builder;
   
   # Build directory
@@ -377,9 +368,13 @@ sub compile_source_file {
     category => $options->{category},
   );
   
-  if ($need_generate) {
-    $builder_cc->compile_source_file($compile_info);
-  }
+  my $need_generate_v2_input_files = [$source_file];
+  my $need_generate_v2_options = {
+    force => $self->force || $config->force,
+    output_file => $output_file,
+    input_files => $need_generate_v2_input_files,
+  };
+  $builder_cc->compile_source_file($compile_info, $need_generate_v2_options);
   
   my $object_file_name = $compile_info->output_file;
   my $object_file = SPVM::Builder::ObjectFileInfo->new(
