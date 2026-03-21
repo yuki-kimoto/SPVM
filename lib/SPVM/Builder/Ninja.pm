@@ -33,14 +33,6 @@ sub new {
   
   bless $self, ref $class || $class;
   
-  $self->prepare;
-  
-  return $self;
-}
-
-sub prepare {
-  my ($self) = @_;
-  
   my $log_file = $self->log_file;
   
   unless (-f $log_file) {
@@ -50,6 +42,10 @@ sub prepare {
   $self->load_log;
   
   $self->recompact_if_needed;
+  
+  $self->open_log;
+  
+  return $self;
 }
 
 sub log_file {
@@ -128,12 +124,12 @@ sub add_log {
     confess("end_time must be defined.");
   }
 
-  my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
-
-  my $mtime = (stat $output_file)[9];
+  my $mtime = $new_log_entry_h->{mtime};
   unless (defined $mtime) {
-    confess("Could not get mtime of $output_file: $!");
+    confess("mtime must be defined.");
   }
+
+  my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
 
   my $log_entry_line = sprintf("%d\t%d\t%d\t%s\t%s\x0A", 
     $start_time, 
@@ -163,9 +159,8 @@ sub load_log {
   my $log_entries_h = {};
   my $log_entries_length = 0;
   
-  $self->open_log;
-  
-  my $log_fh = $self->log_fh;
+  open my $log_fh, '<', $log_file
+    or confess "Cannot open the log file '$log_file':$!";
   
   while (my $line = <$log_fh>) {
     $line =~ s/[\x0A\x0D]+$//;
@@ -190,7 +185,7 @@ sub load_log {
   }
   
   $self->log_entries_length($log_entries_length);
-
+  
   $self->log_entries_h($log_entries_h);
 }
 
@@ -310,9 +305,8 @@ sub recompact_if_needed {
   my $do_recompact = $log_entries_length > $threshold * keys %$log_entries_h;
   
   if ($do_recompact) {
-    $self->close_log;
-    
     my $log_file = $self->log_file;
+    
     unlink $log_file
       or confess("Cannot unlink the file '$log_file': $!");
     
@@ -332,6 +326,8 @@ sub recompact_if_needed {
     }
     
     $self->log_entries_length(keys %$log_entries_h);
+    
+    $self->close_log;
   }
 }
 

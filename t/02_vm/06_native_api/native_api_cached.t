@@ -56,6 +56,8 @@ unless (-f $native_src_file) {
   die 'Unexpected error';
 }
 
+ok(-f "$ENV{SPVM_BUILD_DIR}/.ninja_log");
+
 system($compile_native_api_prgoram) == 0 or die;
 
 # Native object files and shared library files is cached.

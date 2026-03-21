@@ -10,6 +10,7 @@ use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
 use File::Find 'find';
 use File::Basename 'dirname', 'basename';
+use Time::HiRes ();
 
 use SPVM::Builder::Util;
 use SPVM::Builder::CompileInfo;
@@ -153,18 +154,14 @@ sub build_precompile_class_source_file {
 }
 
 sub compile_source_file {
-  my ($self, $compile_info) = @_;
-  
-  my $no_generate = $compile_info->no_generate;
+  my ($self, $compile_info, $options) = @_;
   
   my $config = $compile_info->config;
   
-  # Quiet output
   my $quiet = $self->detect_quiet($config);
   
   my $source_file = $compile_info->source_file;
   
-  # Execute compile command
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
   
   my $output_file = $compile_info->output_file;
@@ -183,23 +180,25 @@ sub compile_source_file {
   }
   
   my $cc_cmd = $compile_info->create_command;
+  my $cc_cmd_string = "@$cc_cmd";
   
-  unless ($no_generate) {
+  my $ninja = $self->builder->ninja;
+  my $need_generate_v2_options = {%$options};
+  $need_generate_v2_options->{command} = $cc_cmd_string;
+  my $need_generate = $ninja->need_generate_v2($need_generate_v2_options);
+  
+  if ($need_generate) {
     mkpath dirname $output_file;
     
     unless ($quiet) {
-      
       my $compile_info_category = $compile_info->category;
-      
       my $message;
       if ($config->is_resource) {
         my $resource_class_name = $config->class_name;
-        
         $message = "[Compile a source file in $resource_class_name resource.";
       }
       else {
         my $config_class_name = $config->class_name;
-        
         my $config_file = $config->file;
         
         if ($compile_info_category eq 'bootstrap') {
@@ -223,12 +222,32 @@ sub compile_source_file {
       }
       
       print "$message\n";
-      
-      print "@$cc_cmd\n";
+      print "$cc_cmd_string\n";
     }
     
+    my $start_time = int(Time::HiRes::time() * 1000);
     $cbuilder->do_system(@$cc_cmd)
-      or confess("$source_file file cannnot be compiled by the following command:\n@$cc_cmd\n");
+      or confess("$source_file file cannnot be compiled by the following command:\n$cc_cmd_string\n");
+    my $end_time = int(Time::HiRes::time() * 1000);
+    
+    my $create_command_hash_options = {%$options};
+    $create_command_hash_options->{command} = $cc_cmd_string;
+    my $command_hash = $ninja->create_command_hash($create_command_hash_options);
+    
+    unless (-f $output_file) {
+      confess("The output file '$output_file' does not exist.");
+    }
+    
+    my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
+    
+    my $log_entry = {
+      output_file  => $output_file,
+      command_hash => $command_hash,
+      start_time   => $start_time,
+      end_time     => $end_time,
+      mtime => $mtime,
+    };
+    $ninja->add_log($log_entry);
   }
 }
 
@@ -544,6 +563,7 @@ sub compile_class {
     
     # Check if object file need to be generated
     my $need_generate;
+    my $need_generate_options;
     {
       my @native_header_files;
       my $native_include_dir = $config->native_include_dir;
@@ -595,16 +615,17 @@ sub compile_class {
         push @$input_files, $config->file;
       };
       
-      $need_generate = SPVM::Builder::Util::need_generate({
+      $need_generate_options = {
         force => $force,
         output_file => $object_file_name,
         input_files => $input_files,
-      });
+      };
+      $need_generate = SPVM::Builder::Util::need_generate($need_generate_options);
     }
     
     # Compile a source file
     $compile_info->no_generate(!$need_generate);
-    $self->compile_source_file($compile_info);
+    $self->compile_source_file($compile_info, $need_generate_options);
     
     # Object file information
     my $compile_info_cc = $compile_info->{cc};
