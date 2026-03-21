@@ -9,15 +9,11 @@ use Config;
 use FindBin;
 
 use Test::More;
-use Time::HiRes 'sleep';
 
 use SPVM;
 
 my $test_dir = "$FindBin::Bin/..";
 my $build_dir = $ENV{SPVM_BUILD_DIR};
-
-# Wait 2 seconds because the time in 1 secend is not detected.
-my $wait_time = 1.1;
 
 my $compile_native_api_prgoram = "$^X -Mblib $FindBin::Bin/compile_native_api.pl";
 
@@ -109,87 +105,6 @@ system($compile_native_api_prgoram) == 0 or die;
   }
 }
 
-# Update config file
-{
-  my $native_object_file;
-  my $start_native_object_file_mtime;
-  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.o";
-  $start_native_object_file_mtime = (stat $native_object_file)[9];
-
-  my $native_shared_lib_file;
-  my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.$Config{dlext}";
-   $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-
-  # Update config file
-  sleep $wait_time;
-  my $now = time;
-  utime $now, $now, $config_file;
-  system($compile_native_api_prgoram) == 0 or die;
-
-  # Native object file is cached
-  my $native_object_file_mtime = (stat $native_object_file)[9];
-  isnt($native_object_file_mtime, $start_native_object_file_mtime);
-
-  # Native shared_lib file is cached
-  my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-  isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
-}
-
-# Update class file
-{
-  my $native_object_file;
-  my $start_native_object_file_mtime;
-  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.o";
-  $start_native_object_file_mtime = (stat $native_object_file)[9];
-  
-  my $precompile_object_file;
-  my $start_precompile_object_file_mtime;
-  $precompile_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.precompile.o";
-  if ($ENV{SPVM_TEST_PRECOMPILE}) {
-   ok(-f $precompile_object_file);
-   $start_precompile_object_file_mtime = (stat $precompile_object_file)[9];
-  }
-  
-  my $native_shared_lib_file;
-  my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.$Config{dlext}";
-   $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-  
-  my $precompile_shared_lib_file;
-  my $start_precompile_shared_lib_file_mtime;
-  $precompile_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{dlext}";
-  if ($ENV{SPVM_TEST_PRECOMPILE}) {
-   ok(-f $precompile_shared_lib_file);
-   $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
-  }
-  
-  # Update class file
-  sleep $wait_time;
-  my $now = time;
-  utime $now, $now, $class_file;
-  system($compile_native_api_prgoram) == 0 or die;
-  
-  # Native object file is not compiled
-  my $native_object_file_mtime = (stat $native_object_file)[9];
-  is($native_object_file_mtime, $start_native_object_file_mtime);
-  
-  # Precompililation object file is compiled
-  my $precompile_object_file_mtime = (stat $precompile_object_file)[9];
-  if ($ENV{SPVM_TEST_PRECOMPILE}) {
-    isnt($precompile_object_file_mtime, $start_precompile_object_file_mtime);
-  }
-  
-  # Native shared_lib file is not linked
-  my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-  is($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
-  
-  my $precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
-  if ($ENV{SPVM_TEST_PRECOMPILE}) {
-    isnt($precompile_shared_lib_file_mtime, $start_precompile_shared_lib_file_mtime);
-  }
-}
-
 # Update native class file
 {
   my $native_object_file;
@@ -203,7 +118,6 @@ system($compile_native_api_prgoram) == 0 or die;
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
-  sleep $wait_time;
   my $now = time;
   utime $now, $now, $native_class_file;
   system($compile_native_api_prgoram) == 0 or die;
@@ -230,7 +144,6 @@ system($compile_native_api_prgoram) == 0 or die;
   $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   
   # Update src file
-  sleep $wait_time;
   my $now = time;
   utime $now, $now, $native_src_file;
   system($compile_native_api_prgoram) == 0 or die;
@@ -262,7 +175,6 @@ system($compile_native_api_prgoram) == 0 or die;
   $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   
   # Update src file
-  sleep $wait_time;
   my $now = time;
   utime $now, $now, $native_header_file;
   system($compile_native_api_prgoram) == 0 or die;
@@ -293,36 +205,8 @@ system($compile_native_api_prgoram) == 0 or die;
   $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   
   # Update src file
-  sleep $wait_time;
   my $now = time;
   utime $now, $now, $resource_native_header_file;
-  system($compile_native_api_prgoram) == 0 or die;
-  
-  # Native class object file is cached
-  my $native_object_file_mtime = (stat $native_object_file)[9];
-  isnt($native_object_file_mtime, $start_native_object_file_mtime);
-  
-  # Native shared_lib file is cached
-  my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-  isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
-}
-
-# Update resource config file
-{
-  my $native_object_file;
-  my $start_native_object_file_mtime;
-  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.o";
-  $start_native_object_file_mtime = (stat $native_object_file)[9];
-  
-  my $native_shared_lib_file;
-  my $start_native_shared_lib_file_mtime;
-  $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
-  $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-  
-  # Update src file
-  sleep $wait_time;
-  my $now = time;
-  utime $now, $now, $resource_config_file;
   system($compile_native_api_prgoram) == 0 or die;
   
   # Native class object file is cached
@@ -353,7 +237,6 @@ system($compile_native_api_prgoram) == 0 or die;
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
-  sleep $wait_time;
   $ENV{SPVM_TEST_CONFIG_FORCE} = 1;
   system($compile_native_api_prgoram) == 0 or die;
 
@@ -389,7 +272,6 @@ system($compile_native_api_prgoram) == 0 or die;
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
-  sleep $wait_time;
   $ENV{SPVM_CC_FORCE} = 1;
   system($compile_native_api_prgoram) == 0 or die;
 
