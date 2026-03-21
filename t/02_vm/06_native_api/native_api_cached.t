@@ -105,6 +105,8 @@ system($compile_native_api_prgoram) == 0 or die;
   }
 }
 
+=pod TODO
+
 # Update native class file
 {
   my $native_object_file;
@@ -252,6 +254,8 @@ system($compile_native_api_prgoram) == 0 or die;
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 }
+
+=cut
 
 # SPVM_CC_FORCE environment variable
 {
