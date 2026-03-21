@@ -310,7 +310,8 @@ C<SPVM::ExchangeAPI> is APIs to convert Perl data structures to/from SPVM data s
 
 =head1 Usage
   
-  use SPVM ();
+  use SPVM;
+  
   my $api = SPVM::api();
   my $spvm_int_array = $api->new_int_array([1, 2, 3]);
   my $perl_array_ref = $spvm_int_array->to_array;
@@ -328,7 +329,7 @@ C<SPVM::ExchangeAPI> is APIs to convert Perl data structures to/from SPVM data s
   use SPVM 'SomeClass';
   
   # Load only SPVM module
-  use SPVM ();
+  use SPVM;
 
 The C<use> statement loads a L<SPVM> class.
 
