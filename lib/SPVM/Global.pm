@@ -5,15 +5,6 @@ use Carp 'confess';
 use File::Temp;
 
 use SPVM::Builder::Util;
-my $SPVM_BUILD_DIR_TMP_DIR_OBJECT;
-BEGIN {
-  my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
-  unless (defined $build_dir) {
-    $SPVM_BUILD_DIR_TMP_DIR_OBJECT = File::Temp->newdir;
-    $ENV{SPVM_BUILD_DIR} = $SPVM_BUILD_DIR_TMP_DIR_OBJECT->dirname;
-  }
-}
-
 use SPVM::Builder;
 use SPVM::Builder::Native::Env;
 use SPVM::ExchangeAPI;

@@ -11,7 +11,7 @@ use FindBin;
 use Test::More;
 use Time::HiRes 'sleep';
 
-use SPVM();
+use SPVM;
 
 my $test_dir = "$FindBin::Bin/..";
 my $build_dir = $ENV{SPVM_BUILD_DIR};
