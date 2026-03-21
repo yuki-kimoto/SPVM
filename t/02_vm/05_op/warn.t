@@ -9,7 +9,7 @@ use File::Path 'mkpath';
 use Test::More;
 
 use TestUtil;
-use SPVM (); # Load SPVM API
+use SPVM; # Load SPVM API
 use SPVM 'TestCase::Operator::Warn';
 
 my $test_dir = "$FindBin::Bin";

@@ -10,7 +10,7 @@ use Test::More;
 
 use TestUtil;
 use File::Spec;
-use SPVM (); # Load SPVM API
+use SPVM; # Load SPVM API
 
 my $test_dir = "$FindBin::Bin";
 my $test_tmp_dir = "$test_dir/test_files/.tmp";

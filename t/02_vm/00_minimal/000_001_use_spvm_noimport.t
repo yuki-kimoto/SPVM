@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM ();
+use SPVM;
 
 ok(1);
 

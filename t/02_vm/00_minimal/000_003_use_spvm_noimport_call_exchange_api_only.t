@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM ();
+use SPVM;
 
 my $api = SPVM::api();
 
