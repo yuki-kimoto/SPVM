@@ -33,19 +33,17 @@ sub new {
   
   bless $self, ref $class || $class;
   
-  my $log_file = $self->log_file;
+  $self->prepare;
   
-  unless (-f $log_file) {
-    $self->create_log;
-  }
+  return $self;
+}
+
+sub prepare {
+  my ($self) = @_;
   
   $self->load_log;
   
-  $self->recompact_if_needed;
-  
-  $self->open_log;
-  
-  return $self;
+  $self->open_log('>>');
 }
 
 sub log_file {
@@ -64,36 +62,30 @@ sub log_file {
   return $log_file;
 }
 
-sub create_log {
-  my ($self) = @_;
+sub open_log {
+  my ($self, $mode) = @_;
   
-  # Create the log directory if it does not exist
-  my $log_dir = $self->log_dir;
-  unless (-d $log_dir) {
-    mkpath($log_dir)
-      or confess("Can't create directory $log_dir: $!");
+  unless ($mode) {
+    confess "The open mode \$mode must be defined.";
   }
   
   my $log_file = $self->log_file;
-  
-  open my $fh, '>', $log_file or confess("Can't open $log_file for appending: $!");
-  binmode $fh;
-  
-  print $fh "# ninja log v5\x0A";
-}
-
-sub open_log {
-  my ($self) = @_;
   
   if ($self->{log_fh}) {
-    return ;
+    confess "The file '$log_file' is already opened";
   }
-  my $log_file = $self->log_file;
-  
-  open my $fh, '>>', $log_file
-    or confess("Can't open $log_file for appending: $!");
+  open my $fh, $mode, $log_file
+    or confess("Can't open '$log_file' with the mode '$mode': $!");
   
   $self->{log_fh} = $fh;
+  $self->{_log_open_mode} = $mode;
+  $self->log_fh->autoflush(1);
+}
+
+sub opened {
+  my ($self) = @_;
+  
+  return $self->{log_fh} ? 1 : 0;
 }
 
 sub add_log {
@@ -130,7 +122,7 @@ sub add_log {
   }
 
   my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
-
+  
   my $log_entry_line = sprintf("%d\t%d\t%d\t%s\t%s\x0A", 
     $start_time, 
     $end_time, 
@@ -152,15 +144,29 @@ sub close_log {
   }
 }
 
+sub add_log_header {
+  my ($self) = @_;
+  
+  my $log_fh = $self->log_fh;
+  
+  print $log_fh "# ninja log v5\x0A";
+}
+
 sub load_log {
   my ($self) = @_;
   
   my $log_file = $self->log_file;
+  
+  unless (-f $log_file) {
+    return;
+  }
+  
   my $log_entries_h = {};
   my $log_entries_length = 0;
   
-  open my $log_fh, '<', $log_file
-    or confess "Cannot open the log file '$log_file':$!";
+  $self->open_log('<');
+  
+  my $log_fh = $self->log_fh;
   
   while (my $line = <$log_fh>) {
     $line =~ s/[\x0A\x0D]+$//;
@@ -183,6 +189,8 @@ sub load_log {
       $log_entries_length++;
     }
   }
+  
+  $self->close_log;
   
   $self->log_entries_length($log_entries_length);
   
@@ -291,43 +299,31 @@ sub need_generate_v2 {
   return $need_generate;
 }
 
-sub recompact_if_needed {
+sub recompact {
   my ($self) = @_;
   
-  unless ($self->log_entries_h) {
-    confess("Entries are not loaded.");
+  my $log_file = $self->log_file;
+  
+  if (-f $log_file) {
+    $self->load_log;
+    $self->close_log;
   }
   
-  # Ninja's threshold: Recompact if total log entries > 3 * valid log entries
-  my $threshold = 3;
-  my $log_entries_length = $self->log_entries_length;
-  my $log_entries_h = $self->log_entries_h;
-  my $do_recompact = $log_entries_length > $threshold * keys %$log_entries_h;
+  $self->open_log('>');
   
-  if ($do_recompact) {
-    my $log_file = $self->log_file;
-    
-    unlink $log_file
-      or confess("Cannot unlink the file '$log_file': $!");
-    
-    $self->create_log;
-    
-    $self->open_log;
-    
-    # Sort by start_time (ascending)
-    my @normalized_output_files = sort {
-      $log_entries_h->{$a}{start_time} <=> $log_entries_h->{$b}{start_time}
-    } keys %$log_entries_h;
-    
-    # Write each valid log entry
-    for my $normalized_output_file (@normalized_output_files) {
-      my $log_entory_h = $log_entries_h->{$normalized_output_file};
-      $self->add_log($log_entory_h);
-    }
-    
-    $self->log_entries_length(keys %$log_entries_h);
-    
-    $self->close_log;
+  $self->add_log_header;
+  
+  my $log_entries_h = $self->log_entries_h;
+  
+  # Sort by start_time (ascending)
+  my @normalized_output_files = sort {
+    $log_entries_h->{$a}{start_time} <=> $log_entries_h->{$b}{start_time}
+  } keys %$log_entries_h;
+  
+  # Write each valid log entry
+  for my $normalized_output_file (@normalized_output_files) {
+    my $log_entory_h = $log_entries_h->{$normalized_output_file};
+    $self->add_log($log_entory_h);
   }
 }
 
