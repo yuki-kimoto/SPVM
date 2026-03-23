@@ -18,6 +18,7 @@ has [qw(
   log_fh
   log_entries_length
   header_exts
+  lock_file_base_name
 )];
 
 sub new {
