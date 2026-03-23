@@ -115,7 +115,7 @@ sub open_lock_file {
   my $lock_file = $self->lock_file;
   
   open my $lock_fh, '>>', $lock_file
-    or croak("Cannot open the file '$lock_file' with '>>' mode:$!");
+    or confess("Cannot open the file '$lock_file' with '>>' mode:$!");
   
   $self->{lock_fh} = $lock_fh;
   
