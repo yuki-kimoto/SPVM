@@ -293,7 +293,7 @@ sub create_make_rule {
   }
   
   # Build command
-  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($options_string)->build_dynamic_lib_dist_$category('$class_name')\"\n\n";
+  $make_rule .= "\t\@$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($options_string)->build_dynamic_lib_dist_$category('$class_name')\"\n\n";
   
   return $make_rule;
 }
