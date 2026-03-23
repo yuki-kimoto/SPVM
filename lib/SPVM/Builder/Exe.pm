@@ -346,6 +346,7 @@ sub compile_source_file {
   my $output_file = $options->{output_file};
   my $config = $options->{config};
   my $config_global = $self->config_global;
+  my $include_dir = $self->{include_dir};
   
   $config->config_global($config_global);
   
@@ -368,7 +369,7 @@ sub compile_source_file {
     category => $options->{category},
   );
   
-  my $need_generate_input_files = [$source_file];
+  my $need_generate_input_files = [$source_file, $include_dir];
   my $need_generate_options = {
     force => $self->force || $config->force,
     output_file => $output_file,
@@ -950,6 +951,8 @@ sub compile_spvm_core_source_files {
   # SPVM src directory
   my $builder_src_dir = "$builder_dir/src";
   
+  my $builder_include_dir = "$builder_dir/include";
+  
   # SPVM runtime source files
   my $spvm_runtime_src_base_names;
   $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
@@ -971,6 +974,7 @@ sub compile_spvm_core_source_files {
       output_file => $object_file_name,
       config => $config,
       category => 'spvm_core',
+      include_dir => $builder_include_dir,
     });
     push @$object_files, $object_file;
   }
