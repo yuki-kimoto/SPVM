@@ -38,6 +38,7 @@ sub new_without_prepare {
     log_file_base_name => '.ninja_log',
     log_entries_length => 0,
     header_exts => [qw(h hpp hh hxx h++ inc inl c cpp cc cxx c++)],
+    lock_file_base_name => '.ninja_lock',
     @_
   };
   
@@ -48,6 +49,8 @@ sub new_without_prepare {
 
 sub prepare {
   my ($self) = @_;
+  
+  $self->open_lock_file;
   
   {
     my $ninja_for_recompact = $self->new_without_prepare(%$self);
@@ -82,16 +85,27 @@ sub log_file {
 sub lock_file {
   my ($self) = @_;
 
-  my $lock_dir = $self->lock_dir;
+  my $log_dir = $self->log_dir;
 
-  # Raise an exception if lock_dir is not defined
-  unless (defined $lock_dir) {
-    confess("The \"lock_dir\" field must be defined");
+  # Raise an exception if log_dir is not defined
+  unless (defined $log_dir) {
+    confess("The \"log_dir\" field must be defined");
   }
 
   my $lock_file_base_name = $self->lock_file_base_name;
-  my $lock_file = "$lock_dir/$lock_file_base_name";
+  my $lock_file = "$log_dir/$lock_file_base_name";
 
+  return $lock_file;
+}
+
+sub open_lock_file {
+  my ($self) = @_;
+  
+  my $lock_file = $self->lock_file;
+  
+  open my $lock_fh, '>>', $lock_file
+    or croak("Cannot open the file '$lock_file' with '>>' mode:$!");
+  
   return $lock_file;
 }
 
