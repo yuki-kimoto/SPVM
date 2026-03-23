@@ -179,10 +179,17 @@ sub compile_source_file {
   
   my $cc_version = $config->cc_version;
   
+  my $force = $options->{force};
+  
+  my $input_files = $options->{input_files};
   my $ninja = $self->builder->ninja;
-  my $need_generate_options = {%$options};
-  $need_generate_options->{command} = $cc_cmd_string;
-  $need_generate_options->{command_version} = $cc_version;
+  my $need_generate_options = {
+    command => $cc_cmd_string,
+    command_version => $cc_version,
+    input_files => $input_files,
+    output_file => $output_file,
+    force => $force,
+  };
   my $need_generate = $ninja->need_generate($need_generate_options);
   
   if ($need_generate) {
