@@ -19,6 +19,7 @@ has [qw(
   log_entries_length
   header_exts
   lock_file_base_name
+  lock_fh
 )];
 
 sub new {
@@ -69,13 +70,29 @@ sub log_file {
 
   # Raise an exception if log_dir is not defined
   unless (defined $log_dir) {
-    confess("The \"log_dir\" property must be defined");
+    confess("The \"log_dir\" field must be defined");
   }
 
   my $log_file_base_name = $self->log_file_base_name;
   my $log_file = "$log_dir/$log_file_base_name";
 
   return $log_file;
+}
+
+sub lock_file {
+  my ($self) = @_;
+
+  my $lock_dir = $self->lock_dir;
+
+  # Raise an exception if lock_dir is not defined
+  unless (defined $lock_dir) {
+    confess("The \"lock_dir\" field must be defined");
+  }
+
+  my $lock_file_base_name = $self->lock_file_base_name;
+  my $lock_file = "$lock_dir/$lock_file_base_name";
+
+  return $lock_file;
 }
 
 sub open_log {
