@@ -482,6 +482,8 @@ sub create_ld_version {
   
   my $ld_version = `$ld --version 2>&1` // '';
   
+  $ld_version =~ s/\n.*//s;
+  
   return $ld_version;
 }
 

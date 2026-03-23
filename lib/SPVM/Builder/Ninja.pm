@@ -286,21 +286,27 @@ sub load_log {
 sub need_generate {
   my ($self, $options) = @_;
   
-  my $force       = $options->{force};
-  my $output_file = $options->{output_file};
-  unless (defined $output_file) {
-    confess("output_file must be defined.");
+  my $command = $options->{command};
+  unless (defined $command ) {
+    confess("'command' option must be defined.");
   }
   
-  my $command     = $options->{command};
-  unless (defined $command ) {
-    confess("command must be defined.");
+  my $command_version = $options->{command_version};
+  unless (defined $command_version ) {
+    confess("'command_version' option must be defined.");
   }
   
   my $input_files = $options->{input_files};
   unless (defined $input_files) {
-    confess("input_files must be defined.");
+    confess("'input_files' option must be defined.");
   }
+  
+  my $output_file = $options->{output_file};
+  unless (defined $output_file) {
+    confess("'output_file' option must be defined.");
+  }
+  
+  my $force = $options->{force};
   
   my $need_generate = 0;
   
@@ -314,15 +320,16 @@ sub need_generate {
   
     # Generate a robust hash of the command and the content of input files
     my $current_command_hash = $self->create_command_hash({
-      command     => $command,
+      command => $command,
+      command_version => $command_version,
       input_files => $input_files,
     });
-
+    
     # Retrieve the recorded log entry for the output file
     my $log_entries_h = $self->log_entries_h;
     my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
     my $log_entry = $log_entries_h->{$normalized_output_file};
-
+    
     # If the entry doesn't exist, or the hash simply doesn't match, rebuild.
     if (!$log_entry || $current_command_hash ne $log_entry->{command_hash}) {
       $need_generate = 1;
@@ -332,50 +339,23 @@ sub need_generate {
   return $need_generate;
 }
 
-my $RECOMPACTED = 0;
-sub recompact {
-  my ($self) = @_;
-  
-  if ($RECOMPACTED) {
-    return;
-  }
-  
-  my $log_file = $self->log_file;
-  
-  if (-f $log_file) {
-    $self->load_log;
-    $self->close_log;
-  }
-  
-  unless (-d $self->log_dir) {
-    mkpath $self->log_dir;
-  }
-  
-  $self->open_log('>');
-  
-  $self->add_log_header;
-  
-  my $log_entries_h = $self->log_entries_h;
-  
-  # Sort by start_time (ascending)
-  my @normalized_output_files = sort {
-    $log_entries_h->{$a}{start_time} <=> $log_entries_h->{$b}{start_time}
-  } keys %$log_entries_h;
-  
-  # Write each valid log entry
-  for my $normalized_output_file (@normalized_output_files) {
-    my $log_entory_h = $log_entries_h->{$normalized_output_file};
-    $self->add_log($log_entory_h, {no_normalize_output_file => 1});
-  }
-  
-  $RECOMPACTED = 1;
-}
-
 sub create_command_hash {
   my ($self, $options) = @_;
-
-  my $input_files = $options->{input_files} || [];
-  my $command     = $options->{command} // '';
+  
+  my $command = $options->{command};
+  unless (defined $command) {
+    confess("command_ must be defined.");
+  }
+  
+  my $command_version = $options->{command_version};
+  unless (defined $command_version) {
+    confess("command_version must be defined.");
+  }
+  
+  my $input_files = $options->{input_files};
+  unless (defined $input_files) {
+    confess("command_ must be defined.");
+  }
   
   # Get extensions from the object accessor (default or user-defined in new)
   my $extensions = $self->header_exts || [];
@@ -420,6 +400,7 @@ sub create_command_hash {
 
   # Add SHA1 of the command string followed by a newline
   $sha->add(Digest::SHA::sha1_hex($command) . "\x0A");
+  $sha->add(Digest::SHA::sha1_hex($command_version) . "\x0A");
 
   for my $input_file (@all_input_files) {
     
@@ -433,6 +414,45 @@ sub create_command_hash {
   }
 
   return $sha->hexdigest;
+}
+
+my $RECOMPACTED = 0;
+sub recompact {
+  my ($self) = @_;
+  
+  if ($RECOMPACTED) {
+    return;
+  }
+  
+  my $log_file = $self->log_file;
+  
+  if (-f $log_file) {
+    $self->load_log;
+    $self->close_log;
+  }
+  
+  unless (-d $self->log_dir) {
+    mkpath $self->log_dir;
+  }
+  
+  $self->open_log('>');
+  
+  $self->add_log_header;
+  
+  my $log_entries_h = $self->log_entries_h;
+  
+  # Sort by start_time (ascending)
+  my @normalized_output_files = sort {
+    $log_entries_h->{$a}{start_time} <=> $log_entries_h->{$b}{start_time}
+  } keys %$log_entries_h;
+  
+  # Write each valid log entry
+  for my $normalized_output_file (@normalized_output_files) {
+    my $log_entory_h = $log_entries_h->{$normalized_output_file};
+    $self->add_log($log_entory_h, {no_normalize_output_file => 1});
+  }
+  
+  $RECOMPACTED = 1;
 }
 
 sub DESTROY {

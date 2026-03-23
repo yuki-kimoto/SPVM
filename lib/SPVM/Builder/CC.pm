@@ -177,9 +177,12 @@ sub compile_source_file {
   my $cc_cmd = $compile_info->create_command;
   my $cc_cmd_string = "@$cc_cmd";
   
+  my $cc_version = $config->cc_version;
+  
   my $ninja = $self->builder->ninja;
   my $need_generate_options = {%$options};
   $need_generate_options->{command} = $cc_cmd_string;
+  $need_generate_options->{command_version} = $cc_version;
   my $need_generate = $ninja->need_generate($need_generate_options);
   
   if ($need_generate) {
@@ -225,9 +228,7 @@ sub compile_source_file {
       or confess("$source_file file cannnot be compiled by the following command:\n$cc_cmd_string\n");
     my $end_time = int(Time::HiRes::time() * 1000);
     
-    my $create_command_hash_options = {%$need_generate_options};
-    $create_command_hash_options->{command} = $cc_cmd_string;
-    my $command_hash = $ninja->create_command_hash($create_command_hash_options);
+    my $command_hash = $ninja->create_command_hash($need_generate_options);
     
     unless (-f $output_file) {
       confess("The output file '$output_file' does not exist.");
@@ -689,8 +690,11 @@ sub link {
     $before_link_cb->($link_info->config, $link_info);
   }
   
+  my $ld_version = $config->ld_version;
+  
   my $need_generate_options = {
     command => $link_info->to_command,
+    command_version => $ld_version,
     force => $force,
     output_file => $output_file,
     input_files => [@object_files],
@@ -760,10 +764,8 @@ sub link {
     
     my $end_time = int(Time::HiRes::time() * 1000);
     
-    my $create_command_hash_options = {%$need_generate_options};
-    $create_command_hash_options->{command} = $link_command;
     my $ninja = $self->builder->ninja;
-    my $command_hash = $ninja->create_command_hash($create_command_hash_options);
+    my $command_hash = $ninja->create_command_hash($need_generate_options);
     
     unless (-f $link_info_output_file) {
       confess("The output file '$link_info_output_file' does not exist.");

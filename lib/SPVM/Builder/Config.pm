@@ -355,6 +355,8 @@ sub create_cc_version {
   
   my $cc_version = `$cc --version 2>&1` // '';
   
+  $cc_version =~ s/\n.*//s;
+  
   return $cc_version;
 }
 
