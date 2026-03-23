@@ -615,11 +615,9 @@ sub compile_class {
         output_file => $object_file_name,
         input_files => $input_files,
       };
-      $need_generate = SPVM::Builder::Util::need_generate($need_generate_options);
     }
     
     # Compile a source file
-    $compile_info->no_generate(!$need_generate);
     $self->compile_source_file($compile_info, $need_generate_options);
     
     # Object file information
