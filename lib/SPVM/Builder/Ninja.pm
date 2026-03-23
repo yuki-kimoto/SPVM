@@ -192,7 +192,17 @@ sub add_log {
     $normalized_output_file, 
     $command_hash);
     
-  print $fh $log_entry_line;
+  my $lock_fh = $self->lock_fh;
+  flock($lock_fh, LOCK_EX)
+    or confess("Can't lock ninja log for header: $!");
+  eval {
+    print $fh $log_entry_line;
+  };
+  my $error = $@;
+  flock($lock_fh, LOCK_UN);
+  if ($error) {
+    die $@;
+  }
   
   $new_log_entry_h->{mtime} = $mtime;
   $self->log_entries_h->{$normalized_output_file} = $new_log_entry_h;
@@ -211,7 +221,17 @@ sub add_log_header {
   
   my $log_fh = $self->log_fh;
   
-  print $log_fh "# ninja log v5\x0A";
+  my $lock_fh = $self->lock_fh;
+  flock($lock_fh, LOCK_EX)
+    or confess("Can't lock ninja log for header: $!");
+  eval {
+    print $log_fh "# ninja log v5\x0A";
+  };
+  my $error = $@;
+  flock($lock_fh, LOCK_UN);
+  if ($error) {
+    die $@;
+  }
 }
 
 sub load_log {
