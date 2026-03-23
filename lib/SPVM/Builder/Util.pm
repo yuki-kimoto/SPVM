@@ -284,7 +284,11 @@ sub create_make_rule {
   $make_rule .= "dynamic :: $dynamic_lib_file\n";
   $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
   
-  $make_rule .= "$dynamic_lib_file :: \n";
+  my $input_files = $options->{input_files} // [];
+  
+  # Use .PHONY to ensure always run the command.
+  $make_rule .= ".PHONY: $dynamic_lib_file\n";
+  $make_rule .= "$dynamic_lib_file :: @$input_files\n";
   
   # Build options
   my $options_string = "build_dir => '.spvm_build'";
