@@ -178,9 +178,9 @@ sub compile_source_file {
   my $cc_cmd_string = "@$cc_cmd";
   
   my $ninja = $self->builder->ninja;
-  my $need_generate_v2_options = {%$options};
-  $need_generate_v2_options->{command} = $cc_cmd_string;
-  my $need_generate = $ninja->need_generate_v2($need_generate_v2_options);
+  my $need_generate_options = {%$options};
+  $need_generate_options->{command} = $cc_cmd_string;
+  my $need_generate = $ninja->need_generate_v2($need_generate_options);
   
   if ($need_generate) {
     mkpath dirname $output_file;
@@ -225,7 +225,7 @@ sub compile_source_file {
       or confess("$source_file file cannnot be compiled by the following command:\n$cc_cmd_string\n");
     my $end_time = int(Time::HiRes::time() * 1000);
     
-    my $create_command_hash_options = {%$options};
+    my $create_command_hash_options = {%$need_generate_options};
     $create_command_hash_options->{command} = $cc_cmd_string;
     my $command_hash = $ninja->create_command_hash($create_command_hash_options);
     
