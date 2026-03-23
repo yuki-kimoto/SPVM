@@ -8,7 +8,7 @@ use warnings;
 use Digest::SHA;
 use Carp 'confess';
 use File::Path 'mkpath';
-
+use Fcntl ':flock';
 use SPVM::Builder::Accessor 'has';
 
 has [qw(
@@ -52,15 +52,26 @@ sub prepare {
   
   $self->open_lock_file;
   
-  {
-    my $ninja_for_recompact = $self->new_without_prepare(%$self);
-    $ninja_for_recompact->recompact;
-  }
+  my $lock_fh = $self->lock_fh;
   
-  $self->load_log;
-  
-  unless (-d $self->log_dir) {
-    mkpath $self->log_dir;
+  flock($lock_fh, LOCK_EX)
+    or confess("Can't lock ninja log for header: $!");
+  eval {
+    {
+      my $ninja_for_recompact = $self->new_without_prepare(%$self);
+      $ninja_for_recompact->recompact;
+    }
+    
+    $self->load_log;
+    
+    unless (-d $self->log_dir) {
+      mkpath $self->log_dir;
+    }
+  };
+  my $error = $@;
+  flock($lock_fh, LOCK_UN);
+  if ($error) {
+    die $@;
   }
   
   $self->open_log('>>');
@@ -105,6 +116,8 @@ sub open_lock_file {
   
   open my $lock_fh, '>>', $lock_file
     or croak("Cannot open the file '$lock_file' with '>>' mode:$!");
+  
+  $self->{lock_fh} = $lock_fh;
   
   return $lock_file;
 }
