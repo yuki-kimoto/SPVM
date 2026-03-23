@@ -647,16 +647,6 @@ sub link {
   
   my @object_files = map { "$_" } @{$link_info->object_files};
   
-  my $input_files = [@object_files];
-  
-  my $need_generate = SPVM::Builder::Util::need_generate({
-    force => $force,
-    output_file => $output_file,
-    input_files => $input_files,
-  });
-  
-  $link_info->no_generate(!$need_generate);
-  
   unless ($config->isa('SPVM::Builder::Config::Linker')) {
     confess("[Unexpected Error]The config must be an SPVM::Builder::Config object");
   }
@@ -699,10 +689,20 @@ sub link {
     $before_link_cb->($link_info->config, $link_info);
   }
   
+  my $need_generate_options = {
+    command => $link_info->to_command,
+    force => $force,
+    output_file => $output_file,
+    input_files => [@object_files],
+  };
+  my $need_generate = $self->builder->ninja->need_generate_v2($need_generate_options);
+  
   if ($need_generate) {
     mkpath dirname $link_info_output_file;
     
     # Create a dynamic library
+    my $start_time = int(Time::HiRes::time() * 1000);
+    my $link_command = $link_info->to_command;
     if ($output_type eq 'dynamic_lib') {
       my $basic_type = $runtime->get_basic_type_by_name($class_name);
       
@@ -728,7 +728,6 @@ sub link {
         my $message = "[Generate Dynamic Link Library for $class_name class$for_precompile]";
         print "$message\n";
         
-        my $link_command = $link_info->to_command;
         print "$link_command\n";
       }
       
@@ -745,7 +744,6 @@ sub link {
       unless ($quiet) {
         print "[Generate Executable File \"$link_info_output_file\"]\n";
         
-        my $link_command = $link_info->to_command;
         print "$link_command\n";
       }
       
@@ -759,6 +757,28 @@ sub link {
     else {
       confess("Unknown output_type \"$output_type\"");
     }
+    
+    my $end_time = int(Time::HiRes::time() * 1000);
+    
+    my $create_command_hash_options = {%$need_generate_options};
+    $create_command_hash_options->{command} = $link_command;
+    my $ninja = $self->builder->ninja;
+    my $command_hash = $ninja->create_command_hash($create_command_hash_options);
+    
+    unless (-f $link_info_output_file) {
+      confess("The output file '$link_info_output_file' does not exist.");
+    }
+    
+    my $mtime = int((Time::HiRes::stat $link_info_output_file)[9] * 1000);
+    
+    my $log_entry = {
+      output_file  => $link_info_output_file,
+      command_hash => $command_hash,
+      start_time   => $start_time,
+      end_time     => $end_time,
+      mtime => $mtime,
+    };
+    $ninja->add_log($log_entry);
     
     if ($self->debug) {
       if ($^O eq 'MSWin32') {
