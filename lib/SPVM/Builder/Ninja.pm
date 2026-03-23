@@ -54,6 +54,10 @@ sub prepare {
   
   $self->load_log;
   
+  unless (-d $self->log_dir) {
+    mkpath $self->log_dir;
+  }
+  
   $self->open_log('>>');
 }
 
@@ -85,6 +89,7 @@ sub open_log {
   if ($self->{log_fh}) {
     confess "The file '$log_file' is already opened";
   }
+  
   open my $fh, $mode, $log_file
     or confess("Can't open '$log_file' with the mode '$mode': $!");
   
@@ -322,6 +327,10 @@ sub recompact {
   if (-f $log_file) {
     $self->load_log;
     $self->close_log;
+  }
+  
+  unless (-d $self->log_dir) {
+    mkpath $self->log_dir;
   }
   
   $self->open_log('>');
