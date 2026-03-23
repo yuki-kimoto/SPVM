@@ -171,7 +171,7 @@ WriteMakefile(
 
 {
   print "\n# Parallel build and test command:\n";
-  print "MAKEFLAGS=j$jobs make && HARNESS_OPTIONS=j$jobs make test\n\n";
+  print "MAKEFLAGS=j$jobs make --output-sync=target && HARNESS_OPTIONS=j$jobs make test\n\n";
 }
 
 # Add Build shared library make rule
