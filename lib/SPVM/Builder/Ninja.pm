@@ -371,7 +371,7 @@ sub create_command_hash {
   my @all_input_files;
 
   for my $path (@$input_files) {
-    if (-d $path) {
+    if (defined $path && -d $path) {
       require File::Find;
       File::Find::find({
         wanted => sub {
@@ -391,7 +391,7 @@ sub create_command_hash {
         follow_skip => 2,
       }, $path);
     }
-    elsif (-f $path) {
+    elsif (defined $path && -f $path) {
       # Directly specified files are always included
       push @all_input_files, $path;
     }

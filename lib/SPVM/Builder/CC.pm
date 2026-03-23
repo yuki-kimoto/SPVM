@@ -557,49 +557,24 @@ sub compile_class {
     );
     
     # Check if object file need to be generated
-    my $need_generate;
-    my $need_generate_options;
-    {
-      my @native_header_files;
-      my $native_include_dir = $config->native_include_dir;
-      if (defined $native_include_dir && -d $native_include_dir) {
-        find(
-          {
-            wanted => sub {
-              my $include_file_name = $File::Find::name;
-              if (-f $include_file_name) {
-                push @native_header_files, $include_file_name;
-              }
-            },
-            no_chdir => 1,
-          },
-          $native_include_dir,
-        );
-      }
+    my $native_include_dir = $config->native_include_dir;
+    
+    # Resource include directories
+    my @resource_naitve_include_dirs;
+    my $resource_names = $config->get_resource_names;
+    for my $resource_name (@$resource_names) {
+      my $resource = $config->get_resource($resource_name);
+      my $resource_config = $resource->config;
       
-      # Resource include directories
-      my @resource_naitve_include_dirs;
-      my $resource_names = $config->get_resource_names;
-      for my $resource_name (@$resource_names) {
-        my $resource = $config->get_resource($resource_name);
-        my $resource_config = $resource->config;
-        
-        my $resource_native_include_dir = $resource_config->native_include_dir;
-        push @resource_naitve_include_dirs, $resource_native_include_dir;
-      }
-      
-      my $input_files = [$source_file, @native_header_files, @resource_naitve_include_dirs];
-      
-      if (defined $config->file) {
-        push @$input_files, $config->file;
-      };
-      
-      $need_generate_options = {
-        force => $force,
-        output_file => $object_file_name,
-        input_files => $input_files,
-      };
+      my $resource_native_include_dir = $resource_config->native_include_dir;
+      push @resource_naitve_include_dirs, $resource_native_include_dir;
     }
+    
+    my $need_generate_options = {
+      force => $force,
+      output_file => $object_file_name,
+      input_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
+    };
     
     # Compile a source file
     $self->compile_source_file($compile_info, $need_generate_options);
