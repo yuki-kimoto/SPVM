@@ -217,59 +217,6 @@ sub load_log {
 sub need_generate {
   my ($self, $options) = @_;
   
-  my $log_entries_h = $self->log_entries_h;
-  
-  my $force       = $options->{force};
-  my $input_files = $options->{input_files} || [];
-  my $output_file = $options->{output_file};
-  my $command     = $options->{command};
-  
-  # Always generate if force is true
-  if ($force) {
-    return 1;
-  }
-
-  # Generate if output file does not exist
-  if (!-f $output_file) {
-    return 1;
-  }
-  
-  # Timestamp-based check
-  my $input_files_mtime_max = 0;
-  my $exists_input_file = 0;
-
-  for my $input_file (@$input_files) {
-    if (-f $input_file) {
-      $exists_input_file = 1;
-      my $mtime = (Time::HiRes::stat($input_file))[9];
-      if ($mtime > $input_files_mtime_max) {
-        $input_files_mtime_max = $mtime;
-      }
-    }
-  }
-
-  if ($exists_input_file) {
-    my $spvm_version_header_file = SPVM::Builder::Util::get_spvm_version_header_file();
-    if (-f $spvm_version_header_file) {
-      my $version_mtime = (Time::HiRes::stat($spvm_version_header_file))[9];
-      if ($version_mtime > $input_files_mtime_max) {
-        $input_files_mtime_max = $version_mtime;
-      }
-    }
-
-    my $output_file_mtime = (Time::HiRes::stat($output_file))[9];
-    
-    if ($input_files_mtime_max > $output_file_mtime) {
-      return 1;
-    }
-  }
-
-  return 0;
-}
-
-sub need_generate_v2 {
-  my ($self, $options) = @_;
-  
   my $force       = $options->{force};
   my $output_file = $options->{output_file};
   unless (defined $output_file) {

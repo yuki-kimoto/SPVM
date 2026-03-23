@@ -368,13 +368,13 @@ sub compile_source_file {
     category => $options->{category},
   );
   
-  my $need_generate_v2_input_files = [$source_file];
-  my $need_generate_v2_options = {
+  my $need_generate_input_files = [$source_file];
+  my $need_generate_options = {
     force => $self->force || $config->force,
     output_file => $output_file,
-    input_files => $need_generate_v2_input_files,
+    input_files => $need_generate_input_files,
   };
-  $builder_cc->compile_source_file($compile_info, $need_generate_v2_options);
+  $builder_cc->compile_source_file($compile_info, $need_generate_options);
   
   my $object_file_name = $compile_info->output_file;
   my $object_file = SPVM::Builder::ObjectFileInfo->new(

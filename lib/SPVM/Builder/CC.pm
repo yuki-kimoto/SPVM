@@ -180,7 +180,7 @@ sub compile_source_file {
   my $ninja = $self->builder->ninja;
   my $need_generate_options = {%$options};
   $need_generate_options->{command} = $cc_cmd_string;
-  my $need_generate = $ninja->need_generate_v2($need_generate_options);
+  my $need_generate = $ninja->need_generate($need_generate_options);
   
   if ($need_generate) {
     mkpath dirname $output_file;
@@ -695,7 +695,7 @@ sub link {
     output_file => $output_file,
     input_files => [@object_files],
   };
-  my $need_generate = $self->builder->ninja->need_generate_v2($need_generate_options);
+  my $need_generate = $self->builder->ninja->need_generate($need_generate_options);
   
   if ($need_generate) {
     mkpath dirname $link_info_output_file;
