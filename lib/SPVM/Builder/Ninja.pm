@@ -102,7 +102,7 @@ sub lock_file {
   unless (defined $log_dir) {
     confess("The \"log_dir\" field must be defined");
   }
-
+  
   my $lock_file_base_name = $self->lock_file_base_name;
   my $lock_file = "$log_dir/$lock_file_base_name";
 
@@ -111,6 +111,10 @@ sub lock_file {
 
 sub open_lock_file {
   my ($self) = @_;
+  
+  unless (-d $self->log_dir) {
+    mkpath $self->log_dir;
+  }
   
   my $lock_file = $self->lock_file;
   
