@@ -857,7 +857,7 @@ sub normalize_path {
     confess("The base directory \$base_dir must be defined.");
   }
   
-  my $abs_path = File::Spec->rel2abs($path);
+  my $abs_path = File::Spec->rel2abs($path, $base_dir);
   my $rel_path = File::Spec->abs2rel($abs_path, $base_dir);
   
   $rel_path =~ s|\\|/|g;

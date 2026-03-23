@@ -21,6 +21,14 @@ has [qw(
 )];
 
 sub new {
+  my $self = shift->new_without_prepare(@_);
+  
+  $self->prepare;
+  
+  return $self;
+}
+
+sub new_without_prepare {
   my $class = shift;
   
   my $self = {
@@ -33,13 +41,16 @@ sub new {
   
   bless $self, ref $class || $class;
   
-  $self->prepare;
-  
   return $self;
 }
 
 sub prepare {
   my ($self) = @_;
+  
+  {
+    my $ninja_for_recompact = $self->new_without_prepare(%$self);
+    $ninja_for_recompact->recompact;
+  }
   
   $self->load_log;
   
@@ -78,7 +89,6 @@ sub open_log {
     or confess("Can't open '$log_file' with the mode '$mode': $!");
   
   $self->{log_fh} = $fh;
-  $self->{_log_open_mode} = $mode;
   $self->log_fh->autoflush(1);
 }
 
@@ -299,8 +309,13 @@ sub need_generate_v2 {
   return $need_generate;
 }
 
+my $RECOMPACTED = 0;
 sub recompact {
   my ($self) = @_;
+  
+  if ($RECOMPACTED) {
+    return;
+  }
   
   my $log_file = $self->log_file;
   
@@ -325,6 +340,8 @@ sub recompact {
     my $log_entory_h = $log_entries_h->{$normalized_output_file};
     $self->add_log($log_entory_h);
   }
+  
+  $RECOMPACTED = 1;
 }
 
 sub create_command_hash {
