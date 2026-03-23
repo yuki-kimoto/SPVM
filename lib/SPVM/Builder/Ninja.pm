@@ -104,7 +104,9 @@ sub opened {
 }
 
 sub add_log {
-  my ($self, $new_log_entry_h) = @_;
+  my ($self, $new_log_entry_h, $options) = @_;
+  
+  $options //= {};
   
   my $fh = $self->{log_fh};
   unless (defined $fh) {
@@ -136,7 +138,7 @@ sub add_log {
     confess("mtime must be defined.");
   }
 
-  my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
+  my $normalized_output_file = $options->{no_normalize_output_file} ? $output_file : SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
   
   my $log_entry_line = sprintf("%d\t%d\t%d\t%s\t%s\x0A", 
     $start_time, 
@@ -347,7 +349,7 @@ sub recompact {
   # Write each valid log entry
   for my $normalized_output_file (@normalized_output_files) {
     my $log_entory_h = $log_entries_h->{$normalized_output_file};
-    $self->add_log($log_entory_h);
+    $self->add_log($log_entory_h, {no_normalize_output_file => 1});
   }
   
   $RECOMPACTED = 1;
