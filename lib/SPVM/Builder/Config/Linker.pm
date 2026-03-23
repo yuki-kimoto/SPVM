@@ -52,6 +52,7 @@ my $fields = [qw(
   external_object_files
   hint_cc
   resources
+  ld_version
 )];
 
 has($fields);
@@ -138,7 +139,7 @@ sub new {
   unless (exists $self->{ld_optimize}) {
     $self->ld_optimize('-O2');
   }
-
+  
   unless (exists $self->{lib_dirs}) {
     $self->lib_dirs([]);
   }
@@ -284,6 +285,10 @@ sub new {
   # long_option_sep
   unless (exists $self->{long_option_sep}) {
     $self->long_option_sep("=");
+  }
+  
+  unless (exists $self->{ld_version}) {
+    $self->ld_version($self->create_ld_version);
   }
   
   return $self;
@@ -470,6 +475,16 @@ sub create_option_long {
   return "$name$sep$value";
 }
 
+sub create_ld_version {
+  my ($self) = @_;
+  
+  my $ld = $self->ld;
+  
+  my $ld_version = `$ld --version 2>&1` // '';
+  
+  return $ld_version;
+}
+
 1;
 
 =head1 Name
@@ -624,6 +639,13 @@ Gets and sets C<ld_optimize> field, an argument of the linker L</"ld"> for optim
 Examples:
 
   $config->ld_optimize("-O3");
+
+=head2 ld_version
+
+  my $ld_version = $config->ld_version;
+  $config->ld_version($ld_version);
+
+Gets and sets C<ld_version> field, the linker version to be used for the build cache digest.
 
 =head2 before_link_cbs
 
@@ -873,6 +895,10 @@ If C<$Config{gccversion}> contains C<clang>, L</"ld"> field are set to C<clang++
 =item * L</"ld_optimize">
 
   "-O2"
+
+=item * L</"ld_version">
+
+  The return value of L</"create_ld_version">.
 
 =item * L</"output_type">
 
@@ -1312,6 +1338,18 @@ Builds a command line option by connecting the option name and the value using L
 
   # Results in "-out:c:/path" (if long_option_sep is ":")
   my $option = $config->create_option_long("-out", "c:/path");
+
+=head2 create_ld_version
+
+  my $cc_version = $config->create_ld_version;
+
+Executes the linker defined in L</"ld"> with the C<--version> option and returns the output.
+
+The return value contains the linker command itself and its version information (the first line of the output). 
+
+If the execution fails, an empty string is returned.
+
+This information is intended to be used as a part of the digest for the build cache.
 
 =head1 Library Path Resolution
 

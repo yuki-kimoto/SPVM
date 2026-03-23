@@ -42,6 +42,7 @@ my $cc_fields = [qw(
   extra_ccflags
   ndebug_ccflags
   before_compile_cbs
+  cc_version
 )];
 
 has($cc_fields);
@@ -62,7 +63,7 @@ sub new {
   unless (exists $self->{ccflags}) {
     $self->ccflags([]);
   }
-
+  
   # defines
   unless (exists $self->{defines}) {
     $self->defines([]);
@@ -175,7 +176,7 @@ sub new {
   unless (exists $self->{cc_output_option_name}) {
     $self->cc_output_option_name("-o");
   }
-
+  
   return $self;
 }
 
@@ -196,6 +197,10 @@ sub new_c {
   $self->language('c');
   
   $self->ext('c');
+  
+  unless (exists $self->{cc_version}) {
+    $self->cc_version($self->create_cc_version);
+  }
   
   return $self;
 }
@@ -239,6 +244,10 @@ sub new_cpp {
   $self->language('cpp');
   
   $self->ext('cpp');
+  
+  unless (exists $self->{cc_version}) {
+    $self->cc_version($self->create_cc_version);
+  }
   
   return $self;
 }
@@ -337,6 +346,16 @@ sub clear_system_fields {
   for my $field_name (@$field_names) {
     $self->$field_name([]);
   }
+}
+
+sub create_cc_version {
+  my ($self) = @_;
+  
+  my $cc = $self->cc;
+  
+  my $cc_version = `$cc --version 2>&1` // '';
+  
+  return $cc_version;
 }
 
 1;
@@ -509,6 +528,13 @@ Gets and sets C<ccflags> field, an array reference containing arugments of the c
   $config->defines($defines);
 
 Gets and sets C<defines> field, an array reference containing the values of C<-D> arugments of the compiler L</"cc">.
+
+=head2 cc_version
+
+  my $cc_version = $config->cc_version;
+  $config->cc_version($cc_version);
+
+Gets and sets C<cc_version> field, the compiler version to be used for the build cache digest.
 
 =head2 optimize
 
@@ -852,6 +878,10 @@ Field Default Values:
 
   []
 
+=item * L</"cc_version">
+
+  The return value of L</"create_cc_version">.
+
 =item * L</"optimize">
 
   "-O3"
@@ -1099,6 +1129,18 @@ The following field names are returned:
 =back
 
 =cut
+
+=head2 create_cc_version
+
+  my $cc_version = $config->create_cc_version;
+
+Executes the compiler defined in L</"cc"> with the C<--version> option and returns the output.
+
+The return value contains the compiler command itself and its version information (the first line of the output). 
+
+If the execution fails, an empty string is returned.
+
+This information is intended to be used as a part of the digest for the build cache.
 
 =head1 Copyright & License
 
