@@ -14,12 +14,12 @@ use SPVM::Builder::Accessor 'has';
 has [qw(
   log_dir
   log_file_base_name
-  log_entries_h
   log_fh
-  log_entries_length
-  header_exts
+  entries_h
+  entries_length
   lock_file_base_name
   lock_fh
+  header_exts
 )];
 
 sub new {
@@ -34,9 +34,9 @@ sub new_without_prepare {
   my $class = shift;
   
   my $self = {
-    log_entries_h => {},
+    entries_h => {},
     log_file_base_name => '.ninja_log',
-    log_entries_length => 0,
+    entries_length => 0,
     header_exts => [qw(h hpp hh hxx h++ inc inl c cpp cc cxx c++)],
     lock_file_base_name => '.ninja_lock',
     @_
@@ -153,7 +153,7 @@ sub opened {
 }
 
 sub add_log {
-  my ($self, $new_log_entry_h, $options) = @_;
+  my ($self, $new_entry_h, $options) = @_;
   
   $options //= {};
   
@@ -162,34 +162,34 @@ sub add_log {
     confess("Ninja log is not open. Call open_log() first.");
   }
 
-  my $output_file = $new_log_entry_h->{output_file};
+  my $output_file = $new_entry_h->{output_file};
   unless (defined $output_file) {
     confess("output_file must be defined.");
   }
 
-  my $command_hash = $new_log_entry_h->{command_hash};
+  my $command_hash = $new_entry_h->{command_hash};
   unless (defined $command_hash) {
     confess("command_hash must be defined.");
   }
 
-  my $start_time = $new_log_entry_h->{start_time};
+  my $start_time = $new_entry_h->{start_time};
   unless (defined $start_time) {
     confess("start_time must be defined.");
   }
 
-  my $end_time = $new_log_entry_h->{end_time};
+  my $end_time = $new_entry_h->{end_time};
   unless (defined $end_time) {
     confess("end_time must be defined.");
   }
 
-  my $mtime = $new_log_entry_h->{mtime};
+  my $mtime = $new_entry_h->{mtime};
   unless (defined $mtime) {
     confess("mtime must be defined.");
   }
 
   my $normalized_output_file = $options->{no_normalize_output_file} ? $output_file : SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
   
-  my $log_entry_line = sprintf("%d\t%d\t%d\t%s\t%s\x0A", 
+  my $entry_line = sprintf("%d\t%d\t%d\t%s\t%s\x0A", 
     $start_time, 
     $end_time, 
     $mtime, 
@@ -200,7 +200,7 @@ sub add_log {
   flock($lock_fh, LOCK_EX)
     or confess("Can't lock ninja log for header: $!");
   eval {
-    print $fh $log_entry_line;
+    print $fh $entry_line;
   };
   my $error = $@;
   flock($lock_fh, LOCK_UN);
@@ -208,8 +208,8 @@ sub add_log {
     die $@;
   }
   
-  $new_log_entry_h->{mtime} = $mtime;
-  $self->log_entries_h->{$normalized_output_file} = $new_log_entry_h;
+  $new_entry_h->{mtime} = $mtime;
+  $self->entries_h->{$normalized_output_file} = $new_entry_h;
 }
 
 sub close_log {
@@ -247,8 +247,8 @@ sub load_log {
     return;
   }
   
-  my $log_entries_h = {};
-  my $log_entries_length = 0;
+  my $entries_h = {};
+  my $entries_length = 0;
   
   $self->open_log('<');
   
@@ -264,7 +264,7 @@ sub load_log {
     if (@fields >= 5) {
       my ($start_time, $end_time, $mtime, $normalized_output_file, $command_hash) = @fields;
 
-      $log_entries_h->{$normalized_output_file} = {
+      $entries_h->{$normalized_output_file} = {
         start_time   => $start_time,
         end_time     => $end_time,
         mtime        => $mtime,
@@ -272,15 +272,15 @@ sub load_log {
         command_hash => $command_hash,
       };
       
-      $log_entries_length++;
+      $entries_length++;
     }
   }
   
   $self->close_log;
   
-  $self->log_entries_length($log_entries_length);
+  $self->entries_length($entries_length);
   
-  $self->log_entries_h($log_entries_h);
+  $self->entries_h($entries_h);
 }
 
 sub need_generate {
@@ -326,12 +326,12 @@ sub need_generate {
     });
     
     # Retrieve the recorded log entry for the output file
-    my $log_entries_h = $self->log_entries_h;
+    my $entries_h = $self->entries_h;
     my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
-    my $log_entry = $log_entries_h->{$normalized_output_file};
+    my $entry = $entries_h->{$normalized_output_file};
     
     # If the entry doesn't exist, or the hash simply doesn't match, rebuild.
-    if (!$log_entry || $current_command_hash ne $log_entry->{command_hash}) {
+    if (!$entry || $current_command_hash ne $entry->{command_hash}) {
       $need_generate = 1;
     }
   }
@@ -439,17 +439,17 @@ sub recompact {
   
   $self->add_log_header;
   
-  my $log_entries_h = $self->log_entries_h;
+  my $entries_h = $self->entries_h;
   
   # Sort by start_time (ascending)
   my @normalized_output_files = sort {
-    $log_entries_h->{$a}{start_time} <=> $log_entries_h->{$b}{start_time}
-  } keys %$log_entries_h;
+    $entries_h->{$a}{start_time} <=> $entries_h->{$b}{start_time}
+  } keys %$entries_h;
   
   # Write each valid log entry
   for my $normalized_output_file (@normalized_output_files) {
-    my $log_entory_h = $log_entries_h->{$normalized_output_file};
-    $self->add_log($log_entory_h, {no_normalize_output_file => 1});
+    my $entory_h = $entries_h->{$normalized_output_file};
+    $self->add_log($entory_h, {no_normalize_output_file => 1});
   }
   
   $RECOMPACTED = 1;
