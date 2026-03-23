@@ -107,26 +107,6 @@ sub need_generate {
   return $ninja->need_generate($options);
 }
 
-sub need_generate_by_content {
-  my ($content, $output_file) = @_;
-
-  # Generate if the file does not exist
-  if (!-f $output_file) {
-    return 1;
-  }
-
-  # Load the current content of the file in binary mode
-  my $current_content = &slurp_binary($output_file);
-
-  # Check if the new content is different from the current content
-  if ($content ne $current_content) {
-    return 1;
-  }
-
-  # No generation needed if content is identical
-  return 0;
-}
-
 sub slurp_binary {
   my ($file) = @_;
   

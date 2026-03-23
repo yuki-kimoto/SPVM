@@ -138,19 +138,14 @@ sub build_precompile_class_source_file {
   my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
   my $source_file = "$cc_input_dir/$source_rel_file";
   
-  # Check if generating is needed by comparing content or if force is true
-  my $need_generate = $force || SPVM::Builder::Util::need_generate_by_content($precompile_source, $source_file);
-  
   # Generate precompile C source file
-  if ($need_generate) {
-    mkpath dirname $source_file;
-    open my $fh, '>', $source_file
-      or die "Can't create $source_file";
-    
-    binmode $fh;
-    print $fh $precompile_source;
-    close $fh;
-  }
+  mkpath dirname $source_file;
+  open my $fh, '>', $source_file
+    or die "Can't create $source_file";
+  
+  binmode $fh;
+  print $fh $precompile_source;
+  close $fh;
 }
 
 sub compile_source_file {

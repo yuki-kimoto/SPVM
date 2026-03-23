@@ -872,12 +872,8 @@ sub create_bootstrap_source {
   my $force = $self->force || $config_global->force;
   
   # Check if generating is needed by comparing content or if force is true
-  my $need_generate = $force || SPVM::Builder::Util::need_generate_by_content($bootstrap_source, $bootstrap_source_file);
-  
-  if ($need_generate) {
-    mkpath dirname $bootstrap_source_file;
-    SPVM::Builder::Util::spurt_binary($bootstrap_source_file, $bootstrap_source);
-  }
+  mkpath dirname $bootstrap_source_file;
+  SPVM::Builder::Util::spurt_binary($bootstrap_source_file, $bootstrap_source);
 }
 
 sub _field_value_to_string {
