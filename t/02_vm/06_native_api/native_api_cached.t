@@ -121,7 +121,6 @@ system($compile_native_api_prgoram) == 0 or die;
 
   # Update src file
   my $now = time;
-  utime $now, $now, $native_class_file;
   system($compile_native_api_prgoram) == 0 or die;
 
   # Native object file is compiled
@@ -147,7 +146,6 @@ system($compile_native_api_prgoram) == 0 or die;
   
   # Update src file
   my $now = time;
-  utime $now, $now, $native_src_file;
   system($compile_native_api_prgoram) == 0 or die;
   
   # Native object file is cached
@@ -178,7 +176,6 @@ system($compile_native_api_prgoram) == 0 or die;
   
   # Update src file
   my $now = time;
-  utime $now, $now, $native_header_file;
   system($compile_native_api_prgoram) == 0 or die;
   
   # Native class object file is cached
@@ -208,7 +205,6 @@ system($compile_native_api_prgoram) == 0 or die;
   
   # Update src file
   my $now = time;
-  utime $now, $now, $resource_native_header_file;
   system($compile_native_api_prgoram) == 0 or die;
   
   # Native class object file is cached
