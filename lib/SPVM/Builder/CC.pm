@@ -323,8 +323,6 @@ sub compile_class {
     $need_compile_resources = 1;
   }
   
-  my $is_cc_config = $config->isa('SPVM::Builder::Config') ? 1 : 0;
-  
   my $runtime = $options->{runtime};
   
   my $is_jit = $config->is_jit;
@@ -429,179 +427,183 @@ sub compile_class {
     }
   }
   
-  my $cc_output_dir = $config->cc_output_dir;
-  unless ($cc_output_dir) {
-    $cc_output_dir = $self->builder->create_build_object_path;
-  }
+  my $is_cc_config = $config->isa('SPVM::Builder::Config') ? 1 : 0;
   
-  my $cc_input_dir;
-  if ($category eq 'precompile') {
-    
-    $cc_input_dir = $self->builder->create_build_src_path;
-    
-    my $config_precompile_class_source = $config->clone;
-    
-    $config_precompile_class_source->cc_input_dir($cc_input_dir);
-    
-    $self->build_precompile_class_source_file(
-      $class_name,
-      {
-        config => $config_precompile_class_source,
-        runtime => $runtime,
-      }
-    );
-  }
-  elsif ($category eq 'native') {
-    if ($is_cc_config) {
-      $cc_input_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
+  if ($is_cc_config) {
+    my $cc_output_dir = $config->cc_output_dir;
+    unless ($cc_output_dir) {
+      $cc_output_dir = $self->builder->create_build_object_path;
     }
-  }
-  
-  # Native class source file
-  my $native_class_source_file;
-  my $native_class_rel_file;
-  if (defined $cc_input_dir && defined $native_class_ext) {
-    $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
-    $native_class_source_file = "$cc_input_dir/$native_class_rel_file";
-  }
-  
-  my $need_native_class_file;
-  if ($native_class_source_file) {
-    if (defined $config->is_resource) {
-      if ($config->is_resource) {
-        $need_native_class_file = 0;
+    
+    my $cc_input_dir;
+    if ($category eq 'precompile') {
+      
+      $cc_input_dir = $self->builder->create_build_src_path;
+      
+      my $config_precompile_class_source = $config->clone;
+      
+      $config_precompile_class_source->cc_input_dir($cc_input_dir);
+      
+      $self->build_precompile_class_source_file(
+        $class_name,
+        {
+          config => $config_precompile_class_source,
+          runtime => $runtime,
+        }
+      );
+    }
+    elsif ($category eq 'native') {
+      if ($is_cc_config) {
+        $cc_input_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
       }
-      else {
-        if ($config->config_global && $class_name eq $config->config_global->class_name) {
+    }
+    
+    # Native class source file
+    my $native_class_source_file;
+    my $native_class_rel_file;
+    if (defined $cc_input_dir && defined $native_class_ext) {
+      $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
+      $native_class_source_file = "$cc_input_dir/$native_class_rel_file";
+    }
+    
+    my $need_native_class_file;
+    if ($native_class_source_file) {
+      if (defined $config->is_resource) {
+        if ($config->is_resource) {
           $need_native_class_file = 0;
         }
         else {
-          $need_native_class_file = 1;
+          if ($config->config_global && $class_name eq $config->config_global->class_name) {
+            $need_native_class_file = 0;
+          }
+          else {
+            $need_native_class_file = 1;
+          }
         }
+      }
+      else {
+        $need_native_class_file = 1;
       }
     }
     else {
-      $need_native_class_file = 1;
+      $need_native_class_file = 0;
     }
-  }
-  else {
-    $need_native_class_file = 0;
-  }
-  
-  if ($need_native_class_file) {
-    unless (-f $native_class_source_file) {
-      Carp::cluck("[Warning]Can't find native class source file $native_class_source_file. If this class is a resource class, set is_resource field to 1 to suppress this warning.");
+    
+    if ($need_native_class_file) {
+      unless (-f $native_class_source_file) {
+        Carp::cluck("[Warning]Can't find native class source file $native_class_source_file. If this class is a resource class, set is_resource field to 1 to suppress this warning.");
+      }
     }
-  }
-  
-  my $is_resource;
-  if (defined $config->is_resource) {
-    $is_resource = $config->is_resource;
-  }
-  else {
-    $is_resource = !(defined $native_class_source_file && -f $native_class_source_file);
-  }
-  
-  # For executable files, the resources are compiled in the executable's configuration file, so we don't compile them here.
-  my $is_compile_native_source_files;
-  if ($is_resource) {
-    if ($config->config_global) {
-      if ($class_name eq $config->config_global->class_name) {
-        $is_compile_native_source_files = 1;
+    
+    my $is_resource;
+    if (defined $config->is_resource) {
+      $is_resource = $config->is_resource;
+    }
+    else {
+      $is_resource = !(defined $native_class_source_file && -f $native_class_source_file);
+    }
+    
+    # For executable files, the resources are compiled in the executable's configuration file, so we don't compile them here.
+    my $is_compile_native_source_files;
+    if ($is_resource) {
+      if ($config->config_global) {
+        if ($class_name eq $config->config_global->class_name) {
+          $is_compile_native_source_files = 1;
+        }
+        else {
+          $is_compile_native_source_files = 0;
+        }
       }
       else {
-        $is_compile_native_source_files = 0;
+        $is_compile_native_source_files = 1;
       }
     }
     else {
       $is_compile_native_source_files = 1;
     }
-  }
-  else {
-    $is_compile_native_source_files = 1;
-  }
-  
-  # Native source files
-  my $native_source_rel_dir = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
-  $native_source_rel_dir .= '/src';
+    
+    # Native source files
+    my $native_source_rel_dir = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
+    $native_source_rel_dir .= '/src';
 
-  my $native_src_dir = $config->native_src_dir;
-  my $native_source_files = [];
-    my $native_source_files_base = $config->source_files;
-  if ($is_compile_native_source_files) {
-    $native_source_files = [map { "$native_src_dir/$_" } @$native_source_files_base ];
-  }
-  
-  # Compile source files
-  my $is_native_class_source_file = 1;
-  my @source_file_infos;
-  if ($native_class_source_file) {
-    push @source_file_infos, {is_native_class_source_file => 1, source_rel_file => $native_class_rel_file};
-  }
-  if ($is_compile_native_source_files) {
-    push @source_file_infos, map { {source_rel_file => SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, "native/src/$_")} } @$native_source_files_base;
-  }
-  
-  for my $source_file_info (@source_file_infos) {
+    my $native_src_dir = $config->native_src_dir;
+    my $native_source_files = [];
+      my $native_source_files_base = $config->source_files;
+    if ($is_compile_native_source_files) {
+      $native_source_files = [map { "$native_src_dir/$_" } @$native_source_files_base ];
+    }
     
-    my $current_is_native_class_source_file = $source_file_info->{is_native_class_source_file};
-    my $source_rel_file = $source_file_info->{source_rel_file};
-    my $source_file = "$cc_input_dir/$source_rel_file";
+    # Compile source files
+    my $is_native_class_source_file = 1;
+    my @source_file_infos;
+    if ($native_class_source_file) {
+      push @source_file_infos, {is_native_class_source_file => 1, source_rel_file => $native_class_rel_file};
+    }
+    if ($is_compile_native_source_files) {
+      push @source_file_infos, map { {source_rel_file => SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, "native/src/$_")} } @$native_source_files_base;
+    }
     
-    next unless defined $source_file && -f $source_file;
-    
-    # Check if object file need to be generated
-    my $native_include_dir = $config->native_include_dir;
-    
-    # Resource include directories
-    my @resource_naitve_include_dirs;
-    my $resource_names = $config->get_resource_names;
-    for my $resource_name (@$resource_names) {
-      my $resource = $config->get_resource($resource_name);
-      my $resource_config = $resource->config;
+    for my $source_file_info (@source_file_infos) {
       
-      my $resource_native_include_dir = $resource_config->native_include_dir;
-      push @resource_naitve_include_dirs, $resource_native_include_dir;
-    }
-    
-    my $compile_source_file_options = {
-      force => $force,
-      input_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
-    };
-    
-    my $compile_info_category;
-    if ($category eq 'precompile') {
-      $compile_info_category = 'precompile_class';
-    }
-    elsif ($category eq 'native') {
-      if ($current_is_native_class_source_file) {
-        $compile_info_category = 'native_class';
+      my $current_is_native_class_source_file = $source_file_info->{is_native_class_source_file};
+      my $source_rel_file = $source_file_info->{source_rel_file};
+      my $source_file = "$cc_input_dir/$source_rel_file";
+      
+      next unless defined $source_file && -f $source_file;
+      
+      # Check if object file need to be generated
+      my $native_include_dir = $config->native_include_dir;
+      
+      # Resource include directories
+      my @resource_naitve_include_dirs;
+      my $resource_names = $config->get_resource_names;
+      for my $resource_name (@$resource_names) {
+        my $resource = $config->get_resource($resource_name);
+        my $resource_config = $resource->config;
+        
+        my $resource_native_include_dir = $resource_config->native_include_dir;
+        push @resource_naitve_include_dirs, $resource_native_include_dir;
       }
-      else {
-        $compile_info_category = 'native_source';
+      
+      my $compile_source_file_options = {
+        force => $force,
+        input_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
+      };
+      
+      my $compile_info_category;
+      if ($category eq 'precompile') {
+        $compile_info_category = 'precompile_class';
       }
+      elsif ($category eq 'native') {
+        if ($current_is_native_class_source_file) {
+          $compile_info_category = 'native_class';
+        }
+        else {
+          $compile_info_category = 'native_source';
+        }
+      }
+      
+      my $compile_info = SPVM::Builder::CompileInfo->new(
+        source_file => $source_file,
+        source_rel_file => $source_rel_file,
+        config => $config,
+        category => $compile_info_category,
+      );
+      
+      # Compile a source file
+      $self->compile_source_file($compile_info, $compile_source_file_options);
+      
+      # Object file information
+      my $compile_info_cc = $compile_info->{cc};
+      my $compile_info_ccflags = $compile_info->{ccflags};
+      my $object_file = SPVM::Builder::ObjectFileInfo->new(
+        file => $compile_info->output_file,
+        compile_info => $compile_info,
+      );
+      
+      # Add object file information
+      push @$object_files, $object_file;
     }
-    
-    my $compile_info = SPVM::Builder::CompileInfo->new(
-      source_file => $source_file,
-      source_rel_file => $source_rel_file,
-      config => $config,
-      category => $compile_info_category,
-    );
-    
-    # Compile a source file
-    $self->compile_source_file($compile_info, $compile_source_file_options);
-    
-    # Object file information
-    my $compile_info_cc = $compile_info->{cc};
-    my $compile_info_ccflags = $compile_info->{ccflags};
-    my $object_file = SPVM::Builder::ObjectFileInfo->new(
-      file => $compile_info->output_file,
-      compile_info => $compile_info,
-    );
-    
-    # Add object file information
-    push @$object_files, $object_file;
   }
   
   return $object_files;
