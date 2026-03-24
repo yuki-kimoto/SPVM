@@ -54,16 +54,16 @@ sub prepare {
   
   my $lock_fh = $self->lock_fh;
   
+  {
+    my $ninja_for_recompact = $self->new_without_prepare(%$self);
+    $ninja_for_recompact->recompact;
+  }
+  
+  $self->load_log;
+  
   flock($lock_fh, LOCK_EX)
     or confess("Can't lock ninja log for header: $!");
   eval {
-    {
-      my $ninja_for_recompact = $self->new_without_prepare(%$self);
-      $ninja_for_recompact->recompact;
-    }
-    
-    $self->load_log;
-    
     unless (-d $self->log_dir) {
       mkpath $self->log_dir;
     }
@@ -153,6 +153,22 @@ sub opened {
 }
 
 sub add_log {
+  my $self = shift;
+  
+  my $lock_fh = $self->lock_fh;
+  flock($lock_fh, LOCK_EX)
+    or confess("Can't lock ninja log for header: $!");
+  eval {
+    $self->add_log_without_lock(@_);
+  };
+  my $error = $@;
+  flock($lock_fh, LOCK_UN);
+  if ($error) {
+    die $@;
+  }
+}
+
+sub add_log_without_lock {
   my ($self, $new_entry_h, $options) = @_;
   
   $options //= {};
@@ -196,17 +212,7 @@ sub add_log {
     $normalized_output_file, 
     $command_hash);
     
-  my $lock_fh = $self->lock_fh;
-  flock($lock_fh, LOCK_EX)
-    or confess("Can't lock ninja log for header: $!");
-  eval {
-    print $fh $entry_line;
-  };
-  my $error = $@;
-  flock($lock_fh, LOCK_UN);
-  if ($error) {
-    die $@;
-  }
+  print $fh $entry_line;
   
   $new_entry_h->{mtime} = $mtime;
   $self->entries_h->{$normalized_output_file} = $new_entry_h;
@@ -221,15 +227,13 @@ sub close_log {
 }
 
 sub add_log_header {
-  my ($self) = @_;
-  
-  my $log_fh = $self->log_fh;
+  my $self = shift;
   
   my $lock_fh = $self->lock_fh;
   flock($lock_fh, LOCK_EX)
     or confess("Can't lock ninja log for header: $!");
   eval {
-    print $log_fh "# ninja log v5\x0A";
+    $self->add_log_header_without_lock(@_);
   };
   my $error = $@;
   flock($lock_fh, LOCK_UN);
@@ -238,7 +242,31 @@ sub add_log_header {
   }
 }
 
+sub add_log_header_without_lock {
+  my ($self) = @_;
+  
+  my $log_fh = $self->log_fh;
+  
+  print $log_fh "# ninja log v5\x0A";
+}
+
 sub load_log {
+  my $self = shift;
+  
+  my $lock_fh = $self->lock_fh;
+  flock($lock_fh, LOCK_SH)
+    or confess("Can't lock ninja log for header: $!");
+  eval {
+    $self->load_log_without_lock(@_);
+  };
+  my $error = $@;
+  flock($lock_fh, LOCK_UN);
+  if ($error) {
+    die $@;
+  }
+}
+
+sub load_log_without_lock {
   my ($self) = @_;
   
   my $log_file = $self->log_file;
@@ -435,21 +463,32 @@ sub recompact {
     mkpath $self->log_dir;
   }
   
-  $self->open_log('>');
+  my $lock_fh = $self->lock_fh;
+  flock($lock_fh, LOCK_EX)
+    or confess("Can't lock .ninja_lock: $!");
   
-  $self->add_log_header;
+  eval {
+    $self->open_log('>');
   
-  my $entries_h = $self->entries_h;
+    $self->add_log_header_without_lock;
+    my $entries_h = $self->entries_h;
+    
+    # Sort by start_time (ascending)
+    my @normalized_output_files = sort {
+      $entries_h->{$a}{start_time} <=> $entries_h->{$b}{start_time}
+    } keys %$entries_h;
+    
+    # Write each valid log entry
+    for my $normalized_output_file (@normalized_output_files) {
+      my $entory_h = $entries_h->{$normalized_output_file};
+      $self->add_log_without_lock($entory_h, {no_normalize_output_file => 1});
+    }
+  };
   
-  # Sort by start_time (ascending)
-  my @normalized_output_files = sort {
-    $entries_h->{$a}{start_time} <=> $entries_h->{$b}{start_time}
-  } keys %$entries_h;
-  
-  # Write each valid log entry
-  for my $normalized_output_file (@normalized_output_files) {
-    my $entory_h = $entries_h->{$normalized_output_file};
-    $self->add_log($entory_h, {no_normalize_output_file => 1});
+  my $error = $@;
+  flock($lock_fh, LOCK_UN);
+  if ($error) {
+    die $@;
   }
   
   $RECOMPACTED = 1;
