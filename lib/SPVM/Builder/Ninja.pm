@@ -143,7 +143,6 @@ sub open_log {
     or confess("Can't open '$log_file' with the mode '$mode': $!");
   
   $self->{log_fh} = $fh;
-  $self->log_fh->autoflush(1);
 }
 
 sub opened {
@@ -160,6 +159,7 @@ sub add_log {
     or confess("Can't lock ninja log for header: $!");
   eval {
     $self->add_log_without_lock(@_);
+    $self->log_fh->flush;
   };
   my $error = $@;
   flock($lock_fh, LOCK_UN);
@@ -234,6 +234,7 @@ sub add_log_header {
     or confess("Can't lock ninja log for header: $!");
   eval {
     $self->add_log_header_without_lock(@_);
+    $self->log_fh->flush;
   };
   my $error = $@;
   flock($lock_fh, LOCK_UN);
@@ -483,6 +484,8 @@ sub recompact {
       my $entory_h = $entries_h->{$normalized_output_file};
       $self->add_log_without_lock($entory_h, {no_normalize_output_file => 1});
     }
+    
+    $self->log_fh->flush;
   };
   
   my $error = $@;
