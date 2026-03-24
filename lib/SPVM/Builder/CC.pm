@@ -183,14 +183,14 @@ sub compile_source_file {
   
   my $input_files = $options->{input_files};
   my $ninja = $self->builder->ninja;
-  my $need_generate_options = {
+  my $ninja_entry = {
     command => $cc_cmd_string,
     command_version => $cc_version,
     input_files => $input_files,
     output_file => $output_file,
     force => $force,
   };
-  my $need_generate = $ninja->need_generate($need_generate_options);
+  my $need_generate = $ninja->need_generate($ninja_entry);
   
   if ($need_generate) {
     mkpath dirname $output_file;
@@ -235,7 +235,7 @@ sub compile_source_file {
       or confess("$source_file file cannnot be compiled by the following command:\n$cc_cmd_string\n");
     my $end_time = int(Time::HiRes::time() * 1000);
     
-    my $command_hash = $ninja->create_command_hash($need_generate_options);
+    my $command_hash = $ninja->create_command_hash($ninja_entry);
     
     unless (-f $output_file) {
       confess("The output file '$output_file' does not exist.");
@@ -578,13 +578,13 @@ sub compile_class {
       push @resource_naitve_include_dirs, $resource_native_include_dir;
     }
     
-    my $need_generate_options = {
+    my $compile_source_file_options = {
       force => $force,
       input_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
     };
     
     # Compile a source file
-    $self->compile_source_file($compile_info, $need_generate_options);
+    $self->compile_source_file($compile_info, $compile_source_file_options);
     
     # Object file information
     my $compile_info_cc = $compile_info->{cc};
@@ -698,14 +698,14 @@ sub link {
   
   my $ld_version = $config->ld_version;
   
-  my $need_generate_options = {
+  my $ninja_entry = {
     command => $link_info->to_command,
     command_version => $ld_version,
     force => $force,
     output_file => $output_file,
     input_files => [@object_files],
   };
-  my $need_generate = $self->builder->ninja->need_generate($need_generate_options);
+  my $need_generate = $self->builder->ninja->need_generate($ninja_entry);
   
   if ($need_generate) {
     mkpath dirname $link_info_output_file;
@@ -771,7 +771,7 @@ sub link {
     my $end_time = int(Time::HiRes::time() * 1000);
     
     my $ninja = $self->builder->ninja;
-    my $command_hash = $ninja->create_command_hash($need_generate_options);
+    my $command_hash = $ninja->create_command_hash($ninja_entry);
     
     unless (-f $link_info_output_file) {
       confess("The output file '$link_info_output_file' does not exist.");
