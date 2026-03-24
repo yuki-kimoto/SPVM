@@ -283,8 +283,6 @@ sub compile_class {
     confess("[Unexpected Error]A class name must be non-reference.");
   }
   
-  $options ||= {};
-  
   my $build_dir = $self->builder->build_dir;
   
   unless (defined $build_dir) {
@@ -295,13 +293,11 @@ sub compile_class {
     confess("[Unexpected Error]A build directory must exists.");
   }
   
-  my $is_anon;
-  if ($class_name =~ /::anon_/) {
-    $is_anon = 1;
-  }
+  $options ||= {};
   
-  # Config
   my $config = $options->{config};
+  
+  my $is_cc_config = $config->isa('SPVM::Builder::Config') ? 1 : 0;
   
   my $runtime = $options->{runtime};
   
@@ -358,7 +354,7 @@ sub compile_class {
     );
   }
   elsif ($category eq 'native') {
-    unless ($is_anon) {
+    if ($is_cc_config) {
       $cc_input_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
     }
   }
