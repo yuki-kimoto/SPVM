@@ -556,6 +556,7 @@ sub compile_class {
       $output_file = "$cc_output_dir/$object_rel_file/$object_file_base";
       
       mkpath dirname $output_file;
+      $source_file = "$cc_input_dir/$source_rel_file";
     }
     
     my $compile_info_category;
