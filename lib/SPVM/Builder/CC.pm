@@ -513,8 +513,8 @@ sub compile_class {
 
   my $native_src_dir = $config->native_src_dir;
   my $native_source_files = [];
-  if ($is_compile_native_source_files) {
     my $native_source_files_base = $config->source_files;
+  if ($is_compile_native_source_files) {
     $native_source_files = [map { "$native_src_dir/$_" } @$native_source_files_base ];
   }
   
@@ -524,13 +524,17 @@ sub compile_class {
   if ($native_class_source_file) {
     push @source_file_infos, {source_file => $native_class_source_file, is_native_class_source_file => 1, source_rel_file => $native_class_rel_file};
   }
-  push @source_file_infos, map { {source_file => $_} } @$native_source_files;
+  if ($is_compile_native_source_files) {
+    push @source_file_infos, map { {source_file => "$native_src_dir/$_", source_rel_file => SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, "native/src/$_")} } @$native_source_files_base;
+  }
   
   for my $source_file_info (@source_file_infos) {
     
     my $current_is_native_class_source_file = $source_file_info->{is_native_class_source_file};
     my $source_rel_file = $source_file_info->{source_rel_file};
     my $source_file = $source_file_info->{source_file};
+    
+    # warn $source_rel_file;
     
     next unless defined $source_file && -f $source_file;
     
