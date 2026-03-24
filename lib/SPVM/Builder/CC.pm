@@ -510,7 +510,7 @@ sub compile_class {
   my $native_source_rel_dir = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
   $native_source_rel_dir .= '/src';
 
-  my $native_src_dir = "$cc_input_dir/$native_source_rel_dir";
+  my $native_src_dir = $config->native_src_dir;
   my $native_source_files = [];
   if ($is_compile_native_source_files) {
     my $native_source_files_base = $config->source_files;
