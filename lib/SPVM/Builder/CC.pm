@@ -591,7 +591,7 @@ sub compile_class {
     my $compile_info_cc = $compile_info->{cc};
     my $compile_info_ccflags = $compile_info->{ccflags};
     my $object_file = SPVM::Builder::ObjectFileInfo->new(
-      file => $object_file_name,
+      file => $compile_info->output_file,
       compile_info => $compile_info,
     );
     
