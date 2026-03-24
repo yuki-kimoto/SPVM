@@ -293,32 +293,6 @@ sub compile_class {
   
   my $config = $options->{config};
   
-  # Add resource include directories
-  my $resource_names = $config->get_resource_names;
-  my $resource_include_dirs = [];
-  for my $resource_name (@$resource_names) {
-    my $resource = $config->get_resource($resource_name);
-    my $resource_config = $resource->config;
-    
-    my $resource_include_dir = $resource_config->native_include_dir;
-    if (defined $resource_include_dir) {
-      push @$resource_include_dirs, $resource_include_dir;
-    }
-  }
-  
-  my $need_compile_resources;
-  if ($config->config_global) {
-    if ($class_name eq $config->config_global->class_name) {
-      $need_compile_resources = 1;
-    }
-    else {
-      $need_compile_resources = 0;
-    }
-  }
-  else {
-    $need_compile_resources = 1;
-  }
-  
   my $runtime = $options->{runtime};
   
   my $is_jit = $config->is_jit;
@@ -373,6 +347,32 @@ sub compile_class {
   my $force = $self->detect_force($config);
   
   my $object_files = [];
+  
+  # Add resource include directories
+  my $resource_names = $config->get_resource_names;
+  my $resource_include_dirs = [];
+  for my $resource_name (@$resource_names) {
+    my $resource = $config->get_resource($resource_name);
+    my $resource_config = $resource->config;
+    
+    my $resource_include_dir = $resource_config->native_include_dir;
+    if (defined $resource_include_dir) {
+      push @$resource_include_dirs, $resource_include_dir;
+    }
+  }
+  
+  my $need_compile_resources;
+  if ($config->config_global) {
+    if ($class_name eq $config->config_global->class_name) {
+      $need_compile_resources = 1;
+    }
+    else {
+      $need_compile_resources = 0;
+    }
+  }
+  else {
+    $need_compile_resources = 1;
+  }
   
   if ($need_compile_resources) {
     for my $resource_name (@$resource_names) {
