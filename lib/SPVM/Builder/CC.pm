@@ -525,11 +525,11 @@ sub compile_class {
     
     next unless defined $source_file && -f $source_file;
     
-    my $object_file_name;
+    my $output_file;
     
     if ($current_is_native_class_source_file) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
-      $object_file_name = "$cc_output_dir/$object_rel_file";
+      $output_file = "$cc_output_dir/$object_rel_file";
     }
     else {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
@@ -539,9 +539,9 @@ sub compile_class {
       $object_file_base =~ s/^[\\\/]//;
       
       $object_file_base =~ s/\.[^\.]+$/.o/;
-      $object_file_name = "$cc_output_dir/$object_rel_file/$object_file_base";
+      $output_file = "$cc_output_dir/$object_rel_file/$object_file_base";
       
-      mkpath dirname $object_file_name;
+      mkpath dirname $output_file;
     }
     
     my $compile_info_category;
@@ -558,7 +558,7 @@ sub compile_class {
     }
     
     my $compile_info = SPVM::Builder::CompileInfo->new(
-      output_file => $object_file_name,
+      output_file => $output_file,
       source_file => $source_file,
       config => $config,
       category => $compile_info_category,
