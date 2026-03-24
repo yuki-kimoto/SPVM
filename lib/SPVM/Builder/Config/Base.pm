@@ -128,16 +128,6 @@ sub load_config {
       }
     }
     
-    # native_src_dir
-    unless (defined $config->native_src_dir) {
-      if (defined $config_file) {
-        my $native_dir = &_remove_ext_from_config_file($config_file);
-        $native_dir .= '.native';
-        my $native_src_dir = "$native_dir/src";
-        
-        $config->native_src_dir($native_src_dir);
-      }
-    }
   }
   
   if ($self) {

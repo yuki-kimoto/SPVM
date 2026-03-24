@@ -24,7 +24,6 @@ my $cc_fields = [qw(
   source_files
   spvm_core_include_dir
   native_include_dir
-  native_src_dir
   cc_output_option_name
   copyright_print_ccflags
   cc_input_dir
@@ -510,13 +509,6 @@ Gets and sets C<native_include_dir> field, a L<native header file|SPVM::Document
 
 The value of this field is converted to C<-I> option when the arguments of the compiler L</"cc"> are created.
 
-=head2 native_src_dir
-
-  my $native_src_dir = $config->native_src_dir;
-  $config->native_src_dir($native_src_dir);
-
-Gets and sets C<native_src_dir> field, a L<native source file|SPVM::Document::NativeClass/"Native Source Files"> search directory.
-
 =head2 ccflags
 
   my $ccflags = $config->ccflags;
@@ -612,7 +604,7 @@ Examples:
   my $source_files = $config->source_files;
   $config->source_files($source_files);
 
-Gets and sets C<source_files> field, an array reference containing relative paths of L<native source file|SPVM::Document::NativeClass/"Native Source Files"> file from L</"native_src_dir"> field.
+Gets and sets C<source_files> field, an array reference containing relative paths of L<native source file|SPVM::Document::NativeClass/"Native Source Files"> file from C<src> directory.
 
 =head2 before_compile_cbs
 
@@ -963,10 +955,6 @@ The SPVM core header file search directory.
 =item * L</"native_include_dir">
 
 The directory described in L<SPVM::Document::NativeClass/"Native Header Files">.
-
-=item * L</"native_src_dir">
-
-The directory described in L<SPVM::Document::NativeClass/"Native Source Files">.
 
 =item * L</"source_files">
 
