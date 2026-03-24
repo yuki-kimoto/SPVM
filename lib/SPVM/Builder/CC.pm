@@ -539,30 +539,6 @@ sub compile_class {
     my $object_rel_file = $source_rel_file;
     $object_rel_file =~ s/\.[^\.]+$/.o/;
     
-    my $output_file = "$cc_output_dir/$object_rel_file";
-    
-    mkpath dirname $output_file;
-    
-    my $compile_info_category;
-    if ($category eq 'precompile') {
-      $compile_info_category = 'precompile_class';
-    }
-    elsif ($category eq 'native') {
-      if ($current_is_native_class_source_file) {
-        $compile_info_category = 'native_class';
-      }
-      else {
-        $compile_info_category = 'native_source';
-      }
-    }
-    
-    my $compile_info = SPVM::Builder::CompileInfo->new(
-      output_file => $output_file,
-      source_file => $source_file,
-      config => $config,
-      category => $compile_info_category,
-    );
-    
     # Check if object file need to be generated
     my $native_include_dir = $config->native_include_dir;
     
@@ -581,6 +557,31 @@ sub compile_class {
       force => $force,
       input_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
     };
+    
+    my $compile_info_category;
+    if ($category eq 'precompile') {
+      $compile_info_category = 'precompile_class';
+    }
+    elsif ($category eq 'native') {
+      if ($current_is_native_class_source_file) {
+        $compile_info_category = 'native_class';
+      }
+      else {
+        $compile_info_category = 'native_source';
+      }
+    }
+    
+    my $output_file = "$cc_output_dir/$object_rel_file";
+    
+    mkpath dirname $output_file;
+    
+    my $compile_info = SPVM::Builder::CompileInfo->new(
+      output_file => $output_file,
+      source_file => $source_file,
+      source_rel_file => $source_rel_file,
+      config => $config,
+      category => $compile_info_category,
+    );
     
     # Compile a source file
     $self->compile_source_file($compile_info, $compile_source_file_options);
