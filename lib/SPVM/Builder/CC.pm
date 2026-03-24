@@ -519,10 +519,16 @@ sub compile_class {
   
   # Compile source files
   my $is_native_class_source_file = 1;
-  my @source_files = ($native_class_source_file, @$native_source_files);
-  for my $source_file (@source_files) {
-    my $current_is_native_class_source_file = $is_native_class_source_file;
-    $is_native_class_source_file = 0;
+  my @source_file_infos;
+  if ($native_class_source_file) {
+    push @source_file_infos, {source_file => $native_class_source_file, is_native_class_source_file => 1};
+  }
+  push @source_file_infos, map { {source_file => $_} } @$native_source_files;
+  
+  for my $source_file_info (@source_file_infos) {
+    
+    my $current_is_native_class_source_file = $source_file_info->{is_native_class_source_file};
+    my $source_file = $source_file_info->{source_file};
     
     next unless defined $source_file && -f $source_file;
     
