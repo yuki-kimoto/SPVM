@@ -520,11 +520,14 @@ sub compile_class {
   
   # Compile source files
   my $is_native_class_source_file = 1;
-  for my $source_file ($native_class_rel_file, @$native_source_files) {
+  for my $source_file ($native_class_rel_file, @$native_source_files_base) {
     my $current_is_native_class_source_file = $is_native_class_source_file;
     
     if ($current_is_native_class_source_file) {
       $source_file = "$cc_input_dir/$source_file";
+    }
+    else {
+      $source_file = "$native_src_dir/$source_file";
     }
     
     $is_native_class_source_file = 0;
