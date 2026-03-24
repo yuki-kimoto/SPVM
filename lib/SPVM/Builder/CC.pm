@@ -169,12 +169,8 @@ sub compile_source_file {
   $object_rel_file =~ s/\.[^\.]+$/.o/;
   my $cc_output_dir = $config->cc_output_dir // $self->builder->create_build_object_path;
   
-  unless (defined $cc_output_dir) {
-    confess("\$cc_output_dir must be defined.");
-  }
-  
   my $output_file = "$cc_output_dir/$object_rel_file";
-    
+  
   mkpath dirname $output_file;
   
   $compile_info->output_file($output_file);
@@ -430,11 +426,6 @@ sub compile_class {
   my $is_cc_config = $config->isa('SPVM::Builder::Config') ? 1 : 0;
   
   if ($is_cc_config) {
-    my $cc_output_dir = $config->cc_output_dir;
-    unless ($cc_output_dir) {
-      $cc_output_dir = $self->builder->create_build_object_path;
-    }
-    
     my $cc_input_dir;
     if ($category eq 'precompile') {
       
