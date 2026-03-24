@@ -23,7 +23,6 @@ my $cc_fields = [qw(
   include_dirs
   source_files
   spvm_core_include_dir
-  native_include_dir
   cc_output_option_name
   copyright_print_ccflags
   cc_input_dir
@@ -359,6 +358,38 @@ sub create_cc_version {
   return $cc_version;
 }
 
+sub native_include_dir {
+  my ($self) = @_;
+  
+  my $config_file = $self->file;
+  
+  unless (defined $config_file) {
+    return;
+  }
+  
+  my $native_dir = &SPVM::Builder::Config::Base::_remove_ext_from_config_file($config_file);
+  $native_dir .= '.native';
+  my $native_include_dir = "$native_dir/include";
+  
+  return $native_include_dir;
+}
+
+sub native_src_dir {
+  my ($self) = @_;
+  
+  my $config_file = $self->file;
+  
+  unless (defined $config_file) {
+    return;
+  }
+  
+  my $native_dir = &SPVM::Builder::Config::Base::_remove_ext_from_config_file($config_file);
+  $native_dir .= '.native';
+  my $native_src_dir = "$native_dir/src";
+  
+  return $native_src_dir;
+}
+
 1;
 
 =head1 Name
@@ -497,15 +528,6 @@ The values of this field are converted to C<-I> options when the arguments of th
   $config->spvm_core_include_dir($spvm_core_include_dir);
 
 Gets and sets C<spvm_core_include_dir> field, an SPVM core header file search directory.
-
-The value of this field is converted to C<-I> option when the arguments of the compiler L</"cc"> are created.
-
-=head2 native_include_dir
-
-  my $native_include_dir = $config->native_include_dir;
-  $config->native_include_dir($native_include_dir);
-
-Gets and sets C<native_include_dir> field, a L<native header file|SPVM::Document::NativeClass/"Native Header Files"> search directory.
 
 The value of this field is converted to C<-I> option when the arguments of the compiler L</"cc"> are created.
 
@@ -1131,6 +1153,20 @@ The return value contains the compiler command itself and its version informatio
 If the execution fails, an empty string is returned.
 
 This information is intended to be used as a part of the digest for the build cache.
+
+=head2 native_include_dir
+
+  my $native_include_dir = $config->native_include_dir;
+  $config->native_include_dir($native_include_dir);
+
+Creates the path of C<include> header directory for the native class.
+
+=head2 native_src_dir
+
+  my $native_src_dir = $config->native_src_dir;
+  $config->native_src_dir($native_src_dir);
+
+Creates the path of C<src> source directory for the native class.
 
 =head1 Copyright & License
 
