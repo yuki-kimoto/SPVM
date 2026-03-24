@@ -914,6 +914,7 @@ sub compile_bootstrap_source_file {
   my $config = SPVM::Builder::Util::API::create_default_config();
   my $config_global = $self->config_global;
   $config->config_global($config_global);
+  $config->cc_input_dir($self->builder->create_build_src_path);
   
   # Target class name
   my $class_name = $self->class_name;
@@ -929,7 +930,7 @@ sub compile_bootstrap_source_file {
   # Compile
   my $object_file = $self->compile_source_file({
     source_file => $source_file,
-    source_rel_file => $source_rel_file,
+    source_rel_file => "bootstrap/$source_rel_file",
     config => $config,
     category => 'bootstrap',
   });
@@ -1139,7 +1140,7 @@ sub create_bootstrap_object_file_path {
   my $bootstrap_source_file_base = basename $script_name;
   $bootstrap_source_file_base =~ s/\..*$//;
   $bootstrap_source_file_base .= '.o';
-  my $bootstrap_source_file = "$build_object_dir/bootstrap/$bootstrap_source_file_base";
+  my $bootstrap_source_file = "$build_object_dir/$bootstrap_source_file_base";
   
   return $bootstrap_source_file;
 }
