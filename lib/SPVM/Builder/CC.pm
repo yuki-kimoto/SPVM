@@ -522,19 +522,17 @@ sub compile_class {
   my $is_native_class_source_file = 1;
   my @source_file_infos;
   if ($native_class_source_file) {
-    push @source_file_infos, {source_file => $native_class_source_file, is_native_class_source_file => 1, source_rel_file => $native_class_rel_file};
+    push @source_file_infos, {is_native_class_source_file => 1, source_rel_file => $native_class_rel_file};
   }
   if ($is_compile_native_source_files) {
-    push @source_file_infos, map { {source_file => "$native_src_dir/$_", source_rel_file => SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, "native/src/$_")} } @$native_source_files_base;
+    push @source_file_infos, map { {source_rel_file => SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, "native/src/$_")} } @$native_source_files_base;
   }
   
   for my $source_file_info (@source_file_infos) {
     
     my $current_is_native_class_source_file = $source_file_info->{is_native_class_source_file};
     my $source_rel_file = $source_file_info->{source_rel_file};
-    my $source_file = $source_file_info->{source_file};
-    
-    # warn $source_rel_file;
+    my $source_file = "$cc_input_dir/$source_rel_file";
     
     next unless defined $source_file && -f $source_file;
     
@@ -543,7 +541,6 @@ sub compile_class {
     if ($current_is_native_class_source_file) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
       $output_file = "$cc_output_dir/$object_rel_file";
-      $source_file = "$cc_input_dir/$source_rel_file";
     }
     else {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
@@ -556,7 +553,6 @@ sub compile_class {
       $output_file = "$cc_output_dir/$object_rel_file/$object_file_base";
       
       mkpath dirname $output_file;
-      $source_file = "$cc_input_dir/$source_rel_file";
     }
     
     my $compile_info_category;
