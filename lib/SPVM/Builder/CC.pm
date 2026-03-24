@@ -519,7 +519,8 @@ sub compile_class {
   
   # Compile source files
   my $is_native_class_source_file = 1;
-  for my $source_file ($native_class_source_file, @$native_source_files) {
+  my @source_files = ($native_class_source_file, @$native_source_files);
+  for my $source_file (@source_files) {
     my $current_is_native_class_source_file = $is_native_class_source_file;
     $is_native_class_source_file = 0;
     
