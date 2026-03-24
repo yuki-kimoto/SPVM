@@ -257,6 +257,102 @@ sub get_class_base_dir {
   return $file;
 }
 
+sub get_possible_dependent_files {
+  my ($class_name, $category, $options) = @_;
+  
+  my @dependent_files;
+  
+  my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
+  
+  my $spvm_class_rel_file_without_ext = &convert_class_name_to_rel_file($class_name);
+  
+  my $spvm_class_file_without_ext = "$lib_dir/$spvm_class_rel_file_without_ext";
+  
+  my $spvm_class_rel_file = "$spvm_class_file_without_ext.spvm";
+  
+  my $spvm_class_file = "$spvm_class_file_without_ext.spvm";
+  
+  my $spvm_version_header_file = &get_spvm_version_header_file;
+  push @dependent_files, $spvm_version_header_file;
+  
+  # Dependency native class file
+  if ($category eq 'native') {
+    # Config
+    my $config_file = "$spvm_class_file_without_ext.config";
+    push @dependent_files, $config_file;
+    my $config = SPVM::Builder::Config->load_config($config_file, []);
+    
+    # Native class
+    my $native_class_file_ext = $config->ext;
+    my $native_class_file = "$spvm_class_file_without_ext.$native_class_file_ext";
+    push @dependent_files, $native_class_file;
+    
+    # Native include
+    my $native_include_dir = "$spvm_class_file_without_ext.native/include";
+    my @native_include_files;
+    if (-d $native_include_dir) {
+      find({wanted => sub { if (-f $_) { push @native_include_files, $_ } }, no_chdir => 1}, $native_include_dir);
+    }
+    push @dependent_files, @native_include_files;
+    
+    # Native source
+    my $native_src_dir = "$spvm_class_file_without_ext.native/src";
+    my @native_src_files;
+    if (-d $native_src_dir) {
+      find({wanted => sub { if (-f $_) { push @native_src_files, $_ } }, no_chdir => 1}, $native_src_dir);
+    }
+    push @dependent_files, @native_src_files;
+    
+    # Dependency resources
+    {
+      my $resource_class_names = $config->get_resource_names;
+      for my $resource_class_name (@$resource_class_names) {
+        my $resource = $config->get_resource($resource_class_name);
+        
+        my $resource_config = $resource->config;
+        
+        my $resource_config_file = $resource_config->file;
+        
+        my $resource_config_file_without_ext = $resource_config_file;
+        $resource_config_file_without_ext =~ s/\.[^\.]+$//;
+        
+        # Resource class file
+        my $resource_spvm_class_file = "$resource_config_file_without_ext.spvm";
+        push @dependent_files, $resource_spvm_class_file;
+        
+        # Config
+        push @dependent_files, $resource_config_file;
+        
+        # Native include
+        my $resource_native_include_dir = "$resource_config_file_without_ext.native/include";
+        my @resource_native_include_files;
+        if (-d $resource_native_include_dir) {
+          find({wanted => sub { if (-f $_) { push @resource_native_include_files, $_ } }, no_chdir => 1}, $resource_native_include_dir);
+        }
+        push @dependent_files, @resource_native_include_files;
+        
+        # Native source
+        my $resource_native_src_dir = "$resource_config_file_without_ext.native/src";
+        my @resource_native_src_files;
+        if (-d $resource_native_src_dir) {
+          find({wanted => sub { if (-f $_) { push @resource_native_src_files, $_ } }, no_chdir => 1}, $resource_native_src_dir);
+        }
+        push @dependent_files, @resource_native_src_files;
+      }
+    }
+  }
+  elsif ($category eq 'precompile') {
+    push @dependent_files, $spvm_class_file;
+  }
+  
+  # Add input files
+  if (my $input_files = $options->{input_files}) {
+    push @dependent_files, @$input_files;
+  }
+  
+  return \@dependent_files;
+}
+
 sub create_make_rule_native {
   my $class_name = shift;
   
@@ -284,11 +380,10 @@ sub create_make_rule {
   $make_rule .= "dynamic :: $dynamic_lib_file\n";
   $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
   
-  my $input_files = $options->{input_files} // [];
+  # Source dependencies
+  my $dependent_files = &get_possible_dependent_files($class_name, $category, $options);
   
-  # Use .PHONY to ensure always run the command.
-  $make_rule .= ".PHONY: $dynamic_lib_file\n";
-  $make_rule .= "$dynamic_lib_file :: @$input_files\n";
+  $make_rule .= "$dynamic_lib_file :: @$dependent_files\n";
   
   # Build options
   my $options_string = "build_dir => '.spvm_build'";
@@ -297,7 +392,7 @@ sub create_make_rule {
   }
   
   # Build command
-  $make_rule .= "\t\@$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($options_string)->build_dynamic_lib_dist_$category('$class_name')\"\n\n";
+  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($options_string)->build_dynamic_lib_dist_$category('$class_name')\"\n\n";
   
   return $make_rule;
 }
