@@ -263,7 +263,7 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $native_src_object_file;
   my $start_native_src_object_file_mtime;
-  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.native/baz/baz.o";
+  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.native/src/baz/baz.o";
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
 
   my $native_shared_lib_file;
