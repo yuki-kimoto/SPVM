@@ -952,10 +952,13 @@ sub compile_spvm_core_source_files {
   
   my $builder_include_dir = "$builder_dir/include";
   
+  my $cc_input_dir = $builder_dir;
+  $cc_input_dir =~ s|/SPVM/Builder$||;
+  
+  $config->cc_input_dir($cc_input_dir);
+  
   # SPVM runtime source files
-  my $spvm_runtime_src_base_names;
-  $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
-  my @spvm_core_source_files = map { "$builder_src_dir/$_" } @$spvm_runtime_src_base_names;
+  my $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
   
   # Object dir
   my $output_dir = $self->builder->create_build_object_path;
@@ -972,7 +975,7 @@ sub compile_spvm_core_source_files {
     
     my $object_file = $self->compile_source_file({
       source_file => $src_file,
-      source_rel_file => $spvm_runtime_src_base_name,
+      source_rel_file => "SPVM/Builder/src/$spvm_runtime_src_base_name",
       config => $config,
       category => 'spvm_core',
       include_dir => $builder_include_dir,

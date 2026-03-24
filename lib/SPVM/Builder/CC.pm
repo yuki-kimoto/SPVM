@@ -155,8 +155,6 @@ sub compile_source_file {
   
   my $quiet = $self->detect_quiet($config);
   
-  my $source_file = $compile_info->source_file;
-  
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
   
   my $source_rel_file = $compile_info->source_rel_file;
@@ -164,6 +162,8 @@ sub compile_source_file {
   unless (defined $source_rel_file) {
     confess("\$source_rel_file must be defined.");
   }
+  
+  my $source_file = $compile_info->source_file;
   
   my $object_rel_file = $source_rel_file;
   $object_rel_file =~ s/\.[^\.]+$/.o/;
