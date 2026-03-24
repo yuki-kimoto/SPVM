@@ -343,7 +343,6 @@ sub compile_source_file {
   my ($self, $options) = @_;
   
   my $source_file = $options->{source_file};
-  my $output_file = $options->{output_file};
   my $config = $options->{config};
   my $config_global = $self->config_global;
   my $include_dir = $self->{include_dir};
@@ -364,7 +363,6 @@ sub compile_source_file {
   );
   
   my $compile_info = SPVM::Builder::CompileInfo->new(
-    output_file => $output_file,
     source_file => $source_file,
     config => $config,
     category => $options->{category},
@@ -373,7 +371,6 @@ sub compile_source_file {
   
   my $compile_source_file_options = {
     force => $self->force || $config->force,
-    output_file => $output_file,
     input_files => [$source_file, $include_dir],
   };
   $builder_cc->compile_source_file($compile_info, $compile_source_file_options);
@@ -933,7 +930,6 @@ sub compile_bootstrap_source_file {
   my $object_file = $self->compile_source_file({
     source_file => $source_file,
     source_rel_file => $source_rel_file,
-    output_file => $object_file_name,
     config => $config,
     category => 'bootstrap',
   });
@@ -977,7 +973,6 @@ sub compile_spvm_core_source_files {
     my $object_file = $self->compile_source_file({
       source_file => $src_file,
       source_rel_file => $spvm_runtime_src_base_name,
-      output_file => $object_file_name,
       config => $config,
       category => 'spvm_core',
       include_dir => $builder_include_dir,
