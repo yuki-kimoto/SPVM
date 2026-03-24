@@ -580,7 +580,6 @@ sub compile_class {
     
     my $need_generate_options = {
       force => $force,
-      output_file => $object_file_name,
       input_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
     };
     
