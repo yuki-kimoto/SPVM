@@ -345,11 +345,6 @@ sub compile_class {
     }
   }
   
-  my $cc_output_dir = $config->cc_output_dir;
-  unless ($cc_output_dir) {
-    $cc_output_dir = $self->builder->create_build_object_path;
-  }
-  
   my $class_file;
   my $basic_type;
   
@@ -360,29 +355,6 @@ sub compile_class {
   }
   else {
     Carp::confess("$class_name class must be loaded.");
-  }
-  
-  my $cc_input_dir;
-  if ($category eq 'precompile') {
-    
-    $cc_input_dir = $self->builder->create_build_src_path;
-    
-    my $config_precompile_class_source = $config->clone;
-    
-    $config_precompile_class_source->cc_input_dir($cc_input_dir);
-    
-    $self->build_precompile_class_source_file(
-      $class_name,
-      {
-        config => $config_precompile_class_source,
-        runtime => $runtime,
-      }
-    );
-  }
-  elsif ($category eq 'native') {
-    if ($is_cc_config) {
-      $cc_input_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
-    }
   }
   
   # Check if a config file and an SPVM class file are in the same directory.
@@ -454,6 +426,34 @@ sub compile_class {
       
       my $resource_object_files = $builder_cc_resource->compile_class($resource_class_name, $compile_options);
       push @$object_files, @$resource_object_files;
+    }
+  }
+  
+  my $cc_output_dir = $config->cc_output_dir;
+  unless ($cc_output_dir) {
+    $cc_output_dir = $self->builder->create_build_object_path;
+  }
+  
+  my $cc_input_dir;
+  if ($category eq 'precompile') {
+    
+    $cc_input_dir = $self->builder->create_build_src_path;
+    
+    my $config_precompile_class_source = $config->clone;
+    
+    $config_precompile_class_source->cc_input_dir($cc_input_dir);
+    
+    $self->build_precompile_class_source_file(
+      $class_name,
+      {
+        config => $config_precompile_class_source,
+        runtime => $runtime,
+      }
+    );
+  }
+  elsif ($category eq 'native') {
+    if ($is_cc_config) {
+      $cc_input_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
     }
   }
   
