@@ -159,7 +159,25 @@ sub compile_source_file {
   
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
   
-  my $output_file = $compile_info->output_file;
+  my $source_rel_file = $compile_info->source_rel_file;
+  
+  unless (defined $source_rel_file) {
+    confess("\$source_rel_file must be defined.");
+  }
+  
+  my $object_rel_file = $source_rel_file;
+  $object_rel_file =~ s/\.[^\.]+$/.o/;
+  my $cc_output_dir = $config->cc_output_dir // $self->builder->create_build_object_path;
+  
+  unless (defined $cc_output_dir) {
+    confess("\$cc_output_dir must be defined.");
+  }
+  
+  my $output_file = "$cc_output_dir/$object_rel_file";
+    
+  mkpath dirname $output_file;
+  
+  $compile_info->output_file($output_file);
   
   my $before_compile_cbs = $config->before_compile_cbs;
   for my $before_compile_cb (@$before_compile_cbs) {
@@ -536,9 +554,6 @@ sub compile_class {
     
     next unless defined $source_file && -f $source_file;
     
-    my $object_rel_file = $source_rel_file;
-    $object_rel_file =~ s/\.[^\.]+$/.o/;
-    
     # Check if object file need to be generated
     my $native_include_dir = $config->native_include_dir;
     
@@ -571,12 +586,7 @@ sub compile_class {
       }
     }
     
-    my $output_file = "$cc_output_dir/$object_rel_file";
-    
-    mkpath dirname $output_file;
-    
     my $compile_info = SPVM::Builder::CompileInfo->new(
-      output_file => $output_file,
       source_file => $source_file,
       source_rel_file => $source_rel_file,
       config => $config,

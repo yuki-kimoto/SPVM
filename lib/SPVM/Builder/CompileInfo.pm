@@ -29,6 +29,17 @@ sub source_file {
   }
 }
 
+sub source_rel_file {
+  my $self = shift;
+  if (@_) {
+    $self->{source_rel_file} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{source_rel_file};
+  }
+}
+
 sub output_file {
   my $self = shift;
   if (@_) {
