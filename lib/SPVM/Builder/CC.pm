@@ -539,6 +539,7 @@ sub compile_class {
     if ($current_is_native_class_source_file) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
       $output_file = "$cc_output_dir/$object_rel_file";
+      $source_file = "$cc_input_dir/$source_rel_file";
     }
     else {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
