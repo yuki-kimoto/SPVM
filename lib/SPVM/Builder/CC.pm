@@ -484,6 +484,8 @@ sub compile_class {
     $is_resource = $config->is_resource;
   }
   else {
+    # This logic is removed in the future
+    Carp::cluck("[Warning]If the class is a resource 'is_resource' field must be set to 1.");
     $is_resource = !(defined $native_class_source_file && -f $native_class_source_file);
   }
   
