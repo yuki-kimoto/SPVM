@@ -117,37 +117,6 @@ sub detect_quiet {
   return $quiet;
 }
 
-sub build_precompile_class_source_file {
-  my ($self, $class_name, $options) = @_;
-  
-  my $config = $options->{config};
-  
-  my $runtime = $options->{runtime};
-  
-  my $basic_type = $runtime->get_basic_type_by_name($class_name);
-  
-  my $class_file = $basic_type->get_class_file;
-  
-  my $precompile_source = $basic_type->build_precompile_class_source($basic_type);
-  
-  # Force
-  my $force = $self->detect_force;
-  
-  # Output - Precompile C source file
-  my $cc_input_dir = $config->cc_input_dir;
-  my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
-  my $source_file = "$cc_input_dir/$source_rel_file";
-  
-  # Generate precompile C source file
-  mkpath dirname $source_file;
-  open my $fh, '>', $source_file
-    or die "Can't create $source_file";
-  
-  binmode $fh;
-  print $fh $precompile_source;
-  close $fh;
-}
-
 sub compile_source_file {
   my ($self, $compile_info, $options) = @_;
   
@@ -602,6 +571,37 @@ sub compile_native_class {
   }
   
   return $object_files;
+}
+
+sub build_precompile_class_source_file {
+  my ($self, $class_name, $options) = @_;
+  
+  my $config = $options->{config};
+  
+  my $runtime = $options->{runtime};
+  
+  my $basic_type = $runtime->get_basic_type_by_name($class_name);
+  
+  my $class_file = $basic_type->get_class_file;
+  
+  my $precompile_source = $basic_type->build_precompile_class_source($basic_type);
+  
+  # Force
+  my $force = $self->detect_force;
+  
+  # Output - Precompile C source file
+  my $cc_input_dir = $config->cc_input_dir;
+  my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
+  my $source_file = "$cc_input_dir/$source_rel_file";
+  
+  # Generate precompile C source file
+  mkpath dirname $source_file;
+  open my $fh, '>', $source_file
+    or die "Can't create $source_file";
+  
+  binmode $fh;
+  print $fh $precompile_source;
+  close $fh;
 }
 
 sub get_resource_object_dir_from_class_name {
