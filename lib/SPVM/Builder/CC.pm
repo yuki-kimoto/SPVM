@@ -345,19 +345,10 @@ sub compile_resources {
     for my $resource_name (@$resource_names) {
       my $resource = $config->get_resource($resource_name);
       
-      my $resource_class_name;
-      my $resource_config;
-      if (ref $resource) {
-        $resource_class_name = $resource->class_name;
-        $resource_config = $resource->config;
-      }
-      else {
-        $resource_class_name = $resource;
-      }
+      my $resource_class_name = $resource->class_name;
+      my $resource_config = $resource->config;
       
       $resource_config->add_include_dir(@$resource_include_dirs);
-      
-      $resource_config->class_name($resource_class_name);
       
       my $compile_options = {
         runtime => $runtime,
