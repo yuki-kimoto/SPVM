@@ -342,7 +342,6 @@ sub compile_classes {
 sub compile_source_file {
   my ($self, $options) = @_;
   
-  my $source_file = $options->{source_file};
   my $config = $options->{config};
   my $config_global = $self->config_global;
   my $include_dir = $self->{include_dir};
@@ -363,13 +362,12 @@ sub compile_source_file {
   );
   
   my $compile_info = SPVM::Builder::CompileInfo->new(
-    source_file => $source_file,
     source_rel_file => $source_rel_file,
     config => $config,
     category => $options->{category},
   );
   
-  $compile_info->dependent_files([$source_file, $include_dir]);
+  $compile_info->dependent_files([$include_dir]);
   
   $builder_cc->compile_source_file($compile_info);
   

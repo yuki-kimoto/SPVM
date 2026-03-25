@@ -455,10 +455,6 @@ sub compile_source_file {
   my $cc_input_dir = $config->cc_input_dir // $config->get_base_dir;
   
   my $source_file = $compile_info->source_file;
-  my $source_file_from_rel_file = "$cc_input_dir/$source_rel_file";
-  unless ($source_file eq $source_file_from_rel_file) {
-    confess("\$source_file '$source_file' does not equel \$source_file_from_rel_file '$cc_input_dir    /    $source_rel_file'.");
-  }
   
   my $object_rel_file = $source_rel_file;
   $object_rel_file =~ s/\.[^\.]+$/.o/;
@@ -495,7 +491,7 @@ sub compile_source_file {
   my $ninja_entry = {
     command => $cc_cmd_string,
     command_version => $cc_version,
-    dependent_files => $dependent_files,
+    dependent_files => [$source_file, @$dependent_files],
     output_file => $output_file,
   };
   my $need_generate = $force || $ninja->need_generate($ninja_entry);
