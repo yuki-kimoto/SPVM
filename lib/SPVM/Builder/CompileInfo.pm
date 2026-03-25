@@ -18,17 +18,6 @@ sub config {
   }
 }
 
-sub source_file {
-  my $self = shift;
-  if (@_) {
-    $self->{source_file} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{source_file};
-  }
-}
-
 sub source_rel_file {
   my $self = shift;
   if (@_) {
@@ -202,6 +191,17 @@ sub to_command {
   return $compile_command_string;
 }
 
+sub source_file {
+  my $self = shift;
+  
+  my $cc_input_dir = $self->config->cc_input_dir;
+  my $source_rel_file = $self->source_rel_file;
+  
+  my $source_file = "$cc_input_dir/$source_rel_file";
+  
+  return $source_file;
+}
+
 1;
 
 =head1 Name
@@ -220,13 +220,6 @@ The SPVM::Builder::CompileInfo class has methods to manipulate compiler informat
   $compile_info->config($config);
 
 Gets and sets the C<config> field, a L<SPVM::Builder::Config> object.
-
-=head2 source_file
-
-  my $source_file = $compile_info->source_file;
-  $compile_info->source_file($source_file);
-
-Gets and sets the C<source_file> field, a source file.
 
 =head2 output_file
 
@@ -262,10 +255,6 @@ Creates a new L<SPVM::Builder::CompileInfo> object given L</"Fields">.
 Field Default Values:
 
 =over 2
-
-=item * L</"source_file">
-
-undef
 
 =item * L</"output_file">
 
@@ -314,6 +303,13 @@ Joins all elements of the return value of the the L</"create_command"> method wi
 Return Value Examples:
 
   "cc -c -o foo.o -O2 -Ipath/include foo.c"
+
+=head2 source_file
+
+  my $source_file = $compile_info->source_file;
+  $compile_info->source_file($source_file);
+
+Gets the source file path from C<config->cc_input_dir> and C</"source_rel_file">.
 
 =head1 Copyright & License
 

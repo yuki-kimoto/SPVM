@@ -923,13 +923,11 @@ sub compile_bootstrap_source_file {
   
   # Compile source files
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
-  my $source_file = $self->create_bootstrap_source_file_path;
   my $source_rel_file = $self->create_bootstrap_source_rel_file_path;
   my $object_file_name = $self->create_bootstrap_object_file_path;
   
   # Compile
   my $object_file = $self->compile_source_file({
-    source_file => $source_file,
     source_rel_file => $source_rel_file,
     config => $config,
     category => 'bootstrap',
@@ -967,16 +965,9 @@ sub compile_spvm_core_source_files {
   # Compile source files
   my $object_files = [];
   for my $spvm_runtime_src_base_name (@$spvm_runtime_src_base_names) {
-    my $src_file = "$builder_src_dir/$spvm_runtime_src_base_name";
-    
-    # Object file
-    my $object_file_name = "$output_dir/" . basename($src_file);
-    $object_file_name =~ s/\.c$//;
-    $object_file_name .= '.o';
-    
+    my $source_rel_file = "SPVM/Builder/src/$spvm_runtime_src_base_name";
     my $object_file = $self->compile_source_file({
-      source_file => $src_file,
-      source_rel_file => "SPVM/Builder/src/$spvm_runtime_src_base_name",
+      source_rel_file => $source_rel_file,
       config => $config,
       category => 'spvm_core',
       include_dir => $builder_include_dir,
