@@ -13,13 +13,17 @@ has [qw(
   source_rel_file
   output_file
   category
+  dependent_files
 )];
 
 # Class methods
 sub new {
   my $class = shift;
   
-  my $self = {@_};
+  my $self = {
+    dependent_files => [],
+    @_,
+  };
   
   bless $self, $class;
   
@@ -189,6 +193,15 @@ Gets and sets the C<output_file> field, an output file.
 Gets and sets the C<category> field.
 
 These are C<native_class>, C<native_source>, C<precompile_class>, C<spvm>, C<spvm_core>.
+
+=head2 dependent_files
+
+  my $dependent_files = $compile_info->dependent_files;
+  $compile_info->dependent_files($dependent_files);
+
+Gets and sets the C<dependent_files> field, an array reference of the dependent files of the source file.
+
+If this field is defined, these files are added to the dependency list of the C<ninja> build rule.
 
 =head1 Class Methods
 
