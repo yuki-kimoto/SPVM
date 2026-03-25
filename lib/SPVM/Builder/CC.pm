@@ -84,131 +84,6 @@ sub detect_quiet {
   return $quiet;
 }
 
-sub compile_source_file {
-  my ($self, $compile_info, $options) = @_;
-  
-  my $config = $compile_info->config;
-  
-  my $quiet = $self->detect_quiet($config);
-  
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
-  
-  my $source_rel_file = $compile_info->source_rel_file;
-  
-  unless (defined $source_rel_file) {
-    confess("\$source_rel_file must be defined.");
-  }
-  
-  my $cc_input_dir = $config->cc_input_dir // $config->get_base_dir;
-  
-  my $source_file = $compile_info->source_file;
-  my $source_file_from_rel_file = "$cc_input_dir/$source_rel_file";
-  unless ($source_file eq $source_file_from_rel_file) {
-    confess("\$source_file '$source_file' does not equel \$source_file_from_rel_file '$cc_input_dir    /    $source_rel_file'.");
-  }
-  
-  my $object_rel_file = $source_rel_file;
-  $object_rel_file =~ s/\.[^\.]+$/.o/;
-  my $cc_output_dir = $self->builder->create_build_object_path;
-  
-  my $output_file = "$cc_output_dir/$object_rel_file";
-  
-  mkpath dirname $output_file;
-  
-  $compile_info->output_file($output_file);
-  
-  my $before_compile_cbs = $config->before_compile_cbs;
-  for my $before_compile_cb (@$before_compile_cbs) {
-    $before_compile_cb->($compile_info->config, $compile_info);
-  }
-  
-  my $config_global = $config->config_global;
-  
-  if ($config_global) {
-    for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
-      $before_compile_cb->($compile_info->config, $compile_info);
-    }
-  }
-  
-  my $cc_cmd = $compile_info->create_command;
-  my $cc_cmd_string = "@$cc_cmd";
-  
-  my $cc_version = $config->cc_version;
-  
-  my $force = $self->detect_force($config);
-  
-  my $dependent_files = $compile_info->dependent_files;
-  my $ninja = $self->builder->ninja;
-  my $ninja_entry = {
-    command => $cc_cmd_string,
-    command_version => $cc_version,
-    dependent_files => $dependent_files,
-    output_file => $output_file,
-  };
-  my $need_generate = $force || $ninja->need_generate($ninja_entry);
-  
-  if ($need_generate) {
-    mkpath dirname $output_file;
-    
-    unless ($quiet) {
-      my $compile_info_category = $compile_info->category;
-      my $message;
-      if ($config->is_resource) {
-        my $resource_class_name = $config->class_name;
-        $message = "[Compile a source file in $resource_class_name resource.";
-      }
-      else {
-        my $config_class_name = $config->class_name;
-        my $config_file = $config->file;
-        
-        if ($compile_info_category eq 'bootstrap') {
-          $message = "[Compile Bootstrap File]";
-        }
-        elsif ($compile_info_category eq 'spvm_core') {
-          $message = "[Compile SPVM Source File]";
-        }
-        elsif ($compile_info_category eq 'native_source') {
-          $message = "[Compile Native Source File for $config_class_name class using the config file \"$config_file\"]";
-        }
-        elsif ($compile_info_category eq 'native_class') {
-          $message = "[Compile Native Class File for $config_class_name class using the config file \"$config_file\"]";
-        }
-        elsif ($compile_info_category eq 'precompile_class') {
-          $message = "[Compile Precompile Class File for $config_class_name class]";
-        }
-        else {
-          confess("[Unexpected Error]Invalid compile info category \"$compile_info_category\".");
-        }
-      }
-      
-      print "$message\n";
-      print "$cc_cmd_string\n";
-    }
-    
-    my $start_time = int(Time::HiRes::time() * 1000);
-    $cbuilder->do_system(@$cc_cmd)
-      or confess("$source_file file cannnot be compiled by the following command:\n$cc_cmd_string\n");
-    my $end_time = int(Time::HiRes::time() * 1000);
-    
-    my $command_hash = $ninja->create_command_hash($ninja_entry);
-    
-    unless (-f $output_file) {
-      confess("The output file '$output_file' does not exist.");
-    }
-    
-    my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
-    
-    my $log_entry = {
-      output_file  => $output_file,
-      command_hash => $command_hash,
-      start_time   => $start_time,
-      end_time     => $end_time,
-      mtime => $mtime,
-    };
-    $ninja->add_log($log_entry);
-  }
-}
-
 sub compile_class {
   my ($self, $class_name, $options) = @_;
   
@@ -560,6 +435,131 @@ sub build_precompile_class_source_file {
   binmode $fh;
   print $fh $precompile_source;
   close $fh;
+}
+
+sub compile_source_file {
+  my ($self, $compile_info, $options) = @_;
+  
+  my $config = $compile_info->config;
+  
+  my $quiet = $self->detect_quiet($config);
+  
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
+  
+  my $source_rel_file = $compile_info->source_rel_file;
+  
+  unless (defined $source_rel_file) {
+    confess("\$source_rel_file must be defined.");
+  }
+  
+  my $cc_input_dir = $config->cc_input_dir // $config->get_base_dir;
+  
+  my $source_file = $compile_info->source_file;
+  my $source_file_from_rel_file = "$cc_input_dir/$source_rel_file";
+  unless ($source_file eq $source_file_from_rel_file) {
+    confess("\$source_file '$source_file' does not equel \$source_file_from_rel_file '$cc_input_dir    /    $source_rel_file'.");
+  }
+  
+  my $object_rel_file = $source_rel_file;
+  $object_rel_file =~ s/\.[^\.]+$/.o/;
+  my $cc_output_dir = $self->builder->create_build_object_path;
+  
+  my $output_file = "$cc_output_dir/$object_rel_file";
+  
+  mkpath dirname $output_file;
+  
+  $compile_info->output_file($output_file);
+  
+  my $before_compile_cbs = $config->before_compile_cbs;
+  for my $before_compile_cb (@$before_compile_cbs) {
+    $before_compile_cb->($compile_info->config, $compile_info);
+  }
+  
+  my $config_global = $config->config_global;
+  
+  if ($config_global) {
+    for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
+      $before_compile_cb->($compile_info->config, $compile_info);
+    }
+  }
+  
+  my $cc_cmd = $compile_info->create_command;
+  my $cc_cmd_string = "@$cc_cmd";
+  
+  my $cc_version = $config->cc_version;
+  
+  my $force = $self->detect_force($config);
+  
+  my $dependent_files = $compile_info->dependent_files;
+  my $ninja = $self->builder->ninja;
+  my $ninja_entry = {
+    command => $cc_cmd_string,
+    command_version => $cc_version,
+    dependent_files => $dependent_files,
+    output_file => $output_file,
+  };
+  my $need_generate = $force || $ninja->need_generate($ninja_entry);
+  
+  if ($need_generate) {
+    mkpath dirname $output_file;
+    
+    unless ($quiet) {
+      my $compile_info_category = $compile_info->category;
+      my $message;
+      if ($config->is_resource) {
+        my $resource_class_name = $config->class_name;
+        $message = "[Compile a source file in $resource_class_name resource.";
+      }
+      else {
+        my $config_class_name = $config->class_name;
+        my $config_file = $config->file;
+        
+        if ($compile_info_category eq 'bootstrap') {
+          $message = "[Compile Bootstrap File]";
+        }
+        elsif ($compile_info_category eq 'spvm_core') {
+          $message = "[Compile SPVM Source File]";
+        }
+        elsif ($compile_info_category eq 'native_source') {
+          $message = "[Compile Native Source File for $config_class_name class using the config file \"$config_file\"]";
+        }
+        elsif ($compile_info_category eq 'native_class') {
+          $message = "[Compile Native Class File for $config_class_name class using the config file \"$config_file\"]";
+        }
+        elsif ($compile_info_category eq 'precompile_class') {
+          $message = "[Compile Precompile Class File for $config_class_name class]";
+        }
+        else {
+          confess("[Unexpected Error]Invalid compile info category \"$compile_info_category\".");
+        }
+      }
+      
+      print "$message\n";
+      print "$cc_cmd_string\n";
+    }
+    
+    my $start_time = int(Time::HiRes::time() * 1000);
+    $cbuilder->do_system(@$cc_cmd)
+      or confess("$source_file file cannnot be compiled by the following command:\n$cc_cmd_string\n");
+    my $end_time = int(Time::HiRes::time() * 1000);
+    
+    my $command_hash = $ninja->create_command_hash($ninja_entry);
+    
+    unless (-f $output_file) {
+      confess("The output file '$output_file' does not exist.");
+    }
+    
+    my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
+    
+    my $log_entry = {
+      output_file  => $output_file,
+      command_hash => $command_hash,
+      start_time   => $start_time,
+      end_time     => $end_time,
+      mtime => $mtime,
+    };
+    $ninja->add_log($log_entry);
+  }
 }
 
 sub link {
