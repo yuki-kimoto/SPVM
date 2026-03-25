@@ -350,25 +350,16 @@ sub compile_native_class {
   
   my $is_cc_config = $config->isa('SPVM::Builder::Config') ? 1 : 0;
   unless ($is_cc_config) {
-    return;
+    return [];
   }
   
   my $runtime = $options->{runtime};
   my $native_class_ext = $config->ext;
   
-  my $class_file;
-  my $basic_type;
+  my $basic_type = $runtime->get_basic_type_by_name($class_name);
   
-  eval { $basic_type = $runtime->get_basic_type_by_name($class_name) };
-  
-  if ($basic_type) {
-    $class_file = $basic_type->get_class_file;
-  }
-  else {
-    Carp::confess("$class_name class must be loaded.");
-  }
-  
-  # Check if a config file and an SPVM class file are in the same directory.
+  # Check if a config file and an loaded SPVM class file are in the same directory.
+  my $class_file = $basic_type->get_class_file;
   if (defined $config->file) {
     my $config_file = $config->file;
     
@@ -390,7 +381,6 @@ sub compile_native_class {
   my $force = $self->detect_force($config);
   
   if ($category eq 'precompile') {
-    my $basic_type = $runtime->get_basic_type_by_name($class_name);
     my $precompile_method_names = $basic_type->get_method_names_by_category($category);
     
     unless (@$precompile_method_names) {
