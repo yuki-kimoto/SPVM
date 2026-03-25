@@ -1,3 +1,80 @@
+0.990151 2026-03-25
+  [New Features]
+    * SPVM::Builder::Ninja: Implement a Ninja-compatible build system that tracks build states using command hashes (SHA1) and file content to ensure robust incremental builds.
+    * SPVM::Builder::Ninja: Implement exclusive file locking (flock) for the Ninja log to support safe parallel builds (make -j).
+    * SPVM::Builder::Ninja: Implement hash-based output directory structure for object files to ensure strict build isolation and prevent artifact pollution.
+    * SPVM::Builder::Ninja: Add in-memory caching for dependent file hashes to significantly accelerate build processes.
+    * SPVM::Builder::Util: Add normalize_path utility to provide consistent relative path representation relative to the build directory.
+    * SPVM::Builder::CC: Add cc_version and ld_version fields to detect toolchain updates and trigger automatic rebuilds.
+    * SPVM::Builder::Config: Add get_base_dir method to SPVM::Builder::Config::Base for centralized input directory resolution.
+    * SPVM::Builder::CompileInfo: Add dependent_files field to manage per-source dependencies.
+
+  [Incompatible Changes]
+    * SPVM::Builder: Remove the optimize field. Optimization flags are now managed through SPVM::Builder::Util or Config classes.
+    * SPVM::Builder::CC: Remove the explicit output_file parameter from compile_source_file; the output path is now internally resolved based on command hashes.
+    * SPVM::Builder::Config: Remove native_include_dir and native_src_dir fields in favor of dynamic resolution from the configuration file's location.
+    * SPVM::Builder::Util: Remove need_generate_by_content and get_possible_dependent_files, delegating all build decisions to the Ninja-based system.
+    * SPVM: Changes to API initialization timing. SPVM_BUILD_DIR and API initialization are now handled in SPVM::Builder::import and SPVM::import instead of BEGIN blocks.
+
+  [Changes]
+    * SPVM::Builder::Ninja: Improve path normalization logic to resolve absolute paths before calculating relative paths, preventing incorrect deep relative paths.
+    * SPVM::Builder::Ninja: Improve dependency scanning by using File::Find's default behavior for duplicate symlinks, avoiding fatal errors.
+    * SPVM::Builder::Ninja: Exclude the output option from command hashes to resolve circular dependencies in dynamic output naming.
+    * SPVM::Builder::Ninja: Ensure deterministic command hashes by removing duplicate dependent files and sorting them by name.
+    * SPVM::Builder::Ninja: Implement automatic log recompaction with a threshold similar to the original Ninja, ensuring log performance.
+    * SPVM::Builder::Ninja: Add command_version to the build hash to ensure rebuilds when the toolchain (compiler/linker) is updated.
+    * SPVM::Builder::Ninja: Use Time::HiRes to support millisecond precision for timestamps in the Ninja log.
+    * SPVM::Builder::Ninja: Ensure the log directory is created (mkpath) before any file operations in prepare and recompact methods.
+    * SPVM::Builder::CC: Refactor compile_source_file to move command hash generation before the rebuild check for better consistency.
+    * SPVM::Builder::CC: Postpone output file path determination until after before_compile callbacks to allow dynamic configuration changes.
+    * SPVM::Builder::CC: Extract native class and resource compilation into separate methods (compile_native_class and compile_resources) for better maintainability.
+    * SPVM::Builder::CC: Delegate recursive header directory traversal to SPVM::Builder::Ninja to simplify dependency collection.
+    * SPVM::Builder::CC: Fix a regression where 'make' unnecessarily rebuilt by removing the spvm_version.h utime hack and using force => 1.
+    * SPVM::Builder::CC: Refactor bootstrap and runtime source paths to ensure consistent object file generation during executable builds.
+    * SPVM::Builder::CC: Replace the term input_file with dependent_file across source and config management to clarify relationships.
+    * SPVM::Builder::Exe: Use load_config to unify configuration loading logic.
+    * SPVM::Builder::Config::Global: Centralize CMake-compatible build type rules and move them from Exe::MSVC to the parent class.
+    * SPVM::Global: Implement caching for the SPVM::Builder instance to improve performance during runtime dynamic loading.
+    * Build: Add .PHONY to dynamic library targets and suppress redundant Perl command echoing in the Makefile.
+
+  [Internal Changes]
+    * SPVM::Builder: Refactor manual accessors to use SPVM::Builder::Accessor across Builder, Ninja, and CC classes for better maintainability.
+    * SPVM::Builder::Ninja: Optimize log writing by keeping the file handle open and using manual flush instead of autoflush.
+    * SPVM::Builder::Ninja: Rename log methods and internal fields (e.g., log_entries_h to entries_h) for simplicity and clarity.
+    * SPVM::Builder::CompileInfo: Remove the obsolete no_generate field and rename input_file to source_file.
+    * SPVM::Builder::LinkInfo: Remove the obsolete no_generate field.
+    * Test: Update test scripts to use default imports to ensure API initialization and update expectations for hashed object paths using glob patterns.
+    
+0.990151 2026-03-25
+  [New Features]
+    * SPVM::Builder::Ninja: Implement hash-based output directory structure for object files to ensure strict build isolation and prevent artifact pollution.
+    * SPVM::Builder::Ninja: Add in-memory caching for dependent file hashes to significantly accelerate build processes.
+    * SPVM::Builder::Config: Add get_base_dir method to SPVM::Builder::Config::Base for centralized input directory resolution.
+    * SPVM::Builder::CompileInfo: Add dependent_files field to manage per-source dependencies.
+
+  [Incompatible Changes]
+    * SPVM::Builder: Remove the optimize field from SPVM::Builder. Optimization flags are now managed through SPVM::Builder::Util or Config classes.
+    * SPVM::Builder::CC: Remove the explicit output_file parameter from compile_source_file; the output path is now internally resolved based on command hashes.
+    * SPVM::Builder::Config: Remove native_include_dir and native_src_dir fields. These are now dynamically resolved from the configuration file's location.
+
+  [Changes]
+    * SPVM::Builder::Ninja: Improve dependency scanning by using File::Find's default behavior for duplicate symlinks, avoiding fatal errors.
+    * SPVM::Builder::Ninja: Exclude the output option from command hashes to resolve circular dependencies in dynamic output naming.
+    * SPVM::Builder::Ninja: Ensure deterministic command hashes by removing duplicate dependent files and sorting them by name.
+    * SPVM::Builder::CC: Refactor compile_source_file to move command hash generation before the rebuild check for better consistency.
+    * SPVM::Builder::CC: Postpone output file path determination until after before_compile callbacks to allow dynamic configuration changes.
+    * SPVM::Builder::CC: Extract native class and resource compilation into separate methods (compile_native_class and compile_resources) for better maintainability.
+    * SPVM::Builder::CC: Fix a regression where 'make' unnecessarily rebuilt by removing the spvm_version.h utime hack and using force => 1.
+    * SPVM::Builder::CC: Refactor bootstrap and runtime source paths to ensure consistent object file generation during executable builds.
+    * SPVM::Builder::CC: Replace the term input_file with dependent_file across source and config management to clarify relationships.
+    * SPVM::Builder::Exe: Use load_config to unify configuration loading logic.
+
+  [Internal Changes]
+    * SPVM::Builder::CC: Use SPVM::Builder::Accessor to define internal fields.
+    * SPVM::Builder::CompileInfo: Remove the obsolete no_generate field and rename input_file to source_file.
+    * SPVM::Builder::LinkInfo: Remove the obsolete no_generate field.
+    * Test: Update test cases to use glob patterns for discovering object files in hashed subdirectories.
+
 0.990150 2026-03-20
   [New Features]
     * SPVM::Builder::Config::Global: Add support for "build_type" field to manage build configurations like Debug, Release, RelWithDebInfo, and MinSizeRel.
