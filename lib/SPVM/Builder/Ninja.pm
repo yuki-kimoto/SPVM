@@ -423,8 +423,9 @@ sub create_command_hash {
   }
 
   # Sort input files by name to ensure consistent hash generation
-  @all_dependent_files = sort @all_dependent_files;
-
+  my %seen_dependent_files_h;
+  @all_dependent_files = sort grep { !$seen_dependent_files_h{$_}++ } @all_dependent_files;
+  
   my $sha = Digest::SHA->new(1);
 
   # Add SHA1 of the command string followed by a newline
