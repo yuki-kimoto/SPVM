@@ -481,6 +481,8 @@ sub compile_source_file {
   
   my $cc_cmd = $compile_info->create_command;
   my $cc_cmd_string = "@$cc_cmd";
+  my $cc_cmd_no_output_option = $compile_info->create_command({no_output_option => 1});
+  my $cc_cmd_string_no_output_option = "@$cc_cmd_no_output_option";
   
   my $cc_version = $config->cc_version;
   
@@ -489,7 +491,7 @@ sub compile_source_file {
   my $dependent_files = $compile_info->dependent_files;
   my $ninja = $self->builder->ninja;
   my $ninja_entry = {
-    command => $cc_cmd_string,
+    command => $cc_cmd_string_no_output_option,
     command_version => $cc_version,
     dependent_files => [$source_file, @$dependent_files],
     output_file => $output_file,
@@ -645,8 +647,13 @@ sub link {
   
   my $force = $self->detect_force($config);
   
+  my $link_command_array = $link_info->create_command;
+  my $link_command = "@$link_command_array";
+  my $link_command_array_no_output_option = $link_info->create_command({no_output_option => 1});
+  my $link_command_no_output_option = "@$link_command_array_no_output_option";
+  
   my $ninja_entry = {
-    command => $link_info->to_command,
+    command => $link_command_no_output_option,
     command_version => $ld_version,
     output_file => $output_file,
     dependent_files => [@object_files],
@@ -658,7 +665,6 @@ sub link {
     
     # Create a dynamic library
     my $start_time = int(Time::HiRes::time() * 1000);
-    my $link_command = $link_info->to_command;
     if ($output_type eq 'dynamic_lib') {
       my $basic_type = $runtime->get_basic_type_by_name($class_name);
       

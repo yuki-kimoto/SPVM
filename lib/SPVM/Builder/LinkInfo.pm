@@ -38,7 +38,11 @@ sub new {
 
 # Instance Methods
 sub create_command {
-  my ($self) = @_;
+  my ($self, $options) = @_;
+  
+  $options //= {};
+  
+  my $no_output_option = $options->{no_output_option};
   
   my $config = $self->config;
   
@@ -57,7 +61,14 @@ sub create_command {
   my $output_option = $config->create_option($ld_output_option_name, $output_file);
   
   # Build command
-  my @link_command = ($ld, $output_option, @$object_file_names, @$ldflags);
+  my @link_command;
+  push @link_command, ($ld);
+  
+  unless ($no_output_option) {
+    push @link_command, $output_option;
+  }
+  
+  push @link_command, (@$object_file_names, @$ldflags);
   
   return \@link_command;
 }

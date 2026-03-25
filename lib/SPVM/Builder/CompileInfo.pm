@@ -40,7 +40,11 @@ sub new {
 
 # Instance Methods
 sub create_command {
-  my ($self) = @_;
+  my ($self, $options) = @_;
+  
+  $options //= {};
+  
+  my $no_output_option = $options->{no_output_option};
   
   my $config = $self->config;
   
@@ -57,7 +61,15 @@ sub create_command {
   my $output_option = $config->create_option_short($cc_output_option_name, $output_file);
   
   # Build command
-  my @compile_command = ($cc, '-c', $output_option, @$compile_command_args, $source_file);
+  my @compile_command;
+  
+  push @compile_command, ($cc, '-c');
+  
+  unless ($no_output_option) {
+    push @compile_command, $output_option;
+  }
+  
+  push @compile_command, (@$compile_command_args, $source_file);
   
   return \@compile_command;
 }
