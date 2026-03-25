@@ -364,9 +364,9 @@ sub compile_source_file {
   
   my $compile_info = SPVM::Builder::CompileInfo->new(
     source_file => $source_file,
+    source_rel_file => $source_rel_file,
     config => $config,
     category => $options->{category},
-    source_rel_file => $source_rel_file,
   );
   
   my $compile_source_file_options = {
@@ -930,7 +930,7 @@ sub compile_bootstrap_source_file {
   # Compile
   my $object_file = $self->compile_source_file({
     source_file => $source_file,
-    source_rel_file => "bootstrap/$source_rel_file",
+    source_rel_file => $source_rel_file,
     config => $config,
     category => 'bootstrap',
   });

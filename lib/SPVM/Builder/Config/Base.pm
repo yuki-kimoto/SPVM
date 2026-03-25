@@ -87,6 +87,69 @@ sub create_option {
   }
 }
 
+sub clone {
+  my ($self) = @_;
+  
+  my $clone = bless {}, ref $self;
+  
+  for my $name (keys %$self) {
+    my $value = $self->{$name};
+    
+    if (ref $value eq 'ARRAY') {
+      $clone->{$name} = [@$value];
+    }
+    elsif (ref $value eq 'HASH') {
+      $clone->{$name} = &_copy_hash($value);
+    }
+    else {
+      $clone->{$name} = $value;
+    }
+  }
+  
+  return $clone;
+}
+
+sub _copy_hash {
+  my ($hash) = @_;
+  
+  my $clone = {};
+  
+  for my $name (keys %$hash) {
+    my $value = $hash->{$name};
+    
+    if (ref $value eq 'ARRAY') {
+      $clone->{$name} = [@$value];
+    }
+    elsif (ref $value eq 'HASH') {
+      $clone->{$name} = {%$value};
+    }
+    else {
+      $clone->{$name} = $value;
+    }
+  }
+  
+  return $clone;
+}
+
+sub _remove_ext_from_config_file {
+  my ($config_file) = @_;
+  
+  my ($config_base_name, $config_dir) = fileparse $config_file;
+  
+  $config_base_name =~ s/(\.[^\.]+)?\.config$//;
+  
+  my $config_file_without_ext = "$config_dir$config_base_name";
+  
+  return $config_file_without_ext;
+}
+
+sub _eval_config_content {
+  
+  $_[0] = qq|{\nuse strict;\nuse warnings;\nuse utf8;\n\nuse SPVM::Builder::Config;\nuse SPVM::Builder::Config::Exe;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
+  
+  return eval $_[0];
+}
+
 sub load_config {
   my ($self, $config_file) = @_;
   
@@ -155,67 +218,31 @@ sub load_base_config {
   return $config;
 }
 
-sub clone {
+sub get_base_dir {
   my ($self) = @_;
-  
-  my $clone = bless {}, ref $self;
-  
-  for my $name (keys %$self) {
-    my $value = $self->{$name};
-    
-    if (ref $value eq 'ARRAY') {
-      $clone->{$name} = [@$value];
-    }
-    elsif (ref $value eq 'HASH') {
-      $clone->{$name} = &_copy_hash($value);
-    }
-    else {
-      $clone->{$name} = $value;
-    }
+
+  my $file = $self->file;
+  my $class_name = $self->class_name;
+
+  unless (defined $file) {
+    confess("The file must be defined.");
   }
-  
-  return $clone;
-}
 
-sub _copy_hash {
-  my ($hash) = @_;
-  
-  my $clone = {};
-  
-  for my $name (keys %$hash) {
-    my $value = $hash->{$name};
-    
-    if (ref $value eq 'ARRAY') {
-      $clone->{$name} = [@$value];
-    }
-    elsif (ref $value eq 'HASH') {
-      $clone->{$name} = {%$value};
-    }
-    else {
-      $clone->{$name} = $value;
-    }
+  unless (defined $class_name) {
+    confess("the class_name must be defined.");
   }
-  
-  return $clone;
-}
 
-sub _remove_ext_from_config_file {
-  my ($config_file) = @_;
-  
-  my ($config_base_name, $config_dir) = fileparse $config_file;
-  
-  $config_base_name =~ s/(\.[^\.]+)?\.config$//;
-  
-  my $config_file_without_ext = "$config_dir$config_base_name";
-  
-  return $config_file_without_ext;
-}
+  my $abs_file = File::Spec->rel2abs($file);
+  my $base_dir = dirname($abs_file);
 
-sub _eval_config_content {
-  
-  $_[0] = qq|{\nuse strict;\nuse warnings;\nuse utf8;\n\nuse SPVM::Builder::Config;\nuse SPVM::Builder::Config::Exe;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
-  
-  return eval $_[0];
+  my @parts = split(/::/, $class_name);
+  my $depth = scalar @parts;
+
+  for (my $i = 0; $i < $depth; $i++) {
+    $base_dir = dirname($base_dir);
+  }
+
+  return $base_dir;
 }
 
 1;

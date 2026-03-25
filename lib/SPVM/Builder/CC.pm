@@ -132,7 +132,13 @@ sub compile_source_file {
     confess("\$source_rel_file must be defined.");
   }
   
+  my $cc_input_dir = $config->cc_input_dir // $config->get_base_dir;
+  
   my $source_file = $compile_info->source_file;
+  my $source_file_from_rel_file = "$cc_input_dir/$source_rel_file";
+  unless ($source_file eq $source_file_from_rel_file) {
+    confess("\$source_file '$source_file' does not equel \$source_file_from_rel_file '$cc_input_dir    /    $source_rel_file'.");
+  }
   
   my $object_rel_file = $source_rel_file;
   $object_rel_file =~ s/\.[^\.]+$/.o/;
@@ -413,6 +419,7 @@ sub compile_native_class {
       $cc_input_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
     }
   }
+  $config->cc_input_dir($cc_input_dir);
   
   # Native class source file
   my $native_class_source_file;
