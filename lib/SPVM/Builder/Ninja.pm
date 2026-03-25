@@ -317,19 +317,9 @@ sub load_log_without_lock {
 sub need_generate {
   my ($self, $options) = @_;
   
-  my $command = $options->{command};
-  unless (defined $command ) {
-    confess("'command' option must be defined.");
-  }
-  
-  my $command_version = $options->{command_version};
-  unless (defined $command_version ) {
-    confess("'command_version' option must be defined.");
-  }
-  
-  my $dependent_files = $options->{dependent_files};
-  unless (defined $dependent_files) {
-    confess("'dependent_files' option must be defined.");
+  my $command_hash = $options->{command_hash};
+  unless (defined $command_hash) {
+    confess("'command_hash' option must be defined.");
   }
   
   my $output_file = $options->{output_file};
@@ -348,21 +338,13 @@ sub need_generate {
     $need_generate = 1;
   }
   else {
-  
-    # Generate a robust hash of the command and the content of input files
-    my $current_command_hash = $self->create_command_hash({
-      command => $command,
-      command_version => $command_version,
-      dependent_files => $dependent_files,
-    });
-    
     # Retrieve the recorded log entry for the output file
     my $entries_h = $self->entries_h;
     my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
     my $entry = $entries_h->{$normalized_output_file};
     
     # If the entry doesn't exist, or the hash simply doesn't match, rebuild.
-    if (!$entry || $current_command_hash ne $entry->{command_hash}) {
+    if (!$entry || $command_hash ne $entry->{command_hash}) {
       $need_generate = 1;
     }
   }
