@@ -479,8 +479,6 @@ sub compile_source_file {
   
   my $output_file = "$cc_output_dir/$object_rel_file";
   
-  mkpath dirname $output_file;
-  
   $compile_info->output_file($output_file);
   
   my $cc_cmd_no_output_option = $compile_info->create_command({no_output_option => 1});
