@@ -22,8 +22,12 @@ ok(SPVM::TestCase::UseResource::Basic->test);
   my $resource = $main::TEST_USE_RESOURCE_RET;
   is_deeply($resource->config->{_test_base_env}, ['args1', 'args2']);
   
-  my $object_file = "$ENV{SPVM_BUILD_DIR}/work/object/SPVM/TestCase/Resource/Mylib1.native/src/mylib1_source1.o";
-  ok (-f $object_file);
+  # Find the object file under the hash-based directory
+  # Use glob to skip hash layers (e.g., ab/cdef...)
+  my ($object_file) = glob "$ENV{SPVM_BUILD_DIR}/work/object/*/*/SPVM/TestCase/Resource/Mylib1.native/src/mylib1_source1.o";
+  
+  # Check if the object file exists
+  ok($object_file && -f $object_file);
 }
 
 {

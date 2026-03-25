@@ -255,15 +255,24 @@ system($compile_native_api_prgoram) == 0 or die;
 
 # SPVM_CC_FORCE environment variable
 {
+  # Helper to find a file under the hash directory
+  # Use glob to skip the hash layers (e.g., ab/cdef...)
+  my $find_obj = sub {
+    my ($base, $rel_path) = @_;
+    my ($file) = glob "$base/*/*/$rel_path";
+    return $file;
+  };
 
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.o";
+  # Find object file under hash directory: work/object/??/hash.../SPVM/TestCase/NativeAPISrc.o
+  $native_object_file = $find_obj->("$build_dir/work/object", "SPVM/TestCase/NativeAPISrc.o");
   $start_native_object_file_mtime = (stat $native_object_file)[9];
-
+  
   my $native_src_object_file;
   my $start_native_src_object_file_mtime;
-  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.native/src/baz/baz.o";
+  # Find source object file under hash directory
+  $native_src_object_file = $find_obj->("$build_dir/work/object", "SPVM/TestCase/NativeAPISrc.native/src/baz/baz.o");
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
 
   my $native_shared_lib_file;

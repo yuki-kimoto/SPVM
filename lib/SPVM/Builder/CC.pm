@@ -484,16 +484,23 @@ sub compile_source_file {
     dependent_files => [$source_file, @$dependent_files],
   };
   
+  # Get command hash
   my $command_hash = $ninja->create_command_hash($ninja_entry);
-  
+
+  # Split hash into directory and filename (e.g., abcdef... -> ab/cdef...)
+  my $hash_dir = $command_hash;
+  $hash_dir =~ s/^(..)/$1\//;
+
+  # Build output file path
   my $object_rel_file = $source_rel_file;
   $object_rel_file =~ s/\.[^\.]+$/.o/;
   my $cc_output_dir = $self->builder->create_build_object_path;
-  
-  my $output_file = "$cc_output_dir/$object_rel_file";
-  
+
+  # Final output path: [build_dir]/[ab/hash_rest]/[source].o
+  my $output_file = "$cc_output_dir/$hash_dir/$object_rel_file";
+
+  # Set output file
   $compile_info->output_file($output_file);
-  
   $ninja_entry->{output_file} = $output_file;
   
   my $need_generate = $force || $ninja->need_generate($ninja_entry);
