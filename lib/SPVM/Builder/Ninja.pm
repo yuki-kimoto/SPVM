@@ -20,6 +20,7 @@ has [qw(
   lock_file_base_name
   lock_fh
   header_exts
+  dependent_content_hashes_h
 )];
 
 sub new {
@@ -39,6 +40,7 @@ sub new_without_prepare {
     entries_length => 0,
     header_exts => [qw(h hpp hh hxx h++ inc inl c cpp cc cxx c++)],
     lock_file_base_name => '.ninja_lock',
+    dependent_content_hashes_h => {},
     @_
   };
   
@@ -432,7 +434,7 @@ sub create_command_hash {
   $sha->add(Digest::SHA::sha1_hex($command) . "\x0A");
   $sha->add(Digest::SHA::sha1_hex($command_version) . "\x0A");
 
-  # 2. Add source file hash if it exists
+  # 2. Add source file hash if it exists (No cache for safety of dynamically generated files)
   if (defined $source_file && -f $source_file) {
     my $normalized_source_file = SPVM::Builder::Util::normalize_path($source_file, $self->log_dir);
     $sha->add(Digest::SHA::sha1_hex($normalized_source_file) . "\x0A");
@@ -440,12 +442,20 @@ sub create_command_hash {
     $sha->add("\x0A");
   }
 
-  # 3. Add dependent files hashes
+  # 3. Add dependent files hashes (Using in-memory cache)
   for my $dependent_file (@all_dependent_files) {
     my $normalized_dependent_file = SPVM::Builder::Util::normalize_path($dependent_file, $self->log_dir);
     $sha->add(Digest::SHA::sha1_hex($normalized_dependent_file) . "\x0A");
-    $sha->addfile($dependent_file);
-    $sha->add("\x0A");
+    
+    my $content_hash = $self->dependent_content_hashes_h->{$dependent_file};
+    unless (defined $content_hash) {
+      my $tmp_sha = Digest::SHA->new(1);
+      $tmp_sha->addfile($dependent_file);
+      $content_hash = $tmp_sha->hexdigest;
+      $self->dependent_content_hashes_h->{$dependent_file} = $content_hash;
+    }
+    
+    $sha->add($content_hash . "\x0A");
   }
 
   return $sha->hexdigest;
