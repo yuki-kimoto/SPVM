@@ -57,15 +57,15 @@ sub create_command {
   # Get output option name
   my $cc_output_option_name = $config->cc_output_option_name;
   
-  # Build output option
-  my $output_option = $config->create_option_short($cc_output_option_name, $output_file);
-  
   # Build command
   my @compile_command;
   
   push @compile_command, ($cc, '-c');
   
   unless ($no_output_option) {
+    # Build output option
+    my $output_option = $config->create_option_short($cc_output_option_name, $output_file);
+  
     push @compile_command, $output_option;
   }
   

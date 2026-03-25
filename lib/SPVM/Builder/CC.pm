@@ -473,14 +473,6 @@ sub compile_source_file {
   
   my $force = $self->detect_force($config);
   
-  my $object_rel_file = $source_rel_file;
-  $object_rel_file =~ s/\.[^\.]+$/.o/;
-  my $cc_output_dir = $self->builder->create_build_object_path;
-  
-  my $output_file = "$cc_output_dir/$object_rel_file";
-  
-  $compile_info->output_file($output_file);
-  
   my $cc_cmd_no_output_option = $compile_info->create_command({no_output_option => 1});
   my $cc_cmd_string_no_output_option = "@$cc_cmd_no_output_option";
   
@@ -491,9 +483,18 @@ sub compile_source_file {
     command_version => $cc_version,
     dependent_files => [$source_file, @$dependent_files],
   };
-  $ninja_entry->{output_file} = $output_file;
   
   my $command_hash = $ninja->create_command_hash($ninja_entry);
+  
+  my $object_rel_file = $source_rel_file;
+  $object_rel_file =~ s/\.[^\.]+$/.o/;
+  my $cc_output_dir = $self->builder->create_build_object_path;
+  
+  my $output_file = "$cc_output_dir/$object_rel_file";
+  
+  $compile_info->output_file($output_file);
+  
+  $ninja_entry->{output_file} = $output_file;
   
   my $need_generate = $force || $ninja->need_generate($ninja_entry);
   

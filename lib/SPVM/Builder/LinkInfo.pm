@@ -57,14 +57,14 @@ sub create_command {
   # Get output option name
   my $ld_output_option_name = $config->ld_output_option_name;
   
-  # Build output option
-  my $output_option = $config->create_option($ld_output_option_name, $output_file);
-  
   # Build command
   my @link_command;
   push @link_command, ($ld);
   
   unless ($no_output_option) {
+    # Build output option
+    my $output_option = $config->create_option($ld_output_option_name, $output_file);
+    
     push @link_command, $output_option;
   }
   
