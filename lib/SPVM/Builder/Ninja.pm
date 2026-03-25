@@ -494,6 +494,73 @@ sub recompact {
   $RECOMPACTED = 1;
 }
 
+sub read_lock {
+  my ($self, $cb) = @_;
+  
+  # Ensure the lock file handle is already opened
+  my $lock_fh = $self->lock_fh;
+  unless (defined $lock_fh) {
+    confess("Log lock file handle 'lock_fh' must be defined.");
+  }
+
+  # Shared lock for concurrent reading
+  flock($lock_fh, LOCK_SH)
+    or confess("Can't get shared lock: $!");
+  
+  my $result;
+  eval { $result = $cb->() };
+  my $error = $@;
+  
+  # Unlock but keep the file handle open for reuse
+  flock($lock_fh, LOCK_UN);
+  
+  if ($error) {
+    die $error;
+  }
+  
+  return $result;
+}
+
+sub write_lock {
+  my ($self, $cb) = @_;
+  
+  # Ensure the lock file handle is already opened
+  my $lock_fh = $self->lock_fh;
+  unless (defined $lock_fh) {
+    confess("Log lock file handle 'lock_fh' must be defined.");
+  }
+  
+  # Exclusive lock for writing
+  flock($lock_fh, LOCK_EX)
+    or confess("Can't get exclusive lock: $!");
+  
+  my $result;
+  eval { $result = $cb->() };
+  my $error = $@;
+  
+  # Unlock but keep the file handle open for reuse
+  flock($lock_fh, LOCK_UN);
+  
+  if ($error) {
+    die $error;
+  }
+  
+  return $result;
+}
+
+sub write_lock_with_flush {
+  my ($self, $cb) = @_;
+  
+  return $self->write_lock(sub {
+    my $result = $cb->();
+    
+    # Flush the log file handle directly
+    $self->log_fh->flush;
+    
+    return $result;
+  });
+}
+
 sub DESTROY {
   my ($self) = @_;
   
