@@ -604,16 +604,6 @@ sub build_precompile_class_source_file {
   close $fh;
 }
 
-sub get_resource_object_dir_from_class_name {
-  my ($self, $class_name) = @_;
-  
-  my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
-  
-  my $resource_object_dir = $self->builder->create_build_object_path("$module_rel_dir.resource");
-  
-  return $resource_object_dir;
-}
-
 sub link {
   my ($self, $class_name, $object_files, $options) = @_;
   
