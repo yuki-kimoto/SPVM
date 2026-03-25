@@ -456,16 +456,6 @@ sub compile_source_file {
   
   my $source_file = $compile_info->source_file;
   
-  my $object_rel_file = $source_rel_file;
-  $object_rel_file =~ s/\.[^\.]+$/.o/;
-  my $cc_output_dir = $self->builder->create_build_object_path;
-  
-  my $output_file = "$cc_output_dir/$object_rel_file";
-  
-  mkpath dirname $output_file;
-  
-  $compile_info->output_file($output_file);
-  
   my $before_compile_cbs = $config->before_compile_cbs;
   for my $before_compile_cb (@$before_compile_cbs) {
     $before_compile_cb->($compile_info->config, $compile_info);
@@ -478,6 +468,16 @@ sub compile_source_file {
       $before_compile_cb->($compile_info->config, $compile_info);
     }
   }
+  
+  my $object_rel_file = $source_rel_file;
+  $object_rel_file =~ s/\.[^\.]+$/.o/;
+  my $cc_output_dir = $self->builder->create_build_object_path;
+  
+  my $output_file = "$cc_output_dir/$object_rel_file";
+  
+  mkpath dirname $output_file;
+  
+  $compile_info->output_file($output_file);
   
   my $cc_cmd = $compile_info->create_command;
   my $cc_cmd_string = "@$cc_cmd";
