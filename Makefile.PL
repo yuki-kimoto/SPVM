@@ -170,7 +170,12 @@ WriteMakefile(
 );
 
 {
-  print "\n# Parallel build and test command:\n";
+  print "\n";
+  
+  print "# Parallel build and test command:\n";
+  print "MAKEFLAGS=j$jobs make && HARNESS_OPTIONS=j$jobs make test\n\n";
+  
+  print "# Parallel build and test command with --output-sync=target:\n";
   print "MAKEFLAGS=j$jobs make --output-sync=target && HARNESS_OPTIONS=j$jobs make test\n\n";
 }
 
@@ -179,10 +184,6 @@ sub MY::postamble {
   
   # The content of Makefile
   my $make_rule = '';
-  
-  # Update spvm_version.h
-  $make_rule .= "dynamic :: \n";
-  $make_rule .= qq|\tperl -e "utime(undef, undef, 'blib/lib/SPVM/Builder/include/spvm_version.h')"\n|;
   
   unless ($no_build_spvm_modules) {
     require SPVM::Builder::Util::API;

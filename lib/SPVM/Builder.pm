@@ -199,6 +199,8 @@ sub build {
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);
   
+  use D;du $cc_options->{force};
+  
   my $compile_and_link_options = {config => $config, runtime => $runtime};
   
   # Compile source files to object files

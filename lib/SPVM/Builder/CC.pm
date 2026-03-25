@@ -691,7 +691,6 @@ sub link {
   my $ninja_entry = {
     command => $link_info->to_command,
     command_version => $ld_version,
-    force => $force,
     output_file => $output_file,
     dependent_files => [@object_files],
   };

@@ -346,8 +346,8 @@ sub get_possible_dependent_files {
   }
   
   # Add input files
-  if (my $dependent_files = $options->{dependent_files}) {
-    push @dependent_files, @$dependent_files;
+  if (my $extra_dependent_files = $options->{dependent_files}) {
+    push @dependent_files, @$extra_dependent_files;
   }
   
   return \@dependent_files;
@@ -383,7 +383,7 @@ sub create_make_rule {
   # Source dependencies
   my $dependent_files = &get_possible_dependent_files($class_name, $category, $options);
   
-  $make_rule .= "$dynamic_lib_file :: @$dependent_files\n";
+  $make_rule .= "$dynamic_lib_file : @$dependent_files\n";
   
   # Build options
   my $options_string = "build_dir => '.spvm_build'";
@@ -392,7 +392,7 @@ sub create_make_rule {
   }
   
   # Build command
-  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($options_string)->build_dynamic_lib_dist_$category('$class_name')\"\n\n";
+  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($options_string)->build_dynamic_lib_dist_$category('$class_name', {force => 1})\"\n\n";
   
   return $make_rule;
 }
