@@ -370,7 +370,6 @@ sub compile_source_file {
   );
   
   my $compile_source_file_options = {
-    force => $self->force || $config->force,
     dependent_files => [$source_file, $include_dir],
   };
   $builder_cc->compile_source_file($compile_info, $compile_source_file_options);
@@ -866,9 +865,6 @@ sub create_bootstrap_source {
   # For detecting changing config mode
   my $mode_string = $self->mode // '';
   $bootstrap_source .= "// mode:$mode_string\n";
-  
-  # Force flag from various sources
-  my $force = $self->force || $config_global->force;
   
   # Check if generating is needed by comparing content or if force is true
   mkpath dirname $bootstrap_source_file;

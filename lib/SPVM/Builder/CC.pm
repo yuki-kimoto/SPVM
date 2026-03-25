@@ -168,7 +168,7 @@ sub compile_source_file {
   
   my $cc_version = $config->cc_version;
   
-  my $force = $options->{force};
+  my $force = $self->detect_force;
   
   my $dependent_files = $options->{dependent_files};
   my $ninja = $self->builder->ninja;
@@ -385,8 +385,6 @@ sub compile_native_class {
   
   my $category = $config->category;
   
-  my $force = $self->detect_force($config);
-  
   if ($category eq 'precompile') {
     my $precompile_method_names = $basic_type->get_method_names_by_category($category);
     
@@ -529,7 +527,6 @@ sub compile_native_class {
     }
     
     my $compile_source_file_options = {
-      force => $force,
       dependent_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
     };
     
