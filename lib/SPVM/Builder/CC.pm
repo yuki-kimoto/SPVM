@@ -478,10 +478,14 @@ sub compile_source_file {
   
   my $dependent_files = $compile_info->dependent_files;
   my $ninja = $self->builder->ninja;
+  unless (defined $source_file && -f $source_file) {
+    confess("source_file \"$source_file\" must be defined and exist.");
+  }
   my $ninja_entry = {
     command => $cc_cmd_string_no_output_option,
     command_version => $cc_version,
-    dependent_files => [$source_file, @$dependent_files],
+    source_file => $source_file,
+    dependent_files => $dependent_files,
   };
   
   # Get command hash

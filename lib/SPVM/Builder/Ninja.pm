@@ -371,42 +371,43 @@ sub need_generate {
 sub create_command_hash {
   my ($self, $options) = @_;
   
+  # Command string
   my $command = $options->{command};
   unless (defined $command) {
-    confess("command_ must be defined.");
+    confess("command must be defined.");
   }
   
+  # Command version
   my $command_version = $options->{command_version};
   unless (defined $command_version) {
     confess("command_version must be defined.");
   }
   
+  # Source file (Primary input, optional)
+  my $source_file = $options->{source_file};
+  
+  # Dependent files or directories (Secondary inputs)
   my $dependent_files = $options->{dependent_files};
   unless (defined $dependent_files) {
-    confess("command_ must be defined.");
+    confess("dependent_files must be defined.");
   }
   
-  # Get extensions from the object accessor (default or user-defined in new)
   my $extensions = $self->header_exts || [];
-  
-  # Build the regex from the extension array with proper escaping
   my $ext_list = join '|', map { quotemeta $_ } @$extensions;
   my $valid_ext_re = qr/\.(?:$ext_list)$/i;
 
   my @all_dependent_files;
 
+  # Process dependent files/directories
   for my $path (@$dependent_files) {
     if (defined $path && -d $path) {
       require File::Find;
       File::Find::find({
         wanted => sub {
           my $full_path = $File::Find::name;
-          
-          # Extract the base name for hidden file and extension checks
           my $base_name = $full_path;
           $base_name =~ s|.*/||; 
 
-          # Check if the path is a file and matches the allowed C/C++ extensions
           if (-f $full_path && $base_name =~ $valid_ext_re) {
             push @all_dependent_files, $full_path;
           }
@@ -417,28 +418,32 @@ sub create_command_hash {
       }, $path);
     }
     elsif (defined $path && -f $path) {
-      # Directly specified files are always included
       push @all_dependent_files, $path;
     }
   }
 
-  # Sort input files by name to ensure consistent hash generation
+  # Sort and unique for dependent files
   my %seen_dependent_files_h;
   @all_dependent_files = sort grep { !$seen_dependent_files_h{$_}++ } @all_dependent_files;
   
   my $sha = Digest::SHA->new(1);
 
-  # Add SHA1 of the command string followed by a newline
+  # 1. Add command and version hashes
   $sha->add(Digest::SHA::sha1_hex($command) . "\x0A");
   $sha->add(Digest::SHA::sha1_hex($command_version) . "\x0A");
 
+  # 2. Add source file hash if it exists
+  if (defined $source_file && -f $source_file) {
+    my $normalized_source_file = SPVM::Builder::Util::normalize_path($source_file, $self->log_dir);
+    $sha->add(Digest::SHA::sha1_hex($normalized_source_file) . "\x0A");
+    $sha->addfile($source_file);
+    $sha->add("\x0A");
+  }
+
+  # 3. Add dependent files hashes
   for my $dependent_file (@all_dependent_files) {
-    
-    # Add SHA1 of the file path followed by a newline
     my $normalized_dependent_file = SPVM::Builder::Util::normalize_path($dependent_file, $self->log_dir);
     $sha->add(Digest::SHA::sha1_hex($normalized_dependent_file) . "\x0A");
-    
-    # Add SHA1 of the file content followed by a newline
     $sha->addfile($dependent_file);
     $sha->add("\x0A");
   }
