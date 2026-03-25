@@ -371,7 +371,7 @@ sub compile_source_file {
   
   my $compile_source_file_options = {
     force => $self->force || $config->force,
-    input_files => [$source_file, $include_dir],
+    dependent_files => [$source_file, $include_dir],
   };
   $builder_cc->compile_source_file($compile_info, $compile_source_file_options);
   

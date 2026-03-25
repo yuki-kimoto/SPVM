@@ -325,9 +325,9 @@ sub need_generate {
     confess("'command_version' option must be defined.");
   }
   
-  my $input_files = $options->{input_files};
-  unless (defined $input_files) {
-    confess("'input_files' option must be defined.");
+  my $dependent_files = $options->{dependent_files};
+  unless (defined $dependent_files) {
+    confess("'dependent_files' option must be defined.");
   }
   
   my $output_file = $options->{output_file};
@@ -351,7 +351,7 @@ sub need_generate {
     my $current_command_hash = $self->create_command_hash({
       command => $command,
       command_version => $command_version,
-      input_files => $input_files,
+      dependent_files => $dependent_files,
     });
     
     # Retrieve the recorded log entry for the output file
@@ -381,8 +381,8 @@ sub create_command_hash {
     confess("command_version must be defined.");
   }
   
-  my $input_files = $options->{input_files};
-  unless (defined $input_files) {
+  my $dependent_files = $options->{dependent_files};
+  unless (defined $dependent_files) {
     confess("command_ must be defined.");
   }
   
@@ -393,9 +393,9 @@ sub create_command_hash {
   my $ext_list = join '|', map { quotemeta $_ } @$extensions;
   my $valid_ext_re = qr/\.(?:$ext_list)$/i;
 
-  my @all_input_files;
+  my @all_dependent_files;
 
-  for my $path (@$input_files) {
+  for my $path (@$dependent_files) {
     if (defined $path && -d $path) {
       require File::Find;
       File::Find::find({
@@ -408,7 +408,7 @@ sub create_command_hash {
 
           # Check if the path is a file and matches the allowed C/C++ extensions
           if (-f $full_path && $base_name =~ $valid_ext_re) {
-            push @all_input_files, $full_path;
+            push @all_dependent_files, $full_path;
           }
         },
         no_chdir    => 1,
@@ -418,12 +418,12 @@ sub create_command_hash {
     }
     elsif (defined $path && -f $path) {
       # Directly specified files are always included
-      push @all_input_files, $path;
+      push @all_dependent_files, $path;
     }
   }
 
   # Sort input files by name to ensure consistent hash generation
-  @all_input_files = sort @all_input_files;
+  @all_dependent_files = sort @all_dependent_files;
 
   my $sha = Digest::SHA->new(1);
 
@@ -431,14 +431,14 @@ sub create_command_hash {
   $sha->add(Digest::SHA::sha1_hex($command) . "\x0A");
   $sha->add(Digest::SHA::sha1_hex($command_version) . "\x0A");
 
-  for my $input_file (@all_input_files) {
+  for my $dependent_file (@all_dependent_files) {
     
     # Add SHA1 of the file path followed by a newline
-    my $normalized_input_file = SPVM::Builder::Util::normalize_path($input_file, $self->log_dir);
-    $sha->add(Digest::SHA::sha1_hex($normalized_input_file) . "\x0A");
+    my $normalized_dependent_file = SPVM::Builder::Util::normalize_path($dependent_file, $self->log_dir);
+    $sha->add(Digest::SHA::sha1_hex($normalized_dependent_file) . "\x0A");
     
     # Add SHA1 of the file content followed by a newline
-    $sha->addfile($input_file);
+    $sha->addfile($dependent_file);
     $sha->add("\x0A");
   }
 

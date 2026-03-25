@@ -346,8 +346,8 @@ sub get_possible_dependent_files {
   }
   
   # Add input files
-  if (my $input_files = $options->{input_files}) {
-    push @dependent_files, @$input_files;
+  if (my $dependent_files = $options->{dependent_files}) {
+    push @dependent_files, @$dependent_files;
   }
   
   return \@dependent_files;

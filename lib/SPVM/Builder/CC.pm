@@ -170,12 +170,12 @@ sub compile_source_file {
   
   my $force = $options->{force};
   
-  my $input_files = $options->{input_files};
+  my $dependent_files = $options->{dependent_files};
   my $ninja = $self->builder->ninja;
   my $ninja_entry = {
     command => $cc_cmd_string,
     command_version => $cc_version,
-    input_files => $input_files,
+    dependent_files => $dependent_files,
     output_file => $output_file,
     force => $force,
   };
@@ -530,7 +530,7 @@ sub compile_native_class {
     
     my $compile_source_file_options = {
       force => $force,
-      input_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
+      dependent_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
     };
     
     my $compile_info_category;
@@ -694,7 +694,7 @@ sub link {
     command_version => $ld_version,
     force => $force,
     output_file => $output_file,
-    input_files => [@object_files],
+    dependent_files => [@object_files],
   };
   my $need_generate = $self->builder->ninja->need_generate($ninja_entry);
   
