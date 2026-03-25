@@ -469,6 +469,10 @@ sub compile_source_file {
     }
   }
   
+  my $cc_version = $config->cc_version;
+  
+  my $force = $self->detect_force($config);
+  
   my $object_rel_file = $source_rel_file;
   $object_rel_file =~ s/\.[^\.]+$/.o/;
   my $cc_output_dir = $self->builder->create_build_object_path;
@@ -479,14 +483,8 @@ sub compile_source_file {
   
   $compile_info->output_file($output_file);
   
-  my $cc_cmd = $compile_info->create_command;
-  my $cc_cmd_string = "@$cc_cmd";
   my $cc_cmd_no_output_option = $compile_info->create_command({no_output_option => 1});
   my $cc_cmd_string_no_output_option = "@$cc_cmd_no_output_option";
-  
-  my $cc_version = $config->cc_version;
-  
-  my $force = $self->detect_force($config);
   
   my $dependent_files = $compile_info->dependent_files;
   my $ninja = $self->builder->ninja;
@@ -494,12 +492,15 @@ sub compile_source_file {
     command => $cc_cmd_string_no_output_option,
     command_version => $cc_version,
     dependent_files => [$source_file, @$dependent_files],
-    output_file => $output_file,
   };
+  $ninja_entry->{output_file} = $output_file;
   my $need_generate = $force || $ninja->need_generate($ninja_entry);
   
   if ($need_generate) {
     mkpath dirname $output_file;
+    
+    my $cc_cmd = $compile_info->create_command;
+    my $cc_cmd_string = "@$cc_cmd";
     
     unless ($quiet) {
       my $compile_info_category = $compile_info->category;
