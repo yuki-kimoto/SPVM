@@ -338,7 +338,12 @@ sub compile_resources {
     }
   }
   else {
-    $need_compile_resources = 1;
+    if ($config->is_resource) {
+      $need_compile_resources = 0;
+    }
+    else {
+      $need_compile_resources = 1;
+    }
   }
   
   if ($need_compile_resources) {
