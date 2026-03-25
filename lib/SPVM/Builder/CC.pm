@@ -494,6 +494,9 @@ sub compile_source_file {
     dependent_files => [$source_file, @$dependent_files],
   };
   $ninja_entry->{output_file} = $output_file;
+  
+  my $command_hash = $ninja->create_command_hash($ninja_entry);
+  
   my $need_generate = $force || $ninja->need_generate($ninja_entry);
   
   if ($need_generate) {
