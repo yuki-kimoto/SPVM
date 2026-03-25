@@ -1056,7 +1056,7 @@ sub compile_native_class {
   
   if (defined $config_file && -f $config_file) {
     
-    my $config = SPVM::Builder::Config->load_config($config_file);
+    my $config = SPVM::Builder::Config::Base::load_config(undef, $config_file);
     
     $config->config_global($config_global);
     
