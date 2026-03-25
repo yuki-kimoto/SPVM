@@ -78,12 +78,15 @@ sub new {
 sub detect_force {
   my ($self, $config) = @_;
   
+  unless ($config) {
+    confess("The config \$config must be define.");
+  }
   my $force;
   
   if (defined $self->force) {
     $force = $self->force;
   }
-  elsif (defined $config && defined $config->force) {
+  elsif (defined $config->force) {
     $force = $config->force;
   }
   else {
@@ -168,7 +171,7 @@ sub compile_source_file {
   
   my $cc_version = $config->cc_version;
   
-  my $force = $self->detect_force;
+  my $force = $self->detect_force($config);
   
   my $dependent_files = $options->{dependent_files};
   my $ninja = $self->builder->ninja;
@@ -177,9 +180,8 @@ sub compile_source_file {
     command_version => $cc_version,
     dependent_files => $dependent_files,
     output_file => $output_file,
-    force => $force,
   };
-  my $need_generate = $ninja->need_generate($ninja_entry);
+  my $need_generate = $force || $ninja->need_generate($ninja_entry);
   
   if ($need_generate) {
     mkpath dirname $output_file;
@@ -582,7 +584,7 @@ sub build_precompile_class_source_file {
   my $precompile_source = $basic_type->build_precompile_class_source($basic_type);
   
   # Force
-  my $force = $self->detect_force;
+  my $force = $self->detect_force($config);
   
   # Output - Precompile C source file
   my $cc_input_dir = $config->cc_input_dir;
@@ -634,8 +636,6 @@ sub link {
   
   my $category = $config->category;
   
-  my $force = $self->detect_force($config);
-  
   my $link_info = $self->create_link_info($class_name, $object_files, $config);
   
   my $output_file = $config->output_file;
@@ -686,6 +686,8 @@ sub link {
   
   my $ld_version = $config->ld_version;
   
+  my $force = $self->detect_force($config);
+  
   my $ninja_entry = {
     command => $link_info->to_command,
     command_version => $ld_version,
@@ -693,7 +695,7 @@ sub link {
     output_file => $output_file,
     dependent_files => [@object_files],
   };
-  my $need_generate = $self->builder->ninja->need_generate($ninja_entry);
+  my $need_generate = $force || $self->builder->ninja->need_generate($ninja_entry);
   
   if ($need_generate) {
     mkpath dirname $link_info_output_file;
