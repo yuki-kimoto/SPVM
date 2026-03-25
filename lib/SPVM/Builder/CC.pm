@@ -361,18 +361,19 @@ sub compile_native_class {
   # Check if a config file and an loaded SPVM class file are in the same directory.
   my $class_file = $basic_type->get_class_file;
   if (defined $config->file) {
-    my $config_file = $config->file;
+    my $config_file_abs = File::Spec->rel2abs($config->file);
+    my $class_file_abs  = File::Spec->rel2abs($class_file);
     
-    my $config_file_abs = File::Spec->rel2abs($config_file);
+    my $config_dir  = dirname($config_file_abs);
+    my $config_base = basename($config_file_abs);
+    $config_base =~ s/\..*$//;
     
-    my $class_file_cannonpath = File::Spec->rel2abs($class_file);
+    my $class_dir  = dirname($class_file_abs);
+    my $class_base = basename($class_file_abs);
+    $class_base =~ s/\..*$//;
     
-    my $class_file_cannonpath_without_ext = $class_file_cannonpath;
-    $class_file_cannonpath_without_ext =~ s/\.spvm$//;
-    my $class_file_cannonpath_without_ext_quotemeta = quotemeta $class_file_cannonpath_without_ext;
-    
-    if (!$config->isa('SPVM::Builder::Config') && $config_file_abs !~ /^$class_file_cannonpath_without_ext_quotemeta\./) {
-      confess("The config file \"$config_file_abs\" is not compatible with the SPVM file \"$class_file_cannonpath\".");
+    unless ($config_dir eq $class_dir && $config_base eq $class_base) {
+      confess("The config file \"$config_file_abs\" is not compatible with the SPVM file \"$class_file_abs\".");
     }
   }
   
