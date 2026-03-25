@@ -20,7 +20,6 @@ use SPVM::Builder::Ninja;
 # Fields
 has [qw(
   build_dir
-  optimize
   work_dir
   include_dirs
   ninja
@@ -177,8 +176,8 @@ sub build {
   
   $config->output_dir($output_dir);
   
-  if (defined $self->optimize) {
-    $config->optimize($self->optimize);
+  if (defined $options->{optimize}) {
+    $config->optimize($options->{optimize});
   }
   
   my $cc_options = {builder => $self};
@@ -198,8 +197,6 @@ sub build {
   }
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);
-  
-  use D;du $cc_options->{force};
   
   my $compile_and_link_options = {config => $config, runtime => $runtime};
   

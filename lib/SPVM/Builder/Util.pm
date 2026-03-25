@@ -386,13 +386,17 @@ sub create_make_rule {
   $make_rule .= "$dynamic_lib_file : @$dependent_files\n";
   
   # Build options
-  my $options_string = "build_dir => '.spvm_build'";
+  my $new_options_string = "build_dir => '.spvm_build'";
   if (defined(my $optimize = $options->{optimize})) {
-    $options_string .= ", optimize => '$optimize'";
+    $new_options_string .= ", optimize => '$optimize'";
+  }
+  my $build_options_string = "force => 1";
+  if (defined(my $optimize = $options->{optimize})) {
+    $build_options_string .= ", optimize => '$optimize'";
   }
   
   # Build command
-  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($options_string)->build_dynamic_lib_dist_$category('$class_name', {force => 1})\"\n\n";
+  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($new_options_string)->build_dynamic_lib_dist_$category('$class_name', {$build_options_string})\"\n\n";
   
   return $make_rule;
 }
