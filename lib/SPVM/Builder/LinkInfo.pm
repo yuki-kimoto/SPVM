@@ -11,7 +11,6 @@ use SPVM::Builder::Accessor 'has';
 has [qw(
   config
   object_files
-  no_generate
 )];
 
 # Class Methods
@@ -166,13 +165,6 @@ Gets and sets the C<output_file> field, an output file.
 
 Gets and sets the C<object_files> field, an array reference of L<SPVM::Builder::ObjectFileInfo> objects.
 
-=head2 no_generate
-
-  my $no_generate = $link_info->no_generate;
-  $link_info->no_generate($no_generate);
-
-Gets and sets the C<no_generate> field. If this field is a true value, the output file is not generated.
-
 =head1 Class Methods
 
 =head2 new
@@ -192,10 +184,6 @@ undef
 =item * L</"object_files">
 
 []
-
-=item * L</"no_generate">
-
-undef
 
 =back
 

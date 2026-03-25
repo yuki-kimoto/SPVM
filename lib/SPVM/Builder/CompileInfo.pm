@@ -13,7 +13,6 @@ has [qw(
   source_rel_file
   output_file
   category
-  no_generate
 )];
 
 # Class methods
@@ -191,13 +190,6 @@ Gets and sets the C<category> field.
 
 These are C<native_class>, C<native_source>, C<precompile_class>, C<spvm>, C<spvm_core>.
 
-=head2 no_generate
-
-  my $no_generate = $link_info->no_generate;
-  $link_info->no_generate($no_generate);
-
-Gets and sets the C<no_generate> field. If this field is a true value, the output file is not generated.
-
 =head1 Class Methods
 
 =head2 new
@@ -211,10 +203,6 @@ Field Default Values:
 =over 2
 
 =item * L</"output_file">
-
-undef
-
-=item * L</"no_generate">
 
 undef
 
