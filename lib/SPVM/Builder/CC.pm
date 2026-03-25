@@ -5,7 +5,6 @@ use warnings;
 
 use Carp 'confess';
 use Config;
-use ExtUtils::CBuilder;
 use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
 use File::Find 'find';
@@ -444,8 +443,6 @@ sub compile_source_file {
   
   my $quiet = $self->detect_quiet($config);
   
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
-  
   my $source_rel_file = $compile_info->source_rel_file;
   
   unless (defined $source_rel_file) {
@@ -551,6 +548,10 @@ sub compile_source_file {
     }
     
     my $start_time = int(Time::HiRes::time() * 1000);
+    
+    # Load ExtUtils::CBuilder only when compilation is needed for performance
+    require ExtUtils::CBuilder;
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
     $cbuilder->do_system(@$cc_cmd)
       or confess("$source_file file cannnot be compiled by the following command:\n$cc_cmd_string\n");
     my $end_time = int(Time::HiRes::time() * 1000);
@@ -622,23 +623,7 @@ sub link {
   my $hint_cc = $config->hint_cc;
   my $ld = $config->ld;
   
-  my $cbuilder_config = {
-    cc => $hint_cc,
-    ld => $ld,
-    lddlflags => '',
-    shrpenv => '',
-    libpth => '',
-    libperl => '',
-    # On Windows/gcc(MinGW) "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
-    # Linker Script File(.lds) when "perllibs" is empty string.
-    # This is syntax error in Linker Script File(.lds)
-    # For the reason, libm is linked which seems to have no effect.
-    perllibs => '-lm',
-  };
-  
   my $quiet = $self->detect_quiet($config);
-  
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
   
   my $link_info_output_file = $config->output_file;
   
@@ -675,6 +660,24 @@ sub link {
   my $need_generate = $force || $self->builder->ninja->need_generate($ninja_entry);
   
   if ($need_generate) {
+    my $cbuilder_config = {
+      cc => $hint_cc,
+      ld => $ld,
+      lddlflags => '',
+      shrpenv => '',
+      libpth => '',
+      libperl => '',
+      # On Windows/gcc(MinGW) "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
+      # Linker Script File(.lds) when "perllibs" is empty string.
+      # This is syntax error in Linker Script File(.lds)
+      # For the reason, libm is linked which seems to have no effect.
+      perllibs => '-lm',
+    };
+    
+    # Load ExtUtils::CBuilder only when linking is needed for performance
+    require ExtUtils::CBuilder;
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
+  
     mkpath dirname $link_info_output_file;
     
     # Create a dynamic library
