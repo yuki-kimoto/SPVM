@@ -137,7 +137,7 @@ sub compile_source_file {
   
   my $force = $self->detect_force($config);
   
-  my $dependent_files = $options->{dependent_files};
+  my $dependent_files = $compile_info->dependent_files;
   my $ninja = $self->builder->ninja;
   my $ninja_entry = {
     command => $cc_cmd_string,
@@ -492,10 +492,6 @@ sub compile_native_class {
       push @resource_naitve_include_dirs, $resource_native_include_dir;
     }
     
-    my $compile_source_file_options = {
-      dependent_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
-    };
-    
     my $compile_info_category;
     if ($category eq 'precompile') {
       $compile_info_category = 'precompile_class';
@@ -514,10 +510,11 @@ sub compile_native_class {
       source_rel_file => $source_rel_file,
       config => $config,
       category => $compile_info_category,
+      dependent_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
     );
     
     # Compile a source file
-    $self->compile_source_file($compile_info, $compile_source_file_options);
+    $self->compile_source_file($compile_info);
     
     # Object file information
     my $compile_info_cc = $compile_info->{cc};

@@ -369,10 +369,9 @@ sub compile_source_file {
     category => $options->{category},
   );
   
-  my $compile_source_file_options = {
-    dependent_files => [$source_file, $include_dir],
-  };
-  $builder_cc->compile_source_file($compile_info, $compile_source_file_options);
+  $compile_info->dependent_files([$source_file, $include_dir]);
+  
+  $builder_cc->compile_source_file($compile_info);
   
   my $object_file_name = $compile_info->output_file;
   my $object_file = SPVM::Builder::ObjectFileInfo->new(
