@@ -5,31 +5,15 @@ use warnings;
 use Config;
 use Carp 'confess';
 use File::Basename 'dirname';
+use SPVM::Builder::Accessor 'has';
 
 use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
 
 # Fields
-sub file {
-  my $self = shift;
-  if (@_) {
-    $self->{file} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{file};
-  }
-}
-
-sub compile_info {
-  my $self = shift;
-  if (@_) {
-    $self->{compile_info} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{compile_info};
-  }
-}
+has [qw(
+  file
+  compile_info
+)];
 
 # Class methods
 sub new {

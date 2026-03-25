@@ -11,40 +11,15 @@ use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 
 use SPVM::Builder::ScriptInfo;
+use SPVM::Builder::Accessor 'has';
+
 
 # Fields
-sub script_name {
-  my $self = shift;
-  if (@_) {
-    $self->{script_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{script_name};
-  }
-}
-
-sub with_version {
-  my $self = shift;
-  if (@_) {
-    $self->{with_version} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{with_version};
-  }
-}
-
-sub excluded_class_names {
-  my $self = shift;
-  if (@_) {
-    $self->{excluded_class_names} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{excluded_class_names};
-  }
-}
+has [qw(
+  script_name
+  with_version
+  excluded_class_names
+)];
 
 # Class Methods
 sub new {

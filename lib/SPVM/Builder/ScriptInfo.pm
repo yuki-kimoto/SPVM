@@ -9,62 +9,16 @@ use File::Basename 'basename';
 use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
+use SPVM::Builder::Accessor 'has';
 
 # Fields
-sub builder {
-  my $self = shift;
-  if (@_) {
-    $self->{builder} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{builder};
-  }
-}
-
-sub class_name {
-  my $self = shift;
-  if (@_) {
-    $self->{class_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{class_name};
-  }
-}
-
-sub script_name {
-  my $self = shift;
-  if (@_) {
-    $self->{script_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{script_name};
-  }
-}
-
-sub compiler {
-  my $self = shift;
-  if (@_) {
-    $self->{compiler} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{compiler};
-  }
-}
-
-sub runtime {
-  my $self = shift;
-  if (@_) {
-    $self->{runtime} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{runtime};
-  }
-}
+has [qw(
+  builder
+  class_name
+  script_name
+  compiler
+  runtime
+)];
 
 # Class Methods
 sub new {

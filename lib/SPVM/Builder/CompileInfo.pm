@@ -5,62 +5,16 @@ use warnings;
 use Config;
 use Carp 'confess';
 use File::Basename 'dirname';
+use SPVM::Builder::Accessor 'has';
 
 # Fields
-sub config {
-  my $self = shift;
-  if (@_) {
-    $self->{config} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{config};
-  }
-}
-
-sub source_rel_file {
-  my $self = shift;
-  if (@_) {
-    $self->{source_rel_file} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{source_rel_file};
-  }
-}
-
-sub output_file {
-  my $self = shift;
-  if (@_) {
-    $self->{output_file} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{output_file};
-  }
-}
-
-sub category {
-  my $self = shift;
-  if (@_) {
-    $self->{category} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{category};
-  }
-}
-
-sub no_generate {
-  my $self = shift;
-  if (@_) {
-    $self->{no_generate} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{no_generate};
-  }
-}
+has [qw(
+  config
+  source_rel_file
+  output_file
+  category
+  no_generate
+)];
 
 # Class methods
 sub new {

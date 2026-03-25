@@ -5,40 +5,14 @@ use warnings;
 use Config;
 use Carp 'confess';
 use File::Basename 'dirname';
+use SPVM::Builder::Accessor 'has';
 
 # Fields
-sub config {
-  my $self = shift;
-  if (@_) {
-    $self->{config} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{config};
-  }
-}
-
-sub object_files {
-  my $self = shift;
-  if (@_) {
-    $self->{object_files} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{object_files};
-  }
-}
-
-sub no_generate {
-  my $self = shift;
-  if (@_) {
-    $self->{no_generate} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{no_generate};
-  }
-}
+has [qw(
+  config
+  object_files
+  no_generate
+)];
 
 # Class Methods
 sub new {

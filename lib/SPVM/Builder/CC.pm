@@ -17,51 +17,15 @@ use SPVM::Builder::CompileInfo;
 use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Native::BasicType;
+use SPVM::Builder::Accessor 'has';
 
 # Fields
-sub builder {
-  my $self = shift;
-  if (@_) {
-    $self->{builder} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{builder};
-  }
-}
-
-sub force {
-  my $self = shift;
-  if (@_) {
-    $self->{force} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{force};
-  }
-}
-
-sub quiet {
-  my $self = shift;
-  if (@_) {
-    $self->{quiet} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{quiet};
-  }
-}
-
-sub debug {
-  my $self = shift;
-  if (@_) {
-    $self->{debug} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{debug};
-  }
-}
+has [qw(
+  builder
+  force
+  quiet
+  debug
+)];
 
 # Class Methods
 sub new {

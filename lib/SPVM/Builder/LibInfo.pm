@@ -5,64 +5,18 @@ use warnings;
 use Config;
 use Carp 'confess';
 use File::Basename 'dirname';
+use SPVM::Builder::Accessor 'has';
 
 use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
 
 # Fields
-sub config {
-  my $self = shift;
-  if (@_) {
-    $self->{config} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{config};
-  }
-}
-
-sub name {
-  my $self = shift;
-  if (@_) {
-    $self->{name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{name};
-  }
-}
-
-sub file {
-  my $self = shift;
-  if (@_) {
-    $self->{file} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{file};
-  }
-}
-
-sub is_static {
-  my $self = shift;
-  if (@_) {
-    $self->{is_static} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{is_static};
-  }
-}
-
-sub is_abs {
-  my $self = shift;
-  if (@_) {
-    $self->{is_abs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{is_abs};
-  }
-}
+has [qw(
+  config
+  name
+  file
+  is_static
+  is_abs
+)];
 
 # Class Methods
 sub new {
