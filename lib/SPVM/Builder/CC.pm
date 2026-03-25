@@ -167,7 +167,7 @@ sub compile_source_file {
   
   my $object_rel_file = $source_rel_file;
   $object_rel_file =~ s/\.[^\.]+$/.o/;
-  my $cc_output_dir = $config->cc_output_dir // $self->builder->create_build_object_path;
+  my $cc_output_dir = $self->builder->create_build_object_path;
   
   my $output_file = "$cc_output_dir/$object_rel_file";
   
@@ -345,13 +345,6 @@ sub compile_resources {
     for my $resource_name (@$resource_names) {
       my $resource = $config->get_resource($resource_name);
       
-      # Build native classes
-      my $builder_cc_resource = SPVM::Builder::CC->new(
-        builder => $self->builder,
-        quiet => $self->detect_quiet($config),
-        force => $self->detect_force($config),
-      );
-      
       my $resource_class_name;
       my $resource_config;
       if (ref $resource) {
@@ -362,22 +355,20 @@ sub compile_resources {
         $resource_class_name = $resource;
       }
       
-      unless ($resource_config->isa('SPVM::Builder::Config')) {
-        confess("[Unexpected Error]The resource config must be an SPVM::Builder::Config object");
-      }
-      
       $resource_config->add_include_dir(@$resource_include_dirs);
       
       $resource_config->class_name($resource_class_name);
-      
-      my $resource_object_dir = $self->builder->create_build_object_path;
-      
-      $resource_config->cc_output_dir($resource_object_dir);
       
       my $compile_options = {
         runtime => $runtime,
         config => $resource_config,
       };
+      
+      my $builder_cc_resource = SPVM::Builder::CC->new(
+        builder => $self->builder,
+        quiet => $self->detect_quiet($config),
+        force => $self->detect_force($config),
+      );
       
       my $resource_object_files = $builder_cc_resource->compile_class($resource_class_name, $compile_options);
       push @$object_files, @$resource_object_files;

@@ -26,7 +26,6 @@ my $cc_fields = [qw(
   cc_output_option_name
   copyright_print_ccflags
   cc_input_dir
-  cc_output_dir
   language_ccflags
   arch_ccflags
   warn_ccflags
@@ -647,13 +646,6 @@ The 2th argument of the callback is an L<SPVM::Builder::CompileInfo> object.
   $config->cc_input_dir($cc_input_dir);
 
 Gets and sets C<cc_input_dir> field, an input directory for the compiler L</"cc">.
-
-=head2 cc_output_dir
-
-  my $cc_output_dir = $config->cc_output_dir;
-  $config->cc_output_dir($cc_output_dir);
-
-Gets and sets C<cc_output_dir> field, an output directory for the compiler L</"cc">.
 
 =head2 language
 
