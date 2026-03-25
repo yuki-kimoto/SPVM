@@ -416,7 +416,6 @@ sub create_command_hash {
         },
         no_chdir    => 1,
         follow      => 1,
-        follow_skip => 2,
       }, $path);
     }
     elsif (defined $path && -f $path) {
