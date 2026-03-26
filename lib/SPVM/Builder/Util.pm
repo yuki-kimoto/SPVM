@@ -534,6 +534,7 @@ sub create_cfunc_name {
   return $cfunc_name;
 }
 
+my $DYNAMIC_LIB_LIBREFS_H = {};
 sub get_method_addresses {
   my ($dynamic_lib_file, $class_name, $method_names, $category) = @_;
   
@@ -553,7 +554,14 @@ sub get_method_addresses {
 
       my $cfunc_address;
       if ($dynamic_lib_file) {
-        my $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
+        my $dynamic_lib_libref;
+        if ($DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file}) {
+          $dynamic_lib_libref = $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file};
+        }
+        else {
+          $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
+          $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file} = $dynamic_lib_libref;
+        }
         
         if ($dynamic_lib_libref) {
 
