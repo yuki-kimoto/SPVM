@@ -34,6 +34,11 @@ END {
     
     $COMPILER = undef;
     
+    for my $dynamic_lib_file (keys %$DYNAMIC_LIB_LIBREFS_H) {
+      my $dynamic_lib_libref = $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file};
+      DynaLoader::dl_unload_file($dynamic_lib_libref);
+    }
+    
     if (defined $BUILD_TMP_DIR) {
       rmtree $BUILD_TMP_DIR;
     }
