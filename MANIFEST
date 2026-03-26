@@ -353,6 +353,8 @@ lib/SPVM/Immutable/StringList.spvm
 lib/SPVM/Int.pm
 lib/SPVM/IntList.pm
 lib/SPVM/IntList.spvm
+lib/SPVM/JIT.pm
+lib/SPVM/JIT.spvm
 lib/SPVM/List.pm
 lib/SPVM/List.spvm
 lib/SPVM/Long.pm
@@ -1008,6 +1010,7 @@ t/06_module/Immutable/ShortList.t
 t/06_module/Immutable/StringList.t
 t/06_module/Int.t
 t/06_module/IntList.t
+t/06_module/JIT.t
 t/06_module/lib/SPVM/TestCase/DefaultLoadedClasses.spvm
 t/06_module/lib/SPVM/TestCase/Module/Array.spvm
 t/06_module/lib/SPVM/TestCase/Module/Bool.spvm
@@ -1039,6 +1042,8 @@ t/06_module/lib/SPVM/TestCase/Module/Immutable/ShortList.spvm
 t/06_module/lib/SPVM/TestCase/Module/Immutable/StringList.spvm
 t/06_module/lib/SPVM/TestCase/Module/Int.spvm
 t/06_module/lib/SPVM/TestCase/Module/IntList.spvm
+t/06_module/lib/SPVM/TestCase/Module/JIT.spvm
+t/06_module/lib/SPVM/TestCase/Module/JIT/Stub.spvm
 t/06_module/lib/SPVM/TestCase/Module/List.spvm
 t/06_module/lib/SPVM/TestCase/Module/Long.spvm
 t/06_module/lib/SPVM/TestCase/Module/LongList.spvm

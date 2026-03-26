@@ -1,0 +1,18 @@
+# Copyright (c) 2026 Yuki Kimoto
+# MIT License
+
+class JIT {
+  version_from SPVM;
+  
+  use Address;
+  
+  # Instance Methods
+  method compile : void ($source : string) {
+    die "Not implemented.";
+  }
+  
+  method get_address : Address ($class_name : string, $method_name : string) {
+    die "Not implemented.";
+  }
+  
+}

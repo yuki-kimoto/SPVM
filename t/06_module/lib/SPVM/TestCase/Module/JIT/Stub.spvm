@@ -1,0 +1,19 @@
+# Copyright (c) 2026 Yuki Kimoto
+# MIT License
+
+class TestCase::Module::JIT::Stub extends JIT {
+  
+  static method new : TestCase::Module::JIT::Stub () {
+    return new TestCase::Module::JIT::Stub;
+  }
+  
+  # Instance Methods
+  method compile : void ($source : string) {
+    
+  }
+  
+  method get_address : Address ($class_name : string, $method_name : string) {
+    return undef;
+  }
+  
+}

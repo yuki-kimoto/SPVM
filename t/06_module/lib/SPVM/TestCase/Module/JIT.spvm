@@ -1,0 +1,26 @@
+# Copyright (c) 2026 Yuki Kimoto
+# MIT License
+
+class TestCase::Module::JIT {
+  
+  use TestCase::Module::JIT::Stub;
+  
+  # Instance Methods
+  static method basic : int () {
+    
+    my $jit = TestCase::Module::JIT::Stub->new;
+    
+    my $source = "1 + 1";
+    $jit->compile($source);
+    
+    my $class_name = "MyClass";
+    my $method_name = "my_method";
+    my $address = $jit->get_address($class_name, $method_name);
+    
+    unless ($address is_compile_type Address) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
