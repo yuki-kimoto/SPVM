@@ -2,6 +2,7 @@ use lib "t/lib";
 use TestAuto;
 use TestUtil::MyLib;
 use TestUtil;
+use lib "$FindBin::Bin/../02_vm/lib";
 
 use strict;
 use warnings;

@@ -1,6 +1,7 @@
 use lib "t/lib";
 use TestAuto;
 use TestUtil::MyLib;
+use lib "$FindBin::Bin/../02_vm/lib";
 
 use strict;
 use warnings;
@@ -9,8 +10,8 @@ use Data::Dumper;
 use File::Basename 'basename';
 use POSIX();
 use Encode 'encode';
-
 use Test::More;
+use FindBin;
 
 my $file = basename $0;
 
@@ -21,6 +22,8 @@ use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'TestCase::ExchangeAPI';
 use SPVM 'TestCase::Point_3i';
 use SPVM 'TestCase::Minimal';
+use SPVM 'TestCase::Simple';
+
 use SPVM 'Point';
 use SPVM 'Point3D';
 use SPVM 'Byte';
@@ -35,8 +38,6 @@ use SPVM 'SPVM';
 
 # use the same module twice
 use SPVM 'Point';
-
-use SPVM 'TestCase::Simple';
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;

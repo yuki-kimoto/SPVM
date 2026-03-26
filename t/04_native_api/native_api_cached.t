@@ -1,6 +1,7 @@
 use lib "t/lib";
 use TestAuto;
 use TestUtil::MyLib;
+use lib "$FindBin::Bin/../02_vm/lib";
 
 use strict;
 use warnings;
@@ -12,7 +13,7 @@ use Test::More;
 
 use SPVM;
 
-my $test_dir = "$FindBin::Bin/..";
+my $test_dir = "$FindBin::Bin";
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 my $compile_native_api_prgoram = "$^X -Mblib $FindBin::Bin/compile_native_api.pl";

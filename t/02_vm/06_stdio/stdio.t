@@ -1,6 +1,7 @@
 use lib "t/lib";
 use TestAuto;
 use TestUtil::MyLib;
+use lib "$FindBin::Bin/../../04_native_api/lib";
 
 use strict;
 use warnings;
