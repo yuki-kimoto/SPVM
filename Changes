@@ -1,4 +1,4 @@
-0.9902 2026-03-26
+0.990152 2026-03-26
   [Bug Fixes]
     * Fix "Permission denied" errors on Windows when removing the temporary build directory.
   [New Features]
