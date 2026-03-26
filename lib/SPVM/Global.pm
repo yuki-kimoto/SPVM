@@ -13,6 +13,13 @@ my $COMPILER;
 my $API;
 my $BUILDER;
 my $DYNAMIC_LIB_LIBREFS_H = {};
+my $BUILD_TMP_DIR;
+
+sub SET_BUILD_TMP_DIR {
+  my ($build_tmp_dir) = @_;
+  
+  $BUILD_TMP_DIR = $build_tmp_dir;
+}
 
 END {
   
