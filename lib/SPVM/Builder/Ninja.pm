@@ -418,8 +418,6 @@ sub recompact {
     
     my $entries_h = $self->entries_h;
     
-    # use D;du $entries_h;
-    
     # Sort by start_time (ascending)
     my @normalized_output_files = sort {
       $entries_h->{$a}{start_time} <=> $entries_h->{$b}{start_time}
@@ -520,6 +518,7 @@ sub DESTROY {
 
 # Parallel Note
 # Use open mode '>>' and '+<' for other process to open the same file.
+# Open the log file in new and close the log file in DESTROY.
 # Use mkdir (mkdir is atomic operation) instead of File::Path::mkpath for avoiding race conditions.
 
 1;
