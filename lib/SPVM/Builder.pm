@@ -200,10 +200,10 @@ sub build {
   my $compile_and_link_options = {config => $config, runtime => $runtime};
   
   # Compile source files to object files
-  my $object_files = $cc->compile_class($class_name, $compile_and_link_options);
+  my $object_files = $cc->prepare_compile_class($class_name, $compile_and_link_options);
   
   # Link object files and generate a dynamic library
-  my $output_file = $cc->link($class_name, $object_files, $compile_and_link_options);
+  my $output_file = $cc->prepare_link($class_name, $object_files, $compile_and_link_options);
   
   return $output_file;
 }

@@ -236,7 +236,7 @@ sub new {
   
   $self->{compiler} = $compiler;
   
-  $self->compile;
+  $self->prepare_compile;
   
   return $self;
 }
@@ -265,14 +265,14 @@ sub build_exe_file {
   $self->create_bootstrap_source;
   
   # Compile bootstrap C source
-  my $bootstrap_object_file = $self->compile_bootstrap_source_file;
+  my $bootstrap_object_file = $self->prepare_compile_bootstrap_source_file;
   push @$object_files, $bootstrap_object_file;
   
   # Compile SPVM core source files
-  my $spvm_object_files = $self->compile_spvm_core_source_files;
+  my $spvm_object_files = $self->prepare_compile_spvm_core_source_files;
   push @$object_files, @$spvm_object_files;
   
-  my $classes_object_files = $self->compile_classes;
+  my $classes_object_files = $self->prepare_compile_classes;
   push @$object_files, @$classes_object_files;
   
   # Add external object files
@@ -290,10 +290,10 @@ sub build_exe_file {
     force => $self->force,
   );
   $config_linker->output_file($output_file);
-  $cc_linker->link($class_name, $object_files, {config => $config_linker});
+  $cc_linker->prepare_link($class_name, $object_files, {config => $config_linker});
 }
 
-sub compile {
+sub prepare_compile {
   my ($self) = @_;
   
   # Builder
@@ -321,7 +321,7 @@ sub compile {
   $self->runtime($runtime);
 }
 
-sub compile_classes {
+sub prepare_compile_classes {
   my ($self) = @_;
   
   my $class_names = $self->get_user_defined_basic_type_names;
@@ -329,17 +329,17 @@ sub compile_classes {
   my $object_files = [];
   for my $class_name (@$class_names) {
     
-    my $precompile_object_files = $self->compile_precompile_class($class_name);
+    my $precompile_object_files = $self->prepare_compile_precompile_class($class_name);
     push @$object_files, @$precompile_object_files;
     
-    my $native_object_files = $self->compile_native_class($class_name);
+    my $native_object_files = $self->prepare_compile_native_class($class_name);
     push @$object_files, @$native_object_files;
   }
   
   return $object_files;
 }
 
-sub compile_source_file {
+sub prepare_compile_source_file {
   my ($self, $options) = @_;
   
   my $config = $options->{config};
@@ -369,7 +369,7 @@ sub compile_source_file {
   
   $compile_info->dependent_files([$include_dir]);
   
-  $builder_cc->compile_source_file($compile_info);
+  $builder_cc->prepare_compile_source_file($compile_info);
   
   my $object_file_name = $compile_info->output_file;
   my $object_file = SPVM::Builder::ObjectFileInfo->new(
@@ -901,7 +901,7 @@ sub _field_value_to_string {
   return $string;
 }
 
-sub compile_bootstrap_source_file {
+sub prepare_compile_bootstrap_source_file {
   my ($self) = @_;
   
   my $config = SPVM::Builder::Util::API::create_default_config();
@@ -920,7 +920,7 @@ sub compile_bootstrap_source_file {
   my $object_file_name = $self->create_bootstrap_object_file_path;
   
   # Compile
-  my $object_file = $self->compile_source_file({
+  my $object_file = $self->prepare_compile_source_file({
     source_rel_file => $source_rel_file,
     config => $config,
     category => 'bootstrap',
@@ -929,7 +929,7 @@ sub compile_bootstrap_source_file {
   return $object_file;
 }
 
-sub compile_spvm_core_source_files {
+sub prepare_compile_spvm_core_source_files {
   my ($self) = @_;
   
   # Config
@@ -959,7 +959,7 @@ sub compile_spvm_core_source_files {
   my $object_files = [];
   for my $spvm_runtime_src_base_name (@$spvm_runtime_src_base_names) {
     my $source_rel_file = "SPVM/Builder/src/$spvm_runtime_src_base_name";
-    my $object_file = $self->compile_source_file({
+    my $object_file = $self->prepare_compile_source_file({
       source_rel_file => $source_rel_file,
       config => $config,
       category => 'spvm_core',
@@ -971,7 +971,7 @@ sub compile_spvm_core_source_files {
   return $object_files;
 }
 
-sub compile_precompile_class {
+sub prepare_compile_precompile_class {
   my ($self, $class_name) = @_;
   
   my $config_global = $self->config_global;
@@ -995,7 +995,7 @@ sub compile_precompile_class {
   my $runtime = $self->runtime;
   
   my $object_files = [];
-  my $precompile_object_files = $builder_cc->compile_class(
+  my $precompile_object_files = $builder_cc->prepare_compile_class(
     $class_name,
     {
       runtime => $runtime,
@@ -1007,7 +1007,7 @@ sub compile_precompile_class {
   return $object_files;
 }
 
-sub compile_native_class {
+sub prepare_compile_native_class {
   my ($self, $class_name) = @_;
   
   my $config_global = $self->config_global;
@@ -1044,7 +1044,7 @@ sub compile_native_class {
     
     $config->config_global($config_global);
     
-    my $object_files = $builder_cc->compile_class(
+    my $object_files = $builder_cc->prepare_compile_class(
       $class_name,
       {
         runtime => $runtime,

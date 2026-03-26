@@ -83,7 +83,7 @@ sub detect_quiet {
   return $quiet;
 }
 
-sub compile_class {
+sub prepare_compile_class {
   my ($self, $class_name, $options) = @_;
   
   unless (defined $class_name) {
@@ -112,16 +112,16 @@ sub compile_class {
   
   my $object_files = [];
   
-  my $resource_object_files = $self->compile_resources($class_name, $options);
+  my $resource_object_files = $self->prepare_compile_resources($class_name, $options);
   push @$object_files, @$resource_object_files;
   
-  my $native_object_files = $self->compile_native_class($class_name, $options);
+  my $native_object_files = $self->prepare_compile_native_class($class_name, $options);
   push @$object_files, @$native_object_files;
   
   return $object_files;
 }
 
-sub compile_resources {
+sub prepare_compile_resources {
   my ($self, $class_name, $options) = @_;
   
   my $config = $options->{config};
@@ -181,7 +181,7 @@ sub compile_resources {
         force => $self->detect_force($config),
       );
       
-      my $resource_object_files = $builder_cc_resource->compile_class($resource_class_name, $compile_options);
+      my $resource_object_files = $builder_cc_resource->prepare_compile_class($resource_class_name, $compile_options);
       push @$object_files, @$resource_object_files;
     }
   }
@@ -189,7 +189,7 @@ sub compile_resources {
   return $object_files;
 }
 
-sub compile_native_class {
+sub prepare_compile_native_class {
   my ($self, $class_name, $options) = @_;
   
   my $config = $options->{config};
@@ -388,7 +388,7 @@ sub compile_native_class {
     );
     
     # Compile a source file
-    $self->compile_source_file($compile_info);
+    $self->prepare_compile_source_file($compile_info);
     
     # Object file information
     my $compile_info_cc = $compile_info->{cc};
@@ -436,7 +436,7 @@ sub build_precompile_class_source_file {
   close $fh;
 }
 
-sub compile_source_file {
+sub prepare_compile_source_file {
   my ($self, $compile_info, $options) = @_;
   
   my $config = $compile_info->config;
@@ -576,7 +576,7 @@ sub compile_source_file {
   }
 }
 
-sub link {
+sub prepare_link {
   my ($self, $class_name, $object_files, $options) = @_;
   
   unless (defined $class_name) {
