@@ -54,7 +54,7 @@ sub prepare {
   
   $self->open_lock_file;
   
-  my $lock_fh = $self->lock_fh;
+  $self->create_log;
   
   {
     my $ninja_for_recompact = $self->new_without_prepare(%$self);
@@ -531,6 +531,13 @@ sub write_lock_with_flush {
     
     return $result;
   });
+}
+
+sub create_log {
+  my ($self) = @_;
+  
+  $self->open_log('>>');
+  $self->close_log;
 }
 
 sub DESTROY {
