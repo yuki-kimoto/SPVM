@@ -387,9 +387,6 @@ sub create_make_rule {
   
   # Build options
   my $new_options_string = "build_dir => '.spvm_build'";
-  if (defined(my $optimize = $options->{optimize})) {
-    $new_options_string .= ", optimize => '$optimize'";
-  }
   my $build_options_string = "force => 1";
   if (defined(my $optimize = $options->{optimize})) {
     $build_options_string .= ", optimize => '$optimize'";
