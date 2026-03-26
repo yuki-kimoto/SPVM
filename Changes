@@ -1,3 +1,26 @@
+0.9902 2026-03-26
+  [Bug Fixes]
+    * Fix "Permission denied" errors on Windows when removing the temporary build directory.
+  [New Features]
+    * SPVM::Global: Implement a global resource management system for temporary build directories and dynamic library handles.
+    * SPVM::Global: Add SET_BUILD_TMP_DIR to allow explicit control over the temporary build directory location.
+    * SPVM::Builder::Util: Expose get_cpu_count as a public API in SPVM::Builder::Util::API to support platform-independent CPU detection for parallel builds.
+
+  [Changes]
+    * SPVM::Global: Relocate get_method_addresses from SPVM::Builder::Util to SPVM::Global to better align with runtime dynamic library loading.
+    * SPVM::Global: Implement explicit unloading of cached dynamic libraries using DynaLoader::dl_unload_file in the END block to ensure clean resource release.
+    * SPVM::Global: Ensure $BUILDER is undefined before calling rmtree in the END block to release file handles and prevent "Permission denied" errors on Windows.
+    * SPVM::Builder::Ninja: Improve concurrent log safety by using read-write mode (+<) with mandatory seeking and flock to prevent data corruption during parallel builds.
+    * SPVM::Builder::Ninja: Use truncate and seek in recompact to ensure portable and safe log management on Windows and Unix.
+    * SPVM::Builder::Ninja: Implement read_lock, write_lock, and write_lock_with_flush methods to encapsulate concurrent access logic.
+    * SPVM::Builder::CC: Refactor need_generate to accept command_hash directly and update its callers in CC.pm.
+    * SPVM::Builder: Load ExtUtils::CBuilder dynamically only when compilation or linking is needed to improve performance.
+
+  [Internal Changes]
+    * SPVM::Global: Fix missing File::Path import by explicitly adding use File::Path 'rmtree'.
+    * SPVM::Builder::Ninja: Ensure the log directory is created (mkpath) before any file operations in prepare and recompact methods.
+    * SPVM::Builder::CC: Remove redundant optimization flag assignment from new_options_string in create_make_rule.
+
 0.990151 2026-03-25
   [New Features]
     * SPVM::Builder::Ninja: Implement a Ninja-compatible build system that tracks build states using command hashes (SHA1) and file content to ensure robust incremental builds.
