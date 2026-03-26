@@ -40,6 +40,8 @@ END {
       DynaLoader::dl_unload_file($dynamic_lib_libref);
     }
     
+    $BUILDER = undef;
+    
     if (defined $BUILD_TMP_DIR) {
       rmtree $BUILD_TMP_DIR;
     }
