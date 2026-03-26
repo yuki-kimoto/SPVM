@@ -63,18 +63,9 @@ sub prepare {
   
   $self->load_log;
   
-  flock($lock_fh, LOCK_EX)
-    or confess("Can't lock ninja log for header: $!");
-  eval {
-    unless (-d $self->log_dir) {
-      mkpath $self->log_dir;
-    }
-  };
-  my $error = $@;
-  flock($lock_fh, LOCK_UN);
-  if ($error) {
-    die $@;
-  }
+  $self->write_lock(sub {
+    mkpath $self->log_dir;
+  });
   
   $self->open_log('>>');
 }
@@ -154,20 +145,11 @@ sub opened {
 }
 
 sub add_log {
-  my $self = shift;
+  my ($self, @args) = @_;
   
-  my $lock_fh = $self->lock_fh;
-  flock($lock_fh, LOCK_EX)
-    or confess("Can't lock ninja log for header: $!");
-  eval {
-    $self->add_log_without_lock(@_);
-    $self->log_fh->flush;
-  };
-  my $error = $@;
-  flock($lock_fh, LOCK_UN);
-  if ($error) {
-    die $@;
-  }
+  $self->write_lock_with_flush(sub {
+    $self->add_log_without_lock(@args);
+  });
 }
 
 sub add_log_without_lock {
@@ -229,20 +211,12 @@ sub close_log {
 }
 
 sub add_log_header {
-  my $self = shift;
+  my ($self, @args) = @_;
   
-  my $lock_fh = $self->lock_fh;
-  flock($lock_fh, LOCK_EX)
-    or confess("Can't lock ninja log for header: $!");
-  eval {
-    $self->add_log_header_without_lock(@_);
-    $self->log_fh->flush;
-  };
-  my $error = $@;
-  flock($lock_fh, LOCK_UN);
-  if ($error) {
-    die $@;
-  }
+  $self->write_lock_with_flush(sub {
+     $self->add_log_header_without_lock(@args);
+  });
+  
 }
 
 sub add_log_header_without_lock {
@@ -254,19 +228,12 @@ sub add_log_header_without_lock {
 }
 
 sub load_log {
-  my $self = shift;
+  my ($self, @args) = @_;
   
-  my $lock_fh = $self->lock_fh;
-  flock($lock_fh, LOCK_SH)
-    or confess("Can't lock ninja log for header: $!");
-  eval {
-    $self->load_log_without_lock(@_);
-  };
-  my $error = $@;
-  flock($lock_fh, LOCK_UN);
-  if ($error) {
-    die $@;
-  }
+  $self->read_lock(sub {
+     $self->load_log_without_lock(@args);
+  });
+  
 }
 
 sub load_log_without_lock {
@@ -461,13 +428,9 @@ sub recompact {
     mkpath $self->log_dir;
   }
   
-  my $lock_fh = $self->lock_fh;
-  flock($lock_fh, LOCK_EX)
-    or confess("Can't lock .ninja_lock: $!");
-  
-  eval {
+  $self->write_lock_with_flush(sub {
     $self->open_log('>');
-  
+    
     $self->add_log_header_without_lock;
     my $entries_h = $self->entries_h;
     
@@ -481,15 +444,7 @@ sub recompact {
       my $entory_h = $entries_h->{$normalized_output_file};
       $self->add_log_without_lock($entory_h, {no_normalize_output_file => 1});
     }
-    
-    $self->log_fh->flush;
-  };
-  
-  my $error = $@;
-  flock($lock_fh, LOCK_UN);
-  if ($error) {
-    die $@;
-  }
+  });
   
   $RECOMPACTED = 1;
 }
