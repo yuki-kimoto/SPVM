@@ -16,6 +16,7 @@ use SPVM::BlessedObject::Class;
 use SPVM::BlessedObject::String;
 use SPVM::Builder::Accessor 'has';
 use SPVM::Builder::Ninja;
+use SPVM::Global;
 
 # Fields
 has [qw(
