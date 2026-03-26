@@ -18,7 +18,7 @@ use SPVM::Builder::Util;
 my $devnull = File::Spec->devnull;
 
 my $test_dir = "$FindBin::Bin";
-my $test_script_dir = 't/04_spvmcc/script';
+my $test_script_dir = 't/08_spvmcc/script';
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 my $exe_dir = "$build_dir/.tmp/exe";
@@ -106,7 +106,7 @@ sub to_cmd {
 
 # External objects
 {
-  my $cc_cmd = qq($Config{cc} -c -o $external_object_dir/external.o t/04_spvmcc/lib/SPVM/external.c);
+  my $cc_cmd = qq($Config{cc} -c -o $external_object_dir/external.o t/08_spvmcc/lib/SPVM/external.c);
   system($cc_cmd) == 0
     or die "Can't execute cc command $cc_cmd:$!";
   

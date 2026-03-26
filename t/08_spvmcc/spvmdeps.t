@@ -32,7 +32,7 @@ my $dev_null = File::Spec->devnull;
 # Failed to parse options.
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps --not-exist t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps --not-exist t/08_spvmcc/script/myapp.spvm);
     my $status = system($spvmcc_cmd);
     isnt($status, 0);
   }
@@ -41,7 +41,7 @@ my $dev_null = File::Spec->devnull;
 # Basic
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^SPVM$|m);
@@ -53,7 +53,7 @@ my $dev_null = File::Spec->devnull;
   
   # --with-version
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --with-version t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --with-version t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^SPVM [\.\d]+$|m);
@@ -66,7 +66,7 @@ my $dev_null = File::Spec->devnull;
   # --exclude
   {
     {
-      my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --exclude TestCase::Precompile t/04_spvmcc/script/myapp.spvm);
+      my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --exclude TestCase::Precompile t/08_spvmcc/script/myapp.spvm);
       my $output = `$spvmcc_cmd`;
       
       like($output, qr|^SPVM$|m);
@@ -77,7 +77,7 @@ my $dev_null = File::Spec->devnull;
     }
     
     {
-      my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --exclude TestCase::NativeAPI2 --exclude TestCase::Precompile t/04_spvmcc/script/myapp.spvm);
+      my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --exclude TestCase::NativeAPI2 --exclude TestCase::Precompile t/08_spvmcc/script/myapp.spvm);
       my $output = `$spvmcc_cmd`;
       
       like($output, qr|^SPVM$|m);
@@ -88,7 +88,7 @@ my $dev_null = File::Spec->devnull;
     }
     
     {
-      my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --exclude TestCase::* t/04_spvmcc/script/myapp.spvm);
+      my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --exclude TestCase::* t/08_spvmcc/script/myapp.spvm);
       my $output = `$spvmcc_cmd`;
       
       like($output, qr|^SPVM$|m);
@@ -105,7 +105,7 @@ my $dev_null = File::Spec->devnull;
 {
   # --cpanm
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanm t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanm t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     warn "[Test Output]\n$output";
@@ -119,7 +119,7 @@ my $dev_null = File::Spec->devnull;
   
   # --cpanm, --with-version
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanm --with-version t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanm --with-version t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     warn "[Test Output]\n$output";
@@ -136,7 +136,7 @@ my $dev_null = File::Spec->devnull;
 {
   # --cpanfile
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanfile t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanfile t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     warn "[Test Output]\n$output";
@@ -150,7 +150,7 @@ my $dev_null = File::Spec->devnull;
   
   # --cpanfile, --with-version
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanfile --with-version t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --cpanfile --with-version t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     warn "[Test Output]\n$output";
@@ -167,7 +167,7 @@ my $dev_null = File::Spec->devnull;
 {
   # --json
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --json t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --json t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^  \{"class_name":"SPVM"\}|m);
@@ -186,7 +186,7 @@ my $dev_null = File::Spec->devnull;
   
   # --json, --with-version
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --json --with-version t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --json --with-version t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^  \{"class_name":"SPVM","version":"[\.\d]+"\}|m);
@@ -210,7 +210,7 @@ my $dev_null = File::Spec->devnull;
   # --resource-info
   {
     $ENV{"SPVM__TEST__MYAPP__EXE"} = 1;
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --resource-info t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $test_dir/lib/SPVM -I t/02_vm/lib/SPVM --resource-info t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     like($output, qr|\Q[TestCase::NativeAPI2]|);
     like($output, qr|TestCase::Resource::Mylib1|);

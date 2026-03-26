@@ -40,7 +40,7 @@ sub to_cmd {
 # Failed to parse options.
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet --not-exist t/04_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet --not-exist t/08_spvmcc/script/myapp.spvm);
     my $status = system($spvmcc_cmd);
     isnt($status, 0);
   }
@@ -48,7 +48,7 @@ sub to_cmd {
 
 # Compilation Error
 {
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -o $exe_dir/myapp_compile_error t/04_spvmcc/script/myapp_compile_error.spvm);
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -o $exe_dir/myapp_compile_error t/08_spvmcc/script/myapp_compile_error.spvm);
   my $status = system($spvmcc_cmd);
   ok($status != 0);
   
@@ -60,7 +60,7 @@ sub to_cmd {
 {
   {
     
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force --quiet -o $exe_dir/myapp_runtime_error t/04_spvmcc/script/myapp_compile_error/main_instant_method.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force --quiet -o $exe_dir/myapp_runtime_error t/08_spvmcc/script/myapp_compile_error/main_instant_method.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
@@ -72,7 +72,7 @@ sub to_cmd {
   }
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force --quiet -o $exe_dir/myapp_runtime_error t/04_spvmcc/script/myapp_compile_error/main_has_arguments.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force --quiet -o $exe_dir/myapp_runtime_error t/08_spvmcc/script/myapp_compile_error/main_has_arguments.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
@@ -84,7 +84,7 @@ sub to_cmd {
   }
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force --quiet -o $exe_dir/myapp_runtime_error t/04_spvmcc/script/myapp_compile_error/main_not_found.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force --quiet -o $exe_dir/myapp_runtime_error t/08_spvmcc/script/myapp_compile_error/main_not_found.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     

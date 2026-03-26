@@ -28,7 +28,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   my $exe_dir = "$build_dir/work/exe";
   mkpath $exe_dir;
   
-  my $script_name = 't/04_spvmcc/script/myapp.spvm';
+  my $script_name = 't/08_spvmcc/script/myapp.spvm';
   my $include_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
   my $output_file = "$build_dir/work/myapp";
 
@@ -78,7 +78,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   my $exe_dir = "$test_dir/.spvm_build/work/exe";
   mkpath $exe_dir;
   
-  my $script_name = 't/04_spvmcc/script/myapp/foo/bar.spvm';
+  my $script_name = 't/08_spvmcc/script/myapp/foo/bar.spvm';
   my $include_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
   my $output_file = "$build_dir/work/myapp";
   

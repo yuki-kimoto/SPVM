@@ -38,7 +38,7 @@ my $dev_null = File::Spec->devnull;
   #   -Mblib (via $^X)
   #   -Mblib (via spvm script)
   #   -Iinclude_a -Iinclude_b (command line includes)
-  my $spvm_cmd = qq|$^X -Mblib blib/script/spvm -Mblib -I $include_a -I $include_b t/04_spvmcc/script/inc-order.spvm|;
+  my $spvm_cmd = qq|$^X -Mblib blib/script/spvm -Mblib -I $include_a -I $include_b t/08_spvmcc/script/inc-order.spvm|;
   my $output = `$spvm_cmd 2>&1`;
 
   # Normalize backslashes to forward slashes for Windows compatibility
@@ -103,7 +103,7 @@ my $dev_null = File::Spec->devnull;
 # Failed to parse options.
 {
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm --not-exist t/04_spvmcc/script/myapp.spvm);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm --not-exist t/08_spvmcc/script/myapp.spvm);
     my $status = system($spvm_cmd);
     isnt($status, 0);
   }
@@ -185,7 +185,7 @@ my $dev_null = File::Spec->devnull;
   
   # prcompile
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/04_spvmcc/lib/SPVM $FindBin::Bin/script/precompile.spvm);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/08_spvmcc/lib/SPVM $FindBin::Bin/script/precompile.spvm);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -194,7 +194,7 @@ my $dev_null = File::Spec->devnull;
   
   # prcompile
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/04_spvmcc/lib/SPVM $FindBin::Bin/script/precompile.spvm);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/08_spvmcc/lib/SPVM $FindBin::Bin/script/precompile.spvm);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -202,9 +202,9 @@ my $dev_null = File::Spec->devnull;
   }
   
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm t/04_spvmcc/script/program_name.spvm);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm t/08_spvmcc/script/program_name.spvm);
     my $spvm_output = `$spvm_cmd`;
-    like($spvm_output, qr|t/04_spvmcc/script/program_name\.spvm|);
+    like($spvm_output, qr|t/08_spvmcc/script/program_name\.spvm|);
   }
   
   # anon method
