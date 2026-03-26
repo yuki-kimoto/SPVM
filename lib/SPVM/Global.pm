@@ -8,6 +8,7 @@ use SPVM::Builder::Util;
 use SPVM::Builder;
 use SPVM::Builder::Native::Env;
 use SPVM::ExchangeAPI;
+use File::Path 'rmtree';
 
 my $COMPILER;
 my $API;
