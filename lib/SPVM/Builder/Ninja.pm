@@ -7,7 +7,7 @@ use strict;
 use warnings;
 use Digest::SHA;
 use Carp 'confess';
-use Fcntl ':flock';
+use Fcntl qw(:flock :seek);
 use SPVM::Builder::Accessor 'has';
 
 has [qw(
@@ -23,14 +23,6 @@ has [qw(
 )];
 
 sub new {
-  my $self = shift->new_without_prepare(@_);
-  
-  $self->prepare;
-  
-  return $self;
-}
-
-sub new_without_prepare {
   my $class = shift;
   
   my $self = {
@@ -45,6 +37,8 @@ sub new_without_prepare {
   
   bless $self, ref $class || $class;
   
+  $self->prepare;
+  
   return $self;
 }
 
@@ -55,14 +49,11 @@ sub prepare {
   
   $self->create_log;
   
-  {
-    my $ninja_for_recompact = $self->new_without_prepare(%$self);
-    $ninja_for_recompact->recompact;
-  }
+  $self->open_log('+<');
+  
+  $self->recompact;
   
   $self->load_log;
-  
-  $self->open_log('>>');
 }
 
 sub log_file {
@@ -141,6 +132,8 @@ sub add_log {
   my ($self, @args) = @_;
   
   $self->write_lock_with_flush(sub {
+    seek($self->log_fh, 0, SEEK_END)
+      or confess("Can't seek to end: $!");
     $self->add_log_without_lock(@args);
   });
 }
@@ -207,7 +200,9 @@ sub add_log_header {
   my ($self, @args) = @_;
   
   $self->write_lock_with_flush(sub {
-     $self->add_log_header_without_lock(@args);
+    seek($self->log_fh, 0, SEEK_END)
+      or confess("Can't seek to end: $!");
+    $self->add_log_header_without_lock(@args);
   });
   
 }
@@ -232,18 +227,11 @@ sub load_log {
 sub load_log_without_lock {
   my ($self) = @_;
   
-  my $log_file = $self->log_file;
-  
-  unless (-f $log_file) {
-    return;
-  }
-  
   my $entries_h = {};
   my $entries_length = 0;
   
-  $self->open_log('<');
-  
   my $log_fh = $self->log_fh;
+  seek($log_fh, 0, SEEK_SET);
   
   while (my $line = <$log_fh>) {
     $line =~ s/[\x0A\x0D]+$//;
@@ -267,11 +255,11 @@ sub load_log_without_lock {
     }
   }
   
-  $self->close_log;
-  
   $self->entries_length($entries_length);
   
   $self->entries_h($entries_h);
+  
+  seek($log_fh, 0, SEEK_END);
 }
 
 sub need_generate {
@@ -410,20 +398,8 @@ sub recompact {
     return;
   }
   
-  my $log_file = $self->log_file;
-  
-  if (-f $log_file) {
-    $self->load_log;
-    $self->close_log;
-  }
-  
-  mkdir $self->log_dir;
-  
-  $self->open_log('>>');
-  $self->close_log;
-  
   $self->write_lock_with_flush(sub {
-    $self->open_log('+<');
+    $self->load_log_without_lock;
     
     my $log_fh = $self->log_fh;
     
@@ -434,13 +410,15 @@ sub recompact {
     
     # Move the file pointer back to the beginning
     # Crucial for Windows to avoid sparse files (null bytes at the start).
-    seek($log_fh, 0, 0)
+    seek($log_fh, 0, SEEK_SET)
       or confess("Can't seek to the start of log file: $!");
     
     # Write header
     $self->add_log_header_without_lock;
     
     my $entries_h = $self->entries_h;
+    
+    # use D;du $entries_h;
     
     # Sort by start_time (ascending)
     my @normalized_output_files = sort {
@@ -540,11 +518,8 @@ sub DESTROY {
   $self->close_log;
 }
 
+# Parallel Note
+# Use open mode '>>' and '+<' for other process to open the same file.
 # Use mkdir (mkdir is atomic operation) instead of File::Path::mkpath for avoiding race conditions.
-#
-#
-#
-#
-#
 
 1;
