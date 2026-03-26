@@ -13,13 +13,9 @@ my $COMPILER;
 my $API;
 my $BUILDER;
 my $DYNAMIC_LIB_LIBREFS_H = {};
-my $BUILD_TMP_DIR;
 
-sub SET_BUILD_TMP_DIR {
-  my ($build_tmp_dir) = @_;
-  
-  $BUILD_TMP_DIR = $build_tmp_dir;
-}
+# Accessed from SPVM::Builder
+our $BUILD_TMP_DIR;
 
 END {
   
@@ -37,6 +33,10 @@ END {
     $API = undef;
     
     $COMPILER = undef;
+    
+    if (defined $BUILD_TMP_DIR) {
+      rmtree $BUILD_TMP_DIR;
+    }
   }
 }
 

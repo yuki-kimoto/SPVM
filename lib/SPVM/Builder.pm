@@ -16,7 +16,6 @@ use SPVM::BlessedObject::Class;
 use SPVM::BlessedObject::String;
 use SPVM::Builder::Accessor 'has';
 use SPVM::Builder::Ninja;
-use SPVM::Global;
 
 # Fields
 has [qw(
@@ -26,13 +25,12 @@ has [qw(
   ninja
 )];
 
-my $SPVM_BUILD_DIR_TMP_DIR_OBJECT;
-
 sub import {
   my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
   unless (defined $build_dir) {
-    $SPVM_BUILD_DIR_TMP_DIR_OBJECT = File::Temp->newdir;
-    $ENV{SPVM_BUILD_DIR} = $SPVM_BUILD_DIR_TMP_DIR_OBJECT->dirname;
+    my $build_tmp_dir = File::Temp->newdir(CLEANUP => 0);
+    $SPVM::Global::BUILD_TMP_DIR = $build_tmp_dir;
+    $ENV{SPVM_BUILD_DIR} = $build_tmp_dir->dirname;
   }
 }
 
