@@ -122,7 +122,7 @@ my @csource_files = ('SPVM.c', @spvm_csource_files);
 my @spvm_header_files = glob 'lib/SPVM/Builder/include/*.h';
 my @header_files = ('ppport.h', @spvm_header_files);
 
-my $cpus = SPVM::Builder::Util::get_cpu_count();
+my $cpus = SPVM::Builder::Util::API::get_cpu_count();
 my $jobs = $cpus + 2;
 
 WriteMakefile(

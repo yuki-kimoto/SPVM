@@ -10,6 +10,8 @@ sub create_make_rule_precompile { SPVM::Builder::Util::create_make_rule_precompi
 
 sub create_default_config { SPVM::Builder::Util::create_default_config(@_) }
 
+sub get_cpu_count { SPVM::Builder::Util::get_cpu_count(@_) }
+
 1;
 
 =head1 Name
@@ -79,6 +81,16 @@ Creates a default config, and returns it. It is an L<SPVM::Builder::Config> obje
 Currently the default config is created by the following operation.
 
   my $config = SPVM::Builder::Config->new_c99;
+
+=head2 get_cpu_count
+
+  my $cpu_count = SPVM::Builder::Util::API::get_cpu_count();
+
+Returns the number of CPU cores on the current system.
+
+This function detects the available CPU count in a platform-independent way (Windows, Linux, macOS, etc.). 
+
+If the CPU count cannot be determined, it returns 1.
 
 =head1 Copyright & License
 
