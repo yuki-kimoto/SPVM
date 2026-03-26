@@ -428,10 +428,27 @@ sub recompact {
     mkpath $self->log_dir;
   }
   
+  $self->open_log('>>');
+  $self->close_log;
+  
   $self->write_lock_with_flush(sub {
-    $self->open_log('>');
+    $self->open_log('+<');
     
+    my $log_fh = $self->log_fh;
+    
+    # Truncate the file to 0 bytes
+    # This is safe because we hold the write lock.
+    truncate($log_fh, 0)
+      or confess("Can't truncate log file: $!");
+    
+    # Move the file pointer back to the beginning
+    # Crucial for Windows to avoid sparse files (null bytes at the start).
+    seek($log_fh, 0, 0)
+      or confess("Can't seek to the start of log file: $!");
+    
+    # Write header
     $self->add_log_header_without_lock;
+    
     my $entries_h = $self->entries_h;
     
     # Sort by start_time (ascending)
