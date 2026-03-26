@@ -1,5 +1,8 @@
 package SPVM::Builder::Accessor;
 
+# SPVM::Builder::Accessor is used from Makefile.PL
+# so this class must be wrote as pure perl. Do not contain XS functions.
+
 use strict;
 use warnings;
 

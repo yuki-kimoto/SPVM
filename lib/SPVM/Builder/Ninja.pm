@@ -7,7 +7,6 @@ use strict;
 use warnings;
 use Digest::SHA;
 use Carp 'confess';
-use File::Path 'mkpath';
 use Fcntl ':flock';
 use SPVM::Builder::Accessor 'has';
 
@@ -63,10 +62,6 @@ sub prepare {
   
   $self->load_log;
   
-  $self->write_lock(sub {
-    mkpath $self->log_dir;
-  });
-  
   $self->open_log('>>');
 }
 
@@ -105,9 +100,7 @@ sub lock_file {
 sub open_lock_file {
   my ($self) = @_;
   
-  unless (-d $self->log_dir) {
-    mkpath $self->log_dir;
-  }
+  mkdir $self->log_dir;
   
   my $lock_file = $self->lock_file;
   
@@ -424,9 +417,7 @@ sub recompact {
     $self->close_log;
   }
   
-  unless (-d $self->log_dir) {
-    mkpath $self->log_dir;
-  }
+  mkdir $self->log_dir;
   
   $self->open_log('>>');
   $self->close_log;
@@ -536,6 +527,8 @@ sub write_lock_with_flush {
 sub create_log {
   my ($self) = @_;
   
+  mkdir $self->log_dir;
+  
   $self->open_log('>>');
   $self->close_log;
 }
@@ -546,5 +539,12 @@ sub DESTROY {
   # Ensure the log file handle is closed
   $self->close_log;
 }
+
+# Use mkdir (mkdir is atomic operation) instead of File::Path::mkpath for avoiding race conditions.
+#
+#
+#
+#
+#
 
 1;
