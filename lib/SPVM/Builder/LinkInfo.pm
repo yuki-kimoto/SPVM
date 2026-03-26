@@ -11,13 +11,20 @@ use SPVM::Builder::Accessor 'has';
 has [qw(
   config
   object_files
+  compile_infos
+  remaining_compile_count
 )];
 
 # Class Methods
 sub new {
   my $class = shift;
   
-  my $self = {@_};
+  my $self = {
+    object_files => [],
+    compile_infos => [],
+    remaining_compile_count => 0,
+    @_
+  };
   
   bless $self, $class;
   
@@ -25,10 +32,6 @@ sub new {
   
   unless ($config) {
     confess("The \"config\" field must be defined.");
-  }
-  
-  unless (defined $self->object_files) {
-    $self->object_files([]);
   }
   
   $self->config($config->clone);
@@ -176,6 +179,20 @@ Gets and sets the C<output_file> field, an output file.
 
 Gets and sets the C<object_files> field, an array reference of L<SPVM::Builder::ObjectFileInfo> objects.
 
+=head2 remaining_compile_count
+
+  my $remaining_compile_count = $link_info->remaining_compile_count;
+  $link_info->remaining_compile_count($remaining_compile_count);
+
+Gets and sets the C<remaining_compile_count> field, the count of remaining compilation tasks as an integer.
+
+=head2 compile_infos
+
+  my $compile_infos = $link_info->compile_infos;
+  $link_info->compile_infos($compile_infos);
+
+Gets and sets the C<compile_infos> field, an array reference of L<SPVM::Builder::CompileInfo> objects.
+
 =head1 Class Methods
 
 =head2 new
@@ -193,6 +210,10 @@ Field Default Values:
 undef
 
 =item * L</"object_files">
+
+[]
+
+=item * L</"compile_infos">
 
 []
 

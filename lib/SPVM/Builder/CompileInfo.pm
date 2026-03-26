@@ -14,6 +14,7 @@ has [qw(
   output_file
   category
   dependent_files
+  link_info
 )];
 
 # Class methods
@@ -215,6 +216,15 @@ Gets and sets the C<dependent_files> field, an array reference of the dependent 
 
 If this field is defined, these files are added to the dependency list of the C<ninja> build rule.
 
+=head2 link_info
+
+  my $link_info = $compile_info->link_info;
+  $compile_info->link_info($link_info);
+
+Gets and sets the C<link_info> field, an L<SPVM::Builder::LinkInfo> object.
+
+This field is a weak reference to the L<SPVM::Builder::LinkInfo> object that this compilation task belongs to.
+
 =head1 Class Methods
 
 =head2 new
@@ -222,14 +232,6 @@ If this field is defined, these files are added to the dependency list of the C<
   my $compile_info = SPVM::Builder::CompileInfo->new(%fields);
 
 Creates a new L<SPVM::Builder::CompileInfo> object given L</"Fields">.
-
-Field Default Values:
-
-=over 2
-
-=item * L</"output_file">
-
-undef
 
 =back
 
