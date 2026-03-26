@@ -1156,8 +1156,8 @@ t/04_spvmcc/spvmcc.t
 t/04_spvmcc/spvmcc_error.t
 t/04_spvmcc/spvmcc_solo.t
 t/04_spvmcc/spvmdeps.t
-t/05_spvmdist/command.t
-t/05_spvmdist/module.t
+t/07_spvmdist/command.t
+t/07_spvmdist/module.t
 t/lib/TestAuto.pm
 t/lib/TestUtil.pm
 t/lib/TestUtil/MyLib.pm
