@@ -7,6 +7,7 @@ use strict;
 use warnings;
 use Digest::SHA;
 use Carp 'confess';
+use File::Path 'mkpath';
 use Fcntl qw(:flock :seek);
 use SPVM::Builder::Accessor 'has';
 
@@ -91,7 +92,7 @@ sub lock_file {
 sub open_lock_file {
   my ($self) = @_;
   
-  mkdir $self->log_dir;
+  mkpath $self->log_dir;
   
   my $lock_file = $self->lock_file;
   
@@ -503,7 +504,7 @@ sub write_lock_with_flush {
 sub create_log {
   my ($self) = @_;
   
-  mkdir $self->log_dir;
+  mkpath $self->log_dir;
   
   $self->open_log('>>');
   $self->close_log;
@@ -519,6 +520,5 @@ sub DESTROY {
 # Parallel Note
 # Use open mode '>>' and '+<' for other process to open the same file.
 # Open the log file in new and close the log file in DESTROY.
-# Use mkdir (mkdir is atomic operation) instead of File::Path::mkpath for avoiding race conditions.
 
 1;
