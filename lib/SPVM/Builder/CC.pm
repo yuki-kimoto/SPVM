@@ -477,8 +477,7 @@ sub compile_source_file {
   my $create_command_hash_options = {
     command => $cc_cmd_string_no_output_option,
     command_version => $cc_version,
-    source_file => $source_file,
-    dependent_files => $dependent_files,
+    dependent_files => [$source_file, @$dependent_files],
   };
   
   # Get command hash

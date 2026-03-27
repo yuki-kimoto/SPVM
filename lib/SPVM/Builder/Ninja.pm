@@ -316,9 +316,6 @@ sub create_command_hash {
     confess("command_version must be defined.");
   }
   
-  # Source file (Primary input, optional)
-  my $source_file = $options->{source_file};
-  
   # Dependent files or directories (Secondary inputs)
   my $dependent_files = $options->{dependent_files};
   unless (defined $dependent_files) {
@@ -360,19 +357,11 @@ sub create_command_hash {
   
   my $sha = Digest::SHA->new(1);
 
-  # 1. Add command and version hashes
+  # Add command and version hashes
   $sha->add(Digest::SHA::sha1_hex($command) . "\x0A");
   $sha->add(Digest::SHA::sha1_hex($command_version) . "\x0A");
 
-  # 2. Add source file hash if it exists (No cache for safety of dynamically generated files)
-  if (defined $source_file && -f $source_file) {
-    my $normalized_source_file = SPVM::Builder::Util::normalize_path($source_file, $self->log_dir);
-    $sha->add(Digest::SHA::sha1_hex($normalized_source_file) . "\x0A");
-    $sha->addfile($source_file);
-    $sha->add("\x0A");
-  }
-
-  # 3. Add dependent files hashes (Using in-memory cache)
+  # Add dependent files hashes (Using in-memory cache)
   for my $dependent_file (@all_dependent_files) {
     my $normalized_dependent_file = SPVM::Builder::Util::normalize_path($dependent_file, $self->log_dir);
     $sha->add(Digest::SHA::sha1_hex($normalized_dependent_file) . "\x0A");
