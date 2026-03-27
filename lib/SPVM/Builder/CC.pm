@@ -689,11 +689,12 @@ sub prepare_link {
     # Load ExtUtils::CBuilder only when linking is needed for performance
     require ExtUtils::CBuilder;
     my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
-  
+    
     mkpath dirname $link_info_output_file;
     
+    my $link_cb;
+    
     # Create a dynamic library
-    my $start_time = int(Time::HiRes::time() * 1000);
     if ($output_type eq 'dynamic_lib') {
       my $basic_type = $runtime->get_basic_type_by_name($class_name);
       
@@ -714,40 +715,48 @@ sub prepare_link {
         push @$dl_func_list, @$anon_dl_func_list;
       }
       
-      unless ($quiet) {
-        my $for_precompile = $category eq 'precompile' ? ' for precompile' : '';
-        my $message = "[Generate Dynamic Link Library for $class_name class$for_precompile]";
-        print "$message\n";
+      $link_cb = sub {
+        unless ($quiet) {
+          my $for_precompile = $category eq 'precompile' ? ' for precompile' : '';
+          my $message = "[Generate Dynamic Link Library for $class_name class$for_precompile]";
+          print "$message\n";
+          
+          print "$link_command\n";
+        }
         
-        print "$link_command\n";
-      }
-      
-      (undef, @link_tmp_files) = $cbuilder->link(
-        objects => $link_info_object_file_names,
-        module_name => $class_name,
-        lib_file => $link_info_output_file,
-        extra_linker_flags => "@$link_info_ldflags",
-        dl_func_list => $dl_func_list,
-      );
+        (undef, @link_tmp_files) = $cbuilder->link(
+          objects => $link_info_object_file_names,
+          module_name => $class_name,
+          lib_file => $link_info_output_file,
+          extra_linker_flags => "@$link_info_ldflags",
+          dl_func_list => $dl_func_list,
+        );
+      };
     }
     # Create an executable file
     elsif ($output_type eq 'exe') {
-      unless ($quiet) {
-        print "[Generate Executable File \"$link_info_output_file\"]\n";
+      $link_cb = sub {
+        unless ($quiet) {
+          print "[Generate Executable File \"$link_info_output_file\"]\n";
+          
+          print "$link_command\n";
+        }
         
-        print "$link_command\n";
+        (undef, @link_tmp_files) = $cbuilder->link_executable(
+          objects => $link_info_object_file_names,
+          module_name => $class_name,
+          exe_file => $link_info_output_file,
+          extra_linker_flags => "@$link_info_ldflags",
+        );
       }
-      
-      (undef, @link_tmp_files) = $cbuilder->link_executable(
-        objects => $link_info_object_file_names,
-        module_name => $class_name,
-        exe_file => $link_info_output_file,
-        extra_linker_flags => "@$link_info_ldflags",
-      );
     }
     else {
       confess("Unknown output_type \"$output_type\"");
     }
+    
+    my $start_time = int(Time::HiRes::time() * 1000);
+    
+    $link_cb->();
     
     my $end_time = int(Time::HiRes::time() * 1000);
     
