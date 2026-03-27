@@ -551,42 +551,22 @@ sub compile_source_file {
     
     mkpath $command_print_dir;
     
-    # 1. Prepare command for intermediate Perl process
-    my @spawn_cmd = ($^X, '-e', 
-      'my ($dir, @cmd) = @ARGV; my $p = $$; ' .
+    # Prepare command for intermediate Perl process
+    my $perl_script = 'my ($dir, @cmd) = @ARGV; my $p = $$; ' .
       'open(STDOUT, qq(>), qq($dir/$p.stdout)) or die $!; ' .
       'open(STDERR, qq(>), qq($dir/$p.stderr)) or die $!; ' .
-      'system(@cmd); exit($? >> 8);',
-      $command_print_dir, @$cc_cmd
-    );
-
-    # 2. Spawn process based on OS
-    my $pid;
-    if ($^O eq 'MSWin32') {
-      # Windows spawn
-      $pid = system(1, @spawn_cmd);
-    }
-    else {
-      # Linux/Unix fork
-      $pid = fork();
-      if (!defined $pid) {
-        confess("Failed to fork: $!");
-      }
-      if ($pid == 0) {
-        exec(@spawn_cmd);
-        exit(1);
-      }
-    }
+      'system(@cmd); exit($? >> 8);';
+    my $pid = SPVM::Builder::Util::spawn_perl($perl_script, $command_print_dir, @$cc_cmd);
     
     if (!$pid || $pid <= 0) {
       confess("Failed to spawn process: $!");
     }
 
-    # 3. Wait for completion
+    # Wait for completion
     my $wait_pid = waitpid($pid, 0);
     my $exit_status = $? >> 8;
 
-    # 4. Read output files from temp directory
+    # Read output files from temp directory
     my $out_file = "$command_print_dir/$pid.stdout";
     my $err_file = "$command_print_dir/$pid.stderr";
     
