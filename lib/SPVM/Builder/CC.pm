@@ -387,14 +387,10 @@ sub prepare_compile_native_class {
       dependent_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
     );
     
-    # Compile a source file
-    $self->compile_source_file($compile_info);
-    
     # Object file information
     my $compile_info_cc = $compile_info->{cc};
     my $compile_info_ccflags = $compile_info->{ccflags};
     my $object_file = SPVM::Builder::ObjectFileInfo->new(
-      file => $compile_info->output_file,
       compile_info => $compile_info,
     );
     
@@ -589,6 +585,15 @@ sub prepare_link {
   
   unless (@$object_files) {
     return;
+  }
+  
+  # Compile a source files
+  for my $object_file (@$object_files) {
+    my $compile_info = $object_file->compile_info;
+    if ($compile_info) {
+      $self->compile_source_file($compile_info);
+      $object_file->file($compile_info->output_file);
+    }
   }
   
   my $runtime = $options->{runtime};
