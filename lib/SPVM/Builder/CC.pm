@@ -244,7 +244,7 @@ sub prepare_compile_native_class {
     
     $config_precompile_class_source->cc_input_dir($cc_input_dir);
     
-    $self->build_precompile_class_source_file(
+    $self->generate_precompile_class_source_file(
       $class_name,
       {
         config => $config_precompile_class_source,
@@ -401,7 +401,7 @@ sub prepare_compile_native_class {
   return $object_files;
 }
 
-sub build_precompile_class_source_file {
+sub generate_precompile_class_source_file {
   my ($self, $class_name, $options) = @_;
   
   my $config = $options->{config};
