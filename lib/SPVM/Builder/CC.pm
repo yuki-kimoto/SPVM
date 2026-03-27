@@ -552,24 +552,20 @@ sub compile_source_file {
     mkpath $command_print_dir;
     
     # 1. Prepare command for intermediate Perl process
-    my @spawn_cmd = ($^X, '-e', '
-      my ($command_print_dir, @cmd) = @ARGV;
-      my $pid = $$;
-
-      # Redirect STDOUT/STDERR to PID-named files in the temp directory
-      open(STDOUT, ">", "$command_print_dir/$pid.stdout") or die $!;
-      open(STDERR, ">", "$command_print_dir/$pid.stderr") or die $!;
-
-      # Execute compiler command
-      system(@cmd);
-      exit($? >> 8);
-    ', $command_print_dir, @$cc_cmd);
+    my @spawn_cmd = ($^X, '-e', 
+      'my ($dir, @cmd) = @ARGV; my $p = $$; ' .
+      'open(STDOUT, qq(>), qq($dir/$p.stdout)) or die $!; ' .
+      'open(STDERR, qq(>), qq($dir/$p.stderr)) or die $!; ' .
+      'system(@cmd); exit($? >> 8);',
+      $command_print_dir, @$cc_cmd
+    );
 
     # 2. Spawn process based on OS
     my $pid;
     if ($^O eq 'MSWin32') {
       # Windows spawn
       $pid = system(1, @spawn_cmd);
+      warn $pid;
     }
     else {
       # Linux/Unix fork
@@ -582,7 +578,7 @@ sub compile_source_file {
         exit(1);
       }
     }
-
+    
     if (!$pid || $pid <= 0) {
       confess("Failed to spawn process: $!");
     }
@@ -611,7 +607,10 @@ sub compile_source_file {
       close $fh;
       warn $error if $error ne "";
     }
-
+    
+    warn $wait_pid;
+    warn $exit_status;
+    
     # 5. Check result
     if ($wait_pid == -1 || $exit_status != 0) {
       confess(
