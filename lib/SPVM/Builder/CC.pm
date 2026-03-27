@@ -550,7 +550,7 @@ sub compile_source_file {
     # Load ExtUtils::CBuilder only when compilation is needed for performance
     require ExtUtils::CBuilder;
     my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
-    $cbuilder->do_system("@$cc_cmd")
+    $cbuilder->do_system(@$cc_cmd)
       or confess("$source_file file cannnot be compiled by the following command:\n$cc_cmd_string\n");
     my $end_time = int(Time::HiRes::time() * 1000);
     
