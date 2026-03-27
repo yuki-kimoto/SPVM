@@ -565,7 +565,6 @@ sub compile_source_file {
     if ($^O eq 'MSWin32') {
       # Windows spawn
       $pid = system(1, @spawn_cmd);
-      warn $pid;
     }
     else {
       # Linux/Unix fork
@@ -607,9 +606,6 @@ sub compile_source_file {
       close $fh;
       warn $error if $error ne "";
     }
-    
-    warn $wait_pid;
-    warn $exit_status;
     
     # 5. Check result
     if ($wait_pid == -1 || $exit_status != 0) {
