@@ -567,20 +567,14 @@ sub compile_source_file {
 
     # 2. Spawn process based on OS
     my $pid;
-    if ($^O eq 'MSWin32') {
-      # Windows spawn
-      $pid = system(1, @spawn_cmd);
+    # Linux/Unix fork
+    $pid = fork();
+    if (!defined $pid) {
+      confess("Failed to fork: $!");
     }
-    else {
-      # Linux/Unix fork
-      $pid = fork();
-      if (!defined $pid) {
-        confess("Failed to fork: $!");
-      }
-      if ($pid == 0) {
-        exec(@spawn_cmd);
-        exit(1);
-      }
+    if ($pid == 0) {
+      exec(@spawn_cmd);
+      exit(1);
     }
 
     if (!$pid || $pid <= 0) {
