@@ -547,11 +547,81 @@ sub compile_source_file {
     
     my $start_time = int(Time::HiRes::time() * 1000);
     
-    # Load ExtUtils::CBuilder only when compilation is needed for performance
-    require ExtUtils::CBuilder;
-    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
-    $cbuilder->do_system(@$cc_cmd)
-      or confess("$source_file file cannnot be compiled by the following command:\n$cc_cmd_string\n");
+    my $command_print_dir = $self->builder->build_dir . "/command";
+    
+    mkpath $command_print_dir;
+    
+    # 1. Prepare command for intermediate Perl process
+    my @spawn_cmd = ($^X, '-e', '
+      my ($command_print_dir, @cmd) = @ARGV;
+      my $pid = $$;
+
+      # Redirect STDOUT/STDERR to PID-named files in the temp directory
+      open(STDOUT, ">", "$command_print_dir/$pid.stdout") or die $!;
+      open(STDERR, ">", "$command_print_dir/$pid.stderr") or die $!;
+
+      # Execute compiler command
+      system(@cmd);
+      exit($? >> 8);
+    ', $command_print_dir, @$cc_cmd);
+
+    # 2. Spawn process based on OS
+    my $pid;
+    if ($^O eq 'MSWin32') {
+      # Windows spawn
+      $pid = system(1, @spawn_cmd);
+    }
+    else {
+      # Linux/Unix fork
+      $pid = fork();
+      if (!defined $pid) {
+        confess("Failed to fork: $!");
+      }
+      if ($pid == 0) {
+        exec(@spawn_cmd);
+        exit(1);
+      }
+    }
+
+    if (!$pid || $pid <= 0) {
+      confess("Failed to spawn process: $!");
+    }
+
+    # 3. Wait for completion
+    my $wait_pid = waitpid($pid, 0);
+    my $exit_status = $? >> 8;
+
+    # 4. Read output files from temp directory
+    my $out_file = "$command_print_dir/$pid.stdout";
+    my $err_file = "$command_print_dir/$pid.stderr";
+    
+    my $output = "";
+    my $error  = "";
+
+    if (-f $out_file) {
+      open my $fh, '<', $out_file;
+      $output = do { local $/; <$fh> };
+      close $fh;
+      print $output if $output ne "";
+    }
+
+    if (-f $err_file) {
+      open my $fh, '<', $err_file;
+      $error = do { local $/; <$fh> };
+      close $fh;
+      warn $error if $error ne "";
+    }
+
+    # 5. Check result
+    if ($wait_pid == -1 || $exit_status != 0) {
+      confess(
+        "Compilation failed.\n" .
+        "Command: $cc_cmd_string\n" .
+        "Exit status: $exit_status\n" .
+        "Error Output:\n$error"
+      );
+    }
+    
     my $end_time = int(Time::HiRes::time() * 1000);
     
     unless (-f $output_file) {
