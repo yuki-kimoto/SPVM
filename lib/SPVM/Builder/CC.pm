@@ -388,7 +388,7 @@ sub prepare_compile_native_class {
     );
     
     # Compile a source file
-    $self->prepare_compile_source_file($compile_info);
+    $self->compile_source_file($compile_info);
     
     # Object file information
     my $compile_info_cc = $compile_info->{cc};
@@ -436,8 +436,8 @@ sub build_precompile_class_source_file {
   close $fh;
 }
 
-sub prepare_compile_source_file {
-  my ($self, $compile_info, $options) = @_;
+sub compile_source_file {
+  my ($self, $compile_info) = @_;
   
   my $config = $compile_info->config;
   
