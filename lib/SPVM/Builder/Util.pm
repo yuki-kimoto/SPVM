@@ -383,7 +383,12 @@ sub create_make_rule {
   # Source dependencies
   my $dependent_files = &get_possible_dependent_files($class_name, $category, $options);
   
-  $make_rule .= "$dynamic_lib_file : @$dependent_files\n";
+  # Order-only dependencies (New!)
+  my $order_only_dependent_files = $options->{order_only_dependent_files} // [];
+  my $order_only_str = @$order_only_dependent_files ? " | " . join(' ', @$order_only_dependent_files) : "";
+
+  # Combine them into the make rule
+  $make_rule .= "$dynamic_lib_file : @$dependent_files$order_only_str\n";
   
   # Build options
   my $new_options_string = "build_dir => '.spvm_build'";
