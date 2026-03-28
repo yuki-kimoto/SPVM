@@ -252,13 +252,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   }
 }
 
-# Interface Methods
-{
-  {
-    ok(SPVM::TestCase::Operator::MethodCall->call_recursive);
-  }
-}
-
 # Inheritance
 {
   {

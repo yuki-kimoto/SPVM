@@ -709,6 +709,7 @@ t/02_vm/05_op/local_var.t
 t/02_vm/05_op/logical_operator.t
 t/02_vm/05_op/make_read_only.t
 t/02_vm/05_op/method_call.t
+t/02_vm/05_op/method_call_max_depth.t
 t/02_vm/05_op/modulo.t
 t/02_vm/05_op/mulnum_array.t
 t/02_vm/05_op/multiplication.t
