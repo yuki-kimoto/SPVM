@@ -201,9 +201,8 @@ sub MY::postamble {
     }
     $options->{dependent_files} = ['SPVM.xs'];
     
-    $make_rule .= "\n# Ensure SPVM.so is built before native modules\n";
-    $make_rule .= "dynamic :: \$(INST_DYNAMIC)\n";
-
+    $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)'];
+    
     # Build native
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn', $options);
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Array', $options);
