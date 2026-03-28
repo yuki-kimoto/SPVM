@@ -1,3 +1,18 @@
+0.990153 2026-03-29
+  [Changes]
+    * Build: Implement order-only dependencies (|) in Makefile.PL for native modules to ensure SPVM.so is built first without triggering redundant rebuilds of all native classes.
+    * Build: Update native class dependencies to include all SPVM core header files instead of only spvm_version.h, ensuring build consistency on core updates.
+    * Build: Ensure precompiled classes depend on essential C source files (spvm_precompile.c, spvm_string_buffer.c) to prevent logic mismatch.
+    * SPVM::Builder::CC: Update Ninja-based build to make native class compilation depend on the entire SPVM include directory for robust version consistency.
+    * VM: Reduce the maximum call depth (max_call_depth) to 512 to improve portability across different platforms and stack sizes.
+
+  [Internal Changes]
+    * Git: Update .gitignore to exclude all *.old files, including Windows-specific SPVM_def.old and Makefile.old.
+    * Build: Update MANIFEST.SKIP to exclude all *.old files from the distribution package.
+    * SPVM::Builder::Util: Add get_spvm_header_files to retrieve all core header files from the include directory.
+    * SPVM::Builder::Util: Add get_spvm_precompile_source_files to manage dependencies for precompiled classes (e.g., spvm_precompile.c, spvm_string_buffer.c).
+    * Test: Move recursive method call tests to a dedicated file (t/02_vm/05_op/method_call_max_depth.t).
+    
 0.990152 2026-03-26
   [Bug Fixes]
     * Fix "Permission denied" errors on Windows when removing the temporary build directory.

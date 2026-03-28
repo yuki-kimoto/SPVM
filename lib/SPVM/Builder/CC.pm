@@ -379,12 +379,19 @@ sub prepare_compile_native_class {
       }
     }
     
+    my $builder_dir = SPVM::Builder::Util::get_builder_dir;
+    my $builder_include_dir = "$builder_dir/include";
+    
+    unless (-d $builder_include_dir) {
+      confess("[Unexpected Error]$builder_include_dir must exist");
+    }
+    
     my $compile_info = SPVM::Builder::CompileInfo->new(
       source_file => $source_file,
       source_rel_file => $source_rel_file,
       config => $config,
       category => $compile_info_category,
-      dependent_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs],
+      dependent_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs, $builder_include_dir],
     );
     
     # Object file information
