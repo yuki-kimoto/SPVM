@@ -35,6 +35,31 @@ sub get_spvm_header_files {
   return \@spvm_header_files;
 }
 
+sub get_spvm_precompile_source_files {
+  my $builder_dir = &get_builder_dir;
+  
+  my $src_dir = "$builder_dir/src";
+  
+  # Specify the required source files
+  my @filenames = (
+    'spvm_precompile.c',
+    'spvm_string_buffer.c',
+  );
+  
+  my @spvm_precompile_source_files;
+  for my $filename (@filenames) {
+    my $file = "$src_dir/$filename";
+    if (-f $file) {
+      push @spvm_precompile_source_files, $file;
+    }
+    else {
+      confess("The SPVM precompile source file '$file' is not found.");
+    }
+  }
+  
+  return \@spvm_precompile_source_files;
+}
+
 sub get_spvm_core_source_file_names {
   
   my @spvm_core_source_file_names = qw(
@@ -344,6 +369,7 @@ sub get_possible_dependent_files {
     }
   }
   elsif ($category eq 'precompile') {
+    push @dependent_files, @{&get_spvm_precompile_source_files};
     push @dependent_files, $spvm_class_file;
   }
   
