@@ -20,17 +20,19 @@ use SPVM::Builder::Ninja;
 # SPVM::Builder::Util is used from Makefile.PL
 # so this class must be wrote as pure perl. Do not contain XS functions.
 
-sub get_spvm_version_header_file {
-  
+sub get_spvm_header_files {
   my $builder_dir = &get_builder_dir;
   
-  my $spvm_version_header_file = "$builder_dir/include/spvm_version.h";
+  my $include_dir = "$builder_dir/include";
   
-  unless (-f $spvm_version_header_file) {
-    confess("The SPVM version header file '$spvm_version_header_file' is not found.");
+  # Get all .h files in the include directory
+  my @spvm_header_files = glob("$include_dir/*.h");
+  
+  unless (@spvm_header_files) {
+    confess("The SPVM header files are not found in the directory '$include_dir'.");
   }
   
-  return $spvm_version_header_file;
+  return \@spvm_header_files;
 }
 
 sub get_spvm_core_source_file_names {
@@ -272,8 +274,8 @@ sub get_possible_dependent_files {
   
   my $spvm_class_file = "$spvm_class_file_without_ext.spvm";
   
-  my $spvm_version_header_file = &get_spvm_version_header_file;
-  push @dependent_files, $spvm_version_header_file;
+  my $spvm_header_files = &get_spvm_header_files;
+  push @dependent_files, @$spvm_header_files;
   
   # Dependency native class file
   if ($category eq 'native') {
