@@ -563,7 +563,7 @@ sub compile_source_file {
       'open(STDOUT, qq(>), qq($dir/$p.stdout)) or die $!; ' .
       'open(STDERR, qq(>), qq($dir/$p.stderr)) or die $!; ' .
       'system(@cmd); exit($? >> 8);';
-    my $pid = SPVM::Builder::Util::spawn_perl($perl_script, $command_print_dir, @$cc_cmd);
+    my $pid = &spawn_perl($perl_script, $command_print_dir, @$cc_cmd);
     
     if (!$pid || $pid <= 0) {
       confess("Failed to spawn process: $!");
@@ -621,6 +621,36 @@ sub compile_source_file {
     };
     $ninja->add_log($log_entry);
   }
+}
+
+sub spawn_perl {
+  my ($script, @args) = @_;
+  
+  my @cmd = ($^X, '-Mstrict', '-Mwarnings', '-e', $script, @args);
+  
+  my $pid;
+  if ($^O eq 'MSWin32') {
+    # Windows spawn
+    $pid = system(1, @cmd);
+  }
+  else {
+    # Linux/Unix fork
+    $pid = fork();
+    if (!defined $pid) {
+      confess("Failed to fork: $!");
+    }
+    if ($pid == 0) {
+      exec(@cmd);
+      exit(1);
+    }
+  }
+  
+  return $pid;
+}
+
+sub spawn_compile {
+  my (@args) = @_;
+  
 }
 
 sub prepare_link {

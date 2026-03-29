@@ -819,31 +819,6 @@ sub normalize_path {
   return $normalized_path;
 }
 
-sub spawn_perl {
-  my ($script, @args) = @_;
-  
-  my @cmd = ($^X, '-Mstrict', '-Mwarnings', '-e', $script, @args);
-  
-  my $pid;
-  if ($^O eq 'MSWin32') {
-    # Windows spawn
-    $pid = system(1, @cmd);
-  }
-  else {
-    # Linux/Unix fork
-    $pid = fork();
-    if (!defined $pid) {
-      confess("Failed to fork: $!");
-    }
-    if ($pid == 0) {
-      exec(@cmd);
-      exit(1);
-    }
-  }
-  
-  return $pid;
-}
-
 1;
 
 =head1 Name
