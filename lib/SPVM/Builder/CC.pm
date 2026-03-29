@@ -515,8 +515,6 @@ sub compile_source_file {
     mkpath dirname $output_file;
     
     my $cc_cmd = $compile_info->create_command;
-    my $cc_cmd_string = "@$cc_cmd";
-    
     unless ($quiet) {
       my $compile_info_category = $compile_info->category;
       my $message;
@@ -549,7 +547,6 @@ sub compile_source_file {
       }
       
       print "$message\n";
-      print "$cc_cmd_string\n";
     }
     
     my $start_time = int(Time::HiRes::time() * 1000);
@@ -559,7 +556,9 @@ sub compile_source_file {
     mkpath $command_log_dir;
     
     # Prepare command for intermediate Perl process
-    my $pid = &spawn_compile($command_log_dir, @$cc_cmd);
+    my $cc_cmd_string = "@$cc_cmd";
+    $cc_cmd_string =~ s/\n//g;
+    my $pid = &spawn_compile($command_log_dir, $cc_cmd_string, @$cc_cmd);
     
     if (!$pid || $pid <= 0) {
       confess("Failed to spawn process: $!");
@@ -620,20 +619,21 @@ sub compile_source_file {
 }
 
 sub spawn_compile {
-  my ($log_dir, @cc_cmd) = @_;
+  my ($log_dir, $cc_cmd_string, @cc_cmd) = @_;
   
   my $perl_script_for_compile =
-    q|my ($log_dir, @cc_cmd) = @ARGV; | .
+    q|my ($log_dir, $cc_cmd_string, @cc_cmd) = @ARGV; | .
     q|my $process_id = $$; | .
     q|my $log_stdout = "$log_dir/$process_id.stdout"; | .
     q|my $log_stderr = "$log_dir/$process_id.stderr"; | .
     q|open(STDOUT, ">", $log_stdout) or warn "Cannot open file '$log_stdout':$!"; | .
     q|open(STDERR, ">", $log_stderr) or warn "Cannot open file '$log_stderr':$!"; | .
+    q|print "$cc_cmd_string\n"; | . 
     q|system(@cc_cmd); | . 
     q|exit($? >> 8);|
   ;
   
-  my $process_id = &spawn_perl($perl_script_for_compile, $log_dir, @cc_cmd);
+  my $process_id = &spawn_perl($perl_script_for_compile, $log_dir, $cc_cmd_string, @cc_cmd);
   
   return $process_id;
 }
