@@ -622,10 +622,16 @@ sub compile_source_file {
 sub spawn_compile {
   my ($log_dir, @cc_cmd) = @_;
   
-  my $perl_script_for_compile = 'my ($log_dir, @cc_cmd) = @ARGV; my $process_id = $$; ' .
-  'open(STDOUT, qq(>), qq($log_dir/$process_id.stdout)) or die $!; ' .
-  'open(STDERR, qq(>), qq($log_dir/$process_id.stderr)) or die $!; ' .
-  'system(@cc_cmd); exit($? >> 8);';
+  my $perl_script_for_compile =
+    q|my ($log_dir, @cc_cmd) = @ARGV; | .
+    q|my $process_id = $$; | .
+    q|my $log_stdout = "$log_dir/$process_id.stdout"; | .
+    q|my $log_stderr = "$log_dir/$process_id.stderr"; | .
+    q|open(STDOUT, ">", $log_stdout) or warn "Cannot open file '$log_stdout':$!"; | .
+    q|open(STDERR, ">", $log_stderr) or warn "Cannot open file '$log_stderr':$!"; | .
+    q|system(@cc_cmd); | . 
+    q|exit($? >> 8);|
+  ;
   
   my $process_id = &spawn_perl($perl_script_for_compile, $log_dir, @cc_cmd);
   
