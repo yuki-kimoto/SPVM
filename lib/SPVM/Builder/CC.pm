@@ -554,16 +554,12 @@ sub compile_source_file {
     
     my $start_time = int(Time::HiRes::time() * 1000);
     
-    my $command_print_dir = $self->builder->build_dir . "/command";
+    my $command_log_dir = $self->builder->build_dir . "/command";
     
-    mkpath $command_print_dir;
+    mkpath $command_log_dir;
     
     # Prepare command for intermediate Perl process
-    my $perl_script = 'my ($dir, @cmd) = @ARGV; my $p = $$; ' .
-      'open(STDOUT, qq(>), qq($dir/$p.stdout)) or die $!; ' .
-      'open(STDERR, qq(>), qq($dir/$p.stderr)) or die $!; ' .
-      'system(@cmd); exit($? >> 8);';
-    my $pid = &spawn_perl($perl_script, $command_print_dir, @$cc_cmd);
+    my $pid = &spawn_compile($command_log_dir, @$cc_cmd);
     
     if (!$pid || $pid <= 0) {
       confess("Failed to spawn process: $!");
@@ -574,8 +570,8 @@ sub compile_source_file {
     my $exit_status = $? >> 8;
 
     # Read output files from temp directory
-    my $out_file = "$command_print_dir/$pid.stdout";
-    my $err_file = "$command_print_dir/$pid.stderr";
+    my $out_file = "$command_log_dir/$pid.stdout";
+    my $err_file = "$command_log_dir/$pid.stderr";
     
     my $output = "";
     my $error  = "";
@@ -623,34 +619,42 @@ sub compile_source_file {
   }
 }
 
+sub spawn_compile {
+  my ($log_dir, @cc_cmd) = @_;
+  
+  my $perl_script_for_compile = 'my ($log_dir, @cc_cmd) = @ARGV; my $process_id = $$; ' .
+  'open(STDOUT, qq(>), qq($log_dir/$process_id.stdout)) or die $!; ' .
+  'open(STDERR, qq(>), qq($log_dir/$process_id.stderr)) or die $!; ' .
+  'system(@cc_cmd); exit($? >> 8);';
+  
+  my $process_id = &spawn_perl($perl_script_for_compile, $log_dir, @cc_cmd);
+  
+  return $process_id;
+}
+
 sub spawn_perl {
-  my ($script, @args) = @_;
+  my ($perl_script, @args) = @_;
   
-  my @cmd = ($^X, '-Mstrict', '-Mwarnings', '-e', $script, @args);
+  my @cmd = ($^X, '-Mstrict', '-Mwarnings', '-e', $perl_script, @args);
   
-  my $pid;
+  my $process_id;
   if ($^O eq 'MSWin32') {
     # Windows spawn
-    $pid = system(1, @cmd);
+    $process_id = system(1, @cmd);
   }
   else {
     # Linux/Unix fork
-    $pid = fork();
-    if (!defined $pid) {
+    $process_id = fork();
+    if (!defined $process_id) {
       confess("Failed to fork: $!");
     }
-    if ($pid == 0) {
+    if ($process_id == 0) {
       exec(@cmd);
       exit(1);
     }
   }
   
-  return $pid;
-}
-
-sub spawn_compile {
-  my (@args) = @_;
-  
+  return $process_id;
 }
 
 sub prepare_link {
