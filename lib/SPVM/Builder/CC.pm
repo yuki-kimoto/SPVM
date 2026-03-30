@@ -505,6 +505,8 @@ sub compile_source_file {
   # Set output file
   $compile_info->output_file($output_file);
   
+  $compile_info->command_hash($command_hash);
+  
   my $need_generate_options = {
     command_hash => $command_hash,
     output_file => $output_file,
