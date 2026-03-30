@@ -508,8 +508,8 @@ sub compile_source_file {
   $compile_info->command_hash($command_hash);
   
   my $need_generate_options = {
-    command_hash => $command_hash,
-    output_file => $output_file,
+    command_hash => $compile_info->command_hash,
+    output_file => $compile_info->output_file,
   };
   my $need_generate = $force || $ninja->need_generate($need_generate_options);
   
