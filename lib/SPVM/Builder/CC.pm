@@ -533,16 +533,16 @@ sub compile_source_file {
           $cc_cmd_heading = "[Compile SPVM Source File]";
         }
         elsif ($compile_info_category eq 'native_source') {
-          $cc_cmd_heading = "[Compile Native Source File for $config_class_name class using the config file \"$config_file\"]";
+          $cc_cmd_heading = "[Compile Native Source File for $config_class_name class using the config file '$config_file']";
         }
         elsif ($compile_info_category eq 'native_class') {
-          $cc_cmd_heading = "[Compile Native Class File for $config_class_name class using the config file \"$config_file\"]";
+          $cc_cmd_heading = "[Compile Native Class File for $config_class_name class using the config file '$config_file']";
         }
         elsif ($compile_info_category eq 'precompile_class') {
           $cc_cmd_heading = "[Compile Precompile Class File for $config_class_name class]";
         }
         else {
-          confess("[Unexpected Error]Invalid compile info category \"$compile_info_category\".");
+          confess("[Unexpected Error]Invalid compile info category '$compile_info_category'.");
         }
       }
       
@@ -641,6 +641,15 @@ sub spawn_compile {
 
 sub spawn_perl {
   my ($perl_script, @args) = @_;
+  
+  for my $item ($perl_script, @args) {
+    if ($item =~ /\n/) {
+      confess("[Internal Error]The argument or script to spawn_perl must not contain a newline character. (The value contains an invalid character)");
+    }
+    if ($item =~ /"/) {
+      confess("[Internal Error]The argument or script to spawn_perl must not contain a double quote character. (The value contains an invalid character)");
+    }
+  }
   
   my @cmd = ($^X, '-Mstrict', '-Mwarnings', '-e', $perl_script, @args);
   
