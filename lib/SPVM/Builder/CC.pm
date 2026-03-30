@@ -626,8 +626,8 @@ sub spawn_compile {
     q|my $process_id = $$; | .
     q|my $log_stdout = qq($log_dir/$process_id.stdout); | .
     q|my $log_stderr = qq($log_dir/$process_id.stderr); | .
-    q|open(STDOUT, ">", $log_stdout) or warn qq(Cannot open file '$log_stdout':$!); | .
-    q|open(STDERR, ">", $log_stderr) or warn qq(Cannot open file '$log_stderr':$!); | .
+    q|open(STDOUT, '>', $log_stdout) or warn qq(Cannot open file '$log_stdout':$!); | .
+    q|open(STDERR, '>', $log_stderr) or warn qq(Cannot open file '$log_stderr':$!); | .
     q|print qq($cc_cmd_string\n); | . 
     q|system(@cc_cmd); | . 
     q|exit($? >> 8);|
