@@ -15,6 +15,7 @@ has [qw(
   category
   dependent_files
   link_info
+  command_hash
 )];
 
 # Class methods
@@ -224,6 +225,29 @@ If this field is defined, these files are added to the dependency list of the C<
 Gets and sets the C<link_info> field, an L<SPVM::Builder::LinkInfo> object.
 
 This field is a weak reference to the L<SPVM::Builder::LinkInfo> object that this compilation task belongs to.
+
+=head2 command_hash
+
+  my $command_hash = $compile_info->command_hash;
+  $compile_info->command_hash($command_hash);
+
+Gets and sets the C<command_hash> field, a SHA-1 hash string that uniquely identifies the compilation task.
+
+This hash ensures the consistency of the compilation. It is generated from the following information:
+
+=over 2
+
+=item * The compilation command itself.
+
+=item * The compiler version.
+
+=item * The SPVM version-specific headers.
+
+=item * The information of the dependent files.
+
+=back
+
+If any of these change, the hash will change, triggering a re-compilation in the C<ninja> build system.
 
 =head1 Class Methods
 
