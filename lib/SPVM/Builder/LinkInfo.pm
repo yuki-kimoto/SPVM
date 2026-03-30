@@ -10,9 +10,8 @@ use SPVM::Builder::Accessor 'has';
 # Fields
 has [qw(
   config
-  object_files
   compile_infos
-  remaining_compile_count
+  object_files
 )];
 
 # Class Methods
@@ -22,7 +21,6 @@ sub new {
   my $self = {
     object_files => [],
     compile_infos => [],
-    remaining_compile_count => 0,
     @_
   };
   
@@ -178,13 +176,6 @@ Gets and sets the C<output_file> field, an output file.
   $link_info->object_files($object_files);
 
 Gets and sets the C<object_files> field, an array reference of L<SPVM::Builder::ObjectFileInfo> objects.
-
-=head2 remaining_compile_count
-
-  my $remaining_compile_count = $link_info->remaining_compile_count;
-  $link_info->remaining_compile_count($remaining_compile_count);
-
-Gets and sets the C<remaining_compile_count> field, the count of remaining compilation tasks as an integer.
 
 =head2 compile_infos
 
