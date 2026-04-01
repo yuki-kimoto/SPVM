@@ -583,24 +583,28 @@ sub compile_source_file {
     my $exit_status = $? >> 8;
 
     # Read output files from temp directory
-    my $out_file = "$command_log_dir/$pid.stdout";
-    my $err_file = "$command_log_dir/$pid.stderr";
-    
-    my $output = "";
-    my $error  = "";
-
-    if (-f $out_file) {
-      open my $fh, '<', $out_file;
-      $output = do { local $/; <$fh> };
-      close $fh;
-      print $output if $output ne "";
+    my $stdout_file = "$command_log_dir/$pid.stdout";
+    unless (-f $stdout_file) {
+      confess("[Unexpected Error]The stdout log file '$stdout_file' does not exist.");
     }
-
-    if (-f $err_file) {
-      open my $fh, '<', $err_file;
-      $error = do { local $/; <$fh> };
-      close $fh;
-      warn $error if $error ne "";
+    
+    my $stderr_file = "$command_log_dir/$pid.stderr";
+    unless (-f $stderr_file) {
+      confess("[Unexpected Error]The stderr log file '$stderr_file' does not exist.");
+    }
+    
+    open my $stdout_fh, '<', $stdout_file;
+    my $stdout_output = do { local $/; <$stdout_fh> };
+    close $stdout_fh;
+    if (length $stdout_output) {
+      print $stdout_output;
+    }
+    
+    open my $stderr_fh, '<', $stderr_file;
+    my $stderr_output = do { local $/; <$stderr_fh> };
+    close $stderr_fh;
+    if (length $stderr_output) {
+      print STDERR $stderr_output;
     }
     
     # Check result
@@ -608,8 +612,7 @@ sub compile_source_file {
       confess(
         "Compilation failed.\n" .
         "Command: $cc_cmd_string\n" .
-        "Exit status: $exit_status\n" .
-        "Error Output:\n$error"
+        "Exit status: $exit_status\n"
       );
     }
     
