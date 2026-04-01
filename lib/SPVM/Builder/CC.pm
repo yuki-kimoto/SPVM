@@ -561,8 +561,6 @@ sub compile_source_file {
           confess("[Unexpected Error]Invalid compile info category '$compile_info_category'.");
         }
       }
-      
-      print "$cc_cmd_heading\n";
     }
     
     my $start_time = int(Time::HiRes::time() * 1000);
