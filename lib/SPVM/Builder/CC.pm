@@ -528,10 +528,11 @@ sub compile_source_file {
   my $need_generate = $force || $ninja->need_generate($need_generate_options);
   
   if ($need_generate) {
+    my $start_time = int(Time::HiRes::time() * 1000);
+    
     mkpath dirname $output_file;
     
-    my $cc_cmd = $compile_info->create_command;
-    my $cc_cmd_heading = '';
+    my $cc_cmd_heading;
     
     my $compile_info_category = $compile_info->category;
     if ($config->is_resource) {
@@ -562,32 +563,28 @@ sub compile_source_file {
       }
     }
     
-    my $start_time = int(Time::HiRes::time() * 1000);
-    
-    my $command_log_dir = $self->builder->build_dir . "/command";
-    
-    mkpath $command_log_dir;
-    
     # Prepare command for intermediate Perl process
-    my $cc_cmd_string = "@$cc_cmd";
-    $cc_cmd_string =~ s/\n//g;
-    my $pid = &spawn_compile($command_log_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
+    my $command_log_dir = $self->builder->build_dir . "/command";
+    mkpath $command_log_dir;
+    my $cc_cmd = $compile_info->create_command;
+    my $cc_cmd_string = $compile_info->to_command;
+    my $process_id = &spawn_compile($command_log_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
     
-    if (!$pid || $pid <= 0) {
+    if (!$process_id || $process_id <= 0) {
       confess("Failed to spawn process: $!");
     }
 
     # Wait for completion
-    my $wait_pid = waitpid($pid, 0);
+    my $wait_pid = waitpid($process_id, 0);
     my $exit_status = $? >> 8;
 
     # Read output files from temp directory
-    my $stdout_file = "$command_log_dir/$pid.stdout";
+    my $stdout_file = "$command_log_dir/$process_id.stdout";
     unless (-f $stdout_file) {
       confess("[Unexpected Error]The stdout log file '$stdout_file' does not exist.");
     }
     
-    my $stderr_file = "$command_log_dir/$pid.stderr";
+    my $stderr_file = "$command_log_dir/$process_id.stderr";
     unless (-f $stderr_file) {
       confess("[Unexpected Error]The stderr log file '$stderr_file' does not exist.");
     }

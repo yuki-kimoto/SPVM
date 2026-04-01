@@ -157,9 +157,39 @@ sub to_command {
   my ($self) = @_;
 
   my $compile_command = $self->create_command;
-  my $compile_command_string = "@$compile_command";
+  
+  my @quoted_parts;
+  for my $part (@$compile_command) {
+    push @quoted_parts, $self->_quote_literal($part);
+  }
+  
+  my $compile_command_string = join(' ', @quoted_parts);
   
   return $compile_command_string;
+}
+
+sub _quote_literal {
+  my ($self, $string) = @_;
+
+  if ($^O eq 'MSWin32') {
+    if (length $string && $string !~ /[ \t\n\x0b"|<>%]/) {
+      return $string;
+    }
+
+    $string =~ s{(\\*)(?="|\z)}{$1$1}g;
+    $string =~ s{"}{\\"}g;
+
+    return qq{"$string"};
+  }
+  else {
+    if (length $string && $string !~ /[^a-zA-Z0-9,._+@%\/-]/) {
+      return $string;
+    }
+
+    $string =~ s{'}{'\\''}g;
+
+    return "'$string'";
+  }
 }
 
 sub source_file {
