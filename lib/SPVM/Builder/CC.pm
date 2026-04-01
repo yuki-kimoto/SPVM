@@ -532,34 +532,33 @@ sub compile_source_file {
     
     my $cc_cmd = $compile_info->create_command;
     my $cc_cmd_heading = '';
-    unless ($quiet) {
-      my $compile_info_category = $compile_info->category;
-      if ($config->is_resource) {
-        my $resource_class_name = $config->class_name;
-        $cc_cmd_heading = "[Compile a source file in $resource_class_name resource.";
+    
+    my $compile_info_category = $compile_info->category;
+    if ($config->is_resource) {
+      my $resource_class_name = $config->class_name;
+      $cc_cmd_heading = "[Compile a source file in $resource_class_name resource.";
+    }
+    else {
+      my $config_class_name = $config->class_name;
+      my $config_file = $config->file;
+      
+      if ($compile_info_category eq 'bootstrap') {
+        $cc_cmd_heading = "[Compile Bootstrap File]";
+      }
+      elsif ($compile_info_category eq 'spvm_core') {
+        $cc_cmd_heading = "[Compile SPVM Source File]";
+      }
+      elsif ($compile_info_category eq 'native_source') {
+        $cc_cmd_heading = "[Compile Native Source File for $config_class_name class using the config file '$config_file']";
+      }
+      elsif ($compile_info_category eq 'native_class') {
+        $cc_cmd_heading = "[Compile Native Class File for $config_class_name class using the config file '$config_file']";
+      }
+      elsif ($compile_info_category eq 'precompile_class') {
+        $cc_cmd_heading = "[Compile Precompile Class File for $config_class_name class]";
       }
       else {
-        my $config_class_name = $config->class_name;
-        my $config_file = $config->file;
-        
-        if ($compile_info_category eq 'bootstrap') {
-          $cc_cmd_heading = "[Compile Bootstrap File]";
-        }
-        elsif ($compile_info_category eq 'spvm_core') {
-          $cc_cmd_heading = "[Compile SPVM Source File]";
-        }
-        elsif ($compile_info_category eq 'native_source') {
-          $cc_cmd_heading = "[Compile Native Source File for $config_class_name class using the config file '$config_file']";
-        }
-        elsif ($compile_info_category eq 'native_class') {
-          $cc_cmd_heading = "[Compile Native Class File for $config_class_name class using the config file '$config_file']";
-        }
-        elsif ($compile_info_category eq 'precompile_class') {
-          $cc_cmd_heading = "[Compile Precompile Class File for $config_class_name class]";
-        }
-        else {
-          confess("[Unexpected Error]Invalid compile info category '$compile_info_category'.");
-        }
+        confess("[Unexpected Error]Invalid compile info category '$compile_info_category'.");
       }
     }
     
@@ -593,11 +592,13 @@ sub compile_source_file {
       confess("[Unexpected Error]The stderr log file '$stderr_file' does not exist.");
     }
     
-    open my $stdout_fh, '<', $stdout_file;
-    my $stdout_output = do { local $/; <$stdout_fh> };
-    close $stdout_fh;
-    if (length $stdout_output) {
-      print $stdout_output;
+    unless ($quiet) {
+      open my $stdout_fh, '<', $stdout_file;
+      my $stdout_output = do { local $/; <$stdout_fh> };
+      close $stdout_fh;
+      if (length $stdout_output) {
+        print $stdout_output;
+      }
     }
     
     open my $stderr_fh, '<', $stderr_file;
