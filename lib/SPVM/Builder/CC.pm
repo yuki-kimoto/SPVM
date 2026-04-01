@@ -506,7 +506,7 @@ sub prepare_compile_source_file {
   return $compile_info;
 }
 
-sub compile_source_file_v2 {
+sub compile_source_file {
   my ($self, $compile_info) = @_;
   
   my $config = $compile_info->config;
@@ -709,7 +709,7 @@ sub prepare_link {
     my $compile_info = $object_file->compile_info;
     if ($compile_info) {
       $compile_info = $self->prepare_compile_source_file($compile_info);
-      $self->compile_source_file_v2($compile_info);
+      $self->compile_source_file($compile_info);
       $object_file->file($compile_info->output_file);
     }
   }
