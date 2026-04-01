@@ -321,11 +321,25 @@ Return Value Examples:
 
   my $compile_command_string = $compile_info->to_command;
 
-Joins all elements of the return value of the the L</"create_command"> method with a space, and returns it.
+Converts the array reference of the compilation command returned by the L</"create_command"> method into a single string that can be executed in a shell (such as C<sh> or C<bash>) or the Windows Command Prompt (C<cmd.exe>).
+
+Each argument is automatically and appropriately quoted only when necessary (e.g., containing spaces or special characters) according to the operating system (OS) to ensure it can be safely executed as a command line.
 
 Return Value Examples:
 
-  "cc -c -o foo.o -O2 -Ipath/include foo.c"
+=over 2
+
+=item * On UNIX/Linux (Only strings with special characters like C<=> or spaces are quoted):
+
+  gcc -c -o foo.o -O2 '-std=c99' -Ipath/include foo.c
+
+=item * On Windows (Only strings with characters like spaces or C<"> are quoted):
+
+  gcc -c -o foo.o -O2 -std=c99 -Ipath/include foo.c
+
+=back
+
+=cut
 
 =head2 source_file
 
