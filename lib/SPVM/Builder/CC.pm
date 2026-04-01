@@ -439,12 +439,10 @@ sub generate_precompile_class_source_file {
   close $fh;
 }
 
-sub compile_source_file {
+sub prepare_compile_source_file {
   my ($self, $compile_info) = @_;
   
   my $config = $compile_info->config;
-  
-  my $quiet = $self->detect_quiet($config);
   
   my $source_rel_file = $compile_info->source_rel_file;
   
@@ -470,8 +468,6 @@ sub compile_source_file {
   }
   
   my $cc_version = $config->cc_version;
-  
-  my $force = $self->detect_force($config);
   
   my $cc_cmd_no_output_option = $compile_info->create_command({no_output_option => 1});
   my $cc_cmd_string_no_output_option = "@$cc_cmd_no_output_option";
@@ -506,6 +502,24 @@ sub compile_source_file {
   $compile_info->output_file($output_file);
   
   $compile_info->command_hash($command_hash);
+  
+  return $compile_info;
+}
+
+sub compile_source_file_v2 {
+  my ($self, $compile_info) = @_;
+  
+  my $config = $compile_info->config;
+  
+  my $force = $self->detect_force($config);
+  
+  my $quiet = $self->detect_quiet($config);
+  
+  my $command_hash = $compile_info->command_hash;
+  
+  my $output_file = $compile_info->output_file;
+  
+  my $ninja = $self->builder->ninja;
   
   my $need_generate_options = {
     command_hash => $compile_info->command_hash,
@@ -591,7 +605,7 @@ sub compile_source_file {
       warn $error if $error ne "";
     }
     
-    # 5. Check result
+    # Check result
     if ($wait_pid == -1 || $exit_status != 0) {
       confess(
         "Compilation failed.\n" .
@@ -694,7 +708,8 @@ sub prepare_link {
   for my $object_file (@$object_files) {
     my $compile_info = $object_file->compile_info;
     if ($compile_info) {
-      $self->compile_source_file($compile_info);
+      $compile_info = $self->prepare_compile_source_file($compile_info);
+      $self->compile_source_file_v2($compile_info);
       $object_file->file($compile_info->output_file);
     }
   }
