@@ -296,7 +296,7 @@ sub build_exe_file {
   
   if (@$object_files) {
     my $link_info = $cc_linker->prepare_link($class_name, $object_files, {config => $config_linker});
-    $cc_linker->link($object_files, {config => $config_linker}, $link_info);
+    $cc_linker->link($object_files, $link_info);
   }
 }
 

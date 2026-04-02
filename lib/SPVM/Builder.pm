@@ -209,7 +209,7 @@ sub build {
   my $output_file;
   if (@$object_files) {
     my $link_info = $cc->prepare_link($class_name, $object_files, $compile_and_link_options);
-    $cc->link($object_files, $compile_and_link_options, $link_info);
+    $cc->link($object_files, $link_info);
     $output_file = $link_info->output_file;
   }
   

@@ -13,6 +13,7 @@ use SPVM::Builder::Accessor 'has';
 has [qw(
   compile_infos
   object_files
+  dl_func_list
 )];
 
 # Class Methods
@@ -22,6 +23,7 @@ sub new {
   my $self = {
     object_files => [],
     compile_infos => [],
+    dl_func_list => [],
     @_
   };
   
