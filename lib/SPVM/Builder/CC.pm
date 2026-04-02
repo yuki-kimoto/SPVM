@@ -912,7 +912,7 @@ sub link {
       my $method_names = $basic_type->get_method_names_by_category($category);
       
       # Create the dynamic link function list for the class
-      my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
+      $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
       
       # Get anon methods from anon basic types
       my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
