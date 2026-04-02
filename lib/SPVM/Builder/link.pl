@@ -5,7 +5,7 @@ use SPVM::Builder::Util;
 use File::Copy;
 
 # Get arguments
-my ($log_dir, $ld_cmd_heading, $ld_cmd_string, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @ARGV;
+my ($command_tmp_dir, $ld_cmd_heading, $ld_cmd_string, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @ARGV;
 
 # Read dl_func_list
 my $dl_func_list;
@@ -36,8 +36,8 @@ if (-f $ldflags_file) {
 
 # Define log file paths
 my $process_id = $$;
-my $log_stdout = "$log_dir/$process_id.stdout";
-my $log_stderr = "$log_dir/$process_id.stderr";
+my $log_stdout = "$command_tmp_dir/$process_id.stdout";
+my $log_stderr = "$command_tmp_dir/$process_id.stderr";
 
 # Redirect stdout and stderr to log files
 open(STDOUT, '>', $log_stdout) or warn "Can't open $log_stdout: $!";
@@ -79,7 +79,7 @@ for my $tmp_file (@link_temporary_files) {
   $tmp_file =~ s/"$//;
   if (-f $tmp_file) {
     my $extension = ($tmp_file =~ /\.([^\.]+)$/) ? $1 : 'tmp';
-    File::Copy::copy($tmp_file, "$log_dir/$process_id.$extension");
+    File::Copy::copy($tmp_file, "$command_tmp_dir/$process_id.$extension");
   }
 }
 

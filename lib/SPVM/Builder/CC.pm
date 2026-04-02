@@ -565,16 +565,16 @@ sub spawn_compile_source_file {
     }
     
     # Prepare command for intermediate Perl process
-    my $command_log_dir = $self->builder->build_dir . "/command";
-    mkpath $command_log_dir;
+    my $command_tmp_dir = $self->builder->build_dir . "/command";
+    mkpath $command_tmp_dir;
     my $cc_cmd = $compile_info->create_command;
     my $cc_cmd_string = $compile_info->to_command;
     
     my $start_time = int(Time::HiRes::time() * 1000);
     $compile_info->start_time($start_time);
-    $compile_info->log_dir($command_log_dir);
+    $compile_info->tmp_dir($command_tmp_dir);
     
-    $process_id = &spawn_compile($command_log_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
+    $process_id = &spawn_compile($command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
   }
   
   return $process_id;
@@ -603,7 +603,7 @@ sub wait_command {
   my $command_string = $command_info->to_command;
   my $output_file = $command_info->output_file;
   my $start_time = $command_info->start_time;
-  my $command_log_dir = $command_info->log_dir;
+  my $command_tmp_dir = $command_info->tmp_dir;
   my $command_hash = $command_info->command_hash;
   my $config = $command_info->config;
   my $quiet = $config->quiet;
@@ -618,12 +618,12 @@ sub wait_command {
   my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
   
   # Read output files from temp directory
-  my $stdout_file = "$command_log_dir/$process_id.stdout";
+  my $stdout_file = "$command_tmp_dir/$process_id.stdout";
   unless (-f $stdout_file) {
     confess("[Unexpected Error]The stdout log file '$stdout_file' does not exist.");
   }
   
-  my $stderr_file = "$command_log_dir/$process_id.stderr";
+  my $stderr_file = "$command_tmp_dir/$process_id.stderr";
   unless (-f $stderr_file) {
     confess("[Unexpected Error]The stderr log file '$stderr_file' does not exist.");
   }
@@ -662,11 +662,11 @@ sub wait_command {
 }
 
 sub spawn_compile {
-  my ($log_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @_;
+  my ($command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @_;
   
   my $compile_script_path = &get_compile_script_path();
   
-  my $process_id = &spawn_perl($compile_script_path, $log_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd);
+  my $process_id = &spawn_perl($compile_script_path, $command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd);
   
   return $process_id;
 }

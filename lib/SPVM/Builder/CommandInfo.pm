@@ -13,7 +13,7 @@ has [qw(
   command_hash
   start_time
   end_time
-  log_dir
+  tmp_dir
 )];
 
 # Instance Methods
@@ -121,12 +121,12 @@ Gets and sets the C<start_time> field. It is a Unix timestamp in milliseconds wh
 
 Gets and sets the C<end_time> field. It is a Unix timestamp in milliseconds when the command execution ended.
 
-=head2 log_dir
+=head2 tmp_dir
 
-  my $log_dir = $command_info->log_dir;
-  $command_info->log_dir($log_dir);
+  my $tmp_dir = $command_info->tmp_dir;
+  $command_info->tmp_dir($tmp_dir);
 
-Gets and sets the C<log_dir> field. It is a directory where the stdout and stderr log files of the command are stored.
+Gets and sets the C<tmp_dir> field. It is a directory where the stdout and stderr log files of the command are stored.
 
 =head1 Instance Methods
 
