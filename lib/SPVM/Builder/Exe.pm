@@ -378,16 +378,12 @@ sub prepare_compile_source_file {
   
   $compile_info = $builder_cc->prepare_compile_source_file($compile_info);
   
-  my $wait_command_options = {};
   my $process_id = $builder_cc->spawn_compile_source_file($compile_info);
   if ($process_id > 0) {
-    $wait_command_options->{command_infos_h}{$process_id} = $compile_info;
-    while ($builder_cc->wait_command($process_id, $wait_command_options) == 0) {
+    while ($builder_cc->wait_command($compile_info) == 0) {
       Time::HiRes::sleep(0.01);
     }
-    my $command_info = $wait_command_options->{command_infos_h}{$process_id};
-    $builder_cc->add_ninja_log($command_info);
-    delete $wait_command_options->{command_infos_h}{$process_id};
+    $builder_cc->add_ninja_log($compile_info);
   }
   
   my $object_file_name = $compile_info->output_file;

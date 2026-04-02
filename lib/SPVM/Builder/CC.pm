@@ -582,9 +582,9 @@ sub spawn_compile_source_file {
 }
 
 sub wait_command {
-  my ($self, $process_id, $options) = @_;
+  my ($self, $command_info) = @_;
   
-  $options //= {};
+  my $process_id = $command_info->process_id;
   
   # Wait for completion
   my $wait_process_id = waitpid($process_id, WNOHANG);
@@ -600,7 +600,6 @@ sub wait_command {
   
   my $exit_status = $? >> 8;
   
-  my $command_info = $options->{command_infos_h}{$process_id};
   my $command_string = $command_info->to_command;
   my $output_file = $command_info->output_file;
   my $command_tmp_dir = $command_info->tmp_dir;
@@ -734,23 +733,18 @@ sub compile_source_files {
     return;
   }
   
-  my $wait_command_options = {};
   for my $object_file (@$object_files) {
     my $compile_info = $object_file->compile_info;
     if ($compile_info) {
       my $compile_info = $self->prepare_compile_source_file($compile_info);
       my $process_id = $self->spawn_compile_source_file($compile_info);
       if ($process_id > 0) {
-        $wait_command_options->{command_infos_h}{$process_id} = $compile_info;
-        while ($self->wait_command($process_id, $wait_command_options) == 0) {
+        while ($self->wait_command($compile_info) == 0) {
           Time::HiRes::sleep(0.01);
         }
         
         # Record the build result after the process finished
-        my $command_info = $wait_command_options->{command_infos_h}{$process_id};
-        $self->add_ninja_log($command_info);
-        
-        delete $wait_command_options->{command_infos_h}{$process_id};
+        $self->add_ninja_log($compile_info);
       }
       $object_file->file($compile_info->output_file);
     }
