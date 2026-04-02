@@ -666,51 +666,12 @@ sub spawn_compile {
   
   my $compile_script_path = &get_compile_script_path();
   
-  my $process_id = &spawn_perl_v2($compile_script_path, $log_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd);
+  my $process_id = &spawn_perl($compile_script_path, $log_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd);
   
   return $process_id;
 }
 
 sub spawn_perl {
-  my ($perl_script, @args) = @_;
-  
-  for my $item ($perl_script, @args) {
-    if ($item =~ /\n/) {
-      confess("[Internal Error]The argument or script to spawn_perl must not contain a newline character. (The value contains an invalid character)");
-    }
-    if ($item =~ /"/) {
-      confess("[Internal Error]The argument or script to spawn_perl must not contain a double quote character. (The value contains an invalid character)");
-    }
-  }
-  
-  my @cmd = ($^X, '-Mstrict', '-Mwarnings', '-e', $perl_script, @args);
-  
-  my $process_id;
-  if ($^O eq 'MSWin32') {
-    # Windows spawn
-    $process_id = system(1, @cmd);
-    if (!defined $process_id || $process_id <= 0) {
-      confess("Failed to spawn Windows process for executing a perl script: $!");
-    }
-  }
-  else {
-    # Linux/Unix fork
-    $process_id = fork();
-    if (!defined $process_id) {
-      confess("Failed to fork for executing a perl script: $!");
-    }
-    
-    # Child process
-    if ($process_id == 0) {
-      exec(@cmd);
-      exit(1);
-    }
-  }
-  
-  return $process_id;
-}
-
-sub spawn_perl_v2 {
   my ($perl_script_file, @args) = @_;
   
   my @cmd = ($^X, $perl_script_file, @args);
@@ -1036,7 +997,7 @@ sub spawn_link {
   
   my $link_script_path = &get_link_script_path();
   
-  my $process_id = &spawn_perl_v2($link_script_path, @args);
+  my $process_id = &spawn_perl($link_script_path, @args);
   
   return $process_id;
 }
