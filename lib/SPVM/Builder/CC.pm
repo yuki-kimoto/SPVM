@@ -565,8 +565,7 @@ sub spawn_compile_source_file {
     }
     
     # Prepare command for intermediate Perl process
-    my $command_tmp_dir = $self->builder->build_dir . "/command";
-    mkpath $command_tmp_dir;
+    my $command_tmp_dir = File::Temp->newdir;
     my $cc_cmd = $compile_info->create_command;
     my $cc_cmd_string = $compile_info->to_command;
     
