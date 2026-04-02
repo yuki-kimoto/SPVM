@@ -734,7 +734,7 @@ sub compile_source_files {
     return;
   }
   
-  my $wait_command_options = {builder => $self->builder};
+  my $wait_command_options = {};
   for my $object_file (@$object_files) {
     my $compile_info = $object_file->compile_info;
     if ($compile_info) {

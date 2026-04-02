@@ -378,7 +378,7 @@ sub prepare_compile_source_file {
   
   $compile_info = $builder_cc->prepare_compile_source_file($compile_info);
   
-  my $wait_command_options = {builder => $self->builder};
+  my $wait_command_options = {};
   my $process_id = $builder_cc->spawn_compile_source_file($compile_info);
   if ($process_id > 0) {
     $wait_command_options->{command_infos_h}{$process_id} = $compile_info;
