@@ -1012,6 +1012,67 @@ sub link {
   return $output_file;
 }
 
+sub spawn_link {
+  my ($log_dir, $ld_cmd_heading, $ld_cmd_string, $output_file, $dl_func_list_file, $object_file_list_file, $ldflags_file, $class_name, $hint_cc, $is_exe, $ld) = @_;
+  
+  my $perl_script_for_link =
+    q|use ExtUtils::CBuilder; | .
+    q|use SPVM::Builder::Util; | .
+    q|use File::Copy; | .
+    q|my ($log_dir, $ld_cmd_heading, $ld_cmd_string, $output_file, $dl_func_list_file, $object_file_list_file, $ldflags_file, $class_name, $hint_cc, $is_exe, $ld) = @ARGV; | .
+    q|my $process_id = $$; | .
+    q|my $log_stdout = qq($log_dir/$process_id.stdout); | .
+    q|my $log_stderr = qq($log_dir/$process_id.stderr); | .
+    q|open(STDOUT, '>', $log_stdout) or warn qq(Cannot open file '$log_stdout':$!); | .
+    q|open(STDERR, '>', $log_stderr) or warn qq(Cannot open file '$log_stderr':$!); | .
+    q|print qq($ld_cmd_heading\n); | . 
+    q|print qq($ld_cmd_string\n); | . 
+    q|my $cbuilder_config = { cc => $hint_cc, ld => $ld, lddlflags => '', shrpenv => '', libpth => '', libperl => '', perllibs => '-lm' }; | .
+    q|my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config); | .
+    q|my $dl_func_list; | .
+    q|if ($dl_func_list_file && -f $dl_func_list_file) { | .
+    q|  my $content = SPVM::Builder::Util::slurp_binary($dl_func_list_file); | .
+    q|  $dl_func_list = [split(/\n/, $content)]; | .
+    q|} | . 
+    q|my @object_file_names; | .
+    q|if ($object_file_list_file && -f $object_file_list_file) { | .
+    q|  my $content = SPVM::Builder::Util::slurp_binary($object_file_list_file); | .
+    q|  @object_file_names = split(/\n/, $content); | .
+    q|} | . 
+    q|my @ldflags; | .
+    q|if ($ldflags_file && -f $ldflags_file) { | .
+    q|  my $content = SPVM::Builder::Util::slurp_binary($ldflags_file); | .
+    q|  @ldflags = split(/\n/, $content); | .
+    q|} | . 
+    q|my $link_method = $is_exe ? 'link_executable' : 'link'; | .
+    q|my $output_option = $is_exe ? 'exe_file' : 'lib_file'; | .
+    q|my @link_tmp_files; | .
+    q|(undef, @link_tmp_files) = $cbuilder->$link_method( | .
+    q|  $output_option => $output_file, | .
+    q|  objects => \@object_file_names, | .
+    q|  extra_linker_flags => "@ldflags", | .
+    q|  module_name => $class_name, | .
+    q|  dl_func_list => $dl_func_list, | .
+    q|); | .
+    q|for my $tmp_file (@link_tmp_files) { | .
+    q|  $tmp_file =~ s/^"//; $tmp_file =~ s/"$//; | .
+    q|  if (-f $tmp_file) { | .
+    q|    my $ext = ($tmp_file =~ /\.([^\.]+)$/) ? $1 : 'tmp'; | .
+    q|    File::Copy::copy($tmp_file, qq($log_dir/$process_id.$ext)); | .
+    q|  } | .
+    q|} | .
+    q|exit(0);|
+  ;
+  
+  my $process_id = &spawn_perl(
+    $perl_script_for_link, 
+    $log_dir, $ld_cmd_heading, $ld_cmd_string, $output_file, $dl_func_list_file, $object_file_list_file, $ldflags_file,
+    $class_name, $hint_cc, $is_exe, $ld
+  );
+  
+  return $process_id;
+}
+
 sub create_link_info {
   my ($self, $class_name, $object_files, $config) = @_;
   
