@@ -291,6 +291,9 @@ sub build_exe_file {
     force => $self->force,
   );
   $config_linker->output_file($output_file);
+  
+  $cc_linker->compile_source_files($class_name, $object_files, {config => $config_linker});
+  
   $cc_linker->prepare_link($class_name, $object_files, {config => $config_linker});
 }
 

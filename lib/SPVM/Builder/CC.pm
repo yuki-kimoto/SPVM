@@ -721,7 +721,8 @@ sub spawn_perl {
   return $process_id;
 }
 
-sub prepare_link {
+# Compile a source files
+sub compile_source_files {
   my ($self, $class_name, $object_files, $options) = @_;
   
   unless (defined $class_name) {
@@ -736,12 +737,11 @@ sub prepare_link {
     return;
   }
   
-  # Compile a source files
   my $wait_command_options = {builder => $self->builder};
   for my $object_file (@$object_files) {
     my $compile_info = $object_file->compile_info;
     if ($compile_info) {
-      $compile_info = $self->prepare_compile_source_file($compile_info);
+      my $compile_info = $self->prepare_compile_source_file($compile_info);
       my $process_id = $self->spawn_compile_source_file($compile_info);
       if ($process_id > 0) {
         $wait_command_options->{command_infos_h}{$process_id} = $compile_info;
@@ -752,6 +752,22 @@ sub prepare_link {
       }
       $object_file->file($compile_info->output_file);
     }
+  }
+}
+
+sub prepare_link {
+  my ($self, $class_name, $object_files, $options) = @_;
+  
+  unless (defined $class_name) {
+    confess("A class name must be defined.");
+  }
+  
+  if (ref $class_name) {
+    confess("[Unexpected Error]A class name must be non-reference.");
+  }
+  
+  unless (@$object_files) {
+    return;
   }
   
   my $runtime = $options->{runtime};
