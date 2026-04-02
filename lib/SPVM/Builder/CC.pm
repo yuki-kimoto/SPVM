@@ -1013,13 +1013,34 @@ sub link {
 }
 
 sub spawn_link {
-  my ($log_dir, $ld_cmd_heading, $ld_cmd_string, $output_file, $dl_func_list_file, $object_file_list_file, $ldflags_file, $class_name, $hint_cc, $is_exe, $ld) = @_;
+  my (@args) = @_;
   
   my $perl_script_for_link =
     q|use ExtUtils::CBuilder; | .
     q|use SPVM::Builder::Util; | .
     q|use File::Copy; | .
-    q|my ($log_dir, $ld_cmd_heading, $ld_cmd_string, $output_file, $dl_func_list_file, $object_file_list_file, $ldflags_file, $class_name, $hint_cc, $is_exe, $ld) = @ARGV; | .
+    q|my ($log_dir, $ld_cmd_heading, $ld_cmd_string, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @ARGV; | . # Get arguments
+    q|my $dl_func_list; | .
+    q|if (-f $dl_func_list_file) { | . # Read dl_func_list
+    q|  my $content = SPVM::Builder::Util::slurp_binary($dl_func_list_file); | .
+    q|  $dl_func_list = [split(/\n/, $content)]; | .
+    q|} else { | .
+    q|  warn qq(Warning: dl_func_list_file "$dl_func_list_file" not found.); | .
+    q|} | .
+    q|my @object_file_names; | .
+    q|if (-f $object_file_names_file) { | . # Read object_file_names
+    q|  my $content = SPVM::Builder::Util::slurp_binary($object_file_names_file); | .
+    q|  @object_file_names = split(/\n/, $content); | .
+    q|} else { | .
+    q|  warn qq(Warning: object_file_names_file "$object_file_names_file" not found.); | .
+    q|} | .
+    q|my @ldflags; | .
+    q|if (-f $ldflags_file) { | . # Read ldflags
+    q|  my $content = SPVM::Builder::Util::slurp_binary($ldflags_file); | .
+    q|  @ldflags = split(/\n/, $content); | .
+    q|} else { | .
+    q|  warn qq(Warning: ldflags_file "$ldflags_file" not found.); | .
+    q|} | .
     q|my $process_id = $$; | .
     q|my $log_stdout = qq($log_dir/$process_id.stdout); | .
     q|my $log_stderr = qq($log_dir/$process_id.stderr); | .
@@ -1029,46 +1050,28 @@ sub spawn_link {
     q|print qq($ld_cmd_string\n); | . 
     q|my $cbuilder_config = { cc => $hint_cc, ld => $ld, lddlflags => '', shrpenv => '', libpth => '', libperl => '', perllibs => '-lm' }; | .
     q|my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config); | .
-    q|my $dl_func_list; | .
-    q|if ($dl_func_list_file && -f $dl_func_list_file) { | .
-    q|  my $content = SPVM::Builder::Util::slurp_binary($dl_func_list_file); | .
-    q|  $dl_func_list = [split(/\n/, $content)]; | .
-    q|} | . 
-    q|my @object_file_names; | .
-    q|if ($object_file_list_file && -f $object_file_list_file) { | .
-    q|  my $content = SPVM::Builder::Util::slurp_binary($object_file_list_file); | .
-    q|  @object_file_names = split(/\n/, $content); | .
-    q|} | . 
-    q|my @ldflags; | .
-    q|if ($ldflags_file && -f $ldflags_file) { | .
-    q|  my $content = SPVM::Builder::Util::slurp_binary($ldflags_file); | .
-    q|  @ldflags = split(/\n/, $content); | .
-    q|} | . 
-    q|my $link_method = $is_exe ? 'link_executable' : 'link'; | .
-    q|my $output_option = $is_exe ? 'exe_file' : 'lib_file'; | .
-    q|my @link_tmp_files; | .
-    q|(undef, @link_tmp_files) = $cbuilder->$link_method( | .
+    q|my $link_method = ($output_type eq 'exe') ? 'link_executable' : 'link'; | .
+    q|my $output_option = ($output_type eq 'exe') ? 'exe_file' : 'lib_file'; | .
+    q|my @link_temporary_files; | .
+    q|(undef, @link_temporary_files) = $cbuilder->$link_method( | . # Run linker
     q|  $output_option => $output_file, | .
     q|  objects => \@object_file_names, | .
     q|  extra_linker_flags => "@ldflags", | .
     q|  module_name => $class_name, | .
     q|  dl_func_list => $dl_func_list, | .
     q|); | .
-    q|for my $tmp_file (@link_tmp_files) { | .
+    q|for my $tmp_file (@link_temporary_files) { | . # Backup temporary files
     q|  $tmp_file =~ s/^"//; $tmp_file =~ s/"$//; | .
     q|  if (-f $tmp_file) { | .
-    q|    my $ext = ($tmp_file =~ /\.([^\.]+)$/) ? $1 : 'tmp'; | .
-    q|    File::Copy::copy($tmp_file, qq($log_dir/$process_id.$ext)); | .
+    q|    my $extension = ($tmp_file =~ /\.([^\.]+)$/) ? $1 : 'tmp'; | .
+    q|    File::Copy::copy($tmp_file, qq($log_dir/$process_id.$extension)); | .
     q|  } | .
     q|} | .
     q|exit(0);|
   ;
   
-  my $process_id = &spawn_perl(
-    $perl_script_for_link, 
-    $log_dir, $ld_cmd_heading, $ld_cmd_string, $output_file, $dl_func_list_file, $object_file_list_file, $ldflags_file,
-    $class_name, $hint_cc, $is_exe, $ld
-  );
+  # Pass arguments
+  my $process_id = &spawn_perl($perl_script_for_link, @args);
   
   return $process_id;
 }
