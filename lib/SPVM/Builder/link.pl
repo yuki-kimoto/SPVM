@@ -35,9 +35,8 @@ if (-f $ldflags_file) {
 }
 
 # Define log file paths
-my $process_id = $$;
-my $log_stdout = "$command_tmp_dir/$process_id.stdout";
-my $log_stderr = "$command_tmp_dir/$process_id.stderr";
+my $log_stdout = "$command_tmp_dir/stdout.log";
+my $log_stderr = "$command_tmp_dir/stderr.log";
 
 # Redirect stdout and stderr to log files
 open(STDOUT, '>', $log_stdout) or warn "Can't open $log_stdout: $!";
@@ -79,7 +78,7 @@ for my $tmp_file (@link_temporary_files) {
   $tmp_file =~ s/"$//;
   if (-f $tmp_file) {
     my $extension = ($tmp_file =~ /\.([^\.]+)$/) ? $1 : 'tmp';
-    File::Copy::copy($tmp_file, "$command_tmp_dir/$process_id.$extension");
+    File::Copy::copy($tmp_file, "$command_tmp_dir/link_temporary_file.$extension");
   }
 }
 
