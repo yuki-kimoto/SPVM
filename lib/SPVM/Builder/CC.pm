@@ -652,12 +652,12 @@ sub wait_command {
 }
 
 sub add_ninja_log {
-  my ($self, $command_info, $options) = @_;
+  my ($self, $command_info) = @_;
   
   my $output_file = $command_info->output_file;
   my $command_hash = $command_info->command_hash;
   my $start_time = $command_info->start_time;
-  my $builder = $options->{builder};
+  my $builder = $self->builder;
   my $ninja = $builder->ninja;
   
   # Set end_time to command_info
@@ -748,7 +748,7 @@ sub compile_source_files {
         
         # Record the build result after the process finished
         my $command_info = $wait_command_options->{command_infos_h}{$process_id};
-        $self->add_ninja_log($command_info, $wait_command_options);
+        $self->add_ninja_log($command_info);
         
         delete $wait_command_options->{command_infos_h}{$process_id};
       }
