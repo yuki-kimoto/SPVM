@@ -294,7 +294,8 @@ sub build_exe_file {
   
   $cc_linker->compile_source_files($class_name, $object_files, {config => $config_linker});
   
-  $cc_linker->prepare_link($class_name, $object_files, {config => $config_linker});
+  my $link_info = $cc_linker->prepare_link_v2($class_name, $object_files, {config => $config_linker});
+  $cc_linker->link($class_name, $object_files, {config => $config_linker}, $link_info);
 }
 
 sub prepare_compile {

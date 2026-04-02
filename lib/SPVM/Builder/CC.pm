@@ -755,7 +755,7 @@ sub compile_source_files {
   }
 }
 
-sub prepare_link {
+sub prepare_link_v2 {
   my ($self, $class_name, $object_files, $options) = @_;
   
   unless (defined $class_name) {
@@ -811,11 +811,7 @@ sub prepare_link {
   
   my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
   
-  my $link_info_ldflags = $link_info->create_ldflags;
-  
   my $output_type = $config->output_type;
-  
-  my @link_tmp_files;
   
   my $before_link_cbs = $config->before_link_cbs;
   for my $before_link_cb (@$before_link_cbs) {
@@ -838,6 +834,43 @@ sub prepare_link {
     dependent_files => [@object_files],
   };
   my $command_hash = $ninja->create_command_hash($create_command_hash_options);
+  
+  $link_info->command_hash($command_hash);
+  $link_info->output_file($output_file);
+  
+  return $link_info;
+}
+
+sub link {
+  my ($self, $class_name, $object_files, $options, $link_info) = @_;
+  
+  my $runtime = $options->{runtime};
+  
+  my $config = $link_info->config;
+  my $force = $config->force;
+  my $hint_cc = $config->hint_cc;
+  my $ld = $config->ld;
+  my $output_type = $config->output_type;
+  my $category = $config->category;
+  my $quiet = $config->quiet;
+  
+  my $command_hash = $link_info->command_hash;
+  my $output_file = $link_info->output_file;
+  
+  my $link_command_array = $link_info->create_command;
+  my $link_command = "@$link_command_array";
+  my $link_command_array_no_output_option = $link_info->create_command({no_output_option => 1});
+  my $link_command_no_output_option = "@$link_command_array_no_output_option";
+  
+  my $link_info_object_files = $link_info->object_files;
+  
+  my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
+  
+  my $link_info_ldflags = $link_info->create_ldflags;
+  
+  my @link_tmp_files;
+  
+  my $ninja = $self->builder->ninja;
   
   my $need_generate_options = {
     command_hash => $command_hash,
@@ -864,7 +897,7 @@ sub prepare_link {
     require ExtUtils::CBuilder;
     my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
     
-    mkpath dirname $link_info_output_file;
+    mkpath dirname $output_file;
     
     my $link_cb;
     
@@ -901,7 +934,7 @@ sub prepare_link {
         (undef, @link_tmp_files) = $cbuilder->link(
           objects => $link_info_object_file_names,
           module_name => $class_name,
-          lib_file => $link_info_output_file,
+          lib_file => $output_file,
           extra_linker_flags => "@$link_info_ldflags",
           dl_func_list => $dl_func_list,
         );
@@ -911,7 +944,7 @@ sub prepare_link {
     elsif ($output_type eq 'exe') {
       $link_cb = sub {
         unless ($quiet) {
-          print "[Generate Executable File \"$link_info_output_file\"]\n";
+          print "[Generate Executable File \"$output_file\"]\n";
           
           print "$link_command\n";
         }
@@ -919,7 +952,7 @@ sub prepare_link {
         (undef, @link_tmp_files) = $cbuilder->link_executable(
           objects => $link_info_object_file_names,
           module_name => $class_name,
-          exe_file => $link_info_output_file,
+          exe_file => $output_file,
           extra_linker_flags => "@$link_info_ldflags",
         );
       }
@@ -934,14 +967,14 @@ sub prepare_link {
     
     my $end_time = int(Time::HiRes::time() * 1000);
     
-    unless (-f $link_info_output_file) {
-      confess("The output file '$link_info_output_file' does not exist.");
+    unless (-f $output_file) {
+      confess("The output file '$output_file' does not exist.");
     }
     
-    my $mtime = int((Time::HiRes::stat $link_info_output_file)[9] * 1000);
+    my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
     
     my $log_entry = {
-      output_file  => $link_info_output_file,
+      output_file  => $output_file,
       command_hash => $command_hash,
       start_time   => $start_time,
       end_time     => $end_time,
