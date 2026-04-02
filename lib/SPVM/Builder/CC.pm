@@ -921,10 +921,8 @@ sub link {
       
       $link_cb = sub {
         unless ($quiet) {
-          my $for_precompile = $category eq 'precompile' ? ' for precompile' : '';
-          my $message = "[Generate Dynamic Link Library for $class_name class$for_precompile]";
-          print "$message\n";
-          
+          my $ld_cmd_heading = "[Generate Dynamic Link Library for $class_name class" . ($category eq 'precompile' ? ' for precompile' : '') . "]";
+          print "$ld_cmd_heading\n";
           print "$ld_cmd_string\n";
         }
         
@@ -945,16 +943,16 @@ sub link {
     elsif ($output_type eq 'exe') {
       $link_cb = sub {
         unless ($quiet) {
-          print "[Generate Executable File \"$output_file\"]\n";
-          
+          my $ld_cmd_heading = "[Generate Executable File \"$output_file\"]\n";
+          print "$ld_cmd_heading\n";
           print "$ld_cmd_string\n";
         }
         
-       # Load ExtUtils::CBuilder only when linking is needed for performance
-       require ExtUtils::CBuilder;
-       my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
-       
-       (undef, @link_tmp_files) = $cbuilder->link_executable(
+        # Load ExtUtils::CBuilder only when linking is needed for performance
+        require ExtUtils::CBuilder;
+        my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
+        
+        (undef, @link_tmp_files) = $cbuilder->link_executable(
           objects => $link_info_object_file_names,
           exe_file => $output_file,
           extra_linker_flags => "@$link_info_ldflags",
