@@ -574,7 +574,7 @@ sub spawn_compile_source_file {
     $compile_info->start_time($start_time);
     $compile_info->log_dir($command_log_dir);
     
-    $process_id = &spawn_compile($command_log_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
+    $process_id = &spawn_command($command_log_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
   }
   
   return $process_id;
@@ -661,23 +661,23 @@ sub wait_command {
 
 }
 
-sub spawn_compile {
-  my ($log_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @_;
+sub spawn_command {
+  my ($log_dir, $cmd_heading, $cmd_string, @cmd) = @_;
   
-  my $perl_script_for_compile =
-    q|my ($log_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @ARGV; | .
+  my $perl_script =
+    q|my ($log_dir, $cmd_heading, $cmd_string, @cmd) = @ARGV; | .
     q|my $process_id = $$; | .
     q|my $log_stdout = qq($log_dir/$process_id.stdout); | .
     q|my $log_stderr = qq($log_dir/$process_id.stderr); | .
     q|open(STDOUT, '>', $log_stdout) or warn qq(Cannot open file '$log_stdout':$!); | .
     q|open(STDERR, '>', $log_stderr) or warn qq(Cannot open file '$log_stderr':$!); | .
-    q|print qq($cc_cmd_heading\n); | . 
-    q|print qq($cc_cmd_string\n); | . 
-    q|system(@cc_cmd); | . 
+    q|print qq($cmd_heading\n); | . 
+    q|print qq($cmd_string\n); | . 
+    q|system(@cmd); | . 
     q|exit($? >> 8);|
   ;
   
-  my $process_id = &spawn_perl($perl_script_for_compile, $log_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd);
+  my $process_id = &spawn_perl($perl_script, $log_dir, $cmd_heading, $cmd_string, @cmd);
   
   return $process_id;
 }
