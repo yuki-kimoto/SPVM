@@ -385,6 +385,8 @@ sub prepare_compile_source_file {
     while ($builder_cc->wait_command($process_id, $wait_command_options) == 0) {
       Time::HiRes::sleep(0.01);
     }
+    my $command_info = $wait_command_options->{command_infos_h}{$process_id};
+    $builder_cc->add_ninja_log($command_info, $wait_command_options);
     delete $wait_command_options->{command_infos_h}{$process_id};
   }
   

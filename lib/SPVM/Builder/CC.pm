@@ -603,20 +603,14 @@ sub wait_command {
   my $command_info = $options->{command_infos_h}{$process_id};
   my $command_string = $command_info->to_command;
   my $output_file = $command_info->output_file;
-  my $start_time = $command_info->start_time;
   my $command_tmp_dir = $command_info->tmp_dir;
-  my $command_hash = $command_info->command_hash;
   my $config = $command_info->config;
   my $quiet = $config->quiet;
-  my $builder = $options->{builder};
-  my $ninja = $builder->ninja;
   
-  my $end_time = int(Time::HiRes::time() * 1000);
+  # Check output file
   unless (-f $output_file) {
     confess("[Unexpected Error]The output file '$output_file' does not exist.");
   }
-  
-  my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
   
   # Read output files from temp directory
   my $stdout_file = "$command_tmp_dir/$process_id.stdout";
@@ -629,6 +623,7 @@ sub wait_command {
     confess("[Unexpected Error]The stderr log file '$stderr_file' does not exist.");
   }
   
+  # Print stdout
   unless ($quiet) {
     open my $stdout_fh, '<', $stdout_file;
     my $stdout_output = do { local $/; <$stdout_fh> };
@@ -638,6 +633,7 @@ sub wait_command {
     }
   }
   
+  # Print stderr
   open my $stderr_fh, '<', $stderr_file;
   my $stderr_output = do { local $/; <$stderr_fh> };
   close $stderr_fh;
@@ -645,21 +641,41 @@ sub wait_command {
     print STDERR $stderr_output;
   }
   
+  # Check exit status
   if ($exit_status != 0) {
     confess("Command failed.\n" .
       "Command: $command_string\n" .
       "Exit status: $exit_status\n");
   }
   
+  return $wait_process_id;
+}
+
+sub add_ninja_log {
+  my ($self, $command_info, $options) = @_;
+  
+  my $output_file = $command_info->output_file;
+  my $command_hash = $command_info->command_hash;
+  my $start_time = $command_info->start_time;
+  my $builder = $options->{builder};
+  my $ninja = $builder->ninja;
+  
+  # Set end_time to command_info
+  my $end_time = int(Time::HiRes::time() * 1000);
+  $command_info->end_time($end_time);
+  
+  # Get mtime of the output file
+  my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
+  
   my $log_entry = {
     output_file  => $output_file,
     command_hash => $command_hash,
     start_time   => $start_time,
     end_time     => $end_time,
-    mtime => $mtime,
+    mtime        => $mtime,
   };
+  
   $ninja->add_log($log_entry);
-
 }
 
 sub spawn_compile {
@@ -729,6 +745,11 @@ sub compile_source_files {
         while ($self->wait_command($process_id, $wait_command_options) == 0) {
           Time::HiRes::sleep(0.01);
         }
+        
+        # Record the build result after the process finished
+        my $command_info = $wait_command_options->{command_infos_h}{$process_id};
+        $self->add_ninja_log($command_info, $wait_command_options);
+        
         delete $wait_command_options->{command_infos_h}{$process_id};
       }
       $object_file->file($compile_info->output_file);
