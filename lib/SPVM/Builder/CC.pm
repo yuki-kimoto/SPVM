@@ -809,7 +809,7 @@ sub prepare_link {
   
   my $link_info_object_files = $link_info->object_files;
   
-  my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
+  my $object_file_names = [map { $_->to_string; } @$link_info_object_files];
   
   my $output_type = $config->output_type;
   
@@ -822,8 +822,6 @@ sub prepare_link {
   
   my $force = $self->detect_force($config);
   
-  my $ld_cmd = $link_info->create_command;
-  my $ld_cmd_string = "@$ld_cmd";
   my $ld_cmd_no_output_option = $link_info->create_command({no_output_option => 1});
   my $ld_cmd_string_no_output_option = "@$ld_cmd_no_output_option";
   
@@ -864,38 +862,12 @@ sub link {
   
   my $ld_cmd = $link_info->create_command;
   my $ld_cmd_string = $link_info->to_command;
-  my $ld_cmd_no_output_option = $link_info->create_command({no_output_option => 1});
-  my $ld_cmd_string_no_output_option = $link_info->to_command({no_output_option => 1});
   
   my $link_info_object_files = $link_info->object_files;
   
-  my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
-  
-  my $link_info_ldflags = $link_info->create_ldflags;
-  
-  my @link_tmp_files;
+  my $object_file_names = [map { $_->to_string; } @$link_info_object_files];
   
   my $ninja = $self->builder->ninja;
-  
-  my $need_generate_options = {
-    command_hash => $command_hash,
-    output_file => $output_file,
-  };
-  my $need_generate = $force || $self->builder->ninja->need_generate($need_generate_options);
-  
-  my $cbuilder_config = {
-    cc => $hint_cc,
-    ld => $ld,
-    lddlflags => '',
-    shrpenv => '',
-    libpth => '',
-    libperl => '',
-    # On Windows/gcc(MinGW) "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
-    # Linker Script File(.lds) when "perllibs" is empty string.
-    # This is syntax error in Linker Script File(.lds)
-    # For the reason, libm is linked which seems to have no effect.
-    perllibs => '-lm',
-  };
   
   mkpath dirname $output_file;
   
@@ -938,7 +910,11 @@ sub link {
     confess("Unknown output_type \"$output_type\"");
   }
   
-  my $link_cb;
+  my $need_generate_options = {
+    command_hash => $link_info->command_hash,
+    output_file => $link_info->output_file,
+  };
+  my $need_generate = $force || $self->builder->ninja->need_generate($need_generate_options);
   
   if ($need_generate) {
     
@@ -951,11 +927,28 @@ sub link {
     
     # Load ExtUtils::CBuilder only when linking is needed for performance
     require ExtUtils::CBuilder;
+    my $cbuilder_config = {
+      cc => $hint_cc,
+      ld => $ld,
+      lddlflags => '',
+      shrpenv => '',
+      libpth => '',
+      libperl => '',
+      # On Windows/gcc(MinGW) "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
+      # Linker Script File(.lds) when "perllibs" is empty string.
+      # This is syntax error in Linker Script File(.lds)
+      # For the reason, libm is linked which seems to have no effect.
+      perllibs => '-lm',
+    };
+    
     my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
+    
+    my @link_tmp_files;
+    my $link_info_ldflags = $link_info->create_ldflags;
     
     (undef, @link_tmp_files) = $cbuilder->$link_method(
       $cbuilder_output_option_name => $output_file,
-      objects => $link_info_object_file_names,
+      objects => $object_file_names,
       extra_linker_flags => "@$link_info_ldflags",
       module_name => $class_name,
       dl_func_list => $dl_func_list,
