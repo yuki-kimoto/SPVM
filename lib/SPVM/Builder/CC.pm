@@ -902,6 +902,8 @@ sub link {
   # Create a dynamic library
   my $ld_cmd_heading;
   my $dl_func_list;
+  my $link_method;
+  my $cbuilder_output_option_name;
   if ($output_type eq 'dynamic_lib') {
     my $basic_type = $runtime->get_basic_type_by_name($class_name);
     
@@ -923,10 +925,14 @@ sub link {
     }
     
     $ld_cmd_heading = "[Generate Dynamic Link Library for $class_name class" . ($category eq 'precompile' ? ' for precompile' : '') . "]";
+    $link_method = 'link';
+    $cbuilder_output_option_name = 'lib_file';
   }
   # Create an executable file
   elsif ($output_type eq 'exe') {
     $ld_cmd_heading = "[Generate Executable File \"$output_file\"]\n";
+    $link_method = 'link_executable';
+    $cbuilder_output_option_name = 'exe_file';
   }
   else {
     confess("Unknown output_type \"$output_type\"");
@@ -935,72 +941,25 @@ sub link {
   my $link_cb;
   
   if ($need_generate) {
-    # Create a dynamic library
-    if ($output_type eq 'dynamic_lib') {
-      $link_cb = sub {
-        unless ($quiet) {
-          print "$ld_cmd_heading\n";
-          print "$ld_cmd_string\n";
-        }
-        
-        # Load ExtUtils::CBuilder only when linking is needed for performance
-        require ExtUtils::CBuilder;
-        my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
-        
-        (undef, @link_tmp_files) = $cbuilder->link(
-          objects => $link_info_object_file_names,
-          lib_file => $output_file,
-          extra_linker_flags => "@$link_info_ldflags",
-          module_name => $class_name,
-          dl_func_list => $dl_func_list,
-        );
-      };
-    }
-    # Create an executable file
-    elsif ($output_type eq 'exe') {
-      $link_cb = sub {
-        unless ($quiet) {
-          print "$ld_cmd_heading\n";
-          print "$ld_cmd_string\n";
-        }
-        
-        # Load ExtUtils::CBuilder only when linking is needed for performance
-        require ExtUtils::CBuilder;
-        my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
-        
-        (undef, @link_tmp_files) = $cbuilder->link_executable(
-          objects => $link_info_object_file_names,
-          exe_file => $output_file,
-          extra_linker_flags => "@$link_info_ldflags",
-          module_name => $class_name,
-          dl_func_list => $dl_func_list,
-        );
-      }
-    }
-    else {
-      confess("Unknown output_type \"$output_type\"");
-    }
     
     my $start_time = int(Time::HiRes::time() * 1000);
     
-    $link_cb->();
-    
-    my $end_time = int(Time::HiRes::time() * 1000);
-    
-    unless (-f $output_file) {
-      confess("The output file '$output_file' does not exist.");
+    unless ($quiet) {
+      print "$ld_cmd_heading\n";
+      print "$ld_cmd_string\n";
     }
     
-    my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
+    # Load ExtUtils::CBuilder only when linking is needed for performance
+    require ExtUtils::CBuilder;
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
     
-    my $log_entry = {
-      output_file  => $output_file,
-      command_hash => $command_hash,
-      start_time   => $start_time,
-      end_time     => $end_time,
-      mtime => $mtime,
-    };
-    $ninja->add_log($log_entry);
+    (undef, @link_tmp_files) = $cbuilder->$link_method(
+      $cbuilder_output_option_name => $output_file,
+      objects => $link_info_object_file_names,
+      extra_linker_flags => "@$link_info_ldflags",
+      module_name => $class_name,
+      dl_func_list => $dl_func_list,
+    );
     
     if ($self->debug) {
       if ($^O eq 'MSWin32') {
@@ -1028,6 +987,23 @@ sub link {
         }
       }
     }
+    
+    my $end_time = int(Time::HiRes::time() * 1000);
+    
+    unless (-f $output_file) {
+      confess("The output file '$output_file' does not exist.");
+    }
+    
+    my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
+    
+    my $log_entry = {
+      output_file  => $output_file,
+      command_hash => $command_hash,
+      start_time   => $start_time,
+      end_time     => $end_time,
+      mtime => $mtime,
+    };
+    $ninja->add_log($log_entry);
   }
   
   # after_link_cbs
