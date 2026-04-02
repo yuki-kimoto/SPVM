@@ -755,7 +755,7 @@ sub compile_source_files {
   }
 }
 
-sub prepare_link_v2 {
+sub prepare_link {
   my ($self, $class_name, $object_files, $options) = @_;
   
   unless (defined $class_name) {
