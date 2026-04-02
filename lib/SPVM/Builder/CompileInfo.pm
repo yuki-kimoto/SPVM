@@ -16,6 +16,7 @@ has [qw(
   dependent_files
   link_info
   command_hash
+  start_time
 )];
 
 # Class methods
