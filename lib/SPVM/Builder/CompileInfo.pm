@@ -1,5 +1,7 @@
 package SPVM::Builder::CompileInfo;
 
+use parent 'SPVM::Builder::CommandInfo';
+
 use strict;
 use warnings;
 use Config;
@@ -9,16 +11,10 @@ use SPVM::Builder::Accessor 'has';
 
 # Fields
 has [qw(
-  config
   source_rel_file
   category
   dependent_files
   link_info
-  output_file
-  command_hash
-  start_time
-  end_time
-  log_dir
 )];
 
 # Class methods
@@ -216,21 +212,11 @@ SPVM::Builder::CompileInfo - Compiler Information
 
 The SPVM::Builder::CompileInfo class has methods to manipulate compiler information.
 
+=head1 Super Class
+
+L<SPVM::Builder::CommandInfo>
+
 =head1 Fields
-
-=head2 config
-
-  my $config = $compile_info->config;
-  $compile_info->config($config);
-
-Gets and sets the C<config> field, a L<SPVM::Builder::Config> object.
-
-=head2 output_file
-
-  my $output_file = $compile_info->output_file;
-  $compile_info->output_file($output_file);
-
-Gets and sets the C<output_file> field, an output file.
 
 =head2 category
 
@@ -258,29 +244,6 @@ If this field is defined, these files are added to the dependency list of the C<
 Gets and sets the C<link_info> field, an L<SPVM::Builder::LinkInfo> object.
 
 This field is a weak reference to the L<SPVM::Builder::LinkInfo> object that this compilation task belongs to.
-
-=head2 command_hash
-
-  my $command_hash = $compile_info->command_hash;
-  $compile_info->command_hash($command_hash);
-
-Gets and sets the C<command_hash> field, a SHA-1 hash string that uniquely identifies the compilation task.
-
-This hash ensures the consistency of the compilation. It is generated from the following information:
-
-=over 2
-
-=item * The compilation command itself.
-
-=item * The compiler version.
-
-=item * The SPVM version-specific headers.
-
-=item * The information of the dependent files.
-
-=back
-
-If any of these change, the hash will change, triggering a re-compilation in the C<ninja> build system.
 
 =head1 Class Methods
 

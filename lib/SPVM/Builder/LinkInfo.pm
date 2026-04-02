@@ -1,5 +1,7 @@
 package SPVM::Builder::LinkInfo;
 
+use parent 'SPVM::Builder::CommandInfo';
+
 use strict;
 use warnings;
 use Config;
@@ -9,14 +11,8 @@ use SPVM::Builder::Accessor 'has';
 
 # Fields
 has [qw(
-  config
   compile_infos
   object_files
-  output_file
-  command_hash
-  start_time
-  end_time
-  log_dir
 )];
 
 # Class Methods
@@ -159,21 +155,11 @@ The SPVM::Builder::LinkInfo class has methods to manipulate linker information.
   my $link_info = SPVM::Builder::LinkInfo->new(%fields);
   my $link_command = $link_info->to_command;
 
+=head1 Super Class
+
+L<SPVM::Builder::CommandInfo>
+
 =head1 Fields
-
-=head2 config
-
-  my $config = $link_info->config;
-  $link_info->config($config);
-
-Gets and sets the C<config> field, an L<SPVM::Builder::Config> object.
-
-=head2 output_file
-
-  my $output_file = $link_info->output_file;
-  $link_info->output_file($output_file);
-
-Gets and sets the C<output_file> field, an output file.
 
 =head2 object_files
 
@@ -200,10 +186,6 @@ Creates a new C<SPVM::Builder::LinkInfo> object given L</"Fields">.
 Field Default Values:
 
 =over 2
-
-=item * L</"output_file">
-
-undef
 
 =item * L</"object_files">
 
