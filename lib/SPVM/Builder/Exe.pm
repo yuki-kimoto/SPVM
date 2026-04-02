@@ -9,6 +9,7 @@ use File::Path 'mkpath', 'rmtree';
 use File::Find 'find';
 use Archive::Tar;
 use File::Copy 'copy';
+use Time::HiRes;
 
 use SPVM::Builder;
 use SPVM::Builder::CC;
@@ -376,7 +377,9 @@ sub prepare_compile_source_file {
   my $process_id = $builder_cc->spawn_compile_source_file($compile_info);
   if ($process_id > 0) {
     $wait_command_options->{command_infos_h}{$process_id} = $compile_info;
-    $builder_cc->wait_command($process_id, $wait_command_options);
+    while ($builder_cc->wait_command($process_id, $wait_command_options) == 0) {
+      Time::HiRes::sleep(0.01);
+    }
     delete $wait_command_options->{command_infos_h}{$process_id};
   }
   

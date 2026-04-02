@@ -10,6 +10,8 @@ use File::Path 'mkpath';
 use File::Find 'find';
 use File::Basename 'dirname', 'basename';
 use Time::HiRes ();
+use POSIX ":sys_wait_h";
+use Time::HiRes;
 
 use SPVM::Builder::Util;
 use SPVM::Builder::CompileInfo;
@@ -584,13 +586,18 @@ sub wait_command {
   $options //= {};
   
   # Wait for completion
-  my $wait_process_id = waitpid($process_id, 0);
-  my $exit_status = $? >> 8;
+  my $wait_process_id = waitpid($process_id, WNOHANG);
+  
+  if ($wait_process_id == 0) {
+    return 0;
+  }
   
   if ($wait_process_id == -1) {
     confess("[Unexpected Error]Failed to wait.\n" .
       "Reason: Process not found or already reaped: $!");
   }
+  
+  my $exit_status = $? >> 8;
   
   my $command_info = $options->{command_infos_h}{$process_id};
   my $command_string = $command_info->to_command;
@@ -738,7 +745,9 @@ sub prepare_link {
       my $process_id = $self->spawn_compile_source_file($compile_info);
       if ($process_id > 0) {
         $wait_command_options->{command_infos_h}{$process_id} = $compile_info;
-        $self->wait_command($process_id, $wait_command_options);
+        while ($self->wait_command($process_id, $wait_command_options) == 0) {
+          Time::HiRes::sleep(0.01);
+        }
         delete $wait_command_options->{command_infos_h}{$process_id};
       }
       $object_file->file($compile_info->output_file);
