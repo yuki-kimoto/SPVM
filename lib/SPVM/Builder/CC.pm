@@ -572,13 +572,15 @@ sub compile_source_file {
     
     my $process_id = &spawn_compile($command_log_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
     
+    my $cmd_info = $compile_info;
+    
     # Wait for completion
     my $wait_pid = waitpid($process_id, 0);
     my $exit_status = $? >> 8;
     
     if ($wait_pid == -1) {
-      confess("[Unexpected Error]Failed to wait for the compilation process.\n" .
-        "Command: $cc_cmd_string\n" .
+      confess("[Unexpected Error]Failed to wait.\n" .
+        "Command: " . $cmd_info->to_command . "\n" .
         "Reason: Process not found or already reaped: $!");
     }
     
@@ -619,8 +621,8 @@ sub compile_source_file {
     }
     
     if ($exit_status != 0) {
-      confess("Compilation failed.\n" .
-        "Command: $cc_cmd_string\n" .
+      confess("Command failed.\n" .
+        "Command: " . $cmd_info->to_command . "\n" .
         "Exit status: $exit_status\n");
     }
     
