@@ -370,7 +370,15 @@ sub prepare_compile_source_file {
   $compile_info->dependent_files([$include_dir]);
   
   $compile_info = $builder_cc->prepare_compile_source_file($compile_info);
-  $builder_cc->compile_source_file($compile_info);
+  
+  my $wait_command_options = {builder => $self->builder};
+  $builder_cc->spawn_compile_source_file($compile_info);
+  my $process_id = $builder_cc->spawn_compile_source_file($compile_info);
+  if ($process_id > 0) {
+    $wait_command_options->{command_infos_h}{$process_id} = $compile_info;
+    $builder_cc->wait_command($process_id, $wait_command_options);
+    delete $wait_command_options->{command_infos_h}{$process_id};
+  }
   
   my $object_file_name = $compile_info->output_file;
   my $object_file = SPVM::Builder::ObjectFileInfo->new(

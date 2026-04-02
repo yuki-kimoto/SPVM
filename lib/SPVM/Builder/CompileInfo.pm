@@ -11,13 +11,14 @@ use SPVM::Builder::Accessor 'has';
 has [qw(
   config
   source_rel_file
-  output_file
   category
   dependent_files
   link_info
+  output_file
   command_hash
   start_time
   end_time
+  log_dir
 )];
 
 # Class methods

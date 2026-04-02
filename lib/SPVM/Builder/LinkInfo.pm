@@ -12,6 +12,11 @@ has [qw(
   config
   compile_infos
   object_files
+  output_file
+  command_hash
+  start_time
+  end_time
+  log_dir
 )];
 
 # Class Methods

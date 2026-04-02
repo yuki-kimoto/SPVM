@@ -506,7 +506,7 @@ sub prepare_compile_source_file {
   return $compile_info;
 }
 
-sub compile_source_file {
+sub spawn_compile_source_file {
   my ($self, $compile_info) = @_;
   
   my $config = $compile_info->config;
@@ -527,6 +527,7 @@ sub compile_source_file {
   };
   my $need_generate = $force || $ninja->need_generate($need_generate_options);
   
+  my $process_id = 0;
   if ($need_generate) {
     mkpath dirname $output_file;
     
@@ -569,72 +570,88 @@ sub compile_source_file {
     
     my $start_time = int(Time::HiRes::time() * 1000);
     $compile_info->start_time($start_time);
+    $compile_info->log_dir($command_log_dir);
     
-    my $process_id = &spawn_compile($command_log_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
-    
-    my $cmd_info = $compile_info;
-    
-    # Wait for completion
-    my $wait_pid = waitpid($process_id, 0);
-    my $exit_status = $? >> 8;
-    
-    if ($wait_pid == -1) {
-      confess("[Unexpected Error]Failed to wait.\n" .
-        "Command: " . $cmd_info->to_command . "\n" .
-        "Reason: Process not found or already reaped: $!");
-    }
-    
-    my $end_time = int(Time::HiRes::time() * 1000);
-    $compile_info->end_time($end_time);
-    
-    unless (-f $output_file) {
-      confess("[Unexpected Error]The output file '$output_file' does not exist.");
-    }
-    
-    my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
-    
-    # Read output files from temp directory
-    my $stdout_file = "$command_log_dir/$process_id.stdout";
-    unless (-f $stdout_file) {
-      confess("[Unexpected Error]The stdout log file '$stdout_file' does not exist.");
-    }
-    
-    my $stderr_file = "$command_log_dir/$process_id.stderr";
-    unless (-f $stderr_file) {
-      confess("[Unexpected Error]The stderr log file '$stderr_file' does not exist.");
-    }
-    
-    unless ($quiet) {
-      open my $stdout_fh, '<', $stdout_file;
-      my $stdout_output = do { local $/; <$stdout_fh> };
-      close $stdout_fh;
-      if (length $stdout_output) {
-        print $stdout_output;
-      }
-    }
-    
-    open my $stderr_fh, '<', $stderr_file;
-    my $stderr_output = do { local $/; <$stderr_fh> };
-    close $stderr_fh;
-    if (length $stderr_output) {
-      print STDERR $stderr_output;
-    }
-    
-    if ($exit_status != 0) {
-      confess("Command failed.\n" .
-        "Command: " . $cmd_info->to_command . "\n" .
-        "Exit status: $exit_status\n");
-    }
-    
-    my $log_entry = {
-      output_file  => $output_file,
-      command_hash => $command_hash,
-      start_time   => $start_time,
-      end_time     => $end_time,
-      mtime => $mtime,
-    };
-    $ninja->add_log($log_entry);
+    $process_id = &spawn_compile($command_log_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
   }
+  
+  return $process_id;
+}
+
+sub wait_command {
+  my ($self, $process_id, $options) = @_;
+  
+  $options //= {};
+  
+  # Wait for completion
+  my $wait_process_id = waitpid($process_id, 0);
+  my $exit_status = $? >> 8;
+  
+  if ($wait_process_id == -1) {
+    confess("[Unexpected Error]Failed to wait.\n" .
+      "Reason: Process not found or already reaped: $!");
+  }
+  
+  my $command_info = $options->{command_infos_h}{$process_id};
+  my $command_string = $command_info->to_command;
+  my $output_file = $command_info->output_file;
+  my $start_time = $command_info->start_time;
+  my $command_log_dir = $command_info->log_dir;
+  my $command_hash = $command_info->command_hash;
+  my $config = $command_info->config;
+  my $quiet = $config->quiet;
+  my $builder = $options->{builder};
+  my $ninja = $builder->ninja;
+  
+  my $end_time = int(Time::HiRes::time() * 1000);
+  unless (-f $output_file) {
+    confess("[Unexpected Error]The output file '$output_file' does not exist.");
+  }
+  
+  my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
+  
+  # Read output files from temp directory
+  my $stdout_file = "$command_log_dir/$process_id.stdout";
+  unless (-f $stdout_file) {
+    confess("[Unexpected Error]The stdout log file '$stdout_file' does not exist.");
+  }
+  
+  my $stderr_file = "$command_log_dir/$process_id.stderr";
+  unless (-f $stderr_file) {
+    confess("[Unexpected Error]The stderr log file '$stderr_file' does not exist.");
+  }
+  
+  unless ($quiet) {
+    open my $stdout_fh, '<', $stdout_file;
+    my $stdout_output = do { local $/; <$stdout_fh> };
+    close $stdout_fh;
+    if (length $stdout_output) {
+      print $stdout_output;
+    }
+  }
+  
+  open my $stderr_fh, '<', $stderr_file;
+  my $stderr_output = do { local $/; <$stderr_fh> };
+  close $stderr_fh;
+  if (length $stderr_output) {
+    print STDERR $stderr_output;
+  }
+  
+  if ($exit_status != 0) {
+    confess("Command failed.\n" .
+      "Command: $command_string\n" .
+      "Exit status: $exit_status\n");
+  }
+  
+  my $log_entry = {
+    output_file  => $output_file,
+    command_hash => $command_hash,
+    start_time   => $start_time,
+    end_time     => $end_time,
+    mtime => $mtime,
+  };
+  $ninja->add_log($log_entry);
+
 }
 
 sub spawn_compile {
@@ -713,11 +730,17 @@ sub prepare_link {
   }
   
   # Compile a source files
+  my $wait_command_options = {builder => $self->builder};
   for my $object_file (@$object_files) {
     my $compile_info = $object_file->compile_info;
     if ($compile_info) {
       $compile_info = $self->prepare_compile_source_file($compile_info);
-      $self->compile_source_file($compile_info);
+      my $process_id = $self->spawn_compile_source_file($compile_info);
+      if ($process_id > 0) {
+        $wait_command_options->{command_infos_h}{$process_id} = $compile_info;
+        $self->wait_command($process_id, $wait_command_options);
+        delete $wait_command_options->{command_infos_h}{$process_id};
+      }
       $object_file->file($compile_info->output_file);
     }
   }
