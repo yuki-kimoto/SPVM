@@ -863,7 +863,9 @@ sub prepare_link {
 }
 
 sub link {
-  my ($self, $object_files, $link_info) = @_;
+  my ($self, $link_info) = @_;
+  
+  my $object_files = $link_info->object_files;
   
   unless (@$object_files) {
     confess("[Unexpected Error]Object files must be at least one.");
