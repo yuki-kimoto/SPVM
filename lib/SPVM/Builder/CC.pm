@@ -772,6 +772,10 @@ sub prepare_link {
     confess("[Unexpected Error]A config must be defined.");
   }
   
+  unless ($object_files) {
+    return;
+  }
+  
   my $link_info = $self->create_link_info($class_name, $object_files, $config);
   
   my $runtime = $options->{runtime};

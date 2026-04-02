@@ -208,9 +208,11 @@ sub build {
   # Link object files and generate a dynamic library
   my $link_info = $cc->prepare_link($class_name, $object_files, $compile_and_link_options);
   
-  $cc->link($class_name, $object_files, $compile_and_link_options, $link_info);
-  
-  my $output_file = $link_info->output_file;
+  my $output_file;
+  if ($link_info) {
+    $cc->link($class_name, $object_files, $compile_and_link_options, $link_info);
+    $output_file = $link_info->output_file;
+  }
   
   return $output_file;
 }
