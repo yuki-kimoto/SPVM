@@ -132,9 +132,9 @@ sub create_ldflags {
 }
 
 sub to_command {
-  my ($self) = @_;
+  my ($self, $options) = @_;
   
-  my $link_command = $self->create_command;
+  my $link_command = $self->create_command($options);
   my $link_command_string = "@$link_command";
   
   return $link_command_string;
@@ -224,16 +224,6 @@ The output file L</"output_file"> and the object files L</"object_files"> are no
 Return Value Examples:
 
   [qw(-shared -O2 -Llibdir -lz)]
-
-=head2 to_command
-
-  my $link_command_string = $link_info->to_command;
-
-Joins all elements of the return value of L</"create_command"> method with a space, and returns it.
-
-Return Value Examples:
-
-  "cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz"
 
 =head1 Copyright & License
 

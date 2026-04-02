@@ -152,45 +152,6 @@ sub create_ccflags {
   return \@compile_command_args;
 }
 
-sub to_command {
-  my ($self) = @_;
-
-  my $compile_command = $self->create_command;
-  
-  my @quoted_parts;
-  for my $part (@$compile_command) {
-    push @quoted_parts, $self->_quote_literal($part);
-  }
-  
-  my $compile_command_string = join(' ', @quoted_parts);
-  
-  return $compile_command_string;
-}
-
-sub _quote_literal {
-  my ($self, $string) = @_;
-
-  if ($^O eq 'MSWin32') {
-    if (length $string && $string !~ /[ \t\n\x0b"|<>%]/) {
-      return $string;
-    }
-
-    $string =~ s{(\\*)(?="|\z)}{$1$1}g;
-    $string =~ s{"}{\\"}g;
-
-    return qq{"$string"};
-  }
-  else {
-    if (length $string && $string !~ /[^a-zA-Z0-9,._+@%\/-]/) {
-      return $string;
-    }
-
-    $string =~ s{'}{'\\''}g;
-
-    return "'$string'";
-  }
-}
-
 sub source_file {
   my $self = shift;
   
@@ -282,30 +243,6 @@ The source file L<"source_file"> and the output file L</"output_file"> are not c
 Return Value Examples:
 
   [qw(-O2 -Ipath/include)]
-
-=head2 to_command
-
-  my $compile_command_string = $compile_info->to_command;
-
-Converts the array reference of the compilation command returned by the L</"create_command"> method into a single string that can be executed in a shell (such as C<sh> or C<bash>) or the Windows Command Prompt (C<cmd.exe>).
-
-Each argument is automatically and appropriately quoted only when necessary (e.g., containing spaces or special characters) according to the operating system (OS) to ensure it can be safely executed as a command line.
-
-Return Value Examples:
-
-=over 2
-
-=item * On UNIX/Linux (Only strings with special characters like C<=> or spaces are quoted):
-
-  gcc -c -o foo.o -O2 '-std=c99' -Ipath/include foo.c
-
-=item * On Windows (Only strings with characters like spaces or C<"> are quoted):
-
-  gcc -c -o foo.o -O2 -std=c99 -Ipath/include foo.c
-
-=back
-
-=cut
 
 =head2 source_file
 

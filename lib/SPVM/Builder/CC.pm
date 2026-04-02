@@ -818,14 +818,14 @@ sub prepare_link {
   
   my $force = $self->detect_force($config);
   
-  my $link_command_array = $link_info->create_command;
-  my $link_command = "@$link_command_array";
-  my $link_command_array_no_output_option = $link_info->create_command({no_output_option => 1});
-  my $link_command_no_output_option = "@$link_command_array_no_output_option";
+  my $ld_cmd = $link_info->create_command;
+  my $ld_cmd_string = "@$ld_cmd";
+  my $ld_cmd_no_output_option = $link_info->create_command({no_output_option => 1});
+  my $ld_cmd_string_no_output_option = "@$ld_cmd_no_output_option";
   
   my $ninja = $self->builder->ninja;
   my $create_command_hash_options = {
-    command => $link_command_no_output_option,
+    command => $ld_cmd_string_no_output_option,
     command_version => $ld_version,
     dependent_files => [@object_files],
   };
@@ -854,10 +854,10 @@ sub link {
   my $command_hash = $link_info->command_hash;
   my $output_file = $link_info->output_file;
   
-  my $link_command_array = $link_info->create_command;
-  my $link_command = "@$link_command_array";
-  my $link_command_array_no_output_option = $link_info->create_command({no_output_option => 1});
-  my $link_command_no_output_option = "@$link_command_array_no_output_option";
+  my $ld_cmd = $link_info->create_command;
+  my $ld_cmd_string = $link_info->to_command;
+  my $ld_cmd_no_output_option = $link_info->create_command({no_output_option => 1});
+  my $ld_cmd_string_no_output_option = $link_info->to_command({no_output_option => 1});
   
   my $link_info_object_files = $link_info->object_files;
   
@@ -925,14 +925,14 @@ sub link {
           my $message = "[Generate Dynamic Link Library for $class_name class$for_precompile]";
           print "$message\n";
           
-          print "$link_command\n";
+          print "$ld_cmd_string\n";
         }
         
         (undef, @link_tmp_files) = $cbuilder->link(
           objects => $link_info_object_file_names,
-          module_name => $class_name,
           lib_file => $output_file,
           extra_linker_flags => "@$link_info_ldflags",
+          module_name => $class_name,
           dl_func_list => $dl_func_list,
         );
       };
@@ -943,14 +943,14 @@ sub link {
         unless ($quiet) {
           print "[Generate Executable File \"$output_file\"]\n";
           
-          print "$link_command\n";
+          print "$ld_cmd_string\n";
         }
         
         (undef, @link_tmp_files) = $cbuilder->link_executable(
           objects => $link_info_object_file_names,
-          module_name => $class_name,
           exe_file => $output_file,
           extra_linker_flags => "@$link_info_ldflags",
+          module_name => $class_name,
         );
       }
     }

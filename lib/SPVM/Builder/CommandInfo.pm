@@ -17,7 +17,46 @@ has [qw(
 )];
 
 # Instance Methods
-sub to_command { confess 'Not implemented.' }
+sub create_command { confess('Not implemented.') }
+
+sub to_command {
+  my ($self, $options) = @_;
+
+  my $compile_command = $self->create_command($options);
+  
+  my @quoted_parts;
+  for my $part (@$compile_command) {
+    push @quoted_parts, $self->_quote_literal($part);
+  }
+  
+  my $compile_command_string = join(' ', @quoted_parts);
+  
+  return $compile_command_string;
+}
+
+sub _quote_literal {
+  my ($self, $string) = @_;
+
+  if ($^O eq 'MSWin32') {
+    if (length $string && $string !~ /[ \t\n\x0b"|<>%]/) {
+      return $string;
+    }
+
+    $string =~ s{(\\*)(?="|\z)}{$1$1}g;
+    $string =~ s{"}{\\"}g;
+
+    return qq{"$string"};
+  }
+  else {
+    if (length $string && $string !~ /[^a-zA-Z0-9,._+@%\/-]/) {
+      return $string;
+    }
+
+    $string =~ s{'}{'\\''}g;
+
+    return "'$string'";
+  }
+}
 
 1;
 
@@ -91,13 +130,37 @@ Gets and sets the C<log_dir> field. It is a directory where the stdout and stder
 
 =head1 Instance Methods
 
+=head2 create_command
+
+  my $compile_command = $compile_info->create_command;
+
+Creates an array reference of the command conponents, and returns it.
+
+This method is meant to be implemented in child classes.
+
 =head2 to_command
 
-  my $compile_command_string = $command_info->to_command;
+  my $compile_command_string = $compile_info->to_command;
 
 Converts the array reference of the compilation command returned by the L</"create_command"> method into a single string that can be executed in a shell (such as C<sh> or C<bash>) or the Windows Command Prompt (C<cmd.exe>).
 
-This method must be implemented in a child class.
+Each argument is automatically and appropriately quoted only when necessary (e.g., containing spaces or special characters) according to the operating system (OS) to ensure it can be safely executed as a command line.
+
+Return Value Examples:
+
+=over 2
+
+=item * On UNIX/Linux (Only strings with special characters like C<=> or spaces are quoted):
+
+  gcc -c -o foo.o -O2 '-std=c99' -Ipath/include foo.c
+
+=item * On Windows (Only strings with characters like spaces or C<"> are quoted):
+
+  gcc -c -o foo.o -O2 -std=c99 -Ipath/include foo.c
+
+=back
+
+=cut
 
 =head1 Copyright & License
 
