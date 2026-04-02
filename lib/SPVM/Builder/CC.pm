@@ -664,20 +664,9 @@ sub wait_command {
 sub spawn_compile {
   my ($log_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @_;
   
-  my $perl_script_for_compile =
-    q|my ($log_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @ARGV; | .
-    q|my $process_id = $$; | .
-    q|my $log_stdout = qq($log_dir/$process_id.stdout); | .
-    q|my $log_stderr = qq($log_dir/$process_id.stderr); | .
-    q|open(STDOUT, '>', $log_stdout) or warn qq(Cannot open file '$log_stdout':$!); | .
-    q|open(STDERR, '>', $log_stderr) or warn qq(Cannot open file '$log_stderr':$!); | .
-    q|print qq($cc_cmd_heading\n); | . 
-    q|print qq($cc_cmd_string\n); | . 
-    q|system(@cc_cmd); | . 
-    q|exit($? >> 8);|
-  ;
+  my $compile_script_path = &get_compile_script_path();
   
-  my $process_id = &spawn_perl($perl_script_for_compile, $log_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd);
+  my $process_id = &spawn_perl_v2($compile_script_path, $log_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd);
   
   return $process_id;
 }
@@ -695,6 +684,36 @@ sub spawn_perl {
   }
   
   my @cmd = ($^X, '-Mstrict', '-Mwarnings', '-e', $perl_script, @args);
+  
+  my $process_id;
+  if ($^O eq 'MSWin32') {
+    # Windows spawn
+    $process_id = system(1, @cmd);
+    if (!defined $process_id || $process_id <= 0) {
+      confess("Failed to spawn Windows process for executing a perl script: $!");
+    }
+  }
+  else {
+    # Linux/Unix fork
+    $process_id = fork();
+    if (!defined $process_id) {
+      confess("Failed to fork for executing a perl script: $!");
+    }
+    
+    # Child process
+    if ($process_id == 0) {
+      exec(@cmd);
+      exit(1);
+    }
+  }
+  
+  return $process_id;
+}
+
+sub spawn_perl_v2 {
+  my ($perl_script_file, @args) = @_;
+  
+  my @cmd = ($^X, $perl_script_file, @args);
   
   my $process_id;
   if ($^O eq 'MSWin32') {
@@ -1131,6 +1150,13 @@ sub create_link_info {
   );
   
   return $link_info;
+}
+
+sub get_compile_script_path {
+  
+  my $compile_script_path = dirname(__FILE__) . "/compile.pl";
+  
+  return $compile_script_path;
 }
 
 1;

@@ -1,0 +1,24 @@
+use strict;
+use warnings;
+
+# Get arguments
+my ($log_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @ARGV;
+
+# Define log file paths
+my $process_id = $$;
+my $log_stdout = "$log_dir/$process_id.stdout";
+my $log_stderr = "$log_dir/$process_id.stderr";
+
+# Redirect stdout and stderr to log files
+open(STDOUT, '>', $log_stdout) or warn "Can't open $log_stdout: $!";
+open(STDERR, '>', $log_stderr) or warn "Can't open $log_stderr: $!";
+
+# Print command information
+print "$cc_cmd_heading\n";
+print "$cc_cmd_string\n";
+
+# Execute the command
+system(@cc_cmd);
+
+# Exit with the command's exit status
+exit($? >> 8);

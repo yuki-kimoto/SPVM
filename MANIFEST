@@ -64,6 +64,7 @@ lib/SPVM/Builder/Accessor.pm
 lib/SPVM/Builder/API.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/CommandInfo.pm
+lib/SPVM/Builder/compile.pl
 lib/SPVM/Builder/CompileInfo.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Base.pm
