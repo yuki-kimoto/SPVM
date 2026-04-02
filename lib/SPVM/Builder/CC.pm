@@ -528,8 +528,6 @@ sub compile_source_file {
   my $need_generate = $force || $ninja->need_generate($need_generate_options);
   
   if ($need_generate) {
-    my $start_time = int(Time::HiRes::time() * 1000);
-    
     mkpath dirname $output_file;
     
     my $cc_cmd_heading;
@@ -568,12 +566,31 @@ sub compile_source_file {
     mkpath $command_log_dir;
     my $cc_cmd = $compile_info->create_command;
     my $cc_cmd_string = $compile_info->to_command;
+    
+    my $start_time = int(Time::HiRes::time() * 1000);
+    $compile_info->start_time($start_time);
+    
     my $process_id = &spawn_compile($command_log_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
     
     # Wait for completion
     my $wait_pid = waitpid($process_id, 0);
     my $exit_status = $? >> 8;
-
+    
+    if ($wait_pid == -1) {
+      confess("[Unexpected Error]Failed to wait for the compilation process.\n" .
+        "Command: $cc_cmd_string\n" .
+        "Reason: Process not found or already reaped: $!");
+    }
+    
+    my $end_time = int(Time::HiRes::time() * 1000);
+    $compile_info->end_time($end_time);
+    
+    unless (-f $output_file) {
+      confess("[Unexpected Error]The output file '$output_file' does not exist.");
+    }
+    
+    my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
+    
     # Read output files from temp directory
     my $stdout_file = "$command_log_dir/$process_id.stdout";
     unless (-f $stdout_file) {
@@ -601,22 +618,11 @@ sub compile_source_file {
       print STDERR $stderr_output;
     }
     
-    # Check result
-    if ($wait_pid == -1 || $exit_status != 0) {
-      confess(
-        "Compilation failed.\n" .
+    if ($exit_status != 0) {
+      confess("Compilation failed.\n" .
         "Command: $cc_cmd_string\n" .
-        "Exit status: $exit_status\n"
-      );
+        "Exit status: $exit_status\n");
     }
-    
-    my $end_time = int(Time::HiRes::time() * 1000);
-    
-    unless (-f $output_file) {
-      confess("The output file '$output_file' does not exist.");
-    }
-    
-    my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
     
     my $log_entry = {
       output_file  => $output_file,
