@@ -845,6 +845,10 @@ sub prepare_link {
 sub link {
   my ($self, $class_name, $object_files, $options, $link_info) = @_;
   
+  unless (@$object_files) {
+    confess("[Unexpected Error]Object files must be at least one.");
+  }
+  
   my $runtime = $options->{runtime};
   
   my $config = $link_info->config;
@@ -899,6 +903,8 @@ sub link {
     my $link_cb;
     
     # Create a dynamic library
+    my $ld_cmd_heading;
+    my $dl_func_list;
     if ($output_type eq 'dynamic_lib') {
       my $basic_type = $runtime->get_basic_type_by_name($class_name);
       
@@ -919,9 +925,20 @@ sub link {
         push @$dl_func_list, @$anon_dl_func_list;
       }
       
+      $ld_cmd_heading = "[Generate Dynamic Link Library for $class_name class" . ($category eq 'precompile' ? ' for precompile' : '') . "]";
+    }
+    # Create an executable file
+    elsif ($output_type eq 'exe') {
+      $ld_cmd_heading = "[Generate Executable File \"$output_file\"]\n";
+    }
+    else {
+      confess("Unknown output_type \"$output_type\"");
+    }
+    
+    # Create a dynamic library
+    if ($output_type eq 'dynamic_lib') {
       $link_cb = sub {
         unless ($quiet) {
-          my $ld_cmd_heading = "[Generate Dynamic Link Library for $class_name class" . ($category eq 'precompile' ? ' for precompile' : '') . "]";
           print "$ld_cmd_heading\n";
           print "$ld_cmd_string\n";
         }
@@ -943,7 +960,6 @@ sub link {
     elsif ($output_type eq 'exe') {
       $link_cb = sub {
         unless ($quiet) {
-          my $ld_cmd_heading = "[Generate Executable File \"$output_file\"]\n";
           print "$ld_cmd_heading\n";
           print "$ld_cmd_string\n";
         }
