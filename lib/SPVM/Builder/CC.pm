@@ -883,58 +883,58 @@ sub link {
   };
   my $need_generate = $force || $self->builder->ninja->need_generate($need_generate_options);
   
+  my $cbuilder_config = {
+    cc => $hint_cc,
+    ld => $ld,
+    lddlflags => '',
+    shrpenv => '',
+    libpth => '',
+    libperl => '',
+    # On Windows/gcc(MinGW) "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
+    # Linker Script File(.lds) when "perllibs" is empty string.
+    # This is syntax error in Linker Script File(.lds)
+    # For the reason, libm is linked which seems to have no effect.
+    perllibs => '-lm',
+  };
+  
+  mkpath dirname $output_file;
+  
+  # Create a dynamic library
+  my $ld_cmd_heading;
+  my $dl_func_list;
+  if ($output_type eq 'dynamic_lib') {
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    # Get normal methods
+    my $method_names = $basic_type->get_method_names_by_category($category);
+    
+    # Create the dynamic link function list for the class
+    $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
+    
+    # Get anon methods from anon basic types
+    my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
+    for my $anon_basic_type_name (@$anon_basic_type_names) {
+      my $anon_basic_type = $runtime->get_basic_type_by_name($anon_basic_type_name);
+      my $anon_method_names = $anon_basic_type->get_method_names_by_category($category);
+      
+      # Create the dynamic link function list for each anon class and merge it
+      my $anon_dl_func_list = SPVM::Builder::Util::create_dl_func_list($anon_basic_type_name, $anon_method_names, {category => $category});
+      push @$dl_func_list, @$anon_dl_func_list;
+    }
+    
+    $ld_cmd_heading = "[Generate Dynamic Link Library for $class_name class" . ($category eq 'precompile' ? ' for precompile' : '') . "]";
+  }
+  # Create an executable file
+  elsif ($output_type eq 'exe') {
+    $ld_cmd_heading = "[Generate Executable File \"$output_file\"]\n";
+  }
+  else {
+    confess("Unknown output_type \"$output_type\"");
+  }
+  
+  my $link_cb;
+  
   if ($need_generate) {
-    my $cbuilder_config = {
-      cc => $hint_cc,
-      ld => $ld,
-      lddlflags => '',
-      shrpenv => '',
-      libpth => '',
-      libperl => '',
-      # On Windows/gcc(MinGW) "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
-      # Linker Script File(.lds) when "perllibs" is empty string.
-      # This is syntax error in Linker Script File(.lds)
-      # For the reason, libm is linked which seems to have no effect.
-      perllibs => '-lm',
-    };
-    
-    mkpath dirname $output_file;
-    
-    my $link_cb;
-    
-    # Create a dynamic library
-    my $ld_cmd_heading;
-    my $dl_func_list;
-    if ($output_type eq 'dynamic_lib') {
-      my $basic_type = $runtime->get_basic_type_by_name($class_name);
-      
-      # Get normal methods
-      my $method_names = $basic_type->get_method_names_by_category($category);
-      
-      # Create the dynamic link function list for the class
-      $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
-      
-      # Get anon methods from anon basic types
-      my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
-      for my $anon_basic_type_name (@$anon_basic_type_names) {
-        my $anon_basic_type = $runtime->get_basic_type_by_name($anon_basic_type_name);
-        my $anon_method_names = $anon_basic_type->get_method_names_by_category($category);
-        
-        # Create the dynamic link function list for each anon class and merge it
-        my $anon_dl_func_list = SPVM::Builder::Util::create_dl_func_list($anon_basic_type_name, $anon_method_names, {category => $category});
-        push @$dl_func_list, @$anon_dl_func_list;
-      }
-      
-      $ld_cmd_heading = "[Generate Dynamic Link Library for $class_name class" . ($category eq 'precompile' ? ' for precompile' : '') . "]";
-    }
-    # Create an executable file
-    elsif ($output_type eq 'exe') {
-      $ld_cmd_heading = "[Generate Executable File \"$output_file\"]\n";
-    }
-    else {
-      confess("Unknown output_type \"$output_type\"");
-    }
-    
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
       $link_cb = sub {
@@ -973,6 +973,7 @@ sub link {
           exe_file => $output_file,
           extra_linker_flags => "@$link_info_ldflags",
           module_name => $class_name,
+          dl_func_list => $dl_func_list,
         );
       }
     }
