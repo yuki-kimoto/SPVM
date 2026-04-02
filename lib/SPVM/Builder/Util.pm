@@ -15,7 +15,6 @@ use Encode 'decode';
 use File::Find 'find';
 use Time::HiRes ();
 use Digest::SHA;
-use SPVM::Builder::Ninja;
 
 # SPVM::Builder::Util is used from Makefile.PL
 # so this class must be wrote as pure perl. Do not contain XS functions.
@@ -123,15 +122,6 @@ sub get_spvm_core_source_file_names {
   );
 
   return \@spvm_core_source_file_names;
-}
-
-sub need_generate {
-  my ($options) = @_;
-  
-  my $ninja = SPVM::Builder::Ninja->new(log_dir => $ENV{SPVM_BUILD_DIR});
-  
-  # Delegate to SPVM::Builder::Ninja instance method
-  return $ninja->need_generate($options);
 }
 
 sub slurp_binary {
