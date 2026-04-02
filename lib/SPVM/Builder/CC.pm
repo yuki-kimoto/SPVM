@@ -841,7 +841,7 @@ sub prepare_link {
 }
 
 sub link {
-  my ($self, $class_name, $object_files, $options, $link_info) = @_;
+  my ($self, $object_files, $options, $link_info) = @_;
   
   unless (@$object_files) {
     confess("[Unexpected Error]Object files must be at least one.");
@@ -856,6 +856,7 @@ sub link {
   my $ld = $config->ld;
   my $output_type = $config->output_type;
   my $category = $config->category;
+  my $class_name = $config->class_name;
   
   my $command_hash = $link_info->command_hash;
   my $output_file = $link_info->output_file;
