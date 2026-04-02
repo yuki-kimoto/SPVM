@@ -570,10 +570,6 @@ sub compile_source_file {
     my $cc_cmd_string = $compile_info->to_command;
     my $process_id = &spawn_compile($command_log_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
     
-    if (!$process_id || $process_id <= 0) {
-      confess("Failed to spawn process: $!");
-    }
-
     # Wait for completion
     my $wait_pid = waitpid($process_id, 0);
     my $exit_status = $? >> 8;
@@ -672,13 +668,18 @@ sub spawn_perl {
   if ($^O eq 'MSWin32') {
     # Windows spawn
     $process_id = system(1, @cmd);
+    if (!defined $process_id || $process_id <= 0) {
+      confess("Failed to spawn Windows process for executing a perl script: $!");
+    }
   }
   else {
     # Linux/Unix fork
     $process_id = fork();
     if (!defined $process_id) {
-      confess("Failed to fork: $!");
+      confess("Failed to fork for executing a perl script: $!");
     }
+    
+    # Child process
     if ($process_id == 0) {
       exec(@cmd);
       exit(1);
