@@ -151,6 +151,7 @@ lib/SPVM/Builder/include/spvm_weaken_backref.h
 lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
 lib/SPVM/Builder/LibInfo.pm
+lib/SPVM/Builder/link.pl
 lib/SPVM/Builder/LinkInfo.pm
 lib/SPVM/Builder/Native/BasicType.pm
 lib/SPVM/Builder/Native/ClassFile.pm
