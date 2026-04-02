@@ -894,10 +894,6 @@ sub link {
       perllibs => '-lm',
     };
     
-    # Load ExtUtils::CBuilder only when linking is needed for performance
-    require ExtUtils::CBuilder;
-    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
-    
     mkpath dirname $output_file;
     
     my $link_cb;
@@ -932,6 +928,10 @@ sub link {
           print "$ld_cmd_string\n";
         }
         
+        # Load ExtUtils::CBuilder only when linking is needed for performance
+        require ExtUtils::CBuilder;
+        my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
+        
         (undef, @link_tmp_files) = $cbuilder->link(
           objects => $link_info_object_file_names,
           lib_file => $output_file,
@@ -950,7 +950,11 @@ sub link {
           print "$ld_cmd_string\n";
         }
         
-        (undef, @link_tmp_files) = $cbuilder->link_executable(
+       # Load ExtUtils::CBuilder only when linking is needed for performance
+       require ExtUtils::CBuilder;
+       my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
+       
+       (undef, @link_tmp_files) = $cbuilder->link_executable(
           objects => $link_info_object_file_names,
           exe_file => $output_file,
           extra_linker_flags => "@$link_info_ldflags",
