@@ -14,6 +14,7 @@ has [qw(
   start_time
   end_time
   tmp_dir
+  process_id
 )];
 
 # Instance Methods
@@ -127,6 +128,13 @@ Gets and sets the C<end_time> field. It is a Unix timestamp in milliseconds when
   $command_info->tmp_dir($tmp_dir);
 
 Gets and sets the C<tmp_dir> field. It is a directory where the stdout and stderr log files of the command are stored.
+
+=head2 process_id
+
+  my $process_id = $command_info->process_id;
+  $command_info->process_id($process_id);
+
+Gets and sets the C<process_id> field. It is the process ID of the command.
 
 =head1 Instance Methods
 

@@ -575,6 +575,7 @@ sub spawn_compile_source_file {
     $compile_info->tmp_dir($command_tmp_dir);
     
     $process_id = &spawn_compile($command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
+    $compile_info->process_id($process_id);
   }
   
   return $process_id;
