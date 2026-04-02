@@ -11,7 +11,6 @@ use SPVM::Builder::Accessor 'has';
 
 # Fields
 has [qw(
-  compile_infos
   object_files
   dl_func_list
 )];
@@ -22,7 +21,6 @@ sub new {
   
   my $self = {
     object_files => [],
-    compile_infos => [],
     dl_func_list => [],
     @_
   };
@@ -170,13 +168,6 @@ L<SPVM::Builder::CommandInfo>
 
 Gets and sets the C<object_files> field, an array reference of L<SPVM::Builder::ObjectFileInfo> objects.
 
-=head2 compile_infos
-
-  my $compile_infos = $link_info->compile_infos;
-  $link_info->compile_infos($compile_infos);
-
-Gets and sets the C<compile_infos> field, an array reference of L<SPVM::Builder::CompileInfo> objects.
-
 =head1 Class Methods
 
 =head2 new
@@ -190,10 +181,6 @@ Field Default Values:
 =over 2
 
 =item * L</"object_files">
-
-[]
-
-=item * L</"compile_infos">
 
 []
 

@@ -14,7 +14,6 @@ has [qw(
   source_rel_file
   category
   dependent_files
-  link_info
 )];
 
 # Class methods
@@ -196,15 +195,6 @@ These are C<native_class>, C<native_source>, C<precompile_class>, C<spvm>, C<spv
 Gets and sets the C<dependent_files> field, an array reference of the dependent files of the source file.
 
 If this field is defined, these files are added to the dependency list of the C<ninja> build rule.
-
-=head2 link_info
-
-  my $link_info = $compile_info->link_info;
-  $compile_info->link_info($link_info);
-
-Gets and sets the C<link_info> field, an L<SPVM::Builder::LinkInfo> object.
-
-This field is a weak reference to the L<SPVM::Builder::LinkInfo> object that this compilation task belongs to.
 
 =head1 Class Methods
 
