@@ -766,9 +766,13 @@ sub prepare_link {
     confess("[Unexpected Error]A class name must be non-reference.");
   }
   
-  unless (@$object_files) {
-    return;
+  my $config = $options->{config};
+  
+  unless ($config) {
+    confess("[Unexpected Error]A config must be defined.");
   }
+  
+  my $link_info = $self->create_link_info($class_name, $object_files, $config);
   
   my $runtime = $options->{runtime};
   
@@ -782,15 +786,7 @@ sub prepare_link {
     confess("[Unexpected Error]A build directory must exists.");
   }
   
-  my $config = $options->{config};
-  
-  unless ($config) {
-    confess("[Unexpected Error]A config must be defined.");
-  }
-  
   my $category = $config->category;
-  
-  my $link_info = $self->create_link_info($class_name, $object_files, $config);
   
   my $output_file = $config->output_file;
   
@@ -837,6 +833,7 @@ sub prepare_link {
   
   $link_info->command_hash($command_hash);
   $link_info->output_file($output_file);
+  $link_info->config($config);
   
   return $link_info;
 }
@@ -847,12 +844,12 @@ sub link {
   my $runtime = $options->{runtime};
   
   my $config = $link_info->config;
-  my $force = $config->force;
+  my $force = $self->detect_force($config);;
+  my $quiet = $self->detect_quiet($config);;
   my $hint_cc = $config->hint_cc;
   my $ld = $config->ld;
   my $output_type = $config->output_type;
   my $category = $config->category;
-  my $quiet = $config->quiet;
   
   my $command_hash = $link_info->command_hash;
   my $output_file = $link_info->output_file;
