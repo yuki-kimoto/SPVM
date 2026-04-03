@@ -23,6 +23,7 @@ use SPVM::Builder::Native::Runtime;
 use SPVM::Builder::Native::BasicType;
 use SPVM::Builder::Native::ClassFile;
 use SPVM::Builder::ScriptInfo;
+use SPVM::Builder::ObjectFileInfo;
 
 # Fields
 sub builder {
@@ -260,25 +261,24 @@ sub build_exe_file {
   my $build_dir = $self->builder->build_dir;
   
   # Object files
-  my $object_files = [];
+  my $compile_infos = [];
   
   # Create bootstrap C source
   $self->create_bootstrap_source;
   
   # Compile bootstrap C source
-  my $bootstrap_object_file = $self->prepare_compile_bootstrap_source_file;
-  push @$object_files, $bootstrap_object_file;
+  my $bootstrap_compile_info = $self->prepare_compile_bootstrap_source_file;
+  push @$compile_infos, $bootstrap_compile_info;
   
   # Compile SPVM core source files
-  my $spvm_object_files = $self->prepare_compile_spvm_core_source_files;
-  push @$object_files, @$spvm_object_files;
+  my $spvm_compile_infos = $self->prepare_compile_spvm_core_source_files;
+  push @$compile_infos, @$spvm_compile_infos;
   
-  my $classes_object_files = $self->prepare_compile_classes;
-  push @$object_files, @$classes_object_files;
-  
-  my $output_file = $self->{output_file};
+  my $classes_compile_infos = $self->prepare_compile_classes;
+  push @$compile_infos, @$classes_compile_infos;
   
   # Link
+  my $output_file = $self->{output_file};
   my $config_linker = $self->config_global->clone;
   my $cc_linker = SPVM::Builder::CC->new(
     builder => $self->builder,
@@ -287,7 +287,9 @@ sub build_exe_file {
   );
   $config_linker->output_file($output_file);
   
-  $cc_linker->compile_source_files($class_name, $object_files, {config => $config_linker});
+  $cc_linker->compile_source_files($class_name, $compile_infos, {config => $config_linker});
+  
+  my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   
   # Add external object files
   for my $external_object_file (@{$config_global->external_object_files}) {
@@ -333,17 +335,17 @@ sub prepare_compile_classes {
   
   my $class_names = $self->get_user_defined_basic_type_names;
   
-  my $object_files = [];
+  my $compile_infos = [];
   for my $class_name (@$class_names) {
     
-    my $precompile_object_files = $self->prepare_compile_precompile_class($class_name);
-    push @$object_files, @$precompile_object_files;
+    my $precompile_compile_infos = $self->prepare_compile_precompile_class($class_name);
+    push @$compile_infos, @$precompile_compile_infos;
     
-    my $native_object_files = $self->prepare_compile_native_class($class_name);
-    push @$object_files, @$native_object_files;
+    my $native_compile_infos = $self->prepare_compile_native_class($class_name);
+    push @$compile_infos, @$native_compile_infos;
   }
   
-  return $object_files;
+  return $compile_infos;
 }
 
 sub prepare_compile_source_file {
@@ -386,13 +388,7 @@ sub prepare_compile_source_file {
     $builder_cc->add_ninja_log($compile_info);
   }
   
-  my $object_file_name = $compile_info->output_file;
-  my $object_file = SPVM::Builder::ObjectFileInfo->new(
-    file => $object_file_name,
-    compile_info => $compile_info,
-  );
-  
-  return $object_file;
+  return $compile_info;
 }
 
 sub create_bootstrap_header_source {
@@ -932,16 +928,15 @@ sub prepare_compile_bootstrap_source_file {
   # Compile source files
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
   my $source_rel_file = $self->create_bootstrap_source_rel_file_path;
-  my $object_file_name = $self->create_bootstrap_object_file_path;
   
   # Compile
-  my $object_file = $self->prepare_compile_source_file({
+  my $compile_info = $self->prepare_compile_source_file({
     source_rel_file => $source_rel_file,
     config => $config,
     category => 'bootstrap',
   });
   
-  return $object_file;
+  return $compile_info;
 }
 
 sub prepare_compile_spvm_core_source_files {
@@ -971,19 +966,19 @@ sub prepare_compile_spvm_core_source_files {
   my $output_dir = $self->builder->create_build_object_path;
   
   # Compile source files
-  my $object_files = [];
+  my $compile_infos = [];
   for my $spvm_runtime_src_base_name (@$spvm_runtime_src_base_names) {
     my $source_rel_file = "SPVM/Builder/src/$spvm_runtime_src_base_name";
-    my $object_file = $self->prepare_compile_source_file({
+    my $compile_info = $self->prepare_compile_source_file({
       source_rel_file => $source_rel_file,
       config => $config,
       category => 'spvm_core',
       include_dir => $builder_include_dir,
     });
-    push @$object_files, $object_file;
+    push @$compile_infos, $compile_info;
   }
   
-  return $object_files;
+  return $compile_infos;
 }
 
 sub prepare_compile_precompile_class {
@@ -1009,17 +1004,17 @@ sub prepare_compile_precompile_class {
   
   my $runtime = $self->runtime;
   
-  my $object_files = [];
-  my $precompile_object_files = $builder_cc->prepare_compile_class(
+  my $compile_infos = [];
+  my $precompile_compile_infos = $builder_cc->prepare_compile_class(
     $class_name,
     {
       runtime => $runtime,
       config => $config,
     }
   );
-  push @$object_files, @$precompile_object_files;
+  push @$compile_infos, @$precompile_compile_infos;
   
-  return $object_files;
+  return $compile_infos;
 }
 
 sub prepare_compile_native_class {
@@ -1038,7 +1033,7 @@ sub prepare_compile_native_class {
     force => $self->force,
   );
   
-  my $all_object_files = [];
+  my $all_compile_infos = [];
   
   my $runtime = $self->runtime;
   
@@ -1059,17 +1054,17 @@ sub prepare_compile_native_class {
     
     $config->config_global($config_global);
     
-    my $object_files = $builder_cc->prepare_compile_class(
+    my $compile_infos = $builder_cc->prepare_compile_class(
       $class_name,
       {
         runtime => $runtime,
         config => $config,
       }
     );
-    push @$all_object_files, @$object_files;
+    push @$all_compile_infos, @$compile_infos;
   }
   
-  return $all_object_files;
+  return $all_compile_infos;
 }
 
 sub get_user_defined_basic_type_names {

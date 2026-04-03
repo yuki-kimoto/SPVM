@@ -16,6 +16,7 @@ use SPVM::BlessedObject::Class;
 use SPVM::BlessedObject::String;
 use SPVM::Builder::Accessor 'has';
 use SPVM::Builder::Ninja;
+use SPVM::Builder::ObjectFileInfo;
 
 # Fields
 has [qw(
@@ -200,10 +201,12 @@ sub build {
   my $compile_and_link_options = {config => $config, runtime => $runtime};
   
   # Compile source files to object files
-  my $object_files = $cc->prepare_compile_class($class_name, $compile_and_link_options);
+  my $compile_infos = $cc->prepare_compile_class($class_name, $compile_and_link_options);
   
   # Compile a source files
-  $cc->compile_source_files($class_name, $object_files, $compile_and_link_options);
+  $cc->compile_source_files($class_name, $compile_infos, $compile_and_link_options);
+  
+  my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   
   # Link object files and generate a dynamic library
   my $output_file;

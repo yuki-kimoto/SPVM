@@ -15,7 +15,6 @@ use Time::HiRes;
 
 use SPVM::Builder::Util;
 use SPVM::Builder::CompileInfo;
-use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Native::BasicType;
 use SPVM::Builder::Accessor 'has';
@@ -112,15 +111,15 @@ sub prepare_compile_class {
   
   $config->class_name($class_name);
   
-  my $object_files = [];
+  my $compile_infos = [];
   
-  my $resource_object_files = $self->prepare_compile_resources($class_name, $options);
-  push @$object_files, @$resource_object_files;
+  my $resource_compile_infos = $self->prepare_compile_resources($class_name, $options);
+  push @$compile_infos, @$resource_compile_infos;
   
-  my $native_object_files = $self->prepare_compile_native_class($class_name, $options);
-  push @$object_files, @$native_object_files;
+  my $native_compile_infos = $self->prepare_compile_native_class($class_name, $options);
+  push @$compile_infos, @$native_compile_infos;
   
-  return $object_files;
+  return $compile_infos;
 }
 
 sub prepare_compile_resources {
@@ -130,7 +129,7 @@ sub prepare_compile_resources {
   
   my $runtime = $options->{runtime};
   
-  my $object_files = [];
+  my $compile_infos = [];
   
   # Add resource include directories
   my $resource_names = $config->get_resource_names;
@@ -183,12 +182,12 @@ sub prepare_compile_resources {
         force => $self->detect_force($config),
       );
       
-      my $resource_object_files = $builder_cc_resource->prepare_compile_class($resource_class_name, $compile_options);
-      push @$object_files, @$resource_object_files;
+      my $resource_compile_infos = $builder_cc_resource->prepare_compile_class($resource_class_name, $compile_options);
+      push @$compile_infos, @$resource_compile_infos;
     }
   }
   
-  return $object_files;
+  return $compile_infos;
 }
 
 sub prepare_compile_native_class {
@@ -235,7 +234,7 @@ sub prepare_compile_native_class {
     }
   }
   
-  my $object_files = [];
+  my $compile_infos = [];
   
   my $cc_input_dir;
   if ($category eq 'precompile') {
@@ -399,15 +398,12 @@ sub prepare_compile_native_class {
     # Object file information
     my $compile_info_cc = $compile_info->{cc};
     my $compile_info_ccflags = $compile_info->{ccflags};
-    my $object_file = SPVM::Builder::ObjectFileInfo->new(
-      compile_info => $compile_info,
-    );
     
     # Add object file information
-    push @$object_files, $object_file;
+    push @$compile_infos, $compile_info;
   }
   
-  return $object_files;
+  return $compile_infos;
 }
 
 sub generate_precompile_class_source_file {
@@ -718,7 +714,7 @@ sub spawn_perl {
 
 # Compile a source files
 sub compile_source_files {
-  my ($self, $class_name, $object_files, $options) = @_;
+  my ($self, $class_name, $compile_infos, $options) = @_;
   
   unless (defined $class_name) {
     confess("A class name must be defined.");
@@ -728,12 +724,11 @@ sub compile_source_files {
     confess("[Unexpected Error]A class name must be non-reference.");
   }
   
-  unless (@$object_files) {
+  unless (@$compile_infos) {
     return;
   }
   
-  for my $object_file (@$object_files) {
-    my $compile_info = $object_file->compile_info;
+  for my $compile_info (@$compile_infos) {
     if ($compile_info) {
       my $compile_info = $self->prepare_compile_source_file($compile_info);
       my $process_id = $self->spawn_compile_source_file($compile_info);
@@ -745,7 +740,6 @@ sub compile_source_files {
         # Record the build result after the process finished
         $self->add_ninja_log($compile_info);
       }
-      $object_file->file($compile_info->output_file);
     }
   }
 }
