@@ -203,7 +203,7 @@ sub build {
   my $compile_infos = $cc->prepare_compile_class($class_name, $config);
   
   # Compile a source files
-  $cc->compile_source_files($class_name, $compile_infos, $config);
+  $cc->compile_source_files($compile_infos);
   
   my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   

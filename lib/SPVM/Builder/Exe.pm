@@ -287,7 +287,7 @@ sub build_exe_file {
   );
   $config_global->output_file($output_file);
   
-  $cc->compile_source_files($class_name, $compile_infos, $config_global);
+  $cc->compile_source_files($compile_infos);
   
   my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   

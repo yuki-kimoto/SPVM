@@ -696,33 +696,19 @@ sub spawn_perl {
 
 # Compile a source files
 sub compile_source_files {
-  my ($self, $class_name, $compile_infos) = @_;
-  
-  unless (defined $class_name) {
-    confess("A class name must be defined.");
-  }
-  
-  if (ref $class_name) {
-    confess("[Unexpected Error]A class name must be non-reference.");
-  }
-  
-  unless (@$compile_infos) {
-    return;
-  }
+  my ($self, $compile_infos) = @_;
   
   for my $compile_info (@$compile_infos) {
-    if ($compile_info) {
-      my $compile_info = $self->prepare_compile_source_file($compile_info);
-      my $process_id = $self->spawn_compile_source_file($compile_info);
-      if ($process_id > 0) {
-        while ($self->wait_command($compile_info) == 0) {
-          Time::HiRes::sleep(0.01);
-        }
-        $compile_info->process_id(undef);
-        
-        # Record the build result after the process finished
-        $self->add_ninja_log($compile_info);
+    my $compile_info = $self->prepare_compile_source_file($compile_info);
+    my $process_id = $self->spawn_compile_source_file($compile_info);
+    if ($process_id > 0) {
+      while ($self->wait_command($compile_info) == 0) {
+        Time::HiRes::sleep(0.01);
       }
+      $compile_info->process_id(undef);
+      
+      # Record the build result after the process finished
+      $self->add_ninja_log($compile_info);
     }
   }
 }
