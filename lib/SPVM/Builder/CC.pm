@@ -832,7 +832,7 @@ sub prepare_link {
   return $link_info;
 }
 
-sub link {
+sub spawn_link {
   my ($self, $link_info) = @_;
   
   my $object_files = $link_info->object_files;
@@ -876,7 +876,7 @@ sub link {
   }
   # Create an executable file
   elsif ($output_type eq 'exe') {
-    $ld_command_heading = "[Generate Executable File \"$output_file\"]\n";
+    $ld_command_heading = "[Generate Executable File \"$output_file\"]";
     $link_method = 'link_executable';
     $cbuilder_output_option_name = 'exe_file';
   }
@@ -890,6 +890,7 @@ sub link {
   };
   my $need_generate = $force || $self->builder->ninja->need_generate($need_generate_options);
   
+  my $process_id;
   if ($need_generate) {
     mkpath dirname $output_file;
     
@@ -914,7 +915,7 @@ sub link {
     SPVM::Builder::Util::spurt_binary($ldflags_file, join("\n", @$link_info_ldflags));
     
     # Spawn link process
-    my $process_id = &spawn_link_command(
+    $process_id = &spawn_link_command(
       $command_tmp_dir,
       $ld_command_heading,
       $ld_command_string,
@@ -928,25 +929,9 @@ sub link {
       $ldflags_file
     );
     $link_info->process_id($process_id);
-    
-    if ($process_id > 0) {
-      while ($self->wait_command($link_info) == 0) {
-        Time::HiRes::sleep(0.01);
-      }
-      $link_info->process_id(undef);
-
-      # Record the build result after the process finished
-      $self->add_ninja_log($link_info);
-    }
   }
   
-  # after_link_cbs
-  my $after_link_cbs = $config->after_link_cbs;
-  for my $after_link_cb (@$after_link_cbs) {
-    $after_link_cb->($link_info->config, $link_info);
-  }
-  
-  return $output_file;
+  return $process_id;
 }
 
 sub spawn_link_command {

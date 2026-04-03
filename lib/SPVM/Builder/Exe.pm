@@ -279,15 +279,15 @@ sub build_exe_file {
   
   # Link
   my $output_file = $self->{output_file};
-  my $config_linker = $self->config_global->clone;
-  my $cc_linker = SPVM::Builder::CC->new(
+  $config_global = $self->config_global->clone;
+  my $cc = SPVM::Builder::CC->new(
     builder => $self->builder,
     quiet => $self->quiet,
     force => $self->force,
   );
-  $config_linker->output_file($output_file);
+  $config_global->output_file($output_file);
   
-  $cc_linker->compile_source_files($class_name, $compile_infos, $config_linker);
+  $cc->compile_source_files($class_name, $compile_infos, $config_global);
   
   my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   
@@ -297,9 +297,25 @@ sub build_exe_file {
   }
   
   if (@$object_files) {
-    my $link_info = $cc_linker->prepare_link($class_name, $object_files, $config_linker);
-    $cc_linker->link($link_info);
+    my $link_info = $cc->prepare_link($class_name, $object_files, $config_global);
+    my $process_id = $cc->spawn_link($link_info);
+    if (defined $process_id && $process_id > 0) {
+      while ($cc->wait_command($link_info) == 0) {
+        Time::HiRes::sleep(0.01);
+      }
+      $link_info->process_id(undef);
+      
+      # Record the build result after the process finished
+      $cc->add_ninja_log($link_info);
+    }
+    
+    # after_link_cbs
+    my $after_link_cbs = $config_global->after_link_cbs;
+    for my $after_link_cb (@$after_link_cbs) {
+      $after_link_cb->($link_info->config, $link_info);
+    }
   }
+  
 }
 
 sub prepare_compile {

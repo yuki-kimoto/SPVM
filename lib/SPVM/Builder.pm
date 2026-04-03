@@ -211,7 +211,24 @@ sub build {
   my $output_file;
   if (@$object_files) {
     my $link_info = $cc->prepare_link($class_name, $object_files, $config);
-    $cc->link($link_info);
+    
+    my $process_id = $cc->spawn_link($link_info);
+    if (defined $process_id && $process_id > 0) {
+      while ($cc->wait_command($link_info) == 0) {
+        Time::HiRes::sleep(0.01);
+      }
+      $link_info->process_id(undef);
+      
+      # Record the build result after the process finished
+      $cc->add_ninja_log($link_info);
+    }
+    
+    # after_link_cbs
+    my $after_link_cbs = $config->after_link_cbs;
+    for my $after_link_cb (@$after_link_cbs) {
+      $after_link_cb->($link_info->config, $link_info);
+    }
+    
     $output_file = $link_info->output_file;
   }
   
