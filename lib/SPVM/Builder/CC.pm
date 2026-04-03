@@ -578,7 +578,27 @@ sub wait_command {
   my $exit_status = $? >> 8;
   
   my $command_string = $command_info->create_command_string;
+  
+  # Check exit status
+  if ($exit_status != 0) {
+    confess("Command failed.\n" .
+      "Command: $command_string\n" .
+      "Exit status: $exit_status\n");
+  }
+  
   my $output_file = $command_info->output_file;
+  
+  # Handle Windows I/O lag: wait up to 10 seconds for the file to appear
+  if ($^O eq 'MSWin32') {
+    my $max_wait = 10.0;
+    my $interval = 0.05;
+    my $waited = 0;
+    while (!-f $output_file && $waited < $max_wait) {
+      Time::HiRes::sleep($interval);
+      $waited += $interval;
+    }
+  }
+  
   my $command_tmp_dir = $command_info->tmp_dir;
   my $config = $command_info->config;
   my $quiet = $config->quiet;
@@ -615,13 +635,6 @@ sub wait_command {
   close $stderr_fh;
   if (length $stderr_output) {
     print STDERR $stderr_output;
-  }
-  
-  # Check exit status
-  if ($exit_status != 0) {
-    confess("Command failed.\n" .
-      "Command: $command_string\n" .
-      "Exit status: $exit_status\n");
   }
   
   return $wait_process_id;
