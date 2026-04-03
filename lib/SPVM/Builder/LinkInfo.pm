@@ -131,15 +131,6 @@ sub create_ldflags {
   return \@merged_ldflags;
 }
 
-sub to_command {
-  my ($self, $options) = @_;
-  
-  my $link_command = $self->create_command($options);
-  my $link_command_string = "@$link_command";
-  
-  return $link_command_string;
-}
-
 1;
 
 =head1 Name
@@ -153,7 +144,6 @@ The SPVM::Builder::LinkInfo class has methods to manipulate linker information.
 =head1 Usage
 
   my $link_info = SPVM::Builder::LinkInfo->new(%fields);
-  my $link_command = $link_info->to_command;
 
 =head1 Super Class
 

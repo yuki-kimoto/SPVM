@@ -20,7 +20,7 @@ has [qw(
 # Instance Methods
 sub create_command { confess('Not implemented.') }
 
-sub to_command {
+sub create_command_string {
   my ($self, $options) = @_;
 
   my $compile_command = $self->create_command($options);
@@ -146,9 +146,9 @@ Creates an array reference of the command conponents, and returns it.
 
 This method is meant to be implemented in child classes.
 
-=head2 to_command
+=head2 create_command_string
 
-  my $compile_command_string = $compile_info->to_command;
+  my $compile_command_string = $compile_info->create_command_string;
 
 Converts the array reference of the compilation command returned by the L</"create_command"> method into a single string that can be executed in a shell (such as C<sh> or C<bash>) or the Windows Command Prompt (C<cmd.exe>).
 

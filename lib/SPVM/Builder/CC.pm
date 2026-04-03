@@ -545,7 +545,7 @@ sub spawn_compile_source_file {
     # Prepare command for intermediate Perl process
     my $command_tmp_dir = File::Temp->newdir;
     my $cc_cmd = $compile_info->create_command;
-    my $cc_cmd_string = $compile_info->to_command;
+    my $cc_cmd_string = $compile_info->create_command_string;
     
     my $start_time = int(Time::HiRes::time() * 1000);
     $compile_info->start_time($start_time);
@@ -577,7 +577,7 @@ sub wait_command {
   
   my $exit_status = $? >> 8;
   
-  my $command_string = $command_info->to_command;
+  my $command_string = $command_info->create_command_string;
   my $output_file = $command_info->output_file;
   my $command_tmp_dir = $command_info->tmp_dir;
   my $config = $command_info->config;
@@ -854,7 +854,7 @@ sub link {
   my $dl_func_list = $link_info->dl_func_list;
   
   my $ld_cmd = $link_info->create_command;
-  my $ld_cmd_string = $link_info->to_command;
+  my $ld_cmd_string = $link_info->create_command_string;
   
   my $link_info_object_files = $link_info->object_files;
   
