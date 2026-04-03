@@ -13,7 +13,8 @@ my ($command_tmp_dir, $ld_command_heading, $ld_command_string, $output_file, $cl
 sub read_file {
   my ($file) = @_;
   return undef unless -f $file;
-  open my $fh, '<', $file or die "Can't open $file: $!";
+  open my $fh, '<', $file
+    or die "Can't open $file: $!";
   binmode $fh;
   local $/;
   return <$fh>;
@@ -42,8 +43,10 @@ my $log_stdout = "$command_tmp_dir/stdout.log";
 my $log_stderr = "$command_tmp_dir/stderr.log";
 
 # Redirect stdout and stderr to log files
-open(STDOUT, '>', $log_stdout) or warn "Can't open $log_stdout: $!";
-open(STDERR, '>', $log_stderr) or warn "Can't open $log_stderr: $!";
+open(STDOUT, '>', $log_stdout)
+  or warn "Can't open $log_stdout: $!";
+open(STDERR, '>', $log_stderr)
+  or warn "Can't open $log_stderr: $!";
 
 # Print command information
 print "$ld_command_heading\n";
@@ -52,8 +55,10 @@ print "$ld_command_string\n";
 # File locking
 my $output_dir = dirname($output_file);
 my $lock_file = "$output_dir/" . sha1_hex($output_file) . ".lock";
-open my $lock_fh, '>>', $lock_file or warn "Can't open lock file $lock_file: $!";
-flock($lock_fh, LOCK_EX) or warn "Can't get lock on $lock_file: $!";
+open my $lock_fh, '>>', $lock_file
+  or warn "Can't open lock file $lock_file: $!";
+flock($lock_fh, LOCK_EX)
+  or warn "Can't get lock on $lock_file: $!";
 
 # Configure CBuilder
 my $cbuilder_config = {
@@ -90,5 +95,9 @@ for my $tmp_file (@link_temporary_files) {
     File::Copy::copy($tmp_file, "$command_tmp_dir/link_temporary_file.$extension");
   }
 }
+
+# File unlocking
+flock($lock_fh, LOCK_UN)
+  or warn "Can't unlock $lock_file: $!";
 
 exit(0);

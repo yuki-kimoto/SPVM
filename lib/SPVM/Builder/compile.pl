@@ -32,5 +32,9 @@ flock($lock_fh, LOCK_EX)
 # Execute the command
 system(@cc_cmd);
 
+# File unlocking
+flock($lock_fh, LOCK_UN)
+  or warn "Can't unlock $lock_file: $!";
+
 # Exit with the command's exit status
 exit($? >> 8);
