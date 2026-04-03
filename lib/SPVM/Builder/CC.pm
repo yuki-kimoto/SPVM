@@ -718,6 +718,7 @@ sub compile_source_files {
         while ($self->wait_command($compile_info) == 0) {
           Time::HiRes::sleep(0.01);
         }
+        $compile_info->process_id(undef);
         
         # Record the build result after the process finished
         $self->add_ninja_log($compile_info);
@@ -890,86 +891,53 @@ sub link {
   my $need_generate = $force || $self->builder->ninja->need_generate($need_generate_options);
   
   if ($need_generate) {
+    mkpath dirname $output_file;
+    
+    # Prepare command for intermediate Perl process
+    my $command_tmp_dir = File::Temp->newdir;
     
     my $start_time = int(Time::HiRes::time() * 1000);
+    $link_info->start_time($start_time);
+    $link_info->tmp_dir($command_tmp_dir);
     
-    unless ($quiet) {
-      print "$ld_command_heading\n";
-      print "$ld_command_string\n";
+    # Prepare arguments for link.pl
+    my $dl_func_list_file = "$command_tmp_dir/dl_func_list.txt";
+    if (defined $dl_func_list) {
+      SPVM::Builder::Util::spurt_binary($dl_func_list_file, join("\n", @$dl_func_list));
     }
     
-    # Load ExtUtils::CBuilder only when linking is needed for performance
-    require ExtUtils::CBuilder;
-    my $cbuilder_config = {
-      cc => $hint_cc,
-      ld => $ld,
-      lddlflags => '',
-      shrpenv => '',
-      libpth => '',
-      libperl => '',
-      # On Windows/gcc(MinGW) "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
-      # Linker Script File(.lds) when "perllibs" is empty string.
-      # This is syntax error in Linker Script File(.lds)
-      # For the reason, libm is linked which seems to have no effect.
-      perllibs => '-lm',
-    };
+    my $object_file_names_file = "$command_tmp_dir/object_file_names.txt";
+    SPVM::Builder::Util::spurt_binary($object_file_names_file, join("\n", @$object_file_names));
     
-    my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
-    
-    my @link_tmp_files;
+    my $ldflags_file = "$command_tmp_dir/ldflags.txt";
     my $link_info_ldflags = $link_info->create_ldflags;
+    SPVM::Builder::Util::spurt_binary($ldflags_file, join("\n", @$link_info_ldflags));
     
-    (undef, @link_tmp_files) = $cbuilder->$link_method(
-      $cbuilder_output_option_name => $output_file,
-      objects => $object_file_names,
-      extra_linker_flags => "@$link_info_ldflags",
-      module_name => $class_name,
-      dl_func_list => $dl_func_list,
+    # Spawn link process
+    my $process_id = &spawn_link(
+      $command_tmp_dir,
+      $ld_command_heading,
+      $ld_command_string,
+      $output_file,
+      $class_name,
+      $hint_cc,
+      $output_type,
+      $ld,
+      $dl_func_list_file,
+      $object_file_names_file,
+      $ldflags_file
     );
+    $link_info->process_id($process_id);
     
-    if ($self->debug) {
-      if ($^O eq 'MSWin32') {
-        my $def_file;
-        my $lds_file;
-        for my $tmp_file (@link_tmp_files) {
-          # Remove double quote
-          $tmp_file =~ s/^"//;
-          $tmp_file =~ s/"$//;
-          
-          if ($tmp_file =~ /\.def$/) {
-            $def_file = $tmp_file;
-            $lds_file = $def_file;
-            $lds_file =~ s/\.def$/.lds/;
-            last;
-          }
-        }
-        if (defined $def_file && -f $def_file) {
-          my $def_content = SPVM::Builder::Util::slurp_binary($def_file);
-          print "[$def_file]\n$def_content\n";
-        }
-        if (defined $lds_file && -f $lds_file) {
-          my $lds_content = SPVM::Builder::Util::slurp_binary($lds_file);
-          print "[$lds_file]\n$lds_content\n";
-        }
+    if ($process_id > 0) {
+      while ($self->wait_command($link_info) == 0) {
+        Time::HiRes::sleep(0.01);
       }
+      $link_info->process_id(undef);
+
+      # Record the build result after the process finished
+      $self->add_ninja_log($link_info);
     }
-    
-    my $end_time = int(Time::HiRes::time() * 1000);
-    
-    unless (-f $output_file) {
-      confess("The output file '$output_file' does not exist.");
-    }
-    
-    my $mtime = int((Time::HiRes::stat $output_file)[9] * 1000);
-    
-    my $log_entry = {
-      output_file  => $output_file,
-      command_hash => $command_hash,
-      start_time   => $start_time,
-      end_time     => $end_time,
-      mtime => $mtime,
-    };
-    $ninja->add_log($log_entry);
   }
   
   # after_link_cbs

@@ -385,6 +385,7 @@ sub prepare_compile_source_file {
     while ($builder_cc->wait_command($compile_info) == 0) {
       Time::HiRes::sleep(0.01);
     }
+    $compile_info->process_id(undef);
     $builder_cc->add_ninja_log($compile_info);
   }
   
