@@ -47,10 +47,6 @@ sub detect_force {
     confess("The config \$config must be define.");
   }
   
-  unless (UNIVERSAL::isa($config, 'SPVM::Builder::Config::Base')) {
-    confess;
-  }
-  
   my $force;
   
   if (defined $self->force) {
@@ -998,11 +994,6 @@ sub spawn_link {
 sub create_link_info {
   my ($self, $class_name, $object_files, $config) = @_;
   
-  unless (UNIVERSAL::isa($config, 'SPVM::Builder::Config::Base')) {
-    confess;
-  }
-  
-
   my $category = $config->category;
   
   my $output_file = $config->output_file;
