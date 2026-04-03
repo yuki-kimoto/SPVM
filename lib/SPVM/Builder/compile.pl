@@ -3,9 +3,11 @@ use warnings;
 use Fcntl qw(:flock);
 use Digest::SHA qw(sha1_hex);
 use File::Basename qw(dirname);
+use MIME::Base64 qw(decode_base64);
 
 # Get arguments
-my ($output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @cc_cmd) = @ARGV;
+my @argv = split("\0", decode_base64($ARGV[0]));
+my ($output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @cc_cmd) = @argv;
 
 # Define log file paths
 my $log_stdout = "$command_tmp_dir/stdout.log";

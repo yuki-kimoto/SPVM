@@ -5,9 +5,11 @@ use File::Copy ();
 use Fcntl qw(:flock :seek);
 use Digest::SHA qw(sha1_hex);
 use File::Basename qw(dirname basename);
+use MIME::Base64 qw(decode_base64);
 
 # Get arguments
-my ($command_tmp_dir, $ld_command_heading, $ld_command_string, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @ARGV;
+my @argv = split("\0", decode_base64($ARGV[0]));
+my ($command_tmp_dir, $ld_command_heading, $ld_command_string, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @argv;
 
 # Function to read file content (replaces slurp_binary)
 sub read_file {

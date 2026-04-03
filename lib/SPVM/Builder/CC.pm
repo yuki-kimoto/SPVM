@@ -12,6 +12,7 @@ use File::Basename 'dirname', 'basename';
 use Time::HiRes ();
 use POSIX ":sys_wait_h";
 use Time::HiRes;
+use MIME::Base64 qw(encode_base64);
 
 use SPVM::Builder::Util;
 use SPVM::Builder::CompileInfo;
@@ -669,7 +670,9 @@ sub spawn_compile_command {
 sub spawn_perl {
   my ($perl_script_file, @args) = @_;
   
-  my @cmd = ($^X, $perl_script_file, @args);
+  my $args_base64 = encode_base64(join("\0", @args), "");
+  
+  my @cmd = ($^X, $perl_script_file, $args_base64);
   
   my $process_id;
   if ($^O eq 'MSWin32') {
