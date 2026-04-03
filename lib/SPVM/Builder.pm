@@ -197,8 +197,9 @@ sub build {
   }
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);
+  $cc->runtime($runtime);
   
-  my $compile_and_link_options = {config => $config, runtime => $runtime};
+  my $compile_and_link_options = {config => $config};
   
   # Compile source files to object files
   my $compile_infos = $cc->prepare_compile_class($class_name, $compile_and_link_options);

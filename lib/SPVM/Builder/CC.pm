@@ -25,6 +25,7 @@ has [qw(
   force
   quiet
   debug
+  runtime
 )];
 
 # Class Methods
@@ -127,7 +128,7 @@ sub prepare_compile_resources {
   
   my $config = $options->{config};
   
-  my $runtime = $options->{runtime};
+  my $runtime = $self->runtime;
   
   my $compile_infos = [];
   
@@ -172,7 +173,6 @@ sub prepare_compile_resources {
       $resource_config->add_include_dir(@$resource_include_dirs);
       
       my $compile_options = {
-        runtime => $runtime,
         config => $resource_config,
       };
       
@@ -180,6 +180,7 @@ sub prepare_compile_resources {
         builder => $self->builder,
         quiet => $self->detect_quiet($config),
         force => $self->detect_force($config),
+        runtime => $self->runtime,
       );
       
       my $resource_compile_infos = $builder_cc_resource->prepare_compile_class($resource_class_name, $compile_options);
@@ -200,8 +201,12 @@ sub prepare_compile_native_class {
     return [];
   }
   
-  my $runtime = $options->{runtime};
+  my $runtime = $self->runtime;
   my $native_class_ext = $config->ext;
+  
+  unless ($runtime) {
+    confess;
+  }
   
   my $basic_type = $runtime->get_basic_type_by_name($class_name);
   
@@ -249,7 +254,6 @@ sub prepare_compile_native_class {
       $class_name,
       {
         config => $config_precompile_class_source,
-        runtime => $runtime,
       }
     );
   }
@@ -411,7 +415,7 @@ sub generate_precompile_class_source_file {
   
   my $config = $options->{config};
   
-  my $runtime = $options->{runtime};
+  my $runtime = $self->runtime;
   
   my $basic_type = $runtime->get_basic_type_by_name($class_name);
   
@@ -767,7 +771,7 @@ sub prepare_link {
   
   my $link_info = $self->create_link_info($class_name, $object_files, $config);
   
-  my $runtime = $options->{runtime};
+  my $runtime = $self->runtime;
   
   my $build_dir = $self->builder->build_dir;
   

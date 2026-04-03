@@ -990,10 +990,13 @@ sub prepare_compile_precompile_class {
   
   my $build_dir = $self->builder->build_dir;
   
+  my $runtime = $self->runtime;
+  
   my $builder_cc = SPVM::Builder::CC->new(
     builder => $self->builder,
     quiet => $self->quiet,
     force => $self->force,
+    runtime => $runtime,
   );
   
   my $config = SPVM::Builder::Util::API::create_default_config();
@@ -1002,16 +1005,8 @@ sub prepare_compile_precompile_class {
   
   $config->config_global($config_global);
   
-  my $runtime = $self->runtime;
-  
   my $compile_infos = [];
-  my $precompile_compile_infos = $builder_cc->prepare_compile_class(
-    $class_name,
-    {
-      runtime => $runtime,
-      config => $config,
-    }
-  );
+  my $precompile_compile_infos = $builder_cc->prepare_compile_class($class_name, {config => $config});
   push @$compile_infos, @$precompile_compile_infos;
   
   return $compile_infos;
@@ -1026,16 +1021,17 @@ sub prepare_compile_native_class {
   
   my $build_dir = $self->builder->build_dir;
   
+  my $runtime = $self->runtime;
+  
   # Compiler for native class
   my $builder_cc = SPVM::Builder::CC->new(
     builder => $self->builder,
     quiet => $self->quiet,
     force => $self->force,
+    runtime => $runtime,
   );
   
   my $all_compile_infos = [];
-  
-  my $runtime = $self->runtime;
   
   my $script_name = $self->script_name;
   my $config_file;
@@ -1057,7 +1053,6 @@ sub prepare_compile_native_class {
     my $compile_infos = $builder_cc->prepare_compile_class(
       $class_name,
       {
-        runtime => $runtime,
         config => $config,
       }
     );
