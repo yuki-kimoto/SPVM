@@ -8,7 +8,7 @@ use Digest::SHA qw(sha1_hex);
 use File::Basename qw(dirname);
 
 # Get arguments
-my ($command_tmp_dir, $ld_cmd_heading, $ld_cmd_string, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @ARGV;
+my ($command_tmp_dir, $ld_command_heading, $ld_command_string, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @ARGV;
 
 # Read dl_func_list
 my $dl_func_list;
@@ -48,8 +48,8 @@ open(STDERR, '>', $log_stderr)
   or warn "Can't open $log_stderr: $!";
 
 # Print command information
-print "$ld_cmd_heading\n";
-print "$ld_cmd_string\n";
+print "$ld_command_heading\n";
+print "$ld_command_string\n";
 
 # File locking
 my $output_dir = dirname($output_file);

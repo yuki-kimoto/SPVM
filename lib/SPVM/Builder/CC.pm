@@ -449,8 +449,8 @@ sub prepare_compile_source_file {
   
   my $cc_version = $config->cc_version;
   
-  my $cc_cmd_no_output_option = $compile_info->create_command({no_output_option => 1});
-  my $cc_cmd_string_no_output_option = "@$cc_cmd_no_output_option";
+  my $cc_command_no_output_option = $compile_info->create_command({no_output_option => 1});
+  my $cc_command_string_no_output_option = "@$cc_command_no_output_option";
   
   my $dependent_files = $compile_info->dependent_files;
   my $ninja = $self->builder->ninja;
@@ -458,7 +458,7 @@ sub prepare_compile_source_file {
     confess("source_file \"$source_file\" must be defined and exist.");
   }
   my $create_command_hash_options = {
-    command => $cc_cmd_string_no_output_option,
+    command => $cc_command_string_no_output_option,
     command_version => $cc_version,
     dependent_files => [$source_file, @$dependent_files],
   };
@@ -511,31 +511,31 @@ sub spawn_compile_source_file {
   if ($need_generate) {
     mkpath dirname $output_file;
     
-    my $cc_cmd_heading;
+    my $cc_command_heading;
     
     my $compile_info_category = $compile_info->category;
     if ($config->is_resource) {
       my $resource_class_name = $config->class_name;
-      $cc_cmd_heading = "[Compile a source file in $resource_class_name resource.";
+      $cc_command_heading = "[Compile a source file in $resource_class_name resource.";
     }
     else {
       my $config_class_name = $config->class_name;
       my $config_file = $config->file;
       
       if ($compile_info_category eq 'bootstrap') {
-        $cc_cmd_heading = "[Compile Bootstrap File]";
+        $cc_command_heading = "[Compile Bootstrap File]";
       }
       elsif ($compile_info_category eq 'spvm_core') {
-        $cc_cmd_heading = "[Compile SPVM Source File]";
+        $cc_command_heading = "[Compile SPVM Source File]";
       }
       elsif ($compile_info_category eq 'native_source') {
-        $cc_cmd_heading = "[Compile Native Source File for $config_class_name class using the config file '$config_file']";
+        $cc_command_heading = "[Compile Native Source File for $config_class_name class using the config file '$config_file']";
       }
       elsif ($compile_info_category eq 'native_class') {
-        $cc_cmd_heading = "[Compile Native Class File for $config_class_name class using the config file '$config_file']";
+        $cc_command_heading = "[Compile Native Class File for $config_class_name class using the config file '$config_file']";
       }
       elsif ($compile_info_category eq 'precompile_class') {
-        $cc_cmd_heading = "[Compile Precompile Class File for $config_class_name class]";
+        $cc_command_heading = "[Compile Precompile Class File for $config_class_name class]";
       }
       else {
         confess("[Unexpected Error]Invalid compile info category '$compile_info_category'.");
@@ -545,13 +545,13 @@ sub spawn_compile_source_file {
     # Prepare command for intermediate Perl process
     my $command_tmp_dir = File::Temp->newdir;
     my $cc_cmd = $compile_info->create_command;
-    my $cc_cmd_string = $compile_info->create_command_string;
+    my $cc_command_string = $compile_info->create_command_string;
     
     my $start_time = int(Time::HiRes::time() * 1000);
     $compile_info->start_time($start_time);
     $compile_info->tmp_dir($command_tmp_dir);
     
-    $process_id = &spawn_compile($output_file, $command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
+    $process_id = &spawn_compile($output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @$cc_cmd);
     $compile_info->process_id($process_id);
   }
   
@@ -655,11 +655,11 @@ sub add_ninja_log {
 }
 
 sub spawn_compile {
-  my ($output_file, $command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @_;
+  my ($output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @cc_cmd) = @_;
   
   my $compile_script_path = &get_compile_script_path();
   
-  my $process_id = &spawn_perl($compile_script_path, $output_file, $command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd);
+  my $process_id = &spawn_perl($compile_script_path, $output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @cc_cmd);
   
   return $process_id;
 }
@@ -791,12 +791,12 @@ sub prepare_link {
   
   my $force = $self->detect_force($config);
   
-  my $ld_cmd_no_output_option = $link_info->create_command({no_output_option => 1});
-  my $ld_cmd_string_no_output_option = "@$ld_cmd_no_output_option";
+  my $ld_command_no_output_option = $link_info->create_command({no_output_option => 1});
+  my $ld_command_string_no_output_option = "@$ld_command_no_output_option";
   
   my $ninja = $self->builder->ninja;
   my $create_command_hash_options = {
-    command => $ld_cmd_string_no_output_option,
+    command => $ld_command_string_no_output_option,
     command_version => $ld_version,
     dependent_files => [@object_files],
   };
@@ -854,7 +854,7 @@ sub link {
   my $dl_func_list = $link_info->dl_func_list;
   
   my $ld_cmd = $link_info->create_command;
-  my $ld_cmd_string = $link_info->create_command_string;
+  my $ld_command_string = $link_info->create_command_string;
   
   my $link_info_object_files = $link_info->object_files;
   
@@ -865,17 +865,17 @@ sub link {
   mkpath dirname $output_file;
   
   # Create a dynamic library
-  my $ld_cmd_heading;
+  my $ld_command_heading;
   my $link_method;
   my $cbuilder_output_option_name;
   if ($output_type eq 'dynamic_lib') {
-    $ld_cmd_heading = "[Generate Dynamic Link Library for $class_name class" . ($category eq 'precompile' ? ' for precompile' : '') . "]";
+    $ld_command_heading = "[Generate Dynamic Link Library for $class_name class" . ($category eq 'precompile' ? ' for precompile' : '') . "]";
     $link_method = 'link';
     $cbuilder_output_option_name = 'lib_file';
   }
   # Create an executable file
   elsif ($output_type eq 'exe') {
-    $ld_cmd_heading = "[Generate Executable File \"$output_file\"]\n";
+    $ld_command_heading = "[Generate Executable File \"$output_file\"]\n";
     $link_method = 'link_executable';
     $cbuilder_output_option_name = 'exe_file';
   }
@@ -894,8 +894,8 @@ sub link {
     my $start_time = int(Time::HiRes::time() * 1000);
     
     unless ($quiet) {
-      print "$ld_cmd_heading\n";
-      print "$ld_cmd_string\n";
+      print "$ld_command_heading\n";
+      print "$ld_command_string\n";
     }
     
     # Load ExtUtils::CBuilder only when linking is needed for performance

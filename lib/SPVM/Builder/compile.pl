@@ -5,7 +5,7 @@ use Digest::SHA qw(sha1_hex);
 use File::Basename qw(dirname);
 
 # Get arguments
-my ($output_file, $command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @ARGV;
+my ($output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @cc_cmd) = @ARGV;
 
 # Define log file paths
 my $log_stdout = "$command_tmp_dir/stdout.log";
@@ -18,8 +18,8 @@ open(STDERR, '>', $log_stderr)
   or warn "Can't open $log_stderr: $!";
 
 # Print command information
-print "$cc_cmd_heading\n";
-print "$cc_cmd_string\n";
+print "$cc_command_heading\n";
+print "$cc_command_string\n";
 
 # File locking
 my $output_dir = dirname($output_file);
