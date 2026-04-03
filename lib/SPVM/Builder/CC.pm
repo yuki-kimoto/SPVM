@@ -46,6 +46,11 @@ sub detect_force {
   unless ($config) {
     confess("The config \$config must be define.");
   }
+  
+  unless (UNIVERSAL::isa($config, 'SPVM::Builder::Config::Base')) {
+    confess;
+  }
+  
   my $force;
   
   if (defined $self->force) {
@@ -86,7 +91,7 @@ sub detect_quiet {
 }
 
 sub prepare_compile_class {
-  my ($self, $class_name, $options) = @_;
+  my ($self, $class_name, $config) = @_;
   
   unless (defined $class_name) {
     confess("A class name must be defined.");
@@ -106,27 +111,21 @@ sub prepare_compile_class {
     confess("[Unexpected Error]A build directory must exists.");
   }
   
-  $options ||= {};
-  
-  my $config = $options->{config};
-  
   $config->class_name($class_name);
   
   my $compile_infos = [];
   
-  my $resource_compile_infos = $self->prepare_compile_resources($class_name, $options);
+  my $resource_compile_infos = $self->prepare_compile_resources($class_name, $config);
   push @$compile_infos, @$resource_compile_infos;
   
-  my $native_compile_infos = $self->prepare_compile_native_class($class_name, $options);
+  my $native_compile_infos = $self->prepare_compile_native_class($class_name, $config);
   push @$compile_infos, @$native_compile_infos;
   
   return $compile_infos;
 }
 
 sub prepare_compile_resources {
-  my ($self, $class_name, $options) = @_;
-  
-  my $config = $options->{config};
+  my ($self, $class_name, $config) = @_;
   
   my $runtime = $self->runtime;
   
@@ -172,10 +171,6 @@ sub prepare_compile_resources {
       
       $resource_config->add_include_dir(@$resource_include_dirs);
       
-      my $compile_options = {
-        config => $resource_config,
-      };
-      
       my $builder_cc_resource = SPVM::Builder::CC->new(
         builder => $self->builder,
         quiet => $self->detect_quiet($config),
@@ -183,7 +178,7 @@ sub prepare_compile_resources {
         runtime => $self->runtime,
       );
       
-      my $resource_compile_infos = $builder_cc_resource->prepare_compile_class($resource_class_name, $compile_options);
+      my $resource_compile_infos = $builder_cc_resource->prepare_compile_class($resource_class_name, $resource_config);
       push @$compile_infos, @$resource_compile_infos;
     }
   }
@@ -192,9 +187,7 @@ sub prepare_compile_resources {
 }
 
 sub prepare_compile_native_class {
-  my ($self, $class_name, $options) = @_;
-  
-  my $config = $options->{config};
+  my ($self, $class_name, $config) = @_;
   
   my $is_cc_config = $config->isa('SPVM::Builder::Config') ? 1 : 0;
   unless ($is_cc_config) {
@@ -203,10 +196,6 @@ sub prepare_compile_native_class {
   
   my $runtime = $self->runtime;
   my $native_class_ext = $config->ext;
-  
-  unless ($runtime) {
-    confess;
-  }
   
   my $basic_type = $runtime->get_basic_type_by_name($class_name);
   
@@ -250,12 +239,7 @@ sub prepare_compile_native_class {
     
     $config_precompile_class_source->cc_input_dir($cc_input_dir);
     
-    $self->generate_precompile_class_source_file(
-      $class_name,
-      {
-        config => $config_precompile_class_source,
-      }
-    );
+    $self->generate_precompile_class_source_file($class_name, $config_precompile_class_source);
   }
   elsif ($category eq 'native') {
     if ($is_cc_config) {
@@ -411,9 +395,7 @@ sub prepare_compile_native_class {
 }
 
 sub generate_precompile_class_source_file {
-  my ($self, $class_name, $options) = @_;
-  
-  my $config = $options->{config};
+  my ($self, $class_name, $config) = @_;
   
   my $runtime = $self->runtime;
   
@@ -718,7 +700,7 @@ sub spawn_perl {
 
 # Compile a source files
 sub compile_source_files {
-  my ($self, $class_name, $compile_infos, $options) = @_;
+  my ($self, $class_name, $compile_infos) = @_;
   
   unless (defined $class_name) {
     confess("A class name must be defined.");
@@ -749,7 +731,7 @@ sub compile_source_files {
 }
 
 sub prepare_link {
-  my ($self, $class_name, $object_files, $options) = @_;
+  my ($self, $class_name, $object_files, $config) = @_;
   
   unless (defined $class_name) {
     confess("A class name must be defined.");
@@ -758,8 +740,6 @@ sub prepare_link {
   if (ref $class_name) {
     confess("[Unexpected Error]A class name must be non-reference.");
   }
-  
-  my $config = $options->{config};
   
   unless ($config) {
     confess("[Unexpected Error]A config must be defined.");
@@ -1018,6 +998,11 @@ sub spawn_link {
 sub create_link_info {
   my ($self, $class_name, $object_files, $config) = @_;
   
+  unless (UNIVERSAL::isa($config, 'SPVM::Builder::Config::Base')) {
+    confess;
+  }
+  
+
   my $category = $config->category;
   
   my $output_file = $config->output_file;

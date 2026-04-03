@@ -199,20 +199,18 @@ sub build {
   my $cc = SPVM::Builder::CC->new(%$cc_options);
   $cc->runtime($runtime);
   
-  my $compile_and_link_options = {config => $config};
-  
   # Compile source files to object files
-  my $compile_infos = $cc->prepare_compile_class($class_name, $compile_and_link_options);
+  my $compile_infos = $cc->prepare_compile_class($class_name, $config);
   
   # Compile a source files
-  $cc->compile_source_files($class_name, $compile_infos, $compile_and_link_options);
+  $cc->compile_source_files($class_name, $compile_infos, $config);
   
   my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   
   # Link object files and generate a dynamic library
   my $output_file;
   if (@$object_files) {
-    my $link_info = $cc->prepare_link($class_name, $object_files, $compile_and_link_options);
+    my $link_info = $cc->prepare_link($class_name, $object_files, $config);
     $cc->link($link_info);
     $output_file = $link_info->output_file;
   }

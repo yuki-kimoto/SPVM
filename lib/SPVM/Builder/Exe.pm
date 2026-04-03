@@ -287,7 +287,7 @@ sub build_exe_file {
   );
   $config_linker->output_file($output_file);
   
-  $cc_linker->compile_source_files($class_name, $compile_infos, {config => $config_linker});
+  $cc_linker->compile_source_files($class_name, $compile_infos, $config_linker);
   
   my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   
@@ -297,7 +297,7 @@ sub build_exe_file {
   }
   
   if (@$object_files) {
-    my $link_info = $cc_linker->prepare_link($class_name, $object_files, {config => $config_linker});
+    my $link_info = $cc_linker->prepare_link($class_name, $object_files, $config_linker);
     $cc_linker->link($link_info);
   }
 }
@@ -1006,7 +1006,7 @@ sub prepare_compile_precompile_class {
   $config->config_global($config_global);
   
   my $compile_infos = [];
-  my $precompile_compile_infos = $builder_cc->prepare_compile_class($class_name, {config => $config});
+  my $precompile_compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
   push @$compile_infos, @$precompile_compile_infos;
   
   return $compile_infos;
@@ -1050,12 +1050,7 @@ sub prepare_compile_native_class {
     
     $config->config_global($config_global);
     
-    my $compile_infos = $builder_cc->prepare_compile_class(
-      $class_name,
-      {
-        config => $config,
-      }
-    );
+    my $compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
     push @$all_compile_infos, @$compile_infos;
   }
   
