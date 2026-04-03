@@ -4,7 +4,7 @@ use ExtUtils::CBuilder;
 use File::Copy ();
 use Fcntl qw(:flock :seek);
 use Digest::SHA qw(sha1_hex);
-use File::Basename qw(dirname);
+use File::Basename qw(dirname basename);
 
 # Get arguments
 my ($command_tmp_dir, $ld_command_heading, $ld_command_string, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @ARGV;
@@ -77,8 +77,8 @@ my $link_method = ($output_type eq 'exe') ? 'link_executable' : 'link';
 my $output_option = ($output_type eq 'exe') ? 'exe_file' : 'lib_file';
 
 # Run linker
-my @link_temporary_files;
-(undef, @link_temporary_files) = $cbuilder->$link_method(
+my @link_tmp_files;
+(undef, @link_tmp_files) = $cbuilder->$link_method(
   $output_option => $output_file,
   objects => \@object_file_names,
   extra_linker_flags => "@ldflags",
@@ -87,12 +87,11 @@ my @link_temporary_files;
 );
 
 # Backup temporary files
-for my $tmp_file (@link_temporary_files) {
-  $tmp_file =~ s/^"//;
-  $tmp_file =~ s/"$//;
+for my $tmp_file (@link_tmp_files) {
   if (-f $tmp_file) {
-    my $extension = ($tmp_file =~ /\.([^\.]+)$/) ? $1 : 'tmp';
-    File::Copy::copy($tmp_file, "$command_tmp_dir/link_temporary_file.$extension");
+    my $to_file = "$command_tmp_dir/" . basename $tmp_file;
+    File::Copy::copy($tmp_file, $to_file)
+      or warn("Cannot copy '$tmp_file' to '$to_file'.");
   }
 }
 
