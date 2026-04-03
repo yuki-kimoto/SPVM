@@ -551,7 +551,7 @@ sub spawn_compile_source_file {
     $compile_info->start_time($start_time);
     $compile_info->tmp_dir($command_tmp_dir);
     
-    $process_id = &spawn_compile($output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @$cc_cmd);
+    $process_id = &spawn_compile_command($output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @$cc_cmd);
     $compile_info->process_id($process_id);
   }
   
@@ -654,7 +654,7 @@ sub add_ninja_log {
   $ninja->add_log($log_entry);
 }
 
-sub spawn_compile {
+sub spawn_compile_command {
   my ($output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @cc_cmd) = @_;
   
   my $compile_script_path = &get_compile_script_path();
@@ -914,7 +914,7 @@ sub link {
     SPVM::Builder::Util::spurt_binary($ldflags_file, join("\n", @$link_info_ldflags));
     
     # Spawn link process
-    my $process_id = &spawn_link(
+    my $process_id = &spawn_link_command(
       $command_tmp_dir,
       $ld_command_heading,
       $ld_command_string,
@@ -949,7 +949,7 @@ sub link {
   return $output_file;
 }
 
-sub spawn_link {
+sub spawn_link_command {
   my (@args) = @_;
   
   my $link_script_path = &get_link_script_path();
