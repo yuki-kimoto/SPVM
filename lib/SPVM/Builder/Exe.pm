@@ -276,11 +276,6 @@ sub build_exe_file {
   my $classes_object_files = $self->prepare_compile_classes;
   push @$object_files, @$classes_object_files;
   
-  # Add external object files
-  for my $external_object_file (@{$config_global->external_object_files}) {
-    push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
-  }
-  
   my $output_file = $self->{output_file};
   
   # Link
@@ -293,6 +288,11 @@ sub build_exe_file {
   $config_linker->output_file($output_file);
   
   $cc_linker->compile_source_files($class_name, $object_files, {config => $config_linker});
+  
+  # Add external object files
+  for my $external_object_file (@{$config_global->external_object_files}) {
+    push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
+  }
   
   if (@$object_files) {
     my $link_info = $cc_linker->prepare_link($class_name, $object_files, {config => $config_linker});
