@@ -1,40 +1,40 @@
 use strict;
 use warnings;
 use ExtUtils::CBuilder;
-use SPVM::Builder::Util;
-use File::Copy;
-use Fcntl qw(:flock);
+use File::Copy ();
+use Fcntl qw(:flock :seek);
 use Digest::SHA qw(sha1_hex);
 use File::Basename qw(dirname);
 
 # Get arguments
 my ($command_tmp_dir, $ld_command_heading, $ld_command_string, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @ARGV;
 
+# Function to read file content (replaces slurp_binary)
+sub read_file {
+  my ($file) = @_;
+  return undef unless -f $file;
+  open my $fh, '<', $file or die "Can't open $file: $!";
+  binmode $fh;
+  local $/;
+  return <$fh>;
+}
+
 # Read dl_func_list
 my $dl_func_list;
-if (-f $dl_func_list_file) {
-  my $content = SPVM::Builder::Util::slurp_binary($dl_func_list_file);
+if (my $content = read_file($dl_func_list_file)) {
   $dl_func_list = [split(/\n/, $content)];
-} else {
-  warn "Warning: dl_func_list_file '$dl_func_list_file' not found.";
 }
 
 # Read object_file_names
 my @object_file_names;
-if (-f $object_file_names_file) {
-  my $content = SPVM::Builder::Util::slurp_binary($object_file_names_file);
+if (my $content = read_file($object_file_names_file)) {
   @object_file_names = split(/\n/, $content);
-} else {
-  warn "Warning: object_file_names_file '$object_file_names_file' not found.";
 }
 
 # Read ldflags
 my @ldflags;
-if (-f $ldflags_file) {
-  my $content = SPVM::Builder::Util::slurp_binary($ldflags_file);
+if (my $content = read_file($ldflags_file)) {
   @ldflags = split(/\n/, $content);
-} else {
-  warn "Warning: ldflags_file '$ldflags_file' not found.";
 }
 
 # Define log file paths
@@ -42,10 +42,8 @@ my $log_stdout = "$command_tmp_dir/stdout.log";
 my $log_stderr = "$command_tmp_dir/stderr.log";
 
 # Redirect stdout and stderr to log files
-open(STDOUT, '>', $log_stdout)
-  or warn "Can't open $log_stdout: $!";
-open(STDERR, '>', $log_stderr)
-  or warn "Can't open $log_stderr: $!";
+open(STDOUT, '>', $log_stdout) or warn "Can't open $log_stdout: $!";
+open(STDERR, '>', $log_stderr) or warn "Can't open $log_stderr: $!";
 
 # Print command information
 print "$ld_command_heading\n";
@@ -54,10 +52,8 @@ print "$ld_command_string\n";
 # File locking
 my $output_dir = dirname($output_file);
 my $lock_file = "$output_dir/" . sha1_hex($output_file) . ".lock";
-open my $lock_fh, '>>', $lock_file
-  or warn "Can't open lock file $lock_file: $!";
-flock($lock_fh, LOCK_EX)
-  or warn "Can't get lock on $lock_file: $!";
+open my $lock_fh, '>>', $lock_file or warn "Can't open lock file $lock_file: $!";
+flock($lock_fh, LOCK_EX) or warn "Can't get lock on $lock_file: $!";
 
 # Configure CBuilder
 my $cbuilder_config = {
