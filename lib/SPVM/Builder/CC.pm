@@ -573,7 +573,7 @@ sub spawn_compile_source_file {
     $compile_info->start_time($start_time);
     $compile_info->tmp_dir($command_tmp_dir);
     
-    $process_id = &spawn_compile($command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
+    $process_id = &spawn_compile($output_file, $command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @$cc_cmd);
     $compile_info->process_id($process_id);
   }
   
@@ -677,11 +677,11 @@ sub add_ninja_log {
 }
 
 sub spawn_compile {
-  my ($command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @_;
+  my ($output_file, $command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @_;
   
   my $compile_script_path = &get_compile_script_path();
   
-  my $process_id = &spawn_perl($compile_script_path, $command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd);
+  my $process_id = &spawn_perl($compile_script_path, $output_file, $command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd);
   
   return $process_id;
 }

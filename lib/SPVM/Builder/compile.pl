@@ -1,8 +1,11 @@
 use strict;
 use warnings;
+use Fcntl qw(:flock);
+use Digest::SHA qw(sha1_hex);
+use File::Basename qw(dirname);
 
 # Get arguments
-my ($command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @ARGV;
+my ($output_file, $command_tmp_dir, $cc_cmd_heading, $cc_cmd_string, @cc_cmd) = @ARGV;
 
 # Define log file paths
 my $log_stdout = "$command_tmp_dir/stdout.log";
@@ -17,6 +20,14 @@ open(STDERR, '>', $log_stderr)
 # Print command information
 print "$cc_cmd_heading\n";
 print "$cc_cmd_string\n";
+
+# File locking
+my $output_dir = dirname($output_file);
+my $lock_file = "$output_dir/" . sha1_hex($output_file) . ".lock";
+open my $lock_fh, '>>', $lock_file
+  or warn "Can't open lock file $lock_file: $!";
+flock($lock_fh, LOCK_EX)
+  or warn "Can't get lock on $lock_file: $!";
 
 # Execute the command
 system(@cc_cmd);
