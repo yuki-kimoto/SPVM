@@ -700,23 +700,49 @@ sub spawn_perl {
 }
 
 # Compile a source files
+use Time::HiRes;
+
 sub compile_source_files {
   my ($self, $compile_infos) = @_;
   
+  # Prepare all compile source files beforehand
   for (my $i = 0; $i < @$compile_infos; $i++) {
     $compile_infos->[$i] = $self->prepare_compile_source_file($compile_infos->[$i]);
   }
   
-  for my $compile_info (@$compile_infos) {
-    my $process_id = $self->spawn_compile_source_file($compile_info);
-    if ($process_id > 0) {
-      while ($self->wait_command($compile_info) == 0) {
-        Time::HiRes::sleep(0.01);
-      }
-      $compile_info->process_id(undef);
+  my $max_jobs = 5;
+  my @waiting_compile_infos = @$compile_infos;
+  my %running_processes; # pid => compile_info
+  
+  # Main loop for parallel processing
+  while (@waiting_compile_infos || %running_processes) {
+    
+    # Spawn new processes if slots are available
+    while (@waiting_compile_infos && keys %running_processes < $max_jobs) {
+      my $compile_info = shift @waiting_compile_infos;
+      my $pid = $self->spawn_compile_source_file($compile_info);
       
-      # Record the build result after the process finished
-      $self->add_ninja_log($compile_info);
+      if ($pid > 0) {
+        $running_processes{$pid} = $compile_info;
+      }
+    }
+    
+    # Check status of running processes
+    for my $pid (keys %running_processes) {
+      my $compile_info = $running_processes{$pid};
+      
+      # Check if the command has finished
+      if ($self->wait_command($compile_info) != 0) {
+        # Process finished
+        $compile_info->process_id(undef);
+        $self->add_ninja_log($compile_info);
+        delete $running_processes{$pid};
+      }
+    }
+    
+    # Sleep to reduce CPU usage if processes are still running
+    if (%running_processes) {
+      Time::HiRes::sleep(0.01);
     }
   }
 }
