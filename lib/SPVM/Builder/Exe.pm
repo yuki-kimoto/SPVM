@@ -396,15 +396,6 @@ sub prepare_compile_source_file {
   
   $compile_info = $builder_cc->prepare_compile_source_file($compile_info);
   
-  my $process_id = $builder_cc->spawn_compile_source_file($compile_info);
-  if ($process_id > 0) {
-    while ($builder_cc->wait_command($compile_info) == 0) {
-      Time::HiRes::sleep(0.01);
-    }
-    $compile_info->process_id(undef);
-    $builder_cc->add_ninja_log($compile_info);
-  }
-  
   return $compile_info;
 }
 
