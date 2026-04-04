@@ -102,3 +102,28 @@ flock($lock_fh, LOCK_UN)
   or warn "Can't unlock $lock_file: $!";
 
 exit(0);
+
+# Copy from 
+sub _quote_literal {
+  my ($self, $string) = @_;
+
+  if ($^O eq 'MSWin32') {
+    if (length $string && $string !~ /[ \t\n\x0b"|<>%]/) {
+      return $string;
+    }
+
+    $string =~ s{(\\*)(?="|\z)}{$1$1}g;
+    $string =~ s{"}{\\"}g;
+
+    return qq{"$string"};
+  }
+  else {
+    if (length $string && $string !~ /[^a-zA-Z0-9,._+@%\/-]/) {
+      return $string;
+    }
+
+    $string =~ s{'}{'\\''}g;
+
+    return "'$string'";
+  }
+}

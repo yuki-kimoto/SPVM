@@ -27,7 +27,7 @@ sub create_command_string {
   
   my @quoted_parts;
   for my $part (@$compile_command) {
-    push @quoted_parts, $self->_quote_literal($part);
+    push @quoted_parts, &_quote_literal($part);
   }
   
   my $compile_command_string = join(' ', @quoted_parts);
@@ -36,7 +36,7 @@ sub create_command_string {
 }
 
 sub _quote_literal {
-  my ($self, $string) = @_;
+  my ($string) = @_;
 
   if ($^O eq 'MSWin32') {
     if (length $string && $string !~ /[ \t\n\x0b"|<>%]/) {
