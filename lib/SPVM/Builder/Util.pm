@@ -809,6 +809,48 @@ sub normalize_path {
   return $normalized_path;
 }
 
+sub quote_literal_for_command_string {
+  my ($string) = @_;
+
+  if ($^O eq 'MSWin32') {
+    if (length $string && $string !~ /[ \t\n\x0b"|<>%]/) {
+      return $string;
+    }
+
+    $string =~ s{(\\*)(?="|\z)}{$1$1}g;
+    $string =~ s{"}{\\"}g;
+
+    return qq{"$string"};
+  }
+  else {
+    if (length $string && $string !~ /[^a-zA-Z0-9,._+@%\/-]/) {
+      return $string;
+    }
+
+    $string =~ s{'}{'\\''}g;
+
+    return "'$string'";
+  }
+}
+
+sub quote_literal_for_command {
+  my ($string) = @_;
+
+  if ($^O eq 'MSWin32') {
+    if (length $string && $string !~ /[ \t\n\x0b"|<>%]/) {
+      return $string;
+    }
+
+    $string =~ s{(\\*)(?="|\z)}{$1$1}g;
+    $string =~ s{"}{\\"}g;
+
+    return qq{"$string"};
+  }
+  else {
+    return $string;
+  }
+}
+
 1;
 
 =head1 Name

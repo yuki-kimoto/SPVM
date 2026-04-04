@@ -5,6 +5,7 @@ use warnings;
 
 use Carp 'confess';
 use SPVM::Builder::Accessor 'has';
+use SPVM::Builder::Util;
 
 # Fields
 has [qw(
@@ -27,54 +28,12 @@ sub create_command_string {
   
   my @quoted_parts;
   for my $part (@$compile_command) {
-    push @quoted_parts, &_quote_literal_for_command_string($part);
+    push @quoted_parts, SPVM::Builder::Util::quote_literal_for_command_string($part);
   }
   
   my $compile_command_string = join(' ', @quoted_parts);
   
   return $compile_command_string;
-}
-
-sub _quote_literal_for_command_string {
-  my ($string) = @_;
-
-  if ($^O eq 'MSWin32') {
-    if (length $string && $string !~ /[ \t\n\x0b"|<>%]/) {
-      return $string;
-    }
-
-    $string =~ s{(\\*)(?="|\z)}{$1$1}g;
-    $string =~ s{"}{\\"}g;
-
-    return qq{"$string"};
-  }
-  else {
-    if (length $string && $string !~ /[^a-zA-Z0-9,._+@%\/-]/) {
-      return $string;
-    }
-
-    $string =~ s{'}{'\\''}g;
-
-    return "'$string'";
-  }
-}
-
-sub _quote_literal_for_command {
-  my ($string) = @_;
-
-  if ($^O eq 'MSWin32') {
-    if (length $string && $string !~ /[ \t\n\x0b"|<>%]/) {
-      return $string;
-    }
-
-    $string =~ s{(\\*)(?="|\z)}{$1$1}g;
-    $string =~ s{"}{\\"}g;
-
-    return qq{"$string"};
-  }
-  else {
-    return $string;
-  }
 }
 
 1;
