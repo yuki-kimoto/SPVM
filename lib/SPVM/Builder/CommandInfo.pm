@@ -28,7 +28,7 @@ sub create_command_string {
   
   my @quoted_parts;
   for my $part (@$compile_command) {
-    push @quoted_parts, SPVM::Builder::Util::quote_literal_for_command_string($part);
+    push @quoted_parts, SPVM::Builder::Util::quote_literal($part);
   }
   
   my $compile_command_string = join(' ', @quoted_parts);

@@ -143,7 +143,7 @@ sub create_ccflags {
       }
     }
     
-    my @all_include_dirs_args = map { "-I" . SPVM::Builder::Util::quote_literal_for_command($_); } @all_include_dirs;
+    my @all_include_dirs_args = map { "-I" . SPVM::Builder::Util::quote_literal($_); } @all_include_dirs;
     
     push @compile_command_args, @all_include_dirs_args;
   }
