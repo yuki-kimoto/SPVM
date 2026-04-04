@@ -703,8 +703,11 @@ sub spawn_perl {
 sub compile_source_files {
   my ($self, $compile_infos) = @_;
   
+  for (my $i = 0; $i < @$compile_infos; $i++) {
+    $compile_infos->[$i] = $self->prepare_compile_source_file($compile_infos->[$i]);
+  }
+  
   for my $compile_info (@$compile_infos) {
-    my $compile_info = $self->prepare_compile_source_file($compile_info);
     my $process_id = $self->spawn_compile_source_file($compile_info);
     if ($process_id > 0) {
       while ($self->wait_command($compile_info) == 0) {
