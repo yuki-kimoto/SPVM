@@ -424,7 +424,7 @@ sub generate_precompile_class_source_file {
   close $fh;
 }
 
-sub prepare_compile_source_file {
+sub finalize_compile_info {
   my ($self, $compile_info) = @_;
   
   my $config = $compile_info->config;
@@ -487,8 +487,6 @@ sub prepare_compile_source_file {
   $compile_info->output_file($output_file);
   
   $compile_info->command_hash($command_hash);
-  
-  return $compile_info;
 }
 
 sub spawn_compile_source_file {
@@ -707,8 +705,8 @@ sub compile_parallel {
   my ($self, $compile_infos) = @_;
   
   # Prepare all compile source files beforehand
-  for (my $i = 0; $i < @$compile_infos; $i++) {
-    $compile_infos->[$i] = $self->prepare_compile_source_file($compile_infos->[$i]);
+  for my $compile_info (@$compile_infos) {
+    $self->finalize_compile_info($compile_info);
   }
   
   my $max_jobs = $self->jobs;
