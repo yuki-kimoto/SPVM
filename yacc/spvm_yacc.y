@@ -1,7 +1,7 @@
 // Copyright (c) 2023 Yuki Kimoto
 // MIT License
 
-%pure-parser
+%define api.pure
 %parse-param  { SPVM_COMPILER* compiler }
 %lex-param  { SPVM_COMPILER* compiler }
 
