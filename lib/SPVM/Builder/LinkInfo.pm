@@ -114,7 +114,10 @@ sub create_ldflags {
   }
   
   my $lib_dirs = $config->lib_dirs;
-  push @merged_ldflags, map { $config->create_option($config->lib_dir_option_name, $_) } grep { length $_ } @$lib_dirs;
+  push @merged_ldflags, map {
+    $config->create_option($config->lib_dir_option_name, SPVM::Builder::Util::quote_literal_for_command($_))
+  }
+  grep { length $_ } @$lib_dirs;
   
   my $libs = $config->libs;
   my @lib_ldflags;
