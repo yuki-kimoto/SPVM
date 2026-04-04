@@ -843,8 +843,10 @@ sub quote_literal_for_command {
 
     $string =~ s{(\\*)(?="|\z)}{$1$1}g;
     $string =~ s{"}{\\"}g;
-
-    return qq{"$string"};
+    
+    my $quoted_string = qq{"$string"};
+    
+    return $quoted_string;
   }
   else {
     return $string;
