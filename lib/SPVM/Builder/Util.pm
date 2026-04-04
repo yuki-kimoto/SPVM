@@ -849,7 +849,13 @@ sub quote_literal_for_command {
     return $quoted_string;
   }
   else {
-    return $string;
+    if (length $string && $string !~ /[^a-zA-Z0-9,._+@%\/-]/) {
+      return $string;
+    }
+
+    $string =~ s{'}{'\\''}g;
+
+    return "'$string'";
   }
 }
 
