@@ -27,13 +27,17 @@ has [qw(
   quiet
   debug
   runtime
+  jobs
 )];
 
 # Class Methods
 sub new {
   my $class = shift;
   
-  my $self = {@_};
+  my $self = {
+    jobs => SPVM::Builder::Util::API::get_cpu_count() + 2,
+    @_
+  };
   
   bless $self, $class;
   
@@ -699,10 +703,7 @@ sub spawn_perl {
   return $process_id;
 }
 
-# Compile a source files
-use Time::HiRes;
-
-sub compile_source_files {
+sub compile_parallel {
   my ($self, $compile_infos) = @_;
   
   # Prepare all compile source files beforehand
@@ -710,7 +711,7 @@ sub compile_source_files {
     $compile_infos->[$i] = $self->prepare_compile_source_file($compile_infos->[$i]);
   }
   
-  my $max_jobs = 5;
+  my $max_jobs = $self->jobs;
   my @waiting_compile_infos = @$compile_infos;
   my %running_processes; # pid => compile_info
   
