@@ -15,6 +15,7 @@ use Time::HiRes;
 use MIME::Base64 qw(encode_base64);
 
 use SPVM::Builder::Util;
+use SPVM::Builder::Util::API;
 use SPVM::Builder::CompileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Native::BasicType;
@@ -701,40 +702,47 @@ sub spawn_perl {
   return $process_id;
 }
 
-sub compile_parallel {
-  my ($self, $compile_infos) = @_;
-  
-  # Prepare all compile source files beforehand
-  for my $compile_info (@$compile_infos) {
-    $self->finalize_compile_info($compile_info);
-  }
+sub command_parallel {
+  my ($self, $command_infos) = @_;
   
   my $max_jobs = $self->jobs;
-  my @waiting_compile_infos = @$compile_infos;
-  my %running_processes; # pid => compile_info
+  my @waiting_command_infos = @$command_infos;
+  my %running_processes; # pid => command_info
   
   # Main loop for parallel processing
-  while (@waiting_compile_infos || %running_processes) {
+  while (@waiting_command_infos || %running_processes) {
     
     # Spawn new processes if slots are available
-    while (@waiting_compile_infos && keys %running_processes < $max_jobs) {
-      my $compile_info = shift @waiting_compile_infos;
-      my $pid = $self->spawn_compile_source_file($compile_info);
+    while (@waiting_command_infos && keys %running_processes < $max_jobs) {
+      my $command_info = shift @waiting_command_infos;
+      my $spawn_method_name;
+      
+      if ($command_info->isa('SPVM::Builder::CompileInfo')) {
+        $spawn_method_name = 'spawn_compile_source_file';
+      }
+      elsif ($command_info->isa('SPVM::Builder::LinkInfo')) {
+        $spawn_method_name = 'spawn_link';
+      }
+      else {
+        confess("[Unexpected Error]Invalid class")
+      }
+      
+      my $pid = $self->$spawn_method_name($command_info);
       
       if ($pid > 0) {
-        $running_processes{$pid} = $compile_info;
+        $running_processes{$pid} = $command_info;
       }
     }
     
     # Check status of running processes
     for my $pid (keys %running_processes) {
-      my $compile_info = $running_processes{$pid};
+      my $command_info = $running_processes{$pid};
       
       # Check if the command has finished
-      if ($self->wait_command($compile_info) != 0) {
+      if ($self->wait_command($command_info) != 0) {
         # Process finished
-        $compile_info->process_id(undef);
-        $self->add_ninja_log($compile_info);
+        $command_info->process_id(undef);
+        $self->add_ninja_log($command_info);
         delete $running_processes{$pid};
       }
     }

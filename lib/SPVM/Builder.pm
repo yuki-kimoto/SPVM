@@ -202,8 +202,12 @@ sub build {
   # Compile source files to object files
   my $compile_infos = $cc->prepare_compile_class($class_name, $config);
   
+  for my $compile_info (@$compile_infos) {
+    $cc->finalize_compile_info($compile_info);
+  }
+  
   # Compile a source files
-  $cc->compile_parallel($compile_infos);
+  $cc->command_parallel($compile_infos);
   
   my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   
