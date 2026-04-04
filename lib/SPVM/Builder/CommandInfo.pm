@@ -59,6 +59,24 @@ sub _quote_literal_for_command_string {
   }
 }
 
+sub _quote_literal_for_command {
+  my ($string) = @_;
+
+  if ($^O eq 'MSWin32') {
+    if (length $string && $string !~ /[ \t\n\x0b"|<>%]/) {
+      return $string;
+    }
+
+    $string =~ s{(\\*)(?="|\z)}{$1$1}g;
+    $string =~ s{"}{\\"}g;
+
+    return qq{"$string"};
+  }
+  else {
+    return $string;
+  }
+}
+
 1;
 
 =head1 Name
