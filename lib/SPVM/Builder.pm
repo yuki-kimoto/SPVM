@@ -211,30 +211,31 @@ sub build {
   
   my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   
-  # Link object files and generate a dynamic library
-  my $output_file;
-  if (@$object_files) {
-    my $link_info = $cc->prepare_link($class_name, $object_files, $config);
-    
-    my $process_id = $cc->spawn_link($link_info);
-    if (defined $process_id && $process_id > 0) {
-      while ($cc->wait_command($link_info) == 0) {
-        Time::HiRes::sleep(0.01);
-      }
-      $link_info->process_id(undef);
-      
-      # Record the build result after the process finished
-      $cc->add_ninja_log($link_info);
-    }
-    
-    # after_link_cbs
-    my $after_link_cbs = $config->after_link_cbs;
-    for my $after_link_cb (@$after_link_cbs) {
-      $after_link_cb->($link_info->config, $link_info);
-    }
-    
-    $output_file = $link_info->output_file;
+  unless (@$object_files) {
+    confess("[Unexpected Error]\$object_files must have object files.");
   }
+  
+  # Link object files and generate a dynamic library
+  my $link_info = $cc->prepare_link($class_name, $object_files, $config);
+  
+  my $process_id = $cc->spawn_link($link_info);
+  if (defined $process_id && $process_id > 0) {
+    while ($cc->wait_command($link_info) == 0) {
+      Time::HiRes::sleep(0.01);
+    }
+    $link_info->process_id(undef);
+    
+    # Record the build result after the process finished
+    $cc->add_ninja_log($link_info);
+  }
+  
+  # after_link_cbs
+  my $after_link_cbs = $config->after_link_cbs;
+  for my $after_link_cb (@$after_link_cbs) {
+    $after_link_cb->($link_info->config, $link_info);
+  }
+  
+  my $output_file = $link_info->output_file;
   
   return $output_file;
 }
