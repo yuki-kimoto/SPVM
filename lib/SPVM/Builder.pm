@@ -218,16 +218,7 @@ sub build {
   # Link object files and generate a dynamic library
   my $link_info = $cc->prepare_link($class_name, $object_files, $config);
   
-  my $process_id = $cc->spawn_link($link_info);
-  if (defined $process_id && $process_id > 0) {
-    while ($cc->wait_command($link_info) == 0) {
-      Time::HiRes::sleep(0.01);
-    }
-    $link_info->process_id(undef);
-    
-    # Record the build result after the process finished
-    $cc->add_ninja_log($link_info);
-  }
+  $cc->command_parallel([$link_info]);
   
   # after_link_cbs
   my $after_link_cbs = $config->after_link_cbs;
