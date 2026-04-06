@@ -174,8 +174,8 @@ sub build_parallel {
   $options ||= {};
 
   # Load options from a JSON configuration file if specified
-  if (my $config_file = delete $options->{config_file}) {
-    open my $fh, '<', $config_file or confess("Can't open config_file \"$config_file\": $!");
+  if (my $build_file = delete $options->{build_file}) {
+    open my $fh, '<', $build_file or confess("Can't open build_file \"$build_file\": $!");
     my $json_content = do { local $/; <$fh> };
     close $fh;
     

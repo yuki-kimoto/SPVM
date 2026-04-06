@@ -34,11 +34,23 @@ The SPVM::Builder::Util::API module has the public utility functions to build SP
 
 =head2 create_make_rule_native
 
-  my $make_rule = SPVM::Builder::Util::API::create_make_rule_native($class_name);
+  my $make_rule = SPVM::Builder::Util::API::create_make_rule_native($class_name, $options);
 
 Creates a string of C<make> commands for generating a dynamic library for a L<native class|SPVM::Document::NativeClass> given the class name $class_name, and returns it.
 
 A native class must have at least one method with L<native attribute|SPVM::Document::Language::Class/"Method Attributes">.
+
+C<$options> is a hash reference. The available options are the same as those for L</create_make_rule_parallel>.
+
+Note that the following option is automatically set:
+
+=over 2
+
+=item * C<native_classes>
+
+This option is automatically set to C<[$class_name]>.
+
+=back
 
 Examples:
 
@@ -55,11 +67,23 @@ Examples:
 
 =head2 create_make_rule_precompile
 
-  my $make_rule = SPVM::Builder::Util::API::create_make_rule_precompile($class_name);
+  my $make_rule = SPVM::Builder::Util::API::create_make_rule_precompile($class_name, $options);
 
 Creates a string of C<make> commands for generating a dynamic library for a precompilation class given the class name $class_name, and returns it.
 
 A precompilation class must have at least one method with L<precompile attribute|SPVM::Document::Language::Class/"Method Attributes">.
+
+C<$options> is a hash reference. The available options are the same as those for L</create_make_rule_parallel>.
+
+Note that the following option is automatically set:
+
+=over 2
+
+=item * C<precompile_classes>
+
+This option is automatically set to C<[$class_name]>.
+
+=back
 
 Examples:
 
@@ -104,31 +128,39 @@ C<$options> is a hash reference.
 
 Options:
 
+The following options are the same as those for L<SPVM::Builder::API/build_parallel_dynamic_lib_dist>:
+
 =over 2
 
 =item * C<native_classes>
 
-An array reference of native class names to be built.
-
 =item * C<precompile_classes>
 
-An array reference of precompile class names to be built.
-
-=item * C<config_file>
-
-A JSON configuration file path. This is useful for avoiding command-line length limits on Windows.
+=item * C<build_file>
 
 =item * C<force>
 
-If this option is a true value, the compilation and link are forced.
-
 =item * C<optimize>
-
-The optimization level for the compiler (e.g., C<O2>, C<O3>, C<O0>).
 
 =item * C<jobs>
 
-The number of parallel jobs. The default value is the number of CPU cores.
+=back
+
+The following options are specific to this method:
+
+=over 2
+
+=item * C<dependent_files>
+
+An array reference of dependency file paths for the C<make> target. These files are treated as normal dependencies.
+
+  $options->{dependent_files} = ['SPVM.xs'];
+
+=item * C<order_only_dependent_files>
+
+An array reference of order-only dependency file paths for the C<make> target. These files must exist before the target is built, but their modification times do not trigger a rebuild.
+
+  $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)'];
 
 =back
 
@@ -149,6 +181,8 @@ Examples:
         'Baz',
       ],
       optimize => 'O3',
+      dependent_files => ['SPVM.xs'],
+      order_only_dependent_files => ['$(INST_DYNAMIC)'],
     });
     
     return $make_rule;

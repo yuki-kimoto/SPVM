@@ -157,9 +157,22 @@ An array reference of native class names to be built.
 
 An array reference of precompile class names to be built.
 
-=item * C<config_file>
+=item * C<build_file>
 
-A JSON configuration file path. If this option is specified, the configuration is loaded from the file and then overridden by the other options in C<$options>. This is useful for avoiding command-line length limits on Windows.
+A JSON configuration file path.
+
+The configuration is loaded from this file and then overridden by the other options in C<$options>.
+
+This file can contain the same build options as those passed directly to the method, such as C<native_classes> and C<precompile_classes>.
+
+Using this file is highly recommended to avoid command-line length limits, especially on Windows environments, when dealing with a large number of classes.
+
+The JSON format must be a hash at the top level. For example:
+
+  {
+    "native_classes" : ["Array", "Hash"],
+    "precompile_classes" : ["Array"]
+  }
 
 =item * C<force>
 

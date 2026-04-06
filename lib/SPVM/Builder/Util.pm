@@ -443,8 +443,8 @@ sub create_make_rule_parallel {
   if (defined(my $jobs = $options->{jobs})) {
     push @build_options, "jobs => $jobs";
   }
-  if (defined(my $config_file = $options->{config_file})) {
-    push @build_options, "config_file => '$config_file'";
+  if (defined(my $build_file = $options->{build_file})) {
+    push @build_options, "build_file => '$build_file'";
   }
   if (my $native_classes = $options->{native_classes}) {
     push @build_options, "native_classes => [" . join(', ', map { "'$_'" } @$native_classes) . "]";

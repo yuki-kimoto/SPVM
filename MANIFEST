@@ -451,7 +451,6 @@ lib/SPVM/Sync/Mutex.pm
 lib/SPVM/Sync/Mutex.spvm
 LICENSE
 logo/spvm_logo.jpg
-make_rule.json
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
@@ -500,6 +499,7 @@ solo/script/myapp.config
 solo/script/myapp.debug_memory_count.config
 solo/script/myapp.spvm
 SPVM.xs
+spvm_build.json
 t/00_builder/CC.t
 t/00_builder/Config-Exe.t
 t/00_builder/Config.t

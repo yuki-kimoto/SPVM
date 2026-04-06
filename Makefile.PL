@@ -237,7 +237,7 @@ sub MY::postamble {
     ];
     
     # Array is written in the config file for practical tests
-    $options->{config_file} = 'make_rule.json';
+    $options->{build_file} = 'spvm_build.json';
 
     # Generate a single parallel make rule for the rest
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel($options);
