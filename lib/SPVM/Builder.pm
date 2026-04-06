@@ -164,8 +164,15 @@ sub build_parallel {
   my $output_files_h = {};
   
   my $cc_options = {builder => $self};
+  
+  # Set force option
   if (exists $options->{force}) {
     $cc_options->{force} = $options->{force};
+  }
+  
+  # Set jobs option
+  if (exists $options->{jobs}) {
+    $cc_options->{jobs} = $options->{jobs};
   }
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);
@@ -174,7 +181,7 @@ sub build_parallel {
   my @all_compile_infos;
   my %class_to_context;
 
-  # 1. Prepare all compile information
+  # Prepare all compile information
   for my $category (keys %$build_infos) {
     my $class_names = $build_infos->{$category};
     
@@ -210,10 +217,10 @@ sub build_parallel {
     }
   }
   
-  # 2. Execute all compilations in parallel
+  # Execute all compilations in parallel
   $cc->command_parallel(\@all_compile_infos);
   
-  # 3. Prepare all link information
+  # Prepare all link information
   my @all_link_infos;
   for my $category (keys %class_to_context) {
     for my $class_name (keys %{$class_to_context{$category}}) {
@@ -231,10 +238,10 @@ sub build_parallel {
     }
   }
   
-  # 4. Execute all links in parallel
+  # Execute all links in parallel
   $cc->command_parallel(\@all_link_infos);
   
-  # 5. Finalize and collect output file paths
+  # Finalize and collect output file paths
   for my $category (keys %class_to_context) {
     for my $class_name (keys %{$class_to_context{$category}}) {
       my $ctx = $class_to_context{$category}{$class_name};
