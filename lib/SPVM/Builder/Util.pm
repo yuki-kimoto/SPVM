@@ -421,6 +421,65 @@ sub create_make_rule {
   return $make_rule;
 }
 
+sub create_make_rule_parallel {
+  my ($options) = @_;
+  
+  $options ||= {};
+  
+  my $make_rule = '';
+  
+  # Target name for parallel build
+  my $target = "spvm-build-parallel";
+  
+  # Order-only dependencies
+  my $order_only_dependent_files = $options->{order_only_dependent_files} // [];
+  my $order_only_str = @$order_only_dependent_files ? " | " . join(' ', @$order_only_dependent_files) : "";
+
+  # Dynamic target
+  $make_rule .= "dynamic :: $target\n";
+  $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
+  
+  # Parallel build rule (Always execute, dependencies are managed internally by SPVM::Builder)
+  $make_rule .= ".PHONY: $target\n";
+  $make_rule .= "$target :$order_only_str\n";
+  
+  # Build options for SPVM::Builder::API
+  my $new_options_string = "build_dir => '.spvm_build'";
+  
+  # Construct options for build_parallel_dynamic_lib_dist
+  my @build_options;
+  
+  # Always force=1 for make-driven builds to let SPVM::Builder decide up-to-date status
+  push @build_options, "force => 1";
+  
+  if (defined(my $optimize = $options->{optimize})) {
+    push @build_options, "optimize => '$optimize'";
+  }
+  
+  if (defined(my $jobs = $options->{jobs})) {
+    push @build_options, "jobs => $jobs";
+  }
+  
+  if (defined(my $config_file = $options->{config_file})) {
+    push @build_options, "config_file => '$config_file'";
+  }
+  
+  # Class list options
+  if (my $native_classes = $options->{native_classes}) {
+    push @build_options, "native_classes => [" . join(', ', map { "'$_'" } @$native_classes) . "]";
+  }
+  if (my $precompile_classes = $options->{precompile_classes}) {
+    push @build_options, "precompile_classes => [" . join(', ', map { "'$_'" } @$precompile_classes) . "]";
+  }
+
+  my $build_options_hash_str = "{" . join(', ', @build_options) . "}";
+  
+  # Build command line
+  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($new_options_string)->build_parallel_dynamic_lib_dist($build_options_hash_str)\"\n\n";
+  
+  return $make_rule;
+}
+
 sub search_config_file {
   my ($class_name, $mode) = @_;
   
