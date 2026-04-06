@@ -8,6 +8,8 @@ sub create_make_rule_native { SPVM::Builder::Util::create_make_rule_native(@_) }
 
 sub create_make_rule_precompile { SPVM::Builder::Util::create_make_rule_precompile(@_) }
 
+sub create_make_rule_parallel { SPVM::Builder::Util::create_make_rule_parallel(@_) }
+
 sub create_default_config { SPVM::Builder::Util::create_default_config(@_) }
 
 sub get_cpu_count { SPVM::Builder::Util::get_cpu_count(@_) }
@@ -91,6 +93,66 @@ Returns the number of CPU cores on the current system.
 This function detects the available CPU count in a platform-independent way (Windows, Linux, macOS, etc.). 
 
 If the CPU count cannot be determined, it returns 1.
+
+=head2 create_make_rule_parallel
+
+  my $make_rule = SPVM::Builder::Util::API::create_make_rule_parallel($options);
+
+Creates a string of C<make> commands for generating dynamic libraries for multiple native classes and precompile classes in parallel, and returns it.
+
+C<$options> is a hash reference.
+
+Options:
+
+=over 2
+
+=item * C<native_classes>
+
+An array reference of native class names to be built.
+
+=item * C<precompile_classes>
+
+An array reference of precompile class names to be built.
+
+=item * C<config_file>
+
+A JSON configuration file path. This is useful for avoiding command-line length limits on Windows.
+
+=item * C<force>
+
+If this option is a true value, the compilation and link are forced.
+
+=item * C<optimize>
+
+The optimization level for the compiler (e.g., C<O2>, C<O3>, C<O0>).
+
+=item * C<jobs>
+
+The number of parallel jobs. The default value is the number of CPU cores.
+
+=back
+
+Examples:
+
+  # Makefile.PL
+  sub MY::postamble {
+    
+    my $make_rule = '';
+    
+    # Parallel build make rule
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel({
+      native_classes => [
+        'Foo',
+        'Bar',
+      ],
+      precompile_classes => [
+        'Baz',
+      ],
+      optimize => 'O3',
+    });
+    
+    return $make_rule;
+  }
 
 =head1 Copyright & License
 
