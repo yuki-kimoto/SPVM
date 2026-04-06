@@ -139,94 +139,20 @@ sub build {
   
   $options ||= {};
   
-  $options = {%$options};
-  
-  my $build_dir = $self->build_dir;
-  
-  my $is_jit = $options->{is_jit};
-  
+  # Ensure the category is defined for build_parallel
   my $category = $options->{category};
-  
-  my $output_dir = $options->{output_dir};
-  
-  my $runtime = $options->{runtime};
-  
-  # Config
-  my $config;
-  if ($category eq 'native') {
-    my $config_file = SPVM::Builder::Util::search_config_file($class_name);
-    
-    unless (defined $config_file) {
-      my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
-      
-      confess("A config file \"$config_rel_file\" is not found in (@INC)");
-    }
-    
-    $config = SPVM::Builder::Config->load_config($config_file, []);
-  }
-  elsif ($category eq 'precompile') {
-    $config = SPVM::Builder::Util::API::create_default_config();
+  unless (defined $category) {
+    confess("The category must be defined.");
   }
   
-  $config->class_name($class_name);
+  # Build information for a single class
+  my $build_infos = {$category => [$class_name]};
   
-  $config->category($category);
+  # Call build_parallel to handle the heavy lifting
+  my $output_files_h = $self->build_parallel($build_infos, $options);
   
-  $config->is_jit($is_jit);
-  
-  $config->output_dir($output_dir);
-  
-  if (defined $options->{optimize}) {
-    $config->optimize($options->{optimize});
-  }
-  
-  my $cc_options = {builder => $self};
-  
-  if (exists $options->{force}) {
-    $cc_options->{force} = $options->{force};
-  }
-  
-  unless (defined $build_dir) {
-    confess("A build directory 'build_dir' must be defined.");
-  }
-  
-  mkpath $build_dir;
-  
-  unless (-d $build_dir) {
-    confess("[Unexpected Error]A build directory 'build_dir' must exists.");
-  }
-  
-  my $cc = SPVM::Builder::CC->new(%$cc_options);
-  $cc->runtime($runtime);
-  
-  # Compile source files to object files
-  my $compile_infos = $cc->prepare_compile_class($class_name, $config);
-  
-  for my $compile_info (@$compile_infos) {
-    $cc->finalize_compile_info($compile_info);
-  }
-  
-  # Compile a source files
-  $cc->command_parallel($compile_infos);
-  
-  my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
-  
-  unless (@$object_files) {
-    confess("[Unexpected Error]\$object_files must have object files.");
-  }
-  
-  # Link object files and generate a dynamic library
-  my $link_info = $cc->prepare_link($class_name, $object_files, $config);
-  
-  $cc->command_parallel([$link_info]);
-  
-  # after_link_cbs
-  my $after_link_cbs = $config->after_link_cbs;
-  for my $after_link_cb (@$after_link_cbs) {
-    $after_link_cb->($link_info->config, $link_info);
-  }
-  
-  my $output_file = $link_info->output_file;
+  # Extract the output file path for the requested class
+  my $output_file = $output_files_h->{$category}{$class_name};
   
   return $output_file;
 }
