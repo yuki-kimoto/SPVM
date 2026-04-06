@@ -729,7 +729,7 @@ sub command_parallel {
       
       my $pid = $self->$spawn_method_name($command_info);
       
-      if ($pid > 0) {
+      if (defined $pid && $pid > 0) {
         $running_processes{$pid} = $command_info;
       }
     }

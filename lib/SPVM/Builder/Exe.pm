@@ -277,7 +277,6 @@ sub build_exe_file {
   my $classes_compile_infos = $self->prepare_compile_classes;
   push @$compile_infos, @$classes_compile_infos;
   
-  # Link
   my $output_file = $self->{output_file};
   $config_global = $self->config_global->clone;
   my $cc = SPVM::Builder::CC->new(
@@ -300,26 +299,20 @@ sub build_exe_file {
     push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
   
-  if (@$object_files) {
-    my $link_info = $cc->prepare_link($class_name, $object_files, $config_global);
-    my $process_id = $cc->spawn_link($link_info);
-    if (defined $process_id && $process_id > 0) {
-      while ($cc->wait_command($link_info) == 0) {
-        Time::HiRes::sleep(0.01);
-      }
-      $link_info->process_id(undef);
-      
-      # Record the build result after the process finished
-      $cc->add_ninja_log($link_info);
-    }
-    
-    # after_link_cbs
-    my $after_link_cbs = $config_global->after_link_cbs;
-    for my $after_link_cb (@$after_link_cbs) {
-      $after_link_cb->($link_info->config, $link_info);
-    }
+  unless (@$object_files) {
+    confess("[Unexpected Error]\$object_files must have object files.");
   }
   
+  # Link object files and generate a dynamic library
+  my $link_info = $cc->prepare_link($class_name, $object_files, $config_global);
+  
+  $cc->command_parallel([$link_info]);
+  
+  # after_link_cbs
+  my $after_link_cbs = $config_global->after_link_cbs;
+  for my $after_link_cb (@$after_link_cbs) {
+    $after_link_cb->($link_info->config, $link_info);
+  }
 }
 
 sub prepare_compile {
