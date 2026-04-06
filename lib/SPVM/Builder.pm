@@ -231,6 +231,104 @@ sub build {
   return $output_file;
 }
 
+sub build_parallel {
+  my ($self, $build_infos, $options) = @_;
+  
+  $options ||= {};
+  my $output_files_h = {};
+  
+  my $cc_options = {builder => $self};
+  if (exists $options->{force}) {
+    $cc_options->{force} = $options->{force};
+  }
+  
+  my $cc = SPVM::Builder::CC->new(%$cc_options);
+  $cc->runtime($options->{runtime});
+
+  my @all_compile_infos;
+  my %class_to_context;
+
+  # 1. Prepare all compile information
+  for my $category (keys %$build_infos) {
+    my $class_names = $build_infos->{$category};
+    
+    for my $class_name (@$class_names) {
+      my $config;
+      if ($category eq 'native') {
+        my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+        confess("A config file is not found for $class_name") unless defined $config_file;
+        $config = SPVM::Builder::Config->load_config($config_file, []);
+      }
+      elsif ($category eq 'precompile') {
+        $config = SPVM::Builder::Util::API::create_default_config();
+      }
+      
+      $config->class_name($class_name);
+      $config->category($category);
+      $config->is_jit($options->{is_jit});
+      $config->output_dir($options->{output_dir});
+      $config->optimize($options->{optimize}) if defined $options->{optimize};
+      
+      # Prepare compile information for each class
+      my $compile_infos = $cc->prepare_compile_class($class_name, $config);
+      for my $compile_info (@$compile_infos) {
+        $cc->finalize_compile_info($compile_info);
+      }
+      
+      # Store information for the next steps
+      push @all_compile_infos, @$compile_infos;
+      $class_to_context{$category}{$class_name} = {
+        config => $config,
+        compile_infos => $compile_infos,
+      };
+    }
+  }
+  
+  # 2. Execute all compilations in parallel
+  $cc->command_parallel(\@all_compile_infos);
+  
+  # 3. Prepare all link information
+  my @all_link_infos;
+  for my $category (keys %class_to_context) {
+    for my $class_name (keys %{$class_to_context{$category}}) {
+      my $ctx = $class_to_context{$category}{$class_name};
+      my $compile_infos = $ctx->{compile_infos};
+      
+      my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
+      unless (@$object_files) {
+        confess("[Unexpected Error]\$object_files must have object files for $class_name.");
+      }
+      
+      my $link_info = $cc->prepare_link($class_name, $object_files, $ctx->{config});
+      $ctx->{link_info} = $link_info;
+      push @all_link_infos, $link_info;
+    }
+  }
+  
+  # 4. Execute all links in parallel
+  $cc->command_parallel(\@all_link_infos);
+  
+  # 5. Finalize and collect output file paths
+  for my $category (keys %class_to_context) {
+    for my $class_name (keys %{$class_to_context{$category}}) {
+      my $ctx = $class_to_context{$category}{$class_name};
+      my $link_info = $ctx->{link_info};
+      my $config = $ctx->{config};
+      
+      # Execute after_link_cbs
+      my $after_link_cbs = $config->after_link_cbs;
+      for my $after_link_cb (@$after_link_cbs) {
+        $after_link_cb->($link_info->config, $link_info);
+      }
+      
+      # Store result in the return hash
+      $output_files_h->{$category}{$class_name} = $link_info->output_file;
+    }
+  }
+  
+  return $output_files_h;
+}
+
 sub create_build_work_path {
   my ($self, $rel_file) = @_;
   
