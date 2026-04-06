@@ -288,6 +288,54 @@ sub build_parallel {
   return $output_files_h;
 }
 
+sub build_parallel_dynamic_lib_dist {
+  my ($self, $options) = @_;
+  
+  $options ||= {};
+  $options = {%$options};
+  
+  # 1. Prepare runtime for all classes
+  my $compiler = SPVM::Builder::Native::Compiler->new;
+  for my $include_dir (@{$self->include_dirs}) {
+    $compiler->add_include_dir($include_dir);
+  }
+  
+  $compiler->set_start_file(__FILE__);
+  $compiler->set_start_line(__LINE__ + 1);
+  
+  # Compile both native and precompile classes
+  my @all_classes;
+  push @all_classes, @{$options->{native_classes}} if $options->{native_classes};
+  push @all_classes, @{$options->{precompile_classes}} if $options->{precompile_classes};
+  
+  for my $class_name (@all_classes) {
+    eval { $compiler->compile($class_name); };
+    if ($@) {
+      Carp::confess(join("\n", @{$compiler->get_formatted_error_messages}));
+    }
+  }
+  
+  my $runtime = $compiler->get_runtime;
+  $options->{runtime} = $runtime;
+  
+  # 2. Call the parallel distribution build
+  $self->build_parallel_dist($options);
+}
+
+sub build_parallel_dist {
+  my ($self, $options) = @_;
+  
+  $options ||= {};
+  $options = {%$options};
+  
+  # Distribution build settings (similar to build_dist)
+  my $output_dir = 'blib/lib';
+  $options->{output_dir} = $output_dir;
+  
+  # Execute parallel build
+  $self->build_parallel($options);
+}
+
 sub create_build_work_path {
   my ($self, $rel_file) = @_;
   
