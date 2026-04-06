@@ -400,14 +400,24 @@ sub create_make_rule {
 
 sub create_make_rule_parallel {
   my ($options) = @_;
-  
+
   $options ||= {};
-  
+
   my $make_rule = '';
+
+  # Generate a unique target name
+  my @target_parts;
+  if (my $precompile_classes = $options->{precompile_classes}) {
+    push @target_parts, map { "precompile|$_" } @$precompile_classes;
+  }
+  if (my $native_classes = $options->{native_classes}) {
+    push @target_parts, map { "native|$_" } @$native_classes;
+  }
   
-  # Target name for parallel build
-  my $target = "spvm-build-parallel";
-  
+  # Create a SHA1 hex digest from sorted parts
+  my $target_id = Digest::SHA::sha1_hex(join("\n", sort @target_parts));
+  my $target = "spvm-build-parallel-$target_id";
+
   # Order-only dependencies
   my $order_only_dependent_files = $options->{order_only_dependent_files} // [];
   my $order_only_str = @$order_only_dependent_files ? " | " . join(' ', @$order_only_dependent_files) : "";
@@ -415,34 +425,27 @@ sub create_make_rule_parallel {
   # Dynamic target
   $make_rule .= "dynamic :: $target\n";
   $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
-  
-  # Parallel build rule (Always execute, dependencies are managed internally by SPVM::Builder)
+
+  # Parallel build rule
   $make_rule .= ".PHONY: $target\n";
   $make_rule .= "$target :$order_only_str\n";
-  
-  # Build options for SPVM::Builder::API
+
+  # Build options
   my $new_options_string = "build_dir => '.spvm_build'";
-  
-  # Construct options for build_parallel_dynamic_lib_dist
+
   my @build_options;
-  
   if (exists $options->{force}) {
     push @build_options, "force => $options->{force}";
   }
-  
   if (defined(my $optimize = $options->{optimize})) {
     push @build_options, "optimize => '$optimize'";
   }
-  
   if (defined(my $jobs = $options->{jobs})) {
     push @build_options, "jobs => $jobs";
   }
-  
   if (defined(my $config_file = $options->{config_file})) {
     push @build_options, "config_file => '$config_file'";
   }
-  
-  # Class list options
   if (my $native_classes = $options->{native_classes}) {
     push @build_options, "native_classes => [" . join(', ', map { "'$_'" } @$native_classes) . "]";
   }
@@ -451,10 +454,10 @@ sub create_make_rule_parallel {
   }
 
   my $build_options_hash_str = "{" . join(', ', @build_options) . "}";
-  
+
   # Build command line
   $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($new_options_string)->build_parallel_dynamic_lib_dist($build_options_hash_str)\"\n\n";
-  
+
   return $make_rule;
 }
 
