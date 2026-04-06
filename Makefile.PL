@@ -209,7 +209,6 @@ sub MY::postamble {
     
     # Native classes (excluding Fn)
     $options->{native_classes} = [
-      'Array',
       'Hash',
       'Format',
       'Sync::Mutex',
@@ -231,12 +230,14 @@ sub MY::postamble {
 
     # Precompile classes (excluding Fn)
     $options->{precompile_classes} = [
-      'Array',
       'Format',
       'Hash',
       'Sort',
       'Packer',
     ];
+    
+    # Array is written in the config file for practical tests
+    $options->{config_file} = 'make_rule.json';
 
     # Generate a single parallel make rule for the rest
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel($options);

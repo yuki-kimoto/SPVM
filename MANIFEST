@@ -451,6 +451,7 @@ lib/SPVM/Sync/Mutex.pm
 lib/SPVM/Sync/Mutex.spvm
 LICENSE
 logo/spvm_logo.jpg
+make_rule.json
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
