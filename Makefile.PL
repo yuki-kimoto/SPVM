@@ -203,9 +203,12 @@ sub MY::postamble {
     
     $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)'];
     
-    # Native classes
+    # Test create_make_rule for backward compatibility and practical testing
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn', $options);
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn', $options);
+    
+    # Native classes (excluding Fn)
     $options->{native_classes} = [
-      'Fn',
       'Array',
       'Hash',
       'Format',
@@ -225,18 +228,17 @@ sub MY::postamble {
       'Native::API',
       'Native::Constant',
     ];
-    
-    # Precompile classes
+
+    # Precompile classes (excluding Fn)
     $options->{precompile_classes} = [
-      'Fn',
       'Array',
       'Format',
       'Hash',
       'Sort',
       'Packer',
     ];
-    
-    # Generate a single parallel make rule
+
+    # Generate a single parallel make rule for the rest
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel($options);
     
   }
