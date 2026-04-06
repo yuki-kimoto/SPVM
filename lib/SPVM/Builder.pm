@@ -80,44 +80,48 @@ sub build_dynamic_lib_dist {
   my ($self, $class_name, $options) = @_;
   
   $options ||= {};
-  
   $options = {%$options};
   
-  my $compiler = SPVM::Builder::Native::Compiler->new;
-  
-  for my $include_dir (@{$self->include_dirs}) {
-    $compiler->add_include_dir($include_dir);
+  # Ensure the category is set
+  my $category = $options->{category};
+  unless (defined $category) {
+    confess("The category must be defined.");
+  }
+
+  # Wrap single class into the correct parallel key
+  if ($category eq 'native') {
+    $options->{native_classes} = [$class_name];
+  }
+  elsif ($category eq 'precompile') {
+    $options->{precompile_classes} = [$class_name];
   }
   
-  $compiler->set_start_file(__FILE__);
-  $compiler->set_start_line(__LINE__ + 1);
-  eval { $compiler->compile($class_name); };
-  if ($@) {
-    Carp::confess(join("\n", @{$compiler->get_formatted_error_messages}));
-  }
-  my $runtime = $compiler->get_runtime;
-  
-  $options->{runtime} = $runtime;
-  
-  $self->build_dist($class_name, $options);
+  # Re-use the parallel version!
+  $self->build_parallel_dynamic_lib_dist($options);
 }
 
 sub build_dist {
   my ($self, $class_name, $options) = @_;
   
   $options ||= {};
-  
   $options = {%$options};
   
-  my $is_jit = 0;
+  # Ensure the category is set
+  my $category = $options->{category};
+  unless (defined $category) {
+    confess("The category must be defined.");
+  }
+
+  # Wrap single class into the correct parallel key
+  if ($category eq 'native') {
+    $options->{native_classes} = [$class_name];
+  }
+  elsif ($category eq 'precompile') {
+    $options->{precompile_classes} = [$class_name];
+  }
   
-  my $build_dir = $self->build_dir;
-  
-  my $output_dir = 'blib/lib';
-  
-  $options->{output_dir} = $output_dir;
-  
-  $self->build($class_name, $options);
+  # Re-use the parallel version!
+  $self->build_parallel_dist($options);
 }
 
 sub build_jit {
