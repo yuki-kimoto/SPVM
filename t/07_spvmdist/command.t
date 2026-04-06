@@ -25,7 +25,7 @@ my $blib_lib = File::Spec->rel2abs('blib/lib');
 my $blib_arch = File::Spec->rel2abs('blib/arch');
 my $include_blib = "-I$blib_arch -I$blib_lib";
 my $path_sep = $Config{path_sep};
-my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
+my $perl5lib = ($ENV{PERL5LIB} // '') . "$path_sep$blib_arch$path_sep$blib_lib";
 
 # Failed to parse options.
 {
@@ -641,8 +641,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
   
-  ok(SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_native'));
-  ok(SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_precompile'));
+  ok(SPVM::Builder::Util::file_contains('Makefile', 'spvm-build-parallel-'));
   
   chdir($save_cur_dir) or die;
 }
@@ -664,7 +663,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
 
-  ok(SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_native'));
+  ok(SPVM::Builder::Util::file_contains('Makefile', 'spvm-build-parallel-'));
   
   chdir($save_cur_dir) or die;
 }
