@@ -35,6 +35,14 @@ sub build_dynamic_lib_dist_native {
   $builder->build_dynamic_lib_dist_native($class_name, $options);
 }
 
+sub build_parallel_dynamic_lib_dist {
+  my ($self, $options) = @_;
+  
+  my $builder = $self->{builder};
+  
+  $builder->build_parallel_dynamic_lib_dist($options);
+}
+
 1;
 
 =head1 Name
@@ -43,7 +51,7 @@ SPVM::Builder::API - Builder APIs
 
 =head1 Description
 
-The SPVM::Builder::API class has the public methods to build SPVM native classes and SPVM precompilation classes.
+SPVM::Builder::API class has the public methods to build SPVM native classes and SPVM precompilation classes.
 
 =head1 Usage
   
@@ -98,6 +106,10 @@ $options is a hash reference. This is optional.
 
 If this option is a true value, the compilation and link are forced.
 
+=item * C<optimize>
+
+The optimization level for the compiler (e.g., C<O2>, C<O3>, C<O0>).
+
 =back
 
 =head2 build_dynamic_lib_dist_native
@@ -119,5 +131,46 @@ $options is a hash reference. This is optional.
 
 If this option is a true value, the compilation and link are forced.
 
+=item * C<optimize>
+
+The optimization level for the compiler (e.g., C<O2>, C<O3>, C<O0>).
+
 =back
 
+=head2 build_parallel_dynamic_lib_dist
+
+  $builder->build_parallel_dynamic_lib_dist($options)
+
+Generates dynamic libraries for multiple native classes and precompile classes in parallel, and copies them into the C<blib/lib> directory.
+
+Options:
+
+C<$options> is a hash reference.
+
+=over 2
+
+=item * C<native_classes>
+
+An array reference of native class names to be built.
+
+=item * C<precompile_classes>
+
+An array reference of precompile class names to be built.
+
+=item * C<config_file>
+
+A JSON configuration file path. If this option is specified, the configuration is loaded from the file and then overridden by the other options in C<$options>. This is useful for avoiding command-line length limits on Windows.
+
+=item * C<force>
+
+If this option is a true value, the compilation and link are forced.
+
+=item * C<optimize>
+
+The optimization level for the compiler (e.g., C<O2>, C<O3>, C<O0>).
+
+=item * C<jobs>
+
+The number of parallel jobs. The default value is the number of CPU cores.
+
+=back
