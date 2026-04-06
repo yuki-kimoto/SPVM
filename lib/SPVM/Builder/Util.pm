@@ -449,8 +449,9 @@ sub create_make_rule_parallel {
   # Construct options for build_parallel_dynamic_lib_dist
   my @build_options;
   
-  # Always force=1 for make-driven builds to let SPVM::Builder decide up-to-date status
-  push @build_options, "force => 1";
+  if (exists $options->{force}) {
+    push @build_options, "force => $options->{force}";
+  }
   
   if (defined(my $optimize = $options->{optimize})) {
     push @build_options, "optimize => '$optimize'";
