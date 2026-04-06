@@ -139,28 +139,34 @@ sub build {
   
   $options ||= {};
   
-  # Ensure the category is defined for build_parallel
+  # Ensure the category is defined
   my $category = $options->{category};
   unless (defined $category) {
     confess("The category must be defined.");
   }
   
-  # Build information for a single class
-  my $build_infos = {$category => [$class_name]};
+  # Create a copy of options to include build_infos without modifying the original
+  my $parallel_options = {%$options};
+  $parallel_options->{build_infos} = {$category => [$class_name]};
   
-  # Call build_parallel to handle the heavy lifting
-  my $output_files_h = $self->build_parallel($build_infos, $options);
+  # Call build_parallel
+  my $output_files_h = $self->build_parallel($parallel_options);
   
-  # Extract the output file path for the requested class
+  # Extract the output file path
   my $output_file = $output_files_h->{$category}{$class_name};
   
   return $output_file;
 }
 
 sub build_parallel {
-  my ($self, $build_infos, $options) = @_;
+  my ($self, $options) = @_;
   
   $options ||= {};
+  my $build_infos = $options->{build_infos};
+  unless (defined $build_infos) {
+    confess("The build_infos option must be defined.");
+  }
+
   my $output_files_h = {};
   
   my $cc_options = {builder => $self};
