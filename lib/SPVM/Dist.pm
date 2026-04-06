@@ -288,12 +288,18 @@ sub generate_spvm_class_file {
     $version_from_decl = "version_from $version_from;";
   }
   
+  my $precompile_attribute_part = $self->precompile ? 'precompile ' : '';
+  
   my $spvm_class_content = <<"EOS";
 # Copyright (c) $year $user_name
 # MIT License
 
 class $class_name ${attributes}{
   $version_decl$version_from_decl
+  
+  ${precompile_attribute_part}static method my_method : void () {
+    
+  }
 }
 EOS
   
