@@ -385,40 +385,17 @@ sub create_make_rule_precompile {
 
 sub create_make_rule {
   my ($class_name, $category, $options) = @_;
-  
-  $options ||= {};
-  
-  # Output file
-  my $dynamic_lib_rel_file = &convert_class_name_to_dynamic_lib_rel_file($class_name, $category);
-  my $dynamic_lib_file = "blib/lib/$dynamic_lib_rel_file";
-  
-  my $make_rule = '';
-  
-  # Dynamic target
-  $make_rule .= "dynamic :: $dynamic_lib_file\n";
-  $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
-  
-  # Source dependencies
-  my $dependent_files = &get_possible_dependent_files($class_name, $category, $options);
-  
-  # Order-only dependencies (New!)
-  my $order_only_dependent_files = $options->{order_only_dependent_files} // [];
-  my $order_only_str = @$order_only_dependent_files ? " | " . join(' ', @$order_only_dependent_files) : "";
 
-  # Combine them into the make rule
-  $make_rule .= "$dynamic_lib_file : @$dependent_files$order_only_str\n";
-  
-  # Build options
-  my $new_options_string = "build_dir => '.spvm_build'";
-  my $build_options_string = "force => 1";
-  if (defined(my $optimize = $options->{optimize})) {
-    $build_options_string .= ", optimize => '$optimize'";
+  $options ||= {};
+
+  if ($category eq 'native') {
+    $options->{native_classes} = [$class_name];
   }
-  
-  # Build command
-  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($new_options_string)->build_dynamic_lib_dist_$category('$class_name', {$build_options_string})\"\n\n";
-  
-  return $make_rule;
+  elsif ($category eq 'precompile') {
+    $options->{precompile_classes} = [$class_name];
+  }
+
+  return create_make_rule_parallel($options);
 }
 
 sub create_make_rule_parallel {
