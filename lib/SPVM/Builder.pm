@@ -134,20 +134,26 @@ sub build_jit {
   $self->build($class_name, $options);
 }
 
+use JSON::PP ();
+
 sub build {
   my ($self, $class_name, $options) = @_;
   
   $options ||= {};
   
-  # Ensure the category is defined
   my $category = $options->{category};
   unless (defined $category) {
     confess("The category must be defined.");
   }
   
-  # Create a copy of options to include build_infos without modifying the original
+  # Create a copy and set the specific class key
   my $parallel_options = {%$options};
-  $parallel_options->{build_infos} = {$category => [$class_name]};
+  if ($category eq 'native') {
+    $parallel_options->{native_classes} = [$class_name];
+  }
+  elsif ($category eq 'precompile') {
+    $parallel_options->{precompile_classes} = [$class_name];
+  }
   
   # Call build_parallel
   my $output_files_h = $self->build_parallel($parallel_options);
@@ -162,21 +168,27 @@ sub build_parallel {
   my ($self, $options) = @_;
   
   $options ||= {};
-  my $build_infos = $options->{build_infos};
-  unless (defined $build_infos) {
-    confess("The build_infos option must be defined.");
+
+  # Load options from a JSON configuration file if specified
+  if (my $config_file = delete $options->{config_file}) {
+    open my $fh, '<', $config_file or confess("Can't open config_file \"$config_file\": $!");
+    my $json_content = do { local $/; <$fh> };
+    close $fh;
+    
+    my $file_options = JSON::PP::decode_json($json_content);
+    
+    # Merge options: $options overrides $file_options
+    $options = {%$file_options, %$options};
   }
 
   my $output_files_h = {};
   
   my $cc_options = {builder => $self};
   
-  # Set force option
   if (exists $options->{force}) {
     $cc_options->{force} = $options->{force};
   }
   
-  # Set jobs option
   if (exists $options->{jobs}) {
     $cc_options->{jobs} = $options->{jobs};
   }
@@ -187,9 +199,17 @@ sub build_parallel {
   my @all_compile_infos;
   my %class_to_context;
 
+  # Define categories and their corresponding keys in $options
+  my %category_to_key = (
+    native     => 'native_classes',
+    precompile => 'precompile_classes',
+  );
+
   # Prepare all compile information
-  for my $category (keys %$build_infos) {
-    my $class_names = $build_infos->{$category};
+  for my $category (keys %category_to_key) {
+    my $key = $category_to_key{$category};
+    my $class_names = $options->{$key};
+    next unless defined $class_names;
     
     for my $class_name (@$class_names) {
       my $config;
