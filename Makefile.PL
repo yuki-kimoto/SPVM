@@ -203,35 +203,41 @@ sub MY::postamble {
     
     $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)'];
     
-    # Build native
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Array', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Hash', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Format', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Sync::Mutex', $options);
+    # Native classes
+    $options->{native_classes} = [
+      'Fn',
+      'Array',
+      'Hash',
+      'Format',
+      'Sync::Mutex',
+      'Native',
+      'Native::Compiler',
+      'Native::ClassFile',
+      'Native::Runtime',
+      'Native::Env',
+      'Native::Stack',
+      'Native::BasicType',
+      'Native::ClassVar',
+      'Native::Field',
+      'Native::Method',
+      'Native::Arg',
+      'Native::MethodCall',
+      'Native::API',
+      'Native::Constant',
+    ];
     
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Compiler', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::ClassFile', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Runtime', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Env', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Stack', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::BasicType', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::ClassVar', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Field', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Method', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Arg', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::MethodCall', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::API', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Constant', $options);
+    # Precompile classes
+    $options->{precompile_classes} = [
+      'Fn',
+      'Array',
+      'Format',
+      'Hash',
+      'Sort',
+      'Packer',
+    ];
     
-    # Build precompile
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Array', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Format', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Hash', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Sort', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Packer', $options);
+    # Generate a single parallel make rule
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel($options);
     
   }
   
