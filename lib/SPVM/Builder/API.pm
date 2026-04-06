@@ -139,7 +139,7 @@ The optimization level for the compiler (e.g., C<O2>, C<O3>, C<O0>).
 
 =head2 build_parallel_dynamic_lib_dist
 
-  $builder->build_parallel_dynamic_lib_dist($options)
+  $builder->build_parallel_dynamic_lib_dist($options);
 
 Generates dynamic libraries for multiple native classes and precompile classes in parallel, and copies them into the C<blib/lib> directory.
 
@@ -153,26 +153,17 @@ C<$options> is a hash reference.
 
 An array reference of native class names to be built.
 
+=item * C<native_classes_file>
+
+A path to a text file containing native class names to be built. The file must contain one class name per line. If both C<native_classes> and this option are specified, they are merged.
+
 =item * C<precompile_classes>
 
 An array reference of precompile class names to be built.
 
-=item * C<build_file>
+=item * C<precompile_classes_file>
 
-A JSON configuration file path.
-
-The configuration is loaded from this file and then overridden by the other options in C<$options>.
-
-This file can contain the same build options as those passed directly to the method, such as C<native_classes> and C<precompile_classes>.
-
-Using this file is highly recommended to avoid command-line length limits, especially on Windows environments, when dealing with a large number of classes.
-
-The JSON format must be a hash at the top level. For example:
-
-  {
-    "native_classes" : ["Array", "Hash"],
-    "precompile_classes" : ["Array"]
-  }
+A path to a text file containing precompile class names to be built. The file must contain one class name per line. If both C<precompile_classes> and this option are specified, they are merged.
 
 =item * C<force>
 

@@ -407,11 +407,19 @@ sub create_make_rule_parallel {
 
   # Generate a unique target name
   my @target_parts;
+  
+  # Target identification includes filenames to ensure unique SHA1 when list changes
   if (my $precompile_classes = $options->{precompile_classes}) {
     push @target_parts, map { "precompile|$_" } @$precompile_classes;
   }
+  if (my $precompile_classes_file = $options->{precompile_classes_file}) {
+    push @target_parts, "precompile_file|$precompile_classes_file";
+  }
   if (my $native_classes = $options->{native_classes}) {
     push @target_parts, map { "native|$_" } @$native_classes;
+  }
+  if (my $native_classes_file = $options->{native_classes_file}) {
+    push @target_parts, "native_file|$native_classes_file";
   }
   
   # Create a SHA1 hex digest from sorted parts
@@ -443,9 +451,16 @@ sub create_make_rule_parallel {
   if (defined(my $jobs = $options->{jobs})) {
     push @build_options, "jobs => $jobs";
   }
-  if (defined(my $build_file = $options->{build_file})) {
-    push @build_options, "build_file => '$build_file'";
+  
+  # New file-based options
+  if (defined(my $native_classes_file = $options->{native_classes_file})) {
+    push @build_options, "native_classes_file => '$native_classes_file'";
   }
+  if (defined(my $precompile_classes_file = $options->{precompile_classes_file})) {
+    push @build_options, "precompile_classes_file => '$precompile_classes_file'";
+  }
+
+  # Array-based options
   if (my $native_classes = $options->{native_classes}) {
     push @build_options, "native_classes => [" . join(', ', map { "'$_'" } @$native_classes) . "]";
   }

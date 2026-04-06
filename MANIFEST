@@ -454,7 +454,9 @@ logo/spvm_logo.jpg
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
+native_classes.txt
 ppport.h
+precompile_classes.txt
 README.md
 script/spvm
 script/spvmcc

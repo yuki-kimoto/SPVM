@@ -197,18 +197,6 @@ sub build_parallel {
     }
   }
   
-  # Load options from a JSON configuration file if specified
-  if (my $build_file = delete $options->{build_file}) {
-    open my $fh, '<', $build_file or confess("Can't open build_file \"$build_file\": $!");
-    my $json_content = do { local $/; <$fh> };
-    close $fh;
-    
-    my $file_options = JSON::PP::decode_json($json_content);
-    
-    # Merge options: $options overrides $file_options
-    $options = {%$file_options, %$options};
-  }
-
   my $output_files_h = {};
   
   my $cc_options = {builder => $self};
@@ -321,6 +309,8 @@ sub build_parallel_dynamic_lib_dist {
   
   $options ||= {};
   $options = {%$options};
+  
+  $self->_resolve_options($options);
   
   # 1. Prepare runtime for all classes
   my $compiler = SPVM::Builder::Native::Compiler->new;
@@ -437,6 +427,41 @@ sub create_build_lib_path {
   }
   
   return $build_lib_path;
+}
+
+sub _load_classes_from_file {
+  my ($self, $file) = @_;
+
+  # Open file for reading
+  open my $fh, '<', $file or Carp::confess("Can't open classes file \"$file\": $!");
+  
+  # Read lines and remove newlines
+  my @classes;
+  while (my $line = <$fh>) {
+    $line =~ s/[\r\n]//g;
+    # Skip empty lines or comments
+    next if $line =~ /^\s*$/ || $line =~ /^\s*#/;
+    push @classes, $line;
+  }
+  close $fh;
+
+  return \@classes;
+}
+
+sub _resolve_options {
+  my ($self, $options) = @_;
+
+  # Resolve native_classes_file (newline-separated text file)
+  if (my $file = delete $options->{native_classes_file}) {
+    my $classes = $self->_load_classes_from_file($file);
+    push @{$options->{native_classes} ||= []}, @$classes;
+  }
+
+  # Resolve precompile_classes_file (newline-separated text file)
+  if (my $file = delete $options->{precompile_classes_file}) {
+    my $classes = $self->_load_classes_from_file($file);
+    push @{$options->{precompile_classes} ||= []}, @$classes;
+  }
 }
 
 1;
