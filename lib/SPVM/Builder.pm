@@ -172,7 +172,31 @@ sub build_parallel {
   my ($self, $options) = @_;
   
   $options ||= {};
+  
+  # Allowed options (White list)
+  my %allowed_options = map { $_ => 1 } qw(
+    build_file
+    native_classes
+    precompile_classes
+    force
+    jobs
+    runtime
+    is_jit
+    output_dir
+    optimize
+    category
+    class_name
+    class_file
+    quiet
+  );
 
+  # Check for invalid options
+  for my $key (keys %$options) {
+    unless ($allowed_options{$key}) {
+      confess("Invalid option \"$key\" passed to build_parallel method.");
+    }
+  }
+  
   # Load options from a JSON configuration file if specified
   if (my $build_file = delete $options->{build_file}) {
     open my $fh, '<', $build_file or confess("Can't open build_file \"$build_file\": $!");
