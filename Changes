@@ -1,3 +1,23 @@
+0.990154 2026-04-06
+  [New Features]
+    * Build: Implement high-performance parallel building for native and precompiled classes.
+    * SPVM::Builder::Util::API: Add create_make_rule_parallel to generate unified parallel make rules using SHA1-based unique target names.
+    * SPVM::Builder: Add the build_file (JSON) option to support passing a large number of build configurations, effectively bypassing command-line length limits on Windows.
+    * SPVM::Builder::API: Add build_parallel_dynamic_lib_dist to support batch processing of dynamic library builds.
+
+  [Changes]
+    * Build: Refactor the build system to unify compilation and linking processes into a single parallel-capable pipeline.
+    * SPVM::Builder: Rename the config_file option to build_file and standardize the default configuration file name to spvm_build.json.
+    * SPVM::Builder: Optimize the build process by reducing redundant process/shell spawning, achieving script-language-like build speed.
+    * SPVM::Builder::Util::API: Update create_make_rule_native and create_make_rule_precompile to support the new options hash and redirect to the parallel build engine.
+    * Documentation: Extensively update POD for SPVM::Builder, SPVM::Builder::API, and SPVM::Builder::Util::API to reflect the new parallel build features and options.
+
+  [Internal Changes]
+    * Build: Implement SHA1-based unique target naming (spvm-build-parallel-[HASH]) to ensure safe and collision-free parallel execution in Makefiles.
+    * Build: Enhance environment variable handling in tests, specifically ensuring $ENV{PERL5LIB} is safely concatenated.
+    * SPVM::Builder: Refactor internal process management to support non-blocking command execution and centralized logging.
+    * Test: Update t/07_spvmdist/command.t to verify the new parallel build target patterns and configuration file logic.
+    
 0.990153 2026-03-29
   [Changes]
     * Build: Implement order-only dependencies (|) in Makefile.PL for native modules to ensure SPVM.so is built first without triggering redundant rebuilds of all native classes.
