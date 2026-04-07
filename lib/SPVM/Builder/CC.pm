@@ -176,10 +176,20 @@ sub prepare_compile_resources {
       
       my $builder_cc_resource = SPVM::Builder::CC->new(
         builder => $self->builder,
-        exists $config->{quiet} ? (quiet => $config->quiet) : (),
-        exists $config->{force} ? (force => $config->force) : (),
         runtime => $self->runtime,
       );
+      
+      if (exists $config->{quiet}) {
+        $resource_config->quiet($config->quiet);
+      }
+      
+      if (exists $config->{force}) {
+        $resource_config->force($config->force);
+      }
+      
+      if (exists $config->{is_jit}) {
+        $resource_config->is_jit($config->is_jit);
+      }
       
       my $resource_compile_infos = $builder_cc_resource->prepare_compile_class($resource_class_name, $resource_config);
       push @$compile_infos, @$resource_compile_infos;
