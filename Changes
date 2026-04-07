@@ -1,7 +1,8 @@
 0.990155 2026-04-07
   [Bug Fix]
     * Fix a bug that ccflags and defines in the config were not added to the compile command.
-    
+  [Warning Fix]
+    * Fix a warning where create_option_short was called with an undefined output_file.
 0.990154 2026-04-06
   [New Features]
     * Build: Implement high-performance parallel building for native and precompiled classes.
