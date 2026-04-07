@@ -473,7 +473,7 @@ sub global_lock {
     my $build_dir = $self->build_dir;
     mkpath $build_dir unless -d $build_dir;
     
-    my $lock_file = "$build_dir/global.lock";
+    my $lock_file = "$build_dir/.global.lock";
     
     # Open with append mode to avoid truncating
     open my $fh, '>>', $lock_file 
