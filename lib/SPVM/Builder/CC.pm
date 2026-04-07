@@ -602,18 +602,6 @@ sub wait_command {
     confess("[Unexpected Error]The stderr log file '$stderr_file' does not exist.");
   }
   
-  # Print stdout
-  unless ($quiet) {
-    open my $stdout_fh, '<', $stdout_file;
-    my $stdout_output = do { local $/; <$stdout_fh> };
-    close $stdout_fh;
-    if (length $stdout_output) {
-      $self->builder->global_lock;
-      print STDERR "$stdout_output\n";
-      $self->builder->global_unlock;
-    }
-  }
-  
   # Print stderr
   open my $stderr_fh, '<', $stderr_file;
   my $stderr_output = do { local $/; <$stderr_fh> };

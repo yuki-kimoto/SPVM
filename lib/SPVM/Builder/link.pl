@@ -6,6 +6,7 @@ use Fcntl qw(:flock :seek);
 use Digest::SHA qw(sha1_hex);
 use File::Basename qw(dirname basename);
 use MIME::Base64 qw(decode_base64);
+use File::Spec;
 
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));
@@ -41,12 +42,11 @@ if (my $content = read_file($ldflags_file)) {
 }
 
 # Define log file paths
-my $log_stdout = "$command_tmp_dir/stdout.log";
 my $log_stderr = "$command_tmp_dir/stderr.log";
 
 # Redirect stdout and stderr to log files
-open(STDOUT, '>', $log_stdout)
-  or warn "Can't open $log_stdout: $!";
+open(STDOUT, '>', File::Spec->devnull)
+  or warn "Can't open null device: $!";
 open(STDERR, '>', $log_stderr)
   or warn "Can't open $log_stderr: $!";
 
