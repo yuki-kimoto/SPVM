@@ -812,8 +812,6 @@ sub prepare_link {
   my $hint_cc = $config->hint_cc;
   my $ld = $config->ld;
   
-  my $quiet = $self->detect_quiet($config);
-  
   my $link_info_output_file = $config->output_file;
   
   my $link_info_object_files = $link_info->object_files;
@@ -881,8 +879,8 @@ sub spawn_link {
   }
   
   my $config = $link_info->config;
-  my $force = $self->detect_force($config);;
-  my $quiet = $self->detect_quiet($config);;
+  my $force = $self->detect_force($config);
+  my $quiet = $self->detect_quiet($config);
   my $hint_cc = $config->hint_cc;
   my $ld = $config->ld;
   my $output_type = $config->output_type;
