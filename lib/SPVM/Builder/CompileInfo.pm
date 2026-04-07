@@ -88,6 +88,9 @@ sub create_ccflags {
   my $ccflags = $config->ccflags;
   push @compile_command_args, @$ccflags;
   
+  my $defines = $config->defines;
+  push @compile_command_args, map { "-D$_" } @$defines;
+  
   my $std = $config->std;
   if (length $std) {
     push @compile_command_args, $config->create_option("-std", $std);
