@@ -56,10 +56,10 @@ sub detect_force {
   
   my $force;
   
-  if (defined $self->force) {
+  if (exists $self->{force}) {
     $force = $self->force;
   }
-  elsif (defined $config->force) {
+  elsif (exists $config->{force}) {
     $force = $config->force;
   }
   else {
@@ -77,10 +77,10 @@ sub detect_quiet {
   if (defined $self->debug) {
     $quiet = 0;
   }
-  elsif (defined $self->quiet) {
+  elsif (exists $self->{quiet}) {
     $quiet = $self->quiet;
   }
-  elsif (defined $config && defined $config->quiet) {
+  elsif (defined $config && exists $config->{quiet}) {
     $quiet = $config->quiet;
   }
   elsif (defined $config && $config->is_jit) {
