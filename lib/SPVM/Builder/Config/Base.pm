@@ -162,7 +162,7 @@ sub load_config {
     open my $fh, '<', $config_file
       or confess("The config file \"$config_file\" can't found: $!");
     
-    my $config_content = do { $/ = undef; <$fh> };
+    my $config_content = do { local $/; <$fh> };
     
     $config = &_eval_config_content($config_content, $config_file);
   }
