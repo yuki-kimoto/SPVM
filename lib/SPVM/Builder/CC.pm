@@ -608,7 +608,9 @@ sub wait_command {
     my $stdout_output = do { local $/; <$stdout_fh> };
     close $stdout_fh;
     if (length $stdout_output) {
+      $self->builder->global_lock;
       print $stdout_output;
+      $self->builder->global_unlock;
     }
   }
   
@@ -617,7 +619,9 @@ sub wait_command {
   my $stderr_output = do { local $/; <$stderr_fh> };
   close $stderr_fh;
   if (length $stderr_output) {
+    $self->builder->global_lock;
     print STDERR $stderr_output;
+    $self->builder->global_unlock;
   }
   
   my $exit_status = $? >> 8;
