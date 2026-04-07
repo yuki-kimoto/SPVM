@@ -556,6 +556,13 @@ sub spawn_compile_source_file {
     $compile_info->start_time($start_time);
     $compile_info->tmp_dir($command_tmp_dir);
     
+    unless ($quiet) {
+      $self->builder->global_lock;
+      print "$cc_command_heading\n";
+      print "$cc_command_string\n";
+      $self->builder->global_unlock;
+    }
+    
     $process_id = &spawn_compile_command($output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @$cc_cmd);
     $compile_info->process_id($process_id);
   }
@@ -941,6 +948,13 @@ sub spawn_link {
     my $ldflags_file = "$command_tmp_dir/ldflags.txt";
     my $link_info_ldflags = $link_info->create_ldflags;
     SPVM::Builder::Util::spurt_binary($ldflags_file, join("\n", @$link_info_ldflags));
+    
+    unless ($quiet) {
+      $self->builder->global_lock;
+      print "$ld_command_heading\n";
+      print "$ld_command_string\n";
+      $self->builder->global_unlock;
+    }
     
     # Spawn link process
     $process_id = &spawn_link_command(

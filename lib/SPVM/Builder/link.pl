@@ -50,10 +50,6 @@ open(STDOUT, '>', $log_stdout)
 open(STDERR, '>', $log_stderr)
   or warn "Can't open $log_stderr: $!";
 
-# Print command information
-print "$ld_command_heading\n";
-print "$ld_command_string\n";
-
 # File locking
 my $output_dir = dirname($output_file);
 my $lock_file = "$output_dir/" . sha1_hex($output_file) . ".lock";
