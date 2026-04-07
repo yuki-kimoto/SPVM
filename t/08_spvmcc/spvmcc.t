@@ -176,7 +176,7 @@ sub to_cmd {
   # debug config: build_type 'Debug'
   {
     my $mode = 'debug';
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --mode debug $test_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --mode debug $test_script_dir/myapp.spvm 2>&1);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
@@ -185,8 +185,6 @@ sub to_cmd {
     like($spvmcc_output, qr/-lm\b/);
     like($spvmcc_output, qr/-std=c99/);
     
-    # Note: Arguments of the link command(these contain -l flags) must be
-    # after object file names for resolving symbol names properly
     like($spvmcc_output, qr/NativeAPI2\.o.+-L\..+-lm\b/);
     
     my $execute_cmd = &to_cmd("$exe_dir/myapp");

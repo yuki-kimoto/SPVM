@@ -521,7 +521,7 @@ sub spawn_compile_source_file {
     my $compile_info_category = $compile_info->category;
     if ($config->is_resource) {
       my $resource_class_name = $config->class_name;
-      $cc_command_heading = "[Compile a source file in $resource_class_name resource.";
+      $cc_command_heading = "[Compile a source file in $resource_class_name resource.]";
     }
     else {
       my $config_class_name = $config->class_name;
@@ -558,8 +558,8 @@ sub spawn_compile_source_file {
     
     unless ($quiet) {
       $self->builder->global_lock;
-      print "$cc_command_heading\n";
-      print "$cc_command_string\n";
+      print STDERR "$cc_command_heading\n";
+      print STDERR "$cc_command_string\n";
       $self->builder->global_unlock;
     }
     
@@ -609,7 +609,7 @@ sub wait_command {
     close $stdout_fh;
     if (length $stdout_output) {
       $self->builder->global_lock;
-      print $stdout_output;
+      print STDERR "$stdout_output\n";
       $self->builder->global_unlock;
     }
   }
@@ -620,7 +620,7 @@ sub wait_command {
   close $stderr_fh;
   if (length $stderr_output) {
     $self->builder->global_lock;
-    print STDERR $stderr_output;
+    print STDERR "$stderr_output\n";
     $self->builder->global_unlock;
   }
   
@@ -953,8 +953,8 @@ sub spawn_link {
     
     unless ($quiet) {
       $self->builder->global_lock;
-      print "$ld_command_heading\n";
-      print "$ld_command_string\n";
+      print STDERR "$ld_command_heading\n";
+      print STDERR "$ld_command_string\n";
       $self->builder->global_unlock;
     }
     
