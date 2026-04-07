@@ -85,6 +85,9 @@ sub create_ccflags {
   
   my @compile_command_args;
   
+  my $ccflags = $config->ccflags;
+  push @compile_command_args, @$ccflags;
+  
   my $std = $config->std;
   if (length $std) {
     push @compile_command_args, $config->create_option("-std", $std);
@@ -105,8 +108,6 @@ sub create_ccflags {
   }
   
   my $optimize = $config->optimize;
-  
-  my $config_global = $config->config_global;
   
   if (length $optimize) {
     push @compile_command_args, split(/ +/, $optimize);
