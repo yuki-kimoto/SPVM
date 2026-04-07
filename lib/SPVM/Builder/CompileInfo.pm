@@ -49,6 +49,7 @@ sub create_command {
   my $config = $self->config;
   
   my $cc = $config->cc;
+  
   my $output_file = $self->output_file;
   my $source_file = $self->source_file;
   
@@ -62,11 +63,11 @@ sub create_command {
   
   push @compile_command, ($cc, '-c');
   
-  unless ($no_output_option) {
-    # Build output option
-    my $output_option = $config->create_option_short($cc_output_option_name, $output_file);
-  
-    push @compile_command, $output_option;
+  if (length $output_file) {
+    unless ($no_output_option) {
+      my $output_option = $config->create_option_short($cc_output_option_name, $output_file);
+      push @compile_command, $output_option;
+    }
   }
   
   push @compile_command, (@$compile_command_args, $source_file);
