@@ -176,8 +176,8 @@ sub prepare_compile_resources {
       
       my $builder_cc_resource = SPVM::Builder::CC->new(
         builder => $self->builder,
-        quiet => $self->detect_quiet($config),
-        force => $self->detect_force($config),
+        exists $config->{quiet} ? (quiet => $config->quiet) : (),
+        exists $config->{force} ? (force => $config->force) : (),
         runtime => $self->runtime,
       );
       
