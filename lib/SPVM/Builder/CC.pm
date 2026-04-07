@@ -592,11 +592,6 @@ sub wait_command {
   my $command_tmp_dir = $command_info->tmp_dir;
   
   # Read output files from temp directory
-  my $stdout_file = "$command_tmp_dir/stdout.log";
-  unless (-f $stdout_file) {
-    confess("[Unexpected Error]The stdout log file '$stdout_file' does not exist.");
-  }
-  
   my $stderr_file = "$command_tmp_dir/stderr.log";
   unless (-f $stderr_file) {
     confess("[Unexpected Error]The stderr log file '$stderr_file' does not exist.");
