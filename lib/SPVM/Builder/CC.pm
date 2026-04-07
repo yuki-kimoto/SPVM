@@ -29,6 +29,7 @@ has [qw(
   debug
   runtime
   jobs
+  global_lock_fh
 )];
 
 # Class Methods

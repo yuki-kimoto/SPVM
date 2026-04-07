@@ -5,6 +5,7 @@ use warnings;
 
 use Carp 'confess';
 use File::Path 'mkpath';
+use Fcntl ':flock';
 
 use SPVM ();
 use SPVM::Builder::CC;
@@ -461,6 +462,39 @@ sub _resolve_options {
   if (my $file = delete $options->{precompile_classes_file}) {
     my $classes = $self->_load_classes_from_file($file);
     push @{$options->{precompile_classes} ||= []}, @$classes;
+  }
+}
+
+sub global_lock {
+  my ($self) = @_;
+  
+  # Open the lock file once and keep the handle
+  unless ($self->{global_lock_fh}) {
+    my $build_dir = $self->build_dir;
+    mkpath $build_dir unless -d $build_dir;
+    
+    my $lock_file = "$build_dir/global.lock";
+    
+    # Open with append mode to avoid truncating
+    open my $fh, '>>', $lock_file 
+      or die "[Internal Error]Can't open global lock file \"$lock_file\": $!";
+    
+    $self->{global_lock_fh} = $fh;
+  }
+  
+  # Wait for an exclusive lock
+  flock($self->{global_lock_fh}, LOCK_EX) 
+    or die "[Internal Error]Can't get exclusive lock on global lock file: $!";
+}
+
+sub global_unlock {
+  my ($self) = @_;
+  
+  my $fh = $self->{global_lock_fh};
+  
+  # Just release the lock (keep the file open for next time)
+  if ($fh) {
+    flock($fh, LOCK_UN);
   }
 }
 
