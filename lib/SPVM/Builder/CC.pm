@@ -563,7 +563,7 @@ sub spawn_compile_source_file {
       $self->builder->global_unlock;
     }
     
-    $process_id = &spawn_compile_command($output_file, $command_tmp_dir, @$cc_cmd);
+    $process_id = &spawn_compile_command($command_tmp_dir, $output_file, @$cc_cmd);
     $compile_info->process_id($process_id);
   }
   
