@@ -86,10 +86,10 @@ sub create_ccflags {
   my @compile_command_args;
   
   my $ccflags = $config->ccflags;
-  push @compile_command_args, @$ccflags;
+  push @compile_command_args, grep { length $_ } @$ccflags;
   
   my $defines = $config->defines;
-  push @compile_command_args, map { "-D$_" } @$defines;
+  push @compile_command_args, map { "-D$_" } grep { length $_ } @$defines;
   
   my $std = $config->std;
   if (length $std) {
