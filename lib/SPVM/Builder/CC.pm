@@ -563,7 +563,7 @@ sub spawn_compile_source_file {
       $self->builder->global_unlock;
     }
     
-    $process_id = &spawn_compile_command($output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @$cc_cmd);
+    $process_id = &spawn_compile_command($output_file, $command_tmp_dir, @$cc_cmd);
     $compile_info->process_id($process_id);
   }
   
@@ -669,11 +669,11 @@ sub add_ninja_log {
 }
 
 sub spawn_compile_command {
-  my ($output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @cc_cmd) = @_;
+  my ($output_file, $command_tmp_dir, @cc_cmd) = @_;
   
   my $compile_script_path = &get_compile_script_path();
   
-  my $process_id = &spawn_perl($compile_script_path, $output_file, $command_tmp_dir, $cc_command_heading, $cc_command_string, @cc_cmd);
+  my $process_id = &spawn_perl($compile_script_path, $output_file, $command_tmp_dir, @cc_cmd);
   
   return $process_id;
 }
@@ -959,8 +959,6 @@ sub spawn_link {
     # Spawn link process
     $process_id = &spawn_link_command(
       $command_tmp_dir,
-      $ld_command_heading,
-      $ld_command_string,
       $output_file,
       $class_name,
       $hint_cc,
