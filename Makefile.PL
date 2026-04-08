@@ -168,7 +168,7 @@ WriteMakefile(
   },
   NORECURS => 1,
   macro => {
-    FULLPERLRUN => "HARNESS_OPTIONS=j$jobs \$(FULLPERL)",
+    TEST_VERBOSE => "(\$ENV{HARNESS_OPTIONS}=q(j$jobs), 0)",
   },
 );
 
@@ -276,6 +276,19 @@ sub MY::postamble {
   }
   
   return $make_rule;
+}
+
+package MY {
+  sub test_via_harness {
+    my ($self, @args) = @_;
+    
+    my $command = $self->SUPER::test_via_harness(@args);
+    
+    # Inject $ENV{HARNESS_OPTIONS}=j$jobs at the beginning of the command line for parallel tests
+    $command =~ s/(\btest_harness\()/eval sprintf(q(%cENV{HARNESS_OPTIONS}=q(%s)), 36, q(j$jobs));$1/;
+    
+    return $command;
+  }
 }
 
 1;
