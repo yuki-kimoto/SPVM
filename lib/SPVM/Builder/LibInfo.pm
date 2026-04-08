@@ -125,11 +125,11 @@ sub to_string {
 
 =head1 Name
 
-SPVM::Builder::LibInfo - Library Information for A Linker
+SPVM::Builder::LibInfo - Library Information for a Linker
 
 =head1 Description
 
-The SPVM::Builder::LibInfo class has methods to manipulate library information for a linker.
+SPVM::Builder::LibInfo class manages a library information for a linker.
 
 =head1 Usage
 
@@ -185,23 +185,11 @@ Gets and sets the C<is_abs> field. If this field is a true value, the library is
 
   my $lib_info = SPVM::Builder::LibInfo->new(%fields);
 
-Creates a new L<SPVM::Builder::LibInfo> object given L<fields|/"Fields">.
-
-The C<config> field must be defined.
-
-Field Default Values:
-
-=over 2
-
-=item * All Fields
-
-  undef
-
-=back
+Creates a new L<SPVM::Builder::LibInfo> object given L<fields|/"Fields">, and returns it.
 
 Exceptions:
 
-The "config" field must be defined.
+L</"config"> field must be defined.
 
 =head1 Instance Methods
 
@@ -209,7 +197,7 @@ The "config" field must be defined.
 
   my $lib_ldflags = $lib_info->create_ldflags;
 
-Creates an array reference of the library part of the linker flags given to the linker L<ld|SPVM::Builder::Config/"ld">, and returns it.
+Creates an array reference of the library part of the linker flags given to the linker L<ld|SPVM::Builder::Config::Linker/"ld">, and returns it.
 
 Return Value Examples:
   
