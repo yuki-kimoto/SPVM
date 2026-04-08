@@ -1,3 +1,38 @@
+0.990156 (Not yet released)
+
+  [Documentation]
+    - Consolidated all documentation links into SPVM::Document to avoid duplicate maintenance and improve scannability.
+    - Improved documentation for SPVM::Builder::LinkInfo, SPVM::Builder::CompileInfo, SPVM::Builder::CommandInfo, SPVM::Builder::ObjectFileInfo, SPVM::Builder::LibInfo, and SPVM::Builder::ScriptInfo.
+    - Added comprehensive documentation for SPVM::Builder::Ninja, explaining its content-based incremental build system and concurrency safety.
+    - Updated SPVM::Document to include sections for Language Specification, Builder APIs, Config Utilities, and Command utilities.
+  
+  [Incompatible Changes]
+    - Renamed the object_files field in SPVM::Builder::LinkInfo to object_file_infos to clarify it contains SPVM::Builder::ObjectFileInfo objects.
+  
+  [Internal Changes]
+    - Changed the global lock file to a hidden file in SPVM::Builder.
+    - Improved SPVM::Builder::Config to allow simplifying C++11 configurations using the new new_cpp11 method.
+
+  [Optimization & Portability]
+    - Improved Darwin (macOS) support by removing redundant -lc++ from exe_libcpp_ldflags to avoid duplicate library warnings.
+    - Set default symbol_strip_ldflags to ['-s'] only on Windows, avoiding "obsolete" warnings on macOS and following Linux conventions.
+    - Set default symbol_strip_ldflags to empty in Debug mode to ensure debug symbols (-g) are preserved.
+    - Improved cross-platform STDOUT/STDERR redirection to null devices using File::Spec.
+
+  [Bug Fixes]
+    - Renamed match_any method to compile_rule_any in SPVM::Builder::Config::Global to fix a naming inconsistency.
+    - Fixed a bug where quiet, force, and is_jit flags were not correctly propagated to resource configurations in SPVM::Builder::CC.
+    - Fixed a bug where the global input record separator ($/) was accidentally undefined in SPVM::Builder::Config::Base; added local scope.
+    - Fixed a bug in SPVM::Builder::CC to ensure synchronized STDOUT/STDERR output across parallel processes using a global lock.
+    - Fixed warnings when the free command is not available on certain systems.
+    - Fixed double semicolons in spawn_link in SPVM::Builder::CC.
+
+  [Refactoring]
+    - Refactored command information output and spawn functions to use global locking for synchronized logging.
+    - Unified the order of arguments in spawn functions and compile/link scripts for better consistency.
+    - Changed local variable names from object_files to object_file_infos across the builder ecosystem.
+    - Used exists instead of defined to check for quiet and force flags in SPVM::Builder::CC.
+   
 0.990155 2026-04-07
   [Bug Fix]
     * Fix a bug that ccflags and defines in the config were not added to the compile command.
