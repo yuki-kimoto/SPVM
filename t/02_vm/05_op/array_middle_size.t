@@ -13,9 +13,9 @@ use SPVM 'TestCase::Operator::ArrayMiddleSize';
 my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
+my $at_least_memory_size = 0;
 my $free_result = `free`;
-my $at_least_memory_size;
-if ($free_result =~ /Mem: +(\d+)/) {
+if (defined $free_result && $free_result =~ /Mem: +(\d+)/) {
   $at_least_memory_size = $1;
 }
 
