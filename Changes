@@ -1,4 +1,4 @@
-0.990156 (Not yet released)
+0.990156 2026-04-08
 
   [Documentation]
     - Consolidated all documentation links into SPVM::Document to avoid duplicate maintenance and improve scannability.
