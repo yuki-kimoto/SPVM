@@ -122,12 +122,7 @@ sub new {
   }
 
   unless (exists $self->{exe_libcpp_ldflags}) {
-    if ($^O eq 'darwin') {
-      $self->exe_libcpp_ldflags(['-lc++']);
-    }
-    else {
-      $self->exe_libcpp_ldflags([]);
-    }
+    $self->exe_libcpp_ldflags([]);
   }
 
   unless (exists $self->{static_lib_braces}) {
