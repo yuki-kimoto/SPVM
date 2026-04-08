@@ -177,8 +177,6 @@ SPVM::Builder::CompileInfo class manages information for a single compilation un
 
 =head1 Super Class
 
-L<SPVM::Builder::CommandInfo>
-
 This class inherits the fields and instance methods of L<SPVM::Builder::CommandInfo>.
 
 =head1 Fields
