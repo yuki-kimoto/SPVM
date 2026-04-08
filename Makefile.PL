@@ -80,7 +80,7 @@ my $std = $default_config->std;
 # optimize
 unless ($optimize) {
   if ($devel) {
-    $optimize = "-O0 -g3";
+    $optimize = "-O0 -g";
   }
   
   unless ($optimize) {

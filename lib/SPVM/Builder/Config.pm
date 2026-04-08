@@ -562,7 +562,7 @@ Examples:
 
   $config->optimize('-O3 -DNDEBUG');
   $config->optimize('-O2');
-  $config->optimize('-g3 -O0');
+  $config->optimize('-g -O0');
 
 =head2 position_independent_code_ccflags
 

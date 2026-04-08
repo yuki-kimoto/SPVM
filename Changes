@@ -9,6 +9,9 @@
   [Incompatible Changes]
     - Renamed the object_files field in SPVM::Builder::LinkInfo to object_file_infos to clarify it contains SPVM::Builder::ObjectFileInfo objects.
   
+  [Changes]
+    * Update the default debug optimization flag from -g3 to -g across Makefile.PL, configuration files, and tests to follow standard practices.
+    
   [Internal Changes]
     - Changed the global lock file to a hidden file in SPVM::Builder.
     - Improved SPVM::Builder::Config to allow simplifying C++11 configurations using the new new_cpp11 method.
