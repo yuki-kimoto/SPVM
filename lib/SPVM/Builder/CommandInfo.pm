@@ -44,7 +44,7 @@ SPVM::Builder::CommandInfo - Command Information
 
 =head1 Description
 
-The SPVM::Builder::CommandInfo class has methods to manipulate Command information.
+SPVM::Builder::CommandInfo class manages command information.
 
 =head1 Fields
 
@@ -104,7 +104,7 @@ Gets and sets the C<end_time> field. It is a Unix timestamp in milliseconds when
   my $tmp_dir = $command_info->tmp_dir;
   $command_info->tmp_dir($tmp_dir);
 
-Gets and sets the C<tmp_dir> field. It is a directory where the stdout and stderr log files of the command are stored.
+Gets and sets the C<tmp_dir> field. It is a directory where the stderr log file and other temporary files of the command are stored.
 
 =head2 process_id
 
@@ -117,17 +117,23 @@ Gets and sets the C<process_id> field. It is the process ID of the command.
 
 =head2 create_command
 
-  my $compile_command = $compile_info->create_command;
+  my $command = $command_info->create_command;
+  my $command_no_output = $command_info->create_command({no_output_option => 1});
 
-Creates an array reference of the command conponents, and returns it.
+Creates an array reference of the command components, and returns it.
+
+If the C<no_output_option> option is a true value, the output option (e.g. C<-o output_file>) is not added to the command.
 
 This method is meant to be implemented in child classes.
 
 =head2 create_command_string
 
-  my $compile_command_string = $compile_info->create_command_string;
+  my $command_string = $command_info->create_command_string;
+  my $command_string_no_output = $command_info->create_command_string({no_output_option => 1});
 
-Converts the array reference of the compilation command returned by the L</"create_command"> method into a single string that can be executed in a shell (such as C<sh> or C<bash>) or the Windows Command Prompt (C<cmd.exe>).
+Converts the array reference of the command returned by the L</"create_command"> method into a single string that can be executed in a shell (such as C<sh> or C<bash>) or the Windows Command Prompt (C<cmd.exe>).
+
+If the C<no_output_option> option is a true value, this option is passed to the L</"create_command"> method, and the output option is not included in the returned string.
 
 Each argument is automatically and appropriately quoted only when necessary (e.g., containing spaces or special characters) according to the operating system (OS) to ensure it can be safely executed as a command line.
 
@@ -135,17 +141,31 @@ Return Value Examples:
 
 =over 2
 
-=item * On UNIX/Linux (Only strings with special characters like C<=> or spaces are quoted):
+=item * On UNIX/Linux:
 
   gcc -c -o foo.o -O2 '-std=c99' -Ipath/include foo.c
 
-=item * On Windows (Only strings with characters like spaces or C<"> are quoted):
+  # With no_output_option => 1
+  gcc -c -O2 '-std=c99' -Ipath/include foo.c
+
+=item * On Windows:
 
   gcc -c -o foo.o -O2 -std=c99 -Ipath/include foo.c
 
+  # With no_output_option => 1
+  gcc -c -O2 -std=c99 -Ipath/include foo.c
+
 =back
 
-=cut
+=head1 Well Knowned Child Classes
+
+=over
+
+=item * L<SPVM::Builder::LinkInfo>
+
+=item * L<SPVM::Builder::CompileInfo>
+
+=back
 
 =head1 Copyright & License
 
