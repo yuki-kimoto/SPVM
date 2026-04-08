@@ -24,10 +24,10 @@ ok(SPVM::TestCase::UseResource::Basic->test);
   
   # Find the object file under the hash-based directory
   # Use glob to skip hash layers (e.g., ab/cdef...)
-  my ($object_file) = glob "$ENV{SPVM_BUILD_DIR}/work/object/*/*/SPVM/TestCase/Resource/Mylib1.native/src/mylib1_source1.o";
+  my ($object_file_info) = glob "$ENV{SPVM_BUILD_DIR}/work/object/*/*/SPVM/TestCase/Resource/Mylib1.native/src/mylib1_source1.o";
   
   # Check if the object file exists
-  ok($object_file && -f $object_file);
+  ok($object_file_info && -f $object_file_info);
 }
 
 {

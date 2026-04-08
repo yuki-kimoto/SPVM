@@ -9,15 +9,15 @@ use SPVM::Builder::LinkInfo;
 {
   my $config = SPVM::Builder::Config->new;
   
-  my $object_file = SPVM::Builder::LinkInfo->new(config => $config);
+  my $object_file_info = SPVM::Builder::LinkInfo->new(config => $config);
   
-  is(ref $object_file, 'SPVM::Builder::LinkInfo');
+  is(ref $object_file_info, 'SPVM::Builder::LinkInfo');
   
-  $object_file->config("test");
-  is($object_file->config(), "test");
+  $object_file_info->config("test");
+  is($object_file_info->config(), "test");
   
-  $object_file->object_files("test");
-  is($object_file->object_files(), "test");
+  $object_file_info->object_file_infos("test");
+  is($object_file_info->object_file_infos(), "test");
 }
 
 done_testing;

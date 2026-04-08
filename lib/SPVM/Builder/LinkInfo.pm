@@ -11,7 +11,7 @@ use SPVM::Builder::Accessor 'has';
 
 # Fields
 has [qw(
-  object_files
+  object_file_infos
   dl_func_list
 )];
 
@@ -20,7 +20,7 @@ sub new {
   my $class = shift;
   
   my $self = {
-    object_files => [],
+    object_file_infos => [],
     dl_func_list => [],
     @_
   };
@@ -51,8 +51,8 @@ sub create_command {
   my $ld = $config->ld;
   
   my $output_file = $config->output_file;
-  my $object_files = $self->object_files;
-  my $object_file_names = [map { $_->to_string; } @$object_files];
+  my $object_file_infos = $self->object_file_infos;
+  my $object_file_names = [map { $_->to_string; } @$object_file_infos];
   
   my $ldflags = $self->create_ldflags;
   
@@ -154,12 +154,12 @@ L<SPVM::Builder::CommandInfo>
 
 =head1 Fields
 
-=head2 object_files
+=head2 object_file_infos
 
-  my $object_files = $link_info->object_files;
-  $link_info->object_files($object_files);
+  my $object_file_infos = $link_info->object_file_infos;
+  $link_info->object_file_infos($object_file_infos);
 
-Gets and sets the C<object_files> field, an array reference of L<SPVM::Builder::ObjectFileInfo> objects.
+Gets and sets the C<object_file_infos> field, an array reference of L<SPVM::Builder::ObjectFileInfo> objects.
 
 =head2 dl_func_list
 
@@ -180,7 +180,7 @@ Field Default Values:
 
 =over 2
 
-=item * L</"object_files">
+=item * L</"object_file_infos">
 
 []
 
@@ -214,7 +214,7 @@ Return Value Examples:
 
 Creates an array reference of the linker options, and returns it.
 
-The output file L<"output_file"|SPVM::Builder::CommandInfo/"output_file"> and the object files L</"object_files"> are not contained.
+The output file L<"output_file"|SPVM::Builder::CommandInfo/"output_file"> and the object files L</"object_file_infos"> are not contained.
 
 Return Value Examples:
 

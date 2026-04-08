@@ -270,12 +270,12 @@ sub build_parallel {
       my $ctx = $class_to_context{$category}{$class_name};
       my $compile_infos = $ctx->{compile_infos};
       
-      my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
-      unless (@$object_files) {
-        confess("[Unexpected Error]\$object_files must have object files for $class_name.");
+      my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
+      unless (@$object_file_infos) {
+        confess("[Unexpected Error]\$object_file_infos must have object files for $class_name.");
       }
       
-      my $link_info = $cc->prepare_link($class_name, $object_files, $ctx->{config});
+      my $link_info = $cc->prepare_link($class_name, $object_file_infos, $ctx->{config});
       $ctx->{link_info} = $link_info;
       push @all_link_infos, $link_info;
     }

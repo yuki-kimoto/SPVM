@@ -292,19 +292,19 @@ sub build_exe_file {
   
   $cc->command_parallel($compile_infos);
   
-  my $object_files = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
+  my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   
   # Add external object files
   for my $external_object_file (@{$config_global->external_object_files}) {
-    push @$object_files, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
+    push @$object_file_infos, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
   
-  unless (@$object_files) {
-    confess("[Unexpected Error]\$object_files must have object files.");
+  unless (@$object_file_infos) {
+    confess("[Unexpected Error]\$object_file_infos must have object files.");
   }
   
   # Link object files and generate a dynamic library
-  my $link_info = $cc->prepare_link($class_name, $object_files, $config_global);
+  my $link_info = $cc->prepare_link($class_name, $object_file_infos, $config_global);
   
   $cc->command_parallel([$link_info]);
   

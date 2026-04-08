@@ -86,7 +86,7 @@ Always true.
 
 =head2 stringify
 
-  my $object_file_info_name = "$object_file_info";
+  my $object_file_name = "$object_file_info";
 
 Alias for L</"to_string"> method.
 

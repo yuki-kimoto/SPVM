@@ -760,7 +760,7 @@ sub command_parallel {
 }
 
 sub prepare_link {
-  my ($self, $class_name, $object_files, $config) = @_;
+  my ($self, $class_name, $object_file_infos, $config) = @_;
   
   unless (defined $class_name) {
     confess("A class name must be defined.");
@@ -774,11 +774,11 @@ sub prepare_link {
     confess("[Unexpected Error]A config must be defined.");
   }
   
-  unless ($object_files) {
+  unless ($object_file_infos) {
     return;
   }
   
-  my $link_info = $self->create_link_info($class_name, $object_files, $config);
+  my $link_info = $self->create_link_info($class_name, $object_file_infos, $config);
   
   my $runtime = $self->runtime;
   
@@ -796,7 +796,7 @@ sub prepare_link {
   
   my $output_file = $config->output_file;
   
-  my @object_files = map { "$_" } @{$link_info->object_files};
+  my @object_file_infos = map { "$_" } @{$link_info->object_file_infos};
   
   unless ($config->isa('SPVM::Builder::Config::Linker')) {
     confess("[Unexpected Error]The config must be an SPVM::Builder::Config object");
@@ -807,7 +807,7 @@ sub prepare_link {
   
   my $link_info_output_file = $config->output_file;
   
-  my $link_info_object_files = $link_info->object_files;
+  my $link_info_object_files = $link_info->object_file_infos;
   
   my $object_file_names = [map { $_->to_string; } @$link_info_object_files];
   
@@ -829,7 +829,7 @@ sub prepare_link {
   my $create_command_hash_options = {
     command => $ld_command_string_no_output_option,
     command_version => $ld_version,
-    dependent_files => [@object_files],
+    dependent_files => [@object_file_infos],
   };
   my $command_hash = $ninja->create_command_hash($create_command_hash_options);
   
@@ -865,9 +865,9 @@ sub prepare_link {
 sub spawn_link {
   my ($self, $link_info) = @_;
   
-  my $object_files = $link_info->object_files;
+  my $object_file_infos = $link_info->object_file_infos;
   
-  unless (@$object_files) {
+  unless (@$object_file_infos) {
     confess("[Unexpected Error]Object files must be at least one.");
   }
   
@@ -887,7 +887,7 @@ sub spawn_link {
   my $ld_cmd = $link_info->create_command;
   my $ld_command_string = $link_info->create_command_string;
   
-  my $link_info_object_files = $link_info->object_files;
+  my $link_info_object_files = $link_info->object_file_infos;
   
   my $object_file_names = [map { $_->to_string; } @$link_info_object_files];
   
@@ -980,7 +980,7 @@ sub spawn_link_command {
 }
 
 sub create_link_info {
-  my ($self, $class_name, $object_files, $config) = @_;
+  my ($self, $class_name, $object_file_infos, $config) = @_;
   
   my $category = $config->category;
   
@@ -1030,7 +1030,7 @@ sub create_link_info {
   my $link_info = SPVM::Builder::LinkInfo->new(
     class_name => $class_name,
     config => $config,
-    object_files => $object_files,
+    object_file_infos => $object_file_infos,
   );
   
   return $link_info;

@@ -1146,7 +1146,7 @@ Examples:
   $config->add_before_link_cb(sub {
     my ($config, $link_info) = @_;
     
-    my $object_files = $link_info->object_files;
+    my $object_file_infos = $link_info->object_file_infos;
     
     # Do something
     
@@ -1163,7 +1163,7 @@ Examples:
   $config->add_after_link_cb(sub {
     my ($config, $link_info) = @_;
     
-    my $object_files = $link_info->object_files;
+    my $object_file_infos = $link_info->object_file_infos;
     
     # Do something
     
