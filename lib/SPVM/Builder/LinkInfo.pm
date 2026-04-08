@@ -138,11 +138,11 @@ sub create_ldflags {
 
 =head1 Name
 
-SPVM::Builder::LinkInfo - Linker Information
+SPVM::Builder::LinkInfo - Link Information
 
 =head1 Description
 
-The SPVM::Builder::LinkInfo class has methods to manipulate linker information.
+SPVM::Builder::LinkInfo class manages information for a link.
 
 =head1 Usage
 
@@ -161,13 +161,20 @@ L<SPVM::Builder::CommandInfo>
 
 Gets and sets the C<object_files> field, an array reference of L<SPVM::Builder::ObjectFileInfo> objects.
 
+=head2 dl_func_list
+
+  my $dl_func_list = $link_info->dl_func_list;
+  $link_info->dl_func_list($dl_func_list);
+
+Gets and sets the C<dl_func_list> field. It is an array reference of function names to be exported from a dynamic library for Windows.
+
 =head1 Class Methods
 
 =head2 new
 
   my $link_info = SPVM::Builder::LinkInfo->new(%fields);
 
-Creates a new C<SPVM::Builder::LinkInfo> object given L</"Fields">.
+Creates a new C<SPVM::Builder::LinkInfo> object given L</"Fields">, and returns it.
 
 Field Default Values:
 
@@ -181,19 +188,25 @@ Field Default Values:
 
 Exceptions:
 
-The "config" field must be defined.
+L<"config"|SPVM::Builder::CommandInfo/"config"> field must be defined.
 
 =head1 Instance Methods
 
 =head2 create_command
 
   my $link_command = $link_info->create_command;
+  my $link_command_no_output = $link_info->create_command({no_output_option => 1});
 
 Creates an array reference of the link command, and returns it.
+
+If the C<no_output_option> option is a true value, the output option (e.g. C<-o dylib.so>) is not added to the command.
 
 Return Value Examples:
 
   [qw(cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz)]
+
+  # With no_output_option => 1
+  [qw(cc foo.o bar.o -shared -O2 -Llibdir -lz)]
 
 =head2 create_ldflags
 
@@ -201,7 +214,7 @@ Return Value Examples:
 
 Creates an array reference of the linker options, and returns it.
 
-The output file L</"output_file"> and the object files L</"object_files"> are not contained.
+The output file L<"output_file"|SPVM::Builder::CommandInfo/"output_file"> and the object files L</"object_files"> are not contained.
 
 Return Value Examples:
 

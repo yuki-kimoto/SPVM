@@ -177,7 +177,7 @@ SPVM::Builder::CompileInfo class manages information for a single compilation un
 
 =head1 Super Class
 
-This class inherits the fields and instance methods of L<SPVM::Builder::CommandInfo>.
+L<SPVM::Builder::CommandInfo>
 
 =head1 Fields
 
@@ -251,12 +251,18 @@ L<"config"|SPVM::Builder::CommandInfo/"config"> field must be defined.
 =head2 create_command
 
   my $compile_command = $compile_info->create_command;
+  my $compile_command_no_output = $compile_info->create_command({no_output_option => 1});
 
 Creates an array reference of the compilation command, and returns it.
+
+If the C<no_output_option> option is a true value, the output option (e.g. C<-o foo.o>) is not added to the command.
 
 Return Value Examples:
 
   [qw(cc -o foo.o -c -O2 -Ipath/include foo.c)]
+
+  # With no_output_option => 1
+  [qw(cc -c -O2 -Ipath/include foo.c)]
 
 =head2 create_ccflags
 
