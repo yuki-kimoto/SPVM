@@ -176,7 +176,15 @@ sub new {
 
   # symbol_strip_ldflags
   unless (exists $self->{symbol_strip_ldflags}) {
-    $self->symbol_strip_ldflags(['-s']);
+    # Windows (MinGW/MSVC) binaries can be significantly larger due to embedded 
+    # debug symbols. Using -s effectively reduces this size. 
+    # On macOS, -s is obsolete. On Linux, keeping symbols by default is preferred.
+    if ($^O eq 'MSWin32') {
+      $self->symbol_strip_ldflags(['-s']);
+    }
+    else {
+      $self->symbol_strip_ldflags([]);
+    }
   }
 
   # libgcc_ldflags
