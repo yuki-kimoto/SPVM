@@ -511,3 +511,47 @@ sub DESTROY {
 # Open the log file in new and close the log file in DESTROY.
 
 1;
+
+=head1 Name
+
+SPVM::Builder::Ninja - Incremental Build Management using Ninja Log Format
+
+=head1 Description
+
+L<SPVM::Builder::Ninja> manages incremental builds for the SPVM build system. It uses a build log format compatible with the Ninja build tool (C<.ninja_log>) to determine if a target file needs to be regenerated.
+
+Unlike traditional C<make>, which relies solely on file modification times (mtime), this class provides a more robust re-generation logic by considering command-line arguments and the content hashes of dependent files.
+
+=head1 Overview of the Build System
+
+This class implements a high-performance and reliable build system based on the following four pillars:
+
+=head2 1. Content-Based Re-generation (Command Hash)
+
+To ensure build correctness, this system generates a B<SHA-1 hash (Command Hash)> by combining various factors:
+
+=over 2
+
+=item * The command-line string itself.
+
+=item * The version of the compiler or tool used.
+
+=item * The paths and B<content hashes> of all dependent files (e.g., header files).
+
+=back
+
+This allows the system to accurately detect when a rebuild is necessary, such as when a source file is modified, an include file is changed, or a compiler flag is updated (e.g., from C<-O2> to C<-O3>).
+
+=head2 2. Ninja-Compatible Log Management
+
+Each successful build entry is recorded in C<.ninja_log>, including the output file name, command hash, start/end times, and mtime. This format is compatible with Ninja v5. The class also includes a "Recompact" feature that cleans up old entries and rewrites the log to prevent it from growing indefinitely.
+
+=head2 3. Concurrency Safety via File Locking
+
+SPVM supports parallel builds to leverage multi-core processors. To prevent data corruption when multiple processes write to the same log file, this class implements strict B<advisory locking (LOCK_SH / LOCK_EX)> using a C<.ninja_lock> file. This ensures that concurrent build processes can operate safely and efficiently.
+
+=head2 4. Dependency Scanning
+
+The system recursively scans specified directories to collect dependencies such as C/C++ header files. Since the state of these files is reflected in the command hash, any change to a deep-level header file will correctly trigger a re-compilation of the dependent source files.
+
+=cut
