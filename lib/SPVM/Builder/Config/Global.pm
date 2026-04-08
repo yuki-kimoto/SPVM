@@ -167,6 +167,8 @@ sub compile_rule {
   });
 }
 
+sub compile_rule_any { shift->compile_rule(undef, @_) }
+
 sub _match_apply {
   my ($config, $condition, $match_config_or_cb) = @_;
   
@@ -261,8 +263,6 @@ sub _match_apply {
     }
   }
 }
-
-sub match_any { shift->compile_rule(undef, @_) }
 
 1;
 
