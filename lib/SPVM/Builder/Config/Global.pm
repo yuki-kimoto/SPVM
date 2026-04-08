@@ -83,6 +83,7 @@ sub new {
       optimize           => '', 
       debug_info_ccflags => ['-g'],
       ndebug_ccflags     => [],
+      symbol_strip_ldflags => [],
     }
   );
 
