@@ -187,11 +187,15 @@ SPVM::Builder::ScriptInfo - Script Information
 
 =head1 Description
 
-The SPVM::Builder::ScriptInfo class has methods to manipulate SPVM script information.
+SPVM::Builder::ScriptInfo class manages SPVM script information.
 
 =head1 Usage
-
-  my $config_info = SPVM::Builder::ScriptInfo->new(class_name => "Foo");
+  
+  my $script_name = 'myapp.spvm';
+  my $script_info = SPVM::Builder::ScriptInfo->new(script_name => $script_name);
+  
+  my $class_name = 'MyClass';
+  my $script_info = SPVM::Builder::ScriptInfo->new(class_name => $class_name);
 
 =head1 Class Methods
 
@@ -221,7 +225,7 @@ A script name.
 
 Exceptions:
 
-The "class_name" option or the "script_name" option must be defined. Otherwise, an exception is thrown.
+C<class_name> option or C<script_name> option must be defined. Otherwise, an exception is thrown.
 
 =head1 Instance Methods
 
