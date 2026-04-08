@@ -796,7 +796,7 @@ sub prepare_link {
   
   my $output_file = $config->output_file;
   
-  my @object_file_infos = map { "$_" } @{$link_info->object_file_infos};
+  my @object_file_names = map { "$_" } @{$link_info->object_file_infos};
   
   unless ($config->isa('SPVM::Builder::Config::Linker')) {
     confess("[Unexpected Error]The config must be an SPVM::Builder::Config object");
@@ -829,7 +829,7 @@ sub prepare_link {
   my $create_command_hash_options = {
     command => $ld_command_string_no_output_option,
     command_version => $ld_version,
-    dependent_files => [@object_file_infos],
+    dependent_files => [@object_file_names],
   };
   my $command_hash = $ninja->create_command_hash($create_command_hash_options);
   
