@@ -12,8 +12,8 @@ use SPVM::Builder::Accessor 'has';
 # Fields
 has [qw(
   source_rel_file
-  category
   dependent_files
+  category
 )];
 
 # Class methods
@@ -81,8 +81,6 @@ sub create_ccflags {
   my $config = $self->config;
   
   my $class_name = $config->class_name;
-  
-  my $config_category = $config->category;
   
   my @compile_command_args;
   
@@ -171,17 +169,39 @@ sub source_file {
 
 =head1 Name
 
-SPVM::Builder::CompileInfo - Compiler Information
+SPVM::Builder::CompileInfo - Compilation Unit Information
 
 =head1 Description
 
-The SPVM::Builder::CompileInfo class has methods to manipulate compiler information.
+SPVM::Builder::CompileInfo class manages information for a single compilation unit.
 
 =head1 Super Class
 
 L<SPVM::Builder::CommandInfo>
 
+This class inherits the fields and instance methods of L<SPVM::Builder::CommandInfo>.
+
 =head1 Fields
+
+=head2 source_rel_file
+
+  my $source_rel_file = $compile_info->source_rel_file;
+  $compile_info->source_rel_file($source_rel_file);
+
+Gets and sets the C<source_rel_file> field. It is a relative path of a source file.
+
+The base directory of this path is the L<SPVM::Builder::Config#cc_input_dir|SPVM::Builder::Config/"cc_input_dir"> field.
+
+=head2 dependent_files
+
+  my $dependent_files = $compile_info->dependent_files;
+  $compile_info->dependent_files($dependent_files);
+
+Gets and sets the C<dependent_files> field. It is an array reference of the files that the source file depends on.
+
+If this field is defined, these files are added to the dependency list of a build rule in L<SPVM::Builder::Ninja>.
+
+If one of the dependent files is changed, the source file is recompiled.
 
 =head2 category
 
@@ -190,16 +210,31 @@ L<SPVM::Builder::CommandInfo>
 
 Gets and sets the C<category> field.
 
-These are C<native_class>, C<native_source>, C<precompile_class>, C<spvm>, C<spvm_core>.
+The category must be one of the following values:
 
-=head2 dependent_files
+=over 2
 
-  my $dependent_files = $compile_info->dependent_files;
-  $compile_info->dependent_files($dependent_files);
+=item * C<bootstrap>
 
-Gets and sets the C<dependent_files> field, an array reference of the dependent files of the source file.
+A bootstrap file.
 
-If this field is defined, these files are added to the dependency list of the C<ninja> build rule.
+=item * C<spvm_core>
+
+An SPVM core source file.
+
+=item * C<native_source>
+
+A native source file in C<src/> directory.
+
+=item * C<native_class>
+
+A native class file.
+
+=item * C<precompile_class>
+
+A precompile class file.
+
+=back
 
 =head1 Class Methods
 
@@ -207,13 +242,11 @@ If this field is defined, these files are added to the dependency list of the C<
 
   my $compile_info = SPVM::Builder::CompileInfo->new(%fields);
 
-Creates a new L<SPVM::Builder::CompileInfo> object given L</"Fields">.
-
-=back
+Creates a new L<SPVM::Builder::CompileInfo> object given L</"Fields">, and returns it.
 
 Exceptions:
 
-The "config" field must be defined.
+L<"config"|SPVM::Builder::CommandInfo/"config"> field must be defined.
 
 =head1 Instance Methods
 
@@ -231,9 +264,9 @@ Return Value Examples:
 
   my $config_args = $compile_info->create_ccflags;
 
-Creates n array reference of the compilation options, and returns it.
+Creates an array reference of the compilation options, and returns it.
 
-The source file L<"source_file"> and the output file L</"output_file"> are not contained.
+The source file L<"source_file"> and the output file L<"output_file"|SPVM::Builder::CommandInfo/"output_file"> are not contained.
 
 Return Value Examples:
 
@@ -244,7 +277,7 @@ Return Value Examples:
   my $source_file = $compile_info->source_file;
   $compile_info->source_file($source_file);
 
-Gets the source file path from C<config->cc_input_dir> and C</"source_rel_file">.
+Gets the source file path from the L<SPVM::Builder::Config#cc_input_dir|SPVM::Builder::Config/"cc_input_dir"> field and the L</"source_rel_file"> field.
 
 =head1 Copyright & License
 
