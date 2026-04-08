@@ -167,9 +167,6 @@ WriteMakefile(
     'Test::More' => '0.92',
   },
   NORECURS => 1,
-  macro => {
-    TEST_VERBOSE => "(\$ENV{HARNESS_OPTIONS}=q(j$jobs), 0)",
-  },
 );
 
 {
@@ -185,100 +182,103 @@ WriteMakefile(
   print "make disttest && make dist && make install\n\n";
 }
 
-# Add Build shared library make rule
-sub MY::postamble {
-  
-  # The content of Makefile
-  my $make_rule = '';
-  
-  unless ($no_build_spvm_modules) {
-    require SPVM::Builder::Util::API;
-    
-    # For loading resources
-    local @INC = @INC;
-    unshift @INC, 'lib';
-    
-    my $options = {};
-    if (defined $optimize) {
-      $options->{optimize} = $optimize;
-    }
-    $options->{dependent_files} = ['SPVM.xs'];
-    
-    $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)'];
-    
-    # Test create_make_rule for backward compatibility and practical testing
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn', $options);
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn', $options);
-    
-    # Native classes (excluding Fn)
-    $options->{native_classes} = [
-      'Format',
-      'Sync::Mutex',
-      'Native',
-      'Native::Compiler',
-      'Native::ClassFile',
-      'Native::Runtime',
-      'Native::Env',
-      'Native::Stack',
-      'Native::BasicType',
-      'Native::ClassVar',
-      'Native::Field',
-      'Native::Method',
-      'Native::Arg',
-      'Native::MethodCall',
-      'Native::API',
-      'Native::Constant',
-    ];
-
-    # Precompile classes (excluding Fn)
-    $options->{precompile_classes} = [
-      'Format',
-      'Sort',
-      'Packer',
-    ];
-    
-    # Specify text files containing additional classes for practical tests
-    # These files contain newline-separated class names like 'Array'
-    $options->{native_classes_file} = 'native_classes.txt';
-    $options->{precompile_classes_file} = 'precompile_classes.txt';
-    
-    # Generate a single parallel make rule for the rest
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel($options);
-    
-  }
-  
-  unless ($no_precompile_tests) {
-    # Create precompile tests
-    my @test_files;
-    find(
-      sub {
-        if (-f $File::Find::name) {
-          my $rel_path = $File::Find::name;
-          $rel_path =~ s|^\Q$FindBin::Bin/||;
-          
-          # Slip hidden files
-          return if $rel_path =~ /[\/\\]\./;
-
-          push @test_files, $rel_path;
-        }
-      },
-      "$FindBin::Bin/t/02_vm"
-    );
-    my $test_files_str = join(' ', @test_files);
-    
-    my $time_stamp_file = "$FindBin::Bin/t/03_precompile/time_stamp.txt";
-    
-    $make_rule .= "dynamic :: $time_stamp_file\n";
-    $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
-
-    $make_rule .= "$time_stamp_file :: $test_files_str\n";
-    $make_rule .= "\tperl t/utils/copy_vm_to_precompile.pl\n";
-  }
-  
-  return $make_rule;
-}
-
 package MY {
+  
+  use File::Find 'find';
+  
+  # Add Build shared library make rule
+  sub MY::postamble {
+    
+    # The content of Makefile
+    my $make_rule = '';
+    
+    unless ($no_build_spvm_modules) {
+      require SPVM::Builder::Util::API;
+      
+      # For loading resources
+      local @INC = @INC;
+      unshift @INC, 'lib';
+      
+      my $options = {};
+      if (defined $optimize) {
+        $options->{optimize} = $optimize;
+      }
+      $options->{dependent_files} = ['SPVM.xs'];
+      
+      $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)'];
+      
+      # Test create_make_rule for backward compatibility and practical testing
+      $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn', $options);
+      $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn', $options);
+      
+      # Native classes (excluding Fn)
+      $options->{native_classes} = [
+        'Format',
+        'Sync::Mutex',
+        'Native',
+        'Native::Compiler',
+        'Native::ClassFile',
+        'Native::Runtime',
+        'Native::Env',
+        'Native::Stack',
+        'Native::BasicType',
+        'Native::ClassVar',
+        'Native::Field',
+        'Native::Method',
+        'Native::Arg',
+        'Native::MethodCall',
+        'Native::API',
+        'Native::Constant',
+      ];
+
+      # Precompile classes (excluding Fn)
+      $options->{precompile_classes} = [
+        'Format',
+        'Sort',
+        'Packer',
+      ];
+      
+      # Specify text files containing additional classes for practical tests
+      # These files contain newline-separated class names like 'Array'
+      $options->{native_classes_file} = 'native_classes.txt';
+      $options->{precompile_classes_file} = 'precompile_classes.txt';
+      
+      # Generate a single parallel make rule for the rest
+      $make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel($options);
+      
+    }
+    
+    unless ($no_precompile_tests) {
+      # Create precompile tests
+      my @test_files;
+      find(
+        sub {
+          if (-f $File::Find::name) {
+            my $rel_path = $File::Find::name;
+            $rel_path =~ s|^\Q$FindBin::Bin/||;
+            
+            # Slip hidden files
+            return if $rel_path =~ /[\/\\]\./;
+
+            push @test_files, $rel_path;
+          }
+        },
+        "$FindBin::Bin/t/02_vm"
+      );
+      my $test_files_str = join(' ', @test_files);
+      
+      my $time_stamp_file = "$FindBin::Bin/t/03_precompile/time_stamp.txt";
+      
+      $make_rule .= "dynamic :: $time_stamp_file\n";
+      $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
+
+      $make_rule .= "$time_stamp_file :: $test_files_str\n";
+      $make_rule .= "\tperl t/utils/copy_vm_to_precompile.pl\n";
+    }
+    
+    return $make_rule;
+  }
+  
   sub test_via_harness {
     my ($self, @args) = @_;
     
