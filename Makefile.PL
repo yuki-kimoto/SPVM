@@ -167,16 +167,19 @@ WriteMakefile(
     'Test::More' => '0.92',
   },
   NORECURS => 1,
+  macro => {
+    FULLPERLRUN => "HARNESS_OPTIONS=j$jobs \$(FULLPERL)",
+  },
 );
 
 {
   print "\n";
   
   print "# Parallel build and test command:\n";
-  print "MAKEFLAGS=j$jobs make && HARNESS_OPTIONS=j$jobs make test\n\n";
+  print "MAKEFLAGS=j$jobs make && make test\n\n";
   
   print "# Parallel build and test command with --output-sync=target:\n";
-  print "MAKEFLAGS=j$jobs make --output-sync=target && HARNESS_OPTIONS=j$jobs make test\n\n";
+  print "MAKEFLAGS=j$jobs make --output-sync=target && make test\n\n";
 
   print "# Release:\n";
   print "make disttest && make dist && make install\n\n";
