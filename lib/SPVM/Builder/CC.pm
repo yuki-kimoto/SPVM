@@ -557,7 +557,11 @@ sub spawn_compile_source_file {
       });
     }
     
-    $process_id = &spawn_compile_command($command_tmp_dir, $output_file, @$cc_cmd);
+    my $build_dir = $self->builder->build_dir;
+    my $output_lock_file = SPVM::Builder::Util::get_lock_file($output_file, $build_dir);
+    mkpath dirname $output_lock_file;
+    
+    $process_id = &spawn_compile_command($command_tmp_dir, $output_file, $output_lock_file, @$cc_cmd);
     $compile_info->process_id($process_id);
   }
   
@@ -928,10 +932,9 @@ sub spawn_link {
     my $link_info_ldflags = $link_info->create_ldflags;
     SPVM::Builder::Util::spurt_binary($ldflags_file, join("\n", @$link_info_ldflags));
     
-    # [Added] Generate lock file path using SHA1 of the normalized output file path
     my $build_dir = $self->builder->build_dir;
-    my $lock_output_file = SPVM::Builder::Util::get_lock_file($output_file, $build_dir);
-    mkpath dirname $lock_output_file;
+    my $output_lock_file = SPVM::Builder::Util::get_lock_file($output_file, $build_dir);
+    mkpath dirname $output_lock_file;
     
     unless ($quiet) {
       $self->builder->global_write_lock(sub {
@@ -951,7 +954,7 @@ sub spawn_link {
       $dl_func_list_file,
       $object_file_names_file,
       $ldflags_file,
-      $lock_output_file,
+      $output_lock_file,
     );
     $link_info->process_id($process_id);
   }

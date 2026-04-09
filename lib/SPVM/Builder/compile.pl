@@ -8,7 +8,7 @@ use File::Spec;
 
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));
-my ($command_tmp_dir, $output_file, @cc_cmd) = @argv;
+my ($command_tmp_dir, $output_file, $output_lock_file, @cc_cmd) = @argv;
 
 # Define log file paths
 my $log_stdout = "$command_tmp_dir/stdout.log";
@@ -32,21 +32,19 @@ exit($exit_status);
 
 # Copied from SPVM::Builder::Util#lock_output_file
 sub lock_output_file {
-  my ($output_file, $cb) = @_;
+  my ($output_lock_file, $cb) = @_;
   
-  # Get the base filename (e.g., "myapp.o" or "bootstrap.c")
-  my $base_name = basename($output_file);
-  my $output_dir = dirname($output_file);
-  
-  # Create lock file path: [dir]/[base_name].lock
-  my $lock_file = "$output_dir/$base_name.lock";
-  
-  open my $lock_fh, '>>', $lock_file
-    or die "Can't open lock file $lock_file: $!";
+  unless (defined $output_lock_file) {
+    die "Lock file path must be defined.";
+  }
+
+  # Open the provided lock file
+  open my $lock_fh, '>>', $output_lock_file
+    or die "Can't open lock file $output_lock_file: $!";
   
   # Exclusive lock (Wait if another process is writing)
   flock($lock_fh, LOCK_EX)
-    or die "Can't get lock on $lock_file: $!";
+    or die "Can't get lock on $output_lock_file: $!";
   
   my $error;
   eval {
@@ -54,8 +52,9 @@ sub lock_output_file {
   };
   $error = $@;
   
-  # Unlock (flock will also be released when $lock_fh is closed or process exits)
+  # Unlock and close
   flock($lock_fh, LOCK_UN);
+  close $lock_fh;
   
   if ($error) {
     die $error;
