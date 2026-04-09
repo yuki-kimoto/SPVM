@@ -10,6 +10,7 @@ use File::Find 'find';
 use Archive::Tar;
 use File::Copy 'copy';
 use Time::HiRes;
+use Digest::SHA 'sha1_hex';
 
 use SPVM::Builder;
 use SPVM::Builder::CC;
@@ -855,7 +856,7 @@ sub prepare_compile_bootstrap_source_file {
   # Create bootstrap C source
   my $bootstrap_source = $self->create_bootstrap_source;
   
-  my $source_rel_file = $self->create_bootstrap_source_rel_file_path;
+  my $source_rel_file = $self->create_bootstrap_source_rel_file_path($bootstrap_source);
   
   # Source file - Output
   my $bootstrap_source_file = $self->builder->create_build_src_path($source_rel_file);
@@ -1043,14 +1044,24 @@ sub parse_option_values_native_class {
 }
 
 sub create_bootstrap_source_rel_file_path {
-  my ($self) = @_;
+  my ($self, $bootstrap_source) = @_;
   
-  my $build_object_dir = $self->builder->create_build_object_path;
+  unless (defined $bootstrap_source) {
+    confess("A bootstrap source must be defined.");
+  }
+  
+  # Create a SHA-1 hex digest from the bootstrap source content
+  my $digest = sha1_hex($bootstrap_source);
+  my $dir_1 = substr($digest, 0, 2);
+  my $dir_2 = substr($digest, 2);
+  
+  # Get the base filename without extension
   my $script_name = $self->script_name;
-  my $bootstrap_source_file_base = basename $script_name;
-  $bootstrap_source_file_base =~ s/\..*$//;
-  $bootstrap_source_file_base .= '.c';
-  my $bootstrap_source_rel_file = "bootstrap/$bootstrap_source_file_base";
+  my $file_base = basename $script_name;
+  $file_base =~ s/\..*$//;
+  
+  # Final relative path: bootstrap/[xx]/[xxxx...]/[script_name].c
+  my $bootstrap_source_rel_file = "bootstrap/$dir_1/$dir_2/$file_base.c";
   
   return $bootstrap_source_rel_file;
 }
