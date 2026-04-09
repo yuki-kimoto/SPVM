@@ -14,7 +14,7 @@ use SPVM::Builder::Config;
 use Encode 'decode';
 use File::Find 'find';
 use Time::HiRes ();
-use Digest::SHA;
+use Digest::SHA 'sha1_hex';
 use Fcntl qw(:flock);
 
 # SPVM::Builder::Util is used from Makefile.PL

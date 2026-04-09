@@ -416,13 +416,7 @@ sub generate_precompile_class_source_file {
   my $source_file = "$cc_input_dir/$source_rel_file";
   
   # Generate precompile C source file
-  mkpath dirname $source_file;
-  open my $fh, '>', $source_file
-    or die "Can't create $source_file";
-  
-  binmode $fh;
-  print $fh $precompile_source;
-  close $fh;
+  SPVM::Builder::Util::spurt_binary_parallel_safe($source_file, $precompile_source);
 }
 
 sub finalize_compile_info {
