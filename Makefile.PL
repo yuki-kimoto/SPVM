@@ -285,8 +285,15 @@ package MY {
     
     my $command = $self->SUPER::test_via_harness(@args);
     
-    # Inject $ENV{HARNESS_OPTIONS}=j$jobs at the beginning of the command line for parallel tests
-    $command =~ s/(\btest_harness\()/eval chr(36) . q(ENV{HARNESS_OPTIONS}='j$jobs'), 36;$1/;
+    # Inject eval "\$ENV{HARNESS_OPTIONS}='j$jobs'" at the beginning of the command line for parallel tests
+    # Constraints for Windows shell compatibility (pwsh/cmd.exe):
+    # 1. The entire command is wrapped in double quotes.
+    # 2. No backslashes (\) to avoid escape hell.
+    # 3. No dollar signs ($) to prevent pwsh variable expansion.
+    # 4. No nested parentheses to avoid pwsh tokenization errors.
+    # 5. Only '();. are used for maximum safety.
+    # 6. Minimal symbols to avoid edge cases in shell parsing.
+    $command =~ s/(\btest_harness\()/eval chr(36) . q(ENV{HARNESS_OPTIONS}='j$jobs');$1/;
     
     return $command;
   }
