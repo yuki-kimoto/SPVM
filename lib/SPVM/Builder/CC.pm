@@ -147,6 +147,8 @@ sub prepare_compile_resources {
     }
   }
   
+  my $is_resource = $config->is_resource;
+  
   my $need_compile_resources;
   if ($config->config_global) {
     if ($class_name eq $config->config_global->class_name) {
@@ -157,7 +159,7 @@ sub prepare_compile_resources {
     }
   }
   else {
-    if ($config->is_resource) {
+    if ($is_resource) {
       $need_compile_resources = 0;
     }
     else {
@@ -270,22 +272,18 @@ sub prepare_compile_native_class {
   }
   
   my $need_native_class_file;
+  my $is_resource = $config->is_resource;
   if ($native_class_source_file) {
-    if (defined $config->is_resource) {
-      if ($config->is_resource) {
+    if ($is_resource) {
+      $need_native_class_file = 0;
+    }
+    else {
+      if ($config->config_global && $class_name eq $config->config_global->class_name) {
         $need_native_class_file = 0;
       }
       else {
-        if ($config->config_global && $class_name eq $config->config_global->class_name) {
-          $need_native_class_file = 0;
-        }
-        else {
-          $need_native_class_file = 1;
-        }
+        $need_native_class_file = 1;
       }
-    }
-    else {
-      $need_native_class_file = 1;
     }
   }
   else {
@@ -296,14 +294,6 @@ sub prepare_compile_native_class {
     unless (-f $native_class_source_file) {
       Carp::cluck("[Warning]Can't find native class source file $native_class_source_file. If this class is a resource class, set is_resource field to 1 to suppress this warning.");
     }
-  }
-  
-  my $is_resource;
-  if (defined $config->is_resource) {
-    $is_resource = $config->is_resource;
-  }
-  else {
-    $is_resource = !(defined $native_class_source_file && -f $native_class_source_file);
   }
   
   # For executable files, the resources are compiled in the executable's configuration file, so we don't compile them here.
