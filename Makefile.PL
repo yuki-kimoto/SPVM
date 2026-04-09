@@ -154,8 +154,6 @@ WriteMakefile(
         web => "https://github.com/yuki-kimoto/SPVM/issues",
       },
     },
-    x_parallel_make_jobs => $jobs,
-    x_parallel_test_jobs => $jobs,
   },
   EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
   PREREQ_PM => {
@@ -167,17 +165,20 @@ WriteMakefile(
     'Test::More' => '0.92',
   },
   NORECURS => 1,
+  macro => {
+    MAKEFLAGS => "-j$jobs",
+  }
 );
 
 {
   print "\n";
   
-  print "# Parallel build and test command:\n";
-  print "MAKEFLAGS=j$jobs make && make test\n\n";
+  print "# Build Only:\n";
+  print "make\n\n";
   
-  print "# Parallel build and test command with --output-sync=target:\n";
-  print "MAKEFLAGS=j$jobs make --output-sync=target && make test\n\n";
-
+  print "# Run Tests with Building:\n";
+  print "make test\n\n";
+  
   print "# Release:\n";
   print "make disttest && make dist && make install\n\n";
 }
