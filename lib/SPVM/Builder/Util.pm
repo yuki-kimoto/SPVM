@@ -8,7 +8,7 @@ use File::Path 'mkpath';
 use Pod::Usage 'pod2usage';
 use Getopt::Long 'GetOptionsFromArray';
 use List::Util 'min';
-use File::Basename 'dirname';
+use File::Basename 'dirname', 'basename';
 use File::Spec;
 use SPVM::Builder::Config;
 use Encode 'decode';
@@ -830,13 +830,17 @@ sub quote_literal {
 sub lock_output_file {
   my ($output_file, $cb) = @_;
   
+  # Get the base filename (e.g., "myapp.o" or "bootstrap.c")
+  my $base_name = basename($output_file);
   my $output_dir = dirname($output_file);
-  my $lock_file = "$output_dir/" . sha1_hex($output_file) . ".lock";
+  
+  # Create lock file path: [dir]/[base_name].lock
+  my $lock_file = "$output_dir/$base_name.lock";
   
   open my $lock_fh, '>>', $lock_file
     or die "Can't open lock file $lock_file: $!";
   
-  # Exclusive lock
+  # Exclusive lock (Wait if another process is writing)
   flock($lock_fh, LOCK_EX)
     or die "Can't get lock on $lock_file: $!";
   
@@ -846,7 +850,7 @@ sub lock_output_file {
   };
   $error = $@;
   
-  # Always unlock
+  # Unlock (flock will also be released when $lock_fh is closed or process exits)
   flock($lock_fh, LOCK_UN);
   
   if ($error) {

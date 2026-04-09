@@ -4,7 +4,7 @@ use ExtUtils::CBuilder;
 use File::Copy ();
 use Fcntl qw(:flock :seek);
 use Digest::SHA qw(sha1_hex);
-use File::Basename qw(dirname basename);
+use File::Basename 'dirname', 'basename';
 use MIME::Base64 qw(decode_base64);
 use File::Spec;
 
@@ -90,17 +90,21 @@ for my $tmp_file (@link_tmp_files) {
 
 exit(0);
 
+# Copied from SPVM::Builder::Util#lock_output_file
 sub lock_output_file {
   my ($output_file, $cb) = @_;
   
+  # Get the base filename (e.g., "myapp.o" or "bootstrap.c")
+  my $base_name = basename($output_file);
   my $output_dir = dirname($output_file);
-  my $lock_file = "$output_dir/" . sha1_hex($output_file) . ".lock";
   
-  # Open lock file
+  # Create lock file path: [dir]/[base_name].lock
+  my $lock_file = "$output_dir/$base_name.lock";
+  
   open my $lock_fh, '>>', $lock_file
     or die "Can't open lock file $lock_file: $!";
   
-  # Exclusive lock
+  # Exclusive lock (Wait if another process is writing)
   flock($lock_fh, LOCK_EX)
     or die "Can't get lock on $lock_file: $!";
   
@@ -110,7 +114,7 @@ sub lock_output_file {
   };
   $error = $@;
   
-  # Always unlock even if copy or link fails
+  # Unlock (flock will also be released when $lock_fh is closed or process exits)
   flock($lock_fh, LOCK_UN);
   
   if ($error) {
