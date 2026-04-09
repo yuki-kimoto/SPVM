@@ -455,7 +455,7 @@ sub create_make_rule_parallel {
   }
   
   # Create a SHA1 hex digest from sorted parts
-  my $target_id = Digest::SHA::sha1_hex(join("\n", sort @target_parts));
+  my $target_id = sha1_hex(join("\n", sort @target_parts));
   my $target = "spvm-build-parallel-$target_id";
 
   # Order-only dependencies
@@ -949,6 +949,32 @@ sub lock_output_file {
   if ($error) {
     die $error;
   }
+}
+
+sub get_sha1_file {
+  my ($file) = @_;
+
+  unless (defined $file) {
+    confess("A file must be defined.");
+  }
+
+  unless (-f $file) {
+    confess("File '$file' does not exist.");
+  }
+
+  open my $fh, '<:raw', $file
+    or confess("Can't open file '$file' for reading: $!");
+
+  my $sha = Digest::SHA->new(1);
+  
+  # Read file in 32KB chunks for memory efficiency
+  while (read($fh, my $buffer, 32768)) {
+    $sha->add($buffer);
+  }
+  
+  close $fh;
+
+  return $sha->hexdigest;
 }
 
 1;
