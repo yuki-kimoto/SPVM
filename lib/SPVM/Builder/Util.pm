@@ -892,6 +892,33 @@ sub quote_literal {
   }
 }
 
+sub lock_output_file {
+  my ($output_file, $cb) = @_;
+  
+  my $output_dir = dirname($output_file);
+  my $lock_file = "$output_dir/" . sha1_hex($output_file) . ".lock";
+  
+  open my $lock_fh, '>>', $lock_file
+    or die "Can't open lock file $lock_file: $!";
+  
+  # Exclusive lock
+  flock($lock_fh, LOCK_EX)
+    or die "Can't get lock on $lock_file: $!";
+  
+  my $error;
+  eval {
+    $cb->();
+  };
+  $error = $@;
+  
+  # Always unlock
+  flock($lock_fh, LOCK_UN);
+  
+  if ($error) {
+    die $error;
+  }
+}
+
 1;
 
 =head1 Name
