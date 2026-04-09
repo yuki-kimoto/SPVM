@@ -862,7 +862,7 @@ sub read_lock_dll_file {
   my ($dll_file, $cb, $base_dir) = @_;
 
   # Generate the centralized lock file path
-  my $lock_file = SPVM::Builder::Util::get_lock_file($dll_file, $base_dir);
+  my $lock_file = SPVM::Builder::Util::create_lock_file_path($dll_file, $base_dir);
   
   mkpath dirname $lock_file;
   
@@ -891,7 +891,7 @@ sub read_lock_dll_file {
   }
 }
 
-sub get_lock_file {
+sub create_lock_file_path {
   my ($file, $base_dir) = @_;
 
   unless (defined $file) {

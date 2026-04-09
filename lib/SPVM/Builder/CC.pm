@@ -558,7 +558,7 @@ sub spawn_compile_source_file {
     }
     
     my $build_dir = $self->builder->build_dir;
-    my $output_lock_file = SPVM::Builder::Util::get_lock_file($output_file, $build_dir);
+    my $output_lock_file = SPVM::Builder::Util::create_lock_file_path($output_file, $build_dir);
     mkpath dirname $output_lock_file;
     
     $process_id = &spawn_compile_command($command_tmp_dir, $output_file, $output_lock_file, @$cc_cmd);
@@ -933,7 +933,7 @@ sub spawn_link {
     SPVM::Builder::Util::spurt_binary($ldflags_file, join("\n", @$link_info_ldflags));
     
     my $build_dir = $self->builder->build_dir;
-    my $output_lock_file = SPVM::Builder::Util::get_lock_file($output_file, $build_dir);
+    my $output_lock_file = SPVM::Builder::Util::create_lock_file_path($output_file, $build_dir);
     mkpath dirname $output_lock_file;
     
     unless ($quiet) {
