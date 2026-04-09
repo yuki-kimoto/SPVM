@@ -175,17 +175,23 @@ sub spurt_binary {
 }
 
 sub spurt_binary_parallel_safe {
-  my ($file, $content) = @_;
-
+  my ($file, $content, $base_dir) = @_;
+  
   unless (defined $file) {
     confess("A file must be defined.");
   }
-
-  # Ensure the directory exists
+  
+  unless (defined $base_dir) {
+    confess("\$base_dir must be defined.");
+  }
+  
+  my $output_lock_file = SPVM::Builder::Util::create_lock_file_path($file, $base_dir);
+  mkpath dirname $output_lock_file;
+  
   mkpath dirname $file;
-
+  
   # Lock the output file during the operation
-  &lock_output_file($file, sub {
+  &lock_output_file($output_lock_file, sub {
     # If the file exists, check if the content is different
     if (-f $file) {
       open my $fh_read, '<:raw', $file
@@ -828,21 +834,19 @@ sub quote_literal {
 }
 
 sub lock_output_file {
-  my ($output_file, $cb) = @_;
+  my ($output_lock_file, $cb) = @_;
   
-  # Get the base filename (e.g., "myapp.o" or "bootstrap.c")
-  my $base_name = basename($output_file);
-  my $output_dir = dirname($output_file);
-  
-  # Create lock file path: [dir]/[base_name].lock
-  my $lock_file = "$output_dir/$base_name.lock";
-  
-  open my $lock_fh, '>>', $lock_file
-    or die "Can't open lock file $lock_file: $!";
+  unless (defined $output_lock_file) {
+    die "Lock file path must be defined.";
+  }
+
+  # Open the provided lock file
+  open my $lock_fh, '>>', $output_lock_file
+    or die "Can't open lock file $output_lock_file: $!";
   
   # Exclusive lock (Wait if another process is writing)
   flock($lock_fh, LOCK_EX)
-    or die "Can't get lock on $lock_file: $!";
+    or die "Can't get lock on $output_lock_file: $!";
   
   my $error;
   eval {
@@ -850,8 +854,9 @@ sub lock_output_file {
   };
   $error = $@;
   
-  # Unlock (flock will also be released when $lock_fh is closed or process exits)
+  # Unlock and close
   flock($lock_fh, LOCK_UN);
+  close $lock_fh;
   
   if ($error) {
     die $error;

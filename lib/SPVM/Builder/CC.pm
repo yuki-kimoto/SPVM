@@ -417,7 +417,7 @@ sub generate_precompile_class_source_file {
   my $source_file = "$cc_input_dir/$source_rel_file";
   
   # Generate precompile C source file
-  SPVM::Builder::Util::spurt_binary_parallel_safe($source_file, $precompile_source);
+  SPVM::Builder::Util::spurt_binary_parallel_safe($source_file, $precompile_source, $self->builder->build_dir);
 }
 
 sub finalize_compile_info {
