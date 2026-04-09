@@ -832,7 +832,8 @@ sub prepare_link {
     unless (defined $output_dir) {
       my $is_jit = $config->is_jit;
       if ($is_jit) {
-        $output_dir = $self->builder->create_build_lib_path;
+        my $command_hash_dir = $command_hash =~ s|^(..)|$1/|r;
+        $output_dir = $self->builder->create_build_lib_path($command_hash_dir);
       }
       else {
         confess("[Unexpected Error]A output directory must exists.");
