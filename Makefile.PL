@@ -286,7 +286,7 @@ package MY {
     my $command = $self->SUPER::test_via_harness(@args);
     
     # Inject $ENV{HARNESS_OPTIONS}=j$jobs at the beginning of the command line for parallel tests
-    $command =~ s/(\btest_harness\()/eval sprintf q(%cENV{HARNESS_OPTIONS}='j$jobs'), 36;$1/;
+    $command =~ s/(\btest_harness\()/eval chr(36) . q(ENV{HARNESS_OPTIONS}='j$jobs'), 36;$1/;
     
     return $command;
   }
