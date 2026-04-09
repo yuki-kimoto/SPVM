@@ -170,19 +170,6 @@ WriteMakefile(
   }
 );
 
-{
-  print "\n";
-  
-  print "# Build Only:\n";
-  print "make\n\n";
-  
-  print "# Run Tests with Building:\n";
-  print "make test\n\n";
-  
-  print "# Release:\n";
-  print "make disttest && make dist && make install\n\n";
-}
-
 package MY {
   
   use File::Find 'find';
