@@ -29,11 +29,38 @@ flock($lock_fh, LOCK_EX)
   or warn "Can't get lock on $lock_file: $!";
 
 # Execute the command
-system(@cc_cmd);
-
-# File unlocking
-flock($lock_fh, LOCK_UN)
-  or warn "Can't unlock $lock_file: $!";
+my $exit_status;
+&lock_output_file($output_file, sub {
+  system(@cc_cmd);
+  $exit_status = $? >> 8;
+});
 
 # Exit with the command's exit status
-exit($? >> 8);
+exit($exit_status);
+
+sub lock_output_file {
+  my ($output_file, $cb) = @_;
+  
+  my $output_dir = dirname($output_file);
+  my $lock_file = "$output_dir/" . sha1_hex($output_file) . ".lock";
+  
+  open my $lock_fh, '>>', $lock_file
+    or die "Can't open lock file $lock_file: $!";
+  
+  # Exclusive lock
+  flock($lock_fh, LOCK_EX)
+    or die "Can't get lock on $lock_file: $!";
+  
+  my $error;
+  eval {
+    $cb->();
+  };
+  $error = $@;
+  
+  # Always unlock
+  flock($lock_fh, LOCK_UN);
+  
+  if ($error) {
+    die $error;
+  }
+}
