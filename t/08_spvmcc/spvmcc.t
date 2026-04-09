@@ -57,9 +57,6 @@ sub to_cmd {
     {
       ok(-f "$exe_dir/myapp$Config{exe_ext}");
     }
-    {
-      ok(-d "$build_dir/spvmcc/myapp");
-    }
   }
 
   # Compile and link cached
@@ -193,10 +190,6 @@ sub to_cmd {
     chomp $output;
     my $output_expect = "AAA $execute_cmd 3 1 1 7 25 args1 args2 1";
     is($output, $output_expect);
-    
-    {
-      ok(-d "$build_dir/spvmcc/myapp.$mode");
-    }
   }
 
 }

@@ -174,18 +174,9 @@ sub new {
   # Config mode
   my $config_mode = $self->{mode};
   
-  # Set work directory
-  my $work_dir = "spvmcc/$app_name";
-  
-  # Append mode to work directory
-  if (defined $config_mode && length $config_mode) {
-    $work_dir .= ".$config_mode";
-  }
-  
   # New SPVM::Builder object
   my $builder = SPVM::Builder->new(
     exists $self->{build_dir} ? (build_dir => $self->{build_dir}) : (),
-    work_dir => $work_dir,
   );
   
   # Config file settings

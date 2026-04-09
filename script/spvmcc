@@ -67,7 +67,7 @@ unless (defined $output_file) {
 
 my $build_exe = SPVM::Builder::Exe->new(
   script_name => $script_name,
-  build_dir => $build_dir,
+  defined $build_dir ? (build_dir => $build_dir) : (),
   output_file => $output_file,
   quiet => $quiet,
   force => $force,
