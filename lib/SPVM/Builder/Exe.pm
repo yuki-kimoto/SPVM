@@ -829,14 +829,6 @@ EOS
 sub create_bootstrap_source {
   my ($self) = @_;
   
-  # Builder
-  my $builder = $self->builder;
-  
-  my $class_name = $self->class_name;
-  
-  # Source file - Output
-  my $bootstrap_source_file = $self->builder->create_build_src_path($self->create_bootstrap_source_rel_file_path);
-  
   # Build bootstrap source content
   my $bootstrap_source = '';
   
@@ -854,15 +846,20 @@ sub create_bootstrap_source {
   
   $bootstrap_source .= "\n";
   
-  # Check if generating is needed by comparing content or if force is true
-  SPVM::Builder::Util::spurt_binary_parallel_safe($bootstrap_source_file, $bootstrap_source);
+  return $bootstrap_source;
 }
 
 sub prepare_compile_bootstrap_source_file {
   my ($self) = @_;
   
   # Create bootstrap C source
-  $self->create_bootstrap_source;
+  my $bootstrap_source = $self->create_bootstrap_source;
+  
+  # Source file - Output
+  my $bootstrap_source_file = $self->builder->create_build_src_path($self->create_bootstrap_source_rel_file_path);
+  
+  # Check if generating is needed by comparing content or if force is true
+  SPVM::Builder::Util::spurt_binary_parallel_safe($bootstrap_source_file, $bootstrap_source);
   
   my $config = SPVM::Builder::Util::API::create_default_config();
   my $config_global = $self->config_global;
