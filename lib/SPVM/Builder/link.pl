@@ -10,7 +10,7 @@ use File::Spec;
 
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));
-my ($command_tmp_dir, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file, $output_lock_file) = @argv;
+my ($command_tmp_dir, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @argv;
 
 # Function to read file content (replaces slurp_binary)
 sub read_file {
@@ -68,16 +68,24 @@ my $output_option = ($output_type eq 'exe') ? 'exe_file' : 'lib_file';
 
 # Run linker
 my @link_tmp_files;
+my $error;
 
-&lock_output_file($output_lock_file, sub {
-  (undef, @link_tmp_files) = $cbuilder->$link_method(
-    $output_option => $output_file,
-    objects => \@object_file_names,
-    extra_linker_flags => "@ldflags",
-    module_name => $class_name,
-    dl_func_list => $dl_func_list,
-  );
-});
+my $tmp_output_file = "$command_tmp_dir/link.output";
+
+# Link to the .tmp file instead of the final file
+(undef, @link_tmp_files) = $cbuilder->$link_method(
+  $output_option => $tmp_output_file,
+  objects => \@object_file_names,
+  extra_linker_flags => "@ldflags",
+  module_name => $class_name,
+  dl_func_list => $dl_func_list,
+);
+
+# Rename (Move) the temporary file to the final output file
+# In Windows, if $output_file already exists and is being used, move may fail.
+# But it's generally safer than flock-based contention during long writes.
+File::Copy::move($tmp_output_file, $output_file)
+  or die "Can't move $tmp_output_file to $output_file: $!";
 
 # Backup temporary files
 for my $tmp_file (@link_tmp_files) {
@@ -89,33 +97,3 @@ for my $tmp_file (@link_tmp_files) {
 }
 
 exit(0);
-
-sub lock_output_file {
-  my ($output_lock_file, $cb) = @_;
-  
-  unless (defined $output_lock_file) {
-    die "Lock file path must be defined.";
-  }
-
-  # Open the provided lock file
-  open my $lock_fh, '>>', $output_lock_file
-    or die "Can't open lock file $output_lock_file: $!";
-  
-  # Exclusive lock (Wait if another process is writing)
-  flock($lock_fh, LOCK_EX)
-    or die "Can't get lock on $output_lock_file: $!";
-  
-  my $error;
-  eval {
-    $cb->();
-  };
-  $error = $@;
-  
-  # Unlock and close
-  flock($lock_fh, LOCK_UN);
-  close $lock_fh;
-  
-  if ($error) {
-    die $error;
-  }
-}
