@@ -29,7 +29,6 @@ has [qw(
   debug
   runtime
   jobs
-  global_lock_fh
 )];
 
 # Class Methods
@@ -557,10 +556,10 @@ sub spawn_compile_source_file {
     $compile_info->tmp_dir($command_tmp_dir);
     
     unless ($quiet) {
-      $self->builder->global_lock;
-      print STDERR "$cc_command_heading\n";
-      print STDERR "$cc_command_string\n";
-      $self->builder->global_unlock;
+      $self->builder->global_write_lock(sub {
+        print STDERR "$cc_command_heading\n";
+        print STDERR "$cc_command_string\n";
+      });
     }
     
     $process_id = &spawn_compile_command($command_tmp_dir, $output_file, @$cc_cmd);
@@ -602,9 +601,9 @@ sub wait_command {
   my $stderr_output = do { local $/; <$stderr_fh> };
   close $stderr_fh;
   if (length $stderr_output) {
-    $self->builder->global_lock;
-    print STDERR "$stderr_output\n";
-    $self->builder->global_unlock;
+    $self->builder->global_write_lock(sub {
+      print STDERR "$stderr_output\n";
+    });
   }
   
   my $exit_status = $? >> 8;
@@ -935,10 +934,10 @@ sub spawn_link {
     SPVM::Builder::Util::spurt_binary($ldflags_file, join("\n", @$link_info_ldflags));
     
     unless ($quiet) {
-      $self->builder->global_lock;
-      print STDERR "$ld_command_heading\n";
-      print STDERR "$ld_command_string\n";
-      $self->builder->global_unlock;
+      $self->builder->global_write_lock(sub {
+        print STDERR "$ld_command_heading\n";
+        print STDERR "$ld_command_string\n";
+      });
     }
     
     # Spawn link process

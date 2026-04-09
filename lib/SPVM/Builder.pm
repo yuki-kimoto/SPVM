@@ -25,6 +25,7 @@ has [qw(
   work_dir
   include_dirs
   ninja
+  global_lock_fh
 )];
 
 sub import {
@@ -465,37 +466,50 @@ sub _resolve_options {
   }
 }
 
-sub global_lock {
-  my ($self) = @_;
+sub global_write_lock {
+  my ($self, $cb) = @_;
   
-  # Open the lock file once and keep the handle
+  # Ensure the global lock file is opened once
   unless ($self->{global_lock_fh}) {
     my $build_dir = $self->build_dir;
-    mkpath $build_dir unless -d $build_dir;
+    
+    # Create build directory if it doesn't exist
+    unless (-d $build_dir) {
+      mkpath $build_dir or die "[Internal Error]Can't create build directory \"$build_dir\": $!";
+    }
     
     my $lock_file = "$build_dir/.global.lock";
     
-    # Open with append mode to avoid truncating
+    # Open with append mode to avoid truncating existing data
     open my $fh, '>>', $lock_file 
       or die "[Internal Error]Can't open global lock file \"$lock_file\": $!";
     
     $self->{global_lock_fh} = $fh;
   }
   
-  # Wait for an exclusive lock
-  flock($self->{global_lock_fh}, LOCK_EX) 
+  my $lock_fh = $self->{global_lock_fh};
+  
+  # Wait for an exclusive lock (Blocking)
+  flock($lock_fh, LOCK_EX) 
     or die "[Internal Error]Can't get exclusive lock on global lock file: $!";
-}
-
-sub global_unlock {
-  my ($self) = @_;
   
-  my $fh = $self->{global_lock_fh};
+  # Execute the callback and ensure unlock happens even on failure
+  my $result;
+  my $error;
+  eval {
+    $result = $cb->();
+  };
+  $error = $@;
   
-  # Just release the lock (keep the file open for next time)
-  if ($fh) {
-    flock($fh, LOCK_UN);
+  # Release the lock but keep the file handle for future reuse
+  flock($lock_fh, LOCK_UN);
+  
+  # Rethrow if something went wrong inside the callback
+  if ($error) {
+    die $error;
   }
+  
+  return $result;
 }
 
 1;
