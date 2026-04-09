@@ -859,38 +859,35 @@ sub lock_output_file {
 }
 
 sub read_lock_dll_file {
-  my ($dll_file, $cb) = @_;
+  my ($dll_file, $cb, $base_dir) = @_;
 
-  my $base_name = basename($dll_file);
-  my $output_dir = dirname($dll_file);
-  my $lock_file = "$output_dir/$base_name.lock";
+  # Generate the centralized lock file path
+  my $lock_file = SPVM::Builder::Util::get_lock_file($dll_file, $base_dir);
+  
+  mkpath dirname $lock_file;
+  
+  # Open with '>>' to ensure the lock file exists.
+  # This avoids the race condition where the reader arrives before the writer creates the lock.
+  open my $lock_fh, '>>', $lock_file
+    or die "Can't open lock file $lock_file: $!";
 
-  # Synchronize only if the lock file exists and is writable
-  if (-f $lock_file && -w $lock_file) {
-    open my $lock_fh, '<', $lock_file
-      or die "Can't open lock file $lock_file for reading: $!";
+  # Shared lock: wait until any active writer (LOCK_EX) is finished.
+  # If no one is writing, it proceeds immediately.
+  flock($lock_fh, LOCK_SH)
+    or die "Can't get shared lock on $lock_file: $!";
 
-    # Shared lock: wait until the writer releases LOCK_EX
-    flock($lock_fh, LOCK_SH)
-      or die "Can't get shared lock on $lock_file: $!";
-
-    my $error;
-    eval {
-      $cb->();
-    };
-    $error = $@;
-
-    # Always unlock and close
-    flock($lock_fh, LOCK_UN);
-    close $lock_fh;
-
-    if ($error) {
-      die $error;
-    }
-  }
-  else {
-    # Execute immediately for static or pre-built files
+  my $error;
+  eval {
     $cb->();
+  };
+  $error = $@;
+
+  # Always release and close
+  flock($lock_fh, LOCK_UN);
+  close $lock_fh;
+
+  if ($error) {
+    die $error;
   }
 }
 

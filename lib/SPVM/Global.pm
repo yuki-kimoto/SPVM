@@ -293,9 +293,12 @@ sub get_method_addresses {
         }
         else {
           # Load dynamic library with a shared lock to prevent race conditions during parallel builds
+          unless (defined $ENV{SPVM_BUILD_DIR}) {
+            confess("[Unexpected Error]no build directory");
+          }
           SPVM::Builder::Util::read_lock_dll_file($dynamic_lib_file, sub {
             $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
-          });
+          }, $ENV{SPVM_BUILD_DIR});
           
           $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file} = $dynamic_lib_libref;
         }
