@@ -835,7 +835,7 @@ sub create_bootstrap_source {
   my $class_name = $self->class_name;
   
   # Source file - Output
-  my $bootstrap_source_file = $self->create_bootstrap_source_file_path;
+  my $bootstrap_source_file = $self->builder->create_build_src_path($self->create_bootstrap_source_rel_file_path);
   
   # Build bootstrap source content
   my $bootstrap_source = '';
@@ -1083,19 +1083,6 @@ sub parse_option_values_native_class {
   }
   
   return $hash;
-}
-
-sub create_bootstrap_source_file_path {
-  my ($self) = @_;
-  
-  my $build_src_dir = $self->builder->create_build_src_path;
-  my $script_name = $self->script_name;
-  my $bootstrap_source_file_base = basename $script_name;
-  $bootstrap_source_file_base =~ s/\..*$//;
-  $bootstrap_source_file_base .= '.c';
-  my $bootstrap_source_file = "$build_src_dir/bootstrap/$bootstrap_source_file_base";
-  
-  return $bootstrap_source_file;
 }
 
 sub create_bootstrap_source_rel_file_path {
