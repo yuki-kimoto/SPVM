@@ -3,7 +3,8 @@ use strict;
 use warnings;
 use Carp 'confess';
 use File::Temp;
-
+use File::Path 'mkpath';
+use File::Basename 'dirname', 'basename';
 use SPVM::Builder::Util;
 use SPVM::Builder;
 use SPVM::Builder::Native::Env;
@@ -296,9 +297,13 @@ sub get_method_addresses {
           unless (defined $ENV{SPVM_BUILD_DIR}) {
             confess("[Unexpected Error]no build directory");
           }
-          SPVM::Builder::Util::read_lock_dll_file($dynamic_lib_file, sub {
+          
+          my $lock_file = SPVM::Builder::Util::create_lock_file_path($dynamic_lib_file, $ENV{SPVM_BUILD_DIR});
+          mkpath dirname $lock_file;
+          
+          SPVM::Builder::Util::file_read_lock($lock_file, sub {
             $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
-          }, $ENV{SPVM_BUILD_DIR});
+          });
           
           $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file} = $dynamic_lib_libref;
         }
