@@ -15,6 +15,7 @@ use Encode 'decode';
 use File::Find 'find';
 use Time::HiRes ();
 use Digest::SHA;
+use Fcntl qw(:flock);
 
 # SPVM::Builder::Util is used from Makefile.PL
 # so this class must be wrote as pure perl. Do not contain XS functions.
@@ -171,6 +172,37 @@ sub spurt_binary {
     or confess("Can't open file '$file':$!");
     
   print $fh $content;
+}
+
+sub spurt_binary_parallel_safe {
+  my ($file, $content) = @_;
+
+  unless (defined $file) {
+    confess("A file must be defined.");
+  }
+
+  # Ensure the directory exists
+  mkpath dirname $file;
+
+  # Lock the output file during the operation
+  &lock_output_file($file, sub {
+    # If the file exists, check if the content is different
+    if (-f $file) {
+      open my $fh_read, '<:raw', $file
+        or confess("Can't open file '$file' for reading: $!");
+      my $current_content = do { local $/; <$fh_read> };
+      close $fh_read;
+
+      # If the content is exactly the same, do nothing and return
+      return if $current_content eq $content;
+    }
+
+    # Write the new content if the file doesn't exist or content is different
+    open my $fh_write, '>:raw', $file
+      or confess("Can't open file '$file' for writing: $!");
+    print $fh_write $content;
+    close $fh_write;
+  });
 }
 
 sub unindent {
