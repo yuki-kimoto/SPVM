@@ -13,6 +13,7 @@ use Time::HiRes ();
 use POSIX ":sys_wait_h";
 use Time::HiRes;
 use MIME::Base64 qw(encode_base64);
+use Digest::SHA 'sha1_hex';
 
 use SPVM::Builder::Util;
 use SPVM::Builder::Util::API;
@@ -927,6 +928,14 @@ sub spawn_link {
     my $link_info_ldflags = $link_info->create_ldflags;
     SPVM::Builder::Util::spurt_binary($ldflags_file, join("\n", @$link_info_ldflags));
     
+    # [Added] Generate lock file path using SHA1 of the normalized output file path
+    my $build_dir = $self->builder->build_dir;
+    my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $build_dir);
+    my $sha1 = sha1_hex($normalized_output_file);
+    my $lock_dir = "$build_dir/lock";
+    mkpath $lock_dir;
+    my $lock_output_file = "$lock_dir/$sha1.lock";
+    
     unless ($quiet) {
       $self->builder->global_write_lock(sub {
         print STDERR "$ld_command_heading\n";
@@ -944,7 +953,8 @@ sub spawn_link {
       $ld,
       $dl_func_list_file,
       $object_file_names_file,
-      $ldflags_file
+      $ldflags_file,
+      $lock_output_file,
     );
     $link_info->process_id($process_id);
   }
