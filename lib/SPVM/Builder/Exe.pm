@@ -248,9 +248,6 @@ sub build_exe_file {
   # Object files
   my $compile_infos = [];
   
-  # Create bootstrap C source
-  $self->create_bootstrap_source;
-  
   # Compile bootstrap C source
   my $bootstrap_compile_info = $self->prepare_compile_bootstrap_source_file;
   push @$compile_infos, $bootstrap_compile_info;
@@ -896,6 +893,9 @@ sub _field_value_to_string {
 
 sub prepare_compile_bootstrap_source_file {
   my ($self) = @_;
+  
+  # Create bootstrap C source
+  $self->create_bootstrap_source;
   
   my $config = SPVM::Builder::Util::API::create_default_config();
   my $config_global = $self->config_global;
