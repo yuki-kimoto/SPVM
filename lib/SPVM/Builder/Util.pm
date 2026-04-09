@@ -894,6 +894,29 @@ sub read_lock_dll_file {
   }
 }
 
+sub get_lock_file {
+  my ($file, $base_dir) = @_;
+
+  unless (defined $file) {
+    confess("The file \$file must be defined.");
+  }
+
+  unless (defined $base_dir) {
+    confess("The base directory \$base_dir must be defined.");
+  }
+
+  # Normalize the target file path relative to the base directory
+  my $normalized_file = SPVM::Builder::Util::normalize_path($file, $base_dir);
+  
+  # Generate a unique lock filename using SHA1
+  my $sha1 = sha1_hex($normalized_file);
+  
+  # Just return the path (mkpath is handled by the caller)
+  my $lock_file = "$base_dir/lock/$sha1.lock";
+
+  return $lock_file;
+}
+
 1;
 
 =head1 Name

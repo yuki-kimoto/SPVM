@@ -930,11 +930,8 @@ sub spawn_link {
     
     # [Added] Generate lock file path using SHA1 of the normalized output file path
     my $build_dir = $self->builder->build_dir;
-    my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $build_dir);
-    my $sha1 = sha1_hex($normalized_output_file);
-    my $lock_dir = "$build_dir/lock";
-    mkpath $lock_dir;
-    my $lock_output_file = "$lock_dir/$sha1.lock";
+    my $lock_output_file = SPVM::Builder::Util::get_lock_file($output_file, $build_dir);
+    mkpath dirname $lock_output_file;
     
     unless ($quiet) {
       $self->builder->global_write_lock(sub {
