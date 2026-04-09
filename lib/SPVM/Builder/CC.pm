@@ -762,11 +762,58 @@ sub prepare_link {
     return;
   }
   
-  my $link_info = $self->create_link_info($class_name, $object_file_infos, $config);
+  my $category = $config->category;
   
-  my $runtime = $self->runtime;
+  my $output_file = $config->output_file;
+  
+  my $output_dir = $config->output_dir;
   
   my $build_dir = $self->builder->build_dir;
+  
+  my $ld = $config->ld;
+  
+  my $output_type = $config->output_type;
+  
+  # Output file
+  unless (defined $output_file) {
+    unless (defined $output_dir) {
+      my $is_jit = $config->is_jit;
+      if ($is_jit) {
+        $output_dir = $self->builder->create_build_lib_path;
+      }
+      else {
+        confess("[Unexpected Error]A output directory must exists.");
+      }
+    }
+    
+    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
+    $output_file = "$output_dir/$output_rel_file";
+  }
+  
+  # Output file extension
+  my $output_file_base = basename $output_file;
+  if ($output_file_base =~ /\.precompile$/ || $output_file_base !~ /\./) {
+    my $exe_ext;
+    
+    if ($output_type eq 'dynamic_lib') {
+      $exe_ext = ".$Config{dlext}"
+    }
+    elsif ($output_type eq 'exe') {
+      $exe_ext = $Config{exe_ext};
+    }
+    
+    $output_file .= $exe_ext;
+  }
+  
+  $config->output_file($output_file);
+  
+  my $link_info = SPVM::Builder::LinkInfo->new(
+    class_name => $class_name,
+    config => $config,
+    object_file_infos => $object_file_infos,
+  );
+  
+  my $runtime = $self->runtime;
   
   unless (defined $build_dir) {
     confess("[Unexpected Error]A build directory must be defined.");
@@ -776,10 +823,6 @@ sub prepare_link {
     confess("[Unexpected Error]A build directory must exists.");
   }
   
-  my $category = $config->category;
-  
-  my $output_file = $config->output_file;
-  
   my @object_file_names = map { "$_" } @{$link_info->object_file_infos};
   
   unless ($config->isa('SPVM::Builder::Config::Linker')) {
@@ -787,15 +830,12 @@ sub prepare_link {
   }
   
   my $hint_cc = $config->hint_cc;
-  my $ld = $config->ld;
   
   my $link_info_output_file = $config->output_file;
   
   my $link_info_object_files = $link_info->object_file_infos;
   
   my $object_file_names = [map { $_->to_string; } @$link_info_object_files];
-  
-  my $output_type = $config->output_type;
   
   my $before_link_cbs = $config->before_link_cbs;
   for my $before_link_cb (@$before_link_cbs) {
@@ -967,63 +1007,6 @@ sub spawn_link_command {
   my $process_id = &spawn_perl($link_script_path, @args);
   
   return $process_id;
-}
-
-sub create_link_info {
-  my ($self, $class_name, $object_file_infos, $config) = @_;
-  
-  my $category = $config->category;
-  
-  my $output_file = $config->output_file;
-  
-  my $output_dir = $config->output_dir;
-  
-  my $build_dir = $self->builder->build_dir;
-  
-  my $ld = $config->ld;
-  
-  my $output_type = $config->output_type;
-  
-  # Output file
-  unless (defined $output_file) {
-    unless (defined $output_dir) {
-      my $is_jit = $config->is_jit;
-      if ($is_jit) {
-        $output_dir = $self->builder->create_build_lib_path;
-      }
-      else {
-        confess("[Unexpected Error]A output directory must exists.");
-      }
-    }
-    
-    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
-    $output_file = "$output_dir/$output_rel_file";
-  }
-  
-  # Output file extension
-  my $output_file_base = basename $output_file;
-  if ($output_file_base =~ /\.precompile$/ || $output_file_base !~ /\./) {
-    my $exe_ext;
-    
-    if ($output_type eq 'dynamic_lib') {
-      $exe_ext = ".$Config{dlext}"
-    }
-    elsif ($output_type eq 'exe') {
-      $exe_ext = $Config{exe_ext};
-    }
-    
-    $output_file .= $exe_ext;
-  }
-  
-  $config->output_file($output_file);
-  
-  my $link_info = SPVM::Builder::LinkInfo->new(
-    class_name => $class_name,
-    config => $config,
-    object_file_infos => $object_file_infos,
-  );
-  
-  return $link_info;
 }
 
 sub get_compile_script_path {

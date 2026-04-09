@@ -137,7 +137,7 @@ sub build_jit {
   
   $options->{is_jit} = 1;
   
-  $self->build($class_name, $options);
+  return $self->build($class_name, $options);
 }
 
 use JSON::PP ();
