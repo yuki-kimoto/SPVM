@@ -50,14 +50,6 @@ open(STDOUT, '>', File::Spec->devnull)
 open(STDERR, '>', $log_stderr)
   or warn "Can't open $log_stderr: $!";
 
-# File locking
-my $output_dir = dirname($output_file);
-my $lock_file = "$output_dir/" . sha1_hex($output_file) . ".lock";
-open my $lock_fh, '>>', $lock_file
-  or warn "Can't open lock file $lock_file: $!";
-flock($lock_fh, LOCK_EX)
-  or warn "Can't get lock on $lock_file: $!";
-
 # Configure CBuilder
 my $cbuilder_config = {
   cc => $hint_cc,
@@ -76,13 +68,16 @@ my $output_option = ($output_type eq 'exe') ? 'exe_file' : 'lib_file';
 
 # Run linker
 my @link_tmp_files;
-(undef, @link_tmp_files) = $cbuilder->$link_method(
-  $output_option => $output_file,
-  objects => \@object_file_names,
-  extra_linker_flags => "@ldflags",
-  module_name => $class_name,
-  dl_func_list => $dl_func_list,
-);
+
+&lock_output_file($output_file, sub {
+  (undef, @link_tmp_files) = $cbuilder->$link_method(
+    $output_option => $output_file,
+    objects => \@object_file_names,
+    extra_linker_flags => "@ldflags",
+    module_name => $class_name,
+    dl_func_list => $dl_func_list,
+  );
+});
 
 # Backup temporary files
 for my $tmp_file (@link_tmp_files) {
@@ -93,8 +88,32 @@ for my $tmp_file (@link_tmp_files) {
   }
 }
 
-# File unlocking
-flock($lock_fh, LOCK_UN)
-  or warn "Can't unlock $lock_file: $!";
-
 exit(0);
+
+sub lock_output_file {
+  my ($output_file, $cb) = @_;
+  
+  my $output_dir = dirname($output_file);
+  my $lock_file = "$output_dir/" . sha1_hex($output_file) . ".lock";
+  
+  # Open lock file
+  open my $lock_fh, '>>', $lock_file
+    or die "Can't open lock file $lock_file: $!";
+  
+  # Exclusive lock
+  flock($lock_fh, LOCK_EX)
+    or die "Can't get lock on $lock_file: $!";
+  
+  my $error;
+  eval {
+    $cb->();
+  };
+  $error = $@;
+  
+  # Always unlock even if copy or link fails
+  flock($lock_fh, LOCK_UN);
+  
+  if ($error) {
+    die $error;
+  }
+}
