@@ -20,14 +20,6 @@ open(STDOUT, '>', File::Spec->devnull)
 open(STDERR, '>', $log_stderr)
   or warn "Can't open $log_stderr: $!";
 
-# File locking
-my $output_dir = dirname($output_file);
-my $lock_file = "$output_dir/" . sha1_hex($output_file) . ".lock";
-open my $lock_fh, '>>', $lock_file
-  or warn "Can't open lock file $lock_file: $!";
-flock($lock_fh, LOCK_EX)
-  or warn "Can't get lock on $lock_file: $!";
-
 # Execute the command
 my $exit_status;
 &lock_output_file($output_file, sub {
