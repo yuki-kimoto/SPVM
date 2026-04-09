@@ -154,8 +154,6 @@ sub new {
   
   my %options = @_;
   
-  my $build_dir = delete $options{build_dir};
-  
   my $self = bless {
     external_object_files => [],
     %options
@@ -169,10 +167,6 @@ sub new {
   my $output_file = $self->{output_file};
   unless (defined $output_file) {
     Carp::confess("A output file must be defined.");
-  }
-  
-  unless (defined $build_dir) {
-    $build_dir = dirname($output_file) . '/.spvm_build';
   }
   
   my $app_name = $self->app_name;
@@ -190,7 +184,7 @@ sub new {
   
   # New SPVM::Builder object
   my $builder = SPVM::Builder->new(
-    build_dir => $build_dir,
+    exists $self->{build_dir} ? (build_dir => $self->{build_dir}) : (),
     work_dir => $work_dir,
   );
   
