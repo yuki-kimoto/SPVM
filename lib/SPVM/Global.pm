@@ -292,7 +292,11 @@ sub get_method_addresses {
           $dynamic_lib_libref = $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file};
         }
         else {
-          $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
+          # Load dynamic library with a shared lock to prevent race conditions during parallel builds
+          SPVM::Builder::Util::read_lock_dll_file($dynamic_lib_file, sub {
+            $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
+          });
+          
           $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file} = $dynamic_lib_libref;
         }
         
