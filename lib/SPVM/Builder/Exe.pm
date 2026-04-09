@@ -840,9 +840,6 @@ sub create_bootstrap_source {
   # Source file - Output
   my $bootstrap_source_file = $self->create_bootstrap_source_file_path;
   
-  # Config
-  my $config_global = $self->config_global;
-  
   # Build bootstrap source content
   my $bootstrap_source = '';
   
@@ -860,12 +857,7 @@ sub create_bootstrap_source {
   
   $bootstrap_source .= "\n";
   
-  # For detecting changing config mode
-  my $mode_string = $self->mode // '';
-  $bootstrap_source .= "// mode:$mode_string\n";
-  
   # Check if generating is needed by comparing content or if force is true
-  mkpath dirname $bootstrap_source_file;
   SPVM::Builder::Util::spurt_binary_parallel_safe($bootstrap_source_file, $bootstrap_source);
 }
 
