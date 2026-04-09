@@ -1098,19 +1098,6 @@ sub create_bootstrap_source_file_path {
   return $bootstrap_source_file;
 }
 
-sub create_bootstrap_object_file_path {
-  my ($self) = @_;
-  
-  my $build_object_dir = $self->builder->create_build_object_path;
-  my $script_name = $self->script_name;
-  my $bootstrap_source_file_base = basename $script_name;
-  $bootstrap_source_file_base =~ s/\..*$//;
-  $bootstrap_source_file_base .= '.o';
-  my $bootstrap_source_file = "$build_object_dir/$bootstrap_source_file_base";
-  
-  return $bootstrap_source_file;
-}
-
 sub create_bootstrap_source_rel_file_path {
   my ($self) = @_;
   
