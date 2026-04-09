@@ -855,8 +855,10 @@ sub prepare_compile_bootstrap_source_file {
   # Create bootstrap C source
   my $bootstrap_source = $self->create_bootstrap_source;
   
+  my $source_rel_file = $self->create_bootstrap_source_rel_file_path;
+  
   # Source file - Output
-  my $bootstrap_source_file = $self->builder->create_build_src_path($self->create_bootstrap_source_rel_file_path);
+  my $bootstrap_source_file = $self->builder->create_build_src_path($source_rel_file);
   
   # Check if generating is needed by comparing content or if force is true
   SPVM::Builder::Util::spurt_binary_parallel_safe($bootstrap_source_file, $bootstrap_source);
@@ -865,15 +867,6 @@ sub prepare_compile_bootstrap_source_file {
   my $config_global = $self->config_global;
   $config->config_global($config_global);
   $config->cc_input_dir($self->builder->create_build_src_path);
-  
-  # Target class name
-  my $class_name = $self->class_name;
-  
-  my $perl_class_name = "SPVM::$class_name";
-  
-  # Compile source files
-  my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
-  my $source_rel_file = $self->create_bootstrap_source_rel_file_path;
   
   # Compile
   my $compile_info = $self->prepare_compile_source_file({
