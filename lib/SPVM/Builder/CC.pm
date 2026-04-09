@@ -764,8 +764,6 @@ sub prepare_link {
   
   my $category = $config->category;
   
-  my $output_file = $config->output_file;
-  
   my $output_dir = $config->output_dir;
   
   my $build_dir = $self->builder->build_dir;
@@ -773,39 +771,6 @@ sub prepare_link {
   my $ld = $config->ld;
   
   my $output_type = $config->output_type;
-  
-  # Output file
-  unless (defined $output_file) {
-    unless (defined $output_dir) {
-      my $is_jit = $config->is_jit;
-      if ($is_jit) {
-        $output_dir = $self->builder->create_build_lib_path;
-      }
-      else {
-        confess("[Unexpected Error]A output directory must exists.");
-      }
-    }
-    
-    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
-    $output_file = "$output_dir/$output_rel_file";
-  }
-  
-  # Output file extension
-  my $output_file_base = basename $output_file;
-  if ($output_file_base =~ /\.precompile$/ || $output_file_base !~ /\./) {
-    my $exe_ext;
-    
-    if ($output_type eq 'dynamic_lib') {
-      $exe_ext = ".$Config{dlext}"
-    }
-    elsif ($output_type eq 'exe') {
-      $exe_ext = $Config{exe_ext};
-    }
-    
-    $output_file .= $exe_ext;
-  }
-  
-  $config->output_file($output_file);
   
   my $link_info = SPVM::Builder::LinkInfo->new(
     class_name => $class_name,
@@ -858,8 +823,44 @@ sub prepare_link {
   my $command_hash = $ninja->create_command_hash($create_command_hash_options);
   
   $link_info->command_hash($command_hash);
-  $link_info->output_file($output_file);
   $link_info->config($config);
+  
+  my $output_file = $config->output_file;
+  
+  # Output file
+  unless (defined $output_file) {
+    unless (defined $output_dir) {
+      my $is_jit = $config->is_jit;
+      if ($is_jit) {
+        $output_dir = $self->builder->create_build_lib_path;
+      }
+      else {
+        confess("[Unexpected Error]A output directory must exists.");
+      }
+    }
+    
+    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
+    $output_file = "$output_dir/$output_rel_file";
+  }
+  
+  # Output file extension
+  my $output_file_base = basename $output_file;
+  if ($output_file_base =~ /\.precompile$/ || $output_file_base !~ /\./) {
+    my $exe_ext;
+    
+    if ($output_type eq 'dynamic_lib') {
+      $exe_ext = ".$Config{dlext}"
+    }
+    elsif ($output_type eq 'exe') {
+      $exe_ext = $Config{exe_ext};
+    }
+    
+    $output_file .= $exe_ext;
+  }
+  
+  $config->output_file($output_file);
+  
+  $link_info->output_file($output_file);
   
   if ($output_type eq 'dynamic_lib') {
     my $basic_type = $runtime->get_basic_type_by_name($class_name);
