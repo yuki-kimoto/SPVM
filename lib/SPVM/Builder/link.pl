@@ -10,7 +10,7 @@ use File::Spec;
 
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));
-my ($command_tmp_dir, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file, $output_lock_file) = @argv;
+my ($command_tmp_dir, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file, $lock_file) = @argv;
 
 # Function to read file content (replaces slurp_binary)
 sub read_file {
@@ -69,7 +69,7 @@ my $output_option = ($output_type eq 'exe') ? 'exe_file' : 'lib_file';
 # Run linker
 my @link_tmp_files;
 
-&lock_output_file($output_lock_file, sub {
+&file_lock($lock_file, sub {
   (undef, @link_tmp_files) = $cbuilder->$link_method(
     $output_option => $output_file,
     objects => \@object_file_names,
@@ -90,20 +90,20 @@ for my $tmp_file (@link_tmp_files) {
 
 exit(0);
 
-sub lock_output_file {
-  my ($output_lock_file, $cb) = @_;
+sub file_lock {
+  my ($lock_file, $cb) = @_;
   
-  unless (defined $output_lock_file) {
+  unless (defined $lock_file) {
     die "Lock file path must be defined.";
   }
 
   # Open the provided lock file
-  open my $lock_fh, '>>', $output_lock_file
-    or die "Can't open lock file $output_lock_file: $!";
+  open my $lock_fh, '>>', $lock_file
+    or die "Can't open lock file $lock_file: $!";
   
   # Exclusive lock (Wait if another process is writing)
   flock($lock_fh, LOCK_EX)
-    or die "Can't get lock on $output_lock_file: $!";
+    or die "Can't get lock on $lock_file: $!";
   
   my $error;
   eval {

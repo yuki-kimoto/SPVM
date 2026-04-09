@@ -8,7 +8,7 @@ use File::Spec;
 
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));
-my ($command_tmp_dir, $output_file, $output_lock_file, @cc_cmd) = @argv;
+my ($command_tmp_dir, $output_file, $lock_file, @cc_cmd) = @argv;
 
 # Define log file paths
 my $log_stdout = "$command_tmp_dir/stdout.log";
@@ -22,7 +22,7 @@ open(STDERR, '>', $log_stderr)
 
 # Execute the command
 my $exit_status;
-&lock_output_file($output_file, sub {
+&file_lock($output_file, sub {
   system(@cc_cmd);
   $exit_status = $? >> 8;
 });
@@ -30,21 +30,21 @@ my $exit_status;
 # Exit with the command's exit status
 exit($exit_status);
 
-# Copied from SPVM::Builder::Util#lock_output_file
-sub lock_output_file {
-  my ($output_lock_file, $cb) = @_;
+# Copied from SPVM::Builder::Util#file_lock
+sub file_lock {
+  my ($lock_file, $cb) = @_;
   
-  unless (defined $output_lock_file) {
+  unless (defined $lock_file) {
     die "Lock file path must be defined.";
   }
 
   # Open the provided lock file
-  open my $lock_fh, '>>', $output_lock_file
-    or die "Can't open lock file $output_lock_file: $!";
+  open my $lock_fh, '>>', $lock_file
+    or die "Can't open lock file $lock_file: $!";
   
   # Exclusive lock (Wait if another process is writing)
   flock($lock_fh, LOCK_EX)
-    or die "Can't get lock on $output_lock_file: $!";
+    or die "Can't get lock on $lock_file: $!";
   
   my $error;
   eval {
