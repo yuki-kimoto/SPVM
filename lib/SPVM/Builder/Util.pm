@@ -306,103 +306,6 @@ sub get_class_base_dir {
   return $file;
 }
 
-sub get_possible_dependent_files {
-  my ($class_name, $category, $options) = @_;
-  
-  my @dependent_files;
-  
-  my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
-  
-  my $spvm_class_rel_file_without_ext = &convert_class_name_to_rel_file($class_name);
-  
-  my $spvm_class_file_without_ext = "$lib_dir/$spvm_class_rel_file_without_ext";
-  
-  my $spvm_class_rel_file = "$spvm_class_file_without_ext.spvm";
-  
-  my $spvm_class_file = "$spvm_class_file_without_ext.spvm";
-  
-  my $spvm_header_files = &get_spvm_header_files;
-  push @dependent_files, @$spvm_header_files;
-  
-  # Dependency native class file
-  if ($category eq 'native') {
-    # Config
-    my $config_file = "$spvm_class_file_without_ext.config";
-    push @dependent_files, $config_file;
-    my $config = SPVM::Builder::Config->load_config($config_file, []);
-    
-    # Native class
-    my $native_class_file_ext = $config->ext;
-    my $native_class_file = "$spvm_class_file_without_ext.$native_class_file_ext";
-    push @dependent_files, $native_class_file;
-    
-    # Native include
-    my $native_include_dir = "$spvm_class_file_without_ext.native/include";
-    my @native_include_files;
-    if (-d $native_include_dir) {
-      find({wanted => sub { if (-f $_) { push @native_include_files, $_ } }, no_chdir => 1}, $native_include_dir);
-    }
-    push @dependent_files, @native_include_files;
-    
-    # Native source
-    my $native_src_dir = "$spvm_class_file_without_ext.native/src";
-    my @native_src_files;
-    if (-d $native_src_dir) {
-      find({wanted => sub { if (-f $_) { push @native_src_files, $_ } }, no_chdir => 1}, $native_src_dir);
-    }
-    push @dependent_files, @native_src_files;
-    
-    # Dependency resources
-    {
-      my $resource_class_names = $config->get_resource_names;
-      for my $resource_class_name (@$resource_class_names) {
-        my $resource = $config->get_resource($resource_class_name);
-        
-        my $resource_config = $resource->config;
-        
-        my $resource_config_file = $resource_config->file;
-        
-        my $resource_config_file_without_ext = $resource_config_file;
-        $resource_config_file_without_ext =~ s/\.[^\.]+$//;
-        
-        # Resource class file
-        my $resource_spvm_class_file = "$resource_config_file_without_ext.spvm";
-        push @dependent_files, $resource_spvm_class_file;
-        
-        # Config
-        push @dependent_files, $resource_config_file;
-        
-        # Native include
-        my $resource_native_include_dir = "$resource_config_file_without_ext.native/include";
-        my @resource_native_include_files;
-        if (-d $resource_native_include_dir) {
-          find({wanted => sub { if (-f $_) { push @resource_native_include_files, $_ } }, no_chdir => 1}, $resource_native_include_dir);
-        }
-        push @dependent_files, @resource_native_include_files;
-        
-        # Native source
-        my $resource_native_src_dir = "$resource_config_file_without_ext.native/src";
-        my @resource_native_src_files;
-        if (-d $resource_native_src_dir) {
-          find({wanted => sub { if (-f $_) { push @resource_native_src_files, $_ } }, no_chdir => 1}, $resource_native_src_dir);
-        }
-        push @dependent_files, @resource_native_src_files;
-      }
-    }
-  }
-  elsif ($category eq 'precompile') {
-    push @dependent_files, @{&get_spvm_precompile_source_files};
-    push @dependent_files, $spvm_class_file;
-  }
-  
-  # Add input files
-  if (my $extra_dependent_files = $options->{dependent_files}) {
-    push @dependent_files, @$extra_dependent_files;
-  }
-  
-  return \@dependent_files;
-}
-
 sub create_make_rule_native {
   my $class_name = shift;
   
@@ -949,32 +852,6 @@ sub lock_output_file {
   if ($error) {
     die $error;
   }
-}
-
-sub get_sha1_file {
-  my ($file) = @_;
-
-  unless (defined $file) {
-    confess("A file must be defined.");
-  }
-
-  unless (-f $file) {
-    confess("File '$file' does not exist.");
-  }
-
-  open my $fh, '<:raw', $file
-    or confess("Can't open file '$file' for reading: $!");
-
-  my $sha = Digest::SHA->new(1);
-  
-  # Read file in 32KB chunks for memory efficiency
-  while (read($fh, my $buffer, 32768)) {
-    $sha->add($buffer);
-  }
-  
-  close $fh;
-
-  return $sha->hexdigest;
 }
 
 1;
