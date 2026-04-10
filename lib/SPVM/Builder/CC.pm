@@ -547,9 +547,9 @@ sub spawn_compile_source_file {
     }
     
     my $cc_cmd_no_output_option = $compile_info->create_command({no_output_option => 1});
-    my $output_option_with_value = $config->create_option_short($config->cc_output_option_name, $output_file);
+    my $output_option_without_value = $config->create_option_short($config->cc_output_option_name, '');
     
-    $process_id = &spawn_compile_command($command_tmp_dir, $output_file, @$cc_cmd_no_output_option, $output_option_with_value);
+    $process_id = &spawn_compile_command($command_tmp_dir, $output_file, @$cc_cmd_no_output_option, $output_option_without_value);
     $compile_info->process_id($process_id);
   }
   
