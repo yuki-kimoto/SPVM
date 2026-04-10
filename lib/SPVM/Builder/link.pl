@@ -8,6 +8,7 @@ use File::Basename 'dirname', 'basename';
 use MIME::Base64 qw(decode_base64);
 use File::Spec;
 use File::Compare 'compare';
+use Time::HiRes;
 
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));
@@ -98,12 +99,28 @@ $object_file_names[0] = $local_first_obj;
 # Rename (Move) the temporary file to the final output file
 # In Windows, if $output_file already exists and is being used, move may fail.
 # But it's generally safer than flock-based contention during long writes.
-File::Copy::move($tmp_output_file, $output_file);
-my $os_error = $!;
-if (-f $tmp_output_file) {
-  unless (-f $output_file && compare($tmp_output_file, $output_file) == 0) {
-    die "Can't move $tmp_output_file to $output_file: $os_error";
+my $max_retries = 10;
+my $success = 0;
+my $os_error;
+for my $i (1 .. $max_retries) {
+  
+  if (File::Copy::move($tmp_output_file, $output_file)) {
+    $success = 1;
+    last;
   }
+  
+  $os_error = $!;
+  
+  if (-f $tmp_output_file && -f $output_file && compare($tmp_output_file, $output_file) == 0) {
+    $success = 1;
+    last;
+  }
+  
+  Time::HiRes::sleep(0.1);
+}
+
+unless ($success) {
+  die "Can't move $tmp_output_file to $output_file after $max_retries retries: $os_error";
 }
 
 # Backup temporary files
