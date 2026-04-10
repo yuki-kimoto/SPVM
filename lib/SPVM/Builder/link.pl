@@ -73,6 +73,19 @@ my $error;
 
 my $tmp_output_file = "$command_tmp_dir/link.output";
 
+# This is a hack for ExtUtils::CBuilder on Windows.
+# When linking, ExtUtils::CBuilder creates intermediate files (like .def or .lds)
+# in the same directory as the first object file in the list.
+# In a parallel build environment with a shared hash directory, multiple processes
+# will conflict by overwriting or deleting each other's intermediate files.
+# To isolate the build process, we copy the first object file to a process-specific
+# temporary directory and use that path as the first element.
+# This forces CBuilder to create and delete intermediate files within the isolated directory.
+my $first_obj = $object_file_names[0];
+my $local_first_obj = "$command_tmp_dir/" . basename($first_obj);
+File::Copy::copy($first_obj, $local_first_obj) or die $!;
+$object_file_names[0] = $local_first_obj;
+
 # Link to the .tmp file instead of the final file
 (undef, @link_tmp_files) = $cbuilder->$link_method(
   $output_option => $tmp_output_file,
