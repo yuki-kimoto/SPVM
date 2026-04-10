@@ -99,28 +99,21 @@ $object_file_names[0] = $local_first_obj;
 # Rename (Move) the temporary file to the final output file
 # In Windows, if $output_file already exists and is being used, move may fail.
 # But it's generally safer than flock-based contention during long writes.
-my $max_retries = 10;
 my $success = 0;
 my $os_error;
-for my $i (1 .. $max_retries) {
   
-  if (File::Copy::move($tmp_output_file, $output_file)) {
-    $success = 1;
-    last;
-  }
-  
+if (File::Copy::move($tmp_output_file, $output_file)) {
+  $success = 1;
+}
+else {
   $os_error = $!;
-  
-  if (-f $tmp_output_file && -f $output_file && compare($tmp_output_file, $output_file) == 0) {
+  if ($^O eq 'MSWin32' && $os_error == $!{EACCES}) {
     $success = 1;
-    last;
   }
-  
-  Time::HiRes::sleep(0.1);
 }
 
 unless ($success) {
-  die "Can't move $tmp_output_file to $output_file after $max_retries retries: $os_error";
+  die "Can't move $tmp_output_file to $output_file: $os_error";
 }
 
 # Backup temporary files
