@@ -247,14 +247,27 @@ sub prepare_compile_native_class {
   
   my $cc_input_dir;
   if ($category eq 'precompile') {
-    
     $cc_input_dir = $self->builder->create_build_src_path;
     
     my $config_precompile_class_source = $config->clone;
     
     $config_precompile_class_source->cc_input_dir($cc_input_dir);
     
-    $self->generate_precompile_class_source_file($class_name, $config_precompile_class_source);
+    my $runtime = $self->runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $class_file = $basic_type->get_class_file;
+    
+    my $precompile_source = $basic_type->build_precompile_class_source($basic_type);
+    
+    # Output - Precompile C source file
+    my $cc_input_dir = $config_precompile_class_source->cc_input_dir;
+    my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
+    my $source_file = "$cc_input_dir/$source_rel_file";
+    
+    # Generate precompile C source file
+    SPVM::Builder::Util::spurt_binary_parallel_safe($source_file, $precompile_source);
   }
   elsif ($category eq 'native') {
     if ($is_cc_config) {
@@ -395,29 +408,6 @@ sub prepare_compile_native_class {
   }
   
   return $compile_infos;
-}
-
-sub generate_precompile_class_source_file {
-  my ($self, $class_name, $config) = @_;
-  
-  my $runtime = $self->runtime;
-  
-  my $basic_type = $runtime->get_basic_type_by_name($class_name);
-  
-  my $class_file = $basic_type->get_class_file;
-  
-  my $precompile_source = $basic_type->build_precompile_class_source($basic_type);
-  
-  # Force
-  my $force = $self->detect_force($config);
-  
-  # Output - Precompile C source file
-  my $cc_input_dir = $config->cc_input_dir;
-  my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
-  my $source_file = "$cc_input_dir/$source_rel_file";
-  
-  # Generate precompile C source file
-  SPVM::Builder::Util::spurt_binary_parallel_safe($source_file, $precompile_source);
 }
 
 sub finalize_compile_info {
