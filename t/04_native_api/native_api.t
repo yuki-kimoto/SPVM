@@ -413,7 +413,7 @@ ok(SPVM::TestCase::NativeAPI->method_begin_and_end_cb);
 
 {
   # The target C source file
-  my $c_source_file = '.spvm_build/work/src/SPVM/Fn.precompile.c';
+  my ($c_source_file) = glob ".spvm_build/work/src/*/*/SPVM/Fn.precompile.c";
 
   # Fail if the file does not exist
   ok(-f $c_source_file, "The precompile C source file exists");
