@@ -96,9 +96,12 @@ $object_file_names[0] = $local_first_obj;
   dl_func_list => $dl_func_list,
 );
 
-# Rename (Move) the temporary file to the final output file
-# In Windows, if $output_file already exists and is being used, move may fail.
-# But it's generally safer than flock-based contention during long writes.
+# Rename (Move) the temporary file to the final output file.
+# In Windows, if $output_file is already loaded by another process (e.g., via dl_open),
+# the move operation will fail with a "Permission denied" (EACCES) error because 
+# executable binaries are locked by the OS while in use.
+# In this case, we treat it as a success because a valid version of the library 
+# is already present and active, which is sufficient for parallel build environments.
 my $success = 0;
 my $os_error;
   
