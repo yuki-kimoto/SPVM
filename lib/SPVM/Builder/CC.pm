@@ -249,9 +249,7 @@ sub prepare_compile_native_class {
   if ($category eq 'precompile') {
     $cc_input_dir = $self->builder->create_build_src_path;
     
-    my $config_precompile_class_source = $config->clone;
-    
-    $config_precompile_class_source->cc_input_dir($cc_input_dir);
+    $config->cc_input_dir($cc_input_dir);
     
     my $runtime = $self->runtime;
     
@@ -262,7 +260,6 @@ sub prepare_compile_native_class {
     my $precompile_source = $basic_type->build_precompile_class_source($basic_type);
     
     # Output - Precompile C source file
-    my $cc_input_dir = $config_precompile_class_source->cc_input_dir;
     my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
     my $source_file = "$cc_input_dir/$source_rel_file";
     
