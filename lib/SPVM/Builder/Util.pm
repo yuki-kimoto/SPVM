@@ -160,35 +160,35 @@ sub file_contains {
 }
 
 sub spurt_binary {
-  my ($file, $content) = @_;
+  my ($output_file, $content) = @_;
   
-  unless (defined $file) {
+  unless (defined $output_file) {
     confess("A file must be defined.");
   }
   
-  mkpath dirname $file;
+  mkpath dirname $output_file;
   
-  open my $fh, '>:raw', $file
-    or confess("Can't open file '$file':$!");
+  open my $fh, '>:raw', $output_file
+    or confess("Can't open file '$output_file':$!");
     
   print $fh $content;
 }
 
 sub spurt_binary_parallel_safe {
-  my ($file, $content) = @_;
+  my ($output_file, $content) = @_;
   
   my $process_id = $$;
   
-  my $tmp_file = "$file.$process_id.tmp";
+  my $tmp_output_file = "$output_file.$process_id.tmp";
   
-  unless (defined $tmp_file) {
+  unless (defined $tmp_output_file) {
     confess("A file must be defined.");
   }
   
-  mkpath dirname $tmp_file;
+  mkpath dirname $tmp_output_file;
   
-  open my $fh, '>:raw', $tmp_file
-    or confess("Can't open file '$tmp_file':$!");
+  open my $fh, '>:raw', $tmp_output_file
+    or confess("Can't open file '$tmp_output_file':$!");
     
   print $fh $content;
   
@@ -197,8 +197,8 @@ sub spurt_binary_parallel_safe {
   # Rename (Move) the temporary file to the final output file
   # In Windows, if $output_file already exists and is being used, move may fail.
   # But it's generally safer than flock-based contention during long writes.
-  File::Copy::move($tmp_file, $file)
-    or die "Can't move '$tmp_file' to '$file': $!";
+  File::Copy::move($tmp_output_file, $output_file)
+    or die "Can't move '$tmp_output_file' to '$output_file': $!";
 }
 
 sub unindent {
