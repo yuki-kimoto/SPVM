@@ -7,6 +7,7 @@ use Digest::SHA qw(sha1_hex);
 use File::Basename 'dirname', 'basename';
 use MIME::Base64 qw(decode_base64);
 use File::Spec;
+use File::Compare 'compare';
 
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));
@@ -84,8 +85,13 @@ my $tmp_output_file = "$command_tmp_dir/link.output";
 # Rename (Move) the temporary file to the final output file
 # In Windows, if $output_file already exists and is being used, move may fail.
 # But it's generally safer than flock-based contention during long writes.
-File::Copy::move($tmp_output_file, $output_file)
-  or die "Can't move $tmp_output_file to $output_file: $!";
+File::Copy::move($tmp_output_file, $output_file);
+my $os_error = $!;
+if (-f $tmp_output_file) {
+  unless (-f $output_file && compare($tmp_output_file, $output_file) == 0) {
+    die "Can't move $tmp_output_file to $output_file: $os_error";
+  }
+}
 
 # Backup temporary files
 for my $tmp_file (@link_tmp_files) {
