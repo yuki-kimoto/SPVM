@@ -177,7 +177,9 @@ sub spurt_binary {
 sub spurt_binary_parallel_safe {
   my ($file, $content) = @_;
   
-  my $tmp_file = "$file.tmp";
+  my $process_id = $$;
+  
+  my $tmp_file = "$file.$process_id.tmp";
   
   unless (defined $tmp_file) {
     confess("A file must be defined.");
