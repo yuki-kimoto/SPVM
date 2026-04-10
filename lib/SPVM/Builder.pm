@@ -466,7 +466,7 @@ sub _resolve_options {
   }
 }
 
-sub global_write_lock {
+sub global_file_lock {
   my ($self, $cb) = @_;
   
   # Ensure the global lock file is opened once
