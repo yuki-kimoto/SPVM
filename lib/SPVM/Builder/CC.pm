@@ -540,7 +540,7 @@ sub spawn_compile_source_file {
     $compile_info->tmp_dir($command_tmp_dir);
     
     unless ($quiet) {
-      $self->builder->global_write_lock(sub {
+      $self->builder->global_file_lock(sub {
         print STDERR "$cc_command_heading\n";
         print STDERR "$cc_command_string\n";
       });
@@ -588,7 +588,7 @@ sub wait_command {
   my $stderr_output = do { local $/; <$stderr_fh> };
   close $stderr_fh;
   if (length $stderr_output) {
-    $self->builder->global_write_lock(sub {
+    $self->builder->global_file_lock(sub {
       print STDERR "$stderr_output\n";
     });
   }
@@ -964,11 +964,9 @@ sub spawn_link {
     
     # [Added] Generate lock file path using SHA1 of the normalized output file path
     my $build_dir = $self->builder->build_dir;
-    my $lock_output_file = SPVM::Builder::Util::get_lock_file($output_file, $build_dir);
-    mkpath dirname $lock_output_file;
     
     unless ($quiet) {
-      $self->builder->global_write_lock(sub {
+      $self->builder->global_file_lock(sub {
         print STDERR "$ld_command_heading\n";
         print STDERR "$ld_command_string\n";
       });
@@ -985,7 +983,6 @@ sub spawn_link {
       $dl_func_list_file,
       $object_file_names_file,
       $ldflags_file,
-      $lock_output_file,
     );
     $link_info->process_id($process_id);
   }

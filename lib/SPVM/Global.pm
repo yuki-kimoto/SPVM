@@ -296,7 +296,10 @@ sub get_method_addresses {
           unless (defined $ENV{SPVM_BUILD_DIR}) {
             confess("[Unexpected Error]no build directory");
           }
-          $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
+          
+          $BUILDER->global_file_lock(sub {
+            $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
+          });
           
           $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file} = $dynamic_lib_libref;
         }
