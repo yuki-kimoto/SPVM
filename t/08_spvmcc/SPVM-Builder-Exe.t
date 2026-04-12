@@ -1,18 +1,16 @@
-# For add_before_link_cb and add_before_compile_cb
-BEGIN { $ENV{SPVM_CC_FORCE} = 1; }
-
-use lib "t/lib";
-use TestUtil::MyLib;
+BEGIN {}
 
 use strict;
 use warnings;
 
 use Test::More;
-
 use Config;
 use File::Temp;
 
 use SPVM::Builder::Exe;
+
+use lib "t/lib";
+use TestUtil::MyLib;
 
 my $test_dir = "$FindBin::Bin";
 my $build_dir = $ENV{SPVM_BUILD_DIR};
