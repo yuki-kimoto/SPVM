@@ -1,4 +1,4 @@
-BEGIN {}
+BEGIN { $ENV{SPVM_BUILD_DIR} = '.spvm_build' }
 
 use strict;
 use warnings;
@@ -12,7 +12,6 @@ use SPVM::Builder::Exe;
 use lib "t/lib";
 use TestUtil::MyLib;
 
-my $test_dir = "$FindBin::Bin";
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 {
