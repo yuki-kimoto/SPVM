@@ -296,4 +296,13 @@ sub is_in_precompile_test {
   return $FindBin::Bin =~ m|t/03_precompile\b| ? 1 : 0;
 }
 
+sub to_os_specific_path {
+  my ($path) = @_;
+  
+  my $cmd = File::Spec->catfile(split("/", $path));
+  
+  return $cmd;
+}
+
+
 1;

@@ -4,6 +4,7 @@ use warnings;
 use Test::More;
 
 use lib "t/lib";
+use TestUtil;
 use TestUtil::MyLib;
 
 use File::Spec;
@@ -16,14 +17,6 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 my $dev_null = File::Spec->devnull;
 
-sub to_cmd {
-  my ($path) = @_;
-  
-  my $cmd = File::Spec->catfile(split("/", $path));
-  
-  return $cmd;
-}
-
 # Execute solo test. This is described in DEVELOPMENT.txt
 {
   my $tmp_dir = File::Temp->newdir;
@@ -31,7 +24,7 @@ sub to_cmd {
   system($spvmcc_cmd) == 0
    or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
-  my $execute_cmd = &to_cmd("$tmp_dir/myapp_solo");
+  my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp_solo");
   my $execute_cmd_with_args = "$execute_cmd foo bar";
   system("$execute_cmd_with_args > $dev_null 2>&1") == 0
     or die "Can't execute command:$execute_cmd_with_args:$!";
