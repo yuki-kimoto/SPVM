@@ -298,7 +298,9 @@ sub get_method_addresses {
           }
           
           $BUILDER->global_file_lock(sub {
+            warn "AAAAAAAAA DynaLoader::dl_load_file";
             $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
+            warn "BBBBBBBBB DynaLoader::dl_load_file";
           });
           
           $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file} = $dynamic_lib_libref;
@@ -307,7 +309,9 @@ sub get_method_addresses {
         if ($dynamic_lib_libref) {
 
           my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($class_name, $method_name, $category);
+          warn "CCCCCCCC DynaLoader::dl_find_symbol";
           $cfunc_address = DynaLoader::dl_find_symbol($dynamic_lib_libref, $cfunc_name);
+          warn "DDDDDDDD DynaLoader::dl_find_symbol";
           unless ($cfunc_address) {
             my $dl_error = DynaLoader::dl_error();
             my $error = <<"EOS";
