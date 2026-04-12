@@ -2,7 +2,6 @@
 BEGIN { $ENV{SPVM_CC_FORCE} = 1; }
 
 use lib "t/lib";
-use TestAuto;
 use TestUtil::MyLib;
 
 use strict;
@@ -10,17 +9,10 @@ use warnings;
 
 use Test::More;
 
-use utf8;
-use Data::Dumper;
-use File::Basename 'basename';
 use Config;
-use File::Path 'mkpath';
-use File::Spec;
 use File::Temp;
 
 use SPVM::Builder::Exe;
-
-my $file = 't/' . basename $0;
 
 my $test_dir = "$FindBin::Bin";
 my $build_dir = $ENV{SPVM_BUILD_DIR};
@@ -28,14 +20,12 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 {
   my $tmp_dir = File::Temp->newdir;
   my $script_name = 't/08_spvmcc/script/myapp.spvm';
-  my $include_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
   my $output_file = "$tmp_dir/myapp";
 
   my $builder_exe = SPVM::Builder::Exe->new(
     script_name => $script_name,
     output_file => $output_file,
     build_dir => $build_dir,
-    include_dirs => $include_dirs,
   );
   
   $builder_exe->build_exe_file;
@@ -76,14 +66,12 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 {
   my $tmp_dir = File::Temp->newdir;
   my $script_name = 't/08_spvmcc/script/myapp/foo/bar.spvm';
-  my $include_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
   my $output_file = "$tmp_dir/work/myapp";
   
   my $builder_exe = SPVM::Builder::Exe->new(
     script_name => $script_name,
     output_file => $output_file,
     build_dir => $build_dir,
-    include_dirs => $include_dirs,
     allow_no_config_file => 1,
   );
   
