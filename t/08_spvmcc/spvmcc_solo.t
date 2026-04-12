@@ -6,7 +6,6 @@ use Test::More;
 use lib "t/lib";
 use TestUtil::MyLib;
 
-use File::Path 'mkpath', 'rmtree';
 use File::Spec;
 use File::Temp;
 
@@ -14,12 +13,6 @@ use SPVM::Builder;
 use SPVM::Builder::Util;
 
 my $build_dir = $ENV{SPVM_BUILD_DIR};
-
-my $external_object_dir = "$build_dir/.tmp/external_object";
-
-rmtree "$build_dir/work";
-
-mkpath $external_object_dir;
 
 my $dev_null = File::Spec->devnull;
 
