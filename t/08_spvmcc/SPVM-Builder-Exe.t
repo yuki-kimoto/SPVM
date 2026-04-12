@@ -1,4 +1,4 @@
-BEGIN {}
+BEGIN { $ENV{SPVM_BUILD_DIR} = '.spvm_build' }
 
 use strict;
 use warnings;
