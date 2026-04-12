@@ -16,6 +16,7 @@ use File::Basename 'basename';
 use Config;
 use File::Path 'mkpath';
 use File::Spec;
+use File::Temp;
 
 use SPVM::Builder::Exe;
 
@@ -25,12 +26,10 @@ my $test_dir = "$FindBin::Bin";
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 {
-  my $exe_dir = "$build_dir/work/exe";
-  mkpath $exe_dir;
-  
+  my $tmp_dir = File::Temp->newdir;
   my $script_name = 't/08_spvmcc/script/myapp.spvm';
   my $include_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
-  my $output_file = "$build_dir/work/myapp";
+  my $output_file = "$tmp_dir/myapp";
 
   my $builder_exe = SPVM::Builder::Exe->new(
     script_name => $script_name,
@@ -49,7 +48,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     
     ok($link_info->config->ld, $config->ld);
     ok($link_info->config->ldflags, $config->ldflags);
-    like($link_info->config->output_file, qr/\Q$build_dir\/work\/myapp$Config{exe_ext}\E/);
+    like($link_info->config->output_file, qr/\Q$tmp_dir\/myapp$Config{exe_ext}\E/);
     my $is_object_files = 1;
     for my $object_file_info (@{$link_info->object_file_infos}) {
       unless ($object_file_info->isa('SPVM::Builder::ObjectFileInfo')) {
@@ -75,12 +74,10 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 # Exe name contain sub directory
 {
-  my $exe_dir = "$test_dir/.spvm_build/work/exe";
-  mkpath $exe_dir;
-  
+  my $tmp_dir = File::Temp->newdir;
   my $script_name = 't/08_spvmcc/script/myapp/foo/bar.spvm';
   my $include_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
-  my $output_file = "$build_dir/work/myapp";
+  my $output_file = "$tmp_dir/work/myapp";
   
   my $builder_exe = SPVM::Builder::Exe->new(
     script_name => $script_name,
