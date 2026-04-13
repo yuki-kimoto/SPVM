@@ -1,11 +1,13 @@
-use lib "t/lib";
-use TestAuto;
-use TestUtil::MyLib;
+use strict;
+use warnings;
 
 use Test::More;
 
-use strict;
-use warnings;
+use lib "t/lib";
+use TestAuto;
+use TestUtil;
+use TestUtil::MyLib;
+
 use utf8;
 use Config;
 use File::Basename 'basename';
@@ -30,14 +32,6 @@ mkpath $external_object_dir;
 
 my $dev_null = File::Spec->devnull;
 
-sub to_cmd {
-  my ($path) = @_;
-  
-  my $cmd = File::Spec->catfile(split("/", $path));
-  
-  return $cmd;
-}
-
 my $tmp_dir = File::Temp->newdir;
 
 {
@@ -47,7 +41,7 @@ my $tmp_dir = File::Temp->newdir;
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = &to_cmd("$tmp_dir/myapp");
+    my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
@@ -95,7 +89,7 @@ my $tmp_dir = File::Temp->newdir;
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = &to_cmd("$tmp_dir/use-class");
+    my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/use-class");
     my $output = `$execute_cmd`;
     chomp $output;
     like($output, qr/3000/);
@@ -114,7 +108,7 @@ my $tmp_dir = File::Temp->newdir;
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = &to_cmd("$tmp_dir/external");
+    my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/external");
     my $output = `$execute_cmd`;
     chomp $output;
     my $output_expect = "40";
@@ -129,7 +123,7 @@ my $tmp_dir = File::Temp->newdir;
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
-    my $execute_cmd = &to_cmd("$tmp_dir/myapp");
+    my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
@@ -163,7 +157,7 @@ my $tmp_dir = File::Temp->newdir;
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = &to_cmd("$tmp_dir/program_name");
+    my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/program_name");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
@@ -185,7 +179,7 @@ my $tmp_dir = File::Temp->newdir;
     
     like($spvmcc_output, qr/NativeAPI2\.o.+-L\..+-lm\b/);
     
-    my $execute_cmd = &to_cmd("$tmp_dir/myapp");
+    my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
