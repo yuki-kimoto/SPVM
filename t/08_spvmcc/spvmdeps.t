@@ -1,3 +1,5 @@
+BEGIN { $ENV{SPVM_BUILD_DIR} = '.spvm_build' }
+
 use strict;
 use warnings;
 
@@ -16,8 +18,6 @@ use SPVM::Builder;
 
 my $inc_dir = "$FindBin::Bin/lib/SPVM";
 my $build_dir = $ENV{SPVM_BUILD_DIR};
-
-rmtree "$build_dir/work";
 
 # Failed to parse options.
 {
