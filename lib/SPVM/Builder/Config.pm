@@ -453,7 +453,7 @@ L<SPVM::Builder::Config::Linker>
 
 =item 1. L<SPVM::Builder::Config::Base>
 
-The base class for all configuration classes. It provides the "loading configuration files" mechanism and manages common settings shared across all build phases, such as C<class_name>, C<force>, and C<quiet>.
+The base class for all configuration classes. It provides the "loading configuration files" mechanism and manages common settings shared across all build phases, such as C<class_name>, and C<quiet>.
 
 =item 2. L<SPVM::Builder::Config::Linker>
 

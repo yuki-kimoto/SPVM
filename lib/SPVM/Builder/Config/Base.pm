@@ -14,7 +14,6 @@ my $base_fields = [qw(
   class_name
   category
   quiet
-  force
   is_jit
   is_resource
   loaded_config_files
@@ -44,13 +43,6 @@ sub new {
   
   SPVM::Builder::Util::check_option_names($self, $self->option_names);
   
-  # file
-  $self->file(undef);
-
-  # force (default is undef)
-  
-  # quiet (default is undef)
-
   # category
   unless (exists $self->{category}) {
     $self->category('native');
@@ -296,19 +288,6 @@ This field is automatically set and users nomally do not change it.
 Gets and sets C<is_resource> field.
 
 If this field is true, this config is for a L<resource|SPVM::Document::Resource> class.
-
-=head2 force
-
-  my $force = $config->force;
-  $config->force($force);
-
-Gets and sets C<force> field.
-
-If this field is a true value, the compilation and linking are forced.
-
-If this field is a false value except for undef, the compilation and linking are performed following the rule of the L<dependency resolution|SPVM::Document::NativeClass/"Dependency Resolution">.
-
-If this field is undef, this config does not specify whether the compilation and linking are perfomed.
 
 =head2 quiet
 

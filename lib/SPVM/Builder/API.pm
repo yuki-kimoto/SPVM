@@ -102,10 +102,6 @@ $options is a hash reference. This is optional.
 
 =over 2
 
-=item * C<force>
-
-If this option is a true value, the compilation and link are forced.
-
 =item * C<optimize>
 
 The optimization level for the compiler (e.g., C<O2>, C<O3>, C<O0>).
@@ -126,10 +122,6 @@ Options:
 $options is a hash reference. This is optional.
 
 =over 2
-
-=item * C<force>
-
-If this option is a true value, the compilation and link are forced.
 
 =item * C<optimize>
 
@@ -164,10 +156,6 @@ An array reference of precompile class names to be built.
 =item * C<precompile_classes_file>
 
 A path to a text file containing precompile class names to be built. The file must contain one class name per line. If both C<precompile_classes> and this option are specified, they are merged.
-
-=item * C<force>
-
-If this option is a true value, the compilation and link are forced.
 
 =item * C<optimize>
 

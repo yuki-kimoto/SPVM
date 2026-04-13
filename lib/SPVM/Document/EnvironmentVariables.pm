@@ -46,14 +46,6 @@ This setting has a higher priority than L<SPVM::Builder::Config#quiet|SPVM::Buil
 
 Note that this environment variable is only effective during runtime compilation (JIT).
 
-=head2 SPVM_CC_FORCE
-
-If C<SPVM_CC_FORCE> environement variable is a true value of Perl, the compilation and link by L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are forced.
-
-This setting has a higher priority than L<SPVM::Builder::Config#force|SPVM::Builder::Config/"force"> field.
-
-Note that this environment variable is only effective during runtime compilation (JIT).
-
 =head2 SPVM_CC_OPTIMIZE
 
 If C<SPVM_CC_OPTIMIZE> environment variable is defined, the L<optimize|/"optimize"> field is overwritten by this value.

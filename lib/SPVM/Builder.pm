@@ -196,7 +196,6 @@ sub build_parallel {
     build_file
     native_classes
     precompile_classes
-    force
     jobs
     runtime
     is_jit
@@ -218,10 +217,6 @@ sub build_parallel {
   my $output_files_h = {};
   
   my $cc_options = {builder => $self};
-  
-  if (exists $options->{force}) {
-    $cc_options->{force} = $options->{force};
-  }
   
   if (exists $options->{jobs}) {
     $cc_options->{jobs} = $options->{jobs};

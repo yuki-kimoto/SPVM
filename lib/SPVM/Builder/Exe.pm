@@ -82,17 +82,6 @@ sub quiet {
   }
 }
 
-sub force {
-  my $self = shift;
-  if (@_) {
-    $self->{force} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{force};
-  }
-}
-
 sub config_global {
   my $self = shift;
   if (@_) {
@@ -265,7 +254,6 @@ sub build_exe_file {
   my $cc = SPVM::Builder::CC->new(
     builder => $self->builder,
     quiet => $self->quiet,
-    force => $self->force,
   );
   $config_global->output_file($output_file);
   
@@ -363,7 +351,6 @@ sub prepare_compile_source_file {
   my $builder_cc = SPVM::Builder::CC->new(
     builder => $self->builder,
     quiet => $self->quiet,
-    force => $self->force,
   );
   
   my $compile_info = SPVM::Builder::CompileInfo->new(
@@ -861,7 +848,7 @@ sub prepare_compile_bootstrap_source_file {
   # Source file - Output
   my $bootstrap_source_file = $self->builder->create_build_src_path($source_rel_file);
   
-  # Check if generating is needed by comparing content or if force is true
+  # Check if generating is needed by comparing content
   SPVM::Builder::Util::spurt_binary_parallel_safe($bootstrap_source_file, $bootstrap_source);
   
   my $config = SPVM::Builder::Util::API::create_default_config();
@@ -935,7 +922,6 @@ sub prepare_compile_precompile_class {
   my $builder_cc = SPVM::Builder::CC->new(
     builder => $self->builder,
     quiet => $self->quiet,
-    force => $self->force,
     runtime => $runtime,
   );
   
@@ -967,7 +953,6 @@ sub prepare_compile_native_class {
   my $builder_cc = SPVM::Builder::CC->new(
     builder => $self->builder,
     quiet => $self->quiet,
-    force => $self->force,
     runtime => $runtime,
   );
   

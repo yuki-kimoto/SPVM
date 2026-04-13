@@ -25,7 +25,6 @@ use SPVM::Builder::Accessor 'has';
 # Fields
 has [qw(
   builder
-  force
   quiet
   debug
   runtime
@@ -47,28 +46,6 @@ sub new {
 }
 
 # Instance Methods
-sub detect_force {
-  my ($self, $config) = @_;
-  
-  unless ($config) {
-    confess("The config \$config must be define.");
-  }
-  
-  my $force;
-  
-  if (exists $self->{force}) {
-    $force = $self->force;
-  }
-  elsif (exists $config->{force}) {
-    $force = $config->force;
-  }
-  else {
-    $force = 0;
-  }
-  
-  return $force;
-}
-
 sub detect_quiet {
   my ($self, $config) = @_;
   
@@ -183,10 +160,6 @@ sub prepare_compile_resources {
       
       if (exists $config->{quiet}) {
         $resource_config->quiet($config->quiet);
-      }
-      
-      if (exists $config->{force}) {
-        $resource_config->force($config->force);
       }
       
       if (exists $config->{is_jit}) {
@@ -479,8 +452,6 @@ sub spawn_compile_source_file {
   
   my $config = $compile_info->config;
   
-  my $force = $self->detect_force($config);
-  
   my $quiet = $self->detect_quiet($config);
   
   my $command_hash = $compile_info->command_hash;
@@ -493,7 +464,7 @@ sub spawn_compile_source_file {
     command_hash => $compile_info->command_hash,
     output_file => $compile_info->output_file,
   };
-  my $need_generate = $force || $ninja->need_generate($need_generate_options);
+  my $need_generate = $ninja->need_generate($need_generate_options);
   
   my $process_id = 0;
   if ($need_generate) {
@@ -804,8 +775,6 @@ sub prepare_link {
   
   my $ld_version = $config->ld_version;
   
-  my $force = $self->detect_force($config);
-  
   my $ld_command_no_output_option = $link_info->create_command({no_output_option => 1});
   my $ld_command_string_no_output_option = "@$ld_command_no_output_option";
   
@@ -896,7 +865,6 @@ sub spawn_link {
   }
   
   my $config = $link_info->config;
-  my $force = $self->detect_force($config);
   my $quiet = $self->detect_quiet($config);
   my $hint_cc = $config->hint_cc;
   my $ld = $config->ld;
@@ -942,7 +910,7 @@ sub spawn_link {
     command_hash => $link_info->command_hash,
     output_file => $link_info->output_file,
   };
-  my $need_generate = $force || $self->builder->ninja->need_generate($need_generate_options);
+  my $need_generate = $self->builder->ninja->need_generate($need_generate_options);
   
   my $process_id;
   if ($need_generate) {

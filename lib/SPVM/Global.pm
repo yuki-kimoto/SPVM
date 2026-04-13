@@ -234,11 +234,6 @@ sub load_dynamic_lib {
             $build_options->{quiet} = 1;
           }
           
-          my $env_spvm_cc_force = SPVM::Builder::Util::get_normalized_env('SPVM_CC_FORCE');
-          if (defined $env_spvm_cc_force) {
-            $build_options->{force} = 1;
-          }
-          
           my $env_spvm_cc_optimize = SPVM::Builder::Util::get_normalized_env('SPVM_CC_OPTIMIZE');
           if (defined $env_spvm_cc_optimize) {
             $build_options->{optimize} = $env_spvm_cc_optimize;

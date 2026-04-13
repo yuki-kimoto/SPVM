@@ -379,9 +379,6 @@ sub create_make_rule_parallel {
   my $new_options_string = "build_dir => '.spvm_build'";
 
   my @build_options;
-  if (exists $options->{force}) {
-    push @build_options, "force => $options->{force}";
-  }
   if (defined(my $optimize = $options->{optimize})) {
     push @build_options, "optimize => '$optimize'";
   }

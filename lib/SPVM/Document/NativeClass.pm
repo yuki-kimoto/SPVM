@@ -689,10 +689,6 @@ The dependencies of compilation and link of a L<native class|/"Native Class">, L
 
 =back
 
-If L<SPVM::Builder::Config#force|SPVM::Builder::Config/"force"> field is set to 1, the compilation and the link are forced.
-
-  $config->force(1);
-
 =head1 Native Types
 
 These types are used in the Native API.

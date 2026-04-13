@@ -276,14 +276,9 @@ sub need_generate {
     confess("'output_file' option must be defined.");
   }
   
-  my $force = $options->{force};
-  
   my $need_generate = 0;
   
-  if ($force) {
-    $need_generate = 1;
-  }
-  elsif (!-f $output_file) {
+  if (!-f $output_file) {
     $need_generate = 1;
   }
   else {

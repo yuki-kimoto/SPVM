@@ -58,7 +58,7 @@ sub to_cmd {
 {
   {
     
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force --quiet -o $exe_dir/myapp_runtime_error t/08_spvmcc/script/myapp_compile_error/main_instant_method.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -o $exe_dir/myapp_runtime_error t/08_spvmcc/script/myapp_compile_error/main_instant_method.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
@@ -70,7 +70,7 @@ sub to_cmd {
   }
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force --quiet -o $exe_dir/myapp_runtime_error t/08_spvmcc/script/myapp_compile_error/main_has_arguments.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -o $exe_dir/myapp_runtime_error t/08_spvmcc/script/myapp_compile_error/main_has_arguments.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
@@ -82,7 +82,7 @@ sub to_cmd {
   }
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force --quiet -o $exe_dir/myapp_runtime_error t/08_spvmcc/script/myapp_compile_error/main_not_found.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -o $exe_dir/myapp_runtime_error t/08_spvmcc/script/myapp_compile_error/main_not_found.spvm);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
