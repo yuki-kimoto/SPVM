@@ -20,8 +20,8 @@ use SPVM::Builder::Util;
 
 my $devnull = File::Spec->devnull;
 
-my $test_dir = "$FindBin::Bin";
-my $test_script_dir = 't/08_spvmcc/script';
+my $inc_dir = "$FindBin::Bin/lib/SPVM";
+my $spvm_script_dir = 't/08_spvmcc/script';
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 rmtree "$build_dir/work";
@@ -37,7 +37,7 @@ mkpath $external_object_dir;
 {
   # Basic
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $tmp_dir/myapp $test_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -56,7 +56,7 @@ mkpath $external_object_dir;
 
   # Compile and link cached
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $tmp_dir/myapp $test_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
     if (length $spvmcc_output == 0) {
       ok(1);
@@ -70,11 +70,11 @@ mkpath $external_object_dir;
 
 # END block
 {
-  my $spvm_script = "$test_script_dir/end-block.spvm";
+  my $spvm_script = "$spvm_script_dir/end-block.spvm";
   my $exe_file = "$tmp_dir/end-block";
   
   # Compile with --no-config
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -q --no-config -B $build_dir -I $test_dir/lib/SPVM -o $exe_file $spvm_script);
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -q --no-config -B $build_dir -I $inc_dir -o $exe_file $spvm_script);
   system($spvmcc_cmd) == 0 or die "Can't execute spvmcc command $spvmcc_cmd:$!";
   
   # Execute and check
@@ -85,7 +85,7 @@ mkpath $external_object_dir;
 {
   # lib directive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -q --build-dir $build_dir -o $tmp_dir/use-class $test_script_dir/use-class.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -q --build-dir $build_dir -o $tmp_dir/use-class $spvm_script_dir/use-class.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -104,7 +104,7 @@ mkpath $external_object_dir;
   
   # --object-file
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -I $test_dir/lib/SPVM --object-file $external_object_dir/external.o -o $tmp_dir/external $test_script_dir/external.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -I $inc_dir --object-file $external_object_dir/external.o -o $tmp_dir/external $spvm_script_dir/external.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -119,7 +119,7 @@ mkpath $external_object_dir;
 
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $tmp_dir/myapp $test_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
@@ -153,7 +153,7 @@ mkpath $external_object_dir;
 
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -o $tmp_dir/program_name $test_script_dir/program_name.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -o $tmp_dir/program_name $spvm_script_dir/program_name.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -168,7 +168,7 @@ mkpath $external_object_dir;
   # debug config: build_type 'Debug'
   {
     my $mode = 'debug';
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $tmp_dir/myapp --mode debug $test_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $inc_dir -o $tmp_dir/myapp --mode debug $spvm_script_dir/myapp.spvm 2>&1);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
