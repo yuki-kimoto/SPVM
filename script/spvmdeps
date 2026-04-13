@@ -13,6 +13,7 @@ SPVM::Builder::Util::getopt
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
   'I=s' => \my @spvm_include_dirs,
+  'B|build-dir=s'   => \my $build_dir,
   'Mblib'            => \my $blib,
   'w'               => \my $warning,
   
@@ -33,6 +34,10 @@ elsif ($show_version) {
   my $version_string = "spvmdeps v$SPVM::VERSION";
   print "$version_string\n";
   exit 0;
+}
+
+if (defined $build_dir) {
+  $ENV{SPVM_BUILD_DIR} = $build_dir;
 }
 
 my $script_name = shift;
@@ -121,7 +126,11 @@ C<spvmdeps> command is a class dependencies analyzer.
   Options:
     -h, --help                      Shows this message
     -v, --version                   Shows the version
-    -I DIRECTORY     Adds a include directory
+    -I DIRECTORY                    Adds a include directory
+    -B, --build-dir DIRECTORY      Build diretory
+    -Mblib                         Same as "-Mblib" in perl
+    -w                             Enables warning flag
+    
     --json                          Prints JSON that contains all dependent class information.
     --cpanm                         Prints cpanm commands that contains dependent cpan modules
     --cpanfile                      Prints cpanfile that contains dependent cpan modules
@@ -160,43 +169,57 @@ I<SCRIPT_NAME> is a script name that contains a L<bootstrap method|SPVM::Documen
 
 See L<Class Search Directories|SPVM::Document::Language::Class/"Class Search Directories"> about default class search directories.
 
-See L<SPVM::Document::EnvironmentVariables> about available environment variables.
-
 =head1 Options
 
 =head2 --help
 
-Outputs how to use the C<spvmdeps> command to standard output.
+See L<spvm/"--help">.
 
 =head2 -h
 
   -h
 
-Same as L</"--help">.
+See L<spvm/"-h">.
 
 =head2 --version
 
-Outputs the version of the C<spvmdeps> command to standard output. This version is the same as the version of L<SPVM>.
+See L<spvm/"--version">.
 
 =head2 -v
 
   -v
 
-Same as L</"--version">.
+See L<spvm/"-v">.
 
 =head2 -I
 
-  -I DIRECTORY
+  -I DIR
 
-Prepends I<DIRECTORY> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
+See L<spvm/"-I">.
 
-This option can be specified multiple times.
+=head2 --build-dir
 
-  -I dir1 -I dir2
+  --build-dir DIR
 
-In this case, class search directories becomes the following.
+See L<spvm/"--build-dir">.
 
-  [dir1, dir2, default_dirs]
+=head2 -B
+
+  -B DIR
+
+=head2 -Mblib
+
+  -Mblib
+
+See L<spvm/"-Mblib">.
+
+See L<spvm/"-B">.
+
+=head2 -w
+
+  -w
+
+See L<spvm/"-w">.
 
 =head2 --json
 

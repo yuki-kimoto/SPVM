@@ -102,12 +102,13 @@ The spvmcc command generates an executable file from SPVM classes.
     -o, --output FILE               The output file name
     -I DIR                          Adds a include directory
     -B, --build-dir DIR             Build directory
+    -Mblib                          Same as "-Mblib" in perl
+    -w                              Enables warning flag
+    
     -q, --quiet                     Stops the output of messages
     -f, --force                     Forces the compile and link
     --no-config                     No configration file is ok
     -m, --mode MODE                 Config mode
-    -w                              Enables warning flag
-    -Mblib                          Same as "-Mblib" in perl
 
 =head1 Details
 
@@ -231,6 +232,12 @@ See L<spvm/"--build-dir">.
 
   -B DIR
 
+=head2 -Mblib
+
+  -Mblib
+
+See L<spvm/"-Mblib">.
+
 See L<spvm/"-B">.
 
 =head2 -w
@@ -238,12 +245,6 @@ See L<spvm/"-B">.
   -w
 
 See L<spvm/"-w">.
-
-=head2 -Mblib
-
-  -Mblib
-
-See L<spvm/"-Mblib">.
 
 =head2 --output
 

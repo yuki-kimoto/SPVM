@@ -6,7 +6,6 @@ use warnings;
 use SPVM::Builder::Util;
 use SPVM::Global;
 use FindBin;
-use blib ();
 
 SPVM::Builder::Util::getopt
   # spvm,spvmcc,spvmdeps shared
@@ -14,8 +13,8 @@ SPVM::Builder::Util::getopt
   'v|version'       => \my $show_version,
   'I=s' => \my @spvm_include_dirs,
   'B|build-dir=s'   => \my $build_dir,
-  'w'               => \my $warning,
   'Mblib' => \my $blib,
+  'w'               => \my $warning,
   
   # spvm only
   'e=s' => \my $source,
@@ -54,10 +53,7 @@ elsif (defined $script_name) {
   
   $0 = $script_name;
   
-  open my $script_fh, '<', $script_name
-    or die "Can't open file \"$script_name\":$!";
-    
-  $source = do { local $/; <$script_fh> };
+  eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
   
   $source = "#file \"$script_name\"\x{A}$source";
 }
@@ -109,13 +105,14 @@ The spvm command executes SPVM programs.
   Options:
     -h, --help                     Shows this message
     -v, --version                  Shows the version
-    -I DIRECTORY    Adds a include directory
+    -I DIRECTORY                   Adds a include directory
     -B, --build-dir DIRECTORY      Build diretory
+    -Mblib                         Same as "-Mblib" in perl
+    -w                             Enables warning flag
+    
     -e SOURCE                      Executes a program source code in main method.
     -c                             Check syntx only
-    -w                             Enables warning flag
     -M CLASS_NAME                  Loads the SPVM class
-    -Mblib                         Same as "-Mblib" in perl
 
 =head1 Details
 
@@ -233,16 +230,6 @@ Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> env
 
 Same as L</"--build-dir">.
 
-=head2 -w
-
-  -w
-
-Enables warning flag.
-
-Implementation:
-
-Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
-
 =head2 -Mblib
 
   -Mblib
@@ -252,6 +239,16 @@ Uses Perl's L<blib> module.
 This is useful for testing a native module before it is installed.
 
 When this option is specified, C<blib/lib> and C<blib/arch> are prepended to C<@INC> and the library search paths.
+
+=head2 -w
+
+  -w
+
+Enables warning flag.
+
+Implementation:
+
+Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
 
 =head2 -e
 
