@@ -21,7 +21,6 @@ SPVM::Builder::Util::getopt
   # spvmcc only
   'o|output=s'        => \my $output_file,
   'q|quiet'   => \my $quiet,
-  'f|force' => \my $force,
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
   'object-file=s' => \my @external_object_files,
@@ -70,7 +69,6 @@ my $build_exe = SPVM::Builder::Exe->new(
   defined $build_dir ? (build_dir => $build_dir) : (),
   output_file => $output_file,
   quiet => $quiet,
-  force => $force,
   allow_no_config_file => $allow_no_config_file,
   mode => $mode,
   external_object_files => \@external_object_files,
@@ -106,7 +104,6 @@ The spvmcc command generates an executable file from SPVM classes.
     -w                              Enables warning flag
     
     -q, --quiet                     Stops the output of messages
-    -f, --force                     Forces the compile and link
     --no-config                     No configration file is ok
     -m, --mode MODE                 Config mode
 
@@ -164,11 +161,11 @@ C<myapp.config>:
   
   $exe_config
 
-=head2 Caching System
+=head2 Build Caching
 
-Compiled object files and an executable file are not rebuilt unless they need to be rebuilt.
+High-reliability build caching using Ninja-compatible logs, command-line hashes, and file content SHA-1 to detect all changes perfectly.
 
-L</"--force"> option forces the rebuild.
+See L<SPVM::Builder::Ninja>.
 
 =head2 Resources
 
@@ -269,18 +266,6 @@ Suppresses messages from the C<spvmcc> command.
   -q
 
 Same as L</"--quiet">.
-
-=head2 --force
-
-  --force
-
-Forces the rebuild of object files and an executable file.
-
-=head2 -f
-
-  -f
-
-Same as L</"--force">.
 
 =head2 --no-config
 
