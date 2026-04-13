@@ -1,3 +1,44 @@
+0.990157 2026-04-13
+
+  [Incompatible Changes]
+    - Removed the force option and the SPVM_CC_FORCE environment variable to improve parallel build reliability by relying solely on dependency resolution.
+    - Removed implicit inference of is_resource in SPVM::Builder::CC; explicit configuration is now required for reliable static analysis.
+
+  [Changes]
+    * Enable automatic parallel building and testing by embedding MAKEFLAGS into Makefile macros.
+    * Limit the maximum number of parallel jobs to 16 to prevent resource exhaustion (process handles/kernel memory) on Windows.
+    * Improve parallel testing reliability by injecting HARNESS_OPTIONS using a scalar (eval ...) hack in Makefile.PL to ensure cross-shell compatibility and correctly override TEST_VERBOSE.
+    * Ensure all .spvm and .pm files are copied to blib before the build starts by adding pm_to_blib to order_only_dependent_files.
+    * Update JIT-compiled DLL tests to handle process isolation and automatic cleanup using glob and process IDs.
+
+  [Bug Fixes]
+    - Fixed race conditions and file-locking conflicts in parallel tests by using temporary directories for executable outputs and build artifacts in spvmcc.t, spvmcc_solo.t, and spvmcc_error.t.
+    - Fixed a bug where TEST_VERBOSE could not be overridden from the command line by using the override directive in Makefile.
+    - Fixed intermittent build failures by stopping the automatic removal of work directories in spvmdeps.t and spvmcc.t during parallel execution.
+    - Fixed "Argument isn't numeric" warnings in test_harness by ensuring the first argument is evaluated as a scalar 0.
+    - Fixed potential crashes and race conditions during parallel dynamic library loading on Windows by wrapping dl_load_file with a global file lock.
+    - Fixed uninitialized value warnings in 003_call_minimal_method.t by adding a defined check for $precompile_class_file.
+
+  [Optimization & Portability]
+    - Replaced flock-based file locking with a "temporary file and rename (move)" strategy to ensure atomic and race-free file generation.
+    - Improved Windows compatibility for moving compiled object files by adding retry logic and content comparison when Permission denied (EACCES) occurs due to file locking.
+    - Shared the build directory across different executables in spvmcc to maximize cache utilization and improve performance.
+    - Improved shell compatibility in Makefile.PL by avoiding backslashes, dollar signs, and nested parentheses in test commands.
+
+  [Refactoring]
+    - Refactored SPVM::Builder to use content-based (SHA1 hash) directory structures for bootstrap sources and precompile C source files to prevent naming collisions.
+    - Renamed global_write_lock to global_file_lock in SPVM::Builder to better reflect its general purpose.
+    - Centralized OS-specific path handling by moving to_cmd logic to TestUtil::to_os_specific_path.
+    - Simplified spvmcc.t and spvmdeps.t by removing unused modules, constants, and redundant include directory handling.
+    - Unified the write safety mechanism using a new spurt_binary_parallel_safe utility in SPVM::Builder::Util.
+    - Clean up SPVM::Builder::Util by removing obsolete dependency tracking, file hashing, and old locking functions (lock_output_file, read_lock_dll_file, etc.).
+
+  [Internal Changes]
+    - Isolated the linker's workspace by copying object files to process-specific temporary directories to prevent intermediate file conflicts on Windows.
+    - Introduced a global lock file in the SPVM::Builder constructor to manage concurrent access to the shared build directory.
+    - Added get_sha1_file to SPVM::Builder::Util for efficient SHA-1 digest computation using stream reading.
+    - Modified SPVM::Builder to skip recording JIT-compiled DLL builds to .ninja_log to prevent infinite log growth.
+
 0.990156 2026-04-08
 
   [Documentation]
