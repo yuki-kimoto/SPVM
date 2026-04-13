@@ -36,6 +36,14 @@ elsif ($show_version) {
   exit 0;
 }
 
+if (defined $build_dir) {
+  $ENV{SPVM_BUILD_DIR} = $build_dir;
+}
+
+if (defined $quiet) {
+  $ENV{SPVM_CC_QUIET} = $quiet;
+}
+
 my $script_name = shift;
 
 my $source = "";
@@ -66,11 +74,9 @@ unless (defined $output_file) {
 
 my $build_exe = SPVM::Builder::Exe->new(
   script_name => $script_name,
-  defined $build_dir ? (build_dir => $build_dir) : (),
-  defined $quiet ? (quiet => $quiet) : (),
   output_file => $output_file,
-  allow_no_config_file => $allow_no_config_file,
   mode => $mode,
+  allow_no_config_file => $allow_no_config_file,
   external_object_files => \@external_object_files,
 );
 
