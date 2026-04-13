@@ -9,7 +9,7 @@ use FindBin;
 use blib ();
 
 SPVM::Builder::Util::getopt
-  # spvmcc and spvm shared
+  # spvm,spvmcc,spvmdeps shared
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
   'I=s' => \my @spvm_include_dirs,

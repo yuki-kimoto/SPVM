@@ -10,7 +10,7 @@ use FindBin;
 
 # NEVER add compiler/linker options here; all flags must be managed in config files to prevent object file inconsistency.
 SPVM::Builder::Util::getopt
-  # spvmcc and spvm shared
+  # spvm,spvmcc,spvmdeps shared
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
   'I=s' => \my @spvm_include_dirs,
