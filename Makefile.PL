@@ -198,7 +198,7 @@ package MY {
       }
       $options->{dependent_files} = ['SPVM.xs'];
       
-      $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)'];
+      $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)', 'pm_to_blib'];
       
       # Test create_make_rule for backward compatibility and practical testing
       $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn', $options);
