@@ -15,7 +15,8 @@ SPVM::Builder::Util::getopt
   'B|build-dir=s'   => \my $build_dir,
   'Mblib' => \my $blib,
   'w'               => \my $warning,
-  
+  'q|quiet'   => \my $quiet,
+
   # spvm only
   'e=s' => \my $source,
   'c' => \my $syntax_ok,
@@ -34,6 +35,10 @@ elsif ($show_version) {
 
 if (defined $build_dir) {
   $ENV{SPVM_BUILD_DIR} = $build_dir;
+}
+
+if (defined $quiet) {
+  $ENV{SPVM_CC_QUIET} = $quiet;
 }
 
 my $script_name = shift;
@@ -109,6 +114,7 @@ The spvm command executes SPVM programs.
     -B, --build-dir DIRECTORY      Build diretory
     -Mblib                         Same as "-Mblib" in perl
     -w                             Enables warning flag
+    -q, --quiet                     Stops the output of messages
     
     -e SOURCE                      Executes a program source code in main method.
     -c                             Check syntx only
@@ -249,6 +255,18 @@ Enables warning flag.
 Implementation:
 
 Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
+
+=head2 --quiet
+
+  --quiet
+
+Suppresses diagnostic messages.
+
+=head2 -q
+
+  -q
+
+Same as L</"--quiet">.
 
 =head2 -e
 

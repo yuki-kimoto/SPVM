@@ -17,10 +17,10 @@ SPVM::Builder::Util::getopt
   'B|build-dir=s'   => \my $build_dir,
   'Mblib'            => \my $blib,
   'w'               => \my $warning,
+  'q|quiet'   => \my $quiet,
   
   # spvmcc only
   'o|output=s'        => \my $output_file,
-  'q|quiet'   => \my $quiet,
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
   'object-file=s' => \my @external_object_files,
@@ -67,8 +67,8 @@ unless (defined $output_file) {
 my $build_exe = SPVM::Builder::Exe->new(
   script_name => $script_name,
   defined $build_dir ? (build_dir => $build_dir) : (),
+  defined $quiet ? (quiet => $quiet) : (),
   output_file => $output_file,
-  quiet => $quiet,
   allow_no_config_file => $allow_no_config_file,
   mode => $mode,
   external_object_files => \@external_object_files,
@@ -102,8 +102,8 @@ The spvmcc command generates an executable file from SPVM classes.
     -B, --build-dir DIR             Build directory
     -Mblib                          Same as "-Mblib" in perl
     -w                              Enables warning flag
-    
     -q, --quiet                     Stops the output of messages
+    
     --no-config                     No configration file is ok
     -m, --mode MODE                 Config mode
 
@@ -243,6 +243,18 @@ See L<spvm/"-B">.
 
 See L<spvm/"-w">.
 
+=head2 --quiet
+
+  --quiet
+
+See L<spvm/"-quiet">.
+
+=head2 -q
+
+  -q
+
+See L<spvm/"-q">.
+
 =head2 --output
 
   --output FILE
@@ -254,18 +266,6 @@ Specifies the output file path I<FILE>. This output file is an executable file.
   -o FILE
 
 Same as L</"--output">.
-
-=head2 --quiet
-
-  --quiet
-
-Suppresses messages from the C<spvmcc> command.
-
-=head2 -q
-
-  -q
-
-Same as L</"--quiet">.
 
 =head2 --no-config
 

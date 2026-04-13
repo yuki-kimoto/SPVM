@@ -16,6 +16,7 @@ SPVM::Builder::Util::getopt
   'B|build-dir=s'   => \my $build_dir,
   'Mblib'            => \my $blib,
   'w'               => \my $warning,
+  'q|quiet'   => \my $quiet,
   
   # spvmdeps only
   'json' => \my $json_option_on,
@@ -38,6 +39,10 @@ elsif ($show_version) {
 
 if (defined $build_dir) {
   $ENV{SPVM_BUILD_DIR} = $build_dir;
+}
+
+if (defined $quiet) {
+  $ENV{SPVM_CC_QUIET} = $quiet;
 }
 
 my $script_name = shift;
@@ -130,6 +135,7 @@ C<spvmdeps> command is a class dependencies analyzer.
     -B, --build-dir DIRECTORY      Build diretory
     -Mblib                         Same as "-Mblib" in perl
     -w                             Enables warning flag
+    -q, --quiet                     Stops the output of messages
     
     --json                          Prints JSON that contains all dependent class information.
     --cpanm                         Prints cpanm commands that contains dependent cpan modules
@@ -220,6 +226,18 @@ See L<spvm/"-B">.
   -w
 
 See L<spvm/"-w">.
+
+=head2 --quiet
+
+  --quiet
+
+See L<spvm/"-quiet">.
+
+=head2 -q
+
+  -q
+
+See L<spvm/"-q">.
 
 =head2 --json
 
