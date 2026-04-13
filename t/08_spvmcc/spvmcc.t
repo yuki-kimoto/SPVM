@@ -11,6 +11,7 @@ use Config;
 use File::Basename 'basename';
 use File::Path 'mkpath', 'rmtree';
 use File::Spec;
+use File::Temp;
 
 use SPVM::Builder;
 use SPVM::Builder::Util;
@@ -21,12 +22,10 @@ my $test_dir = "$FindBin::Bin";
 my $test_script_dir = 't/08_spvmcc/script';
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
-my $exe_dir = "$build_dir/.tmp/exe";
 my $external_object_dir = "$build_dir/.tmp/external_object";
 
 rmtree "$build_dir/work";
 
-mkpath $exe_dir;
 mkpath $external_object_dir;
 
 my $dev_null = File::Spec->devnull;
@@ -39,14 +38,16 @@ sub to_cmd {
   return $cmd;
 }
 
+my $tmp_dir = File::Temp->newdir;
+
 {
   # Basic
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp $test_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $tmp_dir/myapp $test_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = &to_cmd("$exe_dir/myapp");
+    my $execute_cmd = &to_cmd("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
@@ -55,13 +56,13 @@ sub to_cmd {
     
     # Check -B option
     {
-      ok(-f "$exe_dir/myapp$Config{exe_ext}");
+      ok(-f "$tmp_dir/myapp$Config{exe_ext}");
     }
   }
 
   # Compile and link cached
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp $test_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $tmp_dir/myapp $test_script_dir/myapp.spvm);
     my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
     if (length $spvmcc_output == 0) {
       ok(1);
@@ -76,7 +77,7 @@ sub to_cmd {
 # END block
 {
   my $spvm_script = "$test_script_dir/end-block.spvm";
-  my $exe_file = "$exe_dir/end-block";
+  my $exe_file = "$tmp_dir/end-block";
   
   # Compile with --no-config
   my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -q --no-config -B $build_dir -I $test_dir/lib/SPVM -o $exe_file $spvm_script);
@@ -90,11 +91,11 @@ sub to_cmd {
 {
   # lib directive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -q --build-dir $build_dir -o $exe_dir/use-class $test_script_dir/use-class.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -q --build-dir $build_dir -o $tmp_dir/use-class $test_script_dir/use-class.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = &to_cmd("$exe_dir/use-class");
+    my $execute_cmd = &to_cmd("$tmp_dir/use-class");
     my $output = `$execute_cmd`;
     chomp $output;
     like($output, qr/3000/);
@@ -109,11 +110,11 @@ sub to_cmd {
   
   # --object-file
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -I $test_dir/lib/SPVM --object-file $external_object_dir/external.o -o $exe_dir/external $test_script_dir/external.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -I $test_dir/lib/SPVM --object-file $external_object_dir/external.o -o $tmp_dir/external $test_script_dir/external.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = &to_cmd("$exe_dir/external");
+    my $execute_cmd = &to_cmd("$tmp_dir/external");
     my $output = `$execute_cmd`;
     chomp $output;
     my $output_expect = "40";
@@ -124,11 +125,11 @@ sub to_cmd {
 
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp $test_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $tmp_dir/myapp $test_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
-    my $execute_cmd = &to_cmd("$exe_dir/myapp");
+    my $execute_cmd = &to_cmd("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
@@ -137,7 +138,7 @@ sub to_cmd {
     
     # Check -B option
     {
-      ok(-f "$exe_dir/myapp$Config{exe_ext}");
+      ok(-f "$tmp_dir/myapp$Config{exe_ext}");
     }
   }
 }
@@ -158,11 +159,11 @@ sub to_cmd {
 
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -o $exe_dir/program_name $test_script_dir/program_name.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -o $tmp_dir/program_name $test_script_dir/program_name.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    my $execute_cmd = &to_cmd("$exe_dir/program_name");
+    my $execute_cmd = &to_cmd("$tmp_dir/program_name");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
@@ -173,7 +174,7 @@ sub to_cmd {
   # debug config: build_type 'Debug'
   {
     my $mode = 'debug';
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myapp --mode debug $test_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $tmp_dir/myapp --mode debug $test_script_dir/myapp.spvm 2>&1);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
@@ -184,7 +185,7 @@ sub to_cmd {
     
     like($spvmcc_output, qr/NativeAPI2\.o.+-L\..+-lm\b/);
     
-    my $execute_cmd = &to_cmd("$exe_dir/myapp");
+    my $execute_cmd = &to_cmd("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
