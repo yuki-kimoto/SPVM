@@ -33,6 +33,8 @@ elsif ($show_version) {
   exit 0;
 }
 
+my $script_name = shift;
+
 if (defined $build_dir) {
   $ENV{SPVM_BUILD_DIR} = $build_dir;
 }
@@ -40,8 +42,6 @@ if (defined $build_dir) {
 if (defined $quiet) {
   $ENV{SPVM_CC_QUIET} = $quiet;
 }
-
-my $script_name = shift;
 
 if (!defined $script_name && !defined $source && !defined $source) {
   die SPVM::Builder::Util::extract_usage;
