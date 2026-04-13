@@ -83,23 +83,6 @@ my $dev_null = File::Spec->devnull;
   }
 }
 
-# -c option
-{
-  {
-    my $spvm_cmd = "$^X -Mblib blib/script/spvm -c -I solo/lib/SPVM solo/script/myapp.spvm foo bar";
-    my $output = `$spvm_cmd`;
-    
-    is($output, '');
-  }
-  
-  {
-    my $spvm_cmd = "$^X -Mblib blib/script/spvm -c -I solo/lib/SPVM solo/script/myapp.spvm foo bar 2>&1";
-    my $output = `$spvm_cmd`;
-    
-    is($output, "syntax OK\n");
-  }
-}
-
 # Failed to parse options.
 {
   {
@@ -110,33 +93,6 @@ my $dev_null = File::Spec->devnull;
 }
 
 {
-  {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
-    system($spvm_cmd) == 0
-     or die "Can't execute spvm command $spvm_cmd:$!";
-    
-    ok(1);
-  }
-  
-  # -w
-  {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -w -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
-    system($spvm_cmd) == 0
-     or die "Can't execute spvm command $spvm_cmd:$!";
-    
-    ok(1);
-  }
-  
-  # -B
-  {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
-    system($spvm_cmd) == 0
-     or die "Can't execute spvm command $spvm_cmd:$!";
-    
-    ok(1);
-  }
-  
-  
   # --build-dir and -e
   {
     my $spvm_cmd = qq($^X -Mblib blib/script/spvm --build-dir $build_dir -I solo/lib/SPVM -e "warn q'[Test Output]spvm -e option';");
@@ -214,6 +170,49 @@ my $dev_null = File::Spec->devnull;
     like($output, qr/OK/);
   }
   
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
+    system("$spvm_cmd > $dev_null 2>&1") == 0
+     or die "Can't execute spvm command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
+  # -w
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -w -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
+    system("$spvm_cmd > $dev_null 2>&1") == 0
+     or die "Can't execute spvm command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
+  # -B
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
+    system("$spvm_cmd > $dev_null 2>&1") == 0
+     or die "Can't execute spvm command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
+}
+
+# -c option
+{
+  {
+    my $spvm_cmd = "$^X -Mblib blib/script/spvm -c -I solo/lib/SPVM solo/script/myapp.spvm foo bar";
+    my $output = `$spvm_cmd > $dev_null 2>&1`;
+    
+    is($output, '');
+  }
+  
+  {
+    my $spvm_cmd = "$^X -Mblib blib/script/spvm -c -I solo/lib/SPVM solo/script/myapp.spvm foo bar 2>&1";
+    my $output = `$spvm_cmd`;
+    
+    is($output, "syntax OK\n");
+  }
 }
 
 
