@@ -322,6 +322,9 @@ sub create_command_hash {
     confess("dependent_files must be defined.");
   }
   
+  # Process ID (Optional, for process isolation)
+  my $process_id = $options->{process_id};
+
   my $extensions = $self->header_exts || [];
   my $ext_list = join '|', map { quotemeta $_ } @$extensions;
   my $valid_ext_re = qr/\.(?:$ext_list)$/i;
@@ -360,6 +363,12 @@ sub create_command_hash {
   # Add command and version hashes
   $sha->add(Digest::SHA::sha1_hex($command) . "\x0A");
   $sha->add(Digest::SHA::sha1_hex($command_version) . "\x0A");
+
+  # Add process ID hash if defined
+  if (defined $process_id) {
+    # Use the process ID directly to isolate the build directory
+    $sha->add(Digest::SHA::sha1_hex($process_id) . "\x0A");
+  }
 
   # Add dependent files hashes (Using in-memory cache)
   for my $dependent_file (@all_dependent_files) {
