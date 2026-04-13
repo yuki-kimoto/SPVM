@@ -125,6 +125,11 @@ my @header_files = ('ppport.h', @spvm_header_files);
 my $cpus = SPVM::Builder::Util::API::get_cpu_count();
 my $jobs = $cpus + 2;
 
+# Limit the maximum number of parallel jobs to 16 to prevent Windows from exhausting OS resources, such as process handles and kernel memory, ensuring stable performance during JIT builds.
+if ($jobs > 16) {
+  $jobs = 16;
+}
+
 WriteMakefile(
   NAME => 'SPVM',
   VERSION_FROM => 'lib/SPVM.pm',
