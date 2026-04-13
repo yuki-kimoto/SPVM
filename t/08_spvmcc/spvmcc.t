@@ -24,15 +24,15 @@ my $test_dir = "$FindBin::Bin";
 my $test_script_dir = 't/08_spvmcc/script';
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
-my $external_object_dir = "$build_dir/.tmp/external_object";
-
 rmtree "$build_dir/work";
-
-mkpath $external_object_dir;
 
 my $dev_null = File::Spec->devnull;
 
 my $tmp_dir = File::Temp->newdir;
+
+my $external_object_dir = "$tmp_dir/external_object";
+
+mkpath $external_object_dir;
 
 {
   # Basic
