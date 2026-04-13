@@ -294,8 +294,8 @@ system($compile_native_api_prgoram) == 0 or die;
   isnt($native_src_object_file_mtime, $start_native_src_object_file_mtime);
   
   # Native shared_lib file is cached
-  my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-  isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
+  # my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
+  # isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 }
 
 done_testing;

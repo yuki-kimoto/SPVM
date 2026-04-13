@@ -97,23 +97,8 @@ $object_file_names[0] = $local_first_obj;
 );
 
 # Rename (Move) the temporary file to the final output file
-my $success = File::Copy::move($tmp_output_file, $output_file);
-my $os_error = $!;
-# In Windows, if $output_file is already loaded by another process (e.g., via dl_open),
-# the move operation will fail with a "Permission denied" (EACCES) error because 
-# executable binaries are locked by the OS while in use.
-# In this case, we treat it as a success because a valid version of the library 
-# is already present and active, which is sufficient for parallel build environments.
-unless ($success) {
-  if ($^O eq 'MSWin32') {
-    if ($^O eq 'MSWin32' && $os_error == $!{EACCES}) {
-      $success = 1;
-    }
-  }
-}
-unless ($success) {
-  die "Can't move $tmp_output_file to $output_file: $os_error";
-}
+File::Copy::move($tmp_output_file, $output_file)
+  or die "Can't move $tmp_output_file to $output_file: $!";
 
 # Backup temporary files
 for my $tmp_file (@link_tmp_files) {

@@ -723,7 +723,10 @@ sub command_parallel {
       if ($self->wait_command($command_info) != 0) {
         # Process finished
         $command_info->process_id(undef);
-        $self->add_ninja_log($command_info);
+        my $no_add_ninja_log = $command_info->config->is_jit && $command_info->isa('SPVM::Builder::LinkInfo');
+        unless ($no_add_ninja_log) {
+          $self->add_ninja_log($command_info);
+        }
         delete $running_processes{$pid};
       }
     }
@@ -812,6 +815,9 @@ sub prepare_link {
     command_version => $ld_version,
     dependent_files => [@object_file_names],
   };
+  if ($config->is_jit) {
+    $create_command_hash_options->{process_id} = $$;
+  }
   my $command_hash = $ninja->create_command_hash($create_command_hash_options);
   
   $link_info->command_hash($command_hash);
