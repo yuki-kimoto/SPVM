@@ -276,10 +276,10 @@ system($compile_native_api_prgoram) == 0 or die;
   $native_src_object_file = $find_obj->("$build_dir/work/object", "SPVM/TestCase/NativeAPISrc.native/src/baz/baz.o");
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
 
-  my $native_shared_lib_file;
-  my $start_native_shared_lib_file_mtime;
-  ($native_shared_lib_file) = glob "$build_dir/work/lib/*/*/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
-  $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
+  # my $native_shared_lib_file;
+  # my $start_native_shared_lib_file_mtime;
+  # ($native_shared_lib_file) = glob "$build_dir/work/lib/*/*/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
+  # $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
   $ENV{SPVM_CC_FORCE} = 1;
