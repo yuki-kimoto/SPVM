@@ -29,20 +29,8 @@ system(@cc_cmd);
 $exit_status = $? >> 8;
 
 # Rename (Move) the temporary file to the final output file
-my $success = File::Copy::move($tmp_output_file, $output_file);
-my $os_error = $!;
-# In Windows, if $output_file already exists and is being used, move may fail.
-# But it's generally safer than flock-based contention during long writes.
-unless ($success) {
-  if ($^O eq 'MSWin32') {
-    if (-f $tmp_output_file && -f $output_file && compare($tmp_output_file, $output_file) == 0) {
-      $success = 1;
-    }
-  }
-}
-unless ($success) {
-  die "Can't move $tmp_output_file to $output_file: $os_error";
-}
+File::Copy::move($tmp_output_file, $output_file)
+  or die "Can't move $tmp_output_file to $output_file: $!";
 
 # Exit with the command's exit status
 exit($exit_status);
