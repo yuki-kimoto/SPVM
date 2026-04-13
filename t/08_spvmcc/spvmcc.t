@@ -170,7 +170,7 @@ mkpath $external_object_dir;
     my $tmp_dir = File::Temp->newdir;
     
     my $mode = 'debug';
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $tmp_dir -I $inc_dir -o $tmp_dir/myapp --mode debug $spvm_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $tmp_dir -I $inc_dir -o $tmp_dir/myapp --mode debug $spvm_script_dir/myapp.spvm 2>&1);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
