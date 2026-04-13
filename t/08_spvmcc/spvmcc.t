@@ -26,8 +26,6 @@ my $inc_dir = "$FindBin::Bin/lib/SPVM";
 my $spvm_script_dir = 't/08_spvmcc/script';
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
-rmtree "$build_dir/work";
-
 my $dev_null = File::Spec->devnull;
 
 my $tmp_dir = File::Temp->newdir;

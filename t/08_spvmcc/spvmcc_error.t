@@ -22,8 +22,6 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 my $exe_dir = "$build_dir/.tmp/exe";
 my $external_object_dir = "$build_dir/.tmp/external_object";
 
-rmtree "$build_dir/work";
-
 mkpath $exe_dir;
 mkpath $external_object_dir;
 
