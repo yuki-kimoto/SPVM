@@ -1,3 +1,5 @@
+BEGIN { $ENV{SPVM_BUILD_DIR} = '.spvm_build' }
+
 use lib "t/lib";
 use TestAuto;
 use TestUtil::MyLib;
@@ -17,9 +19,6 @@ use FindBin;
 use SPVM::Builder;
 use File::Spec;
 
-my $devnull = File::Spec->devnull;
-
-my $test_dir = "$FindBin::Bin";
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 my $dev_null = File::Spec->devnull;
