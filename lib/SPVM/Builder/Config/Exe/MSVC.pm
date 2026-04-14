@@ -3,7 +3,7 @@ package SPVM::Builder::Config::Exe::MSVC;
 use strict;
 use warnings;
 use Carp ();
-use File::Basename 'dirname';
+use File::Basename 'dirname', 'basename';
 use File::Spec;
 use File::Find;
 
@@ -196,6 +196,8 @@ sub setup_env {
   unless (-f $cl_long_path && -x $cl_long_path) {
     Carp::confess("'$cl_long_path' is not an executable file.");
   }
+  
+  $self->hint_cc(basename $cl_long_path);
   
   require Win32;
   
