@@ -16,7 +16,7 @@ use JSON::PP;
 use SPVM::Builder::Util;
 use SPVM::Builder;
 
-my $inc_dir = "$FindBin::Bin/lib/SPVM";
+my $inc_dir = "$FindBin::Bin/lib";
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 # Failed to parse options.
@@ -31,7 +31,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 # Basic
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib/SPVM t/08_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^SPVM$|m);
@@ -43,7 +43,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   
   # --with-version
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib/SPVM --with-version t/08_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --with-version t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^SPVM [\.\d]+$|m);
@@ -56,7 +56,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   # --exclude
   {
     {
-      my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib/SPVM --exclude TestCase::Precompile t/08_spvmcc/script/myapp.spvm);
+      my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --exclude TestCase::Precompile t/08_spvmcc/script/myapp.spvm);
       my $output = `$spvmcc_cmd`;
       
       like($output, qr|^SPVM$|m);
@@ -67,7 +67,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     }
     
     {
-      my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib/SPVM --exclude TestCase::NativeAPI2 --exclude TestCase::Precompile t/08_spvmcc/script/myapp.spvm);
+      my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --exclude TestCase::NativeAPI2 --exclude TestCase::Precompile t/08_spvmcc/script/myapp.spvm);
       my $output = `$spvmcc_cmd`;
       
       like($output, qr|^SPVM$|m);
@@ -78,7 +78,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     }
     
     {
-      my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib/SPVM --exclude TestCase::* t/08_spvmcc/script/myapp.spvm);
+      my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --exclude TestCase::* t/08_spvmcc/script/myapp.spvm);
       my $output = `$spvmcc_cmd`;
       
       like($output, qr|^SPVM$|m);
@@ -95,7 +95,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 {
   # --cpanm
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib/SPVM --cpanm t/08_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --cpanm t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     warn "[Test Output]\n$output";
@@ -109,7 +109,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   
   # --cpanm, --with-version
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib/SPVM --cpanm --with-version t/08_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --cpanm --with-version t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     warn "[Test Output]\n$output";
@@ -126,7 +126,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 {
   # --cpanfile
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib/SPVM --cpanfile t/08_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --cpanfile t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     warn "[Test Output]\n$output";
@@ -140,7 +140,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   
   # --cpanfile, --with-version
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib/SPVM --cpanfile --with-version t/08_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --cpanfile --with-version t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     warn "[Test Output]\n$output";
@@ -157,7 +157,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 {
   # --json
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib/SPVM --json t/08_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --json t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^  \{"class_name":"SPVM"\}|m);
@@ -176,7 +176,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   
   # --json, --with-version
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib/SPVM --json --with-version t/08_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --json --with-version t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
     like($output, qr|^  \{"class_name":"SPVM","version":"[\.\d]+"\}|m);
@@ -200,7 +200,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   # --resource-info
   {
     $ENV{"SPVM__TEST__MYAPP__EXE"} = 1;
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib/SPVM --resource-info t/08_spvmcc/script/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --resource-info t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     like($output, qr|\Q[TestCase::NativeAPI2]|);
     like($output, qr|TestCase::Resource::Mylib1|);

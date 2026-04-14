@@ -845,9 +845,6 @@ sub resolve_spvm_command_inc {
   # 1st priority: include directories from #lib directives in the source (like use lib)
   unshift @inc, @$include_dirs_by_lib_directive;
   
-  # Normalize paths by removing the trailing /SPVM or \SPVM
-  @inc = map { my $dir = $_; $dir =~ s/[\\\/]SPVM$//; $dir; } @inc;
-  
   return \@inc;
 }
 

@@ -22,7 +22,7 @@ my $dev_null = File::Spec->devnull;
 # Execute solo test. This is described in DEVELOPMENT.txt
 {
   my $tmp_dir = File::Temp->newdir;
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -I solo/lib/SPVM -o $tmp_dir/myapp_solo solo/script/myapp.spvm foo bar);
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -I solo/lib -o $tmp_dir/myapp_solo solo/script/myapp.spvm foo bar);
   system($spvmcc_cmd) == 0
    or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 

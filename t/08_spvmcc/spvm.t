@@ -45,7 +45,7 @@ my $dev_null = File::Spec->devnull;
     $output =~ s|\\|/|g;
   }
   
-  like($output, qr|lib_directive_b/SPVM.+lib_directive_a/SPVM.+blib/arch/SPVM.+blib/lib/SPVM.+include_a/SPVM.+include_b/SPVM|);
+  like($output, qr|lib_directive_b/SPVM.+lib_directive_a/SPVM.+blib/arch/SPVM.+blib/lib.+include_a/SPVM.+include_b/SPVM|);
 }
 
 # -Mblib option
@@ -62,6 +62,7 @@ my $dev_null = File::Spec->devnull;
     # Extract the part inside the parentheses (the search paths)
     if ($output =~ /\((.+?)\)/) {
         my $path_string = $1;
+        warn $path_string;
         my @paths = split(/ /, $path_string);
         
         # Target paths to check
@@ -94,7 +95,7 @@ my $dev_null = File::Spec->devnull;
 {
   # --build-dir and -e
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm --build-dir $build_dir -I solo/lib/SPVM -e "warn q'[Test Output]spvm -e option';");
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm --build-dir $build_dir -I solo/lib -e "warn q'[Test Output]spvm -e option';");
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -103,7 +104,7 @@ my $dev_null = File::Spec->devnull;
   
   # -e, -M
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM -M Fn -M StringBuffer -e "Fn->INT_MAX; StringBuffer->new;warn q'[Test Output]spvm -e and -M option';");
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib -M Fn -M StringBuffer -e "Fn->INT_MAX; StringBuffer->new;warn q'[Test Output]spvm -e and -M option';");
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -140,7 +141,7 @@ my $dev_null = File::Spec->devnull;
   
   # prcompile
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/08_spvmcc/lib/SPVM $FindBin::Bin/script/precompile.spvm);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/08_spvmcc/lib $FindBin::Bin/script/precompile.spvm);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -149,7 +150,7 @@ my $dev_null = File::Spec->devnull;
   
   # prcompile
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/08_spvmcc/lib/SPVM $FindBin::Bin/script/precompile.spvm);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I t/08_spvmcc/lib $FindBin::Bin/script/precompile.spvm);
     system($spvm_cmd) == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -170,7 +171,7 @@ my $dev_null = File::Spec->devnull;
   }
   
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib solo/script/myapp.spvm foo bar);
     system("$spvm_cmd > $dev_null 2>&1") == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -179,7 +180,7 @@ my $dev_null = File::Spec->devnull;
   
   # -w
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -w -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -w -I solo/lib solo/script/myapp.spvm foo bar);
     system("$spvm_cmd > $dev_null 2>&1") == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -188,7 +189,7 @@ my $dev_null = File::Spec->devnull;
   
   # -B
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM solo/script/myapp.spvm foo bar);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib solo/script/myapp.spvm foo bar);
     system("$spvm_cmd > $dev_null 2>&1") == 0
      or die "Can't execute spvm command $spvm_cmd:$!";
     
@@ -200,14 +201,14 @@ my $dev_null = File::Spec->devnull;
 # -c option
 {
   {
-    my $spvm_cmd = "$^X -Mblib blib/script/spvm -c -I solo/lib/SPVM solo/script/myapp.spvm foo bar";
+    my $spvm_cmd = "$^X -Mblib blib/script/spvm -c -I solo/lib solo/script/myapp.spvm foo bar";
     my $output = `$spvm_cmd > $dev_null 2>&1`;
     
     is($output, '');
   }
   
   {
-    my $spvm_cmd = "$^X -Mblib blib/script/spvm -c -I solo/lib/SPVM solo/script/myapp.spvm foo bar 2>&1";
+    my $spvm_cmd = "$^X -Mblib blib/script/spvm -c -I solo/lib solo/script/myapp.spvm foo bar 2>&1";
     my $output = `$spvm_cmd`;
     
     is($output, "syntax OK\n");

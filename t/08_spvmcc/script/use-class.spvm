@@ -1,6 +1,6 @@
 #!/usr/bin/env spvm
 
-#lib "$FindBin::Bin/../lib/SPVM"
+#lib "$FindBin::Bin/../lib"
 
 use TestCase;
 
