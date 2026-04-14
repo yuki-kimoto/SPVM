@@ -108,5 +108,3 @@ for my $tmp_file (@link_tmp_files) {
       or warn("Cannot copy '$tmp_file' to '$to_file'.");
   }
 }
-
-exit(0);
