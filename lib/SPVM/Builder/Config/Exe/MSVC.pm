@@ -67,7 +67,6 @@ sub apply {
     'function_level_linking_ccflags' => ['-Gy'],
     'source_encoding_ccflags' => ['-utf-8'],
     'library_linkage_ccflags'       => ['-MT'],
-    'warn_ccflags'                  => ['-W3'],
     'debug_info_ccflags'            => ['-Zi'],
   });
 
