@@ -7,12 +7,14 @@ use SPVM::Global;
 use SPVM::Builder::Util;
 
 SPVM::Builder::Util::getopt
-  # spvm,spvmcc,spvmdeps shared
+  # spvm,spvmcc,spvmdeps common
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
   'I=s' => \my @spvm_include_dirs,
-  'B|build-dir=s'   => \my $build_dir,
   'Mblib' => \my $blib,
+  
+  # spvm,spvmcc common
+  'B|build-dir=s'   => \my $build_dir,
   'w'               => \my $warning,
   
   # spvm only
@@ -91,8 +93,9 @@ The spvm command executes SPVM programs.
     -h, --help                     Shows this message
     -v, --version                  Shows the version
     -I DIRECTORY                   Adds a include directory
-    -B, --build-dir DIRECTORY      Build diretory
     -Mblib                         Same as "-Mblib" in perl
+    
+    -B, --build-dir DIRECTORY      Build diretory
     -w                             Enables warning flag
     
     --no-quiet                     Shows diagnostic messages.
@@ -204,6 +207,16 @@ In this case, class search directories becomes the following.
 
   [dir1, dir2, default_dirs]
 
+=head2 -Mblib
+
+  -Mblib
+
+Uses Perl's L<blib> module.
+
+This is useful for testing a native module before it is installed.
+
+When this option is specified, C<blib/lib> and C<blib/arch> are prepended to C<@INC> and the library search paths.
+
 =head2 --build-dir
 
   --build-dir DIRECTORY
@@ -215,16 +228,6 @@ Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> env
   -B DIRECTORY
 
 Same as L</"--build-dir">.
-
-=head2 -Mblib
-
-  -Mblib
-
-Uses Perl's L<blib> module.
-
-This is useful for testing a native module before it is installed.
-
-When this option is specified, C<blib/lib> and C<blib/arch> are prepended to C<@INC> and the library search paths.
 
 =head2 -w
 

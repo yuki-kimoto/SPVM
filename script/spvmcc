@@ -9,16 +9,18 @@ use SPVM::Builder::Exe;
 
 # NEVER add compiler/linker options here; all flags must be managed in config files to prevent object file inconsistency.
 SPVM::Builder::Util::getopt
-  # spvm,spvmcc,spvmdeps shared
+  # spvm,spvmcc,spvmdeps common
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
   'I=s' => \my @spvm_include_dirs,
-  'B|build-dir=s'   => \my $build_dir,
   'Mblib'            => \my $blib,
+  
+  # spvm,spvmcc common
+  'B|build-dir=s'   => \my $build_dir,
   'w'               => \my $warning,
-  'q|quiet'   => \my $quiet,
   
   # spvmcc only
+  'q|quiet'   => \my $quiet,
   'o|output=s'        => \my $output_file,
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
@@ -86,12 +88,12 @@ The spvmcc command generates an executable file from SPVM classes.
     -h, --help                      Shows this message
     -v, --version                   Shows the version
     -I DIR                          Adds a include directory
-    -B, --build-dir DIR             Build directory
     -Mblib                          Same as "-Mblib" in perl
-    -w                              Enables warning flag
-    -q, --quiet                     Stops diagnostic messages.
-    --no-quiet                      Shows diagnostic messages.
     
+    -B, --build-dir DIR             Build directory
+    -w                              Enables warning flag
+    
+    -q, --quiet                     Stops diagnostic messages.
     -o, --output FILE               The output file name
     --no-config                     No configration file is ok
     -m, --mode MODE                 Config mode
@@ -208,6 +210,14 @@ See L<spvm/"-v">.
 
 See L<spvm/"-I">.
 
+=head2 -Mblib
+
+  -Mblib
+
+See L<spvm/"-Mblib">.
+
+See L<spvm/"-B">.
+
 =head2 --build-dir
 
   --build-dir DIR
@@ -217,14 +227,6 @@ See L<spvm/"--build-dir">.
 =head2 -B
 
   -B DIR
-
-=head2 -Mblib
-
-  -Mblib
-
-See L<spvm/"-Mblib">.
-
-See L<spvm/"-B">.
 
 =head2 -w
 
