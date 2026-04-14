@@ -546,42 +546,6 @@ sub create_cfunc_name {
   return $cfunc_name;
 }
 
-sub resolve_inc {
-  my ($current_inc, $source, $blib, $include_dirs) = @_;
-  
-  my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
-  
-  # Get blib include directories if $blib is true
-  my @blib_include_dirs;
-  if ($blib) {
-    # Temporarily isolate @INC to get paths from the blib module
-    local @INC;
-    require blib;
-    blib->import;
-    @blib_include_dirs = @INC;
-  }
-  
-  # Final include directories
-  my @inc = @$current_inc;
-  
-  # To match Perl's @INC priority (last-in, first-priority),
-  # we add paths in reverse order of priority using unshift.
-  
-  # 3rd priority: include directories from arguments (like -I)
-  unshift @inc, @$include_dirs;
-  
-  # 2nd priority: include directories from blib (like -Mblib)
-  unshift @inc, @blib_include_dirs;
-  
-  # 1st priority: include directories from #lib directives in the source (like use lib)
-  unshift @inc, @$include_dirs_by_lib_directive;
-  
-  # Normalize paths by removing the trailing /SPVM or \SPVM
-  @inc = map { my $dir = $_; $dir =~ s/[\\\/]SPVM$//; $dir; } @inc;
-  
-  return \@inc;
-}
-
 sub parse_lib_directive {
   my ($source, $bin) = @_;
   
@@ -824,6 +788,61 @@ sub quote_literal {
     
     return $quoted_string;
   }
+}
+
+sub setup_spvm_command_environment {
+  my ($source, $blib, $spvm_include_dirs, $build_dir, $quiet, $warning) = @_;
+  
+  
+  @INC = @{SPVM::Builder::Util::resolve_spvm_command_inc(\@INC, $source, $blib, $spvm_include_dirs)};
+  
+  if (defined $build_dir) {
+    $ENV{SPVM_BUILD_DIR} = $build_dir;
+  }
+  
+  if (defined $quiet) {
+    $ENV{SPVM_CC_QUIET} = $quiet;
+  }
+  
+  if ($warning) {
+    $^W = 1;
+  }
+}
+
+sub resolve_spvm_command_inc {
+  my ($current_inc, $source, $blib, $include_dirs) = @_;
+  
+  my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
+  
+  # Get blib include directories if $blib is true
+  my @blib_include_dirs;
+  if ($blib) {
+    # Temporarily isolate @INC to get paths from the blib module
+    local @INC;
+    require blib;
+    blib->import;
+    @blib_include_dirs = @INC;
+  }
+  
+  # Final include directories
+  my @inc = @$current_inc;
+  
+  # To match Perl's @INC priority (last-in, first-priority),
+  # we add paths in reverse order of priority using unshift.
+  
+  # 3rd priority: include directories from arguments (like -I)
+  unshift @inc, @$include_dirs;
+  
+  # 2nd priority: include directories from blib (like -Mblib)
+  unshift @inc, @blib_include_dirs;
+  
+  # 1st priority: include directories from #lib directives in the source (like use lib)
+  unshift @inc, @$include_dirs_by_lib_directive;
+  
+  # Normalize paths by removing the trailing /SPVM or \SPVM
+  @inc = map { my $dir = $_; $dir =~ s/[\\\/]SPVM$//; $dir; } @inc;
+  
+  return \@inc;
 }
 
 1;
