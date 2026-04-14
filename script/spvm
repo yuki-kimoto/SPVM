@@ -3,9 +3,8 @@
 use strict;
 use warnings;
 
-use SPVM::Builder::Util;
 use SPVM::Global;
-use FindBin;
+use SPVM::Builder::Util;
 
 SPVM::Builder::Util::getopt
   # spvm,spvmcc,spvmdeps shared

@@ -3,10 +3,9 @@
 use strict;
 use warnings;
 
-use SPVM();
-use SPVM::Builder::Exe;
+use SPVM::Global;
 use SPVM::Builder::Util;
-use FindBin;
+use SPVM::Builder::Exe;
 
 # NEVER add compiler/linker options here; all flags must be managed in config files to prevent object file inconsistency.
 SPVM::Builder::Util::getopt

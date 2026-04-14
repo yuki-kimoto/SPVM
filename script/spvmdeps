@@ -3,10 +3,9 @@
 use strict;
 use warnings;
 
-use SPVM();
-use SPVM::Builder::DependencyAnalyzer;
+use SPVM::Global;
 use SPVM::Builder::Util;
-use FindBin;
+use SPVM::Builder::DependencyAnalyzer;
 
 SPVM::Builder::Util::getopt
   # spvm,spvmcc,spvmdeps shared
