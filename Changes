@@ -1,3 +1,12 @@
+0.990158 2026-04-14
+  [Incompatible Changes]
+    * Integrate the -I option with Perl's @INC representation and remove the requirement for the /SPVM suffix.
+    * Remove --force option from spvmcc command, which was inadvertently left over from the previous release.
+    
+  [New Features]
+    * Add --no-quiet option to spvm command.
+    * Add -Mblib option to spvmdeps command.
+
 0.990157 2026-04-13
 
   [Incompatible Changes]
