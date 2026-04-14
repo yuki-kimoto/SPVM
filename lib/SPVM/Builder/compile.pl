@@ -24,14 +24,22 @@ my $tmp_output_file = "$command_tmp_dir/compile.output";
 $cc_cmd[-1] .= $tmp_output_file;
 
 # Execute the command
-my $exit_status;
-system(@cc_cmd);
-$exit_status = $? >> 8;
+my $system_status = system(@cc_cmd);
+
+if ($system_status == -1) {
+  die "Failed to execute compilation command. \$!=$!, \@cc_cmd='@cc_cmd'";
+}
+elsif ($system_status & 127) {
+  my $signal = $system_status & 127;
+  die "Compilation command died with signal. \$signal=$signal, \@cc_cmd='@cc_cmd'";
+}
+else {
+  my $exit_status = $system_status >> 8;
+  if ($exit_status != 0) {
+    die "Compilation command failed with exit code. \$exit_status=$exit_status, \@cc_cmd='@cc_cmd'";
+  }
+}
 
 # Rename (Move) the temporary file to the final output file
 File::Copy::move($tmp_output_file, $output_file)
   or die "Can't move $tmp_output_file to $output_file: $!";
-
-# Exit with the command's exit status
-exit($exit_status);
-
