@@ -246,7 +246,7 @@ sub generate_file {
 }
 
 sub generate_dir {
-  my ($self, $rel_dir, $content) = @_;
+  my ($self, $rel_dir) = @_;
   
   my @created = mkpath $rel_dir;
   if (@created) {
@@ -889,7 +889,7 @@ WriteMakefile(
     (ABSTRACT_FROM => '$perl_class_rel_file',
      AUTHOR => '$user_name<$user_email>') : ()),
   test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
-  clean => {FILES => ['.spvm_build', 't/.spvm_build']},
+  clean => {FILES => ['.spvm_build']},
   META_MERGE => {
     'meta-spec' => {
       version => 2,
@@ -963,7 +963,7 @@ use strict;
 use warnings;
 use FindBin;
 use lib "\$FindBin::Bin/lib";
-BEGIN { \$ENV{SPVM_BUILD_DIR} = "\$FindBin::Bin/.spvm_build"; }
+BEGIN { \$ENV{SPVM_BUILD_DIR} = "\$FindBin::Bin/../.spvm_build"; }
 
 use SPVM 'TestCase::$class_name';
 
@@ -1215,6 +1215,9 @@ sub generate_dist {
   
   my $only_lib_files = $self->only_lib_files;
   unless ($only_lib_files) {
+    # Generate .spvm_build directory
+    $self->generate_dir("$output_dir/.spvm_build");
+    
     # Generate .gitignore file
     $self->generate_gitignore_file;
     
