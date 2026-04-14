@@ -38,12 +38,6 @@ elsif ($show_version) {
 
 my $script_name = shift;
 
-my $source = "";
-
-eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
-
-SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, $quiet, $warning);
-
 unless (defined $script_name) {
   warn "<script_name> is required.\n\n";
   warn SPVM::Builder::Util::extract_usage;
@@ -55,6 +49,11 @@ unless (defined $output_file) {
   warn SPVM::Builder::Util::extract_usage;
   exit 255;
 }
+
+my $source = "";
+eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
+
+SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, $quiet, $warning);
 
 my $build_exe = SPVM::Builder::Exe->new(
   script_name => $script_name,

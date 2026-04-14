@@ -39,8 +39,11 @@ elsif ($show_version) {
 
 my $script_name = shift;
 
-my $source = "";
+unless (defined $script_name) {
+  die "[spvmdeps command]spvmdeps command needs SCRIPT_NAME."
+}
 
+my $source = "";
 eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
 
 SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, $quiet, $warning);
@@ -50,10 +53,6 @@ my $dependency_analyzer = SPVM::Builder::DependencyAnalyzer->new(
   with_version => $with_version_option_on,
   excluded_class_names => \@excluded_class_names,
 );
-
-unless (defined $script_name) {
-  die "[spvmdeps command]spvmdeps command needs SCRIPT_NAME."
-}
 
 if ($show_resource_info) {
   
