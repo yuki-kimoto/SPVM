@@ -791,8 +791,10 @@ sub quote_literal {
 }
 
 sub setup_spvm_command_environment {
-  my ($source, $blib, $spvm_include_dirs, $build_dir, $quiet, $warning) = @_;
+  my ($script_name, $source, $blib, $spvm_include_dirs, $build_dir, $quiet, $warning) = @_;
   
+  $0 = $script_name;
+  FindBin::again();
   
   @INC = @{SPVM::Builder::Util::resolve_spvm_command_inc(\@INC, $source, $blib, $spvm_include_dirs)};
   

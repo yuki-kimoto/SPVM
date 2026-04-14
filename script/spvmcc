@@ -40,12 +40,9 @@ my $script_name = shift;
 
 my $source = "";
 
-$0 = $script_name;
-FindBin::again();
-
 eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
 
-SPVM::Builder::Util::setup_spvm_command_environment($source, $blib, \@spvm_include_dirs, $build_dir, $quiet, $warning);
+SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, $quiet, $warning);
 
 unless (defined $script_name) {
   warn "<script_name> is required.\n\n";

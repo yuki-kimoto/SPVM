@@ -44,19 +44,15 @@ if (defined $script_name && defined $source) {
 }
 
 if (defined $source) {
-  $0 = "-e";
-  FindBin::again();
+  $script_name = "-e";
 }
 elsif (defined $script_name) {
-  $0 = $script_name;
-  FindBin::again();
-  
   eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
   
   $source = "#file \"$script_name\"\x{A}$source";
 }
 
-SPVM::Builder::Util::setup_spvm_command_environment($source, $blib, \@spvm_include_dirs, $build_dir, $quiet, $warning);
+SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, $quiet, $warning);
 
 for my $use_class_name (@use_class_names) {
   SPVM::Global::build_class($use_class_name, __FILE__, __LINE__);
