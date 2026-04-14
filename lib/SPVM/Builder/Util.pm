@@ -792,7 +792,7 @@ sub quote_literal {
 }
 
 sub setup_spvm_command_environment {
-  my ($script_name, $source, $blib, $spvm_include_dirs, $build_dir, $quiet, $warning) = @_;
+  my ($script_name, $source, $blib, $spvm_include_dirs, $build_dir, $quiet, $no_quiet, $warning) = @_;
   
   $0 = $script_name;
   FindBin::again();
@@ -805,6 +805,9 @@ sub setup_spvm_command_environment {
   
   if (defined $quiet) {
     $ENV{SPVM_CC_QUIET} = $quiet;
+  }
+  elsif (defined $no_quiet) {
+    $ENV{SPVM_CC_QUIET} = !$no_quiet;
   }
   
   if ($warning) {

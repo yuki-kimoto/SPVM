@@ -15,7 +15,6 @@ SPVM::Builder::Util::getopt
   'B|build-dir=s'   => \my $build_dir,
   'Mblib'            => \my $blib,
   'w'               => \my $warning,
-  'q|quiet'   => \my $quiet,
   
   # spvmdeps only
   'json' => \my $json_option_on,
@@ -45,7 +44,7 @@ unless (defined $script_name) {
 my $source = "";
 eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
 
-SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, $quiet, $warning);
+SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, undef, undef, $warning);
 
 my $dependency_analyzer = SPVM::Builder::DependencyAnalyzer->new(
   script_name => $script_name,
@@ -114,10 +113,9 @@ C<spvmdeps> command is a class dependencies analyzer.
     -h, --help                      Shows this message
     -v, --version                   Shows the version
     -I DIRECTORY                    Adds a include directory
-    -B, --build-dir DIRECTORY      Build diretory
-    -Mblib                         Same as "-Mblib" in perl
-    -w                             Enables warning flag
-    -q, --quiet                     Stops the output of messages
+    -B, --build-dir DIRECTORY       Build diretory
+    -Mblib                          Same as "-Mblib" in perl
+    -w                              Enables warning flag
     
     --json                          Prints JSON that contains all dependent class information.
     --cpanm                         Prints cpanm commands that contains dependent cpan modules
@@ -208,18 +206,6 @@ See L<spvm/"-B">.
   -w
 
 See L<spvm/"-w">.
-
-=head2 --quiet
-
-  --quiet
-
-See L<spvm/"-quiet">.
-
-=head2 -q
-
-  -q
-
-See L<spvm/"-q">.
 
 =head2 --json
 

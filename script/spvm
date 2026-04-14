@@ -14,9 +14,9 @@ SPVM::Builder::Util::getopt
   'B|build-dir=s'   => \my $build_dir,
   'Mblib' => \my $blib,
   'w'               => \my $warning,
-  'q|quiet'   => \my $quiet,
-
+  
   # spvm only
+  'no-quiet'   => \my $no_quiet,
   'e=s' => \my $source,
   'c' => \my $syntax_ok,
   'M=s' => \my @use_class_names,
@@ -49,7 +49,7 @@ else {
   eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
 }
 
-SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, $quiet, $warning);
+SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, undef, $no_quiet, $warning);
 
 for my $use_class_name (@use_class_names) {
   SPVM::Global::build_class($use_class_name, __FILE__, __LINE__);
@@ -94,8 +94,8 @@ The spvm command executes SPVM programs.
     -B, --build-dir DIRECTORY      Build diretory
     -Mblib                         Same as "-Mblib" in perl
     -w                             Enables warning flag
-    -q, --quiet                     Stops the output of messages
     
+    --no-quiet                     Shows diagnostic messages.
     -e SOURCE                      Executes a program source code in main method.
     -c                             Check syntx only
     -M CLASS_NAME                  Loads the SPVM class
@@ -236,17 +236,9 @@ Implementation:
 
 Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
 
-=head2 --quiet
+=head2 --no-quiet
 
-  --quiet
-
-Suppresses diagnostic messages.
-
-=head2 -q
-
-  -q
-
-Same as L</"--quiet">.
+Shows diagnostic messages.
 
 =head2 -e
 

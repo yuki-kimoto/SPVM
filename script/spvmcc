@@ -52,7 +52,7 @@ unless (defined $output_file) {
 my $source = "";
 eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
 
-SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, $quiet, $warning);
+SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, $quiet, undef, $warning);
 
 my $build_exe = SPVM::Builder::Exe->new(
   script_name => $script_name,
@@ -85,13 +85,14 @@ The spvmcc command generates an executable file from SPVM classes.
   Options:
     -h, --help                      Shows this message
     -v, --version                   Shows the version
-    -o, --output FILE               The output file name
     -I DIR                          Adds a include directory
     -B, --build-dir DIR             Build directory
     -Mblib                          Same as "-Mblib" in perl
     -w                              Enables warning flag
-    -q, --quiet                     Stops the output of messages
+    -q, --quiet                     Stops diagnostic messages.
+    --no-quiet                      Shows diagnostic messages.
     
+    -o, --output FILE               The output file name
     --no-config                     No configration file is ok
     -m, --mode MODE                 Config mode
 
@@ -235,13 +236,13 @@ See L<spvm/"-w">.
 
   --quiet
 
-See L<spvm/"-quiet">.
+Stops diagnostic messages.
 
 =head2 -q
 
   -q
 
-See L<spvm/"-q">.
+Same as L</"--quiet">.
 
 =head2 --output
 
