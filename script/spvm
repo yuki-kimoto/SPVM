@@ -47,11 +47,10 @@ if (defined $script_name && defined $source) {
 if (defined $source) {
   $script_name = "-e";
 }
-else {
+elsif (defined $script_name) {
   eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
+  $source = "#file \"$script_name\"\x{A}$source";
 }
-
-$source = "#file \"$script_name\"\x{A}$source";
 
 SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, undef, $no_quiet, $warning);
 
