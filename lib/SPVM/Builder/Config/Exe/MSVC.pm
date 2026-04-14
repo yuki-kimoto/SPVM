@@ -26,7 +26,7 @@ sub apply {
     $self->{ld} = $options->{ld};
   }
   else {
-    delete $self->{ld};
+    $self->{ld} = 'link.exe';
   }
   
   $self->setup_env;
@@ -34,6 +34,7 @@ sub apply {
   # --- Initialize Global Config ---
   $self->clear_system_fields;
   $self->long_option_sep(':');
+  $self->thread_ldflags([]);
   
   # Linker settings
   $self->static_lib_braces(["", ""]);
