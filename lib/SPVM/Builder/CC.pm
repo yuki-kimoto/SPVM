@@ -535,49 +535,38 @@ sub wait_command {
   # Wait for completion
   my $wait_process_id = waitpid($process_id, WNOHANG);
   
+  my $exit_status = $? >> 8;
+  
   if ($wait_process_id == 0) {
     return 0;
   }
   
-  if ($wait_process_id == -1) {
-    confess("[Unexpected Error]Failed to wait.\n" .
-      "Reason: Process not found or already reaped: $!");
-  }
-  
-  my $config = $command_info->config;
-  my $quiet = $config->quiet;
   my $command_tmp_dir = $command_info->tmp_dir;
   
   # Read output files from temp directory
   my $stderr_file = "$command_tmp_dir/stderr.log";
-  unless (-f $stderr_file) {
-    confess("[Unexpected Error]The stderr log file '$stderr_file' does not exist.");
+  if (-f $stderr_file) {
+    # Print stderr
+    open my $stderr_fh, '<', $stderr_file;
+    my $stderr_output = do { local $/; <$stderr_fh> };
+    close $stderr_fh;
+    if (length $stderr_output) {
+      $self->builder->global_file_lock(sub {
+        print STDERR "$stderr_output\n";
+      });
+    }
   }
-  
-  # Print stderr
-  open my $stderr_fh, '<', $stderr_file;
-  my $stderr_output = do { local $/; <$stderr_fh> };
-  close $stderr_fh;
-  if (length $stderr_output) {
-    $self->builder->global_file_lock(sub {
-      print STDERR "$stderr_output\n";
-    });
-  }
-  
-  my $exit_status = $? >> 8;
   
   my $command_string = $command_info->create_command_string;
-  
-  # Check exit status
-  if ($exit_status != 0) {
-    confess("Command failed.\n" .
-      "Command: $command_string\n" .
-      "Exit status: $exit_status\n");
+  if ($wait_process_id == -1) {
+    confess("The waited command failed. Process not found or already reaped: \$!=$!, , \$command_string='$command_string'");
+  }
+  elsif ($exit_status != 0) {
+    confess("The waited command failed. The command returned an error status code. \$exit_status=$exit_status, \$command_string='$command_string'");
   }
   
-  my $output_file = $command_info->output_file;
-  
   # Check output file
+  my $output_file = $command_info->output_file;
   unless (-f $output_file) {
     confess("[Unexpected Error]The output file '$output_file' does not exist.");
   }
