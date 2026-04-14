@@ -10,15 +10,23 @@ use File::Find;
 # Inherit from SPVM::Builder::Config::Exe
 use base 'SPVM::Builder::Config::Exe';
 
-sub new {
-  my $self = shift->SUPER::new(@_);
+sub apply {
+  my ($self, $options) = @_;
   
-  unless (exists $self->{hint_cc}) {
-    $self->{hint_cc} = 'cl';
+  $options //= {};
+  
+  if (exists $options->{hint_cc}) {
+    $self->{hint_cc} = $options->{hint_cc};
+  }
+  else {
+    delete $self->{hint_cc};
   }
   
-  unless (exists $self->{ld}) {
-    $self->{ld} = 'link.exe';
+  if (exists $options->{ld}) {
+    $self->{ld} = $options->{ld};
+  }
+  else {
+    delete $self->{ld};
   }
   
   $self->setup_env;
@@ -41,18 +49,18 @@ sub new {
   
   # --- Rules for each Config ---
 
+  # Clear system settings before other rules
+  $self->compile_rule_any(sub { $_[0]->clear_system_fields });
+
   # 1. Common settings for all configs
   $self->compile_rule_any({
     cc                    => 'cl',
     long_option_sep       => ':',
     cc_output_option_name => '-Fo',
     copyright_print_ccflags          => ['-nologo'],
-    optimize              => $self->optimize // '-O2',
+    '+extra_ccflags' => ['-FS']
   });
   
-  # Clear system settings before other rules
-  $self->compile_rule_any(sub { $_[0]->clear_system_fields });
-
   # 2. Common C/C++ flags
   # Use '+' to preserve existing flags (equivalent to push)
   $self->compile_rule({language => qr/^(c|cpp)$/}, {
@@ -126,7 +134,7 @@ sub new {
       ndebug_ccflags     => ['-DNDEBUG'],        # Disable assertions
     }
   );
-
+  
   return $self;
 }
 
