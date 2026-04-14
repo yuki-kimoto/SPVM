@@ -30,12 +30,6 @@ Examples:
   # csh
   setenv SPVM_BUILD_DIR ~/.spvm_build
 
-=head2 SPVM_CC_DEBUG
-
-If C<SPVM_CC_DEBUG> environement variable is a true value of Perl, debug messages and messages from L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are printed to stderr.
-
-Note that this environment variable is only effective during runtime compilation (JIT).
-
 =head2 SPVM_CC_QUIET
 
 If C<SPVM_CC_QUIET> environement variable is a true value of Perl, messages L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are not printed to stderr.

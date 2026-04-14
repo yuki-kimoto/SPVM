@@ -2,7 +2,7 @@
   [Incompatible Changes]
     * Integrate the -I option with Perl's @INC representation and remove the requirement for the /SPVM suffix.
     * Remove --force option from spvmcc command, which was inadvertently left over from the previous release.
-    
+    * Remove SPVM_CC_DEBUG environment variable.
   [New Features]
     * Add --no-quiet option to spvm command.
     * Add -Mblib option to spvmdeps command.
