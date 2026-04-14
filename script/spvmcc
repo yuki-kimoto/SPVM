@@ -38,14 +38,6 @@ elsif ($show_version) {
 
 my $script_name = shift;
 
-if (defined $build_dir) {
-  $ENV{SPVM_BUILD_DIR} = $build_dir;
-}
-
-if (defined $quiet) {
-  $ENV{SPVM_CC_QUIET} = $quiet;
-}
-
 my $source = "";
 
 $0 = $script_name;
@@ -54,6 +46,14 @@ FindBin::again();
 eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
 
 @INC = @{SPVM::Builder::Util::resolve_inc(\@INC, $source, $blib, \@spvm_include_dirs)};
+
+if (defined $build_dir) {
+  $ENV{SPVM_BUILD_DIR} = $build_dir;
+}
+
+if (defined $quiet) {
+  $ENV{SPVM_CC_QUIET} = $quiet;
+}
 
 if ($warning) {
   $^W = 1;
