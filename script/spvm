@@ -53,17 +53,16 @@ if (defined $script_name && defined $source) {
 
 if (defined $source) {
   $0 = "-e";
+  FindBin::again();
 }
 elsif (defined $script_name) {
-  
   $0 = $script_name;
+  FindBin::again();
   
   eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
   
   $source = "#file \"$script_name\"\x{A}$source";
 }
-
-FindBin::again();
 
 @INC = @{SPVM::Builder::Util::resolve_inc(\@INC, $source, $blib, \@spvm_include_dirs)};
 

@@ -50,7 +50,6 @@ if (defined $quiet) {
 my $source = "";
 
 $0 = $script_name;
-
 FindBin::again();
 
 eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
