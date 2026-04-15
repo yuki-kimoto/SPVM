@@ -567,6 +567,24 @@ sub wait_command {
     });
   }
   
+  if ($ENV{SPVM_CC_DEBUG}) {
+    opendir(my $command_tmp_dh, $command_tmp_dir)
+      or confess("Can't open directory '$command_tmp_dir': $!");
+    
+    while (my $tmp_file = readdir($command_tmp_dh)) {
+      next if $tmp_file eq 'stdout.log' || $tmp_file eq 'stderr.log';
+      
+      my $tmp_file_path = "$command_tmp_dir/$tmp_file";
+      
+      if (-f $tmp_file_path && -T $tmp_file_path) {
+        my $tmp_content = SPVM::Builder::Util::slurp_binary($tmp_file_path);
+        $self->builder->global_file_lock(sub {
+          print STDERR "[SPVM_CC_DEBUG]Content of '$tmp_file_path':\n$tmp_content\n";
+        });
+      }
+    }
+  }
+  
   if ($exit_status != 0) {
     confess("The waited command failed. The command returned an error status code. \$exit_status=$exit_status, \$command_string='$command_string'");
   }
