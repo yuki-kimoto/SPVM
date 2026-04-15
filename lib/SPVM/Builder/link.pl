@@ -2,8 +2,10 @@ use strict;
 use warnings;
 use ExtUtils::CBuilder;
 use File::Copy ();
+use File::Path 'mkpath';
 use File::Basename 'basename';
 use MIME::Base64 qw(decode_base64);
+use Digest::SHA 'sha1_hex';
 
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));
@@ -60,33 +62,33 @@ my $cbuilder_config = {
 };
 my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
 
+# Create a dedicated object directory in the temporary directory
+my $tmp_object_dir = "$command_tmp_dir/object";
+mkpath($tmp_object_dir);
+
+# Copy all object files with path hashing to avoid collisions
+my @tmp_object_file_names;
+for my $object_file_name (@object_file_names) {
+  my $sha1 = Digest::SHA::sha1_hex($object_file_name);
+  my $tmp_object_dir = "$tmp_object_dir/$sha1";
+  mkpath($tmp_object_dir);
+  
+  my $tmp_object_file_name = "$tmp_object_dir/" . basename($object_file_name);
+  File::Copy::copy($object_file_name, $tmp_object_file_name)
+    or die "Can't copy '$object_file_name' to '$tmp_object_file_name': $!";
+  push @tmp_object_file_names, $tmp_object_file_name;
+}
+
 # Determine link method and output option
 my $link_method = ($output_type eq 'exe') ? 'link_executable' : 'link';
 my $output_option = ($output_type eq 'exe') ? 'exe_file' : 'lib_file';
 
-# Run linker
-my @link_tmp_files;
-my $error;
-
 my $tmp_output_file = "$command_tmp_dir/link.output";
-
-# This is a hack for ExtUtils::CBuilder on Windows.
-# When linking, ExtUtils::CBuilder creates intermediate files (like .def or .lds)
-# in the same directory as the first object file in the list.
-# In a parallel build environment with a shared hash directory, multiple processes
-# will conflict by overwriting or deleting each other's intermediate files.
-# To isolate the build process, we copy the first object file to a process-specific
-# temporary directory and use that path as the first element.
-# This forces CBuilder to create and delete intermediate files within the isolated directory.
-my $first_obj = $object_file_names[0];
-my $local_first_obj = "$command_tmp_dir/" . basename($first_obj);
-File::Copy::copy($first_obj, $local_first_obj) or die $!;
-$object_file_names[0] = $local_first_obj;
 
 # Link to the .tmp file instead of the final file
 $cbuilder->$link_method(
   $output_option => $tmp_output_file,
-  objects => \@object_file_names,
+  objects => \@tmp_object_file_names,
   extra_linker_flags => "@ldflags",
   module_name => $class_name,
   dl_func_list => $dl_func_list,
