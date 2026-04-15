@@ -11,6 +11,16 @@ use Digest::SHA 'sha1_hex';
 my @argv = split("\0", decode_base64($ARGV[0]));
 my ($command_tmp_dir, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @argv;
 
+# Define log file paths
+my $log_stdout = "$command_tmp_dir/stdout.log";
+my $log_stderr = "$command_tmp_dir/stderr.log";
+
+# Redirect stdout and stderr to log files
+open(STDOUT, '>', $log_stdout)
+  or die "Can't open file '$log_stdout': $!";
+open(STDERR, '>', $log_stderr)
+  or die "Can't open file '$log_stderr': $!";
+
 # Function to read file content (replaces slurp_binary)
 sub read_file {
   my ($file) = @_;
@@ -39,16 +49,6 @@ my @ldflags;
 if (my $content = read_file($ldflags_file)) {
   @ldflags = split(/\n/, $content);
 }
-
-# Define log file paths
-my $log_stdout = "$command_tmp_dir/stdout.log";
-my $log_stderr = "$command_tmp_dir/stderr.log";
-
-# Redirect stdout and stderr to log files
-open(STDOUT, '>', $log_stdout)
-  or die "Can't open file '$log_stdout': $!";
-open(STDERR, '>', $log_stderr)
-  or die "Can't open file '$log_stderr': $!";
 
 # Configure CBuilder
 my $cbuilder_config = {
