@@ -84,7 +84,7 @@ File::Copy::copy($first_obj, $local_first_obj) or die $!;
 $object_file_names[0] = $local_first_obj;
 
 # Link to the .tmp file instead of the final file
-(undef, @link_tmp_files) = $cbuilder->$link_method(
+$cbuilder->$link_method(
   $output_option => $tmp_output_file,
   objects => \@object_file_names,
   extra_linker_flags => "@ldflags",
@@ -96,9 +96,3 @@ $object_file_names[0] = $local_first_obj;
 File::Copy::move($tmp_output_file, $output_file)
   or die "Can't move $tmp_output_file to $output_file: $!";
 
-# Backup temporary files
-for my $tmp_file (@link_tmp_files) {
-  my $to_file = "$command_tmp_dir/" . basename $tmp_file;
-  File::Copy::copy($tmp_file, $to_file)
-    or die("Cannot move '$tmp_file' to '$to_file'.");
-}
