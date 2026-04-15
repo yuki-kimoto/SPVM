@@ -319,7 +319,11 @@ sub create_command_hash {
   
   # Process ID (Optional, for process isolation)
   my $process_id = $options->{process_id};
-
+  
+  # Process Time (Optional, for stricter process isolation against PID reuse)
+  # This should be a high-resolution timestamp like CLOCK_MONOTONIC.
+  my $process_time = $options->{process_time};
+  
   my $extensions = $self->header_exts || [];
   my $ext_list = join '|', map { quotemeta $_ } @$extensions;
   my $valid_ext_re = qr/\.(?:$ext_list)$/i;
@@ -364,7 +368,13 @@ sub create_command_hash {
     # Use the process ID directly to isolate the build directory
     $sha->add(Digest::SHA::sha1_hex($process_id) . "\x0A");
   }
-
+  
+  # Add process time hash if defined
+  # Combined with PID, this ensures a unique hash even if the PID is reused.
+  if (defined $process_time) {
+    $sha->add(Digest::SHA::sha1_hex($process_time) . "\x0A");
+  }
+  
   # Add dependent files hashes (Using in-memory cache)
   for my $dependent_file (@all_dependent_files) {
     my $normalized_dependent_file = SPVM::Builder::Util::normalize_path($dependent_file, $self->log_dir);
