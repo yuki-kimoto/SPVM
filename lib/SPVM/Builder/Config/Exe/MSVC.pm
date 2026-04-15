@@ -59,7 +59,8 @@ sub apply {
     long_option_sep       => ':',
     cc_output_option_name => '-Fo',
     copyright_print_ccflags          => ['-nologo'],
-    '+extra_ccflags' => ['-FS']
+    '+extra_ccflags' => ['-FS'],
+    thread_ccflags => [],
   });
   
   # 2. Common C/C++ flags
