@@ -99,6 +99,6 @@ File::Copy::move($tmp_output_file, $output_file)
 # Backup temporary files
 for my $tmp_file (@link_tmp_files) {
   my $to_file = "$command_tmp_dir/" . basename $tmp_file;
-  File::Copy::move($tmp_file, $to_file)
-    or move("Cannot move '$tmp_file' to '$to_file'.");
+  File::Copy::copy($tmp_file, $to_file)
+    or die("Cannot move '$tmp_file' to '$to_file'.");
 }
