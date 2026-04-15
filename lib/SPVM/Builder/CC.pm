@@ -537,8 +537,15 @@ sub wait_command {
   
   my $exit_status = $? >> 8;
   
+  my $command_string = $command_info->create_command_string;
+  
+  # Alive
   if ($wait_process_id == 0) {
     return 0;
+  }
+  # Error
+  elsif ($wait_process_id == -1) {
+    confess("The waited command failed. Process not found or already reaped: \$!=$!, , \$command_string='$command_string'");
   }
   
   my $command_tmp_dir = $command_info->tmp_dir;
@@ -560,11 +567,7 @@ sub wait_command {
     });
   }
   
-  my $command_string = $command_info->create_command_string;
-  if ($wait_process_id == -1) {
-    confess("The waited command failed. Process not found or already reaped: \$!=$!, , \$command_string='$command_string'");
-  }
-  elsif ($exit_status != 0) {
+  if ($exit_status != 0) {
     confess("The waited command failed. The command returned an error status code. \$exit_status=$exit_status, \$command_string='$command_string'");
   }
   
