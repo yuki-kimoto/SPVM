@@ -21,32 +21,21 @@ open(STDOUT, '>', $log_stdout)
 open(STDERR, '>', $log_stderr)
   or die "Can't open file '$log_stderr': $!";
 
-# Function to read file content (replaces slurp_binary)
-sub read_file {
-  my ($file) = @_;
-  return undef unless -f $file;
-  open my $fh, '<', $file
-    or die "Can't open $file: $!";
-  binmode $fh;
-  local $/;
-  return <$fh>;
-}
-
 # Read dl_func_list
 my $dl_func_list;
-if (my $content = read_file($dl_func_list_file)) {
+if (my $content = &slurp_binary($dl_func_list_file)) {
   $dl_func_list = [split(/\n/, $content)];
 }
 
 # Read object_file_names
 my @object_file_names;
-if (my $content = read_file($object_file_names_file)) {
+if (my $content = &slurp_binary($object_file_names_file)) {
   @object_file_names = split(/\n/, $content);
 }
 
 # Read ldflags
 my @ldflags;
-if (my $content = read_file($ldflags_file)) {
+if (my $content = &slurp_binary($ldflags_file)) {
   @ldflags = split(/\n/, $content);
 }
 
@@ -98,3 +87,14 @@ $cbuilder->$link_method(
 File::Copy::move($tmp_output_file, $output_file)
   or die "Can't move $tmp_output_file to $output_file: $!";
 
+# Copied from SPVM::Builder::Util#slurp_binary
+sub slurp_binary {
+  my ($file) = @_;
+  
+  open my $fh, '<', $file
+    or confess("Can't open file '$file':$!");
+    
+  my $content = do { local $/; <$fh> };
+  
+  return $content;
+}
