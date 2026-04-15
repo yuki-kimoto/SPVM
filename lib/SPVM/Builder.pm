@@ -52,9 +52,7 @@ sub new {
   
   my $build_dir = $self->build_dir;
   
-  unless (-d $build_dir) {
-    confess("Build directory '$build_dir' must exist.");
-  }
+  mkpath $build_dir;
   
   unless (exists $self->{ninja}) {
     $self->{ninja} = SPVM::Builder::Ninja->new(log_dir => $self->build_dir);

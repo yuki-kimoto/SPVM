@@ -1215,8 +1215,6 @@ sub generate_dist {
   
   my $only_lib_files = $self->only_lib_files;
   unless ($only_lib_files) {
-    # Generate .spvm_build directory
-    $self->generate_dir("$output_dir/.spvm_build");
     
     # Generate .gitignore file
     $self->generate_gitignore_file;
