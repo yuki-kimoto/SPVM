@@ -642,6 +642,17 @@ typedef unsigned int uint32_t;
   #define PRId64 "lld"
 #endif
 
+#ifndef __builtin_expect
+#  ifdef __has_builtin
+#    if !__has_builtin(__builtin_expect)
+#      define __builtin_expect(x, expected_value) (x)
+#    endif
+#  else
+#    define __builtin_expect(x, expected_value) (x)
+#  endif
+#endif
+ 
+
 #define PRId8 "d"
 #define PRId16 "d"
 #define PRId32 "d"
