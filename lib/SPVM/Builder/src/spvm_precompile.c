@@ -4156,7 +4156,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_MULNUM_FIELD_DEREF_BYTE(env, stack, &");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", (int8_t*)"); // ここを一重ポインタに
+        SPVM_STRING_BUFFER_add(string_buffer, ", (int8_t*)");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ", field_index, &error_id);\n");
         break;

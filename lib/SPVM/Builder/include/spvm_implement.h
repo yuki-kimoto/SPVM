@@ -312,8 +312,6 @@ static inline void SPVM_IMPLEMENT_DIVIDE_LONG(SPVM_ENV* env, SPVM_VALUE* stack, 
   }
 }
 
-// (’†—ª: DIVIDE_FLOAT, DOUBLE ‚Í‚»‚Ì‚Ü‚Ü)
-
 static inline void SPVM_IMPLEMENT_DIVIDE_UNSIGNED_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t in1, int32_t in2, int32_t* error_id) {
   if (__builtin_expect(in2 == 0, 0)) {
     SPVM_OBJ* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_EXCEPTION_DIVIDE_ZERO]);
