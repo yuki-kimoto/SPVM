@@ -241,6 +241,8 @@ sub load_dynamic_lib {
             $build_options,
           );
           
+          
+          
           $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_jit;
           $DYNAMIC_LIB_FILE_IS_JIT_H->{$dynamic_lib_file_jit} = 1;
         }

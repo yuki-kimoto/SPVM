@@ -9,6 +9,7 @@ use Config;
 use SPVM::Builder::Accessor 'has';
 use SPVM::Builder::LibInfo;
 use SPVM::Builder::Resource;
+use SPVM::Builder::Util;
 
 my $fields = [qw(
   ld
@@ -81,7 +82,7 @@ sub new {
   }
 
   unless (exists $self->{dynamic_lib_ldflags}) {
-    if ($^O eq 'MSWin32') {
+    if (SPVM::Builder::Util::is_windows()) {
       $self->dynamic_lib_ldflags(['-mdll']);
     }
     else {
@@ -91,13 +92,13 @@ sub new {
 
   unless (exists $self->{thread_ldflags}) {
     $self->thread_ldflags(['-pthread']);
-    if ($^O eq 'MSWin32') {
+    if (SPVM::Builder::Util::is_windows()) {
       push @{$self->thread_ldflags}, '-Wl,-Bstatic', '-lwinpthread', '-Wl,-Bdynamic';
     }
   }
 
   unless (exists $self->{exe_libbcrypt_ldflags}) {
-    if ($^O eq 'MSWin32') {
+    if (SPVM::Builder::Util::is_windows()) {
       $self->exe_libbcrypt_ldflags(['-lbcrypt']);
     }
     else {
@@ -106,7 +107,7 @@ sub new {
   }
 
   unless (exists $self->{libcpp_ldflags}) {
-    if ($^O eq 'MSWin32') {
+    if (SPVM::Builder::Util::is_windows()) {
       $self->libcpp_ldflags(['-Wl,-Bstatic', '-lstdc++', '-lgcc', '-Wl,-Bdynamic']);
     }
     elsif ($^O eq 'darwin') {
@@ -174,7 +175,7 @@ sub new {
     # Windows (MinGW/MSVC) binaries can be significantly larger due to embedded 
     # debug symbols. Using -s effectively reduces this size. 
     # On macOS, -s is obsolete. On Linux, keeping symbols by default is preferred.
-    if ($^O eq 'MSWin32') {
+    if (SPVM::Builder::Util::is_windows()) {
       $self->symbol_strip_ldflags(['-s']);
     }
     else {

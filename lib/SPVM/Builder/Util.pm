@@ -704,7 +704,7 @@ EOS
 sub get_cpu_count {
   my $cpu_count;
 
-  if ($^O eq 'MSWin32') {
+  if (SPVM::Builder::Util::is_windows()) {
     # Windows
     $cpu_count = $ENV{NUMBER_OF_PROCESSORS} || 1;
   }
@@ -777,7 +777,7 @@ sub normalize_path {
 sub quote_literal {
   my ($string) = @_;
 
-  if ($^O eq 'MSWin32') {
+  if (SPVM::Builder::Util::is_windows()) {
     if (length $string && $string !~ /[ \t\n\x0b"|<>%]/) {
       return $string;
     }
@@ -858,6 +858,8 @@ sub resolve_spvm_command_inc {
   
   return \@inc;
 }
+
+sub is_windows { $^O eq 'MSWin32' }
 
 1;
 

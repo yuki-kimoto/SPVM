@@ -68,7 +68,7 @@ sub new {
 
   # position_independent_code_ccflags
   unless (exists $self->{position_independent_code_ccflags}) {
-    if ($^O eq 'MSWin32') {
+    if (SPVM::Builder::Util::is_windows()) {
       $self->position_independent_code_ccflags([]);
     }
     else {
@@ -156,7 +156,7 @@ sub new {
 
   # cpp_exception_handling_ccflags
   unless (exists $self->{cpp_exception_handling_ccflags}) {
-    if ($^O eq 'MSWin32') {
+    if (SPVM::Builder::Util::is_windows()) {
       $self->cpp_exception_handling_ccflags(['-D__USE_MINGW_ANSI_STDIO']);
     }
     else {

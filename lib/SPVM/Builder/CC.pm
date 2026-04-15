@@ -643,7 +643,7 @@ sub spawn_perl {
   my @cmd = ($^X, $perl_script_file, $args_base64);
   
   my $process_id;
-  if ($^O eq 'MSWin32') {
+  if (SPVM::Builder::Util::is_windows()) {
     # Windows spawn
     $process_id = system(1, @cmd);
     if (!defined $process_id || $process_id <= 0) {
