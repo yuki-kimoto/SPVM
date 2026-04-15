@@ -19,6 +19,7 @@ use File::Temp;
 
 use SPVM::Builder;
 use SPVM::Builder::Util;
+use SPVM::Builder::Config::Exe::MSVC;
 
 my $devnull = File::Spec->devnull;
 
@@ -27,6 +28,24 @@ my $spvm_script_dir = 't/08_spvmcc/script';
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 my $tmp_dir = File::Temp->newdir;
+
+my $has_msvc;
+eval {
+  local %ENV = %ENV;
+  my $global_config = SPVM::Builder::Config::Exe::MSVC->new;
+  $global_config->hint_cc(undef);
+  $global_config->setup_env;
+  my $hint_cc = $global_config->hint_cc;
+  $has_msvc = defined $hint_cc;
+};
+
+if ($@) {
+  warn $@;
+}
+
+unless ($has_msvc) {
+  plan skip_all => '[Test Skip]Do not have MSVC compiler and linker.' ;
+}
 
 {
   # Basic
