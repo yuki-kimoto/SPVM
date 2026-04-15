@@ -1,8 +1,5 @@
 use strict;
 use warnings;
-use Fcntl qw(:flock);
-use Digest::SHA qw(sha1_hex);
-use File::Basename 'dirname', 'basename';
 use MIME::Base64 qw(decode_base64);
 use File::Copy ();
 
@@ -16,9 +13,9 @@ my $log_stderr = "$command_tmp_dir/stderr.log";
 
 # Redirect stdout and stderr to log files
 open(STDOUT, '>', $log_stdout)
-  or warn "Can't open file '$log_stdout': $!";
+  or die "Can't open file '$log_stdout': $!";
 open(STDERR, '>', $log_stderr)
-  or warn "Can't open file '$log_stderr': $!";
+  or die "Can't open file '$log_stderr': $!";
 
 my $tmp_output_file = "$command_tmp_dir/compile.output";
 $cc_cmd[-1] .= $tmp_output_file;

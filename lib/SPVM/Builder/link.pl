@@ -2,13 +2,8 @@ use strict;
 use warnings;
 use ExtUtils::CBuilder;
 use File::Copy ();
-use Fcntl qw(:flock :seek);
-use Digest::SHA qw(sha1_hex);
-use File::Basename 'dirname', 'basename';
+use File::Basename 'basename';
 use MIME::Base64 qw(decode_base64);
-use File::Spec;
-use File::Compare 'compare';
-use Time::HiRes;
 
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));
@@ -49,9 +44,9 @@ my $log_stderr = "$command_tmp_dir/stderr.log";
 
 # Redirect stdout and stderr to log files
 open(STDOUT, '>', $log_stdout)
-  or warn "Can't open file '$log_stdout': $!";
+  or die "Can't open file '$log_stdout': $!";
 open(STDERR, '>', $log_stderr)
-  or warn "Can't open file '$log_stderr': $!";
+  or die "Can't open file '$log_stderr': $!";
 
 # Configure CBuilder
 my $cbuilder_config = {
