@@ -35,6 +35,7 @@ sub apply {
   $self->clear_system_fields;
   $self->long_option_sep(':');
   $self->thread_ldflags([]);
+  $self->ld_version($self->create_cc_version);
   
   # Linker settings
   $self->static_lib_braces(["", ""]);
@@ -61,6 +62,7 @@ sub apply {
     copyright_print_ccflags          => ['-nologo'],
     '+extra_ccflags' => ['-FS'],
     thread_ccflags => [],
+    cc_version => $self->create_cc_version,
   });
   
   # 2. Common C/C++ flags
@@ -264,6 +266,18 @@ sub setup_env {
       }
     }
   }
+}
+
+sub create_cc_version {
+  my ($self) = @_;
+  
+  my $hint_cc = $self->hint_cc;
+  
+  my $cc_version = `$hint_cc 2>&1` // '';
+  
+  $cc_version =~ s/\r?\n.*//s;
+  
+  return $cc_version;
 }
 
 1;
