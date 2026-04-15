@@ -39,6 +39,23 @@ if (my $content = &slurp_binary($ldflags_file)) {
   @ldflags = split(/\n/, $content);
 }
 
+my $perllibs = '';
+if ($^O eq 'MSWin32') {
+  # [HACK]
+  # On Windows, if perllibs is empty, ExtUtils::CBuilder::link may generate
+  # an empty INPUT() section in the response file (linker argument file), 
+  # which leads to a build failure.
+  # To prevent this, we explicitly specify kernel32.lib (a core Windows library)
+  if ($hint_cc =~ /cl(\.exe)?$/i) {
+    # For MSVC (cl.exe)
+    $perllibs = 'kernel32.lib';
+  }
+  else {
+    # For others (e.g. MinGW/gcc)
+    $perllibs = '-lkernel32';
+  }
+}
+
 # Configure CBuilder
 my $cbuilder_config = {
   cc => $hint_cc,
@@ -47,8 +64,9 @@ my $cbuilder_config = {
   shrpenv => '',
   libpth => '',
   libperl => '',
-  perllibs => '-lm'
+  perllibs => $perllibs
 };
+
 my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
 
 # Create a dedicated object directory in the temporary directory
