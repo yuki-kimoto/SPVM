@@ -218,8 +218,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   # Check precompile class file
   {
     my $build_dir = $ENV{SPVM_BUILD_DIR};
-    my ($precompile_class_file) = glob("$build_dir/work/lib/*/*/SPVM/TestCase/Operator/MethodCall.precompile.$Config{dlext}");
-    ok(defined $precompile_class_file && -f $precompile_class_file);
+    my @precompile_class_files = glob("$build_dir/work/lib/*/*/SPVM/TestCase/Operator/MethodCall.precompile.$Config{dlext}");
+    ok(scalar @precompile_class_files);
   }
   
   # Call precompile method

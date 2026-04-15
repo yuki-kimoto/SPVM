@@ -50,25 +50,22 @@ sub new {
   
   bless $self, ref $class || $class;
   
+  my $build_dir = $self->build_dir;
+  
+  mkpath $build_dir;
+  
   unless (exists $self->{ninja}) {
     $self->{ninja} = SPVM::Builder::Ninja->new(log_dir => $self->build_dir);
   }
   
   # Ensure the global lock file is opened once
-  my $build_dir = $self->build_dir;
-  
-  # Create build directory if it doesn't exist
-  unless (-d $build_dir) {
-    mkpath $build_dir or die "[Internal Error]Can't create build directory \"$build_dir\": $!";
-  }
-  
-  my $lock_file = "$build_dir/.global.lock";
+  my $global_lock_file = $self->get_global_lock_file;
   
   # Open with append mode to avoid truncating existing data
-  open my $fh, '>>', $lock_file 
-    or die "[Internal Error]Can't open global lock file \"$lock_file\": $!";
+  open my $global_lock_fh, '>>', $global_lock_file 
+    or die "Can't open global lock file '$global_lock_file': $!";
   
-  $self->{global_lock_fh} = $fh;
+  $self->{global_lock_fh} = $global_lock_fh;
   
   return $self;
 }
@@ -503,6 +500,16 @@ sub global_file_lock {
   }
   
   return $result;
+}
+
+sub get_global_lock_file {
+  my ($self) = @_;
+  
+  my $build_dir = $self->build_dir;
+  
+  my $global_lock_file = "$build_dir/.global.lock";
+  
+  return $global_lock_file;
 }
 
 1;

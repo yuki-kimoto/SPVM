@@ -537,31 +537,55 @@ sub wait_command {
   
   my $exit_status = $? >> 8;
   
+  my $command_string = $command_info->create_command_string;
+  
+  # Alive
   if ($wait_process_id == 0) {
     return 0;
+  }
+  # Error
+  elsif ($wait_process_id == -1) {
+    confess("The waited command failed. Process not found or already reaped: \$!=$!, , \$command_string='$command_string'");
   }
   
   my $command_tmp_dir = $command_info->tmp_dir;
   
   # Read output files from temp directory
+  my $stdout_file = "$command_tmp_dir/stdout.log";
+  my $stdout_output = SPVM::Builder::Util::slurp_binary($stdout_file);
+  if (length $stdout_output) {
+    $self->builder->global_file_lock(sub {
+      print $stdout_output;
+    });
+  }
+  
   my $stderr_file = "$command_tmp_dir/stderr.log";
-  if (-f $stderr_file) {
-    # Print stderr
-    open my $stderr_fh, '<', $stderr_file;
-    my $stderr_output = do { local $/; <$stderr_fh> };
-    close $stderr_fh;
-    if (length $stderr_output) {
-      $self->builder->global_file_lock(sub {
-        print STDERR "$stderr_output\n";
-      });
+  my $stderr_output = SPVM::Builder::Util::slurp_binary($stderr_file);
+  if (length $stderr_output) {
+    $self->builder->global_file_lock(sub {
+      print STDERR $stderr_output;
+    });
+  }
+  
+  if ($ENV{SPVM_CC_DEBUG}) {
+    opendir(my $command_tmp_dh, $command_tmp_dir)
+      or confess("Can't open directory '$command_tmp_dir': $!");
+    
+    while (my $tmp_file = readdir($command_tmp_dh)) {
+      next if $tmp_file eq 'stdout.log' || $tmp_file eq 'stderr.log';
+      
+      my $tmp_file_path = "$command_tmp_dir/$tmp_file";
+      
+      if (-f $tmp_file_path && -T $tmp_file_path) {
+        my $tmp_content = SPVM::Builder::Util::slurp_binary($tmp_file_path);
+        $self->builder->global_file_lock(sub {
+          print STDERR "[SPVM_CC_DEBUG]Content of '$tmp_file_path':\n$tmp_content\n";
+        });
+      }
     }
   }
   
-  my $command_string = $command_info->create_command_string;
-  if ($wait_process_id == -1) {
-    confess("The waited command failed. Process not found or already reaped: \$!=$!, , \$command_string='$command_string'");
-  }
-  elsif ($exit_status != 0) {
+  if ($exit_status != 0) {
     confess("The waited command failed. The command returned an error status code. \$exit_status=$exit_status, \$command_string='$command_string'");
   }
   
@@ -775,6 +799,8 @@ sub prepare_link {
   };
   if ($config->is_jit) {
     $create_command_hash_options->{process_id} = $$;
+    my $process_time = Time::HiRes::clock_gettime(Time::HiRes::CLOCK_MONOTONIC());
+    $create_command_hash_options->{process_time} = $process_time;
   }
   my $command_hash = $ninja->create_command_hash($create_command_hash_options);
   
