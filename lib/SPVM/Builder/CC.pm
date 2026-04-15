@@ -799,6 +799,8 @@ sub prepare_link {
   };
   if ($config->is_jit) {
     $create_command_hash_options->{process_id} = $$;
+    my $process_time = Time::HiRes::clock_gettime(Time::HiRes::CLOCK_MONOTONIC());
+    $create_command_hash_options->{process_time} = $process_time;
   }
   my $command_hash = $ninja->create_command_hash($create_command_hash_options);
   
