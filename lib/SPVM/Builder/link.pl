@@ -44,13 +44,14 @@ if (my $content = read_file($ldflags_file)) {
 }
 
 # Define log file paths
+my $log_stdout = "$command_tmp_dir/stdout.log";
 my $log_stderr = "$command_tmp_dir/stderr.log";
 
 # Redirect stdout and stderr to log files
-open(STDOUT, '>', File::Spec->devnull)
-  or warn "Can't open null device: $!";
+open(STDOUT, '>', $log_stdout)
+  or warn "Can't open file '$log_stdout': $!";
 open(STDERR, '>', $log_stderr)
-  or warn "Can't open $log_stderr: $!";
+  or warn "Can't open file '$log_stderr': $!";
 
 # Configure CBuilder
 my $cbuilder_config = {

@@ -544,6 +544,19 @@ sub wait_command {
   my $command_tmp_dir = $command_info->tmp_dir;
   
   # Read output files from temp directory
+  my $stdout_file = "$command_tmp_dir/stdout.log";
+  if (-f $stdout_file) {
+    # Print stdout
+    open my $stdout_fh, '<', $stdout_file;
+    my $stdout_output = do { local $/; <$stdout_fh> };
+    close $stdout_fh;
+    if (length $stdout_output) {
+      $self->builder->global_file_lock(sub {
+        print $stdout_output;
+      });
+    }
+  }
+  
   my $stderr_file = "$command_tmp_dir/stderr.log";
   if (-f $stderr_file) {
     # Print stderr
@@ -552,7 +565,7 @@ sub wait_command {
     close $stderr_fh;
     if (length $stderr_output) {
       $self->builder->global_file_lock(sub {
-        print STDERR "$stderr_output\n";
+        print STDERR $stderr_output;
       });
     }
   }
