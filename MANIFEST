@@ -979,7 +979,7 @@ t/04_native_api/lib/SPVM/TestCase/UseResource/Mylib2.c
 t/04_native_api/lib/SPVM/TestCase/UseResource/Mylib2.config
 t/04_native_api/lib/SPVM/TestCase/UseResource/Mylib2.spvm
 t/04_native_api/native_api.t
-t/04_native_api/native_api_cached.t
+t/04_native_api/native_api_build_cache_minimal.t
 t/04_native_api/native_api_cpp.t
 t/04_native_api/native_api_link_info.t
 t/04_native_api/native_api_src.t
