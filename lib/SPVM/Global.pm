@@ -9,6 +9,7 @@ use SPVM::Builder;
 use SPVM::Builder::Native::Env;
 use SPVM::ExchangeAPI;
 use File::Path 'rmtree';
+use Time::HiRes;
 
 my $COMPILER;
 my $API;
@@ -241,7 +242,16 @@ sub load_dynamic_lib {
             $build_options,
           );
           
-          
+          # [Windows Only] Wait for the file cache to be fully flushed.
+          # When running tests in parallel on GitHub Actions, a segmentation fault occurs about once in ten times
+          # during DLL loading. This is presumably because the DLL is loaded before the file cache has been
+          # fully written by the system processes (Lazy Writer).
+          # Although a 100ms wait is not a logical solution, since MinGW's gcc does not seem to guarantee
+          # a physical disk flush upon closing the DLL, we use this sleep as a practical workaround
+          # to ensure the DLL is completely written before loading.
+          if (SPVM::Builder::Util::is_windows()) {
+            Time::HiRes::sleep(0.1)
+          }
           
           $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_jit;
           $DYNAMIC_LIB_FILE_IS_JIT_H->{$dynamic_lib_file_jit} = 1;
