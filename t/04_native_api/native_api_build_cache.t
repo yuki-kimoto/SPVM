@@ -106,43 +106,55 @@ find({
 }, $build_dir);
 print "--------------------------------\n";
 
-my ($obj_file) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
-my ($baz_obj_file) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
-ok(-f $obj_file, "Main object file exists");
-ok(-f $baz_obj_file, "Secondary source object file exists");
+my ($native_class_object_file) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
+my ($native_source_baz_object_file) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
+ok(-f $native_class_object_file, "Main object file exists");
+ok(-f $native_source_baz_object_file, "Secondary source object file exists");
 
 # Second build without changes (Should be cached)
 system($compile_cmd) == 0 or die "Second build failed";
-ok(-f $obj_file, "Main object file exists");
+ok(-f $native_class_object_file, "Main object file exists");
 is(scalar (() = glob("$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o")), 1);
-ok(-f $baz_obj_file, "Secondary source object file exists");
+ok(-f $native_source_baz_object_file, "Secondary source object file exists");
 is(scalar (() = glob("$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o")), 1);
 
-# Clear cache
-rmtree "$build_dir/work";
-ok(!-d "$build_dir/work", "work directory cleared");
-
-# Re-build
-system($compile_cmd) == 0 or die "Build after baz.h update failed";
-my ($obj_file_3) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
-ok(-f $obj_file_3, "Main object re-generated");
-
-# Update baz.c and clear work directory
 {
-  my $content = SPVM::Builder::Util::slurp_binary($native_source_file);
-  $content .= "\n// modification\n";
-  
-  SPVM::Builder::Util::spurt_binary($native_source_file, $content);
+  # Update native class file
+  {
+    my $content = SPVM::Builder::Util::slurp_binary($native_class_file);
+    $content .= "\n// modification\n";
+    
+    SPVM::Builder::Util::spurt_binary($native_class_file, $content);
+  }
+
+  # Clear cache
+  rmtree "$build_dir/work";
+  ok(!-d "$build_dir/work", "work directory cleared again");
+
+  # Re-build
+  system($compile_cmd) == 0 or die;
+  my ($native_source_baz_object_file) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
+  ok(-f $native_source_baz_object_file);
 }
 
-# Clear cache
-rmtree "$build_dir/work";
-ok(!-d "$build_dir/work", "work directory cleared again");
+{
+  # Update native source file
+  {
+    my $content = SPVM::Builder::Util::slurp_binary($native_source_file);
+    $content .= "\n// modification\n";
+    
+    SPVM::Builder::Util::spurt_binary($native_source_file, $content);
+  }
 
-# Re-build
-system($compile_cmd) == 0 or die "Build after baz.c update failed";
-my ($baz_obj_file_3) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
-ok(-f $baz_obj_file_3, "baz.o re-generated");
+  # Clear cache
+  rmtree "$build_dir/work";
+  ok(!-d "$build_dir/work", "work directory cleared again");
+
+  # Re-build
+  system($compile_cmd) == 0 or die;
+  my ($native_source_baz_object_file) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
+  ok(-f $native_source_baz_object_file, "baz.o re-generated");
+}
 
 done_testing;
 
