@@ -1,2 +1,16 @@
-use CommandInfo;
-say CommandInfo->PROGRAM_NAME;
+class {
+  static method main : void () {
+    
+    my $argv = CommandInfo->ARGV;
+    
+    unless ($argv->[0] eq "args1") {
+      die;
+    }
+    
+    unless ($argv->[1] eq "args2") {
+      die;
+    }
+    
+    say CommandInfo->PROGRAM_NAME;
+  }
+}
