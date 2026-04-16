@@ -1,3 +1,37 @@
+0.990159 2026-04-16
+  [New Feature]
+    * SPVM::Builder::Config::Exe::MSVC work well.
+    
+  [Changes]
+    * Fix MSVC config: add /FS flag for parallel builds and refine option application logic.
+    * Improve error reporting for the compilation command.
+    * Adjust MSVC config: let compiler use default warning level instead of explicit -W3.
+    * Isolate all object files using SHA1 path hashing to prevent collision of intermediate files on Windows MSVC
+    * Explicitly specify kernel32 as perllibs on Windows in link.pl to prevent build failures caused by an empty INPUT section in the linker response file
+    * Set cc_version and ld_version for MSVC to handle version differences
+    * Use absolute paths for dl_load_file on Windows to prevent the OS loader from triggering unintended DLL search strategies.
+    * Isolate JIT DLL generation using temporary directories.
+    
+  [Bug Fix]
+    * Fix wait_command: print stderr output before checking exit status to provide better error context.
+    * Fix MSVC config: set default linker to link.exe and initialize thread_ldflags.
+    * Fix MSVC config to set the hint_cc attribute using the basename of the compiler path
+    * Support __builtin_expect use in MSVC with empty statement.
+    * Remove -pthread flag on MSVC to suppress warning D9002
+    * Expand the scope of global_file_lock to cover the entire process of DLL loading and symbol resolution to prevent race conditions.
+  [Internal Changes]
+    * Add get_global_lock_file method and use it in constructor to improve maintainability
+    * Improve paralle compilation and link logic.
+    * Add is_windows to SPVM::Builder::Util.
+    * Remove redundant file existence and content comparison logic after moving temporary files in spurt_binary_parallel_safe.
+    * Ensure atomic and isolated file writes in spurt_binary_parallel_safe by using unique temporary directories for each call.
+    * Remove the non-parallel-safe spurt_binary method and unify all file writes to use spurt_binary_parallel_safe to prevent race conditions.
+  [Test Fix]
+    * Fix tests for parallel execution.
+   
+  [Test Improvement]
+    * Add build cache tests.
+  
 0.990158 2026-04-14
   [Incompatible Changes]
     * Integrate the -I option with Perl's @INC representation and remove the requirement for the /SPVM suffix.
