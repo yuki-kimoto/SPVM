@@ -207,25 +207,40 @@ my @current_native_source_baz_object_files;
 }
 
 {
-  # Add a new header file
-  my $native_header_file2 = "$native_include_dir/baz/baz2.h";
-  {
-    my $content = "// New header file\n";
-    SPVM::Builder::Util::spurt_binary($native_header_file2, $content);
+  # --- Test for all supported header extensions ---
+  my @header_exts = qw(h hpp hh hxx h++ inc inl c cpp cc cxx c++);
+
+  for my $ext (@header_exts) {
+    my $new_header_file = "$native_include_dir/baz/extra_$ext.$ext";
+    
+    # 1. Create a new header-like file
+    {
+      my $content = "/* New header with ext: $ext */\n";
+      SPVM::Builder::Util::spurt_binary($new_header_file, $content);
+    }
+
+    # 2. Update the base header to include the new file
+    {
+      my $content = SPVM::Builder::Util::slurp_binary($native_header_file);
+      $content = "#include \"baz/extra_$ext.$ext\"\n" . $content;
+      SPVM::Builder::Util::spurt_binary($native_header_file, $content);
+    }
+    
+    # 3. Re-build
+    system($compile_cmd) == 0 or die "Build failed at extension: $ext";
+    
+    my @old_native_class_object_files = @current_native_class_object_files;
+    my @old_native_source_baz_object_files = @current_native_source_baz_object_files;
+    
+    @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
+    @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
+    
+    # 4. Check if both objects are re-compiled
+    is(@current_native_class_object_files, @old_native_class_object_files + 1, 
+       "Main object re-compiled after adding .$ext header");
+    is(@current_native_source_baz_object_files, @old_native_source_baz_object_files + 1, 
+       "baz.o re-compiled after adding .$ext header");
   }
-  
-  # Re-build
-  system($compile_cmd) == 0 or die;
-  
-  my @old_native_class_object_files = @current_native_class_object_files;
-  my @old_native_source_baz_object_files = @current_native_source_baz_object_files;
-  
-  @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
-  @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
-  
-  # Both should be incremented because they depend on baz.h, which now depends on baz2.h
-  is(@current_native_class_object_files, @old_native_class_object_files + 1, "Main object re-compiled after adding a new header dependency");
-  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files + 1, "baz.o re-compiled after adding a new header dependency");
 }
 
 done_testing;
