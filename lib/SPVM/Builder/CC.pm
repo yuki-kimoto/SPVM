@@ -797,11 +797,6 @@ sub prepare_link {
     command_version => $ld_version,
     dependent_files => [@object_file_names],
   };
-  if ($config->is_jit) {
-    $create_command_hash_options->{process_id} = $$;
-    my $process_time = Time::HiRes::clock_gettime(Time::HiRes::CLOCK_MONOTONIC());
-    $create_command_hash_options->{process_time} = $process_time;
-  }
   my $command_hash = $ninja->create_command_hash($create_command_hash_options);
   
   $link_info->command_hash($command_hash);
@@ -814,8 +809,8 @@ sub prepare_link {
     unless (defined $output_dir) {
       my $is_jit = $config->is_jit;
       if ($is_jit) {
-        my $command_hash_dir = $command_hash =~ s|^(..)|$1/|r;
-        $output_dir = $self->builder->create_build_lib_path($command_hash_dir);
+        $output_dir = File::Temp::tempdir(CLEANUP => 0);
+        push @SPVM::Global::TMP_DIRS, $output_dir;
       }
       else {
         confess("[Unexpected Error]A output directory must exists.");
