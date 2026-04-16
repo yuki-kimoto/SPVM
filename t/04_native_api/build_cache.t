@@ -137,7 +137,7 @@ my @current_native_source_baz_object_files;
   # Update native class file
   {
     my $content = SPVM::Builder::Util::slurp_binary($native_class_file);
-    $content .= "\n// modification\n";
+    $content .= "\n";
     
     SPVM::Builder::Util::spurt_binary_parallel_safe($native_class_file, $content);
   }
@@ -153,6 +153,30 @@ my @current_native_source_baz_object_files;
   @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
   
   is(@current_native_class_object_files, @old_native_class_object_files + 1);
+  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files);
+}
+
+{
+  # Restore native class file
+  {
+    my $content = SPVM::Builder::Util::slurp_binary($native_class_file);
+    
+    chop $content;
+    
+    SPVM::Builder::Util::spurt_binary_parallel_safe($native_class_file, $content);
+  }
+  
+  
+  # Re-build
+  system($compile_cmd) == 0 or die;
+  
+  my @old_native_class_object_files = @current_native_class_object_files;
+  my @old_native_source_baz_object_files = @current_native_source_baz_object_files;
+  
+  @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
+  @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
+  
+  is(@current_native_class_object_files, @old_native_class_object_files);
   is(@current_native_source_baz_object_files, @old_native_source_baz_object_files);
 }
 
@@ -253,12 +277,12 @@ my @current_native_source_baz_object_files;
   @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
 
   # Both should NOT be incremented (Cached)
-  is(@current_native_class_object_files, @old_native_class_object_files, "Main object is NOT re-compiled for comment change in config");
-  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files, "baz.o is NOT re-compiled for comment change in config");
+  is(@current_native_class_object_files, @old_native_class_object_files);
+  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files);
 }
 
 {
-  # Update config file with only a comment change
+  # Update config file
   $config_content = $config_content . "\n\$config->add_ccflag('-O0');\n \$config;\n";
   SPVM::Builder::Util::spurt_binary_parallel_safe($config_file, $config_content);
 
@@ -272,13 +296,13 @@ my @current_native_source_baz_object_files;
   @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
 
   # Both should be re-compiled because the config (compilation flags) changed
-  is(@current_native_class_object_files, @old_native_class_object_files + 1, "Main object re-compiled after config change (-O0)");
-  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files + 1, "baz.o re-compiled after config change (-O0)");
+  is(@current_native_class_object_files, @old_native_class_object_files + 1);
+  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files + 1);
 }
 
 {
-  # Update config file with only a comment change
-  $config_content = $config_content . "\n\$config->cc_version('Different cc');\n \$config;\n";
+  # Restore config file
+  $config_content = $config_content . "\n\pop \@{\$config->ccflags};\n \$config;\n";
   SPVM::Builder::Util::spurt_binary_parallel_safe($config_file, $config_content);
 
   # Re-build
@@ -291,9 +315,48 @@ my @current_native_source_baz_object_files;
   @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
 
   # Both should be re-compiled because the config (compilation flags) changed
-  is(@current_native_class_object_files, @old_native_class_object_files + 1, "Main object re-compiled after config change (-O0)");
-  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files + 1, "baz.o re-compiled after config change (-O0)");
+  is(@current_native_class_object_files, @old_native_class_object_files);
+  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files);
 }
+
+{
+  # Update cc_version
+  $config_content = $config_content . "\nmy \$original_cc_version = \$config->cc_version;\$config->cc_version('Different cc');\n \$config;\n";
+  SPVM::Builder::Util::spurt_binary_parallel_safe($config_file, $config_content);
+
+  # Re-build
+  system($compile_cmd) == 0 or die "Build after config update failed";
+
+  my @old_native_class_object_files = @current_native_class_object_files;
+  my @old_native_source_baz_object_files = @current_native_source_baz_object_files;
+
+  @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
+  @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
+
+  # Both should be re-compiled because the config (compilation flags) changed
+  is(@current_native_class_object_files, @old_native_class_object_files + 1);
+  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files + 1);
+}
+
+{
+  # Restore cc_version
+  $config_content = $config_content . "\n\$config->cc_version(\$original_cc_version);\n \$config;\n";
+  SPVM::Builder::Util::spurt_binary_parallel_safe($config_file, $config_content);
+
+  # Re-build
+  system($compile_cmd) == 0 or die "Build after config update failed";
+
+  my @old_native_class_object_files = @current_native_class_object_files;
+  my @old_native_source_baz_object_files = @current_native_source_baz_object_files;
+
+  @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
+  @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
+
+  # Both should be re-compiled because the config (compilation flags) changed
+  is(@current_native_class_object_files, @old_native_class_object_files);
+  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files);
+}
+
 
 done_testing;
 
