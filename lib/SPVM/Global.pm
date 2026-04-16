@@ -312,7 +312,7 @@ sub get_method_addresses {
             
             $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file_abs);
             
-            $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file_abs} = $dynamic_lib_libref;
+            $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file} = $dynamic_lib_libref;
           }
           
           if ($dynamic_lib_libref) {
