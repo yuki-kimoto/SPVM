@@ -276,5 +276,24 @@ my @current_native_source_baz_object_files;
   is(@current_native_source_baz_object_files, @old_native_source_baz_object_files + 1, "baz.o re-compiled after config change (-O0)");
 }
 
+{
+  # Update config file with only a comment change
+  $config_content = $config_content . "\n\$config->cc_version('Different cc');\n \$config;\n";
+  SPVM::Builder::Util::spurt_binary($config_file, $config_content);
+
+  # Re-build
+  system($compile_cmd) == 0 or die "Build after config update failed";
+
+  my @old_native_class_object_files = @current_native_class_object_files;
+  my @old_native_source_baz_object_files = @current_native_source_baz_object_files;
+
+  @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
+  @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
+
+  # Both should be re-compiled because the config (compilation flags) changed
+  is(@current_native_class_object_files, @old_native_class_object_files + 1, "Main object re-compiled after config change (-O0)");
+  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files + 1, "baz.o re-compiled after config change (-O0)");
+}
+
 done_testing;
 
