@@ -10,6 +10,7 @@ use SPVM::Builder::Native::Env;
 use SPVM::ExchangeAPI;
 use File::Path 'rmtree';
 use Time::HiRes;
+use Fcntl qw(O_RDONLY);
 
 my $COMPILER;
 my $API;
@@ -296,6 +297,14 @@ sub get_method_addresses {
           }
           
           $BUILDER->global_file_lock(sub {
+            unless (-f $dynamic_lib_file) {
+              confess("\$dynamic_lib_file does not exist.");
+            }
+            
+            unless (sysopen(my $dynamic_lib_fh, $dynamic_lib_file, O_RDONLY)) {
+              confess("\$dynamic_lib_file cannot be opened O_RDONLY.");
+            }
+            
             $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
           });
           
