@@ -243,5 +243,80 @@ my @current_native_source_baz_object_files;
   }
 }
 
+{
+  # Update config file with only a comment change
+  {
+    my $content = <<'EOS';
+use strict;
+use warnings;
+use SPVM::Builder::Config;
+use File::Basename 'dirname';
+
+my $config = SPVM::Builder::Config->new_c99;
+
+my $dir = dirname(__FILE__);
+
+$config->add_source_file("baz/baz.c");
+
+# This is just a comment. It should not trigger a re-build.
+
+$config;
+EOS
+
+    SPVM::Builder::Util::spurt_binary($config_file, $content);
+  }
+
+  # Re-build (Should use cache)
+  system($compile_cmd) == 0 or die "Build with comment-only config change failed";
+
+  my @old_native_class_object_files = @current_native_class_object_files;
+  my @old_native_source_baz_object_files = @current_native_source_baz_object_files;
+
+  @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
+  @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
+
+  # Both should NOT be incremented (Cached)
+  is(@current_native_class_object_files, @old_native_class_object_files, "Main object is NOT re-compiled for comment change in config");
+  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files, "baz.o is NOT re-compiled for comment change in config");
+}
+
+{
+  # Update config file (Add -O0 to compiler flags)
+  {
+    my $content = <<'EOS';
+use strict;
+use warnings;
+use SPVM::Builder::Config;
+use File::Basename 'dirname';
+
+my $config = SPVM::Builder::Config->new_c99;
+
+my $dir = dirname(__FILE__);
+
+$config->add_source_file("baz/baz.c");
+
+# Add a compiler flag to trigger re-build for all files
+$config->add_ccflag("-O0");
+
+$config;
+EOS
+
+    SPVM::Builder::Util::spurt_binary($config_file, $content);
+  }
+
+  # Re-build
+  system($compile_cmd) == 0 or die "Build after config update failed";
+
+  my @old_native_class_object_files = @current_native_class_object_files;
+  my @old_native_source_baz_object_files = @current_native_source_baz_object_files;
+
+  @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
+  @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
+
+  # Both should be re-compiled because the config (compilation flags) changed
+  is(@current_native_class_object_files, @old_native_class_object_files + 1, "Main object re-compiled after config change (-O0)");
+  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files + 1, "baz.o re-compiled after config change (-O0)");
+}
+
 done_testing;
 
