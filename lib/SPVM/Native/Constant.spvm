@@ -50,4 +50,6 @@ class Native::Constant {
     SPVM_NATIVE_C_TYPE_FLAG_MUTABLE = 2,
   }
   
+  native private method _dummy : void ();
+  
 }
