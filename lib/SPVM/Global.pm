@@ -283,20 +283,20 @@ sub get_method_addresses {
     for my $method_info (@$method_infos) {
       my $class_name = $method_info->{class_name};
       my $method_name = $method_info->{method_name};
-
-      my $cfunc_address;
-      if ($dynamic_lib_file) {
-        my $dynamic_lib_libref;
-        if ($DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file}) {
-          $dynamic_lib_libref = $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file};
-        }
-        else {
-          # Load dynamic library with a shared lock to prevent race conditions during parallel builds
-          unless (defined $ENV{SPVM_BUILD_DIR}) {
-            confess("[Unexpected Error]no build directory");
+      
+      $BUILDER->global_file_lock(sub {
+        my $cfunc_address;
+        if ($dynamic_lib_file) {
+          my $dynamic_lib_libref;
+          if ($DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file}) {
+            $dynamic_lib_libref = $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file};
           }
-          
-          $BUILDER->global_file_lock(sub {
+          else {
+            # Load dynamic library with a shared lock to prevent race conditions during parallel builds
+            unless (defined $ENV{SPVM_BUILD_DIR}) {
+              confess("[Unexpected Error]no build directory");
+            }
+            
             unless (-f $dynamic_lib_file) {
               confess("\$dynamic_lib_file does not exist.");
             }
@@ -306,18 +306,17 @@ sub get_method_addresses {
             }
             
             $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
-          });
+            
+            $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file} = $dynamic_lib_libref;
+          }
           
-          $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file} = $dynamic_lib_libref;
-        }
-        
-        if ($dynamic_lib_libref) {
+          if ($dynamic_lib_libref) {
 
-          my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($class_name, $method_name, $category);
-          $cfunc_address = DynaLoader::dl_find_symbol($dynamic_lib_libref, $cfunc_name);
-          unless ($cfunc_address) {
-            my $dl_error = DynaLoader::dl_error();
-            my $error = <<"EOS";
+            my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($class_name, $method_name, $category);
+            $cfunc_address = DynaLoader::dl_find_symbol($dynamic_lib_libref, $cfunc_name);
+            unless ($cfunc_address) {
+              my $dl_error = DynaLoader::dl_error();
+              my $error = <<"EOS";
 Can't find native function '$cfunc_name' corresponding to ${class_name}->$method_name in '$dynamic_lib_file'
 
 You must write the following definition.
@@ -332,19 +331,20 @@ int32_t $cfunc_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 $dl_error
 EOS
-            confess($error);
+              confess($error);
+            }
+          }
+          else {
+            my $dl_error = DynaLoader::dl_error();
+            confess("The DynaLoader::dl_load_file function failed:Can't load the '$dynamic_lib_file' file for $category methods in $class_name class: $dl_error");
           }
         }
         else {
-          my $dl_error = DynaLoader::dl_error();
-          confess("The DynaLoader::dl_load_file function failed:Can't load the '$dynamic_lib_file' file for $category methods in $class_name class: $dl_error");
+          confess("DLL file is not specified");
         }
-      }
-      else {
-        confess("DLL file is not specified");
-      }
-      
-      $method_addresses->{$method_name} = $cfunc_address;
+        
+        $method_addresses->{$method_name} = $cfunc_address;
+      });
     }
   }
   
