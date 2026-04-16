@@ -42,14 +42,6 @@ class {
     
     my $argv = CommandInfo->ARGV;
     
-    unless ($argv->[0] eq "args1") {
-      die;
-    }
-    
-    unless ($argv->[1] eq "args2") {
-      die;
-    }
-    
     my $basetime = CommandInfo->BASETIME;
     
     my $basetime_ok = 0;

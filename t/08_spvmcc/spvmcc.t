@@ -42,7 +42,7 @@ mkpath $external_object_dir;
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
-    my $execute_cmd_with_args = "$execute_cmd args1 args2";
+    my $execute_cmd_with_args = "$execute_cmd";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
     is($output, 1);
@@ -123,7 +123,7 @@ mkpath $external_object_dir;
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
-    my $execute_cmd_with_args = "$execute_cmd args1 args2";
+    my $execute_cmd_with_args = "$execute_cmd";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
     is($output, 1);
@@ -180,7 +180,7 @@ mkpath $external_object_dir;
     like($spvmcc_output, qr/NativeAPI2\.o.+-L\..+-lm\b/);
     
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
-    my $execute_cmd_with_args = "$execute_cmd args1 args2";
+    my $execute_cmd_with_args = "$execute_cmd";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
     is($output, 1);
