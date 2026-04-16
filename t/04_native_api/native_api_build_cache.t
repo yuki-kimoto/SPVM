@@ -26,20 +26,22 @@ make_path($native_include_dir . "/baz");
 make_path($native_src_dir);
 
 # Define file paths
-my $class_file         = "$lib_dir/BuildCache.spvm";
-my $config_file        = "$lib_dir/BuildCache.config";
-my $native_class_file  = "$lib_dir/BuildCache.c";
+my $spvm_class_file = "$lib_dir/BuildCache.spvm";
+my $config_file = "$lib_dir/BuildCache.config";
+my $native_class_file = "$lib_dir/BuildCache.c";
 my $native_header_file = "$native_include_dir/baz/baz.h";
-my $native_src_file    = "$native_src_dir/baz.c";
+my $native_source_file = "$native_src_dir/baz.c";
 
 # Create initial files
-open my $spvm_fh, '>', $class_file or die $!;
-print $spvm_fh "class TestCase::BuildCache {\n  native static method test : int ();\n}\n";
-close $spvm_fh;
+{
+  open my $spvm_fh, '>', $spvm_class_file or die $!;
+  print $spvm_fh "class TestCase::BuildCache {\n  native static method test : int ();\n}\n";
+}
 
 # .config file (Faithfully following the provided sample style)
-open my $config_fh, '>', $config_file or die $!;
-print $config_fh <<'EOS';
+{
+  open my $config_fh, '>', $config_file or die $!;
+  print $config_fh <<'EOS';
 use strict;
 use warnings;
 use SPVM::Builder::Config;
@@ -53,19 +55,22 @@ $config->add_source_file("baz/baz.c");
 
 $config;
 EOS
-close $config_fh;
+}
 
-open my $h_fh, '>', $native_header_file or die $!;
-print $h_fh "#define BAZ_VALUE 1\n";
-close $h_fh;
+{
+  open my $h_fh, '>', $native_header_file or die $!;
+  print $h_fh "#define BAZ_VALUE 1\n";
+}
 
-open my $src_fh, '>', $native_src_file or die $!;
-print $src_fh "#include \"baz/baz.h\"\n";
-print $src_fh "int get_baz() { return BAZ_VALUE; }\n";
-close $src_fh;
+{
+  open my $src_fh, '>', $native_source_file or die $!;
+  print $src_fh "#include \"baz/baz.h\"\n";
+  print $src_fh "int get_baz() { return BAZ_VALUE; }\n";
+}
 
-open my $c_fh, '>', $native_class_file or die $!;
-print $c_fh <<'EOS';
+{
+  open my $c_fh, '>', $native_class_file or die $!;
+  print $c_fh <<'EOS';
 #include <spvm_native.h>
 #include "baz/baz.h"
 int get_baz();
@@ -74,7 +79,7 @@ int32_t SPVM__TestCase__BuildCache__test(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 EOS
-close $c_fh;
+}
 
 # Helper to compile
 my $compile_cmd = "$^X -I$tmp_dir/lib -Mblib -e \"use SPVM 'TestCase::BuildCache';\"";
@@ -119,9 +124,10 @@ my ($obj_file_3) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
 ok(-f $obj_file_3, "Main object re-generated");
 
 # Update baz.c and clear work directory
-open my $src_fh_upd, '>>', $native_src_file or die $!;
-print $src_fh_upd "\n// modification\n";
-close $src_fh_upd;
+{
+  open my $src_fh_upd, '>>', $native_source_file or die $!;
+  print $src_fh_upd "\n// modification\n";
+}
 
 # Clear cache
 rmtree "$build_dir/work";
