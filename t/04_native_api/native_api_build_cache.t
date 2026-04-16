@@ -89,6 +89,9 @@ EOS
 # Helper to compile
 my $compile_cmd = "$^X -I$tmp_dir/lib -Mblib -e \"use SPVM 'TestCase::BuildCache';\"";
 
+my $native_class_object_file_glob_pattern = "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
+my $native_source_baz_object_file_glob_pattern = "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
+
 my @current_native_class_object_files;
 my @current_native_source_baz_object_files;
 
@@ -110,8 +113,8 @@ my @current_native_source_baz_object_files;
   }, $build_dir);
   print "--------------------------------\n";
   
-  @current_native_class_object_files = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
-  @current_native_source_baz_object_files = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
+  @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
+  @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
   
   my $native_class_object_file = $current_native_class_object_files[0];
   my $native_source_baz_object_file = $current_native_source_baz_object_files[0];
@@ -123,8 +126,8 @@ my @current_native_source_baz_object_files;
 {
   system($compile_cmd) == 0 or die "Second build failed";
   
-  @current_native_class_object_files = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
-  @current_native_source_baz_object_files = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
+  @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
+  @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
   
   my $native_class_object_file = $current_native_class_object_files[0];
   my $native_source_baz_object_file = $current_native_source_baz_object_files[0];
