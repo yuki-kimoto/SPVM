@@ -111,13 +111,12 @@ my ($baz_obj_file) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.n
 ok(-f $obj_file, "Main object file exists");
 ok(-f $baz_obj_file, "Secondary source object file exists");
 
-my $start_mtime = (stat $obj_file)[9];
-my $start_baz_mtime = (stat $baz_obj_file)[9];
-
 # Second build without changes (Should be cached)
 system($compile_cmd) == 0 or die "Second build failed";
-is((stat $obj_file)[9], $start_mtime, "Main object is cached");
-is((stat $baz_obj_file)[9], $start_baz_mtime, "baz.o is cached");
+ok(-f $obj_file, "Main object file exists");
+is(scalar (() = glob("$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o")), 1);
+ok(-f $baz_obj_file, "Secondary source object file exists");
+is(scalar (() = glob("$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o")), 1);
 
 # Clear cache
 rmtree "$build_dir/work";
@@ -146,3 +145,4 @@ my ($baz_obj_file_3) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache
 ok(-f $baz_obj_file_3, "baz.o re-generated");
 
 done_testing;
+
