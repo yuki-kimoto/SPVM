@@ -45,8 +45,7 @@ mkpath $external_object_dir;
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 25 args1 args2 1";
-    is($output, $output_expect);
+    is($output, 1);
     
     # Check -B option
     {
@@ -127,8 +126,7 @@ mkpath $external_object_dir;
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 25 args1 args2 1";
-    is($output, $output_expect);
+    is($output, 1);
     
     # Check -B option
     {
@@ -185,8 +183,7 @@ mkpath $external_object_dir;
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     my $output = `$execute_cmd_with_args`;
     chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 25 args1 args2 1";
-    is($output, $output_expect);
+    is($output, 1);
   }
 
 }

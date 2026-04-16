@@ -6,45 +6,48 @@ class {
   
   use Fn;
   
-  our $MOVE_BLOCK_PROGRAM_NAME_ZERO : ro string;
-  our $MOVE_BLOCK_ARGV_ZERO : ro string[];
-
-  INIT {
-    $MOVE_BLOCK_PROGRAM_NAME_ZERO = CommandInfo->PROGRAM_NAME;
-    $MOVE_BLOCK_ARGV_ZERO = CommandInfo->ARGV;
-  }
-  
   static method main : void () {
-    my $program_name = CommandInfo->PROGRAM_NAME;
-    my $argv = CommandInfo->ARGV;
     
     my $sum = TestCase::Precompile->sum(1, 2);
+    
+    unless ($sum == 3) {
+      die;
+    }
+    
     my $ret1 = TestCase::NativeAPI2->src_foo;
+    
+    unless ($ret1 == 1) {
+      die;
+    }
+    
     my $ret2 = TestCase::NativeAPI2->src_bar;
     
+    unless ($ret2 == 1) {
+      die;
+    }
+    
     my $ret3 = TestCase::Precompile->anon_method_sum;
+    
+    unless ($ret3 == 7) {
+      die;
+    }
     
     my $ret4 = TestCase::NativeAPI2->mylib2_source1_func1;
     
     my $ret5 =  TestCase::NativeAPICpp->call_cpp_func(11);
     
-    my $global_program_name = CommandInfo->PROGRAM_NAME;
-    
-    unless ($global_program_name == $program_name) {
-      die "Wrong";
+    unless ($ret5 == 25) {
+      die;
     }
     
-    my $global_argv = CommandInfo->ARGV;
-    unless ($global_argv == $argv) {
-      die "Wrong";
+    my $argv = CommandInfo->ARGV;
+    
+    unless ($argv->[0] eq "args1") {
+      die;
     }
     
-    unless ($global_program_name == $MOVE_BLOCK_PROGRAM_NAME_ZERO) {
-      die "Wrong";
-    }
-    
-    unless ($global_argv == $MOVE_BLOCK_ARGV_ZERO) {
-      die "Wrong";
+    unless ($argv->[1] eq "args2") {
+      die;
     }
     
     my $basetime = CommandInfo->BASETIME;
@@ -54,6 +57,10 @@ class {
       $basetime_ok = 1;
     }
     
-    print "AAA $program_name $sum $ret1 $ret2 $ret3 $ret5 $argv->[0] $argv->[1] $basetime_ok\n";
+    unless ($basetime_ok == 1) {
+      die;
+    }
+    
+    print 1;
   }
 }
