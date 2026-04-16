@@ -36,6 +36,7 @@ mkpath $external_object_dir;
 
 {
   # Basic
+  # build_type - Release
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
@@ -163,7 +164,8 @@ mkpath $external_object_dir;
     is($output, $output_expect);
   }
   
-  # debug config: build_type 'Debug'
+  # debug config
+  # build_type 'Debug'
   {
     my $tmp_dir = File::Temp->newdir;
     
@@ -186,6 +188,35 @@ mkpath $external_object_dir;
     is($output, 1);
   }
 
+}
+
+# build_type
+{
+  # build_type - RelWithDebInfo
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode RelWithDebInfo -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
+    system($spvmcc_cmd) == 0
+      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    
+    my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
+    my $execute_cmd_with_args = "$execute_cmd";
+    my $output = `$execute_cmd_with_args`;
+    chomp $output;
+    is($output, 1);
+  }
+  
+  # build_type - MinSizeRel
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode MinSizeRel -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
+    system($spvmcc_cmd) == 0
+      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    
+    my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
+    my $execute_cmd_with_args = "$execute_cmd";
+    my $output = `$execute_cmd_with_args`;
+    chomp $output;
+    is($output, 1);
+  }
 }
 
 done_testing;
