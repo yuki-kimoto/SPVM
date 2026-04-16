@@ -8,7 +8,7 @@ use Config;
 use FindBin;
 use Test::More;
 use File::Temp 'tempdir';
-use File::Path 'make_path';
+use File::Path 'make_path', 'rmtree';
 use SPVM::Builder::Util;
 use File::Basename 'dirname';
 use SPVM;
@@ -109,25 +109,27 @@ system($compile_cmd) == 0 or die "Second build failed";
 is((stat $obj_file)[9], $start_mtime, "Main object is cached");
 is((stat $baz_obj_file)[9], $start_baz_mtime, "baz.o is cached");
 
-=pod TODO
+# Clear cache
+rmtree "$build_dir/work";
+ok(!-d "$build_dir/work", "work directory cleared");
 
-# Update baz.h
-open my $h_fh_upd, '>', $native_header_file or die $!;
-print $h_fh_upd "#define BAZ_VALUE 2\n";
-close $h_fh_upd;
-
+# Re-build
 system($compile_cmd) == 0 or die "Build after baz.h update failed";
-isnt((stat $obj_file)[9], $start_mtime, "Main object re-compiled after header change");
+my ($obj_file_3) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
+ok(-f $obj_file_3, "Main object re-generated");
 
-# Update baz.c
-my $current_baz_mtime = (stat $baz_obj_file)[9];
+# Update baz.c and clear work directory
 open my $src_fh_upd, '>>', $native_src_file or die $!;
 print $src_fh_upd "\n// modification\n";
 close $src_fh_upd;
 
-system($compile_cmd) == 0 or die "Build after baz.c update failed";
-isnt((stat $baz_obj_file)[9], $current_baz_mtime, "baz.o updated after baz.c change");
+# Clear cache
+rmtree "$build_dir/work";
+ok(!-d "$build_dir/work", "work directory cleared again");
 
-=cut
+# Re-build
+system($compile_cmd) == 0 or die "Build after baz.c update failed";
+my ($baz_obj_file_3) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
+ok(-f $baz_obj_file_3, "baz.o re-generated");
 
 done_testing;
