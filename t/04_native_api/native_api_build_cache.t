@@ -183,5 +183,28 @@ my @current_native_source_baz_object_files;
   is(@current_native_source_baz_object_files, @old_native_source_baz_object_files + 1);
 }
 
+{
+  # Update native header file (Both objects should be re-compiled)
+  {
+    my $content = SPVM::Builder::Util::slurp_binary($native_header_file);
+    $content .= "\n// modification for header\n";
+    
+    SPVM::Builder::Util::spurt_binary($native_header_file, $content);
+  }
+  
+  # Re-build
+  system($compile_cmd) == 0 or die;
+  
+  my @old_native_class_object_files = @current_native_class_object_files;
+  my @old_native_source_baz_object_files = @current_native_source_baz_object_files;
+  
+  @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
+  @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
+  
+  # Both should be incremented
+  is(@current_native_class_object_files, @old_native_class_object_files + 1, "Main object re-compiled after header change");
+  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files + 1, "baz.o re-compiled after header change");
+}
+
 done_testing;
 
