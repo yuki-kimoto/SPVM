@@ -305,9 +305,14 @@ sub get_method_addresses {
               confess("\$dynamic_lib_file cannot be opened O_RDONLY.");
             }
             
-            $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file);
+            # On Windows, using an absolute path for LoadLibrary (via DynaLoader) is crucial.
+            # Without it, the OS may trigger its standard search strategy, potentially
+            # loading an unintended DLL with the same base name from other directories.
+            my $dynamic_lib_file_abs = File::Spec->rel2abs($dynamic_lib_file);
             
-            $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file} = $dynamic_lib_libref;
+            $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file_abs);
+            
+            $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file_abs} = $dynamic_lib_libref;
           }
           
           if ($dynamic_lib_libref) {
