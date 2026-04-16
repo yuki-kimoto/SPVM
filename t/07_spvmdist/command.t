@@ -533,7 +533,7 @@ my $perl5lib = ($ENV{PERL5LIB} // '') . "$path_sep$blib_arch$path_sep$blib_lib";
   ok(-f $spvm_class_file);
   ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo {"));
   
-  SPVM::Builder::Util::spurt_binary($spvm_class_file, 'AAAAA');
+  SPVM::Builder::Util::spurt_binary_parallel_safe($spvm_class_file, 'AAAAA');
   ok(SPVM::Builder::Util::file_contains($spvm_class_file, "AAAA"));
 
   my $spvmdist_cmd_fource = qq($^X $include_blib $spvmdist_path --force Foo);
@@ -562,7 +562,7 @@ my $perl5lib = ($ENV{PERL5LIB} // '') . "$path_sep$blib_arch$path_sep$blib_lib";
   ok(-f $spvm_class_file);
   ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo {"));
   
-  SPVM::Builder::Util::spurt_binary($spvm_class_file, 'AAAAA');
+  SPVM::Builder::Util::spurt_binary_parallel_safe($spvm_class_file, 'AAAAA');
   ok(SPVM::Builder::Util::file_contains($spvm_class_file, "AAAA"));
 
   my $spvmdist_cmd_fource = qq($^X $include_blib $spvmdist_path -f Foo);
