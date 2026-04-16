@@ -169,15 +169,18 @@ my @current_native_source_baz_object_files;
     
     SPVM::Builder::Util::spurt_binary($native_source_file, $content);
   }
-
-  # Clear cache
-  rmtree "$build_dir/work";
-  ok(!-d "$build_dir/work", "work directory cleared again");
-
+  
   # Re-build
   system($compile_cmd) == 0 or die;
-  my ($native_source_baz_object_file) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
-  ok(-f $native_source_baz_object_file, "baz.o re-generated");
+  
+  my @old_native_class_object_files = @current_native_class_object_files;
+  my @old_native_source_baz_object_files = @current_native_source_baz_object_files;
+  
+  @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
+  @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
+  
+  is(@current_native_class_object_files, @old_native_class_object_files);
+  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files + 1);
 }
 
 done_testing;
