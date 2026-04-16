@@ -89,34 +89,51 @@ EOS
 # Helper to compile
 my $compile_cmd = "$^X -I$tmp_dir/lib -Mblib -e \"use SPVM 'TestCase::BuildCache';\"";
 
+my @current_native_class_object_files;
+my @current_native_source_baz_object_files;
+
 # First build
-system($compile_cmd) == 0 or die "First build failed";
-
-use File::Find;
-
-print "--- [Test Output]Build Directory Contents ---\n";
-find({
-  wanted => sub {
-    my $file = $File::Find::name;
-    if (-f $file) {
-      print STDERR "Found: $file\n";
-    }
-  },
-  no_chdir => 1,
-}, $build_dir);
-print "--------------------------------\n";
-
-my ($native_class_object_file) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
-my ($native_source_baz_object_file) = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
-ok(-f $native_class_object_file, "Main object file exists");
-ok(-f $native_source_baz_object_file, "Secondary source object file exists");
+{
+  system($compile_cmd) == 0 or die "First build failed";
+  
+  use File::Find;
+  
+  print "--- [Test Output]Build Directory Contents ---\n";
+  find({
+    wanted => sub {
+      my $file = $File::Find::name;
+      if (-f $file) {
+        print STDERR "Found: $file\n";
+      }
+    },
+    no_chdir => 1,
+  }, $build_dir);
+  print "--------------------------------\n";
+  
+  @current_native_class_object_files = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
+  @current_native_source_baz_object_files = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
+  
+  my $native_class_object_file = $current_native_class_object_files[0];
+  my $native_source_baz_object_file = $current_native_source_baz_object_files[0];
+  ok(-f $native_class_object_file, "Main object file exists");
+  ok(-f $native_source_baz_object_file, "Secondary source object file exists");
+}
 
 # Second build without changes (Should be cached)
-system($compile_cmd) == 0 or die "Second build failed";
-ok(-f $native_class_object_file, "Main object file exists");
-is(scalar (() = glob("$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o")), 1);
-ok(-f $native_source_baz_object_file, "Secondary source object file exists");
-is(scalar (() = glob("$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o")), 1);
+{
+  system($compile_cmd) == 0 or die "Second build failed";
+  
+  @current_native_class_object_files = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
+  @current_native_source_baz_object_files = glob "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
+  
+  my $native_class_object_file = $current_native_class_object_files[0];
+  my $native_source_baz_object_file = $current_native_source_baz_object_files[0];
+  ok(-f $native_class_object_file, "Main object file exists");
+  ok(-f $native_source_baz_object_file, "Secondary source object file exists");
+  
+  is(@current_native_class_object_files, 1);
+  is(@current_native_source_baz_object_files, 1);
+}
 
 {
   # Update native class file
