@@ -160,21 +160,6 @@ sub file_contains {
   return $contains;
 }
 
-sub spurt_binary {
-  my ($output_file, $content) = @_;
-  
-  unless (defined $output_file) {
-    confess("A file must be defined.");
-  }
-  
-  mkpath dirname $output_file;
-  
-  open my $fh, '>:raw', $output_file
-    or confess("Can't open file '$output_file':$!");
-    
-  print $fh $content;
-}
-
 sub spurt_binary_parallel_safe {
   my ($output_file, $content) = @_;
   
@@ -681,7 +666,7 @@ EOS
   my $old_content = -f $output_file ? &slurp_binary($output_file) : "";
   
   if ($old_content ne $final_c_source) {
-    &spurt_binary($output_file, $final_c_source);
+    &spurt_binary_parallel_safe($output_file, $final_c_source);
     warn "Generated \"$output_file\".\n";
   }
 

@@ -941,15 +941,15 @@ sub spawn_link {
     # Prepare arguments for link.pl
     my $dl_func_list_file = "$command_tmp_dir/dl_func_list.txt";
     if (defined $dl_func_list) {
-      SPVM::Builder::Util::spurt_binary($dl_func_list_file, join("\n", @$dl_func_list));
+      SPVM::Builder::Util::spurt_binary_parallel_safe($dl_func_list_file, join("\n", @$dl_func_list));
     }
     
     my $object_file_names_file = "$command_tmp_dir/object_file_names.txt";
-    SPVM::Builder::Util::spurt_binary($object_file_names_file, join("\n", @$object_file_names));
+    SPVM::Builder::Util::spurt_binary_parallel_safe($object_file_names_file, join("\n", @$object_file_names));
     
     my $ldflags_file = "$command_tmp_dir/ldflags.txt";
     my $link_info_ldflags = $link_info->create_ldflags;
-    SPVM::Builder::Util::spurt_binary($ldflags_file, join("\n", @$link_info_ldflags));
+    SPVM::Builder::Util::spurt_binary_parallel_safe($ldflags_file, join("\n", @$link_info_ldflags));
     
     # [Added] Generate lock file path using SHA1 of the normalized output file path
     my $build_dir = $self->builder->build_dir;

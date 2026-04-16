@@ -238,7 +238,7 @@ sub generate_file {
   my $force = $self->force;
   if ($force || !-f $file) {
     print "  [write]$file\n";
-    SPVM::Builder::Util::spurt_binary($file, $content);
+    SPVM::Builder::Util::spurt_binary_parallel_safe($file, $content);
   }
   else {
     print "  [exists]$file\n";
