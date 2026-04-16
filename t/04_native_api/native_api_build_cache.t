@@ -34,14 +34,13 @@ my $native_source_file = "$native_src_dir/baz.c";
 
 # Create initial files
 {
-  open my $spvm_fh, '>', $spvm_class_file or die $!;
-  print $spvm_fh "class TestCase::BuildCache {\n  native static method test : int ();\n}\n";
+  my $content = "class TestCase::BuildCache {\n  native static method test : int ();\n}\n";
+  SPVM::Builder::Util::spurt_binary($spvm_class_file, $content);
 }
 
 # .config file (Faithfully following the provided sample style)
 {
-  open my $config_fh, '>', $config_file or die $!;
-  print $config_fh <<'EOS';
+  my $content = <<'EOS';
 use strict;
 use warnings;
 use SPVM::Builder::Config;
@@ -55,22 +54,26 @@ $config->add_source_file("baz/baz.c");
 
 $config;
 EOS
+
+  SPVM::Builder::Util::spurt_binary($config_file, $content);
 }
 
 {
-  open my $h_fh, '>', $native_header_file or die $!;
-  print $h_fh "#define BAZ_VALUE 1\n";
+  my $content = "#define BAZ_VALUE 1\n";
+  SPVM::Builder::Util::spurt_binary($native_header_file, $content);
 }
 
 {
-  open my $src_fh, '>', $native_source_file or die $!;
-  print $src_fh "#include \"baz/baz.h\"\n";
-  print $src_fh "int get_baz() { return BAZ_VALUE; }\n";
+  my $content = <<'EOS';
+#include "baz/baz.h"
+int get_baz() { return BAZ_VALUE; }
+EOS
+  
+  SPVM::Builder::Util::spurt_binary($native_source_file, $content);
 }
 
 {
-  open my $c_fh, '>', $native_class_file or die $!;
-  print $c_fh <<'EOS';
+  my $content = <<'EOS';
 #include <spvm_native.h>
 #include "baz/baz.h"
 int get_baz();
@@ -79,6 +82,8 @@ int32_t SPVM__TestCase__BuildCache__test(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 EOS
+
+  SPVM::Builder::Util::spurt_binary($native_class_file, $content);
 }
 
 # Helper to compile
@@ -125,8 +130,10 @@ ok(-f $obj_file_3, "Main object re-generated");
 
 # Update baz.c and clear work directory
 {
-  open my $src_fh_upd, '>>', $native_source_file or die $!;
-  print $src_fh_upd "\n// modification\n";
+  my $content = SPVM::Builder::Util::slurp_binary($native_source_file);
+  $content .= "\n// modification\n";
+  
+  SPVM::Builder::Util::spurt_binary($native_source_file, $content);
 }
 
 # Clear cache
