@@ -961,11 +961,14 @@ sub spawn_link {
       });
     }
     
+    # Isolate the internal DLL module name by prefixing it with a command hash to prevent symbol and memory collision on Windows.
+    my $module_name = $link_info->command_hash . "::$class_name";
+    
     # Spawn link process
     $process_id = &spawn_link_command(
       $command_tmp_dir,
       $output_file,
-      $class_name,
+      $module_name,
       $hint_cc,
       $output_type,
       $ld,
