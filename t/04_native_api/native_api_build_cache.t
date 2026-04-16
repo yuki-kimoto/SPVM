@@ -38,24 +38,19 @@ my $native_source_file = "$native_src_dir/baz.c";
   SPVM::Builder::Util::spurt_binary($spvm_class_file, $content);
 }
 
-# .config file (Faithfully following the provided sample style)
-{
-  my $content = <<'EOS';
-use strict;
-use warnings;
-use SPVM::Builder::Config;
-use File::Basename 'dirname';
-
+my $config_content = <<'EOS';
 my $config = SPVM::Builder::Config->new_c99;
-
-my $dir = dirname(__FILE__);
 
 $config->add_source_file("baz/baz.c");
 
+no warnings 'void';
 $config;
 EOS
 
-  SPVM::Builder::Util::spurt_binary($config_file, $content);
+# .config file (Faithfully following the provided sample style)
+{
+
+  SPVM::Builder::Util::spurt_binary($config_file, $config_content);
 }
 
 {
@@ -245,26 +240,8 @@ my @current_native_source_baz_object_files;
 
 {
   # Update config file with only a comment change
-  {
-    my $content = <<'EOS';
-use strict;
-use warnings;
-use SPVM::Builder::Config;
-use File::Basename 'dirname';
-
-my $config = SPVM::Builder::Config->new_c99;
-
-my $dir = dirname(__FILE__);
-
-$config->add_source_file("baz/baz.c");
-
-# This is just a comment. It should not trigger a re-build.
-
-$config;
-EOS
-
-    SPVM::Builder::Util::spurt_binary($config_file, $content);
-  }
+  $config_content = $config_content . "\n# This is just a comment. It should not trigger a re-build.\n \$config;\n";
+  SPVM::Builder::Util::spurt_binary($config_file, $config_content);
 
   # Re-build (Should use cache)
   system($compile_cmd) == 0 or die "Build with comment-only config change failed";
@@ -281,28 +258,9 @@ EOS
 }
 
 {
-  # Update config file (Add -O0 to compiler flags)
-  {
-    my $content = <<'EOS';
-use strict;
-use warnings;
-use SPVM::Builder::Config;
-use File::Basename 'dirname';
-
-my $config = SPVM::Builder::Config->new_c99;
-
-my $dir = dirname(__FILE__);
-
-$config->add_source_file("baz/baz.c");
-
-# Add a compiler flag to trigger re-build for all files
-$config->add_ccflag("-O0");
-
-$config;
-EOS
-
-    SPVM::Builder::Util::spurt_binary($config_file, $content);
-  }
+  # Update config file with only a comment change
+  $config_content = $config_content . "\n\$config->add_ccflag('-O0');\n \$config;\n";
+  SPVM::Builder::Util::spurt_binary($config_file, $config_content);
 
   # Re-build
   system($compile_cmd) == 0 or die "Build after config update failed";
