@@ -1144,6 +1144,9 @@ t/08_spvmcc/script/inc-order.spvm
 t/08_spvmcc/script/myapp.config
 t/08_spvmcc/script/myapp.debug.config
 t/08_spvmcc/script/myapp.MinSizeRel.config
+t/08_spvmcc/script/myapp.msvc-Debug.config
+t/08_spvmcc/script/myapp.msvc-MinSizeRel.config
+t/08_spvmcc/script/myapp.msvc-RelWithDebInfo.config
 t/08_spvmcc/script/myapp.msvc.config
 t/08_spvmcc/script/myapp.RelWithDebInfo.config
 t/08_spvmcc/script/myapp.spvm
