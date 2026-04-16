@@ -178,15 +178,9 @@ sub spurt_binary {
 sub spurt_binary_parallel_safe {
   my ($output_file, $content) = @_;
   
-  my $process_id = $$;
+  my $tmp_dir = File::Temp->newdir;
   
-  my $tmp_output_file = "$output_file.$process_id.tmp";
-  
-  unless (defined $tmp_output_file) {
-    confess("A file must be defined.");
-  }
-  
-  mkpath dirname $tmp_output_file;
+  my $tmp_output_file = "$tmp_dir/" . basename $output_file;
   
   {
     open my $tmp_output_fh, '>:raw', $tmp_output_file
@@ -194,6 +188,8 @@ sub spurt_binary_parallel_safe {
       
     print $tmp_output_fh $content;
   }
+  
+  mkpath dirname $output_file;
   
   File::Copy::move($tmp_output_file, $output_file)
     or confess("Can't move '$tmp_output_file' to '$output_file': $!");
