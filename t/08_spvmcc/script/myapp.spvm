@@ -6,6 +6,12 @@ class {
   
   use Fn;
   
+  our $INT_VALUE : int;
+  
+  INIT {
+    $INT_VALUE = 1;
+  }
+  
   static method main : void () {
     
     my $sum = TestCase::Precompile->sum(1, 2);
@@ -50,6 +56,10 @@ class {
     }
     
     unless ($basetime_ok == 1) {
+      die;
+    }
+    
+    unless ($INT_VALUE == 1) {
       die;
     }
     
