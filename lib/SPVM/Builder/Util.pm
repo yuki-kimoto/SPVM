@@ -188,24 +188,15 @@ sub spurt_binary_parallel_safe {
   
   mkpath dirname $tmp_output_file;
   
-  open my $fh, '>:raw', $tmp_output_file
-    or confess("Can't open file '$tmp_output_file':$!");
-    
-  print $fh $content;
-  
-  close $fh;
-  
-  # Rename (Move) the temporary file to the final output file
-  # In Windows, if $output_file already exists and is being used, move may fail.
-  # But it's generally safer than flock-based contention during long writes.
-  File::Copy::move($tmp_output_file, $output_file);
-  my $os_error = $!;
-  if (-f $tmp_output_file) {
-    unless (-f $output_file && compare($tmp_output_file, $output_file) == 0) {
-      die "Can't move $tmp_output_file to $output_file: $os_error";
-    }
+  {
+    open my $tmp_output_fh, '>:raw', $tmp_output_file
+      or confess("Can't open file '$tmp_output_file':$!");
+      
+    print $tmp_output_fh $content;
   }
-
+  
+  File::Copy::move($tmp_output_file, $output_file)
+    or confess("Can't move '$tmp_output_file' to '$output_file': $!");
 }
 
 sub unindent {
