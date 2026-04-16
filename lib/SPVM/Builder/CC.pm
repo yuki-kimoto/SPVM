@@ -956,8 +956,9 @@ sub spawn_link {
       });
     }
     
-    # Isolate the internal DLL module name by prefixing it with a command hash to prevent symbol and memory collision on Windows.
-    my $module_name = $link_info->command_hash . "::$class_name";
+    # Isolate the internal DLL module name by prefixing it with a digest of the output absolute path to prevent symbol and memory collision on Windows.
+    my $output_file_abs = File::Spec->rel2abs($output_file);
+    my $module_name = sha1_hex($output_file_abs) . "::$class_name";
     
     # Spawn link process
     $process_id = &spawn_link_command(
