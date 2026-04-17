@@ -378,7 +378,7 @@ sub create_command_hash {
           
           if ($!{EACCES} && $retry_count < $max_retry) {
             $retry_count++;
-            usleep(10_000);
+            Time::HiRes::sleep(0.01);
             next;
           }
           
