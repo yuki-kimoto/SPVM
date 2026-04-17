@@ -117,22 +117,6 @@ mkpath $external_object_dir;
   
 }
 
-{
-  # Varaiout tests
-  # build_type - Release
-  {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode test -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
-
-    my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
-    my $execute_cmd_with_args = "$execute_cmd";
-    my $output = `$execute_cmd_with_args`;
-    chomp $output;
-    is($output, 1);
-  }
-}
-
 # -h, --help
 {
   {
@@ -160,14 +144,16 @@ mkpath $external_object_dir;
     my $output_expect = "$execute_cmd";
     is($output, $output_expect);
   }
-  
-  # debug config
-  # build_type 'Debug'
+}
+
+{
+  # Varaiout tests
+  # build_type - Release
   {
     my $tmp_dir = File::Temp->newdir;
     
     my $mode = 'debug';
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $tmp_dir -I $inc_dir -o $tmp_dir/myapp --mode debug $spvm_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $tmp_dir -I $inc_dir -o $tmp_dir/myapp --mode test $spvm_script_dir/myapp.spvm 2>&1);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
@@ -184,7 +170,6 @@ mkpath $external_object_dir;
     chomp $output;
     is($output, 1);
   }
-
 }
 
 # build_type
