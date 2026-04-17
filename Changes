@@ -1,3 +1,14 @@
+0.990161 2026-04-17
+
+  [Test Improvement]
+    * Do not use a shared build directory on Windows during tests to avoid file resource contention.
+  
+  [Changes]
+    * Remove all workarounds for Windows parallel processing.
+  
+  [Bug Fix]
+    * Fix a bug that usleep is not found by using Time::HiRes::sleep instead in create_command_hash.
+    
 0.990160 2026-04-17
   
   [Test Improvement]
