@@ -37,6 +37,18 @@ else {
   }
 }
 
-# Rename (Move) the temporary file to the final output file
-File::Copy::move($tmp_output_file, $output_file)
-  or die "Can't move $tmp_output_file to $output_file: $!";
+# Try to move the temporary file to the output file.
+# This logic is used in SPVM::Builder::Util::spurt_binary_parallel_safe, compile.pl and link.pl
+unless (File::Copy::move($tmp_output_file, $output_file)) {
+  my $errno = $!;
+  
+  # On Windows, if the destination file is already opened by another process (like gcc),
+  # move fails with "Permission denied" (EACCES).
+  # In this case, we can safely ignore the error because the content is guaranteed to be the same by SHA-1.
+  if ($^O eq 'MSWin32' && $errno == Errno::EACCES()) {
+    warn "Warning: Can't move '$tmp_output_file' to '$output_file': $!. This error is ignored because the output file already exists and its content is expected to be the same.";
+  }
+  else {
+    confess("Can't move '$tmp_output_file' to '$output_file': $!");
+  }
+}
