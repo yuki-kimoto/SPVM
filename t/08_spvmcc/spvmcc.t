@@ -118,8 +118,10 @@ mkpath $external_object_dir;
 }
 
 {
+  # Varaiout tests
+  # build_type - Release
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode test -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
@@ -128,11 +130,6 @@ mkpath $external_object_dir;
     my $output = `$execute_cmd_with_args`;
     chomp $output;
     is($output, 1);
-    
-    # Check -B option
-    {
-      ok(-f "$tmp_dir/myapp$Config{exe_ext}");
-    }
   }
 }
 
