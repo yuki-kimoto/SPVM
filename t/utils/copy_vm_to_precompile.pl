@@ -46,7 +46,7 @@ find(
         # Inject SPVM_CC_OPTIMIZE for .t files
         if ($file =~ /\.t$/) {
           # Force set the environment variable at the beginning of the test
-          my $env_setting = "BEGIN { \$ENV{SPVM_CC_OPTIMIZE} = '-O0 -g'; \$ENV{SPVM_BUILD_DIR} = '.spvm_build'; }\n";
+          my $env_setting = "BEGIN { \$ENV{SPVM_CC_OPTIMIZE} = '-O0 -g'; unless (\$^O eq 'MSWin32') { \$ENV{SPVM_BUILD_DIR} = '.spvm_build'; } }\n";
           $content = $env_setting . $content;
         }
         

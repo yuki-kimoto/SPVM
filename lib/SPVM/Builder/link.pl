@@ -7,6 +7,7 @@ use File::Basename 'basename', 'dirname';
 use MIME::Base64 qw(decode_base64);
 use Digest::SHA 'sha1_hex';
 use File::Path 'mkpath';
+use Carp 'confess';
 
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));

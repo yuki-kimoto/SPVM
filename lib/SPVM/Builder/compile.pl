@@ -4,6 +4,7 @@ use MIME::Base64 qw(decode_base64);
 use File::Copy ();
 use File::Path 'mkpath';
 use File::Basename 'basename', 'dirname';
+use Carp 'confess';
 
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));
