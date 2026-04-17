@@ -31,7 +31,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   
   {
     no warnings 'once';
-    my $link_info = $main::MYEXE_LINK_INFO;
+    my $link_info = $main::MYAPP_LINK_INFO_BEFORE_LINK_CB;
     
     my $config = SPVM::Builder::Config->new_c99;
     
@@ -49,16 +49,9 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   
   {
     no warnings 'once';
-    my $compile_info = $main::MYEXE_COMPILE_INFO_BEFORE_COMPILE;
+    my $compile_info = $main::MYAPP_COMPILE_INFO_BEFORE_COMPILE_CB;
     ok(ref $compile_info eq 'SPVM::Builder::CompileInfo');
   }
-  
-  {
-    no warnings 'once';
-    my $compile_info = $main::MYEXE_COMPILE_INFO_GLOBAL_BEFORE_COMPILE;
-    ok(ref $compile_info eq 'SPVM::Builder::CompileInfo');
-  }
-  
 }
 
 # Exe name contain sub directory
