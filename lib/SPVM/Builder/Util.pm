@@ -174,14 +174,6 @@ sub spurt_binary_parallel_safe {
       or confess("Can't open file '$tmp_output_file':$!");
       
     print $tmp_output_fh $content;
-    
-    if ($^O eq 'MSWin32') {
-      # On Windows, force physical disk sync to prevent "Permission denied" 
-      # when subsequent processes (like hash calculation or Ninja) try to 
-      # read this file immediately after it is closed.
-      $tmp_output_fh->flush;
-      $tmp_output_fh->sync;
-    }
   }
   
   mkpath dirname $output_file;
