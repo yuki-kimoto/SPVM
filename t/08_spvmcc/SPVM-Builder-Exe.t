@@ -49,6 +49,24 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   
   {
     no warnings 'once';
+    my $link_info = $main::MYAPP_LINK_INFO_AFTER_LINK_CB;
+    
+    my $config = SPVM::Builder::Config->new_c99;
+    
+    ok($link_info->config->ld, $config->ld);
+    ok($link_info->config->ldflags, $config->ldflags);
+    like($link_info->config->output_file, qr/\Q$tmp_dir\/myapp$Config{exe_ext}\E/);
+    my $is_object_files = 1;
+    for my $object_file_info (@{$link_info->object_file_infos}) {
+      unless ($object_file_info->isa('SPVM::Builder::ObjectFileInfo')) {
+        $is_object_files = 0;
+      }
+    }
+    ok($is_object_files);
+  }
+  
+  {
+    no warnings 'once';
     my $compile_info = $main::MYAPP_COMPILE_INFO_BEFORE_COMPILE_CB;
     ok(ref $compile_info eq 'SPVM::Builder::CompileInfo');
   }
