@@ -315,6 +315,8 @@ sub get_method_addresses {
             # loading an unintended DLL with the same base name from other directories.
             my $dynamic_lib_file_abs = File::Spec->rel2abs($dynamic_lib_file);
             
+            SPVM::Builder::Util::wait_windows_lasy_write($dynamic_lib_file_abs);
+            
             $dynamic_lib_libref = DynaLoader::dl_load_file($dynamic_lib_file_abs);
             
             $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file} = $dynamic_lib_libref;

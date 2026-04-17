@@ -365,9 +365,7 @@ sub create_command_hash {
     unless (defined $content_hash) {
       my $tmp_sha = Digest::SHA->new(1);
       
-      if (SPVM::Builder::Util::is_windows()) {
-        SPVM::Builder::Util::wait_windows_lasy_write($dependent_file);
-      }
+      SPVM::Builder::Util::wait_windows_lasy_write($dependent_file);
       
       eval {
         $tmp_sha->addfile($dependent_file);
