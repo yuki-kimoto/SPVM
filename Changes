@@ -1,3 +1,19 @@
+0.990160 2026-04-17
+  
+  [Test Improvement]
+    * Improve tests for spvmcc.
+    * Improve tests for build cache.
+  
+  [Changes]
+    * Improve Windows parallel build isolation.
+  
+  [Incompatible Changes]
+    * Rename apply method to init in SPVM::Builder::Config::Exe::MSVC and unify initialization logic for.
+    * Remove new method in SPVM::Builder::Config::DLL and add init method.
+  
+  [Document Improvement]
+    * Add document for SPVM::Builder::Config::Exe::MSVC.
+
 0.990159 2026-04-16
   [New Feature]
     * SPVM::Builder::Config::Exe::MSVC work well.
