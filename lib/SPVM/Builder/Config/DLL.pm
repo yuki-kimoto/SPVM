@@ -1,19 +1,14 @@
 package SPVM::Builder::Config::DLL;
 
-use parent 'SPVM::Builder::Config::Global';
+use parent 'SPVM::Builder::Config::Exe';
 
 use strict;
 use warnings;
 
-sub new {
-  my $class = shift;
+sub init {
+  my ($self) = @_;
   
-  my $self = $class->SUPER::new(
-    output_type => 'dynamic_lib',
-    @_,
-  );
-  
-  return $self;
+  $self->output_type('dynamic_lib');
 }
 
 1;
@@ -26,18 +21,26 @@ SPVM::Builder::Config::DLL - Configuration for Dynamic Link Libraries
 
 L<SPVM::Builder::Config::DLL> is a class to manage configurations for generating dynamic link libraries.
 
-This class inherits from L<SPVM::Builder::Config::Global> and sets the C<output_type> field to C<dynamic_lib> by default.
+=head1 Usage
 
-=head1 Inheritance
+  use SPVM::Builder::Config::DLL;
 
-L<SPVM::Builder::Config::Global> E<lt>- L<SPVM::Builder::Config> E<lt>- L<SPVM::Builder::Config::Linker> E<lt>- L<SPVM::Builder::Config::Base>
+  my $config_global = SPVM::Builder::Config::DLL->load_base_config(__FILE__);
 
-=head1 Methods
+  $config_global->init;
 
-=head2 new
+  $config_global;
 
-  my $config = SPVM::Builder::Config::DLL->new(%options);
+=head1 Super Class
 
-Creates a new L<SPVM::Builder::Config::DLL> object. The C<output_type> field is set to C<dynamic_lib>.
+L<SPVM::Builder::Config::Exe>
+
+=head1 Instance Methods
+
+=head2 init
+  
+  $config->init;
+
+Initialize this instance. C<output_type> is set to C<"dynamic_lib">.
 
 =cut

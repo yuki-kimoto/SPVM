@@ -10,7 +10,7 @@ use File::Find;
 # Inherit from SPVM::Builder::Config::Exe
 use base 'SPVM::Builder::Config::Exe';
 
-sub apply {
+sub init {
   my ($self, $options) = @_;
   
   $options //= {};
@@ -281,3 +281,34 @@ sub create_cc_version {
 }
 
 1;
+
+=head1 Name
+
+SPVM::Builder::Config::Exe::MSVC - Configuration for Executable Files for MSVC
+
+=head1 Description
+
+L<SPVM::Builder::Config::Exe::MSVC> managaes configurations for generating executable files for MSVC.
+
+=head2 Usage
+
+  use SPVM::Builder::Config::Exe::MSVC;
+
+  my $config_global = SPVM::Builder::Config::Exe::MSVC->load_base_config(__FILE__);
+
+  $config_global->init;
+
+  $config_global;
+
+=head1 Super Class
+
+L<SPVM::Builder::Config::Exe>
+
+=head1 Instance Methods
+
+=head2 init
+  
+  $config->init;
+
+Initialize this instance for MSVC compiler and linker.
+
