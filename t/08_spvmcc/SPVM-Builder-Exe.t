@@ -24,6 +24,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     script_name => $script_name,
     output_file => $output_file,
     build_dir => $build_dir,
+    mode => 'test',
   );
   
   $builder_exe->build_exe_file;
