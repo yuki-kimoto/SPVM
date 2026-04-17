@@ -18,7 +18,6 @@ my $BUILDER;
 my $DYNAMIC_LIB_LIBREFS_H = {};
 my $DYNAMIC_LIB_FILES_H = {};
 my $DYNAMIC_LIB_FILE_IS_JIT_H = {};
-my @TMP_DIRS;
 
 # Accessed from SPVM::Builder
 our $BUILD_TMP_DIR;
@@ -43,15 +42,6 @@ END {
     for my $dynamic_lib_file (keys %$DYNAMIC_LIB_LIBREFS_H) {
       my $dynamic_lib_libref = $DYNAMIC_LIB_LIBREFS_H->{$dynamic_lib_file};
       DynaLoader::dl_unload_file($dynamic_lib_libref);
-    }
-    
-    for my $dynamic_lib_file_for_jit (keys %$DYNAMIC_LIB_FILE_IS_JIT_H) {
-      unlink $dynamic_lib_file_for_jit
-        or confess("[Unexpected Error]Cannot unlink '$dynamic_lib_file_for_jit':$!");
-    }
-    
-    for my $tmp_dir (@TMP_DIRS) {
-      rmtree $tmp_dir;
     }
     
     $BUILDER = undef;

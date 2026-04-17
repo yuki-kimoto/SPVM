@@ -17,8 +17,8 @@ use Time::HiRes ();
 use Digest::SHA 'sha1_hex';
 use Fcntl qw(:flock);
 use FindBin;
-use Errno;
 use Fcntl qw(O_RDONLY);
+use Errno;
 
 # SPVM::Builder::Util is used from Makefile.PL
 # so this class must be wrote as pure perl. Do not contain XS functions.

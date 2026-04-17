@@ -707,10 +707,7 @@ sub command_parallel {
       if ($self->wait_command($command_info) != 0) {
         # Process finished
         $command_info->process_id(undef);
-        my $no_add_ninja_log = $command_info->config->is_jit && $command_info->isa('SPVM::Builder::LinkInfo');
-        unless ($no_add_ninja_log) {
-          $self->add_ninja_log($command_info);
-        }
+        $self->add_ninja_log($command_info);
         delete $running_processes{$pid};
       }
     }
@@ -809,8 +806,7 @@ sub prepare_link {
     unless (defined $output_dir) {
       my $is_jit = $config->is_jit;
       if ($is_jit) {
-        $output_dir = File::Temp::tempdir(CLEANUP => 0);
-        push @SPVM::Global::TMP_DIRS, $output_dir;
+        $output_dir = $self->builder->create_build_lib_path($command_hash =~ s|^(..)|$1/|r);
       }
       else {
         confess("[Unexpected Error]A output directory must exists.");
