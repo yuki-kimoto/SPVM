@@ -364,7 +364,12 @@ sub create_command_hash {
     my $content_hash = $self->dependent_content_hashes_h->{$dependent_file};
     unless (defined $content_hash) {
       my $tmp_sha = Digest::SHA->new(1);
-      $tmp_sha->addfile($dependent_file);
+      eval {
+        $tmp_sha->addfile($dependent_file);
+      };
+      if ($@) {
+        confess "Digest::SHA#addfile failed. \$dependent_file='$dependent_file', \$@=$@";
+      }
       $content_hash = $tmp_sha->hexdigest;
       $self->dependent_content_hashes_h->{$dependent_file} = $content_hash;
     }
