@@ -365,14 +365,7 @@ sub create_command_hash {
     unless (defined $content_hash) {
       my $tmp_sha = Digest::SHA->new(1);
       
-      SPVM::Builder::Util::wait_windows_lasy_write($dependent_file);
-      
-      eval {
-        $tmp_sha->addfile($dependent_file);
-      };
-      if ($@) {
-        confess "Digest::SHA#addfile failed. \$dependent_file='$dependent_file', \$@=$@";
-      }
+      $tmp_sha->addfile($dependent_file);
       $content_hash = $tmp_sha->hexdigest;
       $self->dependent_content_hashes_h->{$dependent_file} = $content_hash;
     }
