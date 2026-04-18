@@ -125,6 +125,8 @@ The mode config file path such as C<path/MyClass.$mode.config> is created from $
 
 L<mode|SPVM::Builder::Config::Base/"mode"> field of the returned config object is set to $mode.
 
+See also L<SPVM::Builder::Config::Base/"Config Mode">.
+
 Examples:
 
   my $config = SPVM::Builder::Config::Util::load_mode_config(__FILE__, "debug");
