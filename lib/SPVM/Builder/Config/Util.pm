@@ -2,6 +2,7 @@ package SPVM::Builder::Config::Util;
 
 use strict;
 use warnings;
+use File::Basename 'fileparse';
 
 sub load_config {
   my ($config_file) = @_;
@@ -40,7 +41,7 @@ sub load_mode_config {
   
   $options //= {};
   
-  my $mode_config_file = SPVM::Builder::Config::Base::_remove_ext_from_config_file($config_file);
+  my $mode_config_file = &remove_ext_from_config_file($config_file);
   if (defined $mode) {
     $mode_config_file .= ".$mode";
   }
@@ -72,6 +73,18 @@ sub _eval_config_content {
   $_[0] = qq|{\nuse strict;\nuse warnings;\nuse utf8;\n\nuse SPVM::Builder::Config;\nuse SPVM::Builder::Config::Exe;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
   
   return eval $_[0];
+}
+
+sub remove_ext_from_config_file {
+  my ($config_file) = @_;
+  
+  my ($config_base_name, $config_dir) = fileparse $config_file;
+  
+  $config_base_name =~ s/(\.[^\.]+)?\.config$//;
+  
+  my $config_file_without_ext = "$config_dir$config_base_name";
+  
+  return $config_file_without_ext;
 }
 
 1;
@@ -136,4 +149,10 @@ This function calls L</"load_mode_config"> function internally.
 Examples:
 
   my $config = SPVM::Builder::Config::Util::load_base_config(__FILE__);
+
+=head2 remove_ext_from_config_file
+
+  my $config_file_without_ext = SPVM::Builder::Config::Util::remove_ext_from_config_file($config_file);
+
+Removes the all extension from the config file path $config_file and returns it.
 

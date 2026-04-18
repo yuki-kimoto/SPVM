@@ -7,6 +7,7 @@ use warnings;
 use Config;
 use Carp 'confess';
 use SPVM::Builder::Util;
+use SPVM::Builder::Config::Util;
 
 use SPVM::Builder::Accessor 'has';
 
@@ -366,7 +367,7 @@ sub native_include_dir {
     return;
   }
   
-  my $native_dir = &SPVM::Builder::Config::Base::_remove_ext_from_config_file($config_file);
+  my $native_dir = SPVM::Builder::Config::Util::remove_ext_from_config_file($config_file);
   $native_dir .= '.native';
   my $native_include_dir = "$native_dir/include";
   
@@ -382,7 +383,7 @@ sub native_src_dir {
     return;
   }
   
-  my $native_dir = &SPVM::Builder::Config::Base::_remove_ext_from_config_file($config_file);
+  my $native_dir = SPVM::Builder::Config::Util::remove_ext_from_config_file($config_file);
   $native_dir .= '.native';
   my $native_src_dir = "$native_dir/src";
   
