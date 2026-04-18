@@ -63,6 +63,8 @@ sub init {
     '+extra_ccflags' => ['-FS'],
     thread_ccflags => [],
     cc_version => $self->create_cc_version,
+    optimize           => '-O2',
+    ndebug_ccflags     => ['-DNDEBUG'],
   });
   
   # 2. Common C/C++ flags
@@ -296,8 +298,8 @@ L<SPVM::Builder::Config::Exe::MSVC> managaes configurations for generating execu
 
   my $config_global = SPVM::Builder::Config::Util::load_base_config(__FILE__);
   
-  bless $config_global, SPVM::Builder::Config::Exe::MSVC;
-
+  $config_global = SPVM::Builder::Config::Exe::MSVC->new_with_config($config_global);
+  
   $config_global->init;
 
   $config_global;
