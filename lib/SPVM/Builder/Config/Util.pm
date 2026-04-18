@@ -96,17 +96,7 @@ Examples:
 
   my $config = SPVM::Builder::Config::Util::load_config($config_file);
 
-=head2 load_base_config
-
-  my $config = SPVM::Builder::Config::Util::load_base_config($config_file);
-
-Loads the base config from the config file $config_file and returns an L<SPVM::Builder::Config::Base> object.
-
-A base config file is the config file that removes its mode. If $config_file is C<path/MyClass.debug.config>, the base config file is C<path/MyClass.config>.
-
-Examples:
-
-  my $config = SPVM::Builder::Config::Util::load_base_config(__FILE__);
+L<file|SPVM::Builder::Config::Base/"file"> field of the returned config object is set to $config_file.
 
 =head2 load_mode_config
 
@@ -125,9 +115,25 @@ The mode config file path such as C<path/MyClass.$mode.config> is created from $
 
 L<mode|SPVM::Builder::Config::Base/"mode"> field of the returned config object is set to $mode.
 
+This function calls L</"load_config"> function internally.
+
 See also L<SPVM::Builder::Config::Base/"Config Mode">.
 
 Examples:
 
   my $config = SPVM::Builder::Config::Util::load_mode_config(__FILE__, "debug");
+
+=head2 load_base_config
+
+  my $config = SPVM::Builder::Config::Util::load_base_config($config_file);
+
+Loads the base config from the config file $config_file and returns an L<SPVM::Builder::Config::Base> object.
+
+A base config file is the config file that removes its mode. If $config_file is C<path/MyClass.debug.config>, the base config file is C<path/MyClass.config>.
+
+This function calls L</"load_mode_config"> function internally.
+
+Examples:
+
+  my $config = SPVM::Builder::Config::Util::load_base_config(__FILE__);
 
