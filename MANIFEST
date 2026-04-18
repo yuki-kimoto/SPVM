@@ -73,6 +73,7 @@ lib/SPVM/Builder/Config/Exe.pm
 lib/SPVM/Builder/Config/Exe/MSVC.pm
 lib/SPVM/Builder/Config/Global.pm
 lib/SPVM/Builder/Config/Linker.pm
+lib/SPVM/Builder/Config/Util.pm
 lib/SPVM/Builder/ConfigBuilder.pm
 lib/SPVM/Builder/DependencyAnalyzer.pm
 lib/SPVM/Builder/Exe.pm

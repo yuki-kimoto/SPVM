@@ -245,7 +245,7 @@ SPVM::Builder::Config - Config for Compiling and Linking Native Classes
 
 =head1 Description
 
-The SPVM::Builder::Config class has methods to get and set config for compiling and linking L<native classes|SPVM::Document::NativeClass>.
+SPVM::Builder::Config class gets and sets config for compiling and linking L<native classes|SPVM::Document::NativeClass>.
 
 =head1 Fields
 

@@ -70,6 +70,8 @@ SPVM::Document - SPVM Documentation
 
 =item * L<SPVM::Builder::ConfigBuilder - Config Builder|SPVM::Builder::ConfigBuilder>
 
+=item * L<SPVM::Builder::Config::Util - Base Config|SPVM::Builder::Config::Util>
+
 =back
 
 =head2 SPVM Native APIs
