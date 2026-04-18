@@ -57,6 +57,20 @@ sub new {
   return $self;
 }
 
+sub new_with_config {
+  my ($class, $config) = @_;
+  
+  unless ($config) {
+    confess("Config file \$config must be defined.");
+  }
+  
+  my $self = {%$config};
+  
+  bless $self, ref $class || $class;
+  
+  return $self;
+}
+
 # Instance Methods related to Base functionality
 sub option_names {
   my ($self) = @_;
@@ -258,6 +272,12 @@ This value is set automatically.
 =back
 
 =cut
+
+=head2 new_with_config
+
+  my $config = SPVM::Builder::Config::Base->new_with_config($config);
+
+Creates a new C<SPVM::Builder::Config::Base> object with the config $config copied shallowly.
 
 =head1 Instance Methods
 
