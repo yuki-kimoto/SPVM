@@ -1,3 +1,12 @@
+0.990162 2026-04-18
+  [New Features]
+    * Add SPVM::Builder::Config::Util.
+    * Add new_with_config method to SPVM::Builder::Config::Base
+    
+  [Incompatible Changes]
+    * Remove load_config, load_mode_config, load_base_config from SPVM::Builder::Config::Base.
+      This methods are moved into SPVM::Builder::Config::Util.
+  
 0.990161 2026-04-17
 
   [Test Improvement]
