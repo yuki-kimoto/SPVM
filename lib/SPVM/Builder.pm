@@ -18,6 +18,7 @@ use SPVM::BlessedObject::String;
 use SPVM::Builder::Accessor 'has';
 use SPVM::Builder::Ninja;
 use SPVM::Builder::ObjectFileInfo;
+use SPVM::Builder::Config::Util;
 
 # Fields
 has [qw(
@@ -242,7 +243,7 @@ sub build_parallel {
       if ($category eq 'native') {
         my $config_file = SPVM::Builder::Util::search_config_file($class_name);
         confess("A config file is not found for $class_name") unless defined $config_file;
-        $config = SPVM::Builder::Config->load_config($config_file, []);
+        $config = SPVM::Builder::Config::Util::load_config($config_file);
       }
       elsif ($category eq 'precompile') {
         $config = SPVM::Builder::Util::API::create_default_config();

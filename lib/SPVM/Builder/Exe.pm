@@ -25,6 +25,7 @@ use SPVM::Builder::Native::BasicType;
 use SPVM::Builder::Native::ClassFile;
 use SPVM::Builder::ScriptInfo;
 use SPVM::Builder::ObjectFileInfo;
+use SPVM::Builder::Config::Util;
 
 # Fields
 sub builder {
@@ -179,7 +180,7 @@ sub new {
   
   my $config_global;
   if (-f $config_file) {
-    $config_global = SPVM::Builder::Config::Base::load_mode_config(undef, $config_file, $config_mode);
+    $config_global = SPVM::Builder::Config::Util::load_mode_config($config_file, $config_mode);
   }
   else {
     if ($allow_no_config_file) {
@@ -971,7 +972,7 @@ sub prepare_compile_native_class {
   
   if (defined $config_file && -f $config_file) {
     
-    my $config = SPVM::Builder::Config::Base::load_config(undef, $config_file);
+    my $config = SPVM::Builder::Config::Util::load_config($config_file);
     
     $config->config_global($config_global);
     

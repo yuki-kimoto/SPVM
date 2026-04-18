@@ -294,7 +294,9 @@ L<SPVM::Builder::Config::Exe::MSVC> managaes configurations for generating execu
 
   use SPVM::Builder::Config::Exe::MSVC;
 
-  my $config_global = SPVM::Builder::Config::Exe::MSVC->load_base_config(__FILE__);
+  my $config_global = SPVM::Builder::Config::Util::load_base_config(__FILE__);
+  
+  bless $config_global, SPVM::Builder::Config::Exe::MSVC;
 
   $config_global->init;
 

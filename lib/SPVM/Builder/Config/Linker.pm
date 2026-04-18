@@ -10,6 +10,7 @@ use SPVM::Builder::Accessor 'has';
 use SPVM::Builder::LibInfo;
 use SPVM::Builder::Resource;
 use SPVM::Builder::Util;
+use SPVM::Builder::Config::Util;
 
 my $fields = [qw(
   ld
@@ -391,7 +392,7 @@ sub use_resource {
     confess("A config file \"$config_rel_file\" is not found in (@INC)");
   }
   
-  my $config = SPVM::Builder::Config->load_config($config_file);
+  my $config = SPVM::Builder::Config::Util::load_config($config_file);
   
   unless ($config->isa('SPVM::Builder::Config')) {
     confess("[Unexpected Error]The config must be an SPVM::Builder::Config object");

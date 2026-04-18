@@ -123,93 +123,6 @@ sub _copy_hash {
   return $clone;
 }
 
-sub _remove_ext_from_config_file {
-  my ($config_file) = @_;
-  
-  my ($config_base_name, $config_dir) = fileparse $config_file;
-  
-  $config_base_name =~ s/(\.[^\.]+)?\.config$//;
-  
-  my $config_file_without_ext = "$config_dir$config_base_name";
-  
-  return $config_file_without_ext;
-}
-
-sub _eval_config_content {
-  
-  $_[0] = qq|{\nuse strict;\nuse warnings;\nuse utf8;\n\nuse SPVM::Builder::Config;\nuse SPVM::Builder::Config::Exe;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
-  
-  return eval $_[0];
-}
-
-sub load_config {
-  my ($self, $config_file) = @_;
-  
-  unless (-f $config_file) {
-    confess("The config file \"$config_file\" must exist");
-  }
-  
-  my $config;
-  {
-    open my $fh, '<', $config_file
-      or confess("The config file \"$config_file\" can't found: $!");
-    
-    my $config_content = do { local $/; <$fh> };
-    
-    $config = &_eval_config_content($config_content, $config_file);
-  }
-  
-  if ($@) {
-    confess("The config file \"$config_file\" can't be parsed: $@");
-  }
-  
-  unless (defined $config && $config->isa('SPVM::Builder::Config::Linker')) {
-    confess("The config file must be an SPVM::Builder::Config::Linker object.");
-  }
-  
-  push @{$config->loaded_config_files}, $config_file;
-  
-  $config->file($config_file);
-  
-  if ($self) {
-    bless $config, ref $self || $self;
-  }
-  
-  return $config;
-}
-
-sub load_mode_config {
-  my ($self, $config_file, $mode, $options) = @_;
-  
-  $options //= {};
-  
-  my $mode_config_file = SPVM::Builder::Config::Base::_remove_ext_from_config_file($config_file);
-  if (defined $mode) {
-    $mode_config_file .= ".$mode";
-  }
-  $mode_config_file .= ".config";
-  
-  unless (-f $mode_config_file) {
-    confess("Can't find the config file '$mode_config_file'");
-  }
-  
-  my $config = SPVM::Builder::Config::Base::load_config($self, $mode_config_file);
-  
-  if (defined $mode) {
-    $config->mode($mode);
-  }
-  
-  return $config;
-}
-
-sub load_base_config {
-  my ($self, $config_file, $args) = @_;
-  
-  my $config = $self->load_mode_config($config_file, undef, $args);
-  
-  return $config;
-}
-
 sub get_base_dir {
   my ($self) = @_;
 
@@ -264,8 +177,6 @@ This field is automatically set and users nomally do not change it.
   $config->file($file);
 
 Gets and sets C<file> field, the file path of this config.
-
-This field is set by L</"load_config"> method and users should not set it.
 
 =head2 category
 
@@ -322,7 +233,7 @@ For example, when the L<spvmcc> command generates an executable file, it sets th
 
 =head2 loaded_config_files
 
-Returns the config files loaded by L</"load_config"> method.
+Returns the config files loaded by L<SPVM::Builder::Config::Util/"load_config"> function.
 
 =head1 Class Methods
 
@@ -349,44 +260,6 @@ This value is set automatically.
 =cut
 
 =head1 Instance Methods
-
-=head2 load_config
-
-  my $config = $config->load_config($config_file);
-
-Loads a config file given a config file path and an array refernce containing L<config arguments|/"Config Arguments">, and returns an L<SPVM::Builder::Config> object.
-
-Examples:
-
-  my $config = $config->load_config(__FILE__);
-
-=head2 load_base_config
-
-  my $config = $config->load_base_config($config_file);
-
-Creates the base config file path from the config file path $config_file, and calls L<load_config|SPVM::Builder::Config/"load_config"> method given the base config file path and config arguments, and returns its return value.
-
-A base config file is the config file that removes its mode.
-
-  # Config file
-  MyClass.mode.config
-  
-  # Base config file
-  MyClass.config
-
-Examples:
-
-  my $config = SPVM::Builder::Config::Global->load_base_config(__FILE__);
-
-=head2 load_mode_config
-
-  my $config = $config->load_mode_config($config_file, $mode);
-
-Creates a L<mode config file|/"Config Mode"> path from the config file path $config_file, and calls L<load_config|SPVM::Builder::Config/"load_config"> method given the mode config file path and config arguments, and returns its return value.
-
-  my $config = SPVM::Builder::Config::Global->load_mode_config(__FILE__, "production");
-
-L</"mode>" field is set to $mode.
 
 =head2 clone
 

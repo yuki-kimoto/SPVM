@@ -10,6 +10,7 @@ use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 use SPVM::Builder::Accessor 'has';
+use SPVM::Builder::Config::Util;
 
 # Fields
 has [qw(
@@ -131,7 +132,7 @@ sub is_resource_loader {
   
   my $is_resource_loader = 0;
   if (defined $config_file && -f $config_file) {
-    my $config = SPVM::Builder::Config->load_config($config_file, []);
+    my $config = SPVM::Builder::Config::Util::load_config($config_file);
     
     my $resource_names = $config->get_resource_names;
     
@@ -174,7 +175,7 @@ sub get_config {
   
   my $config_file = $self->get_config_file($class_name);
   
-  my $config = SPVM::Builder::Config->load_config($config_file, []);
+  my $config = SPVM::Builder::Config::Util::load_config($config_file);
   
   return $config;
 }

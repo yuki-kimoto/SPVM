@@ -25,8 +25,10 @@ L<SPVM::Builder::Config::DLL> is a class to manage configurations for generating
 
   use SPVM::Builder::Config::DLL;
 
-  my $config_global = SPVM::Builder::Config::DLL->load_base_config(__FILE__);
-
+  my $config_global = SPVM::Builder::Config::Util::load_base_config(__FILE__);
+  
+  bless $config_global, SPVM::Builder::Config::DLL;
+  
   $config_global->init;
 
   $config_global;

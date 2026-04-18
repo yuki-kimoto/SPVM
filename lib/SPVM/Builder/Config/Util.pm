@@ -3,6 +3,7 @@ package SPVM::Builder::Config::Util;
 use strict;
 use warnings;
 use File::Basename 'fileparse';
+use Carp 'confess';
 
 sub load_config {
   my ($config_file) = @_;
@@ -70,7 +71,7 @@ sub load_base_config {
 
 sub _eval_config_content {
   
-  $_[0] = qq|{\nuse strict;\nuse warnings;\nuse utf8;\n\nuse SPVM::Builder::Config;\nuse SPVM::Builder::Config::Exe;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
+  $_[0] = qq|{\nuse strict;\nuse warnings;\nuse utf8;\nuse SPVM::Builder::Config::Util;\nuse SPVM::Builder::Config;\nuse SPVM::Builder::Config::Exe;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
   
   return eval $_[0];
 }
