@@ -670,8 +670,19 @@ sub spawn_perl {
 sub command_parallel {
   my ($self, $command_infos) = @_;
   
+  # Remove duplicate commands based on command_hash
+  my @unique_command_infos;
+  my %seen_command_hashes_h;
+  for my $command_info (@$command_infos) {
+    my $hash = $command_info->command_hash;
+    unless ($seen_command_hashes_h{$hash}) {
+      push @unique_command_infos, $command_info;
+      $seen_command_hashes_h{$hash} = 1;
+    }
+  }
+  
   my $max_jobs = $self->jobs;
-  my @waiting_command_infos = @$command_infos;
+  my @waiting_command_infos = @unique_command_infos;
   my %running_processes; # pid => command_info
   
   # Main loop for parallel processing
