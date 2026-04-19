@@ -55,9 +55,12 @@ find(
           # Rather than leaving a large number of correct workarounds,
           # I decided to remove it entirely and not use parallel testing with shared build directories on Windows.
           
-          unless ($^O eq 'MSWin32') {
-            $env_settings .= "BEGIN { \$ENV{SPVM_BUILD_DIR} = '.spvm_build'; }\n";
-          }
+          # [Additional notes] I will turn off parallel precompile tests using shared buld direcotry in all OSs.
+          # https://github.com/yuki-kimoto/SPVM/issues/857]
+          
+          # unless ($^O eq 'MSWin32') {
+            # $env_settings .= "BEGIN { \$ENV{SPVM_BUILD_DIR} = '.spvm_build'; }\n";
+          # }
           
           $content = $env_settings . $content;
         }
