@@ -275,7 +275,7 @@ package MY {
       $make_rule .= "dynamic :: $time_stamp_file\n";
       $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
 
-      $make_rule .= "$time_stamp_file :: $test_files_str\n";
+      $make_rule .= "$time_stamp_file :: t/utils/copy_vm_to_precompile.pl $test_files_str\n";
       $make_rule .= "\tperl t/utils/copy_vm_to_precompile.pl\n";
     }
     
