@@ -45,9 +45,21 @@ find(
         
         # Inject SPVM_CC_OPTIMIZE for .t files
         if ($file =~ /\.t$/) {
-          # Force set the environment variable at the beginning of the test
-          my $env_setting = "BEGIN { \$ENV{SPVM_CC_OPTIMIZE} = '-O0 -g'; unless (\$^O eq 'MSWin32') { \$ENV{SPVM_BUILD_DIR} = '.spvm_build'; } }\n";
-          $content = $env_setting . $content;
+          # Set environment variables at the beginning of the test
+          my $env_settings = '';
+          $env_settings .= "BEGIN { \$ENV{SPVM_CC_OPTIMIZE} = '-O0 -g'; }\n";
+          
+          # Parallel testing on Windows occasionally fails due to permission denied loading of DLLs,
+          # object files, and C language source files.
+          # I worked towards resolving this, but concluded that it was impossible due to OS limitations. 
+          # Rather than leaving a large number of correct workarounds,
+          # I decided to remove it entirely and not use parallel testing with shared build directories on Windows.
+          
+          unless ($^O eq 'MSWin32') {
+            $env_settings .= "BEGIN { \$ENV{SPVM_BUILD_DIR} = '.spvm_build'; }\n";
+          }
+          
+          $content = $env_settings . $content;
         }
         
         mkpath $to_dir;
