@@ -19,19 +19,13 @@ use SPVM::Builder::Config;
 #   yacc/bison.sh
 
 # Check supported environment
+my $make;
 {
   # SPVM requires a 64-bit address space (pointer size must be 8 bytes)
   # This ensures support for large memory maps required by coroutines.
   my $ptrsize = $Config{ptrsize};
   if ($ptrsize < 8) {
     warn "SPVM doesn't support 32-bit address spaces (the pointer size is $ptrsize bytes). A 64-bit environment is required.\n";
-    die "OS unsupported\n";
-  }
-  
-  # Don't support nmake
-  my $make = $Config{make};
-  if ($make eq 'nmake') {
-    warn "SPVM doesn't support nmake. The current \"make\" is \"$make\".\n";
     die "OS unsupported\n";
   }
   
@@ -47,6 +41,19 @@ use SPVM::Builder::Config;
     
     unless (system($cmd) == 0) {
       warn "SPVM doesn't support C++ compilers that does not support -std=c++11 option.\n";
+      die "OS unsupported\n";
+    }
+  }
+  
+  # SPVM requires GNU Make for the order-only dependency syntax '|' and the 'override' syntax.
+  # On FreeBSD, the default "make" is BSD Make, so we need to use "gmake" (GNU Make) instead.
+  if ($^O eq 'freebsd') {
+    my $success = system('gmake', '--version') == 0;
+    if ($success) {
+      $make = 'gmake';
+    }
+    else {
+      warn "SPVM needs GNU Make.\n";
       die "OS unsupported\n";
     }
   }
@@ -182,7 +189,8 @@ WriteMakefile(
     # 5. Only '();. are used for maximum safety.
     # 6. Minimal symbols to avoid edge cases in shell parsing.
     'override TEST_VERBOSE' => "scalar (eval chr(36) . q(ENV{HARNESS_OPTIONS}='j$jobs'), 0)",
-  }
+  },
+  $make ? (MAKE => $make) : (),
 );
 
 package MY {
