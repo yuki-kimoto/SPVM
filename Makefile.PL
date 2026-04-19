@@ -57,6 +57,13 @@ my $make;
       die "OS unsupported\n";
     }
   }
+  
+  # Don't support nmake
+  my $make = $Config{make};
+  if ($make eq 'nmake') {
+    warn "SPVM doesn't support nmake. The current \"make\" is \"$make\".\n";
+    die "OS unsupported\n";
+  }
 }
 
 my @defines;
