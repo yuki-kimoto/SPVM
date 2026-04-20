@@ -30,9 +30,9 @@ Examples:
   # csh
   setenv SPVM_BUILD_DIR ~/.spvm_build
 
-=head2 SPVM_CC_QUIET
+=head2 SPVM_FORCE_QUIET
 
-If C<SPVM_CC_QUIET> environement variable is a true value of Perl, messages L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are not printed to stderr.
+If C<SPVM_FORCE_QUIET> environement variable is a true value of Perl, messages L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are not printed to stderr.
 
 If it is defined and a false value of Perl, the messages are printed.
 
@@ -40,9 +40,9 @@ This setting has a higher priority than L<SPVM::Builder::Config#quiet|SPVM::Buil
 
 Note that this environment variable is only effective during runtime compilation (JIT).
 
-=head2 SPVM_CC_OPTIMIZE
+=head2 SPVM_FORCE_OPTIMIZE
 
-If C<SPVM_CC_OPTIMIZE> environment variable is defined, the L<optimize|/"optimize"> field is overwritten by this value.
+If C<SPVM_FORCE_OPTIMIZE> environment variable is defined, the L<optimize|/"optimize"> field is overwritten by this value.
 
 This setting has a higher priority than L<SPVM::Builder::Config#optimize|SPVM::Builder::Config/"optimize"> field.
 

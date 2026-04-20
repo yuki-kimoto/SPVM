@@ -789,10 +789,10 @@ sub setup_spvm_command_environment {
   }
   
   if (defined $quiet) {
-    $ENV{SPVM_CC_QUIET} = $quiet;
+    $ENV{SPVM_FORCE_QUIET} = $quiet;
   }
   elsif (defined $no_quiet) {
-    $ENV{SPVM_CC_QUIET} = !$no_quiet;
+    $ENV{SPVM_FORCE_QUIET} = !$no_quiet;
   }
   
   if ($warning) {

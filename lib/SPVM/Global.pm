@@ -220,12 +220,12 @@ sub load_dynamic_lib {
             category => $category,
           };
           
-          my $env_spvm_cc_quiet = SPVM::Builder::Util::get_normalized_env('SPVM_CC_QUIET');
+          my $env_spvm_cc_quiet = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_QUIET');
           if (defined $env_spvm_cc_quiet) {
             $build_options->{quiet} = 1;
           }
           
-          my $env_spvm_cc_optimize = SPVM::Builder::Util::get_normalized_env('SPVM_CC_OPTIMIZE');
+          my $env_spvm_cc_optimize = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_OPTIMIZE');
           if (defined $env_spvm_cc_optimize) {
             $build_options->{optimize} = $env_spvm_cc_optimize;
           }
