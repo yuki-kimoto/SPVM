@@ -59,7 +59,6 @@ use SPVM::Builder::Config;
       my $config = SPVM::Builder::Config->new( is_jit => 1);
       my $cc = SPVM::Builder::CC->new;
       
-      $cc->debug(1);
       $cc->quiet(1);
       $config->quiet(1);
       
