@@ -46,8 +46,6 @@ class {
       die;
     }
     
-    my $argv = CommandInfo->ARGV;
-    
     my $basetime = CommandInfo->BASETIME;
     
     my $basetime_ok = 0;
@@ -61,6 +59,13 @@ class {
     
     unless ($INT_VALUE == 1) {
       die;
+    }
+    
+    my $argv = CommandInfo->ARGV;
+    if (@$argv) {
+      unless ($argv->[0] eq "args0") {
+        die;
+      }
     }
     
     print 1;
