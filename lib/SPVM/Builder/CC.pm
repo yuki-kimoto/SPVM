@@ -26,7 +26,6 @@ use SPVM::Builder::Accessor 'has';
 has [qw(
   builder
   quiet
-  debug
   runtime
   jobs
 )];
@@ -51,10 +50,7 @@ sub detect_quiet {
   
   my $quiet;
   
-  if (defined $self->debug) {
-    $quiet = 0;
-  }
-  elsif (exists $self->{quiet}) {
+  if (exists $self->{quiet}) {
     $quiet = $self->quiet;
   }
   elsif (defined $config && exists $config->{quiet}) {
