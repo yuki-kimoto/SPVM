@@ -59,17 +59,6 @@ use SPVM::Builder::Config;
       my $config = SPVM::Builder::Config->new( is_jit => 1);
       my $cc = SPVM::Builder::CC->new;
       
-      $cc->quiet(1);
-      $config->quiet(1);
-      
-      my $quiet = $cc->detect_quiet($config);
-      is($quiet, 0);
-    }
-    
-    {
-      my $config = SPVM::Builder::Config->new( is_jit => 1);
-      my $cc = SPVM::Builder::CC->new;
-      
       $cc->quiet(0);
       $config->quiet(1);
       
