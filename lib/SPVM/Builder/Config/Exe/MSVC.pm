@@ -1,5 +1,7 @@
 package SPVM::Builder::Config::Exe::MSVC;
 
+use parent 'SPVM::Builder::Config::Exe';
+
 use strict;
 use warnings;
 use Carp ();
@@ -7,8 +9,13 @@ use File::Basename 'dirname', 'basename';
 use File::Spec;
 use File::Find;
 
-# Inherit from SPVM::Builder::Config::Exe
-use base 'SPVM::Builder::Config::Exe';
+sub new {
+  my $self = shift->SUPER::new(@_);
+  
+  $self->init;
+  
+  return $self;
+}
 
 sub init {
   my ($self, $options) = @_;
@@ -308,11 +315,18 @@ L<SPVM::Builder::Config::Exe::MSVC> managaes configurations for generating execu
 
 L<SPVM::Builder::Config::Exe>
 
+=head1 Class Methods
+
+=head2 new
+
+  my $config_global = SPVM::Builder::Config::Exe::MSVC->new(%fields);
+
+Creates a new L<SPVM::Builder::Config::Exe::MSVC> object by calling C<new> method in the super class with I<%fields>, and calls L</"init"> method with I<%fields>.
+
 =head1 Instance Methods
 
 =head2 init
   
-  $config->init;
+  $config_global->init(%fields);
 
 Initialize this instance for MSVC compiler and linker.
-

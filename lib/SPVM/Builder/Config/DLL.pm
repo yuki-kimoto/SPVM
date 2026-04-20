@@ -5,6 +5,14 @@ use parent 'SPVM::Builder::Config::Exe';
 use strict;
 use warnings;
 
+sub new {
+  my $self = shift->SUPER::new(@_);
+  
+  $self->init;
+  
+  return $self;
+}
+
 sub init {
   my ($self) = @_;
   
@@ -37,12 +45,18 @@ L<SPVM::Builder::Config::DLL> is a class to manage configurations for generating
 
 L<SPVM::Builder::Config::Exe>
 
+=head1 Class Methods
+
+=head2 new
+
+  my $config_global = SPVM::Builder::Config::DLL->new(%fields);
+
+Creates a new L<SPVM::Builder::Config::DLL> object by calling C<new> method in the super class with I<%fields>, and calls L</"init"> method with I<%fields>.
+
 =head1 Instance Methods
 
 =head2 init
   
-  $config->init;
+  $config_global->init(%fields);
 
 Initialize this instance. C<output_type> is set to C<"dynamic_lib">.
-
-=cut
