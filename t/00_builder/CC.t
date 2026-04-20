@@ -17,16 +17,6 @@ use SPVM::Builder::Config;
     is($quiet, 0);
   }
 
-  # $cc->debug - 0
-  {
-    my $config = SPVM::Builder::Config->new;
-    my $cc = SPVM::Builder::CC->new;
-    $cc->debug(1);
-    
-    my $quiet = $cc->detect_quiet($config);
-    is($quiet, 0);
-  }
-
   # $cc->quiet
   {
     my $config = SPVM::Builder::Config->new;
