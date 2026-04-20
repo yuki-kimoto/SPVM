@@ -36,9 +36,11 @@ mkpath $external_object_dir;
   # Basic
   # build_type - Release
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_output = `$spvmcc_cmd`;
+    like($spvmcc_output, qr/-O3/);
+    like($spvmcc_output, qr/-DNDEBUG/);
+    like($spvmcc_output, qr/-std=c99/);
     
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd";

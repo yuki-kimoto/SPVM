@@ -60,7 +60,6 @@ my $dev_null = File::Spec->devnull;
     # Extract the part inside the parentheses (the search paths)
     if ($output =~ /\((.+?)\)/) {
         my $path_string = $1;
-        warn $path_string;
         my @paths = split(/ /, $path_string);
         
         # Target paths to check
