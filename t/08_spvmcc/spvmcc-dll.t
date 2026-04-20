@@ -37,6 +37,11 @@ my $tmp_dir = File::Temp->newdir;
     ok(-f "$tmp_dir/myapp.$Config{dlext}");
     ok(-f "$tmp_dir/myapp.pl");
     
+    my $execute_cmd = "$^X $tmp_dir/myapp.pl";
+    my $execute_cmd_with_args = "$execute_cmd args0";
+    my $output = `$execute_cmd_with_args`;
+    chomp $output;
+    is($output, 1);
   }
 }
 
