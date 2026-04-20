@@ -36,6 +36,7 @@ my $tmp_dir = File::Temp->newdir;
     
     ok(-f "$tmp_dir/myapp.$Config{dlext}");
     ok(-f "$tmp_dir/myapp.pl");
+    ok(-f "$tmp_dir/myapp.xs");
   }
 }
 
