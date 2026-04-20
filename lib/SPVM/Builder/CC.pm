@@ -50,10 +50,13 @@ sub detect_quiet {
   
   my $quiet;
   
-  if (exists $self->{quiet}) {
+  if (length (my $env_spvm_force_quiet = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_QUIET'))) {
+    $quiet = $env_spvm_force_quiet;
+  }
+  elsif (length $self->{quiet}) {
     $quiet = $self->quiet;
   }
-  elsif (defined $config && exists $config->{quiet}) {
+  elsif (defined $config && length $config->{quiet}) {
     $quiet = $config->quiet;
   }
   elsif (defined $config && $config->is_jit) {

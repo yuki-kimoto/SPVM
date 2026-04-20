@@ -220,11 +220,6 @@ sub load_dynamic_lib {
             category => $category,
           };
           
-          my $env_spvm_cc_quiet = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_QUIET');
-          if (defined $env_spvm_cc_quiet) {
-            $build_options->{quiet} = 1;
-          }
-          
           $BUILDER //= SPVM::Builder->new;
           my $dynamic_lib_file_jit = $BUILDER->build_jit(
             $outmost_class_name,
