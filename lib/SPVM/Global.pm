@@ -141,8 +141,7 @@ sub build_class_common {
 
 sub init_api {
   unless ($API) {
-    my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
-    $BUILDER //= SPVM::Builder->new(build_dir => $build_dir);
+    $BUILDER //= SPVM::Builder->new;
     
     my $compiler = SPVM::Builder::Native::Compiler->new;
     
@@ -231,8 +230,7 @@ sub load_dynamic_lib {
             $build_options->{optimize} = $env_spvm_cc_optimize;
           }
           
-          my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
-          $BUILDER //= SPVM::Builder->new(build_dir => $build_dir);
+          $BUILDER //= SPVM::Builder->new;
           my $dynamic_lib_file_jit = $BUILDER->build_jit(
             $outmost_class_name,
             $build_options,
