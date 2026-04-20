@@ -198,11 +198,11 @@ sub build_parallel {
     runtime
     is_jit
     output_dir
-    optimize
     category
     class_name
     class_file
     quiet
+    optimize
   );
 
   # Check for invalid options
@@ -253,7 +253,20 @@ sub build_parallel {
       $config->category($category);
       $config->is_jit($options->{is_jit});
       $config->output_dir($options->{output_dir});
-      $config->optimize($options->{optimize}) if defined $options->{optimize};
+      
+      my $force_optimize;
+      if (length $options->{optimize}) {
+        $force_optimize = $options->{optimize};
+      }
+      else {
+        my $env_spvm_force_optimize = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_OPTIMIZE');
+        if (length $env_spvm_force_optimize) {
+          $force_optimize = $env_spvm_force_optimize;
+        }
+      }
+      if (length $force_optimize) {
+        $config->optimize($force_optimize);
+      }
       
       # Prepare compile information for each class
       my $compile_infos = $cc->prepare_compile_class($class_name, $config);
