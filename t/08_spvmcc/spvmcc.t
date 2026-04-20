@@ -38,7 +38,7 @@ mkpath $external_object_dir;
   # Basic
   # build_type - Release
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -74,7 +74,7 @@ mkpath $external_object_dir;
   my $exe_file = "$tmp_dir/end-block";
   
   # Compile with --no-config
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -q --no-config -B $build_dir -I $inc_dir -o $exe_file $spvm_script);
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -q --no-config -B $build_dir -I $inc_dir --quiet -o $exe_file $spvm_script);
   system($spvmcc_cmd) == 0 or die "Can't execute spvmcc command $spvmcc_cmd:$!";
   
   # Execute and check
@@ -85,7 +85,7 @@ mkpath $external_object_dir;
 {
   # lib directive
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -q --build-dir $build_dir -o $tmp_dir/use-class $spvm_script_dir/use-class.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -q --build-dir $build_dir --quiet -o $tmp_dir/use-class $spvm_script_dir/use-class.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -104,7 +104,7 @@ mkpath $external_object_dir;
   
   # --object-file
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -I $inc_dir --object-file $external_object_dir/external.o -o $tmp_dir/external $spvm_script_dir/external.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -I $inc_dir --object-file $external_object_dir/external.o --quiet -o $tmp_dir/external $spvm_script_dir/external.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -133,7 +133,7 @@ mkpath $external_object_dir;
 
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir -o $tmp_dir/program_name $spvm_script_dir/program_name.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir --quiet -o $tmp_dir/program_name $spvm_script_dir/program_name.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -176,7 +176,7 @@ mkpath $external_object_dir;
 {
   # build_type - Release
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode Release -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode Release --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -189,7 +189,7 @@ mkpath $external_object_dir;
   
   # build_type - Debug
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode Debug -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode Debug --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -202,7 +202,7 @@ mkpath $external_object_dir;
   
   # build_type - RelWithDebInfo
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode RelWithDebInfo -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode RelWithDebInfo --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -215,7 +215,7 @@ mkpath $external_object_dir;
   
   # build_type - MinSizeRel
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode MinSizeRel -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode MinSizeRel --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     

@@ -1,3 +1,5 @@
+BEGIN { $ENV{SPVM_FORCE_QUIET} = 1 }
+
 BEGIN { $ENV{SPVM_BUILD_DIR} = '.spvm_build' }
 
 use strict;

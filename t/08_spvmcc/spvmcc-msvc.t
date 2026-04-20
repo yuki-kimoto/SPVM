@@ -67,7 +67,7 @@ unless ($has_msvc) {
 {
   # build_type - Release
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc-Release -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc-Release --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -80,7 +80,7 @@ unless ($has_msvc) {
   
   # build_type - Debug
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc-Debug -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc-Debug --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -93,7 +93,7 @@ unless ($has_msvc) {
   
   # build_type - RelWithDebInfo
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc-RelWithDebInfo -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc-RelWithDebInfo --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
@@ -106,7 +106,7 @@ unless ($has_msvc) {
   
   # build_type - MinSizeRel
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc-MinSizeRel -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc-MinSizeRel --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
