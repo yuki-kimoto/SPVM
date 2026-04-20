@@ -1177,6 +1177,7 @@ t/08_spvmcc/script/use-class.spvm
 t/08_spvmcc/SPVM-Builder-Config-Global.t
 t/08_spvmcc/SPVM-Builder-Exe.t
 t/08_spvmcc/spvm.t
+t/08_spvmcc/spvmcc-dll.t
 t/08_spvmcc/spvmcc-msvc.t
 t/08_spvmcc/spvmcc.t
 t/08_spvmcc/spvmcc_error.t

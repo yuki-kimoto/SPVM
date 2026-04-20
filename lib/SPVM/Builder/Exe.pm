@@ -252,9 +252,13 @@ sub build_exe_file {
   
   my $output_file = $self->{output_file};
   $config_global = $self->config_global->clone;
+  
+  my $runtime = $self->runtime;
+  
   my $cc = SPVM::Builder::CC->new(
     builder => $self->builder,
     quiet => $self->quiet,
+    runtime => $runtime,
   );
   $config_global->output_file($output_file);
   
@@ -348,10 +352,13 @@ sub prepare_compile_source_file {
   # Build directory
   my $build_dir = $self->builder->build_dir;
   
+  my $runtime = $self->runtime;
+  
   # Compile command
   my $builder_cc = SPVM::Builder::CC->new(
     builder => $self->builder,
     quiet => $self->quiet,
+    runtime => $runtime,
   );
   
   my $compile_info = SPVM::Builder::CompileInfo->new(
