@@ -484,6 +484,7 @@ sub create_bootstrap_main_func_source {
   
   $source .= <<"EOS";
 int main(int command_args_length, char **command_args);
+int spvm_main(int command_args_length, char **command_args);
 
 int main(int command_args_length, char **command_args) {
   
@@ -608,6 +609,11 @@ int main(int command_args_length, char **command_args) {
   
   return error_id;
 }
+
+int spvm_main(int command_args_length, char **command_args) {
+  return main(command_args_length, command_args);
+}
+
 EOS
 
   return $source;
