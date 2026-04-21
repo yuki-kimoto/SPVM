@@ -156,6 +156,10 @@ sub prepare_compile_resources {
       $resource_config->is_jit($config->is_jit);
     }
     
+    if (exists $config->{config_global}) {
+      $resource_config->config_global($config->config_global);
+    }
+    
     my $resource_compile_infos = $builder_cc_resource->prepare_compile_class($resource_class_name, $resource_config);
     push @$compile_infos, @$resource_compile_infos;
   }
