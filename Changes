@@ -1,3 +1,29 @@
+0.990163 2026-04-21
+  [New Features]
+    * Add new method to SPVM::Builder::Config::DLL and SPVM::Builder::Config::Exe::MSVC to ensure proper initialization via init.
+    * Restore -f|--force option of spvm and spvmcc and SPVM_FORCE_BUILD option(The old name is SPVM_CC_FORCE).
+    * Restore resource_loader_config field to SPVM::Builder::Config::Base. And 
+  [Bug Fix]
+    * Fix a bug where runtime was not passed to SPVM::Builder::CC in SPVM::Builder::Exe.
+    * Resource compilation logic has been corrected.
+    * Fixed a bug where global configuration was not reflected in resource compilation.
+  [Incompatible Changes]
+    * Rename SPVM_CC_QUIET environment variable to SPVM_FORCE_QUIET
+    * Rename SPVM_CC_OPTIMIZE to SPVM_FORCE_OPTIMIZE
+  [Build Process Changes]
+    * Add t/utils/copy_vm_to_precompile.pl to Makefile dependencies for test file generation.
+    * Filter duplicate commands in command_parallel using command_hash to ensure unique process execution.
+    * In Makefile.PL, I've modified it so that on FreeBSD, if gmake is already present, it will be automatically selected.
+  [Internal Changes]
+    * Remove debug field from SPVM::Builder::CC.
+    * The default setting logic for SPVM_BUILD_DIR has been consolidated into one location.
+    * Add no_compile_resources field to SPVM::Builder::CC class.
+  [Test Improvement]
+    * Improve tests for spvmcc for MSVC
+    * Improve spvmcc build_type tests.
+  [Test Changes]
+    * Disable shared build directory in tests in all OSs.
+
 0.990162 2026-04-18
   [New Features]
     * Add SPVM::Builder::Config::Util.
