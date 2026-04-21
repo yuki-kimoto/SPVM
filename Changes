@@ -1,3 +1,9 @@
+0.990164 2026-04-21
+  [Incompatible Changes]
+    * SPVM now uses Perl's @INC syntax directly for expressing include directories in all contexts.
+  [Changes]
+    * Add resource_include_dirs field to SPVM::Builder::Config and improve the resource include directory logic.
+  
 0.990163 2026-04-21
   [New Features]
     * Add new method to SPVM::Builder::Config::DLL and SPVM::Builder::Config::Exe::MSVC to ensure proper initialization via init.
