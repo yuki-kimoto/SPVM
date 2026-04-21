@@ -28,6 +28,7 @@ has [qw(
   quiet
   runtime
   jobs
+  no_compile_resources
 )];
 
 # Class Methods
@@ -94,8 +95,10 @@ sub prepare_compile_class {
   
   my $compile_infos = [];
   
-  my $resource_compile_infos = $self->prepare_compile_resources($class_name, $config);
-  push @$compile_infos, @$resource_compile_infos;
+  unless ($self->no_compile_resources) {
+    my $resource_compile_infos = $self->prepare_compile_resources($class_name, $config);
+    push @$compile_infos, @$resource_compile_infos;
+  }
   
   my $native_compile_infos = $self->prepare_compile_native_class($class_name, $config);
   push @$compile_infos, @$native_compile_infos;
