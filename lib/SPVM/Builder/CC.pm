@@ -759,11 +759,6 @@ sub prepare_link {
   
   my $object_file_names = [map { $_->to_string; } @$link_info_object_files];
   
-  my $before_link_cbs = $config->before_link_cbs;
-  for my $before_link_cb (@$before_link_cbs) {
-    $before_link_cb->($link_info->config, $link_info);
-  }
-  
   my $ld_version = $config->ld_version;
   
   my $ld_command_no_output_option = $link_info->create_command({no_output_option => 1});
@@ -837,6 +832,11 @@ sub prepare_link {
       push @$dl_func_list, @$anon_dl_func_list;
     }
     $link_info->dl_func_list($dl_func_list);
+  }
+  
+  my $before_link_cbs = $config->before_link_cbs;
+  for my $before_link_cb (@$before_link_cbs) {
+    $before_link_cb->($link_info->config, $link_info);
   }
   
   return $link_info;
