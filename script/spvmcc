@@ -18,6 +18,7 @@ SPVM::Builder::Util::getopt
   # spvm,spvmcc common
   'B|build-dir=s'   => \my $build_dir,
   'w'               => \my $warning,
+  'f|force'         => \my $force,
   
   # spvmcc only
   'q|quiet'   => \my $quiet,
@@ -54,7 +55,7 @@ unless (defined $output_file) {
 my $source = "";
 eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
 
-SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, $quiet, undef, $warning);
+SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, $quiet, undef, $warning, $force);
 
 my $build_exe = SPVM::Builder::Exe->new(
   script_name => $script_name,
@@ -85,18 +86,19 @@ The spvmcc command generates an executable file from SPVM classes.
     spvmcc -I lib -o myapp myapp.spvm
   
   Options:
-    -h, --help                      Shows this message
-    -v, --version                   Shows the version
-    -I DIR                          Adds a include directory
-    -Mblib                          Same as "-Mblib" in perl
+    -h, --help                     Shows this message
+    -v, --version                  Shows the version
+    -I DIR                         Adds a include directory
+    -Mblib                         Same as "-Mblib" in perl
     
-    -B, --build-dir DIR             Build directory
-    -w                              Enables warning flag
+    -B, --build-dir DIR            Build directory
+    -w                             Enables warning flag
+    -f|--force                     Compilations and links are forced
     
-    -q, --quiet                     Stops diagnostic messages.
-    -o, --output FILE               The output file name
-    --no-config                     No configration file is ok
-    -m, --mode MODE                 Config mode
+    -q, --quiet                    Stops diagnostic messages.
+    -o, --output FILE              The output file name
+    --no-config                    No configration file is ok
+    -m, --mode MODE                Config mode
 
 =head1 Details
 
@@ -233,6 +235,16 @@ See L<spvm/"--build-dir">.
   -w
 
 See L<spvm/"-w">.
+
+=head2 -f
+
+  -f
+
+See L<spvm/"-f">.
+
+=head2 --force
+
+See L<spvm/"--force">.
 
 =head2 --quiet
 

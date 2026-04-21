@@ -463,10 +463,12 @@ sub spawn_compile_source_file {
     command_hash => $compile_info->command_hash,
     output_file => $compile_info->output_file,
   };
+  
+  my $force = !!$ENV{SPVM_FORCE_BUILD};
   my $need_generate = $ninja->need_generate($need_generate_options);
   
   my $process_id = 0;
-  if ($need_generate) {
+  if ($force || $need_generate) {
     mkpath dirname $output_file;
     
     my $cc_command_heading;
@@ -922,6 +924,8 @@ sub spawn_link {
     confess("Unknown output_type \"$output_type\"");
   }
   
+  my $force = !!$ENV{SPVM_FORCE_BUILD};
+  
   my $need_generate_options = {
     command_hash => $link_info->command_hash,
     output_file => $link_info->output_file,
@@ -929,7 +933,7 @@ sub spawn_link {
   my $need_generate = $self->builder->ninja->need_generate($need_generate_options);
   
   my $process_id;
-  if ($need_generate) {
+  if ($force || $need_generate) {
     mkpath dirname $output_file;
     
     # Prepare command for intermediate Perl process

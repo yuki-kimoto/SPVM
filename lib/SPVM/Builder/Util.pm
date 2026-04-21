@@ -777,7 +777,7 @@ sub quote_literal {
 }
 
 sub setup_spvm_command_environment {
-  my ($script_name, $source, $blib, $spvm_include_dirs, $build_dir, $quiet, $no_quiet, $warning) = @_;
+  my ($script_name, $source, $blib, $spvm_include_dirs, $build_dir, $quiet, $no_quiet, $warning, $force) = @_;
   
   $0 = $script_name;
   FindBin::again();
@@ -793,6 +793,10 @@ sub setup_spvm_command_environment {
   }
   elsif (defined $no_quiet) {
     $ENV{SPVM_FORCE_QUIET} = !$no_quiet;
+  }
+  
+  if (defined $force) {
+    $ENV{SPVM_FORCE_BUILD} = !!$force;
   }
   
   if ($warning) {

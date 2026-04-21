@@ -1,14 +1,12 @@
 =head1 Name
 
-SPVM::Document::EnvironmentVariables - Environment Variables
+SPVM::Document::EnvironmentVariables - SPVM Environment Variables
 
 =head1 Description
 
-This document explains environment variables.
+This document explains SPVM environment variables.
 
 =head1 Environment Variables
-
-If an environment variable is an empty string, it is treated as an undefined value.
 
 =head2 SPVM_BUILD_DIR
 
@@ -18,9 +16,9 @@ C source codes for precompilation, dynamic link libraries and object files are s
 
 These files are output when attempting to build a module containing methods with the C<native> attribute or the C<precompile> attribute.
 
-If the C<SPVM_BUILD_DIR> environment variable is defined, these files are output to the directory. If the directory does not exist, an exception is thrown.
+If the C<SPVM_BUILD_DIR> environment variable is a non-empty string, these files are output to the directory. If the directory does not exist, an exception is thrown.
 
-If the C<SPVM_BUILD_DIR> environment variable is not defined, a temporary directory is created at the beginning of the program, and the path is set to the environment variable.
+If the C<SPVM_BUILD_DIR> environment variable is not spacified, a temporary directory is created at the beginning of the program, and the path is set to the environment variable.
 
 Examples:
 
@@ -30,23 +28,23 @@ Examples:
   # csh
   setenv SPVM_BUILD_DIR ~/.spvm_build
 
+=head2 SPVM_FORCE_BUILD
+
+If it is a true value, compilations and links are forced.
+
 =head2 SPVM_FORCE_QUIET
 
-If C<SPVM_FORCE_QUIET> environement variable is a true value of Perl, messages L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are not printed to stderr.
+If it is a non-empty string and a true value, no diagnostic messages from compilers and linkers are printed.
 
-If it is defined and a false value of Perl, the messages are printed.
+If it is a non-empty string and a false value of Perl, diagnostic messages from compilers and linkers are printed.
 
 This setting has a higher priority than L<SPVM::Builder::Config#quiet|SPVM::Builder::Config/"quiet"> field.
 
-Note that this environment variable is only effective during runtime compilation (JIT).
-
 =head2 SPVM_FORCE_OPTIMIZE
 
-If C<SPVM_FORCE_OPTIMIZE> environment variable is defined, the L<optimize|/"optimize"> field is overwritten by this value.
+If it is a non-empty string, the value is used as a compiler flag for optimaization.
 
 This setting has a higher priority than L<SPVM::Builder::Config#optimize|SPVM::Builder::Config/"optimize"> field.
-
-Note that this environment variable is only effective during runtime compilation (JIT).
 
 =head1 See Also
 

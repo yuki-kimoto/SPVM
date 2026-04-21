@@ -42,7 +42,7 @@ unless (defined $script_name) {
 my $source = "";
 eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
 
-SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, undef, undef, undef, undef);
+SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, undef, undef, undef, undef, undef);
 
 my $dependency_analyzer = SPVM::Builder::DependencyAnalyzer->new(
   script_name => $script_name,

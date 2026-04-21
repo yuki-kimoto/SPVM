@@ -16,6 +16,7 @@ SPVM::Builder::Util::getopt
   # spvm,spvmcc common
   'B|build-dir=s'   => \my $build_dir,
   'w'               => \my $warning,
+  'f|force'         => \my $force,
   
   # spvm only
   'no-quiet'   => \my $no_quiet,
@@ -52,7 +53,7 @@ elsif (defined $script_name) {
   $source = "#file \"$script_name\"\x{A}$source";
 }
 
-SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, undef, $no_quiet, $warning);
+SPVM::Builder::Util::setup_spvm_command_environment($script_name, $source, $blib, \@spvm_include_dirs, $build_dir, undef, $no_quiet, $warning, $force);
 
 for my $use_class_name (@use_class_names) {
   SPVM::Global::build_class($use_class_name, __FILE__, __LINE__);
@@ -98,6 +99,7 @@ The spvm command executes SPVM programs.
     
     -B, --build-dir DIRECTORY      Build diretory
     -w                             Enables warning flag
+    -f|--force                     Compilations and links are forced
     
     --no-quiet                     Shows diagnostic messages.
     -e SOURCE                      Executes a program source code in main method.
@@ -239,6 +241,16 @@ Enables warning flag.
 Implementation:
 
 Sets L<CommandInfo#WARNING|SPVM::CommandInfo> class variable to 1.
+
+=head2 -f
+
+  -f
+
+Compilations and links are forced.
+
+=head2 --force
+
+Same as L</"-f">.
 
 =head2 --no-quiet
 
