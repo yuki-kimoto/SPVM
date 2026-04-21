@@ -27,8 +27,6 @@ my $fields = [qw(
   dynamic_lib_libgcc_ldflags
   exe_libgcc_ldflags
   libbcrypt_ldflags
-  dynamic_lib_libbcrypt_ldflags
-  exe_libbcrypt_ldflags
   libcpp_ldflags
   dynamic_lib_libcpp_ldflags
   exe_libcpp_ldflags
@@ -192,20 +190,11 @@ sub new {
 
   # libbcrypt_ldflags
   unless (exists $self->{libbcrypt_ldflags}) {
-    $self->libbcrypt_ldflags([]);
-  }
-
-  # dynamic_lib_libbcrypt_ldflags
-  unless (exists $self->{dynamic_lib_libbcrypt_ldflags}) {
-    $self->dynamic_lib_libbcrypt_ldflags([]);
-  }
-
-  unless (exists $self->{exe_libbcrypt_ldflags}) {
     if (SPVM::Builder::Util::is_windows()) {
-      $self->exe_libbcrypt_ldflags(['-lbcrypt']);
+      $self->libbcrypt_ldflags(['-lbcrypt']);
     }
     else {
-      $self->exe_libbcrypt_ldflags([]);
+      $self->libbcrypt_ldflags([]);
     }
   }
 
@@ -448,8 +437,6 @@ sub get_ld_system_field_names {
     dynamic_lib_libgcc_ldflags
     exe_libgcc_ldflags
     libbcrypt_ldflags
-    dynamic_lib_libbcrypt_ldflags
-    exe_libbcrypt_ldflags
     extra_ldflags
     dynamic_lib_extra_ldflags
     exe_extra_ldflags
@@ -744,24 +731,6 @@ Note that these flags are only added when the L</"output_type"> is C<exe>.
 
 Gets and sets the C<libbcrypt_ldflags> field, an array reference containing linker arguments for the bcrypt library.
 
-=head2 dynamic_lib_libbcrypt_ldflags
-
-  my $dynamic_lib_libbcrypt_ldflags = $config->dynamic_lib_libbcrypt_ldflags;
-  $config->dynamic_lib_libbcrypt_ldflags(['-lbcrypt']);
-
-Gets and sets the C<dynamic_lib_libbcrypt_ldflags> field, an array reference containing linker arguments for the bcrypt library used for dynamic libraries.
-
-Note that these flags are only added when the L</"output_type"> is C<dynamic_lib>.
-
-=head2 exe_libbcrypt_ldflags
-
-  my $exe_libbcrypt_ldflags = $config->exe_libbcrypt_ldflags;
-  $config->exe_libbcrypt_ldflags(['-lbcrypt']);
-
-Gets and sets the C<exe_libbcrypt_ldflags> field, an array reference containing linker arguments for the bcrypt library used for executable files.
-
-Note that these flags are only added when the L</"output_type"> is C<exe>.
-
 =head2 extra_ldflags
 
   my $extra_ldflags = $config->extra_ldflags;
@@ -980,14 +949,6 @@ Other OSs:
   ["-pthread"]
 
 =item * L</"libbcrypt_ldflags">
-
-  []
-
-=item * L</"dynamic_lib_libbcrypt_ldflags">
-
-  []
-
-=item * L</"exe_libbcrypt_ldflags">
 
 Windows:
 
@@ -1236,10 +1197,6 @@ The following field names are returned:
 
 =item * C<libbcrypt_ldflags>
 
-=item * C<dynamic_lib_libbcrypt_ldflags>
-
-=item * C<exe_libbcrypt_ldflags>
-
 =item * C<extra_ldflags>
 
 =item * C<dynamic_lib_extra_ldflags>
@@ -1293,10 +1250,6 @@ This method clears the linker settings whose field names are returned by the L<g
 =item * L</"exe_libcpp_ldflags">
 
 =item * L</"libbcrypt_ldflags">
-
-=item * L</"dynamic_lib_libbcrypt_ldflags">
-
-=item * L</"exe_libbcrypt_ldflags">
 
 =back
 
