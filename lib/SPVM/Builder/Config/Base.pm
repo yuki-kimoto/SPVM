@@ -18,6 +18,7 @@ my $base_fields = [qw(
   is_resource
   loaded_config_files
   config_global
+  resource_loader_config
 )];
 
 # Accessors generation for base fields
@@ -248,6 +249,10 @@ For example, when the L<spvmcc> command generates an executable file, it sets th
 =head2 loaded_config_files
 
 Returns the config files loaded by L<SPVM::Builder::Config::Util/"load_config"> function.
+
+=head2 resource_loader_config
+
+Gets and sets the C<resource_loader_config> field, which is the config that loaded this resource.
 
 =head1 Class Methods
 

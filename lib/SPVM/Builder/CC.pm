@@ -128,49 +128,36 @@ sub prepare_compile_resources {
   
   my $is_resource = $config->is_resource;
   
-  my $need_compile_resources;
-  if ($config->config_global) {
-    if ($class_name eq $config->config_global->class_name) {
-      $need_compile_resources = 1;
-    }
-    else {
-      $need_compile_resources = 0;
-    }
-  }
-  else {
-    if ($is_resource) {
-      $need_compile_resources = 0;
-    }
-    else {
-      $need_compile_resources = 1;
-    }
+  for my $resource_name (@$resource_names) {
+    my $resource = $config->get_resource($resource_name);
+    
+    my $resource_class_name = $resource->class_name;
+    my $resource_config = $resource->config;
+    
+    $resource_config->add_include_dir(@$resource_include_dirs);
   }
   
-  if ($need_compile_resources) {
-    for my $resource_name (@$resource_names) {
-      my $resource = $config->get_resource($resource_name);
-      
-      my $resource_class_name = $resource->class_name;
-      my $resource_config = $resource->config;
-      
-      $resource_config->add_include_dir(@$resource_include_dirs);
-      
-      my $builder_cc_resource = SPVM::Builder::CC->new(
-        builder => $self->builder,
-        runtime => $self->runtime,
-      );
-      
-      if (exists $config->{quiet}) {
-        $resource_config->quiet($config->quiet);
-      }
-      
-      if (exists $config->{is_jit}) {
-        $resource_config->is_jit($config->is_jit);
-      }
-      
-      my $resource_compile_infos = $builder_cc_resource->prepare_compile_class($resource_class_name, $resource_config);
-      push @$compile_infos, @$resource_compile_infos;
+  for my $resource_name (@$resource_names) {
+    my $resource = $config->get_resource($resource_name);
+    
+    my $resource_class_name = $resource->class_name;
+    my $resource_config = $resource->config;
+    
+    my $builder_cc_resource = SPVM::Builder::CC->new(
+      builder => $self->builder,
+      runtime => $self->runtime,
+    );
+    
+    if (exists $config->{quiet}) {
+      $resource_config->quiet($config->quiet);
     }
+    
+    if (exists $config->{is_jit}) {
+      $resource_config->is_jit($config->is_jit);
+    }
+    
+    my $resource_compile_infos = $builder_cc_resource->prepare_compile_class($resource_class_name, $resource_config);
+    push @$compile_infos, @$resource_compile_infos;
   }
   
   return $compile_infos;
@@ -178,6 +165,10 @@ sub prepare_compile_resources {
 
 sub prepare_compile_native_class {
   my ($self, $class_name, $config) = @_;
+  
+  if ($config->is_resource && !$config->resource_loader_config) {
+    return [];
+  }
   
   my $is_cc_config = $config->isa('SPVM::Builder::Config') ? 1 : 0;
   unless ($is_cc_config) {
@@ -283,35 +274,14 @@ sub prepare_compile_native_class {
     }
   }
   
-  # For executable files, the resources are compiled in the executable's configuration file, so we don't compile them here.
-  my $is_compile_native_source_files;
-  if ($is_resource) {
-    if ($config->config_global) {
-      if ($class_name eq $config->config_global->class_name) {
-        $is_compile_native_source_files = 1;
-      }
-      else {
-        $is_compile_native_source_files = 0;
-      }
-    }
-    else {
-      $is_compile_native_source_files = 1;
-    }
-  }
-  else {
-    $is_compile_native_source_files = 1;
-  }
-  
   # Native source files
   my $native_source_rel_dir = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
   $native_source_rel_dir .= '/src';
 
   my $native_src_dir = $config->native_src_dir;
   my $native_source_files = [];
-    my $native_source_files_base = $config->source_files;
-  if ($is_compile_native_source_files) {
-    $native_source_files = [map { "$native_src_dir/$_" } @$native_source_files_base ];
-  }
+  my $native_source_files_base = $config->source_files;
+  $native_source_files = [map { "$native_src_dir/$_" } @$native_source_files_base ];
   
   # Compile source files
   my $is_native_class_source_file = 1;
@@ -319,9 +289,7 @@ sub prepare_compile_native_class {
   if ($native_class_source_file) {
     push @source_file_infos, {is_native_class_source_file => 1, source_rel_file => $native_class_rel_file};
   }
-  if ($is_compile_native_source_files) {
-    push @source_file_infos, map { {source_rel_file => SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, "native/src/$_")} } @$native_source_files_base;
-  }
+  push @source_file_infos, map { {source_rel_file => SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, "native/src/$_")} } @$native_source_files_base;
   
   for my $source_file_info (@source_file_infos) {
     
@@ -335,14 +303,17 @@ sub prepare_compile_native_class {
     my $native_include_dir = $config->native_include_dir;
     
     # Resource include directories
+    my $resource_loader_config = $config->resource_loader_config;
     my @resource_naitve_include_dirs;
-    my $resource_names = $config->get_resource_names;
-    for my $resource_name (@$resource_names) {
-      my $resource = $config->get_resource($resource_name);
-      my $resource_config = $resource->config;
-      
-      my $resource_native_include_dir = $resource_config->native_include_dir;
-      push @resource_naitve_include_dirs, $resource_native_include_dir;
+    if ($resource_loader_config) {
+      my $resource_names = $resource_loader_config->get_resource_names;
+      for my $resource_name (@$resource_names) {
+        my $resource = $resource_loader_config->get_resource($resource_name);
+        my $resource_config = $resource->config;
+        
+        my $resource_native_include_dir = $resource_config->native_include_dir;
+        push @resource_naitve_include_dirs, $resource_native_include_dir;
+      }
     }
     
     my $compile_info_category;

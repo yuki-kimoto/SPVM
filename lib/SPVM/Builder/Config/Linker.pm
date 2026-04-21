@@ -402,6 +402,8 @@ sub use_resource {
   
   $resource->config($config);
   
+  $config->resource_loader_config($self);
+  
   my $index = keys %{$self->{resources}};
   
   $self->{resources}->{$resource_class_name} = {resource => $resource, index => $index};

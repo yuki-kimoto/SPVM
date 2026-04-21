@@ -982,6 +982,10 @@ sub prepare_compile_native_class {
     
     $config->config_global($config_global);
     
+    my $compile_resources = $self->class_name eq $class_name ? 1 : 0;
+    
+    $builder_cc->no_compile_resources(!$compile_resources);
+    
     my $compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
     push @$all_compile_infos, @$compile_infos;
   }
