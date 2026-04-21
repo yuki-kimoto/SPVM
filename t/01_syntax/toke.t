@@ -278,7 +278,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { use NotFoundClass; }';
-    compile_not_ok($source, qr|\QFailed to load the 'NotFoundClass' module. The class file 'NotFoundClass.spvm' is not found|);
+    compile_not_ok($source, qr|\QFailed to load 'NotFoundClass' module. The class file 'SPVM/NotFoundClass.spvm' is not found|);
   }
 }
 

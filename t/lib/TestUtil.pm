@@ -48,7 +48,7 @@ sub compile_not_ok {
       $first_basic_type_name = $basic_type_name;
     }
     
-    my $class_file = "$tmp_include_dir/$basic_type_name.spvm";
+    my $class_file = "$tmp_include_dir/SPVM/$basic_type_name.spvm";
     $class_file =~ s|::|/|g;
     
     mkpath dirname $class_file;
@@ -146,7 +146,7 @@ sub compile_ok {
       $first_basic_type_name = $basic_type_name;
     }
     
-    my $class_file = "$tmp_include_dir/$basic_type_name.spvm";
+    my $class_file = "$tmp_include_dir/SPVM/$basic_type_name.spvm";
     $class_file =~ s|::|/|g;
     
     mkpath dirname $class_file;

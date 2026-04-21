@@ -18,7 +18,7 @@ class TestCase::Module::Native::Compiler {
     
     my $current_compiler = Native->get_current_compiler;
     
-    my $include_dir = "t/test_add_class/SPVM";
+    my $include_dir = "t/test_add_class";
     
     $current_compiler->prepend_include_dir($include_dir);
     

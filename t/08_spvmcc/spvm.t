@@ -43,7 +43,7 @@ my $dev_null = File::Spec->devnull;
     $output =~ s|\\|/|g;
   }
   
-  like($output, qr|lib_directive_b/SPVM.+lib_directive_a/SPVM.+blib/arch/SPVM.+blib/lib.+include_a/SPVM.+include_b/SPVM|);
+  like($output, qr|lib_directive_b.+lib_directive_a.+blib/arch.+blib/lib.+include_a.+include_b|);
 }
 
 # -Mblib option
@@ -63,8 +63,8 @@ my $dev_null = File::Spec->devnull;
         my @paths = split(/ /, $path_string);
         
         # Target paths to check
-        my $blib_arch_spvm = 'blib/arch/SPVM';
-        my $blib_lib_spvm  = 'blib/lib/SPVM';
+        my $blib_arch_spvm = 'blib/arch';
+        my $blib_lib_spvm  = 'blib/lib';
         
         # Count occurrences
         my $arch_count = grep { $_ =~ /\Q$blib_arch_spvm\E$/ } @paths;

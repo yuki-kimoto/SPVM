@@ -2841,11 +2841,13 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
         continue;
       }
       else {
-        // Create moudle relative file name from class name by changing :: to / and add ".spvm"
-        int32_t current_class_rel_file_length = (int32_t)(strlen(basic_type_name) + 6);
+        // Create moudle relative file name from class name by changing :: to / and add "SPVM/" to the head and add ".spvm" to the end.
+        int32_t current_class_rel_file_length = (int32_t)(5 + strlen(basic_type_name) + 5);
         char* current_class_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, current_class_rel_file_length + 1);
         const char* ch_ptr_orig = basic_type_name;
         char* ch_ptr_to = current_class_rel_file;
+        memcpy(ch_ptr_to, "SPVM/", 5);
+        ch_ptr_to += 5;
         while (*ch_ptr_orig) {
           if (*ch_ptr_orig == ':' && *(ch_ptr_orig + 1) == ':') {
             *ch_ptr_to = '/';
@@ -2916,7 +2918,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
                 }
               }
               
-              SPVM_COMPILER_error(compiler, "Failed to load the '%s' module. The class file '%s' is not found in (%s).\n  at %s line %d", basic_type_name, current_class_rel_file, include_dirs_str, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "Failed to load '%s' module. The class file '%s' is not found in (%s).\n  at %s line %d", basic_type_name, current_class_rel_file, include_dirs_str, op_use->file, op_use->line);
               
               return 0;
             }

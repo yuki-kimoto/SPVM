@@ -302,7 +302,7 @@ my @current_native_source_baz_object_files;
 
 {
   # Restore config file
-  $config_content = $config_content . "\n\pop \@{\$config->ccflags};\n \$config;\n";
+  $config_content = $config_content . "\npop \@{\$config->ccflags};\n \$config;\n";
   SPVM::Builder::Util::spurt_binary_parallel_safe($config_file, $config_content);
 
   # Re-build

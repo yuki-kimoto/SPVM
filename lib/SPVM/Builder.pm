@@ -44,7 +44,7 @@ sub new {
   
   my $self = {
     build_dir => $ENV{SPVM_BUILD_DIR},
-    include_dirs => [map { "$_/SPVM" } @INC],
+    include_dirs => \@INC,
     work_dir => 'work',
     @_
   };
