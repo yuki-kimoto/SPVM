@@ -43,11 +43,13 @@ unless ($has_msvc) {
 
 {
   # Basic
-  # build_type - Release
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_output = `$spvmcc_cmd`;
+    like($spvmcc_output, qr/\bcl\b/);
+    like($spvmcc_output, qr/\blink\b/);
+    like($spvmcc_output, qr/-O2\b/);
+    like($spvmcc_output, qr/-DNDEBUG\b/);
     
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
@@ -61,9 +63,10 @@ unless ($has_msvc) {
 {
   # build_type - Release
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc-Release --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $inc_dir --mode msvc-Release -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_output = `$spvmcc_cmd`;
+    like($spvmcc_output, qr/-O2\b/);
+    like($spvmcc_output, qr/-DNDEBUG\b/);
     
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
@@ -74,9 +77,12 @@ unless ($has_msvc) {
   
   # build_type - Debug
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc-Debug --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force -B $build_dir -I $inc_dir --mode msvc-Debug -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_output = `$spvmcc_cmd`;
+    like($spvmcc_output, qr/-Od\b/);
+    like($spvmcc_output, qr/-Zi\b/);
+    like($spvmcc_output, qr/-RTC1\b/);
+    unlike($spvmcc_output, qr/-DNDEBUG\b/);
     
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
@@ -87,9 +93,11 @@ unless ($has_msvc) {
   
   # build_type - RelWithDebInfo
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc-RelWithDebInfo --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force -B $build_dir -I $inc_dir --mode msvc-RelWithDebInfo -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_output = `$spvmcc_cmd`;
+    like($spvmcc_output, qr/-O2\b/);
+    like($spvmcc_output, qr/-Zi\b/);
+    like($spvmcc_output, qr/-DNDEBUG\b/);
     
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
@@ -100,9 +108,10 @@ unless ($has_msvc) {
   
   # build_type - MinSizeRel
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc-MinSizeRel --quiet -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force -B $build_dir -I $inc_dir --mode msvc-MinSizeRel -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_output = `$spvmcc_cmd`;
+    like($spvmcc_output, qr/-O1\b/);
+    like($spvmcc_output, qr/-DNDEBUG\b/);
     
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
