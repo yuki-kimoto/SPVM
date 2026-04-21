@@ -175,7 +175,7 @@ mkpath $external_object_dir;
 {
   # build_type - Release
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode Release -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $inc_dir --mode Release -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/-O3\b/);
     like($spvmcc_output, qr/-DNDEBUG\b/);
@@ -189,7 +189,7 @@ mkpath $external_object_dir;
   
   # build_type - Debug
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode Debug -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force -B $build_dir -I $inc_dir --mode Debug -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/-g\b/);
     unlike($spvmcc_output, qr/-O3\b/);
@@ -204,7 +204,7 @@ mkpath $external_object_dir;
   
   # build_type - RelWithDebInfo
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode RelWithDebInfo -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force -B $build_dir -I $inc_dir --mode RelWithDebInfo -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
     my $spvmcc_output = `$spvmcc_cmd`;
     unlike($spvmcc_output, qr/-O3\b/);
     like($spvmcc_output, qr/-O2\b/);
@@ -220,7 +220,7 @@ mkpath $external_object_dir;
   
   # build_type - MinSizeRel
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode MinSizeRel -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force -B $build_dir -I $inc_dir --mode MinSizeRel -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
     my $spvmcc_output = `$spvmcc_cmd`;
     unlike($spvmcc_output, qr/-O3\b/);
     like($spvmcc_output, qr/-Os\b/);
