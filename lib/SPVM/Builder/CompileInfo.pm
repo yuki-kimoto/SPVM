@@ -136,15 +136,8 @@ sub create_ccflags {
     }
     
     # Resource include directories
-    my $resource_names = $config->get_resource_names;
-    for my $resource_name (@$resource_names) {
-      my $resource = $config->get_resource($resource_name);
-      my $config = $resource->config;
-      my $resource_include_dir = $config->native_include_dir;
-      if (length $resource_include_dir) {
-        push @all_include_dirs, $resource_include_dir;
-      }
-    }
+    my $resource_include_dirs = $config->resource_include_dirs;
+    push @all_include_dirs, grep { length $_ } @$resource_include_dirs;
     
     my @all_include_dirs_args = map { "-I" . SPVM::Builder::Util::quote_literal($_); } @all_include_dirs;
     

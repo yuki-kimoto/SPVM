@@ -113,30 +113,7 @@ sub prepare_compile_resources {
   
   my $compile_infos = [];
   
-  # Add resource include directories
   my $resource_names = $config->get_resource_names;
-  my $resource_include_dirs = [];
-  for my $resource_name (@$resource_names) {
-    my $resource = $config->get_resource($resource_name);
-    my $resource_config = $resource->config;
-    
-    my $resource_include_dir = $resource_config->native_include_dir;
-    if (defined $resource_include_dir) {
-      push @$resource_include_dirs, $resource_include_dir;
-    }
-  }
-  
-  my $is_resource = $config->is_resource;
-  
-  for my $resource_name (@$resource_names) {
-    my $resource = $config->get_resource($resource_name);
-    
-    my $resource_class_name = $resource->class_name;
-    my $resource_config = $resource->config;
-    
-    $resource_config->add_include_dir(@$resource_include_dirs);
-  }
-  
   for my $resource_name (@$resource_names) {
     my $resource = $config->get_resource($resource_name);
     
@@ -303,22 +280,36 @@ sub prepare_compile_native_class {
     
     next unless defined $source_file && -f $source_file;
     
-    # Check if object file need to be generated
-    my $native_include_dir = $config->native_include_dir;
-    
-    # Resource include directories
-    my $resource_loader_config = $config->resource_loader_config;
-    my @resource_naitve_include_dirs;
-    if ($resource_loader_config) {
-      my $resource_names = $resource_loader_config->get_resource_names;
-      for my $resource_name (@$resource_names) {
-        my $resource = $resource_loader_config->get_resource($resource_name);
-        my $resource_config = $resource->config;
-        
-        my $resource_native_include_dir = $resource_config->native_include_dir;
-        push @resource_naitve_include_dirs, $resource_native_include_dir;
+    my @resource_include_dirs;
+    my @resources;
+    if ($config->is_resource) {
+      my $resource_loader_config = $config->resource_loader_config;
+      if ($resource_loader_config) {
+        my $resource_names = $resource_loader_config->get_resource_names;
+        for my $resource_name (@$resource_names) {
+          my $resource = $resource_loader_config->get_resource($resource_name);
+          push @resources, $resource;
+        }
       }
     }
+    else {
+      my $resource_names = $config->get_resource_names;
+      for my $resource_name (@$resource_names) {
+        my $resource = $config->get_resource($resource_name);
+        push @resources, $resource;
+      }
+    }
+    for my $resource (@resources) {
+      my $resource_config = $resource->config;
+      
+      my $resource_native_include_dir = $resource_config->native_include_dir;
+      push @resource_include_dirs, $resource_native_include_dir;
+    }
+    
+    $config->resource_include_dirs(\@resource_include_dirs);
+    
+    # Check if object file need to be generated
+    my $native_include_dir = $config->native_include_dir;
     
     my $compile_info_category;
     if ($category eq 'precompile') {
@@ -345,7 +336,7 @@ sub prepare_compile_native_class {
       source_rel_file => $source_rel_file,
       config => $config,
       category => $compile_info_category,
-      dependent_files => [$source_file, $native_include_dir, @resource_naitve_include_dirs, $builder_include_dir],
+      dependent_files => [$source_file, $native_include_dir, @resource_include_dirs, $builder_include_dir],
     );
     
     # Object file information
