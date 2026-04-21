@@ -482,8 +482,10 @@ sub create_bootstrap_main_func_source {
   my $source = '';
   
   $source .= <<"EOS";
-  
-int32_t main(int32_t command_args_length, const char *command_args[]) {
+int main(int command_args_length, char **command_args);
+int SPVMCC__main(int command_args_length, char **command_args);
+
+int SPVMCC__main(int command_args_length, char **command_args) {
   
   int32_t error_id = 0;
   
@@ -606,6 +608,11 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   return error_id;
 }
+
+int main(int command_args_length, char **command_args) {
+  return SPVMCC__main(command_args_length, command_args);
+}
+
 EOS
 
   return $source;
