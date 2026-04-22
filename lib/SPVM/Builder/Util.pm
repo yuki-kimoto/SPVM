@@ -560,41 +560,21 @@ sub parse_lib_directive {
 }
 
 # Create C string literal for MSVC/TCC compatibility
+my $CREATE_C_STRING_LITERAL_HEX_TABLE = [map { sprintf("0x%02x", $_) } 0..255];
 sub create_c_string_literal {
   my ($content) = @_;
   
   return 'NULL' unless defined $content;
 
-  my @chunks;
-  my $current_chunk = '';
-  my $count = 0;
+  # write brief comment in English
+  # Use the pre-calculated table to convert bytes to hex values
+  my $hex_table = $CREATE_C_STRING_LITERAL_HEX_TABLE;
+  my @escaped = map { $hex_table->[$_] } unpack('C*', $content);
 
-  {
-    use bytes;
-    for my $i (0 .. length($content) - 1) {
-      my $char = substr($content, $i, 1);
-      my $escaped;
-      
-      # Escape characters
-      if ($char eq "\\") { $escaped = "\\\\"; }
-      elsif ($char eq "\"") { $escaped = "\\\""; }
-      elsif ($char =~ /[[:print:]]/) { $escaped = $char; }
-      else { $escaped = sprintf("\\%03o", ord($char)); }
-
-      $current_chunk .= $escaped;
-      $count++;
-
-      # Split for MSVC limit
-      if ($count >= 100) {
-        push @chunks, qq(      "$current_chunk"\n);
-        $current_chunk = '';
-        $count = 0;
-      }
-    }
-    push @chunks, qq(      "$current_chunk"\n) if length $current_chunk;
-  }
-  
-  return join('', @chunks);
+  # write brief comment in English
+  # Return as a C99 compound literal cast to (const char[])
+  # Includes a null terminator at the end
+  return '(const char[]){' . join(',', @escaped) . ',0}';
 }
 
 sub build_precompile_header_content_c_source {
