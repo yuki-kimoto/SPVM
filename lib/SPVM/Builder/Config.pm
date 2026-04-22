@@ -352,14 +352,23 @@ sub clear_system_fields {
   }
 }
 
+my %CC_VERSION_CACHE;
+
 sub create_cc_version {
   my ($self) = @_;
   
   my $cc = $self->cc;
+  my $path_env = $ENV{PATH} // '';
+  
+  if (exists $CC_VERSION_CACHE{$cc}{$path_env}) {
+    return $CC_VERSION_CACHE{$cc}{$path_env};
+  }
   
   my $cc_version = `$cc --version 2>&1` // '';
   
   $cc_version =~ s/\n.*//s;
+  
+  $CC_VERSION_CACHE{$cc}{$path_env} = $cc_version;
   
   return $cc_version;
 }
