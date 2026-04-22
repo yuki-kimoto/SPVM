@@ -151,6 +151,9 @@ sub new {
     if (SPVM::Builder::Util::is_windows()) {
       $self->libcpp_ldflags(['-Wl,-Bstatic', '-lstdc++', '-Wl,-Bdynamic']);
     }
+    elsif ($^O eq 'darwin') {
+      $self->libcpp_ldflags(['-nostdlib++', '-lc++']);
+    }
     else {
       $self->libcpp_ldflags(['-lstdc++']);
     }

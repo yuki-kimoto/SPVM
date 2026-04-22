@@ -839,6 +839,7 @@ sub resolve_spvm_command_inc {
 
 sub is_windows { $^O eq 'MSWin32' }
 
+
 1;
 
 =head1 Name
