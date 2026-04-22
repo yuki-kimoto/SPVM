@@ -689,7 +689,7 @@ EOS
     
     # Set content as C string literal
     if (defined $class_file_content) {
-      my $content_literal = SPVM::Builder::Util::create_c_string_literal($class_file_content);
+      my $content_literal = $compiler->create_c_string_literal($class_file_content);
       $source_class_file .= qq|    env->api->class_file->set_content(compiler, class_file, \n$content_literal    );\n|;
     }
     
