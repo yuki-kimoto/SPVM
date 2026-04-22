@@ -161,6 +161,10 @@ sub prepare_compile_native_class {
   
   my $basic_type = $runtime->get_basic_type_by_name($class_name);
   
+  unless ($basic_type) {
+    confess("Cannot find the basic type for '$class_name' class. Did you forgot to load the class?");
+  }
+  
   # Check if a config file and an loaded SPVM class file are in the same directory.
   my $class_file = $basic_type->get_class_file;
   if (defined $config->file) {
@@ -194,10 +198,6 @@ sub prepare_compile_native_class {
   
   my $cc_input_dir;
   if ($category eq 'precompile') {
-    my $runtime = $self->runtime;
-    
-    my $basic_type = $runtime->get_basic_type_by_name($class_name);
-    
     my $class_file = $basic_type->get_class_file;
     
     my $precompile_source = $basic_type->build_precompile_class_source($basic_type);
