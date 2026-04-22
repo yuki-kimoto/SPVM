@@ -26,8 +26,6 @@ my $fields = [qw(
   libgcc_ldflags
   libbcrypt_ldflags
   libcpp_ldflags
-  dynamic_lib_libcpp_ldflags
-  exe_libcpp_ldflags
   extra_ldflags
   dynamic_lib_extra_ldflags
   exe_extra_ldflags
@@ -155,20 +153,9 @@ sub new {
     if (SPVM::Builder::Util::is_windows()) {
       $self->libcpp_ldflags(['-Wl,-Bstatic', '-lstdc++', '-Wl,-Bdynamic']);
     }
-    elsif ($^O eq 'darwin') {
-      $self->libcpp_ldflags([]);
-    }
     else {
       $self->libcpp_ldflags(['-lstdc++']);
     }
-  }
-  
-  unless (exists $self->{dynamic_lib_libcpp_ldflags}) {
-    $self->dynamic_lib_libcpp_ldflags([]);
-  }
-  
-  unless (exists $self->{exe_libcpp_ldflags}) {
-    $self->exe_libcpp_ldflags([]);
   }
   
   # libgcc_ldflags
@@ -420,8 +407,6 @@ sub get_ld_system_field_names {
     dynamic_lib_ldflags
     thread_ldflags
     libcpp_ldflags
-    dynamic_lib_libcpp_ldflags
-    exe_libcpp_ldflags
     copyright_print_ldflags
     warn_ldflags
     debug_info_ldflags
@@ -567,20 +552,6 @@ This field is automatically set and users nomally do not change it.
   $config->libcpp_ldflags($libcpp_ldflags);
 
 Gets and sets C<libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library.
-
-=head2 dynamic_lib_libcpp_ldflags
-
-  my $dynamic_lib_libcpp_ldflags = $config->dynamic_lib_libcpp_ldflags;
-  $config->dynamic_lib_libcpp_ldflags($dynamic_lib_libcpp_ldflags);
-
-Gets and sets C<dynamic_lib_libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library used for dynamic libraries.
-
-=head2 exe_libcpp_ldflags
-
-  my $exe_libcpp_ldflags = $config->exe_libcpp_ldflags;
-  $config->exe_libcpp_ldflags($exe_libcpp_ldflags);
-
-Gets and sets C<exe_libcpp_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the C++ standard library used for executable files.
 
 =head2 static_lib_braces
 
@@ -939,14 +910,6 @@ Other OSs:
 
   ["-lstdc++"]
 
-=item * L</"dynamic_lib_libcpp_ldflags">
-
-  []
-
-=item * L</"exe_libcpp_ldflags">
-
-  []
-
 =item * L</"static_lib_braces">
 
   ["-Wl,-Bstatic", "-Wl,-Bdynamic"]
@@ -1148,10 +1111,6 @@ The following field names are returned:
 
 =item * C<libcpp_ldflags>
 
-=item * C<dynamic_lib_libcpp_ldflags>
-
-=item * C<exe_libcpp_ldflags>
-
 =item * C<copyright_print_ldflags>
 
 =item * C<warn_ldflags>
@@ -1207,10 +1166,6 @@ This method clears the linker settings whose field names are returned by the L<g
 =item * L</"exe_extra_ldflags">
 
 =item * L</"libcpp_ldflags">
-
-=item * L</"dynamic_lib_libcpp_ldflags">
-
-=item * L</"exe_libcpp_ldflags">
 
 =item * L</"libbcrypt_ldflags">
 
