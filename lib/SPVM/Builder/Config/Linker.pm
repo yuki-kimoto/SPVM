@@ -24,8 +24,6 @@ my $fields = [qw(
   dynamic_lib_ldflags
   thread_ldflags
   libgcc_ldflags
-  dynamic_lib_libgcc_ldflags
-  exe_libgcc_ldflags
   libbcrypt_ldflags
   libcpp_ldflags
   dynamic_lib_libcpp_ldflags
@@ -96,26 +94,6 @@ sub new {
     }
   }
 
-  unless (exists $self->{libcpp_ldflags}) {
-    if (SPVM::Builder::Util::is_windows()) {
-      $self->libcpp_ldflags(['-Wl,-Bstatic', '-lstdc++', '-lgcc', '-Wl,-Bdynamic']);
-    }
-    elsif ($^O eq 'darwin') {
-      $self->libcpp_ldflags([]);
-    }
-    else {
-      $self->libcpp_ldflags(['-lstdc++']);
-    }
-  }
-
-  unless (exists $self->{dynamic_lib_libcpp_ldflags}) {
-    $self->dynamic_lib_libcpp_ldflags([]);
-  }
-
-  unless (exists $self->{exe_libcpp_ldflags}) {
-    $self->exe_libcpp_ldflags([]);
-  }
-
   unless (exists $self->{static_lib_braces}) {
     my $begin = '-Wl,-Bstatic';
     my $end = '-Wl,-Bdynamic';
@@ -172,20 +150,35 @@ sub new {
       $self->symbol_strip_ldflags([]);
     }
   }
-
+  
+  unless (exists $self->{libcpp_ldflags}) {
+    if (SPVM::Builder::Util::is_windows()) {
+      $self->libcpp_ldflags(['-Wl,-Bstatic', '-lstdc++', '-Wl,-Bdynamic']);
+    }
+    elsif ($^O eq 'darwin') {
+      $self->libcpp_ldflags([]);
+    }
+    else {
+      $self->libcpp_ldflags(['-lstdc++']);
+    }
+  }
+  
+  unless (exists $self->{dynamic_lib_libcpp_ldflags}) {
+    $self->dynamic_lib_libcpp_ldflags([]);
+  }
+  
+  unless (exists $self->{exe_libcpp_ldflags}) {
+    $self->exe_libcpp_ldflags([]);
+  }
+  
   # libgcc_ldflags
   unless (exists $self->{libgcc_ldflags}) {
-    $self->libgcc_ldflags([]);
-  }
-
-  # dynamic_lib_libgcc_ldflags
-  unless (exists $self->{dynamic_lib_libgcc_ldflags}) {
-    $self->dynamic_lib_libgcc_ldflags([]);
-  }
-
-  # exe_libgcc_ldflags
-  unless (exists $self->{exe_libgcc_ldflags}) {
-    $self->exe_libgcc_ldflags([]);
+    if (SPVM::Builder::Util::is_windows()) {
+      $self->libgcc_ldflags(['-Wl,-Bstatic', '-lgcc', '-Wl,-Bdynamic']);
+    }
+    else {
+      $self->libgcc_ldflags([]);
+    }
   }
 
   # libbcrypt_ldflags
@@ -434,8 +427,6 @@ sub get_ld_system_field_names {
     debug_info_ldflags
     symbol_strip_ldflags
     libgcc_ldflags
-    dynamic_lib_libgcc_ldflags
-    exe_libgcc_ldflags
     libbcrypt_ldflags
     extra_ldflags
     dynamic_lib_extra_ldflags
@@ -706,24 +697,6 @@ Gets and sets the C<symbol_strip_ldflags> field, an array reference containing l
 
 Gets and sets the C<libgcc_ldflags> field, an array reference containing linker arguments for the gcc library.
 
-=head2 dynamic_lib_libgcc_ldflags
-
-  my $dynamic_lib_libgcc_ldflags = $config->dynamic_lib_libgcc_ldflags;
-  $config->dynamic_lib_libgcc_ldflags(['-lgcc']);
-
-Gets and sets the C<dynamic_lib_libgcc_ldflags> field, an array reference containing linker arguments for the gcc library used for dynamic libraries.
-
-Note that these flags are only added when the L</"output_type"> is C<dynamic_lib>.
-
-=head2 exe_libgcc_ldflags
-
-  my $exe_libgcc_ldflags = $config->exe_libgcc_ldflags;
-  $config->exe_libgcc_ldflags(['-lgcc']);
-
-Gets and sets the C<exe_libgcc_ldflags> field, an array reference containing linker arguments for the gcc library used for executable files.
-
-Note that these flags are only added when the L</"output_type"> is C<exe>.
-
 =head2 libbcrypt_ldflags
 
   my $libbcrypt_ldflags = $config->libbcrypt_ldflags;
@@ -906,13 +879,11 @@ Other OSs:
 
 =item * L</"libgcc_ldflags">
 
-  []
+Windows:
 
-=item * L</"dynamic_lib_libgcc_ldflags">
+  ["-Wl,-Bstatic", "-lgcc", "-Wl,-Bdynamic"]
 
-  []
-
-=item * L</"exe_libgcc_ldflags">
+Other OSs:
 
   []
 
@@ -962,7 +933,7 @@ Other OSs:
 
 Windows:
 
-  ["-Wl,-Bstatic", "-lstdc++", "-lgcc", "-Wl,-Bdynamic"]
+  ["-Wl,-Bstatic", "-lstdc++", "-Wl,-Bdynamic"]
 
 Other OSs:
 
@@ -1191,10 +1162,6 @@ The following field names are returned:
 
 =item * C<libgcc_ldflags>
 
-=item * C<dynamic_lib_libgcc_ldflags>
-
-=item * C<exe_libgcc_ldflags>
-
 =item * C<libbcrypt_ldflags>
 
 =item * C<extra_ldflags>
@@ -1232,10 +1199,6 @@ This method clears the linker settings whose field names are returned by the L<g
 =item * L</"symbol_strip_ldflags">
 
 =item * L</"libgcc_ldflags">
-
-=item * L</"dynamic_lib_libgcc_ldflags">
-
-=item * L</"exe_libgcc_ldflags">
 
 =item * L</"extra_ldflags">
 
