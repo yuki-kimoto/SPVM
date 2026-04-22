@@ -296,6 +296,7 @@ sub need_generate {
   return $need_generate;
 }
 
+my %NORMALIZE_PATH_CACHE;
 sub create_command_hash {
   my ($self, $options) = @_;
   
@@ -356,9 +357,17 @@ sub create_command_hash {
   $sha->add(Digest::SHA::sha1_hex($command) . "\x0A");
   $sha->add(Digest::SHA::sha1_hex($command_version) . "\x0A");
 
+  my $log_dir = $self->log_dir;
+  
   # Add dependent files hashes (Using in-memory cache)
   for my $dependent_file (@all_dependent_files) {
-    my $normalized_dependent_file = SPVM::Builder::Util::normalize_path($dependent_file, $self->log_dir);
+    my $normalized_dependent_file = $NORMALIZE_PATH_CACHE{$dependent_file}{$log_dir};
+    
+    unless (defined $normalized_dependent_file) {
+      $normalized_dependent_file = SPVM::Builder::Util::normalize_path($dependent_file, $log_dir);
+      $NORMALIZE_PATH_CACHE{$dependent_file}{$log_dir} = $normalized_dependent_file;
+    }
+    
     $sha->add(Digest::SHA::sha1_hex($normalized_dependent_file) . "\x0A");
     
     my $content_hash = $self->dependent_content_hashes_h->{$dependent_file};
