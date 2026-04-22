@@ -10,6 +10,7 @@ use Carp 'confess';
 use File::Path 'mkpath';
 use Fcntl qw(:flock :seek);
 use SPVM::Builder::Accessor 'has';
+use File::Find;
 
 has [qw(
   log_dir
@@ -297,6 +298,8 @@ sub need_generate {
 }
 
 my %NORMALIZE_PATH_CACHE;
+my %DEPENDENT_FILES_CACHE;
+
 sub create_command_hash {
   my ($self, $options) = @_;
   
@@ -322,30 +325,37 @@ sub create_command_hash {
   my $ext_list = join '|', map { quotemeta $_ } @$extensions;
   my $valid_ext_re = qr/\.(?:$ext_list)$/i;
 
-  my @all_dependent_files;
-
   # Process dependent files/directories
+  my @all_dependent_files;
   for my $path (@$dependent_files) {
-    if (defined $path && -d $path) {
-      require File::Find;
-      File::Find::find({
-        wanted => sub {
-          my $full_path = $File::Find::name;
-          my $base_name = $full_path;
-          $base_name =~ s|.*/||; 
+    next unless defined $path;
 
-          if (-f $full_path && $base_name =~ $valid_ext_re) {
-            push @all_dependent_files, $full_path;
-          }
-        },
-        no_chdir    => 1,
-        follow      => 1,
-      }, $path);
+    unless (exists $DEPENDENT_FILES_CACHE{$path}) {
+      # write brief comment in English
+      # Scan and cache files in path if not already cached
+      my @found;
+      if (-d $path) {
+        File::Find::find({
+          wanted => sub {
+            my $full_path = $File::Find::name;
+            my $base_name = $full_path;
+            $base_name =~ s|.*/||; 
+            if (-f $full_path && $base_name =~ $valid_ext_re) {
+              push @found, $full_path;
+            }
+          },
+          no_chdir => 1,
+          follow   => 1,
+        }, $path);
+      }
+      elsif (-f $path) {
+        push @found, $path;
+      }
+      $DEPENDENT_FILES_CACHE{$path} = \@found;
     }
-    elsif (defined $path && -f $path) {
-      push @all_dependent_files, $path;
-    }
+    push @all_dependent_files, @{$DEPENDENT_FILES_CACHE{$path}};
   }
+
 
   # Sort and unique for dependent files
   my %seen_dependent_files_h;
