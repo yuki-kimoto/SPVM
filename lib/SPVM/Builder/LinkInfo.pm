@@ -92,7 +92,20 @@ sub create_ldflags {
   my $ld_system_field_names = $config->get_ld_system_field_names;
   my $output_type = $config->output_type;
   for my $ld_system_field_name (@$ld_system_field_names) {
-    push @merged_ldflags, grep { length $_ } @{$config->$ld_system_field_name};
+    
+    my $add;
+    if ($ld_system_field_name =~ /^dynamic_lib_ldflags$/) {
+      if ($output_type eq 'dynamic_lib') {
+        $add = 1;
+      }
+    }
+    else {
+      $add = 1;
+    }
+    
+    if ($add) {
+      push @merged_ldflags, grep { length $_ } @{$config->$ld_system_field_name};
+    }
   }
   
   my $lib_dirs = $config->lib_dirs;
