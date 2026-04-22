@@ -27,8 +27,6 @@ my $fields = [qw(
   libbcrypt_ldflags
   libcpp_ldflags
   extra_ldflags
-  dynamic_lib_extra_ldflags
-  exe_extra_ldflags
   static_lib_braces
   lib_dirs
   libs
@@ -181,16 +179,6 @@ sub new {
   # extra_ldflags
   unless (exists $self->{extra_ldflags}) {
     $self->extra_ldflags([]);
-  }
-
-  # dynamic_lib_extra_ldflags
-  unless (exists $self->{dynamic_lib_extra_ldflags}) {
-    $self->dynamic_lib_extra_ldflags([]);
-  }
-
-  # exe_extra_ldflags
-  unless (exists $self->{exe_extra_ldflags}) {
-    $self->exe_extra_ldflags([]);
   }
 
   unless (exists $self->{lib_dir_option_name}) {
@@ -414,8 +402,6 @@ sub get_ld_system_field_names {
     libgcc_ldflags
     libbcrypt_ldflags
     extra_ldflags
-    dynamic_lib_extra_ldflags
-    exe_extra_ldflags
   )];
 }
 
@@ -682,24 +668,6 @@ Gets and sets the C<libbcrypt_ldflags> field, an array reference containing link
 
 Gets and sets the C<extra_ldflags> field, an array reference containing extra linker arguments.
 
-=head2 dynamic_lib_extra_ldflags
-
-  my $dynamic_lib_extra_ldflags = $config->dynamic_lib_extra_ldflags;
-  $config->dynamic_lib_extra_ldflags(['-lextra']);
-
-Gets and sets the C<dynamic_lib_extra_ldflags> field, an array reference containing extra linker arguments used for dynamic libraries.
-
-Note that these flags are only added when the L</"output_type"> is C<dynamic_lib>.
-
-=head2 exe_extra_ldflags
-
-  my $exe_extra_ldflags = $config->exe_extra_ldflags;
-  $config->exe_extra_ldflags(['-lextra']);
-
-Gets and sets the C<exe_extra_ldflags> field, an array reference containing extra linker arguments used for executable files.
-
-Note that these flags are only added when the L</"output_type"> is C<exe>.
-
 =head2 lib_dir_option_name
 
   my $lib_dir_option_name = $config->lib_dir_option_name;
@@ -859,14 +827,6 @@ Other OSs:
   []
 
 =item * L</"extra_ldflags">
-
-  []
-
-=item * L</"dynamic_lib_extra_ldflags">
-
-  []
-
-=item * L</"exe_extra_ldflags">
 
   []
 
@@ -1125,10 +1085,6 @@ The following field names are returned:
 
 =item * C<extra_ldflags>
 
-=item * C<dynamic_lib_extra_ldflags>
-
-=item * C<exe_extra_ldflags>
-
 =back
 
 =cut
@@ -1160,10 +1116,6 @@ This method clears the linker settings whose field names are returned by the L<g
 =item * L</"libgcc_ldflags">
 
 =item * L</"extra_ldflags">
-
-=item * L</"dynamic_lib_extra_ldflags">
-
-=item * L</"exe_extra_ldflags">
 
 =item * L</"libcpp_ldflags">
 
