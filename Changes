@@ -1,3 +1,20 @@
+0.990165 2026-04-22
+  [New Features]
+    * Add SPVMCC__main exported symbol to the executable file and dynamic link library generetaed by spvmcc command.
+  [Incompatible Changes]
+    * Remove dynamic_lib_extra_ldflags and exe_extra_ldflags fiedls.
+    * Remove dynamic_lib_libcpp_ldflags and exe_libcpp_ldflags fields and the logic is moved to lib_libcpp_ldflags.
+    * Remove dynamic_lib_libgcc_ldflags and exe_libgcc_ldflags fields and the logic is moved to lib_libgcc_ldflags.
+    * Remove dynamic_lib_libbcrypt_ldflags and exe_libbcrypt_ldflags fields and the settings are moved to libbcrypt_ldflags.
+  [Warning Fix]
+    * Set -nostdlib++ and -lc++ to libcpp_ldflags on macOS to avoid duplicate library warnings.
+  [Bug Fix]
+    * Fix the position of calling SPVM::Builder::Config::Linker#before_link_cbs.
+  [Test Improvement]
+    * Add tests for spvmcc to output dynamic link libraries.
+  [Internal Changes]
+    * Remove dynamic_lib_*_ldflags and exe_*_ldflags logic from LinkInfo.
+  
 0.990164 2026-04-21
   [Incompatible Changes]
     * SPVM now uses Perl's @INC syntax directly for expressing include directories in all contexts.
