@@ -482,10 +482,10 @@ sub create_bootstrap_main_func_source {
   my $source = '';
   
   $source .= <<"EOS";
-int main(int command_args_length, char **command_args);
-int SPVMCC__main(int command_args_length, char **command_args);
+int main(int argc, char* argv[]);
+int SPVMCC__main(int argc, char* argv[]);
 
-int SPVMCC__main(int command_args_length, char **command_args) {
+int SPVMCC__main(int argc, char* argv[]) {
   
   int32_t error_id = 0;
   
@@ -510,12 +510,12 @@ int SPVMCC__main(int command_args_length, char **command_args) {
   {
     int32_t mortal_stack_top = env->enter_scope(env, stack);
     
-    void* obj_program_name = env->new_string(env, stack, command_args[0], strlen(command_args[0]));
+    void* obj_program_name = env->new_string(env, stack, argv[0], strlen(argv[0]));
     
     // ARGV - string[]
-    void* obj_argv = env->new_string_array(env, stack, command_args_length - 1);
-    for (int32_t arg_index = 1; arg_index < command_args_length; arg_index++) {
-      void* obj_arg = env->new_string(env, stack, command_args[arg_index], strlen(command_args[arg_index]));
+    void* obj_argv = env->new_string_array(env, stack, argc - 1);
+    for (int32_t arg_index = 1; arg_index < argc; arg_index++) {
+      void* obj_arg = env->new_string(env, stack, argv[arg_index], strlen(argv[arg_index]));
       env->set_elem_object(env, stack, obj_argv, arg_index - 1, obj_arg);
     }
     
@@ -609,8 +609,8 @@ int SPVMCC__main(int command_args_length, char **command_args) {
   return error_id;
 }
 
-int main(int command_args_length, char **command_args) {
-  return SPVMCC__main(command_args_length, command_args);
+int main(int argc, char* argv[]) {
+  return SPVMCC__main(argc, argv);
 }
 
 EOS
