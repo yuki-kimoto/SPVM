@@ -434,14 +434,22 @@ sub create_option_long {
   return "$name$sep$value";
 }
 
+my %LD_VERSION_CACHE;
 sub create_ld_version {
   my ($self) = @_;
   
   my $ld = $self->ld;
+  my $path_env = $ENV{PATH} // '';
+  
+  if (exists $LD_VERSION_CACHE{$ld}{$path_env}) {
+    return $LD_VERSION_CACHE{$ld}{$path_env};
+  }
   
   my $ld_version = `$ld --version 2>&1` // '';
   
   $ld_version =~ s/\n.*//s;
+  
+  $LD_VERSION_CACHE{$ld}{$path_env} = $ld_version;
   
   return $ld_version;
 }
