@@ -869,6 +869,10 @@ Windows:
 
   ["-Wl,-Bstatic", "-lstdc++", "-Wl,-Bdynamic"]
 
+Mac:
+
+  ["-nostdlib++", "-lc++"]
+
 Other OSs:
 
   ["-lstdc++"]
