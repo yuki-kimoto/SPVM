@@ -863,7 +863,7 @@ sub prepare_compile_bootstrap_source_file {
   my $bootstrap_source_file = $self->builder->create_build_src_path($source_rel_file);
   
   # Check if generating is needed by comparing content
-  SPVM::Builder::Util::spurt_binary_parallel_safe($bootstrap_source_file, $bootstrap_source);
+  SPVM::Builder::Util::spurt_binary($bootstrap_source_file, $bootstrap_source, $self->builder->global_lock_fh);
   
   my $config = SPVM::Builder::Util::API::create_default_config();
   my $config_global = $self->config_global;

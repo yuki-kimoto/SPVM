@@ -213,7 +213,7 @@ sub prepare_compile_native_class {
     my $source_file = "$cc_input_dir/$source_rel_file";
     
     # Generate precompile C source file
-    SPVM::Builder::Util::spurt_binary_parallel_safe($source_file, $precompile_source);
+    SPVM::Builder::Util::spurt_binary($source_file, $precompile_source, $self->builder->global_lock_fh);
   }
   elsif ($category eq 'native') {
     if ($is_cc_config) {
@@ -915,15 +915,15 @@ sub spawn_link {
     # Prepare arguments for link.pl
     my $dl_func_list_file = "$command_tmp_dir/dl_func_list.txt";
     if (defined $dl_func_list) {
-      SPVM::Builder::Util::spurt_binary_parallel_safe($dl_func_list_file, join("\n", @$dl_func_list));
+      SPVM::Builder::Util::spurt_binary($dl_func_list_file, join("\n", @$dl_func_list), $self->builder->global_lock_fh);
     }
     
     my $object_file_names_file = "$command_tmp_dir/object_file_names.txt";
-    SPVM::Builder::Util::spurt_binary_parallel_safe($object_file_names_file, join("\n", @$object_file_names));
+    SPVM::Builder::Util::spurt_binary($object_file_names_file, join("\n", @$object_file_names), $self->builder->global_lock_fh);
     
     my $ldflags_file = "$command_tmp_dir/ldflags.txt";
     my $link_info_ldflags = $link_info->create_ldflags;
-    SPVM::Builder::Util::spurt_binary_parallel_safe($ldflags_file, join("\n", @$link_info_ldflags));
+    SPVM::Builder::Util::spurt_binary($ldflags_file, join("\n", @$link_info_ldflags), $self->builder->global_lock_fh);
     
     # [Added] Generate lock file path using SHA1 of the normalized output file path
     my $build_dir = $self->builder->build_dir;

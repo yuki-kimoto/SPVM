@@ -35,7 +35,7 @@ my $native_source_file = "$native_src_dir/baz.c";
 # Create initial files
 {
   my $content = "class TestCase::BuildCache {\n  native static method test : int ();\n}\n";
-  SPVM::Builder::Util::spurt_binary_parallel_safe($spvm_class_file, $content);
+  SPVM::Builder::Util::spurt_binary($spvm_class_file, $content);
 }
 
 my $config_content = <<'EOS';
@@ -50,12 +50,12 @@ EOS
 # .config file (Faithfully following the provided sample style)
 {
 
-  SPVM::Builder::Util::spurt_binary_parallel_safe($config_file, $config_content);
+  SPVM::Builder::Util::spurt_binary($config_file, $config_content);
 }
 
 {
   my $content = "#define BAZ_VALUE 1\n";
-  SPVM::Builder::Util::spurt_binary_parallel_safe($native_header_file, $content);
+  SPVM::Builder::Util::spurt_binary($native_header_file, $content);
 }
 
 {
@@ -64,7 +64,7 @@ EOS
 int get_baz() { return BAZ_VALUE; }
 EOS
   
-  SPVM::Builder::Util::spurt_binary_parallel_safe($native_source_file, $content);
+  SPVM::Builder::Util::spurt_binary($native_source_file, $content);
 }
 
 {
@@ -78,7 +78,7 @@ int32_t SPVM__TestCase__BuildCache__test(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 EOS
 
-  SPVM::Builder::Util::spurt_binary_parallel_safe($native_class_file, $content);
+  SPVM::Builder::Util::spurt_binary($native_class_file, $content);
 }
 
 # Helper to compile
@@ -139,7 +139,7 @@ my @current_native_source_baz_object_files;
     my $content = SPVM::Builder::Util::slurp_binary($native_class_file);
     $content .= "\n";
     
-    SPVM::Builder::Util::spurt_binary_parallel_safe($native_class_file, $content);
+    SPVM::Builder::Util::spurt_binary($native_class_file, $content);
   }
   
   
@@ -163,7 +163,7 @@ my @current_native_source_baz_object_files;
     
     chop $content;
     
-    SPVM::Builder::Util::spurt_binary_parallel_safe($native_class_file, $content);
+    SPVM::Builder::Util::spurt_binary($native_class_file, $content);
   }
   
   
@@ -186,7 +186,7 @@ my @current_native_source_baz_object_files;
     my $content = SPVM::Builder::Util::slurp_binary($native_source_file);
     $content .= "\n// modification\n";
     
-    SPVM::Builder::Util::spurt_binary_parallel_safe($native_source_file, $content);
+    SPVM::Builder::Util::spurt_binary($native_source_file, $content);
   }
   
   # Re-build
@@ -208,7 +208,7 @@ my @current_native_source_baz_object_files;
     my $content = SPVM::Builder::Util::slurp_binary($native_header_file);
     $content .= "\n// modification for header\n";
     
-    SPVM::Builder::Util::spurt_binary_parallel_safe($native_header_file, $content);
+    SPVM::Builder::Util::spurt_binary($native_header_file, $content);
   }
   
   # Re-build
@@ -235,14 +235,14 @@ my @current_native_source_baz_object_files;
     # 1. Create a new header-like file
     {
       my $content = "/* New header with ext: $ext */\n";
-      SPVM::Builder::Util::spurt_binary_parallel_safe($new_header_file, $content);
+      SPVM::Builder::Util::spurt_binary($new_header_file, $content);
     }
 
     # 2. Update the base header to include the new file
     {
       my $content = SPVM::Builder::Util::slurp_binary($native_header_file);
       $content = "#include \"baz/extra_$ext.$ext\"\n" . $content;
-      SPVM::Builder::Util::spurt_binary_parallel_safe($native_header_file, $content);
+      SPVM::Builder::Util::spurt_binary($native_header_file, $content);
     }
     
     # 3. Re-build
@@ -265,7 +265,7 @@ my @current_native_source_baz_object_files;
 {
   # Update config file with only a comment change
   $config_content = $config_content . "\n# This is just a comment. It should not trigger a re-build.\n \$config;\n";
-  SPVM::Builder::Util::spurt_binary_parallel_safe($config_file, $config_content);
+  SPVM::Builder::Util::spurt_binary($config_file, $config_content);
 
   # Re-build (Should use cache)
   system($compile_cmd) == 0 or die "Build with comment-only config change failed";
@@ -284,7 +284,7 @@ my @current_native_source_baz_object_files;
 {
   # Update config file
   $config_content = $config_content . "\n\$config->add_ccflag('-O0');\n \$config;\n";
-  SPVM::Builder::Util::spurt_binary_parallel_safe($config_file, $config_content);
+  SPVM::Builder::Util::spurt_binary($config_file, $config_content);
 
   # Re-build
   system($compile_cmd) == 0 or die "Build after config update failed";
@@ -303,7 +303,7 @@ my @current_native_source_baz_object_files;
 {
   # Restore config file
   $config_content = $config_content . "\npop \@{\$config->ccflags};\n \$config;\n";
-  SPVM::Builder::Util::spurt_binary_parallel_safe($config_file, $config_content);
+  SPVM::Builder::Util::spurt_binary($config_file, $config_content);
 
   # Re-build
   system($compile_cmd) == 0 or die "Build after config update failed";
@@ -322,7 +322,7 @@ my @current_native_source_baz_object_files;
 {
   # Update cc_version
   $config_content = $config_content . "\nmy \$original_cc_version = \$config->cc_version;\$config->cc_version('Different cc');\n \$config;\n";
-  SPVM::Builder::Util::spurt_binary_parallel_safe($config_file, $config_content);
+  SPVM::Builder::Util::spurt_binary($config_file, $config_content);
 
   # Re-build
   system($compile_cmd) == 0 or die "Build after config update failed";
@@ -341,7 +341,7 @@ my @current_native_source_baz_object_files;
 {
   # Restore cc_version
   $config_content = $config_content . "\n\$config->cc_version(\$original_cc_version);\n \$config;\n";
-  SPVM::Builder::Util::spurt_binary_parallel_safe($config_file, $config_content);
+  SPVM::Builder::Util::spurt_binary($config_file, $config_content);
 
   # Re-build
   system($compile_cmd) == 0 or die "Build after config update failed";

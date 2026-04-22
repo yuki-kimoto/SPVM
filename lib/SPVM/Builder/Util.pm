@@ -162,24 +162,46 @@ sub file_contains {
   return $contains;
 }
 
-sub spurt_binary_parallel_safe {
-  my ($output_file, $content) = @_;
+sub spurt_binary {
+  my ($output_file, $content, $global_lock_fh) = @_;
   
-  my $tmp_dir = File::Temp->newdir;
-  
-  my $tmp_output_file = "$tmp_dir/" . basename $output_file;
-  
-  {
-    open my $tmp_output_fh, '>:raw', $tmp_output_file
-      or confess("Can't open file '$tmp_output_file':$!");
-      
-    print $tmp_output_fh $content;
+  if ($global_lock_fh) {
+    flock($global_lock_fh, LOCK_EX) or confess "Can't lock global lock file: $!";
   }
   
-  mkpath dirname $output_file;
-  
-  File::Copy::move($tmp_output_file, $output_file)
-    or confess("Can't move '$tmp_output_file' to '$output_file': $!");
+  eval {
+    my $should_write = 1;
+    if (-f $output_file) {
+      my $old_content = do {
+        open my $read_fh, '<:raw', $output_file or die "Can't open for read '$output_file':$!";
+        local $/;
+        <$read_fh>;
+      };
+      
+      if ($old_content eq $content) {
+        $should_write = 0;
+      }
+    }
+    
+    if ($should_write) {
+      mkpath dirname $output_file;
+      
+      open my $output_fh, '>:raw', $output_file
+        or die "Can't open file '$output_file':$!";
+      print $output_fh $content;
+      close $output_fh;
+    }
+  };
+
+  my $error = $@;
+
+  if ($global_lock_fh) {
+    flock($global_lock_fh, LOCK_UN);
+  }
+
+  if ($error) {
+    confess $error;
+  }
 }
 
 sub unindent {
@@ -668,7 +690,7 @@ EOS
   my $old_content = -f $output_file ? &slurp_binary($output_file) : "";
   
   if ($old_content ne $final_c_source) {
-    &spurt_binary_parallel_safe($output_file, $final_c_source);
+    &spurt_binary($output_file, $final_c_source);
     warn "Generated \"$output_file\".\n";
   }
 
