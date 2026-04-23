@@ -11,6 +11,8 @@ use File::Path 'mkpath';
 use Fcntl qw(:flock :seek);
 use SPVM::Builder::Accessor 'has';
 use File::Find;
+use Cwd ();
+use File::Spec;
 
 has [qw(
   log_dir
@@ -512,6 +514,29 @@ sub create_log {
   
   $self->open_log('>>');
   $self->close_log;
+}
+
+# Get and cache the absolute current directory once at startup
+my $CWD_ABS = File::Spec->rel2abs(Cwd::getcwd());
+
+# Add a trailing slash to avoid partial match (e.g., /home/user/spvm vs /home/user/spvm_extra)
+my $CWD_CHECK_STR = $CWD_ABS;
+unless ($CWD_CHECK_STR =~ m|[\\/]$|) {
+  $CWD_CHECK_STR .= '/';
+}
+# Normalize to forward slashes for consistent string comparison
+$CWD_CHECK_STR =~ s|\\|/|g;
+
+sub is_under_cwd {
+  my ($path) = @_;
+  
+  # 1. Convert to absolute without hitting disk (rel2abs is mostly string op)
+  # 2. Normalize slashes
+  my $abs_path = File::Spec->rel2abs($path);
+  $abs_path =~ s|\\|/|g;
+  
+  # 3. Fast string prefix match
+  return index($abs_path, $CWD_CHECK_STR) == 0;
 }
 
 sub DESTROY {
