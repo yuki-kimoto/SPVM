@@ -372,6 +372,7 @@ sub create_command_hash {
   my $log_dir = $self->log_dir;
   
   # Add dependent files hashes (Using in-memory cache)
+  # Add dependent files hashes (Using in-memory cache)
   for my $dependent_file (@all_dependent_files) {
     my $normalized_dependent_file = $NORMALIZE_PATH_CACHE{$dependent_file}{$log_dir};
     
@@ -382,16 +383,28 @@ sub create_command_hash {
     
     $sha->add(Digest::SHA::sha1_hex($normalized_dependent_file) . "\x0A");
     
-    my $content_hash = $self->dependent_content_hashes_h->{$dependent_file};
-    unless (defined $content_hash) {
-      my $tmp_sha = Digest::SHA->new(1);
-      
-      $tmp_sha->addfile($dependent_file);
-      $content_hash = $tmp_sha->hexdigest;
-      $self->dependent_content_hashes_h->{$dependent_file} = $content_hash;
+    # Check if the file is under the current working directory AND has source extensions
+    my $is_current_source = is_under_cwd($dependent_file) && ($dependent_file =~ $valid_ext_re);
+    
+    my $file_id_info;
+    if ($is_current_source) {
+      # Use content hash for current source files
+      $file_id_info = $self->dependent_content_hashes_h->{$dependent_file};
+      unless (defined $file_id_info) {
+        my $tmp_sha = Digest::SHA->new(1);
+        
+        $tmp_sha->addfile($dependent_file);
+        $file_id_info = $tmp_sha->hexdigest;
+        $self->dependent_content_hashes_h->{$dependent_file} = $file_id_info;
+      }
+    }
+    else {
+      # Use modification time and size for others (external or non-source files)
+      my @s = stat $dependent_file;
+      $file_id_info = "mtime:$s[9] size:$s[7]";
     }
     
-    $sha->add($content_hash . "\x0A");
+    $sha->add($file_id_info . "\x0A");
   }
 
   return $sha->hexdigest;
