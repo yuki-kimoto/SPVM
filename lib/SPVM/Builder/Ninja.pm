@@ -23,7 +23,6 @@ has [qw(
   lock_file_base_name
   lock_fh
   source_exts
-  dependent_content_hashes_h
 )];
 
 sub new {
@@ -35,7 +34,6 @@ sub new {
     entries_length => 0,
     source_exts => [qw(h hpp hh hxx h++ inc inl c cpp cc cxx c++)],
     lock_file_base_name => '.ninja_lock',
-    dependent_content_hashes_h => {},
     @_
   };
   
@@ -300,8 +298,9 @@ sub need_generate {
 }
 
 my %NORMALIZE_PATH_CACHE;
-my %STAT_CACHE;
+my %DEPENDENT_CONTENT_CACHE;
 my %DEPENDANT_FILE_HASH_CACHE;
+my %STAT_CACHE;
 
 sub create_command_hash {
   my ($self, $options) = @_;
@@ -324,9 +323,9 @@ sub create_command_hash {
     confess("dependent_files must be defined.");
   }
   
-  my $extensions = $self->source_exts || [];
-  my $ext_list = join '|', map { quotemeta $_ } @$extensions;
-  my $valid_ext_re = qr/\.(?:$ext_list)$/i;
+  my $source_exts = $self->source_exts || [];
+  my $source_exts_pattern = join '|', map { quotemeta $_ } @$source_exts;
+  my $source_exts_re = qr/\.(?:$source_exts_pattern)$/i;
 
   my $sha = Digest::SHA->new(1);
 
@@ -339,71 +338,70 @@ sub create_command_hash {
   # Sort dependent files/directories directly to ensure stable hash
   @$dependent_files = sort grep { defined $_ } @$dependent_files;
 
-  for my $path (@$dependent_files) {
+  for my $dependent_file (@$dependent_files) {
     # If the hash for this directory/path is already calculated, use it from cache
-    unless (exists $DEPENDANT_FILE_HASH_CACHE{$path}) {
-      my $path_sha = Digest::SHA->new(1);
+    unless (exists $DEPENDANT_FILE_HASH_CACHE{$dependent_file}) {
+      my $dependent_file_sha = Digest::SHA->new(1);
       
-      # Determine if this entire path is under CWD once
-      my $is_under = is_under_cwd($path);
+      # Determine if this entire path is under CURRENT_DIR once
+      my $is_under_current_dir = &is_under_current_dir($dependent_file);
       
       # Scan and cache files in path if not already cached
-      my @found;
-      if (-d $path) {
+      my @child_dependent_files;
+      if (-d $dependent_file) {
         File::Find::find({
           wanted => sub {
             my $full_path = $File::Find::name;
             my $base_name = $full_path;
             $base_name =~ s|.*/||; 
-            if (-f $full_path && $base_name =~ $valid_ext_re) {
-              push @found, $full_path;
+            if (-f $full_path && $base_name =~ $source_exts_re) {
+              push @child_dependent_files, $full_path;
             }
           },
           no_chdir => 1,
           follow   => 1,
-        }, $path);
+        }, $dependent_file);
       }
-      elsif (-f $path) {
-        push @found, $path;
+      elsif (-f $dependent_file) {
+        push @child_dependent_files, $dependent_file;
       }
       # Files inside must also be sorted for stability
-      @found = sort @found;
+      @child_dependent_files = sort @child_dependent_files;
       
       # Accumulate hash for this path
-      for my $file (@found) {
+      for my $file (@child_dependent_files) {
         # Path hash
         my $normalized = $NORMALIZE_PATH_CACHE{$file}{$log_dir} //= 
           SPVM::Builder::Util::normalize_path($file, $log_dir);
-        $path_sha->add(Digest::SHA::sha1_hex($normalized) . "\x0A");
+        $dependent_file_sha->add(Digest::SHA::sha1_hex($normalized) . "\x0A");
         
         # Content hash or mtime system
-        my $file_id_info;
-        if ($is_under && $file =~ $valid_ext_re) {
-          $file_id_info = $self->dependent_content_hashes_h->{$file};
-          unless (defined $file_id_info) {
+        if ($is_under_current_dir && $file =~ $source_exts_re) {
+          my $dependent_content = $DEPENDENT_CONTENT_CACHE{$file};
+          unless (defined $dependent_content) {
             my $tmp_sha = Digest::SHA->new(1);
             $tmp_sha->addfile($file);
-            $file_id_info = $tmp_sha->hexdigest;
-            $self->dependent_content_hashes_h->{$file} = $file_id_info;
+            $dependent_content = $tmp_sha->hexdigest;
+            $DEPENDENT_CONTENT_CACHE{$file} = $dependent_content;
           }
+          $dependent_file_sha->add($dependent_content . "\x0A");
         }
         else {
           # Use cached stat info if available
-          my $stat_info = $STAT_CACHE{$file};
-          unless (defined $stat_info) {
-            my @s = stat $file;
-            $stat_info = "mtime:$s[9] size:$s[7]";
-            $STAT_CACHE{$file} = $stat_info;
+          my $stat_info_string = $STAT_CACHE{$file};
+          unless (defined $stat_info_string) {
+            my @stat_infos = stat $file;
+            $stat_info_string = "mtime:$stat_infos[9] size:$stat_infos[7]";
+            $STAT_CACHE{$file} = $stat_info_string;
           }
-          $file_id_info = $stat_info;
+          $dependent_file_sha->add($stat_info_string . "\x0A");
         }
-        $path_sha->add($file_id_info . "\x0A");
       }
-      $DEPENDANT_FILE_HASH_CACHE{$path} = $path_sha->hexdigest;
+      $DEPENDANT_FILE_HASH_CACHE{$dependent_file} = $dependent_file_sha->hexdigest;
     }
     
     # Add the pre-calculated directory hash to the main hash
-    $sha->add($DEPENDANT_FILE_HASH_CACHE{$path} . "\x0A");
+    $sha->add($DEPENDANT_FILE_HASH_CACHE{$dependent_file} . "\x0A");
   }
 
   return $sha->hexdigest;
@@ -529,17 +527,16 @@ sub create_log {
 }
 
 # Get and cache the absolute current directory once at startup
-my $CWD_ABS = File::Spec->rel2abs(Cwd::getcwd());
+my $CURRENT_DIR_ABS = File::Spec->rel2abs(Cwd::getcwd());
 
 # Add a trailing slash to avoid partial match (e.g., /home/user/spvm vs /home/user/spvm_extra)
-my $CWD_CHECK_STR = $CWD_ABS;
-unless ($CWD_CHECK_STR =~ m|[\\/]$|) {
-  $CWD_CHECK_STR .= '/';
+unless ($CURRENT_DIR_ABS =~ m|[\\/]$|) {
+  $CURRENT_DIR_ABS .= '/';
 }
 # Normalize to forward slashes for consistent string comparison
-$CWD_CHECK_STR =~ s|\\|/|g;
+$CURRENT_DIR_ABS =~ s|\\|/|g;
 
-sub is_under_cwd {
+sub is_under_current_dir {
   my ($path) = @_;
   
   # 1. Convert to absolute without hitting disk (rel2abs is mostly string op)
@@ -548,7 +545,7 @@ sub is_under_cwd {
   $abs_path =~ s|\\|/|g;
   
   # 3. Fast string prefix match
-  return index($abs_path, $CWD_CHECK_STR) == 0;
+  return index($abs_path, $CURRENT_DIR_ABS) == 0;
 }
 
 sub DESTROY {
