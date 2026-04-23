@@ -8,7 +8,7 @@ use warnings;
 use Digest::SHA;
 use Carp 'confess';
 use File::Path 'mkpath';
-use Fcntl qw(:flock :seek);
+use Fcntl qw(:flock :seek :mode);
 use SPVM::Builder::Accessor 'has';
 use File::Find;
 use Cwd ();
@@ -298,9 +298,7 @@ sub need_generate {
 my %NORMALIZE_PATH_CACHE;
 my %DEPENDENT_CONTENT_CACHE;
 my %DEPENDANT_FILE_HASH_CACHE;
-my %STAT_CACHE;
-
-use Fcntl ':mode';
+my %STAT_RESULT_CACHE;
 
 sub create_command_hash {
   my ($self, $options) = @_;
@@ -334,13 +332,16 @@ sub create_command_hash {
       my @child_dependent_files;
       
       # Check cache or fetch lstat
-      my $st_obj = $STAT_CACHE{$dependent_file} //= do {
-        my @st = lstat $dependent_file;
-        @st ? \@st : undef;
+      my $state_result = $STAT_RESULT_CACHE{$dependent_file};
+      unless ($state_result) {
+        my @stat_result = lstat $dependent_file;
+        if (@stat_result) {
+          $state_result = \@stat_result;
+        }
       };
-      next unless $st_obj;
+      next unless $state_result;
       
-      my $mode = $st_obj->[2];
+      my $mode = $state_result->[2];
       my $is_dir = S_ISDIR($mode);
       my $is_file = S_ISREG($mode);
 
@@ -353,14 +354,14 @@ sub create_command_hash {
             my $full_path = $File::Find::name;
             
             # 1. Fetch from cache or execute lstat
-            my $st_obj = $STAT_CACHE{$full_path} //= do {
-              my @st = lstat $full_path;
-              @st ? \@st : undef;
+            my $state_result = $STAT_RESULT_CACHE{$full_path} //= do {
+              my @stat_result = lstat $full_path;
+              @stat_result ? \@stat_result : undef;
             };
-            return unless $st_obj;
+            return unless $state_result;
 
             # 2. Get mode and check file types using constants
-            my $mode = $st_obj->[2];
+            my $mode = $state_result->[2];
             my $is_dir  = S_ISDIR($mode);
             my $is_file = S_ISREG($mode);
 
@@ -420,9 +421,9 @@ sub create_command_hash {
         }
         else {
           # Retrieve the stat object from cache
-          my $st_obj = $STAT_CACHE{$child_file} // [stat $child_file];
+          my $state_result = $STAT_RESULT_CACHE{$child_file} // [stat $child_file];
           # Use mtime ($st[9]) and size ($st[7]) for the hash
-          $dependent_file_sha->add("mtime:$st_obj->[9] size:$st_obj->[7]");
+          $dependent_file_sha->add("mtime:$state_result->[9] size:$state_result->[7]");
         }
       }
       $dependant_file_hash = $DEPENDANT_FILE_HASH_CACHE{$dependent_file} = $dependent_file_sha->hexdigest;
