@@ -300,9 +300,8 @@ sub need_generate {
 }
 
 my %NORMALIZE_PATH_CACHE;
-my %DEPENDENT_FILES_CACHE;
 my %STAT_CACHE;
-my %DIR_FINAL_HASH_CACHE;
+my %DEPENDANT_FILE_HASH_CACHE;
 
 sub create_command_hash {
   my ($self, $options) = @_;
@@ -342,39 +341,36 @@ sub create_command_hash {
 
   for my $path (@$dependent_files) {
     # If the hash for this directory/path is already calculated, use it from cache
-    unless (exists $DIR_FINAL_HASH_CACHE{$path}) {
+    unless (exists $DEPENDANT_FILE_HASH_CACHE{$path}) {
       my $path_sha = Digest::SHA->new(1);
       
       # Determine if this entire path is under CWD once
       my $is_under = is_under_cwd($path);
       
       # Scan and cache files in path if not already cached
-      unless (exists $DEPENDENT_FILES_CACHE{$path}) {
-        my @found;
-        if (-d $path) {
-          File::Find::find({
-            wanted => sub {
-              my $full_path = $File::Find::name;
-              my $base_name = $full_path;
-              $base_name =~ s|.*/||; 
-              if (-f $full_path && $base_name =~ $valid_ext_re) {
-                push @found, $full_path;
-              }
-            },
-            no_chdir => 1,
-            follow   => 1,
-          }, $path);
-        }
-        elsif (-f $path) {
-          push @found, $path;
-        }
-        # Files inside must also be sorted for stability
-        @found = sort @found;
-        $DEPENDENT_FILES_CACHE{$path} = \@found;
+      my @found;
+      if (-d $path) {
+        File::Find::find({
+          wanted => sub {
+            my $full_path = $File::Find::name;
+            my $base_name = $full_path;
+            $base_name =~ s|.*/||; 
+            if (-f $full_path && $base_name =~ $valid_ext_re) {
+              push @found, $full_path;
+            }
+          },
+          no_chdir => 1,
+          follow   => 1,
+        }, $path);
       }
+      elsif (-f $path) {
+        push @found, $path;
+      }
+      # Files inside must also be sorted for stability
+      @found = sort @found;
       
       # Accumulate hash for this path
-      for my $file (@{$DEPENDENT_FILES_CACHE{$path}}) {
+      for my $file (@found) {
         # Path hash
         my $normalized = $NORMALIZE_PATH_CACHE{$file}{$log_dir} //= 
           SPVM::Builder::Util::normalize_path($file, $log_dir);
@@ -403,11 +399,11 @@ sub create_command_hash {
         }
         $path_sha->add($file_id_info . "\x0A");
       }
-      $DIR_FINAL_HASH_CACHE{$path} = $path_sha->hexdigest;
+      $DEPENDANT_FILE_HASH_CACHE{$path} = $path_sha->hexdigest;
     }
     
     # Add the pre-calculated directory hash to the main hash
-    $sha->add($DIR_FINAL_HASH_CACHE{$path} . "\x0A");
+    $sha->add($DEPENDANT_FILE_HASH_CACHE{$path} . "\x0A");
   }
 
   return $sha->hexdigest;
