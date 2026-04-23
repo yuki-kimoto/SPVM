@@ -343,9 +343,6 @@ sub create_command_hash {
     unless (exists $DEPENDANT_FILE_HASH_CACHE{$dependent_file}) {
       my $dependent_file_sha = Digest::SHA->new(1);
       
-      # Determine if this entire path is under CURRENT_DIR once
-      my $is_under_current_dir_without_log_dir = $self->is_under_current_dir_without_log_dir($dependent_file);
-      
       # Scan and cache files in path if not already cached
       my @child_dependent_files;
       if (-d $dependent_file) {
@@ -370,6 +367,10 @@ sub create_command_hash {
       
       # Accumulate hash for this path
       for my $child_dependent_file (@child_dependent_files) {
+        
+        # Determine if this entire path is under CURRENT_DIR once
+        my $is_under_current_dir_without_log_dir = $self->is_under_current_dir_without_log_dir($child_dependent_file);
+      
         # Path hash
         my $normalized = $NORMALIZE_PATH_CACHE{$child_dependent_file}{$log_dir} //= 
           SPVM::Builder::Util::normalize_path($child_dependent_file, $log_dir);
