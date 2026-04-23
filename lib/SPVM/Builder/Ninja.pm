@@ -305,103 +305,86 @@ my %STAT_CACHE;
 sub create_command_hash {
   my ($self, $options) = @_;
   
-  # Command string
-  my $command = $options->{command};
-  unless (defined $command) {
-    confess("command must be defined.");
-  }
-  
-  # Command version
-  my $command_version = $options->{command_version};
-  unless (defined $command_version) {
-    confess("command_version must be defined.");
-  }
-  
-  # Dependent files or directories (Secondary inputs)
-  my $dependent_files = $options->{dependent_files};
-  unless (defined $dependent_files) {
-    confess("dependent_files must be defined.");
-  }
+  my $command = $options->{command} // confess("command must be defined.");
+  my $command_version = $options->{command_version} // confess("command_version must be defined.");
+  my $dependent_files = $options->{dependent_files} // confess("dependent_files must be defined.");
   
   my $source_exts = $self->source_exts || [];
   my $source_exts_pattern = join '|', map { quotemeta $_ } @$source_exts;
   my $source_exts_re = qr/\.(?:$source_exts_pattern)$/i;
 
   my $sha = Digest::SHA->new(1);
-
-  # Add command and version hashes
   $sha->add(Digest::SHA::sha1_hex($command) . "\x0A");
   $sha->add(Digest::SHA::sha1_hex($command_version) . "\x0A");
 
   my $log_dir = $self->log_dir;
-
-  # Sort dependent files/directories directly to ensure stable hash
   @$dependent_files = sort grep { defined $_ } @$dependent_files;
 
   for my $dependent_file (@$dependent_files) {
-    # If the hash for this directory/path is already calculated, use it from cache
     unless (exists $DEPENDANT_FILE_HASH_CACHE{$dependent_file}) {
       my $dependent_file_sha = Digest::SHA->new(1);
       
-      # Scan and cache files in path if not already cached
       my @child_dependent_files;
-      if (-d $dependent_file) {
+      
+      # Use lstat once to avoid multiple disk hits
+      my @st = lstat $dependent_file;
+      next unless @st;
+      
+      my $mode = $st[2];
+      my $is_dir = ($mode & 0170000) == 0040000;
+      my $is_file = ($mode & 0170000) == 0100000;
+
+      if ($is_dir) {
         File::Find::find({
           wanted => sub {
             my $full_path = $File::Find::name;
-            my $base_name = $full_path;
-            $base_name =~ s|.*/||; 
-            if (-f $full_path && $base_name =~ $source_exts_re) {
+            # Get stat info once during scan
+            my @cst = lstat $full_path;
+            if (@cst && (($cst[2] & 0170000) == 0100000) && $full_path =~ $source_exts_re) {
               push @child_dependent_files, $full_path;
+              # Store the stat arrayref as an object
+              $STAT_CACHE{$full_path} = \@cst;
             }
           },
           no_chdir => 1,
           follow   => 1,
         }, $dependent_file);
       }
-      elsif (-f $dependent_file) {
+      elsif ($is_file) {
         push @child_dependent_files, $dependent_file;
+        $STAT_CACHE{$dependent_file} = \@st;
       }
-      # Files inside must also be sorted for stability
+      
       @child_dependent_files = sort @child_dependent_files;
       
-      # Accumulate hash for this path
-      for my $child_dependent_file (@child_dependent_files) {
-        
-        # Determine if this entire path is under CURRENT_DIR once
-        my $is_under_current_dir_without_log_dir = $self->is_under_current_dir_without_log_dir($child_dependent_file);
+      for my $child_file (@child_dependent_files) {
+        my $is_under_current_dir = $self->is_under_current_dir_without_log_dir($child_file);
       
         # Path hash
-        my $normalized = $NORMALIZE_PATH_CACHE{$child_dependent_file}{$log_dir} //= 
-          SPVM::Builder::Util::normalize_path($child_dependent_file, $log_dir);
+        my $normalized = $NORMALIZE_PATH_CACHE{$child_file}{$log_dir} //= 
+          SPVM::Builder::Util::normalize_path($child_file, $log_dir);
         $dependent_file_sha->add(Digest::SHA::sha1_hex($normalized) . "\x0A");
         
-        # Content hash or mtime system
-        if ($is_under_current_dir_without_log_dir && $child_dependent_file =~ $source_exts_re) {
-          my $dependent_content = $DEPENDENT_CONTENT_CACHE{$child_dependent_file};
-          unless (defined $dependent_content) {
+        # Content or Mtime hash
+        if ($is_under_current_dir && $child_file =~ $source_exts_re) {
+          my $content = $DEPENDENT_CONTENT_CACHE{$child_file};
+          unless (defined $content) {
             my $tmp_sha = Digest::SHA->new(1);
-            $tmp_sha->addfile($child_dependent_file);
-            $dependent_content = $tmp_sha->hexdigest;
-            $DEPENDENT_CONTENT_CACHE{$child_dependent_file} = $dependent_content;
+            $tmp_sha->addfile($child_file);
+            $content = $tmp_sha->hexdigest;
+            $DEPENDENT_CONTENT_CACHE{$child_file} = $content;
           }
-          $dependent_file_sha->add($dependent_content . "\x0A");
+          $dependent_file_sha->add($content . "\x0A");
         }
         else {
-          # Use cached stat info if available
-          my $stat_info_string = $STAT_CACHE{$child_dependent_file};
-          unless (defined $stat_info_string) {
-            my @stat_infos = stat $child_dependent_file;
-            $stat_info_string = "mtime:$stat_infos[9] size:$stat_infos[7]";
-            $STAT_CACHE{$child_dependent_file} = $stat_info_string;
-          }
-          $dependent_file_sha->add($stat_info_string . "\x0A");
+          # Retrieve the stat object from cache
+          my $st_obj = $STAT_CACHE{$child_file} // [stat $child_file];
+          # Use mtime ($st[9]) and size ($st[7]) for the hash
+          $dependent_file_sha->add("mtime:$st_obj->[9] size:$st_obj->[7]\x0A");
         }
       }
       $DEPENDANT_FILE_HASH_CACHE{$dependent_file} = $dependent_file_sha->hexdigest;
     }
-    
-    # Add the pre-calculated directory hash to the main hash
     $sha->add($DEPENDANT_FILE_HASH_CACHE{$dependent_file} . "\x0A");
   }
 
