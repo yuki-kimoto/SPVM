@@ -223,23 +223,27 @@ sub new {
 sub build_exe_file {
   my ($self) = @_;
   
-  # Total start
-  my $total_start = Time::HiRes::gettimeofday();
-  
   my $builder = $self->builder;
+  
   my $config_global = $self->config_global;
+  
   my $class_name = $self->{class_name};
+  
   my $class = $self->runtime->get_basic_type_by_name($class_name);
+  
   my $class_file = $class->get_class_file;
+  
+  # Build directory
   my $build_dir = $self->builder->build_dir;
   
-  # Phase 1: Prep
-  my $t_prep_start = Time::HiRes::gettimeofday();
+  # Object files
   my $compile_infos = [];
   
+  # Compile bootstrap C source
   my $bootstrap_compile_info = $self->prepare_compile_bootstrap_source_file;
   push @$compile_infos, $bootstrap_compile_info;
   
+  # Compile SPVM core source files
   my $spvm_compile_infos = $self->prepare_compile_spvm_core_source_files;
   push @$compile_infos, @$spvm_compile_infos;
   
@@ -256,24 +260,16 @@ sub build_exe_file {
     runtime => $runtime,
   );
   $config_global->output_file($output_file);
-  my $t_prep_end = Time::HiRes::gettimeofday();
   
-  # Phase 2: Finalize (The hash logic we've been optimizing)
-  my $t_fin_start = Time::HiRes::gettimeofday();
   for my $compile_info (@$compile_infos) {
     $cc->finalize_compile_info($compile_info);
   }
-  my $t_fin_end = Time::HiRes::gettimeofday();
   
-  # Phase 3: Compile execution
-  my $t_compile_start = Time::HiRes::gettimeofday();
   $cc->command_parallel($compile_infos);
-  my $t_compile_end = Time::HiRes::gettimeofday();
   
-  # Phase 4: Link preparation
-  my $t_link_prep_start = Time::HiRes::gettimeofday();
   my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   
+  # Add external object files
   for my $external_object_file (@{$config_global->external_object_files}) {
     push @$object_file_infos, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
@@ -282,33 +278,16 @@ sub build_exe_file {
     confess("[Unexpected Error]\$object_file_infos must have object files.");
   }
   
+  # Link object files and generate a dynamic library
   my $link_info = $cc->prepare_link($class_name, $object_file_infos, $config_global);
-  my $t_link_prep_end = Time::HiRes::gettimeofday();
   
-  # Phase 5: Link execution
-  my $t_link_exec_start = Time::HiRes::gettimeofday();
   $cc->command_parallel([$link_info]);
-  my $t_link_exec_end = Time::HiRes::gettimeofday();
   
-  # Phase 6: Callbacks
-  my $t_cb_start = Time::HiRes::gettimeofday();
+  # after_link_cbs
   my $after_link_cbs = $config_global->after_link_cbs;
   for my $after_link_cb (@$after_link_cbs) {
     $after_link_cb->($link_info->config, $link_info);
   }
-  my $t_cb_end = Time::HiRes::gettimeofday();
-
-  # Output Summary
-  warn sprintf(
-    "  [build_exe_file detail] total: %.4fs (prep: %.4fs, finalize: %.4fs, compile: %.4fs, link_prep: %.4fs, link_exec: %.4fs, cb: %.4fs)\n",
-    Time::HiRes::gettimeofday() - $total_start,
-    $t_prep_end - $t_prep_start,
-    $t_fin_end - $t_fin_start,
-    $t_compile_end - $t_compile_start,
-    $t_link_prep_end - $t_link_prep_start,
-    $t_link_exec_end - $t_link_exec_start,
-    $t_cb_end - $t_cb_start
-  );
 }
 
 sub prepare_compile {
