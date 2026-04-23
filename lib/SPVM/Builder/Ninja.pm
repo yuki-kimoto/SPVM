@@ -305,30 +305,32 @@ use Fcntl ':mode';
 sub create_command_hash {
   my ($self, $options) = @_;
   
-  my $command = $options->{command} // confess("command must be defined.");
-  my $command_version = $options->{command_version} // confess("command_version must be defined.");
-  my $dependent_files = $options->{dependent_files} // confess("dependent_files must be defined.");
+  my $command = $options->{command}
+    // confess("'command' option must be defined.");
+  
+  my $command_version = $options->{command_version}
+    // confess("'command_version' option must be defined.");
+  
+  my $dependent_files = $options->{dependent_files}
+    // confess("'dependent_files' optioon must be defined.");
+  
+  my $log_dir = $self->log_dir;
+  
+  # Create regex for dependent file exclusion extensions
+  # Get exclude extensions from environment variable: Comma-separated, no dots, trim whitespace
+  my $env_dependent_file_exclude_exts = $ENV{SPVM_DEPENDENT_FILE_EXCLUDE_EXTS} // '';
+  my @dependent_file_exclude_exts_list = grep { length $_ } map { s/^\s+|\s+$//gr } split(/,/, $env_dependent_file_exclude_exts);
+  my $dependent_file_exclude_exts_pattern = join('|', map { quotemeta $_ } @dependent_file_exclude_exts_list);
+  my $dependent_file_exclude_exts_re = $dependent_file_exclude_exts_pattern ? qr/(?:$dependent_file_exclude_exts_pattern)$/i : qr/$^/;
   
   my $sha = Digest::SHA->new(1);
   $sha->add(Digest::SHA::sha1_hex($command));
   $sha->add(Digest::SHA::sha1_hex($command_version));
-
-  my $log_dir = $self->log_dir;
-  @$dependent_files = sort grep { defined $_ } @$dependent_files;
-
-  # Get exclude extensions from environment variable
-  # Specifications: Comma-separated, no dots, trim whitespace
-  my $env_exclude_exts = $ENV{SPVM_DEPENDENT_FILE_EXCLUDE_EXTS} // '';
-  my @exclude_exts_list = grep { length } map { s/^\s+|\s+$//gr } split /,/, $env_exclude_exts;
   
-  # Create regex for exclusion
-  my $exclude_exts_pattern = join '|', map { quotemeta $_ } @exclude_exts_list;
-  my $exclude_exts_re = $exclude_exts_pattern ? qr/(?:$exclude_exts_pattern)$/i : qr/$^/;
-  
+  @$dependent_files = sort grep { length $_ } @$dependent_files;
   for my $dependent_file (@$dependent_files) {
-    unless (exists $DEPENDANT_FILE_HASH_CACHE{$dependent_file}) {
-      my $dependent_file_sha = Digest::SHA->new(1);
-      
+    my $dependant_file_hash = $DEPENDANT_FILE_HASH_CACHE{$dependent_file};
+    unless (defined $dependant_file_hash) {
       my @child_dependent_files;
       
       # Check cache or fetch lstat
@@ -379,7 +381,7 @@ sub create_command_hash {
             if ($is_file) {
               # Match specs: has extension, not excluded, not in hidden dir
               if ($normalized_path =~ $has_ext_re && 
-                  $normalized_path !~ $exclude_exts_re && 
+                  $normalized_path !~ $dependent_file_exclude_exts_re && 
                   $normalized_path !~ m|[\\/]\.[^\\/]+|) {
                 
                 push @child_dependent_files, $full_path;
@@ -394,8 +396,9 @@ sub create_command_hash {
         push @child_dependent_files, $dependent_file;
       }
       
-      @child_dependent_files = sort @child_dependent_files;
+      my $dependent_file_sha = Digest::SHA->new(1);
       
+      @child_dependent_files = sort @child_dependent_files;
       for my $child_file (@child_dependent_files) {
         my $is_under_current_dir = $self->is_under_current_dir_without_log_dir($child_file);
       
@@ -422,9 +425,9 @@ sub create_command_hash {
           $dependent_file_sha->add("mtime:$st_obj->[9] size:$st_obj->[7]");
         }
       }
-      $DEPENDANT_FILE_HASH_CACHE{$dependent_file} = $dependent_file_sha->hexdigest;
+      $dependant_file_hash = $DEPENDANT_FILE_HASH_CACHE{$dependent_file} = $dependent_file_sha->hexdigest;
     }
-    $sha->add($DEPENDANT_FILE_HASH_CACHE{$dependent_file});
+    $sha->add($dependant_file_hash);
   }
 
   return $sha->hexdigest;
