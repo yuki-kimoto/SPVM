@@ -510,33 +510,35 @@ sub create_log {
   $self->close_log;
 }
 
-# Get and cache the absolute current directory once at startup
-my $CURRENT_DIR_ABS = File::Spec->rel2abs(Cwd::getcwd());
+use Cwd 'abs_path';
 
-# Add a trailing slash to avoid partial match (e.g., /home/user/spvm vs /home/user/spvm_extra)
-unless ($CURRENT_DIR_ABS =~ m|[\\/]$|) {
+# Get the real physical path at startup
+my $CURRENT_DIR_ABS = abs_path(Cwd::getcwd());
+
+# Normalize to forward slashes and add trailing slash
+$CURRENT_DIR_ABS =~ s|\\|/|g;
+unless ($CURRENT_DIR_ABS =~ m|/$|) {
   $CURRENT_DIR_ABS .= '/';
 }
-# Normalize to forward slashes for consistent string comparison
-$CURRENT_DIR_ABS =~ s|\\|/|g;
 
 sub is_under_current_dir_without_log_dir {
   my ($self, $path) = @_;
   
-  # Cache the absolute log directory path
+  # Use abs_path to resolve symlinks (especially for Mac /var -> /private/var)
   my $log_dir_abs = $self->{log_dir_abs} //= do {
-    my $ld = File::Spec->rel2abs($self->log_dir);
+    # If log_dir doesn't exist yet, abs_path might fail, 
+    # so we may need a fallback or ensure it exists.
+    my $ld = abs_path($self->log_dir) || File::Spec->rel2abs($self->log_dir);
     $ld =~ s|\\|/|g;
     $ld;
   };
 
-  # Normalize the input path
-  my $abs_path = File::Spec->rel2abs($path);
+  # Resolve the input path to its real physical path
+  my $abs_path = abs_path($path);
   $abs_path =~ s|\\|/|g;
   
-  # Check if the path is under the current directory
+  # Now the comparison should work even on Mac's temp dirs
   if (index($abs_path, $CURRENT_DIR_ABS) == 0) {
-    # Exclude the log directory
     if (index($abs_path, $log_dir_abs) == 0) {
       return 0;
     }
