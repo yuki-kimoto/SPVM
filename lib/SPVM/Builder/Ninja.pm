@@ -302,6 +302,7 @@ sub need_generate {
 my %NORMALIZE_PATH_CACHE;
 my %DEPENDENT_FILES_CACHE;
 my %STAT_CACHE;
+my %DIR_FINAL_HASH_CACHE;
 
 sub create_command_hash {
   my ($self, $options) = @_;
@@ -328,42 +329,6 @@ sub create_command_hash {
   my $ext_list = join '|', map { quotemeta $_ } @$extensions;
   my $valid_ext_re = qr/\.(?:$ext_list)$/i;
 
-  # Process dependent files/directories
-  my @all_dependent_files;
-  for my $path (@$dependent_files) {
-    next unless defined $path;
-
-    unless (exists $DEPENDENT_FILES_CACHE{$path}) {
-      # write brief comment in English
-      # Scan and cache files in path if not already cached
-      my @found;
-      if (-d $path) {
-        File::Find::find({
-          wanted => sub {
-            my $full_path = $File::Find::name;
-            my $base_name = $full_path;
-            $base_name =~ s|.*/||; 
-            if (-f $full_path && $base_name =~ $valid_ext_re) {
-              push @found, $full_path;
-            }
-          },
-          no_chdir => 1,
-          follow   => 1,
-        }, $path);
-      }
-      elsif (-f $path) {
-        push @found, $path;
-      }
-      $DEPENDENT_FILES_CACHE{$path} = \@found;
-    }
-    push @all_dependent_files, @{$DEPENDENT_FILES_CACHE{$path}};
-  }
-
-
-  # Sort and unique for dependent files
-  my %seen_dependent_files_h;
-  @all_dependent_files = sort grep { !$seen_dependent_files_h{$_}++ } @all_dependent_files;
-  
   my $sha = Digest::SHA->new(1);
 
   # Add command and version hashes
@@ -371,47 +336,78 @@ sub create_command_hash {
   $sha->add(Digest::SHA::sha1_hex($command_version) . "\x0A");
 
   my $log_dir = $self->log_dir;
-  
-  # Add dependent files hashes (Using in-memory cache)
-  # Add dependent files hashes (Using in-memory cache)
-  for my $dependent_file (@all_dependent_files) {
-    my $normalized_dependent_file = $NORMALIZE_PATH_CACHE{$dependent_file}{$log_dir};
-    
-    unless (defined $normalized_dependent_file) {
-      $normalized_dependent_file = SPVM::Builder::Util::normalize_path($dependent_file, $log_dir);
-      $NORMALIZE_PATH_CACHE{$dependent_file}{$log_dir} = $normalized_dependent_file;
-    }
-    
-    $sha->add(Digest::SHA::sha1_hex($normalized_dependent_file) . "\x0A");
-    
-    # Check if the file is under the current working directory AND has source extensions
-    my $is_current_source = is_under_cwd($dependent_file) && ($dependent_file =~ $valid_ext_re);
-    
-    my $file_id_info;
-    if ($is_current_source) {
-      # Use content hash for current source files
-      $file_id_info = $self->dependent_content_hashes_h->{$dependent_file};
-      unless (defined $file_id_info) {
-        my $tmp_sha = Digest::SHA->new(1);
+
+  # Sort dependent files/directories directly to ensure stable hash
+  @$dependent_files = sort grep { defined $_ } @$dependent_files;
+
+  for my $path (@$dependent_files) {
+    # If the hash for this directory/path is already calculated, use it from cache
+    unless (exists $DIR_FINAL_HASH_CACHE{$path}) {
+      my $path_sha = Digest::SHA->new(1);
+      
+      # Determine if this entire path is under CWD once
+      my $is_under = is_under_cwd($path);
+      
+      # Scan and cache files in path if not already cached
+      unless (exists $DEPENDENT_FILES_CACHE{$path}) {
+        my @found;
+        if (-d $path) {
+          File::Find::find({
+            wanted => sub {
+              my $full_path = $File::Find::name;
+              my $base_name = $full_path;
+              $base_name =~ s|.*/||; 
+              if (-f $full_path && $base_name =~ $valid_ext_re) {
+                push @found, $full_path;
+              }
+            },
+            no_chdir => 1,
+            follow   => 1,
+          }, $path);
+        }
+        elsif (-f $path) {
+          push @found, $path;
+        }
+        # Files inside must also be sorted for stability
+        @found = sort @found;
+        $DEPENDENT_FILES_CACHE{$path} = \@found;
+      }
+      
+      # Accumulate hash for this path
+      for my $file (@{$DEPENDENT_FILES_CACHE{$path}}) {
+        # Path hash
+        my $normalized = $NORMALIZE_PATH_CACHE{$file}{$log_dir} //= 
+          SPVM::Builder::Util::normalize_path($file, $log_dir);
+        $path_sha->add(Digest::SHA::sha1_hex($normalized) . "\x0A");
         
-        $tmp_sha->addfile($dependent_file);
-        $file_id_info = $tmp_sha->hexdigest;
-        $self->dependent_content_hashes_h->{$dependent_file} = $file_id_info;
+        # Content hash or mtime system
+        my $file_id_info;
+        if ($is_under && $file =~ $valid_ext_re) {
+          $file_id_info = $self->dependent_content_hashes_h->{$file};
+          unless (defined $file_id_info) {
+            my $tmp_sha = Digest::SHA->new(1);
+            $tmp_sha->addfile($file);
+            $file_id_info = $tmp_sha->hexdigest;
+            $self->dependent_content_hashes_h->{$file} = $file_id_info;
+          }
+        }
+        else {
+          # Use cached stat info if available
+          my $stat_info = $STAT_CACHE{$file};
+          unless (defined $stat_info) {
+            my @s = stat $file;
+            $stat_info = "mtime:$s[9] size:$s[7]";
+            $STAT_CACHE{$file} = $stat_info;
+          }
+          $file_id_info = $stat_info;
+        }
+        $path_sha->add($file_id_info . "\x0A");
       }
-    }
-    else {
-      # Use modification time and size for others (external or non-source files)
-      # Using package-level %STAT_CACHE to avoid repeated I/O
-      my $stat_info = $STAT_CACHE{$dependent_file};
-      unless (defined $stat_info) {
-        my @s = stat $dependent_file;
-        $stat_info = "mtime:$s[9] size:$s[7]";
-        $STAT_CACHE{$dependent_file} = $stat_info;
-      }
-      $file_id_info = $stat_info;
+      $DIR_FINAL_HASH_CACHE{$path} = $path_sha->hexdigest;
     }
     
-    $sha->add($file_id_info . "\x0A");
+    # Add the pre-calculated directory hash to the main hash
+    $sha->add($DIR_FINAL_HASH_CACHE{$path} . "\x0A");
   }
 
   return $sha->hexdigest;
