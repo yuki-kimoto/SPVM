@@ -369,30 +369,30 @@ sub create_command_hash {
       @child_dependent_files = sort @child_dependent_files;
       
       # Accumulate hash for this path
-      for my $file (@child_dependent_files) {
+      for my $child_dependent_file (@child_dependent_files) {
         # Path hash
-        my $normalized = $NORMALIZE_PATH_CACHE{$file}{$log_dir} //= 
-          SPVM::Builder::Util::normalize_path($file, $log_dir);
+        my $normalized = $NORMALIZE_PATH_CACHE{$child_dependent_file}{$log_dir} //= 
+          SPVM::Builder::Util::normalize_path($child_dependent_file, $log_dir);
         $dependent_file_sha->add(Digest::SHA::sha1_hex($normalized) . "\x0A");
         
         # Content hash or mtime system
-        if ($is_under_current_dir_without_log_dir && $file =~ $source_exts_re) {
-          my $dependent_content = $DEPENDENT_CONTENT_CACHE{$file};
+        if ($is_under_current_dir_without_log_dir && $child_dependent_file =~ $source_exts_re) {
+          my $dependent_content = $DEPENDENT_CONTENT_CACHE{$child_dependent_file};
           unless (defined $dependent_content) {
             my $tmp_sha = Digest::SHA->new(1);
-            $tmp_sha->addfile($file);
+            $tmp_sha->addfile($child_dependent_file);
             $dependent_content = $tmp_sha->hexdigest;
-            $DEPENDENT_CONTENT_CACHE{$file} = $dependent_content;
+            $DEPENDENT_CONTENT_CACHE{$child_dependent_file} = $dependent_content;
           }
           $dependent_file_sha->add($dependent_content . "\x0A");
         }
         else {
           # Use cached stat info if available
-          my $stat_info_string = $STAT_CACHE{$file};
+          my $stat_info_string = $STAT_CACHE{$child_dependent_file};
           unless (defined $stat_info_string) {
-            my @stat_infos = stat $file;
+            my @stat_infos = stat $child_dependent_file;
             $stat_info_string = "mtime:$stat_infos[9] size:$stat_infos[7]";
-            $STAT_CACHE{$file} = $stat_info_string;
+            $STAT_CACHE{$child_dependent_file} = $stat_info_string;
           }
           $dependent_file_sha->add($stat_info_string . "\x0A");
         }
