@@ -310,8 +310,8 @@ sub create_command_hash {
   my $dependent_files = $options->{dependent_files} // confess("dependent_files must be defined.");
   
   my $sha = Digest::SHA->new(1);
-  $sha->add(Digest::SHA::sha1_hex($command) . "\x0A");
-  $sha->add(Digest::SHA::sha1_hex($command_version) . "\x0A");
+  $sha->add(Digest::SHA::sha1_hex($command));
+  $sha->add(Digest::SHA::sha1_hex($command_version));
 
   my $log_dir = $self->log_dir;
   @$dependent_files = sort grep { defined $_ } @$dependent_files;
@@ -402,7 +402,7 @@ sub create_command_hash {
         # Path hash
         my $normalized = $NORMALIZE_PATH_CACHE{$child_file}{$log_dir} //= 
           SPVM::Builder::Util::normalize_path($child_file, $log_dir);
-        $dependent_file_sha->add(Digest::SHA::sha1_hex($normalized) . "\x0A");
+        $dependent_file_sha->add(Digest::SHA::sha1_hex($normalized));
         
         # Content or Mtime hash
         if ($is_under_current_dir && -T $child_file) {
@@ -413,18 +413,18 @@ sub create_command_hash {
             $content = $tmp_sha->hexdigest;
             $DEPENDENT_CONTENT_CACHE{$child_file} = $content;
           }
-          $dependent_file_sha->add($content . "\x0A");
+          $dependent_file_sha->add($content);
         }
         else {
           # Retrieve the stat object from cache
           my $st_obj = $STAT_CACHE{$child_file} // [stat $child_file];
           # Use mtime ($st[9]) and size ($st[7]) for the hash
-          $dependent_file_sha->add("mtime:$st_obj->[9] size:$st_obj->[7]\x0A");
+          $dependent_file_sha->add("mtime:$st_obj->[9] size:$st_obj->[7]");
         }
       }
       $DEPENDANT_FILE_HASH_CACHE{$dependent_file} = $dependent_file_sha->hexdigest;
     }
-    $sha->add($DEPENDANT_FILE_HASH_CACHE{$dependent_file} . "\x0A");
+    $sha->add($DEPENDANT_FILE_HASH_CACHE{$dependent_file});
   }
 
   return $sha->hexdigest;
