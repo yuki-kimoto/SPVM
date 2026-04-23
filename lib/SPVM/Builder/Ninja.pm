@@ -344,7 +344,7 @@ sub create_command_hash {
       my $dependent_file_sha = Digest::SHA->new(1);
       
       # Determine if this entire path is under CURRENT_DIR once
-      my $is_under_current_dir = &is_under_current_dir($dependent_file);
+      my $is_under_current_dir_without_log_dir = $self->is_under_current_dir_without_log_dir($dependent_file);
       
       # Scan and cache files in path if not already cached
       my @child_dependent_files;
@@ -376,7 +376,7 @@ sub create_command_hash {
         $dependent_file_sha->add(Digest::SHA::sha1_hex($normalized) . "\x0A");
         
         # Content hash or mtime system
-        if ($is_under_current_dir && $file =~ $source_exts_re) {
+        if ($is_under_current_dir_without_log_dir && $file =~ $source_exts_re) {
           my $dependent_content = $DEPENDENT_CONTENT_CACHE{$file};
           unless (defined $dependent_content) {
             my $tmp_sha = Digest::SHA->new(1);
@@ -536,16 +536,30 @@ unless ($CURRENT_DIR_ABS =~ m|[\\/]$|) {
 # Normalize to forward slashes for consistent string comparison
 $CURRENT_DIR_ABS =~ s|\\|/|g;
 
-sub is_under_current_dir {
-  my ($path) = @_;
+sub is_under_current_dir_without_log_dir {
+  my ($self, $path) = @_;
   
-  # 1. Convert to absolute without hitting disk (rel2abs is mostly string op)
-  # 2. Normalize slashes
+  # Cache the absolute log directory path
+  my $log_dir_abs = $self->{log_dir_abs} //= do {
+    my $ld = File::Spec->rel2abs($self->log_dir);
+    $ld =~ s|\\|/|g;
+    $ld;
+  };
+
+  # Normalize the input path
   my $abs_path = File::Spec->rel2abs($path);
   $abs_path =~ s|\\|/|g;
   
-  # 3. Fast string prefix match
-  return index($abs_path, $CURRENT_DIR_ABS) == 0;
+  # Check if the path is under the current directory
+  if (index($abs_path, $CURRENT_DIR_ABS) == 0) {
+    # Exclude the log directory
+    if (index($abs_path, $log_dir_abs) == 0) {
+      return 0;
+    }
+    return 1;
+  }
+  
+  return 0;
 }
 
 sub DESTROY {
