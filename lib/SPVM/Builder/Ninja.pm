@@ -405,7 +405,7 @@ sub create_command_hash {
         $dependent_file_sha->add(Digest::SHA::sha1_hex($normalized) . "\x0A");
         
         # Content or Mtime hash
-        if ($is_under_current_dir) {
+        if ($is_under_current_dir && -T $child_file) {
           my $content = $DEPENDENT_CONTENT_CACHE{$child_file};
           unless (defined $content) {
             my $tmp_sha = Digest::SHA->new(1);
