@@ -227,9 +227,9 @@ my @current_native_source_baz_object_files;
 
 {
   # --- Test for all supported header extensions ---
-  my @header_exts = qw(h hpp hh hxx h++ inc inl c cpp cc cxx c++);
+  my @source_exts = qw(h hpp hh hxx h++ inc inl c cpp cc cxx c++);
 
-  for my $ext (@header_exts) {
+  for my $ext (@source_exts) {
     my $new_header_file = "$native_include_dir/baz/extra_$ext.$ext";
     
     # 1. Create a new header-like file

@@ -20,7 +20,7 @@ has [qw(
   entries_length
   lock_file_base_name
   lock_fh
-  header_exts
+  source_exts
   dependent_content_hashes_h
 )];
 
@@ -31,7 +31,7 @@ sub new {
     entries_h => {},
     log_file_base_name => '.ninja_log',
     entries_length => 0,
-    header_exts => [qw(h hpp hh hxx h++ inc inl c cpp cc cxx c++)],
+    source_exts => [qw(h hpp hh hxx h++ inc inl c cpp cc cxx c++)],
     lock_file_base_name => '.ninja_lock',
     dependent_content_hashes_h => {},
     @_
@@ -321,7 +321,7 @@ sub create_command_hash {
     confess("dependent_files must be defined.");
   }
   
-  my $extensions = $self->header_exts || [];
+  my $extensions = $self->source_exts || [];
   my $ext_list = join '|', map { quotemeta $_ } @$extensions;
   my $valid_ext_re = qr/\.(?:$ext_list)$/i;
 
