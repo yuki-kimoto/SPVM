@@ -316,6 +316,15 @@ sub create_command_hash {
   my $log_dir = $self->log_dir;
   @$dependent_files = sort grep { defined $_ } @$dependent_files;
 
+  # Get exclude extensions from environment variable
+  # Specifications: Comma-separated, no dots, trim whitespace
+  my $env_exclude_exts = $ENV{SPVM_DEPENDENT_FILE_EXCLUDE_EXTS} // '';
+  my @exclude_exts_list = grep { length } map { s/^\s+|\s+$//gr } split /,/, $env_exclude_exts;
+  
+  # Create regex for exclusion
+  my $exclude_exts_pattern = join '|', map { quotemeta $_ } @exclude_exts_list;
+  my $exclude_exts_re = $exclude_exts_pattern ? qr/(?:$exclude_exts_pattern)$/i : qr/$^/;
+  
   for my $dependent_file (@$dependent_files) {
     unless (exists $DEPENDANT_FILE_HASH_CACHE{$dependent_file}) {
       my $dependent_file_sha = Digest::SHA->new(1);
@@ -336,11 +345,6 @@ sub create_command_hash {
       if ($is_dir) {
         # Check if the file has an extension
         my $has_ext_re = qr/\.[^.\\\/]+$/;
-
-        # Exclude list (empty)
-        my $exclude_exts = [];
-        my $exclude_exts_pattern = join '|', map { quotemeta $_ } @$exclude_exts;
-        my $exclude_exts_re = $exclude_exts_pattern ? qr/(?:$exclude_exts_pattern)$/i : qr/$^/;
 
         File::Find::find({
           wanted => sub {

@@ -46,6 +46,22 @@ If it is a non-empty string, the value is used as a compiler flag for optimaizat
 
 This setting has a higher priority than L<SPVM::Builder::Config#optimize|SPVM::Builder::Config/"optimize"> field.
 
+=head2 SPVM_DEPENDENT_FILE_EXCLUDE_EXTS
+
+A list of file extensions to be excluded from dependent file scanning, separated by commas.
+
+Each element should be only an extension (e.g., C<so>), not including a dot (C<.>). Leading and trailing whitespace in each element is ignored.
+
+These extensions are used to filter out files during the build process, such as large binary files that should not be tracked for changes.
+
+Examples:
+
+  # bash
+  export SPVM_DEPENDENT_FILE_EXCLUDE_EXTS=so,obj,exe
+  
+  # csh
+  setenv SPVM_DEPENDENT_FILE_EXCLUDE_EXTS "so, obj, exe"
+
 =head1 See Also
 
 =over 2
