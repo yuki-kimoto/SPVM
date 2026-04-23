@@ -301,6 +301,7 @@ sub need_generate {
 
 my %NORMALIZE_PATH_CACHE;
 my %DEPENDENT_FILES_CACHE;
+my %STAT_CACHE;
 
 sub create_command_hash {
   my ($self, $options) = @_;
@@ -400,8 +401,14 @@ sub create_command_hash {
     }
     else {
       # Use modification time and size for others (external or non-source files)
-      my @s = stat $dependent_file;
-      $file_id_info = "mtime:$s[9] size:$s[7]";
+      # Using package-level %STAT_CACHE to avoid repeated I/O
+      my $stat_info = $STAT_CACHE{$dependent_file};
+      unless (defined $stat_info) {
+        my @s = stat $dependent_file;
+        $stat_info = "mtime:$s[9] size:$s[7]";
+        $STAT_CACHE{$dependent_file} = $stat_info;
+      }
+      $file_id_info = $stat_info;
     }
     
     $sha->add($file_id_info . "\x0A");
