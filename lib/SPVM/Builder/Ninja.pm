@@ -22,7 +22,6 @@ has [qw(
   entries_length
   lock_file_base_name
   lock_fh
-  source_exts
 )];
 
 sub new {
@@ -32,7 +31,6 @@ sub new {
     entries_h => {},
     log_file_base_name => '.ninja_log',
     entries_length => 0,
-    source_exts => [qw(h hpp hh hxx h++ inc inl c cpp cc cxx c++)],
     lock_file_base_name => '.ninja_lock',
     @_
   };
@@ -302,6 +300,8 @@ my %DEPENDENT_CONTENT_CACHE;
 my %DEPENDANT_FILE_HASH_CACHE;
 my %STAT_CACHE;
 
+use Fcntl ':mode';
+
 sub create_command_hash {
   my ($self, $options) = @_;
   
@@ -309,10 +309,6 @@ sub create_command_hash {
   my $command_version = $options->{command_version} // confess("command_version must be defined.");
   my $dependent_files = $options->{dependent_files} // confess("dependent_files must be defined.");
   
-  my $source_exts = $self->source_exts || [];
-  my $source_exts_pattern = join '|', map { quotemeta $_ } @$source_exts;
-  my $source_exts_re = qr/\.(?:$source_exts_pattern)$/i;
-
   my $sha = Digest::SHA->new(1);
   $sha->add(Digest::SHA::sha1_hex($command) . "\x0A");
   $sha->add(Digest::SHA::sha1_hex($command_version) . "\x0A");
@@ -326,24 +322,64 @@ sub create_command_hash {
       
       my @child_dependent_files;
       
-      # Use lstat once to avoid multiple disk hits
-      my @st = lstat $dependent_file;
-      next unless @st;
+      # Check cache or fetch lstat
+      my $st_obj = $STAT_CACHE{$dependent_file} //= do {
+        my @st = lstat $dependent_file;
+        @st ? \@st : undef;
+      };
+      next unless $st_obj;
       
-      my $mode = $st[2];
-      my $is_dir = ($mode & 0170000) == 0040000;
-      my $is_file = ($mode & 0170000) == 0100000;
+      my $mode = $st_obj->[2];
+      my $is_dir = S_ISDIR($mode);
+      my $is_file = S_ISREG($mode);
 
       if ($is_dir) {
+        # Check if the file has an extension
+        my $has_ext_re = qr/\.[^.\\\/]+$/;
+
+        # Exclude list (empty)
+        my $exclude_exts = [];
+        my $exclude_exts_pattern = join '|', map { quotemeta $_ } @$exclude_exts;
+        my $exclude_exts_re = $exclude_exts_pattern ? qr/(?:$exclude_exts_pattern)$/i : qr/$^/;
+
         File::Find::find({
           wanted => sub {
             my $full_path = $File::Find::name;
-            # Get stat info once during scan
-            my @cst = lstat $full_path;
-            if (@cst && (($cst[2] & 0170000) == 0100000) && $full_path =~ $source_exts_re) {
-              push @child_dependent_files, $full_path;
-              # Store the stat arrayref as an object
-              $STAT_CACHE{$full_path} = \@cst;
+            
+            # 1. Fetch from cache or execute lstat
+            my $st_obj = $STAT_CACHE{$full_path} //= do {
+              my @st = lstat $full_path;
+              @st ? \@st : undef;
+            };
+            return unless $st_obj;
+
+            # 2. Get mode and check file types using constants
+            my $mode = $st_obj->[2];
+            my $is_dir  = S_ISDIR($mode);
+            my $is_file = S_ISREG($mode);
+
+            # Normalize for regex
+            my $normalized_path = $full_path;
+            $normalized_path =~ s|\\|/|g;
+
+            # 3. Directory handling
+            if ($is_dir) {
+              # Prune hidden directories
+              if ($normalized_path =~ m|/\.[^/]+$|) {
+                $File::Find::prune = 1;
+              }
+              return;
+            }
+
+            # 4. File handling
+            if ($is_file) {
+              # Match specs: has extension, not excluded, not in hidden dir
+              if ($normalized_path =~ $has_ext_re && 
+                  $normalized_path !~ $exclude_exts_re && 
+                  $normalized_path !~ m|[\\/]\.[^\\/]+|) {
+                
+                push @child_dependent_files, $full_path;
+              }
             }
           },
           no_chdir => 1,
@@ -352,7 +388,6 @@ sub create_command_hash {
       }
       elsif ($is_file) {
         push @child_dependent_files, $dependent_file;
-        $STAT_CACHE{$dependent_file} = \@st;
       }
       
       @child_dependent_files = sort @child_dependent_files;
@@ -366,7 +401,7 @@ sub create_command_hash {
         $dependent_file_sha->add(Digest::SHA::sha1_hex($normalized) . "\x0A");
         
         # Content or Mtime hash
-        if ($is_under_current_dir && $child_file =~ $source_exts_re) {
+        if ($is_under_current_dir) {
           my $content = $DEPENDENT_CONTENT_CACHE{$child_file};
           unless (defined $content) {
             my $tmp_sha = Digest::SHA->new(1);
