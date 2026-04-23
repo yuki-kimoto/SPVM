@@ -12,6 +12,9 @@ use File::Path 'make_path', 'rmtree';
 use SPVM::Builder::Util;
 use File::Basename 'dirname';
 use SPVM;
+use Cwd;
+
+my $save_cur_dir = Cwd::getcwd();
 
 # Prepare temporary directory
 my $tmp_dir = File::Temp->newdir;
@@ -20,6 +23,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 my $lib_dir = "$tmp_dir/lib/SPVM/TestCase";
 my $native_include_dir = "$lib_dir/BuildCache.native/include";
 my $native_src_dir     = "$lib_dir/BuildCache.native/src/baz";
+
 
 make_path($lib_dir);
 make_path($native_include_dir . "/baz");
@@ -81,14 +85,28 @@ EOS
   SPVM::Builder::Util::spurt_binary($native_class_file, $content);
 }
 
+my @blib;
+my @blib_options;
+{
+  local @INC;
+  blib->import;
+  @blib = @INC;
+  @blib_options = map { "-I$_" } @blib;
+}
+
+
 # Helper to compile
-my $compile_cmd = "$^X -I$tmp_dir/lib -Mblib -e \"use SPVM 'TestCase::BuildCache';\"";
+my $compile_cmd = "$^X -I$tmp_dir/lib @blib_options -e \"use SPVM 'TestCase::BuildCache';\"";
 
 my $native_class_object_file_glob_pattern = "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.o";
 my $native_source_baz_object_file_glob_pattern = "$build_dir/work/object/*/*/SPVM/TestCase/BuildCache.native/src/baz/baz.o";
 
 my @current_native_class_object_files;
 my @current_native_source_baz_object_files;
+
+# Change current directory to use content hash system for build cache.
+chdir $tmp_dir
+  or die "Cannot change directory to '$tmp_dir': $!";
 
 # First build
 {
@@ -357,6 +375,8 @@ my @current_native_source_baz_object_files;
   is(@current_native_source_baz_object_files, @old_native_source_baz_object_files);
 }
 
+chdir $save_cur_dir
+  or die "Cannot change current directory to '$save_cur_dir':$!";
 
 done_testing;
 
