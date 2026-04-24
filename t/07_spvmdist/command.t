@@ -29,6 +29,18 @@ my $perl5lib = ($ENV{PERL5LIB} // '') . "$path_sep$blib_arch$path_sep$blib_lib";
 
 my $make = $Config{make};
 
+# SPVM requires GNU Make for the order-only dependency syntax '|' and the 'override' syntax.
+# On FreeBSD, the default "make" is BSD Make, so we need to use "gmake" (GNU Make) instead.
+if ($^O eq 'freebsd') {
+  my $success = system('gmake', '--version') == 0;
+  if ($success) {
+    $make = 'gmake';
+  }
+  else {
+    die "SPVM needs GNU Make.\n";
+  }
+}
+
 # Failed to parse options.
 {
   {
