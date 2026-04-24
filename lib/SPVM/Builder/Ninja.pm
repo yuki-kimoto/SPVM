@@ -13,9 +13,10 @@ use SPVM::Builder::Accessor 'has';
 use File::Find;
 use Cwd ();
 use File::Spec;
+use Scalar::Util 'weaken';
 
 has [qw(
-  log_dir
+  builder
   log_file_base_name
   log_fh
   entries_h
@@ -36,6 +37,12 @@ sub new {
   };
   
   bless $self, ref $class || $class;
+  
+  unless ($self->builder) {
+    confess("'builder' field must be defined");
+  }
+  
+  weaken $self->{builder};
   
   $self->prepare;
   
@@ -59,15 +66,15 @@ sub prepare {
 sub log_file {
   my ($self) = @_;
 
-  my $log_dir = $self->log_dir;
+  my $build_dir = $self->builder->build_dir;
 
-  # Raise an exception if log_dir is not defined
-  unless (defined $log_dir) {
-    confess("The \"log_dir\" field must be defined");
+  # Raise an exception if build_dir is not defined
+  unless (defined $build_dir) {
+    confess("The \"build_dir\" field must be defined");
   }
 
   my $log_file_base_name = $self->log_file_base_name;
-  my $log_file = "$log_dir/$log_file_base_name";
+  my $log_file = "$build_dir/$log_file_base_name";
 
   return $log_file;
 }
@@ -75,15 +82,15 @@ sub log_file {
 sub lock_file {
   my ($self) = @_;
 
-  my $log_dir = $self->log_dir;
+  my $build_dir = $self->builder->build_dir;
 
-  # Raise an exception if log_dir is not defined
-  unless (defined $log_dir) {
-    confess("The \"log_dir\" field must be defined");
+  # Raise an exception if build_dir is not defined
+  unless (defined $build_dir) {
+    confess("The \"build_dir\" field must be defined");
   }
   
   my $lock_file_base_name = $self->lock_file_base_name;
-  my $lock_file = "$log_dir/$lock_file_base_name";
+  my $lock_file = "$build_dir/$lock_file_base_name";
 
   return $lock_file;
 }
@@ -91,7 +98,7 @@ sub lock_file {
 sub open_lock_file {
   my ($self) = @_;
   
-  mkpath $self->log_dir;
+  mkpath $self->builder->build_dir;
   
   my $lock_file = $self->lock_file;
   
@@ -173,7 +180,7 @@ sub add_log_without_lock {
     confess("mtime must be defined.");
   }
 
-  my $normalized_output_file = $options->{no_normalize_output_file} ? $output_file : SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
+  my $normalized_output_file = $options->{no_normalize_output_file} ? $output_file : SPVM::Builder::Util::normalize_path($output_file, $self->builder->build_dir);
   
   my $entry_line = sprintf("%d\t%d\t%d\t%s\t%s\x0A", 
     $start_time, 
@@ -283,7 +290,7 @@ sub need_generate {
   else {
     # Retrieve the recorded log entry for the output file
     my $entries_h = $self->entries_h;
-    my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $self->log_dir);
+    my $normalized_output_file = SPVM::Builder::Util::normalize_path($output_file, $self->builder->build_dir);
     my $entry = $entries_h->{$normalized_output_file};
     
     # If the entry doesn't exist, or the hash simply doesn't match, rebuild.
@@ -311,7 +318,7 @@ sub create_command_hash {
   my $dependent_files = $options->{dependent_files}
     // confess("'dependent_files' optioon must be defined.");
   
-  my $log_dir = $self->log_dir;
+  my $build_dir = $self->builder->build_dir;
   
   # Check if the file has an extension
   my $has_ext_re = qr/\.[^.\\\/]+$/;
@@ -373,8 +380,8 @@ sub create_command_hash {
         my $is_under_current_dir = $self->is_under_current_dir_without_build_dir($child_dependent_file);
       
         # Path hash
-        my $normalized = $NORMALIZE_PATH_CACHE{$child_dependent_file}{$log_dir} //= 
-          SPVM::Builder::Util::normalize_path($child_dependent_file, $log_dir);
+        my $normalized = $NORMALIZE_PATH_CACHE{$child_dependent_file}{$build_dir} //= 
+          SPVM::Builder::Util::normalize_path($child_dependent_file, $build_dir);
         $dependent_file_sha->add(Digest::SHA::sha1_hex($normalized));
         
         # Content or Mtime hash
@@ -520,7 +527,7 @@ sub write_lock_with_flush {
 sub create_log {
   my ($self) = @_;
   
-  mkpath $self->log_dir;
+  mkpath $self->builder->build_dir;
   
   $self->open_log('>>');
   $self->close_log;
@@ -540,11 +547,11 @@ sub is_under_current_dir_without_build_dir {
   my ($self, $path) = @_;
   
   # Use abs_path to resolve symlinks (especially for Mac /var -> /private/var)
-  my $log_dir_abs = $ABS_PATH_CACHE{$self->log_dir};
-  unless (defined $log_dir_abs) {
-    my $tmp_log_dir_abs = abs_path($self->log_dir);
-    $tmp_log_dir_abs =~ s|\\|/|g;
-    $log_dir_abs = $ABS_PATH_CACHE{$self->log_dir} = $tmp_log_dir_abs;
+  my $build_dir_abs = $ABS_PATH_CACHE{$self->builder->build_dir};
+  unless (defined $build_dir_abs) {
+    my $tmp_build_dir_abs = abs_path($self->builder->build_dir);
+    $tmp_build_dir_abs =~ s|\\|/|g;
+    $build_dir_abs = $ABS_PATH_CACHE{$self->builder->build_dir} = $tmp_build_dir_abs;
   }
   
   # Resolve the input path to its real physical path
@@ -557,7 +564,7 @@ sub is_under_current_dir_without_build_dir {
   
   # Now the comparison should work even on Mac's temp dirs
   if (index($path_abs, $CURRENT_DIR_ABS) == 0) {
-    if (index($path_abs, $log_dir_abs) == 0) {
+    if (index($path_abs, $build_dir_abs) == 0) {
       return 0;
     }
     return 1;

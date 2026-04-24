@@ -56,7 +56,7 @@ sub new {
   mkpath $build_dir;
   
   unless (exists $self->{ninja}) {
-    $self->{ninja} = SPVM::Builder::Ninja->new(log_dir => $self->build_dir);
+    $self->{ninja} = SPVM::Builder::Ninja->new(builder => $self);
   }
   
   # Ensure the global lock file is opened once
