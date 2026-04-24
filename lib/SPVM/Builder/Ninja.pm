@@ -296,7 +296,7 @@ sub need_generate {
 }
 
 my %NORMALIZE_PATH_CACHE;
-my %DEPENDENT_CONTENT_CACHE;
+my %DEPENDENT_CONTENT_HASH_CACHE;
 my %DEPENDANT_FILE_HASH_CACHE;
 
 sub create_command_hash {
@@ -375,14 +375,13 @@ sub create_command_hash {
         
         # Content or Mtime hash
         if ($is_under_current_dir && -T $child_dependent_file) {
-          my $content = $DEPENDENT_CONTENT_CACHE{$child_dependent_file};
-          unless (defined $content) {
-            my $tmp_sha = Digest::SHA->new(1);
-            $tmp_sha->addfile($child_dependent_file);
-            $content = $tmp_sha->hexdigest;
-            $DEPENDENT_CONTENT_CACHE{$child_dependent_file} = $content;
+          my $content_hash = $DEPENDENT_CONTENT_HASH_CACHE{$child_dependent_file};
+          unless (defined $content_hash) {
+            my $content_hash_sha = Digest::SHA->new(1);
+            $content_hash_sha->addfile($child_dependent_file);
+            $content_hash = $DEPENDENT_CONTENT_HASH_CACHE{$child_dependent_file} = $content_hash_sha->hexdigest;
           }
-          $dependent_file_sha->add($content);
+          $dependent_file_sha->add($content_hash);
         }
         else {
           # Retrieve the stat object from cache
@@ -400,7 +399,7 @@ sub create_command_hash {
     }
     $sha->add($dependant_file_hash);
   }
-
+  
   return $sha->hexdigest;
 }
 
