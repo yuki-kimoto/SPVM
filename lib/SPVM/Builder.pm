@@ -55,10 +55,6 @@ sub new {
   
   mkpath $build_dir;
   
-  unless (exists $self->{ninja}) {
-    $self->{ninja} = SPVM::Builder::Ninja->new(builder => $self);
-  }
-  
   # Ensure the global lock file is opened once
   my $global_lock_file = $self->get_global_lock_file;
   
@@ -67,6 +63,10 @@ sub new {
     or die "Can't open global lock file '$global_lock_file': $!";
   
   $self->{global_lock_fh} = $global_lock_fh;
+  
+  unless (exists $self->{ninja}) {
+    $self->{ninja} = SPVM::Builder::Ninja->new(builder => $self);
+  }
   
   return $self;
 }
