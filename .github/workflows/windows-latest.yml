@@ -34,9 +34,4 @@ jobs:
       - name: Show MYMETA.json
         run: cat MYMETA.json
       - run: perl Makefile.PL
-      - name: make disttest
-        run: |
-          $MAKE_JOBS = perl -MJSON::PP -e 'undef $/; $m=decode_json(<>); print $m->{x_parallel_make_jobs} || 1' MYMETA.json
-          echo "MAKE_JOBS: $MAKE_JOBS"
-          $env:MAKEFLAGS = "j$MAKE_JOBS"
-          gmake disttest
+      - run: gmake disttest
