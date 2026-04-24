@@ -281,6 +281,34 @@ chdir $tmp_dir
 }
 
 {
+  # Localize environment variables
+  local %ENV = %ENV;
+  $ENV{SPVM_DEPENDENT_FILE_EXCLUDE_EXTS} = 'exclude';
+
+  # Test for SPVM_DEPENDENT_FILE_EXCLUDE_EXTS (.exclude)
+  my $ext = 'exclude';
+  my $exclude_header_file = "$native_include_dir/baz/extra_$ext.$ext";
+  
+  # Create a new file with .exclude extension
+  SPVM::Builder::Util::spurt_binary($exclude_header_file, "");
+  
+  system($compile_cmd) == 0 or die;
+  
+  my @old_native_class_object_files = @current_native_class_object_files;
+  my @old_native_source_baz_object_files = @current_native_source_baz_object_files;
+  
+  @current_native_class_object_files = glob $native_class_object_file_glob_pattern;
+  @current_native_source_baz_object_files = glob $native_source_baz_object_file_glob_pattern;
+  
+  # Verify that no object files were re-generated
+  is(@current_native_class_object_files, @old_native_class_object_files);
+  is(@current_native_source_baz_object_files, @old_native_source_baz_object_files);
+  
+  # Remove the temporary excluded file
+  unlink $exclude_header_file or die "Can't remove $exclude_header_file: $!";
+}
+
+{
   # Update config file with only a comment change
   $config_content = $config_content . "\n# This is just a comment. It should not trigger a re-build.\n \$config;\n";
   SPVM::Builder::Util::spurt_binary($config_file, $config_content);
