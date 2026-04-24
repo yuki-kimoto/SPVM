@@ -327,7 +327,9 @@ sub create_command_hash {
   $sha->add(Digest::SHA::sha1_hex($command));
   $sha->add(Digest::SHA::sha1_hex($command_version));
   
-  @$dependent_files = sort grep { length $_ } @$dependent_files;
+  my %seen_dependent_files_h;
+  @$dependent_files = grep { length $_ && !$seen_dependent_files_h{$_}++ } @$dependent_files;
+  @$dependent_files = sort @$dependent_files;
   for my $dependent_file (@$dependent_files) {
     my $dependant_file_hash = $DEPENDANT_FILE_HASH_CACHE{$dependent_file};
     unless (defined $dependant_file_hash) {
@@ -364,6 +366,8 @@ sub create_command_hash {
       
       my $dependent_file_sha = Digest::SHA->new(1);
       
+      my %seen_child_dependent_files_h;
+      @child_dependent_files = grep { length $_ && !$seen_child_dependent_files_h{$_}++ } @child_dependent_files;
       @child_dependent_files = sort @child_dependent_files;
       for my $child_dependent_file (@child_dependent_files) {
         my $is_under_current_dir = $self->is_under_current_dir_without_build_dir($child_dependent_file);
