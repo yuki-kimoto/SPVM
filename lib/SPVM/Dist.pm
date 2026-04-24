@@ -870,6 +870,7 @@ GetOptions(
   'meta' => \\my \$meta,
   'no-build-spvm-modules' => \\my \$no_build_spvm_modules,
   'optimize=s' => \\my \$optimize,
+  'devel' => \\my \$devel,
 );
 
 if (\$meta) {
@@ -878,6 +879,12 @@ if (\$meta) {
 
 unless (\$meta) {
   # Do something such as environment check.
+}
+
+unless (\$optimize) {
+  if (\$devel) {
+    \$optimize = "-O0 -g";
+  }
 }
 
 my \%configure_and_runtime_requires = ('SPVM' => '$SPVM::VERSION');
