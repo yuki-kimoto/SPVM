@@ -313,6 +313,9 @@ sub create_command_hash {
   
   my $log_dir = $self->log_dir;
   
+  # Check if the file has an extension
+  my $has_ext_re = qr/\.[^.\\\/]+$/;
+  
   # Create regex for dependent file exclusion extensions
   # Get exclude extensions from environment variable: Comma-separated, no dots, trim whitespace
   my $env_dependent_file_exclude_exts = $ENV{SPVM_DEPENDENT_FILE_EXCLUDE_EXTS} // '';
@@ -329,69 +332,41 @@ sub create_command_hash {
     my $dependant_file_hash = $DEPENDANT_FILE_HASH_CACHE{$dependent_file};
     unless (defined $dependant_file_hash) {
       my @child_dependent_files;
-      
-      # Check cache or fetch stat
-      my @stat_result = stat $dependent_file;
-      next unless @stat_result;
-      
-      my $mode = $stat_result[2];
-      my $is_dir = S_ISDIR($mode);
-      my $is_file = S_ISREG($mode);
-
-      if ($is_dir) {
-        # Check if the file has an extension
-        my $has_ext_re = qr/\.[^.\\\/]+$/;
-
-        File::Find::find({
-          wanted => sub {
-            my $child_dependent_file = $File::Find::name;
-            
-            # Fetch from cache or execute stat
-            my @stat_result = stat $child_dependent_file;
-            next unless @stat_result;
-
-            # Get mode and check file types using constants
-            my $mode = $stat_result[2];
-            my $is_dir  = S_ISDIR($mode);
-            my $is_file = S_ISREG($mode);
-
-            # Normalize for regex
-            my $normalized_path = $child_dependent_file;
-            $normalized_path =~ s|\\|/|g;
-
-            # Directory handling
-            if ($is_dir) {
-              # Prune hidden directories
-              if ($normalized_path =~ m|/\.[^/]+$|) {
-                $File::Find::prune = 1;
-              }
-              return;
+      File::Find::find({
+        wanted => sub {
+          my $child_dependent_file = $File::Find::name;
+          
+          # Fetch from cache or execute stat
+          my @stat_result = stat $child_dependent_file;
+          return unless @stat_result;
+          
+          # Get mode and check file types using constants
+          my $mode = $stat_result[2];
+          my $is_file = S_ISREG($mode);
+          
+          # Prune hidden files and directories
+          if ($child_dependent_file =~ m|[\\/]\.[^\\/]*|) {
+            $File::Find::prune = 1;
+            return;
+          }
+          
+          # File handling
+          if ($is_file) {
+            # Match specs: has extension, not excluded, not in hidden dir
+            if ($child_dependent_file =~ $has_ext_re && $child_dependent_file !~ $dependent_file_exclude_exts_re) {
+              push @child_dependent_files, $child_dependent_file;
             }
-
-            # File handling
-            if ($is_file) {
-              # Match specs: has extension, not excluded, not in hidden dir
-              if ($normalized_path =~ $has_ext_re && 
-                  $normalized_path !~ $dependent_file_exclude_exts_re && 
-                  $normalized_path !~ m|[\\/]\.[^\\/]+|) {
-                
-                push @child_dependent_files, $child_dependent_file;
-              }
-            }
-          },
-          no_chdir => 1,
-          follow   => 1,
-        }, $dependent_file);
-      }
-      elsif ($is_file) {
-        push @child_dependent_files, $dependent_file;
-      }
+          }
+        },
+        no_chdir => 1,
+        follow   => 1,
+      }, $dependent_file);
       
       my $dependent_file_sha = Digest::SHA->new(1);
       
       @child_dependent_files = sort @child_dependent_files;
       for my $child_dependent_file (@child_dependent_files) {
-        my $is_under_current_dir = $self->is_under_current_dir_without_log_dir($child_dependent_file);
+        my $is_under_current_dir = $self->is_under_current_dir_without_build_dir($child_dependent_file);
       
         # Path hash
         my $normalized = $NORMALIZE_PATH_CACHE{$child_dependent_file}{$log_dir} //= 
@@ -559,7 +534,7 @@ unless ($CURRENT_DIR_ABS =~ m|/$|) {
   $CURRENT_DIR_ABS .= '/';
 }
 
-sub is_under_current_dir_without_log_dir {
+sub is_under_current_dir_without_build_dir {
   my ($self, $path) = @_;
   
   # Use abs_path to resolve symlinks (especially for Mac /var -> /private/var)
