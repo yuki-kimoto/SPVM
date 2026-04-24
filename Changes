@@ -1,3 +1,24 @@
+0.990166 2026-04-24
+  [Build System Improvement]
+    * Use a lot of cache to improve build cache check performance.
+    * Improve the logic of build cache check to improve build cache check performance.
+    * Change build cache system. If the source file is text(by -T operator) and current directory, use content hash strategy, If not, use mtime strategy.
+    * Change the range of dependent files. They have an extension, are not hidden file and is not excluded files by SPVM_DEPENDENT_FILE_EXCLUDE_EXTS environment variable.
+  [New Features]
+    Add SPVM_DEPENDENT_FILE_EXCLUDE_EXTS environment variable.
+  [Test Improvement]
+    * Add tests for build cache mtime strategy.
+    * Add tests for spvm_warn in spvmcc for MSVC.
+  [Test Fix]
+    * Use gmake in tests if OS is FreeBSD .
+  [Internal Changes]
+    * Remove spurt_binary_palallel_safe and restore spurt_binary and add global_lock_fh argument and improve performance removeing File::Temp->newdir.   * Remove header_exts field.
+    * Remove log_dir field and add builder field to SPVM::Builder::Ninja.
+    * Add global_file_read_lock method to SPVM::Builder.
+    * Remove lock file fields from SPVM::Builder::Ninja and use global file lock.
+  [Exception Improvement]
+    * Add an exception. Cannot find the basic type for '$class_name' class. Did you forgot to load the class?Add an exception.
+    
 0.990165 2026-04-22
   [New Features]
     * Add SPVMCC__main exported symbol to the executable file and dynamic link library generetaed by spvmcc command.

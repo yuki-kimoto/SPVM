@@ -37,6 +37,8 @@ eval {
   $has_msvc = defined $hint_cc;
 };
 
+warn $@;
+
 unless ($has_msvc) {
   plan skip_all => '[Test Skip]Do not have MSVC compiler and linker.' ;
 }
