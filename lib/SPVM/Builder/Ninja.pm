@@ -524,34 +524,36 @@ sub create_log {
 
 use Cwd 'abs_path';
 
-# Get the real physical path at startup
+# Get the normalized real physical path for current directory at startup
 my $CURRENT_DIR_ABS = abs_path(Cwd::getcwd());
-
-# Normalize to forward slashes and add trailing slash
 $CURRENT_DIR_ABS =~ s|\\|/|g;
 unless ($CURRENT_DIR_ABS =~ m|/$|) {
   $CURRENT_DIR_ABS .= '/';
 }
 
+my %ABS_PATH_CACHE;
 sub is_under_current_dir_without_build_dir {
   my ($self, $path) = @_;
   
   # Use abs_path to resolve symlinks (especially for Mac /var -> /private/var)
-  my $log_dir_abs = $self->{log_dir_abs} //= do {
-    # If log_dir doesn't exist yet, abs_path might fail, 
-    # so we may need a fallback or ensure it exists.
-    my $ld = abs_path($self->log_dir) || File::Spec->rel2abs($self->log_dir);
-    $ld =~ s|\\|/|g;
-    $ld;
-  };
-
+  my $log_dir_abs = $ABS_PATH_CACHE{$self->log_dir};
+  unless (defined $log_dir_abs) {
+    my $tmp_log_dir_abs = abs_path($self->log_dir);
+    $tmp_log_dir_abs =~ s|\\|/|g;
+    $log_dir_abs = $ABS_PATH_CACHE{$self->log_dir} = $tmp_log_dir_abs;
+  }
+  
   # Resolve the input path to its real physical path
-  my $abs_path = abs_path($path);
-  $abs_path =~ s|\\|/|g;
+  my $path_abs = $ABS_PATH_CACHE{$path};
+  unless (defined $path_abs) {
+    my $tmp_path_abs = abs_path($path);
+    $tmp_path_abs =~ s|\\|/|g;
+    $path_abs = $ABS_PATH_CACHE{$path} = $tmp_path_abs;
+  }
   
   # Now the comparison should work even on Mac's temp dirs
-  if (index($abs_path, $CURRENT_DIR_ABS) == 0) {
-    if (index($abs_path, $log_dir_abs) == 0) {
+  if (index($path_abs, $CURRENT_DIR_ABS) == 0) {
+    if (index($path_abs, $log_dir_abs) == 0) {
       return 0;
     }
     return 1;
