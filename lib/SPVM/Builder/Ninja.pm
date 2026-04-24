@@ -334,7 +334,11 @@ sub create_command_hash {
       # Check cache or fetch stat
       my $state_result = $STAT_RESULT_CACHE{$dependent_file};
       unless ($state_result) {
+        $dependent_file =~ s|\\|/|g;
+        
         my @stat_result = stat $dependent_file;
+        
+        # File exists and permission is allowed
         if (@stat_result) {
           $state_result = \@stat_result;
         }
@@ -351,25 +355,32 @@ sub create_command_hash {
 
         File::Find::find({
           wanted => sub {
-            my $full_path = $File::Find::name;
+            my $child_dependent_file = $File::Find::name;
             
-            # 1. Fetch from cache or execute stat
-            my $state_result = $STAT_RESULT_CACHE{$full_path} //= do {
-              my @stat_result = stat $full_path;
-              @stat_result ? \@stat_result : undef;
+            # Fetch from cache or execute stat
+            my $state_result = $STAT_RESULT_CACHE{$child_dependent_file};
+            unless ($state_result) {
+              $dependent_file =~ s|\\|/|g;
+              
+              my @stat_result = stat $child_dependent_file;
+              
+              # File exists and permission is allowed
+              if (@stat_result) {
+                $state_result = \@stat_result;
+              }
             };
-            return unless $state_result;
+            next unless $state_result;
 
-            # 2. Get mode and check file types using constants
+            # Get mode and check file types using constants
             my $mode = $state_result->[2];
             my $is_dir  = S_ISDIR($mode);
             my $is_file = S_ISREG($mode);
 
             # Normalize for regex
-            my $normalized_path = $full_path;
+            my $normalized_path = $child_dependent_file;
             $normalized_path =~ s|\\|/|g;
 
-            # 3. Directory handling
+            # Directory handling
             if ($is_dir) {
               # Prune hidden directories
               if ($normalized_path =~ m|/\.[^/]+$|) {
@@ -378,14 +389,14 @@ sub create_command_hash {
               return;
             }
 
-            # 4. File handling
+            # File handling
             if ($is_file) {
               # Match specs: has extension, not excluded, not in hidden dir
               if ($normalized_path =~ $has_ext_re && 
                   $normalized_path !~ $dependent_file_exclude_exts_re && 
                   $normalized_path !~ m|[\\/]\.[^\\/]+|) {
                 
-                push @child_dependent_files, $full_path;
+                push @child_dependent_files, $child_dependent_file;
               }
             }
           },
@@ -400,30 +411,45 @@ sub create_command_hash {
       my $dependent_file_sha = Digest::SHA->new(1);
       
       @child_dependent_files = sort @child_dependent_files;
-      for my $child_file (@child_dependent_files) {
-        my $is_under_current_dir = $self->is_under_current_dir_without_log_dir($child_file);
+      for my $child_dependent_file (@child_dependent_files) {
+        my $is_under_current_dir = $self->is_under_current_dir_without_log_dir($child_dependent_file);
       
         # Path hash
-        my $normalized = $NORMALIZE_PATH_CACHE{$child_file}{$log_dir} //= 
-          SPVM::Builder::Util::normalize_path($child_file, $log_dir);
+        my $normalized = $NORMALIZE_PATH_CACHE{$child_dependent_file}{$log_dir} //= 
+          SPVM::Builder::Util::normalize_path($child_dependent_file, $log_dir);
         $dependent_file_sha->add(Digest::SHA::sha1_hex($normalized));
         
         # Content or Mtime hash
-        if ($is_under_current_dir && -T $child_file) {
-          my $content = $DEPENDENT_CONTENT_CACHE{$child_file};
+        if ($is_under_current_dir && -T $child_dependent_file) {
+          my $content = $DEPENDENT_CONTENT_CACHE{$child_dependent_file};
           unless (defined $content) {
             my $tmp_sha = Digest::SHA->new(1);
-            $tmp_sha->addfile($child_file);
+            $tmp_sha->addfile($child_dependent_file);
             $content = $tmp_sha->hexdigest;
-            $DEPENDENT_CONTENT_CACHE{$child_file} = $content;
+            $DEPENDENT_CONTENT_CACHE{$child_dependent_file} = $content;
           }
           $dependent_file_sha->add($content);
         }
         else {
           # Retrieve the stat object from cache
-          my $state_result = $STAT_RESULT_CACHE{$child_file} // [stat $child_file];
-          # Use mtime ($st[9]) and size ($st[7]) for the hash
-          $dependent_file_sha->add("mtime:$state_result->[9] size:$state_result->[7]");
+          my $state_result = $STAT_RESULT_CACHE{$child_dependent_file};
+          unless ($state_result) {
+            $dependent_file =~ s|\\|/|g;
+            
+            my @stat_result = stat $child_dependent_file;
+            
+            # File exists and permission is allowed
+            if (@stat_result) {
+              $state_result = \@stat_result;
+            }
+            else {
+              confess("[Unexpected Error]stat failed. \$child_dependent_file='$child_dependent_file'.");
+            }
+          };
+          
+          # Use mtime and size for the hash
+          my $mitme_and_size_json = qq|{mtime":$state_result->[9],"size":$state_result->[7]}|;
+          $dependent_file_sha->add($mitme_and_size_json);
         }
       }
       $dependant_file_hash = $DEPENDANT_FILE_HASH_CACHE{$dependent_file} = $dependent_file_sha->hexdigest;
