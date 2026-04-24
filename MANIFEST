@@ -937,6 +937,7 @@ t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.cpp
 t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.spvm
 t/04_native_api/build_cache.t
 t/04_native_api/build_cache_minimal.t
+t/04_native_api/build_cache_mtime.t
 t/04_native_api/compile_native_api.pl
 t/04_native_api/lib/SPVM/TestCase/NativeAPI.c
 t/04_native_api/lib/SPVM/TestCase/NativeAPI.config
