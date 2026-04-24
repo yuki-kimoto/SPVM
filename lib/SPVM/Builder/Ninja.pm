@@ -298,7 +298,6 @@ sub need_generate {
 my %NORMALIZE_PATH_CACHE;
 my %DEPENDENT_CONTENT_CACHE;
 my %DEPENDANT_FILE_HASH_CACHE;
-my %STAT_RESULT_CACHE;
 
 sub create_command_hash {
   my ($self, $options) = @_;
@@ -332,20 +331,10 @@ sub create_command_hash {
       my @child_dependent_files;
       
       # Check cache or fetch stat
-      my $state_result = $STAT_RESULT_CACHE{$dependent_file};
-      unless ($state_result) {
-        $dependent_file =~ s|\\|/|g;
-        
-        my @stat_result = stat $dependent_file;
-        
-        # File exists and permission is allowed
-        if (@stat_result) {
-          $state_result = \@stat_result;
-        }
-      };
-      next unless $state_result;
+      my @stat_result = stat $dependent_file;
+      next unless @stat_result;
       
-      my $mode = $state_result->[2];
+      my $mode = $stat_result[2];
       my $is_dir = S_ISDIR($mode);
       my $is_file = S_ISREG($mode);
 
@@ -358,21 +347,11 @@ sub create_command_hash {
             my $child_dependent_file = $File::Find::name;
             
             # Fetch from cache or execute stat
-            my $state_result = $STAT_RESULT_CACHE{$child_dependent_file};
-            unless ($state_result) {
-              $dependent_file =~ s|\\|/|g;
-              
-              my @stat_result = stat $child_dependent_file;
-              
-              # File exists and permission is allowed
-              if (@stat_result) {
-                $state_result = \@stat_result;
-              }
-            };
-            next unless $state_result;
+            my @stat_result = stat $child_dependent_file;
+            next unless @stat_result;
 
             # Get mode and check file types using constants
-            my $mode = $state_result->[2];
+            my $mode = $stat_result[2];
             my $is_dir  = S_ISDIR($mode);
             my $is_file = S_ISREG($mode);
 
@@ -432,23 +411,13 @@ sub create_command_hash {
         }
         else {
           # Retrieve the stat object from cache
-          my $state_result = $STAT_RESULT_CACHE{$child_dependent_file};
-          unless ($state_result) {
-            $dependent_file =~ s|\\|/|g;
-            
-            my @stat_result = stat $child_dependent_file;
-            
-            # File exists and permission is allowed
-            if (@stat_result) {
-              $state_result = \@stat_result;
-            }
-            else {
-              confess("[Unexpected Error]stat failed. \$child_dependent_file='$child_dependent_file'.");
-            }
-          };
+          my @stat_result = stat $child_dependent_file;
+          unless (@stat_result) {
+            confess("[Unexpected Error]stat failed. \$child_dependent_file='$child_dependent_file'.");
+          }
           
           # Use mtime and size for the hash
-          my $mitme_and_size_json = qq|{mtime":$state_result->[9],"size":$state_result->[7]}|;
+          my $mitme_and_size_json = qq|{mtime":$stat_result[9],"size":$stat_result[7]}|;
           $dependent_file_sha->add($mitme_and_size_json);
         }
       }
