@@ -27,6 +27,8 @@ my $include_blib = "-I$blib_arch -I$blib_lib";
 my $path_sep = $Config{path_sep};
 my $perl5lib = ($ENV{PERL5LIB} // '') . "$path_sep$blib_arch$path_sep$blib_lib";
 
+my $make = $Config{make};
+
 # Failed to parse options.
 {
   {
@@ -587,7 +589,6 @@ my $perl5lib = ($ENV{PERL5LIB} // '') . "$path_sep$blib_arch$path_sep$blib_lib";
     or die "Can't chdir";
   
   local $ENV{PERL5LIB} = $perl5lib;
-  my $make = $Config{make};
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
   
@@ -611,7 +612,6 @@ my $perl5lib = ($ENV{PERL5LIB} // '') . "$path_sep$blib_arch$path_sep$blib_lib";
     or die "Can't chdir";
   
   local $ENV{PERL5LIB} = $perl5lib;
-  my $make = $Config{make};
   my $ret = system(qq|$^X Makefile.PL --optimize="-O0 -g" && $make && $make test|);
   ok($ret == 0);
   
@@ -636,7 +636,6 @@ my $perl5lib = ($ENV{PERL5LIB} // '') . "$path_sep$blib_arch$path_sep$blib_lib";
     or die "Can't chdir";
   
   local $ENV{PERL5LIB} = $perl5lib;
-  my $make = $Config{make};
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
   
@@ -658,7 +657,6 @@ my $perl5lib = ($ENV{PERL5LIB} // '') . "$path_sep$blib_arch$path_sep$blib_lib";
     or die "Can't chdir";
   
   local $ENV{PERL5LIB} = $perl5lib;
-  my $make = $Config{make};
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
 
@@ -680,7 +678,6 @@ my $perl5lib = ($ENV{PERL5LIB} // '') . "$path_sep$blib_arch$path_sep$blib_lib";
     or die "Can't chdir";
   
   local $ENV{PERL5LIB} = $perl5lib;
-  my $make = $Config{make};
   my $ret = system("$^X Makefile.PL --meta");
   ok($ret == 0);
 
@@ -703,7 +700,6 @@ my $perl5lib = ($ENV{PERL5LIB} // '') . "$path_sep$blib_arch$path_sep$blib_lib";
     or die "Can't chdir";
   
   local $ENV{PERL5LIB} = $perl5lib;
-  my $make = $Config{make};
   my $ret = system("$^X Makefile.PL --no-build-spvm-modules");
   ok($ret == 0);
   
@@ -857,7 +853,6 @@ for my $test_index (0 .. 1) {
     or die "Can't chdir";
   
   local $ENV{PERL5LIB} = $perl5lib;
-  my $make = $Config{make};
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
   
@@ -877,7 +872,6 @@ for my $test_index (0 .. 1) {
     or die "Can't chdir";
   
   local $ENV{PERL5LIB} = $perl5lib;
-  my $make = $Config{make};
   my $ret = system("$^X Makefile.PL && $make && $make test");
   ok($ret == 0);
   
