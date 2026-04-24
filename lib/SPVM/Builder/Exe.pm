@@ -325,10 +325,11 @@ sub prepare_compile_classes {
   
   my $compile_infos = [];
   for my $class_name (@$class_names) {
-    
     my $precompile_compile_infos = $self->prepare_compile_precompile_class($class_name);
     push @$compile_infos, @$precompile_compile_infos;
-    
+  }
+  
+  for my $class_name (@$class_names) {
     my $native_compile_infos = $self->prepare_compile_native_class($class_name);
     push @$compile_infos, @$native_compile_infos;
   }
