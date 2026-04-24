@@ -516,6 +516,34 @@ sub global_file_lock {
   return $result;
 }
 
+sub global_file_read_lock {
+  my ($self, $cb) = @_;
+  
+  my $lock_fh = $self->{global_lock_fh};
+  
+  # Wait for an exclusive read lock (Blocking)
+  flock($lock_fh, LOCK_SH) 
+    or die "[Internal Error]Can't get exclusive lock on global lock file: $!";
+  
+  # Execute the callback and ensure unlock happens even on failure
+  my $result;
+  my $error;
+  eval {
+    $result = $cb->();
+  };
+  $error = $@;
+  
+  # Release the lock but keep the file handle for future reuse
+  flock($lock_fh, LOCK_UN);
+  
+  # Rethrow if something went wrong inside the callback
+  if ($error) {
+    die $error;
+  }
+  
+  return $result;
+}
+
 sub get_global_lock_file {
   my ($self) = @_;
   
