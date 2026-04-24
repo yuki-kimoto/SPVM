@@ -121,4 +121,17 @@ unless ($has_msvc) {
   }
 }
 
+# spvm_warn
+{
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $inc_dir --mode msvc -o $tmp_dir/myapp-spvm_warn $spvm_script_dir/myapp-spvm_warn.spvm 2>&1);
+  my $spvmcc_output = `$spvmcc_cmd`;
+  
+  my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp-spvm_warn");
+  my $execute_cmd_with_args = "$execute_cmd";
+  my $output = `$execute_cmd_with_args 2>&1`;
+  like($output, qr|spvm_warn no_args|);
+  like($output, qr|spvm_warn args|);
+}
+
+
 done_testing;
