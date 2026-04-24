@@ -15,7 +15,6 @@ use SPVM::Builder::Util;
 use File::Basename 'dirname';
 use SPVM;
 use Cwd;
-use Time::HiRes();
 
 # Prepare temporary directory
 my $tmp_dir = File::Temp->newdir;
@@ -197,12 +196,13 @@ my @current_native_source_baz_object_files;
 }
 
 {
-  my @original_stats = Time::HiRes::stat($native_class_file);
+  my @original_stats = stat($native_class_file);
+  my $original_atime = $original_stats[8];
   my $original_mtime = $original_stats[9];
 
   # Update native class file mtime
-  my $future = Time::HiRes::gettimeofday() + 1;
-  Time::HiRes::utime($future, $future, $native_class_file);
+  my $future = time() + 1;
+  utime($future, $future, $native_class_file);
   
   # Re-build
   system($compile_cmd) == 0 or die;
@@ -216,7 +216,7 @@ my @current_native_source_baz_object_files;
   is(@current_native_class_object_files, @old_native_class_object_files + 1);
   is(@current_native_source_baz_object_files, @old_native_source_baz_object_files);
   
-  Time::HiRes::utime($original_mtime, $original_mtime, $native_class_file);
+  utime($original_atime, $original_mtime, $native_class_file);
 }
 
 {
