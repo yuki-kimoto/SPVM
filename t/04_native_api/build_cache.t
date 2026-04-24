@@ -283,14 +283,15 @@ chdir $tmp_dir
 {
   # Localize environment variables
   local %ENV = %ENV;
-  $ENV{SPVM_DEPENDENT_FILE_EXCLUDE_EXTS} = 'exclude';
+  $ENV{SPVM_DEPENDENT_FILE_EXCLUDE_EXTS} = ' exclude, exclude2 ';
 
   # Test for SPVM_DEPENDENT_FILE_EXCLUDE_EXTS (.exclude)
-  my $ext = 'exclude';
-  my $exclude_header_file = "$native_include_dir/baz/extra_$ext.$ext";
+  my $exclude_header_file = "$native_include_dir/baz/extra.exclude";
+  my $exclude_header_file2 = "$native_include_dir/baz/extra.exclude2";
   
   # Create a new file with .exclude extension
   SPVM::Builder::Util::spurt_binary($exclude_header_file, "");
+  SPVM::Builder::Util::spurt_binary($exclude_header_file2, "");
   
   system($compile_cmd) == 0 or die;
   
@@ -305,7 +306,10 @@ chdir $tmp_dir
   is(@current_native_source_baz_object_files, @old_native_source_baz_object_files);
   
   # Remove the temporary excluded file
-  unlink $exclude_header_file or die "Can't remove $exclude_header_file: $!";
+  unlink $exclude_header_file
+    or die "Can't remove $exclude_header_file: $!";
+  unlink $exclude_header_file2
+    or die "Can't remove $exclude_header_file2: $!";
 }
 
 {
