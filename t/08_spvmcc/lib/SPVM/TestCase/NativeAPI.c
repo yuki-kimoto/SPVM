@@ -19,3 +19,12 @@ int32_t SPVM__TestCase__NativeAPI__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__spvm_warn(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  spvm_warn("spvm_warn no_args");
+  
+  spvm_warn("spvm_warn %s", "args");
+  
+  return 0;
+}

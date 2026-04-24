@@ -5,4 +5,5 @@ class TestCase::NativeAPI {
   
   native static method sum : int ($x : int, $y : int);
   
+  native static method spvm_warn : void ();
 }

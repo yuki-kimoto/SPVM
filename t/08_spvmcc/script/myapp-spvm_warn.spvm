@@ -1,0 +1,3 @@
+use TestCase::NativeAPI;
+
+TestCase::NativeAPI->spvm_warn;

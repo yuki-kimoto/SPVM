@@ -1143,6 +1143,8 @@ t/08_spvmcc/script/end-block.spvm
 t/08_spvmcc/script/external.config
 t/08_spvmcc/script/external.spvm
 t/08_spvmcc/script/inc-order.spvm
+t/08_spvmcc/script/myapp-spvm_warn.config
+t/08_spvmcc/script/myapp-spvm_warn.spvm
 t/08_spvmcc/script/myapp.config
 t/08_spvmcc/script/myapp.Debug.config
 t/08_spvmcc/script/myapp.dll.config
