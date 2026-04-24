@@ -368,8 +368,6 @@ sub prepare_compile_source_file {
   
   $compile_info->dependent_files([$include_dir]);
   
-  $builder_cc->finalize_compile_info($compile_info);
-  
   return $compile_info;
 }
 
