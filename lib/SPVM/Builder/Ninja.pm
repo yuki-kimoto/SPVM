@@ -331,10 +331,10 @@ sub create_command_hash {
     unless (defined $dependant_file_hash) {
       my @child_dependent_files;
       
-      # Check cache or fetch lstat
+      # Check cache or fetch stat
       my $state_result = $STAT_RESULT_CACHE{$dependent_file};
       unless ($state_result) {
-        my @stat_result = lstat $dependent_file;
+        my @stat_result = stat $dependent_file;
         if (@stat_result) {
           $state_result = \@stat_result;
         }
@@ -353,9 +353,9 @@ sub create_command_hash {
           wanted => sub {
             my $full_path = $File::Find::name;
             
-            # 1. Fetch from cache or execute lstat
+            # 1. Fetch from cache or execute stat
             my $state_result = $STAT_RESULT_CACHE{$full_path} //= do {
-              my @stat_result = lstat $full_path;
+              my @stat_result = stat $full_path;
               @stat_result ? \@stat_result : undef;
             };
             return unless $state_result;
