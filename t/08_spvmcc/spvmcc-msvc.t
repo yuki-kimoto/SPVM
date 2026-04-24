@@ -37,10 +37,12 @@ eval {
   $has_msvc = defined $hint_cc;
 };
 
-warn $@;
+if ($@) {
+  warn "[Reason]$@";
+}
 
 unless ($has_msvc) {
-  plan skip_all => '[Test Skip]Do not have MSVC compiler and linker.' ;
+  plan skip_all => '[Test Skip]Do not have MSVC compiler and linker.\n' ;
 }
 
 {

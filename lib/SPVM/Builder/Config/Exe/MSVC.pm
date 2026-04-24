@@ -52,7 +52,7 @@ sub init {
   $self->ld_output_option_name('-OUT');
   $self->ld_optimize('-OPT:REF,ICF');
   $self->lib_dir_option_name('-LIBPATH');
-  $self->exe_libbcrypt_ldflags(['bcrypt.lib']);
+  $self->libbcrypt_ldflags(['bcrypt.lib']);
   $self->copyright_print_ldflags(['-nologo']);
   $self->debug_info_ldflags(['-DEBUG']);
   
