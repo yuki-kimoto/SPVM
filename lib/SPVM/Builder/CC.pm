@@ -685,7 +685,8 @@ sub command_parallel {
       my $command_info = $running_processes{$pid};
       
       # Check if the command has finished
-      if ($self->wait_command($command_info) != 0) {
+      my $wait_command_status = $self->wait_command($command_info);
+      if ($wait_command_status != 0) {
         # Process finished
         $command_info->process_id(undef);
         $self->add_ninja_log($command_info);
