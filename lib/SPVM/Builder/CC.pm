@@ -695,6 +695,8 @@ sub command_parallel {
       my $process_finished;
       if ($error) {
         $process_finished = 1;
+        @waiting_command_infos = ();
+        $max_jobs = 0;
         $stop_spawn = 1;
       }
       elsif ($wait_command_status != 0) {
