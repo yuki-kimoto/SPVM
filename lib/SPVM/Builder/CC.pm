@@ -654,7 +654,6 @@ sub command_parallel {
   my $max_jobs = $self->jobs;
   my @waiting_command_infos = @unique_command_infos;
   my %running_processes;
-  my $stop_spawn;
   
   # Main loop for parallel processing
   while (@waiting_command_infos || %running_processes) {
@@ -697,7 +696,6 @@ sub command_parallel {
         $process_finished = 1;
         @waiting_command_infos = ();
         $max_jobs = 0;
-        $stop_spawn = 1;
       }
       elsif ($wait_command_status != 0) {
         $process_finished = 1;
