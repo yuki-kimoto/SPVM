@@ -67,11 +67,11 @@ sub init {
     long_option_sep       => ':',
     cc_output_option_name => '-Fo',
     copyright_print_ccflags          => ['-nologo'],
-    '+extra_ccflags' => ['-FS'],
     thread_ccflags => [],
     cc_version => $self->create_cc_version,
     optimize           => '-O2',
     ndebug_ccflags     => ['-DNDEBUG'],
+    '+extra_ccflags' => ['-FS', '-DNOMINMAX'],
   });
   
   # 2. Common C/C++ flags
@@ -275,6 +275,9 @@ sub setup_env {
       }
     }
   }
+  
+  # Set diagnostic message encoding to English (ASCII)
+  $ENV{VSLANG} = '1033';
 }
 
 sub create_cc_version {
