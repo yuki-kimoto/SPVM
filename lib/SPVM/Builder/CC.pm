@@ -654,6 +654,7 @@ sub command_parallel {
   my $max_jobs = $self->jobs;
   my @waiting_command_infos = @unique_command_infos;
   my %running_processes;
+  my %errors_h;
   
   # Main loop for parallel processing
   while (@waiting_command_infos || %running_processes) {
@@ -696,6 +697,7 @@ sub command_parallel {
         $process_finished = 1;
         @waiting_command_infos = ();
         $max_jobs = 0;
+        $errors_h{$process_id} = $error;
       }
       elsif ($wait_command_status != 0) {
         $process_finished = 1;
@@ -706,10 +708,11 @@ sub command_parallel {
         $command_info->process_id(undef);
         delete $running_processes{$process_id};
       }
-      
-      if ($error) {
-        die $error;
-      }
+    }
+    
+    if (!keys %running_processes && keys %errors_h) {
+      my $errors_count = keys %errors_h;
+      confess "$errors_count commands failed.";
     }
     
     # Sleep to reduce CPU usage if processes are still running
