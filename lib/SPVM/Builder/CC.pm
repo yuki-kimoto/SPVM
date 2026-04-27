@@ -653,7 +653,8 @@ sub command_parallel {
   
   my $max_jobs = $self->jobs;
   my @waiting_command_infos = @unique_command_infos;
-  my %running_processes; # pid => command_info
+  my %running_processes;
+  my $stop_spawn;
   
   # Main loop for parallel processing
   while (@waiting_command_infos || %running_processes) {
@@ -673,24 +674,41 @@ sub command_parallel {
         confess("[Unexpected Error]Invalid class")
       }
       
-      my $pid = $self->$spawn_method_name($command_info);
+      my $process_id = $self->$spawn_method_name($command_info);
       
-      if (defined $pid && $pid > 0) {
-        $running_processes{$pid} = $command_info;
+      if (defined $process_id && $process_id > 0) {
+        $running_processes{$process_id} = $command_info;
       }
     }
     
     # Check status of running processes
-    for my $pid (keys %running_processes) {
-      my $command_info = $running_processes{$pid};
+    for my $process_id (keys %running_processes) {
+      my $command_info = $running_processes{$process_id};
       
       # Check if the command has finished
-      my $wait_command_status = $self->wait_command($command_info);
-      if ($wait_command_status != 0) {
-        # Process finished
-        $command_info->process_id(undef);
+      my $wait_command_status;
+      eval {
+        $wait_command_status = $self->wait_command($command_info);
+      };
+      
+      my $error = $@;
+      my $process_finished;
+      if ($error) {
+        $process_finished = 1;
+        $stop_spawn = 1;
+      }
+      elsif ($wait_command_status != 0) {
+        $process_finished = 1;
         $self->add_ninja_log($command_info);
-        delete $running_processes{$pid};
+      }
+      
+      if ($process_finished) {
+        $command_info->process_id(undef);
+        delete $running_processes{$process_id};
+      }
+      
+      if ($error) {
+        die $error;
       }
     }
     
