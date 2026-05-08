@@ -114,12 +114,6 @@ my $lddlflags = $Config{lddlflags};
 
 $lddlflags .= " " . join(' ', @{$default_config->thread_ldflags}, @lddlflags);
 
-# I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
-# so I dicide not to print warning in release version
-if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
-  $ccflags .= ' -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers';
-}
-
 # INC
 my $inc = '-Ilib/SPVM/Builder/include';
 
