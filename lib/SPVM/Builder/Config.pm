@@ -214,7 +214,6 @@ sub new_c99 {
   
   my $self = $class->new_c(@_);
   
-  # C99
   $self->std('c99');
   
   return $self;
@@ -225,8 +224,27 @@ sub new_c11 {
   
   my $self = $class->new_c(@_);
   
-  # C11
   $self->std('c11');
+  
+  return $self;
+}
+
+sub new_c17 {
+  my $class = shift;
+  
+  my $self = $class->new_c(@_);
+  
+  $self->std('c17');
+  
+  return $self;
+}
+
+sub new_c23 {
+  my $class = shift;
+  
+  my $self = $class->new_c(@_);
+  
+  $self->std('c23');
   
   return $self;
 }
@@ -261,7 +279,6 @@ sub new_cpp11 {
   
   my $self = $class->new_cpp(@_);
   
-  # C++11
   $self->std('c++11');
   
   return $self;
@@ -272,7 +289,6 @@ sub new_cpp14 {
   
   my $self = $class->new_cpp(@_);
   
-  # C++14
   $self->std('c++14');
   
   return $self;
@@ -283,8 +299,27 @@ sub new_cpp17 {
   
   my $self = $class->new_cpp(@_);
   
-  # C++17
   $self->std('c++17');
+  
+  return $self;
+}
+
+sub new_cpp20 {
+  my $class = shift;
+  
+  my $self = $class->new_cpp(@_);
+  
+  $self->std('c++20');
+  
+  return $self;
+}
+
+sub new_cpp23 {
+  my $class = shift;
+  
+  my $self = $class->new_cpp(@_);
+  
+  $self->std('c++23');
   
   return $self;
 }
@@ -427,6 +462,15 @@ Within a configuration file (C<.config>), you can customize the build environmen
   # C99
   my $config = SPVM::Builder::Config->new_c99;
   
+  # C11
+  my $config = SPVM::Builder::Config->new_c11;
+  
+  # C17
+  my $config = SPVM::Builder::Config->new_c17;
+  
+  # C23
+  my $config = SPVM::Builder::Config->new_c23;
+  
   # C++
   my $config = SPVM::Builder::Config->new_cpp;
   
@@ -435,6 +479,12 @@ Within a configuration file (C<.config>), you can customize the build environmen
   
   # C++17
   my $config = SPVM::Builder::Config->new_cpp17;
+  
+  # C++20
+  my $config = SPVM::Builder::Config->new_cpp20;
+  
+  # C++23
+  my $config = SPVM::Builder::Config->new_cpp23;
   
   # Optimize
   $config->optimize("-O2");
@@ -1033,6 +1083,18 @@ Calls L</"new_c"> method and sets L</"std"> field to C<c99>, and returns the ret
 
 Calls L</"new_c"> method and sets L</"std"> field to C<c11>, and returns the return value of L</"new_c"> method.
 
+=head2 new_c17
+
+  my $config = SPVM::Builder::Config->new_c17;
+
+Calls L</"new_c"> method and sets L</"std"> field to C<c17>, and returns the return value of L</"new_c"> method.
+
+=head2 new_c23
+
+  my $config = SPVM::Builder::Config->new_c23;
+
+Calls L</"new_c"> method and sets L</"std"> field to C<c23>, and returns the return value of L</"new_c"> method.
+
 =head2 new_cpp
 
   my $config = SPVM::Builder::Config->new_cpp;
@@ -1058,6 +1120,18 @@ Calls L</"new_cpp"> method and sets L</"std"> field to C<c++14>, and returns the
   my $config = SPVM::Builder::Config->new_cpp17;
 
 Calls L</"new_cpp"> method and sets L</"std"> field to C<c++17>, and returns the return value of L</"new_cpp"> method.
+
+=head2 new_cpp20
+
+  my $config = SPVM::Builder::Config->new_cpp20;
+
+Calls L</"new_cpp"> method and sets L</"std"> field to C<c++20>, and returns the return value of L</"new_cpp"> method.
+
+=head2 new_cpp23
+
+  my $config = SPVM::Builder::Config->new_cpp23;
+
+Calls L</"new_cpp"> method and sets L</"std"> field to C<c++23>, and returns the return value of L</"new_cpp"> method.
 
 =head1 Instance Methods
 
