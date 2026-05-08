@@ -255,6 +255,15 @@ sub build_parallel {
       $config->is_jit($options->{is_jit});
       $config->output_dir($options->{output_dir});
       
+      if (defined(my $build_type = $options->{build_type})) {
+        # Apply config from build type
+        my $build_type_config = SPVM::Builder::Util::get_config_from_build_type($build_type);
+        for my $name (keys %$build_type_config) {
+          my $value = $build_type_config->{$name};
+          $config->{$name} = $value;
+        }
+      }
+      
       my $force_optimize;
       if (length $options->{optimize}) {
         $force_optimize = $options->{optimize};
@@ -267,10 +276,6 @@ sub build_parallel {
       }
       if (length $force_optimize) {
         $config->optimize($force_optimize);
-      }
-      
-      if (defined $options->{build_type}) {
-        $config->build_type($options->{build_type});
       }
       
       # Prepare compile information for each class

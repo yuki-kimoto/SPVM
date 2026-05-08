@@ -3,6 +3,7 @@ package SPVM::Builder::Util::API;
 use strict;
 use warnings;
 use SPVM::Builder::Util;
+use SPVM::Builder::Config::Util;
 
 sub create_make_rule_native { SPVM::Builder::Util::create_make_rule_native(@_) }
 
@@ -141,6 +142,8 @@ The following options are the same as those for L<SPVM::Builder::API/build_paral
 =item * C<optimize>
 
 =item * C<jobs>
+
+=item * C<build_type>
 
 =back
 

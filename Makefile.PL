@@ -222,6 +222,9 @@ package MY {
       unshift @INC, 'lib';
       
       my $options = {};
+      if (defined $build_type) {
+        $options->{build_type} = $build_type;
+      }
       if (defined $optimize) {
         $options->{optimize} = $optimize;
       }

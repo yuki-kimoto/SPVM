@@ -165,4 +165,32 @@ The optimization level for the compiler (e.g., C<O2>, C<O3>, C<O0>).
 
 The number of parallel jobs. The default value is the number of CPU cores.
 
+=item * C<build_type>
+
+The build type for the compiler and linker. This option follows the standard CMake build types.
+
+Options:
+
+=over 2
+
+=item * C<Debug>
+
+For debugging. Optimization is disabled and debug symbols are enabled.
+
+=item * C<Release>
+
+For production. High optimization and no debug symbols.
+
+=item * C<RelWithDebInfo>
+
+For production with debug symbols. High optimization with debug symbols.
+
+=item * C<MinSizeRel>
+
+For production, optimized for binary size.
+
+=back
+
+If this option is specified, it overrides the C<optimize> option and sets appropriate flags for both the compiler and the linker to match CMake's behavior.
+
 =back
