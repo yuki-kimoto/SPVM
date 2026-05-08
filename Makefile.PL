@@ -77,7 +77,7 @@ GetOptions(
   'meta' => \my $meta,
   'no-build-spvm-modules' => \my $no_build_spvm_modules,
   'no-precompile-tests' => \my $no_precompile_tests,
-  'devel' => \my $devel,
+  'debug' => \my $debug,
 );
 
 if ($meta) {
@@ -93,7 +93,7 @@ my $std = $default_config->std;
 
 # optimize
 unless ($optimize) {
-  if ($devel) {
+  if ($debug) {
     $optimize = "-O0 -g";
   }
   

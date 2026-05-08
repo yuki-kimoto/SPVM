@@ -634,7 +634,7 @@ if ($^O eq 'freebsd') {
   chdir($save_cur_dir) or die;
 }
 
-# perl Makefile.PL --devel && make && make test
+# perl Makefile.PL --debug && make && make test
 {
   my $tmp_dir = File::Temp->newdir;
   my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
@@ -647,7 +647,7 @@ if ($^O eq 'freebsd') {
     or die "Can't chdir";
   
   local $ENV{PERL5LIB} = $perl5lib;
-  my $ret = system(qq|$^X Makefile.PL --devel && $make && $make test|);
+  my $ret = system(qq|$^X Makefile.PL --debug && $make && $make test|);
   ok($ret == 0);
   
   my $mymeta_json = 'MYMETA.json';

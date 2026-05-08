@@ -305,8 +305,8 @@ Examples:
   # production mode
   MyClass.production.config
   
-  # devel mode
-  MyClass.devel.config
+  # debug mode
+  MyClass.debug.config
 
 Use L</"mode"> field to get the config mode.
 

@@ -870,7 +870,7 @@ GetOptions(
   'meta' => \\my \$meta,
   'no-build-spvm-modules' => \\my \$no_build_spvm_modules,
   'optimize=s' => \\my \$optimize,
-  'devel' => \\my \$devel,
+  'debug' => \\my \$debug,
 );
 
 if (\$meta) {
@@ -882,7 +882,7 @@ unless (\$meta) {
 }
 
 unless (\$optimize) {
-  if (\$devel) {
+  if (\$debug) {
     \$optimize = "-O0 -g";
   }
 }
