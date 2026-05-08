@@ -104,50 +104,72 @@ sub init {
     std => 'c++14',
   });
   
-  # --- MSVC Build Type Rules (CMake-Compatible & Binary Safe) ---
+  # Define build types
+  my @build_types = qw(Debug Release RelWithDebInfo MinSizeRel);
+  for my $build_type (@build_types) {
+    my $config = &_get_config_from_build_type_msvc($build_type);
+    
+    $self->compile_rule(
+      { global => {build_type => $build_type} },
+      $config
+    );
+  }
 
-  # Debug: Equivalent to CMake's Debug but uses -MT to avoid LNK4098.
-  # Includes debug symbols and disables optimization for a smooth debugging experience.
-  $self->compile_rule(
-    { global => {build_type => 'Debug'} },
-    {
-      optimize           => '-Od',               # Disable optimization
-      debug_info_ccflags => ['-Zi', '-RTC1'],    # Generate PDB and enable runtime stack checks
-      ndebug_ccflags     => [],                  # Enable assertions
-    }
-  );
-
-  # Release: Optimized for speed, no debug symbols.
-  $self->compile_rule(
-    { global => {build_type => 'Release'} },
-    {
-      optimize           => '-O2',               # Maximize speed
-      debug_info_ccflags => [],
-      ndebug_ccflags     => ['-DNDEBUG'],        # Disable assertions
-    }
-  );
-
-  # RelWithDebInfo: Optimized for speed but includes debug symbols for backtracing.
-  $self->compile_rule(
-    { global => {build_type => 'RelWithDebInfo'} },
-    {
-      optimize           => '-O2',               # Maximize speed
-      debug_info_ccflags => ['-Zi'],             # Generate PDB
-      ndebug_ccflags     => ['-DNDEBUG'],        # Disable assertions
-    }
-  );
-
-  # MinSizeRel: Optimized for binary size.
-  $self->compile_rule(
-    { global => {build_type => 'MinSizeRel'} },
-    {
-      optimize           => '-O1',               # Minimize size
-      debug_info_ccflags => [],
-      ndebug_ccflags     => ['-DNDEBUG'],        # Disable assertions
-    }
-  );
   
   return $self;
+}
+
+sub _get_config_from_build_type_msvc {
+  my ($build_type) = @_;
+  
+  my $config;
+  
+  if (!defined $build_type || $build_type eq 'Release') {
+    # Release: /O2 (Maximize Speed)
+    $config = {
+      optimize           => '-O2',
+      ld_optimize        => '/OPT:REF /OPT:ICF', # Remove unreferenced data and fold identical COMDATs
+      debug_info_ccflags => [],
+      ndebug_ccflags     => ['-DNDEBUG'],
+      debug_info_ldflags => [],
+    };
+  }
+  elsif ($build_type eq 'Debug') {
+    # Debug: /Od (Disable optimization), /Zi (PDB), /RTC1 (Runtime checks)
+    $config = {
+      optimize             => '-Od',
+      ld_optimize          => '',
+      debug_info_ccflags   => ['-Zi', '-RTC1'],
+      ndebug_ccflags       => [],
+      debug_info_ldflags   => ['/DEBUG'],
+      symbol_strip_ldflags => [],
+    };
+  }
+  elsif ($build_type eq 'RelWithDebInfo') {
+    # RelWithDebInfo: /O2 with /Zi
+    $config = {
+      optimize           => '-O2',
+      ld_optimize        => '/OPT:REF /OPT:ICF',
+      debug_info_ccflags => ['-Zi'],
+      ndebug_ccflags     => ['-DNDEBUG'],
+      debug_info_ldflags => ['/DEBUG'],
+    };
+  }
+  elsif ($build_type eq 'MinSizeRel') {
+    # MinSizeRel: /O1 (Minimize Size)
+    $config = {
+      optimize           => '-O1',
+      ld_optimize        => '/OPT:REF /OPT:ICF',
+      debug_info_ccflags => [],
+      ndebug_ccflags     => ['-DNDEBUG'],
+      debug_info_ldflags => [],
+    };
+  }
+  else {
+    die "Unknown build_type: $build_type";
+  }
+  
+  return $config;
 }
 
 sub setup_env {
