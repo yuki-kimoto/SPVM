@@ -91,7 +91,7 @@ my $std = $default_config->std;
 # Macro
 @defines = map { "-D$_" } @defines;
 
-# optimize
+# OPTIMIZE
 unless ($optimize) {
   if ($debug) {
     $optimize = "-O0 -g";
