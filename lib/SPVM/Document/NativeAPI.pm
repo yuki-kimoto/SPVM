@@ -2088,6 +2088,20 @@ Returns the value of the L<exception variable|SPVM::Document::Language::Exceptio
 
 The return value is an SPVM string object.
 
+=head2 get_exception_chars
+
+C<const char* (*get_exception_chars)(SPVM_ENV* env, SPVM_VALUE* stack);>
+
+=head2 get_exception_chars
+
+C<const char* (*get_exception_chars)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+
+Returns the C-style string of the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
+
+This native API calls L<get_exception|/"get_exception"> native API. If its return value is NULL, returns NULL. 
+
+Otherwise, returns the C-style string obtained by calling L<get_chars|/"get_chars"> native API on the return value of L<get_exception|/"get_exception">.
+
 =head2 set_exception
 
 C<void (*set_exception)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_OBJ* exception);>

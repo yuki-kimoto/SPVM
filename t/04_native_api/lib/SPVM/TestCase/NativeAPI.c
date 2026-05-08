@@ -2804,6 +2804,8 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* en
   {
     int32_t error_id = 0;
     
+    env->set_exception(env, stack, NULL);
+    
     int32_t output;
     {
       int32_t args_width = 1;
@@ -2813,6 +2815,11 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* en
         return error_id;
       }
       output = stack[0].ival;
+    }
+    
+    if (env->get_exception_chars(env, stack)) {
+      stack[0].ival = 0;
+      return 0;
     }
     
     stack[0].ival = 0;
@@ -3119,7 +3126,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
         return 0;
       }
       
-      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The 1th argument must be assigned to the type of 1th argument of TestCase::NativeAPI#arg_int_object_instance method.")) {
+      if(!strstr(env->get_exception_chars(env, stack), "The 1th argument must be assigned to the type of 1th argument of TestCase::NativeAPI#arg_int_object_instance method.")) {
         stack[0].ival = 0;
         return 0;
       }

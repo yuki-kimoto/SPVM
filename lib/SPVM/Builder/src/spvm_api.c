@@ -378,6 +378,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_set_long_object_value,
     SPVM_API_set_float_object_value,
     SPVM_API_set_double_object_value,
+    SPVM_API_get_exception_chars,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -4269,6 +4270,18 @@ SPVM_OBJECT* SPVM_API_get_exception(SPVM_ENV* env, SPVM_VALUE* stack){
   SPVM_OBJECT* current_exception = *current_exception_ptr;
   
   return current_exception;
+}
+
+const char* SPVM_API_get_exception_chars(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  SPVM_OBJECT* obj_exception = SPVM_API_get_exception(env, stack);
+  
+  const char* exception = NULL;
+  if (obj_exception) {
+    exception = SPVM_API_get_chars(env, stack, obj_exception);
+  }
+  
+  return exception;
 }
 
 SPVM_OBJECT* SPVM_API_new_byte_array(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
