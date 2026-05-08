@@ -75,47 +75,16 @@ sub new {
     $self->build_type($self->{build_type});
   }
   
-  # --- Build type rules (Strict CMake GCC/Clang Compatibility) ---
-  # Debug: Just -g (Optimization defaults to -O0 in GCC)
-  $self->compile_rule(
-    { global => {build_type => 'Debug'} },
-    {
-      optimize           => '', 
-      debug_info_ccflags => ['-g'],
-      ndebug_ccflags     => [],
-      symbol_strip_ldflags => [],
-    }
-  );
-
-  # Release: -O3 -DNDEBUG
-  $self->compile_rule(
-    { global => {build_type => 'Release'} },
-    {
-      optimize           => '-O3',
-      debug_info_ccflags => [],
-      ndebug_ccflags     => ['-DNDEBUG'],
-    }
-  );
-
-  # RelWithDebInfo: -O2 -g -DNDEBUG
-  $self->compile_rule(
-    { global => {build_type => 'RelWithDebInfo'} },
-    {
-      optimize           => '-O2',
-      debug_info_ccflags => ['-g'],
-      ndebug_ccflags     => ['-DNDEBUG'],
-    }
-  );
-
-  # MinSizeRel: -Os -DNDEBUG
-  $self->compile_rule(
-    { global => {build_type => 'MinSizeRel'} },
-    {
-      optimize           => '-Os',
-      debug_info_ccflags => [],
-      ndebug_ccflags     => ['-DNDEBUG'],
-    }
-  );
+  # Define build types
+  my @build_types = qw(Debug Release RelWithDebInfo MinSizeRel);
+  for my $build_type (@build_types) {
+    my $config = SPVM::Builder::Util::get_config_from_build_type($build_type);
+    
+    $self->compile_rule(
+      { global => {build_type => $build_type} },
+      $config
+    );
+  }
   
   return $self;
 }
