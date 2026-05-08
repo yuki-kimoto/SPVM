@@ -844,25 +844,23 @@ sub is_windows { $^O eq 'MSWin32' }
 sub get_config_from_build_type {
   my ($build_type) = @_;
   
-  unless (defined $build_type) {
-    Carp::confess("Build type \$build_type must be defined.");
-  }
-  
   my $config;
   
-  if ($build_type eq 'Debug') {
-    $config = {
-      optimize             => '', 
-      debug_info_ccflags   => ['-g'],
-      ndebug_ccflags       => [],
-      symbol_strip_ldflags => [],
-    };
-  }
-  elsif ($build_type eq 'Release') {
+  if (!defined $build_type || $build_type eq 'Release') {
     $config = {
       optimize           => '-O3',
       debug_info_ccflags => [],
       ndebug_ccflags     => ['-DNDEBUG'],
+      debug_info_ldflags => [],
+    };
+  }
+  elsif ($build_type eq 'Debug') {
+    $config = {
+      optimize             => '', 
+      debug_info_ccflags   => ['-g'],
+      ndebug_ccflags       => [],
+      debug_info_ldflags => ['-g'],
+      symbol_strip_ldflags => [],
     };
   }
   elsif ($build_type eq 'RelWithDebInfo') {
@@ -870,6 +868,7 @@ sub get_config_from_build_type {
       optimize           => '-O2',
       debug_info_ccflags => ['-g'],
       ndebug_ccflags     => ['-DNDEBUG'],
+      debug_info_ldflags => ['-g'],
     };
   }
   elsif ($build_type eq 'MinSizeRel') {
@@ -877,6 +876,7 @@ sub get_config_from_build_type {
       optimize           => '-Os',
       debug_info_ccflags => [],
       ndebug_ccflags     => ['-DNDEBUG'],
+      debug_info_ldflags => [],
     };
   }
   else {

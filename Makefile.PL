@@ -92,10 +92,6 @@ my $default_config = SPVM::Builder::Util::API::create_default_config;
 # Macro
 @defines = map { "-D$_" } @defines;
 
-unless (defined $build_type) {
-  $build_type = 'Release';
-}
-
 if ($debug) {
   $build_type = 'Debug';
 }
