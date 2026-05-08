@@ -1807,4 +1807,6 @@ class TestCase::NativeAPI {
   
   native static method method_begin_and_end_cb : int ();
   
+  native static method push_caller_stack : int ();
+  
 }

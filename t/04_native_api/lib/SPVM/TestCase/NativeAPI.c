@@ -4756,7 +4756,6 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
   {
     char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
     sprintf(tmp_buffer, "%s", "abcd");
-    // ˆø”‚Ì‡˜‚ðC³: tmp_buffer ‚ðÅŒã‚ÉˆÚ“®
     int32_t error_id = env->die(env, stack, "Error %s.", __func__, __FILE__, __LINE__, tmp_buffer); int32_t line = __LINE__;
     
     if (!(error_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS)) {
@@ -5338,5 +5337,56 @@ CLEANUP:
   env->api->runtime->method_begin_cb = NULL;
   env->api->runtime->method_end_cb = NULL;
   
+  return 0;
+}
+
+static void call_level_deep(SPVM_ENV* env, SPVM_VALUE* stack) {
+  env->die(env, stack, "Fatal error occurred.", __func__, FILE_NAME, __LINE__);
+}
+
+static void call_level_middle(SPVM_ENV* env, SPVM_VALUE* stack) {
+  env->push_caller_stack(env, stack, __func__, FILE_NAME, __LINE__);
+  call_level_deep(env, stack);
+  env->pop_caller_stack(env, stack);
+}
+
+int32_t SPVM__TestCase__NativeAPI__push_caller_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+  env->push_caller_stack(env, stack, __func__, FILE_NAME, __LINE__);
+  
+  call_level_middle(env, stack);
+  
+  env->pop_caller_stack(env, stack);
+  
+  SPVM_OBJ* obj_exception = env->build_exception_message(env, stack, 0);
+  const char* exception = env->get_chars(env, stack, obj_exception);
+  
+  if (!strstr(exception, "Fatal error occurred.")) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  if (!strstr(exception, FILE_NAME)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  if (!strstr(exception, "call_level_deep")) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  if (!strstr(exception, "call_level_middle")) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  if (!strstr(exception, "SPVM__TestCase__NativeAPI__push_caller_stack")) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  spvm_warn("%s", exception);
+  
+  stack[0].ival = 1;
   return 0;
 }

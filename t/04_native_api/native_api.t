@@ -411,6 +411,8 @@ ok(SPVM::TestCase::NativeAPI->extra);
 
 ok(SPVM::TestCase::NativeAPI->method_begin_and_end_cb);
 
+ok(SPVM::TestCase::NativeAPI->push_caller_stack);
+
 {
   # The target C source file
   my ($c_source_file) = glob ".spvm_build/work/src/*/*/SPVM/Fn.precompile.c";
