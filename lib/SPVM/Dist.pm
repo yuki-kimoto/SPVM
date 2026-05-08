@@ -871,6 +871,7 @@ GetOptions(
   'no-build-spvm-modules' => \\my \$no_build_spvm_modules,
   'optimize=s' => \\my \$optimize,
   'debug' => \\my \$debug,
+  'build-type=s' => \\my \$build_type,
 );
 
 if (\$meta) {
@@ -881,10 +882,8 @@ unless (\$meta) {
   # Do something such as environment check.
 }
 
-unless (\$optimize) {
-  if (\$debug) {
-    \$optimize = "-O0 -g";
-  }
+if (\$debug) {
+  \$build_type = 'Debug';
 }
 
 my \%configure_and_runtime_requires = ('SPVM' => '$SPVM::VERSION');
@@ -935,6 +934,9 @@ sub MY::postamble {
     local \@INC = ('lib', \@INC);
     
     my \$options = {};
+    if (defined \$build_type) {
+      \$options->{build_type} = \$build_type;
+    }
     if (defined \$optimize) {
       \$options->{optimize} = \$optimize;
     }
