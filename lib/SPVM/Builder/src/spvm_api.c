@@ -267,8 +267,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_die,
     SPVM_API_get_exception,
     SPVM_API_set_exception,
-    NULL, // reserved165
-    NULL, // reserved166
+    SPVM_API_push_caller_stack,
+    SPVM_API_pop_caller_stack,
     SPVM_API_is_string,
     SPVM_API_is_class,
     SPVM_API_is_pointer_class,
@@ -7133,6 +7133,28 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
   (*current_caller_info_stack_ptr)[offset + 3].address = current_method;
   
   return 0;
+}
+
+void SPVM_API_push_caller_stack(SPVM_ENV* env, SPVM_VALUE* stack, const char* func_name, const char* file, int32_t line) {
+  
+  int32_t error_id = 0;
+  
+  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival++;
+  
+  int32_t level = 0;
+  
+  SPVM_RUNTIME_METHOD* current_method = SPVM_API_get_current_method(env, stack, level, &error_id);
+  
+  assert(error_id == 0);
+  
+  SPVM_API_push_caller_info(env, stack, current_method, func_name, file, line);
+}
+
+void SPVM_API_pop_caller_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  assert(stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival >= 0);
+  
+  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival--;
 }
 
 int32_t SPVM_API_get_call_depth(SPVM_ENV* env, SPVM_VALUE* stack) {

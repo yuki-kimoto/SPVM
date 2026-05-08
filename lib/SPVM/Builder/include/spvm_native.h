@@ -440,6 +440,8 @@ struct spvm_env {
   void (*set_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* float_object, float value);
   void (*set_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* double_object, double value);
   const char* (*get_exception_chars)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void (*push_caller_stack)(SPVM_ENV* env, SPVM_VALUE* stack, const char* func_name, const char* file, int32_t line);
+  void (*pop_caller_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 struct spvm_env_api {

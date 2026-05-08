@@ -2858,7 +2858,7 @@ Sets an exception with an existing string object I<obj_exception> and its metada
 
 This is the same as L</"die">, but it takes an SPVM string object instead of a format string.
 
-B<Examples:>
+Examples:
 
   SPVM_OBJ* obj_exception = env->new_string_nolen(env, stack, "Custom error message");
   return env->die_with_string(env, stack, obj_exception, __func__, __FILE__, __LINE__);
@@ -2887,7 +2887,7 @@ The metadata used for reconstruction includes the function name, file path, line
 
 Returns the newly created string object. This object is automatically pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
-B<Examples:>
+Examples:
 
   SPVM_OBJ* obj_full_message = env->build_exception_message(env, stack, 0);
   env->set_exception(env, stack, obj_full_message);
@@ -2950,11 +2950,37 @@ Sets the value of the C<value> field of the L<Double|SPVM::Double> object I<doub
 
 B<Note:> This method sets the value even if the object is marked as read-only.
 
-B<Examples:>
+Examples:
 
   int32_t error_id = 0;
   SPVM_OBJ* obj_int = env->new_object_by_name(env, stack, "Int", &error_id);
   env->set_int_object_value(env, stack, obj_int, 10);
+
+=head2 push_caller_stack
+
+C<void (*push_caller_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* func_name, const char* file, int32_t line);>
+
+Pushes the caller info (function name, file name, and line number) onto the caller info stack.
+
+This information is used to generate a stack trace when an exception occurs.
+
+Every call to L</"push_caller_stack"> native API must be followed by a call to L</"pop_caller_stack"> after the function call.
+
+Examples:
+
+  /* Push the current location info */
+  env->push_caller_stack(env, stack, __func__, __FILE__, __LINE__);
+  
+  my_func(env, stack, 1);
+  
+  /* Pop the last location info */
+  env->pop_caller_stack(env, stack);
+  
+=head2 pop_caller_stack
+
+C<void (*pop_caller_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+
+Pops the last caller info from the caller info stack.
 
 =head1 Native API IDs
 
@@ -3236,6 +3262,9 @@ Native APIs have its IDs.
   273 set_long_object_value
   274 set_float_object_value
   275 set_double_object_value
+  276 get_exception_chars
+  277 push_caller_stack
+  278 pop_caller_stack
 
 =head1 Constant Values
 
