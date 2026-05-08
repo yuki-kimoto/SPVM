@@ -2096,24 +2096,6 @@ Sets I<exception> to the L<exception variable|SPVM::Document::Language::Exceptio
 
 I<exception> must be an SPVM string object or C<NULL>.
 
-=head2 new_stack_trace_no_mortal
-
-C<SPVM_OBJ* (*new_stack_trace_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_OBJ* exception, L<SPVM_NATIVE_METHOD* method|SPVM::Document::NativeAPI::Method>, int32_t line);>
-
-Creates a new string by appending a stack trace line (including the method and the line number) to the end of the exception I<exception>, and returns it.
-
-If its memory allocation failed, returns C<NULL>.
-
-I<exception> must be an SPVM string object. The return value is an SPVM string object.
-
-This native API should not be used unless special purposes are intended. Normally, use L</"new_stack_trace"> native API.
-
-=head2 new_stack_trace
-
-C<SPVM_OBJ* (*new_stack_trace)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_OBJ* exception, L<SPVM_NATIVE_METHOD* method|SPVM::Document::NativeAPI::Method>, int32_t line);>
-
-Calls L</"new_stack_trace_no_mortal"> native API and pushes its return value to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">, and returns it.
-
 =head2 is_string
 
 C<int32_t (*is_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_OBJ* object);>
@@ -3129,8 +3111,8 @@ Native APIs have its IDs.
   162 die
   163 get_exception
   164 set_exception
-  165 new_stack_trace_no_mortal
-  166 new_stack_trace
+  165 reserved165
+  166 reserved166
   167 is_string
   168 is_class
   169 is_pointer_class

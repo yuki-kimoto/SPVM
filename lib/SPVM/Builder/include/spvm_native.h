@@ -328,8 +328,8 @@ struct spvm_env {
   int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...);
   SPVM_OBJ* (*get_exception)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*set_exception)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* exception);
-  SPVM_OBJ* (*new_stack_trace_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* exception, SPVM_NATIVE_METHOD* method, int32_t line);
-  SPVM_OBJ* (*new_stack_trace)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* exception, SPVM_NATIVE_METHOD* method, int32_t line);
+  void* reserved165;
+  void* reserved166;
   int32_t (*is_string)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object);
   int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object);
   int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object);
