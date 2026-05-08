@@ -162,6 +162,40 @@ union spvm_value {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 struct spvm_env {
   SPVM_NATIVE_RUNTIME* runtime;
   SPVM_ENV_API* api;
@@ -328,8 +362,8 @@ struct spvm_env {
   int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_format, const char* func_name, const char* file, int32_t line, ...);
   SPVM_OBJ* (*get_exception)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*set_exception)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* exception);
-  void* reserved165;
-  void* reserved166;
+  void (*push_caller_stack)(SPVM_ENV* env, SPVM_VALUE* stack, const char* func_name, const char* file, int32_t line);
+  void (*pop_caller_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*is_string)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object);
   int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object);
   int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object);
@@ -440,8 +474,6 @@ struct spvm_env {
   void (*set_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* float_object, float value);
   void (*set_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* double_object, double value);
   const char* (*get_exception_chars)(SPVM_ENV* env, SPVM_VALUE* stack);
-  void (*push_caller_stack)(SPVM_ENV* env, SPVM_VALUE* stack, const char* func_name, const char* file, int32_t line);
-  void (*pop_caller_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 struct spvm_env_api {

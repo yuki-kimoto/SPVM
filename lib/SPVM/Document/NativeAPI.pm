@@ -3151,8 +3151,8 @@ Native APIs have its IDs.
   162 die
   163 get_exception
   164 set_exception
-  165 reserved165
-  166 reserved166
+  165 push_caller_stack
+  166 pop_caller_stack
   167 is_string
   168 is_class
   169 is_pointer_class
@@ -3263,8 +3263,6 @@ Native APIs have its IDs.
   274 set_float_object_value
   275 set_double_object_value
   276 get_exception_chars
-  277 push_caller_stack
-  278 pop_caller_stack
 
 =head1 Constant Values
 
