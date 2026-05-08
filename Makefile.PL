@@ -122,7 +122,11 @@ my $lddlflags = $Config{lddlflags};
 $lddlflags =~ s/(?:^|\s)-O[0-9s]\b//g;
 # Remove strip flag (-s) more robustly ---
 $lddlflags =~ s/(?:^|\s)-s(?:\s|$)/ /g;
-$lddlflags .= " " . join(' ', @{$default_config->thread_ldflags}, @{$default_config->debug_info_ldflags}, @{$default_config->symbol_strip_ldflags}, @lddlflags);
+my $ld_optimize = $default_config->ld_optimize;
+unless (length $ld_optimize) {
+  $ld_optimize = ' ';
+}
+$lddlflags .= " " . join(' ', @{$default_config->thread_ldflags}, @{$default_config->debug_info_ldflags}, @{$default_config->symbol_strip_ldflags}, $ld_optimize, @lddlflags);
 
 # INC
 my $inc = '-Ilib/SPVM/Builder/include';

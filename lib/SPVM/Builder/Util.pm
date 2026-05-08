@@ -847,33 +847,41 @@ sub get_config_from_build_type {
   my $config;
   
   if (!defined $build_type || $build_type eq 'Release') {
+    # Release: Full optimization for both CC and LD
     $config = {
       optimize           => '-O3',
+      ld_optimize        => '-O3',
       debug_info_ccflags => [],
       ndebug_ccflags     => ['-DNDEBUG'],
       debug_info_ldflags => [],
     };
   }
   elsif ($build_type eq 'Debug') {
+    # Debug: No optimization
     $config = {
-      optimize             => '', 
+      optimize             => '',
+      ld_optimize          => '',
       debug_info_ccflags   => ['-g'],
       ndebug_ccflags       => [],
-      debug_info_ldflags => ['-g'],
+      debug_info_ldflags   => ['-g'],
       symbol_strip_ldflags => [],
     };
   }
   elsif ($build_type eq 'RelWithDebInfo') {
+    # RelWithDebInfo: Balanced optimization with debug info
     $config = {
       optimize           => '-O2',
+      ld_optimize        => '-O2',
       debug_info_ccflags => ['-g'],
       ndebug_ccflags     => ['-DNDEBUG'],
       debug_info_ldflags => ['-g'],
     };
   }
   elsif ($build_type eq 'MinSizeRel') {
+    # MinSizeRel: Optimize for size
     $config = {
       optimize           => '-Os',
+      ld_optimize        => '-Os',
       debug_info_ccflags => [],
       ndebug_ccflags     => ['-DNDEBUG'],
       debug_info_ldflags => [],
