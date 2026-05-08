@@ -191,7 +191,8 @@ mkpath $external_object_dir;
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force -B $build_dir -I $inc_dir --mode Debug -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
     my $spvmcc_output = `$spvmcc_cmd`;
-    like($spvmcc_output, qr/-g\b/);
+    # Check that -g appears twice in compiler and linker
+    like($spvmcc_output, qr/-g\b.*?\n.*?-g\b/s);
     unlike($spvmcc_output, qr/-O3\b/);
     unlike($spvmcc_output, qr/-DNDEBUG\b/);
     
@@ -208,7 +209,8 @@ mkpath $external_object_dir;
     my $spvmcc_output = `$spvmcc_cmd`;
     unlike($spvmcc_output, qr/-O3\b/);
     like($spvmcc_output, qr/-O2\b/);
-    like($spvmcc_output, qr/-g\b/);
+    # Check that -g appears twice in compiler and linker
+    like($spvmcc_output, qr/-g\b.*?\n.*?-g\b/s);
     like($spvmcc_output, qr/-DNDEBUG\b/);
     
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
