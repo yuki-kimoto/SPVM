@@ -88,7 +88,6 @@ if ($meta) {
 }
 
 my $default_config = SPVM::Builder::Util::API::create_default_config;
-my $std = $default_config->std;
 
 # Macro
 @defines = map { "-D$_" } @defines;
@@ -101,22 +100,33 @@ if ($debug) {
   $build_type = 'Debug';
 }
 
-# OPTIMIZE
-if ($build_type eq 'Debug') {
-  $optimize = "-O0 -g";
+# Apply config from build type
+my $build_type_config = SPVM::Builder::Util::get_config_from_build_type($build_type);
+for my $name (keys %$build_type_config) {
+  my $value = $build_type_config->{$name};
+  $default_config->{$name} = $value;
 }
-unless ($optimize) {
-  $optimize = $default_config->optimize;
+
+# OPTIMIZE
+$optimize = $default_config->optimize;
+unless (length $optimize) {
+  $optimize = ' ';
 }
 
 # CCFLAGS
 my $ccflags = $Config{ccflags};
-$ccflags .= " -std=$std";
-$ccflags .= " " . join(' ', @{$default_config->thread_ccflags}, @ccflags);
+# This removes -O[0-9s] to avoid conflict with SPVM's optimization setting
+$ccflags =~ s/(?:^|\s)-O[0-9s]\b//g;
+$ccflags .= " -std=" . $default_config->std;
+$ccflags .= " " . join(' ', @{$default_config->thread_ccflags}, @{$default_config->debug_info_ccflags}, @{$default_config->ndebug_ccflags}, @ccflags);
 
 # LDDLFLAGS
 my $lddlflags = $Config{lddlflags};
-$lddlflags .= " " . join(' ', @{$default_config->thread_ldflags}, @lddlflags);
+# Remove -O[0-9s] to ensure clean debug session
+$lddlflags =~ s/(?:^|\s)-O[0-9s]\b//g;
+# Remove strip flag (-s) more robustly ---
+$lddlflags =~ s/(?:^|\s)-s(?:\s|$)/ /g;
+$lddlflags .= " " . join(' ', @{$default_config->thread_ldflags}, @{$default_config->debug_info_ldflags}, @{$default_config->symbol_strip_ldflags}, @lddlflags);
 
 # INC
 my $inc = '-Ilib/SPVM/Builder/include';
