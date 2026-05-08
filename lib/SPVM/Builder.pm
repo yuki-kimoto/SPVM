@@ -203,6 +203,7 @@ sub build_parallel {
     class_file
     quiet
     optimize
+    build_type
   );
 
   # Check for invalid options
@@ -266,6 +267,10 @@ sub build_parallel {
       }
       if (length $force_optimize) {
         $config->optimize($force_optimize);
+      }
+      
+      if (defined $options->{build_type}) {
+        $config->build_type($options->{build_type});
       }
       
       # Prepare compile information for each class
