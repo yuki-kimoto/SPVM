@@ -867,7 +867,6 @@ sub get_config_from_build_type {
       debug_info_ccflags   => ['-g'],
       ndebug_ccflags       => [],
       debug_info_ldflags   => ['-g'],
-      symbol_strip_ldflags => [],
     };
   }
   elsif ($build_type eq 'RelWithDebInfo') {

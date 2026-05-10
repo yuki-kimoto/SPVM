@@ -142,7 +142,6 @@ sub _get_config_from_build_type_msvc {
       debug_info_ccflags   => ['-Zi', '-RTC1'],
       ndebug_ccflags       => [],
       debug_info_ldflags   => ['/DEBUG'],
-      symbol_strip_ldflags => [],
     };
   }
   elsif ($build_type eq 'RelWithDebInfo') {
