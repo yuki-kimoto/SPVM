@@ -136,15 +136,7 @@ sub new {
 
   # symbol_strip_ldflags
   unless (exists $self->{symbol_strip_ldflags}) {
-    # Windows (MinGW/MSVC) binaries can be significantly larger due to embedded 
-    # debug symbols. Using -s effectively reduces this size. 
-    # On macOS, -s is obsolete. On Linux, keeping symbols by default is preferred.
-    if (SPVM::Builder::Util::is_windows()) {
-      $self->symbol_strip_ldflags(['-s']);
-    }
-    else {
-      $self->symbol_strip_ldflags([]);
-    }
+    $self->symbol_strip_ldflags([]);
   }
   
   unless (exists $self->{libcpp_ldflags}) {
@@ -818,12 +810,6 @@ If C<$Config{gccversion}> contains C<clang>, L</"ld"> field are set to C<clang++
   []
 
 =item * L</"symbol_strip_ldflags">
-
-Windows:
-
-  ["-s"]
-
-Other OSs:
 
   []
 
