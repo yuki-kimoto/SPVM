@@ -128,9 +128,10 @@ sub _get_config_from_build_type_msvc {
     # Release: /O2 (Maximize Speed)
     $config = {
       optimize           => '-O2',
-      ld_optimize        => '/OPT:REF /OPT:ICF', # Remove unreferenced data and fold identical COMDATs
       debug_info_ccflags => [],
       ndebug_ccflags     => ['-DNDEBUG'],
+      
+      ld_optimize        => '/OPT:REF /OPT:ICF',
       debug_info_ldflags => [],
     };
   }
@@ -138,9 +139,10 @@ sub _get_config_from_build_type_msvc {
     # Debug: /Od (Disable optimization), /Zi (PDB), /RTC1 (Runtime checks)
     $config = {
       optimize             => '-Od',
-      ld_optimize          => '',
       debug_info_ccflags   => ['-Zi', '-RTC1'],
       ndebug_ccflags       => [],
+      
+      ld_optimize          => '',
       debug_info_ldflags   => ['/DEBUG'],
     };
   }
@@ -148,9 +150,10 @@ sub _get_config_from_build_type_msvc {
     # RelWithDebInfo: /O2 with /Zi
     $config = {
       optimize           => '-O2',
-      ld_optimize        => '/OPT:REF /OPT:ICF',
       debug_info_ccflags => ['-Zi'],
       ndebug_ccflags     => ['-DNDEBUG'],
+      
+      ld_optimize        => '/OPT:REF /OPT:ICF',
       debug_info_ldflags => ['/DEBUG'],
     };
   }
@@ -158,9 +161,10 @@ sub _get_config_from_build_type_msvc {
     # MinSizeRel: /O1 (Minimize Size)
     $config = {
       optimize           => '-O1',
-      ld_optimize        => '/OPT:REF /OPT:ICF',
       debug_info_ccflags => [],
       ndebug_ccflags     => ['-DNDEBUG'],
+      
+      ld_optimize        => '/OPT:REF /OPT:ICF',
       debug_info_ldflags => [],
     };
   }

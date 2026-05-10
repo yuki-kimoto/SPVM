@@ -853,9 +853,10 @@ sub get_config_from_build_type {
     # Release: Full optimization for both CC and LD
     $config = {
       optimize           => '-O3',
-      ld_optimize        => '-O3',
       debug_info_ccflags => [],
       ndebug_ccflags     => ['-DNDEBUG'],
+      
+      ld_optimize        => '-O3',
       debug_info_ldflags => [],
     };
   }
@@ -863,9 +864,10 @@ sub get_config_from_build_type {
     # Debug: No optimization
     $config = {
       optimize             => '',
-      ld_optimize          => '',
       debug_info_ccflags   => ['-g'],
       ndebug_ccflags       => [],
+      
+      ld_optimize          => '',
       debug_info_ldflags   => ['-g'],
     };
   }
@@ -873,9 +875,10 @@ sub get_config_from_build_type {
     # RelWithDebInfo: Balanced optimization with debug info
     $config = {
       optimize           => '-O2',
-      ld_optimize        => '-O2',
       debug_info_ccflags => ['-g'],
       ndebug_ccflags     => ['-DNDEBUG'],
+      
+      ld_optimize        => '-O2',
       debug_info_ldflags => ['-g'],
     };
   }
@@ -883,9 +886,10 @@ sub get_config_from_build_type {
     # MinSizeRel: Optimize for size
     $config = {
       optimize           => '-Os',
-      ld_optimize        => '-Os',
       debug_info_ccflags => [],
       ndebug_ccflags     => ['-DNDEBUG'],
+      
+      ld_optimize        => '-Os',
       debug_info_ldflags => [],
     };
   }
