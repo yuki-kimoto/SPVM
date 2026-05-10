@@ -1,3 +1,7 @@
+0.990170 2026-05-11
+  [Changes]
+    * Remove symbol_strip_ldflags setting in SPVM::Builder::Config::Global and SPVM::Builder::Config::Exe::MSVC.
+    * Remove -s linker option in MinGW.
 0.990169 2026-05-08
   [New Features]
     * Add get_exception_chars native API.
