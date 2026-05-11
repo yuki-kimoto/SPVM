@@ -502,7 +502,6 @@ solo/script/myapp.config
 solo/script/myapp.debug_memory_count.config
 solo/script/myapp.spvm
 SPVM.xs
-spvm_build.json
 t/00_builder/CC.t
 t/00_builder/Config-Exe.t
 t/00_builder/Config.t
