@@ -50,68 +50,61 @@ make install
 
 ```
 # Normal run
-yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules && make && perl -Mblib blib/script/spvm -I solo/lib solo/script/myapp.spvm foo bar
 
 # Debug run
-yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --optimize="-O0 -g" && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --debug && make && perl -Mblib blib/script/spvm -I solo/lib solo/script/myapp.spvm foo bar
 
 # Debug run - Print memory count
-yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --optimize="-O0 -g" --define=SPVM_DEBUG_MEMORY && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --debug --define=SPVM_DEBUG_MEMORY && make && perl -Mblib blib/script/spvm -I solo/lib solo/script/myapp.spvm foo bar
 
 # Debug run - Print AST, package information, operaion codes
-yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --optimize="-O0 -g" --define=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --debug --define=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvm -I solo/lib solo/script/myapp.spvm foo bar
 
 # Debug run - Print yacc result
-yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --define=SPVM_DEBUG_YACC --define=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvm -I solo/lib/SPVM solo/script/myapp.spvm foo bar
+yacc/bison.sh && perl Makefile.PL --no-build-spvm-modules --debug --define=SPVM_DEBUG_YACC --define=SPVM_DEBUG_COMPILE && make && perl -Mblib blib/script/spvm -I solo/lib solo/script/myapp.spvm foo bar
 ```
 
 ### SPVM solo test command using spvmcc command
 
 ```
 # Normal run
-make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp -f --no-config solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
+make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib -o solo/.spvm_build/work/myapp -f --no-config solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
 
-# Debug run
-make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp --optimize "-O0 -g" -f --no-config solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
+# Normal run with printing memory count
+make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib -o solo/.spvm_build/work/myapp --define-spvm SPVM_DEBUG_MEMORY -f solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
 
-# Debug run - Print memory count
-make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp --define-spvm SPVM_DEBUG_MEMORY -f solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
-
-# Debug run - Print memory count using config file
-make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib/SPVM -o solo/.spvm_build/work/myapp --mode debug_memory_count -f solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
+# Normal run with printing memory count using config file
+make && perl -Mblib blib/script/spvmcc -B solo/.spvm_build -I solo/lib -o solo/.spvm_build/work/myapp --mode debug_memory_count -f solo/script/myapp.spvm && ./solo/.spvm_build/work/myapp foo bar
 ```
 
-### Cleanup
+### With gdb
 
 ```
-rm solo/.spvm_build/work/myapp
+# Generate Makefile for debug
+perl Makefile.PL --debug
+
+# Run a program on gdb
+make && gdb --args perl -Mblib t/06_module/Fn.t
 ```
 
-### See batcktrace of core dump
+In gdb:
 
 ```
-# Compilation for debug
-perl Makefile.PL --optimize="-O0 -g" && make
+# Break point
+b SPVM__Fn__is_class
 
-# Compiliation time stack trace
-gdb perl core
+# Run
+r
 
-# Runtime stack trace
-gdb solo/.spvm_build/work/myapp core
-
+# Back trace
 bt
-```
-      
-If core file is not output, set the following.
-
-```
-ulimit -c unlimited
 ```
 
 Check memory with valgrind
 
 ```
-valgrind --leak-check=full --track-origins=yes perl -Mblib t/02_vm/05_op/reference.t
+valgrind --leak-check=full --track-origins=yes perl -Mblib t/06_module/Fn.t
 ```
 
 ## Portability Note
