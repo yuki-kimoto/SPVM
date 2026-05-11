@@ -519,10 +519,8 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
   stack[SPVM_API_C_STACK_INDEX_ARGS_WIDTH].ival = args_width;
-  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival++;
-
-  /* Push caller information onto the caller stack */
-  // Note: Assuming SPVM_API_push_caller_info exists or similar logic
+  int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival++;
+  
   SPVM_API_push_caller_info(env, stack, method, func_name, file, line);
   
   SPVM_RUNTIME_BASIC_TYPE* current_basic_type = method->current_basic_type;
@@ -666,7 +664,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     method_end_cb(env, stack);
   }
   
-  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival--;
+  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival = current_call_depth;
   
   return error_id;
 }
