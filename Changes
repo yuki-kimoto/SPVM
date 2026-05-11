@@ -1,3 +1,7 @@
+0.990171 2026-05-11
+  [New Features]
+    * Add get_error_id and set_error_id native API.
+    
 0.990170 2026-05-11
   [Changes]
     * Remove symbol_strip_ldflags setting in SPVM::Builder::Config::Global and SPVM::Builder::Config::Exe::MSVC.
