@@ -20,7 +20,7 @@ GetOptions(
   "define=s" => \my @defines,
   "optimize=s" => \my $optimize,
   "ccflags=s" => \my @ccflags,
-  "lddlflags=s" => \my @lddlflags,
+  "ldflags=s" => \my @ldflags,
   'meta' => \my $meta,
   'no-build-spvm-modules' => \my $no_build_spvm_modules,
   'no-precompile-tests' => \my $no_precompile_tests,
@@ -126,7 +126,7 @@ my $ld_optimize = $default_config->ld_optimize;
 unless (length $ld_optimize) {
   $ld_optimize = ' ';
 }
-$lddlflags .= " " . join(' ', @{$default_config->thread_ldflags}, @{$default_config->debug_info_ldflags}, @{$default_config->symbol_strip_ldflags}, $ld_optimize, @lddlflags);
+$lddlflags .= " " . join(' ', @{$default_config->thread_ldflags}, @{$default_config->debug_info_ldflags}, @{$default_config->symbol_strip_ldflags}, $ld_optimize, @ldflags);
 
 # INC
 my $inc = '-Ilib/SPVM/Builder/include';
