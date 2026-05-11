@@ -379,6 +379,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_set_float_object_value,
     SPVM_API_set_double_object_value,
     SPVM_API_get_exception_chars,
+    SPVM_API_get_error_id,
+    SPVM_API_set_error_id,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -7643,4 +7645,14 @@ int SPVM_API_c_snprintf_len(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t 
   }
 
   return total_len;
+}
+
+int32_t SPVM_API_get_error_id(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  return stack[SPVM_API_C_STACK_INDEX_ERROR_ID].ival;
+}
+
+void SPVM_API_set_error_id(SPVM_ENV* env, SPVM_VALUE* stack, int32_t error_id) {
+  
+  stack[SPVM_API_C_STACK_INDEX_ERROR_ID].ival = error_id;
 }

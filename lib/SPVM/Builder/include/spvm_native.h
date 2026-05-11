@@ -474,6 +474,8 @@ struct spvm_env {
   void (*set_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* float_object, float value);
   void (*set_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* double_object, double value);
   const char* (*get_exception_chars)(SPVM_ENV* env, SPVM_VALUE* stack);
+  int32_t (*get_error_id)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void (*set_error_id)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t error_id);
 };
 
 struct spvm_env_api {

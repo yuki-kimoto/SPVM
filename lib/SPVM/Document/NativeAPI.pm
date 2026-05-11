@@ -2805,7 +2805,7 @@ Same as L</"say">, but prints the output to L<SPVM's standard error|SPVM::Docume
 
 C<int32_t (*get_call_depth)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns the current call depth on the runtime stack I<stack>.
+Returns the current call depth on the runtime stack L<stack|SPVM::Document::NativeClass/"Runtime Stack">.
 
 =head2 get_caller_info_stack
 
@@ -2981,6 +2981,30 @@ Examples:
 C<void (*pop_caller_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
 Pops the last caller info from the caller info stack.
+
+=head2 get_error_id
+
+  int32_t (*get_error_id)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+Returns the current error ID on the runtime stack L<stack|SPVM::Document::NativeClass/"Runtime Stack">.
+
+Note that the error ID is not automatically set by the runtime unless explicitly mentioned in the documentation.
+
+=head2 set_error_id
+
+  void (*set_error_id)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t error_id);
+
+Sets the error ID on the runtime stack L<stack|SPVM::Document::NativeClass/"Runtime Stack">.
+
+Note that the error ID is not automatically set by the runtime unless explicitly mentioned in the documentation.
+
+Examples:
+
+  // Get error ID
+  int32_t error_id = env->get_error_id(env, stack);
+  
+  // Set error ID
+  env->set_error_id(env, stack, error_id);
 
 =head1 Native API IDs
 
@@ -3263,7 +3287,9 @@ Native APIs have its IDs.
   274 set_float_object_value
   275 set_double_object_value
   276 get_exception_chars
-
+  277 get_error_id
+  278 set_error_id
+  
 =head1 Constant Values
 
 =head2 Basic Type IDs

@@ -1809,4 +1809,6 @@ class TestCase::NativeAPI {
   
   native static method push_caller_stack : int ();
   
+  native static method get_error_id : int ();
+  
 }

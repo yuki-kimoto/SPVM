@@ -41,6 +41,7 @@ enum {
   SPVM_API_C_STACK_INDEX_EXCEPTION_FILE = 362,
   SPVM_API_C_STACK_INDEX_EXCEPTION_LINE = 361,
   SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH = 360,
+  SPVM_API_C_STACK_INDEX_ERROR_ID = 359,
 };
 
 enum {
@@ -550,5 +551,9 @@ int SPVM_API_c_fputs(SPVM_ENV* env, SPVM_VALUE* stack, const char* s, void* stre
 int SPVM_API_c_fgetc(SPVM_ENV* env, SPVM_VALUE* stack, void* stream);
 
 int SPVM_API_c_snprintf_len(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t size, const char* format, SPVM_VALUE* args, int32_t args_length);
+
+int32_t SPVM_API_get_error_id(SPVM_ENV* env, SPVM_VALUE* stack);
+
+void SPVM_API_set_error_id(SPVM_ENV* env, SPVM_VALUE* stack, int32_t error_id);
 
 #endif

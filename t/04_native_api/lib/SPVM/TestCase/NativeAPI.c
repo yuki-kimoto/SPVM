@@ -295,6 +295,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->set_float_object_value != &env_array[274]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_double_object_value != &env_array[275]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_exception_chars != &env_array[276]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_error_id != &env_array[277]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_error_id != &env_array[278]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
@@ -5388,5 +5390,20 @@ int32_t SPVM__TestCase__NativeAPI__push_caller_stack(SPVM_ENV* env, SPVM_VALUE* 
   spvm_warn("%s", exception);
   
   stack[0].ival = 1;
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__get_error_id(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 123;
+  env->set_error_id(env, stack, error_id);
+  
+  if (env->get_error_id(env, stack) == error_id) {
+    stack[0].ival = 1;
+  }
+  else {
+    stack[0].ival = 0;
+  }
+  
   return 0;
 }
