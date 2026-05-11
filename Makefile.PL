@@ -17,10 +17,10 @@ use SPVM::Builder::Config;
 use SPVM::Builder::Config::Util;
 
 GetOptions(
-  "ccflags=s" => \my @ccflags,
+  "ccflag=s" => \my @ccflags,
   "define=s" => \my @defines,
   "optimize=s" => \my $optimize,
-  "ldflags=s" => \my @ldflags,
+  "ldflag=s" => \my @ldflags,
   'debug' => \my $debug,
   'build-type=s' => \my $build_type,
   
