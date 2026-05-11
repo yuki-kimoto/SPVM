@@ -141,6 +141,12 @@ The following options are the same as those for L<SPVM::Builder::API/build_paral
 
 =item * C<optimize>
 
+=item * C<ccflags>
+
+=item * C<defines>
+
+=item * C<ldflags>
+
 =item * C<jobs>
 
 =item * C<build_type>
