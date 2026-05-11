@@ -7149,7 +7149,10 @@ void SPVM_API_push_caller_stack(SPVM_ENV* env, SPVM_VALUE* stack, const char* fu
   
   assert(error_id == 0);
   
-  SPVM_API_push_caller_info(env, stack, current_method, func_name, file, line);
+  int32_t status = SPVM_API_push_caller_info(env, stack, current_method, func_name, file, line);
+  if (status == -1) {
+    abort();
+  }
 }
 
 void SPVM_API_pop_caller_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
