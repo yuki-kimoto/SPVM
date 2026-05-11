@@ -161,6 +161,18 @@ A path to a text file containing precompile class names to be built. The file mu
 
 The optimization level for the compiler (e.g., C<O2>, C<O3>, C<O0>).
 
+=item * C<ccflags>
+
+An array reference of extra compiler flags.
+
+=item * C<defines>
+
+An array reference of macro definitions. Each definition is passed to the compiler with the C<-D> prefix.
+
+=item * C<ldflags>
+
+An array reference of extra linker flags.
+
 =item * C<jobs>
 
 The number of parallel jobs. The default value is the number of CPU cores.

@@ -202,10 +202,13 @@ sub build_parallel {
     class_name
     class_file
     quiet
+    ccflags
     optimize
+    defines
+    ldflags
     build_type
   );
-
+  
   # Check for invalid options
   for my $key (keys %$options) {
     unless ($allowed_options{$key}) {
@@ -264,6 +267,14 @@ sub build_parallel {
         }
       }
       
+      if ($options->{ccflags}) {
+        push @{$config->extra_ccflags}, @{$options->{ccflags}};
+      }
+      
+      if ($options->{defines}) {
+        push @{$config->extra_ccflags}, map { "-D$_" } @{$options->{defines}};
+      }
+      
       my $force_optimize;
       if (length $options->{optimize}) {
         $force_optimize = $options->{optimize};
@@ -277,6 +288,11 @@ sub build_parallel {
       if (length $force_optimize) {
         $config->optimize($force_optimize);
       }
+      
+      if ($options->{ldflags}) {
+        push @{$config->extra_ldflags}, @{$options->{ldflags}};
+      }
+      
       
       # Prepare compile information for each class
       my $compile_infos = $cc->prepare_compile_class($class_name, $config);
