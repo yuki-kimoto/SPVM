@@ -268,11 +268,11 @@ sub build_parallel {
       }
       
       if ($options->{ccflags}) {
-        push @{$config->extra_ccflags}, @{$options->{ccflags}};
+        $config->add_ccflag(@{$options->{ccflags}});
       }
       
       if ($options->{defines}) {
-        push @{$config->extra_ccflags}, map { "-D$_" } @{$options->{defines}};
+        $config->add_define(@{$options->{defines}});
       }
       
       my $force_optimize;
@@ -290,9 +290,8 @@ sub build_parallel {
       }
       
       if ($options->{ldflags}) {
-        push @{$config->extra_ldflags}, @{$options->{ldflags}};
+        $config->add_ldflag(@{$options->{ldflags}});
       }
-      
       
       # Prepare compile information for each class
       my $compile_infos = $cc->prepare_compile_class($class_name, $config);
