@@ -136,7 +136,7 @@ SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, void* spvm_object, cons
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  SV* sv_spvm_object = sv_2mortal(newSV(sizeof(void*)));;
+  SV* sv_spvm_object = sv_2mortal(newSVpv(NULL, sizeof(void*)));
   SPVM_OBJ** spvm_object_ref = (SPVM_OBJ**)SvPV_nolen(sv_spvm_object);
   *spvm_object_ref = NULL;
   
