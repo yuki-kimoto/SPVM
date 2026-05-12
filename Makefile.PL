@@ -209,7 +209,7 @@ WriteMakefile(
     # 5. Only '();. are used for maximum safety.
     # 6. Minimal symbols to avoid edge cases in shell parsing.
     'override TEST_VERBOSE' => "scalar (eval chr(36) . q(ENV{HARNESS_OPTIONS}='j$jobs'), 0)",
-    $preload_libasan ? ('override FULLPERL' => "LD_PRELOAD=\$\$(gcc -print-file-name=libasan.so) $^X") : (),
+    $preload_libasan ? ('override FULLPERL' => qq|LD_PRELOAD=\$\$($Config{cc} -print-file-name=libasan.so) ASAN_OPTIONS="exitcode=0" $^X|) : (),
   },
   $make ? (MAKE => $make) : (),
 );
