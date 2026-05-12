@@ -1568,7 +1568,8 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                 int8_t value = (int8_t)SvIV(sv_value_deref);
                 
-                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int8_t)));
+                SV* sv_ref = sv_2mortal(newSVpv("", 0));
+                SvGROW(sv_ref, sizeof(int8_t) + 1);
                 int8_t* ref = (int8_t*)SvPV_nolen(sv_ref);
                 memcpy((void*)ref, &value, sizeof(int8_t));
                 av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
@@ -1580,7 +1581,8 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                 int16_t value = (int16_t)SvIV(sv_value_deref);
                 
-                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int16_t)));
+                SV* sv_ref = sv_2mortal(newSVpv("", 0));
+                SvGROW(sv_ref, sizeof(int16_t) + 1);
                 int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
                 memcpy((void*)ref, &value, sizeof(int16_t));
                 av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
@@ -1592,7 +1594,8 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                 int32_t value = (int32_t)SvIV(sv_value_deref);
                 
-                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int32_t)));
+                SV* sv_ref = sv_2mortal(newSVpv("", 0));
+                SvGROW(sv_ref, sizeof(int32_t) + 1);
                 int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
                 memcpy((void*)ref, &value, sizeof(int32_t));
                 av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
@@ -1604,7 +1607,8 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                 int64_t value = (int64_t)SvIV(sv_value_deref);
                 
-                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int64_t)));
+                SV* sv_ref = sv_2mortal(newSVpv("", 0));
+                SvGROW(sv_ref, sizeof(int64_t) + 1);
                 int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
                 memcpy((void*)ref, &value, sizeof(int64_t));
                 av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
@@ -1616,7 +1620,8 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                 float value = (float)SvNV(sv_value_deref);
                 
-                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(float)));
+                SV* sv_ref = sv_2mortal(newSVpv("", 0));
+                SvGROW(sv_ref, sizeof(float) + 1);
                 float* ref = (float*)SvPV_nolen(sv_ref);
                 memcpy((void*)ref, &value, sizeof(float));
                 av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
@@ -1628,7 +1633,8 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                 double value = (double)SvNV(sv_value_deref);
                 
-                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(double)));
+                SV* sv_ref = sv_2mortal(newSVpv("", 0));
+                SvGROW(sv_ref, sizeof(double) + 1);
                 double* ref = (double*)SvPV_nolen(sv_ref);
                 memcpy((void*)ref, &value, sizeof(double));
                 av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
@@ -1660,7 +1666,8 @@ _xs_call_method(...)
 
             switch(arg_basic_type_field_basic_type_id) {
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int8_t) * arg_basic_type_fields_length));
+                SV* sv_ref = sv_2mortal(newSVpv("", 0));
+                SvGROW(sv_ref, sizeof(int8_t) * arg_basic_type_fields_length + 1);
                 int8_t* ref = (int8_t*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].bref = ref;
@@ -1668,7 +1675,8 @@ _xs_call_method(...)
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int16_t) * arg_basic_type_fields_length));
+                SV* sv_ref = sv_2mortal(newSVpv("", 0));
+                SvGROW(sv_ref, sizeof(int16_t) * arg_basic_type_fields_length + 1);
                 int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].sref = ref;
@@ -1676,7 +1684,8 @@ _xs_call_method(...)
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int32_t) * arg_basic_type_fields_length));
+                SV* sv_ref = sv_2mortal(newSVpv("", 0));
+                SvGROW(sv_ref, sizeof(int32_t) * arg_basic_type_fields_length + 1);
                 int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].iref = ref;
@@ -1684,7 +1693,8 @@ _xs_call_method(...)
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int64_t) * arg_basic_type_fields_length));
+                SV* sv_ref = sv_2mortal(newSVpv("", 0));
+                SvGROW(sv_ref, sizeof(int64_t) * arg_basic_type_fields_length + 1);
                 int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].lref = ref;
@@ -1692,7 +1702,8 @@ _xs_call_method(...)
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(float) * arg_basic_type_fields_length));
+                SV* sv_ref = sv_2mortal(newSVpv("", 0));
+                SvGROW(sv_ref, sizeof(float) * arg_basic_type_fields_length + 1);
                 float* ref = (float*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].fref = ref;
@@ -1700,7 +1711,8 @@ _xs_call_method(...)
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(double) * arg_basic_type_fields_length));
+                SV* sv_ref = sv_2mortal(newSVpv("", 0));
+                SvGROW(sv_ref, sizeof(double) * arg_basic_type_fields_length + 1);
                 double* ref = (double*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].dref = ref;
