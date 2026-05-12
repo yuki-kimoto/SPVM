@@ -407,6 +407,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   SPVM_API_METHOD_free_api(env->api->method);
   SPVM_API_ARG_free_api(env->api->arg);
   SPVM_API_INTERNAL_free_api(env->api->internal);
+  SPVM_API_MUTEX_free_api(env->api->mutex);
   
   free(env->api);
   
