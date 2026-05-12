@@ -144,6 +144,9 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
   SPVM_ALLOCATOR_free(compiler->global_allocator);
   compiler->global_allocator = NULL;
+  
+  SPVM_ALLOCATOR_free_memory_block_unmanaged(compiler);
+  compiler = NULL;
 }
 
 int32_t SPVM_COMPILER_compile_script(SPVM_COMPILER* compiler, const char* source, const char** anon_basic_type_name_ptr) {
