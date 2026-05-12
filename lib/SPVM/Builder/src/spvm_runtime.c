@@ -151,4 +151,7 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
   // Free allocator
   SPVM_ALLOCATOR_free(runtime->allocator);
   runtime->allocator = NULL;
+  
+  SPVM_ALLOCATOR_free_memory_block_unmanaged(runtime);
+  runtime = NULL;
 }
