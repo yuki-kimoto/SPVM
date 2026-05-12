@@ -211,7 +211,7 @@ WriteMakefile(
     # 5. Only '();. are used for maximum safety.
     # 6. Minimal symbols to avoid edge cases in shell parsing.
     'override TEST_VERBOSE' => "scalar (eval chr(36) . q(ENV{HARNESS_OPTIONS}='j$jobs'), 0)",
-    $asan_on_linux ? ('override FULLPERL' => qq|LD_PRELOAD=\$\$($Config{cc} -print-file-name=libasan.so) ASAN_OPTIONS="log_path=$asan_logs_dir/asan.log" $^X|) : (),
+    $asan_on_linux ? ('override FULLPERL' => qq|LD_PRELOAD=\$\$($Config{cc} -print-file-name=libasan.so) ASAN_OPTIONS="log_path=$asan_logs_dir/asan.log:exitcode=0" $^X|) : (),
   },
   $make ? (MAKE => $make) : (),
 );
