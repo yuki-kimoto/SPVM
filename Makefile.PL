@@ -23,6 +23,7 @@ GetOptions(
   "ldflag=s" => \my @ldflags,
   'debug' => \my $debug,
   'build-type=s' => \my $build_type,
+  'asan' => \my $asan,
   
   'meta' => \my $meta,
   'no-build-spvm-modules' => \my $no_build_spvm_modules,
@@ -103,6 +104,11 @@ my $build_type_config = SPVM::Builder::Util::get_config_from_build_type($build_t
 for my $name (keys %$build_type_config) {
   my $value = $build_type_config->{$name};
   $default_config->{$name} = $value;
+}
+
+if ($asan) {
+  push @ccflags, "-fsanitize=address", "-fno-omit-frame-pointer";
+  push @ldflags, "-fsanitize=address";
 }
 
 # OPTIMIZE
