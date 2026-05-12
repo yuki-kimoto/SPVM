@@ -234,6 +234,16 @@ package MY {
       
       $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)', 'pm_to_blib'];
       
+      if (@ccflags) {
+        $options->{ccflags} = \@ccflags;
+      }
+      if (@defines) {
+        $options->{defines} = \@defines;
+      }
+      if (@ldflags) {
+        $options->{ldflags} = \@ldflags;
+      }
+      
       # Test create_make_rule for backward compatibility and practical testing
       $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn', $options);
       $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn', $options);
