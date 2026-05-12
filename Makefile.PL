@@ -10,6 +10,7 @@ use lib "$FindBin::Bin/lib";
 use Getopt::Long 'GetOptions';
 use File::Find 'find';
 use File::Temp;
+use File::Path 'mkpath';
 
 use SPVM::Builder::Util;
 use SPVM::Builder::Util::API;
@@ -106,9 +107,11 @@ for my $name (keys %$build_type_config) {
   $default_config->{$name} = $value;
 }
 
+my $asan_logs_dir = "$FindBin::Bin/.tmp/asan_logs";
 if ($asan_on_linux) {
   push @ccflags, "-fsanitize=address", "-fno-omit-frame-pointer";
   push @ldflags, "-fsanitize=address";
+  mkpath $asan_logs_dir;
 }
 
 # OPTIMIZE
@@ -171,7 +174,7 @@ WriteMakefile(
   OBJECT => '$(O_FILES)', # link all the C files too
   INC => $inc,
   test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t t/*/*/*/*.t'},
-  clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/.spvm_build t/*/.spvm_build t/03_precompile t/test_files_tmp t/*/test_files_tmp t/exe/.spvm_build"},
+  clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/.spvm_build t/*/.spvm_build t/03_precompile t/test_files_tmp t/*/test_files_tmp t/exe/.spvm_build $asan_logs_dir"},
   DEFINE => "@defines -o \$@",
   META_MERGE => {
     'meta-spec' => { version => 2 },
@@ -208,7 +211,7 @@ WriteMakefile(
     # 5. Only '();. are used for maximum safety.
     # 6. Minimal symbols to avoid edge cases in shell parsing.
     'override TEST_VERBOSE' => "scalar (eval chr(36) . q(ENV{HARNESS_OPTIONS}='j$jobs'), 0)",
-    $asan_on_linux ? ('override FULLPERL' => qq|LD_PRELOAD=\$\$($Config{cc} -print-file-name=libasan.so) ASAN_OPTIONS="exitcode=0" $^X|) : (),
+    $asan_on_linux ? ('override FULLPERL' => qq|LD_PRELOAD=\$\$($Config{cc} -print-file-name=libasan.so) ASAN_OPTIONS="log_path=$asan_logs_dir/asan.log" $^X|) : (),
   },
   $make ? (MAKE => $make) : (),
 );
