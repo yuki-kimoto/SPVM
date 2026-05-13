@@ -634,6 +634,78 @@ if ($^O eq 'freebsd') {
   chdir($save_cur_dir) or die;
 }
 
+# perl Makefile.PL --ccflag="-O0" --ldflag="-O1" --define MY_MACRO && make && make test
+{
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  chdir('SPVM-Foo')
+    or die "Can't chdir";
+  
+  local $ENV{PERL5LIB} = $perl5lib;
+  my $ret = system(qq|$^X Makefile.PL --ccflag=-O0 --ldflag=-O1 --define MY_MACRO && $make && $make test|);
+  ok($ret == 0);
+  
+  my $mymeta_json = 'MYMETA.json';
+  ok(-f $mymeta_json);
+  ok(SPVM::Builder::Util::file_contains($mymeta_json, "0.001"));
+  
+  chdir($save_cur_dir) or die;
+}
+
+# perl Makefile.PL --parallel-make --parallel-test --jobs=2 && make && make test
+{
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  chdir('SPVM-Foo')
+    or die "Can't chdir";
+  
+  local $ENV{PERL5LIB} = $perl5lib;
+  my $ret = system(qq|$^X Makefile.PL --parallel-make --parallel-test --jobs=2 && $make && $make test|);
+  ok($ret == 0);
+  
+  my $mymeta_json = 'MYMETA.json';
+  ok(-f $mymeta_json);
+  ok(SPVM::Builder::Util::file_contains($mymeta_json, "0.001"));
+  
+  chdir($save_cur_dir) or die;
+}
+
+# perl Makefile.PL --debug --asan-on-linux && make && make test
+if ($^O eq 'linux') {
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  chdir('SPVM-Foo')
+    or die "Can't chdir";
+  
+  local $ENV{PERL5LIB} = $perl5lib;
+  my $ret = system(qq|$^X Makefile.PL --debug --asan-on-linux && $make && $make test|);
+  ok($ret == 0);
+  
+  my $mymeta_json = 'MYMETA.json';
+  ok(-f $mymeta_json);
+  ok(SPVM::Builder::Util::file_contains($mymeta_json, "0.001"));
+  
+  chdir($save_cur_dir) or die;
+}
+else {
+  skip("The --asan-on-linux test is only executed on Linux", 2);
+}
+
 # perl Makefile.PL --debug && make && make test
 {
   my $tmp_dir = File::Temp->newdir;
