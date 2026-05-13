@@ -17,10 +17,10 @@ use SPVM::Builder::Util;
 
 GetOptions(
   # Compiler and linker flags
-  "ccflag=s" => \my @ccflags,
-  "define=s" => \my @defines,
-  "optimize=s" => \my $optimize,
-  "ldflag=s" => \my @ldflags,
+  'ccflag=s' => \my @ccflags,
+  'define=s' => \my @defines,
+  'optimize=s' => \my $optimize,
+  'ldflag=s' => \my @ldflags,
   'debug' => \my $debug,
   'build-type=s' => \my $build_type,
   'asan-on-linux' => \my $asan_on_linux,
