@@ -212,12 +212,14 @@ WriteMakefile(
   OBJECT => '$(O_FILES)', # link all the C files too
   INC => $inc,
   EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
-  ########## [SPVM Only WriteMakefile Options Start] ##########
+  ########## [SPVM Only WriteMakefile Options End] ##########
 );
 
 package MY {
   
+  ########## [SPVM Only Module Loading Start] ##########
   use File::Find 'find';
+  ########## [SPVM Only Module Loading End] ##########
   
   # Add Build shared library make rule
   sub postamble {
@@ -285,9 +287,9 @@ package MY {
       
       # Generate a single parallel make rule for the rest
       $make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel($options);
-      
     }
     
+    ########## [SPVM Only Test Generation Start] ##########
     unless ($no_precompile_tests) {
       # Create precompile tests
       my @test_files;
@@ -315,6 +317,7 @@ package MY {
       $make_rule .= "$time_stamp_file :: t/utils/copy_vm_to_precompile.pl $test_files_str\n";
       $make_rule .= "\tperl t/utils/copy_vm_to_precompile.pl\n";
     }
+    ########## [SPVM Only Test Generation End] ##########
     
     return $make_rule;
   }
