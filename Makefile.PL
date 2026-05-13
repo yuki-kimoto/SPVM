@@ -217,8 +217,7 @@ package MY {
       require SPVM::Builder::Util::API;
       
       # For loading resources
-      local @INC = @INC;
-      unshift @INC, 'lib';
+      local @INC = ('lib', @INC);
       
       my $options = {};
       if (defined $build_type) {

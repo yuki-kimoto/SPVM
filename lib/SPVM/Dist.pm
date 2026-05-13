@@ -924,28 +924,31 @@ WriteMakefile(
   },
 );
 
-sub MY::postamble {
-
-  my \$make_rule = '';
+package MY {
   
-  unless (\$no_build_spvm_modules) {
-    require SPVM::Builder::Util::API;
+  sub postamble {
     
-    local \@INC = ('lib', \@INC);
+    my \$make_rule = '';
     
-    my \$options = {};
-    if (defined \$build_type) {
-      \$options->{build_type} = \$build_type;
+    unless (\$no_build_spvm_modules) {
+      require SPVM::Builder::Util::API;
+      
+      local \@INC = ('lib', \@INC);
+      
+      my \$options = {};
+      if (defined \$build_type) {
+        \$options->{build_type} = \$build_type;
+      }
+      if (defined \$optimize) {
+        \$options->{optimize} = \$optimize;
+      }
+      
+      $make_rule_native
+      $make_rule_precompile
     }
-    if (defined \$optimize) {
-      \$options->{optimize} = \$optimize;
-    }
     
-    $make_rule_native
-    $make_rule_precompile
+    return \$make_rule;
   }
-  
-  return \$make_rule;
 }
 
 1;
