@@ -833,15 +833,14 @@ sub generate_makefile_pl_file {
   # Resource
   my $resource = $self->resource;
   
-  # Native make rule
-  my $make_rule_native = $self->native && !$resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_native('$class_name', \$options);" : '';
+  # Make rule
+  my $native_class_literal = $self->native ? "'$class_name'" : '';
+  my $precompile_class_literal = $self->precompile ? "'$class_name'" : '';
+  my $make_rule_parallel = !$resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel(\$options);" : '';
   
-  # Precompile make rule
-  my $make_rule_precompile = $self->precompile && !$resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('$class_name', \$options);" : '';
-
   my $perl_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
   $perl_class_rel_file =  $self->create_lib_rel_file($perl_class_rel_file);
-
+  
   my $spvm_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'spvm');
   $spvm_class_rel_file =  $self->create_lib_rel_file($spvm_class_rel_file);
   
@@ -981,8 +980,16 @@ package MY {
       if (\@ldflags) {
         \$options->{ldflags} = [\@ldflags];
       }
-      $make_rule_native
-      $make_rule_precompile
+      
+      \$options->{native_classes} = [
+        $native_class_literal
+      ];
+      
+      \$options->{precompile_classes} = [
+        $precompile_class_literal
+      ];
+      
+      $make_rule_parallel
     }
     return \$make_rule;
   }
