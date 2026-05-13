@@ -9,9 +9,9 @@ use File::Path 'mkpath';
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
-use SPVM::Builder::Util;
-
 use SPVM::Builder::Util::API;
+
+use SPVM::Builder::Util;
 
 GetOptions(
   # Compiler and linker flags
@@ -211,11 +211,6 @@ package MY {
     my $make_rule = '';
     
     unless ($no_build_spvm_modules) {
-      require SPVM::Builder::Util::API;
-      
-      # For loading resources
-      local @INC = ('lib', @INC);
-      
       my $options = {};
       if (defined $build_type) {
         $options->{build_type} = $build_type;
