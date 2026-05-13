@@ -64,7 +64,7 @@ SPVM::Document - SPVM Documentation
 
 =item * L<SPVM::Builder::Config::Exe - Executable Config|SPVM::Builder::Config::Exe>
 
-=item * L<SPVM::Builder::Config::Exe::MSVC - MSVC Executable Config|SPVM::Builder::Config::Exe::MSVC>
+=item * L<SPVM::Builder::Config::MSVC - MSVC Executable Config|SPVM::Builder::Config::MSVC>
 
 =item * L<SPVM::Builder::Config::DLL - DLL Config|SPVM::Builder::Config::DLL>
 

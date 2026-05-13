@@ -1,6 +1,6 @@
-package SPVM::Builder::Config::Exe::MSVC;
+package SPVM::Builder::Config::MSVC;
 
-use parent 'SPVM::Builder::Config::Exe';
+use parent 'SPVM::Builder::Config::Global';
 
 use strict;
 use warnings;
@@ -321,19 +321,19 @@ sub create_cc_version {
 
 =head1 Name
 
-SPVM::Builder::Config::Exe::MSVC - Configuration for Executable Files for MSVC
+SPVM::Builder::Config::MSVC - Configuration for Executable Files for MSVC
 
 =head1 Description
 
-L<SPVM::Builder::Config::Exe::MSVC> managaes configurations for generating executable files for MSVC.
+L<SPVM::Builder::Config::MSVC> managaes configurations for generating executable files for MSVC.
 
 =head2 Usage
 
-  use SPVM::Builder::Config::Exe::MSVC;
+  use SPVM::Builder::Config::MSVC;
 
   my $config_global = SPVM::Builder::Config::Util::load_base_config(__FILE__);
   
-  $config_global = SPVM::Builder::Config::Exe::MSVC->new_with_config($config_global);
+  $config_global = SPVM::Builder::Config::MSVC->new_with_config($config_global);
   
   $config_global->init;
 
@@ -347,9 +347,9 @@ L<SPVM::Builder::Config::Exe>
 
 =head2 new
 
-  my $config_global = SPVM::Builder::Config::Exe::MSVC->new(%fields);
+  my $config_global = SPVM::Builder::Config::MSVC->new(%fields);
 
-Creates a new L<SPVM::Builder::Config::Exe::MSVC> object by calling C<new> method in the super class with I<%fields>, and calls L</"init"> method with I<%fields>.
+Creates a new L<SPVM::Builder::Config::MSVC> object by calling C<new> method in the super class with I<%fields>, and calls L</"init"> method with I<%fields>.
 
 =head1 Instance Methods
 
