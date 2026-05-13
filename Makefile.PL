@@ -79,7 +79,7 @@ if ($meta) {
 my $default_config = SPVM::Builder::Util::API::create_default_config;
 
 # Macro
-@defines = map { "-D$_" } @defines;
+my @define_ccflags = map { "-D$_" } @defines;
 
 if ($debug) {
   $build_type = 'Debug';
@@ -162,7 +162,7 @@ WriteMakefile(
   INC => $inc,
   test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t t/*/*/*/*.t'},
   clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/.spvm_build t/*/.spvm_build t/03_precompile t/test_files_tmp t/*/test_files_tmp t/exe/.spvm_build $asan_logs_dir"},
-  DEFINE => "@defines",
+  DEFINE => "@define_ccflags",
   META_MERGE => {
     'meta-spec' => { version => 2 },
     resources => {
