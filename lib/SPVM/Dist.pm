@@ -996,7 +996,7 @@ SPVM::$class_name Makefile.PL
 
 =head1 Description
 
-Makefile.PL for SPVM::$class_name build.
+Makefile.PL for L<SPVM::$class_name> build.
 
 =head1 Command Line Options
 
