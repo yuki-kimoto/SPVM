@@ -5,7 +5,7 @@ use ExtUtils::MakeMaker;
 use Config;
 use Getopt::Long;
 use Getopt::Long 'GetOptions';
-use File::Path 'mkpath';
+use File::Path 'mkpath', 'rmtree';
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
@@ -36,8 +36,9 @@ GetOptions(
   'parallel-test' => \my $paralle_test,
   'jobs=i' => \my $jobs,
   
-  # SPVM only
+  ########## [SPVM Only Command Line Options Start] ##########
   'no-precompile-tests' => \my $no_precompile_tests,
+  ########## [SPVM Only Line Options Options End] ##########
 );
 
 my $gnu_make = SPVM::Builder::Util::API::search_gnu_make_command();
@@ -54,6 +55,7 @@ my $asan_logs_dir = "$FindBin::Bin/.tmp/asan_logs";
 if ($asan_on_linux) {
   push @ccflags, "-fsanitize=address", "-fno-omit-frame-pointer";
   push @ldflags, "-fsanitize=address";
+  rmtree $asan_logs_dir;
   mkpath $asan_logs_dir;
 }
 
@@ -159,16 +161,8 @@ WriteMakefile(
   ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
     (ABSTRACT_FROM => 'lib/SPVM.pm', # retrieve abstract from module
      AUTHOR => 'Yuki Kimoto<kimoto.yuki@gmail.com>') : ()),
-  CCFLAGS => $ccflags,
-  OPTIMIZE => $optimize,
-  LDDLFLAGS => $lddlflags,
-  C => [@csource_files],
-  H => [@header_files],
-  OBJECT => '$(O_FILES)', # link all the C files too
-  INC => $inc,
   test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t t/*/*/*/*.t'},
-  clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/.spvm_build t/*/.spvm_build t/03_precompile t/test_files_tmp t/*/test_files_tmp t/exe/.spvm_build $asan_logs_dir"},
-  DEFINE => "@define_ccflags",
+  clean => {FILES => ".spvm_build SPVM.o lib/SPVM/Builder/src/*.o t/03_precompile"},
   META_MERGE => {
     'meta-spec' => { version => 2 },
     resources => {
@@ -182,16 +176,7 @@ WriteMakefile(
       },
     },
   },
-  EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
-  PREREQ_PM => {
-    'ExtUtils::CBuilder' => '0.280236',
-    'Time::Piece' => '1.12',
-    'JSON::PP' => '2.27105',
-  },
-  TEST_REQUIRES => {
-    'Test::More' => '0.92',
-  },
-  NORECURS => 1,
+  MAKE => $gnu_make,
   macro => {
     $paralle_make ? (MAKEFLAGS => "-j$jobs") : (),
     
@@ -206,7 +191,28 @@ WriteMakefile(
     $paralle_test ? ('override TEST_VERBOSE' => "scalar (eval chr(36) . q(ENV{HARNESS_OPTIONS}='j$jobs'), 0)") : (),
     $asan_on_linux ? ('override FULLPERL' => qq|LD_PRELOAD=\$\$($Config{cc} -print-file-name=libasan.so) ASAN_OPTIONS="log_path=$asan_logs_dir/asan.log:exitcode=0" $^X|) : (),
   },
-  MAKE => $gnu_make,
+  NORECURS => 1,
+  CONFIGURE_REQUIRES => {
+  },
+  PREREQ_PM => {
+    'ExtUtils::CBuilder' => '0.280236',
+    'Time::Piece' => '1.12',
+    'JSON::PP' => '2.27105',
+  },
+  TEST_REQUIRES => {
+    'Test::More' => '0.92',
+  },
+  ########## [SPVM Only WriteMakefile Options Start] ##########
+  CCFLAGS => $ccflags,
+  OPTIMIZE => $optimize,
+  DEFINE => "@define_ccflags",
+  LDDLFLAGS => $lddlflags,
+  C => [@csource_files],
+  H => [@header_files],
+  OBJECT => '$(O_FILES)', # link all the C files too
+  INC => $inc,
+  EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
+  ########## [SPVM Only WriteMakefile Options Start] ##########
 );
 
 package MY {
