@@ -703,7 +703,7 @@ if ($^O eq 'linux') {
   chdir($save_cur_dir) or die;
 }
 else {
-  skip("The --asan-on-linux test is only executed on Linux", 2);
+  warn "[Test Skip]--asan-on-linux test is only executed on Linux";
 }
 
 # perl Makefile.PL --debug && make && make test
