@@ -108,7 +108,8 @@ my $ccflags = $Config{ccflags};
 $ccflags =~ s/(?:^|\s)-O[0-9s]\b//g;
 $ccflags .= " -std=" . $default_config->std;
 $ccflags .= " " . join(' ', @{$default_config->thread_ccflags}, @{$default_config->debug_info_ccflags}, @{$default_config->ndebug_ccflags}, @ccflags);
-
+$ccflags .= " -o \$@"; # Change output file name
+  
 # DEFINE
 my @define_ccflags = map { "-D$_" } @defines;
 
@@ -162,7 +163,7 @@ WriteMakefile(
   INC => $inc,
   test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t t/*/*/*/*.t'},
   clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/.spvm_build t/*/.spvm_build t/03_precompile t/test_files_tmp t/*/test_files_tmp t/exe/.spvm_build $asan_logs_dir"},
-  DEFINE => "@define_ccflags -o \$@",
+  DEFINE => "@define_ccflags",
   META_MERGE => {
     'meta-spec' => { version => 2 },
     resources => {
