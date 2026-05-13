@@ -162,7 +162,7 @@ WriteMakefile(
   INC => $inc,
   test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t t/*/*/*/*.t'},
   clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/.spvm_build t/*/.spvm_build t/03_precompile t/test_files_tmp t/*/test_files_tmp t/exe/.spvm_build $asan_logs_dir"},
-  DEFINE => "@define_ccflags",
+  DEFINE => "@define_ccflags -o \$@",
   META_MERGE => {
     'meta-spec' => { version => 2 },
     resources => {
