@@ -909,6 +909,30 @@ sub get_config_from_build_type {
   return $config;
 }
 
+sub search_gnu_make_command {
+  my @commands = ('gmake', 'make');
+
+  for my $command (@commands) {
+    my $tempdir_obj = File::Temp->newdir;
+    my $tempdir = $tempdir_obj->dirname;
+    my $filename = "$tempdir/Makefile";
+
+    if (open my $fh, '>', $filename) {
+      print $fh "all:\n\t\@: # do nothing\n";
+      print $fh "\$(info gnu-make-confirmed)\n";
+      close $fh;
+
+      my $output = `$command -f $filename 2>&1`;
+      my $exit_code = $?;
+
+      if ($exit_code == 0 && $output =~ /gnu-make-confirmed/) {
+        return $command;
+      }
+    }
+  }
+
+  return undef;
+}
 
 1;
 

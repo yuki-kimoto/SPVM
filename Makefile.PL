@@ -52,8 +52,9 @@ $paralle_test = 1;
 # Updates src/spvm_precompile_header_content.c
 SPVM::Builder::Util::build_precompile_header_content_c_source();
 
+my $make = SPVM::Builder::Util::search_gnu_make_command();
+
 # Check supported environment
-my $make;
 {
   # SPVM requires a 64-bit address space (pointer size must be 8 bytes)
   # This ensures support for large memory maps required by coroutines.
@@ -80,22 +81,8 @@ my $make;
   }
   
   # SPVM requires GNU Make for the order-only dependency syntax '|' and the 'override' syntax.
-  # On FreeBSD, the default "make" is BSD Make, so we need to use "gmake" (GNU Make) instead.
-  if ($^O eq 'freebsd') {
-    my $success = system('gmake', '--version') == 0;
-    if ($success) {
-      $make = 'gmake';
-    }
-    else {
-      warn "SPVM needs GNU Make.\n";
-      die "OS unsupported\n";
-    }
-  }
-  
-  # Don't support nmake
-  my $make = $Config{make};
-  if ($make eq 'nmake') {
-    warn "SPVM doesn't support nmake. The current \"make\" is \"$make\".\n";
+  unless ($make) {
+    warn "SPVM needs GNU Make.\n";
     die "OS unsupported\n";
   }
 }
@@ -229,7 +216,7 @@ WriteMakefile(
     $paralle_test ? ('override TEST_VERBOSE' => "scalar (eval chr(36) . q(ENV{HARNESS_OPTIONS}='j$jobs'), 0)") : (),
     $asan_on_linux ? ('override FULLPERL' => qq|LD_PRELOAD=\$\$($Config{cc} -print-file-name=libasan.so) ASAN_OPTIONS="log_path=$asan_logs_dir/asan.log:exitcode=0" $^X|) : (),
   },
-  $make ? (MAKE => $make) : (),
+  MAKE => $make,
 );
 
 package MY {
