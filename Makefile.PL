@@ -208,7 +208,7 @@ package MY {
   use File::Find 'find';
   
   # Add Build shared library make rule
-  sub MY::postamble {
+  sub postamble {
     
     # The content of Makefile
     my $make_rule = '';
