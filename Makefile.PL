@@ -78,9 +78,6 @@ if ($meta) {
 
 my $default_config = SPVM::Builder::Util::API::create_default_config;
 
-# Macro
-my @define_ccflags = map { "-D$_" } @defines;
-
 if ($debug) {
   $build_type = 'Debug';
 }
@@ -111,6 +108,9 @@ my $ccflags = $Config{ccflags};
 $ccflags =~ s/(?:^|\s)-O[0-9s]\b//g;
 $ccflags .= " -std=" . $default_config->std;
 $ccflags .= " " . join(' ', @{$default_config->thread_ccflags}, @{$default_config->debug_info_ccflags}, @{$default_config->ndebug_ccflags}, @ccflags);
+
+# DEFINE
+my @define_ccflags = map { "-D$_" } @defines;
 
 # LDDLFLAGS
 my $lddlflags = $Config{lddlflags};
