@@ -10,6 +10,7 @@ use File::Path 'mkpath', 'rmtree';
 use FindBin;
 use lib "$FindBin::Bin/lib";
 use SPVM::Builder::Util::API;
+use SPVM::Builder::Config::DLL;
 
 ########## [SPVM Only Module Loading Start] ##########
 use SPVM::Builder::Util;
@@ -103,6 +104,13 @@ if ($meta) {
 SPVM::Builder::Util::build_precompile_header_content_c_source();
 
 my $default_config = SPVM::Builder::Util::API::create_default_config;
+
+my $config_global = SPVM::Builder::Config::DLL->new;
+if (defined $build_type) {
+  $config_global->build_type($build_type);
+}
+
+$default_config->config_global($config_global);
 
 # Apply config from build type
 my $build_type_config = SPVM::Builder::Util::get_config_from_build_type($build_type);
