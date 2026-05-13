@@ -52,7 +52,7 @@ $paralle_test = 1;
 # Updates src/spvm_precompile_header_content.c
 SPVM::Builder::Util::build_precompile_header_content_c_source();
 
-my $make = SPVM::Builder::Util::search_gnu_make_command();
+my $gnu_make = SPVM::Builder::Util::search_gnu_make_command();
 
 # Check supported environment
 {
@@ -65,8 +65,8 @@ my $make = SPVM::Builder::Util::search_gnu_make_command();
   }
   
   # SPVM requires GNU Make for the order-only dependency syntax '|' and the 'override' syntax.
-  unless ($make) {
-    warn "SPVM needs GNU Make.\n";
+  unless ($gnu_make) {
+    warn "Building SPVM needs GNU Make.\n";
     die "OS unsupported\n";
   }
 }
@@ -200,7 +200,7 @@ WriteMakefile(
     $paralle_test ? ('override TEST_VERBOSE' => "scalar (eval chr(36) . q(ENV{HARNESS_OPTIONS}='j$jobs'), 0)") : (),
     $asan_on_linux ? ('override FULLPERL' => qq|LD_PRELOAD=\$\$($Config{cc} -print-file-name=libasan.so) ASAN_OPTIONS="log_path=$asan_logs_dir/asan.log:exitcode=0" $^X|) : (),
   },
-  MAKE => $make,
+  MAKE => $gnu_make,
 );
 
 package MY {
