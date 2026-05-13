@@ -886,6 +886,23 @@ if (\$debug) {
   \$build_type = 'Debug';
 }
 
+# ASan settings for Linux
+my \$asan_logs_dir = ".tmp/asan_logs";
+if (\$asan_on_linux) {
+  mkpath \$asan_logs_dir;
+}
+
+# Parallel build/test settings
+unless (defined \$jobs) {
+  require SPVM::Builder::Util::API;
+  my \$cpus = SPVM::Builder::Util::API::get_cpu_count();
+  \$jobs = \$cpus + 2;
+}
+
+if (\$jobs > 16) {
+  \$jobs = 16;
+}
+
 my \%configure_and_runtime_requires = ('SPVM' => '$SPVM::VERSION');
 WriteMakefile(
   NAME => 'SPVM::$class_name',
@@ -922,6 +939,13 @@ WriteMakefile(
   TEST_REQUIRES => {
     
   },
+  macro => {
+    \$parallel_make ? (MAKEFLAGS => "-j\$jobs") : (),
+    # Inject parallel tests and ASan preload
+    \$parallel_test ? ('override TEST_VERBOSE' => "scalar (eval chr(36) . q(ENV{HARNESS_OPTIONS}='j\$jobs'), 0)") : (),
+    \$asan_on_linux ? ('override FULLPERL' => qq|LD_PRELOAD=\$\$($Config{cc} -print-file-name=libasan.so) ASAN_OPTIONS="log_path=\$asan_logs_dir/asan.log:exitcode=0" $^X|) : (),
+  },
+  MAKE => \$gnu_make,
 );
 
 package MY {

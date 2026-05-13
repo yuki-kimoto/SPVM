@@ -1,21 +1,17 @@
 use 5.020;
-use ExtUtils::MakeMaker;
-
 use strict;
 use warnings;
+use ExtUtils::MakeMaker;
 use Config;
 use Getopt::Long;
-use FindBin;
-use lib "$FindBin::Bin/lib";
 use Getopt::Long 'GetOptions';
-use File::Find 'find';
-use File::Temp;
 use File::Path 'mkpath';
 
+use FindBin;
+use lib "$FindBin::Bin/lib";
 use SPVM::Builder::Util;
+
 use SPVM::Builder::Util::API;
-use SPVM::Builder::Config;
-use SPVM::Builder::Config::Util;
 
 GetOptions(
   # Compiler and linker flags
