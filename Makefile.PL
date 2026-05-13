@@ -64,22 +64,6 @@ my $make = SPVM::Builder::Util::search_gnu_make_command();
     die "OS unsupported\n";
   }
   
-  # Don't support C++ compilers that does not support -std=c++11 option.
-  {
-    my $config = SPVM::Builder::Config->new_cpp;
-    
-    my $cc = $config->cc;
-    
-    my $tmp_dir = File::Temp->newdir;
-    
-    my $cmd = "$cc -o $tmp_dir/cpp11.o -std=c++11 t/test_files/os_support/cpp11.cpp";
-    
-    unless (system($cmd) == 0) {
-      warn "SPVM doesn't support C++ compilers that does not support -std=c++11 option.\n";
-      die "OS unsupported\n";
-    }
-  }
-  
   # SPVM requires GNU Make for the order-only dependency syntax '|' and the 'override' syntax.
   unless ($make) {
     warn "SPVM needs GNU Make.\n";
