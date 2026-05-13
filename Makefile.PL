@@ -1,21 +1,18 @@
 use 5.020;
-use ExtUtils::MakeMaker;
-
 use strict;
 use warnings;
+use ExtUtils::MakeMaker;
 use Config;
 use Getopt::Long;
-use FindBin;
-use lib "$FindBin::Bin/lib";
 use Getopt::Long 'GetOptions';
-use File::Find 'find';
-use File::Temp;
 use File::Path 'mkpath';
 
-use SPVM::Builder::Util;
+use FindBin;
+use lib "$FindBin::Bin/lib";
 use SPVM::Builder::Util::API;
-use SPVM::Builder::Config;
-use SPVM::Builder::Config::Util;
+
+# SPVM only
+use SPVM::Builder::Util;
 
 GetOptions(
   # Compiler and linker flags
@@ -42,7 +39,7 @@ GetOptions(
   'no-precompile-tests' => \my $no_precompile_tests,
 );
 
-# Always true in SPVM core
+# Always true in SPVM
 $paralle_make = 1;
 $paralle_test = 1;
 
@@ -215,11 +212,6 @@ package MY {
     my $make_rule = '';
     
     unless ($no_build_spvm_modules) {
-      require SPVM::Builder::Util::API;
-      
-      # For loading resources
-      local @INC = ('lib', @INC);
-      
       my $options = {};
       if (defined $build_type) {
         $options->{build_type} = $build_type;

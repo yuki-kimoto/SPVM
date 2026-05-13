@@ -19,6 +19,7 @@ use Fcntl qw(:flock);
 use FindBin;
 use Fcntl qw(O_RDONLY);
 use Errno;
+use File::Temp;
 
 # SPVM::Builder::Util is used from Makefile.PL
 # so this class must be wrote as pure perl. Do not contain XS functions.
