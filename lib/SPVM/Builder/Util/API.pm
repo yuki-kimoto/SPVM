@@ -15,6 +15,8 @@ sub create_default_config { SPVM::Builder::Util::create_default_config(@_) }
 
 sub get_cpu_count { SPVM::Builder::Util::get_cpu_count(@_) }
 
+sub search_gnu_make_command { SPVM::Builder::Util::search_gnu_make_command(@_) }
+
 1;
 
 =head1 Name
@@ -194,6 +196,19 @@ Examples:
     
     return $make_rule;
   }
+
+=head2 search_gnu_make_command
+
+  my $gnu_make_command = SPVM::Builder::Util::API::search_gnu_make_command();
+
+Searches for a GNU Make command available in the current environment.
+
+This function iterates through potential command names (C<gmake>, C<make>) and 
+verifies if they are actually GNU Make by executing a temporary Makefile 
+containing GNU-specific syntax (the C<$(info ...)> function).
+
+The name of the GNU Make command (e.g., C<'gmake'> or C<'make'>) if found and 
+verified. Returns C<undef> otherwise.
 
 =head1 Copyright & License
 

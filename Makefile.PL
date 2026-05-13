@@ -52,7 +52,7 @@ $paralle_test = 1;
 # Updates src/spvm_precompile_header_content.c
 SPVM::Builder::Util::build_precompile_header_content_c_source();
 
-my $gnu_make = SPVM::Builder::Util::search_gnu_make_command();
+my $gnu_make = SPVM::Builder::Util::API::search_gnu_make_command();
 
 # Check supported environment
 {
