@@ -859,20 +859,34 @@ sub generate_makefile_pl_file {
   
   # "Makefile.PL" content
   my $makefile_pl_content = <<"EOS";
-use 5.008_007;
+use 5.020;
 use ExtUtils::MakeMaker;
 use strict;
 use warnings;
 use Config;
 use Getopt::Long 'GetOptions';
+use File::Path 'mkpath', 'rmtree';
+
+use FindBin;
+use lib "\$FindBin::Bin/lib";
+use SPVM::Builder::Util::API;
 
 GetOptions(
   'meta' => \\my \$meta,
   'no-build-spvm-modules' => \\my \$no_build_spvm_modules,
   'optimize=s' => \\my \$optimize,
+  'ccflag=s' => \\my \@ccflags,
+  'define=s' => \\my \@defines,
+  'ldflag=s' => \\my \@ldflags,
   'debug' => \\my \$debug,
   'build-type=s' => \\my \$build_type,
+  'asan-on-linux' => \\my \$asan_on_linux,
+  'parallel-make' => \\my \$parallel_make,
+  'parallel-test' => \\my \$parallel_test,
+  'jobs=i' => \\my \$jobs,
 );
+
+my \$gnu_make = SPVM::Builder::Util::API::search_gnu_make_command();
 
 if (\$meta) {
   \$no_build_spvm_modules = 1;
@@ -884,6 +898,23 @@ unless (\$meta) {
 
 if (\$debug) {
   \$build_type = 'Debug';
+}
+
+my \$asan_logs_dir = "\$FindBin::Bin/.tmp/asan_logs";
+if (\$asan_on_linux) {
+  push \@ccflags, "-fsanitize=address", "-fno-omit-frame-pointer";
+  push \@ldflags, "-fsanitize=address";
+  rmtree \$asan_logs_dir;
+  mkpath \$asan_logs_dir;
+}
+
+unless (defined \$jobs) {
+  my \$cpus = SPVM::Builder::Util::API::get_cpu_count();
+  \$jobs = \$cpus + 2;
+}
+
+if (\$jobs > 16) {
+  \$jobs = 16;
 }
 
 my \%configure_and_runtime_requires = ('SPVM' => '$SPVM::VERSION');
@@ -912,6 +943,12 @@ WriteMakefile(
       directory => [],
     }
   },
+  MAKE => \$gnu_make,
+  macro => {
+    \$parallel_make ? (MAKEFLAGS => "-j\$jobs") : (),
+    \$parallel_test ? ('override TEST_VERBOSE' => "scalar (eval chr(36) . q(ENV{HARNESS_OPTIONS}='j\$jobs'), 0)") : (),
+    \$asan_on_linux ? ('override FULLPERL' => qq|LD_PRELOAD=\\\$\\\$(\$Config{cc} -print-file-name=libasan.so) ASAN_OPTIONS="log_path=\$asan_logs_dir/asan.log:exitcode=0" \$^X|) : (),
+  },
   NORECURS => 1,
   CONFIGURE_REQUIRES => {
     \%configure_and_runtime_requires,
@@ -920,21 +957,14 @@ WriteMakefile(
     \%configure_and_runtime_requires,
   },
   TEST_REQUIRES => {
-    
   },
 );
 
 package MY {
   
   sub postamble {
-    
     my \$make_rule = '';
-    
     unless (\$no_build_spvm_modules) {
-      require SPVM::Builder::Util::API;
-      
-      local \@INC = ('lib', \@INC);
-      
       my \$options = {};
       if (defined \$build_type) {
         \$options->{build_type} = \$build_type;
@@ -942,16 +972,39 @@ package MY {
       if (defined \$optimize) {
         \$options->{optimize} = \$optimize;
       }
-      
+      if (\@ccflags) {
+        \$options->{ccflags} = [\@ccflags];
+      }
+      if (\@defines) {
+        \$options->{defines} = [\@defines];
+      }
+      if (\@ldflags) {
+        \$options->{ldflags} = [\@ldflags];
+      }
       $make_rule_native
       $make_rule_precompile
     }
-    
     return \$make_rule;
   }
 }
 
 1;
+
+=head1 Name 
+
+SPVM::$class_name Makefile.PL
+
+=head1 Description
+
+Makefile.PL for SPVM::$class_name build.
+
+=head1 Command Line Options
+
+See the following URL for the command line options:
+
+L<https://github.com/yuki-kimoto/SPVM/blob/master/Makefile.PL>
+
+=cut
 EOS
 
   # Generate file
