@@ -234,6 +234,7 @@ package MY {
     # The content of Makefile
     my $make_rule = '';
     
+    ########## [SPVM Only Compilation Start] ##########
     for my $spvm_core_source_file (@spvm_core_source_files) {
       my $spvm_core_object_file = $spvm_core_source_file;
       $spvm_core_object_file =~ s/\.c$/\$(OBJ_EXT)/;
@@ -248,6 +249,7 @@ package MY {
       
       $make_rule .= "\t$spvm_core_cc -c $spvm_core_include_dir @$spvm_core_ccflags -o $spvm_core_object_file $spvm_core_source_file\n\n";
     }
+    ########## [SPVM Only Compilation End] ##########
     
     unless ($no_build_spvm_modules) {
       my $options = {};
