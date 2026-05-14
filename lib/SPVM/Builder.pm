@@ -200,7 +200,6 @@ sub build_parallel {
     is_jit
     output_dir
     category
-    class_name
     class_file
     quiet
     ccflags
