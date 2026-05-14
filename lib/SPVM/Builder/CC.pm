@@ -25,7 +25,6 @@ use SPVM::Builder::Accessor 'has';
 # Fields
 has [qw(
   builder
-  quiet
   no_compile_resources
 )];
 
