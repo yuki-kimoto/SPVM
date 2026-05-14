@@ -29,6 +29,7 @@ has [qw(
   global_lock_fh
   runtime
   jobs
+  quiet
 )];
 
 sub import {
@@ -157,8 +158,6 @@ sub build_jit {
   return $self->build($class_name, $options);
 }
 
-use JSON::PP ();
-
 sub build {
   my ($self, $class_name, $options) = @_;
   
@@ -222,6 +221,10 @@ sub build_parallel {
   my $output_files_h = {};
   
   my $cc_options = {builder => $self};
+  
+  if (exists $options->{quiet}) {
+    $self->quiet($options->{quiet});
+  }
   
   if (exists $options->{jobs}) {
     $self->jobs($options->{jobs});

@@ -72,17 +72,6 @@ sub output_file {
   }
 }
 
-sub quiet {
-  my $self = shift;
-  if (@_) {
-    $self->{quiet} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{quiet};
-  }
-}
-
 sub config_global {
   my $self = shift;
   if (@_) {
@@ -260,7 +249,6 @@ sub build_exe_file {
   my $runtime = $self->builder->runtime;
   my $cc = SPVM::Builder::CC->new(
     builder => $self->builder,
-    quiet => $self->quiet,
   );
   
   for my $compile_info (@$compile_infos) {
@@ -359,7 +347,6 @@ sub prepare_compile_source_file {
   # Compile command
   my $builder_cc = SPVM::Builder::CC->new(
     builder => $self->builder,
-    quiet => $self->quiet,
   );
   
   my $compile_info = SPVM::Builder::CompileInfo->new(
@@ -935,7 +922,6 @@ sub prepare_compile_precompile_class {
   
   my $builder_cc = SPVM::Builder::CC->new(
     builder => $self->builder,
-    quiet => $self->quiet,
   );
   
   my $config = SPVM::Builder::Util::API::create_default_config();
@@ -965,7 +951,6 @@ sub prepare_compile_native_class {
   # Compiler for native class
   my $builder_cc = SPVM::Builder::CC->new(
     builder => $self->builder,
-    quiet => $self->quiet,
   );
   
   my $all_compile_infos = [];

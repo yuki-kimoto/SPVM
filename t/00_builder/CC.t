@@ -5,31 +5,32 @@ use Test::More;
 
 use SPVM::Builder::CC;
 use SPVM::Builder::Config;
+use SPVM::Builder;
 
 # detect_quiet
 {
   # default - 0
   {
     my $config = SPVM::Builder::Config->new;
-    my $cc = SPVM::Builder::CC->new;
+    my $cc = SPVM::Builder::CC->new(builder => SPVM::Builder->new);
     
     my $quiet = $cc->detect_quiet($config);
     is($quiet, 0);
   }
 
-  # $cc->quiet
+  # $cc->builder->quiet
   {
     my $config = SPVM::Builder::Config->new;
-    my $cc = SPVM::Builder::CC->new;
+    my $cc = SPVM::Builder::CC->new(builder => SPVM::Builder->new);
     
     {
-      $cc->quiet(0);
+      $cc->builder->quiet(0);
       my $quiet = $cc->detect_quiet($config);
       is($quiet, 0);
     }
     
     {
-      $cc->quiet(1);
+      $cc->builder->quiet(1);
       my $quiet = $cc->detect_quiet($config);
       is($quiet, 1);
     }
@@ -38,7 +39,7 @@ use SPVM::Builder::Config;
   # $config->quiet
   {
     my $config = SPVM::Builder::Config->new;
-    my $cc = SPVM::Builder::CC->new;
+    my $cc = SPVM::Builder::CC->new(builder => SPVM::Builder->new);
     
     {
       $config->quiet(0);
@@ -57,9 +58,9 @@ use SPVM::Builder::Config;
   {
     {
       my $config = SPVM::Builder::Config->new( is_jit => 1);
-      my $cc = SPVM::Builder::CC->new;
+      my $cc = SPVM::Builder::CC->new(builder => SPVM::Builder->new);
       
-      $cc->quiet(0);
+      $cc->builder->quiet(0);
       $config->quiet(1);
       
       my $quiet = $cc->detect_quiet($config);
@@ -68,7 +69,7 @@ use SPVM::Builder::Config;
     
     {
       my $config = SPVM::Builder::Config->new( is_jit => 1);
-      my $cc = SPVM::Builder::CC->new;
+      my $cc = SPVM::Builder::CC->new(builder => SPVM::Builder->new);
       
       $config->quiet(0);
       

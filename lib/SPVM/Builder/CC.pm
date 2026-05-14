@@ -51,8 +51,8 @@ sub detect_quiet {
   if (length (my $env_spvm_force_quiet = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_QUIET'))) {
     $quiet = $env_spvm_force_quiet;
   }
-  elsif (length $self->{quiet}) {
-    $quiet = $self->quiet;
+  elsif (length $self->builder->quiet) {
+    $quiet = $self->builder->quiet;
   }
   elsif (defined $config && length $config->{quiet}) {
     $quiet = $config->quiet;
