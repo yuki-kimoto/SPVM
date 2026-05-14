@@ -42,30 +42,6 @@ sub new {
 }
 
 # Instance Methods
-sub detect_quiet {
-  my ($self, $config) = @_;
-  
-  my $quiet;
-  
-  if (length (my $env_spvm_force_quiet = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_QUIET'))) {
-    $quiet = $env_spvm_force_quiet;
-  }
-  elsif (length $self->builder->quiet) {
-    $quiet = $self->builder->quiet;
-  }
-  elsif (defined $config && length $config->{quiet}) {
-    $quiet = $config->quiet;
-  }
-  elsif (defined $config && $config->is_jit) {
-    $quiet = 1;
-  }
-  else {
-    $quiet = 0;
-  }
-  
-  return $quiet;
-}
-
 sub prepare_compile_class {
   my ($self, $class_name, $config) = @_;
   
@@ -402,7 +378,7 @@ sub spawn_compile_source_file {
   
   my $config = $compile_info->config;
   
-  my $quiet = $self->detect_quiet($config);
+  my $quiet = $self->builder->detect_quiet($config);
   
   my $command_hash = $compile_info->command_hash;
   
@@ -856,7 +832,7 @@ sub spawn_link {
   }
   
   my $config = $link_info->config;
-  my $quiet = $self->detect_quiet($config);
+  my $quiet = $self->builder->detect_quiet($config);
   my $hint_cc = $config->hint_cc;
   my $ld = $config->ld;
   my $output_type = $config->output_type;

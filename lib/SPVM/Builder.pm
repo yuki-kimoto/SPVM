@@ -595,6 +595,30 @@ sub get_global_lock_file {
   return $global_lock_file;
 }
 
+sub detect_quiet {
+  my ($self, $config) = @_;
+  
+  my $quiet;
+  
+  if (length (my $env_spvm_force_quiet = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_QUIET'))) {
+    $quiet = $env_spvm_force_quiet;
+  }
+  elsif (length $self->quiet) {
+    $quiet = $self->quiet;
+  }
+  elsif (defined $config && length $config->{quiet}) {
+    $quiet = $config->quiet;
+  }
+  elsif (defined $config && $config->is_jit) {
+    $quiet = 1;
+  }
+  else {
+    $quiet = 0;
+  }
+  
+  return $quiet;
+}
+
 1;
 
 =encoding utf8
