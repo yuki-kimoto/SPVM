@@ -28,6 +28,7 @@ has [qw(
   ninja
   global_lock_fh
   runtime
+  jobs
 )];
 
 sub import {
@@ -47,6 +48,7 @@ sub new {
     build_dir => $ENV{SPVM_BUILD_DIR},
     include_dirs => \@INC,
     work_dir => 'work',
+    jobs => SPVM::Builder::Util::API::get_cpu_count() + 2,
     @_
   };
   
@@ -222,7 +224,7 @@ sub build_parallel {
   my $cc_options = {builder => $self};
   
   if (exists $options->{jobs}) {
-    $cc_options->{jobs} = $options->{jobs};
+    $self->jobs($options->{jobs});
   }
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);

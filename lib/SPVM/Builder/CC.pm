@@ -26,7 +26,6 @@ use SPVM::Builder::Accessor 'has';
 has [qw(
   builder
   quiet
-  jobs
   no_compile_resources
 )];
 
@@ -35,7 +34,6 @@ sub new {
   my $class = shift;
   
   my $self = {
-    jobs => SPVM::Builder::Util::API::get_cpu_count() + 2,
     @_
   };
   
@@ -636,7 +634,7 @@ sub command_parallel {
     }
   }
   
-  my $max_jobs = $self->jobs;
+  my $max_jobs = $self->builder->jobs;
   my @waiting_command_infos = @unique_command_infos;
   my %running_processes;
   my %errors_h;
