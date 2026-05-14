@@ -193,7 +193,6 @@ sub build_parallel {
   
   # Allowed options (White list)
   my %allowed_options = map { $_ => 1 } qw(
-    build_file
     native_classes
     precompile_classes
     jobs

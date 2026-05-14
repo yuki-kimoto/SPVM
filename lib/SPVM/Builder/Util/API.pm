@@ -139,8 +139,6 @@ The following options are the same as those for L<SPVM::Builder::API/build_paral
 
 =item * C<precompile_classes>
 
-=item * C<build_file>
-
 =item * C<optimize>
 
 =item * C<ccflags>
