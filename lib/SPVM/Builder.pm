@@ -103,11 +103,11 @@ sub build_dynamic_lib_dist {
   $options = {%$options};
   
   # Ensure the category is set
-  my $category = $options->{category};
+  my $category = delete $options->{category};
   unless (defined $category) {
     confess("The category must be defined.");
   }
-
+  
   # Wrap single class into the correct parallel key
   if ($category eq 'native') {
     $options->{native_classes} = [$class_name];
@@ -127,7 +127,7 @@ sub build_dist {
   $options = {%$options};
   
   # Ensure the category is set
-  my $category = $options->{category};
+  my $category = delete $options->{category};
   unless (defined $category) {
     confess("The category must be defined.");
   }
@@ -163,7 +163,7 @@ sub build {
   
   $options ||= {};
   
-  my $category = $options->{category};
+  my $category = delete $options->{category};
   unless (defined $category) {
     confess("The category must be defined.");
   }
@@ -199,7 +199,6 @@ sub build_parallel {
     runtime
     is_jit
     output_dir
-    category
     class_file
     quiet
     ccflags
