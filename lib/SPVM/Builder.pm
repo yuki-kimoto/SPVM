@@ -27,6 +27,7 @@ has [qw(
   include_dirs
   ninja
   global_lock_fh
+  runtime
 )];
 
 sub import {
@@ -225,7 +226,7 @@ sub build_parallel {
   }
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);
-  $cc->runtime($options->{runtime});
+  $self->runtime($options->{runtime});
 
   my @all_compile_infos;
   my %class_to_context;

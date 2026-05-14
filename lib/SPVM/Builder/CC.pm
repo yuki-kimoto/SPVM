@@ -26,7 +26,6 @@ use SPVM::Builder::Accessor 'has';
 has [qw(
   builder
   quiet
-  runtime
   jobs
   no_compile_resources
 )];
@@ -109,7 +108,7 @@ sub prepare_compile_class {
 sub prepare_compile_resources {
   my ($self, $class_name, $config) = @_;
   
-  my $runtime = $self->runtime;
+  my $runtime = $self->builder->runtime;
   
   my $compile_infos = [];
   
@@ -122,7 +121,6 @@ sub prepare_compile_resources {
     
     my $builder_cc_resource = SPVM::Builder::CC->new(
       builder => $self->builder,
-      runtime => $self->runtime,
     );
     
     if (exists $config->{quiet}) {
@@ -156,7 +154,7 @@ sub prepare_compile_native_class {
     return [];
   }
   
-  my $runtime = $self->runtime;
+  my $runtime = $self->builder->runtime;
   my $native_class_ext = $config->ext;
   
   my $basic_type = $runtime->get_basic_type_by_name($class_name);
@@ -744,7 +742,7 @@ sub prepare_link {
     object_file_infos => $object_file_infos,
   );
   
-  my $runtime = $self->runtime;
+  my $runtime = $self->builder->runtime;
   
   unless (defined $build_dir) {
     confess("[Unexpected Error]A build directory must be defined.");
