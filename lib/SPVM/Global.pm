@@ -216,7 +216,6 @@ sub load_dynamic_lib {
         else {
           my $build_options = {
             runtime => $runtime,
-            class_file => $outmost_class_file,
             category => $category,
           };
           

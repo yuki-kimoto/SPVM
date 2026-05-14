@@ -199,7 +199,6 @@ sub build_parallel {
     runtime
     is_jit
     output_dir
-    class_file
     quiet
     ccflags
     optimize
