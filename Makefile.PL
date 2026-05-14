@@ -11,6 +11,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 use SPVM::Builder::Util::API;
 use SPVM::Builder::Config::DLL;
+use SPVM::Builder::CompileInfo;
 
 ########## [SPVM Only Module Loading Start] ##########
 use SPVM::Builder::Util;
@@ -125,14 +126,6 @@ unless (length $optimize) {
   $optimize = ' ';
 }
 
-# CCFLAGS
-my $ccflags = $Config{ccflags};
-# This removes -O[0-9s] to avoid conflict with SPVM's optimization setting
-$ccflags =~ s/(?:^|\s)-O[0-9s]\b//g;
-$ccflags .= " -std=" . $default_config->std;
-$ccflags .= " " . join(' ', @{$default_config->thread_ccflags}, @{$default_config->debug_info_ccflags}, @{$default_config->ndebug_ccflags}, @ccflags);
-$ccflags .= " -o \$@"; # Change output file name
-  
 # DEFINE
 my @define_ccflags = map { "-D$_" } @defines;
 
@@ -149,18 +142,25 @@ unless (length $ld_optimize) {
 $lddlflags .= " " . join(' ', @{$default_config->thread_ldflags}, @{$default_config->debug_info_ldflags}, @{$default_config->symbol_strip_ldflags}, $ld_optimize, @ldflags);
 
 # INC
-my $inc = '-Ilib/SPVM/Builder/include';
+my $spvm_core_include_dir = '-Ilib/SPVM/Builder/include';
 
 # C - Source files
 my $spvm_core_source_file_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
-my @spvm_csource_files = map { "lib/SPVM/Builder/src/$_" } @$spvm_core_source_file_names;
-my @csource_files = ('SPVM.c', @spvm_csource_files);
+my @spvm_core_source_files = map { "lib/SPVM/Builder/src/$_" } @$spvm_core_source_file_names;
+my @csource_files = ('SPVM.c', @spvm_core_source_files);
 
 # H - Header files(This is only used to resolve dependencies)
 my @spvm_header_files = glob 'lib/SPVM/Builder/include/*.h';
 my @header_files = ('ppport.h', @spvm_header_files);
 
 ########## [SPVM Only Build Loigc End] ##########
+
+my $object_map = {};
+for my $c_file (@csource_files) {
+    my $obj_file = $c_file;
+    $obj_file =~ s/\.c$/\$(OBJ_EXT)/;
+    $object_map->{$obj_file} = $c_file;
+}
 
 WriteMakefile(
   NAME => 'SPVM',
@@ -211,14 +211,13 @@ WriteMakefile(
     'Test::More' => '0.92',
   },
   ########## [SPVM Only WriteMakefile Options Start] ##########
-  CCFLAGS => $ccflags,
   OPTIMIZE => $optimize,
   DEFINE => "@define_ccflags",
   LDDLFLAGS => $lddlflags,
   C => [@csource_files],
   H => [@header_files],
   OBJECT => '$(O_FILES)', # link all the C files too
-  INC => $inc,
+  INC => $spvm_core_include_dir,
   EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
   ########## [SPVM Only WriteMakefile Options End] ##########
 );
@@ -234,6 +233,21 @@ package MY {
     
     # The content of Makefile
     my $make_rule = '';
+    
+    for my $spvm_core_source_file (@spvm_core_source_files) {
+      my $spvm_core_object_file = $spvm_core_source_file;
+      $spvm_core_object_file =~ s/\.c$/\$(OBJ_EXT)/;
+      
+      $make_rule .= "$spvm_core_object_file : $spvm_core_source_file\n";
+      
+      my $compile_info = SPVM::Builder::CompileInfo->new(config => $default_config);
+      
+      my $spvm_core_ccflags = $compile_info->create_ccflags;
+      
+      my $spvm_core_cc = $compile_info->config->cc;
+      
+      $make_rule .= "\t$spvm_core_cc -c $spvm_core_include_dir @$spvm_core_ccflags -o $spvm_core_object_file $spvm_core_source_file\n\n";
+    }
     
     unless ($no_build_spvm_modules) {
       my $options = {};
