@@ -355,18 +355,6 @@ sub finalize_compile_info {
   
   my $config = $compile_info->config;
   
-  my $before_compile_cbs = $config->before_compile_cbs;
-  for my $before_compile_cb (@$before_compile_cbs) {
-    $before_compile_cb->($compile_info->config, $compile_info);
-  }
-  
-  my $config_global = $config->config_global;
-  if ($config_global) {
-    for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
-      $before_compile_cb->($compile_info->config, $compile_info);
-    }
-  }
-  
   my $source_rel_file = $compile_info->source_rel_file;
   
   unless (defined $source_rel_file) {

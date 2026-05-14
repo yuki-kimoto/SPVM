@@ -262,6 +262,21 @@ sub build_exe_file {
   $config_global->output_file($output_file);
   
   for my $compile_info (@$compile_infos) {
+    my $config = $compile_info->config;
+    my $before_compile_cbs = $config->before_compile_cbs;
+    for my $before_compile_cb (@$before_compile_cbs) {
+      $before_compile_cb->($compile_info->config, $compile_info);
+    }
+    
+    my $config_global = $config->config_global;
+    if ($config_global) {
+      for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
+        $before_compile_cb->($compile_info->config, $compile_info);
+      }
+    }
+  }
+  
+  for my $compile_info (@$compile_infos) {
     $cc->finalize_compile_info($compile_info);
   }
   
