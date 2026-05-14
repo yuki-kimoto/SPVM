@@ -250,17 +250,6 @@ sub build_exe_file {
   my $classes_compile_infos = $self->prepare_compile_classes;
   push @$compile_infos, @$classes_compile_infos;
   
-  my $output_file = $self->{output_file};
-  $config_global = $self->config_global->clone;
-  my $runtime = $self->runtime;
-  
-  my $cc = SPVM::Builder::CC->new(
-    builder => $self->builder,
-    quiet => $self->quiet,
-    runtime => $runtime,
-  );
-  $config_global->output_file($output_file);
-  
   for my $compile_info (@$compile_infos) {
     my $config = $compile_info->config;
     my $before_compile_cbs = $config->before_compile_cbs;
@@ -275,6 +264,16 @@ sub build_exe_file {
       }
     }
   }
+  
+  my $output_file = $self->{output_file};
+  $config_global->output_file($output_file);
+  
+  my $runtime = $self->runtime;
+  my $cc = SPVM::Builder::CC->new(
+    builder => $self->builder,
+    quiet => $self->quiet,
+    runtime => $runtime,
+  );
   
   for my $compile_info (@$compile_infos) {
     $cc->finalize_compile_info($compile_info);
