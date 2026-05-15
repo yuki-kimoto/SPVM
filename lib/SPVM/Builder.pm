@@ -112,6 +112,7 @@ sub build_parallel {
     ldflags
     build_type
     output_dir
+    config_global
   );
   
   # Check for invalid options
@@ -157,6 +158,9 @@ sub build_parallel {
       $config->category($category);
       $config->is_jit($options->{is_jit});
       $config->output_dir($options->{output_dir});
+      if (my $config_global = $options->{config_global}) {
+        $config->config_global($config_global);
+      }
       
       if (defined(my $build_type = $options->{build_type})) {
         # Apply config from build type
