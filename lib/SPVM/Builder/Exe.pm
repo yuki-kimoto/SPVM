@@ -338,7 +338,6 @@ sub prepare_compile_source_file {
     source_rel_file => $source_rel_file,
     config => $config,
     category => $options->{category},
-    builder => $self->builder,
   );
   
   $compile_info->dependent_files([$include_dir]);

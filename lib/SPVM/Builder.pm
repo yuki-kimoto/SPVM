@@ -51,7 +51,6 @@ has [qw(
   global_lock_fh
   ninja
   is_jit
-  spvm_core_include_dir
 )];
 
 sub import {
@@ -93,10 +92,6 @@ sub new {
   unless (exists $self->{ninja}) {
     $self->{ninja} = SPVM::Builder::Ninja->new(builder => $self);
   }
-  
-  my $builder_dir = SPVM::Builder::Util::get_builder_dir();
-  my $spvm_core_include_dir = "$builder_dir/include";
-  $self->spvm_core_include_dir($spvm_core_include_dir);
   
   return $self;
 }

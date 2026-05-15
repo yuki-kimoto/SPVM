@@ -16,7 +16,6 @@ has [qw(
   end_time
   tmp_dir
   process_id
-  builder
 )];
 
 # Instance Methods

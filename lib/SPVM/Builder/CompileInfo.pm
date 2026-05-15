@@ -120,7 +120,7 @@ sub create_ccflags {
     my @all_include_dirs;
     
     # SPVM core native directory
-    my $spvm_core_include_dir = $self->builder->spvm_core_include_dir;
+    my $spvm_core_include_dir = $config->spvm_core_include_dir;
     if (length $spvm_core_include_dir) {
       push @all_include_dirs, $spvm_core_include_dir;
     }
