@@ -166,7 +166,7 @@ sub prepare_compile_native_class {
   
   my $compile_infos = [];
   
-  my $cc_input_dir;
+  my $source_dir;
   if ($category eq 'precompile') {
     my $class_file = $basic_type->get_class_file;
     
@@ -174,30 +174,27 @@ sub prepare_compile_native_class {
     my $precompile_source_sha1 = sha1_hex $precompile_source;
     my $precompile_source_sha1_dir = $precompile_source_sha1 =~ s|^(..)|$1/|r;
     
-    $cc_input_dir = $self->builder->create_build_src_path($precompile_source_sha1_dir);
-    
-    $config->cc_input_dir($cc_input_dir);
+    $source_dir = $self->builder->create_build_src_path($precompile_source_sha1_dir);
     
     # Output - Precompile C source file
     my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
-    my $source_file = "$cc_input_dir/$source_rel_file";
+    my $source_file = "$source_dir/$source_rel_file";
     
     # Generate precompile C source file
     SPVM::Builder::Util::spurt_binary($source_file, $precompile_source, $self->builder->global_lock_fh);
   }
   elsif ($category eq 'native') {
     if ($is_cc_config) {
-      $cc_input_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
+      $source_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
     }
   }
-  $config->cc_input_dir($cc_input_dir);
   
   # Native class source file
   my $native_class_source_file;
   my $native_class_rel_file;
-  if (defined $cc_input_dir && defined $native_class_ext) {
+  if (defined $source_dir && defined $native_class_ext) {
     $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
-    $native_class_source_file = "$cc_input_dir/$native_class_rel_file";
+    $native_class_source_file = "$source_dir/$native_class_rel_file";
   }
   
   my $need_native_class_file;
@@ -246,7 +243,7 @@ sub prepare_compile_native_class {
     
     my $current_is_native_class_source_file = $source_file_info->{is_native_class_source_file};
     my $source_rel_file = $source_file_info->{source_rel_file};
-    my $source_file = "$cc_input_dir/$source_rel_file";
+    my $source_file = "$source_dir/$source_rel_file";
     
     next unless defined $source_file && -f $source_file;
     
@@ -302,7 +299,7 @@ sub prepare_compile_native_class {
     }
     
     my $compile_info = SPVM::Builder::CompileInfo->new(
-      source_file => $source_file,
+      source_dir => $source_dir,
       source_rel_file => $source_rel_file,
       config => $config,
       category => $compile_info_category,

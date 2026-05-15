@@ -328,6 +328,7 @@ sub prepare_compile_source_file {
   
   my $config = $options->{config};
   my $include_dir = $self->{include_dir};
+  my $source_dir = $options->{source_dir};
   my $source_rel_file = $options->{source_rel_file};
   
   my $builder = $self->builder;
@@ -338,6 +339,7 @@ sub prepare_compile_source_file {
   my $runtime = $self->builder->runtime;
   
   my $compile_info = SPVM::Builder::CompileInfo->new(
+    source_dir => $source_dir,
     source_rel_file => $source_rel_file,
     config => $config,
     category => $options->{category},
@@ -839,10 +841,11 @@ sub prepare_compile_bootstrap_source_file {
   
   my $config = SPVM::Builder::Util::API::create_default_config();
   $config->config_global($self->config_global);
-  $config->cc_input_dir($self->builder->create_build_src_path);
+  my $source_dir = $self->builder->create_build_src_path;
   
   # Compile
   my $compile_info = $self->prepare_compile_source_file({
+    source_dir => $source_dir,
     source_rel_file => $source_rel_file,
     config => $config,
     category => 'bootstrap',
@@ -865,10 +868,8 @@ sub prepare_compile_spvm_core_source_files {
   
   my $builder_include_dir = "$builder_dir/include";
   
-  my $cc_input_dir = $builder_dir;
-  $cc_input_dir =~ s|/SPVM/Builder$||;
-  
-  $config->cc_input_dir($cc_input_dir);
+  my $source_dir = $builder_dir;
+  $source_dir =~ s|/SPVM/Builder$||;
   
   # SPVM runtime source files
   my $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
@@ -878,6 +879,7 @@ sub prepare_compile_spvm_core_source_files {
   for my $spvm_runtime_src_base_name (@$spvm_runtime_src_base_names) {
     my $source_rel_file = "SPVM/Builder/src/$spvm_runtime_src_base_name";
     my $compile_info = $self->prepare_compile_source_file({
+      source_dir => $source_dir,
       source_rel_file => $source_rel_file,
       config => $config,
       category => 'spvm_core',

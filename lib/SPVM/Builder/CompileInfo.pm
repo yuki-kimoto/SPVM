@@ -11,6 +11,7 @@ use SPVM::Builder::Accessor 'has';
 
 # Fields
 has [qw(
+  source_dir
   source_rel_file
   dependent_files
   category
@@ -150,10 +151,14 @@ sub create_ccflags {
 sub source_file {
   my $self = shift;
   
-  my $cc_input_dir = $self->config->cc_input_dir;
+  my $source_dir = $self->source_dir;
   my $source_rel_file = $self->source_rel_file;
   
-  my $source_file = "$cc_input_dir/$source_rel_file";
+  unless ($source_dir) {
+    confess();
+  }
+  
+  my $source_file = "$source_dir/$source_rel_file";
   
   return $source_file;
 }
@@ -181,7 +186,7 @@ L<SPVM::Builder::CommandInfo>
 
 Gets and sets the C<source_rel_file> field. It is a relative path of a source file.
 
-The base directory of this path is the L<SPVM::Builder::Config#cc_input_dir|SPVM::Builder::Config/"cc_input_dir"> field.
+The base directory of this path is the L<SPVM::Builder::Config#source_dir|SPVM::Builder::Config/"source_dir"> field.
 
 =head2 dependent_files
 
@@ -274,7 +279,7 @@ Return Value Examples:
   my $source_file = $compile_info->source_file;
   $compile_info->source_file($source_file);
 
-Gets the source file path from the L<SPVM::Builder::Config#cc_input_dir|SPVM::Builder::Config/"cc_input_dir"> field and the L</"source_rel_file"> field.
+Gets the source file path from the L<SPVM::Builder::Config#source_dir|SPVM::Builder::Config/"source_dir"> field and the L</"source_rel_file"> field.
 
 =head1 Copyright & License
 

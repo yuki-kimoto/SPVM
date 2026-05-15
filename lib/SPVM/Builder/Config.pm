@@ -27,7 +27,6 @@ my $cc_fields = [qw(
   resource_include_dirs
   cc_output_option_name
   copyright_print_ccflags
-  cc_input_dir
   language_ccflags
   arch_ccflags
   warn_ccflags
@@ -689,13 +688,6 @@ Examples:
   $config->source_files($source_files);
 
 Gets and sets C<source_files> field, an array reference containing relative paths of L<native source file|SPVM::Document::NativeClass/"Native Source Files"> file from C<src> directory.
-
-=head2 cc_input_dir
-
-  my $cc_input_dir = $config->cc_input_dir;
-  $config->cc_input_dir($cc_input_dir);
-
-Gets and sets C<cc_input_dir> field, an input directory for the compiler L</"cc">.
 
 =head2 language
 

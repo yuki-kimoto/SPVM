@@ -955,8 +955,6 @@ sub finalize_compile_info {
     confess("\$source_rel_file must be defined.");
   }
   
-  my $cc_input_dir = $config->cc_input_dir // $config->get_base_dir;
-  
   my $source_file = $compile_info->source_file;
   
   my $cc_version = $config->cc_version;
