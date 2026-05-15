@@ -21,7 +21,6 @@ GetOptions(
   # Compiler and linker flags
   'ccflag=s' => \my @ccflags,
   'define=s' => \my @defines,
-  'optimize=s' => \my $optimize,
   'ldflag=s' => \my @ldflags,
   'debug' => \my $debug,
   'build-type=s' => \my $build_type,
@@ -121,7 +120,7 @@ for my $name (keys %$build_type_config) {
 }
 
 # OPTIMIZE
-$optimize = $default_config->optimize;
+my $optimize = $default_config->optimize;
 unless (length $optimize) {
   $optimize = ' ';
 }
@@ -256,9 +255,6 @@ package MY {
       if (defined $build_type) {
         $options->{build_type} = $build_type;
       }
-      if (defined $optimize) {
-        $options->{optimize} = $optimize;
-      }
       $options->{dependent_files} = ['SPVM.xs'];
       
       $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)', 'pm_to_blib'];
@@ -386,10 +382,6 @@ Specifies additional compiler flags.
 =head2 --define
 
 Adds C<-D> macros to the compiler.
-
-=head2 --optimize
-
-Overrides the default optimization level.
 
 =head2 --ldflag
 

@@ -873,7 +873,6 @@ use SPVM::Builder::Util::API;
 GetOptions(
   'meta' => \\my \$meta,
   'no-build-spvm-modules' => \\my \$no_build_spvm_modules,
-  'optimize=s' => \\my \$optimize,
   'ccflag=s' => \\my \@ccflags,
   'define=s' => \\my \@defines,
   'ldflag=s' => \\my \@ldflags,
@@ -967,9 +966,6 @@ package MY {
       my \$options = {};
       if (defined \$build_type) {
         \$options->{build_type} = \$build_type;
-      }
-      if (defined \$optimize) {
-        \$options->{optimize} = \$optimize;
       }
       if (\@ccflags) {
         \$options->{ccflags} = [\@ccflags];

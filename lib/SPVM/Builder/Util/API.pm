@@ -155,8 +155,6 @@ The following options are the same as those for L<SPVM::Builder::API#build_paral
 
 =item * C<precompile_classes>
 
-=item * C<optimize>
-
 =item * C<ccflags>
 
 =item * C<defines>
@@ -201,7 +199,6 @@ Examples:
       precompile_classes => [
         'Baz',
       ],
-      optimize => 'O3',
       dependent_files => ['SPVM.xs'],
       order_only_dependent_files => ['$(INST_DYNAMIC)'],
     });

@@ -109,7 +109,6 @@ sub build_parallel {
     native_classes
     precompile_classes
     ccflags
-    optimize
     defines
     ldflags
     build_type
@@ -177,14 +176,9 @@ sub build_parallel {
       }
       
       my $force_optimize;
-      if (length $options->{optimize}) {
-        $force_optimize = $options->{optimize};
-      }
-      else {
-        my $env_spvm_force_optimize = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_OPTIMIZE');
-        if (length $env_spvm_force_optimize) {
-          $force_optimize = $env_spvm_force_optimize;
-        }
+      my $env_spvm_force_optimize = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_OPTIMIZE');
+      if (length $env_spvm_force_optimize) {
+        $force_optimize = $env_spvm_force_optimize;
       }
       if (length $force_optimize) {
         $config_global->compile_rule_any({'optimize' => $force_optimize});

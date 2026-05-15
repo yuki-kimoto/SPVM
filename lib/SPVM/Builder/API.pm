@@ -104,10 +104,6 @@ An array reference of precompile class names to be built.
 
 A path to a text file containing precompile class names to be built. The file must contain one class name per line. If both C<precompile_classes> and this option are specified, they are merged.
 
-=item * C<optimize>
-
-The optimization level for the compiler (e.g., C<O2>, C<O3>, C<O0>).
-
 =item * C<ccflags>
 
 An array reference of extra compiler flags.
