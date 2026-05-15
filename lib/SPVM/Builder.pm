@@ -137,6 +137,8 @@ sub build_parallel {
     precompile => 'precompile_classes',
   );
   
+  my $config_global = $options->{config_global};
+  
   # Prepare all compile information
   for my $category (keys %category_to_key) {
     my $key = $category_to_key{$category};
@@ -154,7 +156,7 @@ sub build_parallel {
         $config = SPVM::Builder::Util::API::create_default_config();
       }
       
-      if (my $config_global = $options->{config_global}) {
+      if ($config_global) {
         $config->config_global($config_global);
       }
       
@@ -200,8 +202,6 @@ sub build_parallel {
       # Prepare compile information for each class
       my $compile_infos = $cc->prepare_compile_class($class_name, $config);
       for my $compile_info (@$compile_infos) {
-        my $config = $compile_info->config;
-        my $config_global = $config->config_global;
         if ($config_global) {
           for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
             $before_compile_cb->($compile_info->config, $compile_info);
@@ -253,11 +253,12 @@ sub build_parallel {
       my $config = $ctx->{config};
       
       # Execute after_link_cbs
-      my $after_link_cbs = $config->after_link_cbs;
-      for my $after_link_cb (@$after_link_cbs) {
-        $after_link_cb->($link_info->config, $link_info);
+      if ($config_global) {
+        my $after_link_cbs = $config_global->after_link_cbs;
+        for my $after_link_cb (@$after_link_cbs) {
+          $after_link_cb->($link_info->config, $link_info);
+        }
       }
-      
       # Store result in the return hash
       $output_files_h->{$category}{$class_name} = $link_info->output_file;
     }

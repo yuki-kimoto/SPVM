@@ -15,6 +15,8 @@ my $fields;
 BEGIN {
   $fields = [qw(
     before_compile_cbs
+    before_link_cbs
+    after_link_cbs
     build_type
   )];
   
@@ -86,6 +88,14 @@ sub new {
     );
   }
   
+  unless (exists $self->{before_link_cbs}) {
+    $self->before_link_cbs([]);
+  }
+
+  unless (exists $self->{after_link_cbs}) {
+    $self->after_link_cbs([]);
+  }
+
   return $self;
 }
 
@@ -94,6 +104,16 @@ sub add_before_compile_cb {
   my ($self, @before_compile_cbs) = @_;
   
   push @{$self->{before_compile_cbs}}, @before_compile_cbs;
+}
+
+sub add_before_link_cb {
+  my ($self, @before_link_cbs) = @_;
+  push @{$self->{before_link_cbs}}, @before_link_cbs;
+}
+
+sub add_after_link_cb {
+  my ($self, @after_link_cbs) = @_;
+  push @{$self->{after_link_cbs}}, @after_link_cbs;
 }
 
 sub compile_rule {
@@ -324,6 +344,32 @@ Gets and sets the C<before_compile_cbs> field, an array reference of callbacks t
 
 This affects all compilations.
 
+=head2 before_link_cbs
+
+  my $before_link_cbs = $config->before_link_cbs;
+  $config->before_link_cbs($before_link_cbs);
+
+Gets and sets C<before_link_cbs> field, an array reference containing callbacks called just before the link command L</"ld"> is executed.
+
+These callbacks are executed even if the link command is not actually executed because of caching.
+
+The 1th argument of the callback is an L<SPVM::Builder::Config> object.
+
+The 2th argument of the callback is an L<SPVM::Builder::LinkInfo> object.
+
+=head2 after_link_cbs
+
+  my $after_link_cbs = $config->after_link_cbs;
+  $config->after_link_cbs($after_link_cbs);
+
+Gets and sets C<after_link_cbs> field, an array reference containing callbacks called just after the link command L</"ld"> is executed.
+
+These callbacks are executed even if the link command is not actually executed because of caching.
+
+The 1st argument of the callback is an L<SPVM::Builder::Config> object.
+
+The 2nd argument of the callback is an L<SPVM::Builder::LinkInfo> object.
+
 =head2 optimize
 
   $config->optimize($optimize, $condition);
@@ -395,6 +441,14 @@ Field Default Values:
 
   []
 
+=item * L</"before_link_cbs">
+
+  []
+
+=item * L</"after_link_cbs">
+
+  []
+
 =item * Other Fields
 
   undef
@@ -415,6 +469,40 @@ Examples:
     my $cc_command = $compile_info->to_command;
     
     # Do something
+  });
+
+=head2 add_before_link_cb
+
+  $config->add_before_link_cb(@before_link_cbs);
+
+Adds @before_link_cbs to the end of L</"before_link_cbs"> field.
+
+Examples:
+
+  $config->add_before_link_cb(sub {
+    my ($config, $link_info) = @_;
+    
+    my $object_file_infos = $link_info->object_file_infos;
+    
+    # Do something
+    
+  });
+
+=head2 add_after_link_cb
+
+  $config->add_after_link_cb(@after_link_cbs);
+
+Adds @after_link_cbs to the end of L</"after_link_cbs"> field.
+
+Examples:
+
+  $config->add_after_link_cb(sub {
+    my ($config, $link_info) = @_;
+    
+    my $object_file_infos = $link_info->object_file_infos;
+    
+    # Do something
+    
   });
 
 =head2 compile_rule

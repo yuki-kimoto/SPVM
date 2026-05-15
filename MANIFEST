@@ -947,9 +947,6 @@ t/04_native_api/lib/SPVM/TestCase/NativeAPICpp.cpp
 t/04_native_api/lib/SPVM/TestCase/NativeAPICpp.native/include/mylib.hpp
 t/04_native_api/lib/SPVM/TestCase/NativeAPICpp.native/src/mylib.cpp
 t/04_native_api/lib/SPVM/TestCase/NativeAPICpp.spvm
-t/04_native_api/lib/SPVM/TestCase/NativeAPILinkInfo.c
-t/04_native_api/lib/SPVM/TestCase/NativeAPILinkInfo.config
-t/04_native_api/lib/SPVM/TestCase/NativeAPILinkInfo.spvm
 t/04_native_api/lib/SPVM/TestCase/NativeAPISrc.c
 t/04_native_api/lib/SPVM/TestCase/NativeAPISrc.config
 t/04_native_api/lib/SPVM/TestCase/NativeAPISrc.native/include/bar.h
@@ -984,7 +981,6 @@ t/04_native_api/lib/SPVM/TestCase/UseResource/Mylib2.config
 t/04_native_api/lib/SPVM/TestCase/UseResource/Mylib2.spvm
 t/04_native_api/native_api.t
 t/04_native_api/native_api_cpp.t
-t/04_native_api/native_api_link_info.t
 t/04_native_api/native_api_src.t
 t/04_native_api/resource.t
 t/05_exchange_api/exchange_api.t

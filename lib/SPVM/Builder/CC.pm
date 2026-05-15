@@ -454,9 +454,12 @@ sub prepare_link {
     $link_info->dl_func_list($dl_func_list);
   }
   
-  my $before_link_cbs = $config->before_link_cbs;
-  for my $before_link_cb (@$before_link_cbs) {
-    $before_link_cb->($link_info->config, $link_info);
+  my $config_global = $config->config_global;
+  if ($config_global) {
+    my $before_link_cbs = $config_global->before_link_cbs;
+    for my $before_link_cb (@$before_link_cbs) {
+      $before_link_cb->($link_info->config, $link_info);
+    }
   }
   
   return $link_info;

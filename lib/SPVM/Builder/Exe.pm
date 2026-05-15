@@ -175,6 +175,9 @@ sub new {
   
   $self->{config_global} = $config_global;
   
+  # Although not the ideal way, this allows config_global to act as a build target itself.
+  $config_global->config_global($config_global);
+  
   $self->{builder} = $builder;
   
   # Override config settings with command line options if defined

@@ -1,4 +1,0 @@
-class TestCase::NativeAPILinkInfo {
-  
-  native static method dummy : int ();
-}
