@@ -31,7 +31,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   
   {
     no warnings 'once';
-    my $link_info = $main::MYAPP_LINK_INFO_BEFORE_LINK_CB;
+    my $link_info = $main::MYAPP_LINK_INFO_AFTER_PREPARE_LINK_CB;
     
     my $config = SPVM::Builder::Config->new_c99;
     
@@ -67,7 +67,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   
   {
     no warnings 'once';
-    my $compile_info = $main::MYAPP_COMPILE_INFO_BEFORE_COMPILE_CB;
+    my $compile_info = $main::MYAPP_COMPILE_INFO_AFTER_PREPARE_COMPILE_CB;
     ok(ref $compile_info eq 'SPVM::Builder::CompileInfo');
   }
 }

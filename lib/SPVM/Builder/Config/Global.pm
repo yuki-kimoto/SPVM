@@ -14,8 +14,8 @@ use SPVM::Builder::Accessor 'has';
 my $fields;
 BEGIN {
   $fields = [qw(
-    before_compile_cbs
-    before_link_cbs
+    after_prepare_compile_cbs
+    after_prepare_link_cbs
     after_link_cbs
     build_type
   )];
@@ -69,7 +69,7 @@ sub new {
   my $class = shift;
   
   my $self = $class->SUPER::new(
-    before_compile_cbs => [],
+    after_prepare_compile_cbs => [],
     @_
   );
   
@@ -88,8 +88,8 @@ sub new {
     );
   }
   
-  unless (exists $self->{before_link_cbs}) {
-    $self->before_link_cbs([]);
+  unless (exists $self->{after_prepare_link_cbs}) {
+    $self->after_prepare_link_cbs([]);
   }
 
   unless (exists $self->{after_link_cbs}) {
@@ -100,15 +100,15 @@ sub new {
 }
 
 # Instance Methods
-sub add_before_compile_cb {
-  my ($self, @before_compile_cbs) = @_;
+sub add_after_prepare_compile_cb {
+  my ($self, @after_prepare_compile_cbs) = @_;
   
-  push @{$self->{before_compile_cbs}}, @before_compile_cbs;
+  push @{$self->{after_prepare_compile_cbs}}, @after_prepare_compile_cbs;
 }
 
-sub add_before_link_cb {
-  my ($self, @before_link_cbs) = @_;
-  push @{$self->{before_link_cbs}}, @before_link_cbs;
+sub add_after_prepare_link_cb {
+  my ($self, @after_prepare_link_cbs) = @_;
+  push @{$self->{after_prepare_link_cbs}}, @after_prepare_link_cbs;
 }
 
 sub add_after_link_cb {
@@ -149,7 +149,7 @@ sub compile_rule {
     SPVM::Builder::Config->new_empty(%normalized);
   }
   
-  $self->add_before_compile_cb(sub {
+  $self->add_after_prepare_compile_cb(sub {
     my ($config) = @_;
     
     &_match_apply($config, $condition, $match_config_or_cb);
@@ -335,21 +335,21 @@ This is because the compiler flags are used to compile SPVM core source files an
 
 =head1 Fields
 
-=head2 before_compile_cbs
+=head2 after_prepare_compile_cbs
 
-  my $before_compile_cbs = $self->before_compile_cbs;
-  $self->before_compile_cbs($before_compile_cbs);
+  my $after_prepare_compile_cbs = $self->after_prepare_compile_cbs;
+  $self->after_prepare_compile_cbs($after_prepare_compile_cbs);
 
-Gets and sets the C<before_compile_cbs> field, an array reference of callbacks that work globally called just before the compile command L</"cc"> is executed.
+Gets and sets the C<after_prepare_compile_cbs> field, an array reference of callbacks that work globally called just before the compile command L</"cc"> is executed.
 
 This affects all compilations.
 
-=head2 before_link_cbs
+=head2 after_prepare_link_cbs
 
-  my $before_link_cbs = $config->before_link_cbs;
-  $config->before_link_cbs($before_link_cbs);
+  my $after_prepare_link_cbs = $config->after_prepare_link_cbs;
+  $config->after_prepare_link_cbs($after_prepare_link_cbs);
 
-Gets and sets C<before_link_cbs> field, an array reference containing callbacks called just before the link command L</"ld"> is executed.
+Gets and sets C<after_prepare_link_cbs> field, an array reference containing callbacks called just before the link command L</"ld"> is executed.
 
 These callbacks are executed even if the link command is not actually executed because of caching.
 
@@ -437,11 +437,11 @@ Field Default Values:
 
   "exe"
 
-=item * L</"before_compile_cbs">
+=item * L</"after_prepare_compile_cbs">
 
   []
 
-=item * L</"before_link_cbs">
+=item * L</"after_prepare_link_cbs">
 
   []
 
@@ -455,15 +455,15 @@ Field Default Values:
 
 =back
 
-=head2 add_before_compile_cb
+=head2 add_after_prepare_compile_cb
 
-  $self->add_before_compile_cb(@before_compile_cbs);
+  $self->add_after_prepare_compile_cb(@after_prepare_compile_cbs);
 
-Adds @before_compile_cbs to the end of L</"before_compile_cbs"> field.
+Adds @after_prepare_compile_cbs to the end of L</"after_prepare_compile_cbs"> field.
 
 Examples:
 
-  $self->add_before_compile_cb(sub {
+  $self->add_after_prepare_compile_cb(sub {
     my ($config, $compile_info) = @_;
     
     my $cc_command = $compile_info->to_command;
@@ -471,15 +471,15 @@ Examples:
     # Do something
   });
 
-=head2 add_before_link_cb
+=head2 add_after_prepare_link_cb
 
-  $config->add_before_link_cb(@before_link_cbs);
+  $config->add_after_prepare_link_cb(@after_prepare_link_cbs);
 
-Adds @before_link_cbs to the end of L</"before_link_cbs"> field.
+Adds @after_prepare_link_cbs to the end of L</"after_prepare_link_cbs"> field.
 
 Examples:
 
-  $config->add_before_link_cb(sub {
+  $config->add_after_prepare_link_cb(sub {
     my ($config, $link_info) = @_;
     
     my $object_file_infos = $link_info->object_file_infos;
