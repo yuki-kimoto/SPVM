@@ -341,8 +341,6 @@ sub prepare_link {
   
   my $category = $config->category;
   
-  my $output_dir = $config->output_dir;
-  
   my $build_dir = $self->builder->build_dir;
   
   my $ld = $config->ld;
@@ -399,6 +397,7 @@ sub prepare_link {
   
   # Output file
   unless (defined $output_file) {
+    my $output_dir = $self->builder->output_dir;
     unless (defined $output_dir) {
       my $is_jit = $self->builder->is_jit;
       if ($is_jit) {

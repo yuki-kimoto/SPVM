@@ -64,6 +64,10 @@ Options:
 
 A build directory.
 
+=item * C<output_dir>
+
+A output directory.
+
 =item * C<jobs>
 
 The number of parallel jobs. The default value is the number of CPU cores.

@@ -139,6 +139,10 @@ The following options are the same as those for L<SPVM::Builder::API#new|SPVM::B
 
 The default value is C<".spvm_build">.
 
+=item * C<output_dir>
+
+The default value is C<"blib/lib">.
+
 =item * C<jobs>
 
 =back

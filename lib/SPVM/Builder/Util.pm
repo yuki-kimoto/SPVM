@@ -378,6 +378,9 @@ sub create_make_rule_parallel {
   my $build_dir = $options->{build_dir} // '.spvm_build';
   push @new_options, "build_dir => '$build_dir'";
   
+  my $output_dir = $options->{output_dir} // 'blib/lib';
+  push @new_options, "output_dir => '$output_dir'";
+  
   if (defined(my $jobs = $options->{jobs})) {
     push @new_options, "jobs => $jobs";
   }

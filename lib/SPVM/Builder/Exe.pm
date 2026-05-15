@@ -873,9 +873,6 @@ sub prepare_compile_spvm_core_source_files {
   # SPVM runtime source files
   my $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
   
-  # Object dir
-  my $output_dir = $self->builder->create_build_object_path;
-  
   # Compile source files
   my $compile_infos = [];
   for my $spvm_runtime_src_base_name (@$spvm_runtime_src_base_names) {

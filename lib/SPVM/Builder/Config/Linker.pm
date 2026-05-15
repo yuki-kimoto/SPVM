@@ -39,7 +39,6 @@ my $fields = [qw(
   static_lib_ext
   exe_ext
   ld_output_option_name
-  output_dir
   output_file
   external_object_files
   hint_cc
@@ -686,15 +685,6 @@ Gets and sets C<lib_option_name> field, a string that is an option name to speci
   $config->ld_output_option_name($ld_output_option_name);
 
 Gets and sets C<ld_output_option_name> field, a string that is an option name to specify a linker output file name.
-
-=head2 output_dir
-
-  my $output_dir = $config->output_dir;
-  $config->output_dir($output_dir);
-
-Gets and sets C<output_dir> field, an output directory for the linker L</"ld">.
-
-This field is automatically set and users nomally do not change it.
 
 =head2 output_file
 

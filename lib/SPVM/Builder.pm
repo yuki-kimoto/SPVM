@@ -51,6 +51,7 @@ has [qw(
   global_lock_fh
   ninja
   is_jit
+  output_dir
 )];
 
 sub import {
@@ -111,7 +112,6 @@ sub build_parallel {
     defines
     ldflags
     build_type
-    output_dir
     config_global
   );
   
@@ -162,7 +162,6 @@ sub build_parallel {
       
       $config->class_name($class_name);
       $config->category($category);
-      $config->output_dir($options->{output_dir});
       
       if (defined(my $build_type = $options->{build_type})) {
         # Apply config from build type
@@ -296,9 +295,6 @@ sub build_parallel_dynamic_lib_dist {
   
   my $runtime = $compiler->get_runtime;
   $self->runtime($runtime);
-  
-  my $output_dir = 'blib/lib';
-  $options->{output_dir} = $output_dir;
   
   $self->build_parallel($options);
 }
