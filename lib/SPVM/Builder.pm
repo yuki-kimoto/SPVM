@@ -42,13 +42,14 @@ use SPVM::Builder::Accessor 'has';
 # Fields
 has [qw(
   build_dir
-  work_dir
-  include_dirs
-  ninja
-  global_lock_fh
-  runtime
   jobs
   quiet
+  
+  work_dir
+  include_dirs
+  runtime
+  global_lock_fh
+  ninja
 )];
 
 sub import {
@@ -66,9 +67,9 @@ sub new {
   
   my $self = {
     build_dir => $ENV{SPVM_BUILD_DIR},
+    jobs => SPVM::Builder::Util::API::get_cpu_count() + 2,
     include_dirs => \@INC,
     work_dir => 'work',
-    jobs => SPVM::Builder::Util::API::get_cpu_count() + 2,
     @_
   };
   
