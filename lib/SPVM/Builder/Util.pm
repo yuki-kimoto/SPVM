@@ -381,6 +381,7 @@ sub create_make_rule_parallel {
   if (defined(my $jobs = $options->{jobs})) {
     push @new_options, "jobs => $jobs";
   }
+  
   my $new_options_string = join(', ', @new_options);
   
   my @build_options;

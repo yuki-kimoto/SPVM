@@ -43,8 +43,8 @@ use SPVM::Builder::Accessor 'has';
 has [qw(
   build_dir
   jobs
-  quiet
   
+  quiet
   work_dir
   include_dirs
   runtime
@@ -106,7 +106,6 @@ sub build_parallel {
     native_classes
     precompile_classes
     is_jit
-    quiet
     ccflags
     optimize
     defines
@@ -125,10 +124,6 @@ sub build_parallel {
   my $output_files_h = {};
   
   my $cc_options = {builder => $self};
-  
-  if (exists $options->{quiet}) {
-    $self->quiet($options->{quiet});
-  }
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);
   
