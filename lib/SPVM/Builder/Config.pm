@@ -39,7 +39,6 @@ my $cc_fields = [qw(
   thread_ccflags
   extra_ccflags
   ndebug_ccflags
-  before_compile_cbs
   cc_version
 )];
 
@@ -110,11 +109,6 @@ sub new {
   # source_files
   unless (exists $self->{source_files}) {
     $self->source_files([]);
-  }
-
-  # before_compile_cbs
-  unless (exists $self->{before_compile_cbs}) {
-    $self->before_compile_cbs([]);
   }
 
   # copyright_print_ccflags
@@ -338,12 +332,6 @@ sub add_source_file {
   my ($self, @source_files) = @_;
   
   push @{$self->{source_files}}, @source_files;
-}
-
-sub add_before_compile_cb {
-  my ($self, @before_compile_cbs) = @_;
-  
-  push @{$self->{before_compile_cbs}}, @before_compile_cbs;
 }
 
 sub get_cc_system_field_names {
@@ -684,19 +672,6 @@ Examples:
 
 Gets and sets C<source_files> field, an array reference containing relative paths of L<native source file|SPVM::Document::NativeClass/"Native Source Files"> file from C<src> directory.
 
-=head2 before_compile_cbs
-
-  my $before_compile_cbs = $config->before_compile_cbs;
-  $config->before_compile_cbs($before_compile_cbs);
-
-Gets and sets C<before_compile_cbs> field, an array reference containing callbacks called just before the compile command L</"cc"> is executed.
-
-These callbacks are executed only if an object file is actually generated.
-
-The 1th argument of the callback is an L<SPVM::Builder::Config> object.
-
-The 2th argument of the callback is an L<SPVM::Builder::CompileInfo> object.
-
 =head2 cc_input_dir
 
   my $cc_input_dir = $config->cc_input_dir;
@@ -1031,10 +1006,6 @@ The directory described in L<SPVM::Document::NativeClass/"Native Header Files">.
 
   []
 
-=item * L</"before_compile_cbs">
-
-  []
-
 =item * L</"cc_output_option_name">
 
 "-o"
@@ -1140,22 +1111,6 @@ Adds @source_files to the end of L</"source_files"> field.
 Examples:
 
   $config->add_source_file('foo.c', 'bar.c');
-
-=head2 add_before_compile_cb
-
-  $config->add_before_compile_cb(@before_compile_cbs);
-
-Adds @before_compile_cbs to the end of L</"before_compile_cbs"> field.
-
-Examples:
-
-  $config->add_before_compile_cb(sub {
-    my ($config, $compile_info) = @_;
-    
-    my $cc_command = $compile_info->to_command;
-    
-    # Do something
-  });
 
 =head2 clear_system_fields
 
