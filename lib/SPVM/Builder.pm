@@ -169,11 +169,11 @@ sub build_parallel {
       }
       
       if ($options->{ccflags}) {
-        $config->add_ccflag(@{$options->{ccflags}});
+        $config_global->compile_rule_any({'+ccflags' => $options->{ccflags}});
       }
       
       if ($options->{defines}) {
-        $config->add_define(@{$options->{defines}});
+        $config_global->compile_rule_any({'+defines' => $options->{defines}});
       }
       
       my $force_optimize;
@@ -187,7 +187,7 @@ sub build_parallel {
         }
       }
       if (length $force_optimize) {
-        $config->optimize($force_optimize);
+        $config_global->compile_rule_any({'optimize' => $force_optimize});
       }
       
       if ($options->{ldflags}) {
