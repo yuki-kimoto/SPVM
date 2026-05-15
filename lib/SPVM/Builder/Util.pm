@@ -375,9 +375,9 @@ sub create_make_rule_parallel {
 
   # Builder new options
   my @new_options;
-  if (defined(my $build_dir = $options->{build_dir})) {
-    push @new_options, "build_dir => '$build_dir'";
-  }
+  my $build_dir = $options->{build_dir} // '.spvm_build';
+  push @new_options, "build_dir => '$build_dir'";
+  
   if (defined(my $jobs = $options->{jobs})) {
     push @new_options, "jobs => $jobs";
   }
