@@ -137,6 +137,8 @@ The following options are the same as those for L<SPVM::Builder::API#new|SPVM::B
 
 =item * C<build_dir>
 
+The default value is C<".spvm_build">.
+
 =item * C<jobs>
 
 =back
