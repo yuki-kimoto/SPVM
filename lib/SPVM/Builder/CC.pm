@@ -130,6 +130,9 @@ sub prepare_compile_native_class {
   my $runtime = $self->builder->runtime;
   my $native_class_ext = $config->ext;
   
+  unless ($runtime) {
+    confess();
+  }
   my $basic_type = $runtime->get_basic_type_by_name($class_name);
   
   unless ($basic_type) {

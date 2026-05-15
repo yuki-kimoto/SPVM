@@ -106,7 +106,6 @@ sub build_parallel {
     native_classes
     precompile_classes
     jobs
-    runtime
     is_jit
     output_dir
     quiet
@@ -137,17 +136,16 @@ sub build_parallel {
   }
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);
-  $self->runtime($options->{runtime});
-
+  
   my @all_compile_infos;
   my %class_to_context;
-
+  
   # Define categories and their corresponding keys in $options
   my %category_to_key = (
     native     => 'native_classes',
     precompile => 'precompile_classes',
   );
-
+  
   # Prepare all compile information
   for my $category (keys %category_to_key) {
     my $key = $category_to_key{$category};
@@ -307,7 +305,7 @@ sub build_parallel_dynamic_lib_dist {
   }
   
   my $runtime = $compiler->get_runtime;
-  $options->{runtime} = $runtime;
+  $self->runtime($runtime);
   
   my $output_dir = 'blib/lib';
   $options->{output_dir} = $output_dir;

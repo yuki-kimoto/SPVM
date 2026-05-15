@@ -215,12 +215,12 @@ sub load_dynamic_lib {
         }
         else {
           my $build_options = {
-            runtime => $runtime,
             is_jit => 1,
             "${category}_classes" => [$outmost_class_name],
           };
           
           $BUILDER //= SPVM::Builder->new;
+          $BUILDER->runtime($runtime);
           my $output_files_h = $BUILDER->build_parallel(
             $build_options,
           );
