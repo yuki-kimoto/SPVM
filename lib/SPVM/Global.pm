@@ -141,7 +141,7 @@ sub build_class_common {
 
 sub init_api {
   unless ($API) {
-    $BUILDER //= SPVM::Builder->new;
+    $BUILDER //= SPVM::Builder->new(is_jit => 1);;
     
     my $compiler = SPVM::Builder::Native::Compiler->new;
     
@@ -215,11 +215,10 @@ sub load_dynamic_lib {
         }
         else {
           my $build_options = {
-            is_jit => 1,
             "${category}_classes" => [$outmost_class_name],
           };
           
-          $BUILDER //= SPVM::Builder->new;
+          $BUILDER //= SPVM::Builder->new(is_jit => 1);
           $BUILDER->runtime($runtime);
           my $output_files_h = $BUILDER->build_parallel(
             $build_options,

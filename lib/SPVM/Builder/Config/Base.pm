@@ -14,7 +14,6 @@ my $base_fields = [qw(
   class_name
   category
   quiet
-  is_jit
   is_resource
   loaded_config_files
   config_global
@@ -52,8 +51,6 @@ sub new {
   unless (exists $self->{loaded_config_files}) {
     $self->{loaded_config_files} = [];
   }
-  
-  # is_jit, is_resource are normally set via constructor if needed
   
   return $self;
 }

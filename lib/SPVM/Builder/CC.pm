@@ -100,10 +100,6 @@ sub prepare_compile_resources {
       $resource_config->quiet($config->quiet);
     }
     
-    if (exists $config->{is_jit}) {
-      $resource_config->is_jit($config->is_jit);
-    }
-    
     if (exists $config->{config_global}) {
       $resource_config->config_global($config->config_global);
     }
@@ -404,7 +400,7 @@ sub prepare_link {
   # Output file
   unless (defined $output_file) {
     unless (defined $output_dir) {
-      my $is_jit = $config->is_jit;
+      my $is_jit = $self->builder->is_jit;
       if ($is_jit) {
         $output_dir = $self->builder->create_build_lib_path($command_hash =~ s|^(..)|$1/|r);
       }

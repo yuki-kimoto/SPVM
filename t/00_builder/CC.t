@@ -60,8 +60,8 @@ use SPVM::Builder;
   # order
   {
     {
-      my $builder = SPVM::Builder->new;
-      my $config = SPVM::Builder::Config->new(is_jit => 1);
+      my $builder = SPVM::Builder->new(is_jit => 1);
+      my $config = SPVM::Builder::Config->new;
       my $cc = SPVM::Builder::CC->new(builder => $builder);
       
       $cc->builder->quiet(0);
@@ -72,8 +72,8 @@ use SPVM::Builder;
     }
     
     {
-      my $builder = SPVM::Builder->new;
-      my $config = SPVM::Builder::Config->new(is_jit => 1);
+      my $builder = SPVM::Builder->new(is_jit => 1);
+      my $config = SPVM::Builder::Config->new;
       my $cc = SPVM::Builder::CC->new(builder => $builder);
       
       $config->quiet(0);

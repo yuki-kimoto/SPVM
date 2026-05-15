@@ -50,6 +50,7 @@ has [qw(
   runtime
   global_lock_fh
   ninja
+  is_jit
 )];
 
 sub import {
@@ -105,7 +106,6 @@ sub build_parallel {
   my %allowed_options = map { $_ => 1 } qw(
     native_classes
     precompile_classes
-    is_jit
     ccflags
     optimize
     defines
@@ -156,7 +156,6 @@ sub build_parallel {
       
       $config->class_name($class_name);
       $config->category($category);
-      $config->is_jit($options->{is_jit});
       $config->output_dir($options->{output_dir});
       if (my $config_global = $options->{config_global}) {
         $config->config_global($config_global);
@@ -497,7 +496,7 @@ sub detect_quiet {
   elsif (defined $config && length $config->{quiet}) {
     $quiet = $config->quiet;
   }
-  elsif (defined $config && $config->is_jit) {
+  elsif ($self->is_jit) {
     $quiet = 1;
   }
   else {
