@@ -342,11 +342,6 @@ sub prepare_compile_source_file {
   
   my $runtime = $self->builder->runtime;
   
-  # Compile command
-  my $builder_cc = SPVM::Builder::CC->new(
-    builder => $self->builder,
-  );
-  
   my $compile_info = SPVM::Builder::CompileInfo->new(
     source_rel_file => $source_rel_file,
     config => $config,
