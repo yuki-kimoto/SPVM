@@ -847,8 +847,6 @@ sub prepare_compile_bootstrap_source_file {
   SPVM::Builder::Util::spurt_binary($bootstrap_source_file, $bootstrap_source, $self->builder->global_lock_fh);
   
   my $config = SPVM::Builder::Util::API::create_default_config();
-  my $config_global = $self->config_global;
-  $config->config_global($config_global);
   $config->cc_input_dir($self->builder->create_build_src_path);
   
   # Compile
@@ -866,9 +864,6 @@ sub prepare_compile_spvm_core_source_files {
   
   # Config
   my $config = SPVM::Builder::Util::API::create_default_config();
-  my $config_global = $self->config_global;
-  $config->config_global($config_global);
-  
   my $builder_dir = SPVM::Builder::Util::get_builder_dir();
   
   # SPVM src directory
@@ -906,25 +901,21 @@ sub prepare_compile_spvm_core_source_files {
 sub prepare_compile_precompile_class {
   my ($self, $class_name) = @_;
   
-  my $config_global = $self->config_global;
-  
   my $builder = $self->builder;
   
   my $build_dir = $self->builder->build_dir;
   
   my $runtime = $self->builder->runtime;
   
-  my $builder_cc = SPVM::Builder::CC->new(
-    builder => $self->builder,
-  );
-  
   my $config = SPVM::Builder::Util::API::create_default_config();
   
   $config->category('precompile');
   
-  $config->config_global($config_global);
-  
+  my $builder_cc = SPVM::Builder::CC->new(
+    builder => $builder,
+  );
   my $compile_infos = [];
+  $config->config_global($self->config_global);
   my $precompile_compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
   push @$compile_infos, @$precompile_compile_infos;
   
@@ -934,18 +925,11 @@ sub prepare_compile_precompile_class {
 sub prepare_compile_native_class {
   my ($self, $class_name) = @_;
   
-  my $config_global = $self->config_global;
-  
   my $builder = $self->builder;
   
   my $build_dir = $self->builder->build_dir;
   
   my $runtime = $self->builder->runtime;
-  
-  # Compiler for native class
-  my $builder_cc = SPVM::Builder::CC->new(
-    builder => $self->builder,
-  );
   
   my $all_compile_infos = [];
   
@@ -964,12 +948,13 @@ sub prepare_compile_native_class {
     
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
     
-    $config->config_global($config_global);
-    
     my $compile_resources = $self->class_name eq $class_name ? 1 : 0;
     
+    my $builder_cc = SPVM::Builder::CC->new(
+      builder => $self->builder,
+    );
     $builder_cc->no_compile_resources(!$compile_resources);
-    
+    $config->config_global($self->config_global);
     my $compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
     push @$all_compile_infos, @$compile_infos;
   }
