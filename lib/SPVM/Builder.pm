@@ -105,15 +105,14 @@ sub build_parallel {
   my %allowed_options = map { $_ => 1 } qw(
     native_classes
     precompile_classes
-    jobs
     is_jit
-    output_dir
     quiet
     ccflags
     optimize
     defines
     ldflags
     build_type
+    output_dir
   );
   
   # Check for invalid options
@@ -129,10 +128,6 @@ sub build_parallel {
   
   if (exists $options->{quiet}) {
     $self->quiet($options->{quiet});
-  }
-  
-  if (exists $options->{jobs}) {
-    $self->jobs($options->{jobs});
   }
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);

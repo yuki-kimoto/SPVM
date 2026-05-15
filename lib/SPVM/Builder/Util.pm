@@ -373,8 +373,15 @@ sub create_make_rule_parallel {
   $make_rule .= ".PHONY: $target\n";
   $make_rule .= "$target :$order_only_str\n";
 
-  # Build options
-  my $new_options_string = "build_dir => '.spvm_build'";
+  # Builder new options
+  my @new_options;
+  if (defined(my $build_dir = $options->{build_dir})) {
+    push @new_options, "build_dir => '$build_dir'";
+  }
+  if (defined(my $jobs = $options->{jobs})) {
+    push @new_options, "jobs => $jobs";
+  }
+  my $new_options_string = join(', ', @new_options);
   
   my @build_options;
   if (defined(my $build_type = $options->{build_type})) {
@@ -382,9 +389,6 @@ sub create_make_rule_parallel {
   }
   if (defined(my $optimize = $options->{optimize})) {
     push @build_options, "optimize => '$optimize'";
-  }
-  if (defined(my $jobs = $options->{jobs})) {
-    push @build_options, "jobs => $jobs";
   }
   
   # New file-based options

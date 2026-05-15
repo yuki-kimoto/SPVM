@@ -137,6 +137,8 @@ The following options are the same as those for L<SPVM::Builder::API#new|SPVM::B
 
 =item * C<build_dir>
 
+=item * C<jobs>
+
 =back
 
 The following options are the same as those for L<SPVM::Builder::API#build_parallel_dynamic_lib_dist|SPVM::Builder::API/"build_parallel_dynamic_lib_dist"> method:
@@ -154,8 +156,6 @@ The following options are the same as those for L<SPVM::Builder::API#build_paral
 =item * C<defines>
 
 =item * C<ldflags>
-
-=item * C<jobs>
 
 =item * C<build_type>
 

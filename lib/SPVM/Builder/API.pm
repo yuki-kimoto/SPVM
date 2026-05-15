@@ -64,6 +64,10 @@ Options:
 
 A build directory.
 
+=item * C<jobs>
+
+The number of parallel jobs. The default value is the number of CPU cores.
+
 =back
 
 =head1 Instance Methods
@@ -111,10 +115,6 @@ An array reference of macro definitions. Each definition is passed to the compil
 =item * C<ldflags>
 
 An array reference of extra linker flags.
-
-=item * C<jobs>
-
-The number of parallel jobs. The default value is the number of CPU cores.
 
 =item * C<build_type>
 
