@@ -159,12 +159,13 @@ sub build_parallel {
         $config = SPVM::Builder::Util::API::create_default_config();
       }
       
-      $config->class_name($class_name);
-      $config->category($category);
-      $config->output_dir($options->{output_dir});
       if (my $config_global = $options->{config_global}) {
         $config->config_global($config_global);
       }
+      
+      $config->class_name($class_name);
+      $config->category($category);
+      $config->output_dir($options->{output_dir});
       
       if (defined(my $build_type = $options->{build_type})) {
         # Apply config from build type

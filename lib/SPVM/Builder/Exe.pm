@@ -329,11 +329,8 @@ sub prepare_compile_source_file {
   my ($self, $options) = @_;
   
   my $config = $options->{config};
-  my $config_global = $self->config_global;
   my $include_dir = $self->{include_dir};
   my $source_rel_file = $options->{source_rel_file};
-  
-  $config->config_global($config_global);
   
   my $builder = $self->builder;
   
@@ -356,9 +353,6 @@ sub prepare_compile_source_file {
 
 sub create_bootstrap_header_source {
   my ($self) = @_;
-
-  # Config
-  my $config_global = $self->config_global;
 
   # Builder
   my $builder = $self->builder;
@@ -847,6 +841,7 @@ sub prepare_compile_bootstrap_source_file {
   SPVM::Builder::Util::spurt_binary($bootstrap_source_file, $bootstrap_source, $self->builder->global_lock_fh);
   
   my $config = SPVM::Builder::Util::API::create_default_config();
+  $config->config_global($self->config_global);
   $config->cc_input_dir($self->builder->create_build_src_path);
   
   # Compile
@@ -864,6 +859,8 @@ sub prepare_compile_spvm_core_source_files {
   
   # Config
   my $config = SPVM::Builder::Util::API::create_default_config();
+  $config->config_global($self->config_global);
+  
   my $builder_dir = SPVM::Builder::Util::get_builder_dir();
   
   # SPVM src directory
@@ -908,6 +905,7 @@ sub prepare_compile_precompile_class {
   my $runtime = $self->builder->runtime;
   
   my $config = SPVM::Builder::Util::API::create_default_config();
+  $config->config_global($self->config_global);
   
   $config->category('precompile');
   
@@ -915,7 +913,6 @@ sub prepare_compile_precompile_class {
     builder => $builder,
   );
   my $compile_infos = [];
-  $config->config_global($self->config_global);
   my $precompile_compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
   push @$compile_infos, @$precompile_compile_infos;
   
@@ -947,6 +944,7 @@ sub prepare_compile_native_class {
   if (defined $config_file && -f $config_file) {
     
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
+    $config->config_global($self->config_global);
     
     my $compile_resources = $self->class_name eq $class_name ? 1 : 0;
     
@@ -954,7 +952,6 @@ sub prepare_compile_native_class {
       builder => $self->builder,
     );
     $builder_cc->no_compile_resources(!$compile_resources);
-    $config->config_global($self->config_global);
     my $compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
     push @$all_compile_infos, @$compile_infos;
   }
