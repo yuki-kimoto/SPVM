@@ -307,6 +307,7 @@ sub prepare_compile_native_class {
       config => $config,
       category => $compile_info_category,
       dependent_files => [$source_file, $native_include_dir, @resource_include_dirs, $builder_include_dir],
+      builder => $self->builder,
     );
     
     # Object file information

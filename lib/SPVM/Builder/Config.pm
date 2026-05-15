@@ -23,7 +23,6 @@ my $cc_fields = [qw(
   ext
   include_dirs
   source_files
-  spvm_core_include_dir
   resource_include_dirs
   cc_output_option_name
   copyright_print_ccflags
@@ -101,14 +100,6 @@ sub new {
   # include_dirs
   unless (exists $self->{include_dirs}) {
     $self->include_dirs([]);
-  }
-
-  # spvm_core_include_dir
-  unless (exists $self->{spvm_core_include_dir}) {
-    my $builder_dir = SPVM::Builder::Util::get_builder_dir();
-    my $spvm_core_include_dir = "$builder_dir/include";
-    
-    $self->spvm_core_include_dir($spvm_core_include_dir);
   }
 
   # resource_include_dirs
@@ -587,15 +578,6 @@ The values of this field are converted to C<-I> options when the arguments of th
   # -I /path1 -I /path2
   $config->include_dirs(['/path1', '/path2']);
 
-=head2 spvm_core_include_dir
-
-  my $spvm_core_include_dir = $config->spvm_core_include_dir;
-  $config->spvm_core_include_dir($spvm_core_include_dir);
-
-Gets and sets C<spvm_core_include_dir> field, an SPVM core header file search directory.
-
-The value of this field is converted to C<-I> option when the arguments of the compiler L</"cc"> are created.
-
 =head2 resource_include_dirs
 
   my $resource_include_dirs = $config->resource_include_dirs;
@@ -1036,10 +1018,6 @@ Other OSs:
 =item * L</"include_dirs">
 
   []
-
-=item * L</"spvm_core_include_dir">
-
-The SPVM core header file search directory.
 
 =item * L</"resource_include_dirs">
 
