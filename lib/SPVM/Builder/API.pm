@@ -19,22 +19,6 @@ sub new {
   return bless $self, $class;
 }
 
-sub build_dynamic_lib_dist_precompile {
-  my ($self, $class_name, $options) = @_;
-  
-  my $builder = $self->{builder};
-  
-  $builder->build_dynamic_lib_dist_precompile($class_name, $options);
-}
-
-sub build_dynamic_lib_dist_native {
-  my ($self, $class_name, $options) = @_;
-  
-  my $builder = $self->{builder};
-  
-  $builder->build_dynamic_lib_dist_native($class_name, $options);
-}
-
 sub build_parallel_dynamic_lib_dist {
   my ($self, $options) = @_;
   
@@ -59,9 +43,10 @@ SPVM::Builder::API class has the public methods to build SPVM native classes and
     build_dir => '.spvm_build',
   );
   
-  $builder->build_dynamic_lib_dist_precompile('MyClass');
-  
-  $builder->build_dynamic_lib_dist_native('MyClass');
+  $builder->build_parallel_dynamic_lib_dist({
+    native_classes => ['MyClass'],
+    precompile_classes => ['MyClass'],
+  });
 
 =head1 Class Methods
 
@@ -79,55 +64,9 @@ Options:
 
 A build directory.
 
-=item * C<optimize>
-
-The optimization level for the compiler.
-
 =back
 
 =head1 Instance Methods
-
-=head2 build_dynamic_lib_dist_precompile
-
-  $builder->build_dynamic_lib_dist_precompile($class_name)
-  $builder->build_dynamic_lib_dist_precompile($class_name, $options)
-
-Generates a dynamic library for a L<native class|SPVM::Document::NativeClass> given by the class name $class_name, and copies it into the C<blib/lib> directory.
-
-A native class must have at least one method with L<native attribute|SPVM::Document::Language::Class/"Method Attributes">.
-
-Options:
-
-$options is a hash reference. This is optional.
-
-=over 2
-
-=item * C<optimize>
-
-The optimization level for the compiler (e.g., C<O2>, C<O3>, C<O0>).
-
-=back
-
-=head2 build_dynamic_lib_dist_native
-
-  $builder->build_dynamic_lib_dist_native($class_name)
-  $builder->build_dynamic_lib_dist_native($class_name, $options)
-
-Generates a dynamic library for a precompilation class $class_name that has C<native> methods, and copies it into the C<blib/lib> directory.
-
-A precompilation class must have at least one method with L<precompile attribute|SPVM::Document::Language::Class/"Method Attributes">.
-
-Options:
-
-$options is a hash reference. This is optional.
-
-=over 2
-
-=item * C<optimize>
-
-The optimization level for the compiler (e.g., C<O2>, C<O3>, C<O0>).
-
-=back
 
 =head2 build_parallel_dynamic_lib_dist
 

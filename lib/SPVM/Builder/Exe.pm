@@ -246,11 +246,6 @@ sub build_exe_file {
     }
   }
   
-  my $runtime = $self->builder->runtime;
-  my $cc = SPVM::Builder::CC->new(
-    builder => $builder,
-  );
-  
   for my $compile_info (@$compile_infos) {
     $builder->finalize_compile_info($compile_info);
   }
@@ -269,6 +264,9 @@ sub build_exe_file {
   }
   
   # Link object files and generate a dynamic library
+  my $cc = SPVM::Builder::CC->new(
+    builder => $builder,
+  );
   my $link_info = $cc->prepare_link($class_name, $object_file_infos, $config_global);
   
   $builder->command_parallel([$link_info]);
