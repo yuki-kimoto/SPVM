@@ -204,7 +204,7 @@ sub prepare_compile_native_class {
       $need_native_class_file = 0;
     }
     else {
-      if ($config->config_global && $class_name eq $config->config_global->class_name) {
+      if ($config->config_global && $class_name eq ($config->config_global->class_name // '')) {
         $need_native_class_file = 0;
       }
       else {

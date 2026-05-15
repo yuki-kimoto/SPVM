@@ -19,6 +19,7 @@ use SPVM::Builder::Accessor 'has';
 use SPVM::Builder::Ninja;
 use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::Config::Util;
+use SPVM::Builder::Config::DLL;
 
 use Carp 'confess';
 use Config;
@@ -137,7 +138,7 @@ sub build_parallel {
     precompile => 'precompile_classes',
   );
   
-  my $config_global = $options->{config_global};
+  my $config_global = $options->{config_global} // SPVM::Builder::Config::DLL->new;
   
   # Prepare all compile information
   for my $category (keys %category_to_key) {
@@ -164,12 +165,7 @@ sub build_parallel {
       $config->category($category);
       
       if (defined(my $build_type = $options->{build_type})) {
-        # Apply config from build type
-        my $build_type_config = SPVM::Builder::Util::get_config_from_build_type($build_type);
-        for my $name (keys %$build_type_config) {
-          my $value = $build_type_config->{$name};
-          $config->{$name} = $value;
-        }
+        $config_global->build_type($build_type);
       }
       
       if ($options->{ccflags}) {
