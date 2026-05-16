@@ -52,7 +52,7 @@ if ($debug) {
   $build_type = 'Debug';
 }
 
-my $asan_logs_dir = "$FindBin::Bin/.tmp/asan_logs";
+my $asan_logs_dir = "$FindBin::Bin/.spvm_build/asan_logs";
 if ($asan_on_linux) {
   push @ccflags, "-fsanitize=address", "-fno-omit-frame-pointer";
   push @ldflags, "-fsanitize=address";
