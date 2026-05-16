@@ -43,11 +43,10 @@ find(
           $content =~ s/:\s*([a-z][\w:]*)\s*:\s*precompile/: $1 precompile/g;
         }
         
-        # Inject SPVM_FORCE_OPTIMIZE for .t files
         if ($file =~ /\.t$/) {
           # Set environment variables at the beginning of the test
           my $env_settings = '';
-          $env_settings .= "BEGIN { \$ENV{SPVM_FORCE_OPTIMIZE} = '-O0 -g'; }\n";
+          $env_settings .= "BEGIN { \$ENV{SPVM_FORCE_BUILD_TYPE} = 'Debug'; }\n";
           
           # Parallel testing on Windows occasionally fails due to permission denied loading of DLLs,
           # object files, and C language source files.

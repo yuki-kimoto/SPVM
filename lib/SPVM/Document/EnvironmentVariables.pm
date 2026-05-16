@@ -40,11 +40,11 @@ If it is a non-empty string and a false value of Perl, diagnostic messages from 
 
 This setting has a higher priority than L<SPVM::Builder::Config#quiet|SPVM::Builder::Config/"quiet"> field.
 
-=head2 SPVM_FORCE_OPTIMIZE
+=head2 SPVM_FORCE_BUILD_TYPE
 
-If it is a non-empty string, the value is used as a compiler flag for optimaization.
+If it is a non-empty string, the value is used as the build type for compilation.
 
-This setting has a higher priority than L<SPVM::Builder::Config#optimize|SPVM::Builder::Config/"optimize"> field.
+This setting has a higher priority than L<SPVM::Builder::Config::Global#build_type|SPVM::Builder::Config::Global/"build_type"> field.
 
 =head2 SPVM_DEPENDENT_FILE_EXCLUDE_EXTS
 

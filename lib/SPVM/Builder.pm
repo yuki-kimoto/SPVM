@@ -163,7 +163,11 @@ sub build_parallel {
       $config->class_name($class_name);
       $config->category($category);
       
-      if (defined(my $build_type = $options->{build_type})) {
+      my $env_spvm_force_build_type = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_BUILD_TYPE');
+      if (length $env_spvm_force_build_type) {
+        $config_global->build_type($env_spvm_force_build_type);
+      }
+      elsif (defined(my $build_type = $options->{build_type})) {
         $config_global->build_type($build_type);
       }
       
@@ -173,15 +177,6 @@ sub build_parallel {
       
       if ($options->{defines}) {
         $config_global->compile_rule_any({'+defines' => $options->{defines}});
-      }
-      
-      my $force_optimize;
-      my $env_spvm_force_optimize = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_OPTIMIZE');
-      if (length $env_spvm_force_optimize) {
-        $force_optimize = $env_spvm_force_optimize;
-      }
-      if (length $force_optimize) {
-        $config_global->compile_rule_any({'optimize' => $force_optimize});
       }
       
       if ($options->{ldflags}) {
