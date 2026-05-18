@@ -51,7 +51,7 @@ sub optimize {
   
   if (@_) {
     my ($optimize, $condition) = @_;
-    $self->compile_rule($condition, {optimize => $optimize});
+    $self->build_rule($condition, {optimize => $optimize});
     return $self;
   }
   else {
@@ -130,7 +130,7 @@ sub new {
       die "Unknown build_type: $build_type";
     }
     
-    $self->compile_rule(
+    $self->build_rule(
       { global => {build_type => $build_type} },
       $config
     );
@@ -164,7 +164,7 @@ sub add_after_link_cb {
   push @{$self->{after_link_cbs}}, @after_link_cbs;
 }
 
-sub compile_rule {
+sub build_rule {
   my ($self, $condition, $match_config_or_cb) = @_;
   
   # Normalize condition for key validation
@@ -204,7 +204,7 @@ sub compile_rule {
   });
 }
 
-sub compile_rule_any { shift->compile_rule(undef, @_) }
+sub build_rule_any { shift->build_rule(undef, @_) }
 
 sub _match_apply {
   my ($config, $condition, $match_config_or_cb) = @_;
@@ -325,42 +325,42 @@ The SPVM::Builder::Config::Global class has methods to manipulate the config for
   
   # Basic conditional update (Exact match)
   # If language is 'c', set optimization to -O3
-  $self->compile_rule({language => 'c'}, {optimize => '-O3'});
+  $self->build_rule({language => 'c'}, {optimize => '-O3'});
 
   # Regex matching and field appending (+)
   # If dialect matches c11/c17, add a specific warning flag
-  $self->compile_rule({dialect => qr/^c1[17]$/}, {'+ccflags' => ['-Wpedantic']});
+  $self->build_rule({dialect => qr/^c1[17]$/}, {'+ccflags' => ['-Wpedantic']});
 
   # Array Sensitivity (Checking if a flag exists in an array)
   # If '-DDEBUG' is already in ccflags, add debug linker flags
-  $self->compile_rule({ccflags => '-DDEBUG'}, {'+ldflags' => ['-DEBUG']});
+  $self->build_rule({ccflags => '-DDEBUG'}, {'+ldflags' => ['-DEBUG']});
 
   # Negative Match (!prefix)
   # If '-Zi' is NOT in ccflags, enable linker optimizations
-  $self->compile_rule({'!ccflags' => '-Zi'}, {'+ld_optimize' => '-OPT:REF,ICF'});
+  $self->build_rule({'!ccflags' => '-Zi'}, {'+ld_optimize' => '-OPT:REF,ICF'});
 
   # Complex conditions (AND logic)
   # If it's C++ AND dialect is NOT c++11 (e.g. c++14), add exception handling
-  $self->compile_rule({language => 'cpp', '!dialect' => 'c++11'}, {
+  $self->build_rule({language => 'cpp', '!dialect' => 'c++11'}, {
     '+ccflags' => ['-EHsc']
   });
 
   # Procedural update with a callback
   # Dynamically modify the config object based on custom logic
-  $self->compile_rule({language => 'c'}, sub {
+  $self->build_rule({language => 'c'}, sub {
     my $config = shift;
     if ($ENV{MY_CUSTOM_OPT}) {
       $config->optimize('-Ofast');
     }
   });
 
-  # Apply to all configurations (compile_rule_any)
+  # Apply to all configurations (build_rule_any)
   # Ensure all configs have the -nologo flag regardless of any condition
-  $self->compile_rule_any({'+ccflags' => ['-nologo']});
+  $self->build_rule_any({'+ccflags' => ['-nologo']});
 
   # Reset or global initialization via callback
   # Useful for clearing fields before applying specific rules
-  $self->compile_rule_any(sub {
+  $self->build_rule_any(sub {
     my $config = shift;
     $config->clear_system_fields;
   });
@@ -424,7 +424,7 @@ The 2nd argument of the callback is an L<SPVM::Builder::LinkInfo> object.
 
 Sets C<optimize> field for the configs that match the condition C<$condition>.
 
-This method is a setter-only method. It calls L</"compile_rule"> internally.
+This method is a setter-only method. It calls L</"build_rule"> internally.
 
 If C<$condition> is not defined, the optimization setting is applied to all configs.
 
@@ -553,9 +553,9 @@ Examples:
     
   });
 
-=head2 compile_rule
+=head2 build_rule
 
-  $global_config->compile_rule($condition, $match_config_or_cb);
+  $global_config->build_rule($condition, $match_config_or_cb);
 
 Adds a rule to dynamically update the configuration before compilation if the given conditions are met.
 
@@ -602,9 +602,9 @@ If it is a code reference, the callback is executed with the target L<SPVM::Buil
 
 =back
 
-=head2 compile_rule_any
+=head2 build_rule_any
 
-  $global_config->compile_rule_any($match_config_or_cb);
+  $global_config->build_rule_any($match_config_or_cb);
 
 A syntax sugar for L</"match"> with no conditions. 
 The C<$match_config> will be applied to all configurations before compilation.

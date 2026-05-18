@@ -388,13 +388,13 @@ EOS
   
   for my $ccflag (@$ccflags) {
     $config_global_content .= <<"EOS";
-\$config_global->compile_rule_any({'+ccflags' => ['$ccflag']});
+\$config_global->build_rule_any({'+ccflags' => ['$ccflag']});
 EOS
   }
   
   for my $define (@$defines) {
     $config_global_content .= <<"EOS";
-\$config_global->compile_rule_any({'+defines' => ['$define']});
+\$config_global->build_rule_any({'+defines' => ['$define']});
 EOS
   }
   

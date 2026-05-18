@@ -59,10 +59,10 @@ sub init {
   # --- Rules for each Config ---
 
   # Clear system settings before other rules
-  $self->compile_rule_any(sub { $_[0]->clear_system_fields });
+  $self->build_rule_any(sub { $_[0]->clear_system_fields });
 
   # 1. Common settings for all configs
-  $self->compile_rule_any({
+  $self->build_rule_any({
     cc                    => 'cl',
     long_option_sep       => ':',
     cc_output_option_name => '-Fo',
@@ -76,7 +76,7 @@ sub init {
   
   # 2. Common C/C++ flags
   # Use '+' to preserve existing flags (equivalent to push)
-  $self->compile_rule({language => qr/^(c|cpp)$/}, {
+  $self->build_rule({language => qr/^(c|cpp)$/}, {
     'function_level_linking_ccflags' => ['-Gy'],
     'source_encoding_ccflags' => ['-utf-8'],
     'library_linkage_ccflags'       => ['-MT'],
@@ -84,23 +84,23 @@ sub init {
   });
 
   # 3. C specific rules
-  $self->compile_rule({language => 'c'}, {
+  $self->build_rule({language => 'c'}, {
     'language_ccflags' => ['-TC'],
   });
   
   # Ensure C11 as baseline if unspecified or c99
-  $self->compile_rule({language => 'c', std => qr/^(|c99)$/}, {
+  $self->build_rule({language => 'c', std => qr/^(|c99)$/}, {
     std => 'c11',
   });
 
   # 4. C++ specific rules
-  $self->compile_rule({language => 'cpp'}, {
+  $self->build_rule({language => 'cpp'}, {
     'language_ccflags' => ['-TP'],
     'cpp_exception_handling_ccflags'  => ['-EHsc'],
   });
 
   # Ensure C++14 as baseline if specified as c++11
-  $self->compile_rule({language => 'cpp', std => 'c++11'}, {
+  $self->build_rule({language => 'cpp', std => 'c++11'}, {
     std => 'c++14',
   });
   
@@ -109,7 +109,7 @@ sub init {
   for my $build_type (@build_types) {
     my $config = &_get_config_from_build_type_msvc($build_type);
     
-    $self->compile_rule(
+    $self->build_rule(
       { global => {build_type => $build_type} },
       $config
     );
