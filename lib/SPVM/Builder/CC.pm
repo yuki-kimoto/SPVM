@@ -452,9 +452,9 @@ sub prepare_link {
   
   my $config_global = $config->config_global;
   if ($config_global) {
-    my $after_prepare_link_cbs = $config_global->after_prepare_link_cbs;
-    for my $after_prepare_link_cb (@$after_prepare_link_cbs) {
-      $after_prepare_link_cb->($link_info->config, $link_info);
+    my $before_link_cbs = $config_global->before_link_cbs;
+    for my $before_link_cb (@$before_link_cbs) {
+      $before_link_cb->($link_info->config, $link_info);
     }
   }
   
