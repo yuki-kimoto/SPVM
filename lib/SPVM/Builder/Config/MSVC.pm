@@ -39,28 +39,12 @@ sub init {
   $self->setup_env;
   
   # --- Initialize Global Config ---
-  $self->clear_system_fields;
-  $self->long_option_sep(':');
-  $self->thread_ldflags([]);
-  $self->ld_version($self->create_cc_version);
+  $self->build_rule_any(sub {
+    my ($config) = @_;
+    
+    $config->clear_system_fields;
+  });
   
-  # Linker settings
-  $self->static_lib_braces(["", ""]);
-  $self->lib_prefix("");
-  $self->lib_option_name("");
-  $self->lib_option_suffix(".lib");
-  $self->ld_output_option_name('-OUT');
-  $self->ld_optimize('-OPT:REF,ICF');
-  $self->lib_dir_option_name('-LIBPATH');
-  $self->libbcrypt_ldflags(['bcrypt.lib']);
-  $self->copyright_print_ldflags(['-nologo']);
-  $self->debug_info_ldflags(['-DEBUG']);
-  
-  # --- Rules for each Config ---
-
-  # Clear system settings before other rules
-  $self->build_rule_any(sub { $_[0]->clear_system_fields });
-
   # 1. Common settings for all configs
   $self->build_rule_any({
     cc                    => 'cl',
@@ -72,6 +56,20 @@ sub init {
     optimize           => '-O2',
     ndebug_ccflags     => ['-DNDEBUG'],
     '+extra_ccflags' => ['-FS', '-DNOMINMAX'],
+    
+    ld_version => $self->create_cc_version,
+    ld => $self->{ld},
+    hint_cc => $self->{hint_cc},
+    static_lib_braces       => ["", ""],
+    lib_prefix              => "",
+    lib_option_name         => "",
+    lib_option_suffix       => ".lib",
+    ld_output_option_name   => '-OUT',
+    ld_optimize             => '-OPT:REF,ICF',
+    lib_dir_option_name     => '-LIBPATH',
+    libbcrypt_ldflags       => ['bcrypt.lib'],
+    copyright_print_ldflags => ['-nologo'],
+    debug_info_ldflags      => ['-DEBUG'],
   });
   
   # 2. Common C/C++ flags
