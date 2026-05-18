@@ -395,9 +395,6 @@ sub create_make_rule_parallel {
   if (defined(my $build_type = $options->{build_type})) {
     push @build_options, "build_type => '$build_type'";
   }
-  if (defined(my $optimize = $options->{optimize})) {
-    push @build_options, "optimize => '$optimize'";
-  }
   
   # New file-based options
   if (defined(my $native_classes_file = $options->{native_classes_file})) {
