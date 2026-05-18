@@ -53,6 +53,7 @@ has [qw(
   ninja
   is_jit
   output_dir
+  config_global_file
 )];
 
 sub import {
@@ -108,11 +109,6 @@ sub build_parallel {
   my %allowed_options = map { $_ => 1 } qw(
     native_classes
     precompile_classes
-    ccflags
-    defines
-    ldflags
-    build_type
-    config_global
     config_global_file
   );
   
@@ -138,7 +134,18 @@ sub build_parallel {
     precompile => 'precompile_classes',
   );
   
-  my $config_global = $options->{config_global} // SPVM::Builder::Config::DLL->new;
+  my $config_global;
+  if (defined (my $config_global_file = $self->config_global_file)) {
+    $config_global = SPVM::Builder::Config::Util::load_config($config_global_file);
+  }
+  else {
+    $config_global = SPVM::Builder::Config::DLL->new;
+  }
+  
+  my $env_spvm_force_build_type = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_BUILD_TYPE');
+  if (length $env_spvm_force_build_type) {
+    $config_global->build_type($env_spvm_force_build_type);
+  }
   
   # Prepare all compile information
   for my $category (keys %category_to_key) {
@@ -157,32 +164,10 @@ sub build_parallel {
         $config = SPVM::Builder::Util::API::create_default_config();
       }
       
-      if ($config_global) {
-        $config->config_global($config_global);
-      }
+      $config->config_global($config_global);
       
       $config->class_name($class_name);
       $config->category($category);
-      
-      my $env_spvm_force_build_type = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_BUILD_TYPE');
-      if (length $env_spvm_force_build_type) {
-        $config_global->build_type($env_spvm_force_build_type);
-      }
-      elsif (defined(my $build_type = $options->{build_type})) {
-        $config_global->build_type($build_type);
-      }
-      
-      if ($options->{ccflags}) {
-        $config_global->compile_rule_any({'+ccflags' => $options->{ccflags}});
-      }
-      
-      if ($options->{defines}) {
-        $config_global->compile_rule_any({'+defines' => $options->{defines}});
-      }
-      
-      if ($options->{ldflags}) {
-        $config->add_ldflag(@{$options->{ldflags}});
-      }
       
       # Prepare compile information for each class
       my $compile_infos = $cc->prepare_compile_class($class_name, $config);

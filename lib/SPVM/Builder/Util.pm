@@ -392,9 +392,6 @@ sub create_make_rule_parallel {
   my $new_options_string = join(', ', @new_options);
   
   my @build_options;
-  if (defined(my $build_type = $options->{build_type})) {
-    push @build_options, "build_type => '$build_type'";
-  }
   
   # New file-based options
   if (defined(my $native_classes_file = $options->{native_classes_file})) {
@@ -411,16 +408,6 @@ sub create_make_rule_parallel {
   if (my $precompile_classes = $options->{precompile_classes}) {
     push @build_options, "precompile_classes => [" . join(', ', map { "'$_'" } @$precompile_classes) . "]";
   }
-  if (my $ccflags = $options->{ccflags}) {
-    push @build_options, "ccflags => [" . join(', ', map { "'$_'" } @$ccflags) . "]";
-  }
-  if (my $defines = $options->{defines}) {
-    push @build_options, "defines => [" . join(', ', map { "'$_'" } @$defines) . "]";
-  }
-  if (my $ldflags = $options->{ldflags}) {
-    push @build_options, "ldflags => [" . join(', ', map { "'$_'" } @$ldflags) . "]";
-  }
-  
   my $build_options_hash_str = "{" . join(', ', @build_options) . "}";
 
   # Build command line

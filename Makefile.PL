@@ -117,19 +117,12 @@ if ($meta) {
 SPVM::Builder::Util::build_precompile_header_content_c_source();
 
 my $default_config = SPVM::Builder::Util::API::create_default_config;
-
-my $config_global = SPVM::Builder::Config::DLL->new;
-if (defined $build_type) {
-  $config_global->build_type($build_type);
-}
-
+my $config_global = SPVM::Builder::Config::Util::load_config($config_global_file);
 $default_config->config_global($config_global);
-
-# Apply config from build type
-my $build_type_config = SPVM::Builder::Util::get_config_from_build_type($build_type);
-for my $name (keys %$build_type_config) {
-  my $value = $build_type_config->{$name};
-  $default_config->{$name} = $value;
+for my $after_prepare_compile_cb (@{$config_global->after_prepare_compile_cbs}) {
+  my $compile_info = SPVM::Builder::CompileInfo->new(config => $default_config);
+  $after_prepare_compile_cb->($compile_info->config, $compile_info);
+  $default_config = $compile_info->config;
 }
 
 # OPTIMIZE
