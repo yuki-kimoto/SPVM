@@ -42,6 +42,19 @@ GetOptions(
   ########## [SPVM Only Line Options Options End] ##########
 );
 
+my $build_dir = '.spvm_build';
+mkpath $build_dir;
+
+my $config_global_file = '.spvm_build/global.config';
+&generate_config_global_file($config_global_file, {
+  ccflags       => \@ccflags,
+  defines       => \@defines,
+  ldflags       => \@ldflags,
+  debug         => $debug,
+  build_type    => $build_type,
+  asan_on_linux => $asan_on_linux,
+});
+
 my $gnu_make = SPVM::Builder::Util::API::search_gnu_make_command();
 
 if ($meta) {
@@ -342,6 +355,67 @@ package MY {
     return $make_rule;
   }
   
+}
+
+sub generate_config_global_file {
+  my ($config_global_file, $options) = @_;
+  
+  my $ccflags       = $options->{ccflags} // [];
+  my $defines       = $options->{defines} // [];
+  my $ldflags       = $options->{ldflags} // [];
+  my $build_type    = $options->{build_type};
+  my $debug         = $options->{debug};
+  my $asan_on_linux = $options->{asan_on_linux};
+  
+  # --- Handle options ---
+  if ($debug) {
+    $build_type = 'Debug';
+  }
+  
+  if ($asan_on_linux) {
+    push @$ccflags, "-fsanitize=address", "-fno-omit-frame-pointer";
+    push @$ldflags, "-fsanitize=address";
+  }
+  
+  # --- Generate content ---
+  my $config_global_content = '';
+  
+  $config_global_content .= <<"EOS";
+use SPVM::Builder::Config::DLL;
+my \$config_global = SPVM::Builder::Config::DLL->new;
+EOS
+  
+  if (defined $build_type) {
+    $config_global_content .= <<"EOS";
+\$config_global->build_type('$build_type');
+EOS
+  }
+  
+  for my $ccflag (@$ccflags) {
+    $config_global_content .= <<"EOS";
+\$config_global->compile_rule_any({'+ccflags' => [$ccflag]});
+EOS
+  }
+  
+  for my $define (@$defines) {
+    $config_global_content .= <<"EOS";
+\$config_global->compile_rule_any({'+defines' => [$define]});
+EOS
+  }
+  
+  for my $ldflag (@$ldflags) {
+    $config_global_content .= <<"EOS";
+\$config_global->add_ldflag($ldflag);
+EOS
+  }
+  
+  $config_global_content .= <<"EOS";
+\$config_global;
+EOS
+  
+  # --- Write to file ---
+  open my $fh, '>', $config_global_file or die "Can't open file '$config_global_file': $!";
+  print $fh $config_global_content;
 }
 
 1;
