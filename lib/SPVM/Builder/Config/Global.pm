@@ -18,6 +18,7 @@ BEGIN {
     before_link_cbs
     after_link_cbs
     build_type
+    build_rules
   )];
   
   has($fields);
@@ -70,6 +71,7 @@ sub new {
   
   my $self = $class->SUPER::new(
     before_compile_cbs => [],
+    build_rules => [],
     @_
   );
   
@@ -202,6 +204,7 @@ sub build_rule {
     
     &_match_apply($config, $condition, $match_config_or_cb);
   });
+  push @{$self->{build_rules}}, [$condition, $match_config_or_cb];
   
   $self->add_before_link_cb(sub {
     my ($config) = @_;
