@@ -385,6 +385,10 @@ sub create_make_rule_parallel {
     push @new_options, "jobs => $jobs";
   }
   
+  if (defined(my $config_global_file = $options->{config_global_file})) {
+    push @new_options, "config_global_file => '$config_global_file'";
+  }
+  
   my $new_options_string = join(', ', @new_options);
   
   my @build_options;

@@ -113,6 +113,7 @@ sub build_parallel {
     ldflags
     build_type
     config_global
+    config_global_file
   );
   
   # Check for invalid options

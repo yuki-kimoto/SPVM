@@ -282,6 +282,8 @@ package MY {
         $options->{ldflags} = [@ldflags];
       }
       
+      $options->{config_global_file} = $config_global_file;
+      
       # Test create_make_rule for backward compatibility and practical testing
       $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn', $options);
       $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn', $options);

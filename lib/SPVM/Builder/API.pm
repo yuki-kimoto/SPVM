@@ -72,6 +72,10 @@ A output directory.
 
 The number of parallel jobs. The default value is the number of CPU cores.
 
+=item * C<config_global_file>
+
+A global configuration file path. If it is defined, the file is loaded as an L<SPVM::Builder::Config::Global> object and applied globally during the build process.
+
 =back
 
 =head1 Instance Methods

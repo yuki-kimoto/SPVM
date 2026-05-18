@@ -145,6 +145,8 @@ The default value is C<"blib/lib">.
 
 =item * C<jobs>
 
+=item * C<config_global_file>
+
 =back
 
 The following options are the same as those for L<SPVM::Builder::API#build_parallel_dynamic_lib_dist|SPVM::Builder::API/"build_parallel_dynamic_lib_dist"> method:
@@ -154,14 +156,6 @@ The following options are the same as those for L<SPVM::Builder::API#build_paral
 =item * C<native_classes>
 
 =item * C<precompile_classes>
-
-=item * C<ccflags>
-
-=item * C<defines>
-
-=item * C<ldflags>
-
-=item * C<build_type>
 
 =back
 
