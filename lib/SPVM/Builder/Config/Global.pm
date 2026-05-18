@@ -200,12 +200,6 @@ sub build_rule {
   }
   
   push @{$self->{build_rules}}, [$condition, $match_config_or_cb];
-  
-  $self->add_before_link_cb(sub {
-    my ($config) = @_;
-    
-    &_match_apply($config, $condition, $match_config_or_cb);
-  });
 }
 
 sub build_rule_any { shift->build_rule(undef, @_) }

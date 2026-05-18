@@ -452,6 +452,8 @@ sub prepare_link {
   
   my $config_global = $config->config_global;
   if ($config_global) {
+    $config_global->apply_build_rules($link_info->config);
+    
     my $before_link_cbs = $config_global->before_link_cbs;
     for my $before_link_cb (@$before_link_cbs) {
       $before_link_cb->($link_info->config, $link_info);
