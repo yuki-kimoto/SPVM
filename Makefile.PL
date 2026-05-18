@@ -400,7 +400,7 @@ EOS
   
   for my $ldflag (@$ldflags) {
     $config_global_content .= <<"EOS";
-\$config_global->add_ldflag('$ldflag');
+\$config_global->build_rule_any({'+ldflags' => ['$ldflag']});
 EOS
   }
   

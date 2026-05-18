@@ -202,6 +202,12 @@ sub build_rule {
     
     &_match_apply($config, $condition, $match_config_or_cb);
   });
+  
+  $self->add_after_prepare_link_cb(sub {
+    my ($config) = @_;
+    
+    &_match_apply($config, $condition, $match_config_or_cb);
+  });
 }
 
 sub build_rule_any { shift->build_rule(undef, @_) }
