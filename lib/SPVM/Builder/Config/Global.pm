@@ -80,7 +80,55 @@ sub new {
   # Define build types
   my @build_types = qw(Debug Release RelWithDebInfo MinSizeRel);
   for my $build_type (@build_types) {
-    my $config = SPVM::Builder::Util::get_config_from_build_type($build_type);
+    
+    my $config;
+    if (!defined $build_type || $build_type eq 'Release') {
+      # Release: Full optimization for both CC and LD
+      $config = {
+        optimize           => '-O3',
+        debug_info_ccflags => [],
+        ndebug_ccflags     => ['-DNDEBUG'],
+        
+        ld_optimize        => '-O3',
+        debug_info_ldflags => [],
+      };
+    }
+    elsif ($build_type eq 'Debug') {
+      # Debug: No optimization
+      $config = {
+        optimize             => '',
+        debug_info_ccflags   => ['-g'],
+        ndebug_ccflags       => [],
+        
+        ld_optimize          => '',
+        debug_info_ldflags   => ['-g'],
+      };
+    }
+    elsif ($build_type eq 'RelWithDebInfo') {
+      # RelWithDebInfo: Balanced optimization with debug info
+      $config = {
+        optimize           => '-O2',
+        debug_info_ccflags => ['-g'],
+        ndebug_ccflags     => ['-DNDEBUG'],
+        
+        ld_optimize        => '-O2',
+        debug_info_ldflags => ['-g'],
+      };
+    }
+    elsif ($build_type eq 'MinSizeRel') {
+      # MinSizeRel: Optimize for size
+      $config = {
+        optimize           => '-Os',
+        debug_info_ccflags => [],
+        ndebug_ccflags     => ['-DNDEBUG'],
+        
+        ld_optimize        => '-Os',
+        debug_info_ldflags => [],
+      };
+    }
+    else {
+      die "Unknown build_type: $build_type";
+    }
     
     $self->compile_rule(
       { global => {build_type => $build_type} },

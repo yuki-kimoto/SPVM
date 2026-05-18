@@ -116,17 +116,17 @@ if ($meta) {
 # Updates src/spvm_precompile_header_content.c
 SPVM::Builder::Util::build_precompile_header_content_c_source();
 
-my $default_config = SPVM::Builder::Util::API::create_default_config;
+my $config = SPVM::Builder::Util::API::create_default_config;
 my $config_global = SPVM::Builder::Config::Util::load_config($config_global_file);
-$default_config->config_global($config_global);
+$config->config_global($config_global);
 for my $after_prepare_compile_cb (@{$config_global->after_prepare_compile_cbs}) {
-  my $compile_info = SPVM::Builder::CompileInfo->new(config => $default_config);
+  my $compile_info = SPVM::Builder::CompileInfo->new(config => $config);
   $after_prepare_compile_cb->($compile_info->config, $compile_info);
-  $default_config = $compile_info->config;
+  $config = $compile_info->config;
 }
 
 # OPTIMIZE
-my $optimize = $default_config->optimize;
+my $optimize = $config->optimize;
 unless (length $optimize) {
   $optimize = ' ';
 }
@@ -140,11 +140,11 @@ my $lddlflags = $Config{lddlflags};
 $lddlflags =~ s/(?:^|\s)-O[0-9s]\b//g;
 # Remove strip flag (-s) more robustly ---
 $lddlflags =~ s/(?:^|\s)-s(?:\s|$)/ /g;
-my $ld_optimize = $default_config->ld_optimize;
+my $ld_optimize = $config->ld_optimize;
 unless (length $ld_optimize) {
   $ld_optimize = ' ';
 }
-$lddlflags .= " " . join(' ', @{$default_config->thread_ldflags}, @{$default_config->debug_info_ldflags}, @{$default_config->symbol_strip_ldflags}, $ld_optimize, @ldflags);
+$lddlflags .= " " . join(' ', @{$config->thread_ldflags}, @{$config->debug_info_ldflags}, @{$config->symbol_strip_ldflags}, $ld_optimize, @ldflags);
 
 # INC
 my $spvm_core_include_dir = '-Ilib/SPVM/Builder/include';
@@ -246,7 +246,7 @@ package MY {
       
       $make_rule .= "$spvm_core_object_file : $spvm_core_source_file\n";
       
-      my $compile_info = SPVM::Builder::CompileInfo->new(config => $default_config);
+      my $compile_info = SPVM::Builder::CompileInfo->new(config => $config);
       
       my $spvm_core_ccflags = $compile_info->create_ccflags;
       
