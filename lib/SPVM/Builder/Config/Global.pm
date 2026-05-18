@@ -310,6 +310,14 @@ sub _match_apply {
   }
 }
 
+sub apply_build_rules {
+  my ($self, $config) = @_;
+  
+  for my $build_rule (@{$self->build_rules}) {
+    &_match_apply($config, @$build_rule);
+  }
+}
+
 1;
 
 =head1 Name
