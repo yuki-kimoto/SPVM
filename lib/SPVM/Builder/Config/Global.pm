@@ -199,11 +199,6 @@ sub build_rule {
     SPVM::Builder::Config->new_empty(%normalized);
   }
   
-  $self->add_before_compile_cb(sub {
-    my ($config) = @_;
-    
-    &_match_apply($config, $condition, $match_config_or_cb);
-  });
   push @{$self->{build_rules}}, [$condition, $match_config_or_cb];
   
   $self->add_before_link_cb(sub {

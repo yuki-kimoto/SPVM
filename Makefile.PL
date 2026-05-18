@@ -119,6 +119,8 @@ SPVM::Builder::Util::build_precompile_header_content_c_source();
 my $config = SPVM::Builder::Util::API::create_default_config;
 my $config_global = SPVM::Builder::Config::Util::load_config($config_global_file);
 $config->config_global($config_global);
+$config_global->apply_build_rules($config);
+
 for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
   my $compile_info = SPVM::Builder::CompileInfo->new(config => $config);
   $before_compile_cb->($compile_info->config, $compile_info);

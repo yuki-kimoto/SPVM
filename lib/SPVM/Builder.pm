@@ -173,6 +173,8 @@ sub build_parallel {
       my $compile_infos = $cc->prepare_compile_class($class_name, $config);
       for my $compile_info (@$compile_infos) {
         if ($config_global) {
+          $config_global->apply_build_rules($compile_info->config);
+          
           for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
             $before_compile_cb->($compile_info->config, $compile_info);
           }
