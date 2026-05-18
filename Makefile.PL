@@ -127,6 +127,12 @@ for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
   $config = $compile_info->config;
 }
 
+for my $before_link_cb (@{$config_global->before_link_cbs}) {
+  my $link_info = SPVM::Builder::CompileInfo->new(config => $config);
+  $before_link_cb->($link_info->config, $link_info);
+  $config = $link_info->config;
+}
+
 # OPTIMIZE
 my $optimize = $config->optimize;
 unless (length $optimize) {

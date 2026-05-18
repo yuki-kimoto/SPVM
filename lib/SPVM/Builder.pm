@@ -626,6 +626,15 @@ sub spawn_link {
   };
   my $need_generate = $self->ninja->need_generate($need_generate_options);
   
+  my $config_global = $config->config_global;
+  if ($config_global) {
+    for my $before_link_cb (@{$config_global->before_link_cbs}) {
+      my $link_info = SPVM::Builder::CompileInfo->new(config => $config);
+      $before_link_cb->($link_info->config, $link_info);
+      $config = $link_info->config;
+    }
+  }
+  
   my $process_id;
   if ($force || $need_generate) {
     mkpath dirname $output_file;
