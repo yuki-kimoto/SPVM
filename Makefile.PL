@@ -12,6 +12,7 @@ use lib "$FindBin::Bin/lib";
 use SPVM::Builder::Util::API;
 use SPVM::Builder::Config::DLL;
 use SPVM::Builder::CompileInfo;
+use SPVM::Builder::LinkInfo;
 
 ########## [SPVM Only Module Loading Start] ##########
 use SPVM::Builder::Util;
@@ -128,7 +129,7 @@ for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
 }
 
 for my $before_link_cb (@{$config_global->before_link_cbs}) {
-  my $link_info = SPVM::Builder::CompileInfo->new(config => $config);
+  my $link_info = SPVM::Builder::LinkInfo->new(config => $config);
   $before_link_cb->($link_info->config, $link_info);
   $config = $link_info->config;
 }

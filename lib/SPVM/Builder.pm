@@ -20,6 +20,7 @@ use SPVM::Builder::Ninja;
 use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::Config::Util;
 use SPVM::Builder::Config::DLL;
+use SPVM::Builder::LinkInfo;
 
 use Carp 'confess';
 use Config;
@@ -629,7 +630,7 @@ sub spawn_link {
   my $config_global = $config->config_global;
   if ($config_global) {
     for my $before_link_cb (@{$config_global->before_link_cbs}) {
-      my $link_info = SPVM::Builder::CompileInfo->new(config => $config);
+      my $link_info = SPVM::Builder::LinkInfo->new(config => $config);
       $before_link_cb->($link_info->config, $link_info);
       $config = $link_info->config;
     }
