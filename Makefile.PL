@@ -62,14 +62,8 @@ if ($meta) {
   $no_build_spvm_modules = 1;
 }
 
-if ($debug) {
-  $build_type = 'Debug';
-}
-
 my $asan_logs_dir = "$FindBin::Bin/.spvm_build/asan_logs";
 if ($asan_on_linux) {
-  push @ccflags, "-fsanitize=address", "-fno-omit-frame-pointer";
-  push @ldflags, "-fsanitize=address";
   rmtree $asan_logs_dir;
   mkpath $asan_logs_dir;
 }
