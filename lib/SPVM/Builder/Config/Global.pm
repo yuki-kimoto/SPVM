@@ -514,7 +514,9 @@ Adds @before_compile_cbs to the end of L</"before_compile_cbs"> field.
 Examples:
 
   $self->add_before_compile_cb(sub {
-    my ($config, $compile_info) = @_;
+    my ($compile_info) = @_;
+    
+    my $config = $compile_info->config;
     
     my $cc_command = $compile_info->to_command;
     

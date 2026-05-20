@@ -177,7 +177,7 @@ sub build_parallel {
           $config_global->apply_build_rules($compile_info->config);
           
           for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
-            $before_compile_cb->($compile_info->config, $compile_info);
+            $before_compile_cb->($compile_info);
           }
         }
       }
