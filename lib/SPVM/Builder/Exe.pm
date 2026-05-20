@@ -309,7 +309,7 @@ sub prepare_compile_source_file {
   my ($self, $options) = @_;
   
   my $config = $options->{config};
-  my $include_dir = $self->{include_dir};
+  my $include_dirs = $self->builder->include_dirs;
   my $source_dir = $options->{source_dir};
   my $source_rel_file = $options->{source_rel_file};
   
@@ -318,9 +318,8 @@ sub prepare_compile_source_file {
     source_rel_file => $source_rel_file,
     config => $config,
     category => $options->{category},
+    dependent_files => [@$include_dirs],
   );
-  
-  $compile_info->dependent_files([$include_dir]);
   
   return $compile_info;
 }
