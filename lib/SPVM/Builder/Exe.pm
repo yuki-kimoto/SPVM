@@ -210,9 +210,6 @@ sub build_exe_file {
   
   my $class_file = $class->get_class_file;
   
-  # Build directory
-  my $build_dir = $self->builder->build_dir;
-  
   # Object files
   my $compile_infos = [];
   
@@ -267,9 +264,6 @@ sub build_exe_file {
 sub prepare_compile {
   my ($self) = @_;
   
-  # Builder
-  my $builder = $self->builder;
-  
   my $script_name = $self->{script_name};
   
   my $compiler = $self->compiler;
@@ -319,11 +313,6 @@ sub prepare_compile_source_file {
   my $source_dir = $options->{source_dir};
   my $source_rel_file = $options->{source_rel_file};
   
-  my $builder = $self->builder;
-  
-  # Build directory
-  my $build_dir = $self->builder->build_dir;
-  
   my $compile_info = SPVM::Builder::CompileInfo->new(
     source_dir => $source_dir,
     source_rel_file => $source_rel_file,
@@ -338,12 +327,9 @@ sub prepare_compile_source_file {
 
 sub create_bootstrap_header_source {
   my ($self) = @_;
-
-  # Builder
-  my $builder = $self->builder;
-
+  
   my $class_name = $self->class_name;
-
+  
   my $class_names = $self->get_user_defined_basic_type_names;
   
   my $source = '';
@@ -427,9 +413,6 @@ EOS
 
 sub create_bootstrap_main_func_source {
   my ($self) = @_;
-  
-  # Builder
-  my $builder = $self->builder;
   
   my $class_name = $self->class_name;
   
@@ -604,9 +587,6 @@ EOS
 sub create_bootstrap_compile_source {
   my ($self) = @_;
   
-  # Builder
-  my $builder = $self->builder;
-  
   # Namespace
   my $boostrap_name_space = $self->create_boostrap_name_space;
   
@@ -687,9 +667,6 @@ EOS
 sub create_bootstrap_set_precompile_method_addresses_func_source {
   my ($self) = @_;
   
-  # Builder
-  my $builder = $self->builder;
-  
   my $class_names = $self->get_user_defined_basic_type_names;
   
   my $boostrap_name_space = $self->create_boostrap_name_space;
@@ -755,9 +732,6 @@ EOS
 
 sub create_bootstrap_set_native_method_addresses_func_source {
   my ($self) = @_;
-  
-  # Builder
-  my $builder = $self->builder;
   
   my $class_names = $self->get_user_defined_basic_type_names;
   
@@ -880,17 +854,13 @@ sub prepare_compile_spvm_core_source_files {
 sub prepare_compile_precompile_class {
   my ($self, $class_name) = @_;
   
-  my $builder = $self->builder;
-  
-  my $build_dir = $self->builder->build_dir;
-  
   my $config = SPVM::Builder::Util::API::create_default_config();
   $config->global($self->config->global);
   
   $config->category('precompile');
   
   my $builder_cc = SPVM::Builder::CC->new(
-    builder => $builder,
+    builder => $self->builder,
   );
   my $compile_infos = [];
   my $precompile_compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
@@ -901,10 +871,6 @@ sub prepare_compile_precompile_class {
 
 sub prepare_compile_native_class {
   my ($self, $class_name) = @_;
-  
-  my $builder = $self->builder;
-  
-  my $build_dir = $self->builder->build_dir;
   
   my $all_compile_infos = [];
   
