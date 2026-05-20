@@ -394,31 +394,51 @@ This is because the compiler flags are used to compile SPVM core source files an
   my $before_compile_cbs = $self->before_compile_cbs;
   $self->before_compile_cbs($before_compile_cbs);
 
-Gets and sets the C<before_compile_cbs> field, an array reference of callbacks that work globally called just before the compile command L</"cc"> is executed.
+Gets and sets the C<before_compile_cbs> field, an array reference of callbacks that work globally.
+
+These callbacks are executed just after an L<SPVM::Builder::CompileInfo> object is completely constructed and just before the compile command L</"cc"> is planned to be executed.
 
 This affects all compilations.
+
+Note that even if the actual compile command is skipped (for example, when the object file is already up-to-date), these callbacks are still executed as long as the compilation is planned in the build pipeline.
+
+The 1st argument of each callback is an L<SPVM::Builder::CompileInfo> object.
+
+You can modify each field of the L<SPVM::Builder::CompileInfo> object and its internal L<SPVM::Builder::Config> object (obtained via the C<config> method) within the callbacks to dynamically customize the compilation process.
 
 =head2 before_link_cbs
 
   my $before_link_cbs = $config->before_link_cbs;
   $config->before_link_cbs($before_link_cbs);
 
-Gets and sets C<before_link_cbs> field, an array reference containing callbacks called just before the link command L</"ld"> is executed.
+Gets and sets the C<before_link_cbs> field, an array reference of callbacks that work globally.
 
-These callbacks are executed even if the link command is not actually executed because of caching.
+These callbacks are executed just after an L<SPVM::Builder::LinkInfo> object is completely constructed and just before the link command L</"ld"> is planned to be executed.
 
-The 1th argument of the callback is an L<SPVM::Builder::LinkInfo> object.
+This affects all linkings.
+
+Note that even if the actual link command is skipped (for example, when the dynamic link file is already up-to-date), these callbacks are still executed as long as the linking is planned in the build pipeline.
+
+The 1st argument of each callback is an L<SPVM::Builder::LinkInfo> object.
+
+You can modify each field of the L<SPVM::Builder::LinkInfo> object and its internal L<SPVM::Builder::Config> object (obtained via the C<config> method) within the callbacks to dynamically customize the linking process.
 
 =head2 after_link_cbs
 
   my $after_link_cbs = $config->after_link_cbs;
   $config->after_link_cbs($after_link_cbs);
 
-Gets and sets C<after_link_cbs> field, an array reference containing callbacks called just after the link command L</"ld"> is executed.
+Gets and sets the C<after_link_cbs> field, an array reference of callbacks that work globally.
 
-These callbacks are executed even if the link command is not actually executed because of caching.
+These callbacks are executed just after the link command L</"ld"> is executed or planned to be executed.
 
-The 1st argument of the callback is an L<SPVM::Builder::LinkInfo> object.
+This affects all linkings.
+
+Note that even if the actual link command is skipped (for example, when the dynamic link file is already up-to-date), these callbacks are still executed as long as the linking is planned in the build pipeline.
+
+The 1st argument of each callback is an L<SPVM::Builder::LinkInfo> object.
+
+You can check each field of the L<SPVM::Builder::LinkInfo> object and its internal L<SPVM::Builder::Config> object (obtained via the C<config> method) within the callbacks to perform post-linking processes.
 
 =head2 optimize
 

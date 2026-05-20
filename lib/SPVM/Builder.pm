@@ -175,10 +175,6 @@ sub build_parallel {
       for my $compile_info (@$compile_infos) {
         if ($config_global) {
           $config_global->apply_build_rules($compile_info->config);
-          
-          for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
-            $before_compile_cb->($compile_info);
-          }
         }
       }
       for my $compile_info (@$compile_infos) {
@@ -693,6 +689,13 @@ sub spawn_link {
 
 sub spawn_compile_source_file {
   my ($self, $compile_info) = @_;
+  
+  my $config_global = $compile_info->config->config_global;
+  if ($config_global) {
+    for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
+      $before_compile_cb->($compile_info);
+    }
+  }
   
   my $config = $compile_info->config;
   
