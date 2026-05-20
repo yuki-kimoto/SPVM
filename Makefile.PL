@@ -121,29 +121,24 @@ my $config_global = SPVM::Builder::Config::Util::load_config_global($config_glob
 $config->global($config_global);
 $config->global->apply_build_rules($config);
 
-# OPTIMIZE
-my $optimize = $config->optimize;
-unless (length $optimize) {
-  $optimize = ' ';
-}
+my $spvm_core_include_dir = 'lib/SPVM/Builder/include';
 
-# DEFINE
-my @define_ccflags = map { "-D$_" } @defines;
+# CCFLAGS
+my $ccflags = '';
+$ccflags .= " -I$spvm_core_include_dir";
+$ccflags .= " $Config{ccflags}";
+$ccflags .= ' ' . $config->optimize;
+$ccflags .= ' ' . join(' ', map { "-D$_" } @defines);
 
 # LDDLFLAGS
-my $lddlflags = $Config{lddlflags};
-# Remove -O[0-9s] to ensure clean debug session
-$lddlflags =~ s/(?:^|\s)-O[0-9s]\b//g;
-# Remove strip flag (-s) more robustly ---
-$lddlflags =~ s/(?:^|\s)-s(?:\s|$)/ /g;
+my $ldflags = $Config{lddlflags};
+$ldflags =~ s/(?:^|\s)-O[0-9s]\b//g; # Remove -O[0-9s] to ensure clean debug session
+$ldflags =~ s/(?:^|\s)-s(?:\s|$)/ /g; # Remove strip flag (-s) more robustly
 my $ld_optimize = $config->ld_optimize;
 unless (length $ld_optimize) {
   $ld_optimize = ' ';
 }
-$lddlflags .= " " . join(' ', @{$config->thread_ldflags}, @{$config->debug_info_ldflags}, @{$config->symbol_strip_ldflags}, $ld_optimize, @ldflags);
-
-# INC
-my $spvm_core_include_dir = '-Ilib/SPVM/Builder/include';
+$ldflags .= " " . join(' ', @{$config->thread_ldflags}, @{$config->debug_info_ldflags}, @{$config->symbol_strip_ldflags}, $ld_optimize, @ldflags);
 
 # C - Source files
 my $spvm_core_source_file_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
@@ -212,13 +207,12 @@ WriteMakefile(
     'Test::More' => '0.92',
   },
   ########## [SPVM Only WriteMakefile Options Start] ##########
-  OPTIMIZE => $optimize,
-  DEFINE => "@define_ccflags",
-  LDDLFLAGS => $lddlflags,
+  CCFLAGS => $ccflags,
+  OPTIMIZE => ' ',
+  LDDLFLAGS => $ldflags,
   C => [@csource_files],
   H => [@header_files],
   OBJECT => '$(O_FILES)', # link all the C files too
-  INC => $spvm_core_include_dir,
   EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
   ########## [SPVM Only WriteMakefile Options End] ##########
 );
@@ -248,7 +242,7 @@ package MY {
       
       my $spvm_core_cc = $compile_info->config->cc;
       
-      $make_rule .= "\t$spvm_core_cc -c $spvm_core_include_dir @$spvm_core_ccflags -o $spvm_core_object_file $spvm_core_source_file\n\n";
+      $make_rule .= "\t$spvm_core_cc -c -I$spvm_core_include_dir @$spvm_core_ccflags -o $spvm_core_object_file $spvm_core_source_file\n\n";
     }
     ########## [SPVM Only Compilation End] ##########
     
