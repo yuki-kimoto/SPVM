@@ -12,7 +12,6 @@ use lib "$FindBin::Bin/lib";
 use SPVM::Builder::Util::API;
 use SPVM::Builder::Config::DLL;
 use SPVM::Builder::CompileInfo;
-use SPVM::Builder::LinkInfo;
 
 ########## [SPVM Only Module Loading Start] ##########
 use SPVM::Builder::Util;
@@ -117,25 +116,23 @@ if ($meta) {
 # Updates src/spvm_precompile_header_content.c
 SPVM::Builder::Util::build_precompile_header_content_c_source();
 
-my $config = SPVM::Builder::Util::API::create_default_config;
+my $config_common = SPVM::Builder::Util::API::create_default_config;
 my $config_global = SPVM::Builder::Config::Util::load_config($config_global_file);
-$config->config_global($config_global);
-$config_global->apply_build_rules($config);
+$config_common->config_global($config_global);
+$config_global->apply_build_rules($config_common);
 
+my $config_cc = $config_common->clone;
 for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
-  my $compile_info = SPVM::Builder::CompileInfo->new(config => $config);
-  $before_compile_cb->($compile_info->config, $compile_info);
-  $config = $compile_info->config;
+  $before_compile_cb->($config_cc);
 }
 
+my $config_ld = $config_common->clone;
 for my $before_link_cb (@{$config_global->before_link_cbs}) {
-  my $link_info = SPVM::Builder::LinkInfo->new(config => $config);
-  $before_link_cb->($link_info->config, $link_info);
-  $config = $link_info->config;
+  $before_link_cb->($config_ld);
 }
 
 # OPTIMIZE
-my $optimize = $config->optimize;
+my $optimize = $config_cc->optimize;
 unless (length $optimize) {
   $optimize = ' ';
 }
@@ -149,11 +146,11 @@ my $lddlflags = $Config{lddlflags};
 $lddlflags =~ s/(?:^|\s)-O[0-9s]\b//g;
 # Remove strip flag (-s) more robustly ---
 $lddlflags =~ s/(?:^|\s)-s(?:\s|$)/ /g;
-my $ld_optimize = $config->ld_optimize;
+my $ld_optimize = $config_ld->ld_optimize;
 unless (length $ld_optimize) {
   $ld_optimize = ' ';
 }
-$lddlflags .= " " . join(' ', @{$config->thread_ldflags}, @{$config->debug_info_ldflags}, @{$config->symbol_strip_ldflags}, $ld_optimize, @ldflags);
+$lddlflags .= " " . join(' ', @{$config_ld->thread_ldflags}, @{$config_ld->debug_info_ldflags}, @{$config_ld->symbol_strip_ldflags}, $ld_optimize, @ldflags);
 
 # INC
 my $spvm_core_include_dir = '-Ilib/SPVM/Builder/include';
@@ -255,7 +252,7 @@ package MY {
       
       $make_rule .= "$spvm_core_object_file : $spvm_core_source_file\n";
       
-      my $compile_info = SPVM::Builder::CompileInfo->new(config => $config);
+      my $compile_info = SPVM::Builder::CompileInfo->new(config => $config_cc);
       
       my $spvm_core_ccflags = $compile_info->create_ccflags;
       

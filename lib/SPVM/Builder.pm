@@ -571,13 +571,21 @@ sub spawn_link_command {
 sub spawn_link {
   my ($self, $link_info) = @_;
   
+  my $config_global = $link_info->config->config_global;
+  if ($config_global) {
+    for my $before_link_cb (@{$config_global->before_link_cbs}) {
+      $before_link_cb->($link_info->config, $link_info);
+    }
+  }
+  
+  my $config = $link_info->config;
+  
   my $object_file_infos = $link_info->object_file_infos;
   
   unless (@$object_file_infos) {
     confess("[Unexpected Error]Object files must be at least one.");
   }
   
-  my $config = $link_info->config;
   my $quiet = $self->detect_quiet($config);
   my $hint_cc = $config->hint_cc;
   my $ld = $config->ld;
@@ -626,15 +634,6 @@ sub spawn_link {
     output_file => $link_info->output_file,
   };
   my $need_generate = $self->ninja->need_generate($need_generate_options);
-  
-  my $config_global = $config->config_global;
-  if ($config_global) {
-    for my $before_link_cb (@{$config_global->before_link_cbs}) {
-      my $link_info = SPVM::Builder::LinkInfo->new(config => $config);
-      $before_link_cb->($link_info->config, $link_info);
-      $config = $link_info->config;
-    }
-  }
   
   my $process_id;
   if ($force || $need_generate) {
