@@ -121,14 +121,12 @@ my $config_global = SPVM::Builder::Config::Util::load_config_global($config_glob
 $config->global($config_global);
 $config->global->apply_build_rules($config);
 
-my $spvm_core_include_dir = $config->spvm_core_include_dir;
+my $compile_info = SPVM::Builder::CompileInfo->new(config => $config);
 
 # CCFLAGS
 my $ccflags = '';
-$ccflags .= " -I$spvm_core_include_dir";
 $ccflags .= " $Config{ccflags}";
-$ccflags .= ' ' . $config->optimize;
-$ccflags .= ' ' . join(' ', map { "-D$_" } @defines);
+$ccflags .= ' ' . join(' ', @{$compile_info->create_ccflags});
 
 # LDDLFLAGS
 my $ldflags = $Config{lddlflags};
@@ -235,8 +233,6 @@ package MY {
       $spvm_core_object_file =~ s/\.c$/\$(OBJ_EXT)/;
       
       $make_rule .= "$spvm_core_object_file : $spvm_core_source_file\n";
-      
-      my $compile_info = SPVM::Builder::CompileInfo->new(config => $config);
       
       my $spvm_core_ccflags = $compile_info->create_ccflags;
       
