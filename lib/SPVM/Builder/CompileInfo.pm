@@ -10,12 +10,14 @@ use File::Basename 'dirname';
 use SPVM::Builder::Accessor 'has';
 
 # Fields
-has [qw(
+my $field_names = [qw(
+  config
   source_dir
   source_rel_file
   dependent_files
   category
 )];
+has $field_names;
 
 # Class methods
 sub new {
@@ -27,6 +29,8 @@ sub new {
   };
   
   bless $self, $class;
+  
+  SPVM::Builder::Util::check_option_names($self, $field_names);
   
   my $config = $self->config;
   
