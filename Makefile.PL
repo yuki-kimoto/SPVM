@@ -12,6 +12,7 @@ use lib "$FindBin::Bin/lib";
 use SPVM::Builder::Util::API;
 use SPVM::Builder::Config::DLL;
 use SPVM::Builder::CompileInfo;
+use SPVM::Builder::LinkInfo;
 
 ########## [SPVM Only Module Loading Start] ##########
 use SPVM::Builder::Util;
@@ -123,6 +124,8 @@ $config->global->apply_build_rules($config);
 
 my $compile_info = SPVM::Builder::CompileInfo->new(config => $config);
 
+my $link_info = SPVM::Builder::LinkInfo->new(config => $config);
+
 # CCFLAGS
 my $ccflags = '';
 $ccflags .= " $Config{ccflags}";
@@ -132,11 +135,7 @@ $ccflags .= ' ' . join(' ', @{$compile_info->create_ccflags});
 my $ldflags = $Config{lddlflags};
 $ldflags =~ s/(?:^|\s)-O[0-9s]\b//g; # Remove -O[0-9s] to ensure clean debug session
 $ldflags =~ s/(?:^|\s)-s(?:\s|$)/ /g; # Remove strip flag (-s) more robustly
-my $ld_optimize = $config->ld_optimize;
-unless (length $ld_optimize) {
-  $ld_optimize = ' ';
-}
-$ldflags .= " " . join(' ', @{$config->thread_ldflags}, @{$config->debug_info_ldflags}, @{$config->symbol_strip_ldflags}, $ld_optimize, @ldflags);
+$ldflags .= ' ' . join(' ', @{$link_info->create_ldflags});
 
 # C - Source files
 my $spvm_core_source_file_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
