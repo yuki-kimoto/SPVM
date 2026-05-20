@@ -574,7 +574,7 @@ sub spawn_link {
   my $config_global = $link_info->config->config_global;
   if ($config_global) {
     for my $before_link_cb (@{$config_global->before_link_cbs}) {
-      $before_link_cb->($link_info->config, $link_info);
+      $before_link_cb->($link_info);
     }
   }
   

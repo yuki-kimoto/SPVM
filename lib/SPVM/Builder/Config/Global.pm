@@ -407,9 +407,7 @@ Gets and sets C<before_link_cbs> field, an array reference containing callbacks 
 
 These callbacks are executed even if the link command is not actually executed because of caching.
 
-The 1th argument of the callback is an L<SPVM::Builder::Config> object.
-
-The 2th argument of the callback is an L<SPVM::Builder::LinkInfo> object.
+The 1th argument of the callback is an L<SPVM::Builder::LinkInfo> object.
 
 =head2 after_link_cbs
 
@@ -534,7 +532,9 @@ Adds @before_link_cbs to the end of L</"before_link_cbs"> field.
 Examples:
 
   $config->add_before_link_cb(sub {
-    my ($config, $link_info) = @_;
+    my ($link_info) = @_;
+    
+    my $config = $link_info->config;
     
     my $object_file_infos = $link_info->object_file_infos;
     

@@ -122,14 +122,8 @@ $config_common->config_global($config_global);
 $config_global->apply_build_rules($config_common);
 
 my $config_cc = $config_common->clone;
-for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
-  $before_compile_cb->($config_cc);
-}
 
 my $config_ld = $config_common->clone;
-for my $before_link_cb (@{$config_global->before_link_cbs}) {
-  $before_link_cb->($config_ld);
-}
 
 # OPTIMIZE
 my $optimize = $config_cc->optimize;
