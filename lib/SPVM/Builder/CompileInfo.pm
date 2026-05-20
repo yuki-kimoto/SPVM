@@ -28,17 +28,9 @@ sub new {
     @_,
   };
   
-  bless $self, $class;
+  bless $self, ref $class || $class;
   
   SPVM::Builder::Util::check_option_names($self, $field_names);
-  
-  my $config = $self->config;
-  
-  unless ($config) {
-    confess("The \"config\" field must be defined.");
-  }
-  
-  $self->config($config->clone);
   
   return $self;
 }
