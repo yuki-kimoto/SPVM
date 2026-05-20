@@ -118,6 +118,13 @@ sub load_config_global {
   return $config_global;
 }
 
+sub _eval_config_global_content {
+
+  $_[0] = qq|{\nuse strict;\nuse warnings;\nuse utf8;\nuse SPVM::Builder::Config::Util;\nuse SPVM::Builder::Config::Global;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
+
+  return eval $_[0];
+}
+
 1;
 
 =head1 Name
