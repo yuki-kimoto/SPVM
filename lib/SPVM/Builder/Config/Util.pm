@@ -70,12 +70,22 @@ sub load_base_config {
 }
 
 sub _eval_config_content {
-  
-  $_[0] = qq|{\nuse strict;\nuse warnings;\nuse utf8;\nuse SPVM::Builder::Config::Util;\nuse SPVM::Builder::Config;\nuse SPVM::Builder::Config::Exe;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
-  
-  return eval $_[0];
-}
+  my ($config_content, $config_file) = @_;
 
+  $config_content = <<"EOS";
+use strict;
+use warnings;
+use utf8;
+use SPVM::Builder::Config::Util;
+use SPVM::Builder::Config;
+use SPVM::Builder::Config::Exe;
+use SPVM::Builder::Config::DLL;
+# line 1 "$config_file"
+$config_content
+EOS
+
+  return eval $config_content;
+}
 sub remove_ext_from_config_file {
   my ($config_file) = @_;
   
@@ -119,10 +129,19 @@ sub load_config_global {
 }
 
 sub _eval_config_global_content {
+  my ($config_global_content, $config_global_file) = @_;
 
-  $_[0] = qq|{\nuse strict;\nuse warnings;\nuse utf8;\nuse SPVM::Builder::Config::Util;\nuse SPVM::Builder::Config::Global;\n# line 1 "$_[1]"\n$_[0]\n}\n|;
+  $config_global_content = <<"EOS";
+use strict;
+use warnings;
+use utf8;
+use SPVM::Builder::Config::Util;
+use SPVM::Builder::Config::Global;
+# line 1 "$config_global_file"
+$config_global_content
+EOS
 
-  return eval $_[0];
+  return eval $config_global_content;
 }
 
 1;
