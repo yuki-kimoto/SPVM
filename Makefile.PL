@@ -116,17 +116,13 @@ if ($meta) {
 # Updates src/spvm_precompile_header_content.c
 SPVM::Builder::Util::build_precompile_header_content_c_source();
 
-my $config_common = SPVM::Builder::Util::API::create_default_config;
-my $config_tmp = SPVM::Builder::Config::Util::load_config($config_global_file);
-$config_common->global($config_tmp->global);
-$config_common->global->apply_build_rules($config_common);
-
-my $config_cc = $config_common->clone;
-
-my $config_ld = $config_common->clone;
+my $config = SPVM::Builder::Util::API::create_default_config;
+my $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
+$config->global($config_global);
+$config->global->apply_build_rules($config);
 
 # OPTIMIZE
-my $optimize = $config_cc->optimize;
+my $optimize = $config->optimize;
 unless (length $optimize) {
   $optimize = ' ';
 }
@@ -140,11 +136,11 @@ my $lddlflags = $Config{lddlflags};
 $lddlflags =~ s/(?:^|\s)-O[0-9s]\b//g;
 # Remove strip flag (-s) more robustly ---
 $lddlflags =~ s/(?:^|\s)-s(?:\s|$)/ /g;
-my $ld_optimize = $config_ld->ld_optimize;
+my $ld_optimize = $config->ld_optimize;
 unless (length $ld_optimize) {
   $ld_optimize = ' ';
 }
-$lddlflags .= " " . join(' ', @{$config_ld->thread_ldflags}, @{$config_ld->debug_info_ldflags}, @{$config_ld->symbol_strip_ldflags}, $ld_optimize, @ldflags);
+$lddlflags .= " " . join(' ', @{$config->thread_ldflags}, @{$config->debug_info_ldflags}, @{$config->symbol_strip_ldflags}, $ld_optimize, @ldflags);
 
 # INC
 my $spvm_core_include_dir = '-Ilib/SPVM/Builder/include';
@@ -246,7 +242,7 @@ package MY {
       
       $make_rule .= "$spvm_core_object_file : $spvm_core_source_file\n";
       
-      my $compile_info = SPVM::Builder::CompileInfo->new(config => $config_cc);
+      my $compile_info = SPVM::Builder::CompileInfo->new(config => $config);
       
       my $spvm_core_ccflags = $compile_info->create_ccflags;
       
@@ -353,7 +349,7 @@ package MY {
 }
 
 sub generate_config_global_file {
-  my ($config_file, $options) = @_;
+  my ($config_global_file, $options) = @_;
   
   my $ccflags       = $options->{ccflags} // [];
   my $defines       = $options->{defines} // [];
@@ -373,44 +369,43 @@ sub generate_config_global_file {
   }
   
   # --- Generate content ---
-  my $config_content = '';
+  my $config_global_content = '';
   
-  $config_content .= <<"EOS";
-use SPVM::Builder::Config::DLL;
-my \$config = SPVM::Builder::Config::DLL->new;
+  $config_global_content .= <<"EOS";
+my \$config_global = SPVM::Builder::Config::Global->new;
 EOS
   
   if (defined $build_type) {
-    $config_content .= <<"EOS";
-\$config->global->build_type('$build_type');
+    $config_global_content .= <<"EOS";
+\$config_global->build_type('$build_type');
 EOS
   }
   
   for my $ccflag (@$ccflags) {
-    $config_content .= <<"EOS";
-\$config->global->build_rule_any({'+ccflags' => ['$ccflag']});
+    $config_global_content .= <<"EOS";
+\$config_global->build_rule_any({'+ccflags' => ['$ccflag']});
 EOS
   }
   
   for my $define (@$defines) {
-    $config_content .= <<"EOS";
-\$config->global->build_rule_any({'+defines' => ['$define']});
+    $config_global_content .= <<"EOS";
+\$config_global->build_rule_any({'+defines' => ['$define']});
 EOS
   }
   
   for my $ldflag (@$ldflags) {
-    $config_content .= <<"EOS";
-\$config->global->build_rule_any({'+ldflags' => ['$ldflag']});
+    $config_global_content .= <<"EOS";
+\$config_global->build_rule_any({'+ldflags' => ['$ldflag']});
 EOS
   }
   
-  $config_content .= <<"EOS";
-\$config;
+  $config_global_content .= <<"EOS";
+\$config_global;
 EOS
   
   # --- Write to file ---
-  open my $fh, '>', $config_file or die "Can't open file '$config_file': $!";
-  print $fh $config_content;
+  open my $fh, '>', $config_global_file or die "Can't open file '$config_global_file': $!";
+  print $fh $config_global_content;
 }
 
 1;

@@ -137,8 +137,7 @@ sub build_parallel {
   
   my $config_global;
   if (defined (my $config_global_file = $self->config_global_file)) {
-    my $config_for_global = SPVM::Builder::Config::Util::load_config($config_global_file);
-    $config_global = $config_for_global->global;
+    $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
   }
   
   # Prepare all compile information
