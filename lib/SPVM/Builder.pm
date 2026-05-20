@@ -229,7 +229,7 @@ sub build_parallel {
       if ($config_global) {
         my $after_link_cbs = $config_global->after_link_cbs;
         for my $after_link_cb (@$after_link_cbs) {
-          $after_link_cb->($link_info->config, $link_info);
+          $after_link_cb->($link_info);
         }
       }
       # Store result in the return hash
