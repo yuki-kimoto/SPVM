@@ -857,7 +857,7 @@ sub generate_makefile_pl_file {
   }
   
   # "Makefile.PL" content
-  my $makefile_pl_content = <<"EOS";
+  my $makefile_pl_content = <<"END_OF_STRING";
 use 5.020;
 use ExtUtils::MakeMaker;
 use strict;
@@ -883,6 +883,19 @@ GetOptions(
   'parallel-test' => \\my \$parallel_test,
   'jobs=i' => \\my \$jobs,
 );
+
+my \$build_dir = '.spvm_build';
+mkpath \$build_dir;
+
+my \$config_global_file = '.spvm_build/global.config';
+generate_config_global_file(\$config_global_file, {
+  ccflags       => \\\@ccflags,
+  defines       => \\\@defines,
+  ldflags       => \\\@ldflags,
+  debug         => \$debug,
+  build_type    => \$build_type,
+  asan_on_linux => \$asan_on_linux,
+});
 
 my \$gnu_make = SPVM::Builder::Util::API::search_gnu_make_command();
 
@@ -991,6 +1004,66 @@ package MY {
   }
 }
 
+sub generate_config_global_file {
+  my (\$config_global_file, \$options) = \@_;
+  
+  my \$ccflags        = \$options->{ccflags} // [];
+  my \$defines        = \$options->{defines} // [];
+  my \$ldflags        = \$options->{ldflags} // [];
+  my \$build_type     = \$options->{build_type};
+  my \$debug          = \$options->{debug};
+  my \$asan_on_linux = \$options->{asan_on_linux};
+  
+  # --- Handle options ---
+  if (\$debug) {
+    \$build_type = 'Debug';
+  }
+  
+  if (\$asan_on_linux) {
+    push \@\$ccflags, "-fsanitize=address", "-fno-omit-frame-pointer";
+    push \@\$ldflags, "-fsanitize=address";
+  }
+  
+  # --- Generate content ---
+  my \$config_global_content = '';
+  
+  \$config_global_content .= <<"EOS";
+my \\\$config_global = SPVM::Builder::Config::Global->new;
+EOS
+  
+  if (defined \$build_type) {
+    \$config_global_content .= <<"EOS";
+\\\$config_global->build_type('\$build_type');
+EOS
+  }
+  
+  for my \$ccflag (\@\$ccflags) {
+    \$config_global_content .= <<"EOS";
+\\\$config_global->build_rule_any({'+ccflags' => ['\$ccflag']});
+EOS
+  }
+  
+  for my \$define (\@\$defines) {
+    \$config_global_content .= <<"EOS";
+\\\$config_global->build_rule_any({'+defines' => ['\$define']});
+EOS
+  }
+  
+  for my \$ldflag (\@\$ldflags) {
+    \$config_global_content .= <<"EOS";
+\\\$config_global->build_rule_any({'+ldflags' => ['\$ldflag']});
+EOS
+  }
+  
+  \$config_global_content .= <<"EOS";
+\\\$config_global;
+EOS
+  
+  # --- Write to file ---
+  open my \$fh, '>', \$config_global_file or die "Can't open file '\$config_global_file': \$!";
+  print \$fh \$config_global_content;
+}
+
 1;
 
 =head1 Name 
@@ -1008,7 +1081,7 @@ See the following URL for the command line options:
 L<https://github.com/yuki-kimoto/SPVM/blob/master/Makefile.PL>
 
 =cut
-EOS
+END_OF_STRING
 
   # Generate file
   my $makefile_pl_rel_file = 'Makefile.PL';
