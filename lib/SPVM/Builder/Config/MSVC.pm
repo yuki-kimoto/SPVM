@@ -1,6 +1,6 @@
 package SPVM::Builder::Config::MSVC;
 
-use parent 'SPVM::Builder::Config::Global';
+use parent 'SPVM::Builder::Config::Linker';
 
 use strict;
 use warnings;
@@ -39,14 +39,14 @@ sub init {
   $self->setup_env;
   
   # --- Initialize Global Config ---
-  $self->build_rule_any(sub {
+  $self->global->build_rule_any(sub {
     my ($config) = @_;
     
     $config->clear_system_fields;
   });
   
   # 1. Common settings for all configs
-  $self->build_rule_any({
+  $self->global->build_rule_any({
     cc                    => 'cl',
     long_option_sep       => ':',
     cc_output_option_name => '-Fo',
@@ -74,7 +74,7 @@ sub init {
   
   # 2. Common C/C++ flags
   # Use '+' to preserve existing flags (equivalent to push)
-  $self->build_rule({language => qr/^(c|cpp)$/}, {
+  $self->global->build_rule({language => qr/^(c|cpp)$/}, {
     'function_level_linking_ccflags' => ['-Gy'],
     'source_encoding_ccflags' => ['-utf-8'],
     'library_linkage_ccflags'       => ['-MT'],
@@ -82,23 +82,23 @@ sub init {
   });
 
   # 3. C specific rules
-  $self->build_rule({language => 'c'}, {
+  $self->global->build_rule({language => 'c'}, {
     'language_ccflags' => ['-TC'],
   });
   
   # Ensure C11 as baseline if unspecified or c99
-  $self->build_rule({language => 'c', std => qr/^(|c99)$/}, {
+  $self->global->build_rule({language => 'c', std => qr/^(|c99)$/}, {
     std => 'c11',
   });
 
   # 4. C++ specific rules
-  $self->build_rule({language => 'cpp'}, {
+  $self->global->build_rule({language => 'cpp'}, {
     'language_ccflags' => ['-TP'],
     'cpp_exception_handling_ccflags'  => ['-EHsc'],
   });
 
   # Ensure C++14 as baseline if specified as c++11
-  $self->build_rule({language => 'cpp', std => 'c++11'}, {
+  $self->global->build_rule({language => 'cpp', std => 'c++11'}, {
     std => 'c++14',
   });
   
@@ -107,7 +107,7 @@ sub init {
   for my $build_type (@build_types) {
     my $config = &_get_config_from_build_type_msvc($build_type);
     
-    $self->build_rule(
+    $self->global->build_rule(
       { global => {build_type => $build_type} },
       $config
     );
@@ -333,13 +333,13 @@ L<SPVM::Builder::Config::MSVC> managaes configurations for generating executable
   
   $config_global = SPVM::Builder::Config::MSVC->new_with_config($config_global);
   
-  $config_global->init;
+  $config->init;
 
   $config_global;
 
 =head1 Super Class
 
-L<SPVM::Builder::Config::Exe>
+L<SPVM::Builder::Config::Linker>
 
 =head1 Class Methods
 
@@ -353,6 +353,6 @@ Creates a new L<SPVM::Builder::Config::MSVC> object by calling C<new> method in 
 
 =head2 init
   
-  $config_global->init(%fields);
+  $config->init(%fields);
 
 Initialize this instance for MSVC compiler and linker.

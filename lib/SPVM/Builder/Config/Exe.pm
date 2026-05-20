@@ -1,6 +1,6 @@
 package SPVM::Builder::Config::Exe;
 
-use parent 'SPVM::Builder::Config::Global';
+use parent 'SPVM::Builder::Config::Linker';
 
 use strict;
 use warnings;
@@ -28,9 +28,9 @@ L<SPVM::Builder::Config::Exe> is a class to manage configurations for generating
 
 This class inherits from L<SPVM::Builder::Config::Global> and sets the C<output_type> field to C<exe> by default.
 
-=head1 Inheritance
+=head1 Super Class
 
-L<SPVM::Builder::Config::Global> E<lt>- L<SPVM::Builder::Config> E<lt>- L<SPVM::Builder::Config::Linker> E<lt>- L<SPVM::Builder::Config::Base>
+L<SPVM::Builder::Config::Linker>
 
 =head1 Methods
 

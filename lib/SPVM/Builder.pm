@@ -137,15 +137,8 @@ sub build_parallel {
   
   my $config_global;
   if (defined (my $config_global_file = $self->config_global_file)) {
-    $config_global = SPVM::Builder::Config::Util::load_config($config_global_file);
-  }
-  else {
-    $config_global = SPVM::Builder::Config::DLL->new;
-  }
-  
-  my $env_spvm_force_build_type = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_BUILD_TYPE');
-  if (length $env_spvm_force_build_type) {
-    $config_global->build_type($env_spvm_force_build_type);
+    my $config_for_global = SPVM::Builder::Config::Util::load_config($config_global_file);
+    $config_global = $config_for_global->global;
   }
   
   # Prepare all compile information
@@ -165,7 +158,14 @@ sub build_parallel {
         $config = SPVM::Builder::Util::API::create_default_config();
       }
       
-      $config->global($config_global);
+      if ($config_global) {
+        $config->global($config_global);
+      }
+      
+      my $env_spvm_force_build_type = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_BUILD_TYPE');
+      if (length $env_spvm_force_build_type) {
+        $config->global->build_type($env_spvm_force_build_type);
+      }
       
       $config->class_name($class_name);
       $config->category($category);
@@ -173,9 +173,7 @@ sub build_parallel {
       # Prepare compile information for each class
       my $compile_infos = $cc->prepare_compile_class($class_name, $config);
       for my $compile_info (@$compile_infos) {
-        if ($config_global) {
-          $config_global->apply_build_rules($compile_info->config);
-        }
+        $config->global->apply_build_rules($compile_info->config);
       }
       for my $compile_info (@$compile_infos) {
         $self->finalize_compile_info($compile_info);
@@ -222,11 +220,9 @@ sub build_parallel {
       my $config = $ctx->{config};
       
       # Execute after_link_cbs
-      if ($config_global) {
-        my $after_link_cbs = $config_global->after_link_cbs;
-        for my $after_link_cb (@$after_link_cbs) {
-          $after_link_cb->($link_info);
-        }
+      my $after_link_cbs = $config->global->after_link_cbs;
+      for my $after_link_cb (@$after_link_cbs) {
+        $after_link_cb->($link_info);
       }
       # Store result in the return hash
       $output_files_h->{$category}{$class_name} = $link_info->output_file;

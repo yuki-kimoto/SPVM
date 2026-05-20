@@ -6,6 +6,7 @@ use Carp 'confess';
 use SPVM::Builder::Util;
 use SPVM::Builder::Accessor 'has';
 use File::Basename 'dirname', 'fileparse';
+use SPVM::Builder::Config::Global;
 
 # Base Fields
 my $base_fields = [qw(
@@ -50,6 +51,10 @@ sub new {
 
   unless (exists $self->{loaded_config_files}) {
     $self->{loaded_config_files} = [];
+  }
+  
+  unless (exists $self->{global}) {
+    $self->{global} = SPVM::Builder::Config::Global->new;
   }
   
   return $self;

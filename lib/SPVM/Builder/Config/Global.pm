@@ -1,7 +1,5 @@
 package SPVM::Builder::Config::Global;
 
-use parent 'SPVM::Builder::Config::Linker';
-
 use strict;
 use warnings;
 use Carp 'confess';
@@ -56,11 +54,13 @@ sub option_names {
 sub new {
   my $class = shift;
   
-  my $self = $class->SUPER::new(
+  my $self = bless {
     before_compile_cbs => [],
+    before_link_cbs => [],
+    after_link_cbs => [],
     build_rules => [],
     @_
-  );
+  }, ref $class || $class;
   
   if (exists $self->{build_type}) {
     $self->build_type($self->{build_type});
@@ -125,14 +125,6 @@ sub new {
     );
   }
   
-  unless (exists $self->{before_link_cbs}) {
-    $self->before_link_cbs([]);
-  }
-
-  unless (exists $self->{after_link_cbs}) {
-    $self->after_link_cbs([]);
-  }
-
   return $self;
 }
 
@@ -365,14 +357,6 @@ The SPVM::Builder::Config::Global class has methods to manipulate the config for
 The fields for compiler flags in L<SPVM::Builder::Config> such as L<SPVM::Builder::Config/"cc">, L<SPVM::Builder::Config/"std"> should not be changed.
 
 This is because the compiler flags are used to compile SPVM core source files and a bootstrap source file generagted by C<spvmcc> command.
-
-=head1 Super Class
-
-=over 2
-
-=item * L<SPVM::Builder::Config>
-
-=back
 
 =head1 Fields
 

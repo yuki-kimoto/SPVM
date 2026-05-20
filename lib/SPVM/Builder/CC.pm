@@ -204,7 +204,7 @@ sub prepare_compile_native_class {
       $need_native_class_file = 0;
     }
     else {
-      if ($config->global && $class_name eq ($config->global->class_name // '')) {
+      if ($config->global && $class_name eq ($config->class_name // '')) {
         $need_native_class_file = 0;
       }
       else {
@@ -452,7 +452,7 @@ sub prepare_link {
   
   my $config_global = $config->global;
   if ($config_global) {
-    $config_global->apply_build_rules($link_info->config);
+    $config->global->apply_build_rules($link_info->config);
   }
   
   return $link_info;

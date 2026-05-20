@@ -1,6 +1,6 @@
 package SPVM::Builder::Config::DLL;
 
-use parent 'SPVM::Builder::Config::Exe';
+use parent 'SPVM::Builder::Config::Linker';
 
 use strict;
 use warnings;
@@ -43,7 +43,7 @@ L<SPVM::Builder::Config::DLL> is a class to manage configurations for generating
 
 =head1 Super Class
 
-L<SPVM::Builder::Config::Exe>
+L<SPVM::Builder::Config::Linker>
 
 =head1 Class Methods
 

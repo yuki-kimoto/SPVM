@@ -117,9 +117,9 @@ if ($meta) {
 SPVM::Builder::Util::build_precompile_header_content_c_source();
 
 my $config_common = SPVM::Builder::Util::API::create_default_config;
-my $config_global = SPVM::Builder::Config::Util::load_config($config_global_file);
-$config_common->global($config_global);
-$config_global->apply_build_rules($config_common);
+my $config_tmp = SPVM::Builder::Config::Util::load_config($config_global_file);
+$config_common->global($config_tmp->global);
+$config_common->global->apply_build_rules($config_common);
 
 my $config_cc = $config_common->clone;
 
@@ -353,7 +353,7 @@ package MY {
 }
 
 sub generate_config_global_file {
-  my ($config_global_file, $options) = @_;
+  my ($config_file, $options) = @_;
   
   my $ccflags       = $options->{ccflags} // [];
   my $defines       = $options->{defines} // [];
@@ -373,44 +373,44 @@ sub generate_config_global_file {
   }
   
   # --- Generate content ---
-  my $config_global_content = '';
+  my $config_content = '';
   
-  $config_global_content .= <<"EOS";
+  $config_content .= <<"EOS";
 use SPVM::Builder::Config::DLL;
-my \$config_global = SPVM::Builder::Config::DLL->new;
+my \$config = SPVM::Builder::Config::DLL->new;
 EOS
   
   if (defined $build_type) {
-    $config_global_content .= <<"EOS";
-\$config_global->build_type('$build_type');
+    $config_content .= <<"EOS";
+\$config->global->build_type('$build_type');
 EOS
   }
   
   for my $ccflag (@$ccflags) {
-    $config_global_content .= <<"EOS";
-\$config_global->build_rule_any({'+ccflags' => ['$ccflag']});
+    $config_content .= <<"EOS";
+\$config->global->build_rule_any({'+ccflags' => ['$ccflag']});
 EOS
   }
   
   for my $define (@$defines) {
-    $config_global_content .= <<"EOS";
-\$config_global->build_rule_any({'+defines' => ['$define']});
+    $config_content .= <<"EOS";
+\$config->global->build_rule_any({'+defines' => ['$define']});
 EOS
   }
   
   for my $ldflag (@$ldflags) {
-    $config_global_content .= <<"EOS";
-\$config_global->build_rule_any({'+ldflags' => ['$ldflag']});
+    $config_content .= <<"EOS";
+\$config->global->build_rule_any({'+ldflags' => ['$ldflag']});
 EOS
   }
   
-  $config_global_content .= <<"EOS";
-\$config_global;
+  $config_content .= <<"EOS";
+\$config;
 EOS
   
   # --- Write to file ---
-  open my $fh, '>', $config_global_file or die "Can't open file '$config_global_file': $!";
-  print $fh $config_global_content;
+  open my $fh, '>', $config_file or die "Can't open file '$config_file': $!";
+  print $fh $config_content;
 }
 
 1;

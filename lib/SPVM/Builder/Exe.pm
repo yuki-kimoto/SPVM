@@ -72,14 +72,14 @@ sub output_file {
   }
 }
 
-sub global {
+sub config {
   my $self = shift;
   if (@_) {
-    $self->{global} = $_[0];
+    $self->{config} = $_[0];
     return $self;
   }
   else {
-    return $self->{global};
+    return $self->{config};
   }
 }
 
@@ -156,36 +156,29 @@ sub new {
   $config_file =~ s/\..*$//;
   $config_file .= '.config';
   
-  my $config_global;
+  my $config;
   if (-f $config_file) {
-    $config_global = SPVM::Builder::Config::Util::load_mode_config($config_file, $config_mode);
+    $config = SPVM::Builder::Config::Util::load_mode_config($config_file, $config_mode);
   }
   else {
     if ($allow_no_config_file) {
-      $config_global = SPVM::Builder::Config::Exe->new;
+      $config = SPVM::Builder::Config::Exe->new;
     }
     else {
       Carp::confess("The config file '$config_file' is not found.");
     }
   }
   
-  unless ($config_global->isa('SPVM::Builder::Config::Global')) {
-    Carp::confess("The class of a config object for creating an executable file must be SPVM::Builder::Config::Global or its child class.");
-  }
-  
-  $self->{global} = $config_global;
-  
-  # Although not the ideal way, this allows global to act as a build target itself.
-  $config_global->global($config_global);
-  
   $self->{builder} = $builder;
   
   # Override config settings with command line options if defined
   {
     if (defined $self->{external_object_files}) {
-      $config_global->external_object_files($self->{external_object_files});
+      $config->external_object_files($self->{external_object_files});
     }
   }
+  
+  $self->config($config);
   
   my $compiler = SPVM::Builder::Native::Compiler->new;
   
@@ -206,10 +199,10 @@ sub build_exe_file {
   
   my $builder = $self->builder;
   
-  my $config_global = $self->global;
+  my $config = $self->config;
   
   my $output_file = $self->{output_file};
-  $config_global->output_file($output_file);
+  $config->output_file($output_file);
   
   my $class_name = $self->{class_name};
   
@@ -236,10 +229,7 @@ sub build_exe_file {
   
   for my $compile_info (@$compile_infos) {
     my $config = $compile_info->config;
-    my $config_global = $config->global;
-    if ($config_global) {
-      $config_global->apply_build_rules($compile_info->config);
-    }
+    $config->global->apply_build_rules($compile_info->config);
   }
   
   for my $compile_info (@$compile_infos) {
@@ -251,7 +241,7 @@ sub build_exe_file {
   my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   
   # Add external object files
-  for my $external_object_file (@{$config_global->external_object_files}) {
+  for my $external_object_file (@{$config->external_object_files}) {
     push @$object_file_infos, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
   
@@ -263,12 +253,12 @@ sub build_exe_file {
   my $cc = SPVM::Builder::CC->new(
     builder => $builder,
   );
-  my $link_info = $cc->prepare_link($class_name, $object_file_infos, $config_global);
+  my $link_info = $cc->prepare_link($class_name, $object_file_infos, $config);
   
   $builder->command_parallel([$link_info]);
   
   # after_link_cbs
-  my $after_link_cbs = $config_global->after_link_cbs;
+  my $after_link_cbs = $config->global->after_link_cbs;
   for my $after_link_cb (@$after_link_cbs) {
     $after_link_cb->($link_info);
   }
@@ -295,7 +285,7 @@ sub prepare_compile {
   
   $self->class_name($class_name);
   
-  $self->global->class_name($class_name);
+  $self->config->class_name($class_name);
   
   my $runtime = $compiler->get_runtime;
   
@@ -838,7 +828,7 @@ sub prepare_compile_bootstrap_source_file {
   SPVM::Builder::Util::spurt_binary($bootstrap_source_file, $bootstrap_source, $self->builder->global_lock_fh);
   
   my $config = SPVM::Builder::Util::API::create_default_config();
-  $config->global($self->global);
+  $config->global($self->config->global);
   my $source_dir = $self->builder->create_build_src_path;
   
   # Compile
@@ -857,7 +847,7 @@ sub prepare_compile_spvm_core_source_files {
   
   # Config
   my $config = SPVM::Builder::Util::API::create_default_config();
-  $config->global($self->global);
+  $config->global($self->config->global);
   
   my $builder_dir = SPVM::Builder::Util::get_builder_dir();
   
@@ -899,7 +889,7 @@ sub prepare_compile_precompile_class {
   my $runtime = $self->builder->runtime;
   
   my $config = SPVM::Builder::Util::API::create_default_config();
-  $config->global($self->global);
+  $config->global($self->config->global);
   
   $config->category('precompile');
   
@@ -938,7 +928,7 @@ sub prepare_compile_native_class {
   if (defined $config_file && -f $config_file) {
     
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
-    $config->global($self->global);
+    $config->global($self->config->global);
     
     my $compile_resources = $self->class_name eq $class_name ? 1 : 0;
     
