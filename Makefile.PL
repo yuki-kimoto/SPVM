@@ -121,7 +121,7 @@ my $config_global = SPVM::Builder::Config::Util::load_config_global($config_glob
 $config->global($config_global);
 $config->global->apply_build_rules($config);
 
-my $spvm_core_include_dir = 'lib/SPVM/Builder/include';
+my $spvm_core_include_dir = $config->spvm_core_include_dir;
 
 # CCFLAGS
 my $ccflags = '';
@@ -242,7 +242,7 @@ package MY {
       
       my $spvm_core_cc = $compile_info->config->cc;
       
-      $make_rule .= "\t$spvm_core_cc -c -I$spvm_core_include_dir @$spvm_core_ccflags -o $spvm_core_object_file $spvm_core_source_file\n\n";
+      $make_rule .= "\t$spvm_core_cc -c @$spvm_core_ccflags -o $spvm_core_object_file $spvm_core_source_file\n\n";
     }
     ########## [SPVM Only Compilation End] ##########
     
