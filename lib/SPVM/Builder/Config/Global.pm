@@ -47,19 +47,6 @@ BEGIN {
   }
 }
 
-sub optimize {
-  my $self = shift;
-  
-  if (@_) {
-    my ($optimize, $condition) = @_;
-    $self->build_rule($condition, {optimize => $optimize});
-    return $self;
-  }
-  else {
-    confess "The optimize method only supports the setter. Use match methods to configure dynamic settings.";
-  }
-}
-
 sub option_names {
   my ($self) = @_;
   return [@{$self->SUPER::option_names}, @$fields];
@@ -331,29 +318,29 @@ The SPVM::Builder::Config::Global class has methods to manipulate the config for
   
   # Basic conditional update (Exact match)
   # If language is 'c', set optimization to -O3
-  $self->build_rule({language => 'c'}, {optimize => '-O3'});
+  $config_global->build_rule({language => 'c'}, {optimize => '-O3'});
 
   # Regex matching and field appending (+)
   # If dialect matches c11/c17, add a specific warning flag
-  $self->build_rule({dialect => qr/^c1[17]$/}, {'+ccflags' => ['-Wpedantic']});
+  $config_global->build_rule({dialect => qr/^c1[17]$/}, {'+ccflags' => ['-Wpedantic']});
 
   # Array Sensitivity (Checking if a flag exists in an array)
   # If '-DDEBUG' is already in ccflags, add debug linker flags
-  $self->build_rule({ccflags => '-DDEBUG'}, {'+ldflags' => ['-DEBUG']});
+  $config_global->build_rule({ccflags => '-DDEBUG'}, {'+ldflags' => ['-DEBUG']});
 
   # Negative Match (!prefix)
   # If '-Zi' is NOT in ccflags, enable linker optimizations
-  $self->build_rule({'!ccflags' => '-Zi'}, {'+ld_optimize' => '-OPT:REF,ICF'});
+  $config_global->build_rule({'!ccflags' => '-Zi'}, {'+ld_optimize' => '-OPT:REF,ICF'});
 
   # Complex conditions (AND logic)
   # If it's C++ AND dialect is NOT c++11 (e.g. c++14), add exception handling
-  $self->build_rule({language => 'cpp', '!dialect' => 'c++11'}, {
+  $config_global->build_rule({language => 'cpp', '!dialect' => 'c++11'}, {
     '+ccflags' => ['-EHsc']
   });
 
   # Procedural update with a callback
   # Dynamically modify the config object based on custom logic
-  $self->build_rule({language => 'c'}, sub {
+  $config_global->build_rule({language => 'c'}, sub {
     my $config = shift;
     if ($ENV{MY_CUSTOM_OPT}) {
       $config->optimize('-Ofast');
@@ -362,11 +349,11 @@ The SPVM::Builder::Config::Global class has methods to manipulate the config for
 
   # Apply to all configurations (build_rule_any)
   # Ensure all configs have the -nologo flag regardless of any condition
-  $self->build_rule_any({'+ccflags' => ['-nologo']});
+  $config_global->build_rule_any({'+ccflags' => ['-nologo']});
 
   # Reset or global initialization via callback
   # Useful for clearing fields before applying specific rules
-  $self->build_rule_any(sub {
+  $config_global->build_rule_any(sub {
     my $config = shift;
     $config->clear_system_fields;
   });
@@ -439,24 +426,6 @@ Note that even if the actual link command is skipped (for example, when the dyna
 The 1st argument of each callback is an L<SPVM::Builder::LinkInfo> object.
 
 You can check each field of the L<SPVM::Builder::LinkInfo> object and its internal L<SPVM::Builder::Config> object (obtained via the C<config> method) within the callbacks to perform post-linking processes.
-
-=head2 optimize
-
-  $config->optimize($optimize, $condition);
-
-Sets C<optimize> field for the configs that match the condition C<$condition>.
-
-This method is a setter-only method. It calls L</"build_rule"> internally.
-
-If C<$condition> is not defined, the optimization setting is applied to all configs.
-
-Examples:
-
-  # Set -O3 for all configs
-  $config->optimize('-O3');
-  
-  # Set -O2 for native category configs
-  $config->optimize('-O2', {category => 'native'});
 
 =head2 build_type
 
