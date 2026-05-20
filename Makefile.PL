@@ -129,6 +129,8 @@ $ccflags .= ' ' . join(' ', @{$compile_info->create_ccflags});
 my $ldflags = $Config{lddlflags};
 $ldflags =~ s/(?:^|\s)-O[0-9s]\b//g; # Remove -O[0-9s] to ensure clean debug session
 $ldflags =~ s/(?:^|\s)-s(?:\s|$)/ /g; # Remove strip flag (-s) more robustly
+$ldflags =~ s/-shared//g;
+$ldflags =~ s/-bundle//g;
 $ldflags .= ' ' . join(' ', @{$link_info->create_ldflags});
 
 # C - Source files

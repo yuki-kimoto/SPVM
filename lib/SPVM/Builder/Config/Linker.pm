@@ -75,6 +75,9 @@ sub new {
     if (SPVM::Builder::Util::is_windows()) {
       $self->dynamic_lib_ldflags(['-mdll']);
     }
+    elsif ($^O eq 'darwin') {
+      $self->dynamic_lib_ldflags(['-bundle']);
+    }
     else {
       $self->dynamic_lib_ldflags(['-shared']);
     }
