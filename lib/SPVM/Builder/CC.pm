@@ -100,8 +100,8 @@ sub prepare_compile_resources {
       $resource_config->quiet($config->quiet);
     }
     
-    if (exists $config->{config_global}) {
-      $resource_config->config_global($config->config_global);
+    if (exists $config->{global}) {
+      $resource_config->global($config->global);
     }
     
     my $resource_compile_infos = $builder_cc_resource->prepare_compile_class($resource_class_name, $resource_config);
@@ -204,7 +204,7 @@ sub prepare_compile_native_class {
       $need_native_class_file = 0;
     }
     else {
-      if ($config->config_global && $class_name eq ($config->config_global->class_name // '')) {
+      if ($config->global && $class_name eq ($config->global->class_name // '')) {
         $need_native_class_file = 0;
       }
       else {
@@ -450,7 +450,7 @@ sub prepare_link {
     $link_info->dl_func_list($dl_func_list);
   }
   
-  my $config_global = $config->config_global;
+  my $config_global = $config->global;
   if ($config_global) {
     $config_global->apply_build_rules($link_info->config);
   }

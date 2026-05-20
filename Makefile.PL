@@ -118,7 +118,7 @@ SPVM::Builder::Util::build_precompile_header_content_c_source();
 
 my $config_common = SPVM::Builder::Util::API::create_default_config;
 my $config_global = SPVM::Builder::Config::Util::load_config($config_global_file);
-$config_common->config_global($config_global);
+$config_common->global($config_global);
 $config_global->apply_build_rules($config_common);
 
 my $config_cc = $config_common->clone;

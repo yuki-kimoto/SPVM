@@ -240,7 +240,7 @@ sub _match_apply {
     };
     
     my $match_condition = $check_match->($config, $condition);
-    my $match_condition_global = $check_match->($config->{config_global}, $condition_global);
+    my $match_condition_global = $check_match->($config->{global}, $condition_global);
     
     $match = $match_condition && $match_condition_global;
   }

@@ -16,7 +16,7 @@ my $base_fields = [qw(
   quiet
   is_resource
   loaded_config_files
-  config_global
+  global
   resource_loader_config
 )];
 
@@ -232,12 +232,12 @@ If this field is undef, this config does specify whether the messages from the c
 
 Gets and sets C<mode> field.
 
-=head2 config_global
+=head2 global
 
-  my $config_global = $config->config_global;
-  $config->config_global($config_global);
+  my $config_global = $config->global;
+  $config->global($config_global);
 
-Gets and sets the C<config_global> field, which provides global compilation rules.
+Gets and sets the C<global> field, which provides global compilation rules.
 
 This field is an L<SPVM::Builder::Config::Global> object (like L<SPVM::Builder::Config::Exe>) that stores shared settings used across multiple compilation units.
 

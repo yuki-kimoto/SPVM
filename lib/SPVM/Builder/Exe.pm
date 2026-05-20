@@ -72,14 +72,14 @@ sub output_file {
   }
 }
 
-sub config_global {
+sub global {
   my $self = shift;
   if (@_) {
-    $self->{config_global} = $_[0];
+    $self->{global} = $_[0];
     return $self;
   }
   else {
-    return $self->{config_global};
+    return $self->{global};
   }
 }
 
@@ -173,10 +173,10 @@ sub new {
     Carp::confess("The class of a config object for creating an executable file must be SPVM::Builder::Config::Global or its child class.");
   }
   
-  $self->{config_global} = $config_global;
+  $self->{global} = $config_global;
   
-  # Although not the ideal way, this allows config_global to act as a build target itself.
-  $config_global->config_global($config_global);
+  # Although not the ideal way, this allows global to act as a build target itself.
+  $config_global->global($config_global);
   
   $self->{builder} = $builder;
   
@@ -206,7 +206,7 @@ sub build_exe_file {
   
   my $builder = $self->builder;
   
-  my $config_global = $self->config_global;
+  my $config_global = $self->global;
   
   my $output_file = $self->{output_file};
   $config_global->output_file($output_file);
@@ -236,7 +236,7 @@ sub build_exe_file {
   
   for my $compile_info (@$compile_infos) {
     my $config = $compile_info->config;
-    my $config_global = $config->config_global;
+    my $config_global = $config->global;
     if ($config_global) {
       $config_global->apply_build_rules($compile_info->config);
     }
@@ -295,7 +295,7 @@ sub prepare_compile {
   
   $self->class_name($class_name);
   
-  $self->config_global->class_name($class_name);
+  $self->global->class_name($class_name);
   
   my $runtime = $compiler->get_runtime;
   
@@ -838,7 +838,7 @@ sub prepare_compile_bootstrap_source_file {
   SPVM::Builder::Util::spurt_binary($bootstrap_source_file, $bootstrap_source, $self->builder->global_lock_fh);
   
   my $config = SPVM::Builder::Util::API::create_default_config();
-  $config->config_global($self->config_global);
+  $config->global($self->global);
   my $source_dir = $self->builder->create_build_src_path;
   
   # Compile
@@ -857,7 +857,7 @@ sub prepare_compile_spvm_core_source_files {
   
   # Config
   my $config = SPVM::Builder::Util::API::create_default_config();
-  $config->config_global($self->config_global);
+  $config->global($self->global);
   
   my $builder_dir = SPVM::Builder::Util::get_builder_dir();
   
@@ -899,7 +899,7 @@ sub prepare_compile_precompile_class {
   my $runtime = $self->builder->runtime;
   
   my $config = SPVM::Builder::Util::API::create_default_config();
-  $config->config_global($self->config_global);
+  $config->global($self->global);
   
   $config->category('precompile');
   
@@ -938,7 +938,7 @@ sub prepare_compile_native_class {
   if (defined $config_file && -f $config_file) {
     
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
-    $config->config_global($self->config_global);
+    $config->global($self->global);
     
     my $compile_resources = $self->class_name eq $class_name ? 1 : 0;
     

@@ -165,7 +165,7 @@ sub build_parallel {
         $config = SPVM::Builder::Util::API::create_default_config();
       }
       
-      $config->config_global($config_global);
+      $config->global($config_global);
       
       $config->class_name($class_name);
       $config->category($category);
@@ -567,7 +567,7 @@ sub spawn_link_command {
 sub spawn_link {
   my ($self, $link_info) = @_;
   
-  my $config_global = $link_info->config->config_global;
+  my $config_global = $link_info->config->global;
   if ($config_global) {
     for my $before_link_cb (@{$config_global->before_link_cbs}) {
       $before_link_cb->($link_info);
@@ -690,7 +690,7 @@ sub spawn_link {
 sub spawn_compile_source_file {
   my ($self, $compile_info) = @_;
   
-  my $config_global = $compile_info->config->config_global;
+  my $config_global = $compile_info->config->global;
   if ($config_global) {
     for my $before_compile_cb (@{$config_global->before_compile_cbs}) {
       $before_compile_cb->($compile_info);

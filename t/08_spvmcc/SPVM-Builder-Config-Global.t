@@ -187,11 +187,11 @@ subtest 'Config Global Explicit and Undef Matching' => sub {
   # Match global field explicitly
   {
     my $global = bless { build_type => 'debug' }, 'SPVM::Builder::Config::Global';
-    my $config = { lang => 'c', config_global => $global };
+    my $config = { lang => 'c', global => $global };
     
     my $called = 0;
     SPVM::Builder::Config::Global::_match_apply($config, { global => { build_type => 'debug' } }, sub { $called = 1 });
-    ok($called, 'Explicit Global: matches value in config_global');
+    ok($called, 'Explicit Global: matches value in global');
     
     $called = 0;
     SPVM::Builder::Config::Global::_match_apply($config, { global => { build_type => 'release' } }, sub { $called = 1 });
@@ -201,7 +201,7 @@ subtest 'Config Global Explicit and Undef Matching' => sub {
   # Match both local and global at the same time
   {
     my $global = bless { cc => 'gcc' }, 'SPVM::Builder::Config::Global';
-    my $config = { lang => 'c', config_global => $global };
+    my $config = { lang => 'c', global => $global };
     
     my $called = 0;
     SPVM::Builder::Config::Global::_match_apply($config, { lang => 'c', global => { cc => 'gcc' } }, sub { $called = 1 });
@@ -211,7 +211,7 @@ subtest 'Config Global Explicit and Undef Matching' => sub {
   # Match undef vs undef (The "Deep Sea" case)
   {
     my $global = bless { opt => undef }, 'SPVM::Builder::Config::Global';
-    my $config = { config_global => $global };
+    my $config = { global => $global };
     
     # 1. Local is missing (undef) and condition is undef
     my $called = 0;
@@ -227,7 +227,7 @@ subtest 'Config Global Explicit and Undef Matching' => sub {
   # Negative match with global
   {
     my $global = bless { build_type => 'debug' }, 'SPVM::Builder::Config::Global';
-    my $config = { config_global => $global };
+    my $config = { global => $global };
     
     my $called = 0;
     SPVM::Builder::Config::Global::_match_apply($config, { global => { '!build_type' => 'release' } }, sub { $called = 1 });
