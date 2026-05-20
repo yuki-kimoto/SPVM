@@ -977,18 +977,6 @@ package MY {
     my \$make_rule = '';
     unless (\$no_build_spvm_modules) {
       my \$options = {};
-      if (defined \$build_type) {
-        \$options->{build_type} = \$build_type;
-      }
-      if (\@ccflags) {
-        \$options->{ccflags} = [\@ccflags];
-      }
-      if (\@defines) {
-        \$options->{defines} = [\@defines];
-      }
-      if (\@ldflags) {
-        \$options->{ldflags} = [\@ldflags];
-      }
       
       \$options->{native_classes} = [
         $native_class_literal
@@ -997,6 +985,8 @@ package MY {
       \$options->{precompile_classes} = [
         $precompile_class_literal
       ];
+      
+      \$options->{config_global_file} = \$config_global_file;
       
       $make_rule_parallel
     }

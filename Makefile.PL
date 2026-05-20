@@ -243,22 +243,9 @@ package MY {
     
     unless ($no_build_spvm_modules) {
       my $options = {};
-      if (defined $build_type) {
-        $options->{build_type} = $build_type;
-      }
       $options->{dependent_files} = ['SPVM.xs'];
       
       $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)', 'pm_to_blib'];
-      
-      if (@ccflags) {
-        $options->{ccflags} = [@ccflags];
-      }
-      if (@defines) {
-        $options->{defines} = [@defines];
-      }
-      if (@ldflags) {
-        $options->{ldflags} = [@ldflags];
-      }
       
       $options->{config_global_file} = $config_global_file;
       

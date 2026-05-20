@@ -729,7 +729,7 @@ else {
   chdir($save_cur_dir) or die;
 }
 
-# perl Makefile.PL --build-type DEBUG && make && make test
+# perl Makefile.PL --build-type Debug && make && make test
 {
   my $tmp_dir = File::Temp->newdir;
   my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
@@ -742,12 +742,13 @@ else {
     or die "Can't chdir";
   
   local $ENV{PERL5LIB} = $perl5lib;
-  my $ret = system(qq|$^X Makefile.PL --build-type DEBUG && $make && $make test|);
+  my $ret = system(qq|$^X Makefile.PL --build-type Debug && $make && $make test|);
   ok($ret == 0);
   
   my $mymeta_json = 'MYMETA.json';
   ok(-f $mymeta_json);
   ok(SPVM::Builder::Util::file_contains($mymeta_json, "0.001"));
+  ok(-f '.spvm_build/global.config');
   
   chdir($save_cur_dir) or die;
 }
