@@ -9,13 +9,13 @@ sub load_config {
   my ($config_file) = @_;
   
   unless (-f $config_file) {
-    confess("The config file \"$config_file\" must exist");
+    confess("Config file \"$config_file\" must exist");
   }
   
   my $config;
   {
     open my $fh, '<', $config_file
-      or confess("The config file \"$config_file\" can't found: $!");
+      or confess("Config file \"$config_file\" can't found: $!");
     
     my $config_content = do { local $/; <$fh> };
     
@@ -23,11 +23,11 @@ sub load_config {
   }
   
   if ($@) {
-    confess("The config file \"$config_file\" can't be parsed: $@");
+    confess("Config file \"$config_file\" can't be parsed: $@");
   }
   
   unless (defined $config && $config->isa('SPVM::Builder::Config::Linker')) {
-    confess("The config file must be an SPVM::Builder::Config::Linker object.");
+    confess("Config file must be an SPVM::Builder::Config::Linker object.");
   }
   
   push @{$config->loaded_config_files}, $config_file;
@@ -86,6 +86,36 @@ sub remove_ext_from_config_file {
   my $config_file_without_ext = "$config_dir$config_base_name";
   
   return $config_file_without_ext;
+}
+
+sub load_config_global {
+  my ($config_global_file) = @_;
+
+  unless (-f $config_global_file) {
+    confess("Config file '$config_global_file' must exist");
+  }
+
+  my $config_global;
+  {
+    open my $fh, '<', $config_global_file
+      or confess("Config file '$config_global_file' can't be opened: $!");
+
+    my $config_content = do { local $/; <$fh> };
+
+    # Prepare and eval config content for global
+    $config_global = &_eval_config_global_content($config_content, $config_global_file);
+  }
+
+  if ($@) {
+    confess("Config file '$config_global_file' can't be parsed: $@");
+  }
+
+  # Verify object type
+  unless (defined $config_global && $config_global->isa('SPVM::Builder::Config::Global')) {
+    confess("Config file must be an SPVM::Builder::Config::Global object.");
+  }
+
+  return $config_global;
 }
 
 1;
@@ -156,4 +186,14 @@ Examples:
   my $config_file_without_ext = SPVM::Builder::Config::Util::remove_ext_from_config_file($config_file);
 
 Removes the all extension from the config file path $config_file and returns it.
+
+=head2 load_config_global
+
+  my $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
+
+Loads the global config from the config file $config_global_file and returns an L<SPVM::Builder::Config::Global> object.
+
+Examples:
+
+  my $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
 
