@@ -345,7 +345,6 @@ sub prepare_link {
   my $output_type = $config->output_type;
   
   my $link_info = SPVM::Builder::LinkInfo->new(
-    class_name => $class_name,
     config => $config,
     object_file_infos => $object_file_infos,
   );

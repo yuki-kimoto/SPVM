@@ -10,10 +10,12 @@ use File::Basename 'dirname';
 use SPVM::Builder::Accessor 'has';
 
 # Fields
-has [qw(
+my $field_names = [qw(
+  config
   object_file_infos
   dl_func_list
 )];
+has $field_names;
 
 # Class Methods
 sub new {
@@ -25,15 +27,9 @@ sub new {
     @_
   };
   
-  bless $self, $class;
+  bless $self, ref $class || $class;
   
-  my $config = $self->config;
-  
-  unless ($config) {
-    confess("The \"config\" field must be defined.");
-  }
-  
-  $self->config($config->clone);
+  SPVM::Builder::Util::check_option_names($self, $field_names);
   
   return $self;
 }
