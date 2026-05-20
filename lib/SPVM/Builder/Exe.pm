@@ -324,8 +324,6 @@ sub prepare_compile_source_file {
   # Build directory
   my $build_dir = $self->builder->build_dir;
   
-  my $runtime = $self->builder->runtime;
-  
   my $compile_info = SPVM::Builder::CompileInfo->new(
     source_dir => $source_dir,
     source_rel_file => $source_rel_file,
@@ -886,8 +884,6 @@ sub prepare_compile_precompile_class {
   
   my $build_dir = $self->builder->build_dir;
   
-  my $runtime = $self->builder->runtime;
-  
   my $config = SPVM::Builder::Util::API::create_default_config();
   $config->global($self->config->global);
   
@@ -909,8 +905,6 @@ sub prepare_compile_native_class {
   my $builder = $self->builder;
   
   my $build_dir = $self->builder->build_dir;
-  
-  my $runtime = $self->builder->runtime;
   
   my $all_compile_infos = [];
   
