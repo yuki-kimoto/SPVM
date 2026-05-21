@@ -119,7 +119,6 @@ sub build_parallel {
   my $cc = SPVM::Builder::CC->new(%$cc_options);
   
   my @all_compile_infos;
-  my %link_targets_h;
   my $link_targets = [];
   
   my $config_global;
@@ -165,12 +164,7 @@ sub build_parallel {
         $self->finalize_compile_info($compile_info);
       }
       
-      # Store information for the next steps
       push @all_compile_infos, @$compile_infos;
-      $link_targets_h{$category}{$class_name} = {
-        config => $config,
-        compile_infos => $compile_infos,
-      };
       
       push @$link_targets, {config => $config, compile_infos => $compile_infos};
     }
