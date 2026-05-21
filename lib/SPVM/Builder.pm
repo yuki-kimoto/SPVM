@@ -126,7 +126,7 @@ sub build_parallel {
   }
   
   # Prepare all compile information
-  my @categories = ('native', 'precompile');
+  my @categories = ('native');
   for my $category (@categories) {
     my $class_names = $options->{"${category}_classes"};
     next unless defined $class_names;
@@ -147,6 +147,14 @@ sub build_parallel {
       
       my $compile_infos = $cc->prepare_compile_class($class_name, $config);
       push @$link_targets, {config => $config, compile_infos => $compile_infos};
+    }
+  }
+  
+  my $precompile_class_names = $options->{precompile_classes};
+  if ($precompile_class_names) {
+    my $precompile_compile_infos = $self->prepare_compile_precompile_classes($precompile_class_names);
+    if (@$precompile_compile_infos) {
+      push @$link_targets, {config => $precompile_compile_infos->[0]->config, compile_infos => $precompile_compile_infos};
     }
   }
   
