@@ -110,7 +110,6 @@ sub build_parallel {
   my $option_names = [qw(
     native_classes
     precompile_classes
-    config_global_file
   )];
   
   SPVM::Builder::Util::check_option_names($options, $option_names);
