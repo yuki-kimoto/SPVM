@@ -120,13 +120,14 @@ sub build_parallel {
   
   my $link_targets = [];
   
-  my $config_global;
-  if (defined (my $config_global_file = $self->config_global_file)) {
-    $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
+  my $precompile_class_names = $options->{precompile_classes};
+  if ($precompile_class_names) {
+    my $precompile_compile_infos = $self->prepare_compile_precompile_classes($precompile_class_names);
+    push @$link_targets, {config => $precompile_compile_infos->[0]->config, compile_infos => $precompile_compile_infos};
   }
   
   # Prepare all compile information
-  my @categories = ('native', 'precompile');
+  my @categories = ('native');
   for my $category (@categories) {
     my $class_names = $options->{"${category}_classes"};
     next unless defined $class_names;
@@ -151,6 +152,11 @@ sub build_parallel {
   }
   
   my @all_compile_infos = map { @{$_->{compile_infos}} } @$link_targets;
+  
+  my $config_global;
+  if (defined (my $config_global_file = $self->config_global_file)) {
+    $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
+  }
   
   for my $compile_info (@all_compile_infos) {
     my $config = $compile_info->config;
