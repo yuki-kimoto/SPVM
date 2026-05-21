@@ -298,7 +298,20 @@ sub prepare_compile_classes {
   }
   
   for my $class_name (@$class_names) {
-    my $native_compile_infos = $self->prepare_compile_native_class($class_name, $options);
+    my $no_compile_resources = $self->class_name eq $class_name ? 0 : 1;
+    
+    my $script_name = $self->script_name;
+    my $config_file;
+    if ($class_name eq $self->class_name) {
+      $config_file = $script_name;
+      $config_file =~ s/\..*$//;
+      $config_file .= '.config';
+    }
+    else {
+      $config_file = SPVM::Builder::Util::search_config_file($class_name);
+    }
+    
+    my $native_compile_infos = $self->prepare_compile_native_class($class_name, {%$options, no_compile_resources => $no_compile_resources, config_file => $config_file});
     push @$compile_infos, @$native_compile_infos;
   }
   
@@ -827,18 +840,9 @@ sub prepare_compile_native_class {
   
   my $builder = $self->builder;
   
-  my $no_compile_resources = $self->class_name eq $class_name ? 0 : 1;
-  
-  my $script_name = $self->script_name;
-  my $config_file;
-  if ($class_name eq $self->class_name) {
-    $config_file = $script_name;
-    $config_file =~ s/\..*$//;
-    $config_file .= '.config';
-  }
-  else {
-    $config_file = SPVM::Builder::Util::search_config_file($class_name);
-  }
+  $options //= {};
+  my $no_compile_resources = $options->{no_compile_resources};
+  my $config_file = $options->{config_file};
   
   $options //= {};
   my $config_global = $options->{config_global};
