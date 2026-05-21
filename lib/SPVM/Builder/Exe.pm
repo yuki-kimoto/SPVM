@@ -293,12 +293,12 @@ sub prepare_compile_classes {
   
   my $compile_infos = [];
   for my $class_name (@$class_names) {
-    my $precompile_compile_infos = $self->prepare_compile_precompile_class($class_name);
+    my $precompile_compile_infos = $self->prepare_compile_precompile_class($class_name, {config_global => $self->config->global});
     push @$compile_infos, @$precompile_compile_infos;
   }
   
   for my $class_name (@$class_names) {
-    my $native_compile_infos = $self->prepare_compile_native_class($class_name);
+    my $native_compile_infos = $self->prepare_compile_native_class($class_name, {config_global => $self->config->global});
     push @$compile_infos, @$native_compile_infos;
   }
   
@@ -798,10 +798,15 @@ sub prepare_compile_bootstrap_source_file {
 }
 
 sub prepare_compile_precompile_class {
-  my ($self, $class_name) = @_;
+  my ($self, $class_name, $options) = @_;
+  
+  $options //= {};
+  my $config_global = $options->{config_global};
   
   my $config = SPVM::Builder::Util::API::create_default_config();
-  $config->global($self->config->global);
+  if ($config_global) {
+    $config->global($config_global);
+  }
   
   $config->category('precompile');
   
@@ -816,7 +821,10 @@ sub prepare_compile_precompile_class {
 }
 
 sub prepare_compile_native_class {
-  my ($self, $class_name) = @_;
+  my ($self, $class_name, $options) = @_;
+  
+  $options //= {};
+  my $config_global = $options->{config_global};
   
   my $all_compile_infos = [];
   
@@ -834,7 +842,9 @@ sub prepare_compile_native_class {
   if (defined $config_file && -f $config_file) {
     
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
-    $config->global($self->config->global);
+    if ($config_global) {
+      $config->global($config_global);
+    }
     
     my $compile_resources = $self->class_name eq $class_name ? 1 : 0;
     
