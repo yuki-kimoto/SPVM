@@ -1001,6 +1001,7 @@ sub prepare_compile_precompile_class {
   
   my $config = SPVM::Builder::Util::API::create_default_config();
   
+  $config->class_name($class_name);
   $config->category('precompile');
   
   my $builder_cc = SPVM::Builder::CC->new(
@@ -1024,6 +1025,8 @@ sub prepare_compile_native_class {
   
   if (defined $config_file && -f $config_file) {
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
+    $config->class_name($class_name);
+    $config->category('native');
     my $builder_cc = SPVM::Builder::CC->new(
       builder => $self,
     );
