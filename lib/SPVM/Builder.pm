@@ -1018,6 +1018,59 @@ sub prepare_compile_spvm_core_source_files {
   return $compile_infos;
 }
 
+sub prepare_compile_precompile_class {
+  my ($self, $class_name, $options) = @_;
+  
+  $options //= {};
+  my $config_global = $options->{config_global};
+  
+  my $config = SPVM::Builder::Util::API::create_default_config();
+  if ($config_global) {
+    $config->global($config_global);
+  }
+  
+  $config->category('precompile');
+  
+  my $builder_cc = SPVM::Builder::CC->new(
+    builder => $self,
+  );
+  my $compile_infos = [];
+  my $precompile_compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
+  push @$compile_infos, @$precompile_compile_infos;
+  
+  return $compile_infos;
+}
+
+sub prepare_compile_native_class {
+  my ($self, $class_name, $options) = @_;
+  
+  $options //= {};
+  my $no_compile_resources = $options->{no_compile_resources};
+  my $config_file = $options->{config_file};
+  
+  $options //= {};
+  my $config_global = $options->{config_global};
+  
+  my $all_compile_infos = [];
+  
+  if (defined $config_file && -f $config_file) {
+    
+    my $config = SPVM::Builder::Config::Util::load_config($config_file);
+    if ($config_global) {
+      $config->global($config_global);
+    }
+    
+    my $builder_cc = SPVM::Builder::CC->new(
+      builder => $self,
+    );
+    $builder_cc->no_compile_resources($no_compile_resources);
+    my $compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
+    push @$all_compile_infos, @$compile_infos;
+  }
+  
+  return $all_compile_infos;
+}
+
 1;
 
 =encoding utf8

@@ -289,11 +289,13 @@ sub prepare_compile {
 sub prepare_compile_classes {
   my ($self, $options) = @_;
   
+  my $builder = $self->builder;
+  
   my $class_names = $self->get_user_defined_basic_type_names;
   
   my $compile_infos = [];
   for my $class_name (@$class_names) {
-    my $precompile_compile_infos = $self->prepare_compile_precompile_class($class_name, $options);
+    my $precompile_compile_infos = $builder->prepare_compile_precompile_class($class_name, $options);
     push @$compile_infos, @$precompile_compile_infos;
   }
   
@@ -311,7 +313,7 @@ sub prepare_compile_classes {
       $config_file = SPVM::Builder::Util::search_config_file($class_name);
     }
     
-    my $native_compile_infos = $self->prepare_compile_native_class($class_name, {%$options, no_compile_resources => $no_compile_resources, config_file => $config_file});
+    my $native_compile_infos = $builder->prepare_compile_native_class($class_name, {%$options, no_compile_resources => $no_compile_resources, config_file => $config_file});
     push @$compile_infos, @$native_compile_infos;
   }
   
@@ -808,63 +810,6 @@ sub prepare_compile_bootstrap_source_file {
   );
   
   return $compile_info;
-}
-
-sub prepare_compile_precompile_class {
-  my ($self, $class_name, $options) = @_;
-  
-  my $builder = $self->builder;
-  
-  $options //= {};
-  my $config_global = $options->{config_global};
-  
-  my $config = SPVM::Builder::Util::API::create_default_config();
-  if ($config_global) {
-    $config->global($config_global);
-  }
-  
-  $config->category('precompile');
-  
-  my $builder_cc = SPVM::Builder::CC->new(
-    builder => $builder,
-  );
-  my $compile_infos = [];
-  my $precompile_compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
-  push @$compile_infos, @$precompile_compile_infos;
-  
-  return $compile_infos;
-}
-
-sub prepare_compile_native_class {
-  my ($self, $class_name, $options) = @_;
-  
-  my $builder = $self->builder;
-  
-  $options //= {};
-  my $no_compile_resources = $options->{no_compile_resources};
-  my $config_file = $options->{config_file};
-  
-  $options //= {};
-  my $config_global = $options->{config_global};
-  
-  my $all_compile_infos = [];
-  
-  if (defined $config_file && -f $config_file) {
-    
-    my $config = SPVM::Builder::Config::Util::load_config($config_file);
-    if ($config_global) {
-      $config->global($config_global);
-    }
-    
-    my $builder_cc = SPVM::Builder::CC->new(
-      builder => $builder,
-    );
-    $builder_cc->no_compile_resources($no_compile_resources);
-    my $compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
-    push @$all_compile_infos, @$compile_infos;
-  }
-  
-  return $all_compile_infos;
 }
 
 sub get_user_defined_basic_type_names {
