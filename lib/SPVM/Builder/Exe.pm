@@ -218,7 +218,7 @@ sub build_exe_file {
   push @$compile_infos, $bootstrap_compile_info;
   
   # Compile SPVM core source files
-  my $spvm_compile_infos = $self->prepare_compile_spvm_core_source_files;
+  my $spvm_compile_infos = $self->prepare_compile_spvm_core_source_files({config_global => $self->config->global});
   push @$compile_infos, @$spvm_compile_infos;
   
   my $classes_compile_infos = $self->prepare_compile_classes;
@@ -791,11 +791,16 @@ sub prepare_compile_bootstrap_source_file {
 }
 
 sub prepare_compile_spvm_core_source_files {
-  my ($self) = @_;
+  my ($self, $options) = @_;
+  
+  $options //= {};
+  my $config_global = $options->{config_global};
   
   # Config
   my $config = SPVM::Builder::Util::API::create_default_config();
-  $config->global($self->config->global);
+  if ($config_global) {
+    $config->global($config_global);
+  }
   
   my $builder_dir = SPVM::Builder::Util::get_builder_dir();
   
