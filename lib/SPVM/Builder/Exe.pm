@@ -305,25 +305,6 @@ sub prepare_compile_classes {
   return $compile_infos;
 }
 
-sub prepare_compile_source_file {
-  my ($self, $options) = @_;
-  
-  my $config = $options->{config};
-  my $include_dirs = $self->builder->include_dirs;
-  my $source_dir = $options->{source_dir};
-  my $source_rel_file = $options->{source_rel_file};
-  
-  my $compile_info = SPVM::Builder::CompileInfo->new(
-    source_dir => $source_dir,
-    source_rel_file => $source_rel_file,
-    config => $config,
-    category => $options->{category},
-    dependent_files => [@$include_dirs],
-  );
-  
-  return $compile_info;
-}
-
 sub create_bootstrap_header_source {
   my ($self) = @_;
   
@@ -787,28 +768,25 @@ sub create_bootstrap_source {
 sub prepare_compile_bootstrap_source_file {
   my ($self) = @_;
   
-  # Create bootstrap C source
   my $bootstrap_source = $self->create_bootstrap_source;
   
   my $source_rel_file = $self->create_bootstrap_source_rel_file_path($bootstrap_source);
   
-  # Source file - Output
   my $bootstrap_source_file = $self->builder->create_build_src_path($source_rel_file);
   
-  # Check if generating is needed by comparing content
   SPVM::Builder::Util::spurt_binary($bootstrap_source_file, $bootstrap_source, $self->builder->global_lock_fh);
   
   my $config = SPVM::Builder::Util::API::create_default_config();
   $config->global($self->config->global);
   my $source_dir = $self->builder->create_build_src_path;
   
-  # Compile
-  my $compile_info = $self->prepare_compile_source_file({
+  my $compile_info = SPVM::Builder::CompileInfo->new(
     source_dir => $source_dir,
     source_rel_file => $source_rel_file,
     config => $config,
     category => 'bootstrap',
-  });
+    dependent_files => [@{$self->builder->include_dirs}],
+  );
   
   return $compile_info;
 }
@@ -837,13 +815,15 @@ sub prepare_compile_spvm_core_source_files {
   my $compile_infos = [];
   for my $spvm_runtime_src_base_name (@$spvm_runtime_src_base_names) {
     my $source_rel_file = "SPVM/Builder/src/$spvm_runtime_src_base_name";
-    my $compile_info = $self->prepare_compile_source_file({
+    
+    my $compile_info = SPVM::Builder::CompileInfo->new(
       source_dir => $source_dir,
       source_rel_file => $source_rel_file,
       config => $config,
       category => 'spvm_core',
-      include_dir => $builder_include_dir,
-    });
+      dependent_files => [$builder_include_dir],
+    );
+    
     push @$compile_infos, $compile_info;
   }
   
