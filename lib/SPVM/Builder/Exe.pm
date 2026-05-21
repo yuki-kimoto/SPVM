@@ -221,8 +221,29 @@ sub build_exe_file {
   my $spvm_compile_infos = $builder->prepare_compile_spvm_core_source_files({config_global => $self->config->global});
   push @$compile_infos, @$spvm_compile_infos;
   
-  my $classes_compile_infos = $self->prepare_compile_classes({config_global => $self->config->global});
+  my $class_names_include_spvm_script_class_name = $self->get_user_defined_basic_type_names;
+  my $class_names = [];
+  my $spvm_script_class_name;
+  my $spvm_script_config_file;
+  for my $class_name (@$class_names_include_spvm_script_class_name) {
+    my $script_name = $self->script_name;
+    my $config_file;
+    if ($class_name eq $self->class_name) {
+      $spvm_script_class_name = $class_name;
+      $spvm_script_config_file = $script_name;
+      $spvm_script_config_file =~ s/\..*$//;
+      $spvm_script_config_file .= '.config';
+    }
+    else {
+      push @$class_names, $class_name;
+    }
+  }
+  my $no_compile_resources = 1;
+  my $classes_compile_infos = $self->prepare_compile_classes({class_names => $class_names, no_compile_resources => $no_compile_resources, config_global => $self->config->global});
   push @$compile_infos, @$classes_compile_infos;
+  
+  my $spvm_scritp_native_compile_infos = $builder->prepare_compile_native_class($spvm_script_class_name, {config_global => $self->config->global, config_file => $spvm_script_config_file});
+  push @$compile_infos, @$spvm_scritp_native_compile_infos;
   
   for my $compile_info (@$compile_infos) {
     my $config = $compile_info->config;
@@ -289,26 +310,11 @@ sub prepare_compile {
 sub prepare_compile_classes {
   my ($self, $options) = @_;
   
+  $options //= {};
+  my $no_compile_resources = $options->{no_compile_resources};
+  my $class_names = $options->{class_names};
+  
   my $builder = $self->builder;
-  
-  my $class_names_include_spvm_script_class_name = $self->get_user_defined_basic_type_names;
-  
-  my $class_names = [];
-  my $spvm_script_class_name;
-  my $spvm_script_config_file;
-  for my $class_name (@$class_names_include_spvm_script_class_name) {
-    my $script_name = $self->script_name;
-    my $config_file;
-    if ($class_name eq $self->class_name) {
-      $spvm_script_class_name = $class_name;
-      $spvm_script_config_file = $script_name;
-      $spvm_script_config_file =~ s/\..*$//;
-      $spvm_script_config_file .= '.config';
-    }
-    else {
-      push @$class_names, $class_name;
-    }
-  }
   
   my $compile_infos = [];
   for my $class_name (@$class_names) {
@@ -317,13 +323,9 @@ sub prepare_compile_classes {
   }
   
   for my $class_name (@$class_names) {
-    my $no_compile_resources = 1;
     my $native_compile_infos = $builder->prepare_compile_native_class($class_name, {%$options, no_compile_resources => $no_compile_resources});
     push @$compile_infos, @$native_compile_infos;
   }
-  
-  my $spvm_scritp_native_compile_infos = $builder->prepare_compile_native_class($spvm_script_class_name, {%$options, config_file => $spvm_script_config_file});
-  push @$compile_infos, @$spvm_scritp_native_compile_infos;
   
   return $compile_infos;
 }
