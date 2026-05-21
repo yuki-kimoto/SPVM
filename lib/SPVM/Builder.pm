@@ -107,18 +107,13 @@ sub build_parallel {
   $options ||= {};
   
   # Allowed options (White list)
-  my %allowed_options = map { $_ => 1 } qw(
+  my $option_names = [qw(
     native_classes
     precompile_classes
     config_global_file
-  );
+  )];
   
-  # Check for invalid options
-  for my $key (keys %$options) {
-    unless ($allowed_options{$key}) {
-      confess("Invalid option \"$key\" passed to build_parallel method.");
-    }
-  }
+  SPVM::Builder::Util::check_option_names($options, $option_names);
   
   my $output_files_h = {};
   
@@ -127,7 +122,7 @@ sub build_parallel {
   my $cc = SPVM::Builder::CC->new(%$cc_options);
   
   my @all_compile_infos;
-  my %class_to_context;
+  my %link_targets_h;
   
   my $config_global;
   if (defined (my $config_global_file = $self->config_global_file)) {
@@ -174,7 +169,7 @@ sub build_parallel {
       
       # Store information for the next steps
       push @all_compile_infos, @$compile_infos;
-      $class_to_context{$category}{$class_name} = {
+      $link_targets_h{$category}{$class_name} = {
         config => $config,
         compile_infos => $compile_infos,
       };
@@ -186,22 +181,22 @@ sub build_parallel {
   
   # Prepare all link information
   my @all_link_infos;
-  for my $category (keys %class_to_context) {
-    for my $class_name (keys %{$class_to_context{$category}}) {
-      my $ctx = $class_to_context{$category}{$class_name};
-      my $compile_infos = $ctx->{compile_infos};
+  for my $category (keys %link_targets_h) {
+    for my $class_name (keys %{$link_targets_h{$category}}) {
+      my $link_target = $link_targets_h{$category}{$class_name};
+      my $compile_infos = $link_target->{compile_infos};
       
       my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
       unless (@$object_file_infos) {
         confess("[Unexpected Error]\$object_file_infos must have object files for $class_name.");
       }
       
-      my $link_info = $cc->prepare_link($class_name, $object_file_infos, $ctx->{config});
+      my $link_info = $cc->prepare_link($class_name, $object_file_infos, $link_target->{config});
       if ($config_global) {
         $config_global->apply_build_rules($link_info->config);
       }
       
-      $ctx->{link_info} = $link_info;
+      $link_target->{link_info} = $link_info;
       push @all_link_infos, $link_info;
     }
   }
@@ -210,11 +205,11 @@ sub build_parallel {
   $self->command_parallel(\@all_link_infos);
   
   # Finalize and collect output file paths
-  for my $category (keys %class_to_context) {
-    for my $class_name (keys %{$class_to_context{$category}}) {
-      my $ctx = $class_to_context{$category}{$class_name};
-      my $link_info = $ctx->{link_info};
-      my $config = $ctx->{config};
+  for my $category (keys %link_targets_h) {
+    for my $class_name (keys %{$link_targets_h{$category}}) {
+      my $link_target = $link_targets_h{$category}{$class_name};
+      my $link_info = $link_target->{link_info};
+      my $config = $link_target->{config};
       
       # Execute after_link_cbs
       my $after_link_cbs = $config->global->after_link_cbs;
