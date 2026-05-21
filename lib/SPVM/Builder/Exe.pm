@@ -210,17 +210,6 @@ sub build_exe_file {
   
   my $class_file = $class->get_class_file;
   
-  # Object files
-  my $compile_infos = [];
-  
-  # Compile bootstrap C source
-  my $bootstrap_compile_info = $self->prepare_compile_bootstrap_source_file({config_global => $self->config->global});
-  push @$compile_infos, $bootstrap_compile_info;
-  
-  # Compile SPVM core source files
-  my $spvm_compile_infos = $builder->prepare_compile_spvm_core_source_files({config_global => $self->config->global});
-  push @$compile_infos, @$spvm_compile_infos;
-  
   my $class_names_include_spvm_script_class_name = $self->get_user_defined_basic_type_names;
   my $class_names = [];
   my $spvm_script_class_name;
@@ -239,6 +228,18 @@ sub build_exe_file {
     }
   }
   my $no_compile_resources = 1;
+  
+  # Object files
+  my $compile_infos = [];
+  
+  # Compile bootstrap C source
+  my $bootstrap_compile_info = $self->prepare_compile_bootstrap_source_file({config_global => $self->config->global});
+  push @$compile_infos, $bootstrap_compile_info;
+  
+  # Compile SPVM core source files
+  my $spvm_compile_infos = $builder->prepare_compile_spvm_core_source_files({config_global => $self->config->global});
+  push @$compile_infos, @$spvm_compile_infos;
+  
   my $native_classes_compile_infos = $builder->prepare_compile_native_classes($class_names, {no_compile_resources => $no_compile_resources, config_global => $self->config->global});
   push @$compile_infos, @$native_classes_compile_infos;
   
