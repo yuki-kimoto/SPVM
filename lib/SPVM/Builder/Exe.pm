@@ -785,7 +785,6 @@ sub prepare_compile_bootstrap_source_file {
     source_rel_file => $source_rel_file,
     config => $config,
     category => 'bootstrap',
-    dependent_files => [@{$self->builder->include_dirs}],
   );
   
   return $compile_info;
