@@ -114,8 +114,6 @@ sub build_parallel {
   
   SPVM::Builder::Util::check_option_names($options, $option_names);
   
-  my $output_files_h = {};
-  
   my $cc_options = {builder => $self};
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);
@@ -204,20 +202,20 @@ sub build_parallel {
   $self->command_parallel(\@all_link_infos);
   
   # Finalize and collect output file paths
-  for my $category (keys %link_targets_h) {
-    for my $class_name (keys %{$link_targets_h{$category}}) {
-      my $link_target = $link_targets_h{$category}{$class_name};
-      my $link_info = $link_target->{link_info};
-      my $config = $link_target->{config};
-      
-      # Execute after_link_cbs
-      my $after_link_cbs = $config->global->after_link_cbs;
-      for my $after_link_cb (@$after_link_cbs) {
-        $after_link_cb->($link_info);
-      }
-      # Store result in the return hash
-      $output_files_h->{$category}{$class_name} = $link_info->output_file;
+  my $output_files_h = {};
+  for my $link_info (@all_link_infos) {
+    my $config = $link_info->config;
+    
+    # Execute after_link_cbs
+    my $after_link_cbs = $config->global->after_link_cbs;
+    for my $after_link_cb (@$after_link_cbs) {
+      $after_link_cb->($link_info);
     }
+    
+    # Store result in the return hash
+    my $class_name = $config->class_name;
+    my $category = $config->category;
+    $output_files_h->{$category}{$class_name} = $link_info->output_file;
   }
   
   return $output_files_h;
