@@ -120,6 +120,7 @@ sub build_parallel {
   
   my @all_compile_infos;
   my %link_targets_h;
+  my $link_targets = [];
   
   my $config_global;
   if (defined (my $config_global_file = $self->config_global_file)) {
@@ -170,6 +171,8 @@ sub build_parallel {
         config => $config,
         compile_infos => $compile_infos,
       };
+      
+      push @$link_targets, {config => $config, compile_infos => $compile_infos};
     }
   }
   
@@ -178,24 +181,22 @@ sub build_parallel {
   
   # Prepare all link information
   my @all_link_infos;
-  for my $category (keys %link_targets_h) {
-    for my $class_name (keys %{$link_targets_h{$category}}) {
-      my $link_target = $link_targets_h{$category}{$class_name};
-      my $compile_infos = $link_target->{compile_infos};
-      
-      my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
-      unless (@$object_file_infos) {
-        confess("[Unexpected Error]\$object_file_infos must have object files for $class_name.");
-      }
-      
-      my $link_info = $cc->prepare_link($class_name, $object_file_infos, $link_target->{config});
-      if ($config_global) {
-        $config_global->apply_build_rules($link_info->config);
-      }
-      
-      $link_target->{link_info} = $link_info;
-      push @all_link_infos, $link_info;
+  for my $link_target (@$link_targets) {
+    my $config = $link_target->{config};
+    my $class_name = $config->class_name;
+    my $compile_infos = $link_target->{compile_infos};
+    
+    my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
+    unless (@$object_file_infos) {
+      confess("[Unexpected Error]\$object_file_infos must have object files for $class_name.");
     }
+    
+    my $link_info = $cc->prepare_link($class_name, $object_file_infos, $config);
+    if ($config_global) {
+      $config_global->apply_build_rules($link_info->config);
+    }
+    
+    push @all_link_infos, $link_info;
   }
   
   # Execute all links in parallel
