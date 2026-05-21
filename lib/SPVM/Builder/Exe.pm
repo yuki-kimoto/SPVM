@@ -239,8 +239,11 @@ sub build_exe_file {
     }
   }
   my $no_compile_resources = 1;
-  my $classes_compile_infos = $builder->prepare_compile_classes({class_names => $class_names, no_compile_resources => $no_compile_resources, config_global => $self->config->global});
-  push @$compile_infos, @$classes_compile_infos;
+  my $native_classes_compile_infos = $builder->prepare_compile_native_classes($class_names, {no_compile_resources => $no_compile_resources, config_global => $self->config->global});
+  push @$compile_infos, @$native_classes_compile_infos;
+  
+  my $precompile_classes_compile_infos = $builder->prepare_compile_precompile_classes($class_names, {config_global => $self->config->global});
+  push @$compile_infos, @$precompile_classes_compile_infos;
   
   my $spvm_scritp_native_compile_infos = $builder->prepare_compile_native_class($spvm_script_class_name, {config_global => $self->config->global, config_file => $spvm_script_config_file});
   push @$compile_infos, @$spvm_scritp_native_compile_infos;
