@@ -129,21 +129,15 @@ sub build_parallel {
   my @all_compile_infos;
   my %class_to_context;
   
-  # Define categories and their corresponding keys in $options
-  my %category_to_key = (
-    native     => 'native_classes',
-    precompile => 'precompile_classes',
-  );
-  
   my $config_global;
   if (defined (my $config_global_file = $self->config_global_file)) {
     $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
   }
   
   # Prepare all compile information
-  for my $category (keys %category_to_key) {
-    my $key = $category_to_key{$category};
-    my $class_names = $options->{$key};
+  my @categories = ('native', 'precompile');
+  for my $category (@categories) {
+    my $class_names = $options->{"${category}_classes"};
     next unless defined $class_names;
     
     for my $class_name (@$class_names) {
