@@ -100,10 +100,6 @@ sub prepare_compile_resources {
       $resource_config->quiet($config->quiet);
     }
     
-    if (exists $config->{global}) {
-      $resource_config->global($config->global);
-    }
-    
     my $resource_compile_infos = $builder_cc_resource->prepare_compile_class($resource_class_name, $resource_config);
     push @$compile_infos, @$resource_compile_infos;
   }

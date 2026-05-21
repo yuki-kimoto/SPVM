@@ -250,6 +250,7 @@ sub build_exe_file {
   push @$compile_infos, @$spvm_scritp_native_compile_infos;
   
   for my $compile_info (@$compile_infos) {
+    $compile_info->config->global($config->global);
     my $config = $compile_info->config;
     $config->global->apply_build_rules($compile_info->config);
   }
