@@ -201,18 +201,19 @@ sub build_parallel {
   # Execute all links in parallel
   $self->command_parallel(\@all_link_infos);
   
-  # Finalize and collect output file paths
-  my $output_files_h = {};
+  # Execute after_link_cbs
   for my $link_info (@all_link_infos) {
     my $config = $link_info->config;
-    
-    # Execute after_link_cbs
     my $after_link_cbs = $config->global->after_link_cbs;
     for my $after_link_cb (@$after_link_cbs) {
       $after_link_cb->($link_info);
     }
-    
-    # Store result in the return hash
+  }
+  
+  # Store result in the return hash
+  my $output_files_h = {};
+  for my $link_info (@all_link_infos) {
+    my $config = $link_info->config;
     my $class_name = $config->class_name;
     my $category = $config->category;
     $output_files_h->{$category}{$class_name} = $link_info->output_file;
