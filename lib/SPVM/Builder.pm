@@ -979,20 +979,12 @@ sub finalize_compile_info {
 }
 
 sub prepare_compile_spvm_core_source_files {
-  my ($self, $options) = @_;
+  my ($self) = @_;
   
-  $options //= {};
-  my $config_global = $options->{config_global};
-  
-  # Config
   my $config = SPVM::Builder::Util::API::create_default_config();
-  if ($config_global) {
-    $config->global($config_global);
-  }
   
   my $builder_dir = SPVM::Builder::Util::get_builder_dir();
   
-  # SPVM src directory
   my $builder_src_dir = "$builder_dir/src";
   
   my $builder_include_dir = "$builder_dir/include";
@@ -1000,7 +992,6 @@ sub prepare_compile_spvm_core_source_files {
   my $source_dir = $builder_dir;
   $source_dir =~ s|/SPVM/Builder$||;
   
-  # SPVM runtime source files
   my $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
   
   # Compile source files
@@ -1023,15 +1014,9 @@ sub prepare_compile_spvm_core_source_files {
 }
 
 sub prepare_compile_precompile_class {
-  my ($self, $class_name, $options) = @_;
-  
-  $options //= {};
-  my $config_global = $options->{config_global};
+  my ($self, $class_name) = @_;
   
   my $config = SPVM::Builder::Util::API::create_default_config();
-  if ($config_global) {
-    $config->global($config_global);
-  }
   
   $config->category('precompile');
   
@@ -1052,18 +1037,10 @@ sub prepare_compile_native_class {
   my $no_compile_resources = $options->{no_compile_resources};
   my $config_file = $options->{config_file} // SPVM::Builder::Util::search_config_file($class_name);
   
-  $options //= {};
-  my $config_global = $options->{config_global};
-  
   my $all_compile_infos = [];
   
   if (defined $config_file && -f $config_file) {
-    
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
-    if ($config_global) {
-      $config->global($config_global);
-    }
-    
     my $builder_cc = SPVM::Builder::CC->new(
       builder => $self,
     );

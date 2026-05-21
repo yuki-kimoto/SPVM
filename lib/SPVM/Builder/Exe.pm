@@ -233,20 +233,20 @@ sub build_exe_file {
   my $compile_infos = [];
   
   # Compile bootstrap C source
-  my $bootstrap_compile_info = $self->prepare_compile_bootstrap_source_file({config_global => $self->config->global});
+  my $bootstrap_compile_info = $self->prepare_compile_bootstrap_source_file;
   push @$compile_infos, $bootstrap_compile_info;
   
   # Compile SPVM core source files
-  my $spvm_compile_infos = $builder->prepare_compile_spvm_core_source_files({config_global => $self->config->global});
+  my $spvm_compile_infos = $builder->prepare_compile_spvm_core_source_files;
   push @$compile_infos, @$spvm_compile_infos;
   
-  my $native_classes_compile_infos = $builder->prepare_compile_native_classes($class_names, {no_compile_resources => $no_compile_resources, config_global => $self->config->global});
+  my $native_classes_compile_infos = $builder->prepare_compile_native_classes($class_names, {no_compile_resources => $no_compile_resources});
   push @$compile_infos, @$native_classes_compile_infos;
   
-  my $precompile_classes_compile_infos = $builder->prepare_compile_precompile_classes($class_names, {config_global => $self->config->global});
+  my $precompile_classes_compile_infos = $builder->prepare_compile_precompile_classes($class_names);
   push @$compile_infos, @$precompile_classes_compile_infos;
   
-  my $spvm_scritp_native_compile_infos = $builder->prepare_compile_native_class($spvm_script_class_name, {config_global => $self->config->global, config_file => $spvm_script_config_file});
+  my $spvm_scritp_native_compile_infos = $builder->prepare_compile_native_class($spvm_script_class_name, {config_file => $spvm_script_config_file});
   push @$compile_infos, @$spvm_scritp_native_compile_infos;
   
   for my $compile_info (@$compile_infos) {
@@ -778,12 +778,9 @@ sub create_bootstrap_source {
 }
 
 sub prepare_compile_bootstrap_source_file {
-  my ($self, $options) = @_;
+  my ($self) = @_;
   
   my $builder = $self->builder;
-  
-  $options //= {};
-  my $config_global = $options->{config_global};
   
   my $bootstrap_source = $self->create_bootstrap_source;
   
@@ -794,9 +791,6 @@ sub prepare_compile_bootstrap_source_file {
   SPVM::Builder::Util::spurt_binary($bootstrap_source_file, $bootstrap_source, $builder->global_lock_fh);
   
   my $config = SPVM::Builder::Util::API::create_default_config();
-  if ($config_global) {
-    $config->global($config_global);
-  }
   my $source_dir = $builder->create_build_src_path;
   
   my $compile_info = SPVM::Builder::CompileInfo->new(
