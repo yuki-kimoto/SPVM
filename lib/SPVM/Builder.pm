@@ -145,29 +145,31 @@ sub build_parallel {
       $config->class_name($class_name);
       $config->category($category);
       
-      # Prepare compile information for each class
       my $compile_infos = $cc->prepare_compile_class($class_name, $config);
-      for my $compile_info (@$compile_infos) {
-        if ($config_global) {
-          $compile_info->config->global($config_global);
-        }
-        
-        my $env_spvm_force_build_type = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_BUILD_TYPE');
-        if (length $env_spvm_force_build_type) {
-          $compile_info->config->global->build_type($env_spvm_force_build_type);
-        }
-        
-        $config->global->apply_build_rules($compile_info->config);
-      }
-      for my $compile_info (@$compile_infos) {
-        $self->finalize_compile_info($compile_info);
-      }
-      
       push @$link_targets, {config => $config, compile_infos => $compile_infos};
     }
   }
   
   my @all_compile_infos = map { @{$_->{compile_infos}} } @$link_targets;
+  
+  for my $compile_info (@all_compile_infos) {
+    my $config = $compile_info->config;
+    
+    if ($config_global) {
+      $compile_info->config->global($config_global);
+    }
+    
+    my $env_spvm_force_build_type = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_BUILD_TYPE');
+    if (length $env_spvm_force_build_type) {
+      $compile_info->config->global->build_type($env_spvm_force_build_type);
+    }
+    
+    $config->global->apply_build_rules($compile_info->config);
+  }
+  
+  for my $compile_info (@all_compile_infos) {
+    $self->finalize_compile_info($compile_info);
+  }
   
   # Execute all compilations in parallel
   $self->command_parallel(\@all_compile_infos);
