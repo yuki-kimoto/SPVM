@@ -974,6 +974,50 @@ sub finalize_compile_info {
   $compile_info->command_hash($command_hash);
 }
 
+sub prepare_compile_spvm_core_source_files {
+  my ($self, $options) = @_;
+  
+  $options //= {};
+  my $config_global = $options->{config_global};
+  
+  # Config
+  my $config = SPVM::Builder::Util::API::create_default_config();
+  if ($config_global) {
+    $config->global($config_global);
+  }
+  
+  my $builder_dir = SPVM::Builder::Util::get_builder_dir();
+  
+  # SPVM src directory
+  my $builder_src_dir = "$builder_dir/src";
+  
+  my $builder_include_dir = "$builder_dir/include";
+  
+  my $source_dir = $builder_dir;
+  $source_dir =~ s|/SPVM/Builder$||;
+  
+  # SPVM runtime source files
+  my $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
+  
+  # Compile source files
+  my $compile_infos = [];
+  for my $spvm_runtime_src_base_name (@$spvm_runtime_src_base_names) {
+    my $source_rel_file = "SPVM/Builder/src/$spvm_runtime_src_base_name";
+    
+    my $compile_info = SPVM::Builder::CompileInfo->new(
+      source_dir => $source_dir,
+      source_rel_file => $source_rel_file,
+      config => $config,
+      category => 'spvm_core',
+      dependent_files => [$builder_include_dir],
+    );
+    
+    push @$compile_infos, $compile_info;
+  }
+  
+  return $compile_infos;
+}
+
 1;
 
 =encoding utf8
