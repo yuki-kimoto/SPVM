@@ -1046,7 +1046,7 @@ sub prepare_compile_native_class {
   
   $options //= {};
   my $no_compile_resources = $options->{no_compile_resources};
-  my $config_file = $options->{config_file};
+  my $config_file = $options->{config_file} // SPVM::Builder::Util::search_config_file($class_name);
   
   $options //= {};
   my $config_global = $options->{config_global};

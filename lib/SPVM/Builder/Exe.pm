@@ -318,8 +318,7 @@ sub prepare_compile_classes {
   
   for my $class_name (@$class_names) {
     my $no_compile_resources = 1;
-    my $config_file = SPVM::Builder::Util::search_config_file($class_name);
-    my $native_compile_infos = $builder->prepare_compile_native_class($class_name, {%$options, no_compile_resources => $no_compile_resources, config_file => $config_file});
+    my $native_compile_infos = $builder->prepare_compile_native_class($class_name, {%$options, no_compile_resources => $no_compile_resources});
     push @$compile_infos, @$native_compile_infos;
   }
   
