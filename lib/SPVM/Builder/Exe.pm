@@ -827,7 +827,7 @@ sub prepare_compile_native_class {
   
   my $builder = $self->builder;
   
-  my $compile_resources = $self->class_name eq $class_name ? 1 : 0;
+  my $no_compile_resources = $self->class_name eq $class_name ? 0 : 1;
   
   my $script_name = $self->script_name;
   my $config_file;
@@ -855,7 +855,7 @@ sub prepare_compile_native_class {
     my $builder_cc = SPVM::Builder::CC->new(
       builder => $builder,
     );
-    $builder_cc->no_compile_resources(!$compile_resources);
+    $builder_cc->no_compile_resources($no_compile_resources);
     my $compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
     push @$all_compile_infos, @$compile_infos;
   }
