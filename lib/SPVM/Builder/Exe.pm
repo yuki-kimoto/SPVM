@@ -221,7 +221,7 @@ sub build_exe_file {
   my $spvm_compile_infos = $builder->prepare_compile_spvm_core_source_files({config_global => $self->config->global});
   push @$compile_infos, @$spvm_compile_infos;
   
-  my $classes_compile_infos = $self->prepare_compile_classes;
+  my $classes_compile_infos = $self->prepare_compile_classes({config_global => $self->config->global});
   push @$compile_infos, @$classes_compile_infos;
   
   for my $compile_info (@$compile_infos) {
@@ -287,18 +287,18 @@ sub prepare_compile {
 }
 
 sub prepare_compile_classes {
-  my ($self) = @_;
+  my ($self, $options) = @_;
   
   my $class_names = $self->get_user_defined_basic_type_names;
   
   my $compile_infos = [];
   for my $class_name (@$class_names) {
-    my $precompile_compile_infos = $self->prepare_compile_precompile_class($class_name, {config_global => $self->config->global});
+    my $precompile_compile_infos = $self->prepare_compile_precompile_class($class_name, $options);
     push @$compile_infos, @$precompile_compile_infos;
   }
   
   for my $class_name (@$class_names) {
-    my $native_compile_infos = $self->prepare_compile_native_class($class_name, {config_global => $self->config->global});
+    my $native_compile_infos = $self->prepare_compile_native_class($class_name, $options);
     push @$compile_infos, @$native_compile_infos;
   }
   
