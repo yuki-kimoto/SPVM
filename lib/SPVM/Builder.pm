@@ -118,7 +118,6 @@ sub build_parallel {
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);
   
-  my @all_compile_infos;
   my $link_targets = [];
   
   my $config_global;
@@ -164,11 +163,11 @@ sub build_parallel {
         $self->finalize_compile_info($compile_info);
       }
       
-      push @all_compile_infos, @$compile_infos;
-      
       push @$link_targets, {config => $config, compile_infos => $compile_infos};
     }
   }
+  
+  my @all_compile_infos = map { @{$_->{compile_infos}} } @$link_targets;
   
   # Execute all compilations in parallel
   $self->command_parallel(\@all_compile_infos);
