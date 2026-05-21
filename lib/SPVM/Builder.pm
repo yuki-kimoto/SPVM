@@ -203,6 +203,10 @@ sub build_parallel {
       }
       
       my $link_info = $cc->prepare_link($class_name, $object_file_infos, $ctx->{config});
+      if ($config_global) {
+        $config_global->apply_build_rules($link_info->config);
+      }
+      
       $ctx->{link_info} = $link_info;
       push @all_link_infos, $link_info;
     }

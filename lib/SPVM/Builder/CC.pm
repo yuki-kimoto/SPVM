@@ -440,11 +440,6 @@ sub prepare_link {
     $link_info->dl_func_list($dl_func_list);
   }
   
-  my $config_global = $config->global;
-  if ($config_global) {
-    $config->global->apply_build_rules($link_info->config);
-  }
-  
   return $link_info;
 }
 

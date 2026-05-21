@@ -278,6 +278,11 @@ sub build_exe_file {
   );
   my $link_info = $cc->prepare_link($class_name, $object_file_infos, $config);
   
+  my $config_global = $self->config->global;
+  if ($config_global) {
+    $config->global->apply_build_rules($link_info->config);
+  }
+  
   $builder->command_parallel([$link_info]);
   
   # after_link_cbs
