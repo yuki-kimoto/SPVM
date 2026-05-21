@@ -239,7 +239,7 @@ sub build_exe_file {
     }
   }
   my $no_compile_resources = 1;
-  my $classes_compile_infos = $self->prepare_compile_classes({class_names => $class_names, no_compile_resources => $no_compile_resources, config_global => $self->config->global});
+  my $classes_compile_infos = $builder->prepare_compile_classes({class_names => $class_names, no_compile_resources => $no_compile_resources, config_global => $self->config->global});
   push @$compile_infos, @$classes_compile_infos;
   
   my $spvm_scritp_native_compile_infos = $builder->prepare_compile_native_class($spvm_script_class_name, {config_global => $self->config->global, config_file => $spvm_script_config_file});
@@ -305,29 +305,6 @@ sub prepare_compile {
   my $runtime = $compiler->get_runtime;
   
   $self->builder->runtime($runtime);
-}
-
-sub prepare_compile_classes {
-  my ($self, $options) = @_;
-  
-  $options //= {};
-  my $no_compile_resources = $options->{no_compile_resources};
-  my $class_names = $options->{class_names};
-  
-  my $builder = $self->builder;
-  
-  my $compile_infos = [];
-  for my $class_name (@$class_names) {
-    my $precompile_compile_infos = $builder->prepare_compile_precompile_class($class_name, $options);
-    push @$compile_infos, @$precompile_compile_infos;
-  }
-  
-  for my $class_name (@$class_names) {
-    my $native_compile_infos = $builder->prepare_compile_native_class($class_name, {%$options, no_compile_resources => $no_compile_resources});
-    push @$compile_infos, @$native_compile_infos;
-  }
-  
-  return $compile_infos;
 }
 
 sub create_bootstrap_header_source {

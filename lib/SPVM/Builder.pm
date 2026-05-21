@@ -1071,6 +1071,28 @@ sub prepare_compile_native_class {
   return $all_compile_infos;
 }
 
+sub prepare_compile_classes {
+  my ($self, $options) = @_;
+  
+  $options //= {};
+  my $no_compile_resources = $options->{no_compile_resources};
+  my $class_names = $options->{class_names};
+  
+  my $compile_infos = [];
+  for my $class_name (@$class_names) {
+    my $precompile_compile_infos = $self->prepare_compile_precompile_class($class_name, $options);
+    push @$compile_infos, @$precompile_compile_infos;
+  }
+  
+  for my $class_name (@$class_names) {
+    my $native_compile_infos = $self->prepare_compile_native_class($class_name, {%$options, no_compile_resources => $no_compile_resources});
+    push @$compile_infos, @$native_compile_infos;
+  }
+  
+  return $compile_infos;
+}
+
+
 1;
 
 =encoding utf8
