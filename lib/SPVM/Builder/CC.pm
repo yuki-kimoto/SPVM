@@ -18,6 +18,7 @@ use Digest::SHA 'sha1_hex';
 use SPVM::Builder::Util;
 use SPVM::Builder::Util::API;
 use SPVM::Builder::CompileInfo;
+use SPVM::Builder::LinkTarget;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Native::BasicType;
 use SPVM::Builder::Accessor 'has';
