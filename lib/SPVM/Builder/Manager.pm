@@ -7,7 +7,6 @@ use Carp 'confess';
 use File::Path 'mkpath';
 use Fcntl ':flock';
 
-use SPVM ();
 use SPVM::Builder::CC;
 use SPVM::Builder::Native::Compiler;
 use SPVM::Builder::Util::API;
@@ -49,7 +48,6 @@ has [qw(
   quiet
   work_dir
   include_dirs
-  runtime
   global_lock_fh
   ninja
   is_jit
@@ -228,39 +226,6 @@ sub build_parallel_with_link_targets {
   }
   
   return $output_files_h;
-}
-
-sub build_parallel_dynamic_lib_dist {
-  my ($self, $options) = @_;
-  
-  $options ||= {};
-  $options = {%$options};
-  
-  $self->_resolve_options($options);
-  
-  my $compiler = SPVM::Builder::Native::Compiler->new;
-  for my $include_dir (@{$self->include_dirs}) {
-    $compiler->add_include_dir($include_dir);
-  }
-  
-  $compiler->set_start_file(__FILE__);
-  $compiler->set_start_line(__LINE__ + 1);
-  
-  my @all_classes;
-  push @all_classes, @{$options->{native_classes}} if $options->{native_classes};
-  push @all_classes, @{$options->{precompile_classes}} if $options->{precompile_classes};
-  
-  for my $class_name (@all_classes) {
-    eval { $compiler->compile($class_name); };
-    if ($@) {
-      Carp::confess(join("\n", @{$compiler->get_formatted_error_messages}));
-    }
-  }
-  
-  my $runtime = $compiler->get_runtime;
-  $self->runtime($runtime);
-  
-  $self->build_parallel($options);
 }
 
 sub create_build_work_path {
