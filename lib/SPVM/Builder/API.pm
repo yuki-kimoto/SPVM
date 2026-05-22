@@ -8,38 +8,41 @@ use SPVM::Builder;
 sub build_parallel_dynamic_lib_dist {
   my ($options) = @_;
   
-  my @available_option_names = (
-    # new options
+  my @new_option_names = (
     'build_dir',
     'output_dir',
     'jobs',
     'config_global_file',
-    
-    # build_parallel_dynamic_lib_dist options
+  );
+  
+  my @build_parallel_option_names = (
     'native_classes',
     'native_classes_file',
     'precompile_classes',
     'precompile_classes_file',
   );
   
-  SPVM::Builder::Util::check_option_names($options, \@available_option_names);
+  my @all_option_names = (@new_option_names, @build_parallel_option_names);
+  SPVM::Builder::Util::check_option_names($options, \@all_option_names);
+  
+  my %is_new_option = map { $_ => 1 } @new_option_names;
   
   my $new_options = {};
-  my $build_parallel_dynamic_lib_dist_options = {};
+  my $build_parallel_options = {};
   
   if ($options) {
     for my $key (keys %$options) {
-      if ($key =~ /^(?:build_dir|output_dir|jobs|config_global_file)$/) {
+      if ($is_new_option{$key}) {
         $new_options->{$key} = $options->{$key};
       }
       else {
-        $build_parallel_dynamic_lib_dist_options->{$key} = $options->{$key};
+        $build_parallel_options->{$key} = $options->{$key};
       }
     }
   }
   
   my $builder = SPVM::Builder->new(%$new_options);
-  $builder->build_parallel_dynamic_lib_dist($build_parallel_dynamic_lib_dist_options);
+  $builder->build_parallel_dynamic_lib_dist($build_parallel_options);
 }
 
 1;
