@@ -1,3 +1,16 @@
+0.990174 2026-05-22
+    [Changes]
+      * SPVM::Builder::Util::API use SPVM::Builder::API#build_parallel_dynamic_lib_dist function.
+    [Incompatible Changes]
+      * SPVM::Builder::API#build_parallel_dynamic_lib_dist is changed from a method to a function.
+      * Remove SPVM::Builder::API#new method.
+    [Internal Changes]
+      * Check new arguments in SPVM::Builder::CompileInfo.
+      * Do not clone config file in SPVM::Builder::LinkInfo#new
+      * Do not clone config file in SPVM::Builder::CompileInfo#new
+      * Refactor builder classes.
+      * Add SPVM::Builder::LinkTarget class.
+      * Methods in SPVM::Builder::CC class return SPVM::Builder::LinkTarget object.
 0.990173 2026-05-20
     [New Features]
       * Add load_config_global function to SPVM::Builder::Config::Util.
