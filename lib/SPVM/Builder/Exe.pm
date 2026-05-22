@@ -260,6 +260,8 @@ sub build_exe_file {
   
   my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => $compile_infos);
   
+  $builder->build_parallel_with_link_targets([$link_target]);
+  
   for my $compile_info (@$compile_infos) {
     $compile_info->config->global($config->global);
     my $config = $compile_info->config;

@@ -118,11 +118,6 @@ sub build_parallel {
   
   my $link_targets = [];
   
-  my $config_global;
-  if (defined (my $config_global_file = $self->config_global_file)) {
-    $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
-  }
-  
   my $native_class_names = $options->{native_classes} // [];
   for my $class_name (@$native_class_names) {
     my $builder_cc = SPVM::Builder::CC->new(builder => $self);
@@ -137,20 +132,23 @@ sub build_parallel {
     push @$link_targets, $precompile_link_target;
   }
   
-  my $output_files_h = $self->build_parallel_with_link_targets($link_targets);
+  my $config_global;
+  if (defined (my $config_global_file = $self->config_global_file)) {
+    $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
+  }
+  
+  my $output_files_h = $self->build_parallel_with_link_targets($link_targets, {config_global => $config_global});
   
   return $output_files_h;
 }
 
 sub build_parallel_with_link_targets {
-  my ($self, $link_targets) = @_;
+  my ($self, $link_targets, $options) = @_;
+  
+  $options ||= {};
+  my $config_global = $options->{config_global};
   
   my $builder_cc = SPVM::Builder::CC->new(builder => $self);
-  
-  my $config_global;
-  if (defined (my $config_global_file = $self->config_global_file)) {
-    $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
-  }
   
   my @all_compile_infos;
   for my $link_target (@$link_targets) {
