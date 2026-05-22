@@ -145,8 +145,8 @@ sub build_parallel {
       $config->class_name($class_name);
       $config->category($category);
       
-      my $compile_infos = $cc->prepare_compile_class($class_name, $config);
-      push @$link_targets, {config => $config, compile_infos => $compile_infos};
+      my $link_info = $cc->prepare_compile_class($class_name, $config);
+      push @$link_targets, $link_info;
     }
   }
   
@@ -1016,7 +1016,8 @@ sub prepare_compile_precompile_class {
     builder => $self,
   );
   my $compile_infos = [];
-  my $precompile_compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
+  my $precompile_link_info = $builder_cc->prepare_compile_class($class_name, $config);
+  my $precompile_compile_infos = $precompile_link_info->compile_infos;
   push @$compile_infos, @$precompile_compile_infos;
   
   return $compile_infos;
@@ -1039,7 +1040,8 @@ sub prepare_compile_native_class {
       builder => $self,
     );
     $builder_cc->no_compile_resources($no_compile_resources);
-    my $compile_infos = $builder_cc->prepare_compile_class($class_name, $config);
+    my $link_info = $builder_cc->prepare_compile_class($class_name, $config);
+    my $compile_infos = $link_info->compile_infos;
     push @$all_compile_infos, @$compile_infos;
   }
   
