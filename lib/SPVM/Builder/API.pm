@@ -12,7 +12,6 @@ sub build_parallel_dynamic_lib_dist {
     'build_dir',
     'output_dir',
     'jobs',
-    'config_global_file',
   );
   
   my @build_parallel_option_names = (
@@ -20,6 +19,7 @@ sub build_parallel_dynamic_lib_dist {
     'native_classes_file',
     'precompile_classes',
     'precompile_classes_file',
+    'config_global_file',
   );
   
   my @all_option_names = (@new_option_names, @build_parallel_option_names);

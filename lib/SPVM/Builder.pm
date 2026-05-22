@@ -54,7 +54,6 @@ has [qw(
   ninja
   is_jit
   output_dir
-  config_global_file
 )];
 
 sub import {
@@ -110,6 +109,7 @@ sub build_parallel {
   my $option_names = [qw(
     native_classes
     precompile_classes
+    config_global_file
   )];
   
   SPVM::Builder::Util::check_option_names($options, $option_names);
@@ -133,7 +133,7 @@ sub build_parallel {
   }
   
   my $config_global;
-  if (defined (my $config_global_file = $self->config_global_file)) {
+  if (defined (my $config_global_file = $options->{config_global_file})) {
     $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
   }
   
