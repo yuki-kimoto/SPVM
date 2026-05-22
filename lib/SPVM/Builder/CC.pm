@@ -73,7 +73,7 @@ sub prepare_compile_class {
   my $compile_infos = [];
   
   unless ($no_compile_resources) {
-    my $resource_link_info = $self->prepare_compile_resources($class_name, $config);
+    my $resource_link_info = $self->prepare_compile_resources($class_name, {config => $config});
     my $resource_compile_infos = $resource_link_info->compile_infos;
     push @$compile_infos, @$resource_compile_infos;
   }
@@ -119,7 +119,11 @@ sub prepare_compile_native_class {
 }
 
 sub prepare_compile_resources {
-  my ($self, $class_name, $config) = @_;
+  my ($self, $class_name, $options) = @_;
+  
+  $options //= {};
+  
+  my $config = $options->{config};
   
   my $runtime = $self->builder->runtime;
   
@@ -140,7 +144,7 @@ sub prepare_compile_resources {
       $resource_config->quiet($config->quiet);
     }
     
-    my $resource_link_info = $builder_cc_resource->prepare_compile_class($resource_class_name, {config  => $resource_config});
+    my $resource_link_info = $builder_cc_resource->prepare_compile_class($resource_class_name, {%$options, config  => $resource_config});
     my $resource_compile_infos = $resource_link_info->compile_infos;
     push @$compile_infos, @$resource_compile_infos;
   }
