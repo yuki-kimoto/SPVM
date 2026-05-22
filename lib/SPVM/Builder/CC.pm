@@ -95,6 +95,26 @@ sub prepare_compile_precompile_class {
   return $link_target;
 }
 
+sub prepare_compile_native_class_tmp {
+  my ($self, $class_name, $options) = @_;
+  
+  $options //= {};
+  my $no_compile_resources = $options->{no_compile_resources};
+  my $config_file = $options->{config_file} // SPVM::Builder::Util::search_config_file($class_name);
+  
+  my $all_compile_infos = [];
+  
+  my $link_target;
+  if (defined $config_file && -f $config_file) {
+    my $config = SPVM::Builder::Config::Util::load_config($config_file);
+    $config->category('native');
+    local $self->{no_compile_resources} = $no_compile_resources;
+    $link_target = $self->prepare_compile_class($class_name, $config);
+  }
+  
+  return $link_target;
+}
+
 sub prepare_compile_resources {
   my ($self, $class_name, $config) = @_;
   

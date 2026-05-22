@@ -1003,29 +1003,6 @@ sub prepare_compile_spvm_core_source_files {
   return $compile_infos;
 }
 
-sub prepare_compile_native_class {
-  my ($self, $class_name, $options) = @_;
-  
-  $options //= {};
-  my $no_compile_resources = $options->{no_compile_resources};
-  my $config_file = $options->{config_file} // SPVM::Builder::Util::search_config_file($class_name);
-  
-  my $all_compile_infos = [];
-  
-  my $link_target;
-  if (defined $config_file && -f $config_file) {
-    my $config = SPVM::Builder::Config::Util::load_config($config_file);
-    $config->category('native');
-    my $builder_cc = SPVM::Builder::CC->new(
-      builder => $self,
-    );
-    $builder_cc->no_compile_resources($no_compile_resources);
-    $link_target = $builder_cc->prepare_compile_class($class_name, $config);
-  }
-  
-  return $link_target;
-}
-
 1;
 
 =encoding utf8
