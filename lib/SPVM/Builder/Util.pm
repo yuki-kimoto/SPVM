@@ -407,7 +407,7 @@ sub create_make_rule_parallel {
   my $build_options_hash_str = "{" . join(', ', @build_options) . "}";
 
   # Build cmd
-  $make_rule .= "\t\$(FULLPERLRUN) -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API::build_parallel_dynamic_lib_dist_v2($build_options_hash_str)\"\n\n";
+  $make_rule .= "\t\$(FULLPERLRUN) -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API::build_parallel_dynamic_lib_dist($build_options_hash_str)\"\n\n";
 
   return $make_rule;
 }

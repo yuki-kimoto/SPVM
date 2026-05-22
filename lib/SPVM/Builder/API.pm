@@ -5,29 +5,7 @@ use warnings;
 
 use SPVM::Builder;
 
-sub new {
-  my $class = shift;
-  
-  my $self = {};
-  
-  my %options = @_;
-  
-  my $builder = SPVM::Builder->new(%options);
-  
-  $self->{builder} = $builder;
-  
-  return bless $self, $class;
-}
-
 sub build_parallel_dynamic_lib_dist {
-  my ($self, $options) = @_;
-  
-  my $builder = $self->{builder};
-  
-  $builder->build_parallel_dynamic_lib_dist($options);
-}
-
-sub build_parallel_dynamic_lib_dist_v2 {
   my ($options) = @_;
   
   my @available_option_names = (
@@ -76,7 +54,7 @@ SPVM::Builder::API class has the public methods to build SPVM native classes and
 
 =head1 Usage
   
-  SPVM::Builder::API::build_parallel_dynamic_lib_dist_v2({
+  SPVM::Builder::API::build_parallel_dynamic_lib_dist({
     build_dir => '.spvm_build',
     native_classes => ['MyClass'],
     precompile_classes => ['MyClass'],
@@ -84,7 +62,7 @@ SPVM::Builder::API class has the public methods to build SPVM native classes and
 
 =head1 Functions
 
-=head2 build_parallel_dynamic_lib_dist_v2
+=head2 build_parallel_dynamic_lib_dist
 
   SPVM::Builder::API::build_parallel_dynamic_lib_dist($options);
 
