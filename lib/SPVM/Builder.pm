@@ -137,72 +137,7 @@ sub build_parallel {
     push @$link_targets, $precompile_link_target;
   }
   
-  my @all_compile_infos;
-  for my $link_target (@$link_targets) {
-    my $compile_infos = $link_target->compile_infos;
-    for my $compile_info (@$compile_infos) {
-      my $config = $compile_info->config;
-      
-      if ($config_global) {
-        $compile_info->config->global($config_global);
-      }
-      
-      my $env_spvm_force_build_type = SPVM::Builder::Util::get_normalized_env('SPVM_FORCE_BUILD_TYPE');
-      if (length $env_spvm_force_build_type) {
-        $compile_info->config->global->build_type($env_spvm_force_build_type);
-      }
-      
-      $config->global->apply_build_rules($compile_info->config);
-      
-      $self->finalize_compile_info($compile_info);
-      
-      push @all_compile_infos, $compile_info;
-    }
-  }
-  
-  # Execute all compilations in parallel
-  $self->command_parallel(\@all_compile_infos);
-  
-  # Prepare all link information
-  my @all_link_infos;
-  for my $link_target (@$link_targets) {
-    my $config = $link_target->{config};
-    my $class_name = $config->class_name;
-    my $compile_infos = $link_target->{compile_infos};
-    
-    my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
-    unless (@$object_file_infos) {
-      confess("[Unexpected Error]\$object_file_infos must have object files for $class_name.");
-    }
-    
-    my $link_info = $builder_cc->prepare_link($class_name, $object_file_infos, $config);
-    if ($config_global) {
-      $config_global->apply_build_rules($link_info->config);
-    }
-    
-    push @all_link_infos, $link_info;
-  }
-  
-  # Execute all links in parallel
-  $self->command_parallel(\@all_link_infos);
-  
-  # Execute after_link_cbs
-  for my $link_info (@all_link_infos) {
-    my $config = $link_info->config;
-    my $after_link_cbs = $config->global->after_link_cbs;
-    for my $after_link_cb (@$after_link_cbs) {
-      $after_link_cb->($link_info);
-    }
-  }
-  
-  # Store result in the return hash
-  my $output_files_h = {};
-  for my $link_info (@all_link_infos) {
-    my $config = $link_info->config;
-    my $class_name = $config->class_name;
-    my $category = $config->category;
-    $output_files_h->{$category}{$class_name} = $link_info->output_file;
-  }
+  my $output_files_h = $self->build_parallel_with_link_targets($link_targets);
   
   return $output_files_h;
 }
