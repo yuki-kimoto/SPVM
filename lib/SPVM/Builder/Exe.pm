@@ -239,8 +239,8 @@ sub build_exe_file {
   push @$compile_infos, $bootstrap_compile_info;
   
   # Compile SPVM core source files
-  my $spvm_compile_infos = $builder->prepare_compile_spvm_core_source_files;
-  push @$compile_infos, @$spvm_compile_infos;
+  my $spvm_core_link_target = $builder->prepare_compile_spvm_core_source_files;
+  push @$compile_infos, @{$spvm_core_link_target->compile_infos};
   
   for my $class_name (@$class_names) {
     my $native_link_target = $builder_cc->prepare_compile_native_class_tmp($class_name, {no_compile_resources => $no_compile_resources});

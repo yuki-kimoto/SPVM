@@ -998,7 +998,9 @@ sub prepare_compile_spvm_core_source_files {
     push @$compile_infos, $compile_info;
   }
   
-  return $compile_infos;
+  my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => $compile_infos);
+  
+  return $link_target;
 }
 
 1;
