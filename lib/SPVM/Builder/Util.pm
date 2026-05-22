@@ -362,6 +362,9 @@ sub create_make_rule_parallel {
   my $target = "spvm-build-parallel-$target_id";
 
   # Order-only deps
+  my $dependent_files = $options->{dependent_files} // [];
+  my $dependent_str = @$dependent_files ? " " . join(' ', @$dependent_files) : "";
+  
   my $order_only_dependent_files = $options->{order_only_dependent_files} // [];
   my $order_only_str = @$order_only_dependent_files ? " | " . join(' ', @$order_only_dependent_files) : "";
 
@@ -371,7 +374,7 @@ sub create_make_rule_parallel {
 
   # Parallel build rule
   $make_rule .= ".PHONY: $target\n";
-  $make_rule .= "$target :$order_only_str\n";
+  $make_rule .= "$target :$dependent_str$order_only_str\n";
 
   # Collect all build options
   my @build_options;
