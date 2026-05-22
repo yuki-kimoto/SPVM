@@ -258,6 +258,8 @@ sub build_exe_file {
     push @$compile_infos, @{$spvm_scritp_native_link_target->compile_infos};
   }
   
+  my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => $compile_infos);
+  
   for my $compile_info (@$compile_infos) {
     $compile_info->config->global($config->global);
     my $config = $compile_info->config;
