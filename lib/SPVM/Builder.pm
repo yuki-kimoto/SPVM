@@ -1017,10 +1017,8 @@ sub prepare_compile_precompile_class {
   );
   my $compile_infos = [];
   my $precompile_link_info = $builder_cc->prepare_compile_class($class_name, $config);
-  my $precompile_compile_infos = $precompile_link_info->compile_infos;
-  push @$compile_infos, @$precompile_compile_infos;
   
-  return $compile_infos;
+  return $precompile_link_info;
 }
 
 sub prepare_compile_native_class {
@@ -1053,8 +1051,8 @@ sub prepare_compile_precompile_classes {
   
   my $compile_infos = [];
   for my $class_name (@$class_names) {
-    my $precompile_compile_infos = $self->prepare_compile_precompile_class($class_name, $options);
-    push @$compile_infos, @$precompile_compile_infos;
+    my $precompile_link_info = $self->prepare_compile_precompile_class($class_name, $options);
+    push @$compile_infos, @{$precompile_link_info->compile_infos};
   }
   
   return $compile_infos;
