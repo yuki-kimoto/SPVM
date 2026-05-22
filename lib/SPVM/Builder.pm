@@ -132,12 +132,7 @@ sub build_parallel {
     push @$link_targets, $precompile_link_target;
   }
   
-  my $config_global;
-  if (defined (my $config_global_file = $options->{config_global_file})) {
-    $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
-  }
-  
-  my $output_files_h = $self->build_parallel_with_link_targets($link_targets, {config_global => $config_global});
+  my $output_files_h = $self->build_parallel_with_link_targets($link_targets, $options);
   
   return $output_files_h;
 }
@@ -146,7 +141,17 @@ sub build_parallel_with_link_targets {
   my ($self, $link_targets, $options) = @_;
   
   $options ||= {};
-  my $config_global = $options->{config_global};
+  
+  my $config_global;
+  if (exists $options->{config_global_file} && exists $options->{config_global}) {
+    confess("'config_global_file' and 'config_global' cannot be used at the same time.");
+  }
+  if (defined (my $config_global_file = $options->{config_global_file})) {
+    $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
+  }
+  else {
+    $config_global = $options->{config_global};
+  }
   
   my $builder_cc = SPVM::Builder::CC->new(builder => $self);
   
