@@ -75,7 +75,7 @@ sub prepare_compile_class {
     push @$compile_infos, @$resource_compile_infos;
   }
   
-  my $native_link_info = $self->prepare_compile_native_class($class_name, $config);
+  my $native_link_info = $self->prepare_compile_class_common($class_name, $config);
   my $native_compile_infos = $native_link_info->compile_infos;
   push @$compile_infos, @$native_compile_infos;
   
@@ -96,7 +96,7 @@ sub prepare_compile_precompile_class {
   return $link_target;
 }
 
-sub prepare_compile_native_class_tmp {
+sub prepare_compile_class_common_tmp {
   my ($self, $class_name, $options) = @_;
   
   $options //= {};
@@ -107,7 +107,6 @@ sub prepare_compile_native_class_tmp {
   my $link_target;
   if (defined $config_file && -f $config_file) {
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
-    $config->category('native');
     $link_target = $self->prepare_compile_class($class_name, $config, $options);
   }
   
@@ -146,7 +145,7 @@ sub prepare_compile_resources {
   return $link_target;
 }
 
-sub prepare_compile_native_class {
+sub prepare_compile_class_common {
   my ($self, $class_name, $config) = @_;
   
   if ($config->is_resource && !$config->resource_loader_config) {
