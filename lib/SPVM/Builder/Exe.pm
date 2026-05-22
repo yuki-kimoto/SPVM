@@ -260,43 +260,7 @@ sub build_exe_file {
   
   my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => $compile_infos);
   
-  $builder->build_parallel_with_link_targets([$link_target]);
-  
-  for my $compile_info (@$compile_infos) {
-    $compile_info->config->global($config->global);
-    my $config = $compile_info->config;
-    $config->global->apply_build_rules($compile_info->config);
-  }
-  
-  for my $compile_info (@$compile_infos) {
-    $builder->finalize_compile_info($compile_info);
-  }
-  
-  $builder->command_parallel($compile_infos);
-  
-  my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
-  
-  for my $external_object_file (@{$config->external_object_files}) {
-    push @$object_file_infos, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
-  }
-  
-  unless (@$object_file_infos) {
-    confess("[Unexpected Error]\$object_file_infos must have object files.");
-  }
-  
-  my $link_info = $builder_cc->prepare_link($class_name, $object_file_infos, $config);
-  
-  my $config_global = $self->config->global;
-  if ($config_global) {
-    $config->global->apply_build_rules($link_info->config);
-  }
-  
-  $builder->command_parallel([$link_info]);
-  
-  my $after_link_cbs = $config->global->after_link_cbs;
-  for my $after_link_cb (@$after_link_cbs) {
-    $after_link_cb->($link_info);
-  }
+  $builder->build_parallel_with_link_targets([$link_target], {config_global => $config->global});
 }
 
 sub prepare_compile {
