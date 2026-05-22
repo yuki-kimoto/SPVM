@@ -26,7 +26,6 @@ use SPVM::Builder::Accessor 'has';
 # Fields
 has [qw(
   builder
-  no_compile_resources
 )];
 
 # Class Methods
@@ -44,8 +43,10 @@ sub new {
 
 # Instance Methods
 sub prepare_compile_class {
-  my ($self, $class_name, $config) = @_;
+  my ($self, $class_name, $config, $options) = @_;
   
+  $options //= {};
+  my $no_compile_resources = $options->{no_compile_resources};
   unless (defined $class_name) {
     confess("A class name must be defined.");
   }
@@ -68,7 +69,7 @@ sub prepare_compile_class {
   
   my $compile_infos = [];
   
-  unless ($self->no_compile_resources) {
+  unless ($no_compile_resources) {
     my $resource_link_info = $self->prepare_compile_resources($class_name, $config);
     my $resource_compile_infos = $resource_link_info->compile_infos;
     push @$compile_infos, @$resource_compile_infos;
@@ -99,7 +100,6 @@ sub prepare_compile_native_class_tmp {
   my ($self, $class_name, $options) = @_;
   
   $options //= {};
-  my $no_compile_resources = $options->{no_compile_resources};
   my $config_file = $options->{config_file} // SPVM::Builder::Util::search_config_file($class_name);
   
   my $all_compile_infos = [];
@@ -108,8 +108,7 @@ sub prepare_compile_native_class_tmp {
   if (defined $config_file && -f $config_file) {
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
     $config->category('native');
-    local $self->{no_compile_resources} = $no_compile_resources;
-    $link_target = $self->prepare_compile_class($class_name, $config);
+    $link_target = $self->prepare_compile_class($class_name, $config, $options);
   }
   
   return $link_target;
