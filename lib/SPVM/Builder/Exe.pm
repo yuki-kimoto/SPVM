@@ -229,6 +229,8 @@ sub build_exe_file {
   }
   my $no_compile_resources = 1;
   
+  my $builder_cc = SPVM::Builder::CC->new(builder => $builder);
+  
   # Object files
   my $compile_infos = [];
   
@@ -241,7 +243,6 @@ sub build_exe_file {
   push @$compile_infos, @$spvm_compile_infos;
   
   for my $class_name (@$class_names) {
-    my $builder_cc = SPVM::Builder::CC->new(builder => $builder);
     my $native_link_target = $builder_cc->prepare_compile_native_class_tmp($class_name, {no_compile_resources => $no_compile_resources});
     if ($native_link_target) {
       push @$compile_infos, @{$native_link_target->compile_infos};
@@ -249,14 +250,12 @@ sub build_exe_file {
   }
   
   for my $class_name (@$class_names) {
-    my $builder_cc = SPVM::Builder::CC->new(builder => $builder);
     my $precompile_link_target = $builder_cc->prepare_compile_precompile_class($class_name);
     if ($precompile_link_target) {
       push @$compile_infos, @{$precompile_link_target->compile_infos};
     }
   }
   
-  my $builder_cc = SPVM::Builder::CC->new(builder => $builder);
   my $spvm_scritp_native_link_target = $builder_cc->prepare_compile_native_class_tmp($spvm_script_class_name, {config_file => $spvm_script_config_file});
   if ($spvm_scritp_native_link_target) {
     push @$compile_infos, @{$spvm_scritp_native_link_target->compile_infos};
@@ -286,10 +285,7 @@ sub build_exe_file {
   }
   
   # Link object files and generate a dynamic library
-  my $cc = SPVM::Builder::CC->new(
-    builder => $builder,
-  );
-  my $link_info = $cc->prepare_link($class_name, $object_file_infos, $config);
+  my $link_info = $builder_cc->prepare_link($class_name, $object_file_infos, $config);
   
   my $config_global = $self->config->global;
   if ($config_global) {

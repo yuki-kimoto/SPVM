@@ -114,9 +114,7 @@ sub build_parallel {
   
   SPVM::Builder::Util::check_option_names($options, $option_names);
   
-  my $cc_options = {builder => $self};
-  
-  my $cc = SPVM::Builder::CC->new(%$cc_options);
+  my $builder_cc = SPVM::Builder::CC->new(builder => $self);
   
   my $link_targets = [];
   
@@ -145,7 +143,7 @@ sub build_parallel {
       $config->class_name($class_name);
       $config->category($category);
       
-      my $link_info = $cc->prepare_compile_class($class_name, $config);
+      my $link_info = $builder_cc->prepare_compile_class($class_name, $config);
       push @$link_targets, $link_info;
     }
   }
@@ -193,7 +191,7 @@ sub build_parallel {
       confess("[Unexpected Error]\$object_file_infos must have object files for $class_name.");
     }
     
-    my $link_info = $cc->prepare_link($class_name, $object_file_infos, $config);
+    my $link_info = $builder_cc->prepare_link($class_name, $object_file_infos, $config);
     if ($config_global) {
       $config_global->apply_build_rules($link_info->config);
     }
