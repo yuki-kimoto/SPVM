@@ -27,6 +27,43 @@ sub build_parallel_dynamic_lib_dist {
   $builder->build_parallel_dynamic_lib_dist($options);
 }
 
+sub build_parallel_dynamic_lib_dist_v2 {
+  my ($options) = @_;
+  
+  my @available_option_names = (
+    # new options
+    'build_dir',
+    'output_dir',
+    'jobs',
+    'config_global_file',
+    
+    # build_parallel_dynamic_lib_dist options
+    'native_classes',
+    'native_classes_file',
+    'precompile_classes',
+    'precompile_classes_file',
+  );
+  
+  &check_option_names($options, \@available_option_names);
+  
+  my $new_options = {};
+  my $build_parallel_dynamic_lib_dist_options = {};
+  
+  if ($options) {
+    for my $key (keys %$options) {
+      if ($key =~ /^(?:build_dir|output_dir|jobs|config_global_file)$/) {
+        $new_options->{$key} = $options->{$key};
+      }
+      else {
+        $build_parallel_dynamic_lib_dist_options->{$key} = $options->{$key};
+      }
+    }
+  }
+  
+  my $builder = SPVM::Builder->new(%$new_options);
+  $builder->build_parallel_dynamic_lib_dist($build_parallel_dynamic_lib_dist_options);
+}
+
 1;
 
 =head1 Name
@@ -39,24 +76,23 @@ SPVM::Builder::API class has the public methods to build SPVM native classes and
 
 =head1 Usage
   
-  my $builder = SPVM::Builder::API->new(
+  SPVM::Builder::API::build_parallel_dynamic_lib_dist_v2({
     build_dir => '.spvm_build',
-  );
-  
-  $builder->build_parallel_dynamic_lib_dist({
     native_classes => ['MyClass'],
     precompile_classes => ['MyClass'],
   });
 
-=head1 Class Methods
+=head1 Functions
 
-=head2 new
+=head2 build_parallel_dynamic_lib_dist_v2
 
-  my $builder = SPVM::Builder::API->new(%options);
+  SPVM::Builder::API::build_parallel_dynamic_lib_dist($options);
 
-Creates a new L<SPVM::Builder::API> object, and returns it.
+Generates dynamic libraries for multiple native classes and precompile classes in parallel, and copies them into the C<blib/lib> directory.
 
-Options:
+C<$options> is a hash reference.
+
+=head2 Options
 
 =over 2
 
@@ -76,22 +112,6 @@ The number of parallel jobs. The default value is the number of CPU cores.
 
 A global configuration file path. If it is defined, the file is loaded as an L<SPVM::Builder::Config::Global> object and applied globally during the build process.
 
-=back
-
-=head1 Instance Methods
-
-=head2 build_parallel_dynamic_lib_dist
-
-  $builder->build_parallel_dynamic_lib_dist($options);
-
-Generates dynamic libraries for multiple native classes and precompile classes in parallel, and copies them into the C<blib/lib> directory.
-
-Options:
-
-C<$options> is a hash reference.
-
-=over 2
-
 =item * C<native_classes>
 
 An array reference of native class names to be built.
@@ -107,42 +127,6 @@ An array reference of precompile class names to be built.
 =item * C<precompile_classes_file>
 
 A path to a text file containing precompile class names to be built. The file must contain one class name per line. If both C<precompile_classes> and this option are specified, they are merged.
-
-=item * C<ccflags>
-
-An array reference of extra compiler flags.
-
-=item * C<defines>
-
-An array reference of macro definitions. Each definition is passed to the compiler with the C<-D> prefix.
-
-=item * C<ldflags>
-
-An array reference of extra linker flags.
-
-=item * C<build_type>
-
-The build type for the compiler and linker. This option follows the standard CMake build types.
-
-Options:
-
-=over 2
-
-=item * C<Debug>
-
-For debugging. Optimization is disabled and debug symbols are enabled.
-
-=item * C<Release>
-
-For production. High optimization and no debug symbols.
-
-=item * C<RelWithDebInfo>
-
-For production with debug symbols. High optimization with debug symbols.
-
-=item * C<MinSizeRel>
-
-For production, optimized for binary size.
 
 =back
 
