@@ -248,7 +248,8 @@ sub build_exe_file {
   }
   
   for my $class_name (@$class_names) {
-    my $precompile_link_target = $builder->prepare_compile_precompile_class($class_name);
+    my $builder_cc = SPVM::Builder::CC->new(builder => $builder);
+    my $precompile_link_target = $builder_cc->prepare_compile_precompile_class($class_name);
     if ($precompile_link_target) {
       push @$compile_infos, @{$precompile_link_target->compile_infos};
     }

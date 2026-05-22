@@ -83,6 +83,18 @@ sub prepare_compile_class {
   return $link_target;
 }
 
+sub prepare_compile_precompile_class {
+  my ($self, $class_name) = @_;
+  
+  my $config = SPVM::Builder::Util::API::create_default_config();
+  
+  $config->category('precompile');
+  
+  my $link_target = $self->prepare_compile_class($class_name, $config);
+  
+  return $link_target;
+}
+
 sub prepare_compile_resources {
   my ($self, $class_name, $config) = @_;
   

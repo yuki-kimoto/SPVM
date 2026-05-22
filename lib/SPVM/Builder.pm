@@ -152,7 +152,8 @@ sub build_parallel {
   
   my $precompile_class_names = $options->{precompile_classes} // [];
   for my $class_name (@$precompile_class_names) {
-    my $precompile_link_target = $self->prepare_compile_precompile_class($class_name);
+    my $builder_cc = SPVM::Builder::CC->new(builder => $self);
+    my $precompile_link_target = $builder_cc->prepare_compile_precompile_class($class_name);
     push @$link_targets, $precompile_link_target;
   }
   
@@ -1000,22 +1001,6 @@ sub prepare_compile_spvm_core_source_files {
   }
   
   return $compile_infos;
-}
-
-sub prepare_compile_precompile_class {
-  my ($self, $class_name) = @_;
-  
-  my $config = SPVM::Builder::Util::API::create_default_config();
-  
-  $config->category('precompile');
-  
-  my $builder_cc = SPVM::Builder::CC->new(
-    builder => $self,
-  );
-  my $compile_infos = [];
-  my $precompile_link_target = $builder_cc->prepare_compile_class($class_name, $config);
-  
-  return $precompile_link_target;
 }
 
 sub prepare_compile_native_class {
