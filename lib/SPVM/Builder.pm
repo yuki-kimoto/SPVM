@@ -150,12 +150,10 @@ sub build_parallel {
     }
   }
   
-  my $precompile_class_names = $options->{precompile_classes};
-  if ($precompile_class_names) {
-    my $precompile_compile_infos = $self->prepare_compile_precompile_classes($precompile_class_names);
-    if (@$precompile_compile_infos) {
-      push @$link_targets, {config => $precompile_compile_infos->[0]->config, compile_infos => $precompile_compile_infos};
-    }
+  my $precompile_class_names = $options->{precompile_classes} // [];
+  for my $class_name (@$precompile_class_names) {
+    my $precompile_link_target = $self->prepare_compile_precompile_class($class_name);
+    push @$link_targets, $precompile_link_target;
   }
   
   my @all_compile_infos = map { @{$_->{compile_infos}} } @$link_targets;
@@ -1044,18 +1042,6 @@ sub prepare_compile_native_class {
   }
   
   return $all_compile_infos;
-}
-
-sub prepare_compile_precompile_classes {
-  my ($self, $class_names, $options) = @_;
-  
-  my $compile_infos = [];
-  for my $class_name (@$class_names) {
-    my $precompile_link_info = $self->prepare_compile_precompile_class($class_name, $options);
-    push @$compile_infos, @{$precompile_link_info->compile_infos};
-  }
-  
-  return $compile_infos;
 }
 
 sub prepare_compile_native_classes {
