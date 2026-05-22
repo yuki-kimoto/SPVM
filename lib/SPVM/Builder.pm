@@ -1044,18 +1044,6 @@ sub prepare_compile_native_class {
   return $all_compile_infos;
 }
 
-sub prepare_compile_native_classes {
-  my ($self, $class_names, $options) = @_;
-  
-  my $compile_infos = [];
-  for my $class_name (@$class_names) {
-    my $native_compile_infos = $self->prepare_compile_native_class($class_name, $options);
-    push @$compile_infos, @$native_compile_infos;
-  }
-  
-  return $compile_infos;
-}
-
 1;
 
 =encoding utf8
