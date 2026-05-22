@@ -143,7 +143,7 @@ sub build_parallel {
       $config->class_name($class_name);
       $config->category($category);
       
-      my $link_info = $builder_cc->prepare_compile_class($class_name, $config);
+      my $link_info = $builder_cc->prepare_compile_class($class_name, {config => $config});
       push @$link_targets, $link_info;
     }
   }

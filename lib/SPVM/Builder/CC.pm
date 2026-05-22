@@ -43,9 +43,12 @@ sub new {
 
 # Instance Methods
 sub prepare_compile_class {
-  my ($self, $class_name, $config, $options) = @_;
+  my ($self, $class_name, $options) = @_;
   
   $options //= {};
+  
+  my $config = $options->{config};
+  
   my $no_compile_resources = $options->{no_compile_resources};
   unless (defined $class_name) {
     confess("A class name must be defined.");
@@ -85,13 +88,15 @@ sub prepare_compile_class {
 }
 
 sub prepare_compile_precompile_class {
-  my ($self, $class_name) = @_;
+  my ($self, $class_name, $options) = @_;
+  
+  $options //= {};
   
   my $config = SPVM::Builder::Util::API::create_default_config();
   
   $config->category('precompile');
   
-  my $link_target = $self->prepare_compile_class($class_name, $config);
+  my $link_target = $self->prepare_compile_class($class_name, {%$options, config  => $config});
   
   return $link_target;
 }
@@ -107,7 +112,7 @@ sub prepare_compile_native_class {
   my $link_target;
   if (defined $config_file && -f $config_file) {
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
-    $link_target = $self->prepare_compile_class($class_name, $config, $options);
+    $link_target = $self->prepare_compile_class($class_name, {%$options, config  => $config});
   }
   
   return $link_target;
@@ -135,7 +140,7 @@ sub prepare_compile_resources {
       $resource_config->quiet($config->quiet);
     }
     
-    my $resource_link_info = $builder_cc_resource->prepare_compile_class($resource_class_name, $resource_config);
+    my $resource_link_info = $builder_cc_resource->prepare_compile_class($resource_class_name, {config  => $resource_config});
     my $resource_compile_infos = $resource_link_info->compile_infos;
     push @$compile_infos, @$resource_compile_infos;
   }
