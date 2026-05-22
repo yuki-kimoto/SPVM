@@ -241,7 +241,7 @@ sub build_exe_file {
   push @$compile_infos, @$spvm_compile_infos;
   
   for my $class_name (@$class_names) {
-    my $native_link_target = $builder->prepare_compile_native_class_v2($class_name, {no_compile_resources => $no_compile_resources});
+    my $native_link_target = $builder->prepare_compile_native_class($class_name, {no_compile_resources => $no_compile_resources});
     if ($native_link_target) {
       push @$compile_infos, @{$native_link_target->compile_infos};
     }
@@ -254,7 +254,7 @@ sub build_exe_file {
     }
   }
   
-  my $spvm_scritp_native_link_target = $builder->prepare_compile_native_class_v2($spvm_script_class_name, {config_file => $spvm_script_config_file});
+  my $spvm_scritp_native_link_target = $builder->prepare_compile_native_class($spvm_script_class_name, {config_file => $spvm_script_config_file});
   if ($spvm_scritp_native_link_target) {
     push @$compile_infos, @{$spvm_scritp_native_link_target->compile_infos};
   }

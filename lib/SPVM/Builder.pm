@@ -1028,31 +1028,6 @@ sub prepare_compile_native_class {
   
   my $all_compile_infos = [];
   
-  if (defined $config_file && -f $config_file) {
-    my $config = SPVM::Builder::Config::Util::load_config($config_file);
-    $config->class_name($class_name);
-    $config->category('native');
-    my $builder_cc = SPVM::Builder::CC->new(
-      builder => $self,
-    );
-    $builder_cc->no_compile_resources($no_compile_resources);
-    my $link_target = $builder_cc->prepare_compile_class($class_name, $config);
-    my $compile_infos = $link_target->compile_infos;
-    push @$all_compile_infos, @$compile_infos;
-  }
-  
-  return $all_compile_infos;
-}
-
-sub prepare_compile_native_class_v2 {
-  my ($self, $class_name, $options) = @_;
-  
-  $options //= {};
-  my $no_compile_resources = $options->{no_compile_resources};
-  my $config_file = $options->{config_file} // SPVM::Builder::Util::search_config_file($class_name);
-  
-  my $all_compile_infos = [];
-  
   my $link_target;
   if (defined $config_file && -f $config_file) {
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
