@@ -235,8 +235,8 @@ sub build_exe_file {
   my $compile_infos = [];
   
   # Compile bootstrap C source
-  my $bootstrap_compile_info = $self->prepare_compile_bootstrap_source_file;
-  push @$compile_infos, $bootstrap_compile_info;
+  my $bootstrap_link_target = $self->prepare_compile_bootstrap_source_file;
+  push @$compile_infos, @{$bootstrap_link_target->compile_infos};
   
   # Compile SPVM core source files
   my $spvm_core_link_target = $builder_cc->prepare_compile_spvm_core_source_files;
@@ -809,7 +809,9 @@ sub prepare_compile_bootstrap_source_file {
     category => 'bootstrap',
   );
   
-  return $compile_info;
+  my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => [$compile_info]);
+  
+  return $link_target;
 }
 
 sub get_user_defined_basic_type_names {
