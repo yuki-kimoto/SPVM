@@ -96,7 +96,7 @@ sub prepare_compile_precompile_class {
   return $link_target;
 }
 
-sub prepare_compile_class_common_tmp {
+sub prepare_compile_native_class {
   my ($self, $class_name, $options) = @_;
   
   $options //= {};
