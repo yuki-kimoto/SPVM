@@ -1014,9 +1014,9 @@ sub prepare_compile_precompile_class {
     builder => $self,
   );
   my $compile_infos = [];
-  my $precompile_link_info = $builder_cc->prepare_compile_class($class_name, $config);
+  my $precompile_link_target = $builder_cc->prepare_compile_class($class_name, $config);
   
-  return $precompile_link_info;
+  return $precompile_link_target;
 }
 
 sub prepare_compile_native_class {
@@ -1036,8 +1036,8 @@ sub prepare_compile_native_class {
       builder => $self,
     );
     $builder_cc->no_compile_resources($no_compile_resources);
-    my $link_info = $builder_cc->prepare_compile_class($class_name, $config);
-    my $compile_infos = $link_info->compile_infos;
+    my $link_target = $builder_cc->prepare_compile_class($class_name, $config);
+    my $compile_infos = $link_target->compile_infos;
     push @$all_compile_infos, @$compile_infos;
   }
   

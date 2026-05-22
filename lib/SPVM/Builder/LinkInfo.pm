@@ -14,7 +14,6 @@ my $field_names = [qw(
   config
   object_file_infos
   dl_func_list
-  compile_infos
 )];
 has $field_names;
 
@@ -25,7 +24,6 @@ sub new {
   my $self = {
     object_file_infos => [],
     dl_func_list => [],
-    compile_infos => [],
     @_
   };
   
