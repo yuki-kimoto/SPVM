@@ -876,6 +876,43 @@ sub search_gnu_make_command {
   return undef;
 }
 
+sub build_parallel_dynamic_lib_dist {
+  my ($options) = @_;
+  
+  my @available_option_names = (
+    # new options
+    'build_dir',
+    'output_dir',
+    'jobs',
+    'config_global_file',
+    
+    # build_parallel_dynamic_lib_dist options
+    'native_classes',
+    'native_classes_file',
+    'precompile_classes',
+    'precompile_classes_file',
+  );
+  
+  &check_option_names($options, \@available_option_names);
+  
+  my $new_options = {};
+  my $build_parallel_dynamic_lib_dist_options = {};
+  
+  if ($options) {
+    for my $key (keys %$options) {
+      if ($key =~ /^(?:build_dir|output_dir|jobs|config_global_file)$/) {
+        $new_options->{$key} = $options->{$key};
+      }
+      else {
+        $build_parallel_dynamic_lib_dist_options->{$key} = $options->{$key};
+      }
+    }
+  }
+  
+  my $builder = SPVM::Builder->new(%$new_options);
+  $builder->build_parallel_dynamic_lib_dist($build_parallel_dynamic_lib_dist_options);
+}
+
 1;
 
 =head1 Name

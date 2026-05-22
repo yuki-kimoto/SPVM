@@ -17,6 +17,8 @@ sub get_cpu_count { SPVM::Builder::Util::get_cpu_count(@_) }
 
 sub search_gnu_make_command { SPVM::Builder::Util::search_gnu_make_command(@_) }
 
+sub build_parallel_dynamic_lib_dist { SPVM::Builder::Util::build_parallel_dynamic_lib_dist(@_) }
+
 1;
 
 =head1 Name
@@ -131,7 +133,7 @@ C<$options> is a hash reference.
 
 Options:
 
-The following options are the same as those for L<SPVM::Builder::API#new|SPVM::Builder::API/"new"> method:
+The following options are the same as those for L</"build_parallel_dynamic_lib_dist"> function.
 
 =over2 
 
@@ -147,15 +149,13 @@ The default value is C<"blib/lib">.
 
 =item * C<config_global_file>
 
-=back
-
-The following options are the same as those for L<SPVM::Builder::API#build_parallel_dynamic_lib_dist|SPVM::Builder::API/"build_parallel_dynamic_lib_dist"> method:
-
-=over 2
-
 =item * C<native_classes>
 
+=item * C<native_classes_file>
+
 =item * C<precompile_classes>
+
+=item * C<precompile_classes_file>
 
 =back
 
@@ -212,6 +212,90 @@ containing GNU-specific syntax (the C<$(info ...)> function).
 
 The name of the GNU Make command (e.g., C<'gmake'> or C<'make'>) if found and 
 verified. Returns C<undef> otherwise.
+
+=head2 build_parallel_dynamic_lib_dist
+
+  SPVM::Builder::Util::API::build_parallel_dynamic_lib_dist($options);
+
+Generates dynamic libraries for multiple native classes and precompile classes in parallel, and copies them into the C<blib/lib> directory.
+
+C<$options> is a hash reference.
+
+=head2 Options
+
+=over 2
+
+=item * C<build_dir>
+
+A build directory.
+
+=item * C<output_dir>
+
+A output directory.
+
+=item * C<jobs>
+
+The number of parallel jobs. The default value is the number of CPU cores.
+
+=item * C<config_global_file>
+
+A global configuration file path. If it is defined, the file is loaded as an L<SPVM::Builder::Config::Global> object and applied globally during the build process.
+
+=item * C<native_classes>
+
+An array reference of native class names to be built.
+
+=item * C<native_classes_file>
+
+A path to a text file containing native class names to be built. The file must contain one class name per line. If both C<native_classes> and this option are specified, they are merged.
+
+=item * C<precompile_classes>
+
+An array reference of precompile class names to be built.
+
+=item * C<precompile_classes_file>
+
+A path to a text file containing precompile class names to be built. The file must contain one class name per line. If both C<precompile_classes> and this option are specified, they are merged.
+
+=item * C<ccflags>
+
+An array reference of extra compiler flags.
+
+=item * C<defines>
+
+An array reference of macro definitions. Each definition is passed to the compiler with the C<-D> prefix.
+
+=item * C<ldflags>
+
+An array reference of extra linker flags.
+
+=item * C<build_type>
+
+The build type for the compiler and linker. This option follows the standard CMake build types.
+
+=over 2
+
+=item * C<Debug>
+
+For debugging. Optimization is disabled and debug symbols are enabled.
+
+=item * C<Release>
+
+For production. High optimization and no debug symbols.
+
+=item * C<RelWithDebInfo>
+
+For production with debug symbols. High optimization with debug symbols.
+
+=item * C<MinSizeRel>
+
+For production, optimized for binary size.
+
+=back
+
+If this option is specified, it overrides the C<optimize> option and sets appropriate flags for both the compiler and the linker to match CMake's behavior.
+
+=back
 
 =head1 Copyright & License
 
