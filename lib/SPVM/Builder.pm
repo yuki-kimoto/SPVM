@@ -123,29 +123,11 @@ sub build_parallel {
     $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
   }
   
-  # Prepare all compile information
-  my @categories = ('native');
-  for my $category (@categories) {
-    my $class_names = $options->{"${category}_classes"};
-    next unless defined $class_names;
-    
-    for my $class_name (@$class_names) {
-      my $config;
-      if ($category eq 'native') {
-        my $config_file = SPVM::Builder::Util::search_config_file($class_name);
-        confess("A config file is not found for $class_name") unless defined $config_file;
-        $config = SPVM::Builder::Config::Util::load_config($config_file);
-      }
-      elsif ($category eq 'precompile') {
-        $config = SPVM::Builder::Util::API::create_default_config();
-      }
-      
-      $config->class_name($class_name);
-      $config->category($category);
-      
-      my $link_info = $builder_cc->prepare_compile_class($class_name, {config => $config});
-      push @$link_targets, $link_info;
-    }
+  my $native_class_names = $options->{native_classes} // [];
+  for my $class_name (@$native_class_names) {
+    my $builder_cc = SPVM::Builder::CC->new(builder => $self);
+    my $native_link_target = $builder_cc->prepare_compile_native_class($class_name);
+    push @$link_targets, $native_link_target;
   }
   
   my $precompile_class_names = $options->{precompile_classes} // [];

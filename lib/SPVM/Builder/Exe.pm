@@ -231,14 +231,11 @@ sub build_exe_file {
   
   my $builder_cc = SPVM::Builder::CC->new(builder => $builder);
   
-  # Object files
   my $compile_infos = [];
   
-  # Compile bootstrap C source
   my $bootstrap_link_target = $self->prepare_compile_bootstrap_source_file;
   push @$compile_infos, @{$bootstrap_link_target->compile_infos};
   
-  # Compile SPVM core source files
   my $spvm_core_link_target = $builder_cc->prepare_compile_spvm_core_source_files;
   push @$compile_infos, @{$spvm_core_link_target->compile_infos};
   
@@ -275,7 +272,6 @@ sub build_exe_file {
   
   my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
   
-  # Add external object files
   for my $external_object_file (@{$config->external_object_files}) {
     push @$object_file_infos, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
@@ -284,7 +280,6 @@ sub build_exe_file {
     confess("[Unexpected Error]\$object_file_infos must have object files.");
   }
   
-  # Link object files and generate a dynamic library
   my $link_info = $builder_cc->prepare_link($class_name, $object_file_infos, $config);
   
   my $config_global = $self->config->global;
@@ -294,7 +289,6 @@ sub build_exe_file {
   
   $builder->command_parallel([$link_info]);
   
-  # after_link_cbs
   my $after_link_cbs = $config->global->after_link_cbs;
   for my $after_link_cb (@$after_link_cbs) {
     $after_link_cb->($link_info);
