@@ -8,12 +8,7 @@ use File::Path 'mkpath';
 use Fcntl ':flock';
 
 use SPVM::Builder::CC;
-use SPVM::Builder::Native::Compiler;
 use SPVM::Builder::Util::API;
-use SPVM::BlessedObject;
-use SPVM::BlessedObject::Array;
-use SPVM::BlessedObject::Class;
-use SPVM::BlessedObject::String;
 use SPVM::Builder::Accessor 'has';
 use SPVM::Builder::Ninja;
 use SPVM::Builder::ObjectFileInfo;
@@ -37,7 +32,6 @@ use SPVM::Builder::Util;
 use SPVM::Builder::Util::API;
 use SPVM::Builder::CompileInfo;
 use SPVM::Builder::LinkInfo;
-use SPVM::Builder::Native::BasicType;
 use SPVM::Builder::Accessor 'has';
 
 # Fields
@@ -53,15 +47,6 @@ has [qw(
   is_jit
   output_dir
 )];
-
-sub import {
-  my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
-  unless (defined $build_dir) {
-    my $build_tmp_dir = File::Temp->newdir(CLEANUP => 0);
-    $SPVM::Global::BUILD_TMP_DIR = $build_tmp_dir;
-    $ENV{SPVM_BUILD_DIR} = $build_tmp_dir->dirname;
-  }
-}
 
 # Class Methods
 sub new {
