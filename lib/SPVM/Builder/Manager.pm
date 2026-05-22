@@ -41,7 +41,6 @@ has [qw(
   
   quiet
   work_dir
-  include_dirs
   global_lock_fh
   ninja
   is_jit
@@ -55,7 +54,6 @@ sub new {
   my $self = {
     build_dir => $ENV{SPVM_BUILD_DIR},
     jobs => SPVM::Builder::Util::API::get_cpu_count() + 2,
-    include_dirs => \@INC,
     work_dir => 'work',
     @_
   };
@@ -83,43 +81,6 @@ sub new {
 }
 
 # Instance Methods
-sub build_parallel {
-  my ($self, $options) = @_;
-  
-  $options ||= {};
-  
-  # Allowed options (White list)
-  my $option_names = [qw(
-    native_classes
-    precompile_classes
-    config_global_file
-  )];
-  
-  SPVM::Builder::Util::check_option_names($options, $option_names);
-  
-  my $builder_cc = SPVM::Builder::CC->new(builder => $self);
-  
-  my $link_targets = [];
-  
-  my $native_class_names = $options->{native_classes} // [];
-  for my $class_name (@$native_class_names) {
-    my $builder_cc = SPVM::Builder::CC->new(builder => $self);
-    my $native_link_target = $builder_cc->prepare_compile_native_class($class_name);
-    push @$link_targets, $native_link_target;
-  }
-  
-  my $precompile_class_names = $options->{precompile_classes} // [];
-  for my $class_name (@$precompile_class_names) {
-    my $builder_cc = SPVM::Builder::CC->new(builder => $self);
-    my $precompile_link_target = $builder_cc->prepare_compile_precompile_class($class_name);
-    push @$link_targets, $precompile_link_target;
-  }
-  
-  my $output_files_h = $self->build_parallel_with_link_targets($link_targets, $options);
-  
-  return $output_files_h;
-}
-
 sub build_parallel_with_link_targets {
   my ($self, $link_targets, $options) = @_;
   

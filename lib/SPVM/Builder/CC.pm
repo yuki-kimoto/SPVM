@@ -124,8 +124,6 @@ sub prepare_compile_resources {
   
   my $config = $options->{config};
   
-  my $runtime = $self->builder->runtime;
-  
   my $compile_infos = [];
   
   my $resource_names = $config->get_resource_names;
