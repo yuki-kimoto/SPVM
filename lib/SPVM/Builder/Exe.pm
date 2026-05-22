@@ -250,8 +250,10 @@ sub build_exe_file {
     push @$compile_infos, @{$precompile_link_target->compile_infos};
   }
   
-  my $spvm_scritp_native_compile_infos = $builder->prepare_compile_native_class($spvm_script_class_name, {config_file => $spvm_script_config_file});
-  push @$compile_infos, @$spvm_scritp_native_compile_infos;
+  my $spvm_scritp_native_link_target = $builder->prepare_compile_native_class_v2($spvm_script_class_name, {config_file => $spvm_script_config_file});
+  if ($spvm_scritp_native_link_target) {
+    push @$compile_infos, @{$spvm_scritp_native_link_target->compile_infos};
+  }
   
   for my $compile_info (@$compile_infos) {
     $compile_info->config->global($config->global);
