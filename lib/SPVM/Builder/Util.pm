@@ -340,10 +340,10 @@ sub create_make_rule_parallel {
 
   my $make_rule = '';
 
-  # Generate a unique target name
+  # Gen target name
   my @target_parts;
   
-  # Target identification includes filenames to ensure unique SHA1 when list changes
+  # Target ID includes filenames for unique SHA1
   if (my $precompile_classes = $options->{precompile_classes}) {
     push @target_parts, map { "precompile|$_" } @$precompile_classes;
   }
@@ -357,11 +357,11 @@ sub create_make_rule_parallel {
     push @target_parts, "native_file|$native_classes_file";
   }
   
-  # Create a SHA1 hex digest from sorted parts
+  # Create SHA1 hex digest
   my $target_id = sha1_hex(join("\n", sort @target_parts));
   my $target = "spvm-build-parallel-$target_id";
 
-  # Order-only dependencies
+  # Order-only deps
   my $order_only_dependent_files = $options->{order_only_dependent_files} // [];
   my $order_only_str = @$order_only_dependent_files ? " | " . join(' ', @$order_only_dependent_files) : "";
 
@@ -373,27 +373,23 @@ sub create_make_rule_parallel {
   $make_rule .= ".PHONY: $target\n";
   $make_rule .= "$target :$order_only_str\n";
 
-  # Builder new options
-  my @new_options;
+  # Collect all build options
+  my @build_options;
+  
   my $build_dir = $options->{build_dir} // '.spvm_build';
-  push @new_options, "build_dir => '$build_dir'";
+  push @build_options, "build_dir => '$build_dir'";
   
   my $output_dir = $options->{output_dir} // 'blib/lib';
-  push @new_options, "output_dir => '$output_dir'";
+  push @build_options, "output_dir => '$output_dir'";
   
   if (defined(my $jobs = $options->{jobs})) {
-    push @new_options, "jobs => $jobs";
+    push @build_options, "jobs => $jobs";
   }
   
   if (defined(my $config_global_file = $options->{config_global_file})) {
-    push @new_options, "config_global_file => '$config_global_file'";
+    push @build_options, "config_global_file => '$config_global_file'";
   }
   
-  my $new_options_string = join(', ', @new_options);
-  
-  my @build_options;
-  
-  # New file-based options
   if (defined(my $native_classes_file = $options->{native_classes_file})) {
     push @build_options, "native_classes_file => '$native_classes_file'";
   }
@@ -401,17 +397,17 @@ sub create_make_rule_parallel {
     push @build_options, "precompile_classes_file => '$precompile_classes_file'";
   }
 
-  # Array-based options
   if (my $native_classes = $options->{native_classes}) {
     push @build_options, "native_classes => [" . join(', ', map { "'$_'" } @$native_classes) . "]";
   }
   if (my $precompile_classes = $options->{precompile_classes}) {
     push @build_options, "precompile_classes => [" . join(', ', map { "'$_'" } @$precompile_classes) . "]";
   }
+  
   my $build_options_hash_str = "{" . join(', ', @build_options) . "}";
 
-  # Build command line
-  $make_rule .= "\t\$(FULLPERLRUN) -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new($new_options_string)->build_parallel_dynamic_lib_dist($build_options_hash_str)\"\n\n";
+  # Build cmd
+  $make_rule .= "\t\$(FULLPERLRUN) -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API::build_parallel_dynamic_lib_dist_v2($build_options_hash_str)\"\n\n";
 
   return $make_rule;
 }
@@ -874,43 +870,6 @@ sub search_gnu_make_command {
   }
 
   return undef;
-}
-
-sub build_parallel_dynamic_lib_dist {
-  my ($options) = @_;
-  
-  my @available_option_names = (
-    # new options
-    'build_dir',
-    'output_dir',
-    'jobs',
-    'config_global_file',
-    
-    # build_parallel_dynamic_lib_dist options
-    'native_classes',
-    'native_classes_file',
-    'precompile_classes',
-    'precompile_classes_file',
-  );
-  
-  &check_option_names($options, \@available_option_names);
-  
-  my $new_options = {};
-  my $build_parallel_dynamic_lib_dist_options = {};
-  
-  if ($options) {
-    for my $key (keys %$options) {
-      if ($key =~ /^(?:build_dir|output_dir|jobs|config_global_file)$/) {
-        $new_options->{$key} = $options->{$key};
-      }
-      else {
-        $build_parallel_dynamic_lib_dist_options->{$key} = $options->{$key};
-      }
-    }
-  }
-  
-  my $builder = SPVM::Builder->new(%$new_options);
-  $builder->build_parallel_dynamic_lib_dist($build_parallel_dynamic_lib_dist_options);
 }
 
 1;

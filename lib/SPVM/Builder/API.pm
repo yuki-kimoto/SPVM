@@ -44,7 +44,7 @@ sub build_parallel_dynamic_lib_dist_v2 {
     'precompile_classes_file',
   );
   
-  &check_option_names($options, \@available_option_names);
+  SPVM::Builder::Util::check_option_names($options, \@available_option_names);
   
   my $new_options = {};
   my $build_parallel_dynamic_lib_dist_options = {};
