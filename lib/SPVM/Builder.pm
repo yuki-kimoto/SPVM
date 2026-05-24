@@ -21,7 +21,6 @@ use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::Config::Util;
 use SPVM::Builder::Config::DLL;
 use SPVM::Builder::LinkInfo;
-use SPVM::Builder::Manager;
 
 use Carp 'confess';
 use Config;
