@@ -155,7 +155,6 @@ lib/SPVM/Builder/include/spvm_yacc_util.h
 lib/SPVM/Builder/LibInfo.pm
 lib/SPVM/Builder/link.pl
 lib/SPVM/Builder/LinkInfo.pm
-lib/SPVM/Builder/LinkTarget.pm
 lib/SPVM/Builder/Native/BasicType.pm
 lib/SPVM/Builder/Native/ClassFile.pm
 lib/SPVM/Builder/Native/Compiler.pm

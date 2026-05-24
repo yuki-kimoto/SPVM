@@ -18,7 +18,6 @@ use Digest::SHA 'sha1_hex';
 use SPVM::Builder::Util;
 use SPVM::Builder::Util::API;
 use SPVM::Builder::CompileInfo;
-use SPVM::Builder::LinkTarget;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Native::BasicType;
 use SPVM::Builder::Accessor 'has';
@@ -82,7 +81,7 @@ sub prepare_compile_class {
   my $native_compile_infos = $native_link_info->compile_infos;
   push @$compile_infos, @$native_compile_infos;
   
-  my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => $compile_infos);
+  my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
   return $link_target;
 }
@@ -146,7 +145,7 @@ sub prepare_compile_resources {
     push @$compile_infos, @$resource_compile_infos;
   }
   
-  my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => $compile_infos);
+  my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
   return $link_target;
 }
@@ -159,13 +158,13 @@ sub prepare_compile_class_common {
   my $config = $options->{config};
   
   if ($config->is_resource && !$config->resource_loader_config) {
-    my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => []);
+    my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => []);
     return $link_target;
   }
   
   my $is_cc_config = $config->isa('SPVM::Builder::Config') ? 1 : 0;
   unless ($is_cc_config) {
-    my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => []);
+    my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => []);
     return $link_target;
   }
   
@@ -206,7 +205,7 @@ sub prepare_compile_class_common {
     my $precompile_method_names = $basic_type->get_method_names_by_category($category);
     
     unless (@$precompile_method_names) {
-      my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => []);
+      my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => []);
       return $link_target;
     }
   }
@@ -356,7 +355,7 @@ sub prepare_compile_class_common {
     push @$compile_infos, $compile_info;
   }
   
-  my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => $compile_infos);
+  my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
   return $link_target;
 }
@@ -393,7 +392,7 @@ sub prepare_compile_spvm_core_source_files {
     push @$compile_infos, $compile_info;
   }
   
-  my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => $compile_infos);
+  my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
   return $link_target;
 }

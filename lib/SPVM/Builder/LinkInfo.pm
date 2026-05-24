@@ -12,6 +12,7 @@ use SPVM::Builder::Accessor 'has';
 # Fields
 my $field_names = [qw(
   config
+  compile_infos
   object_file_infos
   dl_func_list
 )];

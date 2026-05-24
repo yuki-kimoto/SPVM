@@ -258,7 +258,7 @@ sub build_exe_file {
     push @$compile_infos, @{$spvm_scritp_native_link_target->compile_infos};
   }
   
-  my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => $compile_infos);
+  my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
   $builder->build_parallel_with_link_targets([$link_target], {config_global => $config->global});
 }
@@ -771,7 +771,7 @@ sub prepare_compile_bootstrap_source_file {
     category => 'bootstrap',
   );
   
-  my $link_target = SPVM::Builder::LinkTarget->new(config => $config, compile_infos => [$compile_info]);
+  my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => [$compile_info]);
   
   return $link_target;
 }
