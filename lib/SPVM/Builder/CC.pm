@@ -398,20 +398,21 @@ sub prepare_compile_spvm_core_source_files {
 }
 
 sub prepare_link {
-  my ($self, $class_name, $link_info) = @_;
+  my ($self, $link_info) = @_;
   
+  my $config = $link_info->config;
+  
+  unless ($config) {
+    confess("[Unexpected Error]A config must be defined.");
+  }
+  
+  my $class_name = $link_info->config->class_name;
   unless (defined $class_name) {
     confess("A class name must be defined.");
   }
   
   if (ref $class_name) {
     confess("[Unexpected Error]A class name must be non-reference.");
-  }
-  
-  my $config = $link_info->config;
-  
-  unless ($config) {
-    confess("[Unexpected Error]A config must be defined.");
   }
   
   my $object_file_infos = $link_info->object_file_infos;
