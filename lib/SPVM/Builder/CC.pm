@@ -375,12 +375,12 @@ sub prepare_compile_spvm_core_source_files {
   my $source_dir = $builder_dir;
   $source_dir =~ s|/SPVM/Builder$||;
   
-  my $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
+  my $spvm_core_source_file_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
   
   # Compile source files
   my $compile_infos = [];
-  for my $spvm_runtime_src_base_name (@$spvm_runtime_src_base_names) {
-    my $source_rel_file = "SPVM/Builder/src/$spvm_runtime_src_base_name";
+  for my $spvm_core_source_file_name (@$spvm_core_source_file_names) {
+    my $source_rel_file = "SPVM/Builder/src/$spvm_core_source_file_name";
     
     my $compile_info = SPVM::Builder::CompileInfo->new(
       source_dir => $source_dir,
