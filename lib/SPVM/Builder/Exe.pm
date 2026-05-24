@@ -233,34 +233,34 @@ sub build_exe_file {
   
   my $compile_infos = [];
   
-  my $bootstrap_link_target = $self->prepare_compile_bootstrap_source_file;
-  push @$compile_infos, @{$bootstrap_link_target->compile_infos};
+  my $bootstrap_link_info = $self->prepare_compile_bootstrap_source_file;
+  push @$compile_infos, @{$bootstrap_link_info->compile_infos};
   
-  my $spvm_core_link_target = $builder_cc->prepare_compile_spvm_core_source_files;
-  push @$compile_infos, @{$spvm_core_link_target->compile_infos};
+  my $spvm_core_link_info = $builder_cc->prepare_compile_spvm_core_source_files;
+  push @$compile_infos, @{$spvm_core_link_info->compile_infos};
   
   for my $class_name (@$class_names) {
-    my $native_link_target = $builder_cc->prepare_compile_native_class($class_name, {no_compile_resources => $no_compile_resources});
-    if ($native_link_target) {
-      push @$compile_infos, @{$native_link_target->compile_infos};
+    my $native_link_info = $builder_cc->prepare_compile_native_class($class_name, {no_compile_resources => $no_compile_resources});
+    if ($native_link_info) {
+      push @$compile_infos, @{$native_link_info->compile_infos};
     }
   }
   
   for my $class_name (@$class_names) {
-    my $precompile_link_target = $builder_cc->prepare_compile_precompile_class($class_name);
-    if ($precompile_link_target) {
-      push @$compile_infos, @{$precompile_link_target->compile_infos};
+    my $precompile_link_info = $builder_cc->prepare_compile_precompile_class($class_name);
+    if ($precompile_link_info) {
+      push @$compile_infos, @{$precompile_link_info->compile_infos};
     }
   }
   
-  my $spvm_scritp_native_link_target = $builder_cc->prepare_compile_native_class($spvm_script_class_name, {config_file => $spvm_script_config_file});
-  if ($spvm_scritp_native_link_target) {
-    push @$compile_infos, @{$spvm_scritp_native_link_target->compile_infos};
+  my $spvm_scritp_native_link_info = $builder_cc->prepare_compile_native_class($spvm_script_class_name, {config_file => $spvm_script_config_file});
+  if ($spvm_scritp_native_link_info) {
+    push @$compile_infos, @{$spvm_scritp_native_link_info->compile_infos};
   }
   
-  my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
+  my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
-  $builder->build_parallel_with_link_targets([$link_target], {config_global => $config->global});
+  $builder->build_parallel_with_link_infos([$link_info], {config_global => $config->global});
 }
 
 sub prepare_compile {
@@ -771,9 +771,9 @@ sub prepare_compile_bootstrap_source_file {
     category => 'bootstrap',
   );
   
-  my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => [$compile_info]);
+  my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => [$compile_info]);
   
-  return $link_target;
+  return $link_info;
 }
 
 sub get_user_defined_basic_type_names {

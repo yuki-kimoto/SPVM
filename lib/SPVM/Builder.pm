@@ -116,29 +116,29 @@ sub build_parallel {
   
   my $builder_cc = SPVM::Builder::CC->new(builder => $self);
   
-  my $link_targets = [];
+  my $link_infos = [];
   
   my $native_class_names = $options->{native_classes} // [];
   for my $class_name (@$native_class_names) {
     my $builder_cc = SPVM::Builder::CC->new(builder => $self);
-    my $native_link_target = $builder_cc->prepare_compile_native_class($class_name);
-    push @$link_targets, $native_link_target;
+    my $native_link_info = $builder_cc->prepare_compile_native_class($class_name);
+    push @$link_infos, $native_link_info;
   }
   
   my $precompile_class_names = $options->{precompile_classes} // [];
   for my $class_name (@$precompile_class_names) {
     my $builder_cc = SPVM::Builder::CC->new(builder => $self);
-    my $precompile_link_target = $builder_cc->prepare_compile_precompile_class($class_name);
-    push @$link_targets, $precompile_link_target;
+    my $precompile_link_info = $builder_cc->prepare_compile_precompile_class($class_name);
+    push @$link_infos, $precompile_link_info;
   }
   
-  my $output_files_h = $self->build_parallel_with_link_targets($link_targets, $options);
+  my $output_files_h = $self->build_parallel_with_link_infos($link_infos, $options);
   
   return $output_files_h;
 }
 
-sub build_parallel_with_link_targets {
-  my ($self, $link_targets, $options) = @_;
+sub build_parallel_with_link_infos {
+  my ($self, $link_infos, $options) = @_;
   
   $options ||= {};
   
@@ -156,8 +156,8 @@ sub build_parallel_with_link_targets {
   my $builder_cc = SPVM::Builder::CC->new(builder => $self);
   
   my @all_compile_infos;
-  for my $link_target (@$link_targets) {
-    my $compile_infos = $link_target->compile_infos;
+  for my $link_info (@$link_infos) {
+    my $compile_infos = $link_info->compile_infos;
     for my $compile_info (@$compile_infos) {
       my $config = $compile_info->config;
       
@@ -183,8 +183,8 @@ sub build_parallel_with_link_targets {
   
   # Prepare all link information
   my @all_link_infos;
-  for my $link_target (@$link_targets) {
-    my $link_info = $builder_cc->prepare_link($link_target);
+  for my $link_info (@$link_infos) {
+    my $link_info = $builder_cc->prepare_link($link_info);
     if ($config_global) {
       $config_global->apply_build_rules($link_info->config);
     }

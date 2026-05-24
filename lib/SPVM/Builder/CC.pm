@@ -81,9 +81,9 @@ sub prepare_compile_class {
   my $native_compile_infos = $native_link_info->compile_infos;
   push @$compile_infos, @$native_compile_infos;
   
-  my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
+  my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
-  return $link_target;
+  return $link_info;
 }
 
 sub prepare_compile_precompile_class {
@@ -95,9 +95,9 @@ sub prepare_compile_precompile_class {
   
   $config->category('precompile');
   
-  my $link_target = $self->prepare_compile_class($class_name, {%$options, config  => $config});
+  my $link_info = $self->prepare_compile_class($class_name, {%$options, config  => $config});
   
-  return $link_target;
+  return $link_info;
 }
 
 sub prepare_compile_native_class {
@@ -106,14 +106,14 @@ sub prepare_compile_native_class {
   $options //= {};
   my $config_file = $options->{config_file} // SPVM::Builder::Util::search_config_file($class_name);
   
-  my $link_target;
+  my $link_info;
   if (defined $config_file && -f $config_file) {
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
     $config->category('native');
-    $link_target = $self->prepare_compile_class($class_name, {%$options, config  => $config});
+    $link_info = $self->prepare_compile_class($class_name, {%$options, config  => $config});
   }
   
-  return $link_target;
+  return $link_info;
 }
 
 sub prepare_compile_resources {
@@ -145,9 +145,9 @@ sub prepare_compile_resources {
     push @$compile_infos, @$resource_compile_infos;
   }
   
-  my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
+  my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
-  return $link_target;
+  return $link_info;
 }
 
 sub prepare_compile_class_common {
@@ -158,14 +158,14 @@ sub prepare_compile_class_common {
   my $config = $options->{config};
   
   if ($config->is_resource && !$config->resource_loader_config) {
-    my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => []);
-    return $link_target;
+    my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => []);
+    return $link_info;
   }
   
   my $is_cc_config = $config->isa('SPVM::Builder::Config') ? 1 : 0;
   unless ($is_cc_config) {
-    my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => []);
-    return $link_target;
+    my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => []);
+    return $link_info;
   }
   
   my $runtime = $self->builder->runtime;
@@ -205,8 +205,8 @@ sub prepare_compile_class_common {
     my $precompile_method_names = $basic_type->get_method_names_by_category($category);
     
     unless (@$precompile_method_names) {
-      my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => []);
-      return $link_target;
+      my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => []);
+      return $link_info;
     }
   }
   
@@ -355,9 +355,9 @@ sub prepare_compile_class_common {
     push @$compile_infos, $compile_info;
   }
   
-  my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
+  my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
-  return $link_target;
+  return $link_info;
 }
 
 sub prepare_compile_spvm_core_source_files {
@@ -392,9 +392,9 @@ sub prepare_compile_spvm_core_source_files {
     push @$compile_infos, $compile_info;
   }
   
-  my $link_target = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
+  my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
-  return $link_target;
+  return $link_info;
 }
 
 sub prepare_link {
