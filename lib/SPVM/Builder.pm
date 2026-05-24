@@ -184,22 +184,6 @@ sub build_parallel_with_link_targets {
   # Prepare all link information
   my @all_link_infos;
   for my $link_target (@$link_targets) {
-    my $config = $link_target->config;
-    my $class_name = $config->class_name;
-    my $compile_infos = $link_target->compile_infos;
-    
-    my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
-    
-    for my $external_object_file (@{$config->external_object_files}) {
-      push @$object_file_infos, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
-    }
-    
-    unless (@$object_file_infos) {
-      confess("[Unexpected Error]\$object_file_infos must have object files for $class_name.");
-    }
-    
-    $link_target->object_file_infos($object_file_infos);
-    
     my $link_info = $builder_cc->prepare_link($link_target);
     if ($config_global) {
       $config_global->apply_build_rules($link_info->config);

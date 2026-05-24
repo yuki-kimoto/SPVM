@@ -415,11 +415,19 @@ sub prepare_link {
     confess("[Unexpected Error]A class name must be non-reference.");
   }
   
-  my $object_file_infos = $link_info->object_file_infos;
+  my $compile_infos = $link_info->compile_infos;
   
-  unless ($object_file_infos) {
-    return;
+  my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
+  
+  for my $external_object_file (@{$config->external_object_files}) {
+    push @$object_file_infos, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
   }
+  
+  unless (@$object_file_infos) {
+    confess("[Unexpected Error]\$object_file_infos must have object files for $class_name.");
+  }
+  
+  $link_info->object_file_infos($object_file_infos);
   
   my $category = $config->category;
   
