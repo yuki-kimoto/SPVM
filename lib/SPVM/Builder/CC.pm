@@ -398,7 +398,7 @@ sub prepare_compile_spvm_core_source_files {
 }
 
 sub prepare_link {
-  my ($self, $class_name, $object_file_infos, $config) = @_;
+  my ($self, $class_name, $link_info) = @_;
   
   unless (defined $class_name) {
     confess("A class name must be defined.");
@@ -408,9 +408,13 @@ sub prepare_link {
     confess("[Unexpected Error]A class name must be non-reference.");
   }
   
+  my $config = $link_info->config;
+  
   unless ($config) {
     confess("[Unexpected Error]A config must be defined.");
   }
+  
+  my $object_file_infos = $link_info->object_file_infos;
   
   unless ($object_file_infos) {
     return;
@@ -423,11 +427,6 @@ sub prepare_link {
   my $ld = $config->ld;
   
   my $output_type = $config->output_type;
-  
-  my $link_info = SPVM::Builder::LinkInfo->new(
-    config => $config,
-    object_file_infos => $object_file_infos,
-  );
   
   my $runtime = $self->builder->runtime;
   

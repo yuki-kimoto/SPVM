@@ -184,7 +184,7 @@ sub build_parallel_with_link_targets {
   # Prepare all link information
   my @all_link_infos;
   for my $link_target (@$link_targets) {
-    my $config = $link_target->{config};
+    my $config = $link_target->config;
     my $class_name = $config->class_name;
     my $compile_infos = $link_target->{compile_infos};
     
@@ -198,7 +198,9 @@ sub build_parallel_with_link_targets {
       confess("[Unexpected Error]\$object_file_infos must have object files for $class_name.");
     }
     
-    my $link_info = $builder_cc->prepare_link($class_name, $object_file_infos, $config);
+    $link_target->object_file_infos($object_file_infos);
+    
+    my $link_info = $builder_cc->prepare_link($class_name, $link_target);
     if ($config_global) {
       $config_global->apply_build_rules($link_info->config);
     }
