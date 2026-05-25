@@ -100,47 +100,6 @@ sub new {
 }
 
 # Instance Methods
-sub build_parallel {
-  my ($self, $options) = @_;
-  
-  $options ||= {};
-  
-  # Allowed options (White list)
-  my $option_names = [qw(
-    native_classes
-    precompile_classes
-    config_global_file
-  )];
-  
-  SPVM::Builder::Util::check_option_names($options, $option_names);
-  
-  my $builder_cc = SPVM::Builder::CC->new(builder => $self);
-  
-  my $link_infos = [];
-  
-  my $native_class_names = $options->{native_classes} // [];
-  for my $class_name (@$native_class_names) {
-    my $builder_cc = SPVM::Builder::CC->new(builder => $self);
-    my $native_link_info = $builder_cc->prepare_compile_native_class($class_name);
-    push @$link_infos, $native_link_info;
-  }
-  
-  my $precompile_class_names = $options->{precompile_classes} // [];
-  for my $class_name (@$precompile_class_names) {
-    my $builder_cc = SPVM::Builder::CC->new(builder => $self);
-    my $precompile_link_info = $builder_cc->prepare_compile_precompile_class($class_name);
-    push @$link_infos, $precompile_link_info;
-  }
-  
-  for my $link_info (@$link_infos) {
-    $builder_cc->resolve_dl_func_list($link_info);
-  }
-  
-  my $output_files_h = $self->build_parallel_with_link_infos($link_infos, $options);
-  
-  return $output_files_h;
-}
-
 sub build_parallel_with_link_infos {
   my ($self, $link_infos, $options) = @_;
   
@@ -218,39 +177,6 @@ sub build_parallel_with_link_infos {
   return $output_files_h;
 }
 
-sub build_parallel_dynamic_lib_dist {
-  my ($self, $options) = @_;
-  
-  $options ||= {};
-  $options = {%$options};
-  
-  $self->_resolve_options($options);
-  
-  my $compiler = SPVM::Builder::Native::Compiler->new;
-  for my $include_dir (@{$self->include_dirs}) {
-    $compiler->add_include_dir($include_dir);
-  }
-  
-  $compiler->set_start_file(__FILE__);
-  $compiler->set_start_line(__LINE__ + 1);
-  
-  my @all_classes;
-  push @all_classes, @{$options->{native_classes}} if $options->{native_classes};
-  push @all_classes, @{$options->{precompile_classes}} if $options->{precompile_classes};
-  
-  for my $class_name (@all_classes) {
-    eval { $compiler->compile($class_name); };
-    if ($@) {
-      Carp::confess(join("\n", @{$compiler->get_formatted_error_messages}));
-    }
-  }
-  
-  my $runtime = $compiler->get_runtime;
-  $self->runtime($runtime);
-  
-  $self->build_parallel($options);
-}
-
 sub create_build_work_path {
   my ($self, $rel_file) = @_;
   
@@ -324,41 +250,6 @@ sub create_build_lib_path {
   }
   
   return $build_lib_path;
-}
-
-sub _load_classes_from_file {
-  my ($self, $file) = @_;
-
-  # Open file for reading
-  open my $fh, '<', $file or Carp::confess("Can't open classes file \"$file\": $!");
-  
-  # Read lines and remove newlines
-  my @classes;
-  while (my $line = <$fh>) {
-    $line =~ s/[\r\n]//g;
-    # Skip empty lines or comments
-    next if $line =~ /^\s*$/ || $line =~ /^\s*#/;
-    push @classes, $line;
-  }
-  close $fh;
-
-  return \@classes;
-}
-
-sub _resolve_options {
-  my ($self, $options) = @_;
-
-  # Resolve native_classes_file (newline-separated text file)
-  if (my $file = delete $options->{native_classes_file}) {
-    my $classes = $self->_load_classes_from_file($file);
-    push @{$options->{native_classes} ||= []}, @$classes;
-  }
-
-  # Resolve precompile_classes_file (newline-separated text file)
-  if (my $file = delete $options->{precompile_classes_file}) {
-    my $classes = $self->_load_classes_from_file($file);
-    push @{$options->{precompile_classes} ||= []}, @$classes;
-  }
 }
 
 sub global_file_lock {

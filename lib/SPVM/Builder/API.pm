@@ -42,7 +42,8 @@ sub build_parallel_dynamic_lib_dist {
   }
   
   my $builder = SPVM::Builder->new(%$new_options);
-  $builder->build_parallel_dynamic_lib_dist($build_parallel_options);
+  my $builder_cc = SPVM::Builder::CC->new(builder => $builder);
+  $builder_cc->build_parallel_dynamic_lib_dist($build_parallel_options);
 }
 
 1;

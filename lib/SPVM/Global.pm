@@ -220,7 +220,8 @@ sub load_dynamic_lib {
           
           $BUILDER //= SPVM::Builder->new(is_jit => 1);
           $BUILDER->runtime($runtime);
-          my $output_files_h = $BUILDER->build_parallel(
+          my $builder_cc = SPVM::Builder::CC->new(builder => $BUILDER);
+          my $output_files_h = $builder_cc->build_parallel(
             $build_options,
           );
           
