@@ -467,7 +467,7 @@ sub spawn_link {
   my $link_method;
   my $cbuilder_output_option_name;
   if ($output_type eq 'dynamic_lib') {
-    $ld_command_heading = "[Generate Dynamic Link Library for $class_name class" . ($category eq 'precompile' ? ' for precompile' : '') . "]";
+    $ld_command_heading = "[Generate Dynamic Link Library for $class_name class. \$category='$category'.]";
     $link_method = 'link';
     $cbuilder_output_option_name = 'lib_file';
   }
