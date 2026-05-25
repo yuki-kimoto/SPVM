@@ -875,6 +875,49 @@ sub search_gnu_make_command {
   return undef;
 }
 
+sub build_parallel_libspvm {
+  my ($options) = @_;
+  
+  my @new_option_names = (
+    'build_dir',
+    'output_dir',
+    'jobs',
+  );
+  
+  my @build_parallel_option_names = (
+    'config_global_file',
+  );
+  
+  my @all_option_names = (@new_option_names, @build_parallel_option_names);
+  SPVM::Builder::Util::check_option_names($options, \@all_option_names);
+  
+  my %is_new_option = map { $_ => 1 } @new_option_names;
+  
+  my $new_options = {};
+  my $build_parallel_options = {};
+  
+  if ($options) {
+    for my $key (keys %$options) {
+      if ($is_new_option{$key}) {
+        $new_options->{$key} = $options->{$key};
+      }
+      else {
+        $build_parallel_options->{$key} = $options->{$key};
+      }
+    }
+  }
+  
+  my $builder = SPVM::Builder->new(%$new_options);
+  my $link_info = $builder->prepare_compile_spvm_core_source_files($build_parallel_options);
+  $link_info->category('libspvm');
+  $link_info->class_name('libspvm');
+  
+  my $link_infos = [$link_info];
+  
+  $builder->build_parallel_with_link_infos($link_infos, $options);
+  
+}
+
 1;
 
 =head1 Name
