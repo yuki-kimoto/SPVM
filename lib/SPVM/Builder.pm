@@ -583,10 +583,7 @@ sub spawn_compile_source_file {
         my $config_class_name = $config->class_name;
         my $config_file = $config->file;
         
-        if ($compile_info_category eq 'spvm_core') {
-          $cc_command_diagnostic_message = "[Compile SPVM Source File]";
-        }
-        elsif ($compile_info_category eq 'native_source') {
+        if ($compile_info_category eq 'native_source') {
           $cc_command_diagnostic_message = "[Compile Native Source File for $config_class_name class using the config file '$config_file']";
         }
         elsif ($compile_info_category eq 'native_class') {
@@ -983,6 +980,7 @@ sub prepare_compile_spvm_core_source_files {
       config => $config,
       category => 'spvm_core',
       dependent_files => [$builder_include_dir],
+      diagnostic_message => "[Compile SPVM Source File]",
     );
     
     push @$compile_infos, $compile_info;
