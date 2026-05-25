@@ -571,34 +571,33 @@ sub spawn_compile_source_file {
   if ($force || $need_generate) {
     mkpath dirname $output_file;
     
-    my $cc_command_diagnostic_message;
+    my $cc_command_diagnostic_message = $compile_info->diagnostic_message;
     
-    my $compile_info_category = $compile_info->category;
-    if ($config->is_resource) {
-      my $resource_class_name = $config->class_name;
-      $cc_command_diagnostic_message = "[Compile a source file in $resource_class_name resource.]";
-    }
-    else {
-      my $config_class_name = $config->class_name;
-      my $config_file = $config->file;
-      
-      if ($compile_info_category eq 'bootstrap') {
-        $cc_command_diagnostic_message = "[Compile Bootstrap File]";
-      }
-      elsif ($compile_info_category eq 'spvm_core') {
-        $cc_command_diagnostic_message = "[Compile SPVM Source File]";
-      }
-      elsif ($compile_info_category eq 'native_source') {
-        $cc_command_diagnostic_message = "[Compile Native Source File for $config_class_name class using the config file '$config_file']";
-      }
-      elsif ($compile_info_category eq 'native_class') {
-        $cc_command_diagnostic_message = "[Compile Native Class File for $config_class_name class using the config file '$config_file']";
-      }
-      elsif ($compile_info_category eq 'precompile_class') {
-        $cc_command_diagnostic_message = "[Compile Precompile Class File for $config_class_name class]";
+    unless ($cc_command_diagnostic_message) {
+      my $compile_info_category = $compile_info->category;
+      if ($config->is_resource) {
+        my $resource_class_name = $config->class_name;
+        $cc_command_diagnostic_message = "[Compile a source file in $resource_class_name resource.]";
       }
       else {
-        confess("[Unexpected Error]Invalid compile info category '$compile_info_category'.");
+        my $config_class_name = $config->class_name;
+        my $config_file = $config->file;
+        
+        if ($compile_info_category eq 'spvm_core') {
+          $cc_command_diagnostic_message = "[Compile SPVM Source File]";
+        }
+        elsif ($compile_info_category eq 'native_source') {
+          $cc_command_diagnostic_message = "[Compile Native Source File for $config_class_name class using the config file '$config_file']";
+        }
+        elsif ($compile_info_category eq 'native_class') {
+          $cc_command_diagnostic_message = "[Compile Native Class File for $config_class_name class using the config file '$config_file']";
+        }
+        elsif ($compile_info_category eq 'precompile_class') {
+          $cc_command_diagnostic_message = "[Compile Precompile Class File for $config_class_name class]";
+        }
+        else {
+          confess("[Unexpected Error]Invalid compile info category '$compile_info_category'.");
+        }
       }
     }
     
