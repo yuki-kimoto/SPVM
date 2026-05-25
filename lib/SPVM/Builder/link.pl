@@ -11,7 +11,7 @@ use Carp 'confess';
 
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));
-my ($command_tmp_dir, $output_file, $module_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @argv;
+my ($command_tmp_dir, $output_file, $dll_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @argv;
 
 # Define log file paths
 my $log_stdout = "$command_tmp_dir/stdout.log";
@@ -99,7 +99,7 @@ $cbuilder->$link_method(
   $output_option => $tmp_output_file,
   objects => \@tmp_object_file_names,
   extra_linker_flags => "@ldflags",
-  module_name => $module_name,
+  module_name => $dll_name,
   dl_func_list => $dl_func_list,
 );
 

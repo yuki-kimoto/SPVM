@@ -444,7 +444,8 @@ sub spawn_link {
   my $hint_cc = $config->hint_cc;
   my $ld = $config->ld;
   my $output_type = $config->output_type;
-  my $class_name = $config->class_name;
+  my $dll_name = $config->class_name;
+  $dll_name =~ s|::|/|g;
   
   my $command_hash = $link_info->command_hash;
   my $output_file = $link_info->output_file;
@@ -524,7 +525,7 @@ sub spawn_link {
     $process_id = &spawn_link_command(
       $command_tmp_dir,
       $output_file,
-      $class_name,
+      $dll_name,
       $hint_cc,
       $output_type,
       $ld,
