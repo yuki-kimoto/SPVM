@@ -13,7 +13,6 @@ use Getopt::Long 'GetOptionsFromArray';
 use List::Util 'min';
 use File::Basename 'dirname', 'basename';
 use File::Spec;
-use SPVM::Builder::Config;
 use Encode 'decode';
 use File::Find 'find';
 use Time::HiRes ();
@@ -23,6 +22,8 @@ use FindBin;
 use Fcntl qw(O_RDONLY);
 use Errno;
 use File::Temp;
+
+use SPVM::Builder::Config;
 
 sub get_spvm_header_files {
   my $builder_dir = &get_builder_dir;
@@ -878,6 +879,9 @@ sub search_gnu_make_command {
 sub build_parallel_libspvm {
   my ($options) = @_;
   
+  # For recursive loading
+  require SPVM::Builder;
+  
   my @new_option_names = (
     'build_dir',
     'output_dir',
@@ -909,14 +913,18 @@ sub build_parallel_libspvm {
   
   my $builder = SPVM::Builder->new(%$new_options);
   my $link_info = $builder->prepare_compile_spvm_core_source_files($build_parallel_options);
-  $link_info->category('libspvm');
-  $link_info->class_name('libspvm');
+  $link_info->config->category('libspvm');
+  $link_info->config->class_name('libspvm');
   
-  $link_info->dl_func_list('SPVM_NATIVE_new_env');
+  $link_info->dl_func_list(['SPVM_NATIVE_new_env']);
+  
+  my $diagnostic_message = "[Generate Dynamic Link Library for libpsvm]";
+  $link_info->diagnostic_message($diagnostic_message);
   
   my $link_infos = [$link_info];
   
   $builder->build_parallel_with_link_infos($link_infos, $options);
+  
   
 }
 
