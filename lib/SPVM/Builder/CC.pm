@@ -415,8 +415,6 @@ sub prepare_link {
     confess("[Unexpected Error]A class name must be non-reference.");
   }
   
-  $self->resolve_dl_func_list($link_info);
-  
   my $compile_infos = $link_info->compile_infos;
   
   my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];

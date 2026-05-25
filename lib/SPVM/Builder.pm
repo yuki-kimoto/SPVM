@@ -184,6 +184,7 @@ sub build_parallel_with_link_infos {
   # Prepare all link information
   my @all_link_infos;
   for my $link_info (@$link_infos) {
+    $builder_cc->resolve_dl_func_list($link_info);
     my $link_info = $builder_cc->prepare_link($link_info);
     if ($config_global) {
       $config_global->apply_build_rules($link_info->config);
