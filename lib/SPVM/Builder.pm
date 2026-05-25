@@ -132,6 +132,10 @@ sub build_parallel {
     push @$link_infos, $precompile_link_info;
   }
   
+  for my $link_info (@$link_infos) {
+    $builder_cc->resolve_dl_func_list($link_info);
+  }
+  
   my $output_files_h = $self->build_parallel_with_link_infos($link_infos, $options);
   
   return $output_files_h;
@@ -139,12 +143,6 @@ sub build_parallel {
 
 sub build_parallel_with_link_infos {
   my ($self, $link_infos, $options) = @_;
-  
-  my $builder_cc = SPVM::Builder::CC->new(builder => $self);
-  
-  for my $link_info (@$link_infos) {
-    $builder_cc->resolve_dl_func_list($link_info);
-  }
   
   $options ||= {};
   
