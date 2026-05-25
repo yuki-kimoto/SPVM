@@ -467,7 +467,7 @@ sub spawn_link {
   my $link_method;
   my $cbuilder_output_option_name;
   if ($output_type eq 'dynamic_lib') {
-    $ld_command_heading = "[Generate Dynamic Link Library for $class_name class. \$category='$category'.]";
+    $ld_command_heading = "[Generate Dynamic Link Library for $class_name class. \$category='$category']";
     $link_method = 'link';
     $cbuilder_output_option_name = 'lib_file';
   }
@@ -523,15 +523,11 @@ sub spawn_link {
       });
     }
     
-    # Isolate the internal DLL module name by prefixing it with a digest of the output absolute path to prevent symbol and memory collision on Windows.
-    my $output_file_abs = File::Spec->rel2abs($output_file);
-    my $module_name = sha1_hex($output_file_abs) . "::$class_name";
-    
     # Spawn link process
     $process_id = &spawn_link_command(
       $command_tmp_dir,
       $output_file,
-      $module_name,
+      $class_name,
       $hint_cc,
       $output_type,
       $ld,
