@@ -15,7 +15,6 @@ my $field_names = [qw(
   compile_infos
   object_file_infos
   dl_func_list
-  dll_name
 )];
 has $field_names;
 

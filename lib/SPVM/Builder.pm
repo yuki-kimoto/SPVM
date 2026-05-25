@@ -434,6 +434,8 @@ sub spawn_link {
   
   my $config = $link_info->config;
   
+  my $class_name = $config->class_name;
+  
   my $object_file_infos = $link_info->object_file_infos;
   
   unless (@$object_file_infos) {
@@ -448,7 +450,6 @@ sub spawn_link {
   my $command_hash = $link_info->command_hash;
   my $output_file = $link_info->output_file;
   my $dl_func_list = $link_info->dl_func_list;
-  my $dll_name = $link_info->dll_name;
   
   my $ld_cmd = $link_info->create_command;
   my $ld_command_string = $link_info->create_command_string;
@@ -524,7 +525,7 @@ sub spawn_link {
     $process_id = &spawn_link_command(
       $command_tmp_dir,
       $output_file,
-      $dll_name,
+      $class_name,
       $hint_cc,
       $output_type,
       $ld,
