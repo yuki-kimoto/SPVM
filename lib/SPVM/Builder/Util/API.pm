@@ -131,7 +131,7 @@ C<$options> is a hash reference.
 
 Options:
 
-The following options are the same as those for L<SPVM::Builder::API#build_parallel_dynamic_lib_dist|SPVM::Builder::API/"build_parallel_dynamic_lib_dist"> function.
+The following options are the same as those for L<SPVM::Builder::API#build_parallel|SPVM::Builder::API/"build_parallel"> function.
 
 =over 2
 
