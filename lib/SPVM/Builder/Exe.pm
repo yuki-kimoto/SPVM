@@ -27,105 +27,21 @@ use SPVM::Builder::ScriptInfo;
 use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::Config::Util;
 
+use SPVM::Builder::Accessor 'has';
+
 # Fields
-sub builder {
-  my $self = shift;
-  if (@_) {
-    $self->{builder} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{builder};
-  }
-}
-
-sub script_name {
-  my $self = shift;
-  if (@_) {
-    $self->{script_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{script_name};
-  }
-}
-
-sub class_name {
-  my $self = shift;
-  if (@_) {
-    $self->{class_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{class_name};
-  }
-}
-
-sub output_file {
-  my $self = shift;
-  if (@_) {
-    $self->{output_file} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{output_file};
-  }
-}
-
-sub config {
-  my $self = shift;
-  if (@_) {
-    $self->{config} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{config};
-  }
-}
-
-sub compiler {
-  my $self = shift;
-  if (@_) {
-    $self->{compiler} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{compiler};
-  }
-}
-
-sub allow_no_config_file {
-  my $self = shift;
-  if (@_) {
-    $self->{allow_no_config_file} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{allow_no_config_file};
-  }
-}
-
-sub mode {
-  my $self = shift;
-  if (@_) {
-    $self->{mode} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{mode};
-  }
-}
-
-sub runtime {
-  my $self = shift;
-  if (@_) {
-    $self->{runtime} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{runtime};
-  }
-}
+my $field_names = [qw(
+  builder
+  script_name
+  class_name
+  output_file
+  config
+  compiler
+  allow_no_config_file
+  mode
+  runtime
+)];
+has $field_names;
 
 # Class Methods
 
@@ -783,6 +699,7 @@ sub prepare_compile_bootstrap_source_file {
     source_rel_file => $source_rel_file,
     config => $config,
     category => 'bootstrap',
+    diagnostic_message => "[Compile Bootstrap File]",
   );
   
   my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => [$compile_info]);
