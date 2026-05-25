@@ -226,6 +226,8 @@ package MY {
     ########## [SPVM Only Compilation Start] ##########
     {
       my $options = {};
+      $options->{dependent_files} = ['pm_to_blib'];
+      
       $options->{config_global_file} = $config_global_file;
       
       $make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel_libspvm($options);
