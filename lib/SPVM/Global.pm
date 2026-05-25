@@ -12,6 +12,10 @@ use SPVM::ExchangeAPI;
 use File::Path 'rmtree';
 use Time::HiRes;
 use Fcntl qw(O_RDONLY);
+use SPVM::BlessedObject;
+use SPVM::BlessedObject::Array;
+use SPVM::BlessedObject::Class;
+use SPVM::BlessedObject::String;
 
 my $COMPILER;
 my $API;
