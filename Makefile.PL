@@ -6,6 +6,7 @@ use Config;
 use Getopt::Long;
 use Getopt::Long 'GetOptions';
 use File::Path 'mkpath', 'rmtree';
+use File::Spec;
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
@@ -142,6 +143,8 @@ my @csource_files = ('SPVM.c');
 my @spvm_header_files = glob 'lib/SPVM/Builder/include/*.h';
 my @header_files = ('ppport.h', @spvm_header_files);
 
+my $libspvm_abs_path = File::Spec->rel2abs("blib/lib/SPVM/Builder/lib/libspvm.$Config{dlext}");
+
 ########## [SPVM Only Build Loigc End] ##########
 
 my $object_map = {};
@@ -205,10 +208,11 @@ WriteMakefile(
   LDDLFLAGS => $ldflags,
   C => [@csource_files],
   H => [@header_files],
-  OBJECT => '$(O_FILES)', # link all the C files too
+  OBJECT => "\$(O_FILES) $libspvm_abs_path", # link all the C files too
   EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
-  LIBS => ['-Lblib/lib/SPVM/Builder/lib -lspvm'],
-  ########## [SPVM Only WriteMakefile Options End] ##########
+  depend => {
+    'blib/arch/auto/SPVM/SPVM.so' => 'blib/lib/SPVM/Builder/lib/libspvm.$(DLEXT)'
+  },  ########## [SPVM Only WriteMakefile Options End] ##########
 );
 
 package MY {
@@ -226,13 +230,12 @@ package MY {
     ########## [SPVM Only Compilation Start] ##########
     {
       my $options = {};
-      $options->{dependent_files} = ['pm_to_blib'];
+      
+      $options->{order_only_dependent_files} = ['pm_to_blib'];
       
       $options->{config_global_file} = $config_global_file;
       
       $make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel_libspvm($options);
-      
-      $make_rule .= "SPVM.\$(DLEXT) : blib/lib/SPVM/Builder/lib/libspvm.\$(DLEXT)\n\n";
     }
     ########## [SPVM Only Compilation End] ##########
     
