@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use SPVM::Builder;
+use SPVM::Builder::CC;
 
 sub build_parallel {
   my ($options) = @_;

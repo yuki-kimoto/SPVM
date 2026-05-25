@@ -6,6 +6,7 @@ use File::Temp;
 
 use SPVM::Builder::Util;
 use SPVM::Builder;
+use SPVM::Builder::CC;
 use SPVM::Builder::Native::Env;
 use SPVM::ExchangeAPI;
 use File::Path 'rmtree';

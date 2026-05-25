@@ -10,6 +10,7 @@ use Carp 'confess';
 use File::Path 'mkpath';
 use File::Basename 'dirname';
 use SPVM::Builder;
+use SPVM::Builder::CC;
 use FindBin;
 
 our @EXPORT_OK = qw(compile_ok_file compile_ok compile_not_ok_file compile_not_ok);

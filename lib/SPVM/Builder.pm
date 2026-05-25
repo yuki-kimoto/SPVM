@@ -8,14 +8,11 @@ use File::Path 'mkpath';
 use Fcntl ':flock';
 
 use SPVM ();
-use SPVM::Builder::CC;
-use SPVM::Builder::Native::Compiler;
 use SPVM::Builder::Util::API;
 use SPVM::BlessedObject;
 use SPVM::BlessedObject::Array;
 use SPVM::BlessedObject::Class;
 use SPVM::BlessedObject::String;
-use SPVM::Builder::Accessor 'has';
 use SPVM::Builder::Ninja;
 use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::Config::Util;
@@ -38,7 +35,6 @@ use SPVM::Builder::Util;
 use SPVM::Builder::Util::API;
 use SPVM::Builder::CompileInfo;
 use SPVM::Builder::LinkInfo;
-use SPVM::Builder::Native::BasicType;
 use SPVM::Builder::Accessor 'has';
 
 # Fields
