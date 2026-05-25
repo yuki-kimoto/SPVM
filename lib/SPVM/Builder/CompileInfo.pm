@@ -21,21 +21,22 @@ has $field_names;
 
 # Class methods
 sub new {
-  my $class = shift;
   
-  my $self = {
+  my $self = shift->SUPER::new(
     dependent_files => [],
-    @_,
-  };
-  
-  bless $self, ref $class || $class;
-  
-  SPVM::Builder::Util::check_option_names($self, $field_names);
+    @_
+  );
   
   return $self;
 }
 
 # Instance Methods
+sub field_names {
+  my ($self) = @_;
+  
+  return [@{$self->SUPER::field_names}, @$field_names];
+}
+
 sub create_command {
   my ($self, $options) = @_;
   

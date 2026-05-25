@@ -8,7 +8,7 @@ use SPVM::Builder::Accessor 'has';
 use SPVM::Builder::Util;
 
 # Fields
-has [qw(
+my $field_names = [qw(
   config
   output_file
   command_hash
@@ -18,8 +18,30 @@ has [qw(
   process_id
   diagnostic_message
 )];
+has $field_names;
+
+# Class methods
+sub new {
+  my $class = shift;
+  
+  my $self = {
+    @_,
+  };
+  
+  bless $self, ref $class || $class;
+  
+  SPVM::Builder::Util::check_option_names($self, $self->field_names);
+  
+  return $self;
+}
 
 # Instance Methods
+sub field_names {
+  my ($self) = @_;
+  
+  return $field_names;
+}
+
 sub create_command { confess('Not implemented.') }
 
 sub create_command_string {
