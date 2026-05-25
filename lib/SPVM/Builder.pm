@@ -444,12 +444,11 @@ sub spawn_link {
   my $hint_cc = $config->hint_cc;
   my $ld = $config->ld;
   my $output_type = $config->output_type;
-  my $dll_name = $config->class_name;
-  $dll_name =~ s|::|/|g;
   
   my $command_hash = $link_info->command_hash;
   my $output_file = $link_info->output_file;
   my $dl_func_list = $link_info->dl_func_list;
+  my $dll_name = $link_info->dll_name;
   
   my $ld_cmd = $link_info->create_command;
   my $ld_command_string = $link_info->create_command_string;

@@ -396,6 +396,10 @@ sub resolve_dl_func_list {
       push @$dl_func_list, @$anon_dl_func_list;
     }
     $link_info->dl_func_list($dl_func_list);
+    
+    my $dll_name = $class_name;
+    $dll_name =~ s|::|/|g;
+    $link_info->dll_name($dll_name);
   }
 }
 
