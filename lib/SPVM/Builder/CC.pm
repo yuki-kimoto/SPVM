@@ -341,12 +341,33 @@ sub prepare_compile_class_common {
       confess("[Unexpected Error]$builder_include_dir must exist");
     }
     
+    my $diagnostic_message;
+    if ($config->is_resource) {
+      my $resource_class_name = $config->class_name;
+      $diagnostic_message = "[Compile a source file in $resource_class_name resource.]";
+    }
+    else {
+      my $config_class_name = $config->class_name;
+      my $config_file = $config->file;
+      
+      if ($compile_info_category eq 'native_source') {
+        $diagnostic_message = "[Compile Native Source File for $config_class_name class using the config file '$config_file']";
+      }
+      elsif ($compile_info_category eq 'native_class') {
+        $diagnostic_message = "[Compile Native Class File for $config_class_name class using the config file '$config_file']";
+      }
+      elsif ($compile_info_category eq 'precompile_class') {
+        $diagnostic_message = "[Compile Precompile Class File for $config_class_name class]";
+      }
+    }
+    
     my $compile_info = SPVM::Builder::CompileInfo->new(
       source_dir => $source_dir,
       source_rel_file => $source_rel_file,
       config => $config,
       category => $compile_info_category,
       dependent_files => [$source_file, $native_include_dir, @resource_include_dirs, $builder_include_dir],
+      diagnostic_message => $diagnostic_message,
     );
     
     # Object file information
