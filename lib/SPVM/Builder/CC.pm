@@ -538,6 +538,40 @@ sub prepare_link {
   return $link_info;
 }
 
+sub resolve_dl_func_list {
+  my ($self, $link_info) = @_;
+  
+  my $config = $link_info->config;
+  
+  my $class_name = $config->class_name;
+  
+  my $category = $config->category;
+  
+  if ($category eq 'native' || $category eq 'precompile') {
+    my $runtime = $self->builder->runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    # Get normal methods
+    my $method_names = $basic_type->get_method_names_by_category($category);
+    
+    # Create the dynamic link function list for the class
+    my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
+    
+    # Get anon methods from anon basic types
+    my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
+    for my $anon_basic_type_name (@$anon_basic_type_names) {
+      my $anon_basic_type = $runtime->get_basic_type_by_name($anon_basic_type_name);
+      my $anon_method_names = $anon_basic_type->get_method_names_by_category($category);
+      
+      # Create the dynamic link function list for each anon class and merge it
+      my $anon_dl_func_list = SPVM::Builder::Util::create_dl_func_list($anon_basic_type_name, $anon_method_names, {category => $category});
+      push @$dl_func_list, @$anon_dl_func_list;
+    }
+    $link_info->dl_func_list($dl_func_list);
+  }
+}
+
 1;
 
 =head1 Name
