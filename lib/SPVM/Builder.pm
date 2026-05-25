@@ -444,7 +444,6 @@ sub spawn_link {
   my $hint_cc = $config->hint_cc;
   my $ld = $config->ld;
   my $output_type = $config->output_type;
-  my $category = $config->category;
   my $class_name = $config->class_name;
   
   my $command_hash = $link_info->command_hash;
@@ -921,8 +920,17 @@ sub prepare_link {
     }
     
     my $category = $config->category;
-    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
-    $output_file = "$output_dir/$output_rel_file";
+    if ($category eq 'native' || $category eq 'precompile') {
+      my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
+      $output_file = "$output_dir/$output_rel_file";
+    }
+    elsif ($category eq 'libspvm') {
+      $output_file = "$output_dir/SPVM/Builder/lib/libspvm";
+    }
+  }
+  
+  unless (defined $output_file) {
+    confess("Cannot determine output file for link.");
   }
   
   # Output file extension
