@@ -140,6 +140,12 @@ sub build_parallel {
 sub build_parallel_with_link_infos {
   my ($self, $link_infos, $options) = @_;
   
+  my $builder_cc = SPVM::Builder::CC->new(builder => $self);
+  
+  for my $link_info (@$link_infos) {
+    $builder_cc->resolve_dl_func_list($link_info);
+  }
+  
   $options ||= {};
   
   my $config_global;
@@ -152,8 +158,6 @@ sub build_parallel_with_link_infos {
   else {
     $config_global = $options->{config_global};
   }
-  
-  my $builder_cc = SPVM::Builder::CC->new(builder => $self);
   
   my @all_compile_infos;
   for my $link_info (@$link_infos) {
@@ -184,7 +188,6 @@ sub build_parallel_with_link_infos {
   # Prepare all link information
   my @all_link_infos;
   for my $link_info (@$link_infos) {
-    $builder_cc->resolve_dl_func_list($link_info);
     my $link_info = $builder_cc->prepare_link($link_info);
     if ($config_global) {
       $config_global->apply_build_rules($link_info->config);
