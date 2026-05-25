@@ -188,7 +188,7 @@ sub build_parallel_with_link_infos {
   # Prepare all link information
   my @all_link_infos;
   for my $link_info (@$link_infos) {
-    my $link_info = $builder_cc->prepare_link($link_info);
+    my $link_info = $self->prepare_link($link_info);
     if ($config_global) {
       $config_global->apply_build_rules($link_info->config);
     }
@@ -961,6 +961,123 @@ sub finalize_compile_info {
   $compile_info->output_file($output_file);
   
   $compile_info->command_hash($command_hash);
+}
+
+sub prepare_link {
+  my ($self, $link_info) = @_;
+  
+  my $config = $link_info->config;
+  
+  unless ($config) {
+    confess("[Unexpected Error]A config must be defined.");
+  }
+  
+  my $class_name = $link_info->config->class_name;
+  unless (defined $class_name) {
+    confess("A class name must be defined.");
+  }
+  
+  if (ref $class_name) {
+    confess("[Unexpected Error]A class name must be non-reference.");
+  }
+  
+  my $compile_infos = $link_info->compile_infos;
+  
+  my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
+  
+  for my $external_object_file (@{$config->external_object_files}) {
+    push @$object_file_infos, SPVM::Builder::ObjectFileInfo->new(file => $external_object_file);
+  }
+  
+  unless (@$object_file_infos) {
+    confess("[Unexpected Error]\$object_file_infos must have object files for $class_name.");
+  }
+  
+  $link_info->object_file_infos($object_file_infos);
+  
+  my $build_dir = $self->build_dir;
+  
+  my $ld = $config->ld;
+  
+  unless (defined $build_dir) {
+    confess("[Unexpected Error]A build directory must be defined.");
+  }
+  
+  unless (-d $build_dir) {
+    confess("[Unexpected Error]A build directory must exists.");
+  }
+  
+  my @object_file_names = map { "$_" } @{$link_info->object_file_infos};
+  
+  unless ($config->isa('SPVM::Builder::Config::Linker')) {
+    confess("[Unexpected Error]The config must be an SPVM::Builder::Config object");
+  }
+  
+  my $hint_cc = $config->hint_cc;
+  
+  my $link_info_output_file = $config->output_file;
+  
+  my $link_info_object_files = $link_info->object_file_infos;
+  
+  my $object_file_names = [map { $_->to_string; } @$link_info_object_files];
+  
+  my $ld_version = $config->ld_version;
+  
+  my $ld_command_no_output_option = $link_info->create_command({no_output_option => 1});
+  my $ld_command_string_no_output_option = "@$ld_command_no_output_option";
+  
+  my $ninja = $self->ninja;
+  my $create_command_hash_options = {
+    command => $ld_command_string_no_output_option,
+    command_version => $ld_version,
+    dependent_files => [@object_file_names],
+  };
+  my $command_hash = $ninja->create_command_hash($create_command_hash_options);
+  
+  $link_info->command_hash($command_hash);
+  $link_info->config($config);
+  
+  my $output_file = $config->output_file;
+  
+  # Output file
+  unless (defined $output_file) {
+    my $output_dir = $self->output_dir;
+    unless (defined $output_dir) {
+      my $is_jit = $self->is_jit;
+      if ($is_jit) {
+        $output_dir = $self->create_build_lib_path($command_hash =~ s|^(..)|$1/|r);
+      }
+      else {
+        confess("[Unexpected Error]A output directory must exists.");
+      }
+    }
+    
+    my $category = $config->category;
+    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
+    $output_file = "$output_dir/$output_rel_file";
+  }
+  
+  # Output file extension
+  my $output_type = $config->output_type;
+  my $output_file_base = basename $output_file;
+  if ($output_file_base =~ /\.precompile$/ || $output_file_base !~ /\./) {
+    my $exe_ext;
+    
+    if ($output_type eq 'dynamic_lib') {
+      $exe_ext = ".$Config{dlext}"
+    }
+    elsif ($output_type eq 'exe') {
+      $exe_ext = $Config{exe_ext};
+    }
+    
+    $output_file .= $exe_ext;
+  }
+  
+  $config->output_file($output_file);
+  
+  $link_info->output_file($output_file);
+  
+  return $link_info;
 }
 
 1;
