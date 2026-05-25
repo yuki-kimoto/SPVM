@@ -247,7 +247,7 @@ sub build_exe_file {
   my $bootstrap_link_info = $self->prepare_compile_bootstrap_source_file;
   push @$compile_infos, @{$bootstrap_link_info->compile_infos};
   
-  my $spvm_core_link_info = $builder_cc->prepare_compile_spvm_core_source_files;
+  my $spvm_core_link_info = $builder->prepare_compile_spvm_core_source_files;
   push @$compile_infos, @{$spvm_core_link_info->compile_infos};
   
   for my $class_name (@$class_names) {

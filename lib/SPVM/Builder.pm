@@ -954,6 +954,43 @@ sub prepare_link {
   return $link_info;
 }
 
+sub prepare_compile_spvm_core_source_files {
+  my ($self) = @_;
+  
+  my $config = SPVM::Builder::Util::API::create_default_config();
+  
+  my $builder_dir = SPVM::Builder::Util::get_builder_dir();
+  
+  my $builder_src_dir = "$builder_dir/src";
+  
+  my $builder_include_dir = "$builder_dir/include";
+  
+  my $source_dir = $builder_dir;
+  $source_dir =~ s|/SPVM/Builder$||;
+  
+  my $spvm_core_source_file_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
+  
+  # Compile source files
+  my $compile_infos = [];
+  for my $spvm_core_source_file_name (@$spvm_core_source_file_names) {
+    my $source_rel_file = "SPVM/Builder/src/$spvm_core_source_file_name";
+    
+    my $compile_info = SPVM::Builder::CompileInfo->new(
+      source_dir => $source_dir,
+      source_rel_file => $source_rel_file,
+      config => $config,
+      category => 'spvm_core',
+      dependent_files => [$builder_include_dir],
+    );
+    
+    push @$compile_infos, $compile_info;
+  }
+  
+  my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
+  
+  return $link_info;
+}
+
 1;
 
 =encoding utf8
