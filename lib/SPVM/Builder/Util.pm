@@ -924,8 +924,56 @@ sub build_parallel_libspvm {
   my $link_infos = [$link_info];
   
   $builder->build_parallel_with_link_infos($link_infos, $options);
+}
+
+sub create_make_rule_parallel_libspvm {
+  my ($options) = @_;
+
+  $options ||= {};
+
+  my $make_rule = '';
+
+  # Gen target name
+  my $target = "spvm-build-parallel-libspvm";
+
+  # Order-only deps
+  my $dependent_files = $options->{dependent_files} // [];
+  my $dependent_str = @$dependent_files ? " " . join(' ', @$dependent_files) : "";
   
+  my $order_only_dependent_files = $options->{order_only_dependent_files} // [];
+  my $order_only_str = @$order_only_dependent_files ? " | " . join(' ', @$order_only_dependent_files) : "";
+
+  # Dynamic target
+  $make_rule .= "dynamic :: $target\n";
+  $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
+
+  # Parallel build rule
+  $make_rule .= ".PHONY: $target\n";
+  $make_rule .= "$target :$dependent_str$order_only_str\n";
+
+  # Collect all build options
+  my @build_options;
   
+  my $build_dir = $options->{build_dir} // '.spvm_build';
+  push @build_options, "build_dir => '$build_dir'";
+  
+  my $output_dir = $options->{output_dir} // 'blib/lib';
+  push @build_options, "output_dir => '$output_dir'";
+  
+  if (defined(my $jobs = $options->{jobs})) {
+    push @build_options, "jobs => $jobs";
+  }
+  
+  if (defined(my $config_global_file = $options->{config_global_file})) {
+    push @build_options, "config_global_file => '$config_global_file'";
+  }
+  
+  my $build_options_hash_str = "{" . join(', ', @build_options) . "}";
+
+  # Build cmd
+  $make_rule .= "\t\$(FULLPERLRUN) -Mblib -MSPVM::Builder::Util::API -e \"SPVM::Builder::Util::API::build_parallel_libspvm($build_options_hash_str)\"\n\n";
+
+  return $make_rule;
 }
 
 1;
