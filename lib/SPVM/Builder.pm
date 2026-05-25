@@ -16,18 +16,13 @@ use POSIX ":sys_wait_h";
 use Fcntl ':flock';
 
 use SPVM ();
-use SPVM::BlessedObject;
-use SPVM::BlessedObject::Array;
-use SPVM::BlessedObject::Class;
-use SPVM::BlessedObject::String;
-use SPVM::Builder::Ninja;
-use SPVM::Builder::ObjectFileInfo;
-use SPVM::Builder::Config::Util;
-use SPVM::Builder::Config::DLL;
-use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Util;
+use SPVM::Builder::Config::Util;
 use SPVM::Builder::CompileInfo;
 use SPVM::Builder::LinkInfo;
+use SPVM::Builder::ObjectFileInfo;
+use SPVM::Builder::Ninja;
+
 use SPVM::Builder::Accessor 'has';
 
 # Fields
