@@ -239,7 +239,6 @@ package MY {
     
     unless ($no_build_spvm_modules) {
       my $options = {};
-      $options->{dependent_files} = ['SPVM.xs'];
       
       $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)', 'pm_to_blib'];
       
