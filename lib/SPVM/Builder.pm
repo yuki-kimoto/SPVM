@@ -49,7 +49,6 @@ has [qw(
   quiet
   work_dir
   include_dirs
-  runtime
   global_lock_fh
   ninja
   is_jit

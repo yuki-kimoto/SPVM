@@ -25,6 +25,7 @@ use SPVM::Builder::Accessor 'has';
 # Fields
 has [qw(
   builder
+  runtime
 )];
 
 # Class Methods
@@ -132,15 +133,11 @@ sub prepare_compile_resources {
     my $resource_class_name = $resource->class_name;
     my $resource_config = $resource->config;
     
-    my $builder_cc_resource = SPVM::Builder::CC->new(
-      builder => $self->builder,
-    );
-    
     if (exists $config->{quiet}) {
       $resource_config->quiet($config->quiet);
     }
     
-    my $resource_link_info = $builder_cc_resource->prepare_compile_class($resource_class_name, {%$options, config  => $resource_config});
+    my $resource_link_info = $self->prepare_compile_class($resource_class_name, {%$options, config  => $resource_config});
     my $resource_compile_infos = $resource_link_info->compile_infos;
     push @$compile_infos, @$resource_compile_infos;
   }
@@ -168,12 +165,13 @@ sub prepare_compile_class_common {
     return $link_info;
   }
   
-  my $runtime = $self->builder->runtime;
+  my $runtime = $self->runtime;
+  unless ($runtime) {
+    confess("'runtime' field must be defined.");
+  }
+  
   my $native_class_ext = $config->ext;
   
-  unless ($runtime) {
-    confess();
-  }
   my $basic_type = $runtime->get_basic_type_by_name($class_name);
   
   unless ($basic_type) {
@@ -407,7 +405,10 @@ sub resolve_dl_func_list {
   my $category = $config->category;
   
   if ($category eq 'native' || $category eq 'precompile') {
-    my $runtime = $self->builder->runtime;
+    my $runtime = $self->runtime;
+    unless ($runtime) {
+      confess("'runtime' field must be defined.");
+    }
     
     my $basic_type = $runtime->get_basic_type_by_name($class_name);
     
@@ -498,7 +499,7 @@ sub build_parallel_dynamic_lib_dist {
   }
   
   my $runtime = $compiler->get_runtime;
-  $builder->runtime($runtime);
+  $self->runtime($runtime);
   
   $self->build_parallel($options);
 }

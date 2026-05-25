@@ -116,6 +116,17 @@ sub mode {
   }
 }
 
+sub runtime {
+  my $self = shift;
+  if (@_) {
+    $self->{runtime} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{runtime};
+  }
+}
+
 # Class Methods
 
 sub new {
@@ -206,7 +217,7 @@ sub build_exe_file {
   
   my $class_name = $self->{class_name};
   
-  my $class = $self->builder->runtime->get_basic_type_by_name($class_name);
+  my $class = $self->runtime->get_basic_type_by_name($class_name);
   
   my $class_file = $class->get_class_file;
   
@@ -229,7 +240,7 @@ sub build_exe_file {
   }
   my $no_compile_resources = 1;
   
-  my $builder_cc = SPVM::Builder::CC->new(builder => $builder);
+  my $builder_cc = SPVM::Builder::CC->new(builder => $builder, runtime => $self->runtime);
   
   my $compile_infos = [];
   
@@ -285,7 +296,7 @@ sub prepare_compile {
   
   my $runtime = $compiler->get_runtime;
   
-  $self->builder->runtime($runtime);
+  $self->runtime($runtime);
 }
 
 sub create_bootstrap_header_source {
@@ -312,7 +323,7 @@ EOS
   
   $source .= "// precompile functions declaration\n";
   for my $class_name (@$class_names) {
-    my $class = $self->builder->runtime->get_basic_type_by_name($class_name);
+    my $class = $self->runtime->get_basic_type_by_name($class_name);
     my $precompile_method_names = $class->get_precompile_method_names;
     for my $method_name (@$precompile_method_names) {
       my $class_cname = $class_name;
@@ -322,13 +333,13 @@ int32_t SPVMPRECOMPILE__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* 
 EOS
     }
     
-    my $basic_type = $self->builder->runtime->get_basic_type_by_name($class_name);
+    my $basic_type = $self->runtime->get_basic_type_by_name($class_name);
     my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
     for my $anon_basic_type_name (@$anon_basic_type_names) {
       my $anon_basic_type_cname = $anon_basic_type_name;
       $anon_basic_type_cname =~ s/::/__/g;
       
-      my $anon_basic_type = $self->builder->runtime->get_basic_type_by_name($anon_basic_type_name);
+      my $anon_basic_type = $self->runtime->get_basic_type_by_name($anon_basic_type_name);
       my $anon_method = $anon_basic_type->get_method_by_name("");
       if ($anon_method->is_precompile) {
         $source .= <<"EOS";
@@ -346,7 +357,7 @@ EOS
   
   $source .= "// native functions declaration\n";
   for my $class_name (@$class_names) {
-    my $class = $self->builder->runtime->get_basic_type_by_name($class_name);
+    my $class = $self->runtime->get_basic_type_by_name($class_name);
     my $native_method_names = $class->get_native_method_names;
     for my $method_name (@$native_method_names) {
       my $class_name = $class_name;
@@ -571,7 +582,7 @@ EOS
   
   for my $class_name (@$class_names) {
     
-    my $class = $self->builder->runtime->get_basic_type_by_name($class_name);
+    my $class = $self->runtime->get_basic_type_by_name($class_name);
     my $class_file = $compiler->get_class_file($class_name);
     my $class_file_rel_file = $class_file->get_rel_file;
     my $class_file_content = $class_file->get_content;
@@ -657,7 +668,7 @@ EOS
   $source .= "static void set_precompile_method_addresses(SPVM_ENV* env){\n";
   
   for my $class_name (@$class_names) {
-    my $class = $self->builder->runtime->get_basic_type_by_name($class_name);
+    my $class = $self->runtime->get_basic_type_by_name($class_name);
     
     my $class_cname = $class_name;
     $class_cname =~ s/::/__/g;
@@ -671,13 +682,13 @@ EOS
 EOS
     }
     
-    my $basic_type = $self->builder->runtime->get_basic_type_by_name($class_name);
+    my $basic_type = $self->runtime->get_basic_type_by_name($class_name);
     my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
     for my $anon_basic_type_name (@$anon_basic_type_names) {
       my $anon_basic_type_cname = $anon_basic_type_name;
       $anon_basic_type_cname =~ s/::/__/g;
       
-      my $anon_basic_type = $self->builder->runtime->get_basic_type_by_name($anon_basic_type_name);
+      my $anon_basic_type = $self->runtime->get_basic_type_by_name($anon_basic_type_name);
       my $anon_method = $anon_basic_type->get_method_by_name("");
       if ($anon_method->is_precompile) {
         $source .= <<"EOS";
@@ -705,7 +716,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   $source .= "static void set_native_method_addresses(SPVM_ENV* env){\n";
   
   for my $class_name (@$class_names) {
-    my $class = $self->builder->runtime->get_basic_type_by_name($class_name);
+    my $class = $self->runtime->get_basic_type_by_name($class_name);
     
     my $class_cname = $class_name;
     $class_cname =~ s/::/__/g;
@@ -779,7 +790,7 @@ sub prepare_compile_bootstrap_source_file {
 sub get_user_defined_basic_type_names {
   my ($self) = @_;
   
-  my $runtime = $self->builder->runtime;
+  my $runtime = $self->runtime;
   
   my $category = [
     4, # SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM

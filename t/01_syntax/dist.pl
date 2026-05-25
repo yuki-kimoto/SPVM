@@ -7,4 +7,4 @@ use lib "$FindBin::Bin/lib";
 
 use SPVM::Builder::API;
 
-SPVM::Builder::API::build_parallel_dynamic_lib_dist({precompile_classes => ['TestCase::CompileError::ForTest']});
+SPVM::Builder::API::build_parallel({precompile_classes => ['TestCase::CompileError::ForTest']});
