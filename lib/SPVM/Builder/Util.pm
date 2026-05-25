@@ -912,6 +912,8 @@ sub build_parallel_libspvm {
   $link_info->category('libspvm');
   $link_info->class_name('libspvm');
   
+  $link_info->dl_func_list('SPVM_NATIVE_new_env');
+  
   my $link_infos = [$link_info];
   
   $builder->build_parallel_with_link_infos($link_infos, $options);
