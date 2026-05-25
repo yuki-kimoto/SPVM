@@ -463,17 +463,14 @@ sub spawn_link {
   mkpath dirname $output_file;
   
   # Create a dynamic library
-  my $ld_command_heading;
   my $link_method;
   my $cbuilder_output_option_name;
   if ($output_type eq 'dynamic_lib') {
-    $ld_command_heading = "[Generate Dynamic Link Library for $class_name class. \$category='$category']";
     $link_method = 'link';
     $cbuilder_output_option_name = 'lib_file';
   }
   # Create an executable file
   elsif ($output_type eq 'exe') {
-    $ld_command_heading = "[Generate Executable File \"$output_file\"]";
     $link_method = 'link_executable';
     $cbuilder_output_option_name = 'exe_file';
   }
@@ -517,8 +514,9 @@ sub spawn_link {
     my $build_dir = $self->build_dir;
     
     unless ($quiet) {
+      my $ld_command_diagnostic_message= $link_info->diagnostic_message;
       $self->global_file_lock(sub {
-        print STDERR "$ld_command_heading\n";
+        print STDERR "$ld_command_diagnostic_message\n";
         print STDERR "$ld_command_string\n";
       });
     }

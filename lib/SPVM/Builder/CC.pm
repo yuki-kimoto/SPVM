@@ -362,43 +362,6 @@ sub prepare_compile_class_common {
   return $link_info;
 }
 
-sub prepare_compile_spvm_core_source_files {
-  my ($self) = @_;
-  
-  my $config = SPVM::Builder::Util::API::create_default_config();
-  
-  my $builder_dir = SPVM::Builder::Util::get_builder_dir();
-  
-  my $builder_src_dir = "$builder_dir/src";
-  
-  my $builder_include_dir = "$builder_dir/include";
-  
-  my $source_dir = $builder_dir;
-  $source_dir =~ s|/SPVM/Builder$||;
-  
-  my $spvm_core_source_file_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
-  
-  # Compile source files
-  my $compile_infos = [];
-  for my $spvm_core_source_file_name (@$spvm_core_source_file_names) {
-    my $source_rel_file = "SPVM/Builder/src/$spvm_core_source_file_name";
-    
-    my $compile_info = SPVM::Builder::CompileInfo->new(
-      source_dir => $source_dir,
-      source_rel_file => $source_rel_file,
-      config => $config,
-      category => 'spvm_core',
-      dependent_files => [$builder_include_dir],
-    );
-    
-    push @$compile_infos, $compile_info;
-  }
-  
-  my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
-  
-  return $link_info;
-}
-
 sub resolve_dl_func_list {
   my ($self, $link_info) = @_;
   
@@ -455,12 +418,18 @@ sub build_parallel {
   my $native_class_names = $options->{native_classes} // [];
   for my $class_name (@$native_class_names) {
     my $native_link_info = $self->prepare_compile_native_class($class_name);
+    my $category = $native_link_info->config->category;
+    my $diagnostic_message = "[Generate Dynamic Link Library:\$class_name='$class_name', \$category='$category']";
+    $native_link_info->diagnostic_message($diagnostic_message);
     push @$link_infos, $native_link_info;
   }
   
   my $precompile_class_names = $options->{precompile_classes} // [];
   for my $class_name (@$precompile_class_names) {
     my $precompile_link_info = $self->prepare_compile_precompile_class($class_name);
+    my $category = $precompile_link_info->config->category;
+    my $diagnostic_message = "[Generate Dynamic Link Library:\$class_name='$class_name', \$category='$category']";
+    $precompile_link_info->diagnostic_message($diagnostic_message);
     push @$link_infos, $precompile_link_info;
   }
   

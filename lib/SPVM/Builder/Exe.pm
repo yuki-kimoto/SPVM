@@ -271,6 +271,9 @@ sub build_exe_file {
   
   my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
+  my $diagnostic_message = "[Generate Executable File:\$output_file='$output_file']";
+  $link_info->diagnostic_message($diagnostic_message);
+  
   $builder->build_parallel_with_link_infos([$link_info], {config_global => $config->global});
 }
 
