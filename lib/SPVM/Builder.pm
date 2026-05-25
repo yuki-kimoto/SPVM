@@ -1,5 +1,8 @@
 package SPVM::Builder;
 
+# This module is used from Makefile.PL via SPVM::Builder::Util::API
+# so this class must be wrote as pure perl. Do not contain XS functions.
+
 use strict;
 use warnings;
 
@@ -15,7 +18,6 @@ use Digest::SHA 'sha1_hex';
 use POSIX ":sys_wait_h";
 use Fcntl ':flock';
 
-use SPVM ();
 use SPVM::Builder::Util;
 use SPVM::Builder::Config::Util;
 use SPVM::Builder::CompileInfo;

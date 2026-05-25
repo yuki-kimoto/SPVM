@@ -1,17 +1,18 @@
 package SPVM::Global;
 use strict;
 use warnings;
+
 use Carp 'confess';
 use File::Temp;
+use File::Path 'rmtree';
+use Time::HiRes;
+use Fcntl qw(O_RDONLY);
 
 use SPVM::Builder::Util;
 use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Native::Env;
 use SPVM::ExchangeAPI;
-use File::Path 'rmtree';
-use Time::HiRes;
-use Fcntl qw(O_RDONLY);
 use SPVM::BlessedObject;
 use SPVM::BlessedObject::Array;
 use SPVM::BlessedObject::Class;

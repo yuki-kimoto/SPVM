@@ -14,6 +14,9 @@ use POSIX ":sys_wait_h";
 use Time::HiRes;
 use MIME::Base64 qw(encode_base64);
 use Digest::SHA 'sha1_hex';
+
+use SPVM ();
+
 use SPVM::Builder::Util;
 use SPVM::Builder::Util::API;
 use SPVM::Builder::CompileInfo;

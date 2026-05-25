@@ -1,5 +1,8 @@
 package SPVM::Builder::Util;
 
+# This module is used from Makefile.PL via SPVM::Builder::Util::API
+# so this class must be wrote as pure perl. Do not contain XS functions.
+
 use strict;
 use warnings;
 use Carp 'confess';
@@ -20,9 +23,6 @@ use FindBin;
 use Fcntl qw(O_RDONLY);
 use Errno;
 use File::Temp;
-
-# SPVM::Builder::Util is used from Makefile.PL
-# so this class must be wrote as pure perl. Do not contain XS functions.
 
 sub get_spvm_header_files {
   my $builder_dir = &get_builder_dir;
