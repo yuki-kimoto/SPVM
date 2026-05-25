@@ -415,6 +415,32 @@ sub prepare_link {
     confess("[Unexpected Error]A class name must be non-reference.");
   }
   
+  my $category = $config->category;
+  
+  my $output_type = $config->output_type;
+  
+  my $runtime = $self->builder->runtime;
+  
+  my $basic_type = $runtime->get_basic_type_by_name($class_name);
+  
+  # Get normal methods
+  my $method_names = $basic_type->get_method_names_by_category($category);
+  
+  # Create the dynamic link function list for the class
+  my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
+  
+  # Get anon methods from anon basic types
+  my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
+  for my $anon_basic_type_name (@$anon_basic_type_names) {
+    my $anon_basic_type = $runtime->get_basic_type_by_name($anon_basic_type_name);
+    my $anon_method_names = $anon_basic_type->get_method_names_by_category($category);
+    
+    # Create the dynamic link function list for each anon class and merge it
+    my $anon_dl_func_list = SPVM::Builder::Util::create_dl_func_list($anon_basic_type_name, $anon_method_names, {category => $category});
+    push @$dl_func_list, @$anon_dl_func_list;
+  }
+  $link_info->dl_func_list($dl_func_list);
+  
   my $compile_infos = $link_info->compile_infos;
   
   my $object_file_infos = [map { SPVM::Builder::ObjectFileInfo->new(compile_info => $_, file => $_->output_file) } @$compile_infos];
@@ -429,15 +455,9 @@ sub prepare_link {
   
   $link_info->object_file_infos($object_file_infos);
   
-  my $category = $config->category;
-  
   my $build_dir = $self->builder->build_dir;
   
   my $ld = $config->ld;
-  
-  my $output_type = $config->output_type;
-  
-  my $runtime = $self->builder->runtime;
   
   unless (defined $build_dir) {
     confess("[Unexpected Error]A build directory must be defined.");
@@ -514,26 +534,6 @@ sub prepare_link {
   $config->output_file($output_file);
   
   $link_info->output_file($output_file);
-  
-  my $basic_type = $runtime->get_basic_type_by_name($class_name);
-  
-  # Get normal methods
-  my $method_names = $basic_type->get_method_names_by_category($category);
-  
-  # Create the dynamic link function list for the class
-  my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
-  
-  # Get anon methods from anon basic types
-  my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
-  for my $anon_basic_type_name (@$anon_basic_type_names) {
-    my $anon_basic_type = $runtime->get_basic_type_by_name($anon_basic_type_name);
-    my $anon_method_names = $anon_basic_type->get_method_names_by_category($category);
-    
-    # Create the dynamic link function list for each anon class and merge it
-    my $anon_dl_func_list = SPVM::Builder::Util::create_dl_func_list($anon_basic_type_name, $anon_method_names, {category => $category});
-    push @$dl_func_list, @$anon_dl_func_list;
-  }
-  $link_info->dl_func_list($dl_func_list);
   
   return $link_info;
 }
