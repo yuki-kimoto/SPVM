@@ -570,31 +570,31 @@ sub spawn_compile_source_file {
   if ($force || $need_generate) {
     mkpath dirname $output_file;
     
-    my $cc_command_heading;
+    my $cc_command_diagnostic_message;
     
     my $compile_info_category = $compile_info->category;
     if ($config->is_resource) {
       my $resource_class_name = $config->class_name;
-      $cc_command_heading = "[Compile a source file in $resource_class_name resource.]";
+      $cc_command_diagnostic_message = "[Compile a source file in $resource_class_name resource.]";
     }
     else {
       my $config_class_name = $config->class_name;
       my $config_file = $config->file;
       
       if ($compile_info_category eq 'bootstrap') {
-        $cc_command_heading = "[Compile Bootstrap File]";
+        $cc_command_diagnostic_message = "[Compile Bootstrap File]";
       }
       elsif ($compile_info_category eq 'spvm_core') {
-        $cc_command_heading = "[Compile SPVM Source File]";
+        $cc_command_diagnostic_message = "[Compile SPVM Source File]";
       }
       elsif ($compile_info_category eq 'native_source') {
-        $cc_command_heading = "[Compile Native Source File for $config_class_name class using the config file '$config_file']";
+        $cc_command_diagnostic_message = "[Compile Native Source File for $config_class_name class using the config file '$config_file']";
       }
       elsif ($compile_info_category eq 'native_class') {
-        $cc_command_heading = "[Compile Native Class File for $config_class_name class using the config file '$config_file']";
+        $cc_command_diagnostic_message = "[Compile Native Class File for $config_class_name class using the config file '$config_file']";
       }
       elsif ($compile_info_category eq 'precompile_class') {
-        $cc_command_heading = "[Compile Precompile Class File for $config_class_name class]";
+        $cc_command_diagnostic_message = "[Compile Precompile Class File for $config_class_name class]";
       }
       else {
         confess("[Unexpected Error]Invalid compile info category '$compile_info_category'.");
@@ -612,7 +612,7 @@ sub spawn_compile_source_file {
     
     unless ($quiet) {
       $self->global_file_lock(sub {
-        print STDERR "$cc_command_heading\n";
+        print STDERR "$cc_command_diagnostic_message\n";
         print STDERR "$cc_command_string\n";
       });
     }
