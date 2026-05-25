@@ -211,7 +211,7 @@ WriteMakefile(
   OBJECT => "\$(O_FILES) $libspvm_abs_path", # link all the C files too
   EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
   depend => {
-    'blib/arch/auto/SPVM/SPVM.so' => 'blib/lib/SPVM/Builder/lib/libspvm.$(DLEXT)'
+    "blib/arch/auto/SPVM/SPVM.$Config{dlext}" => "blib/lib/SPVM/Builder/lib/libspvm.$Config{dlext}"
   },  ########## [SPVM Only WriteMakefile Options End] ##########
 );
 
