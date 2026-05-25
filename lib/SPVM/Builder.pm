@@ -4,11 +4,18 @@ use strict;
 use warnings;
 
 use Carp 'confess';
+use Config;
+use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
+use File::Find 'find';
+use File::Basename 'dirname', 'basename';
+use Time::HiRes ();
+use MIME::Base64 qw(encode_base64);
+use Digest::SHA 'sha1_hex';
+use POSIX ":sys_wait_h";
 use Fcntl ':flock';
 
 use SPVM ();
-use SPVM::Builder::Util::API;
 use SPVM::BlessedObject;
 use SPVM::BlessedObject::Array;
 use SPVM::BlessedObject::Class;
@@ -18,21 +25,7 @@ use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::Config::Util;
 use SPVM::Builder::Config::DLL;
 use SPVM::Builder::LinkInfo;
-
-use Carp 'confess';
-use Config;
-use File::Copy 'copy', 'move';
-use File::Path 'mkpath';
-use File::Find 'find';
-use File::Basename 'dirname', 'basename';
-use Time::HiRes ();
-use POSIX ":sys_wait_h";
-use Time::HiRes;
-use MIME::Base64 qw(encode_base64);
-use Digest::SHA 'sha1_hex';
-
 use SPVM::Builder::Util;
-use SPVM::Builder::Util::API;
 use SPVM::Builder::CompileInfo;
 use SPVM::Builder::LinkInfo;
 use SPVM::Builder::Accessor 'has';
@@ -66,7 +59,7 @@ sub new {
   
   my $self = {
     build_dir => $ENV{SPVM_BUILD_DIR},
-    jobs => SPVM::Builder::Util::API::get_cpu_count() + 2,
+    jobs => SPVM::Builder::Util::get_cpu_count() + 2,
     include_dirs => \@INC,
     work_dir => 'work',
     @_
