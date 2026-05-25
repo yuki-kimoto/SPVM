@@ -154,6 +154,8 @@ for my $c_file (@csource_files) {
     $object_map->{$obj_file} = $c_file;
 }
 
+my $libspvm_file = "blib/lib/SPVM/Builder/lib/libspvm.$Config{dlext}";
+
 WriteMakefile(
   NAME => 'SPVM',
   VERSION_FROM => 'lib/SPVM.pm',
@@ -211,8 +213,9 @@ WriteMakefile(
   OBJECT => "\$(O_FILES) $libspvm_abs_path", # link all the C files too
   EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
   depend => {
-    "blib/arch/auto/SPVM/SPVM.$Config{dlext}" => "blib/lib/SPVM/Builder/lib/libspvm.$Config{dlext}"
-  },  ########## [SPVM Only WriteMakefile Options End] ##########
+    '$(INST_DYNAMIC)' => $libspvm_file,
+  },
+  ########## [SPVM Only WriteMakefile Options End] ##########
 );
 
 package MY {

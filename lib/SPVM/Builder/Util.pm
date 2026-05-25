@@ -923,7 +923,11 @@ sub build_parallel_libspvm {
   
   my $link_infos = [$link_info];
   
+  warn;
+  
   $builder->build_parallel_with_link_infos($link_infos, $options);
+  
+  warn;
 }
 
 sub create_make_rule_parallel_libspvm {
@@ -934,7 +938,7 @@ sub create_make_rule_parallel_libspvm {
   my $make_rule = '';
 
   # Gen target name
-  my $target = "blib/lib/SPVM/Builder/lib/libspvm.\$(DLEXT)";
+  my $target = "blib/lib/SPVM/Builder/lib/libspvm.$Config{dlext}";
 
   # Order-only deps
   my $dependent_files = $options->{dependent_files} // [];
