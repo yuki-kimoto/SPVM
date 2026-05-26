@@ -462,22 +462,6 @@ sub spawn_link {
   
   mkpath dirname $output_file;
   
-  # Create a dynamic library
-  my $link_method;
-  my $cbuilder_output_option_name;
-  if ($output_type eq 'dynamic_lib') {
-    $link_method = 'link';
-    $cbuilder_output_option_name = 'lib_file';
-  }
-  # Create an executable file
-  elsif ($output_type eq 'exe') {
-    $link_method = 'link_executable';
-    $cbuilder_output_option_name = 'exe_file';
-  }
-  else {
-    confess("Unknown output_type \"$output_type\"");
-  }
-  
   my $force = !!$ENV{SPVM_FORCE_BUILD};
   
   my $need_generate_options = {
