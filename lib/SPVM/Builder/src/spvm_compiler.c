@@ -39,7 +39,6 @@
 #include "spvm_class_file.h"
 #include "spvm_mutex.h"
 #include "spvm_version_from.h"
-#include "spvm_version.h"
 #include "spvm_toke.h"
 
 #include "spvm_api.h"
