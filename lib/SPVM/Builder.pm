@@ -913,7 +913,7 @@ sub prepare_link {
       }
     }
     elsif ($output_type eq 'exe') {
-      $output_file_ext = $Config{output_file_ext};
+      $output_file_ext = $Config{exe_ext};
     }
     
     $output_file .= $output_file_ext;
