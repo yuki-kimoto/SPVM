@@ -19,7 +19,6 @@
   #include <inttypes.h>
   #include <assert.h>
   #include "spvm_version.h"
-  #include "spvm_builtin_expect.h"
 #endif
 
 struct spvm_native_allocator;
