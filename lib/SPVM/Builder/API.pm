@@ -6,7 +6,7 @@ use warnings;
 use SPVM::Builder;
 use SPVM::Builder::CC;
 
-sub build_parallel {
+sub build_parallel_dynamic_lib_dist {
   my ($options) = @_;
   
   my @new_option_names = (
@@ -67,9 +67,9 @@ SPVM::Builder::API class has the public methods to build SPVM native classes and
 
 =head1 Functions
 
-=head2 build_parallel
+=head2 build_parallel_dynamic_lib_dist
 
-  SPVM::Builder::API::build_parallel($options);
+  SPVM::Builder::API::build_parallel_dynamic_lib_dist($options);
 
 Generates dynamic libraries for multiple native classes and precompile classes in parallel, and copies them into the C<blib/lib> directory.
 
