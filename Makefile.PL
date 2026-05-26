@@ -136,8 +136,8 @@ $ldflags .= ' ' . join(' ', @{$link_info->create_ldflags});
 # H - Header files(This is only used to resolve dependencies)
 my @header_files = ('ppport.h', 'lib/SPVM/Builder/include/spvm_native.h');
 
-my $hint_cc = $config->hint_cc;
-my $static_lib_ext = ($hint_cc =~ /cl(\.exe)?$/i) ? 'lib' : 'a';
+my $hint_cc = $config->hint_cc // '';
+my $static_lib_ext = SPVM::Builder::Util::is_msvc($hint_cc) ? 'lib' : 'a';
 
 my $libspvm_file = "blib/lib/SPVM/Builder/lib/libspvm.$static_lib_ext";
 
