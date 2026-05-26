@@ -134,26 +134,17 @@ $ldflags =~ s/-bundle//g;
 $ldflags .= ' ' . join(' ', @{$link_info->create_ldflags});
 
 # C - Source files
-my $spvm_core_source_file_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
-my @spvm_core_source_files = map { "lib/SPVM/Builder/src/$_" } @$spvm_core_source_file_names;
 my @csource_files = ('SPVM.c');
 
 # H - Header files(This is only used to resolve dependencies)
 my @header_files = ('ppport.h', 'lib/SPVM/Builder/include/spvm_native.h');
 
-########## [SPVM Only Build Loigc End] ##########
-
-my $object_map = {};
-for my $c_file (@csource_files) {
-    my $obj_file = $c_file;
-    $obj_file =~ s/\.c$/\$(OBJ_EXT)/;
-    $object_map->{$obj_file} = $c_file;
-}
-
 my $hint_cc = $config->hint_cc;
 my $static_lib_ext = ($hint_cc =~ /cl(\.exe)?$/i) ? 'lib' : 'a';
 
 my $libspvm_file = "blib/lib/SPVM/Builder/lib/libspvm.$static_lib_ext";
+
+########## [SPVM Only Build Loigc End] ##########
 
 WriteMakefile(
   NAME => 'SPVM',
