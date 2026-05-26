@@ -139,8 +139,7 @@ my @spvm_core_source_files = map { "lib/SPVM/Builder/src/$_" } @$spvm_core_sourc
 my @csource_files = ('SPVM.c');
 
 # H - Header files(This is only used to resolve dependencies)
-my @spvm_header_files = glob 'lib/SPVM/Builder/include/*.h';
-my @header_files = ('ppport.h', @spvm_header_files);
+my @header_files = ('ppport.h', 'lib/SPVM/Builder/include/spvm_native.h');
 
 ########## [SPVM Only Build Loigc End] ##########
 
