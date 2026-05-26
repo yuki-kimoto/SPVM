@@ -89,19 +89,39 @@ for my $object_file_name (@object_file_names) {
 }
 
 # Determine link method and output option
-my $link_method = ($output_type eq 'exe') ? 'link_executable' : 'link';
-my $output_option = ($output_type eq 'exe') ? 'exe_file' : 'lib_file';
-
-my $tmp_output_file = "$command_tmp_dir/link.output";
-
-# Link to the .tmp file instead of the final file
-$cbuilder->$link_method(
-  $output_option => $tmp_output_file,
-  objects => \@tmp_object_file_names,
-  extra_linker_flags => "@ldflags",
-  module_name => $class_name,
-  dl_func_list => $dl_func_list,
-);
+my $tmp_output_file;
+if ($output_type eq 'static_lib') {
+  $tmp_output_file = "$command_tmp_dir/link.output";
+  my @generate_static_lib_command;
+  
+  if ($hint_cc =~ /cl(\.exe)?$/i) {
+    # MSVC toolchain: Use lib.exe
+    @generate_static_lib_command = ('lib', "/OUT:$tmp_output_file", @tmp_object_file_names);
+  }
+  else {
+    # GCC/MinGW toolchain: Use ar
+    @generate_static_lib_command = ('ar', 'rcs', $tmp_output_file, @tmp_object_file_names);
+  }
+  
+  # Execute archiver command
+  system(@generate_static_lib_command) == 0
+    or confess("Failed to generate static library command. \@generate_static_lib_command='@generate_static_lib_command', \$!=$!, \$?=$?.");
+}
+else {
+  my $link_method = ($output_type eq 'exe') ? 'link_executable' : 'link';
+  my $output_option = ($output_type eq 'exe') ? 'exe_file' : 'lib_file';
+  
+  $tmp_output_file = "$command_tmp_dir/link.output";
+  
+  # Link to the .tmp file instead of the final file
+  $cbuilder->$link_method(
+    $output_option => $tmp_output_file,
+    objects => \@tmp_object_file_names,
+    extra_linker_flags => "@ldflags",
+    module_name => $class_name,
+    dl_func_list => $dl_func_list,
+  );
+}
 
 mkpath dirname $output_file;
 

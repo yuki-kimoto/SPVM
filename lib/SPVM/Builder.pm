@@ -902,6 +902,16 @@ sub prepare_link {
     if ($output_type eq 'dynamic_lib') {
       $exe_ext = ".$Config{dlext}"
     }
+    elsif ($output_type eq 'static_lib') {
+      if ($hint_cc =~ /cl(\.exe)?$/i) {
+        # For MSVC toolchain
+        $exe_ext = '.lib';
+      }
+      else {
+        # For GCC/MinGW toolchain
+        $exe_ext = '.a';
+      }
+    }
     elsif ($output_type eq 'exe') {
       $exe_ext = $Config{exe_ext};
     }
