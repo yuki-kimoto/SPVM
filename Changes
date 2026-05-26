@@ -1,3 +1,26 @@
+0.990175 2026-05-26
+    [New Features]
+      * libspvm.a is output to SPVM/Builder/lib directory.
+      * spvmcc support generating static libraries.
+    
+    [Makefile.PL Changes]
+      * Native classes does not depend on SPVM.xs.
+      * Build libspvm.a and SPVM.xs use it when linking.
+    [Changes]
+      * add diagnostic_message field to SPVM::Builder::CommandInfo.
+    [Diagnotsic Message Changes]
+      * Improve compiler and linker messages.
+    
+    [Internal Changes]
+      * Remove SPVM::Builder::LinkTarget and use SPVM::Builder::LinkInfo.
+      * prepare_xxx methods return LinkInfo object.
+      * SPVM::Builder becomes pure Perl. Native implementation methods are moved to SVPM::Builder::CC.
+      * Set always dl_func_list.
+      * Add build_parallel_libspvm to SPVM::Builder::Util.
+      * Add is_msvc to SPVM::Builder::Util.
+    [Bug Fix]
+      * Restore dependent_files options in create_make_rule_parallel.
+    
 0.990174 2026-05-22
     [Changes]
       * SPVM::Builder::Util::API use SPVM::Builder::API#build_parallel_dynamic_lib_dist function.
