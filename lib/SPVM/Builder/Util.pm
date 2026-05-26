@@ -364,10 +364,10 @@ sub create_make_rule_parallel {
 
   # Order-only deps
   my $dependent_files = $options->{dependent_files} // [];
-  my $dependent_str = @$dependent_files ? " " . join(' ', @$dependent_files) : "";
+  my $dependent_files_string = @$dependent_files ? " " . join(' ', @$dependent_files) : "";
   
   my $order_only_dependent_files = $options->{order_only_dependent_files} // [];
-  my $order_only_str = @$order_only_dependent_files ? " | " . join(' ', @$order_only_dependent_files) : "";
+  my $order_only_dependent_files_string = @$order_only_dependent_files ? " | " . join(' ', @$order_only_dependent_files) : "";
 
   # Dynamic target
   $make_rule .= "dynamic :: $target\n";
@@ -375,7 +375,7 @@ sub create_make_rule_parallel {
 
   # Parallel build rule
   $make_rule .= ".PHONY: $target\n";
-  $make_rule .= "$target :$dependent_str$order_only_str\n";
+  $make_rule .= "$target :$dependent_files_string$order_only_dependent_files_string\n";
 
   # Collect all build options
   my @build_options;
@@ -920,7 +920,7 @@ sub build_parallel_libspvm {
   
   my $diagnostic_message = "[Generate Dynamic Link Library for libpsvm]";
   $link_info->diagnostic_message($diagnostic_message);
-  $link_info->output_type('static_lib');
+  $link_info->config->output_type('static_lib');
   
   my $link_infos = [$link_info];
   
@@ -936,23 +936,22 @@ sub create_make_rule_parallel_libspvm {
 
   # Gen target name
   my $hint_cc = $options->{hint_cc} // '';
-  my $lib_ext = ($hint_cc =~ /cl(\.exe)?$/i) ? '.lib' : '.a';
+  my $lib_ext = ($hint_cc =~ /cl(\.exe)?$/i) ? 'lib' : 'a';
   my $target = "blib/lib/SPVM/Builder/lib/libspvm.$lib_ext";
 
   # Order-only deps
   my $dependent_files = $options->{dependent_files} // [];
-  my $dependent_str = @$dependent_files ? " " . join(' ', @$dependent_files) : "";
+  my $dependent_files_string = @$dependent_files ? " " . join(' ', @$dependent_files) : "";
   
   my $order_only_dependent_files = $options->{order_only_dependent_files} // [];
-  my $order_only_str = @$order_only_dependent_files ? " | " . join(' ', @$order_only_dependent_files) : "";
+  my $order_only_dependent_files_string = @$order_only_dependent_files ? " | " . join(' ', @$order_only_dependent_files) : "";
 
   # Dynamic target
   $make_rule .= "dynamic :: $target\n";
   $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
 
   # Parallel build rule
-  $make_rule .= ".PHONY: $target\n";
-  $make_rule .= "$target :$dependent_str$order_only_str\n";
+  $make_rule .= "$target :$dependent_files_string$order_only_dependent_files_string\n";
 
   # Collect all build options
   my @build_options;
@@ -974,7 +973,7 @@ sub create_make_rule_parallel_libspvm {
   my $build_options_hash_str = "{" . join(', ', @build_options) . "}";
 
   # Build cmd
-  $make_rule .= "\t\$(FULLPERLRUN) -Mblib -MSPVM::Builder::Util::API -e \"SPVM::Builder::Util::API::build_parallel_libspvm($build_options_hash_str)\"\n\n";
+  $make_rule .= "\t\$(FULLPERLRUN) -Mblib -MSPVM::Builder::Util -e \"SPVM::Builder::Util::build_parallel_libspvm($build_options_hash_str)\"\n\n";
 
   return $make_rule;
 }

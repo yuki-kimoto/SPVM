@@ -136,7 +136,7 @@ $ldflags .= ' ' . join(' ', @{$link_info->create_ldflags});
 # C - Source files
 my $spvm_core_source_file_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
 my @spvm_core_source_files = map { "lib/SPVM/Builder/src/$_" } @$spvm_core_source_file_names;
-my @csource_files = ('SPVM.c', @spvm_core_source_files);
+my @csource_files = ('SPVM.c');
 
 # H - Header files(This is only used to resolve dependencies)
 my @spvm_header_files = glob 'lib/SPVM/Builder/include/*.h';
@@ -150,6 +150,11 @@ for my $c_file (@csource_files) {
     $obj_file =~ s/\.c$/\$(OBJ_EXT)/;
     $object_map->{$obj_file} = $c_file;
 }
+
+my $hint_cc = $config->hint_cc;
+my $static_lib_ext = ($hint_cc =~ /cl(\.exe)?$/i) ? 'lib' : 'a';
+
+my $libspvm_file = "blib/lib/SPVM/Builder/lib/libspvm.$static_lib_ext";
 
 WriteMakefile(
   NAME => 'SPVM',
@@ -205,8 +210,11 @@ WriteMakefile(
   LDDLFLAGS => $ldflags,
   C => [@csource_files],
   H => [@header_files],
-  OBJECT => '$(O_FILES)', # link all the C files too
+  OBJECT => "\$(O_FILES) $libspvm_file", # link all the C files too
   EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
+  depend => {
+    '$(INST_DYNAMIC)' => $libspvm_file,
+  },
   ########## [SPVM Only WriteMakefile Options End] ##########
 );
 
@@ -223,17 +231,13 @@ package MY {
     my $make_rule = '';
     
     ########## [SPVM Only Compilation Start] ##########
-    for my $spvm_core_source_file (@spvm_core_source_files) {
-      my $spvm_core_object_file = $spvm_core_source_file;
-      $spvm_core_object_file =~ s/\.c$/\$(OBJ_EXT)/;
+    {
+      my $options = {};
+      $options->{hint_cc} = $hint_cc;
+      $options->{config_global_file} = $config_global_file;
+      $options->{order_only_dependent_files} = ['pm_to_blib'];
       
-      $make_rule .= "$spvm_core_object_file : $spvm_core_source_file\n";
-      
-      my $spvm_core_ccflags = $compile_info->create_ccflags;
-      
-      my $spvm_core_cc = $compile_info->config->cc;
-      
-      $make_rule .= "\t$spvm_core_cc -c @$spvm_core_ccflags -o $spvm_core_object_file $spvm_core_source_file\n\n";
+      $make_rule .= SPVM::Builder::Util::create_make_rule_parallel_libspvm($options);
     }
     ########## [SPVM Only Compilation End] ##########
     
