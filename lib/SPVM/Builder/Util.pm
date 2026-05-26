@@ -993,6 +993,18 @@ sub is_msvc {
   return $is_msvc;
 }
 
+sub is_gcc_compatible {
+  my ($cc) = @_;
+  
+  my $is_gcc_compatible = 0;
+  if ($cc =~ /(?:gcc|clang|g\+\+|clang\+\+)(?:\.exe)?$/) {
+    $is_gcc_compatible = 1;
+  }
+  
+  return $is_gcc_compatible;
+}
+
+
 1;
 
 =head1 Name
