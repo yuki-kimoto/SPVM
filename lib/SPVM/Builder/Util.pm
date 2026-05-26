@@ -920,6 +920,7 @@ sub build_parallel_libspvm {
   
   my $diagnostic_message = "[Generate Dynamic Link Library for libpsvm]";
   $link_info->diagnostic_message($diagnostic_message);
+  $link_info->output_type('static_lib');
   
   my $link_infos = [$link_info];
   
