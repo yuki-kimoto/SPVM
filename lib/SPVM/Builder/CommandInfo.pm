@@ -32,6 +32,14 @@ sub new {
   
   SPVM::Builder::Util::check_option_names($self, $self->field_names);
   
+  unless ($self->config) {
+    confess("'config' field must be defined.");
+  }
+  
+  # Clone the config to avoid polluting the global configuration 
+  # when applying individual build options
+  $self->config($self->config->clone);
+  
   return $self;
 }
 

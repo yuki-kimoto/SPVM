@@ -11,7 +11,6 @@ use SPVM::Builder::Accessor 'has';
 
 # Fields
 my $field_names = [qw(
-  config
   source_dir
   source_rel_file
   dependent_files
