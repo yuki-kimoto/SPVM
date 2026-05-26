@@ -1,3 +1,14 @@
+0.990176 2026-05-26
+    [Bug Fix]
+      * Fix a bug that config options are repeated. Clone config per build task to prevent option accumulation.
+    [Makefile.PL Changes]
+      * SPVM.xs only depend on lib/SPVM/Builder/include/spvm_native.h.
+      * Only add ccflags and ldflags when cc is compatible with gcc.
+    [Incompatible Changes]
+      * Remove including spvm_version.h and spvm_builtin_expect.h from spvm_native.h. spvm_native.h becomes standalone.
+    [Internal Changees]
+      * Add is_gcc_compatible to SPVM::Builder::Util.
+    
 0.990175 2026-05-26
     [New Features]
       * libspvm.a is output to SPVM/Builder/lib directory.
