@@ -17,10 +17,6 @@ sub get_cpu_count { SPVM::Builder::Util::get_cpu_count(@_) }
 
 sub search_gnu_make_command { SPVM::Builder::Util::search_gnu_make_command(@_) }
 
-sub build_parallel_libspvm { SPVM::Builder::Util::build_parallel_libspvm(@_) }
-
-sub create_make_rule_parallel_libspvm { SPVM::Builder::Util::create_make_rule_parallel_libspvm(@_) }
-
 1;
 
 =head1 Name
