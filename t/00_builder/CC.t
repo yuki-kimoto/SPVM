@@ -84,4 +84,24 @@ use SPVM::Builder;
   }
 }
 
+subtest 'Check spvm_native.h' => sub {
+  my $header_path = 'lib/SPVM/Builder/include/spvm_native.h';
+
+  ok(-f $header_path);
+
+  open my $fh, '<', $header_path or die "Could not open $header_path: $!";
+  my $content = do { local $/; <$fh> };
+  close $fh;
+
+  my %allowed_headers = map { $_ => 1 } qw(stdint.h stdio.h string.h stdlib.h inttypes.h assert.h);
+
+  my @includes = $content =~ /#include\s*[<"]([^>"]+)[>"]/g;
+
+  is(scalar @includes, 6);
+
+  foreach my $include (@includes) {
+    ok($allowed_headers{$include});
+  }
+};
+
 done_testing;

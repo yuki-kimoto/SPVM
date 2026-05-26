@@ -6,6 +6,8 @@
 
 #ifndef SPVM_NATIVE_NO_INCLUDE_HEADERS
 /*
+    This header file must not include any headers other than standard C headers to ensure it can be used standalone.
+    
     Do not reduce these headers. 
     When adding new headers, exercise extreme caution and ensure they are absolutely necessary.
     
@@ -18,8 +20,15 @@
   #include <stdlib.h>
   #include <inttypes.h>
   #include <assert.h>
-  #include "spvm_version.h"
 #endif
+
+#define SPVM_NATIVE_VERSION_NUMBER 0.990175
+
+#define SPVM_NATIVE_CREATE_VERSION_STRING_STRINGIFY(x) #x
+
+#define SPVM_NATIVE_CREATE_VERSION_STRING(x) SPVM_NATIVE_CREATE_VERSION_STRING_STRINGIFY(x)
+
+#define SPVM_NATIVE_VERSION_STRING SPVM_NATIVE_CREATE_VERSION_STRING(SPVM_NATIVE_VERSION_NUMBER)
 
 struct spvm_native_allocator;
 typedef struct spvm_native_allocator SPVM_NATIVE_ALLOCATOR;
@@ -763,8 +772,6 @@ enum {
   SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE = 512,
 };
 
-// These functions are linked only by SPVM itself,
-// so native classes cannot use these functions.
 SPVM_ENV* SPVM_NATIVE_new_env(void);
 
 #endif
