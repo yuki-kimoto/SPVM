@@ -9,6 +9,10 @@ use Digest::SHA 'sha1_hex';
 use File::Path 'mkpath';
 use Carp 'confess';
 
+use FindBin;
+use lib "$FindBin::Bin/../..";
+use SPVM::Builder::Util;
+
 # Get arguments
 my @argv = split("\0", decode_base64($ARGV[0]));
 my ($command_tmp_dir, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @argv;
@@ -25,24 +29,24 @@ open(STDERR, '>', $log_stderr)
 
 # Read dl_func_list
 my $dl_func_list;
-if (my $content = &slurp_binary($dl_func_list_file)) {
+if (my $content = SPVM::Builder::Util::slurp_binary($dl_func_list_file)) {
   $dl_func_list = [split(/\n/, $content)];
 }
 
 # Read object_file_names
 my @object_file_names;
-if (my $content = &slurp_binary($object_file_names_file)) {
+if (my $content = SPVM::Builder::Util::slurp_binary($object_file_names_file)) {
   @object_file_names = split(/\n/, $content);
 }
 
 # Read ldflags
 my @ldflags;
-if (my $content = &slurp_binary($ldflags_file)) {
+if (my $content = SPVM::Builder::Util::slurp_binary($ldflags_file)) {
   @ldflags = split(/\n/, $content);
 }
 
 my $perllibs = '';
-if ($^O eq 'MSWin32') {
+if (SPVM::Builder::Util::is_windows) {
   # [HACK]
   # On Windows, if perllibs is empty, ExtUtils::CBuilder::link may generate
   # an empty INPUT() section in the response file (linker argument file), 
@@ -128,14 +132,3 @@ mkpath dirname $output_file;
 File::Copy::move($tmp_output_file, $output_file)
   or confess("Can't move '$tmp_output_file' to '$output_file': $!");
   
-# Copied from SPVM::Builder::Util#slurp_binary
-sub slurp_binary {
-  my ($file) = @_;
-  
-  open my $fh, '<', $file
-    or confess("Can't open file '$file':$!");
-    
-  my $content = do { local $/; <$fh> };
-  
-  return $content;
-}
