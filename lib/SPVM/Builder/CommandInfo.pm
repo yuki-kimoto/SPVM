@@ -136,6 +136,13 @@ Gets and sets the C<tmp_dir> field. It is a directory where the stderr log file 
 
 Gets and sets the C<process_id> field. It is the process ID of the command.
 
+=head2 diagnostic_message
+
+  my $diagnostic_message = $command_info->diagnostic_message;
+  $command_info->diagnostic_message($diagnostic_message);
+
+Gets and sets the C<diagnostic_message> field. It is a diagnostic message output when the command is executed.
+
 =head1 Instance Methods
 
 =head2 create_command
