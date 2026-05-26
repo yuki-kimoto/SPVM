@@ -661,6 +661,9 @@ EOS
     # Remove the block including #ifndef and #endif
     $content =~ s/^\s*#ifndef\s+SPVM_NATIVE_NO_INCLUDE_HEADERS.*?#endif//msg;
     
+    # Remove the block including #ifndef and #endif for version utilities
+    $content =~ s/^\s*#ifndef\s+SPVM_NATIVE_NO_VERSION_UTILITIES.*?#endif//msg;
+    
     return $content;
   };
 
