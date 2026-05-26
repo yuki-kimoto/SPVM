@@ -897,26 +897,26 @@ sub prepare_link {
   my $output_type = $config->output_type;
   my $output_file_base = basename $output_file;
   if ($output_file_base =~ /\.precompile$/ || $output_file_base !~ /\./) {
-    my $exe_ext;
+    my $output_file_ext;
     
     if ($output_type eq 'dynamic_lib') {
-      $exe_ext = ".$Config{dlext}"
+      $output_file_ext = ".$Config{dlext}"
     }
     elsif ($output_type eq 'static_lib') {
       if ($hint_cc =~ /cl(\.exe)?$/i) {
         # For MSVC toolchain
-        $exe_ext = '.lib';
+        $output_file_ext = '.lib';
       }
       else {
         # For GCC/MinGW toolchain
-        $exe_ext = '.a';
+        $output_file_ext = '.a';
       }
     }
     elsif ($output_type eq 'exe') {
-      $exe_ext = $Config{exe_ext};
+      $output_file_ext = $Config{output_file_ext};
     }
     
-    $output_file .= $exe_ext;
+    $output_file .= $output_file_ext;
   }
   
   $config->output_file($output_file);
