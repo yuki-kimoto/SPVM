@@ -978,6 +978,19 @@ sub create_make_rule_parallel_libspvm {
   return $make_rule;
 }
 
+sub is_msvc {
+  my ($cc) = @_;
+  
+  confess("Compiler \$cc must be defined.");
+  
+  my $is_msvc = 0;
+  if ($cc =~ /cl(\.exe)?$/) {
+    $is_msvc = 1;
+  }
+  
+  return $is_msvc;
+}
+
 1;
 
 =head1 Name
