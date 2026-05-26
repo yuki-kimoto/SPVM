@@ -903,7 +903,7 @@ sub prepare_link {
       $output_file_ext = ".$Config{dlext}"
     }
     elsif ($output_type eq 'static_lib') {
-      if ($hint_cc =~ /cl(\.exe)?$/i) {
+      if (SPVM::Builder::Util::is_msvc($hint_cc)) {
         # For MSVC toolchain
         $output_file_ext = '.lib';
       }

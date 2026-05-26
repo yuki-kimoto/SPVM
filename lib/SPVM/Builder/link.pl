@@ -17,6 +17,8 @@ use SPVM::Builder::Util;
 my @argv = split("\0", decode_base64($ARGV[0]));
 my ($command_tmp_dir, $output_file, $class_name, $hint_cc, $output_type, $ld, $dl_func_list_file, $object_file_names_file, $ldflags_file) = @argv;
 
+my $is_msvc = SPVM::Builder::Util::is_msvc($hint_cc);
+
 # Define log file paths
 my $log_stdout = "$command_tmp_dir/stdout.log";
 my $log_stderr = "$command_tmp_dir/stderr.log";
@@ -52,7 +54,7 @@ if (SPVM::Builder::Util::is_windows) {
   # an empty INPUT() section in the response file (linker argument file), 
   # which leads to a build failure.
   # To prevent this, we explicitly specify kernel32.lib (a core Windows library)
-  if ($hint_cc =~ /cl(\.exe)?$/i) {
+  if ($is_msvc) {
     # For MSVC (cl.exe)
     $perllibs = 'kernel32.lib';
   }
@@ -98,7 +100,7 @@ if ($output_type eq 'static_lib') {
   $tmp_output_file = "$command_tmp_dir/link.output";
   my @generate_static_lib_command;
   
-  if ($hint_cc =~ /cl(\.exe)?$/i) {
+  if ($is_msvc) {
     # MSVC toolchain: Use lib.exe
     @generate_static_lib_command = ('lib', "/OUT:$tmp_output_file", @tmp_object_file_names);
   }

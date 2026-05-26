@@ -936,7 +936,7 @@ sub create_make_rule_parallel_libspvm {
 
   # Gen target name
   my $hint_cc = $options->{hint_cc} // '';
-  my $lib_ext = ($hint_cc =~ /cl(\.exe)?$/i) ? 'lib' : 'a';
+  my $lib_ext = &is_msvc($hint_cc) ? 'lib' : 'a';
   my $target = "blib/lib/SPVM/Builder/lib/libspvm.$lib_ext";
 
   # Order-only deps
@@ -981,7 +981,9 @@ sub create_make_rule_parallel_libspvm {
 sub is_msvc {
   my ($cc) = @_;
   
-  confess("Compiler \$cc must be defined.");
+  unless (defined $cc) {
+    confess("Compiler \$cc must be defined.");
+  }
   
   my $is_msvc = 0;
   if ($cc =~ /cl(\.exe)?$/) {
