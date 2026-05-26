@@ -123,15 +123,19 @@ my $link_info = SPVM::Builder::LinkInfo->new(config => $config);
 # CCFLAGS
 my $ccflags = '';
 $ccflags .= " $Config{ccflags}";
-$ccflags .= ' ' . join(' ', @{$compile_info->create_ccflags});
+if (SPVM::Builder::Util::is_gcc_compatible($config->cc)) {
+  $ccflags .= ' ' . join(' ', @{$compile_info->create_ccflags});
+}
 
 # LDDLFLAGS
 my $ldflags = $Config{lddlflags};
-$ldflags =~ s/(?:^|\s)-O[0-9s]\b//g; # Remove -O[0-9s] to ensure clean debug session
-$ldflags =~ s/(?:^|\s)-s(?:\s|$)/ /g; # Remove strip flag (-s) more robustly
-$ldflags =~ s/-shared//g;
-$ldflags =~ s/-bundle//g;
-$ldflags .= ' ' . join(' ', @{$link_info->create_ldflags});
+if (SPVM::Builder::Util::is_gcc_compatible($config->cc)) {
+  $ldflags =~ s/(?:^|\s)-O[0-9s]\b//g; # Remove -O[0-9s] to ensure clean debug session
+  $ldflags =~ s/(?:^|\s)-s(?:\s|$)/ /g; # Remove strip flag (-s) more robustly
+  $ldflags =~ s/-shared//g;
+  $ldflags =~ s/-bundle//g;
+  $ldflags .= ' ' . join(' ', @{$link_info->create_ldflags});
+}
 
 # H - Header files(This is only used to resolve dependencies)
 my @header_files = ('ppport.h', 'lib/SPVM/Builder/include/spvm_native.h');
