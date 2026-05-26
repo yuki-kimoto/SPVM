@@ -133,9 +133,6 @@ $ldflags =~ s/-shared//g;
 $ldflags =~ s/-bundle//g;
 $ldflags .= ' ' . join(' ', @{$link_info->create_ldflags});
 
-# C - Source files
-my @csource_files = ('SPVM.c');
-
 # H - Header files(This is only used to resolve dependencies)
 my @header_files = ('ppport.h', 'lib/SPVM/Builder/include/spvm_native.h');
 
@@ -198,7 +195,6 @@ WriteMakefile(
   CCFLAGS => $ccflags,
   OPTIMIZE => ' ',
   LDDLFLAGS => $ldflags,
-  C => [@csource_files],
   H => [@header_files],
   OBJECT => "\$(O_FILES) $libspvm_file", # link all the C files too
   EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
