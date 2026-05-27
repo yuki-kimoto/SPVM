@@ -345,9 +345,8 @@ EOS
   
   if ($msvc) {
     $config_global_content .= <<"EOS";
-use SPVM::Builder::Config::MSVC;
-\$config_global = SPVM::Builder::Config::MSVC->new_with_config(\$config_global);
-\$config_global->init;
+use SPVM::Builder::Config::Global::MSVC;
+\$config_global = SPVM::Builder::Config::Global::MSVC->new;
 EOS
   }
   
@@ -441,7 +440,7 @@ Enables AddressSanitizer (ASan) for memory error detection on Linux.
 
 =head2 --msvc
 
-Compile source codes by using MSVC config(L<SPVM::Builder::Config::MSVC>).
+Compile source codes by using MSVC config(L<SPVM::Builder::Config::Global::MSVC>).
 
 =head2 --no-build-spvm-modules
 
