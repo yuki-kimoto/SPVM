@@ -130,10 +130,14 @@ sub build_parallel_with_link_infos {
   # Prepare all link information
   my @all_link_infos;
   for my $link_info (@$link_infos) {
-    my $link_info = $self->prepare_link($link_info);
+    my $config = $link_info->config;
+    
     if ($config_global) {
-      $config_global->apply_build_rules($link_info->config);
+      $link_info->config->global($config_global);
     }
+    my $link_info = $self->prepare_link($link_info);
+    
+    $config->global->apply_build_rules($link_info->config);
     
     push @all_link_infos, $link_info;
   }
