@@ -21,21 +21,7 @@ has($fields);
 sub new {
   my $self = shift->SUPER::new(@_);
   
-  my ($self, $options) = @_;
-  
-  $options //= {};
-  
-  if (exists $options->{cc}) {
-    $self->cc = $options->{cc};
-  }
-  else {
-    delete $self->{cc};
-  }
-  
-  if (exists $options->{ld}) {
-    $self->ld($options->{ld});
-  }
-  else {
+  unless (defined $self->ld) {
     $self->ld('link.exe');
   }
   
