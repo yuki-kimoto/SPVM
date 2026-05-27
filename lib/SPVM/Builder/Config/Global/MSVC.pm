@@ -21,11 +21,7 @@ has($fields);
 sub new {
   my $self = shift->SUPER::new(@_);
   
-  unless (defined $self->ld) {
-    $self->ld('link.exe');
-  }
-  
-  $self->setup_env;
+  $self->setup;
   
   # --- Initialize Global Config ---
   $self->build_rule_any(sub {
@@ -162,7 +158,7 @@ sub _get_config_from_build_type_msvc {
   return $config;
 }
 
-sub setup_env {
+sub setup {
   my ($self) = @_;
   
   my $cl_long_path = $self->cc;
@@ -222,6 +218,10 @@ sub setup_env {
   }
   
   $self->cc(basename $cl_long_path);
+  
+  unless (defined $self->ld) {
+    $self->ld('link.exe');
+  }
   
   require Win32;
   
