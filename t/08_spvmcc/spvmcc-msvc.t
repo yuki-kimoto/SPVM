@@ -17,7 +17,7 @@ use File::Temp;
 
 use SPVM::Builder;
 use SPVM::Builder::Util;
-use SPVM::Builder::Config::MSVC;
+use SPVM::Builder::Config::Global::MSVC;
 
 my $devnull = File::Spec->devnull;
 
@@ -30,11 +30,8 @@ my $tmp_dir = File::Temp->newdir;
 my $has_msvc;
 eval {
   local %ENV = %ENV;
-  my $global_config = SPVM::Builder::Config::MSVC->new;
-  $global_config->hint_cc(undef);
-  $global_config->setup_env;
-  my $hint_cc = $global_config->hint_cc;
-  $has_msvc = defined $hint_cc;
+  my $global_config = SPVM::Builder::Config::Global::MSVC->new;
+  $has_msvc = !!$global_config;
 };
 
 if ($@) {
