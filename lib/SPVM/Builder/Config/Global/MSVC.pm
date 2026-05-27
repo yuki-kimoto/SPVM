@@ -12,7 +12,7 @@ use File::Find;
 use SPVM::Builder::Accessor 'has';
 
 my $fields = [qw(
-  cc,
+  cc
   ld
 )];
 
@@ -68,7 +68,7 @@ sub init {
     
     ld_version => $self->create_cc_version,
     ld => $self->ld,
-    cc => $self->cc,
+    hint_cc => $self->cc,
     static_lib_braces       => ["", ""],
     lib_prefix              => "",
     lib_option_name         => "",
