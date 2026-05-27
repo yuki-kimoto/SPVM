@@ -135,9 +135,10 @@ sub build_parallel_with_link_infos {
     if ($config_global) {
       $link_info->config->global($config_global);
     }
-    my $link_info = $self->prepare_link($link_info);
     
     $config->global->apply_build_rules($link_info->config);
+    
+    $self->finalize_link_info($link_info);
     
     push @all_link_infos, $link_info;
   }
@@ -794,7 +795,7 @@ sub finalize_compile_info {
   $compile_info->command_hash($command_hash);
 }
 
-sub prepare_link {
+sub finalize_link_info {
   my ($self, $link_info) = @_;
   
   my $config = $link_info->config;
