@@ -26,6 +26,7 @@ GetOptions(
   'debug' => \my $debug,
   'build-type=s' => \my $build_type,
   'asan-on-linux' => \my $asan_on_linux,
+  'msvc' => \my $msvc,
   
   # Build target settings
   'no-build-spvm-modules' => \my $no_build_spvm_modules,
@@ -54,6 +55,7 @@ my $config_global_file = '.spvm_build/global.config';
   debug         => $debug,
   build_type    => $build_type,
   asan_on_linux => $asan_on_linux,
+  msvc => $msvc,
 });
 
 my $gnu_make = SPVM::Builder::Util::API::search_gnu_make_command();
@@ -322,6 +324,7 @@ sub generate_config_global_file {
   my $build_type    = $options->{build_type};
   my $debug         = $options->{debug};
   my $asan_on_linux = $options->{asan_on_linux};
+  my $msvc = $options->{msvc};
   
   # --- Handle options ---
   if ($debug) {
@@ -339,6 +342,14 @@ sub generate_config_global_file {
   $config_global_content .= <<"EOS";
 my \$config_global = SPVM::Builder::Config::Global->new;
 EOS
+  
+  if ($msvc) {
+    $config_global_content .= <<"EOS";
+use SPVM::Builder::Config::MSVC;
+\$config_global = SPVM::Builder::Config::MSVC->new_with_config(\$config_global);
+\$config_global->init;
+EOS
+  }
   
   if (defined $build_type) {
     $config_global_content .= <<"EOS";
@@ -427,6 +438,10 @@ Specifies the build type. The possible values are C<Debug>, C<Release>, C<RelWit
 =head2 --asan-on-linux
 
 Enables AddressSanitizer (ASan) for memory error detection on Linux.
+
+=head2 --msvc
+
+Compile source codes by using MSVC config(L<SPVM::Builder::Config::MSVC>).
 
 =head2 --no-build-spvm-modules
 
