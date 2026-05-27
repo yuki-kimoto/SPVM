@@ -308,11 +308,11 @@ sub create_cc_version {
 
 =head1 Name
 
-SPVM::Builder::Config::Global::MSVC - Configuration for Executable Files for MSVC
+SPVM::Builder::Config::Global::MSVC - Global Config for MSVC(Microsoft Visual C++)
 
 =head1 Description
 
-L<SPVM::Builder::Config::Global::MSVC> managaes configurations for generating executable files for MSVC.
+L<SPVM::Builder::Config::Global::MSVC> creates a global config for MSVC(Microsoft Visual C++).
 
 =head2 Usage
 
@@ -330,5 +330,5 @@ L<SPVM::Builder::Config::Global>
 
   my $config_global = SPVM::Builder::Config::Global::MSVC->new(%fields);
 
-Creates a new L<SPVM::Builder::Config::Global::MSVC> object by calling C<new> method in the super class with I<%fields>, and calls L</"init"> method with I<%fields>.
+Creates a new L<SPVM::Builder::Config::Global::MSVC> object by calling C<new> method in the super class with I<%fields> and returns the new object.
 
