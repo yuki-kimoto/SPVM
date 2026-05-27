@@ -21,12 +21,6 @@ has($fields);
 sub new {
   my $self = shift->SUPER::new(@_);
   
-  $self->init;
-  
-  return $self;
-}
-
-sub init {
   my ($self, $options) = @_;
   
   $options //= {};

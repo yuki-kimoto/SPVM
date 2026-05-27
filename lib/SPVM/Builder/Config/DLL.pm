@@ -8,38 +8,28 @@ use warnings;
 sub new {
   my $self = shift->SUPER::new(@_);
   
-  $self->init;
+  $self->output_type('dynamic_lib');
   
   return $self;
-}
-
-sub init {
-  my ($self) = @_;
-  
-  $self->output_type('dynamic_lib');
 }
 
 1;
 
 =head1 Name
 
-SPVM::Builder::Config::DLL - Configuration for Dynamic Link Libraries
+SPVM::Builder::Config::DLL - Config for Dynamic Link Libraries
 
 =head1 Description
 
-L<SPVM::Builder::Config::DLL> is a class to manage configurations for generating dynamic link libraries.
+L<SPVM::Builder::Config::DLL> creates a config to generate dynamic link libraries.
 
 =head1 Usage
 
   use SPVM::Builder::Config::DLL;
 
-  my $config_global = SPVM::Builder::Config::Util::load_base_config(__FILE__);
+  my $config = SPVM::Builder::Config::DLL->new
   
-  $config_global = SPVM::Builder::Config::DLL->new_with_config($config_global);
-  
-  $config_global->init;
-
-  $config_global;
+  $config;
 
 =head1 Super Class
 
@@ -49,14 +39,8 @@ L<SPVM::Builder::Config::Linker>
 
 =head2 new
 
-  my $config_global = SPVM::Builder::Config::DLL->new(%fields);
+  my $config = SPVM::Builder::Config::DLL->new(%fields);
 
-Creates a new L<SPVM::Builder::Config::DLL> object by calling C<new> method in the super class with I<%fields>, and calls L</"init"> method with I<%fields>.
-
-=head1 Instance Methods
-
-=head2 init
-  
-  $config_global->init(%fields);
-
-Initialize this instance. C<output_type> is set to C<"dynamic_lib">.
+Creates a new L<SPVM::Builder::Config::DLL> object by calling C<new> method in the super class with I<%fields>,
+and sets C<output_type> field to C<"dynamic_lib">,
+and returns the new object.

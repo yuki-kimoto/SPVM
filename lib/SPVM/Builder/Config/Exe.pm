@@ -6,12 +6,9 @@ use strict;
 use warnings;
 
 sub new {
-  my $class = shift;
+  my $self = shift->SUPER::new(@_);
   
-  my $self = $class->SUPER::new(
-    output_type => 'exe',
-    @_,
-  );
+  $self->output_type('exe');
   
   return $self;
 }
@@ -20,24 +17,30 @@ sub new {
 
 =head1 Name
 
-SPVM::Builder::Config::Exe - Configuration for Executable Files
+SPVM::Builder::Config::Exe - Config for Executable Files
 
 =head1 Description
 
-L<SPVM::Builder::Config::Exe> is a class to manage configurations for generating executable files.
+L<SPVM::Builder::Config::Exe> creates a config to generate executable files.
 
-This class inherits from L<SPVM::Builder::Config::Global> and sets the C<output_type> field to C<exe> by default.
+=head1 Usage
+
+  use SPVM::Builder::Config::Exe;
+
+  my $config = SPVM::Builder::Config::Exe->new
+  
+  $config;
 
 =head1 Super Class
 
 L<SPVM::Builder::Config::Linker>
 
-=head1 Methods
+=head1 Class Methods
 
 =head2 new
 
   my $config = SPVM::Builder::Config::Exe->new(%options);
 
-Creates a new L<SPVM::Builder::Config::Exe> object. The C<output_type> field is set to C<exe>.
-
-=cut
+Creates a new L<SPVM::Builder::Config::Exe> object by calling C<new> method in the super class with I<%fields>,
+and sets C<output_type> field to C<"exe">,
+and returns the new object.
