@@ -1,3 +1,15 @@
+0.990177 2026-05-27
+  [Bug Fix]
+    * Fix a bug that globa config is not set to LinkInfo.
+  [Document Improvement]
+    * Add 'static_lib' doc for output_type in SPVM::Builder::Config::Linker.
+  [Incompatible Changes]
+    * Remove SPVM::Builder::Config::MSVC and add SPVM::Builder::Config::Global::MSVC.
+    * Remove init methods from SPVM::Builder::Config::DLL, SPVM::Builder::Config::Exe, SPVM::Builder::Config::Global::MSVC.
+    * Remove new_with_config  method from SPVM::Builder::Config::Base.
+    * Rename prepare_link to finalize_link_info and call $config->global->apply_build_rules before it.
+  [Makefile.PL Changes]
+    Add --msvc option to Makefile.PL(not worked).
 0.990176 2026-05-26
     [Bug Fix]
       * Fix a bug that config options are repeated. Clone config per build task to prevent option accumulation.
