@@ -62,9 +62,9 @@ SPVM::Document - SPVM Documentation
 
 =item * L<SPVM::Builder::Config::Global - Global Config|SPVM::Builder::Config::Global>
 
-=item * L<SPVM::Builder::Config::Exe - Executable Config|SPVM::Builder::Config::Exe>
-
 =item * L<SPVM::Builder::Config::Global::MSVC - MSVC Executable Config|SPVM::Builder::Config::Global::MSVC>
+
+=item * L<SPVM::Builder::Config::Exe - Executable Config|SPVM::Builder::Config::Exe>
 
 =item * L<SPVM::Builder::Config::DLL - DLL Config|SPVM::Builder::Config::DLL>
 
