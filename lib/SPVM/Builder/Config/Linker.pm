@@ -173,7 +173,7 @@ sub new {
   }
 
   unless (exists $self->{dynamic_lib_ext}) {
-    my $ext = $Config{dlext};
+    my $ext = $Config{so};
     $ext =~ s/^\.//;
     $self->dynamic_lib_ext($ext);
   }
@@ -862,7 +862,7 @@ Other OSs:
 
 =item * L</"dynamic_lib_ext">
 
-  $Config{dlext} without the leading dot.
+  $Config{so} without the leading dot.
 
 =item * L</"exe_ext">
 

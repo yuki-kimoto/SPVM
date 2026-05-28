@@ -42,7 +42,7 @@ my $tmp_dir = File::Temp->newdir;
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
     
-    ok(-f "$tmp_dir/myapp.$Config{dlext}");
+    ok(-f "$tmp_dir/myapp.$Config{so}");
     ok(-f "$tmp_dir/myapp.pl");
     
     my $execute_cmd = "$^X $tmp_dir/myapp.pl";

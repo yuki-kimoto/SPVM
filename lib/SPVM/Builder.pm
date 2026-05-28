@@ -905,7 +905,7 @@ sub finalize_link_info {
     my $output_file_ext;
     
     if ($output_type eq 'dynamic_lib') {
-      $output_file_ext = ".$Config{dlext}"
+      $output_file_ext = ".$Config{so}"
     }
     elsif ($output_type eq 'static_lib') {
       if (SPVM::Builder::Util::is_msvc($hint_cc)) {

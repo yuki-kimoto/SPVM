@@ -240,10 +240,10 @@ sub getopt {
 sub convert_class_file_to_dynamic_lib_file {
   my ($class_file, $category) = @_;
   
-  my $dlext = $Config{dlext};
+  my $so = $Config{so};
   $class_file =~ s/\.[^.]+$//;
   my $dynamic_lib_category_file = $class_file;
-  $dynamic_lib_category_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
+  $dynamic_lib_category_file .= $category eq 'native' ? ".$so" : ".$category.$so";
   
   return $dynamic_lib_category_file;
 }
@@ -251,9 +251,9 @@ sub convert_class_file_to_dynamic_lib_file {
 sub convert_class_name_to_dynamic_lib_rel_file {
   my ($class_name, $category) = @_;
   
-  my $dlext = $Config{dlext};
+  my $so = $Config{so};
   my $dynamic_lib_category_rel_file = &convert_class_name_to_rel_file($class_name);
-  $dynamic_lib_category_rel_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
+  $dynamic_lib_category_rel_file .= $category eq 'native' ? ".$so" : ".$category.$so";
   
   return $dynamic_lib_category_rel_file;
 }
