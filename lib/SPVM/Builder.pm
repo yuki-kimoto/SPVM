@@ -908,14 +908,7 @@ sub finalize_link_info {
       $output_file_ext = ".$Config{so}"
     }
     elsif ($output_type eq 'static_lib') {
-      if (SPVM::Builder::Util::is_msvc($hint_cc)) {
-        # For MSVC toolchain
-        $output_file_ext = '.lib';
-      }
-      else {
-        # For GCC/MinGW toolchain
-        $output_file_ext = '.a';
-      }
+      $output_file_ext = $Config{lib_ext};
     }
     elsif ($output_type eq 'exe') {
       $output_file_ext = $Config{exe_ext};
