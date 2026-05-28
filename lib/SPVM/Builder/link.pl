@@ -98,16 +98,7 @@ for my $object_file_name (@object_file_names) {
 my $tmp_output_file;
 if ($output_type eq 'static_lib') {
   $tmp_output_file = "$command_tmp_dir/link.output";
-  my @generate_static_lib_command;
-  
-  if ($is_msvc) {
-    # MSVC toolchain: Use lib.exe
-    @generate_static_lib_command = ('lib', "/OUT:$tmp_output_file", @tmp_object_file_names);
-  }
-  else {
-    # GCC/MinGW toolchain: Use ar
-    @generate_static_lib_command = ('ar', 'rcs', $tmp_output_file, @tmp_object_file_names);
-  }
+  my @generate_static_lib_command = ('ar', 'rcs', $tmp_output_file, @tmp_object_file_names);
   
   # Execute archiver command
   system(@generate_static_lib_command) == 0
