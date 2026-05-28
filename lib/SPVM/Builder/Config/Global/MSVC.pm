@@ -87,6 +87,10 @@ sub new {
     std => 'c++14',
   });
   
+  $self->build_rule({output_type => 'dynamic_lib'}, {
+    'dynamic_lib_ldflags' => ['-DLL'],
+  });
+  
   # Define build types
   my @build_types = qw(Debug Release RelWithDebInfo MinSizeRel);
   for my $build_type (@build_types) {
