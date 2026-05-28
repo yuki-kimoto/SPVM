@@ -1,3 +1,15 @@
+0.990178 2026-05-28
+  [Bug Fix]
+    Fix a bug that Fn#print_stderr do not work well in MSVC.
+  [Makefile.PL Changes]
+    * Separte SPVM.xs, libspvm global config from modules global config in Makefile.PL
+    * Add PHONY to libspvm build.
+  [Incompatible Changes]
+    * Change static_lib default extension to \$Config{lib_ext}.
+    * Do not use lib command and always use ar command.
+  [Changes]
+    * Change DLL extension from $Config{dlext} to $Config{so}.
+    * Add -DLL when dynamic linking in MSVC.
 0.990177 2026-05-27
   [Bug Fix]
     * Fix a bug that globa config is not set to LinkInfo.
