@@ -938,9 +938,7 @@ sub create_make_rule_parallel_libspvm {
   my $make_rule = '';
 
   # Gen target name
-  my $hint_cc = $options->{hint_cc} // '';
-  my $lib_ext = &is_msvc($hint_cc) ? 'lib' : 'a';
-  my $target = "blib/lib/SPVM/Builder/lib/libspvm.$lib_ext";
+  my $target = "blib/lib/SPVM/Builder/lib/libspvm.a";
 
   # Order-only deps
   my $dependent_files = $options->{dependent_files} // [];

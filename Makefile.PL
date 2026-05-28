@@ -14,9 +14,9 @@ use SPVM::Builder::Config::DLL;
 use SPVM::Builder::CompileInfo;
 use SPVM::Builder::LinkInfo;
 
-########## [SPVM Only Module Loading Start] ##########
+#################### [SPVM Only Module Loading Start] ####################
 use SPVM::Builder::Util;
-########## [SPVM Only Module Loading End] ##########
+#################### [SPVM Only Module Loading End] ####################
 
 GetOptions(
   # Compiler and linker flags
@@ -39,9 +39,9 @@ GetOptions(
   'parallel-test' => \my $paralle_test,
   'jobs=i' => \my $jobs,
   
-  ########## [SPVM Only Command Line Options Start] ##########
+  #################### [SPVM Only Command Line Options Start] ####################
   'no-precompile-tests' => \my $no_precompile_tests,
-  ########## [SPVM Only Line Options Options End] ##########
+  #################### [SPVM Only Line Options Options End] ####################
 );
 
 my $build_dir = '.spvm_build';
@@ -80,7 +80,7 @@ if ($jobs > 16) {
   $jobs = 16;
 }
 
-########## [SPVM Only Build Loigc Start] ##########
+#################### [SPVM Only Build Loigc Start] ####################
 
 # Check supported environment
 {
@@ -113,41 +113,41 @@ if ($meta) {
 # Updates src/spvm_precompile_header_content.c
 SPVM::Builder::Util::build_precompile_header_content_c_source();
 
-my $config = SPVM::Builder::Util::API::create_default_config;
-my $config_global = SPVM::Builder::Config::Util::load_config_global($config_global_file);
-$config->global($config_global);
-$config->global->apply_build_rules($config);
+my $xs_config_global_file = '.spvm_build/xs_global.config';
+&generate_config_global_file($xs_config_global_file, {
+  debug         => $debug,
+  build_type    => $build_type,
+  asan_on_linux => $asan_on_linux,
+});
 
-my $compile_info = SPVM::Builder::CompileInfo->new(config => $config);
+my $xs_config = SPVM::Builder::Util::API::create_default_config;
+my $xs_config_global = SPVM::Builder::Config::Util::load_config_global($xs_config_global_file);
+$xs_config->global($xs_config_global);
+$xs_config->global->apply_build_rules($xs_config);
 
-my $link_info = SPVM::Builder::LinkInfo->new(config => $config);
+my $xs_compile_info = SPVM::Builder::CompileInfo->new(config => $xs_config);
+
+my $xs_link_info = SPVM::Builder::LinkInfo->new(config => $xs_config);
 
 # CCFLAGS
-my $ccflags = '';
-$ccflags .= " $Config{ccflags}";
-if (SPVM::Builder::Util::is_gcc_compatible($config->cc)) {
-  $ccflags .= ' ' . join(' ', @{$compile_info->create_ccflags});
-}
+my $xs_ccflags = '';
+$xs_ccflags .= " $Config{ccflags}";
+$xs_ccflags .= ' ' . join(' ', @{$xs_compile_info->create_ccflags});
 
 # LDDLFLAGS
-my $ldflags = $Config{lddlflags};
-if (SPVM::Builder::Util::is_gcc_compatible($config->cc)) {
-  $ldflags =~ s/(?:^|\s)-O[0-9s]\b//g; # Remove -O[0-9s] to ensure clean debug session
-  $ldflags =~ s/(?:^|\s)-s(?:\s|$)/ /g; # Remove strip flag (-s) more robustly
-  $ldflags =~ s/-shared//g;
-  $ldflags =~ s/-bundle//g;
-  $ldflags .= ' ' . join(' ', @{$link_info->create_ldflags});
-}
+my $xs_ldflags = $Config{lddlflags};
+$xs_ldflags =~ s/(?:^|\s)-O[0-9s]\b//g; # Remove -O[0-9s] to ensure clean debug session
+$xs_ldflags =~ s/(?:^|\s)-s(?:\s|$)/ /g; # Remove strip flag (-s) more robustly
+$xs_ldflags =~ s/-shared//g;
+$xs_ldflags =~ s/-bundle//g;
+$xs_ldflags .= ' ' . join(' ', @{$xs_link_info->create_ldflags});
 
 # H - Header files(This is only used to resolve dependencies)
 my @header_files = ('ppport.h', 'lib/SPVM/Builder/include/spvm_native.h');
 
-my $hint_cc = $config->hint_cc // '';
-my $static_lib_ext = SPVM::Builder::Util::is_msvc($hint_cc) ? 'lib' : 'a';
+my $libspvm_file = "blib/lib/SPVM/Builder/lib/libspvm.a";
 
-my $libspvm_file = "blib/lib/SPVM/Builder/lib/libspvm.$static_lib_ext";
-
-########## [SPVM Only Build Loigc End] ##########
+#################### [SPVM Only Build Loigc End] ####################
 
 WriteMakefile(
   NAME => 'SPVM',
@@ -197,24 +197,24 @@ WriteMakefile(
   TEST_REQUIRES => {
     'Test::More' => '0.92',
   },
-  ########## [SPVM Only WriteMakefile Options Start] ##########
-  CCFLAGS => $ccflags,
+  #################### [SPVM Only WriteMakefile Options Start] ####################
+  CCFLAGS => $xs_ccflags,
   OPTIMIZE => ' ',
-  LDDLFLAGS => $ldflags,
+  LDDLFLAGS => $xs_ldflags,
   H => [@header_files],
   OBJECT => "\$(O_FILES) $libspvm_file", # link all the C files too
   EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist', 'script/spvmdeps'],
   depend => {
     '$(INST_DYNAMIC)' => $libspvm_file,
   },
-  ########## [SPVM Only WriteMakefile Options End] ##########
+  #################### [SPVM Only WriteMakefile Options End] ####################
 );
 
 package MY {
   
-  ########## [SPVM Only Module Loading Start] ##########
+  #################### [SPVM Only Module Loading Start] ####################
   use File::Find 'find';
-  ########## [SPVM Only Module Loading End] ##########
+  #################### [SPVM Only Module Loading End] ####################
   
   # Add Build shared library make rule
   sub postamble {
@@ -222,16 +222,15 @@ package MY {
     # The content of Makefile
     my $make_rule = '';
     
-    ########## [SPVM Only Compilation Start] ##########
+    #################### [SPVM Only Generate libspvm Start] ####################
     {
       my $options = {};
-      $options->{hint_cc} = $hint_cc;
-      $options->{config_global_file} = $config_global_file;
+      $options->{config_global_file} = $xs_config_global_file;
       $options->{order_only_dependent_files} = ['pm_to_blib'];
       
       $make_rule .= SPVM::Builder::Util::create_make_rule_parallel_libspvm($options);
     }
-    ########## [SPVM Only Compilation End] ##########
+    #################### [SPVM Only Generate libspvm End] ####################
     
     unless ($no_build_spvm_modules) {
       my $options = {};
@@ -280,7 +279,7 @@ package MY {
       $make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel($options);
     }
     
-    ########## [SPVM Only Test Generation Start] ##########
+    #################### [SPVM Only Test Generation Start] ####################
     unless ($no_precompile_tests) {
       # Create precompile tests
       my @test_files;
@@ -308,7 +307,7 @@ package MY {
       $make_rule .= "$time_stamp_file :: t/utils/copy_vm_to_precompile.pl $test_files_str\n";
       $make_rule .= "\tperl t/utils/copy_vm_to_precompile.pl\n";
     }
-    ########## [SPVM Only Test Generation End] ##########
+    #################### [SPVM Only Test Generation End] ####################
     
     return $make_rule;
   }
