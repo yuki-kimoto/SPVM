@@ -952,6 +952,7 @@ sub create_make_rule_parallel_libspvm {
   $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
 
   # Parallel build rule
+  $make_rule .= ".PHONY: $target\n";
   $make_rule .= "$target :$dependent_files_string$order_only_dependent_files_string\n";
 
   # Collect all build options
