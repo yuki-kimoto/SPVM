@@ -51,6 +51,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
   
   ok(SPVM::TestCase::NativeAPI->check_native_api_internal_ids);
   
+  ok(SPVM::TestCase::NativeAPI->check_native_api_cfunc_ids);
+  
   ok(SPVM::TestCase::NativeAPI->check_native_api_method_ids);
   
   ok(SPVM::TestCase::NativeAPI->check_native_api_mutex_ids);

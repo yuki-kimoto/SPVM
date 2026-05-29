@@ -501,6 +501,28 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_internal_ids(SPVM_ENV* env, 
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__check_native_api_cfunc_ids(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void** env_array = (void**)env->api->cfunc;
+  
+  if ((void*)&env->api->cfunc->c_strlen != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_memcpy != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_memset != &env_array[2]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_memcmp != &env_array[3]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_strtoll != &env_array[4]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_strtof != &env_array[5]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_strtod != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_fputs != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_fgetc != &env_array[8]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_snprintf_len != &env_array[9]) { stack[0].ival = 0; return 0; }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
 int32_t SPVM__TestCase__NativeAPI__check_native_api_method_ids(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;

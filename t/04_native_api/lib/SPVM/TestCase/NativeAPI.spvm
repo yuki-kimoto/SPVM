@@ -71,6 +71,8 @@ class TestCase::NativeAPI {
   
   native static method check_native_api_internal_ids : int ();
   
+  native static method check_native_api_cfunc_ids : int ();
+  
   native static method check_native_api_method_ids : int ();
   
   native static method check_native_api_mutex_ids : int ();

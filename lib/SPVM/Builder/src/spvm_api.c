@@ -41,6 +41,7 @@
 #include "spvm_api_type.h"
 #include "spvm_api_internal.h"
 #include "spvm_api_mutex.h"
+#include "spvm_api_cfunc.h"
 #include "spvm_utf8.h"
 #include "spvm_type.h"
 #include "spvm_runtime_call_stack_frame_info.h"
@@ -72,6 +73,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
   SPVM_API_ARG* api_arg = SPVM_API_ARG_new_api();
   SPVM_API_INTERNAL* api_internal = SPVM_API_INTERNAL_new_api();
   SPVM_API_MUTEX* api_mutex = SPVM_API_MUTEX_new_api();
+  SPVM_API_CFUNC* api_cfunc = SPVM_API_CFUNC_new_api();
   
   void* env_api_init[]  = {
     api_allocator,
@@ -87,6 +89,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     api_type,
     api_internal,
     api_mutex,
+    api_cfunc,
   };
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));
@@ -408,6 +411,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   SPVM_API_ARG_free_api(env->api->arg);
   SPVM_API_INTERNAL_free_api(env->api->internal);
   SPVM_API_MUTEX_free_api(env->api->mutex);
+  SPVM_API_CFUNC_free_api(env->api->cfunc);
   
   free(env->api);
   

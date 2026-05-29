@@ -74,6 +74,7 @@ sub get_spvm_core_source_file_names {
     spvm_api_arg.c
     spvm_api_basic_type.c
     spvm_api.c
+    spvm_api_cfunc.c
     spvm_api_class_file.c
     spvm_api_class_var.c
     spvm_api_compiler.c
