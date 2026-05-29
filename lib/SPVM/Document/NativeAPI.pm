@@ -50,9 +50,11 @@ Returns C<SPVM_ENV_API> object. This object have the following fields for other 
 
 =item * L<SPVM_API_TYPE* type|SPVM::Document::NativeAPI::Type>
 
-=item * L<SPVM_API_INTERNAL* internal|SPVM::Document::NativeAPI::Internal>
-
 =item * L<SPVM_API_MUTEX* mutex|SPVM::Document::NativeAPI::Mutex>
+
+=item * L<SPVM_API_CFUNC* internal|SPVM::Document::NativeAPI::CFunction.>
+
+=item * L<SPVM_API_INTERNAL* internal|SPVM::Document::NativeAPI::Internal>
 
 =back
 
