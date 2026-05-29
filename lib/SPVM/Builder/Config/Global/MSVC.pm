@@ -123,7 +123,7 @@ sub _get_config_from_build_type_msvc {
     };
   }
   elsif ($build_type eq 'Debug') {
-    # Debug: /Od (Disable optimization), /Zi (PDB), /RTC1 (Runtime checks)
+    # Debug: /Od (Disable optimization), /Zi (PDB)
     $config = {
       optimize             => '-Od',
       debug_info_ccflags   => ['-Zi'],
