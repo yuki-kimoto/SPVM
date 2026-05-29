@@ -1469,18 +1469,22 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
         
         // Format the breakpoint information to the temporary buffer
-        snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "[Break Point]%s at %s line %d\n", method_abs_name, file, line);
+        SPVM_VALUE snprintf_args[3];
+        snprintf_args[0].address = (void*)method_abs_name;
+        snprintf_args[1].address = (void*)file;
+        snprintf_args[2].ival = line;
+        env->api->cfunc->c_snprintf_len(env, stack, tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "[Break Point]%s at %s line %d\n", snprintf_args, 3);
         
         // Print the breakpoint information using fputs (Fixed arguments)
-        fputs(tmp_buffer, spvm_stderr);
-        fputs("Press Enter to continue...", spvm_stderr);
+        env->api->cfunc->c_fputs(env, stack, tmp_buffer, spvm_stderr);
+        env->api->cfunc->c_fputs(env, stack, "Press Enter to continue...", spvm_stderr);
         
         // Get the SPVM's stdin from the environment
         FILE* spvm_stdin = env->spvm_stdin(env, stack);
         
         // Wait for the Enter key (newline) from SPVM's stdin.
         int32_t c;
-        while ((c = env->api->internal->c_fgetc(env, stack, spvm_stdin)) != '\n' && c != EOF) {
+        while ((c = env->api->cfunc->c_fgetc(env, stack, spvm_stdin)) != '\n' && c != EOF) {
           // Just discard characters
         }
         

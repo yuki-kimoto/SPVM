@@ -848,7 +848,7 @@ int32_t SPVM__Fn__say_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   env->print_stderr(env, stack, obj_string);
   
-  env->api->internal->c_fputs(env, stack, "\n", env->spvm_stderr(env, stack));
+  env->api->cfunc->c_fputs(env, stack, "\n", env->spvm_stderr(env, stack));
   
   return 0;
 }
