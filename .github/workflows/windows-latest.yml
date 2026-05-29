@@ -1,4 +1,4 @@
-name: windows-latest
+name: windows-latest-msvc
 
 on:
   push:
