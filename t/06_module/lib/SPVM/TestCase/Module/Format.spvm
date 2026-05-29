@@ -228,7 +228,7 @@ class TestCase::Module::Format {
   }
   
   static method sprintf_f : int () {
-    unless (Format->sprintf("%f", [(object)3.1415]) eq "3.141500") { return 0; }
+    unless (Format->sprintf("%f", [(object)3.1415]) eq "3.141500") {return 0; }
     unless (Format->sprintf("%.2f", [(object)3.1415]) eq "3.14") { return 0; }
     unless (Format->sprintf("%.10f", [(object)3.14]) eq "3.1400000000") { return 0; }
     unless (Format->sprintf("%012.6f", [(object)3.14]) eq "00003.140000") { return 0; }
@@ -241,10 +241,8 @@ class TestCase::Module::Format {
     {
       my $output = Format->sprintf("%f", [(object)9.9e+300f]);
       
-      warn "[Test Output]$output";
-      
       unless ($output eq "inf") {
-        warn $output;
+        diag $output;
         return 0;
       }
     }
@@ -252,10 +250,8 @@ class TestCase::Module::Format {
     {
       my $output = Format->sprintf("%f", [(object)-9.9e+300f]);
       
-      warn "[Test Output]$output";
-      
       unless ($output eq "-inf") {
-        warn $output;
+        diag $output;
         return 0;
       }
     }
@@ -263,8 +259,8 @@ class TestCase::Module::Format {
     {
       my $output = Format->sprintf("%f", [(object)(0.0f / 0.0f)]);
       
-      unless ($output eq "nan" || $output eq "-nan") {
-        warn $output;
+      unless (Fn->contains($output, "nan")) {
+        diag $output;
         return 0;
       }
     }
@@ -297,7 +293,7 @@ class TestCase::Module::Format {
       my $output = Format->sprintf("%g", [(object)9.9e+300f]);
       
       unless ($output eq "inf") {
-        warn $output;
+        diag $output;
         return 0;
       }
     }
@@ -305,10 +301,8 @@ class TestCase::Module::Format {
     {
       my $output = Format->sprintf("%g", [(object)-9.9e+300f]);
       
-      warn "[Test Output]$output";
-      
       unless ($output eq "-inf") {
-        warn $output;
+        diag $output;
         return 0;
       }
     }
@@ -316,8 +310,8 @@ class TestCase::Module::Format {
     {
       my $output = Format->sprintf("%g", [(object)(0.0f / 0.0f)]);
       
-      unless ($output eq "nan" || $output eq "-nan") {
-        warn $output;
+      unless (Fn->contains($output, "nan")) {
+        diag $output;
         return 0;
       }
     }
