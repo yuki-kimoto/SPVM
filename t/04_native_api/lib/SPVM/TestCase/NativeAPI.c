@@ -5445,3 +5445,91 @@ int32_t SPVM__TestCase__NativeAPI__get_error_id(SPVM_ENV* env, SPVM_VALUE* stack
   
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__cfunc(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t error_id = 0;
+  
+  SPVM_OBJ* tmp_dir_obj = stack[0].oval;
+  const char* tmp_dir = env->get_chars(env, stack, tmp_dir_obj);
+
+  // String and Memory functions
+  {
+    const char* str = "hello";
+    if (env->api->cfunc->c_strlen(env, stack, str) != 5) { stack[0].ival = 0; return 0; }
+  }
+  {
+    char buf[10];
+    env->api->cfunc->c_memcpy(env, stack, buf, "abc", 3);
+    buf[3] = '\0';
+    if (strcmp(buf, "abc") != 0) { stack[0].ival = 0; return 0; }
+  }
+  {
+    char buf[5];
+    env->api->cfunc->c_memset(env, stack, buf, 'a', 4);
+    buf[4] = '\0';
+    if (strcmp(buf, "aaaa") != 0) { stack[0].ival = 0; return 0; }
+  }
+  {
+    if (env->api->cfunc->c_memcmp(env, stack, "abc", "abd", 3) >= 0) { stack[0].ival = 0; return 0; }
+  }
+  {
+    char* endptr;
+    if (env->api->cfunc->c_strtoll(env, stack, "123", &endptr, 10) != 123) { stack[0].ival = 0; return 0; }
+  }
+  {
+    char* endptr;
+    if ((int)env->api->cfunc->c_strtof(env, stack, "1.5", &endptr) != 1) { stack[0].ival = 0; return 0; }
+  }
+  {
+    char* endptr;
+    if ((int)env->api->cfunc->c_strtod(env, stack, "1.5", &endptr) != 1) { stack[0].ival = 0; return 0; }
+  }
+  {
+    char buf[10];
+    env->api->cfunc->c_snprintf_len(env, stack, buf, 10, "%d", NULL, 0);
+  }
+
+  // Errno
+  {
+    env->api->cfunc->c_set_errno(env, stack, 0);
+    if (env->api->cfunc->c_errno(env, stack) != 0) { stack[0].ival = 0; return 0; }
+  }
+
+  // File IO (Using temporary directory)
+  {
+    char tmp_file_path[256];
+    snprintf(tmp_file_path, sizeof(tmp_file_path), "%s/test_cfunc.txt", tmp_dir);
+    
+    FILE* fp = env->api->cfunc->c_fopen(env, stack, tmp_file_path, "w+");
+    if (!fp) { stack[0].ival = 0; return 0; }
+    
+    env->api->cfunc->c_fputs(env, stack, "test", fp);
+    env->api->cfunc->c_fflush(env, stack, fp);
+    
+    env->api->cfunc->c_fseek(env, stack, fp, 0, SEEK_SET);
+    if (env->api->cfunc->c_ftell(env, stack, fp) != 0) { stack[0].ival = 0; return 0; }
+    
+    char buf[5];
+    env->api->cfunc->c_fread(env, stack, buf, 1, 4, fp);
+    buf[4] = '\0';
+    if (strcmp(buf, "test") != 0) { stack[0].ival = 0; return 0; }
+    
+    // Check EOF, Error, and Fileno
+    if (env->api->cfunc->c_feof(env, stack, fp)) { }
+    if (env->api->cfunc->c_ferror(env, stack, fp)) { stack[0].ival = 0; return 0; }
+    if (env->api->cfunc->c_fileno(env, stack, fp) < 0) { stack[0].ival = 0; return 0; }
+    
+    env->api->cfunc->c_fclose(env, stack, fp);
+    remove(tmp_file_path);
+  }
+  
+  // Streams
+  {
+    if (!env->api->cfunc->c_stdin(env, stack)) { stack[0].ival = 0; return 0; }
+    if (!env->api->cfunc->c_stdout(env, stack)) { stack[0].ival = 0; return 0; }
+    if (!env->api->cfunc->c_stderr(env, stack)) { stack[0].ival = 0; return 0; }
+  }
+  
+  stack[0].ival = 1;
+  return 0;
+}

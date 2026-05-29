@@ -7,6 +7,7 @@ use strict;
 use warnings;
 
 use Test::More;
+use File::Temp;
 
 use Config;
 use Errno;
@@ -15,6 +16,7 @@ use SPVM 'TestCase::NativeAPI';
 use SPVM 'TestCase::Pointer';
 
 my $build_dir = $ENV{SPVM_BUILD_DIR};
+my $tmp_dir = File::Temp->newdir;
 
 # Start objects count
 my $api = SPVM::api();
@@ -416,6 +418,8 @@ ok(SPVM::TestCase::NativeAPI->method_begin_and_end_cb);
 ok(SPVM::TestCase::NativeAPI->push_caller_stack);
 
 ok(SPVM::TestCase::NativeAPI->get_error_id);
+
+ok(SPVM::TestCase::NativeAPI->cfunc("$tmp_dir"));
 
 {
   # The target C source file

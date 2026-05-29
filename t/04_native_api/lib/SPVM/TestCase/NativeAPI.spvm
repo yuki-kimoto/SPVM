@@ -1813,4 +1813,6 @@ class TestCase::NativeAPI {
   
   native static method get_error_id : int ();
   
+  native static method cfunc : int ($tmp_dir : string);
+  
 }
