@@ -11,11 +11,6 @@
 SPVM_API_CFUNC* SPVM_API_CFUNC_new_api() {
   
   void* env_cfunc_init[]  = {
-    SPVM_API_get_ref_count,
-    SPVM_API_inc_ref_count,
-    SPVM_API_dec_ref_count,
-    SPVM_API_get_stack_tmp_buffer,
-    SPVM_API_leave_scope_local,
     SPVM_API_c_strlen,
     SPVM_API_c_memcpy,
     SPVM_API_c_memset,
