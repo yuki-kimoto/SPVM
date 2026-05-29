@@ -8,6 +8,31 @@ Native APIs for C standard functions.
 
 =head1 Details
 
+=head1 Details
+
+These native APIs are provided to safely invoke C standard functions within the SPVM runtime, effectively bridging the isolation between different compilation environments.
+
+In scenarios where the SPVM core is compiled with one compiler (e.g., GCC) and its extension modules are compiled with another (e.g., MSVC), a "runtime boundary" is created. Because each compiler environment maintains its own global state (such as standard I/O streams) and thread-local storage (such as C<errno>), data modified in the SPVM core may not be visible or correctly interpreted by the extension modules, and vice versa.
+
+These APIs encapsulate the necessary logic to capture, synchronize, and handle such states across these runtime boundaries. By using these APIs, developers ensure that global and thread-specific states—such as error codes or stream positions—remain consistent and accessible, regardless of how the individual components were compiled.
+
+Consider the following implementation of C<say_stderr>, which attempts to print a string to standard error:
+
+  int32_t SPVM__Fn__say_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
+    SPVM_OBJ* obj_string = stack[0].oval;
+    
+    // Prints the string via the SPVM runtime
+    env->print_stderr(env, stack, obj_string);
+    
+    // Attempts to print a newline using a direct C function call
+    env->api->cfunc->c_fputs(env, stack, "\n", env->spvm_stderr(env, stack));
+    
+    return 0;
+  }
+
+In this example, C<env->spvm_stderr> returns a C<FILE*> pointer managed by the SPVM core (compiled with GCC). However, when C<c_fputs> is called from an extension module compiled with a different compiler (e.g., MSVC), it attempts to use the standard I/O streams of the MSVC runtime. 
+
+Because the C<FILE*> structure and its underlying state are incompatible between different C runtimes, calling C<fputs> with a file pointer from one runtime in another will lead to undefined behavior or crashes. Using the provided C<NativeAPI> ensures that such operations are routed through the correct runtime environment, maintaining cross-compiler compatibility.
 
 =head1 Usage
 
@@ -89,16 +114,16 @@ Returns the number of characters that would have been written if C<n> had been s
 
 =head1 Native C Function API IDs
 
-  1 c_strlen
-  2 c_memcpy
-  3 c_memset
-  4 c_memcmp
-  5 c_strtoll
-  6 c_strtof
-  7 c_strtod
-  8 c_fputs
-  9 c_fgetc
-  10 c_snprintf_len
+  0 c_strlen
+  1 c_memcpy
+  2 c_memset
+  3 c_memcmp
+  4 c_strtoll
+  5 c_strtof
+  6 c_strtod
+  7 c_fputs
+  8 c_fgetc
+  9 c_snprintf_len
   
 =head1 See Also
 
