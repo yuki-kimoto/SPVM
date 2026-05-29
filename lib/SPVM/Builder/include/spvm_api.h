@@ -556,4 +556,36 @@ int32_t SPVM_API_get_error_id(SPVM_ENV* env, SPVM_VALUE* stack);
 
 void SPVM_API_set_error_id(SPVM_ENV* env, SPVM_VALUE* stack, int32_t error_id);
 
+int SPVM_API_c_errno(SPVM_ENV* env, SPVM_VALUE* stack);
+
+void SPVM_API_c_set_errno(SPVM_ENV* env, SPVM_VALUE* stack, int errno_value);
+
+FILE* SPVM_API_c_fopen(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, const char* mode);
+
+FILE* SPVM_API_c_freopen(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, const char* mode, FILE* stream);
+
+int SPVM_API_c_fclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+
+size_t SPVM_API_c_fread(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size, size_t nmemb, FILE* stream);
+
+size_t SPVM_API_c_fwrite(SPVM_ENV* env, SPVM_VALUE* stack, const void* ptr, size_t size, size_t nmemb, FILE* stream);
+
+int SPVM_API_c_fflush(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+
+int SPVM_API_c_fseek(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream, long offset, int whence);
+
+long SPVM_API_c_ftell(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+
+int SPVM_API_c_feof(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+
+int SPVM_API_c_ferror(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+
+int SPVM_API_c_fileno(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+
+FILE* SPVM_API_c_stdin(SPVM_ENV* env, SPVM_VALUE* stack);
+
+FILE* SPVM_API_c_stdout(SPVM_ENV* env, SPVM_VALUE* stack);
+
+FILE* SPVM_API_c_stderr(SPVM_ENV* env, SPVM_VALUE* stack);
+
 #endif

@@ -112,6 +112,104 @@ For example:
 
 Returns the number of characters that would have been written if C<n> had been sufficiently large, not counting the terminating null character.
 
+せやな、新しく追加したAPIたちのドキュメントを書き足すで。形式を揃えて、きもっちゃんが使いやすいように整えたわ。
+
+=head2 c_errno
+
+C<int (c_errno)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+
+A wrapper for the C standard variable L<errno|https://linux.die.net/man/3/errno>.
+
+=head2 c_set_errno
+
+C<void (c_set_errno)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int errno_value);>
+
+Sets the value of the C standard variable L<errno|https://linux.die.net/man/3/errno>.
+
+=head2 c_fopen
+
+C<FILE* (c_fopen)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* path, const char* mode);>
+
+A wrapper for the C standard function L<fopen|https://linux.die.net/man/3/fopen>.
+
+=head2 c_freopen
+
+C<FILE* (c_freopen)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* path, const char* mode, FILE* stream);>
+
+A wrapper for the C standard function L<freopen|https://linux.die.net/man/3/freopen>.
+
+=head2 c_fclose
+
+C<int (c_fclose)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, FILE* stream);>
+
+A wrapper for the C standard function L<fclose|https://linux.die.net/man/3/fclose>.
+
+=head2 c_fread
+
+C<size_t (c_fread)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* ptr, size_t size, size_t nmemb, FILE* stream);>
+
+A wrapper for the C standard function L<fread|https://linux.die.net/man/3/fread>.
+
+=head2 c_fwrite
+
+C<size_t (c_fwrite)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const void* ptr, size_t size, size_t nmemb, FILE* stream);>
+
+A wrapper for the C standard function L<fwrite|https://linux.die.net/man/3/fwrite>.
+
+=head2 c_fflush
+
+C<int (c_fflush)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, FILE* stream);>
+
+A wrapper for the C standard function L<fflush|https://linux.die.net/man/3/fflush>.
+
+=head2 c_fseek
+
+C<int (c_fseek)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, FILE* stream, long offset, int whence);>
+
+A wrapper for the C standard function L<fseek|https://linux.die.net/man/3/fseek>.
+
+=head2 c_ftell
+
+C<long (c_ftell)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, FILE* stream);>
+
+A wrapper for the C standard function L<ftell|https://linux.die.net/man/3/ftell>.
+
+=head2 c_feof
+
+C<int (c_feof)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, FILE* stream);>
+
+A wrapper for the C standard function L<feof|https://linux.die.net/man/3/feof>.
+
+=head2 c_ferror
+
+C<int (c_ferror)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, FILE* stream);>
+
+A wrapper for the C standard function L<ferror|https://linux.die.net/man/3/ferror>.
+
+=head2 c_fileno
+
+C<int (c_fileno)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, FILE* stream);>
+
+A wrapper for the C standard function L<fileno|https://linux.die.net/man/3/fileno>.
+
+=head2 c_stdin
+
+C<FILE* (c_stdin)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+
+Returns the standard input stream L<stdin|https://linux.die.net/man/3/stdin>.
+
+=head2 c_stdout
+
+C<FILE* (c_stdout)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+
+Returns the standard output stream L<stdout|https://linux.die.net/man/3/stdout>.
+
+=head2 c_stderr
+
+C<FILE* (c_stderr)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+
+Returns the standard error stream L<stderr|https://linux.die.net/man/3/stderr>.
+
 =head1 Native C Function API IDs
 
   0 c_strlen
@@ -124,6 +222,22 @@ Returns the number of characters that would have been written if C<n> had been s
   7 c_fputs
   8 c_fgetc
   9 c_snprintf_len
+  10 c_errno
+  11 c_set_errno
+  12 c_fopen
+  13 c_freopen
+  14 c_fclose
+  15 c_fread
+  16 c_fwrite
+  17 c_fflush
+  18 c_fseek
+  19 c_ftell
+  20 c_feof
+  21 c_ferror
+  22 c_fileno
+  23 c_stdin
+  24 c_stdout
+  25 c_stderr
   
 =head1 See Also
 

@@ -517,6 +517,22 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_cfunc_ids(SPVM_ENV* env, SPV
   if ((void*)&env->api->cfunc->c_fputs != &env_array[7]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->cfunc->c_fgetc != &env_array[8]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->cfunc->c_snprintf_len != &env_array[9]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_errno != &env_array[10]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_set_errno != &env_array[11]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_fopen != &env_array[12]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_freopen != &env_array[13]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_fclose != &env_array[14]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_fread != &env_array[15]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_fwrite != &env_array[16]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_fflush != &env_array[17]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_fseek != &env_array[18]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_ftell != &env_array[19]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_feof != &env_array[20]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_ferror != &env_array[21]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_fileno != &env_array[22]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_stdin != &env_array[23]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_stdout != &env_array[24]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_stderr != &env_array[25]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

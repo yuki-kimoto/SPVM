@@ -723,6 +723,22 @@ struct spvm_api_cfunc {
   int (*c_fputs)(SPVM_ENV* env, SPVM_VALUE* stack, const char* s, void* stream);
   int (*c_fgetc)(SPVM_ENV* env, SPVM_VALUE* stack, void* stream);
   int (*c_snprintf_len)(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t size, const char* format, SPVM_VALUE* args, int32_t args_length);
+  int (*c_errno)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void (*c_set_errno)(SPVM_ENV* env, SPVM_VALUE* stack, int errno_value);
+  FILE* (*c_fopen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, const char* mode);
+  FILE* (*c_freopen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, const char* mode, FILE* stream);
+  int (*c_fclose)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+  size_t (*c_fread)(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size, size_t nmemb, FILE* stream);
+  size_t (*c_fwrite)(SPVM_ENV* env, SPVM_VALUE* stack, const void* ptr, size_t size, size_t nmemb, FILE* stream);
+  int (*c_fflush)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+  int (*c_fseek)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream, long offset, int whence);
+  long (*c_ftell)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+  int (*c_feof)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+  int (*c_ferror)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+  int (*c_fileno)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+  FILE* (*c_stdin)(SPVM_ENV* env, SPVM_VALUE* stack);
+  FILE* (*c_stdout)(SPVM_ENV* env, SPVM_VALUE* stack);
+  FILE* (*c_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 struct spvm_api_type {

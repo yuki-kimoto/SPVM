@@ -7662,3 +7662,68 @@ void SPVM_API_set_error_id(SPVM_ENV* env, SPVM_VALUE* stack, int32_t error_id) {
   
   stack[SPVM_API_C_STACK_INDEX_ERROR_ID].ival = error_id;
 }
+
+int SPVM_API_c_errno(SPVM_ENV* env, SPVM_VALUE* stack) {
+  return errno;
+}
+
+void SPVM_API_c_set_errno(SPVM_ENV* env, SPVM_VALUE* stack, int errno_value) {
+  errno = errno_value;
+}
+
+int SPVM_API_c_fflush(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+  return fflush(stream);
+}
+
+FILE* SPVM_API_c_fopen(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, const char* mode) {
+  return fopen(path, mode);
+}
+
+FILE* SPVM_API_c_freopen(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, const char* mode, FILE* stream) {
+  return freopen(path, mode, stream);
+}
+
+int SPVM_API_c_fclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+  return fclose(stream);
+}
+
+size_t SPVM_API_c_fread(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size, size_t nmemb, FILE* stream) {
+  return fread(ptr, size, nmemb, stream);
+}
+
+size_t SPVM_API_c_fwrite(SPVM_ENV* env, SPVM_VALUE* stack, const void* ptr, size_t size, size_t nmemb, FILE* stream) {
+  return fwrite(ptr, size, nmemb, stream);
+}
+
+int SPVM_API_c_fseek(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream, long offset, int whence) {
+  return fseek(stream, offset, whence);
+}
+
+long SPVM_API_c_ftell(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+  return ftell(stream);
+}
+
+int SPVM_API_c_feof(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+  return feof(stream);
+}
+
+int SPVM_API_c_ferror(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+  return ferror(stream);
+}
+
+int SPVM_API_c_fileno(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+  return fileno(stream);
+}
+
+FILE* SPVM_API_c_stdin(SPVM_ENV* env, SPVM_VALUE* stack) {
+  return stdin;
+}
+
+FILE* SPVM_API_c_stdout(SPVM_ENV* env, SPVM_VALUE* stack) {
+  return stdout;
+}
+
+FILE* SPVM_API_c_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
+  return stderr;
+}
+
