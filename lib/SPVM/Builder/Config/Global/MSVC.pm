@@ -32,20 +32,22 @@ sub new {
   
   # 1. Common settings for all configs
   $self->build_rule_any({
-    cc                    => 'cl',
-    long_option_sep       => ':',
-    cc_output_option_name => '-Fo',
-    copyright_print_ccflags          => ['-nologo'],
-    thread_ccflags => [],
+    # Compiler flags
+    cc => 'cl',
     cc_version => $self->create_cc_version,
-    ndebug_ccflags     => ['-DNDEBUG'],
+    long_option_sep => ':',
+    cc_output_option_name => '-Fo',
+    copyright_print_ccflags => ['-nologo'],
+    thread_ccflags => [],
+    ndebug_ccflags => ['-DNDEBUG'],
     debug_file_synchronized_write_ccflags => ['-FS'],
     function_level_linking_ccflags => ['-Gy'],
     source_encoding_ccflags => ['-utf-8'],
     library_linkage_ccflags => ['-MT'],
     
-    ld_version => $self->create_cc_version,
+    # Linker flags
     ld => $self->ld,
+    ld_version => $self->create_cc_version,
     hint_cc => $self->cc,
     static_lib_braces       => ["", ""],
     lib_prefix              => "",
@@ -110,7 +112,7 @@ sub _get_config_from_build_type_msvc {
       debug_info_ccflags => [],
       ndebug_ccflags     => ['-DNDEBUG'],
       
-      ld_optimize        => '/OPT:REF /OPT:ICF',
+      ld_optimize        => ['/OPT:REF', '/OPT:ICF'],
       debug_info_ldflags => [],
     };
   }
@@ -132,7 +134,7 @@ sub _get_config_from_build_type_msvc {
       debug_info_ccflags => ['-Zi'],
       ndebug_ccflags     => ['-DNDEBUG'],
       
-      ld_optimize        => '/OPT:REF /OPT:ICF',
+      ld_optimize        => ['/OPT:REF', '/OPT:ICF'],
       debug_info_ldflags => ['/DEBUG'],
     };
   }
@@ -143,7 +145,7 @@ sub _get_config_from_build_type_msvc {
       debug_info_ccflags => [],
       ndebug_ccflags     => ['-DNDEBUG'],
       
-      ld_optimize        => '/OPT:REF /OPT:ICF',
+      ld_optimize        => ['/OPT:REF', '/OPT:ICF'],
       debug_info_ldflags => [],
     };
   }
