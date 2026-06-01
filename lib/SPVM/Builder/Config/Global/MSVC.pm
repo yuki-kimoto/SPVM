@@ -40,7 +40,8 @@ sub new {
     cc_version => $self->create_cc_version,
     optimize           => '-O2',
     ndebug_ccflags     => ['-DNDEBUG'],
-    '+extra_ccflags' => ['-FS', '-DNOMINMAX'],
+    debug_file_synchronized_write_ccflags => ['-FS'],
+    '+extra_ccflags' => ['-DNOMINMAX'],
     
     ld_version => $self->create_cc_version,
     ld => $self->ld,
