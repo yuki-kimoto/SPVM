@@ -38,7 +38,6 @@ sub new {
     copyright_print_ccflags          => ['-nologo'],
     thread_ccflags => [],
     cc_version => $self->create_cc_version,
-    optimize           => '-O2',
     ndebug_ccflags     => ['-DNDEBUG'],
     debug_file_synchronized_write_ccflags => ['-FS'],
     
