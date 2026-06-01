@@ -39,6 +39,7 @@ my $cc_fields = [qw(
   thread_ccflags
   extra_ccflags
   ndebug_ccflags
+  debug_file_synchronized_write_ccflags
   cc_version
 )];
 
@@ -89,6 +90,11 @@ sub new {
   # ndebug_ccflags
   unless (exists $self->{ndebug_ccflags}) {
     $self->ndebug_ccflags(['-DNDEBUG']);
+  }
+
+  # debug_file_synchronized_write_ccflags
+  unless (exists $self->{debug_file_synchronized_write_ccflags}) {
+    $self->debug_file_synchronized_write_ccflags([]);
   }
 
   # optimize
@@ -350,6 +356,7 @@ sub get_cc_system_field_names {
     thread_ccflags
     extra_ccflags
     ndebug_ccflags
+    debug_file_synchronized_write_ccflags
     copyright_print_ccflags
     language_ccflags
     arch_ccflags
@@ -658,6 +665,14 @@ Gets and sets C<extra_ccflags> field, an array reference containing extra argume
 
 Gets and sets C<ndebug_ccflags> field, an array reference containing compiler flags to deactivate debug features like C<assert>. 
 This field is typically used to provide C<-DNDEBUG> for production builds.
+
+=head2 debug_file_synchronized_write_ccflags
+
+  my $debug_file_synchronized_write_ccflags = $config->debug_file_synchronized_write_ccflags;
+  $config->debug_file_synchronized_write_ccflags(['-FS']);
+
+Gets and sets C<debug_file_synchronized_write_ccflags> field, an array reference containing compiler flags to ensure synchronized writing of debug information files.
+This field is typically used to provide compiler-specific flags like C<-FS> for MSVC to prevent file access conflicts during parallel builds.
 
 =head2 std
 
@@ -1000,6 +1015,10 @@ Other OSs:
 
   ["-DNDEBUG"]
 
+=item * L</"debug_file_synchronized_write_ccflags">
+
+  []
+
 =item * L</"include_dirs">
 
   []
@@ -1161,6 +1180,8 @@ The following field names are returned:
 =item * C<extra_ccflags>
 
 =item * C<ndebug_ccflags>
+
+=item * C<debug_file_synchronized_write_ccflags>
 
 =item * C<copyright_print_ccflags>
 
