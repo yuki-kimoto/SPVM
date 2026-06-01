@@ -50,7 +50,6 @@ sub new {
     lib_option_name         => "",
     lib_option_suffix       => ".lib",
     ld_output_option_name   => '-OUT',
-    ld_optimize             => '-OPT:REF,ICF',
     lib_dir_option_name     => '-LIBPATH',
     libbcrypt_ldflags       => ['bcrypt.lib'],
     copyright_print_ldflags => ['-nologo'],

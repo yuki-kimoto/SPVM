@@ -97,7 +97,7 @@ sub new {
   }
 
   unless (exists $self->{ld_optimize}) {
-    $self->ld_optimize('-O2');
+    $self->ld_optimize('');
   }
   
   unless (exists $self->{lib_dirs}) {
@@ -558,7 +558,7 @@ Gets and sets C<ld_optimize> field, an argument of the linker L</"ld"> for optim
 
 Examples:
 
-  $config->ld_optimize("-O3");
+  $config->ld_optimize("-O2");
 
 =head2 ld_version
 
@@ -748,7 +748,7 @@ If C<$Config{gccversion}> contains C<clang>, L</"ld"> field are set to C<clang++
 
 =item * L</"ld_optimize">
 
-  "-O2"
+  ""
 
 =item * L</"ld_version">
 

@@ -65,6 +65,9 @@ sub new {
   if (exists $self->{build_type}) {
     $self->build_type($self->{build_type});
   }
+  else {
+    $self->build_type('Release');
+  }
   
   # Define build types
   my @build_types = qw(Debug Release RelWithDebInfo MinSizeRel);
