@@ -459,6 +459,10 @@ Field Default Values:
 
 =over 2
 
+=item * L</"build_type">
+
+  "Release"
+
 =item * L<output_type|SPVM::Builder::Config/"output_type">
 
   "exe"

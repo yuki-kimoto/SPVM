@@ -99,7 +99,7 @@ sub new {
 
   # optimize
   unless (exists $self->{optimize}) {
-    $self->optimize('-O3');
+    $self->optimize('');
   }
 
   # include_dirs
@@ -949,7 +949,7 @@ Field Default Values:
 
 =item * L</"optimize">
 
-  "-O3"
+  ""
 
 =item * L</"copyright_print_ccflags">
 
