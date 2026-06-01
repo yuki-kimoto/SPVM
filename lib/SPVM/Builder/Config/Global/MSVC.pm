@@ -112,7 +112,7 @@ sub _get_config_from_build_type_msvc {
       debug_info_ccflags => [],
       ndebug_ccflags     => ['-DNDEBUG'],
       
-      ld_optimize        => ['/OPT:REF', '/OPT:ICF'],
+      ld_optimize        => '/OPT:REF /OPT:ICF',
       debug_info_ldflags => [],
     };
   }
@@ -134,7 +134,7 @@ sub _get_config_from_build_type_msvc {
       debug_info_ccflags => ['-Zi'],
       ndebug_ccflags     => ['-DNDEBUG'],
       
-      ld_optimize        => ['/OPT:REF', '/OPT:ICF'],
+      ld_optimize        => '/OPT:REF /OPT:ICF',
       debug_info_ldflags => ['/DEBUG'],
     };
   }
@@ -145,7 +145,7 @@ sub _get_config_from_build_type_msvc {
       debug_info_ccflags => [],
       ndebug_ccflags     => ['-DNDEBUG'],
       
-      ld_optimize        => ['/OPT:REF', '/OPT:ICF'],
+      ld_optimize        => '/OPT:REF /OPT:ICF',
       debug_info_ldflags => [],
     };
   }
