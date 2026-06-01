@@ -55,16 +55,14 @@ sub new {
     debug_info_ldflags      => ['-DEBUG'],
   });
   
-  # 2. Common C/C++ flags
-  # Use '+' to preserve existing flags (equivalent to push)
+  # Common C/C++ flags
   $self->build_rule({language => qr/^(c|cpp)$/}, {
     'function_level_linking_ccflags' => ['-Gy'],
     'source_encoding_ccflags' => ['-utf-8'],
     'library_linkage_ccflags'       => ['-MT'],
-    'debug_info_ccflags'            => ['-Zi'],
   });
 
-  # 3. C specific rules
+  # C specific rules
   $self->build_rule({language => 'c'}, {
     'language_ccflags' => ['-TC'],
   });
@@ -74,7 +72,7 @@ sub new {
     std => 'c11',
   });
 
-  # 4. C++ specific rules
+  # C++ specific rules
   $self->build_rule({language => 'cpp'}, {
     'language_ccflags' => ['-TP'],
     'cpp_exception_handling_ccflags'  => ['-EHsc'],
