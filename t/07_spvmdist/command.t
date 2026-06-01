@@ -706,6 +706,39 @@ else {
   warn "[Test Skip]--asan-on-linux test is only executed on Linux";
 }
 
+my $has_msvc;
+eval {
+  local %ENV = %ENV;
+  use SPVM::Builder::Config::Global::MSVC;
+  my $global_config = SPVM::Builder::Config::Global::MSVC->new;
+  $has_msvc = !!$global_config;
+};
+# perl Makefile.PL --msvc && make && make test
+if ($has_msvc) {
+  my $tmp_dir = File::Temp->newdir;
+  my $spvmdist_cmd = qq($^X $include_blib $spvmdist_path Foo);
+  my $save_cur_dir = getcwd();
+  chdir($tmp_dir) or die;
+  system($spvmdist_cmd) == 0
+    or die "Can't execute spvmdist command $spvmdist_cmd:$!";
+  
+  chdir('SPVM-Foo')
+    or die "Can't chdir";
+  
+  local $ENV{PERL5LIB} = $perl5lib;
+  my $ret = system(qq|$^X Makefile.PL --msvc && $make && $make test|);
+  ok($ret == 0);
+  
+  my $mymeta_json = 'MYMETA.json';
+  ok(-f $mymeta_json);
+  ok(SPVM::Builder::Util::file_contains($mymeta_json, "0.001"));
+  
+  chdir($save_cur_dir) or die;
+}
+else {
+  warn "[Test Skip]--msvc test is only executed on Windows/MSVC";
+}
+
 # perl Makefile.PL --debug && make && make test
 {
   my $tmp_dir = File::Temp->newdir;

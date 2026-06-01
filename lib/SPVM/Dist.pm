@@ -879,6 +879,7 @@ GetOptions(
   'debug' => \\my \$debug,
   'build-type=s' => \\my \$build_type,
   'asan-on-linux' => \\my \$asan_on_linux,
+  'msvc' => \\my \$msvc,
   'parallel-make' => \\my \$parallel_make,
   'parallel-test' => \\my \$parallel_test,
   'jobs=i' => \\my \$jobs,
@@ -895,6 +896,7 @@ generate_config_global_file(\$config_global_file, {
   debug         => \$debug,
   build_type    => \$build_type,
   asan_on_linux => \$asan_on_linux,
+  msvc => \$msvc,
 });
 
 my \$gnu_make = SPVM::Builder::Util::API::search_gnu_make_command();
@@ -1003,6 +1005,7 @@ sub generate_config_global_file {
   my \$build_type     = \$options->{build_type};
   my \$debug          = \$options->{debug};
   my \$asan_on_linux = \$options->{asan_on_linux};
+  my \$msvc = \$options->{msvc};
   
   # --- Handle options ---
   if (\$debug) {
@@ -1020,6 +1023,13 @@ sub generate_config_global_file {
   \$config_global_content .= <<"EOS";
 my \\\$config_global = SPVM::Builder::Config::Global->new;
 EOS
+  
+    if (\$msvc) {
+    \$config_global_content .= <<"EOS";
+use SPVM::Builder::Config::Global::MSVC;
+\\\$config_global = SPVM::Builder::Config::Global::MSVC->new;
+EOS
+  }
   
   if (defined \$build_type) {
     \$config_global_content .= <<"EOS";
