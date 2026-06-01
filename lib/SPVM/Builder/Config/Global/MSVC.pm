@@ -41,7 +41,6 @@ sub new {
     optimize           => '-O2',
     ndebug_ccflags     => ['-DNDEBUG'],
     debug_file_synchronized_write_ccflags => ['-FS'],
-    '+extra_ccflags' => ['-DNOMINMAX'],
     
     ld_version => $self->create_cc_version,
     ld => $self->ld,
