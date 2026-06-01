@@ -40,6 +40,9 @@ sub new {
     cc_version => $self->create_cc_version,
     ndebug_ccflags     => ['-DNDEBUG'],
     debug_file_synchronized_write_ccflags => ['-FS'],
+    function_level_linking_ccflags => ['-Gy'],
+    source_encoding_ccflags => ['-utf-8'],
+    library_linkage_ccflags => ['-MT'],
     
     ld_version => $self->create_cc_version,
     ld => $self->ld,
@@ -55,13 +58,6 @@ sub new {
     debug_info_ldflags      => ['-DEBUG'],
   });
   
-  # Common C/C++ flags
-  $self->build_rule({language => qr/^(c|cpp)$/}, {
-    'function_level_linking_ccflags' => ['-Gy'],
-    'source_encoding_ccflags' => ['-utf-8'],
-    'library_linkage_ccflags'       => ['-MT'],
-  });
-
   # C specific rules
   $self->build_rule({language => 'c'}, {
     'language_ccflags' => ['-TC'],
