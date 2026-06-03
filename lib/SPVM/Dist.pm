@@ -1016,7 +1016,7 @@ sub generate_config_global_file {
 my \\\$config_global = SPVM::Builder::Config::Global->new;
 EOS
   
-    if (\$msvc) {
+  if (\$msvc) {
     \$config_global_content .= <<"EOS";
 use SPVM::Builder::Config::Global::MSVC;
 \\\$config_global = SPVM::Builder::Config::Global::MSVC->new;
