@@ -234,10 +234,12 @@ package MY {
     
     unless ($no_build_spvm_modules) {
       my $options = {};
-      
-      $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)', 'pm_to_blib'];
-      
       $options->{config_global_file} = $config_global_file;
+      $options->{order_only_dependent_files} = ['pm_to_blib'];
+      
+      #################### [SPVM Only order_only_dependent_files Option Start] ####################
+      push @{$options->{order_only_dependent_files}}, '$(INST_DYNAMIC)';
+      #################### [SPVM Only order_only_dependent_files Option End] ####################
       
       # Test create_make_rule for backward compatibility and practical testing
       $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Fn', $options);
