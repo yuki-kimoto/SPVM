@@ -866,8 +866,6 @@ use Config;
 use Getopt::Long 'GetOptions';
 use File::Path 'mkpath', 'rmtree';
 
-use SPVM::Builder::Util::API;
-
 GetOptions(
   'meta' => \\my \$meta,
   'no-build-spvm-modules' => \\my \$no_build_spvm_modules,
@@ -883,6 +881,10 @@ GetOptions(
   'jobs=i' => \\my \$jobs,
 );
 
+if (\$meta) {
+  \$no_build_spvm_modules = 1;
+}
+
 my \$build_dir = '.spvm_build';
 mkpath \$build_dir;
 
@@ -897,30 +899,32 @@ generate_config_global_file(\$config_global_file, {
   msvc => \$msvc,
 });
 
-my \$gnu_make = SPVM::Builder::Util::API::search_gnu_make_command();
-
-if (\$meta) {
-  \$no_build_spvm_modules = 1;
-}
-
-unless (\$meta) {
-  # Do something such as environment check.
-}
-
 my \$asan_logs_dir = ".tmp/asan_logs";
 if (\$asan_on_linux) {
   rmtree \$asan_logs_dir;
   mkpath \$asan_logs_dir;
 }
 
-unless (defined \$jobs) {
-  my \$cpus = SPVM::Builder::Util::API::get_cpu_count();
-  \$jobs = \$cpus + 2;
+unless (\$meta) {
+  require SPVM::Builder::Util::API;
 }
 
-if (\$jobs > 16) {
-  \$jobs = 16;
+my \$gnu_make;
+unless (\$meta) {
+  \$gnu_make = SPVM::Builder::Util::API::search_gnu_make_command();
 }
+
+unless (\$meta) {
+  unless (defined \$jobs) {
+    my \$cpus = SPVM::Builder::Util::API::get_cpu_count();
+    \$jobs = \$cpus + 2;
+  }
+
+  if (\$jobs > 16) {
+    \$jobs = 16;
+  }
+}
+\$jobs //= 1;
 
 my \%configure_and_runtime_requires = ('SPVM' => '$SPVM::VERSION');
 WriteMakefile(

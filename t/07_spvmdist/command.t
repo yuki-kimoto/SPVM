@@ -124,6 +124,13 @@ if ($^O eq 'freebsd') {
   ok(!SPVM::Builder::Util::file_contains($makefile_pl_file, q|use lib|));
   ok(!SPVM::Builder::Util::file_contains($makefile_pl_file, q|FindBin|));
   
+  # Do not use SPVM::Builder::Util::API in Makefile.PL.
+  # Although loading it seems valid given the CONFIGURE_REQUIRES,
+  # it fails during 'perl Makefile.PL --meta' on fresh environments
+  # where SPVM is not yet installed.
+  ok(!SPVM::Builder::Util::file_contains($makefile_pl_file, q|use SPVM::Builder::Util::API|));
+  ok(!SPVM::Builder::Util::file_contains($makefile_pl_file, q|use SPVM::Builder::Util|));
+  
   # VERSION_FROM must be included in Makefile.PL to resolve CPAN module dependencies.
   # VERSION is not sufficient.
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'VERSION_FROM'));
