@@ -44,6 +44,10 @@ GetOptions(
   #################### [SPVM Only Line Options Options End] ####################
 );
 
+if ($meta) {
+  $no_build_spvm_modules = 1;
+}
+
 my $build_dir = '.spvm_build';
 mkpath $build_dir;
 
@@ -60,11 +64,7 @@ my $config_global_file = '.spvm_build/global.config';
 
 my $gnu_make = SPVM::Builder::Util::API::search_gnu_make_command();
 
-if ($meta) {
-  $no_build_spvm_modules = 1;
-}
-
-my $asan_logs_dir = "$FindBin::Bin/.spvm_build/asan_logs";
+my $asan_logs_dir = ".spvm_build/asan_logs";
 if ($asan_on_linux) {
   rmtree $asan_logs_dir;
   mkpath $asan_logs_dir;
