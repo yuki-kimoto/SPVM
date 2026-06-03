@@ -975,6 +975,8 @@ package MY {
     my \$make_rule = '';
     unless (\$no_build_spvm_modules) {
       my \$options = {};
+      \$options->{config_global_file} = \$config_global_file;
+      \$options->{order_only_dependent_files} = ['pm_to_blib'];
       
       \$options->{native_classes} = [
         $native_class_literal
@@ -983,8 +985,6 @@ package MY {
       \$options->{precompile_classes} = [
         $precompile_class_literal
       ];
-      
-      \$options->{config_global_file} = \$config_global_file;
       
       $make_rule_parallel
     }

@@ -131,6 +131,9 @@ if ($^O eq 'freebsd') {
   ok(!SPVM::Builder::Util::file_contains($makefile_pl_file, q|use SPVM::Builder::Util::API|));
   ok(!SPVM::Builder::Util::file_contains($makefile_pl_file, q|use SPVM::Builder::Util|));
   
+  # Ensure files are copied to blib before class builds to prevent race conditions during parallel make.
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|$options->{order_only_dependent_files} = ['pm_to_blib'];|));
+  
   # VERSION_FROM must be included in Makefile.PL to resolve CPAN module dependencies.
   # VERSION is not sufficient.
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'VERSION_FROM'));
