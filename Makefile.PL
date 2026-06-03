@@ -7,8 +7,6 @@ use Getopt::Long;
 use Getopt::Long 'GetOptions';
 use File::Path 'mkpath', 'rmtree';
 
-use SPVM::Builder::Util::API;
-
 #################### [SPVM Only Module Loading Start] ####################
 use FindBin;
 use lib "$FindBin::Bin/lib";
@@ -62,23 +60,33 @@ my $config_global_file = '.spvm_build/global.config';
   msvc => $msvc,
 });
 
-my $gnu_make = SPVM::Builder::Util::API::search_gnu_make_command();
-
 my $asan_logs_dir = ".spvm_build/asan_logs";
 if ($asan_on_linux) {
   rmtree $asan_logs_dir;
   mkpath $asan_logs_dir;
 }
 
-# Jobs count for pallalel build and tests
-unless (defined $jobs) {
-  my $cpus = SPVM::Builder::Util::API::get_cpu_count();
-  $jobs = $cpus + 2;
+unless ($meta) {
+  require SPVM::Builder::Util::API;
 }
-# Limit the maximum number of parallel jobs to 16 to prevent Windows from exhausting OS resources, such as process handles and kernel memory, ensuring stable performance during JIT builds.
-if ($jobs > 16) {
-  $jobs = 16;
+
+my $gnu_make;
+unless ($meta) {
+  $gnu_make = SPVM::Builder::Util::API::search_gnu_make_command();
 }
+
+unless ($meta) {
+  # Jobs count for pallalel build and tests
+  unless (defined $jobs) {
+    my $cpus = SPVM::Builder::Util::API::get_cpu_count();
+    $jobs = $cpus + 2;
+  }
+  # Limit the maximum number of parallel jobs to 16 to prevent Windows from exhausting OS resources, such as process handles and kernel memory, ensuring stable performance during JIT builds.
+  if ($jobs > 16) {
+    $jobs = 16;
+  }
+}
+$jobs //= 1;
 
 #################### [SPVM Only Build Loigc Start] ####################
 
@@ -93,9 +101,11 @@ if ($jobs > 16) {
   }
   
   # SPVM requires GNU Make for the order-only dependency syntax '|' and the 'override' syntax.
-  unless ($gnu_make) {
-    warn "Building SPVM needs GNU Make.\n";
-    die "OS unsupported\n";
+  unless ($meta) {
+    unless ($gnu_make) {
+      warn "Building SPVM needs GNU Make.\n";
+      die "OS unsupported\n";
+    }
   }
 }
 
@@ -120,7 +130,7 @@ my $xs_config_global_file = '.spvm_build/xs_global.config';
   asan_on_linux => $asan_on_linux,
 });
 
-my $xs_config = SPVM::Builder::Util::API::create_default_config;
+my $xs_config = SPVM::Builder::Util::create_default_config;
 my $xs_config_global = SPVM::Builder::Config::Util::load_config_global($xs_config_global_file);
 $xs_config->global($xs_config_global);
 $xs_config->global->apply_build_rules($xs_config);
