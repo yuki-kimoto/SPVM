@@ -857,8 +857,7 @@ else {
   my $ret = system("$^X Makefile.PL --meta");
   ok($ret == 0);
 
-  ok(!SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_native'));
-  ok(!SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_precompile'));
+  ok(!SPVM::Builder::Util::file_contains('Makefile', 'build_parallel_dynamic_lib_dist'));
   
   chdir($save_cur_dir) or die;
 }
@@ -879,8 +878,7 @@ else {
   my $ret = system("$^X Makefile.PL --no-build-spvm-modules");
   ok($ret == 0);
   
-  ok(!SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_native'));
-  ok(!SPVM::Builder::Util::file_contains('Makefile', 'build_dynamic_lib_dist_precompile'));
+  ok(!SPVM::Builder::Util::file_contains('Makefile', 'build_parallel_dynamic_lib_dist'));
   
   chdir($save_cur_dir) or die;
 }
