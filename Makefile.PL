@@ -13,7 +13,7 @@ use SPVM::Builder::Util::API;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 use SPVM::Builder::Util;
-use SPVM::Builder::Config::DLL;
+use SPVM::Builder::Config::Global;
 use SPVM::Builder::CompileInfo;
 use SPVM::Builder::LinkInfo;
 #################### [SPVM Only Module Loading End] ####################
