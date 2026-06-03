@@ -854,7 +854,6 @@ else {
   chdir('SPVM-Foo')
     or die "Can't chdir";
   
-  local $ENV{PERL5LIB} = $perl5lib;
   my $ret = system("$^X Makefile.PL --meta");
   ok($ret == 0);
 
