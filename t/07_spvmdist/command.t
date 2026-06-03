@@ -109,15 +109,14 @@ if ($^O eq 'freebsd') {
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'lib/SPVM/Foo.pm'"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "t/*.t t/*/*.t t/*/*/*.t"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "NORECURS => 1"));
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "CONFIGURE_REQUIRES"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "PREREQ_PM"));
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "TEST_REQUIRES"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'unless ($meta) {'));
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|my %configure_and_runtime_requires = ('SPVM' => |));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|mit|));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-name]'));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-email]'));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|# release_status => 'stable',|));
+  
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|'SPVM' => |));
   
   # lib and FindBin should not be used in Makefile.PL
   # to avoid environment-specific issues.

@@ -926,7 +926,6 @@ unless (\$meta) {
 }
 \$jobs //= 1;
 
-my \%configure_and_runtime_requires = ('SPVM' => '$SPVM::VERSION');
 WriteMakefile(
   NAME => 'SPVM::$class_name',
   VERSION_FROM => '$perl_class_rel_file',
@@ -959,13 +958,8 @@ WriteMakefile(
     \$asan_on_linux ? ('override FULLPERL' => qq|LD_PRELOAD=\\\$\\\$(\$Config{cc} -print-file-name=libasan.so) ASAN_OPTIONS="log_path=\$asan_logs_dir/asan.log:exitcode=0" \$^X|) : (),
   },
   NORECURS => 1,
-  CONFIGURE_REQUIRES => {
-    \%configure_and_runtime_requires,
-  },
-  PREREQ_PM         => {
-    \%configure_and_runtime_requires,
-  },
-  TEST_REQUIRES => {
+  PREREQ_PM => {
+    'SPVM' => '$SPVM::VERSION',
   },
 );
 
