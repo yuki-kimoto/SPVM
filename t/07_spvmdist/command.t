@@ -119,6 +119,11 @@ if ($^O eq 'freebsd') {
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-email]'));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|# release_status => 'stable',|));
   
+  # lib and FindBin should not be used in Makefile.PL
+  # to avoid environment-specific issues.
+  ok(!SPVM::Builder::Util::file_contains($makefile_pl_file, q|use lib|));
+  ok(!SPVM::Builder::Util::file_contains($makefile_pl_file, q|FindBin|));
+  
   # VERSION_FROM must be included in Makefile.PL to resolve CPAN module dependencies.
   # VERSION is not sufficient.
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'VERSION_FROM'));
