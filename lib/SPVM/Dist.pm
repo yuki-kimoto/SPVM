@@ -1003,7 +1003,6 @@ sub generate_config_global_file {
   my \$asan_on_linux = \$options->{asan_on_linux};
   my \$msvc = \$options->{msvc};
   
-  # --- Handle options ---
   if (\$debug) {
     \$build_type = 'Debug';
   }
@@ -1013,7 +1012,6 @@ sub generate_config_global_file {
     push \@\$ldflags, "-fsanitize=address";
   }
   
-  # --- Generate content ---
   my \$config_global_content = '';
   
   \$config_global_content .= <<"EOS";
@@ -1055,7 +1053,6 @@ EOS
 \\\$config_global;
 EOS
   
-  # --- Write to file ---
   open my \$fh, '>', \$config_global_file or die "Can't open file '\$config_global_file': \$!";
   print \$fh \$config_global_content;
 }
