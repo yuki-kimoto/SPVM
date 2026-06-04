@@ -5,4 +5,7 @@
 
 static const char* FILE_NAME = "Native/Constant.c";
 
-int32_t SPVM__Native__Constant___dummy(SPVM_ENV* env, SPVM_VALUE* stack) {}
+int32_t SPVM__Native__Constant___dummy(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  return 0;
+}
