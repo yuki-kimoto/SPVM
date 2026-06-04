@@ -81,7 +81,7 @@ unless ($has_msvc) {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force -B $build_dir -I $inc_dir --mode msvc-Debug -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/-Od\b/);
-    like($spvmcc_output, qr/-Zi\b/);
+    like($spvmcc_output, qr/-Z7\b/);
     unlike($spvmcc_output, qr/-DNDEBUG\b/);
     
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
@@ -96,7 +96,7 @@ unless ($has_msvc) {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --force -B $build_dir -I $inc_dir --mode msvc-RelWithDebInfo -o $tmp_dir/myapp $spvm_script_dir/myapp.spvm 2>&1);
     my $spvmcc_output = `$spvmcc_cmd`;
     like($spvmcc_output, qr/-O2\b/);
-    like($spvmcc_output, qr/-Zi\b/);
+    like($spvmcc_output, qr/-Z7\b/);
     like($spvmcc_output, qr/-DNDEBUG\b/);
     
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
