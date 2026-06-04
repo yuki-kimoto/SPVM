@@ -106,7 +106,6 @@ sub _get_config_from_build_type_msvc {
   my $config;
   
   if (!defined $build_type || $build_type eq 'Release') {
-    # Release: /O2 (Maximize Speed)
     $config = {
       optimize           => '-O2',
       debug_info_ccflags => [],
@@ -117,10 +116,9 @@ sub _get_config_from_build_type_msvc {
     };
   }
   elsif ($build_type eq 'Debug') {
-    # Debug: /Od (Disable optimization), /Zi (PDB)
     $config = {
       optimize             => '-Od',
-      debug_info_ccflags   => ['-Zi'],
+      debug_info_ccflags   => ['-Z7'],
       ndebug_ccflags       => [],
       
       ld_optimize          => '',
@@ -128,10 +126,9 @@ sub _get_config_from_build_type_msvc {
     };
   }
   elsif ($build_type eq 'RelWithDebInfo') {
-    # RelWithDebInfo: /O2 with /Zi
     $config = {
       optimize           => '-O2',
-      debug_info_ccflags => ['-Zi'],
+      debug_info_ccflags => ['-Z7'],
       ndebug_ccflags     => ['-DNDEBUG'],
       
       ld_optimize        => '/OPT:REF /OPT:ICF',
@@ -139,7 +136,6 @@ sub _get_config_from_build_type_msvc {
     };
   }
   elsif ($build_type eq 'MinSizeRel') {
-    # MinSizeRel: /O1 (Minimize Size)
     $config = {
       optimize           => '-O1',
       debug_info_ccflags => [],
