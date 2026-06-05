@@ -97,6 +97,7 @@ sub get_spvm_core_source_file_names {
     spvm_class_var.c
     spvm_compiler.c
     spvm_constant.c
+    spvm_crt_init.c
     spvm_dumper.c
     spvm_field_access.c
     spvm_field.c
