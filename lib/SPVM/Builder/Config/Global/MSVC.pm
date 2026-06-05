@@ -123,6 +123,8 @@ sub _get_config_from_build_type_msvc {
       
       ld_optimize          => '',
       debug_info_ldflags   => ['/DEBUG'],
+      ld_debug_output_option_name => '/PDB',
+      enable_ld_debug_output_option => 1,
     };
   }
   elsif ($build_type eq 'RelWithDebInfo') {
@@ -133,6 +135,8 @@ sub _get_config_from_build_type_msvc {
       
       ld_optimize        => '/OPT:REF /OPT:ICF',
       debug_info_ldflags => ['/DEBUG'],
+      ld_debug_output_option_name => '/PDB',
+      enable_ld_debug_output_option => 1,
     };
   }
   elsif ($build_type eq 'MinSizeRel') {
