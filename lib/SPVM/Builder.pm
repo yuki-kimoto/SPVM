@@ -103,6 +103,8 @@ sub build_parallel_with_link_infos {
   
   my @all_compile_infos;
   for my $link_info (@$link_infos) {
+    # warn $link_info->config->class_name;
+    
     my $compile_infos = $link_info->compile_infos;
     for my $compile_info (@$compile_infos) {
       my $config = $compile_info->config;
@@ -963,9 +965,11 @@ sub prepare_compile_spvm_core_source_files {
 }
 
 sub prepare_compile_spvm_core_source_file_crt_init {
-  my ($self) = @_;
+  my ($self, $options) = @_;
   
-  my $config = SPVM::Builder::Util::API::create_default_config();
+  $options //= {};
+  
+  my $config = $options->{config} // SPVM::Builder::Util::API::create_default_config();
   
   my $builder_dir = SPVM::Builder::Util::get_builder_dir();
   
