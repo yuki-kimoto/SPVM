@@ -122,7 +122,7 @@ sub _get_config_from_build_type_msvc {
       ndebug_ccflags       => [],
       
       ld_optimize          => '',
-      debug_info_ldflags   => ['/DEBUG:NONE'],
+      debug_info_ldflags   => ['/DEBUG'],
     };
   }
   elsif ($build_type eq 'RelWithDebInfo') {
@@ -132,7 +132,7 @@ sub _get_config_from_build_type_msvc {
       ndebug_ccflags     => ['-DNDEBUG'],
       
       ld_optimize        => '/OPT:REF /OPT:ICF',
-      debug_info_ldflags => ['/DEBUG:NONE'],
+      debug_info_ldflags => ['/DEBUG'],
     };
   }
   elsif ($build_type eq 'MinSizeRel') {
