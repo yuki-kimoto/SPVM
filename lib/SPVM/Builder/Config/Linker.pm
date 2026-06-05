@@ -48,6 +48,7 @@ my $fields = [qw(
   debug_output_file
   enable_ld_debug_output_option
   debug_output_file_ext
+  debug_output_file_ldflags
 )];
 
 has($fields);
@@ -244,6 +245,10 @@ sub new {
     $self->ld_version($self->create_ld_version);
   }
   
+  unless (exists $self->{debug_output_file_ldflags}) {
+    $self->debug_output_file_ldflags([]);
+  }
+  
   return $self;
 }
 
@@ -383,6 +388,7 @@ sub get_ld_system_field_names {
     libgcc_ldflags
     libbcrypt_ldflags
     extra_ldflags
+    debug_output_file_ldflags
   )];
 }
 
@@ -756,6 +762,13 @@ Gets and sets C<external_object_files> field, an array reference containing addi
 
 Gets and sets C<long_option_sep> field, a string that is a separator between an option name and its value.
 
+=head2 debug_output_file_ldflags
+
+  my $debug_output_file_ldflags = $config->debug_output_file_ldflags;
+  $config->debug_output_file_ldflags($debug_output_file_ldflags);
+
+Gets and sets C<debug_output_file_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the debug information file.
+
 =head1 Class Methods
 
 =head2 new
@@ -1035,6 +1048,8 @@ The following field names are returned:
 
 =item * C<extra_ldflags>
 
+=item * C<debug_output_file_ldflags>
+
 =back
 
 =cut
@@ -1070,6 +1085,8 @@ This method clears the linker settings whose field names are returned by the L<g
 =item * L</"libcpp_ldflags">
 
 =item * L</"libbcrypt_ldflags">
+
+=item * L</"debug_output_file_ldflags">
 
 =back
 
