@@ -923,6 +923,20 @@ sub finalize_link_info {
   
   $link_info->output_file($output_file);
   
+  my $enable_ld_debug_output_option = $config->enable_ld_debug_output_option;
+  if ($enable_ld_debug_output_option) {
+    my $debug_output_file_ext = $config->debug_output_file_ext;
+    
+    my $debug_output_file = $output_file;
+    $debug_output_file =~ s/\.[^.]+$/$debug_output_file_ext/i;
+    
+    unless ($debug_output_file =~ /\Q$debug_output_file_ext\E$/i) {
+      $debug_output_file .= $debug_output_file_ext;
+    }
+    
+    $config->debug_output_file($debug_output_file);
+  }
+  
   return $link_info;
 }
 
