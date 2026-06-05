@@ -125,6 +125,7 @@ sub _get_config_from_build_type_msvc {
       debug_info_ldflags   => ['/DEBUG'],
       ld_debug_output_option_name => '/PDB',
       enable_ld_debug_output_option => 1,
+      debug_output_file_ext => 'pdb',
     };
   }
   elsif ($build_type eq 'RelWithDebInfo') {
@@ -137,6 +138,7 @@ sub _get_config_from_build_type_msvc {
       debug_info_ldflags => ['/DEBUG'],
       ld_debug_output_option_name => '/PDB',
       enable_ld_debug_output_option => 1,
+      debug_output_file_ext => 'pdb',
     };
   }
   elsif ($build_type eq 'MinSizeRel') {
