@@ -931,10 +931,15 @@ sub finalize_link_info {
     $debug_output_file =~ s/\.[^.]+$/$debug_output_file_ext/i;
     
     unless ($debug_output_file =~ /\Q$debug_output_file_ext\E$/i) {
-      $debug_output_file .= $debug_output_file_ext;
+      $debug_output_file .= ".$debug_output_file_ext";
     }
     
     $config->debug_output_file($debug_output_file);
+    
+    my $ld_debug_output_option_name = $config->ld_debug_output_option_name;
+    my $debug_output_file_option =  $config->create_option_long($ld_debug_output_option_name, $debug_output_file);
+    
+    $config->debug_output_file_ldflags([$debug_output_file_option]);
   }
   
   return $link_info;
