@@ -147,7 +147,7 @@ sub build_class_common {
 
 sub init_api {
   unless ($API) {
-    $BUILDER //= SPVM::Builder->new(is_jit => 1);;
+    $BUILDER //= SPVM::Builder->new(is_jit => 1);
     
     my $compiler = SPVM::Builder::Native::Compiler->new;
     
