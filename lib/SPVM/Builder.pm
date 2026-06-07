@@ -928,11 +928,9 @@ sub finalize_link_info {
     my $debug_output_file_ext = $config->debug_output_file_ext;
     
     my $debug_output_file = $output_file;
-    $debug_output_file =~ s/\.[^.]+$/$debug_output_file_ext/i;
+    $debug_output_file =~ s/\.[^.]+$//;
     
-    unless ($debug_output_file =~ /\Q$debug_output_file_ext\E$/i) {
-      $debug_output_file .= ".$debug_output_file_ext";
-    }
+    $debug_output_file .= ".$debug_output_file_ext";
     
     $config->debug_output_file($debug_output_file);
     
