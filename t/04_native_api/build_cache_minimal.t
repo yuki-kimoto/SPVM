@@ -74,16 +74,16 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.$Config{so}";
-   $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
+  $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.$Config{so}";
+  $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   my $precompile_shared_lib_file;
   my $start_precompile_shared_lib_file_mtime;
-   $precompile_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{so}";
-   if ($ENV{SPVM_TEST_PRECOMPILE}) {
-     ok(-f $precompile_shared_lib_file);
-     $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
-   }
+  $precompile_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{so}";
+  if ($ENV{SPVM_TEST_PRECOMPILE}) {
+    ok(-f $precompile_shared_lib_file);
+    $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
+  }
 
   system($compile_native_api_prgoram) == 0 or die;
 
