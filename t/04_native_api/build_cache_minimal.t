@@ -1,3 +1,5 @@
+BEGIN { $ENV{SPVM_FORCE_BUILD_TYPE} = 'Debug'; }
+
 use lib "t/lib";
 use TestAuto;
 use TestUtil::MyLib;
