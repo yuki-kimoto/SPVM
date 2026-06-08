@@ -3,6 +3,8 @@ use warnings;
 
 use Test::More;
 
+use Config;
+
 use SPVM::Builder::CC;
 use SPVM::Builder::Config;
 use SPVM::Builder;
@@ -106,7 +108,7 @@ subtest 'Check spvm_native.h' => sub {
 
 subtest 'PDB file' => sub {
   {
-    my $Fn_dll_file = 'blib/lib/SPVM/Fn.dll';
+    my $Fn_dll_file = "blib/lib/SPVM/Fn.$Config{so}";
     ok(-f $Fn_dll_file);
     my $has_pdb_section = &has_pdb_section($Fn_dll_file);
     
@@ -119,7 +121,7 @@ subtest 'PDB file' => sub {
   }
   
   {
-    my $Fn_dll_file = 'blib/lib/SPVM/Fn.precompile.dll';
+    my $Fn_dll_file = "blib/lib/SPVM/Fn.precompile.$Config{so}";
     ok(-f $Fn_dll_file);
     my $has_pdb_section = &has_pdb_section($Fn_dll_file);
     
