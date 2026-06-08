@@ -1,4 +1,4 @@
-name: windows-latest-msvc
+name: windows-latest-msvc-debug
 
 on:
   push:
@@ -33,5 +33,5 @@ jobs:
         run: perl cpanm -v -n -L ~/mylib --installdeps . --configure-args="--meta"
       - name: Show MYMETA.json
         run: cat MYMETA.json
-      - run: perl Makefile.PL --msvc
+      - run: perl Makefile.PL --msvc --debug
       - run: gmake disttest
