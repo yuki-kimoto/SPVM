@@ -80,11 +80,9 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $precompile_shared_lib_file;
   my $start_precompile_shared_lib_file_mtime;
-  $precompile_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{so}";
-  if ($ENV{SPVM_TEST_PRECOMPILE}) {
-    ok(-f $precompile_shared_lib_file);
-    $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
-  }
+  $precompile_shared_lib_file = (glob "$build_dir/work/lib/*/*/SPVM/TestCase/NativeAPI.precompile.$Config{so}")[0];
+  ok(-f $precompile_shared_lib_file);
+  $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
 
   system($compile_native_api_prgoram) == 0 or die;
 
@@ -93,18 +91,14 @@ system($compile_native_api_prgoram) == 0 or die;
   is($native_object_file_mtime, $start_native_object_file_mtime);
 
   my $precompile_object_file_mtime = (stat $precompile_object_file)[9];
-  if ($ENV{SPVM_TEST_PRECOMPILE}) {
-    is($precompile_object_file_mtime, $start_precompile_object_file_mtime);
-  }
+  is($precompile_object_file_mtime, $start_precompile_object_file_mtime);
 
   # Native shared_lib file is cached
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   is($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 
   my $precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
-  if ($ENV{SPVM_TEST_PRECOMPILE}) {
-    is($precompile_shared_lib_file_mtime, $start_precompile_shared_lib_file_mtime);
-  }
+  is($precompile_shared_lib_file_mtime, $start_precompile_shared_lib_file_mtime);
 }
 
 
