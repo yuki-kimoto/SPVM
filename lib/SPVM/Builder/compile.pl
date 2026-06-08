@@ -20,8 +20,9 @@ open(STDOUT, '>', $log_stdout)
 open(STDERR, '>', $log_stderr)
   or die "Can't open file '$log_stderr': $!";
 
-my $tmp_output_file = "$command_tmp_dir/compile.output";
-$cc_cmd[-1] .= $tmp_output_file;
+$cc_cmd[-1] .= $output_file;
+
+mkpath dirname $output_file;
 
 # Execute the command
 my $system_status = system(@cc_cmd);
@@ -39,8 +40,3 @@ else {
     die "Compilation command failed with exit code. \$exit_status=$exit_status, \@cc_cmd='@cc_cmd'";
   }
 }
-
-mkpath dirname $output_file;
-
-File::Copy::move($tmp_output_file, $output_file)
-  or confess("Can't move '$tmp_output_file' to '$output_file': $!");
