@@ -40,7 +40,6 @@ sub new {
     copyright_print_ccflags => ['-nologo'],
     thread_ccflags => [],
     ndebug_ccflags => ['-DNDEBUG'],
-    debug_file_synchronized_write_ccflags => ['-FS'],
     function_level_linking_ccflags => ['-Gy'],
     source_encoding_ccflags => ['-utf-8'],
     library_linkage_ccflags => ['-MT'],

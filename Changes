@@ -20,6 +20,7 @@
     * Use -Z7 instead of -Zi in cl.exe.
     * Generate PDB file for each DLL file
     * assert do not pup up a GUI window.
+    * Remove -FS option from cl.exe.
     
 0.990181 2026-06-03
   [Makefile.PL Changes]
