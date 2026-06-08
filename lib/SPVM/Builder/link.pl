@@ -94,25 +94,28 @@ for my $object_file_name (@object_file_names) {
   push @tmp_object_file_names, $tmp_object_file_name;
 }
 
+mkpath dirname $output_file;
+
 # Determine link method and output option
-my $tmp_output_file;
 if ($output_type eq 'static_lib') {
+  my $tmp_output_file;
   $tmp_output_file = "$command_tmp_dir/link.output";
   my @generate_static_lib_command = ('ar', 'rcs', $tmp_output_file, @tmp_object_file_names);
   
   # Execute archiver command
   system(@generate_static_lib_command) == 0
     or confess("Failed to generate static library command. \@generate_static_lib_command='@generate_static_lib_command', \$!=$!, \$?=$?.");
+  
+  File::Copy::move($tmp_output_file, $output_file)
+    or confess("Can't move '$tmp_output_file' to '$output_file': $!");
 }
 else {
   my $link_method = ($output_type eq 'exe') ? 'link_executable' : 'link';
   my $output_option = ($output_type eq 'exe') ? 'exe_file' : 'lib_file';
   
-  $tmp_output_file = "$command_tmp_dir/link.output";
-  
   # Link to the .tmp file instead of the final file
   $cbuilder->$link_method(
-    $output_option => $tmp_output_file,
+    $output_option => $output_file,
     objects => \@tmp_object_file_names,
     extra_linker_flags => "@ldflags",
     module_name => $class_name,
@@ -120,8 +123,3 @@ else {
   );
 }
 
-mkpath dirname $output_file;
-
-File::Copy::move($tmp_output_file, $output_file)
-  or confess("Can't move '$tmp_output_file' to '$output_file': $!");
-  
