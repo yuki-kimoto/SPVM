@@ -923,7 +923,7 @@ sub build_parallel_libspvm {
   
   $link_info->dl_func_list(['SPVM_NATIVE_new_env']);
   
-  my $diagnostic_message = "[Generate Dynamic Link Library for libpsvm]";
+  my $diagnostic_message = "[Generate Static Link Library for libpsvm]";
   $link_info->diagnostic_message($diagnostic_message);
   $link_info->config->output_type('static_lib');
   
