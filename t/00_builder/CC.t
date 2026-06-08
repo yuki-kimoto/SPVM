@@ -104,4 +104,55 @@ subtest 'Check spvm_native.h' => sub {
   }
 };
 
+subtest 'PDB file' => sub {
+  {
+    my $Fn_dll_file = 'blib/lib/SPVM/Fn.dll';
+    ok(-f $Fn_dll_file);
+    my $has_pdb_section = &has_pdb_section($Fn_dll_file);
+    
+    if ($has_pdb_section) {
+      ok(-f 'blib/lib/SPVM/Fn.pdb');
+    }
+    else {
+      diag "[Test Skip]No pdf file.";
+    }
+  }
+  
+  {
+    my $Fn_dll_file = 'blib/lib/SPVM/Fn.precompile.dll';
+    ok(-f $Fn_dll_file);
+    my $has_pdb_section = &has_pdb_section($Fn_dll_file);
+    
+    if ($has_pdb_section) {
+      ok(-f 'blib/lib/SPVM/Fn.precompile.pdb');
+    }
+    else {
+      diag "[Test Skip]No pdf file.";
+    }
+  }
+  
+};
+
 done_testing;
+
+sub has_pdb_section {
+  my ($file) = @_;
+
+  # Check file existence and die if missing
+  die "File '$file' not found" unless -f $file;
+
+  # Extract filename without extension
+  my ($base_name) = $file =~ m|([^/\\.]+)\.[^/\\.]+$|;
+  die "Could not extract base name from '$file'" unless $base_name;
+
+  # Open as binary
+  open my $fh, '<:raw', $file or die "Could not open '$file': $!";
+  
+  # Read full content
+  undef $/;
+  my $content = <$fh>;
+  close $fh;
+
+  # Search for <base_name>.pdb
+  return $content =~ /\Q$base_name\E\.pdb\b/i ? 1 : 0;
+}
