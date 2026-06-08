@@ -47,27 +47,41 @@ sub create_command {
   
   my $ld = $config->ld;
   
+  my $output_type = $config->output_type;
   my $output_file = $config->output_file;
   my $object_file_infos = $self->object_file_infos;
   my $object_file_names = [map { $_->to_string; } @$object_file_infos];
   
-  my $ldflags = $self->create_ldflags;
-  
-  # Get output option name
-  my $ld_output_option_name = $config->ld_output_option_name;
-  
-  # Build command
   my @link_command;
-  push @link_command, ($ld);
-  
-  unless ($no_output_option) {
-    # Build output option
-    my $output_option = $config->create_option($ld_output_option_name, $output_file);
+  if ($output_type eq 'static_lib') {
+    my $ar_output_file;
+    if ($no_output_option) {
+      $ar_output_file = "__AR_OUTPUT_FILE__";
+    }
+    else {
+      $ar_output_file = $output_file;
+    }
     
-    push @link_command, $output_option;
+    push @link_command, ('ar', 'rcs', $ar_output_file, @$object_file_names);
   }
-  
-  push @link_command, (@$object_file_names, @$ldflags);
+  else {
+    my $ldflags = $self->create_ldflags;
+    
+    # Get output option name
+    my $ld_output_option_name = $config->ld_output_option_name;
+    
+    # Build command
+    push @link_command, ($ld);
+    
+    unless ($no_output_option) {
+      # Build output option
+      my $output_option = $config->create_option($ld_output_option_name, $output_file);
+      
+      push @link_command, $output_option;
+    }
+    
+    push @link_command, (@$object_file_names, @$ldflags);
+  }
   
   return \@link_command;
 }
