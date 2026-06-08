@@ -449,6 +449,10 @@ Specifies the build type. The possible values are C<Debug>, C<Release>, C<RelWit
 
 Enables AddressSanitizer (ASan) for memory error detection on Linux.
 
+ASan generates a separate log file for each process. To efficiently find both corruption reports and leaks related to your specific module, use the following Perl one-liner (Replace My::Module with your module's name):
+
+  perl -00 -ne 'print "--- File: $ARGV ---\n$_\n" if /My::Module/' .spvm_build/asan_logs/* > .spvm_build/asan_summary.log
+
 =head2 --msvc
 
 Compile source codes by using MSVC config(L<SPVM::Builder::Config::Global::MSVC>).
