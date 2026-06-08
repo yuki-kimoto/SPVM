@@ -869,8 +869,10 @@ use File::Path 'mkpath', 'rmtree';
 GetOptions(
   'meta' => \\my \$meta,
   'no-build-spvm-modules' => \\my \$no_build_spvm_modules,
+  'cc=s' => \\my \$cc,
   'ccflag=s' => \\my \@ccflags,
   'define=s' => \\my \@defines,
+  'ld=s' => \\my \$ld,
   'ldflag=s' => \\my \@ldflags,
   'debug' => \\my \$debug,
   'build-type=s' => \\my \$build_type,
@@ -890,8 +892,10 @@ mkpath \$build_dir;
 
 my \$config_global_file = '.spvm_build/global.config';
 generate_config_global_file(\$config_global_file, {
+  cc            => \$cc,
   ccflags       => \\\@ccflags,
   defines       => \\\@defines,
+  ld            => \$ld,
   ldflags       => \\\@ldflags,
   debug         => \$debug,
   build_type    => \$build_type,
@@ -989,8 +993,10 @@ package MY {
 sub generate_config_global_file {
   my (\$config_global_file, \$options) = \@_;
   
+  my \$cc             = \$options->{cc};
   my \$ccflags        = \$options->{ccflags} // [];
   my \$defines        = \$options->{defines} // [];
+  my \$ld             = \$options->{ld};
   my \$ldflags        = \$options->{ldflags} // [];
   my \$build_type     = \$options->{build_type};
   my \$debug          = \$options->{debug};
@@ -1025,6 +1031,12 @@ EOS
 EOS
   }
   
+  if (defined \$cc) {
+    \$config_global_content .= <<"EOS";
+\\\$config_global->build_rule_any({'cc' => '\$cc'});
+EOS
+  }
+  
   for my \$ccflag (\@\$ccflags) {
     \$config_global_content .= <<"EOS";
 \\\$config_global->build_rule_any({'+ccflags' => ['\$ccflag']});
@@ -1034,6 +1046,12 @@ EOS
   for my \$define (\@\$defines) {
     \$config_global_content .= <<"EOS";
 \\\$config_global->build_rule_any({'+defines' => ['\$define']});
+EOS
+  }
+  
+  if (defined \$ld) {
+    \$config_global_content .= <<"EOS";
+\\\$config_global->build_rule_any({'ld' => '\$ld'});
 EOS
   }
   

@@ -661,7 +661,7 @@ if ($^O eq 'freebsd') {
     or die "Can't chdir";
   
   local $ENV{PERL5LIB} = $perl5lib;
-  my $ret = system(qq|$^X Makefile.PL --ccflag=-O0 --ldflag=-O1 --define MY_MACRO && $make && $make test|);
+  my $ret = system(qq|$^X Makefile.PL --cc=$Config{cc} --ccflag=-O0 --ld=$Config{ld} --ldflag=-O1 --define MY_MACRO && $make && $make test|);
   ok($ret == 0);
   
   my $mymeta_json = 'MYMETA.json';
