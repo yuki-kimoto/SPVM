@@ -63,16 +63,14 @@ system($compile_native_api_prgoram) == 0 or die;
 {
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.o";
+  $native_object_file = (glob "$build_dir/work/object/*/*/SPVM/TestCase/NativeAPI.o")[0];
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
   my $precompile_object_file;
   my $start_precompile_object_file_mtime;
-  $precompile_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI.precompile.o";
-  if ($ENV{SPVM_TEST_PRECOMPILE}) {
-   ok(-f $precompile_object_file);
-   $start_precompile_object_file_mtime = (stat $precompile_object_file)[9];
-  }
+  $precompile_object_file = (glob "$build_dir/work/object/*/*/SPVM/TestCase/NativeAPI.precompile.o")[0];
+  ok(-f $precompile_object_file);
+  $start_precompile_object_file_mtime = (stat $precompile_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
