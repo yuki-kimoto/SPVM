@@ -1359,15 +1359,15 @@ int32_t SPVM__Fn__env(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef _WIN32
   char* value = NULL;
   size_t value_size = 0;
-  if (_dupenv_s(&value, &value_size, name) != 0 || value == NULL) {
+  if (env->api->cfunc->c__dupenv_s(env, stack, &value, &value_size, name) != 0 || value == NULL) {
     stack[0].oval = NULL;
     return 0;
   }
   
   SPVM_OBJ* obj_value = env->new_string_nolen(env, stack, value);
-  free(value);
+  env->api->cfunc->c_free(value);
 #else
-  char* value = getenv(name);
+  char* value = env->api->cfunc->c_getenv(env, stack, name);
   if (!value) {
     stack[0].oval = NULL;
     return 0;
