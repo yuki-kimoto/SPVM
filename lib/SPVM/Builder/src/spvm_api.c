@@ -7503,6 +7503,16 @@ int32_t SPVM_API_is_utf8(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_stri
   return is_utf8;
 }
 
+int32_t SPVM_API_get_error_id(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  return stack[SPVM_API_C_STACK_INDEX_ERROR_ID].ival;
+}
+
+void SPVM_API_set_error_id(SPVM_ENV* env, SPVM_VALUE* stack, int32_t error_id) {
+  
+  stack[SPVM_API_C_STACK_INDEX_ERROR_ID].ival = error_id;
+}
+
 size_t SPVM_API_c_strlen(SPVM_ENV* env, SPVM_VALUE* stack, const char* str) {
   return strlen(str);
 }
@@ -7651,16 +7661,6 @@ int SPVM_API_c_snprintf_len(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t 
   }
 
   return total_len;
-}
-
-int32_t SPVM_API_get_error_id(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  return stack[SPVM_API_C_STACK_INDEX_ERROR_ID].ival;
-}
-
-void SPVM_API_set_error_id(SPVM_ENV* env, SPVM_VALUE* stack, int32_t error_id) {
-  
-  stack[SPVM_API_C_STACK_INDEX_ERROR_ID].ival = error_id;
 }
 
 int SPVM_API_c_errno(SPVM_ENV* env, SPVM_VALUE* stack) {
