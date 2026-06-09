@@ -5544,7 +5544,7 @@ int32_t SPVM__TestCase__NativeAPI__cfunc(SPVM_ENV* env, SPVM_VALUE* stack) {
     char* buf = NULL;
     size_t len = 0;
     if (env->api->cfunc->c__dupenv_s(env, stack, &buf, &len, "SPVM_TEST_WIN") != 0) { stack[0].ival = 0; return 0; }
-    env->api->cfunc->c_free(buf);
+    env->api->cfunc->c_free(env, stack, buf);
 #endif
   }
   {
