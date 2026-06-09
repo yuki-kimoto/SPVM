@@ -1365,7 +1365,7 @@ int32_t SPVM__Fn__env(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   SPVM_OBJ* obj_value = env->new_string_nolen(env, stack, value);
-  env->api->cfunc->c_free(value);
+  env->api->cfunc->c_free(env, stack, value);
 #else
   char* value = env->api->cfunc->c_getenv(env, stack, name);
   if (!value) {
