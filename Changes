@@ -1,3 +1,18 @@
+0.990183 2026-06-09
+  [New Features]
+    * Add the following native C function native APIs.
+      getenv
+      setenv
+      unsetenv
+      _dupenv_s
+      _putenv_s
+      localtime
+      tzset
+      malloc
+      calloc
+      realloc
+      free
+    
 0.990182 2026-06-08
   [Makefile.PL Changes]
     Add --cc and --ld options to Makefile.PL.
