@@ -1,3 +1,7 @@
+0.990184 2026-06-09
+  [Changes]
+    * Fn#getenv access language side environment.
+    
 0.990183 2026-06-09
   [New Features]
     * Add the following native C function native APIs.
