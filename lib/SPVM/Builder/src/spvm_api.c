@@ -1,12 +1,21 @@
 // Copyright (c) 2023 Yuki Kimoto
 // MIT License
 
+#ifdef __linux__
+  // Enable X/Open System Interfaces (SUSv4) functions and POSIX.1-2008 standard functions
+  #define _XOPEN_SOURCE 700
+
+  // Enable BSD and System V extensions
+  #define _DEFAULT_SOURCE
+#endif
+
 #include <inttypes.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <errno.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <time.h>
 
 #include "spvm_native.h"
 #include "spvm_api.h"
@@ -7513,6 +7522,8 @@ void SPVM_API_set_error_id(SPVM_ENV* env, SPVM_VALUE* stack, int32_t error_id) {
   stack[SPVM_API_C_STACK_INDEX_ERROR_ID].ival = error_id;
 }
 
+#include <time.h>
+
 size_t SPVM_API_c_strlen(SPVM_ENV* env, SPVM_VALUE* stack, const char* str) {
   return strlen(str);
 }
@@ -7727,3 +7738,62 @@ FILE* SPVM_API_c_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   return stderr;
 }
 
+char* SPVM_API_c_getenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name) {
+  return getenv(name);
+}
+
+int SPVM_API_c_setenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* value, int overwrite) {
+#ifndef _WIN32
+  return setenv(name, value, overwrite);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_c_unsetenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name) {
+#ifndef _WIN32
+  return unsetenv(name);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_c__dupenv_s(SPVM_ENV* env, SPVM_VALUE* stack, char** buffer, size_t* numberOfElements, const char* varname) {
+#ifdef _WIN32
+  return _dupenv_s(buffer, numberOfElements, varname);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_c__putenv_s(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* value) {
+#ifdef _WIN32
+  return _putenv_s(name, value);
+#else
+  abort();
+#endif
+}
+
+struct tm* SPVM_API_c_localtime(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer) {
+  return localtime(timer);
+}
+
+void SPVM_API_c_tzset(SPVM_ENV* env, SPVM_VALUE* stack) {
+  tzset();
+}
+
+void* SPVM_API_c_malloc(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
+  return malloc(size);
+}
+
+void* SPVM_API_c_calloc(SPVM_ENV* env, SPVM_VALUE* stack, size_t nmemb, size_t size) {
+  return calloc(nmemb, size);
+}
+
+void* SPVM_API_c_realloc(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size) {
+  return realloc(ptr, size);
+}
+
+void SPVM_API_c_free(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr) {
+  free(ptr);
+}

@@ -74,6 +74,9 @@ typedef struct spvm_obj SPVM_OBJ;
 struct spvm_ref;
 typedef struct spvm_ref SPVM_REF;
 
+struct spvm_native_time_t;
+typedef struct spvm_native_time_t SPVM_NATIVE_TIME_T;
+
 #define SPVM_NATIVE_GET_POINTER(object) (*(void**)object)
 
 #define SPVM_NATIVE_SET_POINTER(object, pointer) (*(void**)object = pointer)
@@ -729,6 +732,17 @@ struct spvm_api_cfunc {
   FILE* (*c_stdin)(SPVM_ENV* env, SPVM_VALUE* stack);
   FILE* (*c_stdout)(SPVM_ENV* env, SPVM_VALUE* stack);
   FILE* (*c_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);
+  char* (*c_getenv)(SPVM_ENV* env, SPVM_VALUE* stack, const char* name);
+  int (*c_setenv)(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* value, int overwrite);
+  int (*c_unsetenv)(SPVM_ENV* env, SPVM_VALUE* stack, const char* name);
+  int (*c__dupenv_s)(SPVM_ENV* env, SPVM_VALUE* stack, char** buffer, size_t* numberOfElements, const char* varname);
+  int (*c__putenv_s)(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* value);
+  struct tm* (*c_localtime)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_TIME_T* timer);
+  void (*c_tzset)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void* (*c_malloc)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
+  void* (*c_calloc)(SPVM_ENV* env, SPVM_VALUE* stack, size_t nmemb, size_t size);
+  void* (*c_realloc)(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size);
+  void (*c_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr);
 };
 
 struct spvm_api_type {

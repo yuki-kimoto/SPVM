@@ -6,6 +6,7 @@
 
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
+#include <time.h>
 
 enum {
   SPVM_API_C_STACK_LENGTH = 512,
@@ -587,5 +588,27 @@ FILE* SPVM_API_c_stdin(SPVM_ENV* env, SPVM_VALUE* stack);
 FILE* SPVM_API_c_stdout(SPVM_ENV* env, SPVM_VALUE* stack);
 
 FILE* SPVM_API_c_stderr(SPVM_ENV* env, SPVM_VALUE* stack);
+
+char* SPVM_API_c_getenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name);
+
+int SPVM_API_c_setenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* value, int overwrite);
+
+int SPVM_API_c_unsetenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name);
+
+int SPVM_API_c__dupenv_s(SPVM_ENV* env, SPVM_VALUE* stack, char** buffer, size_t* numberOfElements, const char* varname);
+
+int SPVM_API_c__putenv_s(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* value);
+
+struct tm* SPVM_API_c_localtime(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer);
+
+void SPVM_API_c_tzset(SPVM_ENV* env, SPVM_VALUE* stack);
+
+void* SPVM_API_c_malloc(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
+
+void* SPVM_API_c_calloc(SPVM_ENV* env, SPVM_VALUE* stack, size_t nmemb, size_t size);
+
+void* SPVM_API_c_realloc(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size);
+
+void SPVM_API_c_free(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr);
 
 #endif

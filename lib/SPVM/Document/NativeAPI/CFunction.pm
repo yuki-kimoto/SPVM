@@ -210,6 +210,72 @@ C<FILE* (c_stderr)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environme
 
 Returns the standard error stream L<stderr|https://linux.die.net/man/3/stderr>.
 
+=head2 c_getenv
+
+C<char* (c_getenv)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* name);>
+
+Returns the environment variable value associated with the specified name.
+
+=head2 c_setenv
+
+C<int (c_setenv)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* name, const char* value, int overwrite);>
+
+Sets the environment variable to the specified value.
+
+=head2 c_unsetenv
+
+C<int (c_unsetenv)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* name);>
+
+Unsets the environment variable with the specified name.
+
+=head2 c__dupenv_s
+
+C<int (c__dupenv_s)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, char** buffer, size_t* numberOfElements, const char* varname);>
+
+Retrieves an environment variable and copies it to a buffer. (Windows specific)
+
+=head2 c__putenv_s
+
+C<int (c__putenv_s)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* name, const char* value);>
+
+Sets an environment variable. (Windows specific)
+
+=head2 c_localtime
+
+C<struct tm* (c_localtime)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const SPVM_NATIVE_TIME_T* timer);>
+
+Converts a time value to local time.
+
+=head2 c_tzset
+
+C<void (c_tzset)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+
+Sets time conversion information.
+
+=head2 c_malloc
+
+C<void* (c_malloc)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, size_t size);>
+
+Allocates memory.
+
+=head2 c_calloc
+
+C<void* (c_calloc)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, size_t nmemb, size_t size);>
+
+Allocates and zeros memory.
+
+=head2 c_realloc
+
+C<void* (c_realloc)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* ptr, size_t size);>
+
+Reallocates memory.
+
+=head2 c_free
+
+C<void (c_free)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* ptr);>
+
+Frees memory.
+
 =head1 Native C Function API IDs
 
   0 c_strlen
@@ -238,7 +304,18 @@ Returns the standard error stream L<stderr|https://linux.die.net/man/3/stderr>.
   23 c_stdin
   24 c_stdout
   25 c_stderr
-  
+  26 c_getenv
+  27 c_setenv
+  28 c_unsetenv
+  29 c__dupenv_s
+  30 c__putenv_s
+  31 c_localtime
+  32 c_tzset
+  33 c_malloc
+  34 c_calloc
+  35 c_realloc
+  36 c_free
+
 =head1 See Also
 
 =over 2

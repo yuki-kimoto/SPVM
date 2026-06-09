@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdint.h>
+#include <time.h>
 
 #include <spvm_native.h>
 
@@ -523,6 +524,13 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_cfunc_ids(SPVM_ENV* env, SPV
   if ((void*)&env->api->cfunc->c_stdin != &env_array[23]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->cfunc->c_stdout != &env_array[24]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->cfunc->c_stderr != &env_array[25]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_getenv != &env_array[26]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_setenv != &env_array[27]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_unsetenv != &env_array[28]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c__dupenv_s != &env_array[29]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c__putenv_s != &env_array[30]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_localtime != &env_array[31]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_tzset != &env_array[32]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
@@ -5518,6 +5526,49 @@ int32_t SPVM__TestCase__NativeAPI__cfunc(SPVM_ENV* env, SPVM_VALUE* stack) {
     if (!env->api->cfunc->c_stdin(env, stack)) { stack[0].ival = 0; return 0; }
     if (!env->api->cfunc->c_stdout(env, stack)) { stack[0].ival = 0; return 0; }
     if (!env->api->cfunc->c_stderr(env, stack)) { stack[0].ival = 0; return 0; }
+  }
+  
+  {
+    const char* path = env->api->cfunc->c_getenv(env, stack, "PATH");
+    if (!path) { stack[0].ival = 0; return 0; }
+  }
+  {
+#ifndef _WIN32
+    if (env->api->cfunc->c_setenv(env, stack, "SPVM_TEST_VAR", "123", 1) != 0) { stack[0].ival = 0; return 0; }
+    if (env->api->cfunc->c_unsetenv(env, stack, "SPVM_TEST_VAR") != 0) { stack[0].ival = 0; return 0; }
+#endif
+  }
+  {
+#ifdef _WIN32
+    if (env->api->cfunc->c__putenv_s(env, stack, "SPVM_TEST_WIN", "456") != 0) { stack[0].ival = 0; return 0; }
+    char* buf = NULL;
+    size_t len = 0;
+    if (env->api->cfunc->c__dupenv_s(env, stack, &buf, &len, "SPVM_TEST_WIN") != 0) { stack[0].ival = 0; return 0; }
+    env->api->cfunc->c_free(buf);
+#endif
+  }
+  {
+    time_t now = time(NULL);
+    struct tm* tm_ptr = env->api->cfunc->c_localtime(env, stack, (const SPVM_NATIVE_TIME_T*)&now);
+    if (!tm_ptr) { stack[0].ival = 0; return 0; }
+    
+    env->api->cfunc->c_tzset(env, stack);
+  }
+  
+  // Memory management
+  {
+    void* ptr = env->api->cfunc->c_malloc(env, stack, 10);
+    if (!ptr) { stack[0].ival = 0; return 0; }
+    
+    ptr = env->api->cfunc->c_realloc(env, stack, ptr, 20);
+    if (!ptr) { stack[0].ival = 0; return 0; }
+    
+    env->api->cfunc->c_free(env, stack, ptr);
+  }
+  {
+    void* ptr = env->api->cfunc->c_calloc(env, stack, 1, 10);
+    if (!ptr) { stack[0].ival = 0; return 0; }
+    env->api->cfunc->c_free(env, stack, ptr);
   }
   
   stack[0].ival = 1;
