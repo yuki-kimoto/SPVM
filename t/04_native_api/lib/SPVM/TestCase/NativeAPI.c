@@ -5549,7 +5549,7 @@ int32_t SPVM__TestCase__NativeAPI__cfunc(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   {
     time_t now = time(NULL);
-    struct tm* tm_ptr = env->api->cfunc->c_localtime(env, stack, (const SPVM_NATIVE_TIME_T*)&now);
+    struct tm* tm_ptr = (struct tm*)env->api->cfunc->c_localtime(env, stack, (const SPVM_NATIVE_CTYPE_TIME_T*)&now);
     if (!tm_ptr) { stack[0].ival = 0; return 0; }
     
     env->api->cfunc->c_tzset(env, stack);
