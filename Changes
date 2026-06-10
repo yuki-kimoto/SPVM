@@ -1,3 +1,7 @@
+0.990186 2026-06-10
+  [Incompatible Changes]
+    * Fix localtime_s and gmtime_s native C function native APIs to match Windows ones.
+    
 0.990185 2026-06-10
   [New Features]
     * Add the following C function native APIs.
