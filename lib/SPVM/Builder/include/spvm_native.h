@@ -746,6 +746,10 @@ struct spvm_api_cfunc {
   void* (*c_calloc)(SPVM_ENV* env, SPVM_VALUE* stack, size_t nmemb, size_t size);
   void* (*c_realloc)(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size);
   void (*c_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr);
+  SPVM_NATIVE_CTYPE_TM* (*c_localtime_r)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);
+  SPVM_NATIVE_CTYPE_TM* (*c_localtime_s)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);
+  SPVM_NATIVE_CTYPE_TM* (*c_gmtime_r)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);
+  SPVM_NATIVE_CTYPE_TM* (*c_gmtime_s)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);
 };
 
 struct spvm_api_type {

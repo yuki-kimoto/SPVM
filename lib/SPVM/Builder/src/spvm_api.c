@@ -7797,3 +7797,35 @@ void* SPVM_API_c_realloc(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t siz
 void SPVM_API_c_free(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr) {
   free(ptr);
 }
+
+struct tm* SPVM_API_c_localtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result) {
+#ifndef _WIN32
+  return localtime_r(timer, result);
+#else
+  abort();
+#endif
+}
+
+struct tm* SPVM_API_c_localtime_s(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result) {
+#ifdef _WIN32
+  return localtime_s(result, timer) == 0 ? result : NULL;
+#else
+  abort();
+#endif
+}
+
+struct tm* SPVM_API_c_gmtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result) {
+#ifndef _WIN32
+  return gmtime_r(timer, result);
+#else
+  abort();
+#endif
+}
+
+struct tm* SPVM_API_c_gmtime_s(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result) {
+#ifdef _WIN32
+  return gmtime_s(result, timer) == 0 ? result : NULL;
+#else
+  abort();
+#endif
+}

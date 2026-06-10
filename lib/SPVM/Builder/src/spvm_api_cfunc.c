@@ -48,6 +48,10 @@ SPVM_API_CFUNC* SPVM_API_CFUNC_new_api() {
     SPVM_API_c_calloc,
     SPVM_API_c_realloc,
     SPVM_API_c_free,
+    SPVM_API_c_localtime_r,
+    SPVM_API_c_localtime_s,
+    SPVM_API_c_gmtime_r,
+    SPVM_API_c_gmtime_s,
   };
   SPVM_API_CFUNC* env_cfunc = calloc(1, sizeof(env_cfunc_init));
   memcpy(env_cfunc, env_cfunc_init, sizeof(env_cfunc_init));

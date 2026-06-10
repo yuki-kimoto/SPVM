@@ -531,6 +531,14 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_cfunc_ids(SPVM_ENV* env, SPV
   if ((void*)&env->api->cfunc->c__putenv_s != &env_array[30]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->cfunc->c_localtime != &env_array[31]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->cfunc->c_tzset != &env_array[32]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_malloc != &env_array[33]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_calloc != &env_array[34]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_realloc != &env_array[35]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_free != &env_array[36]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_localtime_r != &env_array[37]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_localtime_s != &env_array[38]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_gmtime_r != &env_array[39]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_gmtime_s != &env_array[40]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
@@ -5569,6 +5577,47 @@ int32_t SPVM__TestCase__NativeAPI__cfunc(SPVM_ENV* env, SPVM_VALUE* stack) {
     void* ptr = env->api->cfunc->c_calloc(env, stack, 1, 10);
     if (!ptr) { stack[0].ival = 0; return 0; }
     env->api->cfunc->c_free(env, stack, ptr);
+  }
+  
+  {
+    time_t now = time(NULL);
+    struct tm result;
+#ifndef _WIN32
+    if (!env->api->cfunc->c_localtime_r(env, stack, (const SPVM_NATIVE_CTYPE_TIME_T*)&now, (SPVM_NATIVE_CTYPE_TM*)&result)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+#endif
+  }
+  {
+    time_t now = time(NULL);
+    struct tm result;
+#ifdef _WIN32
+    if (!env->api->cfunc->c_localtime_s(env, stack, (const SPVM_NATIVE_CTYPE_TIME_T*)&now, (SPVM_NATIVE_CTYPE_TM*)&result)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+#endif
+  }
+  {
+    time_t now = time(NULL);
+    struct tm result;
+#ifndef _WIN32
+    if (!env->api->cfunc->c_gmtime_r(env, stack, (const SPVM_NATIVE_CTYPE_TIME_T*)&now, (SPVM_NATIVE_CTYPE_TM*)&result)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+#endif
+  }
+  {
+    time_t now = time(NULL);
+    struct tm result;
+#ifdef _WIN32
+    if (!env->api->cfunc->c_gmtime_s(env, stack, (const SPVM_NATIVE_CTYPE_TIME_T*)&now, (SPVM_NATIVE_CTYPE_TM*)&result)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+#endif
   }
   
   stack[0].ival = 1;

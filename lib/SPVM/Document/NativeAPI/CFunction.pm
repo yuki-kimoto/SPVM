@@ -8,8 +8,6 @@ Native APIs for C standard functions.
 
 =head1 Details
 
-=head1 Details
-
 These native APIs are provided to safely invoke C standard functions within the SPVM runtime, effectively bridging the isolation between different compilation environments.
 
 In scenarios where the SPVM core is compiled with one compiler (e.g., GCC) and its extension modules are compiled with another (e.g., MSVC), a "runtime boundary" is created. Because each compiler environment maintains its own global state (such as standard I/O streams) and thread-local storage (such as C<errno>), data modified in the SPVM core may not be visible or correctly interpreted by the extension modules, and vice versa.
@@ -242,9 +240,19 @@ Sets an environment variable. (Windows specific)
 
 =head2 c_localtime
 
-C<struct tm* (c_localtime)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const SPVM_NATIVE_TIME_T* timer);>
+C<SPVM_NATIVE_CTYPE_TM* (c_localtime)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const SPVM_NATIVE_CTYPE_TIME_T* timer);>
 
 Converts a time value to local time.
+
+Type Mappings:
+
+=over 2
+
+=item * C<SPVM_NATIVE_CTYPE_TIME_T*> corresponds to C<const time_t*> in C.
+
+=item * C<SPVM_NATIVE_CTYPE_TM*> corresponds to C<struct tm*> in C.
+
+=back
 
 =head2 c_tzset
 
@@ -275,6 +283,70 @@ Reallocates memory.
 C<void (c_free)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* ptr);>
 
 Frees memory.
+
+=head2 c_localtime_r
+
+C<SPVM_NATIVE_CTYPE_TM* (c_localtime_r)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);>
+
+Converts a time value to local time, thread-safe version (POSIX).
+
+Type Mappings:
+
+=over 2
+
+=item * C<SPVM_NATIVE_CTYPE_TIME_T*> corresponds to C<const time_t*> in C.
+
+=item * C<SPVM_NATIVE_CTYPE_TM*> corresponds to C<struct tm*> in C.
+
+=back
+
+=head2 c_localtime_s
+
+C<SPVM_NATIVE_CTYPE_TM* (c_localtime_s)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);>
+
+Converts a time value to local time, secure version (Windows).
+
+Type Mappings:
+
+=over 2
+
+=item * C<SPVM_NATIVE_CTYPE_TIME_T*> corresponds to C<const time_t*> in C.
+
+=item * C<SPVM_NATIVE_CTYPE_TM*> corresponds to C<struct tm*> in C.
+
+=back
+
+=head2 c_gmtime_r
+
+C<SPVM_NATIVE_CTYPE_TM* (c_gmtime_r)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);>
+
+Converts a time value to UTC time, thread-safe version (POSIX).
+
+Type Mappings:
+
+=over 2
+
+=item * C<SPVM_NATIVE_CTYPE_TIME_T*> corresponds to C<const time_t*> in C.
+
+=item * C<SPVM_NATIVE_CTYPE_TM*> corresponds to C<struct tm*> in C.
+
+=back
+
+=head2 c_gmtime_s
+
+C<SPVM_NATIVE_CTYPE_TM* (c_gmtime_s)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);>
+
+Converts a time value to UTC time, secure version (Windows).
+
+Type Mappings:
+
+=over 2
+
+=item * C<SPVM_NATIVE_CTYPE_TIME_T*> corresponds to C<const time_t*> in C.
+
+=item * C<SPVM_NATIVE_CTYPE_TM*> corresponds to C<struct tm*> in C.
+
+=back
 
 =head1 Native C Function API IDs
 
@@ -315,7 +387,11 @@ Frees memory.
   34 c_calloc
   35 c_realloc
   36 c_free
-
+  37 c_localtime_r
+  38 c_localtime_s
+  39 c_gmtime_r
+  40 c_gmtime_s
+  
 =head1 See Also
 
 =over 2
