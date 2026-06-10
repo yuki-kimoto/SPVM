@@ -6,14 +6,24 @@
 
 #ifndef SPVM_NATIVE_NO_INCLUDE_HEADERS
 /*
-    This header file must not include any headers other than standard C headers to ensure it can be used standalone.
-    
-    Do not reduce these headers. 
-    When adding new headers, exercise extreme caution and ensure they are absolutely necessary.
-    
-    SPVM_NATIVE_NO_INCLUDE_HEADERS is defined in precompiled code
-    because precompiled code cannnot contain #include and export for generating portable JIT code(LLVM, tcc, Mir, etc).
+  This header file must not include any headers other than standard C headers to ensure it can be used standalone.
+  
+  Do not reduce these headers. 
+  When adding new headers, exercise extreme caution and ensure they are absolutely necessary.
+  
+  SPVM_NATIVE_NO_INCLUDE_HEADERS is defined in precompiled code
+  because precompiled code cannnot contain #include and export for generating portable JIT code(LLVM, tcc, Mir, etc).
+  
+  If you need to use new types in function definitions, 
+  consider using typedefs for pointer abstract types
+  or using integer types (e.g., using int to represent errno_t). 
+  
+  Example of a pointer abstract type for strunct tm:
+  
+  struct spvm_native_ctype_tm;
+  typedef struct spvm_native_ctype_tm SPVM_NATIVE_CTYPE_TM;
 */
+
   #include <stdint.h>
   #include <stdio.h>
   #include <string.h>
@@ -79,6 +89,9 @@ typedef struct spvm_native_ctype_tm SPVM_NATIVE_CTYPE_TM;
 
 struct spvm_native_ctype_time_t;
 typedef struct spvm_native_ctype_time_t SPVM_NATIVE_CTYPE_TIME_T;
+
+struct spvm_native_ctype_wchar_t;
+typedef struct spvm_native_ctype_wchar_t SPVM_NATIVE_CTYPE_WCHAR_T;
 
 #define SPVM_NATIVE_GET_POINTER(object) (*(void**)object)
 
@@ -750,6 +763,12 @@ struct spvm_api_cfunc {
   int (*c_localtime_s)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_NATIVE_CTYPE_TM* result, const SPVM_NATIVE_CTYPE_TIME_T* timer);
   SPVM_NATIVE_CTYPE_TM* (*c_gmtime_r)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);
   int (*c_gmtime_s)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_NATIVE_CTYPE_TM* result, const SPVM_NATIVE_CTYPE_TIME_T* timer);
+  FILE* (*c__wfopen)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_WCHAR_T* path, const SPVM_NATIVE_CTYPE_WCHAR_T* mode);
+  FILE* (*c_fdopen)(SPVM_ENV* env, SPVM_VALUE* stack, int fd, const char* mode);
+  FILE* (*c_popen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* command, const char* type);
+  FILE* (*c__wpopen)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_WCHAR_T* command, const SPVM_NATIVE_CTYPE_WCHAR_T* type);
+  int (*c_pclose)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+  int (*c__pclose)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
 };
 
 struct spvm_api_type {

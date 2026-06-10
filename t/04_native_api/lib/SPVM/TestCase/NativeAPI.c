@@ -539,6 +539,12 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_cfunc_ids(SPVM_ENV* env, SPV
   if ((void*)&env->api->cfunc->c_localtime_s != &env_array[38]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->cfunc->c_gmtime_r != &env_array[39]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->cfunc->c_gmtime_s != &env_array[40]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c__wfopen != &env_array[41]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_fdopen != &env_array[42]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_popen != &env_array[43]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c__wpopen != &env_array[44]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c_pclose != &env_array[45]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->cfunc->c__pclose != &env_array[46]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
@@ -5617,6 +5623,50 @@ int32_t SPVM__TestCase__NativeAPI__cfunc(SPVM_ENV* env, SPVM_VALUE* stack) {
       stack[0].ival = 0;
       return 0;
     }
+#endif
+  }
+  
+  // New IO functions
+  {
+#ifdef _WIN32
+    const wchar_t* w_path = L"test_wfopen.txt";
+    const wchar_t* w_mode = L"w+";
+    FILE* fp = env->api->cfunc->c__wfopen(env, stack, w_path, w_mode);
+    if (!fp) { stack[0].ival = 0; return 0; }
+    env->api->cfunc->c_fclose(env, stack, fp);
+    _wremove(w_path);
+#endif
+  }
+  {
+    int fd = 1; // standard output
+    FILE* fp = env->api->cfunc->c_fdopen(env, stack, fd, "w");
+    if (!fp) { stack[0].ival = 0; return 0; }
+    // no fclose here because it closes stdout
+  }
+  {
+#ifndef _WIN32
+    FILE* fp = env->api->cfunc->c_popen(env, stack, "echo test", "r");
+    if (!fp) { stack[0].ival = 0; return 0; }
+    env->api->cfunc->c_pclose(env, stack, fp);
+#endif
+  }
+  {
+#ifdef _WIN32
+    FILE* fp = env->api->cfunc->c__wpopen(env, stack, L"echo test", L"r");
+    if (!fp) { stack[0].ival = 0; return 0; }
+    env->api->cfunc->c__pclose(env, stack, fp);
+#endif
+  }
+  {
+#ifndef _WIN32
+    FILE* fp = env->api->cfunc->c_popen(env, stack, "ls", "r");
+    if (env->api->cfunc->c_pclose(env, stack, fp) == -1) { stack[0].ival = 0; return 0; }
+#endif
+  }
+  {
+#ifdef _WIN32
+    FILE* fp = env->api->cfunc->c__wpopen(env, stack, L"dir", L"r");
+    if (env->api->cfunc->c__pclose(env, stack, fp) == -1) { stack[0].ival = 0; return 0; }
 #endif
   }
   

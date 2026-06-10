@@ -7,6 +7,7 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 #include <time.h>
+#include <stddef.h>
 
 enum {
   SPVM_API_C_STACK_LENGTH = 512,
@@ -618,5 +619,17 @@ int SPVM_API_c_localtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, 
 struct tm* SPVM_API_c_gmtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result);
 
 int SPVM_API_c_gmtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, const time_t* timer);
+
+FILE* SPVM_API_c__wfopen(SPVM_ENV* env, SPVM_VALUE* stack, const wchar_t* path, const wchar_t* mode);
+
+FILE* SPVM_API_c_fdopen(SPVM_ENV* env, SPVM_VALUE* stack, int fd, const char* mode);
+
+FILE* SPVM_API_c_popen(SPVM_ENV* env, SPVM_VALUE* stack, const char* command, const char* type);
+
+FILE* SPVM_API_c__wpopen(SPVM_ENV* env, SPVM_VALUE* stack, const wchar_t* command, const wchar_t* type);
+
+int SPVM_API_c_pclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+
+int SPVM_API_c__pclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
 
 #endif

@@ -16,6 +16,7 @@
 #include <ctype.h>
 #include <stdarg.h>
 #include <time.h>
+#include <stddef.h>
 
 #include "spvm_native.h"
 #include "spvm_api.h"
@@ -7825,6 +7826,50 @@ struct tm* SPVM_API_c_gmtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* t
 int SPVM_API_c_gmtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, const time_t* timer) {
 #ifdef _WIN32
   return gmtime_s(result, timer);
+#else
+  abort();
+#endif
+}
+
+FILE* SPVM_API_c__wfopen(SPVM_ENV* env, SPVM_VALUE* stack, const wchar_t* path, const wchar_t* mode) {
+#ifdef _WIN32
+  return _wfopen(path, mode);
+#else
+  abort();
+#endif
+}
+
+FILE* SPVM_API_c_fdopen(SPVM_ENV* env, SPVM_VALUE* stack, int fd, const char* mode) {
+  return fdopen(fd, mode);
+}
+
+FILE* SPVM_API_c_popen(SPVM_ENV* env, SPVM_VALUE* stack, const char* command, const char* type) {
+#ifndef _WIN32
+  return popen(command, type);
+#else
+  abort();
+#endif
+}
+
+FILE* SPVM_API_c__wpopen(SPVM_ENV* env, SPVM_VALUE* stack, const wchar_t* command, const wchar_t* type) {
+#ifdef _WIN32
+  return _wpopen(command, type);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_c_pclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+#ifndef _WIN32
+  return pclose(stream);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_c__pclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+#ifdef _WIN32
+  return _pclose(stream);
 #else
   abort();
 #endif

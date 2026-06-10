@@ -244,16 +244,6 @@ C<SPVM_NATIVE_CTYPE_TM* (c_localtime)(L<SPVM_ENV env|SPVM::Document::NativeClass
 
 Converts a time value to local time.
 
-Type Mappings:
-
-=over 2
-
-=item * C<SPVM_NATIVE_CTYPE_TIME_T*> corresponds to C<const time_t*> in C.
-
-=item * C<SPVM_NATIVE_CTYPE_TM*> corresponds to C<struct tm*> in C.
-
-=back
-
 =head2 c_tzset
 
 C<void (c_tzset)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
@@ -290,31 +280,11 @@ C<SPVM_NATIVE_CTYPE_TM* (c_localtime_r)(L<SPVM_ENV env|SPVM::Document::NativeCla
 
 Converts a time value to local time, thread-safe version (POSIX).
 
-Type Mappings:
-
-=over 2
-
-=item * C<SPVM_NATIVE_CTYPE_TIME_T*> corresponds to C<const time_t*> in C.
-
-=item * C<SPVM_NATIVE_CTYPE_TM*> corresponds to C<struct tm*> in C.
-
-=back
-
 =head2 c_localtime_s
 
 int (c_localtime_s)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_NATIVE_CTYPE_TM* result, const SPVM_NATIVE_CTYPE_TIME_T* timer);>
 
 Converts a time value to local time, secure version (Windows).
-
-Type Mappings:
-
-=over 2
-
-=item * C<SPVM_NATIVE_CTYPE_TIME_T*> corresponds to C<const time_t*> in C.
-
-=item * C<SPVM_NATIVE_CTYPE_TM*> corresponds to C<struct tm*> in C.
-
-=back
 
 =head2 c_gmtime_r
 
@@ -322,29 +292,57 @@ C<SPVM_NATIVE_CTYPE_TM* (c_gmtime_r)(L<SPVM_ENV env|SPVM::Document::NativeClass/
 
 Converts a time value to UTC time, thread-safe version (POSIX).
 
-Type Mappings:
-
-=over 2
-
-=item * C<SPVM_NATIVE_CTYPE_TIME_T*> corresponds to C<const time_t*> in C.
-
-=item * C<SPVM_NATIVE_CTYPE_TM*> corresponds to C<struct tm*> in C.
-
-=back
-
 =head2 c_gmtime_s
 
 int (c_gmtime_s)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_NATIVE_CTYPE_TM* result, const SPVM_NATIVE_CTYPE_TIME_T* timer);>
 
 Converts a time value to UTC time, secure version (Windows).
 
-Type Mappings:
+=head2 c__wfopen
+
+C<FILE* (c__wfopen)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const SPVM_NATIVE_CTYPE_WCHAR_T* path, const SPVM_NATIVE_CTYPE_WCHAR_T* mode);>
+
+Opens a file using a wide-character path. (Windows specific)
+
+=head2 c_fdopen
+
+C<FILE* (c_fdopen)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int fd, const char* mode);>
+
+Associates a stream with a file descriptor. A wrapper for the C standard function L<fdopen|https://linux.die.net/man/3/fdopen>.
+
+=head2 c_popen
+
+C<FILE* (c_popen)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* command, const char* type);>
+
+Opens a process by creating a pipe. A wrapper for the C standard function L<popen|https://linux.die.net/man/3/popen>.
+
+=head2 c__wpopen
+
+C<FILE* (c__wpopen)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const SPVM_NATIVE_CTYPE_WCHAR_T* command, const SPVM_NATIVE_CTYPE_WCHAR_T* type);>
+
+Opens a process by creating a pipe using wide-character strings. (Windows specific)
+
+=head2 c_pclose
+
+C<int (c_pclose)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, FILE* stream);>
+
+Closes a pipe stream. A wrapper for the C standard function L<pclose|https://linux.die.net/man/3/pclose>.
+
+=head2 c__pclose
+
+C<int (c__pclose)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, FILE* stream);>
+
+Closes a pipe stream. (Windows specific)
+
+=head1 Type Mappings
 
 =over 2
 
-=item * C<SPVM_NATIVE_CTYPE_TIME_T*> corresponds to C<const time_t*> in C.
+=item * C<SPVM_NATIVE_CTYPE_WCHAR_T> corresponds to C<WCHAR> (Windows) or C<wchar_t> in C.
 
-=item * C<SPVM_NATIVE_CTYPE_TM*> corresponds to C<struct tm*> in C.
+=item * C<SPVM_NATIVE_CTYPE_TIME_T> corresponds to C<time_t> in C.
+
+=item * C<SPVM_NATIVE_CTYPE_TM> corresponds to C<struct tm> in C.
 
 =back
 
@@ -391,7 +389,13 @@ Type Mappings:
   38 c_localtime_s
   39 c_gmtime_r
   40 c_gmtime_s
-  
+  41 c__wfopen
+  42 c_fdopen
+  43 c_popen
+  44 c__wpopen
+  45 c_pclose
+  46 c__pclose
+
 =head1 See Also
 
 =over 2
