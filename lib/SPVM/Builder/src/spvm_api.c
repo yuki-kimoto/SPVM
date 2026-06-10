@@ -7806,9 +7806,9 @@ struct tm* SPVM_API_c_localtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t
 #endif
 }
 
-struct tm* SPVM_API_c_localtime_s(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result) {
+int SPVM_API_c_localtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, const time_t* timer) {
 #ifdef _WIN32
-  return localtime_s(result, timer) == 0 ? result : NULL;
+  return localtime_s(result, timer);
 #else
   abort();
 #endif
@@ -7822,9 +7822,9 @@ struct tm* SPVM_API_c_gmtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* t
 #endif
 }
 
-struct tm* SPVM_API_c_gmtime_s(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result) {
+int SPVM_API_c_gmtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, const time_t* timer) {
 #ifdef _WIN32
-  return gmtime_s(result, timer) == 0 ? result : NULL;
+  return gmtime_s(result, timer);
 #else
   abort();
 #endif

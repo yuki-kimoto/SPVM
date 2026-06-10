@@ -302,7 +302,7 @@ Type Mappings:
 
 =head2 c_localtime_s
 
-C<SPVM_NATIVE_CTYPE_TM* (c_localtime_s)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);>
+int (c_localtime_s)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_NATIVE_CTYPE_TM* result, const SPVM_NATIVE_CTYPE_TIME_T* timer);>
 
 Converts a time value to local time, secure version (Windows).
 
@@ -334,7 +334,7 @@ Type Mappings:
 
 =head2 c_gmtime_s
 
-C<SPVM_NATIVE_CTYPE_TM* (c_gmtime_s)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);>
+int (c_gmtime_s)(L<SPVM_ENV env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_NATIVE_CTYPE_TM* result, const SPVM_NATIVE_CTYPE_TIME_T* timer);>
 
 Converts a time value to UTC time, secure version (Windows).
 

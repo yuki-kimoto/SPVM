@@ -5593,7 +5593,7 @@ int32_t SPVM__TestCase__NativeAPI__cfunc(SPVM_ENV* env, SPVM_VALUE* stack) {
     time_t now = time(NULL);
     struct tm result;
 #ifdef _WIN32
-    if (!env->api->cfunc->c_localtime_s(env, stack, (const SPVM_NATIVE_CTYPE_TIME_T*)&now, (SPVM_NATIVE_CTYPE_TM*)&result)) {
+    if (env->api->cfunc->c_localtime_s(env, stack, (SPVM_NATIVE_CTYPE_TM*)&result, (const SPVM_NATIVE_CTYPE_TIME_T*)&now) != 0) {
       stack[0].ival = 0;
       return 0;
     }
@@ -5613,7 +5613,7 @@ int32_t SPVM__TestCase__NativeAPI__cfunc(SPVM_ENV* env, SPVM_VALUE* stack) {
     time_t now = time(NULL);
     struct tm result;
 #ifdef _WIN32
-    if (!env->api->cfunc->c_gmtime_s(env, stack, (const SPVM_NATIVE_CTYPE_TIME_T*)&now, (SPVM_NATIVE_CTYPE_TM*)&result)) {
+    if (env->api->cfunc->c_gmtime_s(env, stack, (SPVM_NATIVE_CTYPE_TM*)&result, (const SPVM_NATIVE_CTYPE_TIME_T*)&now) != 0) {
       stack[0].ival = 0;
       return 0;
     }

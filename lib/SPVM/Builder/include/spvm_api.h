@@ -613,10 +613,10 @@ void SPVM_API_c_free(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr);
 
 struct tm* SPVM_API_c_localtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result);
 
-struct tm* SPVM_API_c_localtime_s(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result);
+int SPVM_API_c_localtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, const time_t* timer);
 
 struct tm* SPVM_API_c_gmtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result);
 
-struct tm* SPVM_API_c_gmtime_s(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result);
+int SPVM_API_c_gmtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, const time_t* timer);
 
 #endif
