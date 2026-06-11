@@ -1,3 +1,14 @@
+0.990187 2026-06-11
+  [New Features]
+    * Add the following C Function Native APIs.
+
+      FILE* (*c__wfopen)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_WCHAR_T* path, const SPVM_NATIVE_CTYPE_WCHAR_T* mode);
+      FILE* (*c_fdopen)(SPVM_ENV* env, SPVM_VALUE* stack, int fd, const char* mode);
+      FILE* (*c_popen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* command, const char* type);
+      FILE* (*c__wpopen)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_WCHAR_T* command, const SPVM_NATIVE_CTYPE_WCHAR_T* type);
+      int (*c_pclose)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+      int (*c__pclose)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
+      
 0.990186 2026-06-10
   [Incompatible Changes]
     * Fix localtime_s and gmtime_s native C function native APIs to match Windows ones.
