@@ -1,3 +1,10 @@
+0.990189 2026-06-11
+  [Incompatibe Changes with Binary Compatibility]
+    * Use -MD option for MSVC/cl.exe to use single UCRT to generate DLLs.
+    * Remove the C function native APIs starting from c_errno.
+  [Internal Changes]
+    * Remove spvm_crt_init.c and move the logic into initialization in runtime.
+    
 0.990188 2026-06-11
   [Internal Changes]
     * Update spvm_precompile_header_content.c.
