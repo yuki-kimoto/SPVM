@@ -95,7 +95,6 @@ sub new {
       $config
     );
   }
-
   
   return $self;
 }

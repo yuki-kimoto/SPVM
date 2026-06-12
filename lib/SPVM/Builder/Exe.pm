@@ -185,6 +185,10 @@ sub build_exe_file {
     push @$compile_infos, @{$spvm_scritp_native_link_info->compile_infos};
   }
   
+  for my $compile_info (@$compile_infos) {
+    $compile_info->config->output_type('exe');
+  }
+  
   my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
   my $diagnostic_message = "[Generate Executable File:\$output_file='$output_file']";

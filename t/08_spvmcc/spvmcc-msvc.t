@@ -51,6 +51,8 @@ unless ($has_msvc) {
     like($spvmcc_output, qr/\blink\b/);
     like($spvmcc_output, qr/-O2\b/);
     like($spvmcc_output, qr/-DNDEBUG\b/);
+    like($spvmcc_output, qr/-MT\b/);
+    unlike($spvmcc_output, qr/-MD\b/);
     
     my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/myapp");
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
