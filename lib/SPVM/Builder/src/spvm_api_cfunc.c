@@ -79,6 +79,10 @@ SPVM_API_CFUNC* SPVM_API_CFUNC_new_api() {
   return env_cfunc;
 }
 
+void SPVM_API_CFUNC_free_api(SPVM_API_CFUNC* api) {
+  free(api);
+}
+
 size_t SPVM_API_CFUNC_c_strlen(SPVM_ENV* env, SPVM_VALUE* stack, const char* str) {
   return strlen(str);
 }
@@ -427,9 +431,5 @@ int SPVM_API_CFUNC_c__pclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
 #else
   abort();
 #endif
-}
-
-void SPVM_API_CFUNC_free_api(SPVM_API_CFUNC* api) {
-  free(api);
 }
 
