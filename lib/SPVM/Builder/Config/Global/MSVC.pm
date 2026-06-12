@@ -42,7 +42,7 @@ sub new {
     ndebug_ccflags => ['-DNDEBUG'],
     function_level_linking_ccflags => ['-Gy'],
     source_encoding_ccflags => ['-utf-8'],
-    library_linkage_ccflags => ['-MD'],
+    library_linkage_ccflags => ['-MT'],
     
     # Linker flags
     ld => $self->ld,
@@ -82,6 +82,7 @@ sub new {
   
   $self->build_rule({output_type => 'dynamic_lib'}, {
     'dynamic_lib_ldflags' => ['-DLL'],
+    library_linkage_ccflags => ['-MD'],
   });
   
   # Define build types
