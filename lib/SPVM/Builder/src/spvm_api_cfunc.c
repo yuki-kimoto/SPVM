@@ -545,3 +545,114 @@ FILE* SPVM_API_CFUNC_c__fdopen(SPVM_ENV* env, SPVM_VALUE* stack, int fd, const c
 #endif
 }
 
+int SPVM_API_CFUNC_c__access(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, int mode) {
+#ifdef _WIN32
+  return _access(path, mode);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_CFUNC_c__chdir(SPVM_ENV* env, SPVM_VALUE* stack, const char* path) {
+#ifdef _WIN32
+  return _chdir(path);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_CFUNC_c__chmod(SPVM_ENV* env, SPVM_VALUE* stack, const char* filename, int pmode) {
+#ifdef _WIN32
+  return _chmod(filename, pmode);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_CFUNC_c__closedir(SPVM_ENV* env, SPVM_VALUE* stack, void* dir) {
+#ifdef _WIN32
+  return _closedir(dir);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_CFUNC_c__commit(SPVM_ENV* env, SPVM_VALUE* stack, int fd) {
+#ifdef _WIN32
+  return _commit(fd);
+#else
+  abort();
+#endif
+}
+
+char* SPVM_API_CFUNC_c__fullpath(SPVM_ENV* env, SPVM_VALUE* stack, char* absPath, const char* relPath, size_t maxLength) {
+#ifdef _WIN32
+  return _fullpath(absPath, relPath, maxLength);
+#else
+  abort();
+#endif
+}
+
+char* SPVM_API_CFUNC_c__getcwd(SPVM_ENV* env, SPVM_VALUE* stack, char* buffer, int maxlen) {
+#ifdef _WIN32
+  return _getcwd(buffer, maxlen);
+#else
+  abort();
+#endif
+}
+
+char* SPVM_API_CFUNC_c__getdcwd(SPVM_ENV* env, SPVM_VALUE* stack, int drive, char* buffer, int maxlen) {
+#ifdef _WIN32
+  return _getdcwd(drive, buffer, maxlen);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_CFUNC_c__mkdir(SPVM_ENV* env, SPVM_VALUE* stack, const char* dirname) {
+#ifdef _WIN32
+  return _mkdir(dirname);
+#else
+  abort();
+#endif
+}
+
+void* SPVM_API_CFUNC_c__opendir(SPVM_ENV* env, SPVM_VALUE* stack, const char* name) {
+#ifdef _WIN32
+  return _opendir(name);
+#else
+  abort();
+#endif
+}
+
+void* SPVM_API_CFUNC_c__readdir(SPVM_ENV* env, SPVM_VALUE* stack, void* dir) {
+#ifdef _WIN32
+  return _readdir(dir);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_CFUNC_c__rename(SPVM_ENV* env, SPVM_VALUE* stack, const char* oldname, const char* newname) {
+#ifdef _WIN32
+  return _rename(oldname, newname);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_CFUNC_c__rmdir(SPVM_ENV* env, SPVM_VALUE* stack, const char* dirname) {
+#ifdef _WIN32
+  return _rmdir(dirname);
+#else
+  abort();
+#endif
+}
+
+int SPVM_API_CFUNC_c__unlink(SPVM_ENV* env, SPVM_VALUE* stack, const char* filename) {
+#ifdef _WIN32
+  return _unlink(filename);
+#else
+  abort();
+#endif
+}
