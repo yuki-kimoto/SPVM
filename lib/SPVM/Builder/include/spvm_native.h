@@ -84,15 +84,6 @@ typedef struct spvm_obj SPVM_OBJ;
 struct spvm_ref;
 typedef struct spvm_ref SPVM_REF;
 
-struct spvm_native_ctype_tm;
-typedef struct spvm_native_ctype_tm SPVM_NATIVE_CTYPE_TM;
-
-struct spvm_native_ctype_time_t;
-typedef struct spvm_native_ctype_time_t SPVM_NATIVE_CTYPE_TIME_T;
-
-struct spvm_native_ctype_wchar_t;
-typedef struct spvm_native_ctype_wchar_t SPVM_NATIVE_CTYPE_WCHAR_T;
-
 #define SPVM_NATIVE_GET_POINTER(object) (*(void**)object)
 
 #define SPVM_NATIVE_SET_POINTER(object, pointer) (*(void**)object = pointer)
@@ -732,43 +723,6 @@ struct spvm_api_cfunc {
   int (*c_fputs)(SPVM_ENV* env, SPVM_VALUE* stack, const char* s, void* stream);
   int (*c_fgetc)(SPVM_ENV* env, SPVM_VALUE* stack, void* stream);
   int (*c_snprintf_len)(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t size, const char* format, SPVM_VALUE* args, int32_t args_length);
-  int (*c_errno)(SPVM_ENV* env, SPVM_VALUE* stack);
-  void (*c_set_errno)(SPVM_ENV* env, SPVM_VALUE* stack, int errno_value);
-  FILE* (*c_fopen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, const char* mode);
-  FILE* (*c_freopen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, const char* mode, FILE* stream);
-  int (*c_fclose)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
-  size_t (*c_fread)(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size, size_t nmemb, FILE* stream);
-  size_t (*c_fwrite)(SPVM_ENV* env, SPVM_VALUE* stack, const void* ptr, size_t size, size_t nmemb, FILE* stream);
-  int (*c_fflush)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
-  int (*c_fseek)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream, long offset, int whence);
-  long (*c_ftell)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
-  int (*c_feof)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
-  int (*c_ferror)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
-  int (*c_fileno)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
-  FILE* (*c_stdin)(SPVM_ENV* env, SPVM_VALUE* stack);
-  FILE* (*c_stdout)(SPVM_ENV* env, SPVM_VALUE* stack);
-  FILE* (*c_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);
-  char* (*c_getenv)(SPVM_ENV* env, SPVM_VALUE* stack, const char* name);
-  int (*c_setenv)(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* value, int overwrite);
-  int (*c_unsetenv)(SPVM_ENV* env, SPVM_VALUE* stack, const char* name);
-  int (*c__dupenv_s)(SPVM_ENV* env, SPVM_VALUE* stack, char** buffer, size_t* numberOfElements, const char* varname);
-  int (*c__putenv_s)(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* value);
-  SPVM_NATIVE_CTYPE_TM* (*c_localtime)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_TIME_T* timer);
-  void (*c_tzset)(SPVM_ENV* env, SPVM_VALUE* stack);
-  void* (*c_malloc)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
-  void* (*c_calloc)(SPVM_ENV* env, SPVM_VALUE* stack, size_t nmemb, size_t size);
-  void* (*c_realloc)(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size);
-  void (*c_free)(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr);
-  SPVM_NATIVE_CTYPE_TM* (*c_localtime_r)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);
-  int (*c_localtime_s)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_NATIVE_CTYPE_TM* result, const SPVM_NATIVE_CTYPE_TIME_T* timer);
-  SPVM_NATIVE_CTYPE_TM* (*c_gmtime_r)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_TIME_T* timer, SPVM_NATIVE_CTYPE_TM* result);
-  int (*c_gmtime_s)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_NATIVE_CTYPE_TM* result, const SPVM_NATIVE_CTYPE_TIME_T* timer);
-  FILE* (*c__wfopen)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_WCHAR_T* path, const SPVM_NATIVE_CTYPE_WCHAR_T* mode);
-  FILE* (*c_fdopen)(SPVM_ENV* env, SPVM_VALUE* stack, int fd, const char* mode);
-  FILE* (*c_popen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* command, const char* type);
-  FILE* (*c__wpopen)(SPVM_ENV* env, SPVM_VALUE* stack, const SPVM_NATIVE_CTYPE_WCHAR_T* command, const SPVM_NATIVE_CTYPE_WCHAR_T* type);
-  int (*c_pclose)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
-  int (*c__pclose)(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream);
 };
 
 struct spvm_api_type {
