@@ -442,8 +442,6 @@ sub build_parallel {
     my $category = $native_link_info->config->category;
     my $diagnostic_message = "[Generate Dynamic Link Library:\$class_name='$class_name', \$category='$category']";
     $native_link_info->diagnostic_message($diagnostic_message);
-    my $crt_init_link_info = $self->builder->prepare_compile_spvm_core_source_file_crt_init({config => $native_link_info->config});
-    push @{$native_link_info->compile_infos}, @{$crt_init_link_info->compile_infos};
     push @$link_infos, $native_link_info;
   }
   
@@ -453,8 +451,6 @@ sub build_parallel {
     my $category = $precompile_link_info->config->category;
     my $diagnostic_message = "[Generate Dynamic Link Library:\$class_name='$class_name', \$category='$category']";
     $precompile_link_info->diagnostic_message($diagnostic_message);
-    my $crt_init_link_info = $self->builder->prepare_compile_spvm_core_source_file_crt_init({config => $precompile_link_info->config});
-    push @{$precompile_link_info->compile_infos}, @{$crt_init_link_info->compile_infos};
     push @$link_infos, $precompile_link_info;
   }
   

@@ -981,44 +981,6 @@ sub prepare_compile_spvm_core_source_files {
   return $link_info;
 }
 
-sub prepare_compile_spvm_core_source_file_crt_init {
-  my ($self, $options) = @_;
-  
-  $options //= {};
-  
-  my $config = $options->{config} // SPVM::Builder::Util::API::create_default_config();
-  
-  my $builder_dir = SPVM::Builder::Util::get_builder_dir();
-  
-  my $builder_src_dir = "$builder_dir/src";
-  
-  my $builder_include_dir = "$builder_dir/include";
-  
-  my $source_dir = $builder_dir;
-  $source_dir =~ s|/SPVM/Builder$||;
-  
-  my $spvm_core_source_file_name = 'spvm_crt_init.c';
-  
-  # Compile source files
-  my $compile_infos = [];
-  my $source_rel_file = "SPVM/Builder/src/$spvm_core_source_file_name";
-  
-  my $compile_info = SPVM::Builder::CompileInfo->new(
-    source_dir => $source_dir,
-    source_rel_file => $source_rel_file,
-    config => $config,
-    category => 'spvm_core',
-    dependent_files => [$builder_include_dir],
-    diagnostic_message => "[Compile SPVM Source File]",
-  );
-  
-  push @$compile_infos, $compile_info;
-  
-  my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
-  
-  return $link_info;
-}
-
 1;
 
 =encoding utf8
