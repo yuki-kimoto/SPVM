@@ -20,6 +20,10 @@
 #include "spvm_mutex.h"
 #include "spvm_unistd.h"
 
+#if defined(_MSC_VER)
+  #include <windows.h>
+#endif
+
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   SPVM_RUNTIME* runtime = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_RUNTIME));
   
@@ -126,6 +130,11 @@ void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime) {
     runtime->spvm_stderr = spvm_stderr;
   }
   
+#if defined(_MSC_VER)
+  /* Suppress MSVC GUI pop-ups on calling assert function by redirecting to stderr. */
+  _set_error_mode(_OUT_TO_STDERR);
+#endif
+
 }
 
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {

@@ -271,6 +271,8 @@ int32_t SPVM__Fn__is_array(SPVM_ENV* env, SPVM_VALUE* stack) {
     is_array = 0;
   }
   
+  assert(0);
+  
   stack[0].ival = is_array;
   
   return 0;

@@ -42,7 +42,7 @@ sub new {
     ndebug_ccflags => ['-DNDEBUG'],
     function_level_linking_ccflags => ['-Gy'],
     source_encoding_ccflags => ['-utf-8'],
-    library_linkage_ccflags => ['-MT'],
+    library_linkage_ccflags => ['-MD'],
     
     # Linker flags
     ld => $self->ld,
