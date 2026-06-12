@@ -25,53 +25,53 @@
 SPVM_API_CFUNC* SPVM_API_CFUNC_new_api() {
   
   void* env_cfunc_init[]  = {
-    SPVM_API_c_strlen,
-    SPVM_API_c_memcpy,
-    SPVM_API_c_memset,
-    SPVM_API_c_memcmp,
-    SPVM_API_c_strtoll,
-    SPVM_API_c_strtof,
-    SPVM_API_c_strtod,
-    SPVM_API_c_fputs,
-    SPVM_API_c_fgetc,
-    SPVM_API_c_snprintf_len,
-    SPVM_API_c_errno,
-    SPVM_API_c_set_errno,
-    SPVM_API_c_fopen,
-    SPVM_API_c_freopen,
-    SPVM_API_c_fclose,
-    SPVM_API_c_fread,
-    SPVM_API_c_fwrite,
-    SPVM_API_c_fflush,
-    SPVM_API_c_fseek,
-    SPVM_API_c_ftell,
-    SPVM_API_c_feof,
-    SPVM_API_c_ferror,
-    SPVM_API_c_fileno,
-    SPVM_API_c_stdin,
-    SPVM_API_c_stdout,
-    SPVM_API_c_stderr,
-    SPVM_API_c_getenv,
-    SPVM_API_c_setenv,
-    SPVM_API_c_unsetenv,
-    SPVM_API_c__dupenv_s,
-    SPVM_API_c__putenv_s,
-    SPVM_API_c_localtime,
-    SPVM_API_c_tzset,
-    SPVM_API_c_malloc,
-    SPVM_API_c_calloc,
-    SPVM_API_c_realloc,
-    SPVM_API_c_free,
-    SPVM_API_c_localtime_r,
-    SPVM_API_c_localtime_s,
-    SPVM_API_c_gmtime_r,
-    SPVM_API_c_gmtime_s,
-    SPVM_API_c__wfopen,
-    SPVM_API_c_fdopen,
-    SPVM_API_c_popen,
-    SPVM_API_c__wpopen,
-    SPVM_API_c_pclose,
-    SPVM_API_c__pclose,
+    SPVM_API_CFUNC_c_strlen,
+    SPVM_API_CFUNC_c_memcpy,
+    SPVM_API_CFUNC_c_memset,
+    SPVM_API_CFUNC_c_memcmp,
+    SPVM_API_CFUNC_c_strtoll,
+    SPVM_API_CFUNC_c_strtof,
+    SPVM_API_CFUNC_c_strtod,
+    SPVM_API_CFUNC_c_fputs,
+    SPVM_API_CFUNC_c_fgetc,
+    SPVM_API_CFUNC_c_snprintf_len,
+    SPVM_API_CFUNC_c_errno,
+    SPVM_API_CFUNC_c_set_errno,
+    SPVM_API_CFUNC_c_fopen,
+    SPVM_API_CFUNC_c_freopen,
+    SPVM_API_CFUNC_c_fclose,
+    SPVM_API_CFUNC_c_fread,
+    SPVM_API_CFUNC_c_fwrite,
+    SPVM_API_CFUNC_c_fflush,
+    SPVM_API_CFUNC_c_fseek,
+    SPVM_API_CFUNC_c_ftell,
+    SPVM_API_CFUNC_c_feof,
+    SPVM_API_CFUNC_c_ferror,
+    SPVM_API_CFUNC_c_fileno,
+    SPVM_API_CFUNC_c_stdin,
+    SPVM_API_CFUNC_c_stdout,
+    SPVM_API_CFUNC_c_stderr,
+    SPVM_API_CFUNC_c_getenv,
+    SPVM_API_CFUNC_c_setenv,
+    SPVM_API_CFUNC_c_unsetenv,
+    SPVM_API_CFUNC_c__dupenv_s,
+    SPVM_API_CFUNC_c__putenv_s,
+    SPVM_API_CFUNC_c_localtime,
+    SPVM_API_CFUNC_c_tzset,
+    SPVM_API_CFUNC_c_malloc,
+    SPVM_API_CFUNC_c_calloc,
+    SPVM_API_CFUNC_c_realloc,
+    SPVM_API_CFUNC_c_free,
+    SPVM_API_CFUNC_c_localtime_r,
+    SPVM_API_CFUNC_c_localtime_s,
+    SPVM_API_CFUNC_c_gmtime_r,
+    SPVM_API_CFUNC_c_gmtime_s,
+    SPVM_API_CFUNC_c__wfopen,
+    SPVM_API_CFUNC_c_fdopen,
+    SPVM_API_CFUNC_c_popen,
+    SPVM_API_CFUNC_c__wpopen,
+    SPVM_API_CFUNC_c_pclose,
+    SPVM_API_CFUNC_c__pclose,
   };
   SPVM_API_CFUNC* env_cfunc = calloc(1, sizeof(env_cfunc_init));
   memcpy(env_cfunc, env_cfunc_init, sizeof(env_cfunc_init));
@@ -79,43 +79,43 @@ SPVM_API_CFUNC* SPVM_API_CFUNC_new_api() {
   return env_cfunc;
 }
 
-size_t SPVM_API_c_strlen(SPVM_ENV* env, SPVM_VALUE* stack, const char* str) {
+size_t SPVM_API_CFUNC_c_strlen(SPVM_ENV* env, SPVM_VALUE* stack, const char* str) {
   return strlen(str);
 }
 
-void* SPVM_API_c_memcpy(SPVM_ENV* env, SPVM_VALUE* stack, void* dest, const void* src, size_t n) {
+void* SPVM_API_CFUNC_c_memcpy(SPVM_ENV* env, SPVM_VALUE* stack, void* dest, const void* src, size_t n) {
   return memcpy(dest, src, n);
 }
 
-void* SPVM_API_c_memset(SPVM_ENV* env, SPVM_VALUE* stack, void* s, int c, size_t n) {
+void* SPVM_API_CFUNC_c_memset(SPVM_ENV* env, SPVM_VALUE* stack, void* s, int c, size_t n) {
   return memset(s, c, n);
 }
 
-int SPVM_API_c_memcmp(SPVM_ENV* env, SPVM_VALUE* stack, const void* s1, const void* s2, size_t n) {
+int SPVM_API_CFUNC_c_memcmp(SPVM_ENV* env, SPVM_VALUE* stack, const void* s1, const void* s2, size_t n) {
   return memcmp(s1, s2, n);
 }
 
-long long SPVM_API_c_strtoll(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr, int base) {
+long long SPVM_API_CFUNC_c_strtoll(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr, int base) {
   return strtoll(str, endptr, base);
 }
 
-float SPVM_API_c_strtof(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr) {
+float SPVM_API_CFUNC_c_strtof(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr) {
   return strtof(str, endptr);
 }
 
-double SPVM_API_c_strtod(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr) {
+double SPVM_API_CFUNC_c_strtod(SPVM_ENV* env, SPVM_VALUE* stack, const char* str, char** endptr) {
   return strtod(str, endptr);
 }
 
-int SPVM_API_c_fputs(SPVM_ENV* env, SPVM_VALUE* stack, const char* s, void* stream) {
+int SPVM_API_CFUNC_c_fputs(SPVM_ENV* env, SPVM_VALUE* stack, const char* s, void* stream) {
   return fputs(s, (FILE*)stream);
 }
 
-int SPVM_API_c_fgetc(SPVM_ENV* env, SPVM_VALUE* stack, void* stream) {
+int SPVM_API_CFUNC_c_fgetc(SPVM_ENV* env, SPVM_VALUE* stack, void* stream) {
   return fgetc((FILE*)stream);
 }
 
-int SPVM_API_c_snprintf_len(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t size, const char* format, SPVM_VALUE* args, int32_t args_length) {
+int SPVM_API_CFUNC_c_snprintf_len(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t size, const char* format, SPVM_VALUE* args, int32_t args_length) {
   if (!format) {
     return -1;
   }
@@ -229,75 +229,75 @@ int SPVM_API_c_snprintf_len(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t 
   return total_len;
 }
 
-int SPVM_API_c_errno(SPVM_ENV* env, SPVM_VALUE* stack) {
+int SPVM_API_CFUNC_c_errno(SPVM_ENV* env, SPVM_VALUE* stack) {
   return errno;
 }
 
-void SPVM_API_c_set_errno(SPVM_ENV* env, SPVM_VALUE* stack, int errno_value) {
+void SPVM_API_CFUNC_c_set_errno(SPVM_ENV* env, SPVM_VALUE* stack, int errno_value) {
   errno = errno_value;
 }
 
-int SPVM_API_c_fflush(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+int SPVM_API_CFUNC_c_fflush(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
   return fflush(stream);
 }
 
-FILE* SPVM_API_c_fopen(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, const char* mode) {
+FILE* SPVM_API_CFUNC_c_fopen(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, const char* mode) {
   return fopen(path, mode);
 }
 
-FILE* SPVM_API_c_freopen(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, const char* mode, FILE* stream) {
+FILE* SPVM_API_CFUNC_c_freopen(SPVM_ENV* env, SPVM_VALUE* stack, const char* path, const char* mode, FILE* stream) {
   return freopen(path, mode, stream);
 }
 
-int SPVM_API_c_fclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+int SPVM_API_CFUNC_c_fclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
   return fclose(stream);
 }
 
-size_t SPVM_API_c_fread(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size, size_t nmemb, FILE* stream) {
+size_t SPVM_API_CFUNC_c_fread(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size, size_t nmemb, FILE* stream) {
   return fread(ptr, size, nmemb, stream);
 }
 
-size_t SPVM_API_c_fwrite(SPVM_ENV* env, SPVM_VALUE* stack, const void* ptr, size_t size, size_t nmemb, FILE* stream) {
+size_t SPVM_API_CFUNC_c_fwrite(SPVM_ENV* env, SPVM_VALUE* stack, const void* ptr, size_t size, size_t nmemb, FILE* stream) {
   return fwrite(ptr, size, nmemb, stream);
 }
 
-int SPVM_API_c_fseek(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream, long offset, int whence) {
+int SPVM_API_CFUNC_c_fseek(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream, long offset, int whence) {
   return fseek(stream, offset, whence);
 }
 
-long SPVM_API_c_ftell(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+long SPVM_API_CFUNC_c_ftell(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
   return ftell(stream);
 }
 
-int SPVM_API_c_feof(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+int SPVM_API_CFUNC_c_feof(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
   return feof(stream);
 }
 
-int SPVM_API_c_ferror(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+int SPVM_API_CFUNC_c_ferror(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
   return ferror(stream);
 }
 
-int SPVM_API_c_fileno(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+int SPVM_API_CFUNC_c_fileno(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
   return fileno(stream);
 }
 
-FILE* SPVM_API_c_stdin(SPVM_ENV* env, SPVM_VALUE* stack) {
+FILE* SPVM_API_CFUNC_c_stdin(SPVM_ENV* env, SPVM_VALUE* stack) {
   return stdin;
 }
 
-FILE* SPVM_API_c_stdout(SPVM_ENV* env, SPVM_VALUE* stack) {
+FILE* SPVM_API_CFUNC_c_stdout(SPVM_ENV* env, SPVM_VALUE* stack) {
   return stdout;
 }
 
-FILE* SPVM_API_c_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
+FILE* SPVM_API_CFUNC_c_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   return stderr;
 }
 
-char* SPVM_API_c_getenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name) {
+char* SPVM_API_CFUNC_c_getenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name) {
   return getenv(name);
 }
 
-int SPVM_API_c_setenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* value, int overwrite) {
+int SPVM_API_CFUNC_c_setenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* value, int overwrite) {
 #ifndef _WIN32
   return setenv(name, value, overwrite);
 #else
@@ -305,7 +305,7 @@ int SPVM_API_c_setenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const 
 #endif
 }
 
-int SPVM_API_c_unsetenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name) {
+int SPVM_API_CFUNC_c_unsetenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name) {
 #ifndef _WIN32
   return unsetenv(name);
 #else
@@ -313,7 +313,7 @@ int SPVM_API_c_unsetenv(SPVM_ENV* env, SPVM_VALUE* stack, const char* name) {
 #endif
 }
 
-int SPVM_API_c__dupenv_s(SPVM_ENV* env, SPVM_VALUE* stack, char** buffer, size_t* numberOfElements, const char* varname) {
+int SPVM_API_CFUNC_c__dupenv_s(SPVM_ENV* env, SPVM_VALUE* stack, char** buffer, size_t* numberOfElements, const char* varname) {
 #ifdef _WIN32
   return _dupenv_s(buffer, numberOfElements, varname);
 #else
@@ -321,7 +321,7 @@ int SPVM_API_c__dupenv_s(SPVM_ENV* env, SPVM_VALUE* stack, char** buffer, size_t
 #endif
 }
 
-int SPVM_API_c__putenv_s(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* value) {
+int SPVM_API_CFUNC_c__putenv_s(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, const char* value) {
 #ifdef _WIN32
   return _putenv_s(name, value);
 #else
@@ -329,31 +329,31 @@ int SPVM_API_c__putenv_s(SPVM_ENV* env, SPVM_VALUE* stack, const char* name, con
 #endif
 }
 
-struct tm* SPVM_API_c_localtime(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer) {
+struct tm* SPVM_API_CFUNC_c_localtime(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer) {
   return localtime(timer);
 }
 
-void SPVM_API_c_tzset(SPVM_ENV* env, SPVM_VALUE* stack) {
+void SPVM_API_CFUNC_c_tzset(SPVM_ENV* env, SPVM_VALUE* stack) {
   tzset();
 }
 
-void* SPVM_API_c_malloc(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
+void* SPVM_API_CFUNC_c_malloc(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   return malloc(size);
 }
 
-void* SPVM_API_c_calloc(SPVM_ENV* env, SPVM_VALUE* stack, size_t nmemb, size_t size) {
+void* SPVM_API_CFUNC_c_calloc(SPVM_ENV* env, SPVM_VALUE* stack, size_t nmemb, size_t size) {
   return calloc(nmemb, size);
 }
 
-void* SPVM_API_c_realloc(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size) {
+void* SPVM_API_CFUNC_c_realloc(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr, size_t size) {
   return realloc(ptr, size);
 }
 
-void SPVM_API_c_free(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr) {
+void SPVM_API_CFUNC_c_free(SPVM_ENV* env, SPVM_VALUE* stack, void* ptr) {
   free(ptr);
 }
 
-struct tm* SPVM_API_c_localtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result) {
+struct tm* SPVM_API_CFUNC_c_localtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result) {
 #ifndef _WIN32
   return localtime_r(timer, result);
 #else
@@ -361,7 +361,7 @@ struct tm* SPVM_API_c_localtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t
 #endif
 }
 
-int SPVM_API_c_localtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, const time_t* timer) {
+int SPVM_API_CFUNC_c_localtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, const time_t* timer) {
 #ifdef _WIN32
   return localtime_s(result, timer);
 #else
@@ -369,7 +369,7 @@ int SPVM_API_c_localtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, 
 #endif
 }
 
-struct tm* SPVM_API_c_gmtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result) {
+struct tm* SPVM_API_CFUNC_c_gmtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* timer, struct tm* result) {
 #ifndef _WIN32
   return gmtime_r(timer, result);
 #else
@@ -377,7 +377,7 @@ struct tm* SPVM_API_c_gmtime_r(SPVM_ENV* env, SPVM_VALUE* stack, const time_t* t
 #endif
 }
 
-int SPVM_API_c_gmtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, const time_t* timer) {
+int SPVM_API_CFUNC_c_gmtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, const time_t* timer) {
 #ifdef _WIN32
   return gmtime_s(result, timer);
 #else
@@ -385,7 +385,7 @@ int SPVM_API_c_gmtime_s(SPVM_ENV* env, SPVM_VALUE* stack, struct tm* result, con
 #endif
 }
 
-FILE* SPVM_API_c__wfopen(SPVM_ENV* env, SPVM_VALUE* stack, const wchar_t* path, const wchar_t* mode) {
+FILE* SPVM_API_CFUNC_c__wfopen(SPVM_ENV* env, SPVM_VALUE* stack, const wchar_t* path, const wchar_t* mode) {
 #ifdef _WIN32
   return _wfopen(path, mode);
 #else
@@ -393,11 +393,11 @@ FILE* SPVM_API_c__wfopen(SPVM_ENV* env, SPVM_VALUE* stack, const wchar_t* path, 
 #endif
 }
 
-FILE* SPVM_API_c_fdopen(SPVM_ENV* env, SPVM_VALUE* stack, int fd, const char* mode) {
+FILE* SPVM_API_CFUNC_c_fdopen(SPVM_ENV* env, SPVM_VALUE* stack, int fd, const char* mode) {
   return fdopen(fd, mode);
 }
 
-FILE* SPVM_API_c_popen(SPVM_ENV* env, SPVM_VALUE* stack, const char* command, const char* type) {
+FILE* SPVM_API_CFUNC_c_popen(SPVM_ENV* env, SPVM_VALUE* stack, const char* command, const char* type) {
 #ifndef _WIN32
   return popen(command, type);
 #else
@@ -405,7 +405,7 @@ FILE* SPVM_API_c_popen(SPVM_ENV* env, SPVM_VALUE* stack, const char* command, co
 #endif
 }
 
-FILE* SPVM_API_c__wpopen(SPVM_ENV* env, SPVM_VALUE* stack, const wchar_t* command, const wchar_t* type) {
+FILE* SPVM_API_CFUNC_c__wpopen(SPVM_ENV* env, SPVM_VALUE* stack, const wchar_t* command, const wchar_t* type) {
 #ifdef _WIN32
   return _wpopen(command, type);
 #else
@@ -413,7 +413,7 @@ FILE* SPVM_API_c__wpopen(SPVM_ENV* env, SPVM_VALUE* stack, const wchar_t* comman
 #endif
 }
 
-int SPVM_API_c_pclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+int SPVM_API_CFUNC_c_pclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
 #ifndef _WIN32
   return pclose(stream);
 #else
@@ -421,7 +421,7 @@ int SPVM_API_c_pclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
 #endif
 }
 
-int SPVM_API_c__pclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
+int SPVM_API_CFUNC_c__pclose(SPVM_ENV* env, SPVM_VALUE* stack, FILE* stream) {
 #ifdef _WIN32
   return _pclose(stream);
 #else
