@@ -110,6 +110,22 @@ if ($^O eq 'freebsd') {
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "t/*.t t/*/*.t t/*/*/*.t"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "NORECURS => 1"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "PREREQ_PM"));
+
+=begin comment
+
+  It is necessary to include SPVM in CONFIGURE_REQUIRES for the following reason:
+
+  When cpanm is executed in a clean environment where no modules are installed, it must determine the correct installation order. If both SPVM and SPVM::Sys are listed only in PREREQ_PM, cpanm cannot accurately recognize the dependency hierarchy between them.
+
+  Specifically, SPVM::Sys's Makefile.PL requires SPVM::Builder::Util::API (which is included in the SPVM distribution) to generate its Makefile. If cpanm incorrectly attempts to build SPVM::Sys before SPVM, the build will fail because the required SPVM modules are not yet present.
+
+  By specifying SPVM in CONFIGURE_REQUIRES, you explicitly inform cpanm that the SPVM distribution must be installed before the Makefile.PL for SPVM::Sys can even be executed. This ensures the correct installation order and guarantees a successful build process.
+
+=end comment
+
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "CONFIGURE_REQUIRES => {\n    'SPVM' => "));
+  
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "TEST_REQUIRES"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'unless ($meta) {'));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|mit|));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-name]'));
