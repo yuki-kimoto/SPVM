@@ -3246,7 +3246,7 @@ void SPVM_API_set_field_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   SPVM_API_set_field_object_by_name(env, stack, object, field_name, value, error_id, func_name, file, line);
 }
 
-SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
+SPVM_VALUE* SPVM_API_new_stack_without_destroy_stack(SPVM_ENV* env) {
   
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
@@ -3288,6 +3288,13 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   }
   
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address = caller_info_stack;
+  
+  return stack;
+}
+
+SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
+  
+  SPVM_VALUE* stack = SPVM_API_new_stack_without_destroy_stack(env);
   
   return stack;
 }
