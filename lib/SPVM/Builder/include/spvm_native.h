@@ -110,6 +110,7 @@ typedef struct spvm_ref SPVM_REF;
 
 /* Standard warning macro pointing to stderr */
 #define spvm_warn(format, ...) spvm_warnf(stderr, format, ##__VA_ARGS__)
+#define spvm_diag(format, ...) spvm_warn(format, ##__VA_ARGS__)
 
 typedef union spvm_value SPVM_VALUE;
 

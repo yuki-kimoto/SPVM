@@ -762,6 +762,9 @@ int32_t SPVM__TestCase__NativeAPI__spvm_warn(SPVM_ENV* env, SPVM_VALUE* stack) {
   spvm_warn("[Test Output]spvm_warn: %s %d", "aaa", 3);
   spvm_warn("[Test Output]spvm_warn:Foo");
   
+  spvm_diag("[Test Output]spvm_diag: %s %d", "aaa", 3);
+  spvm_diag("[Test Output]spvm_diag:Foo");
+  
   stack[0].ival = 1;
   
   return 0;
@@ -4128,14 +4131,14 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
   if (args_width >= 1) {
     if (!(value_byte == 1)) {
       stack[0].ival = 0;
-      spvm_warn("%d", value_byte);
+      spvm_diag("%d", value_byte);
       return 0;
     }
   }
   else {
     if (!(value_byte == -128)) {
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
@@ -4143,14 +4146,14 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
   if (args_width >= 2) {
     if (!(value_short == 2)) {
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
   else {
     if (!(value_short == -32768)) {
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
@@ -4158,14 +4161,14 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
   if (args_width >= 3) {
     if (!(value_int == 3)) {
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
   else {
     if (!(value_int == -2147483648)) {
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
@@ -4173,14 +4176,14 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
   if (args_width >= 4) {
     if (!(value_long == 4)) {
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
   else {
     if (!(value_long == -9223372036854775808LU)) {
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
@@ -4188,17 +4191,17 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
   if (args_width >= 5) {
     if (!(value_float == 5.5f)) {
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
   else {
     if (!(value_float == 1.5f)) {
       
-      spvm_warn("%.20f %.20f", value_float, 1.5f);
+      spvm_diag("%.20f %.20f", value_float, 1.5f);
       
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
@@ -4206,14 +4209,14 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
   if (args_width >= 6) {
     if (!(value_double == 6.5)) {
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
   else {
     if (!(value_double == -2147483648.5)) {
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
@@ -4221,14 +4224,14 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
   if (args_width >= 7) {
     if (!(value_object != NULL)) {
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
   else {
     if (!(value_object == NULL)) {
       stack[0].ival = 0;
-      spvm_warn("");
+      spvm_diag("");
       return 0;
     }
   }
