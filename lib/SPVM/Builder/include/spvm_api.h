@@ -35,7 +35,7 @@ enum {
   SPVM_API_C_STACK_INDEX_CALL_STACK_OFFSET = 370,
   SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS = 369,
   SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS_CAPACITY = 368,
-  SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_FOR_CALL_STACK = 367,
+  SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_FOR_EXECUTION_STACK = 367,
   SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK = 366,
   SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE = 365,
   SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY = 364,
@@ -479,9 +479,9 @@ int32_t SPVM_API_get_call_stack_frame_size(SPVM_RUNTIME_METHOD* method);
 int32_t SPVM_API_push_call_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info);
 void SPVM_API_pop_call_stack_frame(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info);
 void SPVM_API_set_call_stack_frame_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CALL_STACK_FRAME_INFO* call_stack_frame_info, char* call_stack_frame);
-void* SPVM_API_new_memory_block_for_call_stack(SPVM_ENV* env, SPVM_VALUE* stack, int32_t size);
+void* SPVM_API_new_memory_block_for_execution_stack(SPVM_ENV* env, SPVM_VALUE* stack, int32_t size);
 
-void SPVM_API_free_memory_block_for_call_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
+void SPVM_API_free_memory_block_for_execution_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
 
 void SPVM_API_enable_options(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 void SPVM_API_disable_options(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
