@@ -3296,6 +3296,8 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   
   SPVM_VALUE* stack = SPVM_API_new_stack_without_destroy_stack(env);
   
+  stack[SPVM_API_C_STACK_INDEX_DESTORY_EXECUTION_STACK].address = SPVM_API_new_stack_without_destroy_stack(env);
+  
   return stack;
 }
 
@@ -3345,6 +3347,10 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   call_stack_frame_infos = NULL;
   
   assert(stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_FOR_CALL_STACK].ival == 0);
+  
+  if (stack[SPVM_API_C_STACK_INDEX_DESTORY_EXECUTION_STACK].address) {
+    env->free_stack(env, (SPVM_VALUE*)stack[SPVM_API_C_STACK_INDEX_DESTORY_EXECUTION_STACK].address);
+  }
   
   env->free_memory_block(env, stack, stack);
   stack = NULL;
