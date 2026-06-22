@@ -3357,13 +3357,14 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_API_free_memory_block_for_execution_stack(env, stack, call_stack_frame_infos);
   call_stack_frame_infos = NULL;
   
-  assert(stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_FOR_EXECUTION_STACK].ival == 0);
-  
   if (stack[SPVM_API_C_STACK_INDEX_DESTROY_EXECUTION_STACK_STACK].address) {
     env->free_memory_block(env, stack, stack[SPVM_API_C_STACK_INDEX_DESTROY_EXECUTION_STACK_STACK].address);
   }
   
   env->free_memory_block(env, stack, stack);
+  
+  assert(stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_FOR_EXECUTION_STACK].ival == 0);
+  
   stack = NULL;
 }
 
