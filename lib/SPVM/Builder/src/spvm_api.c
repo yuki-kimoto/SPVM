@@ -3256,7 +3256,7 @@ void SPVM_API_free_destroy_stack(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_VALUE* d
   return SPVM_API_free_stack(env, destroy_stack);
 }
 
-void SPVM_API_init_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+void SPVM_API_init_stack_without_destory_stack_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
@@ -3283,11 +3283,11 @@ void SPVM_API_init_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Initialize the record size of the caller information stack (e.g., name, file, line)
   int32_t caller_info_stack_record_size = 4;
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival = caller_info_stack_record_size;
-
+  
   // Initialize the initial capacity of the caller information stack
   int32_t caller_info_stack_capacity = 1;
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = caller_info_stack_capacity;
-
+  
   // Allocate the caller information stack with the initial capacity
   SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)SPVM_API_new_memory_block_for_execution_stack(env, stack, sizeof(SPVM_VALUE) * caller_info_stack_record_size * caller_info_stack_capacity);
   
@@ -3300,14 +3300,19 @@ void SPVM_API_init_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   return;
 }
 
+void SPVM_API_init_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  SPVM_API_init_stack_without_destory_stack_stack(env, stack);
+  
+  stack[SPVM_API_C_STACK_INDEX_DESTROY_EXECUTION_STACK_STACK_CAPACITY].ival = 1;
+  stack[SPVM_API_C_STACK_INDEX_DESTROY_EXECUTION_STACK_STACK].address = SPVM_API_new_memory_block_for_execution_stack(env, stack, sizeof(SPVM_VALUE*) * stack[SPVM_API_C_STACK_INDEX_DESTROY_EXECUTION_STACK_STACK_CAPACITY].ival);
+}
+
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   
   SPVM_VALUE* stack = SPVM_API_new_memory_block(env, NULL, sizeof(SPVM_VALUE) * SPVM_API_C_STACK_LENGTH);
   
   SPVM_API_init_stack(env, stack);
-  
-  stack[SPVM_API_C_STACK_INDEX_DESTROY_EXECUTION_STACK_STACK_CAPACITY].ival = 1;
-  stack[SPVM_API_C_STACK_INDEX_DESTROY_EXECUTION_STACK_STACK].address = SPVM_API_new_memory_block_for_execution_stack(env, stack, sizeof(SPVM_VALUE*) * stack[SPVM_API_C_STACK_INDEX_DESTROY_EXECUTION_STACK_STACK_CAPACITY].ival);
   
   return stack;
 }
