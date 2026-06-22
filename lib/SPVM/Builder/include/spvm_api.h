@@ -61,7 +61,7 @@ enum {
 
 SPVM_ENV* SPVM_API_new_env(void);
 void SPVM_API_free_env(SPVM_ENV* env);
-SPVM_VALUE* SPVM_API_new_stack_without_destroy_stack(SPVM_ENV* env);
+void SPVM_API_init_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
 SPVM_VALUE* SPVM_API_new_stack_with_all_method_call_permitted(SPVM_ENV* env);
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
