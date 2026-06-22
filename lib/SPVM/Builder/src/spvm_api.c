@@ -3291,7 +3291,7 @@ SPVM_VALUE* SPVM_API_new_stack_without_destroy_stack(SPVM_ENV* env) {
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = caller_info_stack_capacity;
 
   // Allocate the caller information stack with the initial capacity
-  SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)SPVM_API_new_memory_block(env, stack, sizeof(SPVM_VALUE) * caller_info_stack_record_size * caller_info_stack_capacity);
+  SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)SPVM_API_new_memory_block_for_execution_stack(env, stack, sizeof(SPVM_VALUE) * caller_info_stack_record_size * caller_info_stack_capacity);
   
   if (caller_info_stack == NULL) {
     return NULL;
@@ -3337,7 +3337,7 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Free caller information stack
   SPVM_VALUE* caller_info_stack = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
   if (caller_info_stack != NULL) {
-    SPVM_API_free_memory_block(env, stack, caller_info_stack);
+    SPVM_API_free_memory_block_for_execution_stack(env, stack, caller_info_stack);
     caller_info_stack = NULL;
   }
   
