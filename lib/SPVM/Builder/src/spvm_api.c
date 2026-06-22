@@ -5699,33 +5699,26 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
           // Call destructor
           if (released_object_basic_type->destroy_method) {
             
-            // Save return value and exception variable
-            SPVM_VALUE save_stack_ret = stack[0];
-            SPVM_OBJ* save_stack_exception_var = stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval;
-            stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = NULL;
+            SPVM_VALUE* destroy_stack = env->new_stack(env);
             
             SPVM_RUNTIME_METHOD* destroy_method = released_object_basic_type->destroy_method;
             
-            stack[0].oval = (SPVM_OBJ*)released_object;
+            destroy_stack[0].oval = (SPVM_OBJ*)released_object;
             int32_t args_width = 1;
-            int32_t error_id = SPVM_API_call_method(env, stack, destroy_method, args_width, __func__, FILE_NAME, __LINE__);
+            int32_t error_id = SPVM_API_call_method(env, destroy_stack, destroy_method, args_width, __func__, FILE_NAME, __LINE__);
             
             // An exception thrown in a destructor is converted to a warning message
             if (error_id) {
-              SPVM_OBJECT* exception = SPVM_API_get_exception(env, stack);
+              SPVM_OBJECT* exception = SPVM_API_get_exception(env, destroy_stack);
               
               assert(exception);
               
-              const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
+              const char* exception_chars = SPVM_API_get_chars(env, destroy_stack, exception);
               
               fprintf(runtime->spvm_stderr, "[An exception thrown in DESTROY method is converted to a warning message]\n%s\n", exception_chars);
             }
             
-            SPVM_API_set_exception(env, stack, NULL);
-            
-            // Restore return value and exception variable
-            stack[0] = save_stack_ret;
-            stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = save_stack_exception_var;
+            env->free_stack(env, destroy_stack);
           }
           
           // Free released_object fields
