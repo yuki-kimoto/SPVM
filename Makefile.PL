@@ -503,4 +503,12 @@ Enables parallel execution of tests.
 
 Specifies the number of parallel jobs for the build and testing. Defaults to C<CPU count + 2> (max 16).
 
+=head1 Tips
+
+=head2 Force Build
+
+Forces the build of native and precompile modules by setting the environment variable C<SPVM_FORCE_BUILD=1>.
+
+   SPVM_FORCE_BUILD=1 make
+
 =cut
