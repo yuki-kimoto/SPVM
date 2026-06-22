@@ -107,6 +107,45 @@ Check memory with valgrind
 valgrind --leak-check=full --track-origins=yes perl -Mblib t/06_module/Fn.t
 ```
 
+### ASan
+
+```
+perl Makefile.PL --debug --asan-on-linux
+make
+make test
+```
+
+ASan generates a separate log file for each process. To efficiently find both corruption reports and leaks related to your specific module, use the following Perl one-liner (Replace My::Module with your module's name):
+
+```
+perl -00 -ne 'print "--- File: $ARGV ---\n$_\n" if /My::Module/' .spvm_build/asan_logs/* > .spvm_build/asan_summary.log
+```
+
+Run each test with ASan
+
+```
+make && LD_PRELOAD=$$(gcc -print-file-name=libasan.so) perl -Mblib t/06_module/Fn.t
+```
+
+### MSVC
+
+```
+perl Makefile.PL --msvc
+
+# MSVC debug build
+perl Makefile.PL --msvc --debug
+
+# MSVC debug build with runtiem memory check.
+perl Makefile.PL --msvc --debug --ccflag=-RTC1
+
+# Use clang-cl and lld-link
+perl Makefile.PL --msvc --cc=clang-cl --ld=lld-link
+
+# MSVC debug build with runtiem memory check and use clang-cl and lld-link
+
+perl Makefile.PL --msvc  --debug --ccflag=-RTC1 --cc=clang-cl --ld=lld-link
+```
+
 ## Portability Note
   
 SPVM is run on various environments.
