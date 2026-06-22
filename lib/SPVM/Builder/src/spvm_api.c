@@ -3246,6 +3246,16 @@ void SPVM_API_set_field_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   SPVM_API_set_field_object_by_name(env, stack, object, field_name, value, error_id, func_name, file, line);
 }
 
+SPVM_VALUE* SPVM_API_new_destroy_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  return SPVM_API_new_stack(env);
+}
+
+void SPVM_API_free_destroy_stack(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_VALUE* destroy_stack) {
+  
+  return SPVM_API_free_stack(env, destroy_stack);
+}
+
 SPVM_VALUE* SPVM_API_new_stack_without_destroy_stack(SPVM_ENV* env) {
   
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
@@ -5713,7 +5723,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
           // Call destructor
           if (released_object_basic_type->destroy_method) {
             
-            SPVM_VALUE* destroy_stack = env->new_stack(env);
+            SPVM_VALUE* destroy_stack = SPVM_API_new_destroy_stack(env, stack);
             
             SPVM_RUNTIME_METHOD* destroy_method = released_object_basic_type->destroy_method;
             
@@ -5732,7 +5742,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
               fprintf(runtime->spvm_stderr, "[An exception thrown in DESTROY method is converted to a warning message]\n%s\n", exception_chars);
             }
             
-            env->free_stack(env, destroy_stack);
+            SPVM_API_free_destroy_stack(env, stack, destroy_stack);
           }
           
           // Free released_object fields
