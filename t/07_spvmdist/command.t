@@ -121,13 +121,18 @@ if ($^O eq 'freebsd') {
 
   By specifying SPVM in CONFIGURE_REQUIRES, you explicitly inform cpanm that the SPVM distribution must be installed before the Makefile.PL for SPVM::Sys can even be executed. This ensures the correct installation order and guarantees a successful build process.
 
+  It is also necessary to include these modules in PREREQ_PM because cpanm will not include them in the dependency list for installation unless they are explicitly specified there.
+  
+  I believe it is a safe approach to specify the complete module dependencies in PREREQ_PM, while also adding the modules required for running perl Makefile.PL to CONFIGURE_REQUIRES.
+  
 =end comment
 
 =cut
 
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "CONFIGURE_REQUIRES => {\n    'SPVM' => "));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "my %configure_requires_and_prereq_pm = (\n  'SPVM' => "));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "CONFIGURE_REQUIRES => {\n    %configure_requires_and_prereq_pm,"));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "PREREQ_PM => {\n    %configure_requires_and_prereq_pm,"));
   
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "TEST_REQUIRES"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'unless ($meta) {'));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|mit|));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-name]'));

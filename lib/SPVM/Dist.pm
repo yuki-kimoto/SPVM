@@ -930,6 +930,9 @@ unless (\$meta) {
 }
 \$jobs //= 1;
 
+my \%configure_requires_and_prereq_pm = (
+  'SPVM' => '$SPVM::VERSION',
+);
 WriteMakefile(
   NAME => 'SPVM::$class_name',
   VERSION_FROM => '$perl_class_rel_file',
@@ -963,11 +966,10 @@ WriteMakefile(
   },
   NORECURS => 1,
   CONFIGURE_REQUIRES => {
-    'SPVM' => '$SPVM::VERSION',
+    \%configure_requires_and_prereq_pm,
   },
   PREREQ_PM => {
-  },
-  TEST_REQUIRES => {
+    \%configure_requires_and_prereq_pm,
   },
 );
 
