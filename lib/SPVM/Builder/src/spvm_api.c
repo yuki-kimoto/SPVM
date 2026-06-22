@@ -3263,7 +3263,7 @@ void SPVM_API_init_stack_internal(SPVM_ENV* env, SPVM_VALUE* stack) {
   stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival = 1;
   SPVM_OBJECT* native_mortal_stack = SPVM_API_new_memory_block_for_execution_stack(env, stack, sizeof(SPVM_OBJECT*) * stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival);
   if (native_mortal_stack == NULL) {
-    return NULL;
+    return;
   }
   stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].address = native_mortal_stack;
   stack[SPVM_API_C_STACK_INDEX_ENV].address = env;
@@ -3326,7 +3326,7 @@ SPVM_VALUE* SPVM_API_new_stack_with_all_method_call_permitted(SPVM_ENV* env) {
   return stack;
 }
 
-void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+void SPVM_API_free_stack_internal(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
@@ -3362,10 +3362,17 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_API_free_memory_block_for_execution_stack(env, stack, call_stack_frame_infos);
   call_stack_frame_infos = NULL;
   
-  SPVM_VALUE** destroy_stack_stack = (SPVM_VALUE*)stack[SPVM_API_C_STACK_INDEX_DESTROY_EXECUTION_STACK_STACK].address;
+  stack = NULL;
+}
+
+void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  SPVM_API_free_stack_internal(env, stack);
+  
+  SPVM_VALUE** destroy_stack_stack = (SPVM_VALUE**)stack[SPVM_API_C_STACK_INDEX_DESTROY_EXECUTION_STACK_STACK].address;
   if (destroy_stack_stack) {
     for (int32_t i = 0; i < stack[SPVM_API_C_STACK_INDEX_DESTROY_EXECUTION_STACK_STACK_LENGTH].ival; i++) {
-      SPVM_API_free_stack(env, destroy_stack_stack[i]);
+      SPVM_API_free_stack_internal(env, destroy_stack_stack[i]);
     }
     
     SPVM_API_free_memory_block_for_execution_stack(env, stack, destroy_stack_stack);

@@ -65,6 +65,7 @@ void SPVM_API_init_stack_internal(SPVM_ENV* env, SPVM_VALUE* stack);
 void SPVM_API_init_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
 SPVM_VALUE* SPVM_API_new_stack_with_all_method_call_permitted(SPVM_ENV* env);
+void SPVM_API_free_stack_internal(SPVM_ENV* env, SPVM_VALUE* stack);
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPVM_API_args_width(SPVM_ENV* env, SPVM_VALUE* stack);
 SPVM_VALUE* SPVM_API_new_destroy_stack(SPVM_ENV* env, SPVM_VALUE* stack);
