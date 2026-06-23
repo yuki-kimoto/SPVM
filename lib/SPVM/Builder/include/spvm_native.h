@@ -452,7 +452,7 @@ struct spvm_env {
   const char* (*get_basic_type_name_in_version_from)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_NATIVE_BASIC_TYPE* basic_type);
   int32_t (*set_command_info_warning)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t warning);
   void (*destroy_cache_class_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
-  SPVM_VALUE* (*new_stack_with_all_method_call_permitted)(SPVM_ENV* env);
+  void* reserved231;
   int32_t (*call_instance_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);
   int32_t (*call_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width);
   int32_t (*call_method_no_mortal_no_check_args)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_NATIVE_METHOD* method, int32_t args_width, const char* func_name, const char* file_name, int32_t line);

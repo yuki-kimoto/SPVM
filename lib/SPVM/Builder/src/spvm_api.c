@@ -113,6 +113,88 @@ SPVM_ENV* SPVM_API_new_env(void) {
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   // Native APIs
   void* env_init[]  = {
     NULL, // runtime
@@ -346,7 +428,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_basic_type_name_in_version_from,
     SPVM_API_set_command_info_warning,
     SPVM_API_destroy_cache_class_vars,
-    SPVM_API_new_stack_with_all_method_call_permitted,
+    NULL, // reserved231
     SPVM_API_call_instance_method_no_mortal,
     SPVM_API_call_instance_method,
     SPVM_API_call_method_no_mortal_no_check_args,
@@ -3326,15 +3408,6 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   }
   
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address = caller_info_stack;
-  
-  return stack;
-}
-
-SPVM_VALUE* SPVM_API_new_stack_with_all_method_call_permitted(SPVM_ENV* env) {
-  
-  SPVM_VALUE* stack = SPVM_API_new_stack(env);
-  
-  stack[SPVM_API_C_STACK_INDEX_ALL_METHOD_CALL_PERMITTED].ival = 1;
   
   return stack;
 }
