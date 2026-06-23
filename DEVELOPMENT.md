@@ -239,6 +239,19 @@ perl -n -e 'if (/^(%token|%type|%right|%nonassoc|%left|[a-zA-Z]|\s+:|\s+\|)(.+)/
 find lib | grep -P '\.pm$' | grep -v 'lib/SPVM.pm$' | perl -p -e 's/\.pm$//' | sort | grep -v -P '^lib/SPVM(\.pm|/(Global|ExchangeAPI|Document|Builder|BlessedObject|Dist))' | perl -p -e 'chomp;s|lib/SPVM/||; s|/|::|g; $_ = "=item * L<SPVM::$_|SPVM::$_>\n\n";'
 ```
 
+## Get 10-year perl versions
+
+```
+corelist -v | grep -P '^v' | perl -p -e 's/^v//; s/\.[^.]+$//; $_ .= "\n"' | grep '[02468]$' | sort -Vr | uniq | head -10
+```
+
+Without latest version.
+
+```
+corelist -v | grep -P '^v' | perl -p -e 's/^v//; s/\.[^.]+$//; $_ .= "\n"' | grep '[02468]$' | sort -Vr | uniq | head -10 | tail -n +2
+```
+
+
 ## spvmdist
 
 ### Creates a SPVM distribution
