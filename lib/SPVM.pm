@@ -138,6 +138,8 @@ Run the Perl program.
 
 =item * L<High performance|https://github.com/yuki-kimoto/SPVM/wiki/Benchmark>
 
+=item * Paralell compilation and link support. Paralell test support. Debug build support(gdb can show the stack trace). ASan support on Linux (-fsanitize=address). LLVM support(clang, lld). MSVC(Microsoft Visual C++) support(cl, link). MSVC debug build support(cdb can show the stack trace). MSVC with LLVM support(clang-cl, lld-link). See L<Makefile.PL|https://github.com/yuki-kimoto/SPVM/blob/master/Makefile.PL>. L<spvmdist> command generates Makefile.PL which has the same options.
+
 =back
 
 =head1 Tutorial
