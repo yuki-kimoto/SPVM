@@ -450,6 +450,8 @@ int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METH
 
 void SPVM_API_call_destroy_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_invocant, SPVM_RUNTIME_METHOD* destroy_method, const char* func_name, const char* file, int32_t line) {
   
+  stack[SPVM_API_C_STACK_INDEX_NO_RECORD_CALLER_INFO].ival = 1;
+  
   // Class
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
@@ -478,6 +480,8 @@ void SPVM_API_call_destroy_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
   // Restore return value and exception variable
   stack[0] = save_stack_ret;
   stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = save_stack_exception_var;
+  
+  stack[SPVM_API_C_STACK_INDEX_NO_RECORD_CALLER_INFO].ival = 0;
 }
 
 int32_t SPVM_API_call_method_no_mortal_no_check_args(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, const char* func_name, const char* file, int32_t line) {
@@ -568,7 +572,9 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   stack[SPVM_API_C_STACK_INDEX_ARGS_WIDTH].ival = args_width;
   int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival++;
   
-  SPVM_API_push_caller_info(env, stack, method, func_name, file, line);
+  if (!stack[SPVM_API_C_STACK_INDEX_NO_RECORD_CALLER_INFO].ival) {
+    SPVM_API_push_caller_info(env, stack, method, func_name, file, line);
+  }
   
   SPVM_RUNTIME_BASIC_TYPE* current_basic_type = method->current_basic_type;
   

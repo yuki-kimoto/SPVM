@@ -9266,8 +9266,22 @@ class TestCase::Module::Fn {
   
   static method extra_build_caller_stack : int () {
     
+    # Call DESTROY method to check DESTROY destroys caller info.
+    {
+      my $object = TestCase::Simple->new;
+      $object = undef;
+    }
+    
     # Call a level 1 method to create some stack depth
-    return &extra_build_caller_stack_level1;
+    my $ret = &extra_build_caller_stack_level1;
+    
+    # Call DESTROY method to check DESTROY destroys caller info.
+    {
+      my $object = TestCase::Simple->new;
+      $object = undef;
+    }
+    
+    return $ret;
   }
   
   static method extra_build_caller_stack_level1 : int () {
