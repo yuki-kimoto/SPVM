@@ -33,6 +33,6 @@ jobs:
         run: perl cpanm -v -n -L ~/mylib --installdeps . --configure-args="--meta"
       - name: Show MYMETA.json
         run: cat MYMETA.json
-      - run: perl Makefile.PL --msvc --debug -RTC1
+      - run: perl Makefile.PL --msvc --debug --ccflag=-RTC1
       - run: gmake
       - run: gmake test
