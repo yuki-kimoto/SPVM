@@ -33,4 +33,5 @@ jobs:
       - name: Show MYMETA.json
         run: cat MYMETA.json
       - run: perl Makefile.PL
-      - run: make disttest
+      - run: make
+      - run: make test
