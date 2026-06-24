@@ -1,6 +1,5 @@
 .gitattributes
 .github/workflows/linux-ubuntu-latest-asan.yml
-.github/workflows/linux-ubuntu-latest-perl-10-years.yml
 .github/workflows/linux-ubuntu-latest-perl-v5.20.3.yml
 .github/workflows/linux-ubuntu-latest-perls.yml
 .github/workflows/linux-ubuntu-latest.yml
