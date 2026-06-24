@@ -1,12 +1,7 @@
 name: linux-ubuntu-latest-perl-10-years
 
 on:
-  push:
-    branches:
-      - '*'
-    tags-ignore:
-      - '*'
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
