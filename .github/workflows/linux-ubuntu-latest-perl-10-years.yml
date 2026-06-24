@@ -1,7 +1,9 @@
 name: linux-ubuntu-latest-perl-10-years
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - 'perls'
 
 jobs:
   build:
