@@ -1,4 +1,4 @@
-name: linux-ubuntu-latest-perl-10-years
+name: linux-ubuntu-latest-perls
 
 on:
   push:
