@@ -34,7 +34,7 @@ open my $fh_pm,   '>', $pm_file   or die $!;
 # Header for C file
 my $class_name_c = $class_name;
 $class_name_c =~ s/::/__/g;
-print $fh_c qq|#include "$file_name.h"\n\n|;
+print $fh_c qq|#include "spvm_native.h"\n\n|;
 
 # Header for SPVM file
 print $fh_spvm "class $class_name {\n";
@@ -50,7 +50,6 @@ while (my $line = <>) {
   # C
   print $fh_c <<"EOS";
 int32_t SPVM__${class_name_c}__$constant_name(SPVM_ENV* env, SPVM_VALUE* stack) {
-  // Check definition
 #ifdef $constant_name
   stack[0].ival = (int32_t)$constant_name;
   return 0;
