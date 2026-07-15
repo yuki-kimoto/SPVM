@@ -27,6 +27,7 @@ unless (length $class_name && length $dir && $input_file) {
 my @class_parts = split('::', $class_name);
 my $file_name = pop @class_parts;
 my $class_name_dir = "$dir/SPVM/" . join('/', @class_parts);
+my $class_name_path = join('/', @class_parts);
 
 my $spvm_file = "$class_name_dir/$file_name.spvm";
 my $c_file    = "$class_name_dir/$file_name.c";
@@ -37,7 +38,7 @@ my $class_name_c = $class_name;
 $class_name_c =~ s/::/__/g;
 
 my $spvm_content = "class $class_name {\n";
-my $c_content    = qq|#include "spvm_native.h"\n\n|;
+my $c_content = qq|#include "spvm_native.h"\n\nstatic const char* FILE_NAME = "$class_name_path.c\n\n";|;
 
 # Name section with description
 my $name_header = $class_name;
