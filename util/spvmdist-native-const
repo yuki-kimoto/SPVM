@@ -26,7 +26,7 @@ unless (length $class_name && length $dir && $input_file) {
 # Set paths
 my @class_parts = split('::', $class_name);
 my $file_name = pop @class_parts;
-my $class_name_dir = "$dir/" . join('/', @class_parts);
+my $class_name_dir = "$dir/SPVM/" . join('/', @class_parts);
 
 my $spvm_file = "$class_name_dir/$file_name.spvm";
 my $c_file    = "$class_name_dir/$file_name.c";
