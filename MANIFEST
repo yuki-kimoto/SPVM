@@ -1204,5 +1204,6 @@ t/utils/sort_method_name_pod.pl
 t/utils/sort_method_name_spvm.pl
 t/utils/sort_opcode_vm.pl
 util/cpandeps
+util/spvmdist-const
 yacc/bison.sh
 yacc/spvm_yacc.y
