@@ -4,7 +4,11 @@
   
   # .spvm file
   cat constants.txt | util/spvmdist-const MyClass::Constant lib
-
+  
+  # constants.txt
+  MY_FOO
+  MY_BAR
+  
 =cut
 
 use strict;
