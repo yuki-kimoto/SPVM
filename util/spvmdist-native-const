@@ -156,6 +156,7 @@ sub generate_file {
   ./util/spvmdist-native-const --input-file=.tmp/constants.txt --description='Constants for libuv' Go::UV::Constant .tmp/lib
 
   ./util/spvmdist-native-const --force --input-file=.tmp/constants.txt --description='Constants for libuv' Go::UV::Constant .tmp/lib
-
-  curl -L https://raw.githubusercontent.com/yuki-kimoto/SPVM/constant/util/spvmdist-native-const | perl - --input-file=.tmp/constants.txt --description='Constants for libuv' Go::UV::Constant .tmp/lib
+  
+  # Onliner with curl
+  curl -L https://raw.githubusercontent.com/yuki-kimoto/SPVM/refs/heads/master/util/spvmdist-native-const | perl - --input-file=.tmp/constants.txt --description='Constants for libuv' Go::UV::Constant .tmp/lib
   
