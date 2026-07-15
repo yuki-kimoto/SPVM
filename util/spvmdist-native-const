@@ -17,8 +17,7 @@ GetOptions(
 );
 
 # Parse args
-my $class_name = shift @ARGV;
-my $dir = shift @ARGV;
+my ($class_name, $dir) = @ARGV;
 
 unless (length $class_name && length $dir && $input_file) {
   die "Usage: $0 --input-file <file> [--force] [--description 'desc'] <class_name> <dir>\n";
@@ -51,6 +50,7 @@ open my $fh_input, '<', $input_file or die "Cannot open $input_file: $!";
 # Read inputs
 while (my $line = <$fh_input>) {
   chomp $line;
+  next if $line =~ /^#/;
   next unless $line =~ /\S/;
   
   my ($constant_name, $type) = split(/\s*:\s*/, $line);
@@ -94,7 +94,7 @@ while (my $line = <$fh_input>) {
   }
 
   # Append SPVM
-  $spvm_content .= "  native static method $constant_name : $return_type ();\n";
+  $spvm_content .= "  native static method $constant_name : $return_type ();\n\n";
 
   # Append C
   $c_content .= <<"EOS";
@@ -146,3 +146,16 @@ sub generate_file {
     print "  [exists]$file\n";
   }
 }
+
+=head1 Name
+  
+  spvmdist-native-const - Generate native constants files
+  
+=head1 Usage
+
+  ./util/spvmdist-native-const --input-file=.tmp/constants.txt --description='Constants for libuv' Go::UV::Constant .tmp/lib
+
+  ./util/spvmdist-native-const --force --input-file=.tmp/constants.txt --description='Constants for libuv' Go::UV::Constant .tmp/lib
+
+  curl -L https://raw.githubusercontent.com/yuki-kimoto/SPVM/constant/util/spvmdist-native-const | perl - --input-file=.tmp/constants.txt --description='Constants for libuv' Go::UV::Constant .tmp/lib
+  
