@@ -3,15 +3,79 @@
 =pod
   
   # .spvm file
-  cat helper/constants.txt | perl helper/generate_Constant.pl Net::SSLeay::Constant spvm > .tmp/Constant.spvm
-
-  # .c file
-  cat helper/constants.txt | perl helper/generate_Constant.pl Net::SSLeay::Constant c > .tmp/Constant.c
-
-  # .pm file
-  cat helper/constants.txt | perl helper/generate_Constant.pl Net::SSLeay::Constant pm > .tmp/Constant.pm
+  cat constants.txt | util/spvmdist-const MyClass::Constant lib
 
 =cut
+
+use strict;
+use warnings;
+use File::Path qw(make_path);
+
+my ($class_name, $dir) = @ARGV;
+
+unless (length $class_name && length $dir) {
+  die "Usage: $0 <class_name> <dir>\n";
+}
+
+# Create directory path
+my @class_parts = split('::', $class_name);
+my $file_name = pop @class_parts;
+my $class_name_dir = "$dir/" . join('/', @class_parts);
+make_path($class_name_dir);
+
+my $spvm_file = "$class_name_dir/$file_name.spvm";
+my $c_file    = "$class_name_dir/$file_name.c";
+my $pm_file   = "$class_name_dir/$file_name.pm";
+
+open my $fh_spvm, '>', $spvm_file or die $!;
+open my $fh_c,    '>', $c_file    or die $!;
+open my $fh_pm,   '>', $pm_file   or die $!;
+
+# Header for C file
+my $class_name_c = $class_name;
+$class_name_c =~ s/::/__/g;
+print $fh_c qq|#include "$file_name.h"\n\n|;
+
+# Header for SPVM file
+print $fh_spvm "class $class_name {\n";
+
+while (my $line = <>) {
+  chomp $line;
+  next unless $line =~ /\S/;
+  my $constant_name = $line;
+
+  # SPVM
+  print $fh_spvm "  native static method $constant_name : int ();\n";
+
+  # C
+  print $fh_c <<"EOS";
+int32_t SPVM__${class_name_c}__$constant_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  // Check definition
+#ifdef $constant_name
+  stack[0].ival = (int32_t)$constant_name;
+  return 0;
+#else
+  env->die(env, stack, "$constant_name is not defined on the system", __func__, FILE_NAME, __LINE__);
+  return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS;
+#endif
+}
+
+EOS
+
+  # PM
+  print $fh_pm <<"EOS";
+=head2 $constant_name
+
+C<static method $constant_name : int ();>
+
+Returns the value of C<$constant_name>. If this constant is not defined on the system, L<Error::NotSupported|SPVM::Error::NotSupported> exception is thrown.
+
+EOS
+}
+
+print $fh_spvm "}\n";
+
+__END__
 
 use strict;
 use warnings;
