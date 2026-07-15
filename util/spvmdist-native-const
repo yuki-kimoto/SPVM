@@ -1,16 +1,5 @@
 #!/usr/bin/env perl
 
-=pod
-  
-  # .spvm file
-  cat constants.txt | util/spvmdist-const MyClass::Constant lib
-  
-  # constants.txt
-  MY_FOO
-  MY_BAR
-  
-=cut
-
 use strict;
 use warnings;
 use File::Path qw(make_path);
@@ -21,7 +10,6 @@ unless (length $class_name && length $dir) {
   die "Usage: $0 <class_name> <dir>\n";
 }
 
-# Create directory path
 my @class_parts = split('::', $class_name);
 my $file_name = pop @class_parts;
 my $class_name_dir = "$dir/" . join('/', @class_parts);
@@ -35,27 +23,65 @@ open my $fh_spvm, '>', $spvm_file or die $!;
 open my $fh_c,    '>', $c_file    or die $!;
 open my $fh_pm,   '>', $pm_file   or die $!;
 
-# Header for C file
 my $class_name_c = $class_name;
 $class_name_c =~ s/::/__/g;
 print $fh_c qq|#include "spvm_native.h"\n\n|;
-
-# Header for SPVM file
 print $fh_spvm "class $class_name {\n";
 
 while (my $line = <>) {
   chomp $line;
   next unless $line =~ /\S/;
-  my $constant_name = $line;
+  
+  my ($constant_name, $type) = split(/\s*:\s*/, $line);
+  $type ||= 'int';
+
+  my $return_type;
+  my $stack_op;
+
+  if ($type eq 'int') {
+    $return_type = 'int';
+    $stack_op = 'stack[0].ival = (int32_t)CONSTANT;';
+  }
+  elsif ($type eq 'string') {
+    $return_type = 'string';
+    $stack_op = 'stack[0].sval = env->new_string_nolen(env, stack, CONSTANT);';
+  }
+  elsif ($type eq 'byte') {
+    $return_type = 'byte';
+    $stack_op = 'stack[0].bval = (int8_t)CONSTANT;';
+  }
+  elsif ($type eq 'short') {
+    $return_type = 'short';
+    $stack_op = 'stack[0].sval = (int16_t)CONSTANT;'; # Note: short uses sval
+  }
+  elsif ($type eq 'long') {
+    $return_type = 'long';
+    $stack_op = 'stack[0].lval = (int64_t)CONSTANT;';
+  }
+  elsif ($type eq 'float') {
+    $return_type = 'float';
+    $stack_op = 'stack[0].fval = (float)CONSTANT;';
+  }
+  elsif ($type eq 'double') {
+    $return_type = 'double';
+    $stack_op = 'stack[0].dval = (double)CONSTANT;';
+  }
+  else {
+    warn "Unknown type: $type for $constant_name. Ignoring.\n";
+    next;
+  }
+
+  my $c_stack_op = $stack_op;
+  $c_stack_op =~ s/CONSTANT/$constant_name/g;
 
   # SPVM
-  print $fh_spvm "  native static method $constant_name : int ();\n";
+  print $fh_spvm "  native static method $constant_name : $return_type ();\n";
 
   # C
   print $fh_c <<"EOS";
 int32_t SPVM__${class_name_c}__$constant_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef $constant_name
-  stack[0].ival = (int32_t)$constant_name;
+  $c_stack_op
   return 0;
 #else
   env->die(env, stack, "$constant_name is not defined on the system", __func__, FILE_NAME, __LINE__);
@@ -69,7 +95,7 @@ EOS
   print $fh_pm <<"EOS";
 =head2 $constant_name
 
-C<static method $constant_name : int ();>
+C<static method $constant_name : $return_type ();>
 
 Returns the value of C<$constant_name>. If this constant is not defined on the system, L<Error::NotSupported|SPVM::Error::NotSupported> exception is thrown.
 
@@ -77,6 +103,10 @@ EOS
 }
 
 print $fh_spvm "}\n";
+
+close $fh_spvm;
+close $fh_c;
+close $fh_pm;
 
 __END__
 
