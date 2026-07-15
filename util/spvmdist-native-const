@@ -3,92 +3,101 @@
 use strict;
 use warnings;
 use File::Path qw(make_path);
+use File::Basename qw(dirname);
+use Getopt::Long qw(GetOptions);
 
-my ($class_name, $dir) = @ARGV;
+# Parse options
+my $force;
+my $description;
+my $input_file;
+GetOptions(
+  'force'           => \$force,
+  'description=s'   => \$description,
+  'input-file=s'    => \$input_file,
+);
 
-unless (length $class_name && length $dir) {
-  die "Usage: $0 <class_name> <dir>\n";
+# Parse args
+my $class_name = shift @ARGV;
+my $dir = shift @ARGV;
+
+unless (length $class_name && length $dir && $input_file) {
+  die "Usage: $0 --input-file <file> [--force] [--description 'desc'] <class_name> <dir>\n";
 }
 
+# Set paths
 my @class_parts = split('::', $class_name);
 my $file_name = pop @class_parts;
 my $class_name_dir = "$dir/" . join('/', @class_parts);
-make_path($class_name_dir);
 
 my $spvm_file = "$class_name_dir/$file_name.spvm";
 my $c_file    = "$class_name_dir/$file_name.c";
 my $pm_file   = "$class_name_dir/$file_name.pm";
 
-open my $fh_spvm, '>', $spvm_file
-  or die "Can't open file '$spvm_file':$!";
-open my $fh_c,    '>', $c_file    or die $!
-  or die "Can't open file '$c_file':$!";
-open my $fh_pm,   '>', $pm_file   or die $!
-  or die "Can't open file '$pm_file':$!";
-
+# Init contents
 my $class_name_c = $class_name;
 $class_name_c =~ s/::/__/g;
-print $fh_c qq|#include "spvm_native.h"\n\n|;
 
-print $fh_spvm "class $class_name {\n";
+my $spvm_content = "class $class_name {\n";
+my $c_content    = qq|#include "spvm_native.h"\n\n|;
 
-print $fh_pm <<"EOS";
-=head1 Name
+# Name section with description
+my $name_header = $class_name;
+$name_header .= " - $description" if $description;
+my $pm_content   = "=head1 Name\n\n$name_header\n\n=head1 Class Methods\n\n";
 
-$class_name
+# Open input handle
+open my $fh_input, '<', $input_file or die "Cannot open $input_file: $!";
 
-=head1 Class Methods
-
-EOS
-
-while (my $line = <>) {
+# Read inputs
+while (my $line = <$fh_input>) {
   chomp $line;
   next unless $line =~ /\S/;
   
   my ($constant_name, $type) = split(/\s*:\s*/, $line);
   $type ||= 'int';
-  
+
   my $return_type;
   my $set_value;
-  
+
+  # Determine return type and value setter
   if ($type eq 'byte') {
     $return_type = 'byte';
-    $set_value = 'stack[0].bval = (int8_t)$constant_name;';
+    $set_value = "stack[0].bval = (int8_t)$constant_name;";
   }
   elsif ($type eq 'short') {
     $return_type = 'short';
-    $set_value = 'stack[0].sval = (int16_t)$constant_name;';
+    $set_value = "stack[0].sval = (int16_t)$constant_name;";
   }
   elsif ($type eq 'int') {
     $return_type = 'int';
-    $set_value = 'stack[0].ival = (int32_t)$constant_name;';
+    $set_value = "stack[0].ival = (int32_t)$constant_name;";
   }
   elsif ($type eq 'long') {
     $return_type = 'long';
-    $set_value = 'stack[0].lval = (int64_t)$constant_nameT;';
+    $set_value = "stack[0].lval = (int64_t)$constant_name;";
   }
   elsif ($type eq 'float') {
     $return_type = 'float';
-    $set_value = 'stack[0].fval = (float)$constant_name;';
+    $set_value = "stack[0].fval = (float)$constant_name;";
   }
   elsif ($type eq 'double') {
     $return_type = 'double';
-    $set_value = 'stack[0].dval = (double)$constant_name;';
+    $set_value = "stack[0].dval = (double)$constant_name;";
   }
   elsif ($type eq 'string') {
     $return_type = 'string';
-    $set_value = 'stack[0].oval = env->new_string_nolen(env, stack, $constant_name);';
+    $set_value = "stack[0].sval = env->new_string_nolen(env, stack, $constant_name);";
   }
   else {
     warn "Unknown type: $type for $constant_name. Ignoring.\n";
     next;
   }
-  
-  # SPVM
-  print $fh_spvm "  native static method $constant_name : $return_type ();\n";
-  
-  # C
-  print $fh_c <<"EOS";
+
+  # Append SPVM
+  $spvm_content .= "  native static method $constant_name : $return_type ();\n";
+
+  # Append C
+  $c_content .= <<"EOS";
 int32_t SPVM__${class_name_c}__$constant_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef $constant_name
   $set_value
@@ -101,8 +110,8 @@ int32_t SPVM__${class_name_c}__$constant_name(SPVM_ENV* env, SPVM_VALUE* stack) 
 
 EOS
 
-  # PM
-  print $fh_pm <<"EOS";
+  # Append PM
+  $pm_content .= <<"EOS";
 =head2 $constant_name
 
 C<static method $constant_name : $return_type ();>
@@ -111,8 +120,32 @@ Returns the value of C<$constant_name>. If this constant is not defined on the s
 
 EOS
 }
+close $fh_input;
 
-print $fh_spvm "}\n";
+$spvm_content .= "}\n";
+
+# Output files
+generate_file($spvm_file, $spvm_content, $force);
+generate_file($c_file, $c_content, $force);
+generate_file($pm_file, $pm_content, $force);
+
+# File generator
+sub generate_file {
+  my ($file, $content, $force_flag) = @_;
+  
+  my $dir_name = dirname($file);
+  make_path($dir_name) unless -d $dir_name;
+  
+  if ($force_flag || !-f $file) {
+    print "  [write]$file\n";
+    open my $fh, '>', $file or die $!;
+    print $fh $content;
+    close $fh;
+  }
+  else {
+    print "  [exists]$file\n";
+  }
+}
 
 __END__
 
