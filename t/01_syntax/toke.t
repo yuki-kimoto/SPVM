@@ -859,6 +859,24 @@ use Test::More;
         compile_not_ok($source, q|Unexpected token ","|);
       }
     }
+    
+    # Forbidden ,, - anon method fields
+    {
+      {
+        my $source = q|class MyClass { static method foo : void () { [has field0 : int, has field1 : int,] method : void () { }; } }|;
+        compile_ok($source);
+      }
+      
+      {
+        my $source = q|class MyClass { static method foo : void () { [has field0 : int,,] method : void () { }; } }|;
+        compile_not_ok($source, q|Unexpected token ","|);
+      }
+      
+      {
+        my $source = q|class MyClass { static method foo : void () { [has field0 : int,, has field : int] method : void () { }; } }|;
+        compile_not_ok($source, q|Unexpected token ","|);
+      }
+    }
   }
   
 }
