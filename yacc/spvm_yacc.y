@@ -45,7 +45,7 @@
 %type <opval> block eval_block init_block end_block switch_block if_require_statement
 %type <opval> die exists delete
 %type <opval> var_decl var
-%type <opval> operator opt_operators operators opt_operator
+%type <opval> operator opt_operators operators operators_without_last_comma opt_operator
 %type <opval> void_return_operator warn warn_level
 %type <opval> unary_operator array_length
 %type <opval> inc dec
@@ -1093,7 +1093,7 @@ sequential
         $$ = $2;
       }
     }
-  | '(' operators ',' if_statement ',' operator ')'
+  | '(' operators_without_last_comma ',' if_statement ',' operator ')'
     {
       SPVM_OP* op_operator = $2->first;
       SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, compiler->current_file, compiler->current_line);
@@ -1106,7 +1106,11 @@ sequential
     }
 
 operators
-  : operators ',' operator
+  : operators_without_last_comma
+  | operators_without_last_comma ','
+  
+operators_without_last_comma
+  : operators_without_last_comma ',' operator
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -1119,10 +1123,6 @@ operators
       SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
       
       $$ = op_list;
-    }
-  | operators ','
-    {
-      $$ = $1;
     }
   | operator
     {

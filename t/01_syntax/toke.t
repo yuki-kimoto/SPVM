@@ -877,6 +877,24 @@ use Test::More;
         compile_not_ok($source, q|Unexpected token ","|);
       }
     }
+    
+    # Forbidden ,, - operators
+    {
+      {
+        my $source = q|class MyClass { static method foo : void () { (1, 2,); } }|;
+        compile_ok($source);
+      }
+      
+      {
+        my $source = q|class MyClass { static method foo : void () { (1,,); } }|;
+        compile_not_ok($source, q|Unexpected token ","|);
+      }
+      
+      {
+        my $source = q|class MyClass { static method foo : void () { (1,,2); } }|;
+        compile_not_ok($source, q|Unexpected token ","|);
+      }
+    }
   }
   
 }
