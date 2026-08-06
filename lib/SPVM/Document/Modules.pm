@@ -80,13 +80,13 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<SPVM::Error::Compile|SPVM::Error::Compile>
 
-=item * L<SPVM::Error::FieldNotSpecified|SPVM::Error::FieldNotSpecified>
-
 =item * L<SPVM::Error::MethodCallNotPermitted|SPVM::Error::MethodCallNotPermitted>
 
 =item * L<SPVM::Error::NotSupported|SPVM::Error::NotSupported>
 
 =item * L<SPVM::Error::System|SPVM::Error::System>
+
+=item * L<SPVM::Error::FieldNotSpecified|SPVM::Error::FieldNotSpecified>
 
 =item * L<SPVM::Error::Unicode::InvalidUTF8|SPVM::Error::Unicode::InvalidUTF8>
 

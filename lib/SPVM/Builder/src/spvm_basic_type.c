@@ -50,6 +50,7 @@ const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void) {
     "Countable",
     "CallerInfo",
     "Cloneable",
+    "Error::FieldNotSpecified",
   };
   
   return id_names;

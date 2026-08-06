@@ -3384,6 +3384,9 @@ Native APIs have its IDs.
   <tr>
     <td>29</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_CLONEABLE_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Cloneable">Cloneable</a> class</td>
   </tr>
+  <tr>
+    <td>30</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_FIELD_NOT_SPECIFIED_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Error::FieldNotSpecified">Error::FieldNotSpecified</a> class</td>
+  </tr>
 </table>
 
 =end html

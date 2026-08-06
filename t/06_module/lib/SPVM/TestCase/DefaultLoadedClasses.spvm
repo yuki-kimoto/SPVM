@@ -23,6 +23,7 @@ class TestCase::DefaultLoadedClasses {
     $object isa Countable;
     $object isa CallerInfo;
     $object isa Cloneable;
+    $object isa Error::FieldNotSpecified;
     
     return 1;
   }

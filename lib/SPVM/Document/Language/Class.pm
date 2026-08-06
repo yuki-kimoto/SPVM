@@ -377,6 +377,8 @@ The following classes are loaded by default.
 
 =item * L<Cloneable|SPVM::Cloneable>
 
+=item * L<Error::FieldNotSpecified|SPVM::Error::FieldNotSpecified>
+
 =back
 
 =head2 alias Statement
