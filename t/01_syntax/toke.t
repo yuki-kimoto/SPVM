@@ -824,7 +824,7 @@ use Test::More;
   
   # Forbidden ,,
   {
-    # ,, is invalid - enum
+    # Forbidden ,, - enum
     {
       {
         my $source = q|class MyClass { enum { FOO,} }|;
@@ -838,6 +838,24 @@ use Test::More;
       
       {
         my $source = q|class MyClass { enum { FOO,,BAR}|;
+        compile_not_ok($source, q|Unexpected token ","|);
+      }
+    }
+    
+    # Forbidden ,, - arguments
+    {
+      {
+        my $source = q|class MyClass { static method foo : void ($var0 : int, $var2 : int,) { } }|;
+        compile_ok($source);
+      }
+      
+      {
+        my $source = q|class MyClass { static method foo : void ($var0 : int,,) { } }|;
+        compile_not_ok($source, q|Unexpected token ","|);
+      }
+      
+      {
+        my $source = q|class MyClass { static method foo : void ($var0 : int,, $var2 : int) { } }|;
         compile_not_ok($source, q|Unexpected token ","|);
       }
     }

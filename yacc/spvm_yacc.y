@@ -36,7 +36,7 @@
 %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_items_without_last_comma enumeration_item
-%type <opval> method anon_method opt_args args arg use use_without_alias require class_alias our has getter opt_getter setter opt_setter anon_method_fields anon_method_field interface allow
+%type <opval> method anon_method opt_args args args_without_last_comma arg use use_without_alias require class_alias our has getter opt_getter setter opt_setter anon_method_fields anon_method_field interface allow
 %type <opval> opt_attributes attributes
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement foreach_statement
@@ -586,7 +586,11 @@ opt_args
     }
 
 args
-  : args ',' arg
+  : args_without_last_comma
+  | args_without_last_comma ','
+
+args_without_last_comma
+  : args_without_last_comma ',' arg
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -600,7 +604,6 @@ args
       
       $$ = op_list;
     }
-  | args ','
   | arg
 
 arg
