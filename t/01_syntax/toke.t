@@ -897,6 +897,14 @@ use Test::More;
     }
   }
   
+  # ;;
+  {
+    {
+      my $source = q|class MyClass { static method foo : void () { 1;; 2;; } }|;
+      compile_ok($source);
+    }
+  }
+
 }
 
 
