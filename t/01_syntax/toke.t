@@ -822,7 +822,7 @@ use Test::More;
     compile_ok($source);
   }
   
-  # , , is invalid
+  # Forbidden ,,
   {
     # ,, is invalid - enum
     {
@@ -833,6 +833,11 @@ use Test::More;
       
       {
         my $source = q|class MyClass { enum { FOO,,}|;
+        compile_not_ok($source, q|Unexpected token ","|);
+      }
+      
+      {
+        my $source = q|class MyClass { enum { FOO,,BAR}|;
         compile_not_ok($source, q|Unexpected token ","|);
       }
     }
