@@ -33,9 +33,11 @@ SPVM::Builder::ConfigBuilder class is the base class of a config builder.
   use base 'SPVM::Builder::ConfigBuilder';
   
   sub build_config {
-    my ($self, $config) = @_;
+    my ($self) = @_;
     
     # Build config
+    
+    return $config;
   }
   
   1;
@@ -52,11 +54,9 @@ Create a new object blessed by the class name of the invocant and returns it.
 
 =head2 build_config
 
-  $config_builder->build_config($config);
+  my $config = $config_builder->build_config;
 
-Builds the config $config.
-
-$config is a L<SPVM::Builder::Config> object.
+Builds an L<SPVM::Builder::Config> object and returns it.
 
 This method must be implemented in a child class.
 
