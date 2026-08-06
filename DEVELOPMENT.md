@@ -124,7 +124,7 @@ perl -00 -ne 'print "--- File: $ARGV ---\n$_\n" if /My::Module/' .spvm_build/asa
 Run each test with ASan
 
 ```
-make && LD_PRELOAD=$$(gcc -print-file-name=libasan.so) perl -Mblib t/06_module/Fn.t
+make && LD_PRELOAD=$(gcc -print-file-name=libasan.so) perl -Mblib t/06_module/Fn.t
 ```
 
 ### MSVC
