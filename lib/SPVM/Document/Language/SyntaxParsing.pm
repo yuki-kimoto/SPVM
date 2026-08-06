@@ -23,7 +23,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL BREAK_POINT
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
-  %token <opval> RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER SET_LENGTH SET_CAPACITY
+  %token <opval> RW RO WO INIT END NEW OF BASIC_TYPE_ID EXTENDS SUPER SET_LENGTH SET_CAPACITY
   %token <opval> RETURN WEAKEN DIE WARN WARN_LEVEL DIAG PRINT SAY STDERR OUTMOST_CLASS_NAME UNWEAKEN ENABLE_OPTIONS DISABLE_OPTIONS
   %type <opval> grammar
   %type <opval> field_name method_name class_name
@@ -31,16 +31,17 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> union_type generic_type
   %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
   %type <opval> opt_definitions definitions definition
-  %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
-  %type <opval> method anon_method opt_args args arg use use_without_alias require class_alias our has getter opt_getter setter opt_setter anon_method_fields anon_method_field interface allow
+  %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_items_without_last_comma enumeration_item
+  %type <opval> method opt_args args args_without_last_comma arg use use_without_alias require class_alias our has getter opt_getter setter opt_setter anon_method_field interface allow
+  %type <opval> anon_method anon_method_fields anon_method_fields_without_last_comma
   %type <opval> opt_attributes attributes
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement foreach_statement
   %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
-  %type <opval> block eval_block init_statement switch_block if_require_statement
+  %type <opval> block eval_block init_block end_block switch_block if_require_statement
   %type <opval> die exists delete
   %type <opval> var_decl var
-  %type <opval> operator opt_operators operators opt_operator
+  %type <opval> operator opt_operators operators operators_without_last_comma opt_operator
   %type <opval> void_return_operator warn warn_level
   %type <opval> unary_operator array_length
   %type <opval> inc dec
@@ -170,14 +171,18 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | class_alias
     | allow
     | interface
-    | init_statement
+    | init_block
+    | end_block
     | enumeration
     | our
     | has ';'
     | method
 
-  init_statement
+  init_block
     : INIT block
+
+  end_block
+    : END block
 
   version_decl
     : VERSION_DECL CONSTANT ';'
@@ -215,8 +220,11 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | enumeration_items
 
   enumeration_items
-    : enumeration_items ',' enumeration_item
-    | enumeration_items ','
+    : enumeration_items_without_last_comma
+    | enumeration_items_without_last_comma ','
+
+  enumeration_items_without_last_comma
+    : enumeration_items_without_last_comma ',' enumeration_item
     | enumeration_item
 
   enumeration_item
@@ -261,8 +269,11 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | args
 
   args
-    : args ',' arg
-    | args ','
+    : args_without_last_comma
+    | args_without_last_comma ','
+
+  args_without_last_comma
+    : args_without_last_comma ',' arg
     | arg
 
   arg
@@ -270,8 +281,11 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | var ':' type ASSIGN operator
 
   anon_method_fields
-    : anon_method_fields ',' anon_method_field
-    | anon_method_fields ','
+    : anon_method_fields_without_last_comma
+    | anon_method_fields_without_last_comma ','
+
+  anon_method_fields_without_last_comma
+    : anon_method_fields_without_last_comma ',' anon_method_field
     | anon_method_field
 
   anon_method_field
@@ -445,11 +459,14 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
 
   sequential
     : '(' operators ')'
-    | '(' operators ',' if_statement ',' operator ')'
+    | '(' operators_without_last_comma ',' if_statement ',' operator ')'
 
   operators
-    : operators ',' operator
-    | operators ','
+    : operators_without_last_comma
+    | operators_without_last_comma ','
+
+  operators_without_last_comma
+    : operators_without_last_comma ',' operator
     | operator
 
   unary_operator
