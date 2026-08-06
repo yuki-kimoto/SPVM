@@ -162,7 +162,7 @@ my @header_files = ('ppport.h', 'lib/SPVM/Builder/include/spvm_native.h');
 my $libspvm_file = "blib/lib/SPVM/Builder/lib/libspvm.a";
 
 #################### [SPVM Only Build Loigc End] ####################
-
+my @test_clean_files = map { "t/" . join('', map { '*/' } 1 .. $_) . "*.$Config{dlext}" } (1 .. 10);
 WriteMakefile(
   NAME => 'SPVM',
   VERSION_FROM => 'lib/SPVM.pm',
@@ -171,7 +171,7 @@ WriteMakefile(
     (ABSTRACT_FROM => 'lib/SPVM.pm', # retrieve abstract from module
      AUTHOR => 'Yuki Kimoto<kimoto.yuki@gmail.com>') : ()),
   test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t t/*/*/*/*.t'},
-  clean => {FILES => ".spvm_build SPVM.o lib/SPVM/Builder/src/*.o t/03_precompile"},
+  clean => {FILES => ".spvm_build SPVM.o lib/SPVM/Builder/src/*.o t/03_precompile @test_clean_files"},
   META_MERGE => {
     'meta-spec' => { version => 2 },
     resources => {
@@ -293,6 +293,13 @@ package MY {
       
       # Generate a single parallel make rule for the rest
       $make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel($options);
+      
+      # Build native class in test directory for tests
+      {
+        my $include_dir = 't/04_native_api/lib';
+        $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('TestCase::NativeAPISrc', {%$options, output_dir => $include_dir, include_dir => [$include_dir]});
+      }
+      
     }
     
     #################### [SPVM Only Test Generation Start] ####################
