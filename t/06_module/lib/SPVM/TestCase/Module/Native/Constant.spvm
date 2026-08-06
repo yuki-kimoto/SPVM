@@ -1,0 +1,11 @@
+class TestCase::Module::Native::Constant {
+  
+  use Native::Constant;
+  
+  static method basic : int () {
+    
+    
+    
+    return 1;
+  }
+}

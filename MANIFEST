@@ -1061,6 +1061,7 @@ t/06_module/lib/SPVM/TestCase/Module/Mutex.spvm
 t/06_module/lib/SPVM/TestCase/Module/Native/Argument.spvm
 t/06_module/lib/SPVM/TestCase/Module/Native/BasicType.spvm
 t/06_module/lib/SPVM/TestCase/Module/Native/Compiler.spvm
+t/06_module/lib/SPVM/TestCase/Module/Native/Constant.spvm
 t/06_module/lib/SPVM/TestCase/Module/Native/MethodCall.spvm
 t/06_module/lib/SPVM/TestCase/Module/Native/Runtime.spvm
 t/06_module/lib/SPVM/TestCase/Module/Packer.spvm
@@ -1080,6 +1081,7 @@ t/06_module/LongList.t
 t/06_module/Native/Argument.t
 t/06_module/Native/BasicType.t
 t/06_module/Native/Compiler.t
+t/06_module/Native/Constant.t
 t/06_module/Native/MethodCall.t
 t/06_module/Native/Runtime.t
 t/06_module/Packer.t
