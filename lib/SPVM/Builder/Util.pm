@@ -337,11 +337,11 @@ sub create_make_rule {
 
 sub create_make_rule_parallel {
   my ($options) = @_;
-
+  
   $options ||= {};
-
+  
   my $make_rule = '';
-
+  
   # Gen target name
   my @target_parts;
   
@@ -362,22 +362,22 @@ sub create_make_rule_parallel {
   # Create SHA1 hex digest
   my $target_id = sha1_hex(join("\n", sort @target_parts));
   my $target = "spvm-build-parallel-$target_id";
-
+  
   # Order-only deps
   my $dependent_files = $options->{dependent_files} // [];
   my $dependent_files_string = @$dependent_files ? " " . join(' ', @$dependent_files) : "";
   
   my $order_only_dependent_files = $options->{order_only_dependent_files} // [];
   my $order_only_dependent_files_string = @$order_only_dependent_files ? " | " . join(' ', @$order_only_dependent_files) : "";
-
+  
   # Dynamic target
   $make_rule .= "dynamic :: $target\n";
   $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
-
+  
   # Parallel build rule
   $make_rule .= ".PHONY: $target\n";
   $make_rule .= "$target :$dependent_files_string$order_only_dependent_files_string\n";
-
+  
   # Collect all build options
   my @build_options;
   
@@ -401,7 +401,7 @@ sub create_make_rule_parallel {
   if (defined(my $precompile_classes_file = $options->{precompile_classes_file})) {
     push @build_options, "precompile_classes_file => '$precompile_classes_file'";
   }
-
+  
   if (my $native_classes = $options->{native_classes}) {
     push @build_options, "native_classes => [" . join(', ', map { "'$_'" } @$native_classes) . "]";
   }
@@ -410,10 +410,17 @@ sub create_make_rule_parallel {
   }
   
   my $build_options_hash_str = "{" . join(', ', @build_options) . "}";
-
+  
+  # Build @INC string for -I
+  my $inc = $options->{include_dir} // [];
+  my $inc_string = '';
+  if (@$inc) {
+    $inc_string = join(' ', map { "-I$_" } @$inc) . ' ';
+  }
+  
   # Build cmd
-  $make_rule .= "\t\$(FULLPERLRUN) -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API::build_parallel_dynamic_lib_dist($build_options_hash_str)\"\n\n";
-
+  $make_rule .= "\t\$(FULLPERLRUN) ${inc_string} -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API::build_parallel_dynamic_lib_dist($build_options_hash_str)\"\n\n";
+  
   return $make_rule;
 }
 
