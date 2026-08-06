@@ -924,6 +924,7 @@ for my $test_index (0 .. 1) {
 
   my $makefile_pl_file = "$tmp_dir/SPVM-Foo/Makefile.PL";
   ok(-f $makefile_pl_file);
+  ok(!SPVM::Builder::Util::file_contains($makefile_pl_file, "'Foo'"));
 
   my $perl_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
   ok(-f $perl_class_file);

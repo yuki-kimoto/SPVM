@@ -834,7 +834,7 @@ sub generate_makefile_pl_file {
   my $resource = $self->resource;
   
   # Make rule
-  my $native_class_literal = $self->native ? "'$class_name'" : '';
+  my $native_class_literal = $self->native && !$resource ? "'$class_name'" : '';
   my $precompile_class_literal = $self->precompile ? "'$class_name'" : '';
   my $make_rule_parallel = !$resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel(\$options);" : '';
   
