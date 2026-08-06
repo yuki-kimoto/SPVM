@@ -35,7 +35,7 @@
 %type <opval> union_type generic_type
 %type <opval> opt_classes classes class class_block opt_extends version_decl version_from
 %type <opval> opt_definitions definitions definition
-%type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
+%type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_items_without_last_comma enumeration_item
 %type <opval> method anon_method opt_args args arg use use_without_alias require class_alias our has getter opt_getter setter opt_setter anon_method_fields anon_method_field interface allow
 %type <opval> opt_attributes attributes
 %type <opval> opt_statements statements statement if_statement else_statement 
@@ -440,9 +440,13 @@ opt_enumeration_items
         $$ = op_list;
       }
     }
-    
+
 enumeration_items
-  : enumeration_items ',' enumeration_item 
+  : enumeration_items_without_last_comma
+  | enumeration_items_without_last_comma ','
+
+enumeration_items_without_last_comma
+  : enumeration_items_without_last_comma ',' enumeration_item
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -456,7 +460,6 @@ enumeration_items
       
       $$ = op_list;
     }
-  | enumeration_items ','
   | enumeration_item
   
 enumeration_item

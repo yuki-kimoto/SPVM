@@ -817,6 +817,27 @@ use Test::More;
     like ($@, qr|\Q[Compilation Error]The class name 'CompileError::Class::ClassNameDifferntFromClassFileNameWithAnonFieldXXXXXXX' must be 'CompileError::Class::ClassNameDifferntFromClassFileNameWithAnonField'.|);
   }
   
+  {
+    my $source = q|class MyClass { static method main : void () { eval {} } }|;
+    compile_ok($source);
+  }
+  
+  # , , is invalid
+  {
+    # ,, is invalid - enum
+    {
+      {
+        my $source = q|class MyClass { enum { FOO,} }|;
+        compile_ok($source);
+      }
+      
+      {
+        my $source = q|class MyClass { enum { FOO,,}|;
+        compile_not_ok($source, q|Unexpected token ","|);
+      }
+    }
+  }
+  
 }
 
 
