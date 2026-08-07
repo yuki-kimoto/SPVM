@@ -21,15 +21,15 @@ GetOptions(
   'cc=s' => \my $cc,
   'ccflag=s' => \my @ccflags,
   'define=s' => \my @defines,
+  'include-dir=s' => \my @include_dirs,
   'ld=s' => \my $ld,
   'ldflag=s' => \my @ldflags,
+  'lib=s' => \my @libs,
+  'lib-dir=s' => \my @lib_dirs,
   'debug' => \my $debug,
   'build-type=s' => \my $build_type,
   'asan-on-linux' => \my $asan_on_linux,
   'msvc' => \my $msvc,
-  'include-dir=s' => \my @include_dirs,
-  'lib=s' => \my @libs,
-  'lib-dir=s' => \my @lib_dirs,
   
   # Build target settings
   'no-build-spvm-modules' => \my $no_build_spvm_modules,
