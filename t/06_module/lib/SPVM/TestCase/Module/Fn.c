@@ -16,4 +16,11 @@ int32_t SPVM__TestCase__Module__Fn__set_no_free_true(SPVM_ENV* env, SPVM_VALUE* 
   return 0;
 }
 
-
+int32_t SPVM__TestCase__Module__Fn__set_no_close_true(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  SPVM_OBJ* object = stack[0].oval;
+  
+  env->set_no_close(env, stack, object, 1);
+  
+  return 0;
+}

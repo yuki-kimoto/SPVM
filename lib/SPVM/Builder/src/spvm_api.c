@@ -476,6 +476,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_exception_chars,
     SPVM_API_get_error_id,
     SPVM_API_set_error_id,
+    SPVM_API_no_close,
+    SPVM_API_set_no_close,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -6120,6 +6122,23 @@ void SPVM_API_set_no_free(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object,
   }
 }
 
+int32_t SPVM_API_no_close(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  int32_t no_close = !!(object->flag & SPVM_OBJECT_C_FLAG_NO_FREE);
+  
+  return no_close;
+}
+
+void SPVM_API_set_no_close(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t no_close) {
+  
+  if (no_close) {
+    __sync_fetch_and_or(&object->flag, SPVM_OBJECT_C_FLAG_NO_FREE);
+  }
+  else {
+    __sync_fetch_and_xor(&object->flag, SPVM_OBJECT_C_FLAG_NO_FREE);
+  }
+}
+
 void SPVM_API_print_exception_to_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJECT* obj_exception = SPVM_API_get_exception(env, stack);
@@ -6167,9 +6186,14 @@ SPVM_OBJECT* SPVM_API_dump_object_internal(SPVM_ENV* env, SPVM_VALUE* stack, SPV
       no_free_flag_str = "no_free";
     }
     
+    const char* no_close_flag_str = "";
+    if (flag & SPVM_OBJECT_C_FLAG_NO_FREE) {
+      no_close_flag_str = "no_close";
+    }
+    
     int32_t length = SPVM_API_length(env, stack, object);
     
-    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "[Object Intenal:%p]\npointer:%p\nweaken_backrefs_length:%d\nref_count:%d\nbasic_type_name:%s\ntype_dimension:%d\nflag:%s %s\nlength:%d", object, pointer, weaken_backrefs_length, ref_count, basic_type_name, type_dimension, is_read_only_flag_str, no_free_flag_str, length);
+    snprintf(tmp_buffer, SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE, "[Object Intenal:%p]\npointer:%p\nweaken_backrefs_length:%d\nref_count:%d\nbasic_type_name:%s\ntype_dimension:%d\nflag:%s %s %s\nlength:%d", object, pointer, weaken_backrefs_length, ref_count, basic_type_name, type_dimension, is_read_only_flag_str, no_free_flag_str, no_close_flag_str, length);
     
     obj_dump = SPVM_API_new_string_nolen(env, stack, tmp_buffer);
   }

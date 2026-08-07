@@ -1733,21 +1733,41 @@ Converts the binary data $binary to the objects $objects according to the templa
 
 This method just creates a L<Packer|SPVM::Packer> object, calls L<Packer#unpack|SPVM::Packer/"unpack"> method, and returns its return value.
 
-=head2 no_free
+=head2 no_close
 
-C<static method no_free : int ($object : object);>
+C<static method no_close : int ($object : object);>
 
-Calls L<no_free|SPVM::Document::NativeAPI/"no_free"> native API given $object, and retunrs its return value.
+Calls L<no_close|SPVM::Document::NativeAPI/"no_close"> native API given $object, and retunrs its return value.
 
 Excetpions:
 
 The object $object must be defined. Otherwise an exception is thrown.
 
-=head2 set_no_free
+=head2 set_no_close
 
-C<static method set_no_free : void ($object : object, $no_free : int);>
+C<static method set_no_close : void ($object : object, $no_close : int);>
 
-Calls L<set_no_free|SPVM::Document::NativeAPI/"set_no_free"> native API given $object, $no_free.
+Calls L<set_no_close|SPVM::Document::NativeAPI/"set_no_close"> native API given $object, $no_close.
+
+Excetpions:
+
+The object $object must be defined. Otherwise an exception is thrown.
+
+=head2 no_close
+
+C<static method no_close : int ($object : object);>
+
+Calls L<no_close|SPVM::Document::NativeAPI/"no_close"> native API given $object, and retunrs its return value.
+
+Excetpions:
+
+The object $object must be defined. Otherwise an exception is thrown.
+
+=head2 set_no_close
+
+C<static method set_no_close : void ($object : object, $no_close : int);>
+
+Calls L<set_no_close|SPVM::Document::NativeAPI/"set_no_close"> native API given $object, $no_close.
 
 Excetpions:
 

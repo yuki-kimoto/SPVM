@@ -405,6 +405,8 @@ ok(SPVM::TestCase::NativeAPI->spvm_warnf);
 
 ok(SPVM::TestCase::NativeAPI->no_free);
 
+ok(SPVM::TestCase::NativeAPI->no_close);
+
 ok(SPVM::TestCase::NativeAPI->die);
 
 ok(SPVM::TestCase::NativeAPI->print_exception_to_stderr);

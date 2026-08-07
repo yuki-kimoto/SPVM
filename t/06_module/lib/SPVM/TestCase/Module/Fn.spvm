@@ -8463,6 +8463,54 @@ class TestCase::Module::Fn {
   
   native static method set_no_free_true : int ($object : object);
   
+  static method no_close : int () {
+    
+    my $point = Point->new;
+    
+    {
+      my $no_close = Fn->no_close($point);
+      
+      if ($no_close) {
+        return 0;
+      }
+    }
+    
+    {
+      &set_no_close_true($point);
+      
+      my $no_close = Fn->no_close($point);
+      
+      unless ($no_close) {
+        return 0;
+      }
+      
+      unless ($no_close == 1) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method set_no_close : int () {
+    
+    my $point = Point->new;
+    
+    {
+      Fn->set_no_close($point, 1);
+      
+      my $no_close = Fn->no_close($point);
+      
+      unless ($no_close) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  native static method set_no_close_true : int ($object : object);
+  
   static method get_pointer : int () {
     
     {

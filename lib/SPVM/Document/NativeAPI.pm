@@ -3000,6 +3000,18 @@ Examples:
   // Set error ID
   env->set_error_id(env, stack, error_id);
 
+=head2 no_close
+
+C<int32_t (*no_close)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_OBJ* object);>
+
+If the C<no_close> flag of the object I<object> is enabled, returns 1, otherwise returns 0.
+
+=head2 set_no_close
+
+C<void (*set_no_close)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_OBJ* object, int32_t no_close);>
+
+If I<no_close> is a true value, enables the C<no_close> flag of the object I<object>, otherwise disables it.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3283,6 +3295,8 @@ Native APIs have its IDs.
   276 get_exception_chars
   277 get_error_id
   278 set_error_id
+  279 no_close
+  280 set_no_close
   
 =head1 Constant Values
 

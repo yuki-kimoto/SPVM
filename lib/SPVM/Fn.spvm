@@ -2053,6 +2053,10 @@ class Fn {
   
   native static method set_no_free : void ($object : object, $no_free : int);
   
+  native static method no_close : int ($object : object);
+  
+  native static method set_no_close : void ($object : object, $no_close : int);
+  
   native static method get_pointer : Address ($object : object);
   
   native static method set_pointer : void ($object : object, $address : Address);

@@ -298,6 +298,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->get_exception_chars != &env_array[276]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_error_id != &env_array[277]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_error_id != &env_array[278]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->no_close != &env_array[279]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_no_close != &env_array[280]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
@@ -4718,6 +4720,48 @@ int32_t SPVM__TestCase__NativeAPI__no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
   env->set_no_free(env, stack, object, 0);
   
   if (env->no_free(env, stack, object)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  if (!env->is_read_only(env, stack, object)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__no_close(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  SPVM_OBJ* object = env->new_string_nolen(env, stack, "abc");
+  
+  // Check no effect SPVM_OBJECT_C_FLAG_IS_READ_ONLY
+  env->make_read_only(env, stack, object);
+  if (!env->is_read_only(env, stack, object)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  if (env->no_close(env, stack, object)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  env->set_no_close(env, stack, object, 1);
+  
+  if (!env->no_close(env, stack, object)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  env->set_no_close(env, stack, object, 0);
+  
+  if (env->no_close(env, stack, object)) {
     stack[0].ival = 0;
     return 0;
   }

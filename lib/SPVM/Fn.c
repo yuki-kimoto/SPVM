@@ -957,6 +957,36 @@ int32_t SPVM__Fn__set_no_free(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Fn__no_close(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  SPVM_OBJ* object = stack[0].oval;
+  
+  if (!object) {
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t no_close = env->no_close(env, stack, object);
+  
+  stack[0].ival = no_close;
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__set_no_close(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  SPVM_OBJ* object = stack[0].oval;
+  
+  if (!object) {
+    return env->die(env, stack, "The object $object must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t no_close = stack[1].ival;
+  
+  env->set_no_close(env, stack, object, no_close);
+  
+  return 0;
+}
+
 int32_t SPVM__Fn__get_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
