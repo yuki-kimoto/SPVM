@@ -349,15 +349,15 @@ sub generate_config_global_file {
   my $cc            = $options->{cc};
   my $ccflags       = $options->{ccflags} // [];
   my $defines       = $options->{defines} // [];
+  my $include_dirs = $options->{include_dirs};
   my $ld            = $options->{ld};
   my $ldflags       = $options->{ldflags} // [];
-  my $build_type    = $options->{build_type};
-  my $debug         = $options->{debug};
-  my $asan_on_linux = $options->{asan_on_linux};
-  my $msvc = $options->{msvc};
-  my $include_dirs = $options->{include_dirs};
   my $libs = $options->{libs};
   my $lib_dirs = $options->{lib_dirs};
+  my $debug         = $options->{debug};
+  my $build_type    = $options->{build_type};
+  my $asan_on_linux = $options->{asan_on_linux};
+  my $msvc = $options->{msvc};
   
   # --- Handle options ---
   if ($debug) {
