@@ -27,6 +27,9 @@ GetOptions(
   'build-type=s' => \my $build_type,
   'asan-on-linux' => \my $asan_on_linux,
   'msvc' => \my $msvc,
+  'include-dir=s' => \my @include_dirs,
+  'lib=s' => \my @libs,
+  'lib-dir=s' => \my @lib_dirs,
   
   # Build target settings
   'no-build-spvm-modules' => \my $no_build_spvm_modules,
@@ -56,8 +59,11 @@ my $config_global_file = '.spvm_build/global.config';
   cc            => $cc,
   ccflags       => \@ccflags,
   defines       => \@defines,
+  include_dirs => \@include_dirs,
   ld            => $ld,
   ldflags       => \@ldflags,
+  libs => \@libs,
+  lib_dirs => \@lib_dirs,
   debug         => $debug,
   build_type    => $build_type,
   asan_on_linux => $asan_on_linux,
@@ -296,8 +302,8 @@ package MY {
       
       # Build native class in test directory for tests
       {
-        my $include_dir = 't/04_native_api/lib';
-        $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('TestCase::NativeAPISrc', {%$options, output_dir => $include_dir, include_dir => [$include_dir]});
+        my $test_include_dir = 't/04_native_api/lib';
+        $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('TestCase::NativeAPISrc', {%$options, output_dir => $test_include_dir, include_dir => [$test_include_dir]});
       }
       
     }
@@ -349,6 +355,9 @@ sub generate_config_global_file {
   my $debug         = $options->{debug};
   my $asan_on_linux = $options->{asan_on_linux};
   my $msvc = $options->{msvc};
+  my $include_dirs = $options->{include_dirs};
+  my $libs = $options->{libs};
+  my $lib_dirs = $options->{lib_dirs};
   
   # --- Handle options ---
   if ($debug) {
@@ -398,6 +407,12 @@ EOS
 EOS
   }
   
+  for my $include_dir (@$include_dirs) {
+    $config_global_content .= <<"EOS";
+\$config_global->build_rule_any({'+include_dirs' => ['$include_dir']});
+EOS
+  }
+  
   if (defined $ld) {
     $config_global_content .= <<"EOS";
 \$config_global->build_rule_any({'ld' => '$ld'}); # set ld
@@ -407,6 +422,18 @@ EOS
   for my $ldflag (@$ldflags) {
     $config_global_content .= <<"EOS";
 \$config_global->build_rule_any({'+ldflags' => ['$ldflag']});
+EOS
+  }
+  
+  for my $lib (@$libs) {
+    $config_global_content .= <<"EOS";
+\$config_global->build_rule_any({'+libs' => ['$lib']});
+EOS
+  }
+  
+  for my $lib_dir (@$lib_dirs) {
+    $config_global_content .= <<"EOS";
+\$config_global->build_rule_any({'+lib_dirs' => ['$lib_dir']});
 EOS
   }
   
@@ -474,6 +501,10 @@ Specifies additional compiler flags.
 
 Adds C<-D> macros to the compiler.
 
+=head2 --include-dir
+
+Add a header directory.
+
 =head2 --ld
 
 Specifies the linker command.
@@ -481,6 +512,14 @@ Specifies the linker command.
 =head2 --ldflag
 
 Specifies additional linker flags.
+
+=head2 --lib
+
+Add a library.
+
+=head2 --lib-dir
+
+Add a library directory.
 
 =head2 --debug
 
