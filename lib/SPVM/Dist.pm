@@ -875,8 +875,11 @@ GetOptions(
   'cc=s' => \\my \$cc,
   'ccflag=s' => \\my \@ccflags,
   'define=s' => \\my \@defines,
+  'include-dir=s' => \\my \@include_dirs,
   'ld=s' => \\my \$ld,
   'ldflag=s' => \\my \@ldflags,
+  'lib=s' => \\my \@libs,
+  'lib-dir=s' => \\my \@lib_dirs,
   'debug' => \\my \$debug,
   'build-type=s' => \\my \$build_type,
   'asan-on-linux' => \\my \$asan_on_linux,
@@ -898,8 +901,11 @@ generate_config_global_file(\$config_global_file, {
   cc            => \$cc,
   ccflags       => \\\@ccflags,
   defines       => \\\@defines,
+  include_dirs => \\\@include_dirs,
   ld            => \$ld,
   ldflags       => \\\@ldflags,
+  libs => \\\@libs,
+  lib_dirs => \\\@lib_dirs,
   debug         => \$debug,
   build_type    => \$build_type,
   asan_on_linux => \$asan_on_linux,
@@ -1008,8 +1014,11 @@ sub generate_config_global_file {
   my \$cc             = \$options->{cc};
   my \$ccflags        = \$options->{ccflags} // [];
   my \$defines        = \$options->{defines} // [];
+  my \$include_dirs = \$options->{include_dirs};
   my \$ld             = \$options->{ld};
   my \$ldflags        = \$options->{ldflags} // [];
+  my \$libs = \$options->{libs};
+  my \$lib_dirs = \$options->{lib_dirs};
   my \$build_type     = \$options->{build_type};
   my \$debug          = \$options->{debug};
   my \$asan_on_linux = \$options->{asan_on_linux};
@@ -1061,6 +1070,12 @@ EOS
 EOS
   }
   
+  for my \$include_dir (\@\$include_dirs) {
+    \$config_global_content .= <<"EOS";
+\\\$config_global->build_rule_any({'+include_dirs' => ['\$include_dir']});
+EOS
+  }
+  
   if (defined \$ld) {
     \$config_global_content .= <<"EOS";
 \\\$config_global->build_rule_any({'ld' => '\$ld'});
@@ -1070,6 +1085,18 @@ EOS
   for my \$ldflag (\@\$ldflags) {
     \$config_global_content .= <<"EOS";
 \\\$config_global->build_rule_any({'+ldflags' => ['\$ldflag']});
+EOS
+  }
+  
+  for my \$lib (\@\$libs) {
+    \$config_global_content .= <<"EOS";
+\\\$config_global->build_rule_any({'+libs' => ['\$lib']});
+EOS
+  }
+  
+  for my \$lib_dir (\@\$lib_dirs) {
+    \$config_global_content .= <<"EOS";
+\\\$config_global->build_rule_any({'+lib_dirs' => ['\$lib_dir']});
 EOS
   }
   
