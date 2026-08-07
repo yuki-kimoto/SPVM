@@ -288,7 +288,10 @@ sub prepare_compile_class_common {
     my $source_rel_file = $source_file_info->{source_rel_file};
     my $source_file = "$source_dir/$source_rel_file";
     
-    next unless defined $source_file && -f $source_file;
+    unless (-f $source_file) {
+      Carp::cluck("The source file '$source_file' is not found.");
+      next;
+    }
     
     my @resource_include_dirs;
     my @resources;
