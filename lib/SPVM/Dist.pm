@@ -839,7 +839,7 @@ sub generate_makefile_pl_file {
     : $self->native ? "'$class_name'" : '';
   my $precompile_class_literal = $self->precompile ? "'$class_name'" : '';
   my $make_rule_parallel
-    = $resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel({%\$options, output_dir => \$test_include_dir, include_dir => [\$test_include_dir]});"
+    = $resource ? "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel({%\$options, output_dir => \$test_class_search_dir, class_search_dir => [\$test_class_search_dir]});"
     : "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel(\$options);";
   my $perl_class_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'pm');
   $perl_class_rel_file =  $self->create_lib_rel_file($perl_class_rel_file);
@@ -1000,7 +1000,7 @@ package MY {
         $precompile_class_literal
       ];
       
-      my \$test_include_dir = 't/lib';
+      my \$test_class_search_dir = 't/lib';
       
       $make_rule_parallel
     }

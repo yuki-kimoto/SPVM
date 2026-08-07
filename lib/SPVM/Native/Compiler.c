@@ -191,41 +191,41 @@ int32_t SPVM__Native__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* st
   return 0;
 }
 
-int32_t SPVM__Native__Compiler__add_include_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__Compiler__add_class_search_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  SPVM_OBJ* obj_include_dir = stack[1].oval;
+  SPVM_OBJ* obj_class_search_dir = stack[1].oval;
   
   SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
-  const char* include_dir = NULL;
-  if (obj_include_dir) {
-    include_dir = env->get_chars(env, stack, obj_include_dir);
+  const char* class_search_dir = NULL;
+  if (obj_class_search_dir) {
+    class_search_dir = env->get_chars(env, stack, obj_class_search_dir);
   }
-  env->api->compiler->add_include_dir(self, include_dir);
+  env->api->compiler->add_class_search_dir(self, class_search_dir);
   
   return 0;
 }
 
-int32_t SPVM__Native__Compiler__prepend_include_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__Compiler__prepend_class_search_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
   SPVM_OBJ* obj_self = stack[0].oval;
   
-  SPVM_OBJ* obj_include_dir = stack[1].oval;
+  SPVM_OBJ* obj_class_search_dir = stack[1].oval;
   
   SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
-  const char* include_dir = NULL;
-  if (obj_include_dir) {
-    include_dir = env->get_chars(env, stack, obj_include_dir);
+  const char* class_search_dir = NULL;
+  if (obj_class_search_dir) {
+    class_search_dir = env->get_chars(env, stack, obj_class_search_dir);
   }
   
-  env->api->compiler->prepend_include_dir(self, include_dir);
+  env->api->compiler->prepend_class_search_dir(self, class_search_dir);
   
   return 0;
 }
@@ -321,7 +321,7 @@ int32_t SPVM__Native__Compiler__compile_script(SPVM_ENV* env, SPVM_VALUE* stack)
   return SPVM__Native__Compiler__compile_anon_class(env, stack);
 }
 
-int32_t SPVM__Native__Compiler__clear_include_dirs(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__Compiler__clear_class_search_dirs(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
@@ -329,12 +329,12 @@ int32_t SPVM__Native__Compiler__clear_include_dirs(SPVM_ENV* env, SPVM_VALUE* st
   
   SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
-  env->api->compiler->clear_include_dirs(self);
+  env->api->compiler->clear_class_search_dirs(self);
   
   return 0;
 }
 
-int32_t SPVM__Native__Compiler__get_include_dirs_length(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__Compiler__get_class_search_dirs_length(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
@@ -342,14 +342,14 @@ int32_t SPVM__Native__Compiler__get_include_dirs_length(SPVM_ENV* env, SPVM_VALU
   
   SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
-  int32_t include_dirs_length = env->api->compiler->get_include_dirs_length(self);
+  int32_t class_search_dirs_length = env->api->compiler->get_class_search_dirs_length(self);
   
-  stack[0].ival = include_dirs_length;
+  stack[0].ival = class_search_dirs_length;
   
   return 0;
 }
 
-int32_t SPVM__Native__Compiler__get_include_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__Compiler__get_class_search_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
@@ -359,17 +359,17 @@ int32_t SPVM__Native__Compiler__get_include_dir(SPVM_ENV* env, SPVM_VALUE* stack
   
   SPVM_NATIVE_COMPILER* self = env->get_pointer(env, stack, obj_self);
   
-  int32_t include_dirs_length = env->api->compiler->get_include_dirs_length(self);
+  int32_t class_search_dirs_length = env->api->compiler->get_class_search_dirs_length(self);
   
-  if (!(index >= 0 && index < include_dirs_length)) {
+  if (!(index >= 0 && index < class_search_dirs_length)) {
     return env->die(env, stack, "The index $index is out of range.", __func__, FILE_NAME, __LINE__);
   }
   
-  const char* include_dir = env->api->compiler->get_include_dir(self, index);
+  const char* class_search_dir = env->api->compiler->get_class_search_dir(self, index);
   
-  SPVM_OBJ* obj_include_dir = env->new_string_nolen(env, stack, include_dir);
+  SPVM_OBJ* obj_class_search_dir = env->new_string_nolen(env, stack, class_search_dir);
   
-  stack[0].oval = obj_include_dir;
+  stack[0].oval = obj_class_search_dir;
   
   return 0;
 }

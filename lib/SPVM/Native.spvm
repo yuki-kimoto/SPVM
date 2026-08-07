@@ -86,47 +86,47 @@ $eval_source
     return $ret;
   }
   
-  static method push_inc : void ($include_dir : string) {
+  static method push_inc : void ($class_search_dir : string) {
     
     my $compiler = Native->get_current_compiler;
     
-    $compiler->add_include_dir($include_dir);
+    $compiler->add_class_search_dir($class_search_dir);
   }
   
-  static method unshift_inc : void ($include_dir : string) {
+  static method unshift_inc : void ($class_search_dir : string) {
     
     my $compiler = Native->get_current_compiler;
     
-    $compiler->prepend_include_dir($include_dir);
+    $compiler->prepend_class_search_dir($class_search_dir);
   }
   
   static method inc : string[] () {
     
     my $compiler = Native->get_current_compiler;
     
-    my $length = $compiler->get_include_dirs_length;
+    my $length = $compiler->get_class_search_dirs_length;
     
-    my $include_dirs_list = StringList->new;
+    my $class_search_dirs_list = StringList->new;
     for (my $i = 0; $i < $length; $i++) {
-      my $include_dir = $compiler->get_include_dir($i);
-      $include_dirs_list->push($include_dir);
+      my $class_search_dir = $compiler->get_class_search_dir($i);
+      $class_search_dirs_list->push($class_search_dir);
     }
     
-    return $include_dirs_list->to_array;
+    return $class_search_dirs_list->to_array;
   }
   
-  static method set_inc : void ($include_dirs : string[]) {
+  static method set_inc : void ($class_search_dirs : string[]) {
     
-    unless ($include_dirs) {
-      die "The include directory \$include_dirs must be defined.";
+    unless ($class_search_dirs) {
+      die "The include directory \$class_search_dirs must be defined.";
     }
     
     my $compiler = Native->get_current_compiler;
     
-    $compiler->clear_include_dirs;
+    $compiler->clear_class_search_dirs;
     
-    for my $_ (@$include_dirs) {
-      $compiler->add_include_dir($_);
+    for my $_ (@$class_search_dirs) {
+      $compiler->add_class_search_dir($_);
     }
   }
   

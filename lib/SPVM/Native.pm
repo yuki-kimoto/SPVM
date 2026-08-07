@@ -96,21 +96,21 @@ Returns the current serach directories of the class search directories of the co
 
 =head2 set_inc
 
-C<static method set_inc : void ($include_dirs : string[]);>
+C<static method set_inc : void ($class_search_dirs : string[]);>
 
-Set the current serach directories $include_dirs to the class search directories of the compiler of the current runtime.
+Set the current serach directories $class_search_dirs to the class search directories of the compiler of the current runtime.
 
 =head2 push_inc
 
-C<static method push_inc : void ($include_dir : string);>
+C<static method push_inc : void ($class_search_dir : string);>
 
-Add the class search directory $include_dir at the tail of the class search directories of the compiler of the current runtime.
+Add the class search directory $class_search_dir at the tail of the class search directories of the compiler of the current runtime.
 
 =head2 unshift_inc
 
-C<static method unshift_inc : void ($include_dir : string);>
+C<static method unshift_inc : void ($class_search_dir : string);>
 
-Add the class search directory $include_dir at the head of the class search directories of the compiler of the current runtime.
+Add the class search directory $class_search_dir at the head of the class search directories of the compiler of the current runtime.
 
 =head1 Copyright & License
 

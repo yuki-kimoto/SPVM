@@ -4933,27 +4933,27 @@ set_start_line(...)
 }
 
 SV*
-add_include_dir(...)
+add_class_search_dir(...)
   PPCODE:
 {
   
   SV* sv_self = ST(0);
   
-  SV* sv_include_dir = ST(1);
+  SV* sv_class_search_dir = ST(1);
   
-  const char* include_dir = SvPV_nolen(sv_include_dir);
+  const char* class_search_dir = SvPV_nolen(sv_class_search_dir);
   
   SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  boot_env->api->compiler->add_include_dir(compiler, include_dir);
+  boot_env->api->compiler->add_class_search_dir(compiler, class_search_dir);
   
   XSRETURN(0);
 }
 
 SV*
-get_include_dir(...)
+get_class_search_dir(...)
   PPCODE:
 {
   
@@ -4967,17 +4967,17 @@ get_include_dir(...)
   
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  const char* include_dir = boot_env->api->compiler->get_include_dir(compiler, index);
+  const char* class_search_dir = boot_env->api->compiler->get_class_search_dir(compiler, index);
   
-  SV* sv_include_dir = sv_2mortal(newSVpv(include_dir, 0));
+  SV* sv_class_search_dir = sv_2mortal(newSVpv(class_search_dir, 0));
   
-  XPUSHs(sv_include_dir);
+  XPUSHs(sv_class_search_dir);
   
   XSRETURN(1);
 }
 
 SV*
-get_include_dirs_length(...)
+get_class_search_dirs_length(...)
   PPCODE:
 {
   
@@ -4987,11 +4987,11 @@ get_include_dirs_length(...)
   
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  int32_t include_dirs_length = boot_env->api->compiler->get_include_dirs_length(compiler);
+  int32_t class_search_dirs_length = boot_env->api->compiler->get_class_search_dirs_length(compiler);
   
-  SV* sv_include_dirs_length = sv_2mortal(newSViv(include_dirs_length));
+  SV* sv_class_search_dirs_length = sv_2mortal(newSViv(class_search_dirs_length));
   
-  XPUSHs(sv_include_dirs_length);
+  XPUSHs(sv_class_search_dirs_length);
   
   XSRETURN(1);
 }

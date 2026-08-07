@@ -903,7 +903,7 @@ for my $test_index (0 .. 1) {
   ok(-f $makefile_pl_file);
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'TestCase::Foo'"));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "'TestCase::Foo'"));
-  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'output_dir => $test_include_dir, include_dir => [$test_include_dir]'));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, 'output_dir => $test_class_search_dir, class_search_dir => [$test_class_search_dir]'));
 
   my $perl_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
   ok(-f $perl_class_file);

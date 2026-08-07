@@ -151,8 +151,8 @@ sub init_api {
     
     my $compiler = SPVM::Builder::Native::Compiler->new;
     
-    for my $include_dir (@{$BUILDER->include_dirs}) {
-      $compiler->add_include_dir($include_dir);
+    for my $class_search_dir (@{$BUILDER->class_search_dirs}) {
+      $compiler->add_class_search_dir($class_search_dir);
     }
     
     my $runtime = $compiler->get_runtime;

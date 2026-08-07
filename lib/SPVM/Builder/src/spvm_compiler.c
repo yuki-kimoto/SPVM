@@ -75,7 +75,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->class_files = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->class_file_class_names = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
-  compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  compiler->class_search_dirs = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
@@ -105,7 +105,7 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
   SPVM_COMPILER_set_start_file(compiler, NULL);
   
-  SPVM_COMPILER_clear_include_dirs(compiler);
+  SPVM_COMPILER_clear_class_search_dirs(compiler);
   
   if (compiler->runtime) {
     SPVM_RUNTIME_free(compiler->runtime);
@@ -1478,48 +1478,48 @@ void SPVM_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line) {
   compiler->start_line = start_line;
 }
 
-int32_t SPVM_COMPILER_get_include_dirs_length(SPVM_COMPILER* compiler) {
-  SPVM_LIST* include_dirs = compiler->include_dirs;
-  int32_t include_dirs_length = include_dirs->length;
-  return include_dirs_length;
+int32_t SPVM_COMPILER_get_class_search_dirs_length(SPVM_COMPILER* compiler) {
+  SPVM_LIST* class_search_dirs = compiler->class_search_dirs;
+  int32_t class_search_dirs_length = class_search_dirs->length;
+  return class_search_dirs_length;
 }
 
-void SPVM_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {  
-  int32_t include_dir_length = strlen(include_dir);
-  char* compiler_include_dir = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, include_dir_length + 1);
-  memcpy(compiler_include_dir, include_dir, include_dir_length);
-  SPVM_LIST_push(compiler->include_dirs, (void*)compiler_include_dir);
+void SPVM_COMPILER_add_class_search_dir(SPVM_COMPILER* compiler, const char* class_search_dir) {  
+  int32_t class_search_dir_length = strlen(class_search_dir);
+  char* compiler_class_search_dir = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, class_search_dir_length + 1);
+  memcpy(compiler_class_search_dir, class_search_dir, class_search_dir_length);
+  SPVM_LIST_push(compiler->class_search_dirs, (void*)compiler_class_search_dir);
 }
 
-void SPVM_COMPILER_prepend_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {  
-  int32_t include_dir_length = strlen(include_dir);
-  char* compiler_include_dir = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, include_dir_length + 1);
-  memcpy(compiler_include_dir, include_dir, include_dir_length);
+void SPVM_COMPILER_prepend_class_search_dir(SPVM_COMPILER* compiler, const char* class_search_dir) {  
+  int32_t class_search_dir_length = strlen(class_search_dir);
+  char* compiler_class_search_dir = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, class_search_dir_length + 1);
+  memcpy(compiler_class_search_dir, class_search_dir, class_search_dir_length);
   
-  SPVM_LIST_unshift(compiler->include_dirs, (void*)compiler_include_dir);
+  SPVM_LIST_unshift(compiler->class_search_dirs, (void*)compiler_class_search_dir);
 }
 
-void SPVM_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler) {
-  int32_t include_dirs_length = SPVM_COMPILER_get_include_dirs_length(compiler);
+void SPVM_COMPILER_clear_class_search_dirs(SPVM_COMPILER* compiler) {
+  int32_t class_search_dirs_length = SPVM_COMPILER_get_class_search_dirs_length(compiler);
   
-  for (int32_t i = 0; i < include_dirs_length; i++) {
-    const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
-    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)include_dir);
-    include_dir = NULL;
+  for (int32_t i = 0; i < class_search_dirs_length; i++) {
+    const char* class_search_dir = SPVM_COMPILER_get_class_search_dir(compiler, i);
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)class_search_dir);
+    class_search_dir = NULL;
   }
   
-  SPVM_LIST_clear(compiler->include_dirs);
+  SPVM_LIST_clear(compiler->class_search_dirs);
 }
 
-const char* SPVM_COMPILER_get_include_dir (SPVM_COMPILER* compiler, int32_t include_dir_id) {
-  const char* include_dir = SPVM_LIST_get(compiler->include_dirs, include_dir_id);
-  return include_dir;
+const char* SPVM_COMPILER_get_class_search_dir (SPVM_COMPILER* compiler, int32_t class_search_dir_id) {
+  const char* class_search_dir = SPVM_LIST_get(compiler->class_search_dirs, class_search_dir_id);
+  return class_search_dir;
 }
 
 void SPVM_COMPILER_create_precompile_inline_header(SPVM_COMPILER* compiler) {
   
   SPVM_RUNTIME* runtime = compiler->runtime;
-  int32_t include_dirs_length = compiler->include_dirs->length;
+  int32_t class_search_dirs_length = compiler->class_search_dirs->length;
   const char* native_rel = "SPVM/Builder/include/spvm_native.h";
   const char* implement_rel = "SPVM/Builder/include/spvm_implement.h";
   
@@ -1529,15 +1529,15 @@ void SPVM_COMPILER_create_precompile_inline_header(SPVM_COMPILER* compiler) {
   int32_t implement_size = 0;
 
   // Search header files and get their sizes
-  for (int32_t i = 0; i < include_dirs_length; i++) {
-    const char* include_dir = (const char*)SPVM_LIST_get(compiler->include_dirs, i);
-    int32_t include_dir_len = (int32_t)strlen(include_dir);
+  for (int32_t i = 0; i < class_search_dirs_length; i++) {
+    const char* class_search_dir = (const char*)SPVM_LIST_get(compiler->class_search_dirs, i);
+    int32_t class_search_dir_len = (int32_t)strlen(class_search_dir);
     
     // Search spvm_native.h
     if (!found_native_path) {
-      int32_t path_len = include_dir_len + 1 + (int32_t)strlen(native_rel);
+      int32_t path_len = class_search_dir_len + 1 + (int32_t)strlen(native_rel);
       char* path = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, path_len + 1);
-      sprintf(path, "%s/%s", include_dir, native_rel);
+      sprintf(path, "%s/%s", class_search_dir, native_rel);
       
       FILE* fp = fopen(path, "rb");
       if (fp) {
@@ -1551,9 +1551,9 @@ void SPVM_COMPILER_create_precompile_inline_header(SPVM_COMPILER* compiler) {
 
     // Search spvm_implement.h
     if (!found_implement_path) {
-      int32_t path_len = include_dir_len + 1 + (int32_t)strlen(implement_rel);
+      int32_t path_len = class_search_dir_len + 1 + (int32_t)strlen(implement_rel);
       char* path = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, path_len + 1);
-      sprintf(path, "%s/%s", include_dir, implement_rel);
+      sprintf(path, "%s/%s", class_search_dir, implement_rel);
       
       FILE* fp = fopen(path, "rb");
       if (fp) {

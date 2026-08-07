@@ -436,10 +436,10 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_compiler_ids(SPVM_ENV* env, 
   if ((void*)&env->api->compiler->set_start_line != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->get_start_file != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->set_start_file != &env_array[5]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->compiler->get_include_dirs_length != &env_array[6]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->compiler->get_include_dir != &env_array[7]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->compiler->add_include_dir != &env_array[8]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->compiler->clear_include_dirs != &env_array[9]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->get_class_search_dirs_length != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->get_class_search_dir != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->add_class_search_dir != &env_array[8]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->clear_class_search_dirs != &env_array[9]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->add_class_file != &env_array[10]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->delete_class_file != &env_array[11]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->get_class_file != &env_array[12]) { stack[0].ival = 0; return 0; }
@@ -447,7 +447,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_compiler_ids(SPVM_ENV* env, 
   if ((void*)&env->api->compiler->get_error_message != &env_array[14]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->get_error_messages_length != &env_array[15]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->get_runtime != &env_array[16]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->compiler->prepend_include_dir != &env_array[17]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->prepend_class_search_dir != &env_array[17]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->compile_anon_class != &env_array[18]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->compile_script != &env_array[19]) { stack[0].ival = 0; return 0; }
   

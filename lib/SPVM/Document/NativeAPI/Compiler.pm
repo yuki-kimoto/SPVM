@@ -8,7 +8,7 @@ SPVM::Document::NativeAPI::Compiler - Compiler Native APIs
   
   SPVM_NATIVE_COMPILER* compiler = api_compiler->new_instance();
   
-  api_compiler->add_include_dir(compiler, "lib");
+  api_compiler->add_class_search_dir(compiler, "lib");
   
   api_compiler->set_start_file(compiler, __FILE__);
   api_compiler->set_start_line(compiler, __LINE__ + 1);
@@ -58,29 +58,29 @@ C<void (*set_start_file)(L<SPVM_NATIVE_COMPILER* compiler|SPVM::Document::Native
 
 Sets I<start_file> to the C<start_file> field.
 
-=head2 get_include_dirs_length
+=head2 get_class_search_dirs_length
 
-C<int32_t (*get_include_dirs_length)(L<SPVM_NATIVE_COMPILER* compiler|SPVM::Document::NativeAPI::Compiler>);>
+C<int32_t (*get_class_search_dirs_length)(L<SPVM_NATIVE_COMPILER* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
 Returns the length of the class search directories.
 
-=head2 get_include_dir
+=head2 get_class_search_dir
 
-C<const char* (*get_include_dir)(L<SPVM_NATIVE_COMPILER* compiler|SPVM::Document::NativeAPI::Compiler>, int32_t index);>
+C<const char* (*get_class_search_dir)(L<SPVM_NATIVE_COMPILER* compiler|SPVM::Document::NativeAPI::Compiler>, int32_t index);>
 
 Searches a class search directory given the index I<index>.
 
 If it is found, returns it. Otherwise, returns C<NULL>.
 
-=head2 add_include_dir
+=head2 add_class_search_dir
   
-C<void (*add_include_dir)(L<SPVM_NATIVE_COMPILER* compiler|SPVM::Document::NativeAPI::Compiler>, const char* include_dir);>
+C<void (*add_class_search_dir)(L<SPVM_NATIVE_COMPILER* compiler|SPVM::Document::NativeAPI::Compiler>, const char* class_search_dir);>
 
-Adds I<include_dir> at the end of the class search directories.
+Adds I<class_search_dir> at the end of the class search directories.
 
-=head2 clear_include_dirs
+=head2 clear_class_search_dirs
   
-C<void (*clear_include_dirs)(L<SPVM_NATIVE_COMPILER* compiler|SPVM::Document::NativeAPI::Compiler>);>
+C<void (*clear_class_search_dirs)(L<SPVM_NATIVE_COMPILER* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
 Removes all class search directories.
 
@@ -136,11 +136,11 @@ C<SPVM_NATIVE_RUNTIME* (*get_runtime)(L<SPVM_NATIVE_COMPILER* compiler|SPVM::Doc
 
 Returns the L<runtime|SPVM::Document::NativeAPI::Runtime> that is build by the compiler I<compiler>.
 
-=head2 prepend_include_dir
+=head2 prepend_class_search_dir
   
-C<void (*prepend_include_dir)(L<SPVM_NATIVE_COMPILER* compiler|SPVM::Document::NativeAPI::Compiler>, const char* include_dir);>
+C<void (*prepend_class_search_dir)(L<SPVM_NATIVE_COMPILER* compiler|SPVM::Document::NativeAPI::Compiler>, const char* class_search_dir);>
 
-Prepends I<include_dir> to the class search directory.
+Prepends I<class_search_dir> to the class search directory.
 
 =head2 compile_anon_class
   
@@ -170,10 +170,10 @@ Same as L</"compile_anon_class">.
   3 set_start_line
   4 get_start_file
   5 set_start_file
-  6 get_include_dirs_length
-  7 get_include_dir
-  8 add_include_dir
-  9 clear_include_dirs
+  6 get_class_search_dirs_length
+  7 get_class_search_dir
+  8 add_class_search_dir
+  9 clear_class_search_dirs
   10 add_class_file
   11 delete_class_file
   12 get_class_file
@@ -181,7 +181,7 @@ Same as L</"compile_anon_class">.
   14 get_error_message
   15 get_error_messages_length
   16 get_runtime
-  17 prepend_include_dir
+  17 prepend_class_search_dir
   18 compile_anon_class
   19 compile_script
 

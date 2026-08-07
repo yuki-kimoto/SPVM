@@ -601,10 +601,10 @@ struct spvm_api_compiler {
   void (*set_start_line)(SPVM_NATIVE_COMPILER* compiler, int32_t start_line);
   const char* (*get_start_file)(SPVM_NATIVE_COMPILER* compiler);
   void (*set_start_file)(SPVM_NATIVE_COMPILER* compiler, const char* start_file);
-  int32_t (*get_include_dirs_length )(SPVM_NATIVE_COMPILER* compiler);
-  const char* (*get_include_dir )(SPVM_NATIVE_COMPILER* compiler, int32_t index);
-  void (*add_include_dir)(SPVM_NATIVE_COMPILER* compiler, const char* include_dir);
-  void (*clear_include_dirs)(SPVM_NATIVE_COMPILER* compiler);
+  int32_t (*get_class_search_dirs_length )(SPVM_NATIVE_COMPILER* compiler);
+  const char* (*get_class_search_dir)(SPVM_NATIVE_COMPILER* compiler, int32_t index);
+  void (*add_class_search_dir)(SPVM_NATIVE_COMPILER* compiler, const char* class_search_dir);
+  void (*clear_class_search_dirs)(SPVM_NATIVE_COMPILER* compiler);
   void (*add_class_file)(SPVM_NATIVE_COMPILER* compiler, const char* class_name);
   void (*delete_class_file)(SPVM_NATIVE_COMPILER* compiler, const char* class_name);
   SPVM_NATIVE_CLASS_FILE* (*get_class_file)(SPVM_NATIVE_COMPILER* compiler, const char* class_name);
@@ -612,7 +612,7 @@ struct spvm_api_compiler {
   const char* (*get_error_message)(SPVM_NATIVE_COMPILER* compiler, int32_t index);
   int32_t (*get_error_messages_length)(SPVM_NATIVE_COMPILER* compiler);
   SPVM_NATIVE_RUNTIME* (*get_runtime)(SPVM_NATIVE_COMPILER* compiler);
-  void (*prepend_include_dir)(SPVM_NATIVE_COMPILER* compiler, const char* include_dir);
+  void (*prepend_class_search_dir)(SPVM_NATIVE_COMPILER* compiler, const char* class_search_dir);
   int32_t (*compile_anon_class)(SPVM_NATIVE_COMPILER* compiler, const char* source, const char** anon_basic_type_name_ptr);
   int32_t (*compile_script)(SPVM_NATIVE_COMPILER* compiler, const char* source, const char** anon_basic_type_name_ptr);
 };

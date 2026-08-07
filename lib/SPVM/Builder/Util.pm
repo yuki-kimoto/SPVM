@@ -412,7 +412,7 @@ sub create_make_rule_parallel {
   my $build_options_hash_str = "{" . join(', ', @build_options) . "}";
   
   # Build @INC string for -I
-  my $inc = $options->{include_dir} // [];
+  my $inc = $options->{class_search_dir} // [];
   my $inc_string = '';
   if (@$inc) {
     $inc_string = join(' ', map { "-I$_" } @$inc) . ' ';
@@ -563,17 +563,17 @@ sub create_cfunc_name {
 sub parse_lib_directive {
   my ($source, $bin) = @_;
   
-  my $include_dirs = [];
+  my $class_search_dirs = [];
   
   while ($source =~ /^#lib "([^"]+)"/gm) {
-    my $include_dir = $1;
+    my $class_search_dir = $1;
     
-    $include_dir =~ s/\$FindBin::Bin/$bin/g;
+    $class_search_dir =~ s/\$FindBin::Bin/$bin/g;
     
-    unshift @$include_dirs, $include_dir;
+    unshift @$class_search_dirs, $class_search_dir;
   }
   
-  return $include_dirs;
+  return $class_search_dirs;
 }
 
 # Create C string literal for MSVC/TCC compatibility
@@ -799,12 +799,12 @@ sub quote_literal {
 }
 
 sub setup_spvm_command_environment {
-  my ($script_name, $source, $blib, $spvm_include_dirs, $build_dir, $quiet, $no_quiet, $warning, $force) = @_;
+  my ($script_name, $source, $blib, $class_search_dirs, $build_dir, $quiet, $no_quiet, $warning, $force) = @_;
   
   $0 = $script_name;
   FindBin::again();
   
-  @INC = @{SPVM::Builder::Util::resolve_spvm_command_inc(\@INC, $source, $blib, $spvm_include_dirs)};
+  @INC = @{SPVM::Builder::Util::resolve_spvm_command_inc(\@INC, $source, $blib, $class_search_dirs)};
   
   if (defined $build_dir) {
     $ENV{SPVM_BUILD_DIR} = $build_dir;
@@ -827,18 +827,18 @@ sub setup_spvm_command_environment {
 }
 
 sub resolve_spvm_command_inc {
-  my ($current_inc, $source, $blib, $include_dirs) = @_;
+  my ($current_inc, $source, $blib, $class_search_dirs) = @_;
   
-  my $include_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
+  my $class_search_dirs_by_lib_directive = SPVM::Builder::Util::parse_lib_directive($source, $FindBin::Bin);
   
   # Get blib include directories if $blib is true
-  my @blib_include_dirs;
+  my @blib_class_search_dirs;
   if ($blib) {
     # Temporarily isolate @INC to get paths from the blib module
     local @INC;
     require blib;
     blib->import;
-    @blib_include_dirs = @INC;
+    @blib_class_search_dirs = @INC;
   }
   
   # Final include directories
@@ -848,13 +848,13 @@ sub resolve_spvm_command_inc {
   # we add paths in reverse order of priority using unshift.
   
   # 3rd priority: include directories from arguments (like -I)
-  unshift @inc, @$include_dirs;
+  unshift @inc, @$class_search_dirs;
   
   # 2nd priority: include directories from blib (like -Mblib)
-  unshift @inc, @blib_include_dirs;
+  unshift @inc, @blib_class_search_dirs;
   
   # 1st priority: include directories from #lib directives in the source (like use lib)
-  unshift @inc, @$include_dirs_by_lib_directive;
+  unshift @inc, @$class_search_dirs_by_lib_directive;
   
   return \@inc;
 }

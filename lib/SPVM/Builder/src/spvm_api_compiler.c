@@ -26,10 +26,10 @@ SPVM_API_COMPILER* SPVM_API_COMPILER_new_api() {
     SPVM_API_COMPILER_set_start_line,
     SPVM_API_COMPILER_get_start_file,
     SPVM_API_COMPILER_set_start_file,
-    SPVM_API_COMPILER_get_include_dirs_length,
-    SPVM_API_COMPILER_get_include_dir,
-    SPVM_API_COMPILER_add_include_dir,
-    SPVM_API_COMPILER_clear_include_dirs,
+    SPVM_API_COMPILER_get_class_search_dirs_length,
+    SPVM_API_COMPILER_get_class_search_dir,
+    SPVM_API_COMPILER_add_class_search_dir,
+    SPVM_API_COMPILER_clear_class_search_dirs,
     SPVM_API_COMPILER_add_class_file,
     SPVM_API_COMPILER_delete_class_file,
     SPVM_API_COMPILER_get_class_file,
@@ -37,7 +37,7 @@ SPVM_API_COMPILER* SPVM_API_COMPILER_new_api() {
     SPVM_API_COMPILER_get_error_message,
     SPVM_API_COMPILER_get_error_messages_length,
     SPVM_API_COMPILER_get_runtime,
-    SPVM_API_COMPILER_prepend_include_dir,
+    SPVM_API_COMPILER_prepend_class_search_dir,
     SPVM_API_COMPILER_compile_anon_class,
     SPVM_API_COMPILER_compile_script,
   };
@@ -71,20 +71,20 @@ void SPVM_API_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start
   SPVM_COMPILER_set_start_file(compiler, start_file);
 }
 
-void SPVM_API_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {
-  SPVM_COMPILER_add_include_dir(compiler, include_dir);
+void SPVM_API_COMPILER_add_class_search_dir(SPVM_COMPILER* compiler, const char* class_search_dir) {
+  SPVM_COMPILER_add_class_search_dir(compiler, class_search_dir);
 }
 
-int32_t SPVM_API_COMPILER_get_include_dirs_length (SPVM_COMPILER* compiler) {
-  return SPVM_COMPILER_get_include_dirs_length(compiler);
+int32_t SPVM_API_COMPILER_get_class_search_dirs_length (SPVM_COMPILER* compiler) {
+  return SPVM_COMPILER_get_class_search_dirs_length(compiler);
 }
 
-const char* SPVM_API_COMPILER_get_include_dir (SPVM_COMPILER* compiler, int32_t index) {  
-  return SPVM_COMPILER_get_include_dir(compiler, index);
+const char* SPVM_API_COMPILER_get_class_search_dir(SPVM_COMPILER* compiler, int32_t index) {  
+  return SPVM_COMPILER_get_class_search_dir(compiler, index);
 }
 
-void SPVM_API_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler) {
-  SPVM_COMPILER_clear_include_dirs(compiler);
+void SPVM_API_COMPILER_clear_class_search_dirs(SPVM_COMPILER* compiler) {
+  SPVM_COMPILER_clear_class_search_dirs(compiler);
 }
 
 void SPVM_API_COMPILER_add_class_file(SPVM_COMPILER* compiler, const char* class_name) {
@@ -115,8 +115,8 @@ SPVM_RUNTIME* SPVM_API_COMPILER_get_runtime(SPVM_COMPILER* compiler) {
   return SPVM_COMPILER_get_runtime(compiler);
 }
 
-void SPVM_API_COMPILER_prepend_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {
-  SPVM_COMPILER_prepend_include_dir(compiler, include_dir);
+void SPVM_API_COMPILER_prepend_class_search_dir(SPVM_COMPILER* compiler, const char* class_search_dir) {
+  SPVM_COMPILER_prepend_class_search_dir(compiler, class_search_dir);
 }
 
 void  SPVM_API_COMPILER_free_api(SPVM_API_COMPILER* api) {

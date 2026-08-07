@@ -41,7 +41,7 @@ sub new {
   $self->{builder} = $builder;
   
   my $compiler = SPVM::Builder::Native::Compiler->new;
-  $compiler->add_include_dir($_) for @{$builder->include_dirs};
+  $compiler->add_class_search_dir($_) for @{$builder->class_search_dirs};
   $self->{compiler} = $compiler;
   
   $self->compile;

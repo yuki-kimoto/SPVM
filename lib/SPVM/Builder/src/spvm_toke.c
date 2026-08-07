@@ -537,12 +537,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->ch_ptr++;
           }
           
-          int32_t include_dir_length = 0;
+          int32_t class_search_dir_length = 0;
           if (*compiler->ch_ptr == '"') {
             
             compiler->ch_ptr++;
             
-            const char* include_dir_begin_ptr = compiler->ch_ptr;
+            const char* class_search_dir_begin_ptr = compiler->ch_ptr;
             while (*compiler->ch_ptr != '"') {
               if (*compiler->ch_ptr == '\n') {
                 SPVM_COMPILER_error(compiler, "The directory specified by a lib directive must end with \".\n  at %s line %d", compiler->current_file, compiler->current_line);
@@ -550,7 +550,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               
               compiler->ch_ptr++;
-              include_dir_length++;
+              class_search_dir_length++;
             }
             
             compiler->ch_ptr++;
@@ -569,7 +569,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             return 0;
           }
           
-          if (include_dir_length == 0) {
+          if (class_search_dir_length == 0) {
             SPVM_COMPILER_error(compiler, "The directory specified by a lib directive must not be an empty string.\n  at %s line %d", compiler->current_file, compiler->current_line);
             return 0;
           }
@@ -2868,19 +2868,19 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
         
         SPVM_CLASS_FILE* class_file = SPVM_COMPILER_get_class_file(compiler, basic_type_name);
         
-        const char* include_dir = NULL;
+        const char* class_search_dir = NULL;
         if (!class_file) {
           
           // Search class file
           FILE* fh = NULL;
-          int32_t include_dirs_length = SPVM_COMPILER_get_include_dirs_length(compiler);
-          for (int32_t i = 0; i < include_dirs_length; i++) {
-            include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
+          int32_t class_search_dirs_length = SPVM_COMPILER_get_class_search_dirs_length(compiler);
+          for (int32_t i = 0; i < class_search_dirs_length; i++) {
+            class_search_dir = SPVM_COMPILER_get_class_search_dir(compiler, i);
             
             // File name
-            int32_t file_name_length = (int32_t)(strlen(include_dir) + 1 + strlen(current_class_rel_file));
+            int32_t file_name_length = (int32_t)(strlen(class_search_dir) + 1 + strlen(current_class_rel_file));
             current_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, file_name_length + 1);
-            sprintf(current_file, "%s/%s", include_dir, current_class_rel_file);
+            sprintf(current_file, "%s/%s", class_search_dir, current_class_rel_file);
             current_file[file_name_length] = '\0';
             
             // \ is replaced to /
@@ -2901,24 +2901,24 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
           // Module not found
           if (!fh) {
             if (!op_use->uv.use->is_require) {
-              int32_t include_dirs_str_length = 0;
-              for (int32_t i = 0; i < include_dirs_length; i++) {
-                const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
-                include_dirs_str_length += 1 + strlen(include_dir);
+              int32_t class_search_dirs_str_length = 0;
+              for (int32_t i = 0; i < class_search_dirs_length; i++) {
+                const char* class_search_dir = SPVM_COMPILER_get_class_search_dir(compiler, i);
+                class_search_dirs_str_length += 1 + strlen(class_search_dir);
               }
-              char* include_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, include_dirs_str_length + 1);
-              int32_t include_dirs_str_offset = 0;
-              for (int32_t i = 0; i < include_dirs_length; i++) {
-                const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
-                sprintf(include_dirs_str + include_dirs_str_offset, "%s", include_dir);
-                include_dirs_str_offset += strlen(include_dir);
-                if (i != include_dirs_length - 1) {
-                  include_dirs_str[include_dirs_str_offset] = ' ';
-                  include_dirs_str_offset++;
+              char* class_search_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, class_search_dirs_str_length + 1);
+              int32_t class_search_dirs_str_offset = 0;
+              for (int32_t i = 0; i < class_search_dirs_length; i++) {
+                const char* class_search_dir = SPVM_COMPILER_get_class_search_dir(compiler, i);
+                sprintf(class_search_dirs_str + class_search_dirs_str_offset, "%s", class_search_dir);
+                class_search_dirs_str_offset += strlen(class_search_dir);
+                if (i != class_search_dirs_length - 1) {
+                  class_search_dirs_str[class_search_dirs_str_offset] = ' ';
+                  class_search_dirs_str_offset++;
                 }
               }
               
-              SPVM_COMPILER_error(compiler, "Failed to load '%s' module. The class file '%s' is not found in (%s).\n  at %s line %d", basic_type_name, current_class_rel_file, include_dirs_str, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "Failed to load '%s' module. The class file '%s' is not found in (%s).\n  at %s line %d", basic_type_name, current_class_rel_file, class_search_dirs_str, op_use->file, op_use->line);
               
               return 0;
             }
@@ -2954,7 +2954,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
                 SPVM_CLASS_FILE* class_file = SPVM_COMPILER_get_class_file(compiler, basic_type_name);
                 SPVM_CLASS_FILE_set_file(compiler, class_file, current_file);
                 SPVM_CLASS_FILE_set_rel_file(compiler, class_file, current_class_rel_file);
-                SPVM_CLASS_FILE_set_dir(compiler, class_file, include_dir);
+                SPVM_CLASS_FILE_set_dir(compiler, class_file, class_search_dir);
                 SPVM_CLASS_FILE_set_content(compiler, class_file, source);
                 SPVM_CLASS_FILE_set_content_length(compiler, class_file, content_length);
               }

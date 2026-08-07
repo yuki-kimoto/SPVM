@@ -20,7 +20,7 @@ The instance of L<Native::Runtime|SPVM::Native::Runtime> class is build by L</"g
   
   my $compiler = Native::Compiler->new;
   
-  $compiler->add_include_dir("lib");
+  $compiler->add_class_search_dir("lib");
   
   $compiler->set_start_file(__FILE__);
   
@@ -54,33 +54,33 @@ Creates a new C<Native::Compiler> object and returns it.
 
 =head1 Instance Methods
 
-=head2 get_include_dirs_length
+=head2 get_class_search_dirs_length
 
-C<method get_include_dirs_length : int ();>
+C<method get_class_search_dirs_length : int ();>
 
 Returns the length of the class search directories.
 
-=head2 get_include_dir
+=head2 get_class_search_dir
 
-C<method get_include_dir : string ($index : int);>
+C<method get_class_search_dir : string ($index : int);>
 
 Returns a class search directory at the index $index.
 
-=head2 add_include_dir
+=head2 add_class_search_dir
 
-C<method add_include_dir : void ($include_dir : string);>
+C<method add_class_search_dir : void ($class_search_dir : string);>
 
 Adds a class search directory at the tail of the current class search directories.
 
-=head2 prepend_include_dir
+=head2 prepend_class_search_dir
 
-C<method prepend_include_dir : void ($include_dir : string);>
+C<method prepend_class_search_dir : void ($class_search_dir : string);>
 
 Adds a class search directory at the head of the current class search directories.
 
-=head2 clear_include_dirs
+=head2 clear_class_search_dirs
 
-C<method clear_include_dirs : void ();>
+C<method clear_class_search_dirs : void ();>
 
 Removes all class search directories.
 

@@ -33,7 +33,7 @@ sub compile_not_ok {
   
   my $builder = SPVM::Builder->new;
   
-  my $tmp_include_dir = File::Temp->newdir;
+  my $tmp_class_search_dir = File::Temp->newdir;
     
   my $first_basic_type_name;
   for my $source (@$sources) {
@@ -49,7 +49,7 @@ sub compile_not_ok {
       $first_basic_type_name = $basic_type_name;
     }
     
-    my $class_file = "$tmp_include_dir/SPVM/$basic_type_name.spvm";
+    my $class_file = "$tmp_class_search_dir/SPVM/$basic_type_name.spvm";
     $class_file =~ s|::|/|g;
     
     mkpath dirname $class_file;
@@ -62,7 +62,7 @@ sub compile_not_ok {
     close $class_fh;
   }
   
-  compile_not_ok_file($first_basic_type_name, $error_message_re, {include_dir => "$tmp_include_dir", file => $file, line => $line});
+  compile_not_ok_file($first_basic_type_name, $error_message_re, {class_search_dir => "$tmp_class_search_dir", file => $file, line => $line});
 }
 
 sub compile_not_ok_file {
@@ -72,7 +72,7 @@ sub compile_not_ok_file {
     $options = {};
   }
   
-  my $include_dir = $options->{include_dir};
+  my $class_search_dir = $options->{class_search_dir};
   
   my (undef, $caller_file, $caller_line) = caller;
   
@@ -93,14 +93,14 @@ sub compile_not_ok_file {
   }
   
   my $builder = SPVM::Builder->new;
-  if (defined $include_dir) {
-    unshift @{$builder->include_dirs}, $include_dir;
+  if (defined $class_search_dir) {
+    unshift @{$builder->class_search_dirs}, $class_search_dir;
   }
   
   my $compiler = SPVM::Builder::Native::Compiler->new;
   
-  for my $include_dir (@{$builder->include_dirs}) {
-    $compiler->add_include_dir($include_dir);
+  for my $class_search_dir (@{$builder->class_search_dirs}) {
+    $compiler->add_class_search_dir($class_search_dir);
   }
   
   $compiler->set_start_file(__FILE__);
@@ -131,7 +131,7 @@ sub compile_ok {
   
   my $builder = SPVM::Builder->new;
   
-  my $tmp_include_dir = File::Temp->newdir;
+  my $tmp_class_search_dir = File::Temp->newdir;
     
   my $first_basic_type_name;
   for my $source (@$sources) {
@@ -147,7 +147,7 @@ sub compile_ok {
       $first_basic_type_name = $basic_type_name;
     }
     
-    my $class_file = "$tmp_include_dir/SPVM/$basic_type_name.spvm";
+    my $class_file = "$tmp_class_search_dir/SPVM/$basic_type_name.spvm";
     $class_file =~ s|::|/|g;
     
     mkpath dirname $class_file;
@@ -160,7 +160,7 @@ sub compile_ok {
     close $class_fh;
   }
   
-  compile_ok_file($first_basic_type_name, {include_dir => "$tmp_include_dir", file => $file, line => $line});
+  compile_ok_file($first_basic_type_name, {class_search_dir => "$tmp_class_search_dir", file => $file, line => $line});
 }
 
 sub compile_ok_file {
@@ -170,7 +170,7 @@ sub compile_ok_file {
     $options = {};
   }
   
-  my $include_dir = $options->{include_dir};
+  my $class_search_dir = $options->{class_search_dir};
   
   my (undef, $caller_file, $caller_line) = caller;
   
@@ -191,14 +191,14 @@ sub compile_ok_file {
   }
   
   my $builder = SPVM::Builder->new;
-  if (defined $include_dir) {
-    unshift @{$builder->include_dirs}, $include_dir;
+  if (defined $class_search_dir) {
+    unshift @{$builder->class_search_dirs}, $class_search_dir;
   }
   
   my $compiler = SPVM::Builder::Native::Compiler->new;
   
-  for my $include_dir (@{$builder->include_dirs}) {
-    $compiler->add_include_dir($include_dir);
+  for my $class_search_dir (@{$builder->class_search_dirs}) {
+    $compiler->add_class_search_dir($class_search_dir);
   }
   
   $compiler->set_start_file(__FILE__);

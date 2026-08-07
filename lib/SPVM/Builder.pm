@@ -34,7 +34,7 @@ has [qw(
   
   quiet
   work_dir
-  include_dirs
+  class_search_dirs
   global_lock_fh
   ninja
   is_jit
@@ -57,7 +57,7 @@ sub new {
   my $self = {
     build_dir => $ENV{SPVM_BUILD_DIR},
     jobs => SPVM::Builder::Util::get_cpu_count() + 2,
-    include_dirs => \@INC,
+    class_search_dirs => \@INC,
     work_dir => 'work',
     @_
   };

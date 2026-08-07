@@ -173,11 +173,11 @@ An array reference of order-only dependency file paths for the C<make> target. T
 
   $options->{order_only_dependent_files} = ['$(INST_DYNAMIC)'];
 
-=item * C<include_dir>
+=item * C<class_search_dir>
 
 An array reference of include directories (corresponding to C<-I> options) for the Perl interpreter.
 
-  $options->{include_dir} = ['lib', 'ext/lib'];
+  $options->{class_search_dir} = ['lib', 'ext/lib'];
 
 =back
 

@@ -109,8 +109,8 @@ sub new {
   
   my $compiler = SPVM::Builder::Native::Compiler->new;
   
-  for my $include_dir (@{$builder->include_dirs}) {
-    $compiler->add_include_dir($include_dir);
+  for my $class_search_dir (@{$builder->class_search_dirs}) {
+    $compiler->add_class_search_dir($class_search_dir);
   }
   
   $self->{compiler} = $compiler;

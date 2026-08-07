@@ -302,8 +302,8 @@ package MY {
       
       # Build native class in test directory for tests
       {
-        my $test_include_dir = 't/04_native_api/lib';
-        $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('TestCase::NativeAPISrc', {%$options, output_dir => $test_include_dir, include_dir => [$test_include_dir]});
+        my $test_class_search_dir = 't/04_native_api/lib';
+        $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('TestCase::NativeAPISrc', {%$options, output_dir => $test_class_search_dir, class_search_dir => [$test_class_search_dir]});
       }
       
     }
