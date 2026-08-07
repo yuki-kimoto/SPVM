@@ -45,7 +45,7 @@ GetOptions(
   #################### [SPVM Only Command Line Options Start] ####################
   'no-precompile-tests' => \my $no_precompile_tests,
   #################### [SPVM Only Line Options Options End] ####################
-);
+) or die 'Invalid command line options are specified.';
 
 if ($meta) {
   $no_build_spvm_modules = 1;
