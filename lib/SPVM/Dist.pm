@@ -933,6 +933,7 @@ unless (\$meta) {
 }
 \$jobs //= 1;
 
+my \@test_clean_files = map { "t/" . join('', map { '*/' } 1 .. \$_) . "*.\$Config{dlext}" } (1 .. 10);
 my \%configure_requires_and_prereq_pm = (
   'SPVM' => '$SPVM::VERSION',
 );
@@ -944,7 +945,7 @@ WriteMakefile(
     (ABSTRACT_FROM => '$perl_class_rel_file',
      AUTHOR => '$user_name<$user_email>') : ()),
   test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
-  clean => {FILES => ['.spvm_build']},
+  clean => {FILES => ['.spvm_build', \@test_clean_files]},
   META_MERGE => {
     'meta-spec' => {
       version => 2,
