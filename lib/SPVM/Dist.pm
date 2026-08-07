@@ -887,7 +887,7 @@ GetOptions(
   'parallel-make' => \\my \$parallel_make,
   'parallel-test' => \\my \$parallel_test,
   'jobs=i' => \\my \$jobs,
-);
+) or die 'Invalid command line options are specified.';
 
 if (\$meta) {
   \$no_build_spvm_modules = 1;
