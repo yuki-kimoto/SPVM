@@ -1,0 +1,21 @@
+use lib "t/lib";
+use TestAuto;
+use TestUtil::MyLib;
+
+use strict;
+use warnings;
+
+use Test::More;
+
+use SPVM 'TestCase::Issues::Issue902';
+
+my $api = SPVM::api();
+
+my $start_memory_blocks_count = $api->get_memory_blocks_count;
+
+$api->destroy_runtime_permanent_vars;
+
+my $end_memory_blocks_count = $api->get_memory_blocks_count;
+is($end_memory_blocks_count, $start_memory_blocks_count);
+
+done_testing;

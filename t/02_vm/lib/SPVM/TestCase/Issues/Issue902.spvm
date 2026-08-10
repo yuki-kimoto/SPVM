@@ -1,0 +1,20 @@
+class TestCase::Issues::Issue902 {
+  use Complex_2d;
+  
+  has foo : public Int;
+  
+  private method add_task : void ($object : object) {
+    
+    my $self = new TestCase::Issues::Issue902;
+    my $foo = Int->new(1);
+    
+    $self->add_task([has number : int] method : void () {});
+    
+    if (0 || 0) {
+    }
+    elsif (0 || 0) {
+      $self->{foo} //= $foo;
+    }
+  }
+  
+}
