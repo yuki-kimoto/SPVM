@@ -3084,12 +3084,7 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
   op_culc->allow_narrowing_conversion = 1;
   op_culc->original_id = op_special_assign->id;
   
-  if (culc_op_id == SPVM_OP_C_ID_DEFINED_OR) {
-    op_culc = SPVM_OP_build_defined_or(compiler, op_culc, op_var_old_clone, op_src);
-  }
-  else {
-    SPVM_OP_build_binary_op(compiler, op_culc, op_var_old_clone, op_src);
-  }
+  SPVM_OP_build_binary_op(compiler, op_culc, op_var_old_clone, op_src);
   
   if (op_dist->id == SPVM_OP_C_ID_VAR || op_dist->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
     SPVM_OP_build_assign(compiler, op_assign_save_old, op_var_old, op_dist);
