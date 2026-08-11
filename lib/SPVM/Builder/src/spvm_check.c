@@ -1318,7 +1318,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_cur->file, op_cur->line);
           SPVM_LIST* dist_fields = basic_type_for_fields->fields;
           
-          SPVM_OP* op_name_var_dist = SPVM_OP_new_op_name_tmp_var(compiler, op_cur->file, op_cur->line);
+          SPVM_OP* op_name_var_dist = SPVM_CHECK_new_op_name_tmp_var(compiler, op_cur->file, op_cur->line);
           SPVM_OP* op_var_dist = SPVM_OP_new_op_var(compiler, op_name_var_dist);
           SPVM_OP* op_var_dist_decl = SPVM_OP_new_op_var_decl(compiler, op_cur->file, op_cur->line);
           SPVM_OP_build_var_decl(compiler, op_var_dist_decl, op_var_dist, NULL, NULL);
@@ -1328,7 +1328,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           
           SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_var_dist);
           
-          SPVM_OP* op_name_var_src = SPVM_OP_new_op_name_tmp_var(compiler, op_cur->file, op_cur->line);
+          SPVM_OP* op_name_var_src = SPVM_CHECK_new_op_name_tmp_var(compiler, op_cur->file, op_cur->line);
           SPVM_OP* op_var_src = SPVM_OP_new_op_var(compiler, op_name_var_src);
           SPVM_OP* op_var_src_decl = SPVM_OP_new_op_var_decl(compiler, op_cur->file, op_cur->line);
           SPVM_OP_build_var_decl(compiler, op_var_src_decl, op_var_src, NULL, NULL);
@@ -2743,7 +2743,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_defined_or->file, op_defined_or->line);
               op_sequence->original_id = SPVM_OP_C_ID_DEFINED_OR;
               
-              SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, op_defined_or->file, op_defined_or->line);
+              SPVM_OP* op_name_var = SPVM_CHECK_new_op_name_tmp_var(compiler, op_defined_or->file, op_defined_or->line);
               SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
               SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_defined_or->file, op_defined_or->line);
               SPVM_OP* op_left_operand_type = SPVM_OP_new_op_type(compiler, left_operand_type->basic_type->name, left_operand_type->basic_type, left_operand_type->dimension, left_operand_type->flag, op_defined_or->file, op_defined_or->line);
@@ -2847,7 +2847,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_ternary->file, op_ternary->line);
               op_sequence->original_id = SPVM_OP_C_ID_TERNARY_OP;
               
-              SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, op_ternary->file, op_ternary->line);
+              SPVM_OP* op_name_var = SPVM_CHECK_new_op_name_tmp_var(compiler, op_ternary->file, op_ternary->line);
               SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
               SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_ternary->file, op_ternary->line);
               SPVM_OP* op_left_operand_type = SPVM_OP_new_op_type(compiler, left_operand_type->basic_type->name, left_operand_type->basic_type, left_operand_type->dimension, left_operand_type->flag, op_ternary->file, op_ternary->line);
@@ -3222,7 +3222,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_logical_and->file, op_logical_and->line);
               
-              SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, op_logical_and->file, op_logical_and->line);
+              SPVM_OP* op_name_var = SPVM_CHECK_new_op_name_tmp_var(compiler, op_logical_and->file, op_logical_and->line);
               SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
               SPVM_OP* op_type_var = SPVM_OP_new_op_int_type(compiler, op_logical_and->file, op_logical_and->line);
               SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_logical_and->file, op_logical_and->line);
@@ -3309,7 +3309,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_logical_or->file, op_logical_or->line);
               
-              SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, op_logical_or->file, op_logical_or->line);
+              SPVM_OP* op_name_var = SPVM_CHECK_new_op_name_tmp_var(compiler, op_logical_or->file, op_logical_or->line);
               SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
               SPVM_OP* op_type_var = SPVM_OP_new_op_int_type(compiler, op_logical_or->file, op_logical_or->line);
               SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_logical_or->file, op_logical_or->line);
@@ -3387,7 +3387,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_logical_not->file, op_logical_not->line);
               
-              SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, op_logical_not->file, op_logical_not->line);
+              SPVM_OP* op_name_var = SPVM_CHECK_new_op_name_tmp_var(compiler, op_logical_not->file, op_logical_not->line);
               SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
               SPVM_OP* op_type_var = SPVM_OP_new_op_int_type(compiler, op_logical_not->file, op_logical_not->line);
               SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_logical_not->file, op_logical_not->line);
@@ -5821,6 +5821,18 @@ SPVM_OP* SPVM_CHECK_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPV
   SPVM_LIST_push(method->op_method->uv.method->var_decls, op_var_tmp->uv.var->var_decl);
   
   return op_var_tmp;
+}
+
+SPVM_OP* SPVM_CHECK_new_op_name_tmp_var(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  
+  // Temparary variable name
+  char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, strlen("$.tmp_in_check2147483647") + 1);
+  sprintf(name, "$.tmp_in_check%d", compiler->current_tmp_vars_length);
+  compiler->current_tmp_vars_length++;
+  SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
+  op_name->uv.name = name;
+  
+  return op_name;
 }
 
 // Don't use this method in spvm_op.c because types must not be shared in builiding AST.
