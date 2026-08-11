@@ -80,16 +80,6 @@ class TestCase::Operator::DefinedOr {
     }
     
     {
-      my $ret : object;
-      $ret //= Int->new(2);
-      
-      unless ((int)$ret == 2) {
-        return 0;
-      }
-      
-    }
-    
-    {
       my $value = (List of Int)undef;
       my $ret = $value // undef;
       
@@ -98,6 +88,41 @@ class TestCase::Operator::DefinedOr {
         return 0;
       }
       
+    }
+    
+    # Define-or
+    {
+      {
+        my $ret : object;
+        $ret //= Int->new(2);
+        
+        unless ((int)$ret == 2) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        {
+          my $simple = TestCase::Simple->new;
+          $simple->{string_value} //= "headers";
+          
+          unless ($simple->{string_value} eq "headers") {
+            return 0;
+          }
+        }
+      }
+      
+      {
+        {
+          my $simple = TestCase::Simple->new;
+          $simple->{object_value} //= TestCase::Minimal->new_xy(1, 2);
+          
+          unless ($simple->{object_value}{x} == 1) {
+            return 0;
+          }
+        }
+      }
     }
     
     return 1;
