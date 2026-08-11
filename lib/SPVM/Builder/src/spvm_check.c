@@ -4826,13 +4826,13 @@ void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_clas
 }
 
 void SPVM_CHECK_check_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access) {
-
+  
   SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
-
+  
   if (field_access->field) {
     return;
   }
-
+  
   SPVM_OP* op_operand = op_field_access->first;
   SPVM_OP* op_name = field_access->op_name;
   
@@ -4863,6 +4863,8 @@ void SPVM_CHECK_check_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_ac
     op_field_access->uv.field_access->field = found_field;
   }
   else {
+    SPVM_DUMPER_dump_ast(compiler, op_field_access);
+    
     SPVM_COMPILER_error(compiler, "%s field is not found in %s class or its super classes.\n  at %s line %d", field_name, basic_type->name, op_field_access->file, op_field_access->line);
     return;
   }

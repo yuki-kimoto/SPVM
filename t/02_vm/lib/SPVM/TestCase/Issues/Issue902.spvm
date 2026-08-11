@@ -1,13 +1,14 @@
 class TestCase::Issues::Issue902 {
   use Complex_2d;
   
-  private method add_task : void () {
+  private static method test : int () {
     
     if (1 || 1) {
       my $nums = new Int[1];
       $nums->[0] //= undef;
     }
     
+    return 1;
   }
   
 }

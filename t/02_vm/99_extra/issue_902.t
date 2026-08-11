@@ -13,6 +13,8 @@ my $api = SPVM::api();
 
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
+ok(SPVM::TestCase::Issues::Issue902->test);
+
 $api->destroy_runtime_permanent_vars;
 
 my $end_memory_blocks_count = $api->get_memory_blocks_count;
