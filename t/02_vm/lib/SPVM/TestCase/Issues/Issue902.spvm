@@ -10,9 +10,7 @@ class TestCase::Issues::Issue902 {
     
     $self->add_task([has number : int] method : void () {});
     
-    if (0 || 0) {
-    }
-    elsif (0 || 0) {
+    if (0 || 0 || 0) {
       $self->{foo} //= $foo;
     }
   }
