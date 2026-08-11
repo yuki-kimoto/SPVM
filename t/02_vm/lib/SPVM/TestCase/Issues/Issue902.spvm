@@ -5,9 +5,8 @@ class TestCase::Issues::Issue902 {
   
   private method add_task : void ($object : object) {
     
-    $self->add_task([has number : int] method : void () {});
-    
     if (1 || 1 || 1) {
+      $self->add_task([has number : int] method : void () {});
       my $self = new TestCase::Issues::Issue902;
       $self->{foo} //= undef;
     }
