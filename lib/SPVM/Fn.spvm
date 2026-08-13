@@ -2190,5 +2190,7 @@ class Fn {
   native static method getrandom : string ($size : int);
   
   native static method env : string ($name : string);
-
+  
+  native static method longmess : string ($message : string, $level : int = 0);
+  
 }

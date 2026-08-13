@@ -1945,11 +1945,23 @@ Exceptions:
 
 If the specified C<$level> is out of range of the caller stack, an exception is thrown.
 
+=head2 longmess
+
+C<static method longmess : string ($message : string, $level : int = 0);>
+
+Reconstructs a full message, including a stack trace, using the metadata stored in the runtime stack and the specified message string.
+
+The I<level> argument specifies the starting depth of the stack trace relative to the current call. For example, 0 starts from the caller of this method.
+
+This method calls the L<longmess|SPVM::Document::NativeAPI/"longmess"> native API.
+
+Returns the newly created string object.
+
 =head2 build_exception_message
 
 C<static method build_exception_message : string ($level : int = 0);>
 
-Reconstructs the full exception message, including a stack trace, using the metadata stored in the runtime stack.
+Reconstructs the full exception message, including a stack trace, by calling L</"longmess"> with the current exception object stored in the runtime stack.
 
 The I<level> argument specifies the starting depth of the stack trace relative to the current call. For example, 0 starts from the caller of this method.
 

@@ -318,6 +318,8 @@ ok(SPVM::TestCase::Module::Fn->get_call_depth);
 ok(SPVM::TestCase::Module::Fn->extra_build_caller_stack);
 ok(SPVM::TestCase::Module::Fn->is_utf8);
 ok(SPVM::TestCase::Module::Fn->env);
+ok(SPVM::TestCase::Module::Fn->build_exception_message);
+ok(SPVM::TestCase::Module::Fn->longmess);
 
 # All object is freed
 $api->destroy_runtime_permanent_vars;

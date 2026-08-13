@@ -9487,5 +9487,43 @@ class TestCase::Module::Fn {
 
     return 1;
   }
+
+  static method longmess : int () {
+    
+    my $message = "Error message";
+    
+    my $full_message = Fn->longmess($message, 0);
+    
+    unless (Fn->contains($full_message, "Error message")) {
+      diag "Longmess does not contain expected message";
+      return 0;
+    }
+    
+    unless (Fn->contains($full_message, "TestCase::Module::Fn#longmess")) {
+      diag "Longmess does not contain expected method name";
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method build_exception_message : int () {
+    
+    $@ = "Error message";
+    
+    my $full_message = Fn->build_exception_message(0);
+    
+    unless (Fn->contains($full_message, "Error message")) {
+      diag "Build exception message does not contain expected message";
+      return 0;
+    }
+    
+    unless (Fn->contains($full_message, "TestCase::Module::Fn#build_exception_message")) {
+      diag "Build exception message does not contain expected method name";
+      return 0;
+    }
+    
+    return 1;
+  }
   
 }
