@@ -7511,7 +7511,7 @@ static int32_t SPVM_API_build_caller_stack_line(char* buffer, const char* func_n
   }
 }
 
-SPVM_OBJECT* SPVM_API_build_caller_stack_lines(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t start_depth, int32_t end_depth) {
+SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t start_depth, int32_t end_depth) {
   
   const char* unknown_func_name = "(Method name unknown)";
   const char* unknown_file = "(File name unknown)";
@@ -7587,6 +7587,12 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines(SPVM_ENV* env, SPVM_VALUE* stack,
   }
   
   return obj_new_caller_stack_lines;
+}
+
+SPVM_OBJECT* SPVM_API_build_caller_stack_lines(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t start_depth, int32_t end_depth) {
+  SPVM_OBJECT* obj_caller_stack_lines = SPVM_API_build_caller_stack_lines(env, stack, obj_message, start_depth, end_depth);
+  SPVM_API_push_mortal(env, stack, obj_caller_stack_lines);
+  return obj_caller_stack_lines;
 }
 
 SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t level) {
