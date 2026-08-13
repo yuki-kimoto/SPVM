@@ -660,7 +660,6 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
   
   if (!stack[SPVM_API_C_STACK_INDEX_NO_RECORD_CALLER_INFO].ival) {
-    stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival++;
     SPVM_API_push_caller_info(env, stack, method, func_name, file, line);
   }
   
@@ -7247,6 +7246,8 @@ SPVM_OBJECT* SPVM_API_numeric_object_to_string(SPVM_ENV* env, SPVM_VALUE* stack,
 
 int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* current_method, const char* caller_method_abs_name, const char* caller_file, int32_t caller_line) {
   
+  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival++;
+  
   // Touch pointers to ensure they are valid and prevent optimization using volatile
   if (caller_method_abs_name) {
     volatile char c = *caller_method_abs_name;
@@ -7292,8 +7293,6 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
 void SPVM_API_push_caller_stack(SPVM_ENV* env, SPVM_VALUE* stack, const char* func_name, const char* file, int32_t line) {
   
   int32_t error_id = 0;
-  
-  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival++;
   
   int32_t level = 0;
   
