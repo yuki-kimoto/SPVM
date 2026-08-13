@@ -3938,9 +3938,9 @@ void SPVM_API_warn_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string,
   
   if (longmess) {
     int32_t scope_id = SPVM_API_enter_scope(env, stack);
-    SPVM_OBJECT* obj_empty_string = SPVM_API_new_string_no_mortal(env, stack, "", 0);
+    SPVM_OBJECT* obj_empty_string = SPVM_API_new_string(env, stack, "", 0);
     int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
-    SPVM_OBJECT* obj_longmess = SPVM_API_longmess_no_mortal(env, stack, obj_empty_string, current_call_depth);
+    SPVM_OBJECT* obj_longmess = SPVM_API_longmess(env, stack, obj_empty_string, current_call_depth);
     const char* longmess_chars = SPVM_API_get_chars(env, stack, obj_longmess);
     int32_t longmess_length = SPVM_API_length(env, stack, obj_longmess);
     if (longmess_length > 0) {
@@ -3949,7 +3949,7 @@ void SPVM_API_warn_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string,
     SPVM_API_leave_scope(env, stack, scope_id);
   }
   
-  fprintf(spvm_stderr, "\n", func_name, file, line);
+  fprintf(spvm_stderr, "\n\n", func_name, file, line);
   
 }
 
