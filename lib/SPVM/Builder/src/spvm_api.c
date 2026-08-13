@@ -3931,7 +3931,7 @@ void SPVM_API_warn_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string,
     }
   }
   else {
-    fprintf(spvm_stderr, "undef", func_name, file, line);
+    fprintf(spvm_stderr, "undef");
   }
   
   fprintf(spvm_stderr, "\n  %s at %s line %d", func_name, file, line);
