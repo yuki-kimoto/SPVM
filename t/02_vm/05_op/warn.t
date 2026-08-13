@@ -172,6 +172,31 @@ my $class_name = 'TestCase::Operator::Warn';
   }
 }
 
+# diag_level
+{
+  # diag_level 0
+  {
+    my $method_name = 'test_diag_level_zero';
+    TestUtil::generate_class_method_call_script($script_file, $class_name, $method_name);
+    my $output = `$^X -Mblib $script_file 2>&1`;
+    like($output, qr|Hello\n  TestCase::Operator::Warn#test_diag_level_zero at .*TestCase/Operator/Warn.spvm line|);
+  }
+  
+  # diag_level -1
+  {
+    my $method_name = 'test_diag_level_negative';
+    TestUtil::generate_class_method_call_script($script_file, $class_name, $method_name);
+    my $output = `$^X -Mblib $script_file 2>&1`;
+    is($output, "");
+  }
+  
+  # diag_level 1
+  {
+    eval { SPVM::TestCase::Operator::Warn->test_diag_level_positive };
+    like($@, qr/Hello/);
+  }
+}
+
 # All object is freed
 $api->destroy_runtime_permanent_vars;
 my $end_memory_blocks_count = $api->get_memory_blocks_count;

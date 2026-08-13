@@ -1459,6 +1459,10 @@ Examples:
 
 Same as L</"warn"> operator.
 
+=head2 diag_level Operator
+
+Same as L</"warn_level"> operator.
+
 =head2 address Operator
 
 The C<address> operator gets the address of an object or a reference as a hex string.

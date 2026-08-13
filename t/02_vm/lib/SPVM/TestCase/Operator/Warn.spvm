@@ -129,4 +129,25 @@ class TestCase::Operator::Warn { use Fn;
     return 1;
   }
   
+  static method test_diag_level_zero : int () {
+    
+    diag_level "Hello", 0;
+    
+    return 1;
+  }
+  
+  static method test_diag_level_negative : int () {
+    
+    diag_level "Hello", -1;
+    
+    return 1;
+  }
+  
+  static method test_diag_level_positive : int () {
+    
+    diag_level "Hello", 1;
+    
+    return 1;
+  }
+  
 }
