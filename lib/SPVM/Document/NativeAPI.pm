@@ -2867,26 +2867,14 @@ This is the same as L</"build_exception_message">, but the returned object is no
 
 C<SPVM_OBJ* (*build_exception_message)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t level);>
 
-Reconstructs a full exception message including a stack trace by using the metadata stored in the runtime stack.
-
-This function creates a new SPVM string object by combining the original exception message (stored in the exception slot of the stack) with caller information retrieved from the metadata slots.
-
-The I<level> argument specifies the range of the stack trace relative to the current call depth:
-
-* Positive values or zero: The trace starts from the exception origin down to the depth calculated as C<current_call_depth + level>.
-
-This is useful for C<eval> blocks or L<Fn#build_exception_message|SPVM::Fn/"build_exception_message"> to limit the trace depth.
-
-The metadata used for reconstruction includes the function name, file path, line number, and the caller information stack.
+Reconstructs a full exception message including a stack trace by calling L</"longmess"> with the current exception object stored in the runtime stack.
 
 Returns the newly created string object. This object is automatically pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
 Examples:
 
   SPVM_OBJ* obj_full_message = env->build_exception_message(env, stack, 0);
-  env->set_exception(env, stack, obj_full_message);
-
-=head2 is_utf8
+  env->set_exception(env, stack, obj_full_message);=head2 is_utf8
 
 C<int32_t (*is_utf8)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_OBJ* obj_string, int32_t* error_id);>
 
@@ -3011,6 +2999,30 @@ If the C<no_close> flag of the object I<object> is enabled, returns 1, otherwise
 C<void (*set_no_close)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_OBJ* object, int32_t no_close);>
 
 If I<no_close> is a true value, enables the C<no_close> flag of the object I<object>, otherwise disables it.
+
+=head2 longmess_no_mortal
+
+C<SPVM_OBJ* (*longmess_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_OBJ* obj_message|SPVM::Document::NativeClass/"Native Object">, int32_t level);>
+
+This is the same as L</"longmess">, but the returned object is not pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
+
+=head2 longmess
+
+C<SPVM_OBJ* (*longmess)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_OBJ* obj_message|SPVM::Document::NativeClass/"Native Object">, int32_t level);>
+
+Reconstructs a full message including a stack trace by using the metadata stored in the runtime stack.
+
+This function creates a new SPVM string object by combining the specified message object (I<obj_message>) with caller information retrieved from the metadata slots.
+
+The I<level> argument specifies the range of the stack trace relative to the current call depth:
+
+* Positive values or zero: The trace starts from the exception origin down to the depth calculated as C<current_call_depth + level>.
+
+This is useful for formatting messages with a stack trace.
+
+The metadata used for reconstruction includes the function name, file path, line number, and the caller information stack.
+
+Returns the newly created string object. This object is automatically pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
 =head1 Native API IDs
 
@@ -3297,7 +3309,9 @@ Native APIs have its IDs.
   278 set_error_id
   279 no_close
   280 set_no_close
-  
+  281 longmess_no_mortal
+  282 longmess
+
 =head1 Constant Values
 
 =head2 Basic Type IDs

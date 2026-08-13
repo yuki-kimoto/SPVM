@@ -478,6 +478,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_set_error_id,
     SPVM_API_no_close,
     SPVM_API_set_no_close,
+    SPVM_API_longmess_no_mortal,
+    SPVM_API_longmess,
   };
   
   SPVM_ENV* env = calloc(1, sizeof(env_init));

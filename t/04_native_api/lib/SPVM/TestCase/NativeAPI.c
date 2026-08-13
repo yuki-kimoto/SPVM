@@ -300,6 +300,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->set_error_id != &env_array[278]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->no_close != &env_array[279]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_no_close != &env_array[280]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->longmess_no_mortal != &env_array[281]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->longmess != &env_array[282]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
@@ -4830,6 +4832,44 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
     const char* exception = env->get_chars(env, stack, obj_exception);
     
     if (!strstr(exception, "abcd")) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    if (!strstr(exception, "SPVM__TestCase__NativeAPI__die")) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    if (!strstr(exception, "NativeAPI.c")) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    char tmp_line[255] = {0};
+    sprintf(tmp_line, "%d", line);
+    
+    if (!strstr(exception, tmp_line)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  {
+    char* tmp_buffer = env->get_stack_tmp_buffer(env, stack);
+    sprintf(tmp_buffer, "%s", "abcd");
+    int32_t error_id = env->die(env, stack, "Error %s.", __func__, __FILE__, __LINE__, tmp_buffer); int32_t line = __LINE__;
+    
+    if (!(error_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
+    SPVM_OBJ* obj_message = env->new_string(env, stack, "Custom Message", 14);
+    SPVM_OBJ* obj_exception = env->longmess(env, stack, obj_message, 0);
+    const char* exception = env->get_chars(env, stack, obj_exception);
+    
+    if (!strstr(exception, "Custom Message")) {
       stack[0].ival = 0;
       return 0;
     }
