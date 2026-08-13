@@ -3949,7 +3949,7 @@ void SPVM_API_warn_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string,
     SPVM_API_leave_scope(env, stack, scope_id);
   }
   
-  fprintf(spvm_stderr, "\n\n", func_name, file, line);
+  fprintf(spvm_stderr, "\n\n");
   
 }
 
