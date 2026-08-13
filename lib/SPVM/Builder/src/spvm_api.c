@@ -7482,7 +7482,7 @@ static int32_t SPVM_API_build_caller_stack_line(char* buffer, const char* func_n
   }
 }
 
-SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
+SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t level) {
   
   const char* unknown_func_name = "(Method name unknown)";
   const char* unknown_file = "(File name unknown)";
@@ -7491,9 +7491,8 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
   const int32_t max_func_name_len = 511;
   const int32_t max_file_len = 1023;
   
-  SPVM_OBJECT* obj_exception = SPVM_API_get_exception(env, stack);
-  const char* exception_bytes = SPVM_API_get_chars(env, stack, obj_exception);
-  int32_t exception_length = SPVM_API_length(env, stack, obj_exception);
+  const char* message_bytes = SPVM_API_get_chars(env, stack, obj_message);
+  int32_t message_length = SPVM_API_length(env, stack, obj_message);
 
   const char* exception_func_name = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval;
   if (!exception_func_name) {
@@ -7517,7 +7516,7 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
   SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
 
-  /* Calculate the target depth with clamping */
+  /* Calculate target depth */
   int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
   int32_t target_call_depth = current_call_depth - level;
   
@@ -7528,13 +7527,13 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
     target_call_depth = exception_call_depth;
   }
   
-  /* 1. Calculate total length */
-  int32_t total_length = exception_length;
+  /* Calculate total length */
+  int32_t total_length = message_length;
   
-  // Origin
+  /* Origin */
   total_length += SPVM_API_build_caller_stack_line(NULL, exception_func_name, exception_file, exception_line);
 
-  // Callers
+  /* Callers */
   for (int32_t depth = exception_call_depth; depth >= target_call_depth; depth--) {
     int32_t offset = depth * record_size;
     const char* func_name = (const char*)caller_info_stack[offset + 0].address;
@@ -7558,18 +7557,18 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
     total_length += SPVM_API_build_caller_stack_line(NULL, func_name, file, line);
   }
 
-  /* 2. Allocate */
-  SPVM_OBJECT* obj_new_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
-  char* new_exception_bytes = (char*)SPVM_API_get_chars(env, stack, obj_new_exception);
+  /* Allocate */
+  SPVM_OBJECT* obj_new_message = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
+  char* new_message_bytes = (char*)SPVM_API_get_chars(env, stack, obj_new_message);
   
-  /* 3. Fill */
-  memcpy(new_exception_bytes, exception_bytes, exception_length);
-  int32_t current_offset = exception_length;
+  /* Fill */
+  memcpy(new_message_bytes, message_bytes, message_length);
+  int32_t current_offset = message_length;
 
-  // Write Origin
-  current_offset += SPVM_API_build_caller_stack_line(new_exception_bytes + current_offset, exception_func_name, exception_file, exception_line);
+  /* Write Origin */
+  current_offset += SPVM_API_build_caller_stack_line(new_message_bytes + current_offset, exception_func_name, exception_file, exception_line);
 
-  // Write Callers
+  /* Write Callers */
   for (int32_t depth = exception_call_depth; depth >= target_call_depth; depth--) {
     int32_t offset = depth * record_size;
     const char* func_name = (const char*)caller_info_stack[offset + 0].address;
@@ -7590,10 +7589,22 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
     
     int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2].ival;
     
-    current_offset += SPVM_API_build_caller_stack_line(new_exception_bytes + current_offset, func_name, file, line);
+    current_offset += SPVM_API_build_caller_stack_line(new_message_bytes + current_offset, func_name, file, line);
   }
 
-  return obj_new_exception;
+  return obj_new_message;
+}
+
+SPVM_OBJECT* SPVM_API_longmess(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t level) {
+  SPVM_OBJECT* obj_longmess = SPVM_API_longmess_no_mortal(env, stack, obj_message, level);
+  SPVM_API_push_mortal(env, stack, obj_longmess);
+  return obj_longmess;
+}
+
+SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
+  SPVM_OBJECT* obj_exception = SPVM_API_get_exception(env, stack);
+  SPVM_OBJECT* obj_message = SPVM_API_longmess_no_mortal(env, stack, obj_exception, level);
+  return obj_message;
 }
 
 SPVM_OBJECT* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
