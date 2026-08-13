@@ -1681,6 +1681,10 @@ static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   env->warn(env, stack, string, func_name, file, line);
 }
 
+static inline void SPVM_IMPLEMENT_DIAG(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* string, const char* func_name, const char* file, int32_t line) {
+  env->diag(env, stack, string, func_name, file, line);
+}
+
 #define SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_ID(eval_error_id) (eval_error_id = 0)
 #define SPVM_IMPLEMENT_GET_EVAL_ERROR_ID(out, eval_error_id) (out = eval_error_id)
 #define SPVM_IMPLEMENT_SET_ERROR_ID(error_id, die_error_id) (error_id = die_error_id)

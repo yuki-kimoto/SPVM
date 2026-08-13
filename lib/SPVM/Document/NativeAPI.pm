@@ -3024,6 +3024,12 @@ The metadata used for reconstruction includes the function name, file path, line
 
 Returns the newly created string object. This object is automatically pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
+=head2 diag
+
+C<void (*diag)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_OBJ* string, const char* func_name, const char* file, int32_t line);>
+
+Same as L</"warn">.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3311,6 +3317,7 @@ Native APIs have its IDs.
   280 set_no_close
   281 longmess_no_mortal
   282 longmess
+  283 diag
 
 =head1 Constant Values
 

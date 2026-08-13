@@ -1454,6 +1454,18 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         break;
       }
+      case SPVM_OPCODE_C_ID_DIAG: {
+        SPVM_OBJ* string = object_vars[opcode->operand0];
+        int32_t line = opcode->operand1;
+        
+        const char* method_abs_name = current_method->abs_name;
+        
+        const char* file = current_basic_type->file;
+        
+        SPVM_IMPLEMENT_DIAG(env, stack, string, method_abs_name, file, line);
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_BREAK_POINT: {
         // Get the line number from operand0
         int32_t line = opcode->operand0;
