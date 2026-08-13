@@ -3906,7 +3906,7 @@ void SPVM_API_say_stderr(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) 
   fputc('\n', runtime->spvm_stderr);
 }
 
-void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const char* func_name, const char* file, int32_t line) {
+void SPVM_API_warn_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const char* func_name, const char* file, int32_t line, int32_t longmess) {
   
   FILE* spvm_stderr = SPVM_API_RUNTIME_get_spvm_stderr((SPVM_RUNTIME*)env->runtime);
   
@@ -3934,12 +3934,33 @@ void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const 
     fprintf(spvm_stderr, "undef", func_name, file, line);
   }
   
-  fprintf(spvm_stderr, "\n  %s at %s line %d\n", func_name, file, line);
+  fprintf(spvm_stderr, "\n  %s at %s line %d", func_name, file, line);
+  
+  if (longmess) {
+    int32_t scope_id = SPVM_API_enter_scope(env, stack);
+    SPVM_OBJECT* obj_empty_string = SPVM_API_new_string_no_mortal(env, stack, "", 0);
+    int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
+    SPVM_OBJECT* obj_longmess = SPVM_API_longmess_no_mortal(env, stack, obj_empty_string, current_call_depth);
+    const char* longmess_chars = SPVM_API_get_chars(env, stack, obj_longmess);
+    int32_t longmess_length = SPVM_API_length(env, stack, obj_longmess);
+    if (longmess_length > 0) {
+      fwrite(longmess_chars, 1, longmess_length, spvm_stderr);
+    }
+    SPVM_API_leave_scope(env, stack, scope_id);
+  }
+  
+  fprintf(spvm_stderr, "\n", func_name, file, line);
+  
+}
+
+void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const char* func_name, const char* file, int32_t line) {
+  int32_t longmess = 0;
+  SPVM_API_warn_common(env, stack, string, func_name, file, line, longmess);
 }
 
 void SPVM_API_diag(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const char* func_name, const char* file, int32_t line) {
-  
-  SPVM_API_warn(env, stack, string, func_name, file, line);
+  int32_t longmess = 1;
+  SPVM_API_warn_common(env, stack, string, func_name, file, line, longmess);
 }
 
 void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
