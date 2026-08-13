@@ -7597,6 +7597,28 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines(SPVM_ENV* env, SPVM_VALUE* stack,
 
 SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t level) {
   
+  int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
+  int32_t target_call_depth = current_call_depth - level;
+  
+  if (target_call_depth < 0) {
+    target_call_depth = 0;
+  }
+  
+  SPVM_OBJECT* obj_caller_stack_lines = SPVM_API_build_caller_stack_lines_no_mortal(env, stack, obj_message, 0, target_call_depth);
+  
+  return obj_caller_stack_lines;
+}
+
+SPVM_OBJECT* SPVM_API_longmess(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t level) {
+  
+  SPVM_OBJECT* obj_caller_stack_lines = SPVM_API_longmess_no_mortal(env, stack, obj_message, level);
+  SPVM_API_push_mortal(env, stack, obj_caller_stack_lines);
+  
+  return obj_caller_stack_lines;
+}
+
+SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
+  
   const char* unknown_func_name = "(Method name unknown)";
   const char* unknown_file = "(File name unknown)";
   const char* too_long_func_name = "(Method name too long)";
@@ -7604,6 +7626,7 @@ SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   const int32_t max_func_name_len = 511;
   const int32_t max_file_len = 1023;
   
+  SPVM_OBJECT* obj_message = env->get_exception(env, stack);
   const char* message_bytes = SPVM_API_get_chars(env, stack, obj_message);
   int32_t message_length = SPVM_API_length(env, stack, obj_message);
 
@@ -7704,20 +7727,8 @@ SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
     
     current_offset += SPVM_API_build_caller_stack_line(new_message_bytes + current_offset, func_name, file, line);
   }
-
+  
   return obj_new_message;
-}
-
-SPVM_OBJECT* SPVM_API_longmess(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t level) {
-  SPVM_OBJECT* obj_longmess = SPVM_API_longmess_no_mortal(env, stack, obj_message, level);
-  SPVM_API_push_mortal(env, stack, obj_longmess);
-  return obj_longmess;
-}
-
-SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
-  SPVM_OBJECT* obj_exception = SPVM_API_get_exception(env, stack);
-  SPVM_OBJECT* obj_message = SPVM_API_longmess_no_mortal(env, stack, obj_exception, level);
-  return obj_message;
 }
 
 SPVM_OBJECT* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
