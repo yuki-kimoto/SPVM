@@ -3926,7 +3926,7 @@ void SPVM_API_warn_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string,
       const char* type_name = SPVM_API_get_chars(env, stack, obj_type_name);
       
       fprintf(spvm_stderr, "%s", type_name);
-      fprintf(spvm_stderr, "(0x%" PRIxPTR ")", (uintptr_t)string, func_name, file, line);
+      fprintf(spvm_stderr, "(0x%" PRIxPTR ")", (uintptr_t)string);
       SPVM_API_leave_scope(env, stack, scope_id);
     }
   }
