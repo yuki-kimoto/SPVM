@@ -3919,8 +3919,6 @@ void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const 
       if (string_length > 0) {
         size_t ret = fwrite(chars, 1, string_length, spvm_stderr);
       }
-      
-      fprintf(spvm_stderr, "\n  %s at %s line %d\n", func_name, file, line);
     }
     else {
       int32_t scope_id = SPVM_API_enter_scope(env, stack);
@@ -3928,13 +3926,15 @@ void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const 
       const char* type_name = SPVM_API_get_chars(env, stack, obj_type_name);
       
       fprintf(spvm_stderr, "%s", type_name);
-      fprintf(spvm_stderr, "(0x%" PRIxPTR ")\n  %s at %s line %d\n", (uintptr_t)string, func_name, file, line);
+      fprintf(spvm_stderr, "(0x%" PRIxPTR ")", (uintptr_t)string, func_name, file, line);
       SPVM_API_leave_scope(env, stack, scope_id);
     }
   }
   else {
-    fprintf(spvm_stderr, "undef\n  %s at %s line %d\n", func_name, file, line);
+    fprintf(spvm_stderr, "undef", func_name, file, line);
   }
+  
+  fprintf(spvm_stderr, "\n  %s at %s line %d\n", func_name, file, line);
 }
 
 void SPVM_API_diag(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const char* func_name, const char* file, int32_t line) {
