@@ -4545,6 +4545,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                       opcode.operand0 = typed_var_index_in;
                       opcode.operand1 = op_assign->line;
+                      opcode.operand2 = op_assign_src->flag & SPVM_OP_C_FLAG_WARN_LONGMESS ? 1 : 0;
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       

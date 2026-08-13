@@ -316,6 +316,11 @@ enum {
   SPVM_OP_C_FLAG_ARRAY_ELEMENT_ACCESS_ISWEAK = 8,
 };
 
+enum {
+  // WARN flag
+  SPVM_OP_C_FLAG_WARN_LONGMESS = 1,
+};
+
 struct spvm_op {
   const char* name;
   SPVM_OP* first;

@@ -2187,10 +2187,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else if (strcmp(symbol_name, "diag") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_WARN);
+                  yylvalp->opval->flag |= SPVM_OP_C_FLAG_WARN_LONGMESS;
                   keyword_token = WARN;
                 }
                 else if (strcmp(symbol_name, "diag_level") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_WARN);
+                  yylvalp->opval->flag |= SPVM_OP_C_FLAG_WARN_LONGMESS;
                   keyword_token = WARN_LEVEL;
                 }
                 else if (strcmp(symbol_name, "die") == 0) {
