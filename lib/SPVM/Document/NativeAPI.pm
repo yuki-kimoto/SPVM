@@ -3002,21 +3002,19 @@ If I<no_close> is a true value, enables the C<no_close> flag of the object I<obj
 
 =head2 longmess_no_mortal
 
-C<SPVM_OBJ* (*longmess_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_OBJ* obj_message|SPVM::Document::NativeClass/"Native Object">, const char* func_name, const char* file, int32_t line);>
+C<SPVM_OBJ* (*longmess_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_OBJ* obj_message|SPVM::Document::NativeClass/"Native Object">, const char* func_name, const char* file, int32_t line, int32_t start_call_depth);>
 
 This is the same as L</"longmess">, but the returned object is not pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
 =head2 longmess
 
-C<SPVM_OBJ* (*longmess)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_OBJ* obj_message|SPVM::Document::NativeClass/"Native Object">, const char* func_name, const char* file, int32_t line);>
+C<SPVM_OBJ* (*longmess)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_OBJ* obj_message|SPVM::Document::NativeClass/"Native Object">, const char* func_name, const char* file, int32_t line, int32_t start_call_depth);>
 
 Reconstructs a full message including a stack trace by using the metadata stored in the runtime stack.
 
 This function creates a new SPVM string object by combining the specified message object (I<obj_message>) with caller information retrieved from the metadata slots.
 
-The I<level> argument specifies the range of the stack trace relative to the current call depth:
-
-* Positive values or zero: The trace starts from the exception origin down to the depth calculated as C<current_call_depth + level>.
+The I<start_call_depth> argument specifies the starting call depth of the caller information stack to include in the trace. Normally, you specify C<0>.
 
 This is useful for formatting messages with a stack trace.
 

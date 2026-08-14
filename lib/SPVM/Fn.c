@@ -1285,6 +1285,7 @@ int32_t SPVM__Fn___longmess(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_OBJ* obj_func_name = stack[1].oval;
   SPVM_OBJ* obj_file = stack[2].oval;
   int32_t line = stack[3].ival;
+  int32_t start_call_depth = stack[4].ival;
   
   const char* func_name = NULL;
   if (obj_func_name) {
@@ -1296,7 +1297,7 @@ int32_t SPVM__Fn___longmess(SPVM_ENV* env, SPVM_VALUE* stack) {
     file = env->get_chars(env, stack, obj_file);
   }
   
-  SPVM_OBJ* obj_longmess = env->longmess(env, stack, obj_message, func_name, file, line);
+  SPVM_OBJ* obj_longmess = env->longmess(env, stack, obj_message, func_name, file, line, start_call_depth);
   
   stack[0].oval = obj_longmess;
   

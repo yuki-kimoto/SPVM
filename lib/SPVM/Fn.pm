@@ -1947,7 +1947,7 @@ If the specified C<$level> is out of range of the caller stack, an exception is 
 
 =head2 longmess
 
-C<static method longmess : string ($message : string);>
+C<static method longmess : string ($message : string, $start_call_depth : int = 0);>
 
 Reconstructs a full message, including a stack trace, using the metadata stored in the runtime stack and the specified message string.
 

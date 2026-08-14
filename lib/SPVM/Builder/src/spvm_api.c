@@ -3938,7 +3938,7 @@ void SPVM_API_warn_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string,
     int32_t scope_id = SPVM_API_enter_scope(env, stack);
     SPVM_OBJECT* obj_empty_string = SPVM_API_new_string(env, stack, "", 0);
     int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
-    SPVM_OBJECT* obj_longmess = SPVM_API_longmess(env, stack, obj_empty_string, func_name, file, line);
+    SPVM_OBJECT* obj_longmess = SPVM_API_longmess(env, stack, obj_empty_string, func_name, file, line, 0);
     const char* longmess_chars = SPVM_API_get_chars(env, stack, obj_longmess);
     int32_t longmess_length = SPVM_API_length(env, stack, obj_longmess);
     if (longmess_length > 0) {
@@ -7617,9 +7617,8 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines(SPVM_ENV* env, SPVM_VALUE* stack,
   return obj_caller_stack_lines;
 }
 
-SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, const char* func_name, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, const char* func_name, const char* file, int32_t line, int32_t start_call_depth) {
   
-  int32_t start_call_depth = 0;
   int32_t end_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
   
   SPVM_OBJECT* obj_new_caller_stack_lines = SPVM_API_build_caller_stack_lines_no_mortal(env, stack, obj_message, func_name, file, line, start_call_depth, end_call_depth);
@@ -7627,8 +7626,8 @@ SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   return obj_new_caller_stack_lines;
 }
 
-SPVM_OBJECT* SPVM_API_longmess(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, const char* func_name, const char* file, int32_t line) {
-  SPVM_OBJECT* obj_longmess = SPVM_API_longmess_no_mortal(env, stack, obj_message, func_name, file, line);
+SPVM_OBJECT* SPVM_API_longmess(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, const char* func_name, const char* file, int32_t line, int32_t start_call_depth) {
+  SPVM_OBJECT* obj_longmess = SPVM_API_longmess_no_mortal(env, stack, obj_message, func_name, file, line, start_call_depth);
   SPVM_API_push_mortal(env, stack, obj_longmess);
   return obj_longmess;
 }
