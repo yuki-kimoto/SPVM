@@ -1189,9 +1189,10 @@ _xs_call_method(...)
   SV* sv_error_ret_or_options = ST(args_length - 1);
   SV* sv_error_ret = &PL_sv_undef;
   SV* sv_options = &PL_sv_undef;
+  
+  const char* method_abs_name = __func__;
+  const char* file = __FILE__;
   int32_t line = 0;
-  const char* file = NULL;
-  const char* method_abs_name = NULL;
   
   if (sv_isobject(sv_error_ret_or_options) && sv_derived_from(sv_error_ret_or_options, "SPVM::ExchangeAPI::Error")) {
     sv_error_ret = sv_error_ret_or_options;
@@ -1202,9 +1203,9 @@ _xs_call_method(...)
     args_length -= 1;
     HV* hv_options = (HV*)SvRV(sv_error_ret_or_options);
     
-    SV** svp_line = hv_fetch(hv_options, "line", 4, 0);
-    if (svp_line && SvIOK(*svp_line)) {
-      line = SvIV(*svp_line);
+    SV** svp_method_abs_name = hv_fetch(hv_options, "method_abs_name", 15, 0);
+    if (svp_method_abs_name && SvPOK(*svp_method_abs_name)) {
+      method_abs_name = SvPV_nolen(*svp_method_abs_name);
     }
     
     SV** svp_file = hv_fetch(hv_options, "file", 4, 0);
@@ -1212,10 +1213,11 @@ _xs_call_method(...)
       file = SvPV_nolen(*svp_file);
     }
     
-    SV** svp_method_abs_name = hv_fetch(hv_options, "method_abs_name", 15, 0);
-    if (svp_method_abs_name && SvPOK(*svp_method_abs_name)) {
-      method_abs_name = SvPV_nolen(*svp_method_abs_name);
+    SV** svp_line = hv_fetch(hv_options, "line", 4, 0);
+    if (svp_line && SvIOK(*svp_line)) {
+      line = SvIV(*svp_line);
     }
+    
   }
   
   SV* sv_self = ST(0);
@@ -1988,6 +1990,11 @@ _xs_call_method(...)
       HV* hv_error_ret = (HV*)SvRV(sv_error_ret);
       SV* sv_error_id = sv_2mortal(newSViv(error_id));
       (void)hv_store(hv_error_ret, "id", strlen("id"), SvREFCNT_inc(sv_error_id), 0);
+    }
+    else if (SvOK(sv_options)) {
+      HV* hv_options = (HV*)SvRV(sv_options);
+      SV* sv_error_id = sv_2mortal(newSViv(error_id));
+      (void)hv_store(hv_options, "error_id", strlen("error_id"), SvREFCNT_inc(sv_error_id), 0);
     }
     
     int32_t scope_id = env->enter_scope(env, stack);
