@@ -643,8 +643,8 @@ SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
 
 SPVM_OBJECT* SPVM_API_longmess(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, const char* func_name, const char* file, int32_t line);
 
-SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t start_depth, int32_t end_depth);
+SPVM_OBJECT* SPVM_API_build_caller_stack_lines(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, const char* func_name, const char* file, int32_t line, int32_t start_call_depth, int32_t end_call_depth);
 
-SPVM_OBJECT* SPVM_API_build_caller_stack_lines(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t start_depth, int32_t end_depth);
+SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, const char* func_name, const char* file, int32_t line, int32_t start_call_depth, int32_t end_call_depth);
 
 #endif
