@@ -1247,7 +1247,7 @@ _xs_call_method(...)
   if (sv_isobject(sv_invocant)) {
     class_method_call = 0;
     if (!(sv_isobject(sv_invocant) && sv_derived_from(sv_invocant, "SPVM::BlessedObject::Class"))) {
-      croak("$invocant must be an SPVM::BlessedObject::Class object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("$invocant must be an SPVM::BlessedObject::Class object\n    %s at %s line %d\n", method_abs_name, file, line);
     }
     
     HV* hv_invocant = (HV*)SvRV(sv_invocant);
@@ -1258,7 +1258,7 @@ _xs_call_method(...)
     char* found_char = strrchr(method_name, ':');
     if (found_char) {
       if (!(*(found_char - 1) == ':')) {
-        croak("The static method call must be valid\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+        croak("The static method call must be valid\n    %s at %s line %d\n", method_abs_name, file, line);
       }
       *(found_char - 1) = '\0';
       const char* basic_type_name = method_name;
@@ -1266,12 +1266,12 @@ _xs_call_method(...)
       
       void* static_call_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
       if (!static_call_basic_type) {
-        croak("%s class is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
+        croak("%s class is not found\n    %s at %s line %d\n", basic_type_name, method_abs_name, file, line);
       }
       
       int32_t isa = env->isa(env, stack, object, static_call_basic_type, 0);
       if (!isa) {
-        croak("The invocant must be assinged to %s class\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
+        croak("The invocant must be assinged to %s class\n    %s at %s line %d\n", basic_type_name, method_abs_name, file, line);
       }
       
       method = env->api->basic_type->get_method_by_name(env->runtime, static_call_basic_type, method_name);
@@ -1311,7 +1311,7 @@ _xs_call_method(...)
   
   // Method not found
   if (!method) {
-    croak("%s#%s method is not found\n    %s at %s line %d\n", basic_type_name, method_name, __func__, FILE_NAME, __LINE__);
+    croak("%s#%s method is not found\n    %s at %s line %d\n", basic_type_name, method_name, method_abs_name, file, line);
   }
   
   // Base index of SPVM arguments
@@ -1330,7 +1330,7 @@ _xs_call_method(...)
   int32_t call_method_args_length = args_length - spvm_args_base;
   
   if (call_method_args_length < method_required_args_length) {
-    croak("Too few arguments are passed to %s#%s method\n    %s at %s line %d\n", basic_type_name, method_name, __func__, FILE_NAME, __LINE__);
+    croak("Too few arguments are passed to %s#%s method\n    %s at %s line %d\n", basic_type_name, method_name, method_abs_name, file, line);
   }
   else if (call_method_args_length > method_args_length) {
     call_method_args_length = method_args_length;
@@ -1378,7 +1378,7 @@ _xs_call_method(...)
         switch (arg_basic_type_category) {
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
             if (!(SvOK(sv_value) && !SvROK(sv_value))) {
-              croak("The %dth argument of %s#%s method must be a non-reference scalar\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of %s#%s method must be a non-reference scalar\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, method_abs_name, file, line);
             }
             
             switch(arg_basic_type_id) {
@@ -1430,7 +1430,7 @@ _xs_call_method(...)
             SV* sv_error = &PL_sv_undef;
             sv_value = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_value, &sv_error);
             if (SvOK(sv_error)) {
-              croak("The %dth argument of %s#%s method%s\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of %s#%s method%s\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, SvPV_nolen(sv_error), method_abs_name, file, line);
             }
             void* spvm_string = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_value);
             
@@ -1458,7 +1458,7 @@ _xs_call_method(...)
                 SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, spvm_value, "SPVM::BlessedObject::String");
               }
               else {
-                croak("The %dth argument of %s#%s method must be an SPVM::BlessedObject object or a string or undef\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, __func__, FILE_NAME, __LINE__);
+                croak("The %dth argument of %s#%s method must be an SPVM::BlessedObject object or a string or undef\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, method_abs_name, file, line);
               }
             }
             stack[stack_index].oval = spvm_value;
@@ -1489,7 +1489,7 @@ _xs_call_method(...)
               const char* arg_basic_type_name = env->api->basic_type->get_name(env->runtime, arg_basic_type);
               void* spvm_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_name, arg_type_dimension, arg_type_flag);
               const char* compile_type_name = env->get_chars(env, stack, spvm_compile_type_name);
-              croak("The %dth argument of %s#%s method must be an SPVM::BlessedObject::Class object of a \"%s\" assignable type or undef\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, compile_type_name, __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of %s#%s method must be an SPVM::BlessedObject::Class object of a \"%s\" assignable type or undef\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, compile_type_name, method_abs_name, file, line);
             }
             
             stack[stack_index].oval = spvm_value;
@@ -1501,7 +1501,7 @@ _xs_call_method(...)
           {
             // Argument conversion - multi-numeric
             if (!(SvROK(sv_value) && sv_derived_from(sv_value, "HASH"))) {
-              croak("The %dth argument of %s#%s method must be a hash reference\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of %s#%s method must be a hash reference\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, method_abs_name, file, line);
             }
             
             int32_t arg_basic_type_fields_length = env->api->basic_type->get_fields_length(env->runtime, arg_basic_type);
@@ -1522,7 +1522,7 @@ _xs_call_method(...)
               }
               else {
                 const char* arg_basic_type_name = env->api->basic_type->get_name(env->runtime, arg_basic_type);
-                croak("The hash reference for the %dth argument of %s#%s method must have \"%s\" key for %s#%s field\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, mulnum_field_name, arg_basic_type_name, mulnum_field_name, __func__, FILE_NAME, __LINE__);
+                croak("The hash reference for the %dth argument of %s#%s method must have \"%s\" key for %s#%s field\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, mulnum_field_name, arg_basic_type_name, mulnum_field_name, method_abs_name, file, line);
 
               }
               
@@ -1583,7 +1583,7 @@ _xs_call_method(...)
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
             // Argument conversion - numeric reference
             if (!(SvROK(sv_value) && sv_derived_from(sv_value , "SCALAR"))) {
-              croak("The %dth argument of %s#%s method must be a scalar reference\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of %s#%s method must be a scalar reference\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, method_abs_name, file, line);
             }
             
             SV* sv_value_deref = SvRV(sv_value);
@@ -1677,7 +1677,7 @@ _xs_call_method(...)
           {
             // Argument conversion - multi-numeric reference
             if (!(SvROK(sv_value) && SvROK(SvRV(sv_value)) && sv_derived_from(SvRV(sv_value) , "HASH"))) {
-              croak("The %dth argument of %s#%s method must be a reference to a hash reference\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, __func__, FILE_NAME, __LINE__);
+              croak("The %dth argument of %s#%s method must be a reference to a hash reference\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, method_abs_name, file, line);
             }
             
             SV* hv_value_ref = SvRV(sv_value);
@@ -1759,7 +1759,7 @@ _xs_call_method(...)
               }
               else {
                 const char* arg_basic_type_name = env->api->basic_type->get_name(env->runtime, arg_basic_type);
-                croak("The hash reference for the %dth argument of %s#%s method must have \"%s\" key for %s#%s field\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, mulnum_field_name, arg_basic_type_name, mulnum_field_name, __func__, FILE_NAME, __LINE__);
+                croak("The hash reference for the %dth argument of %s#%s method must have \"%s\" key for %s#%s field\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, mulnum_field_name, arg_basic_type_name, mulnum_field_name, method_abs_name, file, line);
               }
               switch(arg_basic_type_field_basic_type_id) {
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
@@ -1885,7 +1885,7 @@ _xs_call_method(...)
           }
           
           if (SvOK(sv_error)) {
-            croak("The %dth argument of %s#%s method%s\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+            croak("The %dth argument of %s#%s method%s\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, SvPV_nolen(sv_error), method_abs_name, file, line);
           }
           
           void* spvm_array = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_value);
@@ -1901,7 +1901,7 @@ _xs_call_method(...)
           sv_value = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, arg_basic_type, sv_value, &sv_error);
           
           if (SvOK(sv_error)) {
-            croak("The %dth argument of %s#%s method%s\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+            croak("The %dth argument of %s#%s method%s\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, SvPV_nolen(sv_error), method_abs_name, file, line);
           }
           
           void* spvm_array = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_value);
@@ -1917,7 +1917,7 @@ _xs_call_method(...)
           sv_value = SPVM_XS_UTIL_new_string_array(aTHX_ sv_self, sv_value, &sv_error);
           
           if (SvOK(sv_error)) {
-            croak("The %dth argument of %s#%s method%s\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+            croak("The %dth argument of %s#%s method%s\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, SvPV_nolen(sv_error), method_abs_name, file, line);
           }
           
           void* spvm_array = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_value);
@@ -1936,7 +1936,7 @@ _xs_call_method(...)
           sv_value = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, arg_basic_type, sv_value, &sv_error);
           
           if (SvOK(sv_error)) {
-            croak("The %dth argument of %s#%s method%s\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+            croak("The %dth argument of %s#%s method%s\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, SvPV_nolen(sv_error), method_abs_name, file, line);
           }
           
           void* spvm_array = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_value);
@@ -1959,7 +1959,7 @@ _xs_call_method(...)
       sv_value = SPVM_XS_UTIL_new_muldim_array(aTHX_ sv_self, arg_basic_type, arg_type_dimension, sv_value, &sv_error);
       
       if (SvOK(sv_error)) {
-        croak("The %dth argument of %s#%s method%s\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+        croak("The %dth argument of %s#%s method%s\n    %s at %s line %d\n", arg_index_nth, basic_type_name, method_name, SvPV_nolen(sv_error), method_abs_name, file, line);
       }
       
       void* spvm_array = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_value);
@@ -1983,7 +1983,7 @@ _xs_call_method(...)
   
   // Call method
   int32_t call_method_args_width = stack_index;
-  int32_t error_id = env->call_method_no_mortal(env, stack, method, call_method_args_width, __func__, FILE_NAME, __LINE__);
+  int32_t error_id = env->call_method_no_mortal(env, stack, method, call_method_args_width, method_abs_name, file, line);
   
   if (error_id) {
     if (SvOK(sv_error_ret)) {
@@ -2016,9 +2016,9 @@ _xs_call_method(...)
     */
     croak("%s\n    (C function %s at %s line %d)\n", 
           SvPV_nolen(sv_exception), 
-          __func__, 
-          FILE_NAME, 
-          __LINE__
+          method_abs_name, 
+          file, 
+          line
     );
   }
   
