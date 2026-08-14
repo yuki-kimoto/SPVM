@@ -2001,7 +2001,7 @@ _xs_call_method(...)
     
     /* Reconstruct the exception message including the SPVM stack trace */
     /* level = 0 starts from the caller of this XS function in the SPVM world */
-    void* obj_exception_with_stack_trace = env->build_exception_message(env, stack, 0);
+    void* obj_exception_with_stack_trace = env->build_exception_message(env, stack, env->get_call_depth(env, stack));
     
     const char* exception_chars_with_stack_trace = env->get_chars(env, stack, obj_exception_with_stack_trace);
     int32_t exception_with_stack_trace_length = env->length(env, stack, obj_exception_with_stack_trace);

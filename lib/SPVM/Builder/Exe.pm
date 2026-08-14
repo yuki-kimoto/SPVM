@@ -424,7 +424,7 @@ int SPVMCC__main(int argc, char* argv[]) {
     int32_t scope_id = env->enter_scope(env, stack);
     
     /* Reconstruct the exception message including the SPVM stack trace */
-    void* obj_exception_with_stack_trace = env->build_exception_message(env, stack, 0);
+    void* obj_exception_with_stack_trace = env->build_exception_message(env, stack, env->get_call_depth(env, stack));
     
     /* Print the full exception message to stderr */
     env->print_stderr(env, stack, obj_exception_with_stack_trace);
