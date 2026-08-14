@@ -7659,13 +7659,13 @@ SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
     total_length += SPVM_API_build_caller_stack_line(NULL, func_name, file, line);
   }
   
-  SPVM_OBJECT* obj_new_message = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
-  char* new_message_bytes = (char*)SPVM_API_get_chars(env, stack, obj_new_message);
+  SPVM_OBJECT* obj_new_caller_stack_lines = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
+  char* new_caller_stack_lines_bytes = (char*)SPVM_API_get_chars(env, stack, obj_new_caller_stack_lines);
   
-  memcpy(new_message_bytes, message_bytes, message_length);
+  memcpy(new_caller_stack_lines_bytes, message_bytes, message_length);
   int32_t current_offset = message_length;
   
-  current_offset += SPVM_API_build_caller_stack_line(new_message_bytes + current_offset, current_func_name, current_file, current_line);
+  current_offset += SPVM_API_build_caller_stack_line(new_caller_stack_lines_bytes + current_offset, current_func_name, current_file, current_line);
   
   for (int32_t depth = end_call_depth; depth >= start_call_depth; depth--) {
     int32_t offset = depth * record_size;
@@ -7687,10 +7687,10 @@ SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
     
     int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2].ival;
     
-    current_offset += SPVM_API_build_caller_stack_line(new_message_bytes + current_offset, func_name, file, line);
+    current_offset += SPVM_API_build_caller_stack_line(new_caller_stack_lines_bytes + current_offset, func_name, file, line);
   }
   
-  return obj_new_message;
+  return obj_new_caller_stack_lines;
 }
 
 SPVM_OBJECT* SPVM_API_longmess(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, const char* func_name, const char* file, int32_t line) {
