@@ -1186,13 +1186,36 @@ _xs_call_method(...)
   
   int32_t args_length = items;
   
-  // SPVM::ExchangeAPI::Error
-  SV* sv_error_ret = ST(args_length - 1);
-  if (sv_isobject(sv_error_ret) && sv_derived_from(sv_error_ret, "SPVM::ExchangeAPI::Error")) {
+  SV* sv_error_ret_or_options = ST(args_length - 1);
+  SV* sv_error_ret = &PL_sv_undef;
+  SV* sv_options = &PL_sv_undef;
+  int32_t line = 0;
+  const char* file = NULL;
+  const char* method_abs_name = NULL;
+  
+  if (sv_isobject(sv_error_ret_or_options) && sv_derived_from(sv_error_ret_or_options, "SPVM::ExchangeAPI::Error")) {
+    sv_error_ret = sv_error_ret_or_options;
     args_length -= 1;
   }
-  else {
-    sv_error_ret = &PL_sv_undef;
+  else if (sv_isobject(sv_error_ret_or_options) && sv_derived_from(sv_error_ret_or_options, "SPVM::ExchangeAPI::Options")) {
+    sv_options = sv_error_ret_or_options;
+    args_length -= 1;
+    HV* hv_options = (HV*)SvRV(sv_error_ret_or_options);
+    
+    SV** svp_line = hv_fetch(hv_options, "line", 4, 0);
+    if (svp_line && SvIOK(*svp_line)) {
+      line = SvIV(*svp_line);
+    }
+    
+    SV** svp_file = hv_fetch(hv_options, "file", 4, 0);
+    if (svp_file && SvPOK(*svp_file)) {
+      file = SvPV_nolen(*svp_file);
+    }
+    
+    SV** svp_method_abs_name = hv_fetch(hv_options, "method_abs_name", 15, 0);
+    if (svp_method_abs_name && SvPOK(*svp_method_abs_name)) {
+      method_abs_name = SvPV_nolen(*svp_method_abs_name);
+    }
   }
   
   SV* sv_self = ST(0);
