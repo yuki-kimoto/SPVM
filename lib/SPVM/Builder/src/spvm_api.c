@@ -7614,97 +7614,10 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines(SPVM_ENV* env, SPVM_VALUE* stack,
 
 SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, const char* func_name, const char* file, int32_t line) {
   
-  const char* unknown_func_name = "(Method name unknown)";
-  const char* unknown_file = "(File name unknown)";
-  const char* too_long_func_name = "(Method name too long)";
-  const char* too_long_file = "(File name too long)";
-  const int32_t max_func_name_len = 511;
-  const int32_t max_file_len = 1023;
-  
-  const char* message_bytes = SPVM_API_get_chars(env, stack, obj_message);
-  int32_t message_length = SPVM_API_length(env, stack, obj_message);
-  
-  const char* current_func_name = func_name;
-  if (!current_func_name) {
-    current_func_name = unknown_func_name;
-  }
-  else if (SPVM_API_strnlen(current_func_name, max_func_name_len + 1) > max_func_name_len) {
-    current_func_name = too_long_func_name;
-  }
-  
-  const char* current_file = file;
-  if (!current_file) {
-    current_file = unknown_file;
-  }
-  else if (SPVM_API_strnlen(current_file, max_file_len + 1) > max_file_len) {
-    current_file = too_long_file;
-  }
-  
-  int32_t current_line = line;
-  
-  SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
-  int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
-  
-  int32_t end_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
   int32_t start_call_depth = 0;
+  int32_t end_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
   
-  int32_t total_length = message_length;
-  
-  total_length += SPVM_API_build_caller_stack_line(NULL, current_func_name, current_file, current_line);
-  
-  for (int32_t depth = end_call_depth; depth >= start_call_depth; depth--) {
-    int32_t offset = depth * record_size;
-    const char* func_name = (const char*)caller_info_stack[offset + 0].address;
-    if (!func_name) {
-      func_name = unknown_func_name;
-    }
-    else if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
-      func_name = too_long_func_name;
-    }
-    
-    const char* file = (const char*)caller_info_stack[offset + 1].address;
-    if (!file) {
-      file = unknown_file;
-    }
-    else if (SPVM_API_strnlen(file, max_file_len + 1) > max_file_len) {
-      file = too_long_file;
-    }
-    
-    int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2].ival;
-    
-    total_length += SPVM_API_build_caller_stack_line(NULL, func_name, file, line);
-  }
-  
-  SPVM_OBJECT* obj_new_caller_stack_lines = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
-  char* new_caller_stack_lines_bytes = (char*)SPVM_API_get_chars(env, stack, obj_new_caller_stack_lines);
-  
-  memcpy(new_caller_stack_lines_bytes, message_bytes, message_length);
-  int32_t current_offset = message_length;
-  
-  current_offset += SPVM_API_build_caller_stack_line(new_caller_stack_lines_bytes + current_offset, current_func_name, current_file, current_line);
-  
-  for (int32_t depth = end_call_depth; depth >= start_call_depth; depth--) {
-    int32_t offset = depth * record_size;
-    const char* func_name = (const char*)caller_info_stack[offset + 0].address;
-    if (!func_name) {
-      func_name = unknown_func_name;
-    }
-    else if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
-      func_name = too_long_func_name;
-    }
-    
-    const char* file = (const char*)caller_info_stack[offset + 1].address;
-    if (!file) {
-      file = unknown_file;
-    }
-    else if (SPVM_API_strnlen(file, max_file_len + 1) > max_file_len) {
-      file = too_long_file;
-    }
-    
-    int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2].ival;
-    
-    current_offset += SPVM_API_build_caller_stack_line(new_caller_stack_lines_bytes + current_offset, func_name, file, line);
-  }
+  SPVM_OBJECT* obj_new_caller_stack_lines = SPVM_API_build_caller_stack_lines_no_mortal(env, stack, obj_message, func_name, file, line, start_call_depth, end_call_depth);
   
   return obj_new_caller_stack_lines;
 }
