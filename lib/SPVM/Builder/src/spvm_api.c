@@ -7489,7 +7489,6 @@ int32_t SPVM_API_die_with_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
   return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
 }
 
-/* File scope helper for portability */
 static int32_t SPVM_API_strnlen(const char *s, int32_t maxlen) {
   if (!s) return 0;
   int32_t len = 0;
@@ -7499,7 +7498,6 @@ static int32_t SPVM_API_strnlen(const char *s, int32_t maxlen) {
   return len;
 }
 
-/* Helper to format a single line of the stack trace */
 static int32_t SPVM_API_build_caller_stack_line(char* buffer, const char* func_name, const char* file, int32_t line) {
   
   if (buffer) {
@@ -7607,7 +7605,7 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VAL
 }
 
 SPVM_OBJECT* SPVM_API_build_caller_stack_lines(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, const char* func_name, const char* file, int32_t line, int32_t start_call_depth, int32_t end_call_depth) {
-  SPVM_OBJECT* obj_caller_stack_lines = SPVM_API_build_caller_stack_lines(env, stack, obj_message, func_name, file, line, start_call_depth, end_call_depth);
+  SPVM_OBJECT* obj_caller_stack_lines = SPVM_API_build_caller_stack_lines_no_mortal(env, stack, obj_message, func_name, file, line, start_call_depth, end_call_depth);
   SPVM_API_push_mortal(env, stack, obj_caller_stack_lines);
   return obj_caller_stack_lines;
 }
@@ -7631,41 +7629,12 @@ SPVM_OBJECT* SPVM_API_longmess(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
 SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
   
   SPVM_OBJECT* obj_message = SPVM_API_get_exception(env, stack);
-  
   const char* func_name = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval;
   const char* file = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].oval;
   int32_t line = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival;
   int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
   int32_t start_call_depth = current_call_depth - level;
   int32_t end_call_depth = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH].ival;
-  
-  const char* unknown_func_name = "(Method name unknown)";
-  const char* unknown_file = "(File name unknown)";
-  const char* too_long_func_name = "(Method name too long)";
-  const char* too_long_file = "(File name too long)";
-  const int32_t max_func_name_len = 511;
-  const int32_t max_file_len = 1023;
-  
-  const char* message_bytes = SPVM_API_get_chars(env, stack, obj_message);
-  int32_t message_length = SPVM_API_length(env, stack, obj_message);
-
-  if (!func_name) {
-    func_name = unknown_func_name;
-  }
-  else if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
-    func_name = too_long_func_name;
-  }
-  
-  if (!file) {
-    file = unknown_file;
-  }
-  else if (SPVM_API_strnlen(file, max_file_len + 1) > max_file_len) {
-    file = too_long_file;
-  }
-
-  SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
-  int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
-
   if (start_call_depth < 0) {
     start_call_depth = 0;
   }
@@ -7673,72 +7642,9 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
     start_call_depth = end_call_depth;
   }
   
-  /* Calculate total length */
-  int32_t total_length = message_length;
+  SPVM_OBJECT* obj_new_caller_stack_lines = SPVM_API_build_caller_stack_lines_no_mortal(env, stack, obj_message, func_name, file, line, start_call_depth, end_call_depth);
   
-  /* Origin */
-  total_length += SPVM_API_build_caller_stack_line(NULL, func_name, file, line);
-
-  /* Callers */
-  for (int32_t depth = end_call_depth; depth >= start_call_depth; depth--) {
-    int32_t offset = depth * record_size;
-    const char* func_name = (const char*)caller_info_stack[offset + 0].address;
-    if (!func_name) {
-      func_name = unknown_func_name;
-    }
-    else if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
-      func_name = too_long_func_name;
-    }
-    
-    const char* file = (const char*)caller_info_stack[offset + 1].address;
-    if (!file) {
-      file = unknown_file;
-    }
-    else if (SPVM_API_strnlen(file, max_file_len + 1) > max_file_len) {
-      file = too_long_file;
-    }
-    
-    int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2].ival;
-    
-    total_length += SPVM_API_build_caller_stack_line(NULL, func_name, file, line);
-  }
-
-  /* Allocate */
-  SPVM_OBJECT* obj_new_message = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
-  char* new_message_bytes = (char*)SPVM_API_get_chars(env, stack, obj_new_message);
-  
-  /* Fill */
-  memcpy(new_message_bytes, message_bytes, message_length);
-  int32_t current_offset = message_length;
-
-  /* Write Origin */
-  current_offset += SPVM_API_build_caller_stack_line(new_message_bytes + current_offset, func_name, file, line);
-
-  /* Write Callers */
-  for (int32_t depth = end_call_depth; depth >= start_call_depth; depth--) {
-    int32_t offset = depth * record_size;
-    const char* func_name = (const char*)caller_info_stack[offset + 0].address;
-    if (!func_name) {
-      func_name = unknown_func_name;
-    }
-    else if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
-      func_name = too_long_func_name;
-    }
-    
-    const char* file = (const char*)caller_info_stack[offset + 1].address;
-    if (!file) {
-      file = unknown_file;
-    }
-    else if (SPVM_API_strnlen(file, max_file_len + 1) > max_file_len) {
-      file = too_long_file;
-    }
-    
-    int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2].ival;
-    
-    current_offset += SPVM_API_build_caller_stack_line(new_message_bytes + current_offset, func_name, file, line);
-  }
-
-  return obj_new_message;
+  return obj_new_caller_stack_lines;
 }
 
 SPVM_OBJECT* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
