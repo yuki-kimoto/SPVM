@@ -7540,6 +7540,13 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VAL
   
   int32_t current_line = line;
   
+  if (start_call_depth < 0) {
+    start_call_depth = 0;
+  }
+  else if (start_call_depth > end_call_depth) {
+    start_call_depth = end_call_depth;
+  }
+  
   SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
   
@@ -7635,12 +7642,6 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
   int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
   int32_t start_call_depth = current_call_depth - level;
   int32_t end_call_depth = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH].ival;
-  if (start_call_depth < 0) {
-    start_call_depth = 0;
-  }
-  else if (start_call_depth > end_call_depth) {
-    start_call_depth = end_call_depth;
-  }
   
   SPVM_OBJECT* obj_new_caller_stack_lines = SPVM_API_build_caller_stack_lines_no_mortal(env, stack, obj_message, func_name, file, line, start_call_depth, end_call_depth);
   
