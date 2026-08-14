@@ -1279,18 +1279,24 @@ int32_t SPVM__Fn__build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Fn__longmess(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn___longmess(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_message = stack[0].oval;
-  int32_t level = stack[1].ival;
+  SPVM_OBJ* obj_func_name = stack[1].oval;
+  SPVM_OBJ* obj_file = stack[2].oval;
+  int32_t line = stack[3].ival;
   
-  if (!obj_message) {
-    return env->die(env, stack, "The message $message must be defined.", __func__, FILE_NAME, __LINE__);
+  const char* func_name = NULL;
+  if (obj_func_name) {
+    func_name = env->get_chars(env, stack, obj_func_name);
   }
   
-  int32_t adjusted_level = level + 1;
+  const char* file = NULL;
+  if (obj_file) {
+    file = env->get_chars(env, stack, obj_file);
+  }
   
-  SPVM_OBJ* obj_longmess = env->longmess(env, stack, obj_message, adjusted_level);
+  SPVM_OBJ* obj_longmess = env->longmess(env, stack, obj_message, func_name, file, line);
   
   stack[0].oval = obj_longmess;
   

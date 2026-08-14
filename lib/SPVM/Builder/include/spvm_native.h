@@ -502,8 +502,8 @@ struct spvm_env {
   void (*set_error_id)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t error_id);
   int32_t (*no_close)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object);
   void (*set_no_close)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object, int32_t no_close);
-  SPVM_OBJ* (*longmess_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* obj_message, int32_t level);
-  SPVM_OBJ* (*longmess)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* obj_message, int32_t level);
+  SPVM_OBJ* (*longmess_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* obj_message, const char* func_name, const char* file, int32_t line);
+  SPVM_OBJ* (*longmess)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* obj_message, const char* func_name, const char* file, int32_t line);
   void (*diag)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* string, const char* func_name, const char* file, int32_t line);
 };
 

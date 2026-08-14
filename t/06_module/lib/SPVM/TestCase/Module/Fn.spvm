@@ -9492,7 +9492,7 @@ class TestCase::Module::Fn {
     
     my $message = "Error message";
     
-    my $full_message = Fn->longmess($message, 0);
+    my $full_message = Fn->longmess($message);
     
     unless (Fn->contains($full_message, "Error message")) {
       diag "Longmess does not contain expected message";

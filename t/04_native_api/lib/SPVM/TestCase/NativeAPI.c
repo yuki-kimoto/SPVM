@@ -4867,7 +4867,7 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
     }
     
     SPVM_OBJ* obj_message = env->new_string(env, stack, "Custom Message", 14);
-    SPVM_OBJ* obj_exception = env->longmess(env, stack, obj_message, 0);
+    SPVM_OBJ* obj_exception = env->longmess(env, stack, obj_message, __func__, __FILE__, __LINE__);
     const char* exception = env->get_chars(env, stack, obj_exception);
     
     if (!strstr(exception, "Custom Message")) {

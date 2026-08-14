@@ -2867,7 +2867,7 @@ This is the same as L</"build_exception_message">, but the returned object is no
 
 C<SPVM_OBJ* (*build_exception_message)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t level);>
 
-Reconstructs a full exception message including a stack trace by calling L</"longmess"> with the current exception object stored in the runtime stack.
+Reconstructs a full exception message including a stack trace with the current exception object stored in the runtime stack.
 
 Returns the newly created string object. This object is automatically pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
@@ -3002,13 +3002,13 @@ If I<no_close> is a true value, enables the C<no_close> flag of the object I<obj
 
 =head2 longmess_no_mortal
 
-C<SPVM_OBJ* (*longmess_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_OBJ* obj_message|SPVM::Document::NativeClass/"Native Object">, int32_t level);>
+C<SPVM_OBJ* (*longmess_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_OBJ* obj_message|SPVM::Document::NativeClass/"Native Object">, const char* func_name, const char* file, int32_t line);>
 
 This is the same as L</"longmess">, but the returned object is not pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
 =head2 longmess
 
-C<SPVM_OBJ* (*longmess)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_OBJ* obj_message|SPVM::Document::NativeClass/"Native Object">, int32_t level);>
+C<SPVM_OBJ* (*longmess)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<SPVM_OBJ* obj_message|SPVM::Document::NativeClass/"Native Object">, const char* func_name, const char* file, int32_t line);>
 
 Reconstructs a full message including a stack trace by using the metadata stored in the runtime stack.
 

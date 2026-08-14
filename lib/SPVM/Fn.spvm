@@ -2191,6 +2191,13 @@ class Fn {
   
   native static method env : string ($name : string);
   
-  native static method longmess : string ($message : string, $level : int = 0);
+  static method longmess : string ($message : string) {
+    
+    my $caller_info = caller 1;
+    
+    return &_longmess($message, $caller_info->method_abs_name, $caller_info->file, $caller_info->line);
+  }
+  
+  native static method _longmess : string ($message : string, $func_name : string, $file : string, $line : int);
   
 }
