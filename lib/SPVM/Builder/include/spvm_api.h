@@ -525,9 +525,9 @@ SPVM_OBJECT* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t
 
 SPVM_OBJECT* SPVM_API_caller(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
 
-SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level);
+SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t start_call_depth);
 
-SPVM_OBJECT* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level);
+SPVM_OBJECT* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t start_call_depth);
 
 typedef void SPVM_API_method_cb_t(SPVM_ENV* env, SPVM_VALUE* stack);
 

@@ -1957,11 +1957,11 @@ Returns the newly created string object.
 
 =head2 build_exception_message
 
-C<static method build_exception_message : string ($level : int = 0);>
+C<static method build_exception_message : string ($start_call_depth : int = 0);>
 
 Reconstructs the full exception message, including a stack trace, by calling L</"longmess"> with the current exception object stored in the runtime stack.
 
-The I<level> argument specifies the starting depth of the stack trace relative to the current call. For example, 0 starts from the caller of this method.
+The I<start_call_depth> argument specifies the starting depth of the stack trace relative to the current call. For example, 0 starts from the caller of this method.
 
 This method calls the L<build_exception_message|SPVM::Document::NativeAPI/"build_exception_message"> native API.
 
@@ -1975,8 +1975,8 @@ Examples:
   
   if ($@) {
     # Reconstruct the message with a stack trace
-    my $full_message = Fn->build_exception_message;
-    warn $full_message;
+    my $message_with_caller_stack_lines = Fn->build_exception_message;
+    Fn->say_stderr($message_with_caller_stack_lines);
   }
 
 =head2 get_call_depth

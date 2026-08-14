@@ -2859,13 +2859,13 @@ Examples:
 
 =head2 build_exception_message_no_mortal
 
-C<SPVM_OBJ* (*build_exception_message_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t level);>
+C<SPVM_OBJ* (*build_exception_message_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t start_call_depth);>
 
 This is the same as L</"build_exception_message">, but the returned object is not pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
 =head2 build_exception_message
 
-C<SPVM_OBJ* (*build_exception_message)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t level);>
+C<SPVM_OBJ* (*build_exception_message)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t start_call_depth);>
 
 Reconstructs a full exception message including a stack trace with the current exception object stored in the runtime stack.
 
@@ -2874,7 +2874,8 @@ Returns the newly created string object. This object is automatically pushed to 
 Examples:
 
   SPVM_OBJ* obj_full_message = env->build_exception_message(env, stack, 0);
-  env->set_exception(env, stack, obj_full_message);=head2 is_utf8
+
+=head2 is_utf8
 
 C<int32_t (*is_utf8)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, SPVM_OBJ* obj_string, int32_t* error_id);>
 

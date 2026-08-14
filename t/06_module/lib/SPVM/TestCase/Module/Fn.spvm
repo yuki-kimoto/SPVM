@@ -9511,7 +9511,7 @@ class TestCase::Module::Fn {
     
     $@ = "Error message";
     
-    my $full_message = Fn->build_exception_message(0);
+    my $full_message = Fn->build_exception_message(Fn->get_call_depth);
     
     unless (Fn->contains($full_message, "Error message")) {
       diag "Build exception message does not contain expected message";

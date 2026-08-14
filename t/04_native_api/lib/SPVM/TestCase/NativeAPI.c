@@ -4792,7 +4792,7 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
       return 0;
     }
     
-    SPVM_OBJ* obj_exception = env->build_exception_message(env, stack, 0);
+    SPVM_OBJ* obj_exception = env->build_exception_message(env, stack, env->get_call_depth(env, stack));
     const char* exception = env->get_chars(env, stack, obj_exception);
     
     if (!strstr(exception, "abc")) {
@@ -4829,7 +4829,7 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
       return 0;
     }
     
-    SPVM_OBJ* obj_exception = env->build_exception_message(env, stack, 0);
+    SPVM_OBJ* obj_exception = env->build_exception_message(env, stack, env->get_call_depth(env, stack));
     const char* exception = env->get_chars(env, stack, obj_exception);
     
     if (!strstr(exception, "abcd")) {
@@ -5465,7 +5465,7 @@ int32_t SPVM__TestCase__NativeAPI__push_caller_stack(SPVM_ENV* env, SPVM_VALUE* 
   
   env->pop_caller_stack(env, stack);
   
-  SPVM_OBJ* obj_exception = env->build_exception_message(env, stack, 0);
+  SPVM_OBJ* obj_exception = env->build_exception_message(env, stack, env->get_call_depth(env, stack));
   const char* exception = env->get_chars(env, stack, obj_exception);
   
   if (!strstr(exception, "Fatal error occurred.")) {

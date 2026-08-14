@@ -487,8 +487,8 @@ struct spvm_env {
   SPVM_OBJ* (*caller_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
   SPVM_OBJ* (*caller)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level, int32_t* error_id);
   int32_t (*die_with_string)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* obj_exception, const char* func_name, const char* file, int32_t line);
-  SPVM_OBJ* (*build_exception_message_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level);
-  SPVM_OBJ* (*build_exception_message)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level);
+  SPVM_OBJ* (*build_exception_message_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t start_call_depth);
+  SPVM_OBJ* (*build_exception_message)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t start_call_depth);
   int32_t (*call_end_methods)(SPVM_ENV* env, SPVM_VALUE* stack);
   int32_t (*is_utf8)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* obj_string, int32_t* error_id);
   void (*set_byte_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* byte_object, int8_t value);

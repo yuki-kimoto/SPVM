@@ -1268,11 +1268,9 @@ int32_t SPVM__Fn__get_current_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack) 
 
 int32_t SPVM__Fn__build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t level = stack[0].ival;
+  int32_t start_call_depth = stack[0].ival;
   
-  int32_t adjusted_level = level + 1;
-  
-  SPVM_OBJ* obj_message = env->build_exception_message(env, stack, adjusted_level);
+  SPVM_OBJ* obj_message = env->build_exception_message(env, stack, start_call_depth);
   
   stack[0].oval = obj_message;
   

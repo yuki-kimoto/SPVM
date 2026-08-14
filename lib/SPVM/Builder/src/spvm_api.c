@@ -7632,14 +7632,13 @@ SPVM_OBJECT* SPVM_API_longmess(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   return obj_longmess;
 }
 
-SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
+SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t start_call_depth) {
   
   SPVM_OBJECT* obj_message = SPVM_API_get_exception(env, stack);
   const char* func_name = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval;
   const char* file = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].oval;
   int32_t line = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival;
   int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
-  int32_t start_call_depth = current_call_depth - level;
   int32_t end_call_depth = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH].ival;
   
   SPVM_OBJECT* obj_new_caller_stack_lines = SPVM_API_build_caller_stack_lines_no_mortal(env, stack, obj_message, func_name, file, line, start_call_depth, end_call_depth);
@@ -7647,8 +7646,8 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
   return obj_new_caller_stack_lines;
 }
 
-SPVM_OBJECT* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t level) {
-  SPVM_OBJECT* obj_message = SPVM_API_build_exception_message_no_mortal(env, stack, level);
+SPVM_OBJECT* SPVM_API_build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack, int32_t start_call_depth) {
+  SPVM_OBJECT* obj_message = SPVM_API_build_exception_message_no_mortal(env, stack, start_call_depth);
   SPVM_API_push_mortal(env, stack, obj_message);
   return obj_message;
 }
