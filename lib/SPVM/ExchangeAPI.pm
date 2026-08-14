@@ -292,9 +292,11 @@ sub dump { my $ret; eval { $ret =  &_xs_dump(@_) }; if ($@) { confess($@) } $ret
 sub get_exception { my $ret; eval { $ret =  &_xs_get_exception(@_) }; if ($@) { confess($@) } $ret}
 sub set_exception { my $ret; eval { $ret =  &_xs_set_exception(@_) }; if ($@) { confess($@) } $ret}
 sub get_memory_blocks_count { my $ret; eval { $ret =  &_xs_get_memory_blocks_count(@_) }; if ($@) { confess($@) } $ret}
-sub call_method { my $ret; eval { $ret =  &_xs_call_method(@_) }; if ($@) { confess($@) } $ret}
 sub destroy_runtime_permanent_vars { my $ret; eval { $ret =  &_xs_destroy_runtime_permanent_vars(@_) }; if ($@) { confess($@) } $ret}
 sub get_version_string { my $ret; eval { $ret =  &_xs_get_version_string(@_) }; if ($@) { confess($@) } $ret}
+sub call_method {
+  my $ret; eval { $ret =  &_xs_call_method(@_) }; if ($@) { confess($@) } $ret;
+}
 
 1;
 
@@ -1149,6 +1151,8 @@ The error id is set to 0.
   my $ret = $api->call_method($invocant, $method_name, @args);
   
   my $ret = $api->call_method($invocant, $method_name, @args, $error);
+  
+  my $ret = $api->call_method($invocant, $method_name, @args, $options);
 
 Calls a class method or an instance method. If the invocant $invocant is a string, a class method is called. If the invocant $invocant is a L<SPVM::BlessedObject::Class>, an instance method is called.
 
