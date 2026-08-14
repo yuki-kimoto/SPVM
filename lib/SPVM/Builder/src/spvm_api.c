@@ -7346,10 +7346,10 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stac
   }
 
   /* Calculate the target call depth */
-  int32_t target_call_depth = call_depth - level;
+  int32_t start_call_depth = call_depth - level;
 
   /* Check if the depth is out of range (Level 0 is the current method) */
-  if (target_call_depth < 0) {
+  if (start_call_depth < 0) {
     return NULL;
   }
   
@@ -7358,12 +7358,12 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stac
   int32_t record_size = SPVM_API_get_caller_info_stack_record_size(env, stack);
   
   /* The method information is stored at index 3 of each record */
-  int32_t offset = target_call_depth * record_size;
+  int32_t offset = start_call_depth * record_size;
   
   SPVM_RUNTIME_METHOD* method = (SPVM_RUNTIME_METHOD*)caller_info_stack[offset + 3].address;
   
-  /* method must not be NULL during method execution if target_call_depth is valid. */
-  if (target_call_depth <= call_depth) {
+  /* method must not be NULL during method execution if start_call_depth is valid. */
+  if (start_call_depth <= call_depth) {
     assert(method != NULL);
   }
   
@@ -7384,10 +7384,10 @@ SPVM_OBJECT* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t
   }
   
   /* Calculate the target call depth. */
-  int32_t target_call_depth = call_depth - level;
+  int32_t start_call_depth = call_depth - level;
   
   /* Check if the depth is out of range */
-  if (target_call_depth < 0) {
+  if (start_call_depth < 0) {
     *error_id = env->die(env, stack, "The level exceeds the call depth.", __func__, FILE_NAME, __LINE__);
     return NULL;
   }
@@ -7396,7 +7396,7 @@ SPVM_OBJECT* SPVM_API_caller_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t
   int32_t record_size = SPVM_API_get_caller_info_stack_record_size(env, stack);
   
   /* Calculate the target index in the caller info stack */
-  int32_t target_index = target_call_depth * record_size;
+  int32_t target_index = start_call_depth * record_size;
   
   /* Extract information directly from the record. */
   const char* caller_func_name = (const char*)caller_info_stack[target_index + 0].address;
@@ -7632,6 +7632,13 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
   
   SPVM_OBJECT* obj_message = SPVM_API_get_exception(env, stack);
   
+  const char* func_name = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval;
+  const char* file = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].oval;
+  int32_t line = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival;
+  int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
+  int32_t start_call_depth = current_call_depth - level;
+  int32_t end_call_depth = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH].ival;
+  
   const char* unknown_func_name = "(Method name unknown)";
   const char* unknown_file = "(File name unknown)";
   const char* too_long_func_name = "(Method name too long)";
@@ -7642,47 +7649,38 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
   const char* message_bytes = SPVM_API_get_chars(env, stack, obj_message);
   int32_t message_length = SPVM_API_length(env, stack, obj_message);
 
-  const char* exception_func_name = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].oval;
-  if (!exception_func_name) {
-    exception_func_name = unknown_func_name;
+  if (!func_name) {
+    func_name = unknown_func_name;
   }
-  else if (SPVM_API_strnlen(exception_func_name, max_func_name_len + 1) > max_func_name_len) {
-    exception_func_name = too_long_func_name;
+  else if (SPVM_API_strnlen(func_name, max_func_name_len + 1) > max_func_name_len) {
+    func_name = too_long_func_name;
   }
   
-  const char* exception_file = (const char*)stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].oval;
-  if (!exception_file) {
-    exception_file = unknown_file;
+  if (!file) {
+    file = unknown_file;
   }
-  else if (SPVM_API_strnlen(exception_file, max_file_len + 1) > max_file_len) {
-    exception_file = too_long_file;
+  else if (SPVM_API_strnlen(file, max_file_len + 1) > max_file_len) {
+    file = too_long_file;
   }
-
-  int32_t exception_line = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival;
-  int32_t exception_call_depth = stack[SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH].ival;
 
   SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
 
-  /* Calculate target depth */
-  int32_t current_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
-  int32_t target_call_depth = current_call_depth - level;
-  
-  if (target_call_depth < 0) {
-    target_call_depth = 0;
+  if (start_call_depth < 0) {
+    start_call_depth = 0;
   }
-  else if (target_call_depth > exception_call_depth) {
-    target_call_depth = exception_call_depth;
+  else if (start_call_depth > end_call_depth) {
+    start_call_depth = end_call_depth;
   }
   
   /* Calculate total length */
   int32_t total_length = message_length;
   
   /* Origin */
-  total_length += SPVM_API_build_caller_stack_line(NULL, exception_func_name, exception_file, exception_line);
+  total_length += SPVM_API_build_caller_stack_line(NULL, func_name, file, line);
 
   /* Callers */
-  for (int32_t depth = exception_call_depth; depth >= target_call_depth; depth--) {
+  for (int32_t depth = end_call_depth; depth >= start_call_depth; depth--) {
     int32_t offset = depth * record_size;
     const char* func_name = (const char*)caller_info_stack[offset + 0].address;
     if (!func_name) {
@@ -7714,10 +7712,10 @@ SPVM_OBJECT* SPVM_API_build_exception_message_no_mortal(SPVM_ENV* env, SPVM_VALU
   int32_t current_offset = message_length;
 
   /* Write Origin */
-  current_offset += SPVM_API_build_caller_stack_line(new_message_bytes + current_offset, exception_func_name, exception_file, exception_line);
+  current_offset += SPVM_API_build_caller_stack_line(new_message_bytes + current_offset, func_name, file, line);
 
   /* Write Callers */
-  for (int32_t depth = exception_call_depth; depth >= target_call_depth; depth--) {
+  for (int32_t depth = end_call_depth; depth >= start_call_depth; depth--) {
     int32_t offset = depth * record_size;
     const char* func_name = (const char*)caller_info_stack[offset + 0].address;
     if (!func_name) {
