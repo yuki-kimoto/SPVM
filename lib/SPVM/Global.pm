@@ -17,7 +17,6 @@ use SPVM::BlessedObject;
 use SPVM::BlessedObject::Array;
 use SPVM::BlessedObject::Class;
 use SPVM::BlessedObject::String;
-use SPVM::ExchangeAPI::Options;
 
 my $COMPILER;
 my $API;
@@ -416,14 +415,7 @@ sub bind_to_perl {
           
           my $return_value;
           
-          my ($class_name, $file, $line) = caller 0;
-          
-          my $options = SPVM::ExchangeAPI::Options->new(
-            method_abs_name => "$class_name_string#$$method_name_string",
-            file => $file,
-            line => $line,
-          );
-          eval { $return_value = SPVM::api()->call_method($class_name_string, $method_name_string, @_, $options) };
+          eval { $return_value = SPVM::api()->call_method($class_name_string, $method_name_string, @_) };
           my $error = $@;
           if ($error) {
             confess($error);
