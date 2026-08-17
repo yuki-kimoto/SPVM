@@ -7519,8 +7519,12 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VAL
   const int32_t max_func_name_len = 511;
   const int32_t max_file_len = 1023;
   
-  const char* message_bytes = SPVM_API_get_chars(env, stack, obj_message);
-  int32_t message_length = SPVM_API_length(env, stack, obj_message);
+  const char* message_bytes = NULL;
+  int32_t message_length = 0;
+  if (obj_message) {
+    message_bytes = SPVM_API_get_chars(env, stack, obj_message);
+    int32_t message_length = SPVM_API_length(env, stack, obj_message);
+  }
   
   const char* current_func_name = func_name;
   if (!current_func_name) {
@@ -7577,7 +7581,9 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VAL
   SPVM_OBJECT* obj_new_caller_stack_lines = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
   char* new_caller_stack_lines_bytes = (char*)SPVM_API_get_chars(env, stack, obj_new_caller_stack_lines);
   
-  memcpy(new_caller_stack_lines_bytes, message_bytes, message_length);
+  if (message_length > 0) {
+    memcpy(new_caller_stack_lines_bytes, message_bytes, message_length);
+  }
   int32_t current_offset = message_length;
   
   current_offset += SPVM_API_build_caller_stack_line(new_caller_stack_lines_bytes + current_offset, current_func_name, current_file, current_line);
