@@ -1359,14 +1359,10 @@ class TestCase::ExchangeAPI {
   
   static method caller_stack : int ($caller_line : int) {
     
-    my $longmess = Fn->longmess(undef);my $line = __LINE__;
+    my $message = "Error";
+    my $longmess = Fn->longmess($message);my $line = __LINE__;
     
-    # TODO
-    # unless (Fn->contains($longmess, "\n  TestCase::ExchangeAPI#caller_stack")) {
-    #   return 0;
-    # }
-    
-    unless (Fn->contains($longmess, "TestCase::ExchangeAPI#caller_stack")) {
+    unless (Fn->contains($longmess, "Error\n  TestCase::ExchangeAPI#caller_stack")) {
       return 0;
     }
     
@@ -1378,7 +1374,7 @@ class TestCase::ExchangeAPI {
       return 0;
     }
     
-    unless (Fn->contains($longmess, "main#(Unknown)")) {
+    unless (Fn->contains($longmess, "\n  main#(Unknown)")) {
       return 0;
     }
     
@@ -1389,8 +1385,6 @@ class TestCase::ExchangeAPI {
     unless (Fn->contains($longmess, $caller_line)) {
       return 0;
     }
-    
-    # print STDERR $longmess;
     
     return 1;
   }
