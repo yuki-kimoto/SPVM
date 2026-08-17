@@ -3017,7 +3017,7 @@ This function creates a new SPVM string object by combining the specified messag
 
 The I<start_call_depth> argument specifies the starting call depth of the caller information stack to include in the trace. Normally, you specify C<0>.
 
-The I<end_call_depth> argument specifies the ending call depth of the caller information stack to include in the trace.
+The I<end_call_depth> argument specifies the ending call depth of the caller information stack to include in the trace. If I<end_call_depth> is less than 0 or greater than the value obtained by L</"get_call_depth">, the value obtained by L</"get_call_depth"> is set.
 
 This is useful for formatting messages with a stack trace.
 

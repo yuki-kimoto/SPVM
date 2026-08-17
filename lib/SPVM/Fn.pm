@@ -1947,11 +1947,13 @@ If the specified C<$level> is out of range of the caller stack, an exception is 
 
 =head2 longmess
 
-C<static method longmess : string ($message : string, $start_call_depth : int = 0);>
+C<static method longmess : string ($message : string, $start_call_depth : int = 0, $end_call_depth : int = -1);>
 
 Reconstructs a full message, including a stack trace, using the metadata stored in the runtime stack and the specified message string.
 
 This method calls the L<longmess|SPVM::Document::NativeAPI/"longmess"> native API.
+
+If I<end_call_depth> is less than 0 or greater than the value obtained by L</"get_call_depth"> method, the value obtained by L</"get_call_depth"> method is set.
 
 Returns the newly created string object.
 
