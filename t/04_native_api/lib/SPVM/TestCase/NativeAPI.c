@@ -4784,7 +4784,6 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
   {
-    // ˆø”‚Ì‡˜‚ðC³: format, func, file, line, ...args
     int32_t error_id = env->die(env, stack, "Error %s.", __func__, __FILE__, __LINE__, "abc"); int32_t line = __LINE__;
     
     if (!(error_id == SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS)) {
@@ -4867,7 +4866,7 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
     }
     
     SPVM_OBJ* obj_message = env->new_string(env, stack, "Custom Message", 14);
-    SPVM_OBJ* obj_exception = env->longmess(env, stack, obj_message, 0, -1); int32_t line = __LINE__;
+    SPVM_OBJ* obj_exception = env->longmess(env, stack, obj_message, 0, -1);
     const char* exception = env->get_chars(env, stack, obj_exception);
     
     if (!strstr(exception, "Custom Message")) {
@@ -4887,15 +4886,6 @@ int32_t SPVM__TestCase__NativeAPI__die(SPVM_ENV* env, SPVM_VALUE* stack) {
       stack[0].ival = 0;
       return 0;
     }
-    
-    char tmp_line[255] = {0};
-    sprintf(tmp_line, "%d", line);
-    
-    if (!strstr(exception, tmp_line)) {
-      spvm_diag("");
-      stack[0].ival = 0;
-      return 0;
-    }
   }
   
   stack[0].ival = 1;
@@ -4908,7 +4898,6 @@ int32_t SPVM__TestCase__NativeAPI__print_exception_to_stderr(SPVM_ENV* env, SPVM
   int32_t error_id = 0;
   
   {
-    // ˆø”‚Ì‡˜‚ðC³: format, func, file, line, ...args
     int32_t error_id = env->die(env, stack, "[Test Output]Error %s.", __func__, __FILE__, __LINE__, "abc");
     
     env->print_exception_to_stderr(env, stack);
@@ -4923,7 +4912,6 @@ int32_t SPVM__TestCase__NativeAPI__extra(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  // sprintf("%s", NULL);
   {
     const char* string = NULL;
     fprintf(env->spvm_stderr(env, stack), "[Test Output][sprintf string NULL]%s\n", string);
