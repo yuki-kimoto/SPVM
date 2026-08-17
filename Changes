@@ -7,7 +7,7 @@
     * Add longmess_no_mortal and longmess native APIs.
     * Add Fn#longmess method.
     * Add diag native API.
-    * Add SPVM::Builder::CallerInfo class.
+    * Add SPVM::ExchangeAPI::CallerInfo class.
     * Pass caller infomation to exchange API class method call and instance mthod call.
   [Internal Changes]
     * Add SPVM_OP_C_FLAG_WARN_LONGMESS and add operand2 to warn operator.
