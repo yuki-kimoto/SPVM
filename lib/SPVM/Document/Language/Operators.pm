@@ -1457,11 +1457,11 @@ Examples:
 
 =head2 diag Operator
 
-Same as L</"warn"> operator.
+Same as L</"warn"> operator, but prints the caller's stack trace.
 
 =head2 diag_level Operator
 
-Same as L</"warn_level"> operator.
+Same as L</"warn_level"> operator, but prints the caller's stack trace.
 
 =head2 address Operator
 
