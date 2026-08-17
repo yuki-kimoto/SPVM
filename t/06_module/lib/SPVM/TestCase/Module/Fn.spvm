@@ -9522,6 +9522,39 @@ class TestCase::Module::Fn {
       
     }
     
+    {
+      my $message = "Error message";
+      
+      my $start_call_depth = 1;
+      my $message_with_caller_stack = Fn->longmess($message, $start_call_depth);my $line = __LINE__;
+      
+      unless (Fn->contains($message_with_caller_stack, "Error message\n  TestCase::Module::Fn#longmess")) {
+        diag;
+        return 0;
+      }
+      
+      unless (Fn->contains($message_with_caller_stack, "t/06_module/lib/SPVM/TestCase/Module/Fn.spvm")) {
+        diag;
+        return 0;
+      }
+      
+      unless (Fn->contains($message_with_caller_stack, "$line")) {
+        diag;
+        return 0;
+      }
+      
+      if (Fn->contains($message_with_caller_stack, "\n  main#(Unknown)")) {
+        diag;
+        return 0;
+      }
+      
+      if (Fn->contains($message_with_caller_stack, "t/06_module/Fn.t")) {
+        diag;
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
 

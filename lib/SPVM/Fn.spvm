@@ -2191,6 +2191,6 @@ class Fn {
   
   native static method env : string ($name : string);
   
-  native static method longmess : string ($message : string, $start_call_depth : int = 0, $end_call_depth : int = -1);
+  native static method longmess : string ($message : string, $start_call_depth : int = 0);
   
 }

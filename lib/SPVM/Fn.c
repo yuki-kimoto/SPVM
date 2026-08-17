@@ -1281,7 +1281,7 @@ int32_t SPVM__Fn__longmess(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_message = stack[0].oval;
   int32_t start_call_depth = stack[1].ival;
-  int32_t end_call_depth = stack[2].ival;
+  int32_t end_call_depth = -1;
   
   SPVM_OBJ* obj_longmess = env->longmess(env, stack, obj_message, start_call_depth, end_call_depth);
   
