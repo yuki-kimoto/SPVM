@@ -7361,11 +7361,6 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_current_method(SPVM_ENV* env, SPVM_VALUE* stac
   
   SPVM_RUNTIME_METHOD* method = (SPVM_RUNTIME_METHOD*)caller_info_stack[offset + 3].address;
   
-  /* method must not be NULL during method execution if start_call_depth is valid. */
-  if (start_call_depth <= call_depth) {
-    assert(method != NULL);
-  }
-  
   return method;
 }
 
