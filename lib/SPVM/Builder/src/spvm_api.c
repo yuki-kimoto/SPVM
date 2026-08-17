@@ -7523,7 +7523,7 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VAL
   int32_t message_length = 0;
   if (obj_message) {
     message_bytes = SPVM_API_get_chars(env, stack, obj_message);
-    int32_t message_length = SPVM_API_length(env, stack, obj_message);
+    message_length = SPVM_API_length(env, stack, obj_message);
   }
   
   const char* current_func_name = func_name;
