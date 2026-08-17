@@ -7622,7 +7622,7 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines(SPVM_ENV* env, SPVM_VALUE* stack,
 
 SPVM_OBJECT* SPVM_API_longmess_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, const char* func_name, const char* file, int32_t line, int32_t start_call_depth, int32_t end_call_depth) {
   
-  if (end_call_depth < 0) {
+  if (end_call_depth < 0 || end_call_depth > stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival) {
     end_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
   }
   
