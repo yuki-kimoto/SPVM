@@ -7543,9 +7543,6 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VAL
   if (start_call_depth < 0) {
     start_call_depth = 0;
   }
-  else if (start_call_depth > end_call_depth) {
-    start_call_depth = end_call_depth;
-  }
   
   SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
   int32_t record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
