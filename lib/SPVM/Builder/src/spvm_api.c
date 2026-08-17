@@ -7477,15 +7477,11 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* exception_for
 
 int32_t SPVM_API_die_with_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_exception, const char* func_name, const char* file, int32_t line) {
   
-  /* Set the exception object */
   SPVM_API_set_exception(env, stack, obj_exception);
-
-  /* Set exception metadata to the stack indices */
-  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_METHOD_ABS_NAME].address = (char*)func_name;
-  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_FILE].address = (char*)file;
-  stack[SPVM_API_C_STACK_INDEX_EXCEPTION_LINE].ival = line;
+  
+  SPVM_API_push_caller_stack(env, stack, func_name, file, line);
   stack[SPVM_API_C_STACK_INDEX_EXCEPTION_CALL_DEPTH].ival = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
-
+  
   return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
 }
 
