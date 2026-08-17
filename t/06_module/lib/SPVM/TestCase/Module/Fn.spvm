@@ -9490,18 +9490,36 @@ class TestCase::Module::Fn {
 
   static method longmess : int () {
     
-    my $message = "Error message";
-    
-    my $full_message = Fn->longmess($message);
-    
-    unless (Fn->contains($full_message, "Error message")) {
-      diag "Longmess does not contain expected message";
-      return 0;
-    }
-    
-    unless (Fn->contains($full_message, "TestCase::Module::Fn#longmess")) {
-      diag "Longmess does not contain expected method name";
-      return 0;
+    {
+      my $message = "Error message";
+      
+      my $message_with_caller_stack = Fn->longmess($message);my $line = __LINE__;
+      
+      unless (Fn->contains($message_with_caller_stack, "Error message\n  TestCase::Module::Fn#longmess")) {
+        diag;
+        return 0;
+      }
+      
+      unless (Fn->contains($message_with_caller_stack, "t/06_module/lib/SPVM/TestCase/Module/Fn.spvm")) {
+        diag;
+        return 0;
+      }
+      
+      unless (Fn->contains($message_with_caller_stack, "$line")) {
+        diag;
+        return 0;
+      }
+      
+      unless (Fn->contains($message_with_caller_stack, "\n  main#(Unknown)")) {
+        diag;
+        return 0;
+      }
+      
+      unless (Fn->contains($message_with_caller_stack, "t/06_module/Fn.t")) {
+        diag;
+        return 0;
+      }
+      
     }
     
     return 1;
@@ -9511,14 +9529,14 @@ class TestCase::Module::Fn {
     
     $@ = "Error message";
     
-    my $full_message = Fn->build_exception_message(Fn->get_call_depth);
+    my $message_with_caller_stack = Fn->build_exception_message(Fn->get_call_depth);
     
-    unless (Fn->contains($full_message, "Error message")) {
+    unless (Fn->contains($message_with_caller_stack, "Error message")) {
       diag "Build exception message does not contain expected message";
       return 0;
     }
     
-    unless (Fn->contains($full_message, "TestCase::Module::Fn#build_exception_message")) {
+    unless (Fn->contains($message_with_caller_stack, "TestCase::Module::Fn#build_exception_message")) {
       diag "Build exception message does not contain expected method name";
       return 0;
     }
