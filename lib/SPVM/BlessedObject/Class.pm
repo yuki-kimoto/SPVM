@@ -31,7 +31,7 @@ sub AUTOLOAD {
   
   my ($caller_class_name, $caller_file, $caller_line) = caller;
   my $caller_method_abs_name = "$caller_class_name#(Unknown)";
-  my $caller_info = SPVM::Builder::CallerInfo->new(method_abs_name => $caller_method_abs_name, file => $caller_file, line => $caller_line);
+  my $caller_info = SPVM::ExchangeAPI::CallerInfo->new(method_abs_name => $caller_method_abs_name, file => $caller_file, line => $caller_line);
   
   my $ret = $self->__api->call_method($self, $method_name, @_, $caller_info);
   

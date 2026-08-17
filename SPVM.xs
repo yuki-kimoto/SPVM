@@ -1203,7 +1203,7 @@ _xs_call_method(...)
       sv_error_ret = sv_last;
       args_length -= 1;
     }
-    else if (sv_derived_from(sv_last, "SPVM::Builder::CallerInfo")) {
+    else if (sv_derived_from(sv_last, "SPVM::ExchangeAPI::CallerInfo")) {
       sv_caller_info = sv_last;
       args_length -= 1;
       HV* hv_caller_info = (HV*)SvRV(sv_last);

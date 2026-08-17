@@ -65,7 +65,6 @@ lib/SPVM/Bool.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/Accessor.pm
 lib/SPVM/Builder/API.pm
-lib/SPVM/Builder/CallerInfo.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/CommandInfo.pm
 lib/SPVM/Builder/compile.pl
@@ -325,6 +324,7 @@ lib/SPVM/Error/System.pm
 lib/SPVM/Error/Unicode/InvalidUTF8.pm
 lib/SPVM/Error/Unicode/InvalidUTF8.spvm
 lib/SPVM/ExchangeAPI.pm
+lib/SPVM/ExchangeAPI/CallerInfo.pm
 lib/SPVM/ExchangeAPI/Class.pm
 lib/SPVM/ExchangeAPI/Error.pm
 lib/SPVM/Float.pm

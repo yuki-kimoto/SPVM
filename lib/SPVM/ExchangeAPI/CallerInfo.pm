@@ -1,4 +1,4 @@
-package SPVM::Builder::CallerInfo;
+package SPVM::ExchangeAPI::CallerInfo;
 use strict;
 use warnings;
 
