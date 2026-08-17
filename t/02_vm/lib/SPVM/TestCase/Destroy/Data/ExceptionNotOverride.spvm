@@ -9,6 +9,9 @@ class TestCase::Destroy::Data::ExceptionNotOverride {
   }
   
   method DESTROY : void () {
+    
+    diag "Exception in DESTROY using diag";
+    
     die "Exception in DESTROY";
   }
 }
