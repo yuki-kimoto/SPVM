@@ -3,17 +3,6 @@ use strict;
 use warnings;
 
 # Fields
-sub error_id {
-  my $self = shift;
-  if (@_) {
-    $self->{error_id} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{error_id};
-  }
-}
-
 sub line {
   my $self = shift;
   if (@_) {
@@ -52,7 +41,6 @@ sub new {
   my $error = shift;
   
   my $self = {
-    error_id => 0,
     line => 0,
     file => undef,
     method_abs_name => undef,
@@ -77,22 +65,8 @@ The SPVM::ExchangeAPI::Options class has methods to get and set options.
 =head1 Usage
   
   my $error = SPVM::ExchangeAPI::Options->new;
-  $error->error_id(2);
-  my $die_error_id = $error->error_id;
 
 =head1 Fields
-
-=head2 error_id
-
-  my $error_id = $error->error_id;
-  $error->error_id($error_id);
-
-Gets and sets an error id.
-
-Examples:
-
-  $error->error_id(2);
-  my $error_id = $error->error_id;
 
 =head2 line
 
@@ -141,10 +115,6 @@ Creates a new C<SPVM::ExchangeAPI::Options> object.
 Options:
 
 =over 2
-
-=item * C<error_id>
-
-An error id.
 
 =item * C<line>
 

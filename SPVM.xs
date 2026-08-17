@@ -1999,11 +1999,6 @@ _xs_call_method(...)
       SV* sv_error_id = sv_2mortal(newSViv(error_id));
       (void)hv_store(hv_error_ret, "id", strlen("id"), SvREFCNT_inc(sv_error_id), 0);
     }
-    else if (SvOK(sv_options)) {
-      HV* hv_options = (HV*)SvRV(sv_options);
-      SV* sv_error_id = sv_2mortal(newSViv(error_id));
-      (void)hv_store(hv_options, "error_id", strlen("error_id"), SvREFCNT_inc(sv_error_id), 0);
-    }
     
     int32_t scope_id = env->enter_scope(env, stack);
     
