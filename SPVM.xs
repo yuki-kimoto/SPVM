@@ -1187,7 +1187,7 @@ _xs_call_method(...)
   int32_t args_length = items;
   
   SV* sv_error_ret = &PL_sv_undef;
-  SV* sv_options = &PL_sv_undef;
+  SV* sv_caller_info = &PL_sv_undef;
   
   const char* method_abs_name = __func__;
   const char* file = __FILE__;
@@ -1203,22 +1203,22 @@ _xs_call_method(...)
       sv_error_ret = sv_last;
       args_length -= 1;
     }
-    else if (sv_derived_from(sv_last, "SPVM::ExchangeAPI::Options")) {
-      sv_options = sv_last;
+    else if (sv_derived_from(sv_last, "SPVM::Builder::CallerInfo")) {
+      sv_caller_info = sv_last;
       args_length -= 1;
-      HV* hv_options = (HV*)SvRV(sv_last);
+      HV* hv_caller_info = (HV*)SvRV(sv_last);
       
-      SV** svp_method_abs_name = hv_fetch(hv_options, "method_abs_name", 15, 0);
+      SV** svp_method_abs_name = hv_fetch(hv_caller_info, "method_abs_name", 15, 0);
       if (svp_method_abs_name && SvPOK(*svp_method_abs_name)) {
         method_abs_name = SvPV_nolen(*svp_method_abs_name);
       }
       
-      SV** svp_file = hv_fetch(hv_options, "file", 4, 0);
+      SV** svp_file = hv_fetch(hv_caller_info, "file", 4, 0);
       if (svp_file && SvPOK(*svp_file)) {
         file = SvPV_nolen(*svp_file);
       }
       
-      SV** svp_line = hv_fetch(hv_options, "line", 4, 0);
+      SV** svp_line = hv_fetch(hv_caller_info, "line", 4, 0);
       if (svp_line && SvIOK(*svp_line)) {
         line = SvIV(*svp_line);
       }
