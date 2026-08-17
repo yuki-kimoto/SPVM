@@ -420,7 +420,7 @@ sub bind_to_perl {
           my $caller_method_abs_name = "$caller_class_name#(Unknown)";
           my $options = SPVM::ExchangeAPI::Options->new(method_abs_name => $caller_method_abs_name, file => $caller_file, line => $caller_line);
           
-          eval { $return_value = SPVM::api()->call_method($class_name_string, $method_name_string, @_) };
+          eval { $return_value = SPVM::api()->call_method($class_name_string, $method_name_string, @_, $options) };
           my $error = $@;
           if ($error) {
             confess($error);
