@@ -1356,4 +1356,44 @@ class TestCase::ExchangeAPI {
   static method die_with_die_error_id : void ($message : string) {
     die Error::System $message;
   }
+  
+  static method caller_stack : int ($caller_line : int) {
+    
+    my $longmess = Fn->longmess(undef);my $line = __LINE__;
+    
+    # TODO
+    # unless (Fn->contains($longmess, "\n  TestCase::ExchangeAPI#caller_stack")) {
+    #   return 0;
+    # }
+    
+    unless (Fn->contains($longmess, "TestCase::ExchangeAPI#caller_stack")) {
+      return 0;
+    }
+    
+    unless (Fn->contains($longmess, "t/05_exchange_api/lib/SPVM/TestCase/ExchangeAPI.spvm")) {
+      return 0;
+    }
+    
+    unless (Fn->contains($longmess, $line)) {
+      return 0;
+    }
+    
+    unless (Fn->contains($longmess, "main#(Unknown)")) {
+      return 0;
+    }
+    
+    unless (Fn->contains($longmess, "t/05_exchange_api/exchange_api.t")) {
+      return 0;
+    }
+    
+    unless (Fn->contains($longmess, $caller_line)) {
+      return 0;
+    }
+    
+    # print STDERR $longmess;
+    
+    return 1;
+  }
+  
+  
 }

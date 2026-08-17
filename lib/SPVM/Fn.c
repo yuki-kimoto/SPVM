@@ -1277,24 +1277,11 @@ int32_t SPVM__Fn__build_exception_message(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Fn___longmess(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__longmess(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_OBJ* obj_message = stack[0].oval;
-  SPVM_OBJ* obj_func_name = stack[1].oval;
-  SPVM_OBJ* obj_file = stack[2].oval;
-  int32_t line = stack[3].ival;
-  int32_t start_call_depth = stack[4].ival;
-  int32_t end_call_depth = stack[5].ival;
-  
-  const char* func_name = NULL;
-  if (obj_func_name) {
-    func_name = env->get_chars(env, stack, obj_func_name);
-  }
-  
-  const char* file = NULL;
-  if (obj_file) {
-    file = env->get_chars(env, stack, obj_file);
-  }
+  int32_t start_call_depth = stack[1].ival;
+  int32_t end_call_depth = stack[2].ival;
   
   SPVM_OBJ* obj_longmess = env->longmess(env, stack, obj_message, NULL, NULL, 0, start_call_depth, end_call_depth);
   
