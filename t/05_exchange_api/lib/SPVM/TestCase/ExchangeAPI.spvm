@@ -15,7 +15,14 @@ class TestCase::ExchangeAPI {
   static method DOUBLE_PRECICE : double () { return 65536.5; }
   use Fn;
   use Array;
-
+  
+  static method new : TestCase::ExchangeAPI () {
+    
+    my $self = new TestCase::ExchangeAPI;
+    
+    return $self;
+  }
+  
   static method return_object : TestCase::Minimal () {
     
     my $minimal = TestCase::Minimal->new;
@@ -1359,35 +1366,71 @@ class TestCase::ExchangeAPI {
   
   static method caller_stack : int ($caller_line : int) {
     
-    my $message = "Error";
-    my $longmess = Fn->longmess($message);my $line = __LINE__;
-    
-    unless (Fn->contains($longmess, "Error\n  TestCase::ExchangeAPI#caller_stack")) {
-      return 0;
-    }
-    
-    unless (Fn->contains($longmess, "t/05_exchange_api/lib/SPVM/TestCase/ExchangeAPI.spvm")) {
-      return 0;
-    }
-    
-    unless (Fn->contains($longmess, $line)) {
-      return 0;
-    }
-    
-    unless (Fn->contains($longmess, "\n  main#(Unknown)")) {
-      return 0;
-    }
-    
-    unless (Fn->contains($longmess, "t/05_exchange_api/exchange_api.t")) {
-      return 0;
-    }
-    
-    unless (Fn->contains($longmess, $caller_line)) {
-      return 0;
+    {
+      my $message = "Error";
+      my $longmess = Fn->longmess($message);my $line = __LINE__;
+      
+      unless (Fn->contains($longmess, "Error\n  TestCase::ExchangeAPI#caller_stack")) {
+        return 0;
+      }
+      
+      unless (Fn->contains($longmess, "t/05_exchange_api/lib/SPVM/TestCase/ExchangeAPI.spvm")) {
+        return 0;
+      }
+      
+      unless (Fn->contains($longmess, $line)) {
+        return 0;
+      }
+      
+      unless (Fn->contains($longmess, "\n  main#(Unknown)")) {
+        return 0;
+      }
+      
+      unless (Fn->contains($longmess, "t/05_exchange_api/exchange_api.t")) {
+        return 0;
+      }
+      
+      unless (Fn->contains($longmess, $caller_line)) {
+        return 0;
+      }
     }
     
     return 1;
   }
   
+  method caller_stack_instance_method : int ($caller_line : int) {
+    
+    {
+      my $message = "Error";
+      my $longmess = Fn->longmess($message);my $line = __LINE__;
+      
+      unless (Fn->contains($longmess, "Error\n  TestCase::ExchangeAPI#caller_stack")) {
+        return 0;
+      }
+      
+      unless (Fn->contains($longmess, "t/05_exchange_api/lib/SPVM/TestCase/ExchangeAPI.spvm")) {
+        return 0;
+      }
+      
+      unless (Fn->contains($longmess, $line)) {
+        return 0;
+      }
+      
+      unless (Fn->contains($longmess, "\n  main#(Unknown)")) {
+        return 0;
+      }
+      
+      unless (Fn->contains($longmess, "t/05_exchange_api/exchange_api.t")) {
+        return 0;
+      }
+      
+      unless (Fn->contains($longmess, $caller_line)) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
   
 }

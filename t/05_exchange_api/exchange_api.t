@@ -2383,8 +2383,15 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 }
 
 {
-  my $line = __LINE__ + 1;
-  ok(SPVM::TestCase::ExchangeAPI->caller_stack($line));
+  {
+    my $line = __LINE__ + 1;
+    ok(SPVM::TestCase::ExchangeAPI->caller_stack($line));
+  }
+  
+  {
+    my $line = __LINE__ + 1;
+    ok(SPVM::TestCase::ExchangeAPI->new->caller_stack_instance_method($line));
+  }
 }
 
 # All object is freed
