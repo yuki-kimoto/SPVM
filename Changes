@@ -1,3 +1,24 @@
+0.990193 2026-08-17
+  
+  [Summary]
+    In this release, caller stack trace is much improved.
+  [New Features]
+    * Add diag_level operator.
+    * Add longmess_no_mortal and longmess native APIs.
+    * Add Fn#longmess method.
+    * Add diag native API.
+    * Add SPVM::Builder::CallerInfo class.
+    * Pass caller infomation to exchange API class method call and instance mthod call.
+  [Internal Changes]
+    * Add SPVM_OP_C_FLAG_WARN_LONGMESS and add operand2 to warn operator.
+    * Add SPVM_OPCODE_C_ID_DIAG opcode and separate diag logic from warn. 
+    * SPVM_API_push_caller_info increment call_depth.
+    * Use SPVM_API_push_caller_stack in SPVM_API_die_with_string.
+  [Bug Fix]
+    * Fix caller stack bugs.
+  [Incompatible Changes]
+    * Change build_exception_message level argument to start_call_depth.
+  
 0.990192 2026-08-12
   
   [Bug Fix]
