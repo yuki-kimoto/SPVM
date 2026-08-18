@@ -193,6 +193,13 @@ my $dev_null = File::Spec->devnull;
     ok(1);
   }
   
+  # --class
+  {
+    my $spvm_cmd = qq($^X -It/08_spvmcc/lib -Mblib blib/script/spvm --class program_name);
+    my $spvm_output = `$spvm_cmd args1 args2`;
+    like($spvm_output, qr|t/08_spvmcc/lib/SPVM/program_name\.spvm|);
+  }
+  
 }
 
 # -c option

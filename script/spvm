@@ -51,7 +51,11 @@ if (defined $source) {
 }
 elsif (defined $script_name) {
   if ($script_name_is_class_name) {
-    $script_name = SPVM::Builder::Util::search_spvm_file($script_name);
+    my $class_name = $script_name;
+    $script_name = SPVM::Builder::Util::search_spvm_file($class_name);
+    unless (defined $script_name) {
+      die "Cannot find $class_name class in @INC";
+    }
   }
   
   eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };

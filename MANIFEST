@@ -1100,6 +1100,7 @@ t/06_module/Sync/Mutex.t
 t/07_spvmdist/command.t
 t/07_spvmdist/module.t
 t/08_spvmcc/lib/SPVM/external.c
+t/08_spvmcc/lib/SPVM/program_name.spvm
 t/08_spvmcc/lib/SPVM/TestCase.spvm
 t/08_spvmcc/lib/SPVM/TestCase/ExternalFunction.c
 t/08_spvmcc/lib/SPVM/TestCase/ExternalFunction.config

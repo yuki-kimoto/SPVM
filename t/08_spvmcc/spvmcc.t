@@ -248,4 +248,20 @@ mkpath $external_object_dir;
   like($output, qr|spvm_warn args|);
 }
 
+# --class
+{
+  {
+    my $spvmcc_cmd = qq($^X -It/08_spvmcc/lib -Mblib blib/script/spvmcc --quiet -B $build_dir --quiet -o $tmp_dir/program_name --class program_name);
+    system($spvmcc_cmd) == 0
+      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    
+    my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/program_name");
+    my $execute_cmd_with_args = "$execute_cmd args1 args2";
+    my $output = `$execute_cmd_with_args`;
+    chomp $output;
+    my $output_expect = "$execute_cmd";
+    is($output, $output_expect);
+  }
+}
+
 done_testing;
