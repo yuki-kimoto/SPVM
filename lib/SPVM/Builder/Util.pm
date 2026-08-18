@@ -445,6 +445,24 @@ sub search_config_file {
   return $config_file;
 }
 
+sub search_spvm_file {
+  my ($class_name) = @_;
+  
+  my $ext = 'spvm';
+  
+  my $spvm_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, $ext);
+  my $spvm_file;
+  for my $inc (@INC) {
+    my $spvm_file_tmp = "$inc/$spvm_file_base";
+    if (-f $spvm_file_tmp) {
+      $spvm_file = $spvm_file_tmp;
+      last;
+    }
+  }
+  
+  return $spvm_file;
+}
+
 sub get_builder_dir {
   my $builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
   my $builder_dir = $builder_config_dir;
