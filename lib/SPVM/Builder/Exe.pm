@@ -40,6 +40,7 @@ my $field_names = [qw(
   allow_no_config_file
   mode
   runtime
+  class_name_for_script_name
 )];
 has $field_names;
 
@@ -56,6 +57,31 @@ sub new {
   }, $class;
   
   my $script_name = $self->{script_name};
+  
+  unless (defined $script_name) {
+    my $class_name_for_script_name = $self->{class_name_for_script_name};
+    
+    if (defined $class_name_for_script_name) {
+      my $rel_file = $class_name_for_script_name;
+      $rel_file =~ s{::}{/}g;
+      $rel_file .= '.spvm';
+      
+      my $found_script_name;
+      for my $dir (@INC) {
+        my $file = "$dir/SPVM/$rel_file";
+        if (-f $file) {
+          $found_script_name = $file;
+          last;
+        }
+      }
+      
+      unless (defined $found_script_name) {
+        Carp::confess("The class $class_name_for_script_name for the script name cannot be found in \@INC.");
+      }
+      
+      $self->{script_name} = $found_script_name;
+    }
+  }
   
   $self->check_script_name;
   
