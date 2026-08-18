@@ -23,6 +23,7 @@ SPVM::Builder::Util::getopt
   'e=s' => \my $source,
   'c' => \my $syntax_ok,
   'M=s' => \my @use_class_names,
+  'class' => \my $script_name_is_class_name
 ;
 
 if ($help) {
@@ -49,6 +50,10 @@ if (defined $source) {
   $script_name = "-e";
 }
 elsif (defined $script_name) {
+  if ($script_name_is_class_name) {
+    $script_name = SPVM::Builder::Util::search_spvm_file($script_name);
+  }
+  
   eval { $source = SPVM::Builder::Util::slurp_binary($script_name); };
   $source = "#file \"$script_name\"\x{A}$source";
 }
@@ -105,6 +110,7 @@ The spvm command executes SPVM programs.
     -e SOURCE                      Executes a program source code in main method.
     -c                             Check syntx only
     -M CLASS_NAME                  Loads the SPVM class
+    --class                        Interprets SCRIPT_NAME as a class name and searches for it
 
 =head1 Details
 
@@ -288,6 +294,17 @@ Implementation:
 
 Calls L</"build_class"> method for I<CLASS_NAME>.
 
+=head2 --class
+
+  --class
+
+Interprets I<SCRIPT_NAME> as a class name and searches for it in the class search paths.
+
+This allows you to specify a class name directly instead of a file path.
+
+Example:
+
+  spvm --class Foo::Bar
 
 =head1 lib Directive
 

@@ -26,6 +26,7 @@ SPVM::Builder::Util::getopt
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
   'object-file=s' => \my @external_object_files,
+  'class' => \my $script_name_is_class_name
 ;
 
 if ($help) {
@@ -50,6 +51,10 @@ unless (defined $output_file) {
   warn "-o, --output option is required.\n\n";
   warn SPVM::Builder::Util::extract_usage;
   exit 255;
+}
+
+if ($script_name_is_class_name) {
+  $script_name = SPVM::Builder::Util::search_spvm_file($script_name);
 }
 
 my $source = "";
@@ -99,6 +104,7 @@ The spvmcc command generates an executable file from SPVM classes.
     -o, --output FILE              The output file name
     --no-config                    No configration file is ok
     -m, --mode MODE                Config mode
+    --class                        Interprets SCRIPT_NAME as a class name and searches for it
 
 =head1 Details
 
@@ -301,6 +307,12 @@ Same as L</"--mode">.
 An additional object file I<OBJECT_FILE> passed to the linker.
 
 This option can be repeated.
+
+=head2 --class
+
+  --class
+
+See L<spvm/"--class">.
 
 =head1 Copyright & License
 
