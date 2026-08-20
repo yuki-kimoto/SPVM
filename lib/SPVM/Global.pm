@@ -220,6 +220,12 @@ sub load_dynamic_lib {
           Carp::confess("The loaded class file is different from the file found in @INC. \$loaded_class_file='$outmost_class_file', \$found_class_file='$outmost_class_file_from_inc'");
         }
         
+        my $config_file = SPVM::Builder::Util::get_config_file_from_class_file($outmost_class_file);
+        if (-f $config_file) {
+          my $config = SPVM::Builder::Config::Util::load_config($config_file);
+          my $link_to = $config->link_to;
+        }
+        
         my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($outmost_class_file, $category);
         
         # Try to build the shared library at runtime if shared library is not found
