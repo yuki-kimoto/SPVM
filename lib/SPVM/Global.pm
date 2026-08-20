@@ -134,6 +134,12 @@ sub build_class_common {
       my $class_name = $basic_type->get_name;
       
       &build_dynamic_lib($runtime, $class_name);
+    }
+    
+    for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
+      my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
+      my $class_name = $basic_type->get_name;
+      
       &load_dynamic_lib($runtime, $class_name);
     }
     
@@ -169,6 +175,11 @@ sub init_api {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
       my $class_name = $basic_type->get_name;
       &build_dynamic_lib($runtime, $class_name);
+    }
+    
+    for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
+      my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
+      my $class_name = $basic_type->get_name;
       &load_dynamic_lib($runtime, $class_name);
     }
     
