@@ -101,6 +101,30 @@ sub build_parallel_with_link_infos {
     $config_global = $options->{config_global};
   }
   
+  # link_to
+  my @tmp_link_infos;
+  for my $link_info (@$link_infos) {
+    my $compile_infos = $link_info->compile_infos;
+    for my $compile_info (@$compile_infos) {
+      my $config = $compile_info->config;
+      if (my $link_to = $config->link_to) {
+        my ($found_link_info) = grep { $link_to eq $_->config->class_name } @$link_infos;
+        
+        unless ($found_link_info) {
+          my $compile_info_class_name = $compile_info->class_name;
+          Carp::confess("Cannot find $link_to class specifed by $compile_info_class_name#link_to.");
+        }
+        
+        push @{$found_link_info->compile_infos}, shift @$compile_infos;
+      }
+    }
+    
+    if (@{$link_info->compile_infos}) {
+      push @tmp_link_infos, $link_info;
+    }
+  }
+  @$link_infos = @tmp_link_infos;
+  
   my @all_compile_infos;
   for my $link_info (@$link_infos) {
     # warn $link_info->config->class_name;
