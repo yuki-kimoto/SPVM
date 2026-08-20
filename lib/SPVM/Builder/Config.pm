@@ -41,6 +41,7 @@ my $cc_fields = [qw(
   ndebug_ccflags
   debug_file_synchronized_write_ccflags
   cc_version
+  link_to
 )];
 
 has($cc_fields);
@@ -159,7 +160,7 @@ sub new {
   unless (exists $self->{function_level_linking_ccflags}) {
     $self->function_level_linking_ccflags([]);
   }
-
+  
   # cpp_exception_handling_ccflags
   unless (exists $self->{cpp_exception_handling_ccflags}) {
     if (SPVM::Builder::Util::is_windows()) {
@@ -169,12 +170,12 @@ sub new {
       $self->cpp_exception_handling_ccflags([]);
     }
   }
-
+  
   # library_linkage_ccflags
   unless (exists $self->{library_linkage_ccflags}) {
     $self->library_linkage_ccflags([]);
   }
-
+  
   # cc_output_option_name
   unless (exists $self->{cc_output_option_name}) {
     $self->cc_output_option_name("-o");
@@ -916,6 +917,13 @@ These flags are passed to the compiler L</"cc"> to determine how libraries (such
   $config->cc_output_option_name($cc_output_option_name);
 
 Gets and sets C<cc_output_option_name> field, a string that is an option name to specify a compiler output file name.
+
+=head2 link_to
+
+  my $link_to = $config->link_to;
+  $config->link_to($link_to);
+
+Gets and sets C<link_to> field, which is the class name to link to.
 
 =head1 Class Methods
 
