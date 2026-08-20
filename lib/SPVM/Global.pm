@@ -129,12 +129,13 @@ sub build_class_common {
     
     my $basic_types_length = $runtime->get_basic_types_length;
     
+    my $class_names = [];
     for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
-      my $class_name = $basic_type->get_name;
-      
-      &build_dynamic_lib($runtime, $class_name);
+      push @$class_names, $basic_type->get_name;
     }
+    
+    &build_dynamic_libs($runtime, $class_names);
     
     for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
@@ -171,11 +172,13 @@ sub init_api {
     
     my $basic_types_length = $runtime->get_basic_types_length;
     
+    my $class_names = [];
     for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
-      my $class_name = $basic_type->get_name;
-      &build_dynamic_lib($runtime, $class_name);
+      push @$class_names, $basic_type->get_name;
     }
+    
+    &build_dynamic_libs($runtime, $class_names);
     
     for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
@@ -205,81 +208,100 @@ sub init_api {
   }
 }
 
-sub build_dynamic_lib {
-  my ($runtime, $class_name) = @_;
+sub build_dynamic_libs {
+  my ($runtime, $class_names) = @_;
   
-  my $outmost_class_name;
-  if ($class_name =~ /^(.*)::anon_method::/) {
-    $outmost_class_name = $1;
-  }
-  else {
-    $outmost_class_name = $class_name;
-  }
+  # Tracking classes to build
+  my %classes_to_build = (precompile => {}, native => {});
   
-  for my $category ('precompile', 'native') {
-    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+  for my $class_name (@$class_names) {
+    my $outmost_class_name;
+    if ($class_name =~ /^(.*)::anon_method::/) {
+      $outmost_class_name = $1;
+    }
+    else {
+      $outmost_class_name = $class_name;
+    }
     
-    my $method_names = $basic_type->get_method_names_by_category($category);
-    
-    if (@$method_names) {
+    for my $category ('precompile', 'native') {
+      my $basic_type = $runtime->get_basic_type_by_name($class_name);
+      my $method_names = $basic_type->get_method_names_by_category($category);
       
-      # Use the outmost class to find the class file and the dynamic library
-      unless ($DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category}) {
-        my $outmost_basic_type = $runtime->get_basic_type_by_name($outmost_class_name);
-        my $outmost_class_file = $outmost_basic_type->get_class_file;
-        my $outmost_class_file_from_inc = SPVM::Builder::Util::search_spvm_file($outmost_class_name);
-        
-        unless ($outmost_class_file eq $outmost_class_file_from_inc) {
-          Carp::confess("The loaded class file is different from the file found in \@INC. \$loaded_class_file='$outmost_class_file', \$found_class_file='$outmost_class_file_from_inc'");
-        }
-        
-        my $target_class_file;
-        
-        if ($category eq 'native') {
-          my $config_file = SPVM::Builder::Util::get_config_file_from_class_file($outmost_class_file);
-          if (-f $config_file) {
-            my $config = SPVM::Builder::Config::Util::load_config($config_file);
-            my $link_to_class_name = $config->link_to;
-            if ($link_to_class_name) {
-              my $link_to_basic_type = $runtime->get_basic_type_by_name($link_to_class_name);
-              unless ($link_to_basic_type) {
-                Carp::confess("$link_to_class_name class is not yet loaded.");
+      if (@$method_names) {
+        unless ($DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category}) {
+          my $outmost_basic_type = $runtime->get_basic_type_by_name($outmost_class_name);
+          my $outmost_class_file = $outmost_basic_type->get_class_file;
+          my $outmost_class_file_from_inc = SPVM::Builder::Util::search_spvm_file($outmost_class_name);
+          
+          unless ($outmost_class_file eq $outmost_class_file_from_inc) {
+            Carp::confess("The loaded class file is different from the file found in \@INC. \$loaded_class_file='$outmost_class_file', \$found_class_file='$outmost_class_file_from_inc'");
+          }
+          
+          my $target_class_file;
+          
+          if ($category eq 'native') {
+            my $config_file = SPVM::Builder::Util::get_config_file_from_class_file($outmost_class_file);
+            if (-f $config_file) {
+              my $config = SPVM::Builder::Config::Util::load_config($config_file);
+              my $link_to_class_name = $config->link_to;
+              if ($link_to_class_name) {
+                my $link_to_basic_type = $runtime->get_basic_type_by_name($link_to_class_name);
+                unless ($link_to_basic_type) {
+                  Carp::confess("$link_to_class_name class is not yet loaded.");
+                }
+                my $link_to_class_file = $link_to_basic_type->get_class_file;
+                my $link_to_class_file_from_inc = SPVM::Builder::Util::search_spvm_file($link_to_class_name);
+                
+                unless ($link_to_class_file eq $link_to_class_file_from_inc) {
+                  Carp::confess("The loaded class file is different from the file found in \@INC. \$loaded_class_file='$link_to_class_file', \$found_class_file='$link_to_class_file_from_inc'");
+                }
+                
+                $target_class_file = $link_to_class_file;
               }
-              my $link_to_class_file = $link_to_basic_type->get_class_file;
-              my $link_to_class_file_from_inc = SPVM::Builder::Util::search_spvm_file($link_to_class_name);
-              
-              unless ($link_to_class_file eq $link_to_class_file_from_inc) {
-                Carp::confess("The loaded class file is different from the file found in \@INC. \$loaded_class_file='$link_to_class_file', \$found_class_file='$link_to_class_file_from_inc'");
-              }
-              
-              $target_class_file = $link_to_class_file;
             }
           }
-        }
-        
-        unless (defined $target_class_file) {
-          $target_class_file = $outmost_class_file;
-        }
-        
-        my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($target_class_file, $category);
-        
-        # Try to build the shared library at runtime if shared library is not found
-        if (-f $dynamic_lib_file_dist) {
-          $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_dist;
-        }
-        else {
-          my $build_options = {
-            "${category}_classes" => [$outmost_class_name],
-          };
           
-          $BUILDER //= SPVM::Builder->new(is_jit => 1);
-          my $builder_cc = SPVM::Builder::CC->new(builder => $BUILDER, runtime => $runtime);
-          my $output_files_h = $builder_cc->build_parallel(
-            $build_options,
-          );
+          unless (defined $target_class_file) {
+            $target_class_file = $outmost_class_file;
+          }
           
-          my $dynamic_lib_file_jit = $output_files_h->{$category}{$outmost_class_name};
+          my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($target_class_file, $category);
           
+          if (-f $dynamic_lib_file_dist) {
+            # Cache dist lib
+            $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_dist;
+          }
+          else {
+            # Mark for build
+            $classes_to_build{$category}{$outmost_class_name} = 1;
+          }
+        }
+      }
+    }
+  }
+  
+  my @precompile_classes_to_build = keys %{$classes_to_build{precompile}};
+  my @native_classes_to_build = keys %{$classes_to_build{native}};
+  
+  if (@precompile_classes_to_build || @native_classes_to_build) {
+    my $build_options = {};
+    if (@precompile_classes_to_build) {
+      $build_options->{precompile_classes} = \@precompile_classes_to_build;
+    }
+    if (@native_classes_to_build) {
+      $build_options->{native_classes} = \@native_classes_to_build;
+    }
+    
+    # Build in parallel
+    $BUILDER //= SPVM::Builder->new(is_jit => 1);
+    my $builder_cc = SPVM::Builder::CC->new(builder => $BUILDER, runtime => $runtime);
+    my $output_files_h = $builder_cc->build_parallel($build_options);
+    
+    # Cache JIT lib
+    for my $category ('precompile', 'native') {
+      if (my $built_classes = $output_files_h->{$category}) {
+        for my $outmost_class_name (keys %$built_classes) {
+          my $dynamic_lib_file_jit = $built_classes->{$outmost_class_name};
           $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_jit;
           $DYNAMIC_LIB_FILE_IS_JIT_H->{$dynamic_lib_file_jit} = 1;
         }
@@ -290,9 +312,6 @@ sub build_dynamic_lib {
 
 sub load_dynamic_lib {
   my ($runtime, $class_name) = @_;
-  
-  # Build dynamic lib
-  &build_dynamic_lib($runtime, $class_name);
   
   my $outmost_class_name;
   if ($class_name =~ /^(.*)::anon_method::/) {
