@@ -8,6 +8,9 @@ use warnings;
 
 use Test::More;
 use File::Temp();
+use File::Find;
+use File::Basename;
+use Config;
 
 BEGIN {
   my $tmp_dir = File::Temp->newdir;
@@ -22,6 +25,28 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 {
   ok(SPVM::TestCase::NativeAPILinkTo->basic);
 }
+
+my $has_native_api_dlext = 0;
+my $has_native_api_link_to_dlext = 0;
+
+find(
+  sub {
+    my $file = $_;
+    if (-f $file) {
+      my $basename = basename($file);
+      if ($basename eq "NativeAPI.$Config{dlext}") {
+        $has_native_api_dlext = 1;
+      }
+      elsif ($basename eq "NativeAPILinkTo.$Config{dlext}") {
+        $has_native_api_link_to_dlext = 1;
+      }
+    }
+  },
+  $ENV{SPVM_BUILD_DIR}
+);
+
+ok($has_native_api_dlext, "NativeAPI.$Config{dlext} exists.");
+ok(!$has_native_api_link_to_dlext, "NativeAPILinkTo.$Config{dlext} does not exist.");
 
 # Clear exception
 $api->destroy_runtime_permanent_vars;
