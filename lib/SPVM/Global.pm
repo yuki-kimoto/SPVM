@@ -133,6 +133,7 @@ sub build_class_common {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
       my $class_name = $basic_type->get_name;
       
+      &build_dynamic_lib($runtime, $class_name);
       &load_dynamic_lib($runtime, $class_name);
     }
     
@@ -167,6 +168,7 @@ sub init_api {
     for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
       my $class_name = $basic_type->get_name;
+      &build_dynamic_lib($runtime, $class_name);
       &load_dynamic_lib($runtime, $class_name);
     }
     
@@ -192,7 +194,7 @@ sub init_api {
   }
 }
 
-sub load_dynamic_lib {
+sub build_dynamic_lib {
   my ($runtime, $class_name) = @_;
   
   my $outmost_class_name;
@@ -217,7 +219,7 @@ sub load_dynamic_lib {
         my $outmost_class_file_from_inc = SPVM::Builder::Util::search_spvm_file($outmost_class_name);
         
         unless ($outmost_class_file eq $outmost_class_file_from_inc) {
-          Carp::confess("The loaded class file is different from the file found in @INC. \$loaded_class_file='$outmost_class_file', \$found_class_file='$outmost_class_file_from_inc'");
+          Carp::confess("The loaded class file is different from the file found in \@INC. \$loaded_class_file='$outmost_class_file', \$found_class_file='$outmost_class_file_from_inc'");
         }
         
         my $target_class_file;
@@ -236,7 +238,7 @@ sub load_dynamic_lib {
               my $link_to_class_file_from_inc = SPVM::Builder::Util::search_spvm_file($link_to_class_name);
               
               unless ($link_to_class_file eq $link_to_class_file_from_inc) {
-                Carp::confess("The loaded class file is different from the file found in @INC. \$loaded_class_file='$link_to_class_file', \$found_class_file='$link_to_class_file_from_inc'");
+                Carp::confess("The loaded class file is different from the file found in \@INC. \$loaded_class_file='$link_to_class_file', \$found_class_file='$link_to_class_file_from_inc'");
               }
               
               $target_class_file = $link_to_class_file;
@@ -271,7 +273,30 @@ sub load_dynamic_lib {
           $DYNAMIC_LIB_FILE_IS_JIT_H->{$dynamic_lib_file_jit} = 1;
         }
       }
-      
+    }
+  }
+}
+
+sub load_dynamic_lib {
+  my ($runtime, $class_name) = @_;
+  
+  # Build dynamic lib
+  &build_dynamic_lib($runtime, $class_name);
+  
+  my $outmost_class_name;
+  if ($class_name =~ /^(.*)::anon_method::/) {
+    $outmost_class_name = $1;
+  }
+  else {
+    $outmost_class_name = $class_name;
+  }
+  
+  for my $category ('precompile', 'native') {
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $method_names = $basic_type->get_method_names_by_category($category);
+    
+    if (@$method_names) {
       if (-f $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category}) {
         # Get addresses using the original class_name (containing the anon method name)
         my $method_addresses = &get_method_addresses($DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category}, $class_name, $method_names, $category);
