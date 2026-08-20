@@ -417,7 +417,7 @@ sub get_method_addresses {
             unless ($cfunc_address) {
               my $dl_error = DynaLoader::dl_error();
               my $error = <<"EOS";
-Can't find native function '$cfunc_name' corresponding to ${class_name}->$method_name in '$dynamic_lib_file'
+Can't find native function '$cfunc_name' corresponding to ${class_name}#$method_name in '$dynamic_lib_file'
 
 You must write the following definition.
 --------------------------------------------------
