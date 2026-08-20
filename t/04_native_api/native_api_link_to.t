@@ -10,9 +10,7 @@ use Test::More;
 use File::Temp();
 
 BEGIN {
-  use File::Path 'mkpath';
-  my $tmp_dir = '.tmp/link_to';
-  mkpath $tmp_dir;
+  my $tmp_dir = File::Temp->newdir;
   $ENV{SPVM_BUILD_DIR} = $tmp_dir;
 }
 use SPVM 'TestCase::NativeAPILinkTo';
