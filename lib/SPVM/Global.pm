@@ -282,8 +282,8 @@ sub build_dynamic_libs {
             $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $jit_file;
           }
           else {
-            # Mark target for build
-            $classes_to_build{$category}{$target_class_name} = 1;
+            # Mark outmost for build
+            $classes_to_build{$category}{$outmost_class_name} = 1;
           }
         }
       }
@@ -310,11 +310,11 @@ sub build_dynamic_libs {
     # Cache JIT lib
     for my $category ('precompile', 'native') {
       if (my $built_classes = $output_files_h->{$category}) {
-        # Map DLL
+        # Loop through mapped classes to ensure all get DLL
         for my $outmost_class_name (keys %{$outmost_to_target{$category}}) {
           my $target_class_name = $outmost_to_target{$category}{$outmost_class_name};
           
-          if (my $dynamic_lib_file_jit = $built_classes->{$target_class_name}) {
+          if (my $dynamic_lib_file_jit = $built_classes->{$target_class_name} // $built_classes->{$outmost_class_name}) {
             $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_jit;
             $DYNAMIC_LIB_FILES_H->{$target_class_name}{$category} = $dynamic_lib_file_jit;
             $DYNAMIC_LIB_FILE_IS_JIT_H->{$dynamic_lib_file_jit} = 1;
@@ -323,6 +323,7 @@ sub build_dynamic_libs {
       }
     }
   }
+  
 }
 
 sub load_dynamic_lib {

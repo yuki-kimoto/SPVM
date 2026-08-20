@@ -1,0 +1,5 @@
+class TestCase::NativeAPILinkTo {
+  use TestCase::NativeAPI;
+  
+  native static method basic : int ();
+}
