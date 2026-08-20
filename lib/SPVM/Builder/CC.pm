@@ -391,7 +391,9 @@ sub prepare_compile_class_common {
 sub resolve_dl_func_list {
   my ($self, $link_info) = @_;
   
-  my $category = $link_info->config->category;
+  my $config = $link_info->config;
+  my $class_name = $config->class_name;
+  my $category = $config->category;
   
   if ($category eq 'native' || $category eq 'precompile') {
     my $runtime = $self->runtime;
@@ -402,30 +404,25 @@ sub resolve_dl_func_list {
     my $dl_func_list = [];
     my %seen_class_name;
     
-    my @class_names;
-    push @class_names, $link_info->config->class_name;
+    my @target_class_names = ($class_name);
     for my $compile_info (@{$link_info->compile_infos}) {
-      push @class_names, $compile_info->config->class_name;
+      push @target_class_names, $compile_info->config->class_name;
     }
     
-    for my $class_name (@class_names) {
-      next if $seen_class_name{$class_name}++;
+    for my $target_class_name (@target_class_names) {
+      next if $seen_class_name{$target_class_name}++;
       
-      my $basic_type = $runtime->get_basic_type_by_name($class_name);
-      unless ($basic_type) {
-        next;
-      }
+      my $basic_type = $runtime->get_basic_type_by_name($target_class_name);
+      next unless $basic_type;
       
       my $method_names = $basic_type->get_method_names_by_category($category);
-      
-      my $class_dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
+      my $class_dl_func_list = SPVM::Builder::Util::create_dl_func_list($target_class_name, $method_names, {category => $category});
       push @$dl_func_list, @$class_dl_func_list;
       
       my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
       for my $anon_basic_type_name (@$anon_basic_type_names) {
         my $anon_basic_type = $runtime->get_basic_type_by_name($anon_basic_type_name);
         my $anon_method_names = $anon_basic_type->get_method_names_by_category($category);
-        
         my $anon_dl_func_list = SPVM::Builder::Util::create_dl_func_list($anon_basic_type_name, $anon_method_names, {category => $category});
         push @$dl_func_list, @$anon_dl_func_list;
       }
