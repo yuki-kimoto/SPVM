@@ -117,6 +117,16 @@ sub build_parallel_with_link_infos {
         }
         
         push @{$found_link_info->compile_infos}, shift @$compile_infos;
+        
+        if (my $src_dl_func_list = $link_info->dl_func_list) {
+          $found_link_info->dl_func_list([]) unless $found_link_info->dl_func_list;
+          my %seen = map { $_ => 1 } @{$found_link_info->dl_func_list};
+          for my $func (@$src_dl_func_list) {
+            unless ($seen{$func}++) {
+              push @{$found_link_info->dl_func_list}, $func;
+            }
+          }
+        }
       }
     }
     
