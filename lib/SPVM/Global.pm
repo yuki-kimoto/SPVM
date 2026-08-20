@@ -214,6 +214,12 @@ sub load_dynamic_lib {
       unless ($DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category}) {
         my $outmost_basic_type = $runtime->get_basic_type_by_name($outmost_class_name);
         my $outmost_class_file = $outmost_basic_type->get_class_file;
+        my $outmost_class_file_from_inc = SPVM::Builder::Util::search_spvm_file($outmost_class_name);
+        
+        unless ($outmost_class_file eq $outmost_class_file_from_inc) {
+          Carp::confess("The loaded class file is different from the file found in @INC. \$loaded_class_file='$outmost_class_file', \$found_class_file='$outmost_class_file_from_inc'");
+        }
+        
         my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($outmost_class_file, $category);
         
         # Try to build the shared library at runtime if shared library is not found
