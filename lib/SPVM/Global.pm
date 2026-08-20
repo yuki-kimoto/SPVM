@@ -220,13 +220,35 @@ sub load_dynamic_lib {
           Carp::confess("The loaded class file is different from the file found in @INC. \$loaded_class_file='$outmost_class_file', \$found_class_file='$outmost_class_file_from_inc'");
         }
         
-        my $config_file = SPVM::Builder::Util::get_config_file_from_class_file($outmost_class_file);
-        if (-f $config_file) {
-          my $config = SPVM::Builder::Config::Util::load_config($config_file);
-          my $link_to = $config->link_to;
+        my $target_class_file;
+        
+        if ($category eq 'native') {
+          my $config_file = SPVM::Builder::Util::get_config_file_from_class_file($outmost_class_file);
+          if (-f $config_file) {
+            my $config = SPVM::Builder::Config::Util::load_config($config_file);
+            my $link_to_class_name = $config->link_to;
+            if ($link_to_class_name) {
+              my $link_to_basic_type = $runtime->get_basic_type_by_name($link_to_class_name);
+              unless ($link_to_basic_type) {
+                Carp::confess("$link_to_class_name class is not yet loaded.");
+              }
+              my $link_to_class_file = $link_to_basic_type->get_class_file;
+              my $link_to_class_file_from_inc = SPVM::Builder::Util::search_spvm_file($link_to_class_name);
+              
+              unless ($link_to_class_file eq $link_to_class_file_from_inc) {
+                Carp::confess("The loaded class file is different from the file found in @INC. \$loaded_class_file='$link_to_class_file', \$found_class_file='$link_to_class_file_from_inc'");
+              }
+              
+              $target_class_file = $link_to_class_file;
+            }
+          }
         }
         
-        my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($outmost_class_file, $category);
+        unless (defined $target_class_file) {
+          $target_class_file = $outmost_class_file;
+        }
+        
+        my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($target_class_file, $category);
         
         # Try to build the shared library at runtime if shared library is not found
         if (-f $dynamic_lib_file_dist) {
