@@ -264,4 +264,21 @@ mkpath $external_object_dir;
   }
 }
 
+# Config new extention
+{
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --quiet -B $build_dir --quiet -o $tmp_dir/config_ext $spvm_script_dir/config_ext.spvm);
+    system($spvmcc_cmd) == 0
+      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    
+    my $execute_cmd = TestUtil::to_os_specific_path("$tmp_dir/config_ext");
+    my $execute_cmd_with_args = "$execute_cmd";
+    my $output = `$execute_cmd_with_args`;
+    chomp $output;
+    my $output_expect = "$execute_cmd";
+    is($output, $output_expect);
+  }
+}
+
+
 done_testing;

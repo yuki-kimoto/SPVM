@@ -12,7 +12,7 @@ sub load_config {
   
   my $config_ext_v2 = &get_config_ext_v2();
   my $config_file_v2 = $config_file;
-  $config_file_v2 =~ s/\.$config_ext$/.$config_file_v2/;
+  $config_file_v2 =~ s/\.$config_ext$/.$config_ext_v2/;
   
   unless (-f $config_file || -f $config_file_v2) {
     confess("Config file '$config_file' or '$config_file_v2' must exist.");
@@ -22,6 +22,10 @@ sub load_config {
     unless (-f $config_file_v2) {
       confess("Config file '$config_file_v2' must exist.");
     }
+  }
+  
+  if (-f $config_file_v2) {
+    $config_file = $config_file_v2;
   }
   
   my $config;
@@ -61,10 +65,6 @@ sub load_mode_config {
   my $config_ext = &get_config_ext();
   
   $mode_config_file .= ".$config_ext";
-  
-  unless (-f $mode_config_file) {
-    confess("Can't find the config file '$mode_config_file'");
-  }
   
   my $config = &load_config($mode_config_file);
   

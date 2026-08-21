@@ -82,16 +82,11 @@ sub new {
   my $config_file = SPVM::Builder::Config::Util::create_config_file_path_from_class_file_path($script_name);
   
   my $config;
-  if (-f $config_file) {
-    $config = SPVM::Builder::Config::Util::load_mode_config($config_file, $config_mode);
+  if ($allow_no_config_file) {
+    $config = SPVM::Builder::Config::Exe->new;
   }
   else {
-    if ($allow_no_config_file) {
-      $config = SPVM::Builder::Config::Exe->new;
-    }
-    else {
-      Carp::confess("The config file '$config_file' is not found.");
-    }
+    $config = SPVM::Builder::Config::Util::load_mode_config($config_file, $config_mode);
   }
   
   $self->{builder} = $builder;

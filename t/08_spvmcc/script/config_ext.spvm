@@ -1,0 +1,6 @@
+class {
+  static method main : void () {
+    
+    say CommandInfo->PROGRAM_NAME;
+  }
+}
