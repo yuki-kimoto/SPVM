@@ -8,14 +8,26 @@ use Carp 'confess';
 sub load_config {
   my ($config_file) = @_;
   
-  unless (-f $config_file) {
-    confess("Config file \"$config_file\" must exist");
+  my $config_ext = &get_config_ext();
+  
+  my $config_ext_v2 = &get_config_ext_v2();
+  my $config_file_v2 = $config_file;
+  $config_file_v2 =~ s/\.$config_ext$/.$config_file_v2/;
+  
+  unless (-f $config_file || -f $config_file_v2) {
+    confess("Config file '$config_file' or '$config_file_v2' must exist.");
+  }
+  
+  if ($ENV{SPVM_REQUIRE_BUILD_CONFIG_EXT}) {
+    unless (-f $config_file_v2) {
+      confess("Config file '$config_file_v2' must exist.");
+    }
   }
   
   my $config;
   {
     open my $fh, '<', $config_file
-      or confess("Config file \"$config_file\" can't found: $!");
+      or confess("Config file '$config_file' can't found: $!.");
     
     my $config_content = do { local $/; <$fh> };
     
@@ -23,7 +35,7 @@ sub load_config {
   }
   
   if ($@) {
-    confess("Config file \"$config_file\" can't be parsed: $@");
+    confess("Config file '$config_file' can't be parsed: $@.");
   }
   
   unless (defined $config && $config->isa('SPVM::Builder::Config::Linker')) {
