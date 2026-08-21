@@ -1149,6 +1149,8 @@ t/08_spvmcc/myapp.pl
 t/08_spvmcc/script/anon_method.config
 t/08_spvmcc/script/anon_method.spvm
 t/08_spvmcc/script/basic.spvm
+t/08_spvmcc/script/config_ext.build
+t/08_spvmcc/script/config_ext.spvm
 t/08_spvmcc/script/end-block.spvm
 t/08_spvmcc/script/external.config
 t/08_spvmcc/script/external.spvm
