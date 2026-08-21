@@ -151,10 +151,19 @@ sub create_config_file_path_from_class_file_path {
     Carp::confess("The class file path '$class_file' must end with '.spvm'.");
   }
   
+  my $config_ext = &get_config_ext();
+  
   my $config_file = $class_file;
-  $config_file =~ s/\.spvm$/.config/;
+  $config_file =~ s/\.spvm$/$config_ext/;
   
   return $config_file;
+}
+
+sub get_config_ext {
+  
+  my $config_ext = 'config';
+  
+  return $config_ext;
 }
 
 1;
