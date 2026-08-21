@@ -94,8 +94,10 @@ sub remove_ext_from_config_file {
   my ($config_base_name, $config_dir) = fileparse $config_file;
   
   my $config_ext = &get_config_ext();
-  
   $config_base_name =~ s/(\.[^\.]+)?\.$config_ext$//;
+  
+  my $config_ext_v2 = &get_config_ext_v2();
+  $config_base_name =~ s/(\.[^\.]+)?\.$config_ext_v2$//;
   
   my $config_file_without_ext = "$config_dir$config_base_name";
   
