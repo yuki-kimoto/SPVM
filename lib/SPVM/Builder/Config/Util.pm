@@ -170,6 +170,13 @@ sub get_config_ext {
   return $config_ext;
 }
 
+sub get_config_ext_v2 {
+  
+  my $config_ext = 'build';
+  
+  return $config_ext;
+}
+
 1;
 
 =head1 Name
