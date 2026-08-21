@@ -158,7 +158,7 @@ sub create_config_file_path_from_class_file_path {
   my $config_ext = &get_config_ext();
   
   my $config_file = $class_file;
-  $config_file =~ s/\.spvm$/$config_ext/;
+  $config_file =~ s/\.spvm$/.$config_ext/;
   
   return $config_file;
 }
