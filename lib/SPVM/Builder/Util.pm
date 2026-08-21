@@ -436,8 +436,8 @@ sub search_config_file {
   my $config_file;
   for my $inc (@INC) {
     my $config_file_tmp = "$inc/$config_file_base";
-    if (-f $config_file_tmp) {
-      $config_file = $config_file_tmp;
+    if (my $found_config_file = SPVM::Builder::Config::Util::exists_config_file($config_file_tmp)) {
+      $config_file = $found_config_file;
       last;
     }
   }

@@ -112,8 +112,8 @@ sub prepare_compile_native_class {
   my $config_file = $options->{config_file} // SPVM::Builder::Util::search_config_file($class_name);
   
   my $link_info;
-  if (defined $config_file && -f $config_file) {
-    my $config = SPVM::Builder::Config::Util::load_config($config_file);
+  if (defined $config_file && (my $found_config_file = SPVM::Builder::Config::Util::exists_config_file($config_file))) {
+    my $config = SPVM::Builder::Config::Util::load_config($found_config_file);
     $config->category('native');
     $link_info = $self->prepare_compile_class($class_name, {%$options, config  => $config});
   }

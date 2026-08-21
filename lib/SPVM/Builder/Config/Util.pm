@@ -191,6 +191,27 @@ sub get_config_ext_v2 {
   return $config_ext;
 }
 
+sub exists_config_file {
+  my ($config_file) = @_;
+  
+  my $config_ext = &get_config_ext();
+  
+  my $config_ext_v2 = &get_config_ext_v2();
+  my $config_file_v2 = $config_file;
+  $config_file_v2 =~ s/\.$config_ext$/.$config_ext_v2/;
+  
+  my $exists_file;
+  
+  if (-f $config_file) {
+    $exists_file = $config_file;
+  }
+  elsif(-f $config_file_v2) {
+    $exists_file = $config_file_v2;
+  };
+  
+  return $exists_file;
+}
+
 1;
 
 =head1 Name

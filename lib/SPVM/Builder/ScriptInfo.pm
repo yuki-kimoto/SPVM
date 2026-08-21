@@ -131,7 +131,7 @@ sub is_resource_loader {
   my $config_file = SPVM::Builder::Util::search_config_file($class_name);
   
   my $is_resource_loader = 0;
-  if (defined $config_file && -f $config_file) {
+  if (defined $config_file && SPVM::Builder::Config::Util::exists_config_file($config_file)) {
     my $config = SPVM::Builder::Config::Util::load_config($config_file);
     
     my $resource_names = $config->get_resource_names;
