@@ -463,15 +463,6 @@ sub search_spvm_file {
   return $spvm_file;
 }
 
-sub get_config_file_from_class_file {
-  my ($spvm_file) = @_;
-  
-  my $config_file = $spvm_file;
-  $config_file =~ s/\.spvm$/.config/;
-  
-  return $config_file;
-}
-
 sub get_builder_dir {
   my $builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
   my $builder_dir = $builder_config_dir;

@@ -242,7 +242,7 @@ sub build_dynamic_libs {
           my $target_class_name = $outmost_class_name;
           
           if ($category eq 'native') {
-            my $config_file = SPVM::Builder::Util::get_config_file_from_class_file($outmost_class_file);
+            my $config_file = SPVM::Builder::Config::Util::create_config_file_path_from_class_file_path($outmost_class_file);
             if (-f $config_file) {
               my $config = SPVM::Builder::Config::Util::load_config($config_file);
               my $link_to_class_name = $config->link_to;

@@ -79,7 +79,7 @@ sub new {
   my $allow_no_config_file = $self->{allow_no_config_file};
   
   # Config
-  my $config_file = SPVM::Builder::Util::get_config_file_from_class_file($script_name);
+  my $config_file = SPVM::Builder::Config::Util::create_config_file_path_from_class_file_path($script_name);
   
   my $config;
   if (-f $config_file) {
@@ -144,7 +144,7 @@ sub build_exe_file {
     my $config_file;
     if ($class_name eq $self->class_name) {
       $spvm_script_class_name = $class_name;
-      $spvm_script_config_file = SPVM::Builder::Util::get_config_file_from_class_file($script_name);
+      $spvm_script_config_file = SPVM::Builder::Config::Util::create_config_file_path_from_class_file_path($script_name);
     }
     else {
       push @$class_names, $class_name;

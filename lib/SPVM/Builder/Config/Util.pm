@@ -144,6 +144,19 @@ EOS
   return eval $config_global_content;
 }
 
+sub create_config_file_path_from_class_file_path {
+  my ($class_file) = @_;
+  
+  unless ($class_file =~ /\.spvm$/) {
+    Carp::confess("The class file path '$class_file' must end with '.spvm'.");
+  }
+  
+  my $config_file = $class_file;
+  $config_file =~ s/\.spvm$/.config/;
+  
+  return $config_file;
+}
+
 1;
 
 =head1 Name
