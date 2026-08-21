@@ -46,7 +46,9 @@ sub load_mode_config {
   if (defined $mode) {
     $mode_config_file .= ".$mode";
   }
-  $mode_config_file .= ".config";
+  my $config_ext = &get_config_ext();
+  
+  $mode_config_file .= ".$config_ext";
   
   unless (-f $mode_config_file) {
     confess("Can't find the config file '$mode_config_file'");
@@ -91,7 +93,9 @@ sub remove_ext_from_config_file {
   
   my ($config_base_name, $config_dir) = fileparse $config_file;
   
-  $config_base_name =~ s/(\.[^\.]+)?\.config$//;
+  my $config_ext = &get_config_ext();
+  
+  $config_base_name =~ s/(\.[^\.]+)?\.$config_ext$//;
   
   my $config_file_without_ext = "$config_dir$config_base_name";
   
