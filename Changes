@@ -1,3 +1,9 @@
+0.990195 2026-08-21
+  [Summary]
+    * In a future release, there will be a breaking change affecting all native classes where the file extension will be changed from .config to .build. This release adds support for .build, while .config will be deprecated and removed in a near-future release. Although this is a major change with a wide impact, we believe .config should be left available for application users as it is an extremely common file extension.
+  [Changes]
+    * Allow .build config extension such as Foo.build.
+    
 0.990194 2026-08-20
   [New Features]
     * Add --class option to spvm and spvmcc to interpret script name as class name.
