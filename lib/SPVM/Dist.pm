@@ -9,6 +9,7 @@ use File::Path 'mkpath';
 use File::Find 'find';
 use File::Basename 'dirname', 'basename';
 use SPVM::Builder::Util;
+use SPVM::Builder::Config::Util;
 use Getopt::Long 'GetOptions';
 use Time::Piece();
 
@@ -387,10 +388,12 @@ EOS
       $extern_c_end = '';
     }
     
+    my $config_ext = SPVM::Builder::Config::Util::get_config_ext();
+    
     $main_doc  = <<"EOS";
 =head1 Usage
 
-MyClass.config:
+MyClass.$config_ext:
   
   my \$config = SPVM::Builder::Config->$new_method;
   
@@ -859,6 +862,8 @@ sub generate_makefile_pl_file {
     $user_email = '[--user-email]'
   }
   
+  my $config_ext = SPVM::Builder::Config::Util::get_config_ext();
+  
   # "Makefile.PL" content
   my $makefile_pl_content = <<"END_OF_STRING";
 use 5.020;
@@ -896,7 +901,7 @@ if (\$meta) {
 my \$build_dir = '.spvm_build';
 mkpath \$build_dir;
 
-my \$config_global_file = '.spvm_build/global.config';
+my \$config_global_file = '.spvm_build/global.$config_ext';
 generate_config_global_file(\$config_global_file, {
   cc            => \$cc,
   ccflags       => \\\@ccflags,
