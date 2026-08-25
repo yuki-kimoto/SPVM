@@ -54,7 +54,7 @@ if ($meta) {
 my $build_dir = '.spvm_build';
 mkpath $build_dir;
 
-my $config_global_file = '.spvm_build/global.config';
+my $config_global_file = '.spvm_build/global.build';
 &generate_config_global_file($config_global_file, {
   cc            => $cc,
   ccflags       => \@ccflags,
@@ -133,7 +133,7 @@ if ($meta) {
 # Updates src/spvm_precompile_header_content.c
 SPVM::Builder::Util::build_precompile_header_content_c_source();
 
-my $xs_config_global_file = '.spvm_build/xs_global.config';
+my $xs_config_global_file = '.spvm_build/xs_global.build';
 &generate_config_global_file($xs_config_global_file, {
   debug         => $debug,
   build_type    => $build_type,

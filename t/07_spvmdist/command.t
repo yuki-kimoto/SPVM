@@ -367,7 +367,7 @@ if ($^O eq 'freebsd') {
   ok(-f $makefile_pl_file);
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel(\$options)"));
 
-  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
+  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.build";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_c99'));
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'Copyright'));
@@ -406,7 +406,7 @@ if ($^O eq 'freebsd') {
   ok(-f $makefile_pl_file);
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel(\$options)"));
 
-  my $native_config_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.config";
+  my $native_config_file = "$tmp_dir/SPVM-Foo-Bar-Baz/lib/SPVM/Foo/Bar/Baz.build";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_c99'));
   
@@ -441,7 +441,7 @@ if ($^O eq 'freebsd') {
   ok(-f $makefile_pl_file);
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel(\$options)"));
 
-  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
+  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.build";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_cpp'));
   
@@ -470,7 +470,7 @@ if ($^O eq 'freebsd') {
   ok(-f $makefile_pl_file);
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, "\$make_rule .= SPVM::Builder::Util::API::create_make_rule_parallel(\$options)"));
 
-  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
+  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.build";
   ok(!-f $native_config_file);
   
   my $native_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.c";
@@ -499,7 +499,7 @@ if ($^O eq 'freebsd') {
   ok(!SPVM::Builder::Util::file_contains($perl_class_file, 'version'));
   ok(!SPVM::Builder::Util::file_contains($spvm_class_file, 'version'));
   
-  my $native_config_file = "$tmp_dir/mylib/SPVM/Foo.config";
+  my $native_config_file = "$tmp_dir/mylib/SPVM/Foo.build";
   ok(-f $native_config_file);
   
   my $native_class_file = "$tmp_dir/mylib/SPVM/Foo.c";
@@ -795,7 +795,7 @@ else {
   my $mymeta_json = 'MYMETA.json';
   ok(-f $mymeta_json);
   ok(SPVM::Builder::Util::file_contains($mymeta_json, "0.001"));
-  ok(-f '.spvm_build/global.config');
+  ok(-f '.spvm_build/global.build');
   
   chdir($save_cur_dir) or die;
 }
@@ -909,7 +909,7 @@ for my $test_index (0 .. 1) {
   ok(-f $perl_class_file);
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo;"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "L<resource|SPVM::Document::Resource>"));
-  ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.config:"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.build:"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.c:"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "new_c99"));
   ok(!SPVM::Builder::Util::file_contains($perl_class_file, 'extern "C"'));
@@ -917,7 +917,7 @@ for my $test_index (0 .. 1) {
   my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_class_file);
 
-  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
+  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.build";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_c99'));
   
@@ -944,7 +944,7 @@ for my $test_index (0 .. 1) {
   ok(SPVM::Builder::Util::file_contains($basic_test_native_class_file, '#include "spvm_native.h"'));
   ok(SPVM::Builder::Util::file_contains($basic_test_native_class_file, "SPVM__TestCase__Foo__test"));
   
-  my $basic_test_native_config_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.config";
+  my $basic_test_native_config_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.build";
   ok(-f $basic_test_native_config_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, 'my $config = SPVM::Builder::Config->new_c99;'));
   ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, q($config->use_resource('Foo');)));
@@ -972,7 +972,7 @@ for my $test_index (0 .. 1) {
   ok(-f $perl_class_file);
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo;"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "L<resource|SPVM::Document::Resource>"));
-  ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.config:"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.build:"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.cpp:"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "new_cpp"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, 'extern "C"'));
@@ -980,7 +980,7 @@ for my $test_index (0 .. 1) {
   my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_class_file);
 
-  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.config";
+  my $native_config_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.build";
   ok(-f $native_config_file);
   ok(SPVM::Builder::Util::file_contains($native_config_file, 'SPVM::Builder::Config->new_cpp'));
   
@@ -1008,7 +1008,7 @@ for my $test_index (0 .. 1) {
   ok(SPVM::Builder::Util::file_contains($basic_test_native_class_file, 'extern "C" {'));
   ok(SPVM::Builder::Util::file_contains($basic_test_native_class_file, "SPVM__TestCase__Foo__test"));
   
-  my $basic_test_native_config_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.config";
+  my $basic_test_native_config_file = "$tmp_dir/SPVM-Foo/t/lib/SPVM/TestCase/Foo.build";
   ok(-f $basic_test_native_config_file);
   ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, 'my $config = SPVM::Builder::Config->new_cpp;'));
   ok(SPVM::Builder::Util::file_contains($basic_test_native_config_file, q($config->use_resource('Foo');)));
@@ -1098,7 +1098,7 @@ for my $test_index (0 .. 1) {
   my $spvm_class_file = "$tmp_dir/mylib/SPVM/Foo.spvm";
   ok(-f $spvm_class_file);
 
-  my $native_config_file = "$tmp_dir/mylib/SPVM/Foo.config";
+  my $native_config_file = "$tmp_dir/mylib/SPVM/Foo.build";
   ok(-f $native_config_file);
   
   my $native_class_file = "$tmp_dir/mylib/SPVM/Foo.c";

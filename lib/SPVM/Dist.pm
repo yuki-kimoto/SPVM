@@ -388,7 +388,7 @@ EOS
       $extern_c_end = '';
     }
     
-    my $config_ext = SPVM::Builder::Config::Util::get_config_ext();
+    my $config_ext = SPVM::Builder::Config::Util::get_config_ext_v2();
     
     $main_doc  = <<"EOS";
 =head1 Usage
@@ -617,7 +617,8 @@ $is_resource_code
 EOS
 
   # Generate file
-  my $native_config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
+  my $config_ext = SPVM::Builder::Config::Util::get_config_ext_v2();
+  my $native_config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, $config_ext);
   $native_config_rel_file =  $self->create_lib_rel_file($native_config_rel_file);
   $self->generate_file($native_config_rel_file, $native_config_content);
 }
@@ -862,7 +863,7 @@ sub generate_makefile_pl_file {
     $user_email = '[--user-email]'
   }
   
-  my $config_ext = SPVM::Builder::Config::Util::get_config_ext();
+  my $config_ext = SPVM::Builder::Config::Util::get_config_ext_v2();
   
   # "Makefile.PL" content
   my $makefile_pl_content = <<"END_OF_STRING";
@@ -1290,7 +1291,8 @@ my \$config = SPVM::Builder::Config->$new_method;
 EOS
   
   # Generate file
-  my $basic_test_native_config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file("TestCase::$class_name", 'config');
+  my $config_ext = SPVM::Builder::Config::Util::get_config_ext_v2();
+  my $basic_test_native_config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file("TestCase::$class_name", $config_ext);
   $basic_test_native_config_rel_file = "t/lib/$basic_test_native_config_rel_file";
   $self->generate_file($basic_test_native_config_rel_file, $basic_test_native_config_content);
 }
