@@ -242,14 +242,14 @@ L<file|SPVM::Builder::Config::Base/"file"> field of the returned config object i
 
 Loads the mode config from the config file $config_file and the mode $mode and returns an L<SPVM::Builder::Config::Base> object.
 
-$config_file is a config file path, such as C<path/MyClass.config> and C<path/MyClass.debug.config>.
+$config_file is a config file path, such as C<path/MyClass.build> and C<path/MyClass.debug.build>.
 
 A mode config file is a config file with a mode.
 
   # Mode config file
-  MyClass.debug.config
+  MyClass.debug.build
 
-The mode config file path such as C<path/MyClass.$mode.config> is created from $config_file and $mode.
+The mode config file path such as C<path/MyClass.$mode.build> is created from $config_file and $mode.
 
 L<mode|SPVM::Builder::Config::Base/"mode"> field of the returned config object is set to $mode.
 
@@ -267,7 +267,7 @@ Examples:
 
 Loads the base config from the config file $config_file and returns an L<SPVM::Builder::Config::Base> object.
 
-A base config file is the config file that removes its mode. If $config_file is C<path/MyClass.debug.config>, the base config file is C<path/MyClass.config>.
+A base config file is the config file that removes its mode. If $config_file is C<path/MyClass.debug.build>, the base config file is C<path/MyClass.build>.
 
 This function calls L</"load_mode_config"> function internally.
 

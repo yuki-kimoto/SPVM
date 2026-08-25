@@ -446,7 +446,7 @@ L<SPVM::Builder::Config> is a class to manage the configurations for compiling a
 
 An instance of this class holds compiler settings (managed by L<SPVM::Builder::Config> itself), linker and resource settings (inherited from L<SPVM::Builder::Config::Linker>), and configuration loading and common settings (inherited from L<SPVM::Builder::Config::Base>).
 
-Within a configuration file (C<.config>), you can customize the build environment by accessing methods from all of these hierarchical levels.=head1 Usage
+Within a configuration file (C<.build>), you can customize the build environment by accessing methods from all of these hierarchical levels.=head1 Usage
 
   use SPVM::Builder::Config;
   

@@ -17,10 +17,10 @@ A native method is defined by L<native method attribute|SPVM::Document::Language
 
 =head1 Native Config File
 
-A native config file is needed for a native class. The name of the config file is the same as the SPVM class name, but the extension C<.spvm> is replaced with C<.config>. 
+A native config file is needed for a native class. The name of the config file is the same as the SPVM class name, but the extension C<.spvm> is replaced with C<.build>. 
 
   # The name of a native config file
-  SPVM/MyClass.config
+  SPVM/MyClass.build
 
 A native config file is writen by Perl. It must end with a L<Builder::Config|SPVM::Builder::Config> object.
 
@@ -755,7 +755,7 @@ The native type for the SPVM reference.
 
 A native class can use native header files and native source files writen by native langauges such as the C language and C++ using L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource">.
 
-  # MyClass.config
+  # MyClass.build
   $config->use_resource("Resource::Zlib");
   
   // MyClass.c
