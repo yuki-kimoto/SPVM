@@ -134,12 +134,11 @@ sub build_parallel_with_link_infos {
   for my $link_info (@$link_infos) {
     my $config = $link_info->config;
     my $compile_infos = $link_info->compile_infos;
+    my $dl_func_list = $link_info->dl_func_list // [];
     my $link_to = $config->link_to;
     my $class_name = $config->class_name;
-    my $dl_func_list = $link_info->dl_func_list // [];
     
     if ($link_to) {
-      
       my ($found_link_to) = grep { $link_to eq $_->config->class_name } @$link_infos;
       unless ($found_link_to) {
         Carp::confess("Cannot find $link_to class specifed by link_to field.");
@@ -147,15 +146,11 @@ sub build_parallel_with_link_infos {
       
       $moved_dl_func_list_h->{$link_to} //= [];
       push @{$moved_dl_func_list_h->{$link_to}}, @$dl_func_list;
+      $link_info->dl_func_list([]);
       
       $moved_compile_infos_h->{$link_to} //= [];
       push @{$moved_compile_infos_h->{$link_to}}, @$compile_infos;
-      
-      for my $compile_info (@$compile_infos) {
-        my ($found_link_info) = grep { $link_to eq $_->config->class_name } @$link_infos;
-        
-        push @{$found_link_info->compile_infos}, shift @$compile_infos;
-      }
+      $link_info->compile_infos([]);
     }
     
     if (!defined $link_to || $link_to eq $class_name) {
@@ -165,6 +160,12 @@ sub build_parallel_with_link_infos {
   @$link_infos = @new_link_infos;
   for my $link_info (@$link_infos) {
     my $class_name = $link_info->config->class_name;
+    
+    my $moved_compile_infos = $moved_compile_infos_h->{$class_name};
+    if ($moved_compile_infos) {
+      push @{$link_info->compile_infos}, @$moved_compile_infos;
+    }
+    
     my $moved_dl_func_list = $moved_dl_func_list_h->{$class_name};
     if ($moved_dl_func_list) {
       push @{$link_info->dl_func_list}, @$moved_dl_func_list;
