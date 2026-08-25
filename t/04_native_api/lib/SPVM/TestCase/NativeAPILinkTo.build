@@ -1,5 +1,5 @@
 my $config = SPVM::Builder::Config->new_c99;;
 
-$config->link_to('TestCase::NativeAPI');
+$config->link_to('TestCase::UseResource::Basic');
 
 $config;

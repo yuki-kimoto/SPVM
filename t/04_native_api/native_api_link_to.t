@@ -34,7 +34,8 @@ find(
     my $file = $_;
     if (-f $file) {
       my $basename = basename($file);
-      if ($basename eq "NativeAPI.$Config{so}") {
+      # TestCase::UseResource::Basic
+      if ($basename eq "Basic.$Config{so}") {
         $has_native_api_so = 1;
       }
       elsif ($basename eq "NativeAPILinkTo.$Config{so}") {
@@ -45,7 +46,7 @@ find(
   $ENV{SPVM_BUILD_DIR}
 );
 
-ok($has_native_api_so, "NativeAPI.$Config{so} exists.");
+ok($has_native_api_so, "TestCase/UseResource/Basic.$Config{so} exists.");
 ok(!$has_native_api_link_to_so, "NativeAPILinkTo.$Config{so} does not exist.");
 
 # Clear exception
