@@ -129,12 +129,23 @@ sub build_parallel_with_link_infos {
   
   # link_to
   my @new_link_infos;
+  my $moved_compile_infos_h = {};
+  my $moved_dl_func_list_h = {};
   for my $link_info (@$link_infos) {
     my $config = $link_info->config;
     my $compile_infos = $link_info->compile_infos;
     my $link_to = $config->link_to;
     my $class_name = $config->class_name;
+    my $dl_func_list = $link_info->dl_func_list // [];
+    
     if ($link_to) {
+      
+      $moved_dl_func_list_h->{$link_to} //= [];
+      push @{$moved_dl_func_list_h->{$link_to}}, @$dl_func_list;
+      
+      $moved_compile_infos_h->{$link_to} //= [];
+      push @{$moved_compile_infos_h->{$link_to}}, @$compile_infos;
+      
       for my $compile_info (@$compile_infos) {
         my ($found_link_info) = grep { $link_to eq $_->config->class_name } @$link_infos;
         
