@@ -128,7 +128,7 @@ sub build_parallel_with_link_infos {
   $self->command_parallel(\@all_compile_infos);
   
   # link_to
-  my @new_link_infos;
+  my $new_link_infos = [];
   my $moved_compile_infos_h = {};
   my $moved_dl_func_list_h = {};
   for my $link_info (@$link_infos) {
@@ -154,10 +154,10 @@ sub build_parallel_with_link_infos {
     }
     
     if (!defined $link_to || $link_to eq $class_name) {
-      push @new_link_infos, $link_info;
+      push @$new_link_infos, $link_info;
     }
   }
-  @$link_infos = @new_link_infos;
+  $link_infos = $new_link_infos;
   for my $link_info (@$link_infos) {
     my $class_name = $link_info->config->class_name;
     
