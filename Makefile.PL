@@ -168,7 +168,7 @@ my @header_files = ('ppport.h', 'lib/SPVM/Builder/include/spvm_native.h');
 my $libspvm_file = "blib/lib/SPVM/Builder/lib/libspvm.a";
 
 #################### [SPVM Only Build Loigc End] ####################
-my @test_clean_files = map { "t/" . join('', map { '*/' } 1 .. $_) . "*.$Config{dlext}" } (1 .. 10);
+my @test_clean_files = map { "t/" . join('', map { '*/' } 1 .. $_) . "*.$Config{so}" } (1 .. 10);
 WriteMakefile(
   NAME => 'SPVM',
   VERSION_FROM => 'lib/SPVM.pm',
