@@ -6,6 +6,7 @@
 ^blib/
 ^Makefile$
 ^.*\.old$
+\.bs$
 ^MYMETA\.yml$
 ^MYMETA\.json$
 ^pm_to_blib$
@@ -16,9 +17,8 @@
 
 # C/C++
 \.o$
-\.bs$
 \.a$
-\.(so|out)$
+\.out$
 ^core(\..*)?$
 
 # Temp & archives
@@ -59,7 +59,8 @@
 ^\.LSOverride$
 ^\._
 
-# Linux / Android
+# Linux / Android / UNIX
+\.so$
 ^\.thumbnails/
 ^\.cache/
 
