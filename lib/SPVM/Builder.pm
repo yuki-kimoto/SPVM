@@ -128,7 +128,7 @@ sub build_parallel_with_link_infos {
   $self->command_parallel(\@all_compile_infos);
   
   # link_to
-  my @tmp_link_infos;
+  my @new_link_infos;
   for my $link_info (@$link_infos) {
     my $compile_infos = $link_info->compile_infos;
     for my $compile_info (@$compile_infos) {
@@ -157,10 +157,10 @@ sub build_parallel_with_link_infos {
     }
     
     if (@{$link_info->compile_infos}) {
-      push @tmp_link_infos, $link_info;
+      push @new_link_infos, $link_info;
     }
   }
-  @$link_infos = @tmp_link_infos;
+  @$link_infos = @new_link_infos;
   
   # Prepare all link information
   my @all_link_infos;
