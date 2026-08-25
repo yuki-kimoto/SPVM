@@ -130,11 +130,11 @@ sub build_parallel_with_link_infos {
   # link_to
   my @new_link_infos;
   for my $link_info (@$link_infos) {
+    my $config = $link_info->config;
     my $compile_infos = $link_info->compile_infos;
-    for my $compile_info (@$compile_infos) {
-      my $config = $compile_info->config;
-      if (my $link_to = $config->link_to) {
-        
+    my $link_to = $config->link_to;
+    if ($link_to) {
+      for my $compile_info (@$compile_infos) {
         my ($found_link_info) = grep { $link_to eq $_->config->class_name } @$link_infos;
         
         unless ($found_link_info) {
