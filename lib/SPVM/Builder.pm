@@ -886,7 +886,8 @@ sub finalize_link_info {
   
   my $link_info_object_files = $link_info->object_file_infos;
   
-  my $object_file_names = [map { $_->to_string; } @$link_info_object_files];
+  my %seen;
+  my $object_file_names = [grep { !$seen{$_}++ } map { $_->to_string; } @$link_info_object_files];
   
   my $ld_version = $config->ld_version;
   
