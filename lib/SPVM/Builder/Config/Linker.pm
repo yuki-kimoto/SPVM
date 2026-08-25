@@ -49,6 +49,7 @@ my $fields = [qw(
   enable_ld_debug_output_option
   debug_output_file_ext
   debug_output_file_ldflags
+  link_to
 )];
 
 has($fields);
@@ -768,6 +769,13 @@ Gets and sets C<long_option_sep> field, a string that is a separator between an 
   $config->debug_output_file_ldflags($debug_output_file_ldflags);
 
 Gets and sets C<debug_output_file_ldflags> field, an array reference containing arguments of the linker L</"ld"> for the debug information file.
+
+=head2 link_to
+
+  my $link_to = $config->link_to;
+  $config->link_to($link_to);
+
+Gets and sets C<link_to> field, which is the class name to link to.
 
 =head1 Class Methods
 

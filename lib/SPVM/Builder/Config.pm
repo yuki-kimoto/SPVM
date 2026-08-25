@@ -41,7 +41,6 @@ my $cc_fields = [qw(
   ndebug_ccflags
   debug_file_synchronized_write_ccflags
   cc_version
-  link_to
 )];
 
 has($cc_fields);
@@ -917,13 +916,6 @@ These flags are passed to the compiler L</"cc"> to determine how libraries (such
   $config->cc_output_option_name($cc_output_option_name);
 
 Gets and sets C<cc_output_option_name> field, a string that is an option name to specify a compiler output file name.
-
-=head2 link_to
-
-  my $link_to = $config->link_to;
-  $config->link_to($link_to);
-
-Gets and sets C<link_to> field, which is the class name to link to.
 
 =head1 Class Methods
 
