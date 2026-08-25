@@ -155,16 +155,6 @@ sub build_parallel_with_link_infos {
         my ($found_link_info) = grep { $link_to eq $_->config->class_name } @$link_infos;
         
         push @{$found_link_info->compile_infos}, shift @$compile_infos;
-        
-        if (my $src_dl_func_list = $link_info->dl_func_list) {
-          $found_link_info->dl_func_list([]) unless $found_link_info->dl_func_list;
-          my %seen = map { $_ => 1 } @{$found_link_info->dl_func_list};
-          for my $func (@$src_dl_func_list) {
-            unless ($seen{$func}++) {
-              push @{$found_link_info->dl_func_list}, $func;
-            }
-          }
-        }
       }
     }
     
@@ -173,6 +163,13 @@ sub build_parallel_with_link_infos {
     }
   }
   @$link_infos = @new_link_infos;
+  for my $link_info (@$link_infos) {
+    my $class_name = $link_info->config->class_name;
+    my $moved_dl_func_list = $moved_dl_func_list_h->{$class_name};
+    if ($moved_dl_func_list) {
+      push @{$link_info->dl_func_list}, @$moved_dl_func_list;
+    }
+  }
   
   # Prepare all link information
   my @all_link_infos;
