@@ -1,3 +1,11 @@
+0.990197 2026-08-31
+  [Summary]
+    * This release introduces a major breaking change: native class configuration files can no longer use the .config extension, and only .build is supported.
+  [Internal Changes]
+    * Change config extension from .config to .build.
+  [Incompatibe Changes]
+    * Unified native class build configuration extensions to .build by removing .config.
+    
 0.990196 2026-08-25
   [Document Changes]
     * Change .config to .build in config file in document.
