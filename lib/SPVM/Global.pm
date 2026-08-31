@@ -436,7 +436,7 @@ EOS
           }
           else {
             my $dl_error = DynaLoader::dl_error();
-            confess("The DynaLoader::dl_load_file function failed:Can't load the '$dynamic_lib_file' file for $category methods in $class_name class: $dl_error");
+            confess("DynaLoader#dl_load_file function failed:Can't load '$dynamic_lib_file' file for $category methods in $class_name class: dl_error='$dl_error'");
           }
         }
         else {
