@@ -216,7 +216,7 @@ A version string must be written by the following rules.
 
 The type of a version string is string type.
 
-It consists of C<0-9>, C<.>. 
+It consists of C<0-9>, C<.>, and optionally the C<_000> suffix.
 
 The count of C<.> is less than or equal to 1.
 
@@ -226,7 +226,7 @@ It ends with C<0-9>.
 
 The count of C<0-9> after C<.> is divisible by 3.
 
-It is able to be parsed by the C<strtod> function in the C language.
+It is able to be parsed by the C function in the C language after the C<_000> suffix is removed.
 
 Complication Errors:
 
@@ -239,6 +239,7 @@ Examples:
   "10.001003"
   "1"
   "10000"
+  "0.001_000"
 
 =head3 Version Number
 

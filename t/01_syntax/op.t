@@ -418,6 +418,10 @@ use Test::More;
     my $source = 'class MyClass { version 1.001; }';
     compile_not_ok($source,q|The operand type of version statement must be string type.|);
   }
+  {
+    my $source = 'class MyClass { version "1.001_000"; }';
+    compile_ok($source);
+  }
 }
 
 # version statement - Version Declaration

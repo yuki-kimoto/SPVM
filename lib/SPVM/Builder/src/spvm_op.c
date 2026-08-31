@@ -457,8 +457,18 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           break;
         }
         
-        const char* version_string = version_string_constant->value.address;
+        char* version_string = version_string_constant->value.address;
         int32_t version_string_length = version_string_constant->string_length;
+        
+        // Allow _000 suffix
+        if (version_string_length >= 4 && version_string[version_string_length - 4] == '_') {
+          if (version_string[version_string_length - 3] == '0' &&
+              version_string[version_string_length - 2] == '0' &&
+              version_string[version_string_length - 1] == '0') {
+            version_string_length -= 4;
+            version_string[version_string_length] = '\0';
+          }
+        }
         
         // Version string validation
         {
