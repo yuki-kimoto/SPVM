@@ -31,7 +31,7 @@ make_path($native_src_dir);
 
 # Define file paths
 my $spvm_class_file = "$lib_dir/BuildCache.spvm";
-my $config_file = "$lib_dir/BuildCache.config";
+my $config_file = "$lib_dir/BuildCache.build";
 my $native_class_file = "$lib_dir/BuildCache.c";
 my $native_header_file = "$native_include_dir/baz/baz.h";
 my $native_source_file = "$native_src_dir/baz.c";
@@ -51,7 +51,6 @@ no warnings 'void';
 $config;
 EOS
 
-# .config file (Faithfully following the provided sample style)
 {
 
   SPVM::Builder::Util::spurt_binary($config_file, $config_content);
