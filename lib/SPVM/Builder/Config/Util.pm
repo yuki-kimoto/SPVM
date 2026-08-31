@@ -179,7 +179,7 @@ sub create_config_file_path_from_class_file_path {
 
 sub get_config_ext {
   
-  my $config_ext = 'config';
+  my $config_ext = 'build';
   
   return $config_ext;
 }
