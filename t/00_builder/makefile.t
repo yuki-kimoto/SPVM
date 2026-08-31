@@ -9,7 +9,7 @@ my $makefile_file = 'Makefile';
 my $makefile_content = do { open my $fh, '<', $makefile_file or die; local $/; <$fh> };
 
 like($makefile_content, qr|\Qlib/SPVM/Fn.spvm|);
-like($makefile_content, qr|\Qlib/SPVM/Fn.config|);
+like($makefile_content, qr|\Qlib/SPVM/Fn.build|);
 like($makefile_content, qr|\Qlib/SPVM/Fn.c|);
 
 done_testing;

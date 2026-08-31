@@ -25,7 +25,7 @@ unless (-f $class_file) {
   die 'Unexpected error';
 }
 
-my $config_file = "$test_dir/lib/SPVM/TestCase/NativeAPI.config";
+my $config_file = "$test_dir/lib/SPVM/TestCase/NativeAPI.build";
 unless (-f $config_file) {
   die 'Unexpected error';
 }
@@ -40,7 +40,7 @@ unless (-f $native_header_file) {
   die 'Unexpected error';
 }
 
-my $resource_config_file = "$test_dir/lib/SPVM/TestCase/Resource/Mylib1.config";
+my $resource_config_file = "$test_dir/lib/SPVM/TestCase/Resource/Mylib1.build";
 unless (-f $resource_config_file) {
   die 'Unexpected error';
 }

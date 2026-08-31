@@ -51,7 +51,7 @@ my $class_name = 'TestCase::UseResource::Basic';
   my $class_rel_file = $class_name;
   $class_rel_file =~ s|::|/|g;
   
-  like($config_file, qr/$class_rel_file\.config/);
+  like($config_file, qr/$class_rel_file\.build/);
 }
 
 # get_config_content
