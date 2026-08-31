@@ -8,24 +8,8 @@ use Carp 'confess';
 sub load_config {
   my ($config_file) = @_;
   
-  my $config_ext = &get_config_ext();
-  
-  my $config_ext_v2 = &get_config_ext_v2();
-  my $config_file_v2 = $config_file;
-  $config_file_v2 =~ s/\.$config_ext$/.$config_ext_v2/;
-  
-  unless (-f $config_file || -f $config_file_v2) {
-    confess("Config file '$config_file' or '$config_file_v2' must exist.");
-  }
-  
-  if ($ENV{SPVM_REQUIRE_BUILD_CONFIG_EXT}) {
-    unless (-f $config_file_v2) {
-      confess("Config file '$config_file_v2' must exist.");
-    }
-  }
-  
-  if (-f $config_file_v2) {
-    $config_file = $config_file_v2;
+  unless (-f $config_file) {
+    confess("Config file '$config_file' must exist.");
   }
   
   my $config;
@@ -108,9 +92,6 @@ sub remove_ext_from_config_file {
   my $config_ext = &get_config_ext();
   $config_base_name =~ s/(\.[^\.]+)?\.$config_ext$//;
   
-  my $config_ext_v2 = &get_config_ext_v2();
-  $config_base_name =~ s/(\.[^\.]+)?\.$config_ext_v2$//;
-  
   my $config_file_without_ext = "$config_dir$config_base_name";
   
   return $config_file_without_ext;
@@ -184,30 +165,16 @@ sub get_config_ext {
   return $config_ext;
 }
 
-sub get_config_ext_v2 {
-  
-  my $config_ext = 'build';
-  
-  return $config_ext;
-}
-
 sub exists_config_file {
   my ($config_file) = @_;
   
   my $config_ext = &get_config_ext();
-  
-  my $config_ext_v2 = &get_config_ext_v2();
-  my $config_file_v2 = $config_file;
-  $config_file_v2 =~ s/\.$config_ext$/.$config_ext_v2/;
   
   my $exists_file;
   
   if (-f $config_file) {
     $exists_file = $config_file;
   }
-  elsif(-f $config_file_v2) {
-    $exists_file = $config_file_v2;
-  };
   
   return $exists_file;
 }

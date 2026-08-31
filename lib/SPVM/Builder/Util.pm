@@ -427,7 +427,7 @@ sub create_make_rule_parallel {
 sub search_config_file {
   my ($class_name, $mode) = @_;
   
-  my $ext = SPVM::Builder::Config::Util::get_config_ext_v2();
+  my $ext = SPVM::Builder::Config::Util::get_config_ext();
   if (defined $mode) {
     $ext = "$mode.$ext";
   }
