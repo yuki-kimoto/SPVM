@@ -4,7 +4,7 @@ use warnings;
 
 use SPVM::Global;
 
-our $VERSION = "0.990197";
+our $VERSION = "0.990197001_000";
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
