@@ -283,7 +283,6 @@ sub build_dynamic_libs {
     $build_options->{native_classes} = \@native_classes_to_build;
   }
   
-  $BUILDER //= SPVM::Builder->new(is_jit => 1);
   my $builder_cc = SPVM::Builder::CC->new(builder => $BUILDER, runtime => $runtime);
   my $output_files_h = $builder_cc->build_parallel($build_options);
   
