@@ -231,9 +231,7 @@ sub build_dynamic_libs {
             Carp::confess("The loaded class file is different from the file found in \@INC. \$loaded_class_file='$class_file', \$found_class_file='$class_file_from_inc'");
           }
           
-          my $target_class_file;
-          my $target_class_name = $class_name;
-          
+          my $link_to_class_file;
           if ($category eq 'native') {
             my $config_file = SPVM::Builder::Config::Util::create_config_file_path_from_class_file_path($class_file);
             if (SPVM::Builder::Config::Util::exists_config_file($config_file)) {
@@ -244,24 +242,21 @@ sub build_dynamic_libs {
                 unless ($link_to_basic_type) {
                   Carp::confess("$link_to_class_name class is not yet loaded.");
                 }
-                my $link_to_class_file = $link_to_basic_type->get_class_file;
+                $link_to_class_file = $link_to_basic_type->get_class_file;
                 my $link_to_class_file_from_inc = SPVM::Builder::Util::search_spvm_file($link_to_class_name);
                 
                 unless ($link_to_class_file eq $link_to_class_file_from_inc) {
                   Carp::confess("The loaded class file is different from the file found in \@INC. \$loaded_class_file='$link_to_class_file', \$found_class_file='$link_to_class_file_from_inc'");
                 }
-                
-                $target_class_file = $link_to_class_file;
-                $target_class_name = $link_to_class_name;
               }
             }
           }
           
-          unless (defined $target_class_file) {
-            $target_class_file = $class_file;
+          unless (defined $link_to_class_file) {
+            $link_to_class_file = $class_file;
           }
           
-          my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($target_class_file, $category);
+          my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($link_to_class_file, $category);
           
           if (-f $dynamic_lib_file_dist) {
             $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $dynamic_lib_file_dist;
