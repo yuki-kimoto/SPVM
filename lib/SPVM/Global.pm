@@ -272,16 +272,9 @@ sub build_dynamic_libs {
     }
   }
   
-  my @precompile_classes_to_build = keys %{$classes_to_build{precompile}};
-  my @native_classes_to_build = keys %{$classes_to_build{native}};
-  
   my $build_options = {};
-  if (@precompile_classes_to_build) {
-    $build_options->{precompile_classes} = \@precompile_classes_to_build;
-  }
-  if (@native_classes_to_build) {
-    $build_options->{native_classes} = \@native_classes_to_build;
-  }
+  $build_options->{precompile_classes} = [keys %{$classes_to_build{precompile}}];
+  $build_options->{native_classes} = [keys %{$classes_to_build{native}}];
   
   my $builder_cc = SPVM::Builder::CC->new(builder => $BUILDER, runtime => $runtime);
   my $output_files_h = $builder_cc->build_parallel($build_options);
