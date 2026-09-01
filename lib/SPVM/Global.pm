@@ -232,46 +232,42 @@ sub build_dynamic_libs {
             Carp::confess("The loaded class file is different from the file found in \@INC. \$loaded_class_file='$class_file', \$found_class_file='$class_file_from_inc'");
           }
           
-          my $target_class_file;
-          my $target_class_name = $class_name;
+          my $link_to_class_name;
+          my $link_to_class_file;
           
           if ($category eq 'native') {
             my $config_file = SPVM::Builder::Config::Util::create_config_file_path_from_class_file_path($class_file);
             if (SPVM::Builder::Config::Util::exists_config_file($config_file)) {
               my $config = SPVM::Builder::Config::Util::load_config($config_file);
-              my $link_to_class_name = $config->link_to;
+              $link_to_class_name = $config->link_to;
               if ($link_to_class_name) {
                 my $link_to_basic_type = $runtime->get_basic_type_by_name($link_to_class_name);
                 unless ($link_to_basic_type) {
                   Carp::confess("$link_to_class_name class is not yet loaded.");
                 }
-                my $link_to_class_file = $link_to_basic_type->get_class_file;
+                $link_to_class_file = $link_to_basic_type->get_class_file;
                 my $link_to_class_file_from_inc = SPVM::Builder::Util::search_spvm_file($link_to_class_name);
                 
                 unless ($link_to_class_file eq $link_to_class_file_from_inc) {
                   Carp::confess("The loaded class file is different from the file found in \@INC. \$loaded_class_file='$link_to_class_file', \$found_class_file='$link_to_class_file_from_inc'");
                 }
-                
-                $target_class_file = $link_to_class_file;
-                $target_class_name = $link_to_class_name;
+              }
+              else {
+                $link_to_class_name = $class_name;
               }
             }
           }
           
-          unless (defined $target_class_file) {
-            $target_class_file = $class_file;
-          }
-          
           # Map outmost to target
-          $to_target{$category}{$class_name} = $target_class_name;
+          $to_target{$category}{$class_name} = $link_to_class_name;
           
-          my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($target_class_file, $category);
+          my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($link_to_class_file, $category);
           
           if (-f $dynamic_lib_file_dist) {
             # Cache dist lib
             $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $dynamic_lib_file_dist;
           }
-          elsif (my $jit_file = $DYNAMIC_LIB_FILES_H->{$target_class_name}{$category}) {
+          elsif (my $jit_file = $DYNAMIC_LIB_FILES_H->{$link_to_class_name}{$category}) {
             # Reuse target lib
             $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $jit_file;
           }
@@ -306,11 +302,11 @@ sub build_dynamic_libs {
       if (my $built_classes = $output_files_h->{$category}) {
         # Loop through mapped classes to ensure all get DLL
         for my $class_name (keys %{$to_target{$category}}) {
-          my $target_class_name = $to_target{$category}{$class_name};
+          my $link_to_class_name = $to_target{$category}{$class_name};
           
-          if (my $dynamic_lib_file_jit = $built_classes->{$target_class_name} // $built_classes->{$class_name}) {
+          if (my $dynamic_lib_file_jit = $built_classes->{$link_to_class_name} // $built_classes->{$class_name}) {
             $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $dynamic_lib_file_jit;
-            $DYNAMIC_LIB_FILES_H->{$target_class_name}{$category} = $dynamic_lib_file_jit;
+            $DYNAMIC_LIB_FILES_H->{$link_to_class_name}{$category} = $dynamic_lib_file_jit;
             $DYNAMIC_LIB_FILE_IS_JIT_H->{$dynamic_lib_file_jit} = 1;
           }
         }
