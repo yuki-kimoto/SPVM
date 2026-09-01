@@ -114,11 +114,12 @@ else {
   my $output_option = ($output_type eq 'exe') ? 'exe_file' : 'lib_file';
   
   # Link to the .tmp file instead of the final file
+  my $module_name = "SPVM::$class_name";
   $cbuilder->$link_method(
     $output_option => $output_file,
     objects => \@tmp_object_file_names,
     extra_linker_flags => "@ldflags",
-    module_name => $class_name,
+    module_name => $module_name,
     dl_func_list => $dl_func_list,
   );
 }
