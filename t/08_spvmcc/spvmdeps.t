@@ -44,7 +44,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --with-version t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
-    like($output, qr|^SPVM [\.\d]+$|m);
+    like($output, qr|^SPVM [\.\d_]+$|m);
     like($output, qr|^TestCase::NativeAPI2 1\.002$|m);
     like($output, qr|^TestCase::Precompile 2\.005$|m);
     like($output, qr|^Byte \(version_from SPVM\)$|m);
@@ -112,7 +112,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     
     warn "[Test Output]\n$output";
     
-    like($output, qr|^cpanm SPVM\@[\.\d]+$|m);
+    like($output, qr|^cpanm SPVM\@[\.\d_]+$|m);
     like($output, qr|^cpanm SPVM::TestCase::NativeAPI2\@1\.002$|m);
     like($output, qr|^cpanm SPVM::TestCase::Precompile\@2\.005$|m);
     unlike($output, qr|SPVM::Byte|m);
@@ -143,7 +143,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     
     warn "[Test Output]\n$output";
     
-    like($output, qr|^requires 'SPVM', '== [\.\d]+';$|m);
+    like($output, qr|^requires 'SPVM', '== [\.\d_]+';$|m);
     like($output, qr|^requires 'SPVM::TestCase::NativeAPI2', '== 1\.002';$|m);
     like($output, qr|^requires 'SPVM::TestCase::Precompile', '== 2\.005';$|m);
     unlike($output, qr|SPVM::Byte|m);
@@ -177,7 +177,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmdeps -I $inc_dir -I t/02_vm/lib --json --with-version t/08_spvmcc/script/myapp.spvm);
     my $output = `$spvmcc_cmd`;
     
-    like($output, qr|^  \{"class_name":"SPVM","version":"[\.\d]+"\}|m);
+    like($output, qr|^  \{"class_name":"SPVM","version":"[\.\d_]+"\}|m);
     like($output, qr|^  \{"class_name":"TestCase::NativeAPI2","version":"1\.002"\}|m);
     like($output, qr|^  \{"class_name":"TestCase::Precompile","version":"2\.005"\}|m);
     like($output, qr|\x0A$|s);
