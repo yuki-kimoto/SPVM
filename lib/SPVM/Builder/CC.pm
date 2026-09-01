@@ -461,6 +461,14 @@ sub build_parallel {
   
   for my $link_info (@$link_infos) {
     $self->resolve_dl_func_list($link_info);
+    my $dl_func_list = $link_info->dl_func_list;
+    unless (@$dl_func_list) {
+      my $config = $link_info->config;
+      my $class_name = $config->class_name;
+      my $category = $config->category;
+      
+      confess("\$dl_func_list must have at least one function name. \$class_name='$class_name', \$category='$category'. You might forget to specify '$category' method attribute.");
+    }
   }
   
   my $output_files_h = $self->builder->build_parallel_with_link_infos($link_infos, $options);
