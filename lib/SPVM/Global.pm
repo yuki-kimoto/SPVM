@@ -296,23 +296,16 @@ sub build_dynamic_libs {
       $build_options->{native_classes} = \@native_classes_to_build;
     }
     
-    # Build in parallel
     $BUILDER //= SPVM::Builder->new(is_jit => 1);
     my $builder_cc = SPVM::Builder::CC->new(builder => $BUILDER, runtime => $runtime);
     my $output_files_h = $builder_cc->build_parallel($build_options);
     
-    # Cache JIT lib
-    for my $category ('precompile', 'native') {
-      if (my $built_classes = $output_files_h->{$category}) {
-        # Loop through mapped classes to ensure all get DLL
-        for my $class_name (keys %{$to_target{$category}}) {
-          my $target_class_name = $to_target{$category}{$class_name};
-          
-          if (my $dynamic_lib_file_jit = $built_classes->{$target_class_name} // $built_classes->{$class_name}) {
-            $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $dynamic_lib_file_jit;
-            $DYNAMIC_LIB_FILES_H->{$target_class_name}{$category} = $dynamic_lib_file_jit;
-            $DYNAMIC_LIB_FILE_IS_JIT_H->{$dynamic_lib_file_jit} = 1;
-          }
+    for my $category (keys %{$output_files_h}) {
+      for my $class_name (%{$output_files_h->{$category}}) {
+        my $dynamic_lib_file_jit = $output_files_h->{$category}{$class_name};
+        if ($dynamic_lib_file_jit) {
+          $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $dynamic_lib_file_jit;
+          $DYNAMIC_LIB_FILE_IS_JIT_H->{$dynamic_lib_file_jit} = 1;
         }
       }
     }
