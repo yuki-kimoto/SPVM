@@ -212,7 +212,7 @@ sub build_dynamic_libs {
   my ($runtime, $class_names) = @_;
   
   my %classes_to_build = (precompile => {}, native => {});
-  my %to_target = (precompile => {}, native => {});
+  my %link_to_h = (precompile => {}, native => {});
   
   for my $class_name (@$class_names) {
     if ($class_name =~ /::anon_method::/) {
@@ -259,7 +259,7 @@ sub build_dynamic_libs {
           }
           
           # Map outmost to target
-          $to_target{$category}{$class_name} = $link_to_class_name;
+          $link_to_h{$category}{$class_name} = $link_to_class_name;
           
           my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($link_to_class_file, $category);
           
@@ -301,8 +301,8 @@ sub build_dynamic_libs {
     for my $category ('precompile', 'native') {
       if (my $built_classes = $output_files_h->{$category}) {
         # Loop through mapped classes to ensure all get DLL
-        for my $class_name (keys %{$to_target{$category}}) {
-          my $link_to_class_name = $to_target{$category}{$class_name};
+        for my $class_name (keys %{$link_to_h{$category}}) {
+          my $link_to_class_name = $link_to_h{$category}{$class_name};
           
           if (my $dynamic_lib_file_jit = $built_classes->{$link_to_class_name} // $built_classes->{$class_name}) {
             $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $dynamic_lib_file_jit;
