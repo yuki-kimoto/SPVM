@@ -5454,7 +5454,6 @@ double SPVM_API_get_spvm_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
   char *end;
   errno = 0;
   double version_number = strtod(spvm_version_string, &end);
-  assert(*end == '\0');
   assert(errno == 0);
   
   return version_number;
@@ -5478,7 +5477,6 @@ double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
   char *end;
   errno = 0;
   double version_number = strtod(version_string, &end);
-  assert(*end == '\0');
   assert(errno == 0);
   
   return version_number;
