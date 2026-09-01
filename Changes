@@ -1,3 +1,7 @@
+0.990197002 2026-09-01
+  [Release Summary]
+    * Refactored the build and load logic for link_to and DLLs, and fixed potential bugs.
+    
 0.990197001_000 2026-09-01
   [Release Summary]
     * Allowing _000 at the end of version strings has made it much easier to make development releases to CPAN.
