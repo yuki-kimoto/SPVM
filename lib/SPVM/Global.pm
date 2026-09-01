@@ -211,18 +211,16 @@ sub init_api {
 sub build_dynamic_libs {
   my ($runtime, $class_names) = @_;
   
-  # Track classes to build and map
   my %classes_to_build = (precompile => {}, native => {});
   my %outmost_to_target = (precompile => {}, native => {});
   
   for my $class_name (@$class_names) {
     my $outmost_class_name;
-    if ($class_name =~ /^(.*)::anon_method::/) {
-      $outmost_class_name = $1;
+    if ($class_name =~ /::anon_method::/) {
+      next;
     }
-    else {
-      $outmost_class_name = $class_name;
-    }
+    
+    $outmost_class_name = $class_name;
     
     for my $category ('precompile', 'native') {
       my $basic_type = $runtime->get_basic_type_by_name($class_name);
