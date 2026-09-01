@@ -212,7 +212,6 @@ sub build_dynamic_libs {
   my ($runtime, $class_names) = @_;
   
   my %classes_to_build = (precompile => {}, native => {});
-  my %to_target = (precompile => {}, native => {});
   
   for my $class_name (@$class_names) {
     if ($class_name =~ /::anon_method::/) {
@@ -261,9 +260,6 @@ sub build_dynamic_libs {
           unless (defined $target_class_file) {
             $target_class_file = $class_file;
           }
-          
-          # Map outmost to target
-          $to_target{$category}{$class_name} = $target_class_name;
           
           my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($target_class_file, $category);
           
