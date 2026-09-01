@@ -275,26 +275,24 @@ sub build_dynamic_libs {
   my @precompile_classes_to_build = keys %{$classes_to_build{precompile}};
   my @native_classes_to_build = keys %{$classes_to_build{native}};
   
-  if (@precompile_classes_to_build || @native_classes_to_build) {
-    my $build_options = {};
-    if (@precompile_classes_to_build) {
-      $build_options->{precompile_classes} = \@precompile_classes_to_build;
-    }
-    if (@native_classes_to_build) {
-      $build_options->{native_classes} = \@native_classes_to_build;
-    }
-    
-    $BUILDER //= SPVM::Builder->new(is_jit => 1);
-    my $builder_cc = SPVM::Builder::CC->new(builder => $BUILDER, runtime => $runtime);
-    my $output_files_h = $builder_cc->build_parallel($build_options);
-    
-    for my $category (keys %{$output_files_h}) {
-      for my $class_name (%{$output_files_h->{$category}}) {
-        my $dynamic_lib_file_jit = $output_files_h->{$category}{$class_name};
-        if ($dynamic_lib_file_jit) {
-          $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $dynamic_lib_file_jit;
-          $DYNAMIC_LIB_FILE_IS_JIT_H->{$dynamic_lib_file_jit} = 1;
-        }
+  my $build_options = {};
+  if (@precompile_classes_to_build) {
+    $build_options->{precompile_classes} = \@precompile_classes_to_build;
+  }
+  if (@native_classes_to_build) {
+    $build_options->{native_classes} = \@native_classes_to_build;
+  }
+  
+  $BUILDER //= SPVM::Builder->new(is_jit => 1);
+  my $builder_cc = SPVM::Builder::CC->new(builder => $BUILDER, runtime => $runtime);
+  my $output_files_h = $builder_cc->build_parallel($build_options);
+  
+  for my $category (keys %{$output_files_h}) {
+    for my $class_name (%{$output_files_h->{$category}}) {
+      my $dynamic_lib_file_jit = $output_files_h->{$category}{$class_name};
+      if ($dynamic_lib_file_jit) {
+        $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $dynamic_lib_file_jit;
+        $DYNAMIC_LIB_FILE_IS_JIT_H->{$dynamic_lib_file_jit} = 1;
       }
     }
   }
