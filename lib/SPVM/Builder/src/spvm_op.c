@@ -460,13 +460,21 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         char* version_string = version_string_constant->value.address;
         int32_t version_string_length = version_string_constant->string_length;
         
-        // Allow _000 suffix
-        if (version_string_length >= 4 && version_string[version_string_length - 4] == '_') {
-          if (version_string[version_string_length - 3] == '0' &&
-              version_string[version_string_length - 2] == '0' &&
-              version_string[version_string_length - 1] == '0') {
-            version_string_length -= 4;
-            version_string[version_string_length] = '\0';
+        // _000 suffix
+        if (strchr(version_string, '_')) {
+          int32_t under_score_count = 0;
+          char* version_string_ptr = version_string;
+          while (*version_string_ptr) {
+            if (*version_string_ptr == '_') {
+              under_score_count++;
+            }
+            version_string_ptr++;
+          }
+          
+          if (!(under_score_count == 1 && version_string_length >= 4
+            && version_string[version_string_length - 4] == '_' && version_string[version_string_length - 3] == '0' && version_string[version_string_length - 2] == '0' && version_string[version_string_length - 1] == '0')) {
+            SPVM_COMPILER_error(compiler, "_000 suffix in a version string must be at the end of the string.\n  at %s line %d", op_decl->file, op_decl->line);
+            break;
           }
         }
         
@@ -478,7 +486,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           for (int32_t version_global_string_address_id = 0; version_global_string_address_id < version_string_length; version_global_string_address_id++) {
             char ch = version_string[version_global_string_address_id];
             
-            if (!(ch == '.' || isdigit(ch))) {
+            if (!(ch == '.' || isdigit(ch) || ch == '_')) {
               invalid_char = 1;
               break;
             }
@@ -493,7 +501,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           }
           
           if (invalid_char) {
-            SPVM_COMPILER_error(compiler, "A character in a version string must be a number or \".\".\n  at %s line %d", op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "A character in a version string must be a number, '.', or '_'.\n  at %s line %d", op_decl->file, op_decl->line);
             break;
           }
           
@@ -520,7 +528,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           {
             char *end;
             double double_value = strtod(version_string, &end);
-            if (*end != '\0') {
+            if (!(*end == '\0' || *end == '_')) {
               SPVM_COMPILER_error(compiler, "A version string must be able to be parsed by the 'strtod' C function.\n  at %s line %d", op_decl->file, op_decl->line);
               break;
             }

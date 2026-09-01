@@ -400,7 +400,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { version "1.0a0"; }';
-    compile_not_ok($source, qr|A character in a version string must be a number or "\."|);
+    compile_not_ok($source, qr|A character in a version string must be a number, '.', or '_'|);
   }
   {
     my $source = 'class MyClass { version "1.001.001"; }';
@@ -418,9 +418,15 @@ use Test::More;
     my $source = 'class MyClass { version 1.001; }';
     compile_not_ok($source,q|The operand type of version statement must be string type.|);
   }
+  
   {
     my $source = 'class MyClass { version "1.001_000"; }';
     compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { version "1.001_000_000"; }';
+    compile_not_ok($source, q|_000 suffix in a version string must be at the end of the string.|);
   }
 }
 
@@ -456,7 +462,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { version "1.0a0"; }';
-    compile_not_ok($source, qr|A character in a version string must be a number or "\."|);
+    compile_not_ok($source, qr|A character in a version string must be a number, '.', or '_'|);
   }
   {
     my $source = 'class MyClass { version "1.001.001"; }';
