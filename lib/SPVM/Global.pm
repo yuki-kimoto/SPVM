@@ -264,15 +264,12 @@ sub build_dynamic_libs {
           my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($target_class_file, $category);
           
           if (-f $dynamic_lib_file_dist) {
-            # Cache dist lib
             $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $dynamic_lib_file_dist;
           }
-          elsif (my $jit_file = $DYNAMIC_LIB_FILES_H->{$target_class_name}{$category}) {
-            # Reuse target lib
-            $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $jit_file;
+          elsif (my $dynamic_lib_file_jit = $DYNAMIC_LIB_FILES_H->{$class_name}{$category}) {
+            # Do nothing
           }
           else {
-            # Mark outmost for build
             $classes_to_build{$category}{$class_name} = 1;
           }
         }
