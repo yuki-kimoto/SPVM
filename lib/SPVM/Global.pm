@@ -215,29 +215,26 @@ sub build_dynamic_libs {
   my %outmost_to_target = (precompile => {}, native => {});
   
   for my $class_name (@$class_names) {
-    my $outmost_class_name;
     if ($class_name =~ /::anon_method::/) {
       next;
     }
-    
-    $outmost_class_name = $class_name;
     
     for my $category ('precompile', 'native') {
       my $basic_type = $runtime->get_basic_type_by_name($class_name);
       my $method_names = $basic_type->get_method_names_by_category($category);
       
       if (@$method_names) {
-        unless ($DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category}) {
-          my $outmost_basic_type = $runtime->get_basic_type_by_name($outmost_class_name);
+        unless ($DYNAMIC_LIB_FILES_H->{$class_name}{$category}) {
+          my $outmost_basic_type = $runtime->get_basic_type_by_name($class_name);
           my $outmost_class_file = $outmost_basic_type->get_class_file;
-          my $outmost_class_file_from_inc = SPVM::Builder::Util::search_spvm_file($outmost_class_name);
+          my $outmost_class_file_from_inc = SPVM::Builder::Util::search_spvm_file($class_name);
           
           unless ($outmost_class_file eq $outmost_class_file_from_inc) {
             Carp::confess("The loaded class file is different from the file found in \@INC. \$loaded_class_file='$outmost_class_file', \$found_class_file='$outmost_class_file_from_inc'");
           }
           
           my $target_class_file;
-          my $target_class_name = $outmost_class_name;
+          my $target_class_name = $class_name;
           
           if ($category eq 'native') {
             my $config_file = SPVM::Builder::Config::Util::create_config_file_path_from_class_file_path($outmost_class_file);
@@ -267,21 +264,21 @@ sub build_dynamic_libs {
           }
           
           # Map outmost to target
-          $outmost_to_target{$category}{$outmost_class_name} = $target_class_name;
+          $outmost_to_target{$category}{$class_name} = $target_class_name;
           
           my $dynamic_lib_file_dist = SPVM::Builder::Util::get_dynamic_lib_file_dist($target_class_file, $category);
           
           if (-f $dynamic_lib_file_dist) {
             # Cache dist lib
-            $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_dist;
+            $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $dynamic_lib_file_dist;
           }
           elsif (my $jit_file = $DYNAMIC_LIB_FILES_H->{$target_class_name}{$category}) {
             # Reuse target lib
-            $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $jit_file;
+            $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $jit_file;
           }
           else {
             # Mark outmost for build
-            $classes_to_build{$category}{$outmost_class_name} = 1;
+            $classes_to_build{$category}{$class_name} = 1;
           }
         }
       }
@@ -309,11 +306,11 @@ sub build_dynamic_libs {
     for my $category ('precompile', 'native') {
       if (my $built_classes = $output_files_h->{$category}) {
         # Loop through mapped classes to ensure all get DLL
-        for my $outmost_class_name (keys %{$outmost_to_target{$category}}) {
-          my $target_class_name = $outmost_to_target{$category}{$outmost_class_name};
+        for my $class_name (keys %{$outmost_to_target{$category}}) {
+          my $target_class_name = $outmost_to_target{$category}{$class_name};
           
-          if (my $dynamic_lib_file_jit = $built_classes->{$target_class_name} // $built_classes->{$outmost_class_name}) {
-            $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category} = $dynamic_lib_file_jit;
+          if (my $dynamic_lib_file_jit = $built_classes->{$target_class_name} // $built_classes->{$class_name}) {
+            $DYNAMIC_LIB_FILES_H->{$class_name}{$category} = $dynamic_lib_file_jit;
             $DYNAMIC_LIB_FILES_H->{$target_class_name}{$category} = $dynamic_lib_file_jit;
             $DYNAMIC_LIB_FILE_IS_JIT_H->{$dynamic_lib_file_jit} = 1;
           }
