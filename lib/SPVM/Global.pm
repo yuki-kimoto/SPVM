@@ -211,7 +211,9 @@ sub init_api {
 sub build_dynamic_libs {
   my ($runtime, $class_names) = @_;
   
-  my %classes_to_build = (precompile => {}, native => {});
+  my $build_options = {};
+  $build_options->{precompile_classes} = [];
+  $build_options->{native_classes} = [];
   
   for my $class_name (@$class_names) {
     if ($class_name =~ /::anon_method::/) {
@@ -265,16 +267,12 @@ sub build_dynamic_libs {
             # Do nothing
           }
           else {
-            $classes_to_build{$category}{$class_name} = 1;
+            push @{$build_options->{"${category}_classes"}}, $class_name;
           }
         }
       }
     }
   }
-  
-  my $build_options = {};
-  $build_options->{precompile_classes} = [keys %{$classes_to_build{precompile}}];
-  $build_options->{native_classes} = [keys %{$classes_to_build{native}}];
   
   my $builder_cc = SPVM::Builder::CC->new(builder => $BUILDER, runtime => $runtime);
   my $output_files_h = $builder_cc->build_parallel($build_options);
