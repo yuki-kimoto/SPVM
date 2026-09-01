@@ -307,7 +307,6 @@ sub load_dynamic_lib {
     
     if (@$method_names) {
       if (-f $DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category}) {
-        # Get addresses using the original class_name (containing the anon method name)
         my $method_addresses = &get_method_addresses($DYNAMIC_LIB_FILES_H->{$outmost_class_name}{$category}, $class_name, $method_names, $category);
         
         for my $method_name (sort keys %$method_addresses) {
