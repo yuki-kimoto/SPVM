@@ -131,6 +131,7 @@ sub build_parallel_with_link_infos {
   my $new_link_infos = [];
   my $moved_compile_infos_h = {};
   my $moved_dl_func_list_h = {};
+  my $link_to_h = {};
   for my $link_info (@$link_infos) {
     my $config = $link_info->config;
     my $compile_infos = $link_info->compile_infos;
@@ -151,6 +152,8 @@ sub build_parallel_with_link_infos {
       $moved_compile_infos_h->{$link_to} //= [];
       push @{$moved_compile_infos_h->{$link_to}}, @$compile_infos;
       $link_info->compile_infos([]);
+      
+      $link_to_h->{$class_name} = $link_to;
     }
     
     if (!defined $link_to || $link_to eq $class_name) {
@@ -207,6 +210,10 @@ sub build_parallel_with_link_infos {
     my $class_name = $config->class_name;
     my $category = $config->category;
     $output_files_h->{$category}{$class_name} = $link_info->output_file;
+    
+    for my $merged_class_name (keys %$link_to_h) {
+      $output_files_h->{$category}{$merged_class_name} = $link_info->output_file;
+    }
   }
   
   return $output_files_h;
