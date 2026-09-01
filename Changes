@@ -1,3 +1,9 @@
+0.990197001_000 2026-09-01
+  [Release Summary]
+    * Allowing _000 at the end of version strings has made it much easier to make development releases to CPAN.
+  [New Features]
+    * Version string allow _000 suffix.
+    
 0.990197 2026-08-31
   [Summary]
     * This release introduces a major breaking change: native class configuration files can no longer use the .config extension, and only .build is supported.
