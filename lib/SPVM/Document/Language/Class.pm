@@ -226,7 +226,7 @@ It ends with C<0-9>.
 
 The count of C<0-9> after C<.> is divisible by 3.
 
-It is able to be parsed by the C function in the C language after the C<_000> suffix is removed.
+It is able to be parsed by C<strtod> function in the C language.
 
 Complication Errors:
 
