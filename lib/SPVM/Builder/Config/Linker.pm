@@ -325,15 +325,13 @@ sub use_resource {
   
   my $resource_class_name = $resource->class_name;
   
-  my $ext = 'config';
-  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, $ext);
-  
   my $config_file = SPVM::Builder::Util::search_config_file($resource_class_name);
   
   unless (defined $config_file) {
-    my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, 'config');
+    my $config_ext = SPVM::Builder::Config::Util::get_config_ext();
+    my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, $config_ext);
     
-    confess("A config file \"$config_rel_file\" is not found in (@INC)");
+    confess("The config file '$config_rel_file' is not found in (@INC)");
   }
   
   my $config = SPVM::Builder::Config::Util::load_config($config_file);
