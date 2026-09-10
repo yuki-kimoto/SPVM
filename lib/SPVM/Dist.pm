@@ -810,23 +810,73 @@ sub generate_manifest_skip_file {
   
   # Content
   my $manifest_skip_content = <<'EOS';
-^blib(/|$)
+# ===============================================================
+# Common
+# ===============================================================
+
+# Perl build
+^blib/
 ^Makefile$
-^Makefile.old$
-^MYMETA.yml$
-^MYMETA.json$
+\.old$
+\.bs$
+^MYMETA\.yml$
+^MYMETA\.json$
 ^pm_to_blib$
+^_build/
+^Build$
+^Build\.bat$
+^Build\.com$
+
+# C/C++
+\.o$
+\.a$
+\.out$
 ^core\.
 ^core$
+
+# Temp & archives
 ^SPVM-
+\.spvm_build/
+(^|/)\.tmp/
 \.bak$
 \.BAK$
 \.tmp$
-\.o$
-\.bs$
-(^|/)\.tmp(/|$)
-(^|/)\.git(/|$)
-(^|/)\.spvm_build(/|$)
+\.swp$
+~$
+\.log$
+
+# Version control
+(^|/)\.git/
+
+# ===============================================================
+# OS specific
+# ===============================================================
+
+# Windows
+\.def$
+\.obj$
+\.exe$
+\.dll$
+\.lib$
+\.exp$
+\.pdb$
+\.ilk$
+\.manifest$
+^Thumbs\.db$
+^desktop\.ini$
+^\$RECYCLE\.BIN/
+
+# macOS / iOS
+\.dylib$
+(^|/)\.DS_Store$
+^\.AppleDouble$
+^\.LSOverride$
+^\._
+
+# Linux / Android / UNIX
+\.so$
+^\.thumbnails/
+^\.cache/
 EOS
 
   # Generate file

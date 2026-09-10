@@ -197,13 +197,13 @@ if ($^O eq 'freebsd') {
   
   my $manifest_skip_file = "$tmp_dir/SPVM-Foo/MANIFEST.SKIP";
   ok(-f $manifest_skip_file);
-  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^blib(/|$)'));
+  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^blib/'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^Makefile$'));
-  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^Makefile.old$'));
-  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^MYMETA.yml$'));
-  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^MYMETA.json$'));
+  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.old$'));
+  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^MYMETA\\.yml$'));
+  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^MYMETA\\.json$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^pm_to_blib$'));
-  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^core\.'));
+  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^core\\.'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^core$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '^SPVM-'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.BAK$'));
@@ -211,9 +211,9 @@ if ($^O eq 'freebsd') {
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.tmp$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.o$'));
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.bs$'));
-  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '(^|/)\\.tmp(/|$)'));
-  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '(^|/)\\.git(/|$)'));
-  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '(^|/)\\.spvm_build(/|$)'));
+  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '(^|/)\\.tmp/'));
+  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '(^|/)\\.git/'));
+  ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '\\.spvm_build/'));
   
   my $basic_test_file = "$tmp_dir/SPVM-Foo/t/basic.t";
   ok(-f $basic_test_file);

@@ -5,7 +5,7 @@
 # Perl build
 ^blib/
 ^Makefile$
-^.*\.old$
+\.old$
 \.bs$
 ^MYMETA\.yml$
 ^MYMETA\.json$
@@ -19,13 +19,15 @@
 \.o$
 \.a$
 \.out$
-^core(\..*)?$
+^core\.
+^core$
 
 # Temp & archives
 ^SPVM-
 \.spvm_build/
 (^|/)\.tmp/
-\.[bB][aA][kK]$
+\.bak$
+\.BAK$
 \.tmp$
 \.swp$
 ~$
