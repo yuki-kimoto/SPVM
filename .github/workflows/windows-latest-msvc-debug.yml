@@ -33,9 +33,11 @@ jobs:
         run: perl cpanm -v -n -L ~/mylib --installdeps . --configure-args="--meta"
       - name: Show MYMETA.json
         run: cat MYMETA.json
-      - run: perl Makefile.PL --msvc --debug --ccflag=-RTC1
+      - run: perl Makefile.PL INSTALL_BASE=~/mylib --msvc --debug --ccflag=-RTC1
       - run: gmake
       - run: gmake test
       - name: Test downstream modules
         if: hashFiles('downstream.cpanfile') != ''
-        run: perl cpanm -v -L ~/mylib --cpanfile downstream.cpanfile --installdeps .
+        run: |
+          gmake install
+          perl cpanm -v -L ~/mylib --cpanfile downstream.cpanfile --installdeps .
