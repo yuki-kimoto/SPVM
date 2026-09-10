@@ -13,6 +13,7 @@ benchmark/lib/SPVM/MyMath.c
 benchmark/lib/SPVM/MyMath.spvm
 Changes
 DEVELOPMENT.md
+downstream.cpanfile
 examples/doc/tutorial/basic/lib/SPVM/MyMath.spvm
 examples/doc/tutorial/basic/sum.pl
 examples/doc/tutorial/precompile/lib/SPVM/MyMath.spvm
