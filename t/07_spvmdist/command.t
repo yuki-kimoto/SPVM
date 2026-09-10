@@ -175,7 +175,7 @@ if ($^O eq 'freebsd') {
   ok(-f $gitignore_file);
   ok(SPVM::Builder::Util::file_contains($gitignore_file, '/blib'));
   ok(SPVM::Builder::Util::file_contains($gitignore_file, '/Makefile'));
-  ok(SPVM::Builder::Util::file_contains($gitignore_file, '/Makefile.old'));
+  ok(SPVM::Builder::Util::file_contains($gitignore_file, '*.old'));
   ok(SPVM::Builder::Util::file_contains($gitignore_file, '/MYMETA.yml'));
   ok(SPVM::Builder::Util::file_contains($gitignore_file, '/MYMETA.json'));
   ok(SPVM::Builder::Util::file_contains($gitignore_file, '/pm_to_blib'));
