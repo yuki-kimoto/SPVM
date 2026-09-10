@@ -34,5 +34,6 @@ jobs:
       - run: make test
       - name: Test downstream modules
         if: hashFiles('downstream.cpanfile') != ''
-        run: make install INSTALL_BASE=~/mylib
-        run: perl cpanm -v -L ~/mylib --cpanfile downstream.cpanfile --installdeps .
+        run: |
+          make install INSTALL_BASE=~/mylib
+          perl cpanm -v -L ~/mylib --cpanfile downstream.cpanfile --installdeps .
