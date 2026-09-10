@@ -36,3 +36,6 @@ jobs:
       - run: perl Makefile.PL --msvc --debug --ccflag=-RTC1
       - run: gmake
       - run: gmake test
+      - name: Test downstream modules
+        if: hashFiles('downstream.cpanfile') != ''
+        run: perl cpanm -v -n -L ~/mylib --cpanfile downstream.cpanfile
