@@ -38,4 +38,4 @@ jobs:
       - run: gmake test
       - name: Test downstream modules
         if: hashFiles('downstream.cpanfile') != ''
-        run: perl cpanm -v -n -L ~/mylib --cpanfile downstream.cpanfile
+        run: perl cpanm -v -L ~/mylib --cpanfile downstream.cpanfile --installdeps .
