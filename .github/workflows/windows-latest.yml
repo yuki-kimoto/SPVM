@@ -37,7 +37,7 @@ jobs:
       - run: gmake
       - run: gmake test
       - name: Test downstream modules
-        if: hashFiles('downstream.cpanfile') != ''
+        if: hashFiles('.github/workflows/enable/downstream') != ''
         run: |
           gmake install
-          perl cpanm -v -L .tmp/mylib --cpanfile downstream.cpanfile --installdeps .
+          perl cpanm -v -L .tmp/mylib --cpanfile .github/workflows/enable/downstream-cpanfile --installdeps .
