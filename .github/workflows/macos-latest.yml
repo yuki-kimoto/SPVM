@@ -24,18 +24,18 @@ jobs:
       - name: Download cpanm
         run: perl -0777 -Mstrict -Mwarnings -MIO::Socket::INET -e 'my $socket = IO::Socket::INET->new(  Proto => qq(tcp),  PeerAddr => qq(cpanmin.us),  PeerPort => 80,) or die $!;print $socket join qq(\r\n),  qq(GET / HTTP/1.1),  qq(Connection:close),  qq(Host:cpanmin.us),  qq(\r\n);my $res = <$socket>;$res =~ m(^HTTP/1\.1 200 OK\r\n) or die $res;$res =~ s/.*?\r\n\r\n//s;open my $out, qq(>), qq(cpanm) or die $!;print $out $res'
       - name: cpanm installs ExtUtils::MakeMaker
-        run: perl cpanm -v -n -L "${{ github.workspace }}/mylib" ExtUtils::MakeMaker
+        run: perl cpanm -v -n -L .tmp/mylib ExtUtils::MakeMaker
       - name: cpanm installs dependent modules
-        run: perl cpanm -v -n -L "${{ github.workspace }}/mylib" --installdeps . --configure-args="--meta"
+        run: perl cpanm -v -n -L .tmp/mylib --installdeps . --configure-args="--meta"
       - name: Show MYMETA.json
         run: perl -0777 -p -e 1 MYMETA.json
       - name: Show MYMETA.json
         run: cat MYMETA.json
-      - run: perl Makefile.PL INSTALL_BASE="${{ github.workspace }}/mylib"
+      - run: perl Makefile.PL INSTALL_BASE="${{ github.workspace }}/.tmp/mylib"
       - run: make
       - run: make test
       - name: Test downstream modules
         if: hashFiles('downstream.cpanfile') != ''
         run: |
           make install
-          perl cpanm -v -L "${{ github.workspace }}/mylib" --cpanfile downstream.cpanfile --installdeps .
+          perl cpanm -v -L .tmp/mylib --cpanfile downstream.cpanfile --installdeps .
