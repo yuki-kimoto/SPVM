@@ -847,6 +847,7 @@ sub generate_manifest_skip_file {
 
 # Version control
 (^|/)\.git/
+(^|/)\.github/
 
 # ===============================================================
 # OS specific
