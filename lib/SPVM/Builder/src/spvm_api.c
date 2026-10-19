@@ -536,20 +536,27 @@ int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METH
 }
 
 void SPVM_API_call_destroy_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_invocant, SPVM_RUNTIME_METHOD* destroy_method, const char* func_name, const char* file, int32_t line) {
-  
-  // Class
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  // Save return value and exception variable
+  int32_t call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
+  SPVM_VALUE* caller_info_stack = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
+  int32_t caller_info_stack_capacity = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival;
+  
+  if (stack[SPVM_API_C_STACK_INDEX_DESTROY_NEST_COUNT].ival == 0) {
+    stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival = -1;
+    stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address = stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK].address;
+    stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK_CAPACITY].ival;
+  }
+  
+  stack[SPVM_API_C_STACK_INDEX_DESTROY_NEST_COUNT].ival++;
+  
   SPVM_VALUE save_stack_ret = stack[0];
   SPVM_OBJ* save_stack_exception_var = stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval;
-  stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = NULL;
+  stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = NULL;  stack[0].oval = (SPVM_OBJ*)obj_invocant;
   
-  stack[0].oval = (SPVM_OBJ*)obj_invocant;
   int32_t args_width = 1;
-  int32_t error_id = SPVM_API_call_method(env, stack, destroy_method, args_width, __func__, FILE_NAME, __LINE__);
+  int32_t error_id = SPVM_API_call_method(env, stack, destroy_method, args_width, func_name, file, line);
   
-  // An exception thrown in a destructor is converted to a warning message
   if (error_id) {
     SPVM_OBJECT* exception = SPVM_API_get_exception(env, stack);
     
@@ -561,10 +568,16 @@ void SPVM_API_call_destroy_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
   }
   
   SPVM_API_set_exception(env, stack, NULL);
-  
-  // Restore return value and exception variable
   stack[0] = save_stack_ret;
   stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = save_stack_exception_var;
+  
+  stack[SPVM_API_C_STACK_INDEX_DESTROY_NEST_COUNT].ival--;
+  
+  if (stack[SPVM_API_C_STACK_INDEX_DESTROY_NEST_COUNT].ival == 0) {
+    stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival = call_depth;
+    stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address = caller_info_stack;
+    stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = caller_info_stack_capacity;
+  }
 }
 
 int32_t SPVM_API_call_method_no_mortal_no_check_args(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, const char* func_name, const char* file, int32_t line) {
@@ -7295,6 +7308,11 @@ int32_t SPVM_API_push_caller_info(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
     *current_capacity_ptr = new_capacity;
     SPVM_API_free_memory_block(env, stack, *current_caller_info_stack_ptr);
     *current_caller_info_stack_ptr = new_caller_info_stack;
+    
+    if (stack[SPVM_API_C_STACK_INDEX_DESTROY_NEST_COUNT].ival > 0) {
+      stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK].address = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
+      stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK_CAPACITY].ival = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival;
+    }
   }
   
   // Push the record at the index indicated by the current call depth
