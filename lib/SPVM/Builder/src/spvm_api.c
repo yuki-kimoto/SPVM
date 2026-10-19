@@ -3381,9 +3381,6 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival = -1;
   
-  // Initialize destroy call depth
-  stack[SPVM_API_C_STACK_INDEX_DESTROY_CALL_DEPTH].ival = -1;
-  
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival = 1;
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS].address = SPVM_API_new_memory_block_for_call_stack(env, stack, sizeof(SPVM_RUNTIME_CALL_STACK_FRAME_INFO) * stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival);
   
@@ -3397,11 +3394,11 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   // Initialize the record size of the caller information stack (e.g., name, file, line)
   int32_t caller_info_stack_record_size = 4;
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival = caller_info_stack_record_size;
-
+  
   // Initialize the initial capacity of the caller information stack
   int32_t caller_info_stack_capacity = 1;
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = caller_info_stack_capacity;
-
+  
   // Allocate the caller information stack with the initial capacity
   SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)SPVM_API_new_memory_block(env, stack, sizeof(SPVM_VALUE) * caller_info_stack_record_size * caller_info_stack_capacity);
   
@@ -3410,13 +3407,10 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   }
   
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address = caller_info_stack;
-
-  // Initialize the record size of the destroy caller information stack
-  stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK_RECORD_SIZE].ival = caller_info_stack_record_size;
-
+  
   // Initialize the initial capacity of the destroy caller information stack
   stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK_CAPACITY].ival = caller_info_stack_capacity;
-
+  
   // Allocate the destroy caller information stack with the initial capacity
   SPVM_VALUE* destroy_caller_info_stack = (SPVM_VALUE*)SPVM_API_new_memory_block(env, stack, sizeof(SPVM_VALUE) * caller_info_stack_record_size * caller_info_stack_capacity);
   
