@@ -5852,7 +5852,13 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
           // Call DESTROY method
           SPVM_RUNTIME_METHOD* destroy_method = released_object_basic_type->destroy_method;
           if (destroy_method) {
-            SPVM_API_call_destroy_method(env, stack, released_object, destroy_method, __func__, FILE_NAME, __LINE__);
+            int32_t error_id = 0;
+            int32_t level = 0;
+            SPVM_RUNTIME_METHOD* current_method = SPVM_API_get_current_method(env, stack, level, &error_id);
+            const char* caller_func = current_method ? current_method->abs_name : __func__;
+            const char* caller_file = current_method ? current_method->current_basic_type->file : FILE_NAME;
+            int32_t caller_line = caller_line = current_method ? current_method->line : __LINE__ + 1;
+            SPVM_API_call_destroy_method(env, stack, released_object, destroy_method, caller_func, caller_file, caller_line);
           }
           
           // Free released_object fields
