@@ -61,6 +61,7 @@ enum {
 SPVM_ENV* SPVM_API_new_env(void);
 void SPVM_API_free_env(SPVM_ENV* env);
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
+SPVM_VALUE* SPVM_API_new_stack_common(SPVM_ENV* env, int32_t has_destroy_stack);
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPVM_API_args_width(SPVM_ENV* env, SPVM_VALUE* stack);
 

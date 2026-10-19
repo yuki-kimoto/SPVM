@@ -3371,7 +3371,7 @@ void SPVM_API_set_field_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   SPVM_API_set_field_object_by_name(env, stack, object, field_name, value, error_id, func_name, file, line);
 }
 
-SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
+SPVM_VALUE* SPVM_API_new_stack_common(SPVM_ENV* env, int32_t has_destroy_stack) {
   
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
@@ -3397,15 +3397,15 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   }
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].address = call_stack_memory_blocks;
   
-  // Initialize the record size of the caller information stack (e.g., name, file, line)
+  // Initialize caller info stack record size
   int32_t caller_info_stack_record_size = 4;
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival = caller_info_stack_record_size;
 
-  // Initialize the initial capacity of the caller information stack
+  // Initialize caller info stack capacity
   int32_t caller_info_stack_capacity = 1;
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = caller_info_stack_capacity;
 
-  // Allocate the caller information stack with the initial capacity
+  // Allocate caller info stack
   SPVM_VALUE* caller_info_stack = (SPVM_VALUE*)SPVM_API_new_memory_block(env, stack, sizeof(SPVM_VALUE) * caller_info_stack_record_size * caller_info_stack_capacity);
   
   if (caller_info_stack == NULL) {
@@ -3414,7 +3414,24 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address = caller_info_stack;
   
+  // Setup destroy runtime stack
+  if (has_destroy_stack) {
+    int32_t sub_has_destroy_stack = 0;
+    stack[SPVM_API_C_STACK_INDEX_DESTROY_RUNTIME_STACK].address = SPVM_API_new_stack_common(env, sub_has_destroy_stack);
+    if (stack[SPVM_API_C_STACK_INDEX_DESTROY_RUNTIME_STACK].address == NULL) {
+      return NULL;
+    }
+  }
+  else {
+    stack[SPVM_API_C_STACK_INDEX_DESTROY_RUNTIME_STACK].address = NULL;
+  }
+  
   return stack;
+}
+
+SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
+  int32_t has_destroy_stack = 1;
+  return SPVM_API_new_stack_common(env, has_destroy_stack);
 }
 
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -3422,6 +3439,13 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
   SPVM_API_set_exception(env, stack, NULL);
+  
+  // Free destroy runtime stack
+  SPVM_VALUE* destroy_runtime_stack = stack[SPVM_API_C_STACK_INDEX_DESTROY_RUNTIME_STACK].address;
+  if (destroy_runtime_stack != NULL) {
+    SPVM_API_free_stack(env, destroy_runtime_stack);
+    destroy_runtime_stack = NULL;
+  }
   
   SPVM_OBJECT** mortal_stack = (SPVM_OBJECT**)stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].oval;
   
