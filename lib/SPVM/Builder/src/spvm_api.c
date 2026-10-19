@@ -5858,7 +5858,38 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
           // Call DESTROY method
           SPVM_RUNTIME_METHOD* destroy_method = released_object_basic_type->destroy_method;
           if (destroy_method) {
+            int32_t start_destroy = (stack[SPVM_API_C_STACK_INDEX_DESTROY_CALL_DEPTH].ival == -1);
+            
+            int32_t save_call_depth = 0;
+            void* save_caller_info_stack = NULL;
+            int32_t save_caller_info_stack_record_size = 0;
+            int32_t save_caller_info_stack_capacity = 0;
+            
+            if (start_destroy) {
+              save_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
+              save_caller_info_stack = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
+              save_caller_info_stack_record_size = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
+              save_caller_info_stack_capacity = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival;
+              
+              stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival = stack[SPVM_API_C_STACK_INDEX_DESTROY_CALL_DEPTH].ival;
+              stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address = stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK].address;
+              stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival = stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK_RECORD_SIZE].ival;
+              stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK_CAPACITY].ival;
+            }
+            
             SPVM_API_call_destroy_method(env, stack, released_object, destroy_method, __func__, FILE_NAME, __LINE__);
+            
+            stack[SPVM_API_C_STACK_INDEX_DESTROY_CALL_DEPTH].ival = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
+            stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK].address = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
+            stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK_RECORD_SIZE].ival = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival;
+            stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK_CAPACITY].ival = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival;
+            
+            if (start_destroy) {
+              stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival = save_call_depth;
+              stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address = save_caller_info_stack;
+              stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE].ival = save_caller_info_stack_record_size;
+              stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = save_caller_info_stack_capacity;
+            }
           }
           
           // Free released_object fields
