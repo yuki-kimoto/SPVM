@@ -5865,6 +5865,10 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             int32_t save_caller_info_stack_record_size = 0;
             int32_t save_caller_info_stack_capacity = 0;
             
+            int32_t error_id = 0;
+            int32_t level = 0;
+            SPVM_RUNTIME_METHOD* current_method = SPVM_API_get_current_method(env, stack, level, &error_id);
+            
             if (start_destroy) {
               save_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
               save_caller_info_stack = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
@@ -5877,7 +5881,10 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
               stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK_CAPACITY].ival;
             }
             
-            SPVM_API_call_destroy_method(env, stack, released_object, destroy_method, destroy_method->abs_name, destroy_method->current_basic_type->file, destroy_method->line);
+            const char* caller_abs_name = current_method ? current_method->abs_name : __func__;
+            const char* caller_file = current_method ? current_method->current_basic_type->file : __FILE__;
+            int32_t caller_line = current_method ? current_method->line : __LINE__ + 1;
+            SPVM_API_call_destroy_method(env, stack, released_object, destroy_method, caller_abs_name, caller_file, caller_line);
             
             stack[SPVM_API_C_STACK_INDEX_DESTROY_CALL_DEPTH].ival = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
             stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK].address = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
