@@ -3381,6 +3381,9 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival = -1;
   
+  // Initialize destroy call depth
+  stack[SPVM_API_C_STACK_INDEX_DESTROY_CALL_DEPTH].ival = -1;
+  
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival = 1;
   stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS].address = SPVM_API_new_memory_block_for_call_stack(env, stack, sizeof(SPVM_RUNTIME_CALL_STACK_FRAME_INFO) * stack[SPVM_API_C_STACK_INDEX_CALL_STACK_FRAME_INFOS_CAPACITY].ival);
   
@@ -3407,6 +3410,21 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   }
   
   stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address = caller_info_stack;
+
+  // Initialize the record size of the destroy caller information stack
+  stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK_RECORD_SIZE].ival = caller_info_stack_record_size;
+
+  // Initialize the initial capacity of the destroy caller information stack
+  stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK_CAPACITY].ival = caller_info_stack_capacity;
+
+  // Allocate the destroy caller information stack with the initial capacity
+  SPVM_VALUE* destroy_caller_info_stack = (SPVM_VALUE*)SPVM_API_new_memory_block(env, stack, sizeof(SPVM_VALUE) * caller_info_stack_record_size * caller_info_stack_capacity);
+  
+  if (destroy_caller_info_stack == NULL) {
+    return NULL;
+  }
+  
+  stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK].address = destroy_caller_info_stack;
   
   return stack;
 }
@@ -3429,6 +3447,13 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (caller_info_stack != NULL) {
     SPVM_API_free_memory_block(env, stack, caller_info_stack);
     caller_info_stack = NULL;
+  }
+
+  // Free destroy caller information stack
+  SPVM_VALUE* destroy_caller_info_stack = stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK].address;
+  if (destroy_caller_info_stack != NULL) {
+    SPVM_API_free_memory_block(env, stack, destroy_caller_info_stack);
+    destroy_caller_info_stack = NULL;
   }
   
   char** call_stack_memory_blocks = stack[SPVM_API_C_STACK_INDEX_CALL_STACK_MEMORY_BLOCKS].address;
