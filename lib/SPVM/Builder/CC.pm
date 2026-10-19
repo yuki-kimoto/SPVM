@@ -366,7 +366,11 @@ sub prepare_compile_class_common {
       }
     }
     
-    my $dependent_files = [$source_file, $native_include_dir, @resource_include_dirs, $builder_include_dir];
+    my $dependent_files = [$source_file, $native_include_dir, @resource_include_dirs];
+    if (&maybe_contain_include_spvm_native_h($source_file)) {
+      push @$dependent_files, $builder_include_dir;
+    }
+    
     my $compile_info = SPVM::Builder::CompileInfo->new(
       source_dir => $source_dir,
       source_rel_file => $source_rel_file,
@@ -387,6 +391,32 @@ sub prepare_compile_class_common {
   my $link_info = SPVM::Builder::LinkInfo->new(config => $config, compile_infos => $compile_infos);
   
   return $link_info;
+}
+
+sub maybe_contain_include_spvm_native_h {
+  my ($source_file) = @_;
+  
+  return 0 unless -f $source_file;
+  
+  # Process only text files according to OS file system checks
+  return 0 unless -T $source_file;
+  
+  # Safety guard: Skip if file size is unreasonably huge (> 100MB)
+  return 0 if (-s $source_file // 0) > 100_000_000;
+  
+  open my $fh, '<', $source_file
+    or confess("Can not open file '$source_file': $!");
+  
+  my $found = 0;
+  while (my $line = <$fh>) {
+    if ($line =~ /\bspvm_native\.h\b/) {
+      $found = 1;
+      last;
+    }
+  }
+  close $fh;
+  
+  return $found;
 }
 
 sub resolve_dl_func_list {
