@@ -5877,7 +5877,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
               stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_CAPACITY].ival = stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK_CAPACITY].ival;
             }
             
-            SPVM_API_call_destroy_method(env, stack, released_object, destroy_method, __func__, FILE_NAME, __LINE__);
+            SPVM_API_call_destroy_method(env, stack, released_object, destroy_method, destroy_method->abs_name, destroy_method->current_basic_type->file, destroy_method->line);
             
             stack[SPVM_API_C_STACK_INDEX_DESTROY_CALL_DEPTH].ival = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
             stack[SPVM_API_C_STACK_INDEX_DESTROY_CALLER_INFO_STACK].address = stack[SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK].address;
