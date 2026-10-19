@@ -1254,6 +1254,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_method->is_required = method->is_required;
         runtime_method->is_enum = method->is_enum;
         
+        runtime_method->line = method->line;
+        
         SPVM_STRING* method_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, method->name, strlen(method->name));
         runtime_method->name = runtime_basic_type->constant_strings[method_name_string->index].value;
         

@@ -34,6 +34,7 @@ struct spvm_runtime_method {
   int32_t call_stack_frame_size;
   int32_t return_type_dimension;
   int32_t return_type_flag;
+  int32_t line;
   int8_t is_class_method;
   int8_t is_enum;
   int8_t is_precompile;
