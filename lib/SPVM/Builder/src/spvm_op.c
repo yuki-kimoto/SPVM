@@ -1877,6 +1877,8 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   
   method->op_block = op_block_outer;
   
+  method->line = op_method->line;
+  
   method->op_method = op_method;
   
   op_method->uv.method = method;

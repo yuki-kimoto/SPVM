@@ -35,6 +35,7 @@ struct spvm_method {
   int32_t mortal_stack_length;
   int32_t mortal_stack_tops_length;
   int32_t tmp_vars_length;
+  int32_t line;
   int8_t is_class_method;
   int8_t is_init_method;
   int8_t is_end_method;
