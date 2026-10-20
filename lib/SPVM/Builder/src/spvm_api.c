@@ -5937,11 +5937,11 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
         
         if (released_object_ref_count == 0) {
           
-          // Remove from tracking symtables only when recording is active
+          // Remove recorded object
           SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
-          int32_t record_object = runtime->record_object && !stack[SPVM_API_C_STACK_INDEX_NO_RECORD_OBJECT].ival;
-          if (record_object) {
-            void* object_ptr = released_object;
+          void* object_ptr = released_object;
+          int32_t has_recorded_object = !!SPVM_HASH_get(runtime->object_symtable, (const char*)&object_ptr, sizeof(void*));
+          if (has_recorded_object) {
             SPVM_HASH_delete(runtime->object_symtable, (const char*)&object_ptr, sizeof(void*));
             char* stack_trace_chars = (char*)SPVM_HASH_delete(runtime->object_stack_trace_symtable, (const char*)&object_ptr, sizeof(void*));
             assert(stack_trace_chars);
