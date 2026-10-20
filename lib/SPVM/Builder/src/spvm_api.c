@@ -565,7 +565,7 @@ void SPVM_API_call_destroy_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
     
     const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
     
-    fprintf(runtime->spvm_stderr, "[An exception thrown in DESTROY method is converted to a warning message]\n%s\n", exception_chars);
+    fprintf(runtime->spvm_stderr, "[An exception is thrown in %s#DESTROY method]\n%s\n", destroy_method->current_basic_type->name, exception_chars);
   }
   
   SPVM_API_set_exception(env, stack, NULL);
