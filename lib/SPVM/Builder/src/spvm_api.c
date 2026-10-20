@@ -5562,22 +5562,13 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
         void* object_ptr = object;
         SPVM_HASH_set(runtime->object_symtable, (const char*)&object_ptr, sizeof(void*), object);
         
-        // Get stack trace using longmess
-        int32_t scope_id = SPVM_API_enter_scope(env, stack);
-        SPVM_OBJECT* obj_empty_string = SPVM_API_new_string(env, stack, "", 0);
-        SPVM_OBJECT* obj_longmess = SPVM_API_longmess(env, stack, obj_empty_string, 0, -1);
-        const char* longmess_chars = SPVM_API_get_chars(env, stack, obj_longmess);
-        int32_t longmess_length = SPVM_API_length(env, stack, obj_longmess);
-        
-        // Copy stack trace characters to unmanaged memory block
-        char* stack_trace_chars = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(longmess_length + 1);
-        memcpy(stack_trace_chars, longmess_chars, longmess_length);
-        stack_trace_chars[longmess_length] = '\0';
+        // Get stack trace bytes without creating objects (prevent infinite recursion)
+        int32_t stack_trace_length = SPVM_API_build_caller_stack_lines_bytes(NULL, env, stack, NULL, 0, -1);
+        char* stack_trace_chars = (char*)SPVM_ALLOCATOR_alloc_memory_block_unmanaged(stack_trace_length + 1);
+        SPVM_API_build_caller_stack_lines_bytes(stack_trace_chars, env, stack, NULL, 0, -1);
         
         // Register stack trace to symtable
         SPVM_HASH_set(runtime->object_stack_trace_symtable, (const char*)&object_ptr, sizeof(void*), stack_trace_chars);
-        
-        SPVM_API_leave_scope(env, stack, scope_id);
         
         SPVM_MUTEX_unlock(runtime_mutex);
       }
