@@ -44,6 +44,8 @@ struct spvm_runtime {
   SPVM_HASH* object_symtable;
   
   SPVM_HASH* object_stack_trace_symtable;
+  
+  int8_t record_object;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
