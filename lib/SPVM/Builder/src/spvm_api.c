@@ -552,7 +552,8 @@ void SPVM_API_call_destroy_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
   
   SPVM_VALUE ret = stack[0];
   SPVM_OBJ* exception_var = stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval;
-  stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = NULL;  stack[0].oval = (SPVM_OBJ*)obj_invocant;
+  stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = NULL;
+  stack[0].oval = (SPVM_OBJ*)obj_invocant;
   
   int32_t args_width = 1;
   int32_t error_id = SPVM_API_call_method(env, stack, destroy_method, args_width, func_name, file, line);
