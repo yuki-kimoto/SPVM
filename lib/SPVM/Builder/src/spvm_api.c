@@ -550,8 +550,8 @@ void SPVM_API_call_destroy_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
   
   stack[SPVM_API_C_STACK_INDEX_DESTROY_NEST_COUNT].ival++;
   
-  SPVM_VALUE save_stack_ret = stack[0];
-  SPVM_OBJ* save_stack_exception_var = stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval;
+  SPVM_VALUE ret = stack[0];
+  SPVM_OBJ* exception_var = stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval;
   stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = NULL;  stack[0].oval = (SPVM_OBJ*)obj_invocant;
   
   int32_t args_width = 1;
@@ -576,8 +576,8 @@ void SPVM_API_call_destroy_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
   }
   
   SPVM_API_set_exception(env, stack, NULL);
-  stack[0] = save_stack_ret;
-  stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = save_stack_exception_var;
+  stack[0] = ret;
+  stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = exception_var;
   
   stack[SPVM_API_C_STACK_INDEX_DESTROY_NEST_COUNT].ival--;
   
