@@ -5553,7 +5553,8 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
   // Record object and its stack trace for leak detection
   if (object) {
     SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
-    if (runtime->record_object) {
+    int32_t record_object = runtime->record_object && !stack[SPVM_API_C_STACK_INDEX_NO_RECORD_OBJECT].ival;
+    if (record_object) {
       SPVM_MUTEX* runtime_mutex = runtime->mutex;
       {
         SPVM_MUTEX_lock(runtime_mutex);
