@@ -7642,17 +7642,14 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VAL
   // Get total length required
   int32_t total_length = SPVM_API_build_caller_stack_lines_bytes(NULL, env, stack, obj_message, start_call_depth, end_call_depth);
   
+  // Create string object
+  SPVM_OBJECT* obj_new_caller_stack_lines = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
+  
   // Allocate unmanaged memory block
-  char* stack_lines_bytes = (char*)SPVM_ALLOCATOR_alloc_memory_block_unmanaged(total_length + 1);
+  char* stack_lines_bytes = (char*)SPVM_API_get_chars(env, stack, obj_new_caller_stack_lines);
   
   // Build stack lines into the buffer
   SPVM_API_build_caller_stack_lines_bytes(stack_lines_bytes, env, stack, obj_message, start_call_depth, end_call_depth);
-  
-  // Create string object
-  SPVM_OBJECT* obj_new_caller_stack_lines = SPVM_API_new_string_no_mortal(env, stack, stack_lines_bytes, total_length);
-  
-  // Free unmanaged memory block
-  SPVM_ALLOCATOR_free_memory_block_unmanaged(stack_lines_bytes);
   
   return obj_new_caller_stack_lines;
 }
