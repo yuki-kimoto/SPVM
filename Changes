@@ -1,3 +1,9 @@
+0.990201 2026-10-20
+  [New Features]
+    * Add eval_error_name operator.
+  [Incompatible Changes]
+    * Change type_name $@ mean eval_error_name.
+  
 0.990200 2026-10-20
   [Exception Stack Trace Improvement]
     * Separete main caller stack and destroy caller stack.
