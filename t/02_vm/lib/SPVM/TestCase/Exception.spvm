@@ -253,6 +253,12 @@ class TestCase::Exception {
         diag;
         return 0;
       }
+      
+      unless (type_name $@ eq "Error::System") {
+        diag;
+        return 0;
+      }
+      
     }
 
     {

@@ -1443,12 +1443,18 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               SPVM_OP* op_operand = op_cur->first;
               
-              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
-              
-              // Must be object type
-              if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The operand type of type_name operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
+              // type_name $@
+              if (op_operand->id == SPVM_OP_C_ID_EXCEPTION_VAR) {
+                op_cur->id = SPVM_OP_C_ID_EVAL_ERROR_NAME;
+              }
+              else {
+                SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_operand);
+                
+                // Must be object type
+                if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                  SPVM_COMPILER_error(compiler, "The operand type of type_name operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                  return;
+                }
               }
               
               break;

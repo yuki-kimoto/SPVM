@@ -3521,6 +3521,10 @@ Compilation Errors.
 
 I<OPERAND> must be an object type. Otherwise, a compilation error occurs.
 
+  type_name $@
+
+This is special case. Returns the return value of L</"eval_error_name"> operator.
+
 Examples:
   
   # "Point"
@@ -3530,6 +3534,9 @@ Examples:
   # "Point"
   my $point = (object)Point->new;
   my $type_name = type_name $point;
+  
+  # Such as Error::System
+  my $error_name = type_name $@;
 
 =head2 compile_type_name Operator
 
