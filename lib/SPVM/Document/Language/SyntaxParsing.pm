@@ -19,7 +19,7 @@ Syntax parsing is performed according to the grammer of the SPVM language.
 The grammer of the SPVM language is described using L<GNU Bison|https://en.wikipedia.org/wiki/GNU_Bison> syntax.
 
   %token <opval> CLASS HAS GET SET METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
-  %token <opval> ATTRIBUTE MAKE_READ_ONLY MAKE_FIXED_LENGTH INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL VERSION_FROM
+  %token <opval> ATTRIBUTE MAKE_READ_ONLY MAKE_FIXED_LENGTH INTERFACE EVAL_ERROR_ID EVAL_ERROR_NAME ARGS_WIDTH VERSION_DECL VERSION_FROM
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL BREAK_POINT
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR COPY_FIELDS EXISTS DELETE
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT ELEMENT TRUE FALSE END_OF_FILE
@@ -434,6 +434,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | new
     | var_decl
     | EVAL_ERROR_ID
+    | EVAL_ERROR_NAME
     | ARGS_WIDTH
     | TRUE
     | FALSE
@@ -792,6 +793,9 @@ These are tokens for L<grammer/"Grammer">.
   </tr>
   <tr>
     <td>EVAL_ERROR_ID</td><td>eval_error_id</td>
+  </tr>
+  <tr>
+    <td>EVAL_ERROR_NAME</td><td>eval_error_name</td>
   </tr>
   <tr>
     <td>EXTENDS</td><td>extends</td>
