@@ -563,9 +563,17 @@ void SPVM_API_call_destroy_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
     
     assert(exception);
     
-    const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
+    int32_t scope_id = env->enter_scope(env, stack);
     
-    fprintf(runtime->spvm_stderr, "[An exception is thrown in %s#DESTROY method]\n%s\n", destroy_method->current_basic_type->name, exception_chars);
+    SPVM_OBJ* obj_full_exception_message = env->build_exception_message(env, stack, 0);
+    
+    fprintf(env->api->runtime->get_spvm_stderr(env->runtime), "[An exception is thrown in %s#DESTROY method]\n", destroy_method->current_basic_type->name);
+    
+    env->print_stderr(env, stack, obj_full_exception_message);
+    
+    env->leave_scope(env, stack, scope_id);
+    
+    fprintf(env->api->runtime->get_spvm_stderr(env->runtime), "\n");
   }
   
   SPVM_API_set_exception(env, stack, NULL);
