@@ -326,3 +326,65 @@ int32_t SPVM_HASH_calc_hash_value(const char* str, int32_t len) {
   
   return hash;
 }
+
+void* SPVM_HASH_delete(SPVM_HASH* hash, const char* key, int32_t key_length) {
+  
+  assert(hash);
+  assert(key);
+  assert(key_length >= 0);
+  
+  int32_t hash_value = SPVM_HASH_calc_hash_value(key, key_length);
+  int32_t table_index = hash_value % hash->table_capacity;
+  
+  SPVM_HASH_ENTRY* entry = hash->table[table_index];
+  SPVM_HASH_ENTRY* prev_entry = NULL;
+  
+  while (entry) {
+    int32_t match = 0;
+    int32_t entry_key_length = entry->key_length;
+    if (key_length == 0 && entry_key_length == 0) {
+      match = 1;
+    }
+    else if (entry_key_length == key_length && memcmp(key, entry->key, key_length) == 0) {
+      match = 1;
+    }
+    
+    if (match) {
+      // Unlink entry from linked list
+      if (prev_entry) {
+        prev_entry->next_entry = entry->next_entry;
+      }
+      else {
+        hash->table[table_index] = entry->next_entry;
+      }
+      
+      void* value = entry->value;
+      SPVM_ALLOCATOR* allocator = hash->allocator;
+      
+      // Free memory block if temporary
+      if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
+        SPVM_ALLOCATOR_free_memory_block_tmp(allocator, (void*)entry->key);
+        entry->key = NULL;
+        
+        SPVM_ALLOCATOR_free_memory_block_tmp(allocator, entry);
+        entry = NULL;
+      }
+      else if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
+        // Nothing
+      }
+      else {
+        assert(0);
+      }
+      
+      hash->keys_length--;
+      
+      return value;
+    }
+    else {
+      prev_entry = entry;
+      entry = entry->next_entry;
+    }
+  }
+  
+  return NULL;
+}

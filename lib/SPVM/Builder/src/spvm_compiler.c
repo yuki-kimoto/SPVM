@@ -271,7 +271,7 @@ int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_
         SPVM_COMPILER_delete_class_file(compiler, basic_type->name);
       }
       
-      SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), NULL);
+      SPVM_HASH_delete(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name));
     }
     
     compiler->eval_anon_classes_length = original_eval_anon_classes_length;
@@ -280,7 +280,7 @@ int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_
      
     for (int32_t constant_string_id = compiler_constant_strings_base_id; constant_string_id < compiler->constant_strings->length; constant_string_id++) {
       SPVM_BASIC_TYPE* constant_string = SPVM_LIST_get(compiler->constant_strings, constant_string_id);
-      SPVM_HASH_set(compiler->constant_string_symtable, constant_string->name, strlen(constant_string->name), NULL);
+      SPVM_HASH_delete(compiler->constant_string_symtable, constant_string->name, strlen(constant_string->name));
     }
     compiler->constant_strings->length = compiler_constant_strings_base_id;
     

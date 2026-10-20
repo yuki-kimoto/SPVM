@@ -41,4 +41,6 @@ int32_t SPVM_HASH_calc_hash_value(const char* str, int32_t len);
 
 void SPVM_HASH_set_entry(SPVM_HASH_ENTRY** table, int32_t table_capacity, const char* key, int32_t key_length, SPVM_HASH_ENTRY* entry);
 
+void* SPVM_HASH_delete(SPVM_HASH* hash, const char* key, int32_t key_length);
+
 #endif
