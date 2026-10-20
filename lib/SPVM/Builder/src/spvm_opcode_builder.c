@@ -3769,6 +3769,17 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       break;
                     }
+                    case SPVM_OP_C_ID_EVAL_ERROR_NAME : {
+                      
+                      SPVM_OPCODE opcode = {0};
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_EVAL_ERROR_NAME);
+                      
+                      int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
+                      opcode.operand0 = typed_var_index_out;
+                      SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                      
+                      break;
+                    }
                     case SPVM_OP_C_ID_ARGS_WIDTH : {
                       
                       SPVM_OPCODE opcode = {0};

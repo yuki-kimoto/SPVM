@@ -248,6 +248,11 @@ class TestCase::Exception {
         diag;
         return 0;
       }
+      
+      unless (eval_error_name eq "Error::System") {
+        diag;
+        return 0;
+      }
     }
 
     {

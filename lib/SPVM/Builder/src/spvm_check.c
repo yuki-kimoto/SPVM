@@ -4370,6 +4370,7 @@ void SPVM_CHECK_check_ast_assign_form(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* 
               case SPVM_OP_C_ID_NEW:
               case SPVM_OP_C_ID_BASIC_TYPE_ID:
               case SPVM_OP_C_ID_EVAL_ERROR_ID:
+              case SPVM_OP_C_ID_EVAL_ERROR_NAME:
               case SPVM_OP_C_ID_ARGS_WIDTH:
               case SPVM_OP_C_ID_STRING_CONCAT:
               case SPVM_OP_C_ID_TYPE_NAME:
@@ -6041,6 +6042,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_DUMP:
     case SPVM_OP_C_ID_EXCEPTION_VAR:
     case SPVM_OP_C_ID_ADDRESS:
+    case SPVM_OP_C_ID_EVAL_ERROR_NAME:
     {
       type = SPVM_TYPE_new_string_type(compiler);
       break;

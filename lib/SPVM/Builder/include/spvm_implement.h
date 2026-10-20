@@ -1692,6 +1692,20 @@ static inline void SPVM_IMPLEMENT_DIAG(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 #define SPVM_IMPLEMENT_ARGS_WIDTH(env, stack, out) (out = env->args_width(env, stack))
 #define SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(env, stack, out, basic_type_arg) ((out) = (env)->api->basic_type->get_id((env)->runtime, (basic_type_arg)))
 
+static inline void SPVM_IMPLEMENT_GET_EVAL_ERROR_NAME(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, int32_t eval_error_id) {
+  
+  SPVM_NATIVE_BASIC_TYPE* eval_error_basic_type = env->get_basic_type_by_id(env, stack, eval_error_id);
+  
+  if (eval_error_basic_type == NULL) {
+    *out = NULL;
+  }
+  else {
+    const char* eval_error_name = env->api->basic_type->get_name(env->runtime, eval_error_basic_type);
+    SPVM_OBJ* obj_eval_error_name = env->new_string_nolen_no_mortal(env, stack, eval_error_name);
+    env->assign_object(env, stack, out, obj_eval_error_name);
+  }
+}
+
 static inline void SPVM_IMPLEMENT_TYPE_NAME(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** out, SPVM_OBJ* object) {
   if (object == NULL) {
     *out = NULL;

@@ -3178,6 +3178,13 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         break;
       }
+      case SPVM_OPCODE_C_ID_GET_EVAL_ERROR_NAME: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_EVAL_ERROR_NAME(env, stack, &");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", eval_error_id);\n");
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_SET_ERROR_ID_BY_TYPE: {
         int32_t basic_type_id = opcode->operand0;
         SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);

@@ -253,6 +253,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "REFERENCE",
     "DEREFERENCE",
     "EVAL_ERROR_ID",
+    "EVAL_ERROR_NAME",
     "SEQUENCE",
     "DEFINED_OR",
     "TERNARY_OP",

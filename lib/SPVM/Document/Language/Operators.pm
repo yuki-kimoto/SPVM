@@ -3667,6 +3667,12 @@ The C<eval_error_id> operatoer gets the value of C<eval_error_id>.
 
 See L<SPVM::Document::Language::ExceptionHandling> about the way to use the C<eval_error_id> operator.
 
+=head2 eval_error_name Operator
+
+The C<eval_error_name> operatoer gets the type name of C<eval_error_id>.
+
+  eval_error_name
+
 =head2 weaken Operator
 
 The C<weaken> operator enables a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">.
