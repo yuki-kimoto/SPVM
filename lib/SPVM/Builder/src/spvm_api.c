@@ -5563,9 +5563,9 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
         SPVM_HASH_set(runtime->object_symtable, (const char*)&object_ptr, sizeof(void*), object);
         
         // Get stack trace bytes without creating objects (prevent infinite recursion)
-        int32_t stack_trace_length = SPVM_API_build_caller_stack_lines_bytes(NULL, env, stack, NULL, 0, -1);
+        int32_t stack_trace_length = SPVM_API_build_caller_stack_lines_to_buffer(NULL, env, stack, NULL, 0, -1);
         char* stack_trace_chars = (char*)SPVM_ALLOCATOR_alloc_memory_block_unmanaged(stack_trace_length + 1);
-        SPVM_API_build_caller_stack_lines_bytes(stack_trace_chars, env, stack, NULL, 0, -1);
+        SPVM_API_build_caller_stack_lines_to_buffer(stack_trace_chars, env, stack, NULL, 0, -1);
         
         // Register stack trace to symtable
         SPVM_HASH_set(runtime->object_stack_trace_symtable, (const char*)&object_ptr, sizeof(void*), stack_trace_chars);
@@ -7569,7 +7569,7 @@ static int32_t SPVM_API_build_caller_stack_line(char* buffer, const char* func_n
   }
 }
 
-int32_t SPVM_API_build_caller_stack_lines_bytes(char* buffer, SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t start_call_depth, int32_t end_call_depth) {
+int32_t SPVM_API_build_caller_stack_lines_to_buffer(char* buffer, SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t start_call_depth, int32_t end_call_depth) {
   
   const char* unknown_func_name = "(Method name unknown)";
   const char* unknown_file = "(File name unknown)";
@@ -7640,7 +7640,7 @@ int32_t SPVM_API_build_caller_stack_lines_bytes(char* buffer, SPVM_ENV* env, SPV
 SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t start_call_depth, int32_t end_call_depth) {
   
   // Get total length required
-  int32_t total_length = SPVM_API_build_caller_stack_lines_bytes(NULL, env, stack, obj_message, start_call_depth, end_call_depth);
+  int32_t total_length = SPVM_API_build_caller_stack_lines_to_buffer(NULL, env, stack, obj_message, start_call_depth, end_call_depth);
   
   // Create string object
   SPVM_OBJECT* obj_new_caller_stack_lines = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
@@ -7649,7 +7649,7 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VAL
   char* stack_lines_bytes = (char*)SPVM_API_get_chars(env, stack, obj_new_caller_stack_lines);
   
   // Build stack lines into the buffer
-  SPVM_API_build_caller_stack_lines_bytes(stack_lines_bytes, env, stack, obj_message, start_call_depth, end_call_depth);
+  SPVM_API_build_caller_stack_lines_to_buffer(stack_lines_bytes, env, stack, obj_message, start_call_depth, end_call_depth);
   
   return obj_new_caller_stack_lines;
 }

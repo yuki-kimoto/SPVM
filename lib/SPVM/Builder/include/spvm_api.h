@@ -649,6 +649,6 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines(SPVM_ENV* env, SPVM_VALUE* stack,
 
 SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t start_call_depth, int32_t end_call_depth);
 
-int32_t SPVM_API_build_caller_stack_lines_bytes(char* buffer, SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t start_call_depth, int32_t end_call_depth);
+int32_t SPVM_API_build_caller_stack_lines_to_buffer(char* buffer, SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t start_call_depth, int32_t end_call_depth);
 
 #endif
