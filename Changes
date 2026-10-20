@@ -1,3 +1,11 @@
+0.990200 2026-10-20
+  [Exception Stack Trace Improvement]
+    * Separete main caller stack and destroy caller stack.
+      main caller stack is not broken by DESTROY. DESTROY use destroy caller stack.
+      
+  [Compilation Cache Improvement]
+    * Included the SPVM include directory in compilation dependencies only when spvm_native.h is actually included in the source file.
+  
 0.990199 2026-09-11
   [CI Improvement]
     * Add downstream module tests logic to each CIs.
