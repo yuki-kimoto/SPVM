@@ -35,6 +35,10 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   runtime->assignment_requirement_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, 0);
   
+  runtime->object_symtable = SPVM_HASH_new_hash_tmp(runtime->allocator, 0);
+  
+  runtime->object_stack_trace_symtable = SPVM_HASH_new_hash_tmp(runtime->allocator, 0);
+  
   int32_t mutex_size = SPVM_MUTEX_size();
   void* mutex = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, mutex_size);
   SPVM_MUTEX_init(mutex);
@@ -156,6 +160,12 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
   fclose(runtime->spvm_stdout);
   
   fclose(runtime->spvm_stderr);
+  
+  SPVM_HASH_free(runtime->object_symtable);
+  runtime->object_symtable = NULL;
+  
+  SPVM_HASH_free(runtime->object_stack_trace_symtable);
+  runtime->object_stack_trace_symtable = NULL;
   
   // Free allocator
   SPVM_ALLOCATOR_free(runtime->allocator);

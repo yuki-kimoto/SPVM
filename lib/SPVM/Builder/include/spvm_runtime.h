@@ -40,6 +40,10 @@ struct spvm_runtime {
   FILE* spvm_stderr;
   
   const char* precompile_inline_header;
+  
+  SPVM_HASH* object_symtable;
+  
+  SPVM_HASH* object_stack_trace_symtable;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

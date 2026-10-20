@@ -61,6 +61,15 @@ SPVM_HASH* SPVM_HASH_new_hash_permanent(SPVM_ALLOCATOR* allocator, int32_t capac
   return hash;
 }
 
+SPVM_HASH* SPVM_HASH_new_hash_tmp(SPVM_ALLOCATOR* allocator, int32_t capacity) {
+  
+  int32_t memory_block_type = SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP;
+  
+  SPVM_HASH* hash = SPVM_HASH_new(allocator, capacity, memory_block_type);
+  
+  return hash;
+}
+
 void* SPVM_HASH_get(SPVM_HASH* hash, const char* key, int32_t key_length) {
   
   assert(hash);

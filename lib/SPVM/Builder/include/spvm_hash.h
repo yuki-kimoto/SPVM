@@ -27,6 +27,8 @@ SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t capacity, int32_t me
 
 SPVM_HASH* SPVM_HASH_new_hash_permanent(SPVM_ALLOCATOR* allocator, int32_t capacity);
 
+SPVM_HASH* SPVM_HASH_new_hash_tmp(SPVM_ALLOCATOR* allocator, int32_t capacity);
+
 void SPVM_HASH_free(SPVM_HASH* hash);
 
 void* SPVM_HASH_get(SPVM_HASH* hash, const char* key, int32_t length);
