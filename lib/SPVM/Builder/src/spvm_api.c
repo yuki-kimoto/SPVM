@@ -7557,7 +7557,7 @@ static int32_t SPVM_API_strnlen(const char *s, int32_t maxlen) {
   return len;
 }
 
-static int32_t SPVM_API_build_caller_stack_line(char* buffer, const char* func_name, const char* file, int32_t line) {
+static int32_t SPVM_API_build_caller_stack_line_to_buffer(char* buffer, const char* func_name, const char* file, int32_t line) {
   
   if (buffer) {
     return sprintf(buffer, "\n  %s at %s line %" PRId32, func_name, file, line);
@@ -7623,7 +7623,7 @@ int32_t SPVM_API_build_caller_stack_lines_to_buffer(char* buffer, SPVM_ENV* env,
     
     int32_t line = (int32_t)(intptr_t)caller_info_stack[offset + 2].ival;
     
-    int32_t line_length = SPVM_API_build_caller_stack_line(current_buffer, func_name, file, line);
+    int32_t line_length = SPVM_API_build_caller_stack_line_to_buffer(current_buffer, func_name, file, line);
     if (current_buffer) {
       current_buffer += line_length;
     }
