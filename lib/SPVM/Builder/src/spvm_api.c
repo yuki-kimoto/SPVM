@@ -5550,6 +5550,40 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
     object->capacity = length + 1;
   }
   
+  // Record object and its stack trace for leak detection
+  if (object) {
+    SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+    if (runtime->record_object) {
+      SPVM_MUTEX* runtime_mutex = runtime->mutex;
+      {
+        SPVM_MUTEX_lock(runtime_mutex);
+        
+        // Register object pointer to symtable
+        void* object_ptr = object;
+        SPVM_HASH_set(runtime->object_symtable, (const char*)&object_ptr, sizeof(void*), object);
+        
+        // Get stack trace using longmess
+        int32_t scope_id = SPVM_API_enter_scope(env, stack);
+        SPVM_OBJECT* obj_empty_string = SPVM_API_new_string(env, stack, "", 0);
+        SPVM_OBJECT* obj_longmess = SPVM_API_longmess(env, stack, obj_empty_string, 0, -1);
+        const char* longmess_chars = SPVM_API_get_chars(env, stack, obj_longmess);
+        int32_t longmess_length = SPVM_API_length(env, stack, obj_longmess);
+        
+        // Copy stack trace characters to unmanaged memory block
+        char* stack_trace_chars = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(longmess_length + 1);
+        memcpy(stack_trace_chars, longmess_chars, longmess_length);
+        stack_trace_chars[longmess_length] = '\0';
+        
+        // Register stack trace to symtable
+        SPVM_HASH_set(runtime->object_stack_trace_symtable, (const char*)&object_ptr, sizeof(void*), stack_trace_chars);
+        
+        SPVM_API_leave_scope(env, stack, scope_id);
+        
+        SPVM_MUTEX_unlock(runtime_mutex);
+      }
+    }
+  }
+  
   return object;
 }
 
