@@ -611,6 +611,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_ids(SPVM_ENV* env, S
   if ((void*)&env->api->runtime->stack_index_call_depth != &env_array[20]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->stack_index_caller_info_stack != &env_array[21]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->stack_index_caller_info_stack_record_size != &env_array[22]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->enable_record_object != &env_array[23]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->disable_record_object != &env_array[24]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

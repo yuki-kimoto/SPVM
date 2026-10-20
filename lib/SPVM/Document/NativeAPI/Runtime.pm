@@ -191,6 +191,18 @@ Examples:
   int32_t record_size_index = (int32_t)(intptr_t)env->api->runtime->stack_index_caller_info_stack_record_size;
   int32_t record_size = stack[record_size_index].ival;
 
+=head2 enable_record_object
+
+C<void (*enable_record_object)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
+
+Enables object recording for memory leak tracking.
+
+=head2 disable_record_object
+
+C<void (*disable_record_object)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
+
+Disables object recording for memory leak tracking.
+
 =head1 Native Runtime API IDs
 
   0 get_object_data_offset
@@ -216,7 +228,9 @@ Examples:
   20 stack_index_call_depth
   21 stack_index_caller_info_stack
   22 stack_index_caller_info_stack_record_size
-  
+  23 enable_record_object
+  24 disable_record_object
+
 =head1 See Also
 
 =over 2

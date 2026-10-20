@@ -56,4 +56,8 @@ FILE* SPVM_API_RUNTIME_get_spvm_stderr(SPVM_RUNTIME* runtime);
 
 SPVM_ENV* SPVM_API_RUNTIME_get_env(SPVM_RUNTIME* runtime);
 
+void SPVM_API_RUNTIME_enable_record_object(SPVM_RUNTIME* runtime);
+
+void SPVM_API_RUNTIME_disable_record_object(SPVM_RUNTIME* runtime);
+
 #endif

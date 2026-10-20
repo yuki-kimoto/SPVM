@@ -120,6 +120,8 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     (void*)SPVM_API_C_STACK_INDEX_CALL_DEPTH, // stack_index_call_depth
     (void*)SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK, // stack_index_caller_info_stack
     (void*)SPVM_API_C_STACK_INDEX_CALLER_INFO_STACK_RECORD_SIZE, // stack_index_caller_info_stack_record_size
+    SPVM_API_RUNTIME_enable_record_object,
+    SPVM_API_RUNTIME_disable_record_object,
   };
   SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -287,4 +289,14 @@ FILE* SPVM_API_RUNTIME_get_spvm_stderr(SPVM_RUNTIME* runtime) {
 SPVM_ENV* SPVM_API_RUNTIME_get_env(SPVM_RUNTIME* runtime) {
   
   return runtime->env;
+}
+
+void SPVM_API_RUNTIME_enable_record_object(SPVM_RUNTIME* runtime) {
+  
+  runtime->record_object = 1;
+}
+
+void SPVM_API_RUNTIME_disable_record_object(SPVM_RUNTIME* runtime) {
+  
+  runtime->record_object = 0;
 }

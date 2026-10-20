@@ -4397,6 +4397,71 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
   }
 }
 
+SPVM_OBJECT* SPVM_API_dump_recorded_objects(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  SPVM_OBJECT* str = SPVM_API_dump_recorded_objects_no_mortal(env, stack);
+  
+  SPVM_API_push_mortal(env, stack, str);
+  
+  return str;
+}
+
+SPVM_OBJECT* SPVM_API_dump_recorded_objects_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+  
+  // Temporarily disable object recording on this thread to prevent infinite recursion
+  int32_t old_no_record = stack[SPVM_API_C_STACK_INDEX_NO_RECORD_OBJECT].ival;
+  stack[SPVM_API_C_STACK_INDEX_NO_RECORD_OBJECT].ival = 1;
+  
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(runtime->allocator, 1024, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  
+  SPVM_MUTEX_lock(runtime->mutex);
+  
+  if (runtime->object_symtable) {
+    for (int32_t table_index = 0; table_index < runtime->object_symtable->table_capacity; table_index++) {
+      SPVM_HASH_ENTRY* entry = runtime->object_symtable->table[table_index];
+      
+      while (entry) {
+        SPVM_OBJECT* object = (SPVM_OBJECT*)entry->value;
+        
+        if (object) {
+          // 1. Dump object content
+          int32_t depth = 0;
+          SPVM_HASH* address_symtable = SPVM_HASH_new(runtime->allocator, 255, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+          SPVM_API_dump_recursive(env, stack, object, &depth, string_buffer, address_symtable);
+          SPVM_HASH_free(address_symtable);
+          address_symtable = NULL;
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "\n");
+          
+          // 2. Fetch and append associated stack trace string
+          const char* stack_trace = (const char*)SPVM_HASH_get(runtime->object_stack_trace_symtable, entry->key, entry->key_length);
+          if (stack_trace) {
+            SPVM_STRING_BUFFER_add(string_buffer, stack_trace);
+          }
+          
+          SPVM_STRING_BUFFER_add(string_buffer, "\n\n");
+        }
+        
+        entry = entry->next_entry;
+      }
+    }
+  }
+  
+  SPVM_MUTEX_unlock(runtime->mutex);
+  
+  SPVM_OBJECT* obj_dump_recorded_objects = SPVM_API_new_string_no_mortal(env, stack, string_buffer->string, string_buffer->length);
+  
+  SPVM_STRING_BUFFER_free(string_buffer);
+  string_buffer = NULL;
+  
+  // Restore previous recording state
+  stack[SPVM_API_C_STACK_INDEX_NO_RECORD_OBJECT].ival = old_no_record;
+  
+  return obj_dump_recorded_objects;
+}
+
 void SPVM_API_make_read_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
   SPVM_RUNTIME_BASIC_TYPE* string_basic_type = SPVM_API_get_object_basic_type(env, stack, string);
   if (string && string_basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && string->type_dimension == 0) {

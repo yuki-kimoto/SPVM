@@ -692,6 +692,8 @@ struct spvm_api_runtime {
   void* stack_index_call_depth;
   void* stack_index_caller_info_stack;
   void* stack_index_caller_info_stack_record_size;
+  void (*enable_record_object)(SPVM_NATIVE_RUNTIME* runtime);
+  void (*disable_record_object)(SPVM_NATIVE_RUNTIME* runtime);
 };
 
 struct spvm_api_mutex {
