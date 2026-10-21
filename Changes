@@ -1,3 +1,11 @@
+0.990202 2026-10-21
+  [Summary]
+    * Add a memory leak diagnostic feature to record object creation stack traces and dump them for debugging.
+  [New Features]
+    * Add `enable_record_object`, `disable_record_object`, and `dump_recorded_objects` methods to the `Fn` class and Exchange API.
+    * Add `dump_recorded_objects` and `dump_recorded_objects_no_mortal` native APIs.
+    * Add `enable_record_object` and `disable_record_object` runtime native APIs.
+
 0.990201 2026-10-20
   [New Features]
     * Add eval_error_name operator.
