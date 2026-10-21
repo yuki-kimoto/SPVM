@@ -1,3 +1,6 @@
+0.990203 2026-10-21
+  [Small Fix]
+    * Update lib/SPVM/Builder/src/spvm_precompile_header_content.c
 0.990202 2026-10-21
   [Summary]
     * Add a memory leak diagnostic feature to record object creation stack traces and dump them for debugging.
