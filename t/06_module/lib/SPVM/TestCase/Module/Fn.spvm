@@ -9579,52 +9579,54 @@ class TestCase::Module::Fn {
   
   static method dump_recorded_objects : int () {
     
-    # Enable object recording
-    Fn->enable_record_object;
-    
-    # Create Point instances
-    my $point0 = Point->new(100000, 2);
-    my $point1 = Point->new(200000, 4);
-    
-    # Dump recorded objects
-    my $dump = Fn->dump_recorded_objects;
-    
-    warn "[Test Output:dump_recorded_objects]\n$dump";
-    
-    # Check if the dump contains Point class name
-    unless (Fn->contains($dump, "Point")) {
-      diag $dump;
-      return 0;
-    }
-    
-    # Check if the dump contains the value 100000
-    unless (Fn->contains($dump, "100000")) {
-      diag $dump;
-      return 0;
-    }
-    
-    # Check if the dump contains the value 200000
-    unless (Fn->contains($dump, "200000")) {
-      diag $dump;
-      return 0;
-    }
-    
-    # Check if the dump does not contain string
-    if (Fn->contains($dump, "string")) {
-      diag $dump;
-      return 0;
-    }
-    
-    # Check if the dump contains TestCase::Module::Fn class name
-    unless (Fn->contains($dump, "TestCase::Module::Fn")) {
-      diag $dump;
-      return 0;
-    }
-    
-    # Check if the dump contains dump_recorded_objects method name
-    unless (Fn->contains($dump, "dump_recorded_objects")) {
-      diag $dump;
-      return 0;
+    {
+      # Enable object recording
+      Fn->enable_record_object;
+      
+      # Create Point instances
+      my $point0 = Point->new(100000, 2);
+      my $point1 = Point->new(200000, 4);
+      
+      # Dump recorded objects
+      my $dump = Fn->dump_recorded_objects;
+      
+      warn "[Test Output:dump_recorded_objects]\n$dump";
+      
+      # Check if the dump contains Point class name
+      unless (Fn->contains($dump, "Point")) {
+        diag $dump;
+        return 0;
+      }
+      
+      # Check if the dump contains the value 100000
+      unless (Fn->contains($dump, "100000")) {
+        diag $dump;
+        return 0;
+      }
+      
+      # Check if the dump contains the value 200000
+      unless (Fn->contains($dump, "200000")) {
+        diag $dump;
+        return 0;
+      }
+      
+      # Check if the dump does not contain string
+      if (Fn->contains($dump, "string")) {
+        diag $dump;
+        return 0;
+      }
+      
+      # Check if the dump contains TestCase::Module::Fn class name
+      unless (Fn->contains($dump, "TestCase::Module::Fn")) {
+        diag $dump;
+        return 0;
+      }
+      
+      # Check if the dump contains dump_recorded_objects method name
+      unless (Fn->contains($dump, "dump_recorded_objects")) {
+        diag $dump;
+        return 0;
+      }
     }
     
     return 1;
