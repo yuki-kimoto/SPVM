@@ -9579,6 +9579,19 @@ class TestCase::Module::Fn {
   
   static method dump_recorded_objects : int () {
     
+    # Check default state is empty
+    {
+      # Create Point instances
+      my $point0 = Point->new(100000, 2);
+      my $point1 = Point->new(200000, 4);
+      
+      my $dump = Fn->dump_recorded_objects;
+      unless ($dump eq "") {
+        diag $dump;
+        return 0;
+      }
+    }
+    
     {
       # Enable object recording
       Fn->enable_record_object;
@@ -9624,6 +9637,21 @@ class TestCase::Module::Fn {
       
       # Check if the dump contains dump_recorded_objects method name
       unless (Fn->contains($dump, "dump_recorded_objects")) {
+        diag $dump;
+        return 0;
+      }
+    }
+    
+    # Check state after disable is empty
+    {
+      Fn->disable_record_object;
+      
+      # Create Point instances
+      my $point0 = Point->new(100000, 2);
+      my $point1 = Point->new(200000, 4);
+      
+      my $dump = Fn->dump_recorded_objects;
+      unless ($dump eq "") {
         diag $dump;
         return 0;
       }
