@@ -5630,10 +5630,13 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
         void* object_ptr = object;
         SPVM_HASH_set(runtime->object_symtable, (const char*)&object_ptr, sizeof(void*), object);
         
+        // Get the maximum call depth
+        int32_t end_call_depth = stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival;
+        
         // Get stack trace bytes without creating objects (prevent infinite recursion)
-        int32_t stack_trace_length = SPVM_API_build_caller_stack_lines_to_buffer(NULL, env, stack, NULL, 0, -1);
+        int32_t stack_trace_length = SPVM_API_build_caller_stack_lines_to_buffer(NULL, env, stack, NULL, 0, end_call_depth);
         char* stack_trace_chars = (char*)SPVM_ALLOCATOR_alloc_memory_block_unmanaged(stack_trace_length + 1);
-        SPVM_API_build_caller_stack_lines_to_buffer(stack_trace_chars, env, stack, NULL, 0, -1);
+        SPVM_API_build_caller_stack_lines_to_buffer(stack_trace_chars, env, stack, NULL, 0, end_call_depth);
         
         // Register stack trace to symtable
         SPVM_HASH_set(runtime->object_stack_trace_symtable, (const char*)&object_ptr, sizeof(void*), stack_trace_chars);
