@@ -1415,14 +1415,14 @@ int32_t SPVM__Fn__env(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Fn__enable_record_object(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  env->runtime->api->runtime->enable_record_object(env->runtime);
+  env->api->runtime->enable_record_object(env->runtime);
   
   return 0;
 }
 
 int32_t SPVM__Fn__disable_record_object(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  env->runtime->api->runtime->disable_record_object(env->runtime);
+  env->api->runtime->disable_record_object(env->runtime);
   
   return 0;
 }
