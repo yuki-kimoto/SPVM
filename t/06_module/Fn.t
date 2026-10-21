@@ -322,6 +322,42 @@ ok(SPVM::TestCase::Module::Fn->build_exception_message);
 ok(SPVM::TestCase::Module::Fn->longmess);
 ok(SPVM::TestCase::Module::Fn->dump_recorded_objects);
 
+# dump_recorded_objects exchange API
+{
+  # 1. Check default state is empty
+  {
+    my $point = SPVM::TestCase::Module::Fn->dump_recorded_objects_exchange_api_data;
+    
+    my $dump = SPVM::Fn->dump_recorded_objects;
+    is($dump, "");
+  }
+
+  # 2. Check recording objects and dumping
+  {
+    SPVM::Fn->enable_record_object;
+    
+    my $point = SPVM::TestCase::Module::Fn->dump_recorded_objects_exchange_api_data;
+    
+    my $dump = SPVM::Fn->dump_recorded_objects;
+    
+    like($dump, qr/Point/);
+    like($dump, qr/100000/);
+    like($dump, qr/2/);
+    like($dump, qr/Created in/);
+    like($dump, qr/TestCase::Module::Fn/);
+  }
+
+  # 3. Check state after disable is empty
+  {
+    SPVM::Fn->disable_record_object;
+    
+    my $point = SPVM::TestCase::Module::Fn->dump_recorded_objects_exchange_api_data;
+    
+    my $dump = SPVM::Fn->dump_recorded_objects;
+    is($dump, "");
+  }
+}
+
 # All object is freed
 $api->destroy_runtime_permanent_vars;
 my $end_memory_blocks_count = $api->get_memory_blocks_count;
