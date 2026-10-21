@@ -320,6 +320,7 @@ ok(SPVM::TestCase::Module::Fn->is_utf8);
 ok(SPVM::TestCase::Module::Fn->env);
 ok(SPVM::TestCase::Module::Fn->build_exception_message);
 ok(SPVM::TestCase::Module::Fn->longmess);
+ok(SPVM::TestCase::Module::Fn->dump_recorded_objects);
 
 # All object is freed
 $api->destroy_runtime_permanent_vars;
