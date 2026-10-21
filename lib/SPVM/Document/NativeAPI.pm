@@ -3031,6 +3031,20 @@ C<void (*diag)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment"
 
 Same as L</"warn">.
 
+=head2 dump_recorded_objects
+
+C<SPVM_OBJ* (*dump_recorded_objects)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+
+Dumps all recorded objects currently tracked for memory leak detection along with their allocation stack traces.
+
+Returns the newly created string object containing the dump. This object is automatically pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
+
+=head2 dump_recorded_objects_no_mortal
+
+C<SPVM_OBJ* (*dump_recorded_objects_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+
+This is the same as L</"dump_recorded_objects">, but the returned object is not pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.
@@ -3319,6 +3333,8 @@ Native APIs have its IDs.
   281 longmess_no_mortal
   282 longmess
   283 diag
+  284 dump_recorded_objects
+  285 dump_recorded_objects_no_mortal
 
 =head1 Constant Values
 

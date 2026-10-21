@@ -303,6 +303,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->longmess_no_mortal != &env_array[281]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->longmess != &env_array[282]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->diag != &env_array[283]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->dump_recorded_objects != &env_array[284]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->dump_recorded_objects_no_mortal != &env_array[285]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

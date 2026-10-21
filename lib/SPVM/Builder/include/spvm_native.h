@@ -505,6 +505,8 @@ struct spvm_env {
   SPVM_OBJ* (*longmess_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* obj_message, int32_t start_call_depth, int32_t end_call_depth);
   SPVM_OBJ* (*longmess)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* obj_message, int32_t start_call_depth, int32_t end_call_depth);
   void (*diag)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* string, const char* func_name, const char* file, int32_t line);
+  SPVM_OBJ* (*dump_recorded_objects)(SPVM_ENV* env, SPVM_VALUE* stack);
+  SPVM_OBJ* (*dump_recorded_objects_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 struct spvm_env_api {
