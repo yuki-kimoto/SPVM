@@ -5,6 +5,9 @@
 %parse-param  { SPVM_COMPILER* compiler }
 %lex-param  { SPVM_COMPILER* compiler }
 
+// Expect exact shift/reduce conflicts to prevent regressions
+%expect 12
+
 %{
   #include <stdio.h>
   

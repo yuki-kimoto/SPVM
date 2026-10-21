@@ -2045,6 +2045,9 @@ SPVM_OP* SPVM_OP_build_anon_method_field(SPVM_COMPILER* compiler, SPVM_OP* op_fi
     is_decl_var_in_anon_method = 1;
   }
   
+  if (!op_type) {
+    op_type = SPVM_OP_new_op_any_object_type(compiler, op_name_field->file, op_name_field->line);
+  }
   SPVM_OP* op_field_definition = SPVM_OP_build_field(compiler, op_field, op_name_field, op_attributes, op_type, NULL, NULL);
   
   op_field_definition->uv.field->op_anon_method_field_default = op_default;
