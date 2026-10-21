@@ -659,6 +659,12 @@ anon_method_field
       
       $$ = SPVM_OP_build_anon_method_field(compiler, op_field, $1, $3, $4, $6);
     }
+  | var ':'
+    {
+      SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, $1->file, $1->line);
+      
+      $$ = SPVM_OP_build_anon_method_field(compiler, op_field, $1, NULL, NULL, NULL);
+    }
     
 opt_attributes
   : /* Empty */
