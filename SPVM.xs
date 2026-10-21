@@ -3858,6 +3858,86 @@ _xs_destroy_runtime_permanent_vars(...)
 }
 
 SV*
+_xs_enable_record_object(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Get env
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Get stack
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  env->api->runtime->enable_record_object(env->runtime);
+  
+  XSRETURN(0);
+}
+
+SV*
+_xs_disable_record_object(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Get env
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Get stack
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  env->api->runtime->disable_record_object(env->runtime);
+  
+  XSRETURN(0);
+}
+
+SV*
+_xs_dump_recorded_objects(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Get env
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  // Get stack
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  SPVM_OBJ* obj_dump = env->dump_recorded_objects(env, stack);
+  
+  SV* sv_dump = NULL;
+  if (obj_dump) {
+    const char* dump_chars = env->get_chars(env, stack, obj_dump);
+    int32_t dump_length = env->length(env, stack, obj_dump);
+    sv_dump = sv_2mortal(newSVpvn(dump_chars, dump_length));
+  }
+  else {
+    sv_dump = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_dump);
+  XSRETURN(1);
+}
+
+SV*
 _xs_get_version_string(...)
   PPCODE:
 {

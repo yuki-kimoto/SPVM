@@ -292,6 +292,9 @@ sub dump { my $ret; eval { $ret =  &_xs_dump(@_) }; if ($@) { confess($@) } $ret
 sub get_exception { my $ret; eval { $ret =  &_xs_get_exception(@_) }; if ($@) { confess($@) } $ret}
 sub set_exception { my $ret; eval { $ret =  &_xs_set_exception(@_) }; if ($@) { confess($@) } $ret}
 sub get_memory_blocks_count { my $ret; eval { $ret =  &_xs_get_memory_blocks_count(@_) }; if ($@) { confess($@) } $ret}
+sub enable_record_object { my $ret; eval { $ret =  &_xs_enable_record_object(@_) }; if ($@) { confess($@) } $ret}
+sub disable_record_object { my $ret; eval { $ret =  &_xs_disable_record_object(@_) }; if ($@) { confess($@) } $ret}
+sub dump_recorded_objects { my $ret; eval { $ret =  &_xs_dump_recorded_objects(@_) }; if ($@) { confess($@) } $ret}
 sub destroy_runtime_permanent_vars { my $ret; eval { $ret =  &_xs_destroy_runtime_permanent_vars(@_) }; if ($@) { confess($@) } $ret}
 sub get_version_string { my $ret; eval { $ret =  &_xs_get_version_string(@_) }; if ($@) { confess($@) } $ret}
 sub call_method {
@@ -1214,6 +1217,30 @@ Same as L<Fn#destroy_runtime_permanent_vars|SPVM::Fn/"destroy_runtime_permanent_
   my $version_string = $api->get_version_string("MyClass");
 
 Same as L<Fn#get_version_string|SPVM::Fn/"get_version_string"> method.
+
+=head2 get_version_string
+
+  my $version_string = $api->get_version_string("MyClass");
+
+Same as L<Fn#get_version_string|SPVM::Fn/"get_version_string"> method.
+
+=head2 enable_record_object
+
+  $api->enable_record_object;
+
+Same as L<Fn#enable_record_object|SPVM::Fn/"enable_record_object"> method.
+
+=head2 disable_record_object
+
+  $api->disable_record_object;
+
+Same as L<Fn#disable_record_object|SPVM::Fn/"disable_record_object"> method.
+
+=head2 dump_recorded_objects
+
+  my $dump = $api->dump_recorded_objects;
+
+Same as L<Fn#dump_recorded_objects|SPVM::Fn/"dump_recorded_objects"> method.
 
 =head1 Argument Conversion
 
