@@ -1412,3 +1412,26 @@ int32_t SPVM__Fn__env(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__enable_record_object(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  env->runtime->api->runtime->enable_record_object(env->runtime);
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__disable_record_object(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  env->runtime->api->runtime->disable_record_object(env->runtime);
+  
+  return 0;
+}
+
+int32_t SPVM__Fn__dump_recorded_objects(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  SPVM_OBJ* obj_dump = env->dump_recorded_objects(env, stack);
+  
+  stack[0].oval = obj_dump;
+  
+  return 0;
+}

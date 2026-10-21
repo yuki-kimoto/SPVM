@@ -2135,6 +2135,26 @@ Examples:
   # Get the value of the HOME environment variable
   my $home = Fn->env("HOME");
 
+=head2 enable_record_object
+
+C<static method enable_record_object : void ();>
+
+Enables object recording for memory leak tracking.
+
+=head2 disable_record_object
+
+C<static method disable_record_object : void ();>
+
+Disables object recording for memory leak tracking.
+
+=head2 dump_recorded_objects
+
+C<static method dump_recorded_objects : string ();>
+
+Dumps all recorded objects currently tracked for memory leak detection along with their allocation stack traces.
+
+Returns the newly created string object containing the dump.
+
 =head1 See Also
 
 =over 2
