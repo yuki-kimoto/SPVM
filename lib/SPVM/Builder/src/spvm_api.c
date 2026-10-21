@@ -4435,7 +4435,7 @@ SPVM_OBJECT* SPVM_API_dump_recorded_objects_no_mortal(SPVM_ENV* env, SPVM_VALUE*
           SPVM_HASH_free(address_symtable);
           address_symtable = NULL;
           
-          SPVM_STRING_BUFFER_add(string_buffer, "\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "\nCreated in");
           
           // 2. Fetch and append associated stack trace string
           const char* stack_trace = (const char*)SPVM_HASH_get(runtime->object_stack_trace_symtable, entry->key, entry->key_length);
