@@ -654,6 +654,7 @@ I<ANON_METHOD_CLASS_FIELD_DEFINITION_ITEM> are one of
   has FIELD_NAME : TYPE = OPERAND
   VAR : TYPE
   VAR : TYPE = OPERAND
+  VAR :
   
   has FIELD_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE
   has FIELD_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE = OPERAND
@@ -671,6 +672,8 @@ C<VAR : TYPE = OPERAND> is expaneded to C<has FIELD_NAME : TYPE = OPERAND>. I<FI
 C<VAR : TYPE> is the same as above, but expaneded to C<has FIELD_NAME : TYPE = VAR>.
 
 I<ATTRIBUTE> is a L<field attribute|/"Field Attributes">.
+
+C<VAR :> is expanded to C<has FIELD_NAME : object = VAR>. I<FIELD_NAME> is the same as the name of I<VAR>, but C<$> is removed. The internal field type of the anon class is the any object type (object), but through a type cast performed during compilation, it is treated as the same type as the capture-source variable. I<VAR> is declared at the top of this anon method and set to the value of its corresponding field.
 
 Compilation Errors:
 
@@ -720,6 +723,26 @@ Examples:
     }
   }
 
+  # Type inference for VAR without explicit type specification
+  class Foo::Bar {
+    method my_method : void () {
+      my $self = Int->new(1);
+      my $foo = 2;
+      
+      my $object = [$self : , $foo : ] method : int () {
+        unless (compile_type_name $foo eq "int") {
+          die;
+        }
+        
+        unless (compile_type_name $self eq "Int") {
+          die;
+        }
+        
+        return $self->(int) + $foo;
+      };
+    }
+  }
+  
 =head2 Outmost Class
 
 An outmost class is the outmost defined class. This is the same as the class defined by L<class definition|/"Class Definition">.
