@@ -2053,8 +2053,10 @@ SPVM_OP* SPVM_OP_build_anon_method_field(SPVM_COMPILER* compiler, SPVM_OP* op_fi
     is_decl_var_in_anon_method = 1;
   }
   
+  int32_t enable_anon_method_field_cast_type_inference = 0;
   if (!op_type) {
     op_type = SPVM_OP_new_op_any_object_type(compiler, op_name_field->file, op_name_field->line);
+    enable_anon_method_field_cast_type_inference = 1;
   }
   SPVM_OP* op_field_definition = SPVM_OP_build_field(compiler, op_field, op_name_field, op_attributes, op_type, NULL, NULL);
   
@@ -2062,6 +2064,8 @@ SPVM_OP* SPVM_OP_build_anon_method_field(SPVM_COMPILER* compiler, SPVM_OP* op_fi
   
   op_field_definition->uv.field->is_decl_var_in_anon_method = is_decl_var_in_anon_method;
   
+  op_field_definition->uv.field->enable_anon_method_field_cast_type_inference = enable_anon_method_field_cast_type_inference;
+    
   return op_field_definition;
 }
 

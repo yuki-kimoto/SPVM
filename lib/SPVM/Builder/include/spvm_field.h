@@ -28,6 +28,7 @@ struct spvm_field {
   int8_t is_parent_field;
   int8_t is_virtual;
   int8_t exists_bit;
+  int8_t enable_anon_method_field_cast_type_inference;
 };
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);
