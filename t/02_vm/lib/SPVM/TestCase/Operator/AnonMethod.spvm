@@ -154,6 +154,31 @@ class TestCase::Operator::AnonMethod {
       }
     }
     
+    {
+      my $self = Int->new(1);
+      my $foo = 2;
+      my $object = [$foo : , $self : ] method : int () {
+        
+        unless (compile_type_name $foo eq "int") {
+          die;
+        }
+        
+        unless (compile_type_name $self eq "Int") {
+          die;
+        }
+        
+        my $total = $self->(int) + $foo;
+        
+        return $total;
+      };
+      
+      my $total = $object->();
+      unless ($total == 3) {
+        diag $total;
+        return 0;
+      }
+    }
+    
     return 1;
   }
 

@@ -3981,7 +3981,7 @@ yyreduce:
     {
       SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, (yyvsp[-1].opval)->file, (yyvsp[-1].opval)->line);
       
-      (yyval.opval) = SPVM_OP_build_anon_method_field(compiler, op_field, (yyvsp[-1].opval), NULL, NULL, NULL);
+      (yyval.opval) = SPVM_OP_build_anon_method_field(compiler, op_field, (yyvsp[-1].opval), NULL, NULL, (yyvsp[-1].opval));
     }
 #line 3987 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
