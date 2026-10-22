@@ -4258,6 +4258,27 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               SPVM_OP* op_src = op_cur->first;
               SPVM_OP* op_cast = op_cur->last;
               
+              if (op_cur->flag & SPVM_OP_C_FLAG_TYPE_CAST_ANON_FIELD_INFERENCE) {
+                assert(op_src->id == SPVM_OP_C_ID_FIELD_ACCESS);
+                assert(op_src->uv.field_access->field);
+                const char* field_name = op_src->uv.field_access->field->name;
+                
+                SPVM_BASIC_TYPE* current_basic_type = method->current_basic_type;
+                for (int32_t i = 0; i < current_basic_type->fields->length; i++) {
+                  SPVM_FIELD* field = SPVM_LIST_get(current_basic_type->fields, i);
+                  if (strcmp(field->name, field_name) == 0) {
+                    if (field->anon_method_field_cast_type) {
+                      SPVM_TYPE* new_cast_type = field->anon_method_field_cast_type;
+                      SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cast);
+                      SPVM_OP* op_new_dist_type = SPVM_OP_new_op_type(compiler, new_cast_type->basic_type->name, new_cast_type->basic_type, new_cast_type->dimension, new_cast_type->flag, op_cast->file, op_cast->line);
+                      SPVM_OP_replace_op(compiler, op_stab, op_new_dist_type);
+                      op_cast = op_new_dist_type;
+                    }
+                    break;
+                  }
+                }
+              }
+              
               SPVM_TYPE* src_type = SPVM_CHECK_get_type(compiler, op_src);
               assert(src_type);
               
