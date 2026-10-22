@@ -322,6 +322,10 @@ enum {
   SPVM_OP_C_FLAG_WARN_LONGMESS = 1,
 };
 
+enum {
+  SPVM_OP_C_FLAG_TYPE_CAST_ANON_FIELD_INFERENCE = 1,
+};
+
 struct spvm_op {
   const char* name;
   SPVM_OP* first;
