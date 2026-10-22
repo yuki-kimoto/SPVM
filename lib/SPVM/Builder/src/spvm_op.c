@@ -1951,8 +1951,16 @@ SPVM_OP* SPVM_OP_build_anon_method_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op
   SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_anon_method_field_var_decl_start->file, op_anon_method_field_var_decl_start->line);
   SPVM_OP_build_field_access(compiler, op_field_access, op_var_self_invocant, op_name_field_access);
   
+  SPVM_OP* op_assignment_src = op_field_access;
+  if (field->anon_method_field_cast_type) {
+    SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_anon_method_field_var_decl_start->file, op_anon_method_field_var_decl_start->line);
+    SPVM_TYPE* cast_type = field->anon_method_field_cast_type;
+    SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, cast_type->basic_type->name, cast_type->basic_type, cast_type->dimension, cast_type->flag, op_anon_method_field_var_decl_start->file, op_anon_method_field_var_decl_start->line);
+    op_assignment_src = SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_field_access);
+  }
+  
   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_anon_method_field_var_decl_start->file, op_anon_method_field_var_decl_start->line);
-  SPVM_OP_build_assign(compiler, op_assign, op_var, op_field_access);
+  SPVM_OP_build_assign(compiler, op_assign, op_var, op_assignment_src);
   
   assert(op_anon_method_field_var_decl_start);
   
