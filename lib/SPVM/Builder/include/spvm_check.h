@@ -80,4 +80,6 @@ SPVM_OP* SPVM_CHECK_apply_union_type_mapping(SPVM_COMPILER* compiler, SPVM_OP* o
 
 SPVM_OP* SPVM_CHECK_new_op_name_tmp_var(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
+void SPVM_CHECK_sort_anon_method_basic_types(SPVM_COMPILER* compiler);
+
 #endif

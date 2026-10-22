@@ -245,6 +245,8 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
 
 void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {
   
+  SPVM_CHECK_sort_anon_method_basic_types(compiler);
+  
   SPVM_CHECK_check_basic_types_relation(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
@@ -6305,4 +6307,70 @@ SPVM_OP* SPVM_CHECK_apply_union_type_mapping(SPVM_COMPILER* compiler, SPVM_OP* o
   }
 
   return op_call_method;
+}
+
+static int32_t SPVM_CHECK_basic_type_qsort_cmp(const void* p1, const void* p2) {
+  SPVM_BASIC_TYPE* basic_type1 = *(SPVM_BASIC_TYPE* const*)p1;
+  SPVM_BASIC_TYPE* basic_type2 = *(SPVM_BASIC_TYPE* const*)p2;
+  
+  int32_t line1 = 0, col1 = 0;
+  int32_t line2 = 0, col2 = 0;
+  
+  const char* ptr1 = strstr(basic_type1->name, "::anon_method::");
+  if (ptr1) {
+    sscanf(ptr1, "::anon_method::%d::%d", &line1, &col1);
+  }
+  
+  const char* ptr2 = strstr(basic_type2->name, "::anon_method::");
+  if (ptr2) {
+    sscanf(ptr2, "::anon_method::%d::%d", &line2, &col2);
+  }
+  
+  if (line1 != line2) {
+    return line1 - line2;
+  }
+  return col1 - col2;
+}
+
+void SPVM_CHECK_sort_anon_method_basic_types(SPVM_COMPILER* compiler) {
+  SPVM_LIST* basic_types = compiler->basic_types;
+  
+  // Find continuous ranges of anon_methods and sort them within their groups
+  int32_t i = compiler->basic_types_base_id;
+  while (i < basic_types->length) {
+    SPVM_BASIC_TYPE* basic_type = basic_types->values[i];
+    if (strstr(basic_type->name, "::anon_method::") != NULL) {
+      int32_t start_index = i;
+      int32_t end_index = i;
+      
+      // Find the contiguous range of anon methods that share the same base context
+      while (end_index < basic_types->length) {
+        SPVM_BASIC_TYPE* next_type = basic_types->values[end_index];
+        if (strstr(next_type->name, "::anon_method::") == NULL) {
+          break;
+        }
+        end_index++;
+      }
+      
+      int32_t sort_count = end_index - start_index;
+      if (sort_count > 1) {
+        qsort(
+          &basic_types->values[start_index],
+          sort_count,
+          sizeof(void*),
+          SPVM_CHECK_basic_type_qsort_cmp
+        );
+      }
+      
+      i = end_index;
+    } else {
+      i++;
+    }
+  }
+  
+  // Reassign basic type IDs only within the valid compilation range
+  for (int32_t j = compiler->basic_types_base_id; j < basic_types->length; j++) {
+    SPVM_BASIC_TYPE* basic_type = basic_types->values[j];
+    basic_type->id = j;
+  }
 }
