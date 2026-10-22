@@ -1,3 +1,15 @@
+0.990204 2026-10-22
+  [New Features]
+    * Support type inference for anonymous method capture arguments.
+    
+      Example:
+        my $foo = 1;
+        my $bar = Int->new(2);
+        
+        my $object = [$foo : , $bar : ] method : int () {
+          return $foo + $bar->(int);
+        };
+    
 0.990203 2026-10-21
   [Small Fix]
     * Update lib/SPVM/Builder/src/spvm_precompile_header_content.c
