@@ -2190,7 +2190,28 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   SPVM_COMPILER_error(compiler, "The operand type of new operator cannnot be a multi-numeric type.\n  at %s line %d", op_new->file, op_new->line);
                   return;
                 }
-
+                
+                // Infer field cast type from local variables in the outer scope
+                if (basic_type->is_generated_from_anon_method) {
+                  for (int32_t i = 0; i < basic_type->fields->length; i++) {
+                    SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, i);
+                    if (field->enable_anon_method_field_cast_type_inference) {
+                      SPVM_VAR_DECL* found_var_decl = NULL;
+                      for (int32_t j = var_decl_stack->length - 1; j >= 0; j--) {
+                        SPVM_VAR_DECL* var_decl = SPVM_LIST_get(var_decl_stack, j);
+                        if (var_decl->var->name[0] == '$' && strcmp(var_decl->var->name + 1, field->name) == 0) {
+                          found_var_decl = var_decl;
+                          break;
+                        }
+                      }
+                      
+                      if (found_var_decl) {
+                        field->anon_method_field_cast_type = found_var_decl->type;
+                      }
+                    }
+                  }
+                }
+                
                 SPVM_BASIC_TYPE* current_basic_type = method->current_basic_type;
                 if (!SPVM_CHECK_can_access(compiler, current_basic_type, new_basic_type, new_basic_type->access_control_type, 0)) {
                   if (!SPVM_OP_is_allowed(compiler, current_basic_type, new_basic_type, 0)) {
