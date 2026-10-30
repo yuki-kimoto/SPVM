@@ -293,6 +293,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | HAS field_name ':' opt_attributes type ASSIGN operator
     | var ':' opt_attributes type
     | var ':' opt_attributes type ASSIGN operator
+    | var ':'
 
   opt_attributes
     : /* Empty */
