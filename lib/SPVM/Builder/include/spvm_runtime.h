@@ -29,8 +29,6 @@ struct spvm_runtime {
   
   SPVM_MUTEX* mutex;
   
-  SPVM_MUTEX* mutex_atomic;
-  
   volatile int32_t memory_blocks_count;
   
   FILE* spvm_stdin;
