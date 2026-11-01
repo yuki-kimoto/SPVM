@@ -302,7 +302,7 @@ void SPVM_API_RUNTIME_disable_record_object(SPVM_RUNTIME* runtime) {
   runtime->record_object = 0;
 }
 
-SPVM_NATIVE_MUTEX* SPVM_API_RUNTIME_get_mutex(SPVM_RUNTIME* runtime) {
+SPVM_MUTEX* SPVM_API_RUNTIME_get_mutex(SPVM_RUNTIME* runtime) {
   
   return runtime->mutex;
 }
