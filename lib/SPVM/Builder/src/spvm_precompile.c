@@ -109,27 +109,23 @@ void SPVM_PRECOMPILE_build_method_declaration(SPVM_PRECOMPILE* precompile, SPVM_
 void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* current_basic_type, SPVM_RUNTIME_METHOD* current_method) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
-  // Method declaration
   SPVM_PRECOMPILE_build_method_declaration(precompile, string_buffer, current_basic_type, current_method);
   
-  // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t constants_inited = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_BASIC_TYPE* current_basic_type = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!constants_inited) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    if (!constants_inited) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      const char* current_basic_type_name = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, current_basic_type->name);
+  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, current_basic_type_name);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "      constants_inited = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  
-  // The basic type name
-  SPVM_STRING_BUFFER_add(string_buffer,"  const char* current_basic_type_name = \"");
-  SPVM_STRING_BUFFER_add(string_buffer, current_basic_type->name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-  
-  SPVM_STRING_BUFFER_add(string_buffer,"  SPVM_NATIVE_BASIC_TYPE* current_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, current_basic_type_name);\n");
   
   // Current method name
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* current_method_name = \"");
