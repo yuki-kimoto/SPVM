@@ -203,6 +203,12 @@ C<void (*disable_record_object)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::N
 
 Disables object recording for memory leak tracking.
 
+=head2 get_mutex
+
+C<SPVM_NATIVE_MUTEX* (*get_mutex)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>);>
+
+Returns the runtime mutex.
+
 =head1 Native Runtime API IDs
 
   0 get_object_data_offset
@@ -230,6 +236,7 @@ Disables object recording for memory leak tracking.
   22 stack_index_caller_info_stack_record_size
   23 enable_record_object
   24 disable_record_object
+  25 get_mutex
 
 =head1 See Also
 

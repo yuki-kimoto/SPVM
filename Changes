@@ -1,3 +1,7 @@
+0.990205 2026-11-02
+  [New Features]
+    * Add get_mutex runtime API to get the runtime mutex.
+    
 0.990204 2026-10-22
   [New Features]
     * Support type inference for anonymous method capture arguments.
