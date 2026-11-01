@@ -113,31 +113,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t constants_inited = 0;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_basic_type_name = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_BASIC_TYPE* current_basic_type = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_method_name = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_METHOD* current_method = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_method_abs_name = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_file = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (!constants_inited) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (!constants_inited) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      current_basic_type_name = \"");
-  SPVM_STRING_BUFFER_add(string_buffer, current_basic_type->name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      current_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, current_basic_type_name);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      current_method_name = \"");
-  SPVM_STRING_BUFFER_add(string_buffer, current_method->name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      current_method = env->api->basic_type->get_method_by_name(env->runtime, current_basic_type, current_method_name);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      current_method_abs_name = env->api->method->get_abs_name(env->runtime, current_method);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      current_file = env->api->basic_type->get_file(env->runtime, current_basic_type);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      constants_inited = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  
   // object variable declarations
   int32_t object_vars_width = current_method->object_vars_width;
   if (object_vars_width > 0) {
@@ -327,6 +302,31 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_exists_bit;\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);\n");
+  
+  SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t constants_inited = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_basic_type_name = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_BASIC_TYPE* current_basic_type = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_method_name = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_METHOD* current_method = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_method_abs_name = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_file = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  if (!constants_inited) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (!constants_inited) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_basic_type_name = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, current_basic_type->name);
+  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, current_basic_type_name);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_method_name = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, current_method->name);
+  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_method = env->api->basic_type->get_method_by_name(env->runtime, current_basic_type, current_method_name);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_method_abs_name = env->api->method->get_abs_name(env->runtime, current_method);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_file = env->api->basic_type->get_file(env->runtime, current_basic_type);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      constants_inited = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   
   SPVM_OPCODE* opcodes = current_method->opcodes;
   int32_t opcodes_length = current_method->opcodes_length;
