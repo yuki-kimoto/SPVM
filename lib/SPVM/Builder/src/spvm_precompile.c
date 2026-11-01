@@ -115,6 +115,15 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   // Block start
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
   
+  SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t constants_inited = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  if (!constants_inited) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (!constants_inited) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      constants_inited = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+  
   // The basic type name
   SPVM_STRING_BUFFER_add(string_buffer,"  const char* current_basic_type_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, current_basic_type->name);
