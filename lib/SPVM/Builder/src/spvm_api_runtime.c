@@ -123,6 +123,7 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_enable_record_object,
     SPVM_API_RUNTIME_disable_record_object,
     SPVM_API_RUNTIME_get_mutex,
+    SPVM_API_RUNTIME_get_field_by_abs_name,
   };
   SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -305,4 +306,40 @@ void SPVM_API_RUNTIME_disable_record_object(SPVM_RUNTIME* runtime) {
 SPVM_MUTEX* SPVM_API_RUNTIME_get_mutex(SPVM_RUNTIME* runtime) {
   
   return runtime->mutex;
+}
+
+SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_abs_name(SPVM_RUNTIME* runtime, const char* field_abs_name) {
+  const char* sharp = strchr(field_abs_name, '#');
+  if (!sharp) {
+    return NULL;
+  }
+  
+  int32_t basic_type_name_length = sharp - field_abs_name;
+  const char* field_name = sharp + 1;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = NULL;
+  for (int32_t i = 0; i < runtime->basic_types_length; i++) {
+    SPVM_RUNTIME_BASIC_TYPE* candidate = runtime->basic_types[i];
+    if (strlen(candidate->name) == basic_type_name_length && strncmp(candidate->name, field_abs_name, basic_type_name_length) == 0) {
+      basic_type = candidate;
+      break;
+    }
+  }
+  if (!basic_type) {
+    return NULL;
+  }
+  
+  SPVM_RUNTIME_FIELD* found_field = NULL;
+  if (basic_type->fields_length > 0) {
+    for (int32_t field_index = 0; field_index < basic_type->fields_length; field_index++) {
+      SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, basic_type, field_index);
+      const char* field_name_current = field->name;
+      if (strcmp(field_name_current, field_name) == 0) {
+        found_field = field;
+        break;
+      }
+    }
+  }
+  
+  return found_field;
 }

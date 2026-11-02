@@ -62,4 +62,6 @@ void SPVM_API_RUNTIME_disable_record_object(SPVM_RUNTIME* runtime);
 
 SPVM_MUTEX* SPVM_API_RUNTIME_get_mutex(SPVM_RUNTIME* runtime);
 
+SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_abs_name(SPVM_RUNTIME* runtime, const char* field_abs_name);
+
 #endif

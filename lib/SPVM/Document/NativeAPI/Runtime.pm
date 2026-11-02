@@ -209,6 +209,14 @@ C<SPVM_NATIVE_MUTEX* (*get_mutex)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document:
 
 Returns the runtime mutex.
 
+=head2 get_field_by_abs_name
+
+C<SPVM_RUNTIME_FIELD* (*get_field_by_abs_name)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, const char* field_abs_name);>
+
+Searches a field given the field absolute name I<field_abs_name> such as C<MyClass#foo>
+
+If it is found, returns it. Otherwise, returns C<NULL>.
+
 =head1 Native Runtime API IDs
 
   0 get_object_data_offset
@@ -237,6 +245,7 @@ Returns the runtime mutex.
   23 enable_record_object
   24 disable_record_object
   25 get_mutex
+  26 get_field_by_abs_name
 
 =head1 See Also
 

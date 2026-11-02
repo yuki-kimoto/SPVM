@@ -423,6 +423,8 @@ ok(SPVM::TestCase::NativeAPI->get_error_id);
 
 ok(SPVM::TestCase::NativeAPI->cfunc("$tmp_dir"));
 
+ok(SPVM::TestCase::NativeAPI->runtime_api);
+
 {
   # The target C source file
   my ($c_source_file) = glob ".spvm_build/work/src/*/*/SPVM/Fn.precompile.c";

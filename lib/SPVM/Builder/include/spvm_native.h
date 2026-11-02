@@ -697,6 +697,7 @@ struct spvm_api_runtime {
   void (*enable_record_object)(SPVM_NATIVE_RUNTIME* runtime);
   void (*disable_record_object)(SPVM_NATIVE_RUNTIME* runtime);
   SPVM_NATIVE_MUTEX* (*get_mutex)(SPVM_NATIVE_RUNTIME* runtime);
+  SPVM_NATIVE_FIELD* (*get_field_by_abs_name)(SPVM_NATIVE_RUNTIME* runtime, const char* field_abs_name);
 };
 
 struct spvm_api_mutex {

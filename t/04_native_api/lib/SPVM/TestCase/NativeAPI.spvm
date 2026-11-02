@@ -1817,4 +1817,6 @@ class TestCase::NativeAPI {
   
   native static method cfunc : int ($tmp_dir : string);
   
+  native static method runtime_api : int ();
+  
 }
