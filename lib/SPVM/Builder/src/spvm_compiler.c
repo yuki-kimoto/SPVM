@@ -1215,6 +1215,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         SPVM_STRING* field_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field->name, strlen(field->name));
         runtime_field->name = runtime_basic_type->constant_strings[field_name_string->index].value;
         
+        SPVM_STRING* field_abs_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field->abs_name, strlen(field->abs_name));
+        runtime_field->abs_name = runtime_basic_type->constant_strings[field_abs_name_string->index].value;
       }
       runtime_basic_type->fields = runtime_fields;
       runtime_basic_type->fields_length = basic_type->fields->length;
