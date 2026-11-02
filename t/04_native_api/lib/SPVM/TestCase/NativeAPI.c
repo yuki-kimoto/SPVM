@@ -617,6 +617,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_ids(SPVM_ENV* env, S
   if ((void*)&env->api->runtime->disable_record_object != &env_array[24]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_mutex != &env_array[25]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_field_by_abs_name != &env_array[26]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_class_var_by_abs_name != &env_array[27]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
@@ -5570,6 +5571,21 @@ int32_t SPVM__TestCase__NativeAPI__runtime_api(SPVM_ENV* env, SPVM_VALUE* stack)
     stack[0].ival = 0;
     return 0;
   }
+
+  SPVM_NATIVE_CLASS_VAR* class_var = env->api->runtime->get_class_var_by_abs_name(env->runtime, "TestCase::NativeAPI#$INT_VALUE");
+
+  if (!class_var) {
+    spvm_diag("");
+    stack[0].ival = 0;
+    return 0;
+  }
+
+  if (!(strcmp(env->api->class_var->get_name(env->runtime, class_var), "$INT_VALUE") == 0)) {
+    spvm_diag("");
+    stack[0].ival = 0;
+    return 0;
+  }
+  
   stack[0].ival = 1;
   
   return 0;
