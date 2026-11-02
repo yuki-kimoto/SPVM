@@ -108,4 +108,12 @@ int32_t SPVM_PRECOMPILE_contains_method(SPVM_PRECOMPILE* precompile, const char*
 // Defined in spvm_precompile_header_content.c
 const char* get_precompile_header_content();
 
+void SPVM_PRECOMPILE_add_class_var_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_var_abs_name);
+void SPVM_PRECOMPILE_add_field_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name);
+void SPVM_PRECOMPILE_add_field_offset_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name);
+void SPVM_PRECOMPILE_add_field_exists_offset_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name);
+void SPVM_PRECOMPILE_add_field_exists_bit_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name);
+void SPVM_PRECOMPILE_add_field_index_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name);
+void SPVM_PRECOMPILE_add_method_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* method_abs_name);
+
 #endif
