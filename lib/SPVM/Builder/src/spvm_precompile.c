@@ -5193,40 +5193,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
                                         "\n");
 }
 
-const char* SPVM_PRECOMPILE_get_ctype_name(SPVM_PRECOMPILE* precompile, int32_t ctype_id) {
-  SPVM_RUNTIME* runtime = precompile->runtime;
-
-  
-  switch (ctype_id) {
-    case SPVM_PRECOMPILE_C_CTYPE_ID_BYTE:
-      return "int8_t";
-      break;
-    case SPVM_PRECOMPILE_C_CTYPE_ID_SHORT:
-      return "int16_t";
-      break;
-    case SPVM_PRECOMPILE_C_CTYPE_ID_INT:
-      return "int32_t";
-      break;
-    case SPVM_PRECOMPILE_C_CTYPE_ID_LONG:
-      return "int64_t";
-      break;
-    case SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT:
-      return "float";
-      break;
-    case SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE:
-      return "double";
-      break;
-    case SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT:
-      return "SPVM_OBJ*";
-      break;
-    case SPVM_PRECOMPILE_C_CTYPE_ID_REF:
-      return "SPVM_REF*";
-      break;
-  }
-  
-  return NULL;
-}
-
 void SPVM_PRECOMPILE_add_operand(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t index) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
