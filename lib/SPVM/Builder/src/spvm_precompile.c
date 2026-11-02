@@ -486,43 +486,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   
-  // Static method calls
-  SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t opcode_method_inited = 0;\n");
-  int32_t static_method_call_abs_names_length = current_method->static_method_call_abs_names_length;
-  if (static_method_call_abs_names_length > 0) {
-    for (int32_t i = 0; i < static_method_call_abs_names_length; i++) {
-      const char* static_method_call_abs_name = current_method->static_method_call_abs_names[i];
-      
-      SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_METHOD* ");
-      SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, static_method_call_abs_name);
-      SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
-    }
-  }
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (!opcode_method_inited) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (!opcode_method_inited) {\n");
-  if (static_method_call_abs_names_length > 0) {
-    for (int32_t i = 0; i < static_method_call_abs_names_length; i++) {
-      const char* static_method_call_abs_name = current_method->static_method_call_abs_names[i];
-      
-      SPVM_STRING_BUFFER_add(string_buffer, "      ");
-      SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, static_method_call_abs_name);
-      SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_method_by_abs_name(env->runtime, \"");
-      SPVM_STRING_BUFFER_add(string_buffer, static_method_call_abs_name);
-      SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
-      SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, static_method_call_abs_name);
-      SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-    }
-  }
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "      opcode_method_inited = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  
   // Field access
   SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t opcode_field_inited = 0;\n");
   int32_t field_access_abs_names_length = current_method->field_access_abs_names_length;
@@ -587,6 +550,43 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   }
   
   SPVM_STRING_BUFFER_add(string_buffer, "      opcode_field_inited = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+  
+  // Static method calls
+  SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t opcode_method_inited = 0;\n");
+  int32_t static_method_call_abs_names_length = current_method->static_method_call_abs_names_length;
+  if (static_method_call_abs_names_length > 0) {
+    for (int32_t i = 0; i < static_method_call_abs_names_length; i++) {
+      const char* static_method_call_abs_name = current_method->static_method_call_abs_names[i];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_METHOD* ");
+      SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, static_method_call_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
+    }
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  if (!opcode_method_inited) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (!opcode_method_inited) {\n");
+  if (static_method_call_abs_names_length > 0) {
+    for (int32_t i = 0; i < static_method_call_abs_names_length; i++) {
+      const char* static_method_call_abs_name = current_method->static_method_call_abs_names[i];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "      ");
+      SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, static_method_call_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_method_by_abs_name(env->runtime, \"");
+      SPVM_STRING_BUFFER_add(string_buffer, static_method_call_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
+      SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, static_method_call_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+    }
+  }
+  
+  SPVM_STRING_BUFFER_add(string_buffer, "      opcode_method_inited = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
