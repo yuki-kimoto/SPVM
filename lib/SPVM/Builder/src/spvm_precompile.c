@@ -344,7 +344,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       const char* basic_type_access_name = current_method->basic_type_access_names[i];
       
       SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_BASIC_TYPE* ");
-      SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_access_name);
+      SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_access_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
     }
   }
@@ -356,12 +356,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       const char* basic_type_access_name = current_method->basic_type_access_names[i];
       
       SPVM_STRING_BUFFER_add(string_buffer, "      ");
-      SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_access_name);
+      SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_access_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_basic_type_by_name(env->runtime, \"");
       SPVM_STRING_BUFFER_add(string_buffer, basic_type_access_name);
       SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
-      SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_access_name);
+      SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_access_name);
       SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
       SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
@@ -852,7 +852,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, dist_basic_type_name);
+        SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, dist_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
                                               
         SPVM_STRING_BUFFER_add(string_buffer, "  dist_type_dimension = ");
@@ -1791,7 +1791,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
+        SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NEW_OBJECT(env, stack, ");
@@ -1814,7 +1814,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
+        SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NEW_OBJECT_ARRAY(env, stack, ");
@@ -1841,7 +1841,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
+        SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NEW_MULDIM_ARRAY(env, stack, ");
@@ -1864,7 +1864,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
+        SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NEW_MULNUM_ARRAY(env, stack, ");
@@ -2739,7 +2739,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
+        SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ISA(env, stack, ");
@@ -2766,7 +2766,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
+        SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ISA_ERROR(env, stack, ");
@@ -2791,7 +2791,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
+        SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_IS_TYPE(env, stack, ");
@@ -2816,7 +2816,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
+        SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  src_basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, src_basic_type_id);\n");
@@ -2989,7 +2989,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
+        SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = env->api->basic_type->get_id(env->runtime, basic_type);");
@@ -3021,7 +3021,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
+        SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(env, stack, ");
@@ -5258,7 +5258,7 @@ void SPVM_PRECOMPILE_add_operand_address(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_PRECOMPILE_add_operand(precompile, string_buffer, ctype_id, var_index);
 }
 
-void SPVM_PRECOMPILE_add_basic_type(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
+void SPVM_PRECOMPILE_add_cvar_for_basic_type(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
   SPVM_STRING_BUFFER_add(string_buffer, "basic_type");
   SPVM_STRING_BUFFER_add(string_buffer, "____");
   SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
