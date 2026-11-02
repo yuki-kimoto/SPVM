@@ -846,7 +846,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  // METHOD: ");
         SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\t");
+        SPVM_STRING_BUFFER_add(string_buffer, "#");
         SPVM_STRING_BUFFER_add(string_buffer, method_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
       }
@@ -870,46 +870,26 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         }
         if (scan_offset + 9 < scan_limit && memcmp(string_buffer->string + scan_offset, "METHOD: ", 8) == 0) {
           scan_offset += 8;
-          int32_t start = scan_offset;
+          int32_t start_offset = scan_offset;
           while (scan_offset < scan_limit && string_buffer->string[scan_offset] != '\0' && string_buffer->string[scan_offset] != ';') {
             scan_offset++;
           }
           if (scan_offset < scan_limit && string_buffer->string[scan_offset] == ';') {
-            string_buffer->string[scan_offset] = '\0';
-            const char* comment_content = string_buffer->string + start;
-            
-            char basic_type_name_buf[256];
-            char method_name_buf[256];
+            int32_t semicolon_offset = scan_offset;
+            string_buffer->string[semicolon_offset] = '\0';
 
-            char* tab = strchr((char*)comment_content, '\t');
-            if (tab) {
-              *tab = '\0';
-              assert(strlen(comment_content) < sizeof(basic_type_name_buf));
-              assert(strlen(tab + 1) < sizeof(method_name_buf));
-              strcpy(basic_type_name_buf, comment_content);
-              strcpy(method_name_buf, tab + 1);
-              *tab = '\t';
-            }
+            SPVM_STRING_BUFFER_add(string_buffer, "      ");
+            SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, string_buffer->string + start_offset);
+            SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_method_by_abs_name(env->runtime, \"");
+            SPVM_STRING_BUFFER_add(string_buffer, string_buffer->string + start_offset);
+            SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
+            SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, string_buffer->string + start_offset);
+            SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
 
-            string_buffer->string[scan_offset] = ';';
-
-            if (tab) {
-              const char* basic_type_name = basic_type_name_buf;
-              const char* method_name = method_name_buf;
-
-              SPVM_STRING_BUFFER_add(string_buffer, "      ");
-              SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
-              SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_method_by_abs_name(env->runtime, \"");
-              SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-              SPVM_STRING_BUFFER_add(string_buffer, "#");
-              SPVM_STRING_BUFFER_add(string_buffer, method_name);
-              SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
-              SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
-              SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-            }
+            string_buffer->string[semicolon_offset] = ';';
           }
         }
       }
