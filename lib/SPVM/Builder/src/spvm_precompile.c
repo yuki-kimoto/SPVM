@@ -506,115 +506,38 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   
-  // Class variables
+  // Class variable access
   SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t opcode_class_var_inited = 0;\n");
-  string_buffer_begin_offset = string_buffer->length;
-  opcode_index = 0;
-  while (opcode_index < opcodes_length) {
-    opcode = &(opcodes[opcode_index]);
-    int32_t opcode_id = opcode->id;
-    
-    int32_t basic_type_id = -1;
-    SPVM_RUNTIME_CLASS_VAR* class_var = NULL;
-    switch(opcode_id) {
-      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE:
-      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_SHORT:
-      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_INT:
-      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_LONG:
-      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_FLOAT:
-      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_DOUBLE:
-      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_OBJECT:
-      {
-        basic_type_id = opcode->operand1;
-        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
-        int32_t class_var_index = opcode->operand2;
-        class_var = SPVM_API_BASIC_TYPE_get_class_var_by_index(runtime, basic_type, class_var_index);
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE:
-      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_SHORT:
-      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_INT:
-      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_LONG:
-      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_FLOAT:
-      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_DOUBLE:
-      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT:
-      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF:
-      {
-        basic_type_id = opcode->operand0;
-        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
-        int32_t class_var_index = opcode->operand1;
-        class_var = SPVM_API_BASIC_TYPE_get_class_var_by_index(runtime, basic_type, class_var_index);
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-    
-    if (class_var) {
-      assert(basic_type_id >= 0);
-      const char* class_var_name = class_var->name;
-      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
-      const char* basic_type_name = basic_type->name;
-      int32_t found = SPVM_PRECOMPILE_contains_class_var(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, class_var_name);
+  int32_t class_var_access_abs_names_length = current_method->class_var_access_abs_names_length;
+  if (class_var_access_abs_names_length > 0) {
+    for (int32_t i = 0; i < class_var_access_abs_names_length; i++) {
+      const char* class_var_access_abs_name = current_method->class_var_access_abs_names[i];
       
-      if (!found) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_CLASS_VAR* ");
-        SPVM_PRECOMPILE_add_class_var(precompile, string_buffer, basic_type_name, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  // CLASS_VAR: ");
-        SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "#");
-        SPVM_STRING_BUFFER_add(string_buffer, class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-      }
+      SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_CLASS_VAR* ");
+      SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, class_var_access_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
     }
-    opcode_index++;
   }
-
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!opcode_class_var_inited) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    if (!opcode_class_var_inited) {\n");
-
-  scan_limit = string_buffer->length;
-
-  {
-    int32_t scan_offset = string_buffer_begin_offset;
-    while (scan_offset < scan_limit) {
-      if (string_buffer->string[scan_offset] == '/' && string_buffer->string[scan_offset + 1] == '/') {
-        scan_offset += 2;
-        while (scan_offset < scan_limit && (string_buffer->string[scan_offset] == ' ' || string_buffer->string[scan_offset] == '\t')) {
-          scan_offset++;
-        }
-        if (scan_offset + 11 < scan_limit && memcmp(string_buffer->string + scan_offset, "CLASS_VAR: ", 11) == 0) {
-          scan_offset += 11;
-          int32_t start_offset = scan_offset;
-          while (scan_offset < scan_limit && string_buffer->string[scan_offset] != '\0' && string_buffer->string[scan_offset] != ';') {
-            scan_offset++;
-          }
-          if (scan_offset < scan_limit && string_buffer->string[scan_offset] == ';') {
-            int32_t semicolon_offset = scan_offset;
-            string_buffer->string[semicolon_offset] = '\0';
-            
-            SPVM_STRING_BUFFER_add(string_buffer, "      ");
-            SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, string_buffer->string + start_offset);
-            SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_class_var_by_abs_name(env->runtime, \"");
-            SPVM_STRING_BUFFER_add(string_buffer, string_buffer->string + start_offset);
-            SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
-            SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, string_buffer->string + start_offset);
-            SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-
-            string_buffer->string[semicolon_offset] = ';';
-          }
-        }
-      }
-      scan_offset++;
+  if (class_var_access_abs_names_length > 0) {
+    for (int32_t i = 0; i < class_var_access_abs_names_length; i++) {
+      const char* class_var_access_abs_name = current_method->class_var_access_abs_names[i];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "      ");
+      SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, class_var_access_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_class_var_by_abs_name(env->runtime, \"");
+      SPVM_STRING_BUFFER_add(string_buffer, class_var_access_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
+      SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, class_var_access_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
     }
   }
-
+  
   SPVM_STRING_BUFFER_add(string_buffer, "      opcode_class_var_inited = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
