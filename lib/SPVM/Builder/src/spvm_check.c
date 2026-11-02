@@ -3810,6 +3810,22 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                   
                   var->class_var = class_var;
                   
+                  // Generate class variable absolute name: BasicTypeName#$VAR
+                  const char* class_var_name = class_var->name;
+                  int32_t class_var_abs_name_length = strlen(class_var_access_basic_type->name) + 1 + strlen(class_var_name);
+                  char* class_var_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, class_var_abs_name_length + 1);
+                  memcpy(class_var_abs_name, class_var_access_basic_type->name, strlen(class_var_access_basic_type->name));
+                  memcpy(class_var_abs_name + strlen(class_var_access_basic_type->name), "#", 1);
+                  memcpy(class_var_abs_name + strlen(class_var_access_basic_type->name) + 1, class_var_name, strlen(class_var_name));
+                  class_var_abs_name[class_var_abs_name_length] = '\0';
+                  
+                  SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, class_var_abs_name, strlen(class_var_abs_name));
+                  
+                  if (!SPVM_HASH_get(method->class_var_access_abs_name_symtable, class_var_abs_name, strlen(class_var_abs_name))) {
+                    SPVM_HASH_set(method->class_var_access_abs_name_symtable, class_var_abs_name, strlen(class_var_abs_name), (void*)class_var_abs_name);
+                    SPVM_LIST_push(method->class_var_access_abs_names, (void*)class_var_abs_name);
+                  }
+                  
                   SPVM_OP_replace_op(compiler, op_stab, op_class_var_access);
                   
                   op_cur = op_class_var_access;

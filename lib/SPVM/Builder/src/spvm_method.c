@@ -9,6 +9,7 @@
 #include "spvm_allocator.h"
 #include "spvm_compiler.h"
 #include "spvm_list.h"
+#include "spvm_hash.h"
 #include "spvm_op.h"
 #include "spvm_opcode_list.h"
 
@@ -18,8 +19,6 @@ SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   method->var_decls = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   method->anon_method_fields = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   
-  method->opcode_list = SPVM_OPCODE_LIST_new(compiler);
-  
   method->basic_type_access_names = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   method->basic_type_access_name_symtable = SPVM_HASH_new_hash_permanent(compiler->current_each_compile_allocator, 0);
   method->class_var_access_abs_names = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
@@ -28,6 +27,8 @@ SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   method->field_access_abs_name_symtable = SPVM_HASH_new_hash_permanent(compiler->current_each_compile_allocator, 0);
   method->static_method_call_abs_names = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   method->static_method_call_symtable = SPVM_HASH_new_hash_permanent(compiler->current_each_compile_allocator, 0);
+  
+  method->opcode_list = SPVM_OPCODE_LIST_new(compiler);
   
   return method;
 }
