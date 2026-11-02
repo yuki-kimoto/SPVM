@@ -4184,6 +4184,23 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field_access->field->name, strlen(field_access->field->name));
               
+              // Generate field absolute name: BasicTypeName#field_name
+              const char* field_name = field->name;
+              SPVM_BASIC_TYPE* field_basic_type = field->current_basic_type;
+              int32_t field_abs_name_length = strlen(field_basic_type->name) + 1 + strlen(field_name);
+              char* field_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, field_abs_name_length + 1);
+              memcpy(field_abs_name, field_basic_type->name, strlen(field_basic_type->name));
+              memcpy(field_abs_name + strlen(field_basic_type->name), "#", 1);
+              memcpy(field_abs_name + strlen(field_basic_type->name) + 1, field_name, strlen(field_name));
+              field_abs_name[field_abs_name_length] = '\0';
+              
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field_abs_name, strlen(field_abs_name));
+              
+              if (!SPVM_HASH_get(method->field_access_abs_name_symtable, field_abs_name, strlen(field_abs_name))) {
+                SPVM_HASH_set(method->field_access_abs_name_symtable, field_abs_name, strlen(field_abs_name), (void*)field_abs_name);
+                SPVM_LIST_push(method->field_access_abs_names, (void*)field_abs_name);
+              }
+              
               break;
             }
             case SPVM_OP_C_ID_HASH_VALUE_ACCESS: {

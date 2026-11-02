@@ -1212,6 +1212,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         
         SPVM_STRING* field_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field->name, strlen(field->name));
         runtime_field->name = runtime_basic_type->constant_strings[field_name_string->index].value;
+        
       }
       runtime_basic_type->fields = runtime_fields;
       runtime_basic_type->fields_length = basic_type->fields->length;
@@ -1310,6 +1311,16 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
           const char* class_var_access_abs_name = SPVM_LIST_get(method->class_var_access_abs_names, i);
           SPVM_STRING* class_var_access_abs_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, class_var_access_abs_name, strlen(class_var_access_abs_name));
           runtime_method->class_var_access_abs_names[i] = runtime_basic_type->constant_strings[class_var_access_abs_name_string->index].value;
+        }
+        
+        int32_t field_access_abs_names_length = method->field_access_abs_names ? method->field_access_abs_names->length : 0;
+        runtime_method->field_access_abs_names_length = field_access_abs_names_length;
+        runtime_method->field_access_abs_names = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(const char*) * (field_access_abs_names_length + 1));
+        
+        for (int32_t i = 0; i < field_access_abs_names_length; i++) {
+          const char* field_access_abs_name = SPVM_LIST_get(method->field_access_abs_names, i);
+          SPVM_STRING* field_access_abs_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field_access_abs_name, strlen(field_access_abs_name));
+          runtime_method->field_access_abs_names[i] = runtime_basic_type->constant_strings[field_access_abs_name_string->index].value;
         }
       }
       runtime_basic_type->methods = runtime_methods;
