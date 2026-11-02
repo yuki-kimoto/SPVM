@@ -336,114 +336,37 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   int32_t string_buffer_begin_offset = 0;
   int32_t scan_limit = 0;
   
+  // Basic type access
   SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t opcode_basic_types_inited = 0;\n");
-  
-  string_buffer_begin_offset = string_buffer->length;
-  opcode_index = 0;
-  while (opcode_index < opcodes_length) {
-    opcode = &(opcodes[opcode_index]);
-    int32_t opcode_id = opcode->id;
-    
-    int32_t basic_type_id = -1;
-    switch(opcode_id) {
-      case SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECK: {
-        basic_type_id = opcode->operand2;
-        break;
-      }
-      case SPVM_OPCODE_C_ID_NEW_OBJECT: {
-        basic_type_id = opcode->operand1;
-        break;
-      }
-      case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
-        basic_type_id = opcode->operand1;
-        break;
-      }
-      case SPVM_OPCODE_C_ID_NEW_MULDIM_ARRAY: {
-        basic_type_id = opcode->operand1;
-        break;
-      }
-      case SPVM_OPCODE_C_ID_NEW_MULNUM_ARRAY: {
-        basic_type_id = opcode->operand1;
-        break;
-      }
-      case SPVM_OPCODE_C_ID_ISA:
-      case SPVM_OPCODE_C_ID_ISA_ERROR:
-      case SPVM_OPCODE_C_ID_IS_TYPE:
-      case SPVM_OPCODE_C_ID_IS_ERROR:
-      {
-        basic_type_id = opcode->operand2;
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_ERROR_ID_BY_TYPE:
-      {
-        basic_type_id = opcode->operand0;
-        break;
-      }
-      case SPVM_OPCODE_C_ID_GET_BASIC_TYPE_ID:
-      {
-        basic_type_id = opcode->operand1;
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-    
-    if (basic_type_id >= 0) {
-      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
-      const char* basic_type_name = basic_type->name;
+  int32_t basic_type_access_names_length = current_method->basic_type_access_names_length;
+  if (basic_type_access_names_length > 0) {
+    for (int32_t i = 0; i < basic_type_access_names_length; i++) {
+      const char* basic_type_access_name = current_method->basic_type_access_names[i];
       
-      int32_t found_basic_type = SPVM_PRECOMPILE_contains_basic_type(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name);
-      if (!found_basic_type) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_BASIC_TYPE* ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  // ");
-        SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-      }
+      SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_BASIC_TYPE* ");
+      SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_access_name);
+      SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
     }
-    opcode_index++;
   }
-
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!opcode_basic_types_inited) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    if (!opcode_basic_types_inited) {\n");
-  
-  scan_limit = string_buffer->length;
-  
-  {
-    int32_t scan_offset = string_buffer_begin_offset;
-    while (scan_offset < scan_limit) {
-      if (string_buffer->string[scan_offset] == '/' && string_buffer->string[scan_offset + 1] == '/') {
-        scan_offset += 2;
-        while (scan_offset < scan_limit && (string_buffer->string[scan_offset] == ' ' || string_buffer->string[scan_offset] == '\t')) {
-          scan_offset++;
-        }
-        int32_t start = scan_offset;
-        while (scan_offset < scan_limit && string_buffer->string[scan_offset] != '\0' && string_buffer->string[scan_offset] != ';') {
-          scan_offset++;
-        }
-        if (scan_offset < scan_limit && string_buffer->string[scan_offset] == ';') {
-          string_buffer->string[scan_offset] = '\0';
-          const char* basic_type_name = string_buffer->string + start;
-
-          SPVM_STRING_BUFFER_add(string_buffer, "      ");
-          SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
-          SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(env, stack, \"");
-          SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-          SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      if (error_id) {\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
-          SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-
-          string_buffer->string[scan_offset] = ';';
-        }
-      }
-      scan_offset++;
+  if (basic_type_access_names_length > 0) {
+    for (int32_t i = 0; i < basic_type_access_names_length; i++) {
+      const char* basic_type_access_name = current_method->basic_type_access_names[i];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "      ");
+      SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_access_name);
+      SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_basic_type_by_name(env->runtime, \"");
+      SPVM_STRING_BUFFER_add(string_buffer, basic_type_access_name);
+      SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
+      SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_access_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
     }
   }
-
   SPVM_STRING_BUFFER_add(string_buffer, "      opcode_basic_types_inited = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
