@@ -125,6 +125,7 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_get_mutex,
     SPVM_API_RUNTIME_get_field_by_abs_name,
     SPVM_API_RUNTIME_get_class_var_by_abs_name,
+    SPVM_API_RUNTIME_get_method_by_abs_name,
   };
   SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -379,4 +380,40 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_abs_name(SPVM_RUNTIME*
   }
 
   return found_class_var;
+}
+
+SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_abs_name(SPVM_RUNTIME* runtime, const char* method_abs_name) {
+  const char* sharp = strchr(method_abs_name, '#');
+  if (!sharp) {
+    return NULL;
+  }
+
+  int32_t basic_type_name_length = sharp - method_abs_name;
+  const char* method_name = sharp + 1;
+
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = NULL;
+  for (int32_t i = 0; i < runtime->basic_types_length; i++) {
+    SPVM_RUNTIME_BASIC_TYPE* candidate = runtime->basic_types[i];
+    if (strlen(candidate->name) == basic_type_name_length && strncmp(candidate->name, method_abs_name, basic_type_name_length) == 0) {
+      basic_type = candidate;
+      break;
+    }
+  }
+  if (!basic_type) {
+    return NULL;
+  }
+
+  SPVM_RUNTIME_METHOD* found_method = NULL;
+  if (basic_type->methods_length > 0) {
+    for (int32_t method_index = 0; method_index < basic_type->methods_length; method_index++) {
+      SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, basic_type, method_index);
+      const char* method_name_current = method->name;
+      if (strcmp(method_name_current, method_name) == 0) {
+        found_method = method;
+        break;
+      }
+    }
+  }
+
+  return found_method;
 }

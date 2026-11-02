@@ -66,4 +66,6 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_abs_name(SPVM_RUNTIME* runtime
 
 SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_abs_name(SPVM_RUNTIME* runtime, const char* class_var_abs_name);
 
+SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_abs_name(SPVM_RUNTIME* runtime, const char* method_abs_name);
+
 #endif

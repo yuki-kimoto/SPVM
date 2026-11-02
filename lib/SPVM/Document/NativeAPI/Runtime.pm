@@ -225,6 +225,14 @@ Searches a class variable given the class variable absolute name I<class_var_abs
 
 If it is found, returns it. Otherwise, returns C<NULL>.
 
+=head2 get_method_by_abs_name
+
+C<SPVM_RUNTIME_METHOD* (*get_method_by_abs_name)(L<SPVM_NATIVE_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>, const char* method_abs_name);>
+
+Searches a method given the method absolute name I<method_abs_name> such as C<MyClass#foo>.
+
+If it is found, returns it. Otherwise, returns C<NULL>.
+
 =head1 Native Runtime API IDs
 
   0 get_object_data_offset
@@ -255,7 +263,8 @@ If it is found, returns it. Otherwise, returns C<NULL>.
   25 get_mutex
   26 get_field_by_abs_name
   27 get_class_var_by_abs_name
-
+  28 get_method_by_abs_name
+  
 =head1 See Also
 
 =over 2
