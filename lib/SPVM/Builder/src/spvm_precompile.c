@@ -815,6 +815,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   
   // Methods
+  SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t opcode_method_inited = 0;\n");
+  string_buffer_begin_offset = string_buffer->length;
   opcode_index = 0;
   while (opcode_index < opcodes_length) {
     opcode = &(opcodes[opcode_index]);
@@ -839,33 +841,93 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     
     if (method) {
       assert(basic_type_id >= 0);
-      const char* method_name = SPVM_API_METHOD_get_name(runtime, method);
+      const char* method_name = method->name;
       SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
       const char* basic_type_name = basic_type->name;
-      int32_t found = SPVM_PRECOMPILE_contains_method(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, method_name);
       
+      int32_t found = SPVM_PRECOMPILE_contains_method(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, method_name);
       if (!found) {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_METHOD* ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_METHOD* ");
         SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
         SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  if (!");
-        SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    ");
-        SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
-        SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_METHOD_BY_NAME(env, stack, \"");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  // METHOD: ");
         SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "\t");
         SPVM_STRING_BUFFER_add(string_buffer, method_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (error_id) {\n"
-                                             "      goto END_OF_METHOD;\n"
-                                             "    }\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
       }
     }
     opcode_index++;
   }
+
+  SPVM_STRING_BUFFER_add(string_buffer, "  if (!opcode_method_inited) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (!opcode_method_inited) {\n");
+
+  scan_limit = string_buffer->length;
+
+  {
+    int32_t scan_offset = string_buffer_begin_offset;
+    while (scan_offset < scan_limit) {
+      if (string_buffer->string[scan_offset] == '/' && string_buffer->string[scan_offset + 1] == '/') {
+        scan_offset += 2;
+        while (scan_offset < scan_limit && (string_buffer->string[scan_offset] == ' ' || string_buffer->string[scan_offset] == '\t')) {
+          scan_offset++;
+        }
+        if (scan_offset + 9 < scan_limit && memcmp(string_buffer->string + scan_offset, "METHOD: ", 8) == 0) {
+          scan_offset += 8;
+          int32_t start = scan_offset;
+          while (scan_offset < scan_limit && string_buffer->string[scan_offset] != '\0' && string_buffer->string[scan_offset] != ';') {
+            scan_offset++;
+          }
+          if (scan_offset < scan_limit && string_buffer->string[scan_offset] == ';') {
+            string_buffer->string[scan_offset] = '\0';
+            const char* comment_content = string_buffer->string + start;
+            
+            char basic_type_name_buf[256];
+            char method_name_buf[256];
+
+            char* tab = strchr((char*)comment_content, '\t');
+            if (tab) {
+              *tab = '\0';
+              assert(strlen(comment_content) < sizeof(basic_type_name_buf));
+              assert(strlen(tab + 1) < sizeof(method_name_buf));
+              strcpy(basic_type_name_buf, comment_content);
+              strcpy(method_name_buf, tab + 1);
+              *tab = '\t';
+            }
+
+            string_buffer->string[scan_offset] = ';';
+
+            if (tab) {
+              const char* basic_type_name = basic_type_name_buf;
+              const char* method_name = method_name_buf;
+
+              SPVM_STRING_BUFFER_add(string_buffer, "      ");
+              SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_method_by_abs_name(env->runtime, \"");
+              SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "#");
+              SPVM_STRING_BUFFER_add(string_buffer, method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
+              SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+            }
+          }
+        }
+      }
+      scan_offset++;
+    }
+  }
+
+  SPVM_STRING_BUFFER_add(string_buffer, "      opcode_method_inited = 1;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   
   opcode_index = 0;
   while (opcode_index < opcodes_length) {
