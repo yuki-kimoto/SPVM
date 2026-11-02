@@ -762,36 +762,21 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
               
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
               SPVM_PRECOMPILE_add_field_offset(precompile, string_buffer, basic_type_name, field_name);
-              SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELD_OFFSET_BY_NAME(env, stack, \"");
-              SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-              SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-              SPVM_STRING_BUFFER_add(string_buffer, field_name);
-              SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      if (error_id) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, " = env->api->field->get_offset(env->runtime, ");
+              SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
 
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
               SPVM_PRECOMPILE_add_field_exists_offset(precompile, string_buffer, basic_type_name, field_name);
-              SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELD_EXISTS_OFFSET_BY_NAME(env, stack, \"");
-              SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-              SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-              SPVM_STRING_BUFFER_add(string_buffer, field_name);
-              SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      if (error_id) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, " = env->api->field->get_exists_offset(env->runtime, ");
+              SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
 
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
               SPVM_PRECOMPILE_add_field_exists_bit(precompile, string_buffer, basic_type_name, field_name);
-              SPVM_STRING_BUFFER_add(string_buffer, " = SPVM_IMPLEMENT_GET_FIELD_EXISTS_BIT_BY_NAME(env, stack, \"");
-              SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-              SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-              SPVM_STRING_BUFFER_add(string_buffer, field_name);
-              SPVM_STRING_BUFFER_add(string_buffer, "\", &error_id);\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      if (error_id) {\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
-              SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, " = env->api->field->get_exists_bit(env->runtime, ");
+              SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
+              SPVM_STRING_BUFFER_add(string_buffer, ");\n");
             }
           }
         }
