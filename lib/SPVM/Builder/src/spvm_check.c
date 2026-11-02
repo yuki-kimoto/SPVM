@@ -5319,6 +5319,25 @@ void SPVM_CHECK_check_call_method_call(SPVM_COMPILER* compiler, SPVM_OP* op_call
     }
   }
   
+  // Register absolute name for class method call and static instance method call
+  if (call_method->is_class_method || call_method->is_instance_method_static) {
+    SPVM_METHOD* found_method = call_method->method;
+    const char* found_method_name = found_method->name;
+    SPVM_BASIC_TYPE* found_method_basic_type = found_method->current_basic_type;
+    int32_t static_method_call_abs_name_length = strlen(found_method_basic_type->name) + 1 + strlen(found_method_name);
+    char* static_method_call_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, static_method_call_abs_name_length + 1);
+    memcpy(static_method_call_abs_name, found_method_basic_type->name, strlen(found_method_basic_type->name));
+    memcpy(static_method_call_abs_name + strlen(found_method_basic_type->name), "#", 1);
+    memcpy(static_method_call_abs_name + strlen(found_method_basic_type->name) + 1, found_method_name, strlen(found_method_name));
+    static_method_call_abs_name[static_method_call_abs_name_length] = '\0';
+    
+    SPVM_BASIC_TYPE_add_constant_string(compiler, current_method->current_basic_type, static_method_call_abs_name, strlen(static_method_call_abs_name));
+    
+    if (!SPVM_HASH_get(current_method->static_method_call_symtable, static_method_call_abs_name, strlen(static_method_call_abs_name))) {
+      SPVM_HASH_set(current_method->static_method_call_symtable, static_method_call_abs_name, strlen(static_method_call_abs_name), (void*)static_method_call_abs_name);
+      SPVM_LIST_push(current_method->static_method_call_abs_names, (void*)static_method_call_abs_name);
+    }
+  }
 }
 
 SPVM_OP* SPVM_CHECK_check_call_method_varargs(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method) {

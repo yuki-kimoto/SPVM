@@ -1322,6 +1322,15 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
           SPVM_STRING* field_access_abs_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field_access_abs_name, strlen(field_access_abs_name));
           runtime_method->field_access_abs_names[i] = runtime_basic_type->constant_strings[field_access_abs_name_string->index].value;
         }
+        
+        int32_t static_method_call_abs_names_length = method->static_method_call_abs_names ? method->static_method_call_abs_names->length : 0;
+        runtime_method->static_method_call_abs_names_length = static_method_call_abs_names_length;
+        runtime_method->static_method_call_abs_names = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(const char*) * (static_method_call_abs_names_length + 1));        
+        for (int32_t i = 0; i < static_method_call_abs_names_length; i++) {
+          const char* static_method_call_abs_name = SPVM_LIST_get(method->static_method_call_abs_names, i);
+          SPVM_STRING* static_method_call_abs_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, static_method_call_abs_name, strlen(static_method_call_abs_name));
+          runtime_method->static_method_call_abs_names[i] = runtime_basic_type->constant_strings[static_method_call_abs_name_string->index].value;
+        }
       }
       runtime_basic_type->methods = runtime_methods;
       runtime_basic_type->methods_length = basic_type->methods->length;
