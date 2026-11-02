@@ -46,6 +46,14 @@ struct spvm_method {
   int8_t is_required;
   int8_t access_control_type;
   SPVM_OP* op_anon_method_field_var_decl_start;
+  SPVM_LIST* basic_type_access_names;
+  SPVM_HASH* basic_type_access_name_symtable;
+  SPVM_LIST* class_var_access_abs_names;
+  SPVM_HASH* class_var_access_abs_name_symtable;
+  SPVM_LIST* field_access_abs_names;
+  SPVM_HASH* field_access_abs_name_symtable;
+  SPVM_LIST* static_method_call_abs_names;
+  SPVM_HASH* static_method_call_symtable;
 };
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);
