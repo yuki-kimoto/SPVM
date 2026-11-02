@@ -596,15 +596,13 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
             int32_t semicolon_offset = scan_offset;
             string_buffer->string[semicolon_offset] = '\0';
             
-            const char* class_var_abs_name = string_buffer->string + start_offset;
-
             SPVM_STRING_BUFFER_add(string_buffer, "      ");
-            SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, class_var_abs_name);
+            SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, string_buffer->string + start_offset);
             SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_class_var_by_abs_name(env->runtime, \"");
-            SPVM_STRING_BUFFER_add(string_buffer, class_var_abs_name);
+            SPVM_STRING_BUFFER_add(string_buffer, string_buffer->string + start_offset);
             SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
             SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
-            SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, class_var_abs_name);
+            SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, string_buffer->string + start_offset);
             SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
             SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
             SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
