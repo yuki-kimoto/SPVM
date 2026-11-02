@@ -424,6 +424,16 @@ void SPVM_CHECK_check_class_vars(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable.\n  at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
         return;
       }
+      
+      // Create class variable absolute name: BasicTypeName#$CLASS_VAR
+      int32_t class_var_abs_name_length = strlen(class_var->current_basic_type->name) + 1 + strlen(class_var->name);
+      char* class_var_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, class_var_abs_name_length + 1);
+      memcpy(class_var_abs_name, class_var->current_basic_type->name, strlen(class_var->current_basic_type->name));
+      memcpy(class_var_abs_name + strlen(class_var->current_basic_type->name), "#", 1);
+      memcpy(class_var_abs_name + strlen(class_var->current_basic_type->name) + 1, class_var->name, strlen(class_var->name));
+      class_var_abs_name[class_var_abs_name_length] = '\0';
+      SPVM_STRING* class_var_abs_name_string = SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, class_var_abs_name, strlen(class_var_abs_name));
+      class_var->abs_name = class_var_abs_name_string->value;
     }
     
     // Class variable
@@ -679,7 +689,6 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
       field_abs_name[field_abs_name_length] = '\0';
       SPVM_STRING* field_abs_name_string = SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field_abs_name, strlen(field_abs_name));
       field->abs_name = field_abs_name_string->value;
-      assert(field->abs_name);
     }
   }
 }
