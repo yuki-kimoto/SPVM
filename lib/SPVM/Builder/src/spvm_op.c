@@ -1184,16 +1184,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         assert(method->op_method->file);
         
-        // Method absolute name
-        // Foo#bar
-        int32_t method_abs_name_length = strlen(type->unresolved_basic_type_name) + 1 + strlen(method->name);
-        char* method_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, method_abs_name_length + 1);
-        memcpy(method_abs_name, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
-        memcpy(method_abs_name + strlen(basic_type_name), "#", 1);
-        memcpy(method_abs_name + strlen(basic_type_name) + 1, method_name, strlen(method_name));
-        method->abs_name = method_abs_name;
-        SPVM_BASIC_TYPE_add_constant_string(compiler, type->basic_type, method->abs_name, strlen(method->abs_name));
-        
         // Add the method to the method symtable of the class
         SPVM_HASH_set(type->basic_type->method_symtable, method->name, strlen(method->name), method);
       }

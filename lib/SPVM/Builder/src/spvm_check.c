@@ -1175,6 +1175,16 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
     for (int32_t i = 0; i < methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_get(methods, i);
       
+      // Create method absolute name: BasicType#method_name
+      int32_t method_abs_name_length = strlen(method->current_basic_type->name) + 1 + strlen(method->name);
+      char* method_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, method_abs_name_length + 1);
+      memcpy(method_abs_name, method->current_basic_type->name, strlen(method->current_basic_type->name));
+      memcpy(method_abs_name + strlen(method->current_basic_type->name), "#", 1);
+      memcpy(method_abs_name + strlen(method->current_basic_type->name) + 1, method->name, strlen(method->name));
+      method_abs_name[method_abs_name_length] = '\0';
+      SPVM_STRING* method_abs_name_string = SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method_abs_name, strlen(method_abs_name));
+      method->abs_name = method_abs_name_string->value;
+      
       method->index = i;
     }
     
