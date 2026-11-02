@@ -2647,17 +2647,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_BASIC_TYPE_get_class_var_by_index(runtime, class_var_current_basic_type, class_var_index);
         const char* basic_type_name = class_var_current_basic_type->name;
         const char* class_var_name = class_var->name;
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_var_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)class_var_name);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        const char* class_var_abs_name = class_var->abs_name;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_class_var = ");
-        SPVM_PRECOMPILE_add_class_var(precompile, string_buffer, basic_type_name, class_var_name);
+        SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, class_var_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         switch (opcode_id) {
