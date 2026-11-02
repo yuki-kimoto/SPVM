@@ -48,6 +48,8 @@ struct spvm_runtime_method {
   int8_t has_object_args;
   int8_t return_type_is_object;
   int8_t return_type_is_void;
+  const char** class_var_access_abs_names;
+  int32_t class_var_access_abs_names_length;
 };
 
 #endif

@@ -1301,6 +1301,16 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         }
         
         runtime_method->call_stack_frame_size = SPVM_API_get_call_stack_frame_size(runtime_method);
+        
+        int32_t class_var_access_abs_names_length = method->class_var_access_abs_names ? method->class_var_access_abs_names->length : 0;
+        runtime_method->class_var_access_abs_names_length = class_var_access_abs_names_length;
+        runtime_method->class_var_access_abs_names = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(const char*) * (class_var_access_abs_names_length + 1));
+        
+        for (int32_t i = 0; i < class_var_access_abs_names_length; i++) {
+          const char* class_var_access_abs_name = SPVM_LIST_get(method->class_var_access_abs_names, i);
+          SPVM_STRING* class_var_access_abs_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, class_var_access_abs_name, strlen(class_var_access_abs_name));
+          runtime_method->class_var_access_abs_names[i] = runtime_basic_type->constant_strings[class_var_access_abs_name_string->index].value;
+        }
       }
       runtime_basic_type->methods = runtime_methods;
       runtime_basic_type->methods_length = basic_type->methods->length;
