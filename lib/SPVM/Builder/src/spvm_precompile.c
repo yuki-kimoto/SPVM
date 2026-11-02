@@ -739,11 +739,24 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
             string_buffer->string[scan_offset] = '\0';
             const char* comment_content = string_buffer->string + start;
             
+            char basic_type_name_buf[256];
+            char field_name_buf[256];
+
             char* tab = strchr((char*)comment_content, '\t');
             if (tab) {
               *tab = '\0';
-              const char* basic_type_name = comment_content;
-              const char* field_name = tab + 1;
+              assert(strlen(comment_content) < sizeof(basic_type_name_buf));
+              assert(strlen(tab + 1) < sizeof(field_name_buf));
+              strcpy(basic_type_name_buf, comment_content);
+              strcpy(field_name_buf, tab + 1);
+              *tab = '\t';
+            }
+
+            string_buffer->string[scan_offset] = ';';
+
+            if (tab) {
+              const char* basic_type_name = basic_type_name_buf;
+              const char* field_name = field_name_buf;
 
               SPVM_STRING_BUFFER_add(string_buffer, "      ");
               SPVM_PRECOMPILE_add_field(precompile, string_buffer, basic_type_name, field_name);
@@ -788,11 +801,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
               SPVM_STRING_BUFFER_add(string_buffer, "      if (error_id) {\n");
               SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
               SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-
-              *tab = '\t';
             }
-
-            string_buffer->string[scan_offset] = ';';
           }
         }
       }
