@@ -1184,6 +1184,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         SPVM_STRING* class_var_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, class_var->name, strlen(class_var->name));
         runtime_class_var->name = runtime_basic_type->constant_strings[class_var_name_string->index].value;
         
+        SPVM_STRING* class_var_abs_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, class_var->abs_name, strlen(class_var->abs_name));
+        runtime_class_var->abs_name = runtime_basic_type->constant_strings[class_var_abs_name_string->index].value;
       }
       runtime_basic_type->class_vars = runtime_class_vars;
       runtime_basic_type->class_vars_length = basic_type->class_vars->length;

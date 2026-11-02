@@ -10,6 +10,7 @@
 struct spvm_runtime_class_var {
   SPVM_VALUE data;
   const char* name;
+  const char* abs_name;
   SPVM_RUNTIME_BASIC_TYPE* current_basic_type;
   SPVM_RUNTIME_BASIC_TYPE* basic_type;
   int32_t index;

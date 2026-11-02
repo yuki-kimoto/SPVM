@@ -1034,6 +1034,16 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       
       // Add op class
       class_var->current_basic_type = type->basic_type;
+      
+      // Class variable absolute name: BasicTypeName#$VAR
+      int32_t class_var_abs_name_length = strlen(type->unresolved_basic_type_name) + 1 + strlen(class_var_name);
+      char* class_var_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, class_var_abs_name_length + 1);
+      memcpy(class_var_abs_name, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
+      memcpy(class_var_abs_name + strlen(type->unresolved_basic_type_name), "#", 1);
+      memcpy(class_var_abs_name + strlen(type->unresolved_basic_type_name) + 1, class_var_name, strlen(class_var_name));
+      class_var_abs_name[class_var_abs_name_length] = '\0';
+      class_var->abs_name = class_var_abs_name;
+      SPVM_BASIC_TYPE_add_constant_string(compiler, type->basic_type, class_var->abs_name, strlen(class_var->abs_name));
     }
   }
   
