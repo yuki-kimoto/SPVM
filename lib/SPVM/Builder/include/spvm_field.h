@@ -12,6 +12,7 @@ struct spvm_field {
   SPVM_OP* op_anon_method_field_default;
   SPVM_TYPE* anon_method_field_cast_type;
   const char* name;
+  const char* abs_name;
   SPVM_TYPE* type;
   SPVM_BASIC_TYPE* current_basic_type;
   SPVM_OP* op_getter;

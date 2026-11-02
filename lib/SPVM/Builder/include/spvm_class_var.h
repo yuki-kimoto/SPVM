@@ -8,6 +8,7 @@
 
 struct spvm_class_var {
   const char* name;
+  const char* abs_name;
   SPVM_TYPE* type;
   SPVM_BASIC_TYPE* current_basic_type;
   SPVM_OP* op_class_var;
