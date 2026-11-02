@@ -1455,6 +1455,29 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               break;
             }
+            case SPVM_OP_C_ID_TYPE: {
+              
+              SPVM_TYPE* type = op_cur->uv.type;
+              SPVM_BASIC_TYPE* target_basic_type = type->basic_type;
+              
+              if (target_basic_type) {
+                const char* basic_type_name = target_basic_type->name;
+                int32_t basic_type_name_length = strlen(basic_type_name);
+                
+                char* basic_type_access_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, basic_type_name_length + 1);
+                memcpy(basic_type_access_name, basic_type_name, basic_type_name_length);
+                basic_type_access_name[basic_type_name_length] = '\0';
+                
+                SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type_access_name, basic_type_name_length);
+                
+                if (!SPVM_HASH_get(method->basic_type_access_name_symtable, basic_type_access_name, basic_type_name_length)) {
+                  SPVM_HASH_set(method->basic_type_access_name_symtable, basic_type_access_name, basic_type_name_length, (void*)basic_type_access_name);
+                  SPVM_LIST_push(method->basic_type_access_names, (void*)basic_type_access_name);
+                }
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_TYPE_NAME: {
               
               SPVM_OP* op_operand = op_cur->first;

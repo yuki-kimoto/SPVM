@@ -1303,6 +1303,16 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         
         runtime_method->call_stack_frame_size = SPVM_API_get_call_stack_frame_size(runtime_method);
         
+        int32_t basic_type_access_names_length = method->basic_type_access_names ? method->basic_type_access_names->length : 0;
+        runtime_method->basic_type_access_names_length = basic_type_access_names_length;
+        runtime_method->basic_type_access_names = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(const char*) * (basic_type_access_names_length + 1));
+        
+        for (int32_t i = 0; i < basic_type_access_names_length; i++) {
+          const char* basic_type_access_name = SPVM_LIST_get(method->basic_type_access_names, i);
+          SPVM_STRING* basic_type_access_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type_access_name, strlen(basic_type_access_name));
+          runtime_method->basic_type_access_names[i] = runtime_basic_type->constant_strings[basic_type_access_name_string->index].value;
+        }
+        
         int32_t class_var_access_abs_names_length = method->class_var_access_abs_names ? method->class_var_access_abs_names->length : 0;
         runtime_method->class_var_access_abs_names_length = class_var_access_abs_names_length;
         runtime_method->class_var_access_abs_names = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(const char*) * (class_var_access_abs_names_length + 1));
@@ -1331,6 +1341,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
           SPVM_STRING* static_method_call_abs_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, static_method_call_abs_name, strlen(static_method_call_abs_name));
           runtime_method->static_method_call_abs_names[i] = runtime_basic_type->constant_strings[static_method_call_abs_name_string->index].value;
         }
+        
       }
       runtime_basic_type->methods = runtime_methods;
       runtime_basic_type->methods_length = basic_type->methods->length;
