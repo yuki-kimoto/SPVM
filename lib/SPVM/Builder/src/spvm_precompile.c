@@ -254,7 +254,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t fields_length;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_CLASS_VAR* decl_class_var = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_METHOD* decl_method = NULL;\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);\n");
   
@@ -2526,15 +2525,19 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, field_current_basic_type, field_index);
         const char* field_abs_name = field->abs_name;
         
+        SPVM_STRING_BUFFER_add(string_buffer, "{\n");
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_FIELD* decl_field = ");
         SPVM_PRECOMPILE_add_cvar_for_field(precompile, string_buffer, field_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_DELETE(env, stack, object, decl_field, &error_id);\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "}\n");
         
         break;
       }
@@ -5053,17 +5056,21 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         const char* method_abs_name = decl_method->abs_name;
         const char* basic_type_name = invocant_decl_basic_type->name;
         
+        SPVM_STRING_BUFFER_add(string_buffer, "{\n");
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  args_width = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, args_width);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_method = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_METHOD* decl_method = ");
         SPVM_PRECOMPILE_add_cvar_for_static_method(precompile, string_buffer, method_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, decl_method, args_width, current_method_abs_name, current_file, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, "  );\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "}\n");
         
         break;
       }
@@ -5078,11 +5085,13 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         const char* method_abs_name = decl_method->abs_name;
         const char* basic_type_name = invocant_decl_basic_type->name;
         
+        SPVM_STRING_BUFFER_add(string_buffer, "{\n");
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  args_width = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, args_width);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_method = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_METHOD* decl_method = ");
         SPVM_PRECOMPILE_add_cvar_for_static_method(precompile, string_buffer, method_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
@@ -5090,6 +5099,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
                                               "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, decl_method, args_width, current_method_abs_name, current_file, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, "  );\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "}\n");
         
         break;
       }
