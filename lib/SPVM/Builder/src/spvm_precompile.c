@@ -380,7 +380,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       const char* class_var_access_abs_name = current_method->class_var_access_abs_names[i];
       
       SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_CLASS_VAR* ");
-      SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, class_var_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_class_var(precompile, string_buffer, class_var_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
     }
   }
@@ -392,12 +392,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       const char* class_var_access_abs_name = current_method->class_var_access_abs_names[i];
       
       SPVM_STRING_BUFFER_add(string_buffer, "      ");
-      SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, class_var_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_class_var(precompile, string_buffer, class_var_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_class_var_by_abs_name(env->runtime, \"");
       SPVM_STRING_BUFFER_add(string_buffer, class_var_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
-      SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, class_var_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_class_var(precompile, string_buffer, class_var_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
       SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
@@ -417,19 +417,19 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       const char* field_access_abs_name = current_method->field_access_abs_names[i];
       
       SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_FIELD* ");
-      SPVM_PRECOMPILE_add_field_by_abs_name(precompile, string_buffer, field_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_field(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
       
       SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
-      SPVM_PRECOMPILE_add_field_offset_by_abs_name(precompile, string_buffer, field_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_field_offset(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
       
       SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
-      SPVM_PRECOMPILE_add_field_exists_offset_by_abs_name(precompile, string_buffer, field_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_field_exists_offset(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
       
       SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t ");
-      SPVM_PRECOMPILE_add_field_exists_bit_by_abs_name(precompile, string_buffer, field_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_field_exists_bit(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
     }
   }
@@ -441,33 +441,33 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       const char* field_access_abs_name = current_method->field_access_abs_names[i];
       
       SPVM_STRING_BUFFER_add(string_buffer, "      ");
-      SPVM_PRECOMPILE_add_field_by_abs_name(precompile, string_buffer, field_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_field(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_field_by_abs_name(env->runtime, \"");
       SPVM_STRING_BUFFER_add(string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
       
       SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
-      SPVM_PRECOMPILE_add_field_by_abs_name(precompile, string_buffer, field_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_field(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
       SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
       
       SPVM_STRING_BUFFER_add(string_buffer, "      ");
-      SPVM_PRECOMPILE_add_field_offset_by_abs_name(precompile, string_buffer, field_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_field_offset(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = env->api->field->get_offset(env->runtime, ");
-      SPVM_PRECOMPILE_add_field_by_abs_name(precompile, string_buffer, field_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_field(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, ");\n");
 
       SPVM_STRING_BUFFER_add(string_buffer, "      ");
-      SPVM_PRECOMPILE_add_field_exists_offset_by_abs_name(precompile, string_buffer, field_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_field_exists_offset(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = env->api->field->get_exists_offset(env->runtime, ");
-      SPVM_PRECOMPILE_add_field_by_abs_name(precompile, string_buffer, field_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_field(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, ");\n");
 
       SPVM_STRING_BUFFER_add(string_buffer, "      ");
-      SPVM_PRECOMPILE_add_field_exists_bit_by_abs_name(precompile, string_buffer, field_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_field_exists_bit(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = env->api->field->get_exists_bit(env->runtime, ");
-      SPVM_PRECOMPILE_add_field_by_abs_name(precompile, string_buffer, field_access_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_field(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, ");\n");
     }
   }
@@ -485,7 +485,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       const char* static_method_call_abs_name = current_method->static_method_call_abs_names[i];
       
       SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_METHOD* ");
-      SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, static_method_call_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_static_method(precompile, string_buffer, static_method_call_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
     }
   }
@@ -497,12 +497,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       const char* static_method_call_abs_name = current_method->static_method_call_abs_names[i];
       
       SPVM_STRING_BUFFER_add(string_buffer, "      ");
-      SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, static_method_call_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_static_method(precompile, string_buffer, static_method_call_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_method_by_abs_name(env->runtime, \"");
       SPVM_STRING_BUFFER_add(string_buffer, static_method_call_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
-      SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, static_method_call_abs_name);
+      SPVM_PRECOMPILE_add_cvar_for_static_method(precompile, string_buffer, static_method_call_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
       SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
@@ -2313,7 +2313,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
-        SPVM_PRECOMPILE_add_field_offset_by_abs_name(precompile, string_buffer,  field_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_field_offset(precompile, string_buffer,  field_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         switch (opcode_id) {
@@ -2386,15 +2386,15 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
-        SPVM_PRECOMPILE_add_field_offset_by_abs_name(precompile, string_buffer, field_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_field_offset(precompile, string_buffer, field_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_exists_offset = ");
-        SPVM_PRECOMPILE_add_field_exists_offset_by_abs_name(precompile, string_buffer, field_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_field_exists_offset(precompile, string_buffer, field_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_exists_bit = ");
-        SPVM_PRECOMPILE_add_field_exists_bit_by_abs_name(precompile, string_buffer, field_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_field_exists_bit(precompile, string_buffer, field_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         switch (opcode_id) {
@@ -2463,7 +2463,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
-        SPVM_PRECOMPILE_add_field_offset_by_abs_name(precompile, string_buffer, field_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_field_offset(precompile, string_buffer, field_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_WEAKEN_FIELD(env, stack, object, decl_field_offset, &error_id);\n");
@@ -2483,7 +2483,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
-        SPVM_PRECOMPILE_add_field_offset_by_abs_name(precompile, string_buffer, field_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_field_offset(precompile, string_buffer, field_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_UNWEAKEN_FIELD(env, stack, object, decl_field_offset, &error_id);\n");
@@ -2503,11 +2503,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_exists_offset = ");
-        SPVM_PRECOMPILE_add_field_exists_offset_by_abs_name(precompile, string_buffer, field_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_field_exists_offset(precompile, string_buffer, field_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_offset = ");
-        SPVM_PRECOMPILE_add_field_offset_by_abs_name(precompile, string_buffer, field_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_field_offset(precompile, string_buffer, field_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &");
@@ -2529,11 +2529,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_exists_offset = ");
-        SPVM_PRECOMPILE_add_field_exists_offset_by_abs_name(precompile, string_buffer, field_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_field_exists_offset(precompile, string_buffer, field_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field_exists_bit = ");
-        SPVM_PRECOMPILE_add_field_exists_bit_by_abs_name(precompile, string_buffer, field_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_field_exists_bit(precompile, string_buffer, field_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_EXISTS(env, stack, &");
@@ -2555,7 +2555,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_field = ");
-        SPVM_PRECOMPILE_add_field_by_abs_name(precompile, string_buffer, field_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_field(precompile, string_buffer, field_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_DELETE(env, stack, object, decl_field, &error_id);\n");
@@ -2578,7 +2578,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         const char* class_var_abs_name = class_var->abs_name;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_class_var = ");
-        SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, class_var_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_class_var(precompile, string_buffer, class_var_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         switch (opcode_id) {
@@ -2650,7 +2650,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         const char* class_var_abs_name = class_var->abs_name;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_class_var = ");
-        SPVM_PRECOMPILE_add_class_var_by_abs_name(precompile, string_buffer, class_var_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_class_var(precompile, string_buffer, class_var_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         switch (opcode_id) {
@@ -5082,7 +5082,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_method = ");
-        SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, method_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_static_method(precompile, string_buffer, method_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, decl_method, args_width, current_method_abs_name, current_file, ");
@@ -5107,7 +5107,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_method = ");
-        SPVM_PRECOMPILE_add_method_by_abs_name(precompile, string_buffer, method_abs_name);
+        SPVM_PRECOMPILE_add_cvar_for_static_method(precompile, string_buffer, method_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer,
@@ -5266,7 +5266,7 @@ void SPVM_PRECOMPILE_add_cvar_for_basic_type(SPVM_PRECOMPILE* precompile, SPVM_S
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
-void SPVM_PRECOMPILE_add_class_var_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_var_abs_name) {
+void SPVM_PRECOMPILE_add_cvar_for_class_var(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_var_abs_name) {
   const char* sharp = strchr(class_var_abs_name, '#');
   assert(sharp);
   int32_t basic_type_name_length = sharp - class_var_abs_name;
@@ -5282,7 +5282,7 @@ void SPVM_PRECOMPILE_add_class_var_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
-void SPVM_PRECOMPILE_add_field_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
+void SPVM_PRECOMPILE_add_cvar_for_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
   const char* sharp = strchr(field_abs_name, '#');
   assert(sharp);
   int32_t basic_type_name_length = sharp - field_abs_name;
@@ -5298,7 +5298,7 @@ void SPVM_PRECOMPILE_add_field_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STR
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
-void SPVM_PRECOMPILE_add_field_offset_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
+void SPVM_PRECOMPILE_add_cvar_for_field_offset(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
   const char* sharp = strchr(field_abs_name, '#');
   assert(sharp);
   int32_t basic_type_name_length = sharp - field_abs_name;
@@ -5314,7 +5314,7 @@ void SPVM_PRECOMPILE_add_field_offset_by_abs_name(SPVM_PRECOMPILE* precompile, S
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
-void SPVM_PRECOMPILE_add_field_exists_offset_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
+void SPVM_PRECOMPILE_add_cvar_for_field_exists_offset(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
   const char* sharp = strchr(field_abs_name, '#');
   assert(sharp);
   int32_t basic_type_name_length = sharp - field_abs_name;
@@ -5330,7 +5330,7 @@ void SPVM_PRECOMPILE_add_field_exists_offset_by_abs_name(SPVM_PRECOMPILE* precom
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
-void SPVM_PRECOMPILE_add_field_exists_bit_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
+void SPVM_PRECOMPILE_add_cvar_for_field_exists_bit(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
   const char* sharp = strchr(field_abs_name, '#');
   assert(sharp);
   int32_t basic_type_name_length = sharp - field_abs_name;
@@ -5346,7 +5346,7 @@ void SPVM_PRECOMPILE_add_field_exists_bit_by_abs_name(SPVM_PRECOMPILE* precompil
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
-void SPVM_PRECOMPILE_add_field_index_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
+void SPVM_PRECOMPILE_add_cvar_for_field_index(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
   const char* sharp = strchr(field_abs_name, '#');
   assert(sharp);
   int32_t basic_type_name_length = sharp - field_abs_name;
@@ -5362,7 +5362,7 @@ void SPVM_PRECOMPILE_add_field_index_by_abs_name(SPVM_PRECOMPILE* precompile, SP
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
-void SPVM_PRECOMPILE_add_method_by_abs_name(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* method_abs_name) {
+void SPVM_PRECOMPILE_add_cvar_for_static_method(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* method_abs_name) {
   const char* sharp = strchr(method_abs_name, '#');
   assert(sharp);
   int32_t basic_type_name_length = sharp - method_abs_name;
