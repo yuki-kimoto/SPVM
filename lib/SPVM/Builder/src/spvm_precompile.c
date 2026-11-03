@@ -5259,129 +5259,65 @@ void SPVM_PRECOMPILE_add_operand_address(SPVM_PRECOMPILE* precompile, SPVM_STRIN
 }
 
 void SPVM_PRECOMPILE_add_cvar_for_basic_type(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
-  SPVM_STRING_BUFFER_add(string_buffer, "basic_type");
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(basic_type_name));
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_PRECOMPILE_add_cvar(precompile, string_buffer, "basic_type", basic_type_name);
 }
 
 void SPVM_PRECOMPILE_add_cvar_for_class_var(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_var_abs_name) {
-  const char* sharp = strchr(class_var_abs_name, '#');
-  assert(sharp);
-  int32_t basic_type_name_length = sharp - class_var_abs_name;
-  const char* class_var_name = sharp + 1;
-
-  SPVM_STRING_BUFFER_add(string_buffer, "class_var");
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add_len(string_buffer, (char*)class_var_abs_name, basic_type_name_length);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - basic_type_name_length);
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add(string_buffer, class_var_name);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(class_var_name));
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_PRECOMPILE_add_cvar(precompile, string_buffer, "class_var", class_var_abs_name);
 }
 
 void SPVM_PRECOMPILE_add_cvar_for_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
-  const char* sharp = strchr(field_abs_name, '#');
-  assert(sharp);
-  int32_t basic_type_name_length = sharp - field_abs_name;
-  const char* field_name = sharp + 1;
-
-  SPVM_STRING_BUFFER_add(string_buffer, "field");
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add_len(string_buffer, (char*)field_abs_name, basic_type_name_length);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - basic_type_name_length);
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add(string_buffer, field_name);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(field_name));
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_PRECOMPILE_add_cvar(precompile, string_buffer, "field", field_abs_name);
 }
 
 void SPVM_PRECOMPILE_add_cvar_for_field_offset(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
-  const char* sharp = strchr(field_abs_name, '#');
-  assert(sharp);
-  int32_t basic_type_name_length = sharp - field_abs_name;
-  const char* field_name = sharp + 1;
-
-  SPVM_STRING_BUFFER_add(string_buffer, "field_offset");
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add_len(string_buffer, (char*)field_abs_name, basic_type_name_length);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - basic_type_name_length);
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add(string_buffer, field_name);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(field_name));
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_PRECOMPILE_add_cvar(precompile, string_buffer, "field_offset", field_abs_name);
 }
 
 void SPVM_PRECOMPILE_add_cvar_for_field_exists_offset(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
-  const char* sharp = strchr(field_abs_name, '#');
-  assert(sharp);
-  int32_t basic_type_name_length = sharp - field_abs_name;
-  const char* field_name = sharp + 1;
-
-  SPVM_STRING_BUFFER_add(string_buffer, "field_exists_offset");
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add_len(string_buffer, (char*)field_abs_name, basic_type_name_length);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - basic_type_name_length);
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add(string_buffer, field_name);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(field_name));
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_PRECOMPILE_add_cvar(precompile, string_buffer, "field_exists_offset", field_abs_name);
 }
 
 void SPVM_PRECOMPILE_add_cvar_for_field_exists_bit(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
-  const char* sharp = strchr(field_abs_name, '#');
-  assert(sharp);
-  int32_t basic_type_name_length = sharp - field_abs_name;
-  const char* field_name = sharp + 1;
-
-  SPVM_STRING_BUFFER_add(string_buffer, "field_exists_bit");
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add_len(string_buffer, (char*)field_abs_name, basic_type_name_length);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - basic_type_name_length);
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add(string_buffer, field_name);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(field_name));
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_PRECOMPILE_add_cvar(precompile, string_buffer, "field_exists_bit", field_abs_name);
 }
 
 void SPVM_PRECOMPILE_add_cvar_for_field_index(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name) {
-  const char* sharp = strchr(field_abs_name, '#');
-  assert(sharp);
-  int32_t basic_type_name_length = sharp - field_abs_name;
-  const char* field_name = sharp + 1;
-
-  SPVM_STRING_BUFFER_add(string_buffer, "field_index");
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add_len(string_buffer, (char*)field_abs_name, basic_type_name_length);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - basic_type_name_length);
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add(string_buffer, field_name);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(field_name));
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_PRECOMPILE_add_cvar(precompile, string_buffer, "field_index", field_abs_name);
 }
 
 void SPVM_PRECOMPILE_add_cvar_for_static_method(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* method_abs_name) {
-  const char* sharp = strchr(method_abs_name, '#');
-  assert(sharp);
-  int32_t basic_type_name_length = sharp - method_abs_name;
-  const char* method_name = sharp + 1;
-
-  SPVM_STRING_BUFFER_add(string_buffer, "method");
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add_len(string_buffer, (char*)method_abs_name, basic_type_name_length);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - basic_type_name_length);
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-  SPVM_STRING_BUFFER_add(string_buffer, method_name);
-  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(method_name));
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_PRECOMPILE_add_cvar(precompile, string_buffer, "method", method_abs_name);
 }
 
-void SPVM_PRECOMPILE_replace_colon_with_under_score(SPVM_PRECOMPILE* precompile, char* string) {
+void SPVM_PRECOMPILE_add_cvar(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* prefix, const char* name) {
+  const char* sharp = strchr(name, '#');
+  if (sharp) {
+    int32_t basic_type_name_length = sharp - name;
+    const char* sub_name = sharp + 1;
+
+    SPVM_STRING_BUFFER_add(string_buffer, prefix);
+    SPVM_STRING_BUFFER_add(string_buffer, "____");
+    SPVM_STRING_BUFFER_add_len(string_buffer, (char*)name, basic_type_name_length);
+    SPVM_PRECOMPILE_replace_colon_and_dollar_with_under_score(precompile, string_buffer->string + string_buffer->length - basic_type_name_length);
+    SPVM_STRING_BUFFER_add(string_buffer, "____");
+    SPVM_STRING_BUFFER_add(string_buffer, sub_name);
+    SPVM_PRECOMPILE_replace_colon_and_dollar_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(sub_name));
+    SPVM_STRING_BUFFER_add(string_buffer, "____");
+  }
+  else {
+    SPVM_STRING_BUFFER_add(string_buffer, prefix);
+    SPVM_STRING_BUFFER_add(string_buffer, "____");
+    SPVM_STRING_BUFFER_add(string_buffer, name);
+    SPVM_PRECOMPILE_replace_colon_and_dollar_with_under_score(precompile, string_buffer->string + string_buffer->length - strlen(name));
+    SPVM_STRING_BUFFER_add(string_buffer, "____");
+  }
+}
+
+void SPVM_PRECOMPILE_replace_colon_and_dollar_with_under_score(SPVM_PRECOMPILE* precompile, char* string) {
   int32_t offset = 0;
   while (string[offset] != '\0') {
-    if (string[offset] == ':') {
+    if (string[offset] == ':' || string[offset] == '$') {
       string[offset] = '_';
     }
     offset++;

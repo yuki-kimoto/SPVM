@@ -77,12 +77,7 @@ void SPVM_PRECOMPILE_add_operand(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER
 
 void SPVM_PRECOMPILE_add_operand_address(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index);
 
-void SPVM_PRECOMPILE_replace_colon_with_under_score(SPVM_PRECOMPILE* precompile, char* string);
-
 void SPVM_PRECOMPILE_add_cvar_for_basic_type(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name);
-
-// Defined in spvm_precompile_header_content.c
-const char* get_precompile_header_content();
 
 void SPVM_PRECOMPILE_add_cvar_for_class_var(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* class_var_abs_name);
 void SPVM_PRECOMPILE_add_cvar_for_field(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name);
@@ -91,5 +86,10 @@ void SPVM_PRECOMPILE_add_cvar_for_field_exists_offset(SPVM_PRECOMPILE* precompil
 void SPVM_PRECOMPILE_add_cvar_for_field_exists_bit(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name);
 void SPVM_PRECOMPILE_add_cvar_for_field_index(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* field_abs_name);
 void SPVM_PRECOMPILE_add_cvar_for_static_method(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* method_abs_name);
+void SPVM_PRECOMPILE_add_cvar(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* prefix, const char* name);
+void SPVM_PRECOMPILE_replace_colon_and_dollar_with_under_score(SPVM_PRECOMPILE* precompile, char* string);
+
+// Defined in spvm_precompile_header_content.c
+const char* get_precompile_header_content();
 
 #endif
