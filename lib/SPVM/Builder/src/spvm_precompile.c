@@ -253,7 +253,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  char* file;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t fields_length;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_CLASS_VAR* decl_class_var = NULL;\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);\n");
   
@@ -2556,7 +2555,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_BASIC_TYPE_get_class_var_by_index(runtime, class_var_current_basic_type, class_var_index);
         const char* class_var_abs_name = class_var->abs_name;
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_class_var = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "{\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_CLASS_VAR* decl_class_var = ");
         SPVM_PRECOMPILE_add_cvar_for_class_var(precompile, string_buffer, class_var_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
@@ -2608,6 +2609,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           }
         }
         
+        SPVM_STRING_BUFFER_add(string_buffer, "}\n");
+        
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE:
@@ -2628,7 +2631,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         const char* class_var_name = class_var->name;
         const char* class_var_abs_name = class_var->abs_name;
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  decl_class_var = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "{\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_NATIVE_CLASS_VAR* decl_class_var = ");
         SPVM_PRECOMPILE_add_cvar_for_class_var(precompile, string_buffer, class_var_abs_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
@@ -2683,6 +2688,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
             assert(0);
           }
         }
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "}\n");
         
         break;
       }
