@@ -303,9 +303,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);\n");
   
-  SPVM_OPCODE* opcodes = current_method->opcodes;
-  int32_t opcodes_length = current_method->opcodes_length;
-  
   SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t constants_inited = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_basic_type_name = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_BASIC_TYPE* current_basic_type = NULL;\n");
@@ -330,11 +327,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  
-  int32_t opcode_index = 0;
-  SPVM_OPCODE* opcode = NULL;
-  int32_t string_buffer_begin_offset = 0;
-  int32_t scan_limit = 0;
   
   // Basic type access
   SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t opcode_basic_types_inited = 0;\n");
@@ -514,7 +506,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
   
-  opcode_index = 0;
+  SPVM_OPCODE* opcodes = current_method->opcodes;
+  int32_t opcodes_length = current_method->opcodes_length;
+  int32_t opcode_index = 0;
+  SPVM_OPCODE* opcode = NULL;
   while (opcode_index < opcodes_length) {
 
     // Line label
