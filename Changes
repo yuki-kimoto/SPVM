@@ -1,3 +1,16 @@
+0.990205 2026-11-04
+  [Performance Improvement]
+    * Static variables initialization is performed only once in precompiled method.
+  [New Features]
+    * Add get_mutex runtime API to get the runtime mutex.
+    * Add get_method_var_by_abs_name runtime native APIs.
+    * Add get_class_var_by_abs_name runtime native APIs.
+    * Add get_field_by_abs_name runtime native APIs.
+  [Internal Changes]
+    * Remove unused mutex_atomic member from spvm_runtime.h.
+    * Add scope to all opcode in precomple souce.
+    * Add abs_name to spvm_field.h and spvm_class_var.h
+    * Refactor precompile code.
 0.990205 2026-11-02
   [New Features]
     * Add get_mutex runtime API to get the runtime mutex.
