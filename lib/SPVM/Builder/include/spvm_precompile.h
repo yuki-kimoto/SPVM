@@ -41,6 +41,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
 
 void SPVM_PRECOMPILE_build_local_vars_declaration(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* current_basic_type, SPVM_RUNTIME_METHOD* current_method);
 
+void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* current_basic_type, SPVM_RUNTIME_METHOD* current_method);
+
 void SPVM_PRECOMPILE_add_operand(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index);
 
 void SPVM_PRECOMPILE_add_operand_address(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t var_index);
