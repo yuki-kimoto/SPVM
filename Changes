@@ -2,8 +2,7 @@
   [Performance Improvement]
     * Static variables initialization is performed only once in precompiled method.
   [New Features]
-    * Add get_mutex runtime API to get the runtime mutex.
-    * Add get_method_var_by_abs_name runtime native APIs.
+    * Add get_method_by_abs_name runtime native APIs.
     * Add get_class_var_by_abs_name runtime native APIs.
     * Add get_field_by_abs_name runtime native APIs.
     * Add get_mutex runtime API to get the runtime mutex.
