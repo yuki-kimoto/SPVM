@@ -113,86 +113,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_STRING_BUFFER_add(string_buffer, " {\n");
   
-  int32_t object_vars_width = current_method->object_vars_width;
-  if (object_vars_width > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* object_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, object_vars_width);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
-  }
-
-  int32_t ref_vars_width = current_method->ref_vars_width;
-  if (ref_vars_width > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_REF* ref_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, ref_vars_width);
-    SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
-  }
-
-  int32_t double_vars_width = current_method->double_vars_width;
-  if (double_vars_width > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  double double_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, double_vars_width);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
-
-  int32_t float_vars_width = current_method->float_vars_width;
-  if (float_vars_width > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  float float_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, float_vars_width);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
-
-  int32_t long_vars_width = current_method->long_vars_width;
-  if (long_vars_width > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  int64_t long_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, long_vars_width);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
-
-  int32_t int_vars_width = current_method->int_vars_width;
-  if (int_vars_width > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t int_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, int_vars_width);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
+  SPVM_PRECOMPILE_build_local_vars_declaration(precompile, string_buffer, current_basic_type, current_method);
   
-  int32_t short_vars_width = current_method->short_vars_width;
-  if (short_vars_width > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  int16_t short_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, short_vars_width);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
-  
-  int32_t byte_vars_width = current_method->byte_vars_width;
-  if (byte_vars_width > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  int8_t byte_vars[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, byte_vars_width);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-  }
-  
-  int32_t method_mortal_stack_length = current_method->mortal_stack_length;
-  if (method_mortal_stack_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_typed_var_index[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, method_mortal_stack_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  env->api->cfunc->c_memset(env, stack, mortal_stack_typed_var_index, -1, ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_length * sizeof(int32_t));
-    SPVM_STRING_BUFFER_add(string_buffer, ");");
-  }
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
-  
-  if (current_method->mortal_stack_tops_length > 0) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_tops[");
-    SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_tops_length);
-    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  env->api->cfunc->c_memset(env, stack, mortal_stack_tops, -1, ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_tops_length * sizeof(int32_t));
-    SPVM_STRING_BUFFER_add(string_buffer, ");");
-  }
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t error_id = 0;\n");
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_error_id = 0;\n");
-
   SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t constants_inited = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_basic_type_name = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_BASIC_TYPE* current_basic_type = NULL;\n");
@@ -5090,6 +5012,89 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  return error_id;\n"
                                         "}\n"
                                         "\n");
+}
+
+void SPVM_PRECOMPILE_build_local_vars_declaration(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* current_basic_type, SPVM_RUNTIME_METHOD* current_method) {
+
+  int32_t object_vars_width = current_method->object_vars_width;
+  if (object_vars_width > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_OBJ* object_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, object_vars_width);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
+  }
+
+  int32_t ref_vars_width = current_method->ref_vars_width;
+  if (ref_vars_width > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_REF* ref_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, ref_vars_width);
+    SPVM_STRING_BUFFER_add(string_buffer, "] = {0};\n");
+  }
+
+  int32_t double_vars_width = current_method->double_vars_width;
+  if (double_vars_width > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  double double_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, double_vars_width);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+
+  int32_t float_vars_width = current_method->float_vars_width;
+  if (float_vars_width > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  float float_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, float_vars_width);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+
+  int32_t long_vars_width = current_method->long_vars_width;
+  if (long_vars_width > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  int64_t long_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, long_vars_width);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+
+  int32_t int_vars_width = current_method->int_vars_width;
+  if (int_vars_width > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t int_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, int_vars_width);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+  
+  int32_t short_vars_width = current_method->short_vars_width;
+  if (short_vars_width > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  int16_t short_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, short_vars_width);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+  
+  int32_t byte_vars_width = current_method->byte_vars_width;
+  if (byte_vars_width > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  int8_t byte_vars[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, byte_vars_width);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+  }
+  
+  int32_t method_mortal_stack_length = current_method->mortal_stack_length;
+  if (method_mortal_stack_length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_typed_var_index[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, method_mortal_stack_length);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  env->api->cfunc->c_memset(env, stack, mortal_stack_typed_var_index, -1, ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_length * sizeof(int32_t));
+    SPVM_STRING_BUFFER_add(string_buffer, ");");
+  }
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_top = 0;\n");
+  
+  if (current_method->mortal_stack_tops_length > 0) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t mortal_stack_tops[");
+    SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_tops_length);
+    SPVM_STRING_BUFFER_add(string_buffer, "];\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  env->api->cfunc->c_memset(env, stack, mortal_stack_tops, -1, ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, current_method->mortal_stack_tops_length * sizeof(int32_t));
+    SPVM_STRING_BUFFER_add(string_buffer, ");");
+  }
+  
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t error_id = 0;\n");
+  
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t eval_error_id = 0;\n");
 }
 
 void SPVM_PRECOMPILE_add_operand(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t index) {
