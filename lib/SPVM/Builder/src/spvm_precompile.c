@@ -4989,6 +4989,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
       SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_access_name);
       SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "        error_id = env->die(env, stack, \"Static variable initialization for basic type failed.\", __func__, __FILE__, __LINE__);\n");
       SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
     }
@@ -5006,6 +5007,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
       SPVM_PRECOMPILE_add_cvar_for_class_var(precompile, string_buffer, class_var_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "        error_id = env->die(env, stack, \"Static variable initialization for class variable failed.\", __func__, __FILE__, __LINE__);\n");
       SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
     }
@@ -5024,6 +5026,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
       SPVM_PRECOMPILE_add_cvar_for_field(precompile, string_buffer, field_access_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "        error_id = env->die(env, stack, \"Static variable initialization for field failed.\", __func__, __FILE__, __LINE__);\n");
       SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
       
@@ -5059,6 +5062,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
       SPVM_PRECOMPILE_add_cvar_for_static_method(precompile, string_buffer, static_method_call_abs_name);
       SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "        error_id = env->die(env, stack, \"Static variable initialization for static method failed.\", __func__, __FILE__, __LINE__);\n");
       SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
       SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
     }
