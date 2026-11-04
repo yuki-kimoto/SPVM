@@ -4898,33 +4898,14 @@ void SPVM_PRECOMPILE_build_local_vars_declaration(SPVM_PRECOMPILE* precompile, S
 
 void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* current_basic_type, SPVM_RUNTIME_METHOD* current_method) {
 
-  SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t constants_inited = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t static_vars_initialized = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_basic_type_name = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_BASIC_TYPE* current_basic_type = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_method_name = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_METHOD* current_method = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_method_abs_name = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  static const char* current_file = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (!constants_inited) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (!constants_inited) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      current_basic_type_name = \"");
-  SPVM_STRING_BUFFER_add(string_buffer, current_basic_type->name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      current_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, current_basic_type_name);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      current_method_name = \"");
-  SPVM_STRING_BUFFER_add(string_buffer, current_method->name);
-  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      current_method = env->api->basic_type->get_method_by_name(env->runtime, current_basic_type, current_method_name);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      current_method_abs_name = env->api->method->get_abs_name(env->runtime, current_method);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      current_file = env->api->basic_type->get_file(env->runtime, current_basic_type);\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "      constants_inited = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  
-  // Basic type access
-  SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t opcode_basic_types_inited = 0;\n");
+
   int32_t basic_type_access_names_length = current_method->basic_type_access_names_length;
   if (basic_type_access_names_length > 0) {
     for (int32_t i = 0; i < basic_type_access_names_length; i++) {
@@ -4935,32 +4916,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
     }
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (!opcode_basic_types_inited) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (!opcode_basic_types_inited) {\n");
-  if (basic_type_access_names_length > 0) {
-    for (int32_t i = 0; i < basic_type_access_names_length; i++) {
-      const char* basic_type_access_name = current_method->basic_type_access_names[i];
-      
-      SPVM_STRING_BUFFER_add(string_buffer, "      ");
-      SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_access_name);
-      SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_basic_type_by_name(env->runtime, \"");
-      SPVM_STRING_BUFFER_add(string_buffer, basic_type_access_name);
-      SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
-      SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_access_name);
-      SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-    }
-  }
-  SPVM_STRING_BUFFER_add(string_buffer, "      opcode_basic_types_inited = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  
-  // Class variable access
-  SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t opcode_class_var_inited = 0;\n");
+
   int32_t class_var_access_abs_names_length = current_method->class_var_access_abs_names_length;
   if (class_var_access_abs_names_length > 0) {
     for (int32_t i = 0; i < class_var_access_abs_names_length; i++) {
@@ -4971,33 +4927,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
     }
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (!opcode_class_var_inited) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (!opcode_class_var_inited) {\n");
-  if (class_var_access_abs_names_length > 0) {
-    for (int32_t i = 0; i < class_var_access_abs_names_length; i++) {
-      const char* class_var_access_abs_name = current_method->class_var_access_abs_names[i];
-      
-      SPVM_STRING_BUFFER_add(string_buffer, "      ");
-      SPVM_PRECOMPILE_add_cvar_for_class_var(precompile, string_buffer, class_var_access_abs_name);
-      SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_class_var_by_abs_name(env->runtime, \"");
-      SPVM_STRING_BUFFER_add(string_buffer, class_var_access_abs_name);
-      SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
-      SPVM_PRECOMPILE_add_cvar_for_class_var(precompile, string_buffer, class_var_access_abs_name);
-      SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-    }
-  }
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "      opcode_class_var_inited = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  
-  // Field access
-  SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t opcode_field_inited = 0;\n");
+
   int32_t field_access_abs_names_length = current_method->field_access_abs_names_length;
   if (field_access_abs_names_length > 0) {
     for (int32_t i = 0; i < field_access_abs_names_length; i++) {
@@ -5020,9 +4950,67 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
     }
   }
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (!opcode_field_inited) {\n");
+
+  int32_t static_method_call_abs_names_length = current_method->static_method_call_abs_names_length;
+  if (static_method_call_abs_names_length > 0) {
+    for (int32_t i = 0; i < static_method_call_abs_names_length; i++) {
+      const char* static_method_call_abs_name = current_method->static_method_call_abs_names[i];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_METHOD* ");
+      SPVM_PRECOMPILE_add_cvar_for_static_method(precompile, string_buffer, static_method_call_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
+    }
+  }
+
+  SPVM_STRING_BUFFER_add(string_buffer, "  if (!static_vars_initialized) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (!opcode_field_inited) {\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "    if (!static_vars_initialized) {\n");
+
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_basic_type_name = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, current_basic_type->name);
+  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, current_basic_type_name);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_method_name = \"");
+  SPVM_STRING_BUFFER_add(string_buffer, current_method->name);
+  SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_method = env->api->basic_type->get_method_by_name(env->runtime, current_basic_type, current_method_name);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_method_abs_name = env->api->method->get_abs_name(env->runtime, current_method);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "      current_file = env->api->basic_type->get_file(env->runtime, current_basic_type);\n");
+
+  if (basic_type_access_names_length > 0) {
+    for (int32_t i = 0; i < basic_type_access_names_length; i++) {
+      const char* basic_type_access_name = current_method->basic_type_access_names[i];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "      ");
+      SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_access_name);
+      SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_basic_type_by_name(env->runtime, \"");
+      SPVM_STRING_BUFFER_add(string_buffer, basic_type_access_name);
+      SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
+      SPVM_PRECOMPILE_add_cvar_for_basic_type(precompile, string_buffer, basic_type_access_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+    }
+  }
+
+  if (class_var_access_abs_names_length > 0) {
+    for (int32_t i = 0; i < class_var_access_abs_names_length; i++) {
+      const char* class_var_access_abs_name = current_method->class_var_access_abs_names[i];
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "      ");
+      SPVM_PRECOMPILE_add_cvar_for_class_var(precompile, string_buffer, class_var_access_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, " = env->api->runtime->get_class_var_by_abs_name(env->runtime, \"");
+      SPVM_STRING_BUFFER_add(string_buffer, class_var_access_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      if (!");
+      SPVM_PRECOMPILE_add_cvar_for_class_var(precompile, string_buffer, class_var_access_abs_name);
+      SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "        goto END_OF_METHOD;\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+    }
+  }
+
   if (field_access_abs_names_length > 0) {
     for (int32_t i = 0; i < field_access_abs_names_length; i++) {
       const char* field_access_abs_name = current_method->field_access_abs_names[i];
@@ -5058,27 +5046,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       SPVM_STRING_BUFFER_add(string_buffer, ");\n");
     }
   }
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "      opcode_field_inited = 1;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  
-  // Static method calls
-  SPVM_STRING_BUFFER_add(string_buffer, "  static int32_t opcode_method_inited = 0;\n");
-  int32_t static_method_call_abs_names_length = current_method->static_method_call_abs_names_length;
-  if (static_method_call_abs_names_length > 0) {
-    for (int32_t i = 0; i < static_method_call_abs_names_length; i++) {
-      const char* static_method_call_abs_name = current_method->static_method_call_abs_names[i];
-      
-      SPVM_STRING_BUFFER_add(string_buffer, "  static SPVM_NATIVE_METHOD* ");
-      SPVM_PRECOMPILE_add_cvar_for_static_method(precompile, string_buffer, static_method_call_abs_name);
-      SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
-    }
-  }
-  SPVM_STRING_BUFFER_add(string_buffer, "  if (!opcode_method_inited) {\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "    if (!opcode_method_inited) {\n");
+
   if (static_method_call_abs_names_length > 0) {
     for (int32_t i = 0; i < static_method_call_abs_names_length; i++) {
       const char* static_method_call_abs_name = current_method->static_method_call_abs_names[i];
@@ -5095,12 +5063,11 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
     }
   }
-  
-  SPVM_STRING_BUFFER_add(string_buffer, "      opcode_method_inited = 1;\n");
+
+  SPVM_STRING_BUFFER_add(string_buffer, "      static_vars_initialized = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-  
 }
 
 void SPVM_PRECOMPILE_add_operand(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t index) {
