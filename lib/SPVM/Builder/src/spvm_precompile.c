@@ -448,8 +448,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_STRING_BUFFER_add(string_buffer, (char*)(SPVM_OPCODE_C_ID_NAMES())[opcode_id]);
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
     
+    SPVM_STRING_BUFFER_add(string_buffer, "{\n");
+    
     switch (opcode_id) {
-
       case SPVM_OPCODE_C_ID_END_METHOD: {
         break;
       }
@@ -5198,6 +5199,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         assert(0);
       }
     }
+    
+    SPVM_STRING_BUFFER_add(string_buffer, "}\n");
+    
     opcode_index++;
   }
   
