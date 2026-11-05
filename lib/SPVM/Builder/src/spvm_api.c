@@ -62,6 +62,17 @@
 #include "spvm_atomic.h"
 #include "spvm_mutex.h"
 
+// Never change for binary backword compatible
+struct switch_table_row {
+  const char* method_abs_name;
+  int32_t value;
+  int32_t index;
+};
+struct switch_table {
+  struct switch_table_row* rows;
+  int32_t switch_table_rows_length;
+};
+
 static const char* FILE_NAME = "spvm_api.c";
 
 SPVM_ENV* SPVM_NATIVE_new_env(void) {
@@ -490,6 +501,15 @@ SPVM_ENV* SPVM_API_new_env(void) {
     return NULL;
   }
   memcpy(env, env_init, sizeof(env_init));
+  
+  // Never change for binary backword compatible
+  assert(offsetof(struct switch_table_row, method_abs_name) == 0);
+  assert(offsetof(struct switch_table_row, value) == 8);
+  assert(offsetof(struct switch_table_row, index) == 12);
+  
+  // Never change for binary backword compatible
+  assert(offsetof(struct switch_table, rows) == 0);
+  assert(offsetof(struct switch_table, switch_table_rows_length) == 8);
   
   return env;
 }
