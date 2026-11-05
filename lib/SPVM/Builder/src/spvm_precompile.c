@@ -26,6 +26,8 @@
 #include "spvm_runtime_method.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_string.h"
+#include "spvm_runtime_switch_info.h"
+#include "spvm_runtime_case_info.h"
 #include "spvm_type.h"
 #include "spvm_runtime.h"
 
@@ -63,7 +65,7 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
     SPVM_STRING_BUFFER_add(string_buffer, precompile_header_content);
     
     // Add case_info struct definition to the precompile source header
-    SPVM_STRING_BUFFER_add(string_buffer, "struct case_info {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "struct case_info_for_switch_table {\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  const char* method_abs_name;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t value;\n");
@@ -4969,6 +4971,49 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
     }
   }
 
+  int32_t switch_infos_length = current_method->switch_infos_length;
+  if (switch_infos_length > 0) {
+    for (int32_t i = 0; i < switch_infos_length; i++) {
+      SPVM_RUNTIME_SWITCH_INFO* switch_info = &current_method->switch_infos[i];
+      int32_t opcode_index = switch_info->opcode_index;
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "  static struct case_info_for_switch_table ");
+      SPVM_PRECOMPILE_add_cvar_for_switch_table(precompile, string_buffer, opcode_index);
+      SPVM_STRING_BUFFER_add(string_buffer, "[] = {\n");
+      
+      int32_t case_infos_length = switch_info->case_infos_length;
+      for (int32_t j = 0; j < case_infos_length; j++) {
+        SPVM_RUNTIME_CASE_INFO* case_info = &switch_info->case_infos[j];
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "    {\n");
+        
+        // index
+        SPVM_STRING_BUFFER_add(string_buffer, "      .index = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, j);
+        SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+        
+        // method_abs_name
+        SPVM_STRING_BUFFER_add(string_buffer, "      .method_abs_name = ");
+        if (case_info->method_abs_name) {
+          SPVM_STRING_BUFFER_add(string_buffer, "\"");
+          SPVM_STRING_BUFFER_add(string_buffer, case_info->method_abs_name);
+          SPVM_STRING_BUFFER_add(string_buffer, "\",\n");
+        } else {
+          SPVM_STRING_BUFFER_add(string_buffer, "NULL,\n");
+        }
+        
+        // value
+        SPVM_STRING_BUFFER_add(string_buffer, "      .value = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, case_info->value);
+        SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "    },\n");
+      }
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+    }
+  }
+  
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!static_vars_initialized) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    if (!static_vars_initialized) {\n");
