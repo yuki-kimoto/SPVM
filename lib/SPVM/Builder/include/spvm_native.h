@@ -75,6 +75,12 @@ typedef struct spvm_native_arg SPVM_NATIVE_ARG;
 struct spvm_native_mutex;
 typedef struct spvm_native_mutex SPVM_NATIVE_MUTEX;
 
+struct spvm_native_switch_info;
+typedef struct spvm_native_switch_info SPVM_NATIVE_SWITCH_INFO;
+
+struct spvm_native_case_info;
+typedef struct spvm_native_case_info SPVM_NATIVE_CASE_INFO;
+
 struct spvm_native_opcode;
 typedef struct spvm_native_opcode SPVM_NATIVE_OPCODE;
 
