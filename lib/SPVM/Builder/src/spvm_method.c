@@ -12,6 +12,7 @@
 #include "spvm_hash.h"
 #include "spvm_op.h"
 #include "spvm_opcode_list.h"
+#include "spvm_switch_info.h"
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   SPVM_METHOD* method = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, sizeof(SPVM_METHOD));
