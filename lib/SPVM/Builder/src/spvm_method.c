@@ -30,5 +30,7 @@ SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   
   method->opcode_list = SPVM_OPCODE_LIST_new(compiler);
   
+  method->switch_infos = SPVM_OPCODE_LIST_new(compiler);
+  
   return method;
 }
