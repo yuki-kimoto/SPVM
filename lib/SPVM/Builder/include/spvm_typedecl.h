@@ -7,6 +7,12 @@
 #include <stdint.h>
 #include <stddef.h>
 
+struct spvm_runtime_case_info;
+typedef struct spvm_runtime_case_info SPVM_RUNTIME_CASE_INFO;
+
+struct spvm_runtime_switch_info;
+typedef struct spvm_runtime_switch_info SPVM_RUNTIME_SWITCH_INFO;
+
 struct spvm_runtime_call_stack_frame_info;
 typedef struct spvm_runtime_call_stack_frame_info SPVM_RUNTIME_CALL_STACK_FRAME_INFO;
 
