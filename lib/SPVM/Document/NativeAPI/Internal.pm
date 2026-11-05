@@ -50,6 +50,12 @@ Performs a leaving scope operation for local variables given object variables I<
 
 The value referenced by I<mortal_stack_top_ptr> is updated.
 
+=head2 lookup_switch_table
+
+C<int32_t (*lookup_switch_table)(SPVM_NATIVE_SWITCH_TABLE* switch_table, int32_t value);>
+
+Looks up the switch table I<switch_table> for the specified I<value> using binary search and returns the corresponding index.
+
 =head1 Native Internal API IDs
 
   0 get_ref_count
@@ -57,6 +63,7 @@ The value referenced by I<mortal_stack_top_ptr> is updated.
   2 dec_ref_count
   3 get_stack_tmp_buffer
   4 leave_scope_local
+  5 lookup_switch_table
   
 =head1 See Also
 

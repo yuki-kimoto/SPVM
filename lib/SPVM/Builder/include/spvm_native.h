@@ -727,6 +727,7 @@ struct spvm_api_internal {
   void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ* object);
   char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ** object_vars, int32_t* mortal_stack_typed_var_index, int32_t* mortal_stack_top_ptr, int32_t* mortal_stack_tops, int32_t mortal_stack_tops_index);
+  int32_t (*lookup_switch_table)(SPVM_NATIVE_SWITCH_TABLE* switch_table, int32_t value);
 };
 
 struct spvm_api_cfunc {
