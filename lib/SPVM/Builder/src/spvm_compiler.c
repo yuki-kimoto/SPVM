@@ -1352,7 +1352,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         
         int32_t switch_infos_length = method->switch_infos ? method->switch_infos->length : 0;
         runtime_method->switch_infos_length = switch_infos_length;
-        SPVM_RUNTIME_SWITCH_INFO* runtime_switch_infos = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_SWITCH_INFO) * (switch_infos_length + 1));        for (int32_t i = 0; i < switch_infos_length; i++) {
+        SPVM_RUNTIME_SWITCH_INFO* runtime_switch_infos = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_SWITCH_INFO) * (switch_infos_length + 1));
+        for (int32_t i = 0; i < switch_infos_length; i++) {
           SPVM_SWITCH_INFO* switch_info = SPVM_LIST_get(method->switch_infos, i);
           SPVM_RUNTIME_SWITCH_INFO* runtime_switch_info = &runtime_switch_infos[i];
           

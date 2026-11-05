@@ -65,7 +65,7 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
     SPVM_STRING_BUFFER_add(string_buffer, precompile_header_content);
     
     // Add case_info struct definition to the precompile source header
-    SPVM_STRING_BUFFER_add(string_buffer, "struct case_info_for_switch_table {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "struct switch_table_row {\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  const char* method_abs_name;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t value;\n");
@@ -74,8 +74,8 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
     SPVM_STRING_BUFFER_add(string_buffer, "#include <stdlib.h>\n");
     
     SPVM_STRING_BUFFER_add(string_buffer, "static int32_t compare_case_info_for_switch_table(const void* p1, const void* p2) {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  const struct case_info_for_switch_table* c1 = (const struct case_info_for_switch_table*)p1;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  const struct case_info_for_switch_table* c2 = (const struct case_info_for_switch_table*)p2;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  const struct switch_table_row* c1 = (const struct switch_table_row*)p1;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  const struct switch_table_row* c2 = (const struct switch_table_row*)p2;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  if (c1->value < c2->value) {\n");
     SPVM_STRING_BUFFER_add(string_buffer, "    return -1;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -4993,7 +4993,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       SPVM_RUNTIME_SWITCH_INFO* switch_info = &current_method->switch_infos[i];
       int32_t opcode_index = switch_info->opcode_index;
       
-      SPVM_STRING_BUFFER_add(string_buffer, "  static struct case_info_for_switch_table ");
+      SPVM_STRING_BUFFER_add(string_buffer, "  static struct switch_table_row ");
       SPVM_PRECOMPILE_add_cvar_for_switch_table(precompile, string_buffer, opcode_index);
       SPVM_STRING_BUFFER_add(string_buffer, "[] = {\n");
       
@@ -5171,7 +5171,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
         SPVM_PRECOMPILE_add_cvar_for_switch_table(precompile, string_buffer, opcode_index);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_STRING_BUFFER_add_int(string_buffer, case_infos_length);
-        SPVM_STRING_BUFFER_add(string_buffer, ", sizeof(struct case_info_for_switch_table), compare_case_info_for_switch_table);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", sizeof(struct switch_table_row), compare_case_info_for_switch_table);\n");
       }
     }
   }
