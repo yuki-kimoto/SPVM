@@ -529,27 +529,75 @@ class TestCase::Statement::Switch {
     
     # Enumeration
     {
-      my $success : int;
-      switch (1) {
-        case &VALUE0: {
-          $success = 0;
-          break;
+      {
+        my $success : int;
+        switch (1) {
+          case &VALUE0: {
+            $success = 0;
+            break;
+          }
+          case &VALUE1: {
+            $success = 1;
+            break;
+          }
+          case &VALUE2: {
+            $success = 0;
+            break;
+          }
+          default:
         }
-        case &VALUE1: {
-          $success = 1;
-          break;
+        unless ($success) {
+          return 0;
         }
-        case &VALUE2: {
-          $success = 0;
-          break;
-        }
-        default:
       }
-      unless ($success) {
-        return 0;
+      
+      {
+        my $success : int;
+        switch (1) {
+          case &VALUE2: {
+            $success = 0;
+            break;
+          }
+          case &VALUE1: {
+            $success = 1;
+            break;
+          }
+          case &VALUE0: {
+            $success = 0;
+            break;
+          }
+          default:
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+      
+      {
+        my $success : int;
+        switch (4) {
+          case TestCase::Statement::Switch->VALUE2: {
+            $success = 0;
+            break;
+          }
+          case TestCase::Statement::Switch->VALUE1: {
+            $success = 0;
+            break;
+          }
+          case TestCase::Statement::Switch->VALUE0: {
+            $success = 0;
+            break;
+          }
+          default: {
+            $success = 1;
+          }
+        }
+        unless ($success) {
+          return 0;
+        }
       }
     }
-
+    
     # Character literal
     {
       my $success : int;
