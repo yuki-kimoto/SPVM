@@ -5171,6 +5171,13 @@ void SPVM_PRECOMPILE_add_cvar_for_static_method(SPVM_PRECOMPILE* precompile, SPV
   SPVM_PRECOMPILE_add_cvar(precompile, string_buffer, "method", method_abs_name);
 }
 
+void SPVM_PRECOMPILE_add_cvar_for_switch_table(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t opcode_index) {
+  char prefix_buf[64];
+  snprintf(prefix_buf, sizeof(prefix_buf), "switch_table____%d", opcode_index);
+  SPVM_STRING_BUFFER_add(string_buffer, prefix_buf);
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+}
+
 void SPVM_PRECOMPILE_add_cvar(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* prefix, const char* name) {
   const char* sharp = strchr(name, '#');
   if (sharp) {
