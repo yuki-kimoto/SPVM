@@ -1609,9 +1609,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               SPVM_LIST_pop(op_switch_stack);
               
-              // Decide switch type
-              switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
-              
               if (!switch_info->op_default) {
                 SPVM_OP* op_switch_block = op_cur->last;
                 
