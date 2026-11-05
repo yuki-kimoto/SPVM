@@ -62,17 +62,6 @@
 #include "spvm_atomic.h"
 #include "spvm_mutex.h"
 
-// Never change for binary backword compatible
-struct switch_table_row {
-  const char* method_abs_name;
-  int32_t value;
-  int32_t index;
-};
-struct switch_table {
-  struct switch_table_row* rows;
-  int32_t switch_table_rows_length;
-};
-
 static const char* FILE_NAME = "spvm_api.c";
 
 SPVM_ENV* SPVM_NATIVE_new_env(void) {
@@ -7980,3 +7969,29 @@ int SPVM_API_c_snprintf_len(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t 
   return total_len;
 }
 
+int32_t SPVM_API_lookup_switch_table(struct switch_table* switch_table, int32_t value) {
+  assert(switch_table != NULL);
+  assert(switch_table->rows != NULL);
+
+  int32_t found_index = -1;
+  int32_t low = 0;
+  int32_t high = switch_table->switch_table_rows_length - 1;
+
+  while (low <= high) {
+    int32_t mid = low + (high - low) / 2;
+    int32_t mid_value = switch_table->rows[mid].value;
+
+    if (mid_value == value) {
+      found_index = switch_table->rows[mid].index;
+      break;
+    }
+    else if (mid_value < value) {
+      low = mid + 1;
+    }
+    else {
+      high = mid - 1;
+    }
+  }
+
+  return found_index;
+}

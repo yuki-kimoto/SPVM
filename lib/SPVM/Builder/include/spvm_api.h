@@ -654,4 +654,17 @@ SPVM_OBJECT* SPVM_API_build_caller_stack_lines_no_mortal(SPVM_ENV* env, SPVM_VAL
 
 int32_t SPVM_API_build_caller_stack_lines_to_buffer(char* buffer, SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_message, int32_t start_call_depth, int32_t end_call_depth);
 
+// Never change for binary backword compatible
+struct switch_table_row {
+  const char* method_abs_name;
+  int32_t value;
+  int32_t index;
+};
+struct switch_table {
+  struct switch_table_row* rows;
+  int32_t switch_table_rows_length;
+};
+
+int32_t SPVM_API_lookup_switch_table(struct switch_table* switch_table, int32_t value);
+
 #endif
