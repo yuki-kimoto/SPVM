@@ -40,6 +40,8 @@
 #include "spvm_mutex.h"
 #include "spvm_version_from.h"
 #include "spvm_toke.h"
+#include "spvm_switch_info.h"
+#include "spvm_case_info.h"
 
 #include "spvm_api.h"
 #include "spvm_api_runtime.h"
@@ -52,6 +54,8 @@
 #include "spvm_runtime_method.h"
 #include "spvm_runtime_string.h"
 #include "spvm_runtime_arg.h"
+#include "spvm_runtime_switch_info.h"
+#include "spvm_runtime_case_info.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_COMPILER));
@@ -1345,6 +1349,40 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
           SPVM_STRING* static_method_call_abs_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, static_method_call_abs_name, strlen(static_method_call_abs_name));
           runtime_method->static_method_call_abs_names[i] = runtime_basic_type->constant_strings[static_method_call_abs_name_string->index].value;
         }
+        
+        int32_t switch_infos_length = method->switch_infos ? method->switch_infos->length : 0;
+        runtime_method->switch_infos_length = switch_infos_length;
+        SPVM_RUNTIME_SWITCH_INFO* runtime_switch_infos = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_SWITCH_INFO) * (switch_infos_length + 1));        for (int32_t i = 0; i < switch_infos_length; i++) {
+          SPVM_SWITCH_INFO* switch_info = SPVM_LIST_get(method->switch_infos, i);
+          SPVM_RUNTIME_SWITCH_INFO* runtime_switch_info = &runtime_switch_infos[i];
+          
+          runtime_switch_info->default_opcode_index = switch_info->default_opcode_index;
+          runtime_switch_info->opcode_index = switch_info->opcode_index;
+          
+          int32_t case_infos_length = switch_info->case_infos ? switch_info->case_infos->length : 0;
+          runtime_switch_info->case_infos_length = case_infos_length;
+          
+          // Allocate memory with +1 for case infos
+          SPVM_RUNTIME_CASE_INFO* runtime_case_infos = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_CASE_INFO) * (case_infos_length + 1));
+          
+          for (int32_t j = 0; j < case_infos_length; j++) {
+            SPVM_CASE_INFO* case_info = SPVM_LIST_get(switch_info->case_infos, j);
+            SPVM_RUNTIME_CASE_INFO* runtime_case_info = &runtime_case_infos[j];
+            
+            runtime_case_info->value = case_info->value;
+            runtime_case_info->goto_opcode_index = case_info->goto_opcode_index;
+            
+            if (case_info->method_abs_name) {
+              SPVM_STRING* case_method_abs_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, case_info->method_abs_name, strlen(case_info->method_abs_name));
+              runtime_case_info->method_abs_name = runtime_basic_type->constant_strings[case_method_abs_name_string->index].value;
+            }
+            else {
+              runtime_case_info->method_abs_name = NULL;
+            }
+          }
+          runtime_switch_info->case_infos = runtime_case_infos;
+        }
+        runtime_method->switch_infos = runtime_switch_infos;
         
       }
       runtime_basic_type->methods = runtime_methods;
