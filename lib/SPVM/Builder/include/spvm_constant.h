@@ -11,6 +11,7 @@ struct spvm_constant {
   SPVM_OP* op_constant;
   SPVM_TYPE* type;
   SPVM_VALUE value;
+  const char* enum_abs_name;
   int32_t string_length;
 };
 
