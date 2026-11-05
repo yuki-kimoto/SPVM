@@ -8,7 +8,7 @@
 
 struct spvm_case_info {
   SPVM_OP* op_case_info;
-  int32_t case_value;
+  int32_t value;
   int32_t goto_opcode_index;
 };
 

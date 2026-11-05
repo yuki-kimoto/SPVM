@@ -1588,8 +1588,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 for (int32_t j = i + 1; j < switch_info->case_infos->length; j++) {
                   SPVM_CASE_INFO* case_i = SPVM_LIST_get(switch_info->case_infos, i);
                   SPVM_CASE_INFO* case_j = SPVM_LIST_get(switch_info->case_infos, j);
-                  int32_t match_i = case_i->case_value;
-                  int32_t match_j = case_j->case_value;
+                  int32_t match_i = case_i->value;
+                  int32_t match_j = case_j->value;
                   
                   if (match_i > match_j) {
                     SPVM_LIST_set(switch_info->case_infos, i, case_j);
@@ -1602,7 +1602,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               for (int32_t i = 0; i < switch_info->case_infos->length - 1; i++) {
                 SPVM_CASE_INFO* case_info = SPVM_LIST_get(switch_info->case_infos, i);
                 SPVM_CASE_INFO* case_info_next = SPVM_LIST_get(switch_info->case_infos, i + 1);
-                if (case_info->case_value == case_info_next->case_value) {
+                if (case_info->value == case_info_next->value) {
                   SPVM_COMPILER_error(compiler, "The value of case statement cannnot be duplicated.\n  at %s line %d", case_info->op_case_info->file, case_info->op_case_info->line);
                 }
               }
@@ -1651,7 +1651,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 constant->value.ival = (int32_t)constant->value.bval;
               }
               
-              case_info->case_value = constant->value.ival;
+              case_info->value = constant->value.ival;
               
               // Remove case value operation because this is a constant value for a case statemenet.
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur->first);

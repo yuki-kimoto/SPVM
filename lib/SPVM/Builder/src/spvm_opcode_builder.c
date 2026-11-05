@@ -558,7 +558,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
                   SPVM_OPCODE* opcode_case_info = opcode_list->values + opcode_index + 1 + i;
                   SPVM_CASE_INFO* case_info = SPVM_LIST_get(case_infos, i);
-                  opcode_case_info->operand1 = case_info->case_value;
+                  opcode_case_info->operand1 = case_info->value;
                   opcode_case_info->operand2 = case_info->goto_opcode_index;
                 }
                 
