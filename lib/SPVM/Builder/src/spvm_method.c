@@ -29,9 +29,9 @@ SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   method->static_method_call_abs_names = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   method->static_method_call_symtable = SPVM_HASH_new_hash_permanent(compiler->current_each_compile_allocator, 0);
   
-  method->opcode_list = SPVM_OPCODE_LIST_new(compiler);
+  method->switch_infos = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   
-  method->switch_infos = SPVM_OPCODE_LIST_new(compiler);
+  method->opcode_list = SPVM_OPCODE_LIST_new(compiler);
   
   return method;
 }

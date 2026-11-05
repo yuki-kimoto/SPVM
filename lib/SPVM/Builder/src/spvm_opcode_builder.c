@@ -562,6 +562,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   opcode_case_info->operand2 = case_info->goto_opcode_index;
                 }
                 
+                SPVM_LIST_push(method->switch_infos, switch_info);
+                
                 break;
               }
               case SPVM_OP_C_ID_SWITCH_CONDITION: {
