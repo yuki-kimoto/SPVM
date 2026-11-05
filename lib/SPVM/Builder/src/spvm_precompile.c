@@ -66,8 +66,8 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
     
     // Add case_info struct definition to the precompile source header
     SPVM_STRING_BUFFER_add(string_buffer, "struct switch_table_row {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  const char* method_abs_name;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t value;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "};\n\n");
     

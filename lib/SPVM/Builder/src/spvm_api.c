@@ -7959,3 +7959,4 @@ int SPVM_API_c_snprintf_len(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t 
 
   return total_len;
 }
+
