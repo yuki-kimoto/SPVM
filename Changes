@@ -1,3 +1,18 @@
+0.990206 2026-11-05
+  [Improve switch Statement Binary Compatibility]
+    * Changes to enum values used in switch statement cases in precompiled code no longer break binary compatibility. Case enum values are no longer hardcoded in the source code, but are instead retrieved at runtime upon first execution. Due to the adoption of a lookup table, there is a slight performance degradation compared to traditional C switch statements.
+    
+  [New Features]
+    * Add SPVM_NATIVE_SWITCH_TABLE to spvm_native.h
+    * Add lookup_switch_table internal native API.
+  [Internal Changes]
+    * Add spvm_runtime_case_info.h and spvm_runtime_switch_info.h.
+    * Add switch_infos to spvm_method.h.
+    * Remove switch id. Only lookup switch.
+    * Rename case_value to value in spvm_case_info.
+    * Add method_abs_name member to spvm_constant.
+    * Add struct switch_table_row and struct switch_table to spvm_api.
+  
 0.990205 2026-11-04
   [Performance Improvement]
     * Static variables initialization is performed only once in precompiled method.
