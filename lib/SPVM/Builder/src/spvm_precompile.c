@@ -61,6 +61,13 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
   if (!basic_type->is_generated_from_anon_method) {
     const char* precompile_header_content = get_precompile_header_content();
     SPVM_STRING_BUFFER_add(string_buffer, precompile_header_content);
+    
+    // Add case_info struct definition to the precompile source header
+    SPVM_STRING_BUFFER_add(string_buffer, "struct case_info {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  const char* method_abs_name;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t value;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "};\n\n");
   }
   
   // Method implementations
