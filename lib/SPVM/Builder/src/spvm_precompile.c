@@ -76,7 +76,27 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t switch_table_rows_length;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "};\n\n");
     
-    SPVM_STRING_BUFFER_add(string_buffer, "#include <stdlib.h>\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "static void my_qsort(void* base, size_t nmemb, size_t size, int (*compar)(const void*, const void*)) {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  char* ptr = (char*)base;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  size_t i, j;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  for (i = 0; i < nmemb - 1; i++) {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "    for (j = 0; j < nmemb - 1 - i; j++) {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "      void* p1 = ptr + j * size;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "      void* p2 = ptr + (j + 1) * size;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "      if (compar(p1, p2) > 0) {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "        /* swap elements of 'size' bytes */\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "        size_t k;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "        char* b1 = (char*)p1;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "        char* b2 = (char*)p2;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "        for (k = 0; k < size; k++) {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "          char tmp = b1[k];\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "          b1[k] = b2[k];\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "          b2[k] = tmp;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "}\n\n");
     
     SPVM_STRING_BUFFER_add(string_buffer, "static int32_t compare_case_info_for_switch_table(const void* p1, const void* p2) {\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  const struct switch_table_row* c1 = (const struct switch_table_row*)p1;\n");
@@ -5181,7 +5201,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
           }
         }
         
-        SPVM_STRING_BUFFER_add(string_buffer, "      qsort(");
+        SPVM_STRING_BUFFER_add(string_buffer, "      my_qsort(");
         SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(precompile, string_buffer, opcode_index);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_STRING_BUFFER_add_int(string_buffer, case_infos_length);
