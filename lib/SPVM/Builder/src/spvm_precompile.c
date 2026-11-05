@@ -70,6 +70,20 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
     SPVM_STRING_BUFFER_add(string_buffer, "  const char* method_abs_name;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t value;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "};\n\n");
+    
+    SPVM_STRING_BUFFER_add(string_buffer, "static int32_t compare_case_info_for_switch_table(const void* p1, const void* p2) {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  const struct case_info_for_switch_table* c1 = (const struct case_info_for_switch_table*)p1;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  const struct case_info_for_switch_table* c2 = (const struct case_info_for_switch_table*)p2;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  if (c1->value < c2->value) {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "    return -1;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  else if (c1->value > c2->value) {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "    return 1;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "    return 0;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "}\n\n");
   }
   
   // Method implementations
