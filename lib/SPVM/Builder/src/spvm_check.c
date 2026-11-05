@@ -3933,7 +3933,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 
                 int32_t enum_value = call_method->method->enum_value;
                 SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, enum_value, op_cur->file, op_cur->line);
-                op_constant->uv.constant->enum_abs_name = call_method->method->abs_name;
+                op_constant->uv.constant->method_abs_name = call_method->method->abs_name;
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_constant);
                 
