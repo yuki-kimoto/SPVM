@@ -7969,7 +7969,7 @@ int SPVM_API_c_snprintf_len(SPVM_ENV* env, SPVM_VALUE* stack, char* str, size_t 
   return total_len;
 }
 
-int32_t SPVM_API_lookup_switch_table(struct switch_table* switch_table, int32_t value) {
+int32_t SPVM_API_lookup_switch_table(SPVM_ENV* env, SPVM_VALUE* stack, struct switch_table* switch_table, int32_t value) {
   assert(switch_table != NULL);
   assert(switch_table->rows != NULL);
 

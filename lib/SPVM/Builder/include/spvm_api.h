@@ -665,6 +665,6 @@ struct switch_table {
   int32_t switch_table_rows_length;
 };
 
-int32_t SPVM_API_lookup_switch_table(struct switch_table* switch_table, int32_t value);
+int32_t SPVM_API_lookup_switch_table(SPVM_ENV* env, SPVM_VALUE* stack, struct switch_table* switch_table, int32_t value);
 
 #endif

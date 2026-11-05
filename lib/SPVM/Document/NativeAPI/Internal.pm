@@ -52,7 +52,7 @@ The value referenced by I<mortal_stack_top_ptr> is updated.
 
 =head2 lookup_switch_table
 
-C<int32_t (*lookup_switch_table)(SPVM_NATIVE_SWITCH_TABLE* switch_table, int32_t value);>
+C<int32_t (*lookup_switch_table)(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_NATIVE_SWITCH_TABLE* switch_table, int32_t value);>
 
 Looks up the switch table I<switch_table> for the specified I<value> using binary search and returns the corresponding index.
 
