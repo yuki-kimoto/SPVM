@@ -58,6 +58,7 @@ void SPVM_PRECOMPILE_add_cvar_for_field_index(SPVM_PRECOMPILE* precompile, SPVM_
 void SPVM_PRECOMPILE_add_cvar_for_static_method(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* method_abs_name);
 void SPVM_PRECOMPILE_add_cvar(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* prefix, const char* name);
 void SPVM_PRECOMPILE_add_cvar_for_switch_table(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t opcode_index);
+void SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t opcode_index);
 void SPVM_PRECOMPILE_replace_colon_and_dollar_with_under_score(SPVM_PRECOMPILE* precompile, char* string);
 
 // Defined in spvm_precompile_header_content.c

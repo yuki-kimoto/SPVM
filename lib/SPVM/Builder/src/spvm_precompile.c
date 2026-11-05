@@ -4991,7 +4991,8 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       SPVM_STRING_BUFFER_add(string_buffer, " = NULL;\n");
     }
   }
-
+  
+  // Initialize switch tables and sort their rows by case value for binary search
   int32_t switch_infos_length = current_method->switch_infos_length;
   if (switch_infos_length > 0) {
     for (int32_t i = 0; i < switch_infos_length; i++) {
@@ -4999,7 +5000,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       int32_t opcode_index = switch_info->opcode_index;
       
       SPVM_STRING_BUFFER_add(string_buffer, "  static struct switch_table_row ");
-      SPVM_PRECOMPILE_add_cvar_for_switch_table(precompile, string_buffer, opcode_index);
+      SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(precompile, string_buffer, opcode_index);
       SPVM_STRING_BUFFER_add(string_buffer, "[] = {\n");
       
       int32_t case_infos_length = switch_info->case_infos_length;
@@ -5008,12 +5009,10 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
         
         SPVM_STRING_BUFFER_add(string_buffer, "    {\n");
         
-        // index
         SPVM_STRING_BUFFER_add(string_buffer, "      .index = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, j);
         SPVM_STRING_BUFFER_add(string_buffer, ",\n");
         
-        // method_abs_name
         SPVM_STRING_BUFFER_add(string_buffer, "      .method_abs_name = ");
         if (case_info->method_abs_name) {
           SPVM_STRING_BUFFER_add(string_buffer, "\"");
@@ -5023,7 +5022,6 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
           SPVM_STRING_BUFFER_add(string_buffer, "NULL,\n");
         }
         
-        // value
         SPVM_STRING_BUFFER_add(string_buffer, "      .value = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, case_info->value);
         SPVM_STRING_BUFFER_add(string_buffer, ",\n");
@@ -5031,6 +5029,17 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
         SPVM_STRING_BUFFER_add(string_buffer, "    },\n");
       }
       
+      SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
+      
+      SPVM_STRING_BUFFER_add(string_buffer, "  static struct switch_table ");
+      SPVM_PRECOMPILE_add_cvar_for_switch_table(precompile, string_buffer, opcode_index);
+      SPVM_STRING_BUFFER_add(string_buffer, " = {\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "    .rows = ");
+      SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(precompile, string_buffer, opcode_index);
+      SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "    .switch_table_rows_length = ");
+      SPVM_STRING_BUFFER_add_int(string_buffer, case_infos_length);
+      SPVM_STRING_BUFFER_add(string_buffer, "\n");
       SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
     }
   }
@@ -5164,7 +5173,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
             
             SPVM_STRING_BUFFER_add(string_buffer, "        env->call_method_no_mortal(env, stack, method, 0, __func__, __FILE__, __LINE__);\n");
             SPVM_STRING_BUFFER_add(string_buffer, "        ");
-            SPVM_PRECOMPILE_add_cvar_for_switch_table(precompile, string_buffer, opcode_index);
+            SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(precompile, string_buffer, opcode_index);
             SPVM_STRING_BUFFER_add(string_buffer, "[");
             SPVM_STRING_BUFFER_add_int(string_buffer, j);
             SPVM_STRING_BUFFER_add(string_buffer, "].value = stack[0].ival;\n");
@@ -5173,7 +5182,7 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "      qsort(");
-        SPVM_PRECOMPILE_add_cvar_for_switch_table(precompile, string_buffer, opcode_index);
+        SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(precompile, string_buffer, opcode_index);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_STRING_BUFFER_add_int(string_buffer, case_infos_length);
         SPVM_STRING_BUFFER_add(string_buffer, ", sizeof(struct switch_table_row), compare_case_info_for_switch_table);\n");
@@ -5287,6 +5296,13 @@ void SPVM_PRECOMPILE_add_cvar_for_static_method(SPVM_PRECOMPILE* precompile, SPV
 void SPVM_PRECOMPILE_add_cvar_for_switch_table(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t opcode_index) {
   char prefix_buf[64];
   snprintf(prefix_buf, sizeof(prefix_buf), "switch_table____%d", opcode_index);
+  SPVM_STRING_BUFFER_add(string_buffer, prefix_buf);
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+}
+
+void SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t opcode_index) {
+  char prefix_buf[64];
+  snprintf(prefix_buf, sizeof(prefix_buf), "switch_table_rows____%d", opcode_index);
   SPVM_STRING_BUFFER_add(string_buffer, prefix_buf);
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
