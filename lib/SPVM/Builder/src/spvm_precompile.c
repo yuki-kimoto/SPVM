@@ -71,6 +71,8 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t value;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "};\n\n");
     
+    SPVM_STRING_BUFFER_add(string_buffer, "#include <stdlib.h>\n");
+    
     SPVM_STRING_BUFFER_add(string_buffer, "static int32_t compare_case_info_for_switch_table(const void* p1, const void* p2) {\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  const struct case_info_for_switch_table* c1 = (const struct case_info_for_switch_table*)p1;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "  const struct case_info_for_switch_table* c2 = (const struct case_info_for_switch_table*)p2;\n");
@@ -5133,7 +5135,47 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
     }
   }
-
+  
+  // Initialize switch info tables and sort them by case value for binary search
+  if (switch_infos_length > 0) {
+    for (int32_t i = 0; i < switch_infos_length; i++) {
+      SPVM_RUNTIME_SWITCH_INFO* switch_info = &current_method->switch_infos[i];
+      int32_t opcode_index = switch_info->opcode_index;
+      int32_t case_infos_length = switch_info->case_infos_length;
+      
+      if (case_infos_length > 0) {
+        for (int32_t j = 0; j < case_infos_length; j++) {
+          SPVM_RUNTIME_CASE_INFO* case_info = &switch_info->case_infos[j];
+          
+          if (case_info->method_abs_name) {
+            SPVM_STRING_BUFFER_add(string_buffer, "      {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_NATIVE_METHOD* method = env->api->runtime->get_method_by_abs_name(env->runtime, \"");
+            SPVM_STRING_BUFFER_add(string_buffer, case_info->method_abs_name);
+            SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        if (!method) {\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "          error_id = env->die(env, stack, \"Static variable initialization for switch case method failed.\", __func__, __FILE__, __LINE__);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "          goto END_OF_METHOD;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
+            
+            SPVM_STRING_BUFFER_add(string_buffer, "        env->call_method_no_mortal(env, stack, method, 0, __func__, __FILE__, __LINE__);\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "        ");
+            SPVM_PRECOMPILE_add_cvar_for_switch_table(precompile, string_buffer, opcode_index);
+            SPVM_STRING_BUFFER_add(string_buffer, "[");
+            SPVM_STRING_BUFFER_add_int(string_buffer, j);
+            SPVM_STRING_BUFFER_add(string_buffer, "].value = stack[0].ival;\n");
+            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+          }
+        }
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "      qsort(");
+        SPVM_PRECOMPILE_add_cvar_for_switch_table(precompile, string_buffer, opcode_index);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, case_infos_length);
+        SPVM_STRING_BUFFER_add(string_buffer, ", sizeof(struct case_info_for_switch_table), compare_case_info_for_switch_table);\n");
+      }
+    }
+  }
+  
   SPVM_STRING_BUFFER_add(string_buffer, "      static_vars_initialized = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
