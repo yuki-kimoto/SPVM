@@ -71,6 +71,11 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
     SPVM_STRING_BUFFER_add(string_buffer, "  int32_t value;\n");
     SPVM_STRING_BUFFER_add(string_buffer, "};\n\n");
     
+    SPVM_STRING_BUFFER_add(string_buffer, "struct switch_table {\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  struct switch_table_row* rows;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t switch_table_rows_length;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "};\n\n");
+    
     SPVM_STRING_BUFFER_add(string_buffer, "#include <stdlib.h>\n");
     
     SPVM_STRING_BUFFER_add(string_buffer, "static int32_t compare_case_info_for_switch_table(const void* p1, const void* p2) {\n");
