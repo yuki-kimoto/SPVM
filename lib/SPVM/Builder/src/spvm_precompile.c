@@ -28,6 +28,8 @@
 #include "spvm_runtime_string.h"
 #include "spvm_type.h"
 #include "spvm_runtime.h"
+#include "spvm_runtime_switch_info.h"
+#include "spvm_runtime_case_info.h"
 
 SPVM_PRECOMPILE* SPVM_PRECOMPILE_new(void) {
   SPVM_PRECOMPILE* precompile = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_PRECOMPILE));
@@ -214,9 +216,12 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add_int(string_buffer, switch_info_index);
         SPVM_STRING_BUFFER_add(string_buffer, ", value);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    switch (found_index) {\n");
+        
+        SPVM_RUNTIME_SWITCH_INFO* switch_info = &current_method->switch_infos[switch_info_index];
+        
         for (int32_t case_index = 0; case_index < case_infos_length; case_index++) {
-          SPVM_OPCODE* opcode_case_info = &(opcodes[opcode_index + 1 + case_index]);
-          int32_t target_opcode_index = opcode_case_info->operand2;
+          SPVM_RUNTIME_CASE_INFO* case_info = &switch_info->case_infos[case_index];
+          int32_t target_opcode_index = case_info->goto_opcode_index;
           
           SPVM_STRING_BUFFER_add(string_buffer, "      case ");
           SPVM_STRING_BUFFER_add_int(string_buffer, case_index);
@@ -224,6 +229,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
           SPVM_STRING_BUFFER_add_int(string_buffer, target_opcode_index);
           SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         }
+        
         SPVM_STRING_BUFFER_add(string_buffer, "      default: goto L");
         SPVM_STRING_BUFFER_add_int(string_buffer, default_opcode_index);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
