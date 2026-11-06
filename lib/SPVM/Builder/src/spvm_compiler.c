@@ -1366,6 +1366,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
           runtime_method->static_method_call_abs_names[i] = runtime_basic_type->constant_strings[static_method_call_abs_name_string->index].value;
         }
         
+        // Switch
         int32_t switch_infos_length = method->switch_infos ? method->switch_infos->length : 0;
         runtime_method->switch_infos_length = switch_infos_length;
         SPVM_RUNTIME_SWITCH_INFO* runtime_switch_infos = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_SWITCH_INFO) * (switch_infos_length + 1));
@@ -1391,7 +1392,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
           }
           runtime_switch_info->case_infos = runtime_case_infos;
 
-          // Build table_rows for binary search with +1 allocation
+          // Build table_rows for lookup with +1 allocation
           int32_t table_rows_length = case_infos_length;
           runtime_switch_info->table_rows_length = table_rows_length;
           
@@ -1402,13 +1403,55 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
             table_rows[j].index = j;
           }
           
+          int32_t algorithm = SPVM_RUNTIME_SWITCH_INFO_C_ALGORITHM_BINARY_SEARCH;
+
           if (table_rows_length > 0) {
             // Sort table_rows by value in ascending order using qsort
             qsort(table_rows, table_rows_length, sizeof(SPVM_RUNTIME_SWITCH_TABLE_ROW), SPVM_COMPILER_compare_switch_table_row);
+
+            int32_t min_value = table_rows[0].value;
+            int32_t max_value = table_rows[table_rows_length - 1].value;
+            int64_t value_range = (int64_t)max_value - min_value + 1;
+
+            // Heuristic for algorithm selection
+            if (table_rows_length <= 4) {
+              algorithm = SPVM_RUNTIME_SWITCH_INFO_C_ALGORITHM_LINEAR_SEARCH;
+            }
+            else if (value_range > 0 && value_range <= (int64_t)table_rows_length * 4 && value_range <= INT32_MAX) {
+              algorithm = SPVM_RUNTIME_SWITCH_INFO_C_ALGORITHM_JUMP_TABLE;
+              
+              // If JUMP_TABLE is selected, we want table_rows to be indexed by (value - min_value)
+              // so that O(1) lookup works directly using the diff offset.
+              SPVM_RUNTIME_SWITCH_TABLE_ROW* jump_table_rows = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_SWITCH_TABLE_ROW) * (value_range + 1));
+              
+              // Initialize with invalid index (-1)
+              for (int64_t j = 0; j <= value_range; j++) {
+                jump_table_rows[j].value = 0;
+                jump_table_rows[j].index = -1;
+              }
+              
+              // Map each case to its offset position
+              for (int32_t j = 0; j < table_rows_length; j++) {
+                int32_t val = table_rows[j].value;
+                int32_t orig_idx = table_rows[j].index;
+                int32_t diff = val - min_value;
+                jump_table_rows[diff].value = val;
+                jump_table_rows[diff].index = orig_idx;
+              }
+              
+              table_rows = jump_table_rows;
+              runtime_switch_info->table_rows_length = (int32_t)value_range;
+            }
+            else {
+              algorithm = SPVM_RUNTIME_SWITCH_INFO_C_ALGORITHM_BINARY_SEARCH;
+            }
+          }
+          else {
+            algorithm = SPVM_RUNTIME_SWITCH_INFO_C_ALGORITHM_LINEAR_SEARCH;
           }
           
           runtime_switch_info->table_rows = table_rows;
-          runtime_switch_info->algorithm = SPVM_RUNTIME_SWITCH_INFO_C_ALGORITHM_BINARY_SEARCH;
+          runtime_switch_info->algorithm = algorithm;
         }
         runtime_method->switch_infos = runtime_switch_infos;
         
