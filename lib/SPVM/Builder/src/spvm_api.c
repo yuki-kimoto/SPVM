@@ -56,6 +56,8 @@
 #include "spvm_type.h"
 #include "spvm_runtime_call_stack_frame_info.h"
 #include "spvm_toke.h"
+#include "spvm_runtime_switch_info.h"
+#include "spvm_runtime_switch_table_row.h"
 
 // OS specific
 #include "spvm_builtin_expect.h"
@@ -8004,6 +8006,42 @@ int32_t SPVM_API_lookup_switch_table(SPVM_ENV* env, SPVM_VALUE* stack, struct sw
         else {
           high = mid - 1;
         }
+      }
+    }
+  }
+
+  return found_index;
+}
+
+int32_t SPVM_API_lookup_switch_table_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t switch_info_index, int32_t value) {
+  assert(method != NULL);
+  assert(switch_info_index >= 0);
+  assert(switch_info_index < method->switch_infos_length);
+
+  SPVM_RUNTIME_SWITCH_INFO* switch_info = &method->switch_infos[switch_info_index];
+  assert(switch_info != NULL);
+  assert(switch_info->table_rows != NULL);
+
+  int32_t found_index = -1;
+  int32_t length = switch_info->table_rows_length;
+
+  if (length > 0) {
+    int32_t low = 0;
+    int32_t high = length - 1;
+
+    while (low <= high) {
+      int32_t mid = low + (high - low) / 2;
+      int32_t mid_value = switch_info->table_rows[mid].value;
+
+      if (mid_value == value) {
+        found_index = switch_info->table_rows[mid].index;
+        break;
+      }
+      else if (mid_value < value) {
+        low = mid + 1;
+      }
+      else {
+        high = mid - 1;
       }
     }
   }
