@@ -1391,27 +1391,23 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
           }
           runtime_switch_info->case_infos = runtime_case_infos;
 
-          // Build table_rows for binary search
+          // Build table_rows for binary search with +1 allocation
           int32_t table_rows_length = case_infos_length;
           runtime_switch_info->table_rows_length = table_rows_length;
           
-          if (table_rows_length > 0) {
-            SPVM_RUNTIME_SWITCH_TABLE_ROW* table_rows = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_SWITCH_TABLE_ROW) * table_rows_length);
-            
-            for (int32_t j = 0; j < table_rows_length; j++) {
-              table_rows[j].value = runtime_case_infos[j].value;
-              table_rows[j].index = j;
-            }
-            
-            // Sort table_rows by value in ascending order using qsort
-            qsort(table_rows, table_rows_length, sizeof(SPVM_RUNTIME_SWITCH_TABLE_ROW), SPVM_COMPILER_compare_switch_table_row);
-            
-            runtime_switch_info->table_rows = table_rows;
-          }
-          else {
-            runtime_switch_info->table_rows = NULL;
+          SPVM_RUNTIME_SWITCH_TABLE_ROW* table_rows = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_SWITCH_TABLE_ROW) * (table_rows_length + 1));
+          
+          for (int32_t j = 0; j < table_rows_length; j++) {
+            table_rows[j].value = runtime_case_infos[j].value;
+            table_rows[j].index = j;
           }
           
+          if (table_rows_length > 0) {
+            // Sort table_rows by value in ascending order using qsort
+            qsort(table_rows, table_rows_length, sizeof(SPVM_RUNTIME_SWITCH_TABLE_ROW), SPVM_COMPILER_compare_switch_table_row);
+          }
+          
+          runtime_switch_info->table_rows = table_rows;
           runtime_switch_info->algorithm = SPVM_RUNTIME_SWITCH_INFO_C_ALGORITHM_BINARY_SEARCH;
         }
         runtime_method->switch_infos = runtime_switch_infos;

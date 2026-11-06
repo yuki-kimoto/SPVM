@@ -254,13 +254,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         int32_t default_opcode_index = opcode->operand1;
         int32_t case_infos_length = opcode->operand2;
+        int32_t switch_info_index = opcode->operand3;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t value = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t found_index = env->api->internal->lookup_switch_table(env, stack, (SPVM_NATIVE_SWITCH_TABLE*)&");
-        SPVM_PRECOMPILE_add_cvar_for_switch_table(precompile, string_buffer, opcode_index);
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t found_index = env->api->internal->lookup_switch_table_v2(env, stack, current_method, ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, switch_info_index);
         SPVM_STRING_BUFFER_add(string_buffer, ", value);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    switch (found_index) {\n");
         for (int32_t case_index = 0; case_index < case_infos_length; case_index++) {
