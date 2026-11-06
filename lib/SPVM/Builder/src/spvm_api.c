@@ -7975,22 +7975,31 @@ int32_t SPVM_API_lookup_switch_table(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNT
   int32_t length = switch_info->table_rows_length;
 
   if (length > 0) {
-    int32_t low = 0;
-    int32_t high = length - 1;
-
-    while (low <= high) {
-      int32_t mid = low + (high - low) / 2;
-      int32_t mid_value = switch_info->table_rows[mid].value;
-
-      if (mid_value == value) {
-        found_index = switch_info->table_rows[mid].index;
-        break;
+    if (switch_info->algorithm == SPVM_RUNTIME_SWITCH_INFO_C_ALGORITHM_JUMP_TABLE) {
+      int32_t min_value = switch_info->table_rows[0].value;
+      int32_t diff = value - min_value;
+      if (diff >= 0 && diff < length) {
+        found_index = switch_info->table_rows[diff].index;
       }
-      else if (mid_value < value) {
-        low = mid + 1;
-      }
-      else {
-        high = mid - 1;
+    }
+    else {
+      int32_t low = 0;
+      int32_t high = length - 1;
+
+      while (low <= high) {
+        int32_t mid = low + (high - low) / 2;
+        int32_t mid_value = switch_info->table_rows[mid].value;
+
+        if (mid_value == value) {
+          found_index = switch_info->table_rows[mid].index;
+          break;
+        }
+        else if (mid_value < value) {
+          low = mid + 1;
+        }
+        else {
+          high = mid - 1;
+        }
       }
     }
   }
