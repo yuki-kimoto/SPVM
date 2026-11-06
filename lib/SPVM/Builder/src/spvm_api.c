@@ -7982,6 +7982,14 @@ int32_t SPVM_API_lookup_switch_table(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNT
         found_index = switch_info->table_rows[diff].index;
       }
     }
+    else if (switch_info->algorithm == SPVM_RUNTIME_SWITCH_INFO_C_ALGORITHM_LINEAR_SEARCH) {
+      for (int32_t i = 0; i < length; i++) {
+        if (switch_info->table_rows[i].value == value) {
+          found_index = switch_info->table_rows[i].index;
+          break;
+        }
+      }
+    }
     else {
       int32_t low = 0;
       int32_t high = length - 1;
