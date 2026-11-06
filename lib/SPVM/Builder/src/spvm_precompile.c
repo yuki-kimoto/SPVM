@@ -26,8 +26,6 @@
 #include "spvm_runtime_method.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_string.h"
-#include "spvm_runtime_switch_info.h"
-#include "spvm_runtime_case_info.h"
 #include "spvm_type.h"
 #include "spvm_runtime.h"
 
@@ -63,54 +61,6 @@ void SPVM_PRECOMPILE_build_class_source(SPVM_PRECOMPILE* precompile, SPVM_STRING
   if (!basic_type->is_generated_from_anon_method) {
     const char* precompile_header_content = get_precompile_header_content();
     SPVM_STRING_BUFFER_add(string_buffer, precompile_header_content);
-    
-    // Add case_info struct definition to the precompile source header
-    SPVM_STRING_BUFFER_add(string_buffer, "struct switch_table_row {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  const char* method_abs_name;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t value;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "};\n\n");
-    
-    SPVM_STRING_BUFFER_add(string_buffer, "struct switch_table {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  struct switch_table_row* rows;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  int32_t switch_table_rows_length;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "};\n\n");
-    
-    SPVM_STRING_BUFFER_add(string_buffer, "static void my_qsort(void* base, size_t nmemb, size_t size, int (*compar)(const void*, const void*)) {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  char* ptr = (char*)base;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  size_t i, j;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  for (i = 0; i < nmemb - 1; i++) {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "    for (j = 0; j < nmemb - 1 - i; j++) {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "      void* p1 = ptr + j * size;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "      void* p2 = ptr + (j + 1) * size;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "      if (compar(p1, p2) > 0) {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "        /* swap elements of 'size' bytes */\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "        size_t k;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "        char* b1 = (char*)p1;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "        char* b2 = (char*)p2;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "        for (k = 0; k < size; k++) {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "          char tmp = b1[k];\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "          b1[k] = b2[k];\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "          b2[k] = tmp;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "}\n\n");
-    
-    SPVM_STRING_BUFFER_add(string_buffer, "static int32_t compare_case_info_for_switch_table(const void* p1, const void* p2) {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  const struct switch_table_row* c1 = (const struct switch_table_row*)p1;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  const struct switch_table_row* c2 = (const struct switch_table_row*)p2;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  if (c1->value < c2->value) {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "    return -1;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  else if (c1->value > c2->value) {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "    return 1;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  else {\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "    return 0;\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-    SPVM_STRING_BUFFER_add(string_buffer, "}\n\n");
   }
   
   // Method implementations
@@ -5013,49 +4963,6 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
     }
   }
   
-  // Initialize switch tables and sort their rows by case value for binary search
-  int32_t switch_infos_length = current_method->switch_infos_length;
-  if (switch_infos_length > 0) {
-    for (int32_t i = 0; i < switch_infos_length; i++) {
-      SPVM_RUNTIME_SWITCH_INFO* switch_info = &current_method->switch_infos[i];
-      int32_t opcode_index = switch_info->opcode_index;
-      
-      SPVM_STRING_BUFFER_add(string_buffer, "  static struct switch_table_row ");
-      SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(precompile, string_buffer, opcode_index);
-      SPVM_STRING_BUFFER_add(string_buffer, "[] = {\n");
-      
-      int32_t case_infos_length = switch_info->case_infos_length;
-      for (int32_t j = 0; j < case_infos_length; j++) {
-        SPVM_RUNTIME_CASE_INFO* case_info = &switch_info->case_infos[j];
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "    {\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "      .index = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, j);
-        SPVM_STRING_BUFFER_add(string_buffer, ",\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "      .value = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, case_info->value);
-        SPVM_STRING_BUFFER_add(string_buffer, ",\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "    },\n");
-      }
-      
-      SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
-      
-      SPVM_STRING_BUFFER_add(string_buffer, "  static struct switch_table ");
-      SPVM_PRECOMPILE_add_cvar_for_switch_table(precompile, string_buffer, opcode_index);
-      SPVM_STRING_BUFFER_add(string_buffer, " = {\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "    .rows = ");
-      SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(precompile, string_buffer, opcode_index);
-      SPVM_STRING_BUFFER_add(string_buffer, ",\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "    .switch_table_rows_length = ");
-      SPVM_STRING_BUFFER_add_int(string_buffer, case_infos_length);
-      SPVM_STRING_BUFFER_add(string_buffer, "\n");
-      SPVM_STRING_BUFFER_add(string_buffer, "  };\n");
-    }
-  }
-  
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!static_vars_initialized) {\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->lock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    if (!static_vars_initialized) {\n");
@@ -5162,23 +5069,6 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
     }
   }
   
-  // Initialize switch info tables and sort them by case value for binary search
-  if (switch_infos_length > 0) {
-    for (int32_t i = 0; i < switch_infos_length; i++) {
-      SPVM_RUNTIME_SWITCH_INFO* switch_info = &current_method->switch_infos[i];
-      int32_t opcode_index = switch_info->opcode_index;
-      int32_t case_infos_length = switch_info->case_infos_length;
-      
-      if (case_infos_length > 0) {
-        SPVM_STRING_BUFFER_add(string_buffer, "      my_qsort(");
-        SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(precompile, string_buffer, opcode_index);
-        SPVM_STRING_BUFFER_add(string_buffer, ", ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, case_infos_length);
-        SPVM_STRING_BUFFER_add(string_buffer, ", sizeof(struct switch_table_row), compare_case_info_for_switch_table);\n");
-      }
-    }
-  }
-  
   SPVM_STRING_BUFFER_add(string_buffer, "      static_vars_initialized = 1;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
   SPVM_STRING_BUFFER_add(string_buffer, "    env->api->mutex->unlock(env, stack, env->api->runtime->get_mutex(env->runtime));\n");
@@ -5280,20 +5170,6 @@ void SPVM_PRECOMPILE_add_cvar_for_field_index(SPVM_PRECOMPILE* precompile, SPVM_
 
 void SPVM_PRECOMPILE_add_cvar_for_static_method(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* method_abs_name) {
   SPVM_PRECOMPILE_add_cvar(precompile, string_buffer, "method", method_abs_name);
-}
-
-void SPVM_PRECOMPILE_add_cvar_for_switch_table(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t opcode_index) {
-  char prefix_buf[64];
-  snprintf(prefix_buf, sizeof(prefix_buf), "switch_table____%d", opcode_index);
-  SPVM_STRING_BUFFER_add(string_buffer, prefix_buf);
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
-}
-
-void SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, int32_t opcode_index) {
-  char prefix_buf[64];
-  snprintf(prefix_buf, sizeof(prefix_buf), "switch_table_rows____%d", opcode_index);
-  SPVM_STRING_BUFFER_add(string_buffer, prefix_buf);
-  SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
 void SPVM_PRECOMPILE_add_cvar(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* prefix, const char* name) {
