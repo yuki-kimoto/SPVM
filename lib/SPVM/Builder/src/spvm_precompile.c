@@ -210,7 +210,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t value = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t found_index = env->api->internal->lookup_switch_table_v2(env, stack, current_method, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t found_index = env->api->internal->lookup_switch_table(env, stack, current_method, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, switch_info_index);
         SPVM_STRING_BUFFER_add(string_buffer, ", value);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    switch (found_index) {\n");
