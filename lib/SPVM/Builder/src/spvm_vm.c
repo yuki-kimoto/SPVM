@@ -41,6 +41,8 @@
 #include "spvm_api_arg.h"
 #include "spvm_type.h"
 #include "spvm_runtime_call_stack_frame_info.h"
+#include "spvm_runtime_switch_info.h"
+#include "spvm_runtime_case_info.h"
 
 // OS specific
 #include "spvm_builtin_expect.h"
@@ -167,50 +169,15 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         
-        // Default branch
         int32_t default_opcode_index = opcode->operand1;
+        int32_t switch_info_index = opcode->operand3;
+        int32_t value = int_vars[opcode->operand0];
         
-        // Cases length
-        int32_t case_infos_length = opcode->operand2;
-
-        if (case_infos_length > 0) {
-          // min
-          SPVM_OPCODE* opcode_case_info_min = &(opcodes[opcode_index + 1 + 0]);
-          int32_t min = opcode_case_info_min->operand1;
-          
-          // max
-          SPVM_OPCODE* opcode_case_info_max = &(opcodes[opcode_index + 1 + case_infos_length - 1]);
-          int32_t max = opcode_case_info_max->operand1;
-          
-          if (int_vars[opcode->operand0] >= min && int_vars[opcode->operand0] <= max) {
-            // 2 opcode_index searching
-            int32_t current_min_pos = 0;
-            int32_t current_max_pos = case_infos_length - 1;
-            
-            while (1) {
-              if (current_max_pos < current_min_pos) {
-                opcode_index = default_opcode_index;
-                break;
-              }
-              int32_t current_half_pos = current_min_pos + (current_max_pos - current_min_pos) / 2;
-              SPVM_OPCODE* opcode_case_cur_half = &(opcodes[opcode_index + 1 + current_half_pos]);
-              int32_t current_half = opcode_case_cur_half->operand1;
-              
-              if (int_vars[opcode->operand0] > current_half) {
-                current_min_pos = current_half_pos + 1;
-              }
-              else if (int_vars[opcode->operand0] < current_half) {
-                current_max_pos = current_half_pos - 1;
-              }
-              else {
-                opcode_index = opcode_case_cur_half->operand2;
-                break;
-              }
-            }
-          }
-          else {
-            opcode_index = default_opcode_index;
-          }
+        int32_t found_index = SPVM_API_lookup_switch_table(env, stack, current_method, switch_info_index, value);
+        
+        if (found_index >= 0) {
+          SPVM_RUNTIME_SWITCH_INFO* switch_info = &current_method->switch_infos[switch_info_index];
+          opcode_index = switch_info->case_infos[found_index].goto_opcode_index;
         }
         else {
           opcode_index = default_opcode_index;
