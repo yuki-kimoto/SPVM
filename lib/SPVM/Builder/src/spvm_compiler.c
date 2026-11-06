@@ -1372,14 +1372,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
             
             runtime_case_info->value = case_info->value;
             runtime_case_info->goto_opcode_index = case_info->goto_opcode_index;
-            
-            if (case_info->method_abs_name) {
-              SPVM_STRING* case_method_abs_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, case_info->method_abs_name, strlen(case_info->method_abs_name));
-              runtime_case_info->method_abs_name = runtime_basic_type->constant_strings[case_method_abs_name_string->index].value;
-            }
-            else {
-              runtime_case_info->method_abs_name = NULL;
-            }
           }
           runtime_switch_info->case_infos = runtime_case_infos;
         }

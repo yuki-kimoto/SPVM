@@ -1653,10 +1653,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               case_info->value = constant->value.ival;
               
-              if (constant->method_abs_name) {
-                case_info->method_abs_name = constant->method_abs_name;
-              }
-              
               // Remove case value operation because this is a constant value for a case statemenet.
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur->first);
               SPVM_OP* op_do_nothing = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_cur->first->file, op_cur->first->line);
@@ -3937,7 +3933,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 
                 int32_t enum_value = call_method->method->enum_value;
                 SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, enum_value, op_cur->file, op_cur->line);
-                op_constant->uv.constant->method_abs_name = call_method->method->abs_name;
                 
                 SPVM_OP_replace_op(compiler, op_stab, op_constant);
                 

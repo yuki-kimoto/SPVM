@@ -5033,15 +5033,6 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
         SPVM_STRING_BUFFER_add_int(string_buffer, j);
         SPVM_STRING_BUFFER_add(string_buffer, ",\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "      .method_abs_name = ");
-        if (case_info->method_abs_name) {
-          SPVM_STRING_BUFFER_add(string_buffer, "\"");
-          SPVM_STRING_BUFFER_add(string_buffer, case_info->method_abs_name);
-          SPVM_STRING_BUFFER_add(string_buffer, "\",\n");
-        } else {
-          SPVM_STRING_BUFFER_add(string_buffer, "NULL,\n");
-        }
-        
         SPVM_STRING_BUFFER_add(string_buffer, "      .value = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, case_info->value);
         SPVM_STRING_BUFFER_add(string_buffer, ",\n");
@@ -5178,30 +5169,6 @@ void SPVM_PRECOMPILE_build_static_vars_declaration(SPVM_PRECOMPILE* precompile, 
       int32_t case_infos_length = switch_info->case_infos_length;
       
       if (case_infos_length > 0) {
-        for (int32_t j = 0; j < case_infos_length; j++) {
-          SPVM_RUNTIME_CASE_INFO* case_info = &switch_info->case_infos[j];
-          
-          if (case_info->method_abs_name) {
-            SPVM_STRING_BUFFER_add(string_buffer, "      {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_NATIVE_METHOD* method = env->api->runtime->get_method_by_abs_name(env->runtime, \"");
-            SPVM_STRING_BUFFER_add(string_buffer, case_info->method_abs_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        if (!method) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "          error_id = env->die(env, stack, \"Static variable initialization for switch case method failed.\", __func__, __FILE__, __LINE__);\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "          goto END_OF_METHOD;\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_VALUE backup_stack_0 = stack[0];\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        env->call_method_no_mortal(env, stack, method, 0, __func__, __FILE__, __LINE__);\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        ");
-            SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(precompile, string_buffer, opcode_index);
-            SPVM_STRING_BUFFER_add(string_buffer, "[");
-            SPVM_STRING_BUFFER_add_int(string_buffer, j);
-            SPVM_STRING_BUFFER_add(string_buffer, "].value = stack[0].ival;\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        stack[0] = backup_stack_0;\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-          }
-        }
-        
         SPVM_STRING_BUFFER_add(string_buffer, "      my_qsort(");
         SPVM_PRECOMPILE_add_cvar_for_switch_table_rows(precompile, string_buffer, opcode_index);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");

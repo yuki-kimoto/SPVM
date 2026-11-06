@@ -7974,22 +7974,37 @@ int32_t SPVM_API_lookup_switch_table(SPVM_ENV* env, SPVM_VALUE* stack, struct sw
   assert(switch_table->rows != NULL);
 
   int32_t found_index = -1;
-  int32_t low = 0;
-  int32_t high = switch_table->switch_table_rows_length - 1;
+  int32_t length = switch_table->switch_table_rows_length;
 
-  while (low <= high) {
-    int32_t mid = low + (high - low) / 2;
-    int32_t mid_value = switch_table->rows[mid].value;
+  if (length > 0) {
+    int32_t min_value = switch_table->rows[0].value;
+    int32_t max_value = switch_table->rows[length - 1].value;
 
-    if (mid_value == value) {
-      found_index = switch_table->rows[mid].index;
-      break;
-    }
-    else if (mid_value < value) {
-      low = mid + 1;
+    if (max_value - min_value == length - 1) {
+      int32_t diff = value - min_value;
+      if (diff >= 0 && diff < length) {
+        found_index = switch_table->rows[diff].index;
+      }
     }
     else {
-      high = mid - 1;
+      int32_t low = 0;
+      int32_t high = length - 1;
+
+      while (low <= high) {
+        int32_t mid = low + (high - low) / 2;
+        int32_t mid_value = switch_table->rows[mid].value;
+
+        if (mid_value == value) {
+          found_index = switch_table->rows[mid].index;
+          break;
+        }
+        else if (mid_value < value) {
+          low = mid + 1;
+        }
+        else {
+          high = mid - 1;
+        }
+      }
     }
   }
 

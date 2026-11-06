@@ -10,7 +10,6 @@
     * Add switch_infos to spvm_method.h.
     * Remove switch id. Only lookup switch.
     * Rename case_value to value in spvm_case_info.
-    * Add method_abs_name member to spvm_constant.
     * Add struct switch_table_row and struct switch_table to spvm_api.
   
 0.990205 2026-11-04
