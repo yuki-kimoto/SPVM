@@ -245,7 +245,7 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
 
 void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {
   
-  SPVM_CHECK_sort_anon_method_basic_types(compiler);
+  SPVM_CHECK_sort_basic_types(compiler);
   
   SPVM_CHECK_check_basic_types_relation(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
@@ -1193,84 +1193,70 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
 
   
 void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler) {
-  for (int32_t pass = 0; pass < 2; pass++) {
-    for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-      
-      // Required to determine the cast types of anonymous method fields
-      if (pass == 0) {
-        if (basic_type->is_generated_from_anon_method) {
-          continue;
-        }
-      }
-      else {
-        if (!basic_type->is_generated_from_anon_method) {
-          continue;
-        }
-      }
-      
-      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->name, strlen(basic_type->name));
-      
-      if (basic_type->file) {
-        SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->file, strlen(basic_type->file));
-      }
-      
-      if (basic_type->class_dir) {
-        SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->class_dir, strlen(basic_type->class_dir));
-      }
-      
-      if (basic_type->class_rel_file) {
-        SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->class_rel_file, strlen(basic_type->class_rel_file));
-      }
-      
-      if (basic_type->version_string) {
-        SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->version_string, strlen(basic_type->version_string));
-      }
-      
-      for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
-        SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
-        SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, class_var->name, strlen(class_var->name));
-      }
-      
-      for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
-        SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field->name, strlen(field->name));
-      }
-      
-      for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
-        SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
-        SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method->name, strlen(method->name));
-      }
-      
-      int32_t compile_error = 0;
-      for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
-        SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
-        // AST traversals
-        if (method->op_block) {
-          // AST traversal - Check syntax and generate some operations
-          SPVM_CHECK_check_ast_syntax(compiler, basic_type, method);
-          if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-            return;
-          }
-          
-          // AST traversal - assign an unassigned operator to a variable
-          SPVM_CHECK_check_ast_assign_form(compiler, basic_type, method);
-          assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
-          
-          // AST traversal - Check if a block needs "leave scope" operation
-          SPVM_CHECK_check_ast_fix_leave_scope(compiler, basic_type, method);
-          assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
-          
-          // AST traversal - Check call stack ids of variable declarations
-          SPVM_CHECK_check_ast_resolve_typed_var_indexes(compiler, basic_type, method);
-          assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
-        }
-      }
-      
-      // String pool must end with "\0"
-      // This is not needed, but maybe there are bugs in other places
-      SPVM_STRING_BUFFER_add_len(basic_type->string_pool, "\0\0\0\0", 4);
+  for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    
+    SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->name, strlen(basic_type->name));
+    
+    if (basic_type->file) {
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->file, strlen(basic_type->file));
     }
+    
+    if (basic_type->class_dir) {
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->class_dir, strlen(basic_type->class_dir));
+    }
+    
+    if (basic_type->class_rel_file) {
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->class_rel_file, strlen(basic_type->class_rel_file));
+    }
+    
+    if (basic_type->version_string) {
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->version_string, strlen(basic_type->version_string));
+    }
+    
+    for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, class_var->name, strlen(class_var->name));
+    }
+    
+    for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field->name, strlen(field->name));
+    }
+    
+    for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method->name, strlen(method->name));
+    }
+    
+    int32_t compile_error = 0;
+    for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+      // AST traversals
+      if (method->op_block) {
+        // AST traversal - Check syntax and generate some operations
+        SPVM_CHECK_check_ast_syntax(compiler, basic_type, method);
+        if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+          return;
+        }
+        
+        // AST traversal - assign an unassigned operator to a variable
+        SPVM_CHECK_check_ast_assign_form(compiler, basic_type, method);
+        assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
+        
+        // AST traversal - Check if a block needs "leave scope" operation
+        SPVM_CHECK_check_ast_fix_leave_scope(compiler, basic_type, method);
+        assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
+        
+        // AST traversal - Check call stack ids of variable declarations
+        SPVM_CHECK_check_ast_resolve_typed_var_indexes(compiler, basic_type, method);
+        assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
+      }
+    }
+    
+    // String pool must end with "\0"
+    // This is not needed, but maybe there are bugs in other places
+    SPVM_STRING_BUFFER_add_len(basic_type->string_pool, "\0\0\0\0", 4);
   }
 }
 
@@ -6439,45 +6425,50 @@ static int32_t SPVM_CHECK_basic_type_qsort_cmp(const void* p1, const void* p2) {
   return col1 - col2;
 }
 
-void SPVM_CHECK_sort_anon_method_basic_types(SPVM_COMPILER* compiler) {
+void SPVM_CHECK_sort_basic_types(SPVM_COMPILER* compiler) {
   SPVM_LIST* basic_types = compiler->basic_types;
   
-  // Find continuous ranges of anon_methods and sort them within their groups
-  int32_t i = compiler->basic_types_base_id;
-  while (i < basic_types->length) {
+  // Create temporary list
+  SPVM_LIST* temp_basic_types = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  
+  // Add basic types not containing ::anon_method:: first
+  for (int32_t i = compiler->basic_types_base_id; i < basic_types->length; i++) {
     SPVM_BASIC_TYPE* basic_type = basic_types->values[i];
-    if (strstr(basic_type->name, "::anon_method::") != NULL) {
-      int32_t start_index = i;
-      int32_t end_index = i;
-      
-      // Find the contiguous range of anon methods that share the same base context
-      while (end_index < basic_types->length) {
-        SPVM_BASIC_TYPE* next_type = basic_types->values[end_index];
-        if (strstr(next_type->name, "::anon_method::") == NULL) {
-          break;
-        }
-        end_index++;
-      }
-      
-      int32_t sort_count = end_index - start_index;
-      if (sort_count > 1) {
-        qsort(
-          &basic_types->values[start_index],
-          sort_count,
-          sizeof(void*),
-          SPVM_CHECK_basic_type_qsort_cmp
-        );
-      }
-      
-      i = end_index;
-    } else {
-      i++;
+    if (strstr(basic_type->name, "::anon_method::") == NULL) {
+      SPVM_LIST_push(temp_basic_types, basic_type);
     }
   }
   
-  // Reassign basic type IDs only within the valid compilation range
-  for (int32_t j = compiler->basic_types_base_id; j < basic_types->length; j++) {
-    SPVM_BASIC_TYPE* basic_type = basic_types->values[j];
-    basic_type->id = j;
+  // Remember the start position of anon_method basic types
+  int32_t anon_method_start_index = temp_basic_types->length;
+  
+  // Add basic types containing ::anon_method:: next
+  for (int32_t i = compiler->basic_types_base_id; i < basic_types->length; i++) {
+    SPVM_BASIC_TYPE* basic_type = basic_types->values[i];
+    if (strstr(basic_type->name, "::anon_method::") != NULL) {
+      SPVM_LIST_push(temp_basic_types, basic_type);
+    }
   }
+  
+  // Sort the anon_method range by line and column
+  int32_t anon_method_count = temp_basic_types->length - anon_method_start_index;
+  if (anon_method_count > 1) {
+    qsort(
+      &temp_basic_types->values[anon_method_start_index],
+      anon_method_count,
+      sizeof(void*),
+      SPVM_CHECK_basic_type_qsort_cmp
+    );
+  }
+  
+  // Copy back to the original basic_types list and reassign IDs
+  for (int32_t j = 0; j < temp_basic_types->length; j++) {
+    int32_t target_index = compiler->basic_types_base_id + j;
+    SPVM_BASIC_TYPE* basic_type = temp_basic_types->values[j];
+    basic_types->values[target_index] = basic_type;
+    basic_type->id = target_index;
+  }
+  
+  // Free temporary list
+  SPVM_LIST_free(temp_basic_types);
 }
