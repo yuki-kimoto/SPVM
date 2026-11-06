@@ -56,6 +56,7 @@
 #include "spvm_runtime_arg.h"
 #include "spvm_runtime_switch_info.h"
 #include "spvm_runtime_case_info.h"
+#include "spvm_runtime_switch_table_row.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_COMPILER));
@@ -1123,6 +1124,21 @@ void SPVM_COMPILER_free_memory_tmp_each_compile(SPVM_COMPILER* compiler) {
   SPVM_HASH_free(compiler->if_require_not_found_basic_type_name_symtable);
 }
 
+static int32_t SPVM_COMPILER_compare_switch_table_row(const void* p1, const void* p2) {
+  const SPVM_RUNTIME_SWITCH_TABLE_ROW* row1 = (const SPVM_RUNTIME_SWITCH_TABLE_ROW*)p1;
+  const SPVM_RUNTIME_SWITCH_TABLE_ROW* row2 = (const SPVM_RUNTIME_SWITCH_TABLE_ROW*)p2;
+
+  if (row1->value < row2->value) {
+    return -1;
+  }
+  else if (row1->value > row2->value) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   
   SPVM_RUNTIME* current_runtime = compiler->runtime;
@@ -1374,6 +1390,29 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
             runtime_case_info->goto_opcode_index = case_info->goto_opcode_index;
           }
           runtime_switch_info->case_infos = runtime_case_infos;
+
+          // Build table_rows for binary search
+          int32_t table_rows_length = case_infos_length;
+          runtime_switch_info->table_rows_length = table_rows_length;
+          
+          if (table_rows_length > 0) {
+            SPVM_RUNTIME_SWITCH_TABLE_ROW* table_rows = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_SWITCH_TABLE_ROW) * table_rows_length);
+            
+            for (int32_t j = 0; j < table_rows_length; j++) {
+              table_rows[j].value = runtime_case_infos[j].value;
+              table_rows[j].index = j;
+            }
+            
+            // Sort table_rows by value in ascending order using qsort
+            qsort(table_rows, table_rows_length, sizeof(SPVM_RUNTIME_SWITCH_TABLE_ROW), SPVM_COMPILER_compare_switch_table_row);
+            
+            runtime_switch_info->table_rows = table_rows;
+          }
+          else {
+            runtime_switch_info->table_rows = NULL;
+          }
+          
+          runtime_switch_info->algorithm = SPVM_RUNTIME_SWITCH_INFO_C_ALGORITHM_BINARY_SEARCH;
         }
         runtime_method->switch_infos = runtime_switch_infos;
         

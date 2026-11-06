@@ -6,7 +6,7 @@
 
 #include "spvm_typedecl.h"
 
-struct switch_table_row {
+struct spvm_runtime_switch_table_row {
   int32_t value;
   int32_t index;
 };
