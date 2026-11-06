@@ -106,7 +106,6 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "IF_EQ_ZERO",
     "IF_NE_ZERO",
     "LOOKUP_SWITCH",
-    "CASE_INFO",
     "ENTER_SCOPE",
     "PUSH_MORTAL",
     "LEAVE_SCOPE",

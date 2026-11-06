@@ -552,16 +552,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                 SPVM_OPCODE* opcode = opcode_list->values + opcode_index;
                 opcode->operand1 = switch_info->default_opcode_index;
                 opcode->operand2 = switch_info->case_infos->length;
-
-                // Set case info operands
-                SPVM_LIST* case_infos = switch_info->case_infos;
-                for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
-                  SPVM_OPCODE* opcode_case_info = opcode_list->values + opcode_index + 1 + i;
-                  SPVM_CASE_INFO* case_info = SPVM_LIST_get(case_infos, i);
-                  opcode_case_info->operand1 = case_info->value;
-                  opcode_case_info->operand2 = case_info->goto_opcode_index;
-                }
-                
                 opcode->operand3 = method->switch_infos->length;
                 SPVM_LIST_push(method->switch_infos, switch_info);
                 
@@ -591,12 +581,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   // Branch
                   SPVM_CASE_INFO* branch_opcode_index_case_info = switch_info->case_infos->values[i];
                   branch_opcode_index_case_info->goto_opcode_index = case_info->goto_opcode_index;
-                  
-                  // Add case info
-                  SPVM_OPCODE opcode_case_info;
-                  memset(&opcode_case_info, 0, sizeof(SPVM_OPCODE));
-                  opcode_case_info.id = SPVM_OPCODE_C_ID_CASE_INFO;
-                  SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode_case_info);
                 }
                 
                 // Default branch
