@@ -17,6 +17,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 {
   ok(SPVM::TestCase::Statement::Switch->switch);
   ok(SPVM::TestCase::Statement::Switch->switch_extra);
+  ok(SPVM::TestCase::Statement::Switch->algorithms);
 }
 
 

@@ -748,4 +748,170 @@ class TestCase::Statement::Switch {
       }
     }
   }
+  
+  static method algorithms : int () {
+
+    # 1. Linear Search Tests (<= 4 cases or fallback)
+    # Testing small number of cases and multiple consecutive/sparse values
+    {
+      # Small density (Linear Search should be selected)
+      {
+        my $success = 0;
+        switch (2) {
+          case 1: { $success = 0; break; }
+          case 2: { $success = 1; break; }
+          case 3: { $success = 0; break; }
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+
+      # Single case edge case
+      {
+        my $success = 0;
+        switch (42) {
+          case 42: { $success = 1; break; }
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+
+      # Zero cases (empty switch)
+      {
+        my $success = 0;
+        switch (10) {}
+        $success = 1;
+        unless ($success) {
+          return 0;
+        }
+      }
+    }
+
+    # 2. Jump Table Tests (Dense range: max - min <= length * 4, and length > 4)
+    # Testing dense sequences where O(1) direct indexing is optimal
+    {
+      # Exactly 5 cases, consecutive values (Range = 5, Length = 5 -> Jump Table)
+      {
+        my $success = 0;
+        switch (3) {
+          case 1: { $success = 0; break; }
+          case 2: { $success = 0; break; }
+          case 3: { $success = 1; break; }
+          case 4: { $success = 0; break; }
+          case 5: { $success = 0; break; }
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+
+      # Jump table with negative range boundaries
+      {
+        my $success = 0;
+        switch (-2) {
+          case -3: { $success = 0; break; }
+          case -2: { $success = 1; break; }
+          case -1: { $success = 0; break; }
+          case  0: { $success = 0; break; }
+          case  1: { $success = 0; break; }
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+
+      # Jump table hitting default when within min-max range but value doesn't exist (sparse gap)
+      {
+        my $success = 0;
+        switch (2) {
+          case 1: { $success = 0; break; }
+          # 2 is missing gap
+          case 3: { $success = 0; break; }
+          case 4: { $success = 0; break; }
+          case 5: { $success = 0; break; }
+          case 6: { $success = 0; break; }
+          default: {
+            $success = 1;
+          }
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+    }
+
+    # 3. Binary Search Tests (Sparse datasets or > 4 cases with wide range)
+    # Testing when range > length * 4, ensuring O(log N) correctness
+    {
+      # 5 cases, but very sparse (Range = 10000, Length = 5 -> Binary Search)
+      {
+        my $success = 0;
+        switch (100) {
+          case 1:     { $success = 0; break; }
+          case 10:    { $success = 0; break; }
+          case 100:   { $success = 1; break; }
+          case 1000:  { $success = 0; break; }
+          case 10000: { $success = 0; break; }
+          default:    { $success = 0; }
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+
+      # Binary search with extreme min/max integer boundaries
+      {
+        my $success = 0;
+        switch (-2147483648) {
+          case -2147483648: { $success = 1; break; }
+          case 0:           { $success = 0; break; }
+          case 2147483647:  { $success = 0; break; }
+          case 100000:      { $success = 0; break; }
+          case -100000:     { $success = 0; break; }
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+
+      {
+        my $success = 0;
+        switch (2147483647) {
+          case -2147483648: { $success = 0; break; }
+          case 0:           { $success = 0; break; }
+          case 2147483647:  { $success = 1; break; }
+          case 100000:      { $success = 0; break; }
+          case -100000:     { $success = 0; break; }
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+    }
+
+    # 4. Fallback & Default Edge Cases across algorithms
+    {
+      # Falling through / hitting default when value is completely out of bounds
+      {
+        my $success = 0;
+        switch (99999) {
+          case 1:  { $success = 0; break; }
+          case 2:  { $success = 0; break; }
+          case 3:  { $success = 0; break; }
+          case 4:  { $success = 0; break; }
+          case 5:  { $success = 0; break; }
+          default: {
+            $success = 1;
+          }
+        }
+        unless ($success) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
 }
