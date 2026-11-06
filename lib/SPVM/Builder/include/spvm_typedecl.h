@@ -7,6 +7,9 @@
 #include <stdint.h>
 #include <stddef.h>
 
+struct spvm_runtime_switch_table_row;
+typedef struct spvm_runtime_switch_table_row SPVM_RUNTIME_SWITCH_TABLE_ROW;
+
 struct spvm_runtime_case_info;
 typedef struct spvm_runtime_case_info SPVM_RUNTIME_CASE_INFO;
 

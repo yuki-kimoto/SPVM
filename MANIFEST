@@ -133,6 +133,7 @@ lib/SPVM/Builder/include/spvm_runtime_field.h
 lib/SPVM/Builder/include/spvm_runtime_method.h
 lib/SPVM/Builder/include/spvm_runtime_string.h
 lib/SPVM/Builder/include/spvm_runtime_switch_info.h
+lib/SPVM/Builder/include/spvm_runtime_switch_table_row.h
 lib/SPVM/Builder/include/spvm_strerror.h
 lib/SPVM/Builder/include/spvm_string.h
 lib/SPVM/Builder/include/spvm_string_buffer.h
