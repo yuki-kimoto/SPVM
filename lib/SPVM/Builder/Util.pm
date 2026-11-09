@@ -22,6 +22,7 @@ use FindBin;
 use Fcntl qw(O_RDONLY);
 use Errno;
 use File::Temp;
+use File::Copy 'move';
 
 use SPVM::Builder::Config;
 
@@ -187,12 +188,20 @@ sub spurt_binary {
     }
     
     if ($should_write) {
-      mkpath dirname $output_file;
+      my $dir = dirname($output_file);
+      mkpath $dir;
       
-      open my $output_fh, '>:raw', $output_file
-        or die "Can't open file '$output_file':$!";
+      # Write to a temporary file first
+      my $tmp_file = "$output_file.tmp.$$";
+      
+      open my $output_fh, '>:raw', $tmp_file
+        or die "Can't open temporary file '$tmp_file':$!";
       print $output_fh $content;
       close $output_fh;
+      
+      # Atomically replace the target file
+      move($tmp_file, $output_file)
+        or confess("Can't move '$tmp_file' to '$output_file':$!");
     }
   };
 
