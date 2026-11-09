@@ -1,3 +1,6 @@
+0.990207 2026-11-09
+  [Build Process Improvement]
+    * Use temporary file and move for atomic file writing to create precompile sorces.
 0.990206 2026-11-05
   [Improve switch Statement Binary Compatibility]
     * Changes to enum values used in switch statement cases in precompiled code no longer break binary compatibility. Case enum values are no longer hardcoded in the source code, but are instead retrieved at runtime upon first execution.
