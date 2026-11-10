@@ -1,3 +1,6 @@
+0.990208 2026-11-10
+  [Build Process Improvement]
+    * Use temporary file and move for atomic file writing for compilation and link.
 0.990207 2026-11-09
   [Build Process Improvement]
     * Use temporary file and move for atomic file writing to create precompile sorces.
