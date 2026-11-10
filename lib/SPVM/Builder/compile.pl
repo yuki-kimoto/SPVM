@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use MIME::Base64 qw(decode_base64);
-use File::Copy ();
+use File::Copy 'move';
 use File::Path 'mkpath';
 use File::Basename 'basename', 'dirname';
 use Carp 'confess';
@@ -20,7 +20,9 @@ open(STDOUT, '>', $log_stdout)
 open(STDERR, '>', $log_stderr)
   or die "Can't open file '$log_stderr': $!";
 
-$cc_cmd[-1] .= $output_file;
+# Use a temporary file for atomic output generation
+my $tmp_output_file = "$output_file.tmp.$$";
+$cc_cmd[-1] .= $tmp_output_file;
 
 mkpath dirname $output_file;
 
@@ -40,3 +42,7 @@ else {
     die "Compilation command failed with exit code. \$exit_status=$exit_status, \@cc_cmd='@cc_cmd'";
   }
 }
+
+# Atomically replace the target file
+move($tmp_output_file, $output_file)
+  or confess("Can't move '$tmp_output_file' to '$output_file':$!");
