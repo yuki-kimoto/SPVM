@@ -113,14 +113,19 @@ else {
   my $link_method = ($output_type eq 'exe') ? 'link_executable' : 'link';
   my $output_option = ($output_type eq 'exe') ? 'exe_file' : 'lib_file';
   
-  # Link to the .tmp file instead of the final file
+  # Use a temporary file for atomic output generation
+  my $tmp_output_file = "$command_tmp_dir/link.output";
+  
+  # Link to the temp file first
   my $module_name = "SPVM::$class_name";
   $cbuilder->$link_method(
-    $output_option => $output_file,
+    $output_option => $tmp_output_file,
     objects => \@tmp_object_file_names,
     extra_linker_flags => "@ldflags",
     module_name => $module_name,
     dl_func_list => $dl_func_list,
   );
+  
+  File::Copy::move($tmp_output_file, $output_file)
+    or confess("Can't move '$tmp_output_file' to '$output_file': $!");
 }
-
