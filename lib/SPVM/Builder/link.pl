@@ -96,10 +96,11 @@ for my $object_file_name (@object_file_names) {
 
 mkpath dirname $output_file;
 
+# Use a temporary file for atomic output generation
+my $tmp_output_file = "$output_file.tmp.$$";
+
 # Determine link method and output option
 if ($output_type eq 'static_lib') {
-  my $tmp_output_file;
-  $tmp_output_file = "$command_tmp_dir/link.output";
   my @generate_static_lib_command = ('ar', 'rcs', $tmp_output_file, @tmp_object_file_names);
   
   # Execute archiver command
@@ -112,9 +113,6 @@ if ($output_type eq 'static_lib') {
 else {
   my $link_method = ($output_type eq 'exe') ? 'link_executable' : 'link';
   my $output_option = ($output_type eq 'exe') ? 'exe_file' : 'lib_file';
-  
-  # Use a temporary file for atomic output generation
-  my $tmp_output_file = "$command_tmp_dir/link.output";
   
   # Link to the temp file first
   my $module_name = "SPVM::$class_name";
